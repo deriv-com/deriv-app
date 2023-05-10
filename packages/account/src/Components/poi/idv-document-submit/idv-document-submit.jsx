@@ -13,7 +13,7 @@ import {
     filterObjProperties,
     isDesktop,
 } from '@deriv/shared';
-import { documentAdditionalError, getRegex, validate } from 'Helpers/utils';
+import { documentAdditionalError, getRegex, validate, removeUndefinedProperties } from 'Helpers/utils';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import IDVForm from 'Components/forms/idv-form';
@@ -115,7 +115,7 @@ const IdvDocumentSubmit = ({
         errors.first_name = validateName(values.first_name, min_name, max_name);
         errors.last_name = validateName(values.last_name, min_name, max_name);
 
-        return errors;
+        return removeUndefinedProperties(errors);
     };
 
     const makeSettingsRequest = settings => {

@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import classNames from 'classnames';
 import { Button } from '@deriv/components';
 import { filterObjProperties, toMoment, validLength, validName, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
-import { documentAdditionalError, getRegex, validate } from 'Helpers/utils';
+import { documentAdditionalError, getRegex, validate, removeUndefinedProperties } from 'Helpers/utils';
 import FormSubHeader from 'Components/form-sub-header';
 import IDVForm from 'Components/forms/idv-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
@@ -92,7 +92,7 @@ export const IdvDocSubmitOnSignup = ({
         errors.first_name = validateName(values.first_name, min_name, max_name);
         errors.last_name = validateName(values.last_name, min_name, max_name);
 
-        return errors;
+        return removeUndefinedProperties(errors);
     };
 
     const visible_settings = ['first_name', 'last_name', 'date_of_birth'];

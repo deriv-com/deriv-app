@@ -227,3 +227,8 @@ export const validate =
     };
 
 export const isFieldImmutable = (field: string, mutable_fields: string[] = []) => !mutable_fields.includes(field);
+
+export const removeUndefinedProperties = (obj: Record<string, any>) => {
+    Object.keys(obj).forEach(key => obj[key] === undefined && delete obj[key]);
+    return obj;
+};

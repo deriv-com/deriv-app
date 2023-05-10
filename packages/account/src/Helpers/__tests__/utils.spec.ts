@@ -6,6 +6,7 @@ import {
     getRegex,
     preventEmptyClipboardPaste,
     isFieldImmutable,
+    removeUndefinedProperties,
 } from '../utils';
 
 describe('generatePlaceholderText', () => {
@@ -161,5 +162,13 @@ describe('isFieldImmutable', () => {
     it('should return true if field is immutable', () => {
         const mutable_field_set = ['test1', 'test2'];
         expect(isFieldImmutable('test3', mutable_field_set)).toBeTruthy();
+    });
+});
+
+describe('removeUndefinedProperties', () => {
+    it('should remove undefined properties', () => {
+        const data = { name: 'test', age: undefined, email: '', phone: undefined };
+        const new_data = removeUndefinedProperties(data);
+        expect(new_data).toEqual({ name: 'test', email: '' });
     });
 });

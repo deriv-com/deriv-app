@@ -11,7 +11,12 @@ import {
 } from '@deriv/components';
 import { isDesktop, isMobile, PlatformContext, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { shouldShowIdentityInformation, documentAdditionalError, getRegex } from 'Helpers/utils';
+import {
+    shouldShowIdentityInformation,
+    documentAdditionalError,
+    getRegex,
+    removeUndefinedProperties,
+} from 'Helpers/utils';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import IDVForm from '../forms/idv-form';
 import PersonalDetailsForm from '../forms/personal-details-form';
@@ -117,7 +122,7 @@ const PersonalDetails = ({
         }
 
         errors.document_number = isDocumentNumberValid(document_number, document_type);
-        return errors;
+        return removeUndefinedProperties(errors);
     };
 
     const handleValidate = values => {

@@ -10,7 +10,7 @@ import { getWalletHeaderButtons } from 'Constants/utils';
 import './wallet-header.scss';
 
 type TWalletHeader = {
-    account_type: TAccountCategory;
+    account_type?: TAccountCategory;
     shortcode?: Extract<TJurisdictionData['jurisdiction'], 'svg' | 'malta'>;
     currency?: TWalletCurrency;
     balance?: string;

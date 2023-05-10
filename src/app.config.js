@@ -179,7 +179,7 @@ export default {
     trading_view_chart: {
         visible: true,
         // URL to the chart
-        url: 'https://tradingview.binary.com/',
+        url: 'https://tradingview.deriv.com/deriv',
         label: translate('Trading View'),
     },
     login: {

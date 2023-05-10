@@ -193,7 +193,7 @@ const IdvDocumentSubmit = ({
                             />
                         )}
                     </Field>
-                    <FormSubHeader title={localize('Identity verification')} />
+                    <FormSubHeader title={localize('Details')} />
                     <Field>
                         {({ field }) => (
                             <div

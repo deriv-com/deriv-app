@@ -6,14 +6,14 @@ import BalanceText from 'Components/elements/text/balance-text';
 import { observer, useStore } from '@deriv/stores';
 import './asset-summary.scss';
 import TotalAssetsLoader from 'Components/pre-loader/total-assets-loader';
-import { useTotalAccountBalance, useCfdAccounts, usePlatformAccounts } from '@deriv/hooks';
+import { useTotalAccountBalance, useCFDAccounts, usePlatformAccounts } from '@deriv/hooks';
 
 const AssetSummary = observer(() => {
     const { traders_hub, client } = useStore();
     const { selected_account_type, is_eu_user, no_CR_account, no_MF_account } = traders_hub;
     const { is_logging_in, is_switching, default_currency } = client;
     const { real: platform_real_accounts, demo: platform_demo_account } = usePlatformAccounts();
-    const { real: cfd_real_accounts, demo: cfd_demo_accounts } = useCfdAccounts();
+    const { real: cfd_real_accounts, demo: cfd_demo_accounts } = useCFDAccounts();
     const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
     const cfd_real_balance = useTotalAccountBalance(cfd_real_accounts);
     const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
@@ -54,7 +54,7 @@ const AssetSummary = observer(() => {
                         <BalanceText
                             currency={
                                 is_real
-                                    ? platform_real_balance.currency
+                                    ? platform_real_balance.currency || ''
                                     : platform_demo_account?.currency || default_currency
                             }
                             balance={is_real ? real_total_balance : demo_total_balance}

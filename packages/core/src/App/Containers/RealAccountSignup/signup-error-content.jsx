@@ -102,6 +102,8 @@ const ErrorCTA = ({ code, onConfirm }) => {
             return <TryAgain text={localize('Try a different currency')} onConfirm={onConfirm} />;
         case 'DuplicateAccount':
             return null;
+        case 'DuplicateCurrency':
+            return <TryAgain text={localize('OK')} onConfirm={onConfirm} />;
         case 'InputValidationFailed':
         case 'PoBoxInAddress':
         case 'InvalidPhone':

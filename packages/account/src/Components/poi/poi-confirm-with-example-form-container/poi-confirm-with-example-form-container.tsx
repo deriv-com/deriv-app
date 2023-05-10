@@ -46,7 +46,10 @@ const PoiConfirmWithExampleFormContainer = ({
     }, [account_settings]);
 
     const makeSettingsRequest = (settings: TValues) => {
-        const request = filterObjProperties(settings, [...rest_state?.changeable_fields]);
+        const request = filterObjProperties(
+            settings,
+            rest_state?.changeable_fields ? [...rest_state?.changeable_fields] : []
+        );
 
         if (request.first_name) {
             request.first_name = request.first_name.trim();

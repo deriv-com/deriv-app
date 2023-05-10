@@ -10,7 +10,7 @@ const ModalContent = ({ settings_extension }) => {
 
     content.push(...(settings_extension || []));
 
-    return <VerticalTab alignment='center' classNameHeader='modal__tab-header' id='modal' list={content} />;
+    return <VerticalTab list={content} />;
 };
 
 const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSettings, settings_extension }) => {

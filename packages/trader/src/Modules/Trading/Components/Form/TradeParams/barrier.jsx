@@ -22,7 +22,11 @@ const Barrier = ({
     setCurrentFocus,
     validation_errors,
 }) => {
-    const contract_type_info = proposal_info?.CALL || proposal_info?.NOTOUCH;
+    const contract_type_info =
+        (proposal_info?.CALL?.spot && proposal_info?.CALL) ||
+        proposal_info?.PUT ||
+        (proposal_info?.NOTOUCH?.spot && proposal_info?.NOTOUCH) ||
+        proposal_info?.ONETOUCH;
     const current_price = contract_type_info?.spot || '';
     const barrier_price = contract_type_info?.barrier || '';
     const barrier_title = barrier_count === 1 ? localize('Barrier') : localize('Barriers');

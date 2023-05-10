@@ -28,13 +28,13 @@ export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean
         case 'demo':
             return is_dark_mode_on ? 'IcWalletDerivDemoDark' : 'IcWalletDerivDemoLight';
         case 'USD':
-            return 'IcCurrencyUsd';
+            return 'IcWalletCurrencyUsd';
         case 'EUR':
-            return 'IcCurrencyEur';
+            return 'IcWalletCurrencyEur';
         case 'AUD':
-            return 'IcCurrencyAud';
+            return 'IcWalletCurrencyAud';
         case 'BTC':
-            return is_dark_mode_on ? 'IcCashierBitcoinDark' : 'IcCashierBitcoinLight';
+            return is_dark_mode_on ? 'IcWalletBitcoinDark' : 'IcWalletBitcoinLight';
         case 'ETH':
             return is_dark_mode_on ? 'IcWalletEtheriumDark' : 'IcWalletEtheriumLight';
         case 'USDT':
@@ -43,9 +43,9 @@ export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean
         case 'UST':
             return is_dark_mode_on ? 'IcWalletTetherDark' : 'IcWalletTetherLight';
         case 'LTC':
-            return is_dark_mode_on ? 'IcCashierLiteCoinDark' : 'IcCashierLiteCoinLight';
+            return is_dark_mode_on ? 'IcWalletLiteCoinDark' : 'IcWalletLiteCoinLight';
         case 'USDC':
-            return is_dark_mode_on ? 'IcCashierUsdCoinDark' : 'IcCashierUsdCoinLight';
+            return is_dark_mode_on ? 'IcWalletUsdCoinDark' : 'IcWalletUsdCoinLight';
         default:
             return 'Unknown';
     }

@@ -91,7 +91,7 @@ const CashierWalletModalHeader = ({
 
     return (
         <GradientBackground {...getCashierWalletModalBackgrounds(getBackgroundName())}>
-            {is_demo && <Watermark image={`url(${is_dark ? DemoDark : DemoLight})`} />}
+            {is_demo && <Watermark image={`url(${is_dark ? DemoDark : DemoLight})`} opacity={is_dark ? 0.32 : 0.24} />}
             <div
                 className={classNames(header_class_name, {
                     [`${header_class_name}--hide-title`]: !show_wallet_name,

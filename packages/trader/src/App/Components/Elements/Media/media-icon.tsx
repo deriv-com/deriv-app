@@ -1,8 +1,8 @@
 import React from 'react';
 
 type TMediaIcon = {
-    disabled: React.FC<React.SVGAttributes<SVGElement>>;
-    enabled: React.FC<React.SVGAttributes<SVGElement>>;
+    disabled: React.ComponentType<React.SVGAttributes<SVGElement>>;
+    enabled: React.ComponentType<React.SVGAttributes<SVGElement>>;
     id: string;
     is_enabled: boolean;
 };

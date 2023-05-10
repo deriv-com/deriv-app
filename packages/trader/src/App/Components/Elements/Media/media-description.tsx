@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MediaDescription: React.FC<React.PropsWithChildren<unknown>> = ({ children }) => (
+const MediaDescription = ({ children }: React.PropsWithChildren) => (
     <div className='media__description'>{children}</div>
 );
 

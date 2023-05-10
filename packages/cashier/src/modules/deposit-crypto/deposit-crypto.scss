@@ -1,4 +1,9 @@
 .deposit-crypto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+
     &__divider {
         height: 2px;
         width: 100%;

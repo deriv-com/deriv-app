@@ -1,2 +1,2 @@
 export * from './cashier-onboarding';
-export { default as DepositCryptoModule } from './deposit-crypto';
+export * from './deposit-crypto';

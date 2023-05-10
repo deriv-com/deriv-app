@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { WS, validPassword } from '@deriv/shared';
+import { WS, getErrorMessages, validPassword } from '@deriv/shared';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import CFDPasswordModal from '../cfd-password-modal';
 
@@ -26,7 +26,7 @@ jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     getErrorMessages: jest.fn().mockReturnValue({
         password_warnings: '',
-        password: jest.fn(),
+        password: jest.fn().mockReturnValue('Password should have lower and uppercase English letters with numbers.'),
     }),
     isDesktop: jest.fn().mockReturnValue(true),
     WS: {
@@ -191,6 +191,34 @@ describe('<CFDPasswordModal/>', () => {
         expect(await screen.findByText(/your password cannot be the same as your email address./i)).toBeInTheDocument();
     });
 
+    it('should display error message when password contain non-english characters', async () => {
+        validPassword.mockReturnValue(false);
+        const user_input = 'demo@deriv.com';
+        render(
+            <Router history={history}>
+                <CFDPasswordModal
+                    {...mock_props}
+                    account_status={{ status: [], category: 'Real' }}
+                    email={user_input}
+                />
+            </Router>
+        );
+        const ele_password_input = await screen.findByTestId('dt_mt5_password');
+        fireEvent.change(ele_password_input, { target: { value: 'Passwordååøø' } });
+        await waitFor(() => {
+            fireEvent.focusOut(ele_password_input);
+        });
+
+        await waitFor(() => {
+            expect(validPassword).toHaveBeenCalled();
+        });
+
+        expect(getErrorMessages).toHaveBeenCalled();
+        expect(
+            await screen.findByText(/Password should have lower and uppercase English letters with numbers./i)
+        ).toBeInTheDocument();
+    });
+
     it('should show transfer message on successful DerivX account creation', async () => {
         const props = {
             is_cfd_success_dialog_enabled: true,
@@ -300,12 +328,12 @@ describe('<CFDPasswordModal/>', () => {
         expect(await screen.findByText('IcMt5FinancialPlatform')).toBeInTheDocument();
     });
 
-    it('should display IcDxtradeSyntheticPlatform icon in Success Dialog', async () => {
+    it('should display IcRebrandingDerivx icon in Success Dialog', async () => {
         const props = {
             account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
             platform: 'dxtrade',
             error_type: 'PasswordError',
-            account_type: { category: 'real', type: 'synthetic' },
+            account_type: { category: 'real', type: 'all' },
         };
         render(
             <Router history={history}>
@@ -313,23 +341,7 @@ describe('<CFDPasswordModal/>', () => {
             </Router>
         );
 
-        expect(await screen.findByText('IcDxtradeSyntheticPlatform')).toBeInTheDocument();
-    });
-
-    it('should display IcDxtradeFinancialPlatform icon in Success Dialog', async () => {
-        const props = {
-            account_status: { status: ['mt5_password_not_set', 'dxtrade_password_not_set'] },
-            platform: 'dxtrade',
-            error_type: 'PasswordError',
-            account_type: { category: 'real', type: 'financial' },
-        };
-        render(
-            <Router history={history}>
-                <CFDPasswordModal {...mock_props} {...props} is_cfd_success_dialog_enabled />
-            </Router>
-        );
-
-        expect(await screen.findByText('IcDxtradeFinancialPlatform')).toBeInTheDocument();
+        expect(await screen.findByText('IcRebrandingDerivx')).toBeInTheDocument();
     });
 
     it('should display IcCfds icon in Success Dialog', async () => {

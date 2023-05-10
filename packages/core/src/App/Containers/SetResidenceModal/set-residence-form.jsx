@@ -1,7 +1,7 @@
 import { Field } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Autocomplete, DesktopWrapper, MobileWrapper, SelectNative, Text } from '@deriv/components';
+import { Autocomplete, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 const SetResidenceForm = ({
@@ -26,38 +26,19 @@ const SetResidenceForm = ({
             <Field name='residence'>
                 {({ field }) => (
                     <React.Fragment>
-                        <DesktopWrapper>
-                            <Autocomplete
-                                {...field}
-                                autoComplete='off'
-                                input_id='dt_core_set-residence-form_signup-residence-select'
-                                className={`${class_prefix}__residence-field`}
-                                type='text'
-                                label={localize('Country of residence')}
-                                historyValue={history_value}
-                                error={touched.residence && errors.residence}
-                                required
-                                list_items={residence_list}
-                                onItemSelection={({ value, text }) =>
-                                    setFieldValue('residence', value ? text : '', true)
-                                }
-                            />
-                        </DesktopWrapper>
-                        <MobileWrapper>
-                            <SelectNative
-                                placeholder={localize('Please select')}
-                                label={localize('Country of residence')}
-                                value={field.value}
-                                list_items={residence_list}
-                                error={touched.residence && errors.residence}
-                                required
-                                use_text
-                                onChange={e => {
-                                    setFieldTouched('residence', true);
-                                    setFieldValue('residence', e.target.value, true);
-                                }}
-                            />
-                        </MobileWrapper>
+                        <Autocomplete
+                            {...field}
+                            autoComplete='off'
+                            input_id='dt_core_set-residence-form_signup-residence-select'
+                            className={`${class_prefix}__residence-field`}
+                            type='text'
+                            label={localize('Country of residence')}
+                            historyValue={history_value}
+                            error={touched.residence && errors.residence}
+                            required
+                            list_items={residence_list}
+                            onItemSelection={({ value, text }) => setFieldValue('residence', value ? text : '', true)}
+                        />
                     </React.Fragment>
                 )}
             </Field>

@@ -48,6 +48,7 @@ interface ILoadModalStore {
     setSelectedStrategyId: (selected_strategy_id: string[] | undefined) => void;
     toggleExplanationExpand: () => void;
     toggleLoadModal: () => void;
+    toggleTourLoadModal: (toggle: boolean) => void;
     readFile: (is_preview: boolean, drop_event: DragEvent, file: File) => void;
     updateListStrategies: (workspaces: Array<TWorkspace>) => void;
     getRecentFileIcon: (save_type: { [key: string]: string } | string) => string;
@@ -91,6 +92,7 @@ export default class LoadModalStore implements ILoadModalStore {
             setSelectedStrategyId: action.bound,
             toggleExplanationExpand: action.bound,
             toggleLoadModal: action.bound,
+            toggleTourLoadModal: action.bound,
             readFile: action.bound,
             setDashboardStrategies: action.bound,
             updateListStrategies: action.bound,
@@ -382,14 +384,10 @@ export default class LoadModalStore implements ILoadModalStore {
     toggleLoadModal = (): void => {
         this.is_load_modal_open = !this.is_load_modal_open;
         if (this.selected_strategy_id) this.previewRecentStrategy(this.selected_strategy_id);
-        const { has_started_bot_builder_tour, active_tour_step_number } = this.root_store.dashboard;
-        if (has_started_bot_builder_tour && isMobile()) {
-            if (active_tour_step_number === 2) {
-                this.is_load_modal_open = true;
-            } else {
-                this.is_load_modal_open = false;
-            }
-        }
+    };
+
+    toggleTourLoadModal = (toggle = !this.is_load_modal_open) => {
+        this.is_load_modal_open = toggle;
     };
 
     updateListStrategies = (workspaces: Array<TWorkspace>): void => {

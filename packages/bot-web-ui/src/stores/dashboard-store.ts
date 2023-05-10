@@ -2,6 +2,7 @@ import { observable, action, reaction, makeObservable } from 'mobx';
 import { tour_type, setTourSettings, TTourType } from '../components/dashboard/joyride-config';
 import RootStore from './root-store';
 import { clearInjectionDiv } from 'Constants/load-modal';
+import { isMobile } from '@deriv/shared';
 
 export interface IDashboardStore {
     active_tab: number;
@@ -199,6 +200,10 @@ export default class DashboardStore implements IDashboardStore {
             } = this.root_store;
             previewRecentStrategy(selected_strategy_id);
         }
+        if (this.has_started_bot_builder_tour) {
+            this.setTourActive(false);
+            this.setBotBuilderTourState(false);
+        }
     };
 
     setActiveTabTutorial = (active_tab_tutorials: number): void => {
@@ -255,7 +260,7 @@ export default class DashboardStore implements IDashboardStore {
     setTourEnd = (param: TTourType): void => {
         const { key } = param;
         this.setHasTourEnded(true);
-        this.setTourDialogVisibility(true);
+        if (!isMobile()) this.setTourDialogVisibility(true);
         this.setTourActive(false);
         setTourSettings(new Date().getTime(), `${key}_token`);
     };

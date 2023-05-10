@@ -43,6 +43,7 @@ type TDashboard = {
     is_dialog_open: boolean;
     is_drawer_open: boolean;
     is_tour_dialog_visible: boolean;
+    is_strategy_modal_open: boolean;
     onCancelButtonClick: () => void;
     onCloseDialog: () => void;
     onEntered: () => void;
@@ -67,6 +68,7 @@ const Dashboard = ({
     has_started_bot_builder_tour,
     is_dialog_open,
     is_tour_dialog_visible,
+    is_strategy_modal_open,
     onCancelButtonClick,
     onCloseDialog,
     onEntered,
@@ -218,7 +220,7 @@ const Dashboard = ({
                         top
                     >
                         <div icon='IcDashboardComponentTab' label={localize('Dashboard')} id='id-dbot-dashboard'>
-                            <DashboardComponent />
+                            <DashboardComponent handleTabChange={handleTabChange} />
                         </div>
                         <div icon='IcBotBuilderTabIcon' label={localize('Bot Builder')} id='id-bot-builder' />
                         <div icon='IcChartsTabDbot' label={localize('Charts')} id='id-charts'>
@@ -239,7 +241,7 @@ const Dashboard = ({
                         !has_started_bot_builder_tour && <RunPanel />}
                 </div>
             </DesktopWrapper>
-            <MobileWrapper>{active_tab !== 2 && <RunPanel />}</MobileWrapper>
+            <MobileWrapper>{!is_strategy_modal_open && <RunPanel />}</MobileWrapper>
             <Dialog
                 cancel_button_text={dialog_options.cancel_button_text || localize('Cancel')}
                 className={'dc-dialog__wrapper--fixed'}
@@ -260,7 +262,7 @@ const Dashboard = ({
     );
 };
 
-export default connect(({ dashboard, run_panel, load_modal }: RootStore) => ({
+export default connect(({ dashboard, run_panel, load_modal, quick_strategy }: RootStore) => ({
     active_tab: dashboard.active_tab,
     has_file_loaded: dashboard.has_file_loaded,
     has_tour_started: dashboard.has_tour_started,
@@ -283,4 +285,5 @@ export default connect(({ dashboard, run_panel, load_modal }: RootStore) => ({
     setBotBuilderTokenCheck: dashboard.setBotBuilderTokenCheck,
     setOnBoardingTokenCheck: dashboard.setOnBoardingTokenCheck,
     has_tour_ended: dashboard.has_tour_ended,
+    is_strategy_modal_open: quick_strategy.is_strategy_modal_open,
 }))(Dashboard);

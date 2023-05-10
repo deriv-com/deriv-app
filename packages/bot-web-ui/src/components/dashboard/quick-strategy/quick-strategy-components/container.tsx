@@ -17,7 +17,6 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
         selected_trade_type,
         selected_duration_unit,
         selected_type_strategy,
-        is_dialog_open,
         is_running,
         is_contract_dialog_open,
         is_stop_bot_dialog_open,
@@ -66,7 +65,6 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
             selected_trade_type={selected_trade_type}
             selected_duration_unit={selected_duration_unit}
             selected_type_strategy={selected_type_strategy}
-            is_dialog_open={is_dialog_open}
             getSizeDesc={getSizeDesc}
             createStrategy={createStrategy}
             onChangeDropdownItem={onChangeDropdownItem}

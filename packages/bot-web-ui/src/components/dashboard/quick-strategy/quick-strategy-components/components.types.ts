@@ -42,7 +42,6 @@ export type TQuickStrategyForm = {
     selected_duration_unit: TDurationOptions;
     selected_type_strategy: TTypeStrategy;
     description: string;
-    is_dialog_open: boolean;
     is_running: boolean;
     is_contract_dialog_open: boolean;
     is_stop_bot_dialog_open: boolean;
@@ -81,7 +80,6 @@ export type TQuickStrategyFields = {
 export type TQuickStrategyFooter = {
     is_submit_enabled: boolean;
     is_stop_button_visible: boolean;
-    is_dialog_open: boolean;
     is_running: boolean;
     is_contract_dialog_open: boolean;
     is_stop_bot_dialog_open: boolean;

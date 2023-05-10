@@ -108,7 +108,7 @@ export const DBOT_ONBOARDING = [
                         'We also provide a tutorial on this tab to show you how you can build and execute a simple strategy.'
                     ),
                 ]}
-                img={getImageLocation('dbot-onboarding-step-1.gif')}
+                img={getImageLocation('dbot-onboarding-tour-step-1.gif')}
                 dashboard_tab_index={0}
                 step_index={1}
             />
@@ -122,7 +122,7 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('Monitor the market')}
                 content={[localize('View the market price of your favourite assets.')]}
-                img={getImageLocation('dbot-onboarding-step-2.gif')}
+                img={getImageLocation('dbot-onboarding-tour-step-2.gif')}
                 dashboard_tab_index={0}
                 step_index={2}
             />
@@ -136,7 +136,7 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('Guides and FAQs to help you')}
                 content={[localize('Start with a video guide and the FAQs.')]}
-                img={getImageLocation('dbot-onboarding-step-3.gif')}
+                img={getImageLocation('dbot-onboarding-tour-step-3.gif')}
                 dashboard_tab_index={0}
                 step_index={3}
             />
@@ -164,7 +164,7 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('How is my bot doing?')}
                 content={[localize("See your bot's performance in real-time.")]}
-                img={getImageLocation('dbot-onboarding-step-5.gif')}
+                img={getImageLocation('dbot-onboarding-tour-step-5.gif')}
                 dashboard_tab_index={0}
                 step_index={5}
             />
@@ -179,7 +179,7 @@ export const DBOT_ONBOARDING = [
             <TourGuide
                 label={localize('Run or stop your bot')}
                 content={[localize('Click Run when you want to start trading, and click Stop when you want to stop.')]}
-                img={getImageLocation('dbot-onboarding-step-6.gif')}
+                img={getImageLocation('dbot-onboarding-tour-step-6.gif')}
                 dashboard_tab_index={0}
                 step_index={6}
             />
@@ -199,7 +199,7 @@ const Step1 = ({ show_label = false }) => (
         )}
         <div className='joyride-content__left'>
             <Localize
-                i18n_default_text={`Let's start by setting up the <0>first block.</0>`}
+                i18n_default_text={`First, set the <0>Trade parameters</0> block.`}
                 components={[<strong key={0} />]}
             />
         </div>
@@ -252,7 +252,7 @@ const Step1A = () => (
                 </li>
                 <li>
                     <Localize
-                        i18n_default_text='<0>Stake: AUD</0> 10 (min: 0.35 - max: 50000)'
+                        i18n_default_text='<0>Stake: USD</0> 10 (min: 0.35 - max: 50000)'
                         components={[<strong key={0} />]}
                     />
                 </li>
@@ -388,7 +388,7 @@ const Step5 = ({ show_label = false }) => (
                 </li>
                 <li>
                     <Localize
-                        i18n_default_text='Drag the <0>Trade again</0> block and add it to the <0>do</0> part of the <0>Repeat until</0> block.'
+                        i18n_default_text='Drag the <0>Trade again</0> block and add it into the <0>do</0> part of the <0>Repeat until</0> block.'
                         components={[<strong key={0} />]}
                     />
                 </li>

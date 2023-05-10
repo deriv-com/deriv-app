@@ -130,7 +130,7 @@ export default class SaveModalStore implements ISaveModalStore {
 
         if (active_tab === 0) {
             const workspace_id = selected_strategy_id || Blockly.utils.genUid();
-            this.addStrategyToWorkspace(workspace_id, is_local, save_as_collection, bot_name);
+            await this.addStrategyToWorkspace(workspace_id, is_local, save_as_collection, bot_name);
             localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(workspace)));
             const updated_stratagies = await getSavedWorkspaces();
             setRecentStrategies(updated_stratagies);

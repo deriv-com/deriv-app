@@ -24,6 +24,7 @@ type TLocalComponent = {
     loadFileFromRecent: () => void;
     onConfirmSave: () => void;
     onDrop: () => void;
+    handleTabChange: (param: number) => void;
     previewRecentStrategy: () => void;
     setActiveTab: (param: number) => void;
     dashboard_strategies: Array<TWorkspace>;
@@ -42,6 +43,7 @@ const LocalComponent = ({
     dashboard_strategies,
     setPreviewOnDialog,
     has_mobile_preview_loaded,
+    handleTabChange,
 }: TLocalComponent) => {
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);

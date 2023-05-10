@@ -92,7 +92,14 @@ const BotBuilder = ({
                             steps={BOT_BUILDER_TOUR}
                             run={is_tour_running}
                             showProgress
-                            styles={{ options: { arrowColor: 'transparent' } }}
+                            styles={{
+                                options: {
+                                    arrowColor: 'transparent',
+                                    backgroundColor: 'var(--general-main-2)',
+                                    primaryColor: 'var(--brand-red-coral)',
+                                    textColor: 'var(--text-general)',
+                                },
+                            }}
                         />
                     </DesktopWrapper>
                 </>

@@ -1,5 +1,5 @@
 import { localize } from '@deriv/translations';
-import { messageWithButton, arrayAsMessage } from 'Components';
+import { messageWithButton, arrayAsMessage } from '@deriv/components';
 
 const showErrorMessageWithButton = (message, block_id, showErrorMessage, centerAndHighlightBlock) => {
     showErrorMessage(

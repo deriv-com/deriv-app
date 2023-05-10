@@ -29,6 +29,8 @@ const mock = (): TStores & { is_mock: boolean } => {
                     is_virtual: 0,
                     excluded_until: 0,
                     landing_company_name: 'svg',
+                    balance: 0,
+                    landing_company_shortcode: 'svg',
                 },
             },
             is_social_signup: false,

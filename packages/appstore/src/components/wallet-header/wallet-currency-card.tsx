@@ -1,13 +1,13 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import type { TAccountCategory, TWalletSvgCurrency } from 'Types';
+import type { TAccountCategory, TWalletCurrency } from 'Types';
 import { getWalletCurrencyIcon } from 'Constants/utils';
 import { isCryptocurrency } from '@deriv/shared';
 
 type TWalletCurrencyCard = {
     account_type: TAccountCategory;
-    currency: TWalletSvgCurrency;
+    currency: TWalletCurrency;
 };
 
 const WalletCurrencyCard = observer(({ account_type, currency }: TWalletCurrencyCard) => {

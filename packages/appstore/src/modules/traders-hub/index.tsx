@@ -128,14 +128,20 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
-                    <WalletHeader account_type='demo' is_open_wallet={false} setIsOpen={fn} />
-                    {wallet_test_accounts.map((account, index) => (
-                        <Wallet
-                            key={`${account.account_type}-${account.shortcode}-${account.currency}`}
-                            account={account}
-                            is_open_wallet={index === 0}
-                        />
-                    ))}
+                    <WalletHeader account_type='demo' />
+                    <WalletHeader currency='AUD' shortcode='svg' />
+                    <WalletHeader currency='EUR' shortcode='svg' is_open_wallet={true} />
+                    <WalletHeader currency='USD' shortcode='malta' />
+                    <WalletHeader currency='BTC' shortcode='svg' />
+                    <WalletHeader currency='ETH' shortcode='svg' />
+                    <WalletHeader currency='USDT' shortcode='svg' />
+                    <WalletHeader currency='eUSDT' shortcode='svg' />
+                    <WalletHeader currency='tUSDT' shortcode='svg' />
+                    <WalletHeader currency='LTC' shortcode='svg' />
+                    <WalletHeader currency='USDC' shortcode='svg' />
+                    <WalletHeader account_status='pending' currency='USD' shortcode='malta' />
+                    <WalletHeader account_status='need_verification' currency='EUR' shortcode='malta' />
+                    <WalletHeader account_status='failed' currency='USD' shortcode='malta' />
                     <MainTitleBar />
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>

@@ -385,6 +385,6 @@
     "-1626659964": "I've received {{amount}} {{currency}}.",
     "-237014436": "{{recommended_count}} ট্রেডার দ্বারা প্রস্তাবিত",
     "-2054589794": "You've been temporarily barred from using our services due to multiple cancellation attempts. Try again after {{date_time}} GMT.",
-    "-1079963355": "ব্যবসা",
-    "-930400128": "Deriv P2P ব্যবহার করতে, আপনাকে একটি প্রদর্শন নাম (একটি ডাকনাম) নির্বাচন করতে হবে এবং আপনার পরিচয় যাচাই করতে হবে।"
+    "-1079963355": "trades",
+    "-930400128": "To use Deriv P2P, you need to choose a display name (a nickname) and verify your identity."
 }

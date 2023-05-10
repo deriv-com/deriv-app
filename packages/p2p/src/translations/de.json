@@ -56,8 +56,20 @@
     "611376642": "Klar",
     "612069973": "Würden Sie diesen Käufer weiterempfehlen?",
     "628581263": "The {{local_currency}} market rate has changed.",
+<<<<<<< HEAD
     "649549724": "Ich habe keine Zahlung erhalten.",
     "654193846": "Der Bestätigungslink scheint ungültig zu sein. Klicken Sie auf die Schaltfläche unten, um ein neues anzufordern",
+=======
+<<<<<<< HEAD
+    "649549724": "I’ve not received any payment.",
+=======
+    "649549724": "Ich habe keine Zahlung erhalten.",
+    "654193846": "Der Bestätigungslink scheint ungültig zu sein. Klicken Sie auf die Schaltfläche unten, um ein neues anzufordern",
+<<<<<<< HEAD
+>>>>>>> a514e35485994d4e657bc7bb9016604e3d3716d2
+=======
+>>>>>>> a514e35485994d4e657bc7bb9016604e3d3716d2
+>>>>>>> sergei/wall-272/wallet-desktop-header
     "661808069": "Resend email {{remaining_time}}",
     "662578726": "Verfügbar",
     "683273691": "Bewerten (1 {{ account_currency }})",

@@ -385,6 +385,6 @@
     "-1626659964": "I've received {{amount}} {{currency}}.",
     "-237014436": "{{recommended_count}} 트레이더 추천",
     "-2054589794": "You've been temporarily barred from using our services due to multiple cancellation attempts. Try again after {{date_time}} GMT.",
-    "-1079963355": "거래",
-    "-930400128": "Deriv P2P를 사용하려면 표시 이름 (닉네임) 을 선택하고 ID를 확인해야 합니다."
+    "-1079963355": "trades",
+    "-930400128": "To use Deriv P2P, you need to choose a display name (a nickname) and verify your identity."
 }

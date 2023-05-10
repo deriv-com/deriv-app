@@ -3,9 +3,8 @@ import ReactDOM from 'react-dom';
 import { Div100vhContainer, Icon, useOnClickOutside, Text } from '@deriv/components';
 import { routes, isDesktop, isMobile, getActivePlatform } from '@deriv/shared';
 import { BinaryLink } from 'App/Components/Routes';
-import 'Sass/app/_common/components/platform-dropdown.scss';
+import { useHistory } from 'react-router-dom';
 import { Localize } from '@deriv/translations';
-import { useHistory } from 'react-router';
 
 const PlatformBox = ({ platform: { icon, description } }) => (
     <React.Fragment>

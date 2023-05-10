@@ -2,6 +2,7 @@ import { getUrlBase } from '@deriv/shared';
 
 import { localize } from '@deriv/translations';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
+import { FormikErrors, FormikValues } from 'formik';
 
 const getImageLocation = (image_name: string) => getUrlBase(`/public/images/common/${image_name}`);
 
@@ -217,7 +218,7 @@ export const generatePlaceholderText = (selected_doc: string) => {
 };
 
 export const validate =
-    (errors: Record<string, string>, values: Record<string, string>) =>
+    (errors: FormikErrors<FormikValues>, values: Record<string, string>) =>
     (fn: (value: string) => string, arr: string[], err_msg: string) => {
         arr.forEach(field => {
             const value = values[field];

@@ -1,49 +1,18 @@
 import React from 'react';
 import { Formik, Field, FormikValues, FormikHelpers, FormikErrors } from 'formik';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import classNames from 'classnames';
-import {
-    Autocomplete,
-    AutoHeightWrapper,
-    DesktopWrapper,
-    FormSubmitButton,
-    Input,
-    MobileWrapper,
-    Modal,
-    SelectNative,
-    Text,
-    ThemedScrollbars,
-    Button,
-} from '@deriv/components';
-import {
-    isDesktop,
-    formatInput,
-    isMobile,
-    filterObjProperties,
-    toMoment,
-    validLength,
-    validName,
-    IDV_NOT_APPLICABLE_OPTION,
-} from '@deriv/shared';
-import DocumentSubmitLogo from 'Assets/ic-document-submit-icon.svg';
-import {
-    generatePlaceholderText,
-    getDocumentData,
-    documentAdditionalError,
-    preventEmptyClipboardPaste,
-    getRegex,
-    validate,
-} from 'Helpers/utils';
+import { Button } from '@deriv/components';
+import { filterObjProperties, toMoment, validLength, validName, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
+import { documentAdditionalError, getRegex, validate } from 'Helpers/utils';
 import FormSubHeader from 'Components/form-sub-header';
 import IDVForm from 'Components/forms/idv-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
 import FormFooter from 'Components/form-footer';
 import { GetSettings } from '@deriv/api-types';
-import FormBody from 'Components/form-body';
 
 type TIdvDocSubmitOnSignup = {
     citizen_data: FormikValues;
-    has_previous: boolean;
     onPrevious: (values: FormikValues) => void;
     onNext: (
         values: FormikValues,
@@ -57,61 +26,71 @@ type TIdvDocSubmitOnSignup = {
 
 export const IdvDocSubmitOnSignup = ({
     citizen_data,
-    has_previous,
-    onPrevious,
     onNext,
-    value,
-    has_idv_error,
     account_settings,
     getChangeableFields,
 }: TIdvDocSubmitOnSignup) => {
     const shouldHideHelperImage = (document_id: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
 
+    const isDocumentTypeValid = (document_type: FormikValues) => {
+        if (!document_type?.text) {
+            return localize('Please select a document type.');
+        }
+        return undefined;
+    };
+
+    const isAdditionalDocumentValid = (document_type: FormikValues, document_additional: string) => {
+        const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
+        if (error_message) {
+            return localize(error_message) + getExampleFormat(document_type.additional?.example_format);
+        }
+        return undefined;
+    };
+
+    const isDocumentNumberValid = (document_number: string, document_type: FormikValues) => {
+        const is_document_number_invalid = document_number === document_type.example_format;
+        if (!document_number) {
+            return localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
+        } else if (is_document_number_invalid) {
+            return localize('Please enter a valid ID number.');
+        }
+        const format_regex = getRegex(document_type.value);
+        if (!format_regex.test(document_number)) {
+            return localize('Please enter the correct format. ') + getExampleFormat(document_type.example_format);
+        }
+        return undefined;
+    };
+
+    const validateName = (name: string, min_name: number, max_name: number) => {
+        if (name) {
+            if (!validLength(name.trim(), { min: min_name, max: max_name })) {
+                return localize('You should enter 2-50 characters.');
+            } else if (!validName(name)) {
+                return localize('Letters, spaces, periods, hyphens, apostrophes only.');
+            }
+        }
+        return undefined;
+    };
+
     const validateFields = (values: FormikValues) => {
-        const errors = {};
+        const errors: FormikErrors<FormikValues> = {};
         const { document_type, document_number, document_additional } = values;
         const needs_additional_document = !!document_type.additional;
-        const is_document_number_invalid = document_number === document_type.example_format;
 
-        if (!document_type || !document_type.text) {
-            errors.document_type = localize('Please select a document type.');
-        }
+        errors.document_type = isDocumentTypeValid(document_type);
         if (!shouldHideHelperImage(document_type?.id)) {
             if (needs_additional_document) {
-                const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
-                if (error_message)
-                    errors.document_additional =
-                        localize(error_message) + getExampleFormat(document_type.additional?.example_format);
+                errors.document_additional = isAdditionalDocumentValid(document_type, document_additional);
             }
-            if (!document_number) {
-                errors.document_number =
-                    localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-            } else if (is_document_number_invalid) {
-                errors.document_number = localize('Please enter a valid ID number.');
-            } else {
-                const format_regex = getRegex(document_type.value);
-                if (!format_regex.test(document_number)) {
-                    errors.document_number =
-                        localize('Please enter the correct format. ') + getExampleFormat(document_type.example_format);
-                }
-            }
+            errors.document_number = isDocumentNumberValid(document_number, document_type);
         }
         const required_fields = ['first_name', 'last_name', 'date_of_birth'];
         const validateValues = validate(errors, values);
         validateValues(val => val, required_fields, localize('This field is required'));
         const min_name = 2;
         const max_name = 50;
-        const validateName = (name, field) => {
-            if (name) {
-                if (!validLength(name.trim(), { min: min_name, max: max_name })) {
-                    errors[field] = localize('You should enter 2-50 characters.');
-                } else if (!validName(name)) {
-                    errors[field] = localize('Letters, spaces, periods, hyphens, apostrophes only.');
-                }
-            }
-        };
-        validateName(values.first_name, 'first_name');
-        validateName(values.last_name, 'last_name');
+        errors.first_name = validateName(values.first_name, min_name, max_name);
+        errors.last_name = validateName(values.last_name, min_name, max_name);
 
         return errors;
     };

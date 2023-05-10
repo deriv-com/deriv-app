@@ -177,23 +177,21 @@ const IdvDocumentSubmit = ({
                 <div className='proof-of-identity__container proof-of-identity__container--reset'>
                     <FormSubHeader title={localize('Identity verification')} />
                     <Field>
-                        {({ field }) => {
-                            return (
-                                <IDVForm
-                                    errors={errors}
-                                    touched={touched}
-                                    values={values}
-                                    handleChange={handleChange}
-                                    handleBlur={handleBlur}
-                                    setFieldValue={setFieldValue}
-                                    hide_hint={false}
-                                    selected_country={selected_country}
-                                    is_from_external={is_from_external}
-                                    class_name='idv-layout'
-                                    {...field}
-                                />
-                            );
-                        }}
+                        {({ field }) => (
+                            <IDVForm
+                                errors={errors}
+                                touched={touched}
+                                values={values}
+                                handleChange={handleChange}
+                                handleBlur={handleBlur}
+                                setFieldValue={setFieldValue}
+                                hide_hint={false}
+                                selected_country={selected_country}
+                                is_from_external={is_from_external}
+                                class_name='idv-layout'
+                                {...field}
+                            />
+                        )}
                     </Field>
                     <FormSubHeader title={localize('Identity verification')} />
                     <Field>

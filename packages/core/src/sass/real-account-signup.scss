@@ -183,6 +183,10 @@
 }
 
 .mt5-layout {
+    @include desktop {
+        display: flex;
+        flex-direction: column;
+    }
     &__container {
         overflow: auto;
         height: 100%;

@@ -70,10 +70,7 @@ const Reports = ({
                 <PageOverlay header={localize('Reports')} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
                     <DesktopWrapper>
                         <VerticalTab
-                            alignment='center'
-                            id='report'
                             is_floating
-                            classNameHeader='reports__tab-header'
                             current_path={location.pathname}
                             is_routed
                             is_full_width

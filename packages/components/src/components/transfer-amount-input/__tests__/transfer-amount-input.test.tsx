@@ -5,7 +5,7 @@ import TransferAmountInput from '../transfer-amount-input';
 
 describe('<TransferAmountInput/>', () => {
     it('should render with the initial value of "0.00"', () => {
-        render(<TransferAmountInput currency={'USD'} maxDigits={8} />);
+        render(<TransferAmountInput currency='USD' maxDigits={8} />);
         const input = screen.getByTestId('dt_transfer-amount-input');
         expect(input).toHaveDisplayValue('0.00');
     });

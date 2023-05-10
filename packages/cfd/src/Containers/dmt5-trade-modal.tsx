@@ -28,6 +28,7 @@ type TMT5TradeModalProps = {
     ) => void;
     toggleModal: () => void;
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
+    derivez_tokens: TCFDDashboardContainer['derivez_tokens'];
 };
 
 export type TSpecBoxProps = {

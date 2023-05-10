@@ -289,6 +289,7 @@ type TTradersHubStore = {
     selectRegion: (region: string) => void;
     financial_restricted_countries: boolean;
     selected_account_type: string;
+    setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
     no_CR_account: boolean;
     no_MF_account: boolean;
 };

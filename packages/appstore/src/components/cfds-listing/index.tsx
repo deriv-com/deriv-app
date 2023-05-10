@@ -54,7 +54,7 @@ const CFDsListing = () => {
         financial_restricted_countries,
     } = traders_hub;
 
-    const { toggleCompareAccountsModal, setAccountType } = cfd;
+    const { toggleCompareAccountsModal, setAccountType, derivez_tokens } = cfd;
     const { is_landing_company_loaded, real_account_creation_unlock_date } = client;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;

@@ -40,6 +40,10 @@ export type TCFDDashboardContainer = {
         demo: string;
         real: string;
     };
+    derivez_tokens: {
+        demo: string;
+        real: string;
+    };
 };
 
 export type TCFDAccountCardActionProps = {
@@ -84,6 +88,10 @@ export type TCFDAccountCard = {
     commission_message: string;
     descriptor: string;
     dxtrade_tokens: {
+        demo: string;
+        real: string;
+    };
+    derivez_tokens: {
         demo: string;
         real: string;
     };

@@ -111,6 +111,16 @@ const getDXTradeWebTerminalLink = (category: string, token?: string) => {
     return url;
 };
 
+const getDerivEzWebTerminalLink = (category: string, token?: string) => {
+    let url = category === 'real' ? DERIVEZ_URL : DERIVEZ_URL;
+
+    if (token) {
+        url += `?token=${token}`;
+    }
+
+    return url;
+};
+
 const getMT5WebTerminalLink = ({
     category,
     loginid,
@@ -140,6 +150,7 @@ export {
     getPlatformDerivEZDownloadLink,
     getPlatformMt5DownloadLink,
     getDXTradeWebTerminalLink,
+    getDerivEzWebTerminalLink,
     getMT5WebTerminalLink,
     getTopUpConfig,
 };

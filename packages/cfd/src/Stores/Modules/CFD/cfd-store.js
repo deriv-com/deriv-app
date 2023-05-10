@@ -34,6 +34,10 @@ export default class CFDStore extends BaseStore {
         demo: '',
         real: '',
     };
+    derivez_tokens = {
+        demo: '',
+        real: '',
+    };
 
     real_synthetic_accounts_existing_data = [];
     real_financial_accounts_existing_data = [];
@@ -60,6 +64,7 @@ export default class CFDStore extends BaseStore {
             is_cfd_verification_modal_visible: observable,
             error_type: observable,
             dxtrade_tokens: observable,
+            derivez_tokens: observable,
             account_title: computed,
             current_list: computed,
             has_created_account_for_selected_jurisdiction: computed,
@@ -102,14 +107,19 @@ export default class CFDStore extends BaseStore {
             setJurisdictionSelectedShortcode: action.bound,
             toggleCFDVerificationModal: action.bound,
             setDxtradeToken: action.bound,
+            setDerivezToken: action.bound,
             loadDxtradeTokens: action.bound,
+            loadDerivezTokens: action.bound,
         });
 
         reaction(
-            () => [this.root_store.client.dxtrade_accounts_list],
+            () => [this.root_store.client.dxtrade_accounts_list, this.root_store.client.derivez_accounts_list],
             () => {
                 if (this.root_store.client.dxtrade_accounts_list.length > 0) {
                     this.loadDxtradeTokens();
+                }
+                if (this.root_store.client.derivez_accounts_list.length > 0) {
+                    this.loadDerivezTokens();
                 }
             }
         );
@@ -641,6 +651,27 @@ export default class CFDStore extends BaseStore {
             if (!this.dxtrade_tokens[account_type] && has_existing_account) {
                 WS.getServiceToken(CFD_PLATFORMS.DXTRADE, account_type).then(response =>
                     this.setDxtradeToken(response, account_type)
+                );
+            }
+        });
+    }
+
+    setDerivezToken(response, server) {
+        if (!response.error) {
+            const { derivez } = response.service_token;
+            this.derivez_tokens[server] = derivez.token;
+        }
+    }
+
+    loadDerivezTokens() {
+        ['demo', 'real'].forEach(account_type => {
+            const has_existing_account = this.root_store.client.derivez_accounts_list.some(
+                account => account.account_type === account_type
+            );
+
+            if (!this.derivez_tokens[account_type] && has_existing_account) {
+                WS.getServiceToken(CFD_PLATFORMS.DERIVEZ, account_type).then(response =>
+                    this.setDerivezToken(response, account_type)
                 );
             }
         });

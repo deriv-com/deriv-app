@@ -1,7 +1,14 @@
 import React from 'react';
 import { QRCode } from 'react-qrcode';
 import { TCFDsPlatformType } from 'Components/props.types';
-import { getDXTradeWebTerminalLink, platformsText, DERIVEZ_URL, platformsIcons, mobileDownloadLink } from './constants';
+import {
+    getDXTradeWebTerminalLink,
+    getDerivEzWebTerminalLink,
+    platformsText,
+    DERIVEZ_URL,
+    platformsIcons,
+    mobileDownloadLink,
+} from './constants';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isMobile, OSDetect, isDesktopOs } from '@deriv/shared';
@@ -32,14 +39,23 @@ export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
 type TPlatformsDesktopDownload = {
     platform: TCFDsPlatformType;
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
+    derivez_tokens: TCFDDashboardContainer['derivez_tokens'];
     is_demo: string;
 };
 
-export const PlatformsDesktopDownload = ({ platform, dxtrade_tokens, is_demo }: TPlatformsDesktopDownload) => {
+export const PlatformsDesktopDownload = ({
+    platform,
+    dxtrade_tokens,
+    derivez_tokens,
+    is_demo,
+}: TPlatformsDesktopDownload) => {
     const PlatformsDesktopDownloadLinks = () => {
         switch (platform) {
             case 'derivez':
-                return DERIVEZ_URL;
+                return getDerivEzWebTerminalLink(
+                    is_demo ? 'demo' : 'real',
+                    derivez_tokens && derivez_tokens[is_demo ? 'demo' : 'real']
+                );
             case 'dxtrade':
                 return getDXTradeWebTerminalLink(
                     is_demo ? 'demo' : 'real',

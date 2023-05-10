@@ -21,6 +21,7 @@ type TTradeModalProps = {
     ) => void;
     toggleModal: () => void;
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
+    derivez_tokens: TCFDDashboardContainer['derivez_tokens'];
     is_demo: string;
     platform: TCFDsPlatformType;
 };
@@ -50,6 +51,7 @@ const TradeModal = ({
     onPasswordManager,
     toggleModal,
     dxtrade_tokens,
+    derivez_tokens,
     is_demo,
     platform,
 }: TTradeModalProps) => {
@@ -73,7 +75,12 @@ const TradeModal = ({
                     <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                         {localize('Run Deriv X on your browser')}
                     </Text>
-                    <PlatformsDesktopDownload platform={platform} is_demo={is_demo} dxtrade_tokens={dxtrade_tokens} />
+                    <PlatformsDesktopDownload
+                        platform={platform}
+                        is_demo={is_demo}
+                        dxtrade_tokens={dxtrade_tokens}
+                        derivez_tokens={derivez_tokens}
+                    />
                 </div>
             );
         } else if (platform_type === 'derivez') {
@@ -82,7 +89,12 @@ const TradeModal = ({
                     <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                         {localize('Run Deriv EZ on your browser')}
                     </Text>
-                    <PlatformsDesktopDownload platform={platform} is_demo={is_demo} dxtrade_tokens={dxtrade_tokens} />
+                    <PlatformsDesktopDownload
+                        platform={platform}
+                        is_demo={is_demo}
+                        dxtrade_tokens={dxtrade_tokens}
+                        derivez_tokens={derivez_tokens}
+                    />
                 </div>
             );
         }

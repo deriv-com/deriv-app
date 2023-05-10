@@ -22,6 +22,7 @@ module.exports = function (env) {
             CFDPasswordManagerModal: 'Containers/cfd-password-manager-modal.tsx',
             CFDFinancialStpRealAccountSignup: 'Containers/cfd-financial-stp-real-account-signup.tsx',
             getDXTradeWebTerminalLink: 'Helpers/constants.ts',
+            getDerivEzWebTerminalLink: 'Helpers/constants.ts',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

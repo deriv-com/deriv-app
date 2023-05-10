@@ -7,7 +7,7 @@ import { observer, useStore } from '@deriv/stores';
 const CashierWalletModal = observer(() => {
     const store = useStore();
     const {
-        client: { balance, currency, landing_company_shortcode },
+        client: { balance, currency, landing_company_shortcode: shortcode },
         ui: { is_dark_mode_on, is_cashier_wallet_modal_visible, is_mobile, setIsCashierWalletModalVisible },
         traders_hub: { is_demo },
     } = store;
@@ -51,7 +51,7 @@ const CashierWalletModal = observer(() => {
                 is_dark={is_dark_mode_on}
                 is_demo={is_demo}
                 is_mobile={is_mobile}
-                landing_company_shortcode={landing_company_shortcode}
+                shortcode={shortcode}
                 is_wallet_name_visible={is_wallet_name_visible}
             />
             <CashierWalletModalBody

@@ -13,7 +13,7 @@ type TCashierWalletModalHeaderProps = {
     is_dark: boolean;
     is_demo: boolean;
     is_mobile: boolean;
-    landing_company_shortcode: string;
+    shortcode: string;
     closeModal: VoidFunction;
     is_wallet_name_visible: boolean;
 };
@@ -25,7 +25,7 @@ const CashierWalletModalHeader = ({
     is_dark,
     is_demo,
     is_mobile,
-    landing_company_shortcode: shortcode,
+    shortcode,
     is_wallet_name_visible,
 }: TCashierWalletModalHeaderProps) => {
     const header_class_name = 'cashier-wallet-modal__header';

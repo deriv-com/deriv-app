@@ -3,9 +3,11 @@ import { Button, ButtonLink, Clipboard, Dropdown, Icon, Loading, Text } from '@d
 import { localize, Localize } from '@deriv/translations';
 import { CryptoConfig, getCurrencyName, isCryptocurrency, isMobile } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
+import { useFetch } from '@deriv/api';
 import CashierBreadcrumb from '../../../components/cashier-breadcrumb';
 import QRCode from 'qrcode.react';
 import RecentTransaction from '../../../components/recent-transaction';
+import AlertBanner from '../../../components/alert-banner/alert-banner';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './crypto-deposit.scss';
 
@@ -16,6 +18,9 @@ const CryptoDeposit = observer(() => {
     const { api_error, deposit_address, is_deposit_address_loading, pollApiForDepositAddress } = onramp;
     const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
     const { setIsDeposit } = general_store;
+
+    const { data } = useFetch('crypto_config', { payload: { currency_code: currency } });
+    const minimum_deposit = data?.currencies_config[currency]?.minimum_deposit;
 
     React.useEffect(() => {
         recentTransactionOnMount();
@@ -150,10 +155,12 @@ const CryptoDeposit = observer(() => {
                 </Text>
                 {api_error ? (
                     <div className='crypto-api-error'>
-                        <Text as='p' align='center' size='xs' className='crypto-api-error__text'>
-                            <Icon width={30} height={20} icon='IcAlertWarning' />
-                            <Localize i18n_default_text="Unfortunately, we couldn't get the address since our server was down. Please click Refresh to reload the address or try again later." />
-                        </Text>
+                        <AlertBanner
+                            icon='IcAlertWarning'
+                            message={localize(
+                                "Unfortunately, we couldn't get the address since our server was down. Please click Refresh to reload the address or try again later."
+                            )}
+                        />
                         <Button
                             text={localize('Refresh')}
                             onClick={() => pollApiForDepositAddress(false)}
@@ -163,9 +170,23 @@ const CryptoDeposit = observer(() => {
                     </div>
                 ) : (
                     <>
-                        <Text as='p' align='center' line_height='m' size={isMobile() ? 'xs' : 's'}>
-                            {qrcode_header || header_note}
-                        </Text>
+                        {minimum_deposit ? (
+                            <AlertBanner
+                                className='crypto-third-party-alert'
+                                icon='IcAlertWarningDark'
+                                message={localize(
+                                    'A minimum deposit value of {{minimum_deposit}} {{currency}} is required. Otherwise, the funds will be lost and cannot be recovered.',
+                                    {
+                                        minimum_deposit,
+                                        currency,
+                                    }
+                                )}
+                            />
+                        ) : (
+                            <Text as='p' align='center' line_height='m' size={isMobile() ? 'xs' : 's'}>
+                                {qrcode_header || header_note}
+                            </Text>
+                        )}
                         {
                             <>
                                 {((currency === 'ETH' && option_list_value !== option_list[4].value) ||

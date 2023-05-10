@@ -199,7 +199,7 @@ export default class OrderStore {
                     const { p2p_order_list } = response;
 
                     this.root_store.general_store.handleNotifications(this.orders, p2p_order_list.list);
-                    p2p_order_list.list.forEach(order => this.syncOrder(order));
+                    p2p_order_list.list?.forEach(order => this.syncOrder(order));
                     this.setOrders(p2p_order_list.list);
                 }
             }
@@ -263,7 +263,7 @@ export default class OrderStore {
                         const old_list = [...this.orders];
                         const new_list = [];
 
-                        list.forEach(order => {
+                        list?.forEach(order => {
                             const old_list_idx = old_list.findIndex(o => o.id === order.id);
 
                             if (old_list_idx > -1) {

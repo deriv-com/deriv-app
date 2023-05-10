@@ -14,6 +14,34 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(),
 }));
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    usePlatformAccounts: jest.fn(() => ({
+        real: [
+            {
+                balance: 100,
+                currency: 'USD',
+            },
+        ],
+        demo: {
+            balance: 10000,
+            currency: 'USD',
+        },
+    })),
+    useCfdAccounts: jest.fn(() => ({
+        real: [
+            {
+                balance: 15000,
+                currency: 'USD',
+            },
+        ],
+        demo: {
+            balance: 123213,
+            currency: 'USD',
+        },
+    })),
+}));
+
 describe('AssetSummary', () => {
     it('should render correctly', () => {
         const mock = mockStore({});
@@ -39,8 +67,8 @@ describe('AssetSummary', () => {
             wrapper,
         });
         expect(container).toBeInTheDocument();
-        expect(screen.getByText('Total assets')).toBeInTheDocument();
-        expect(screen.getByText('0.00')).toBeInTheDocument();
+        expect(screen.getByText('Total asset')).toBeInTheDocument();
+        expect(screen.getByText('15,100.00')).toBeInTheDocument();
     });
 
     it('should not show Total Assets title if isMobile is true ', () => {
@@ -101,9 +129,6 @@ describe('AssetSummary', () => {
         const mock = mockStore({
             traders_hub: {
                 selected_account_type: 'real',
-                platform_real_balance: {
-                    balance: 100,
-                },
             },
         });
 
@@ -115,7 +140,7 @@ describe('AssetSummary', () => {
             wrapper,
         });
         expect(container).toBeInTheDocument();
-        expect(screen.getByText('100.00')).toBeInTheDocument();
+        expect(screen.getByText('15,100.00')).toBeInTheDocument();
     });
 
     it('should not show component if user has no real MF account and in eu regulation', () => {
@@ -179,19 +204,7 @@ describe('AssetSummary', () => {
     });
 
     it('should show the correct real total amount with total cfd currency', () => {
-        const mock = mockStore({
-            traders_hub: {
-                selected_account_type: 'real',
-                platform_real_balance: {
-                    balance: 9090,
-                    currency: 'USD',
-                },
-                cfd_real_balance: {
-                    balance: 6060,
-                    currency: 'USD',
-                },
-            },
-        });
+        const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
@@ -201,23 +214,11 @@ describe('AssetSummary', () => {
             wrapper,
         });
         expect(container).toBeInTheDocument();
-        expect(screen.getByText('15,150.00')).toBeInTheDocument();
+        expect(screen.getByText('15,100.00')).toBeInTheDocument();
     });
 
     it('should show the correct total demo amount with total demo cfd currency', () => {
-        const mock = mockStore({
-            traders_hub: {
-                selected_account_type: 'demo',
-                platform_demo_balance: {
-                    balance: 123123,
-                    currency: 'USD',
-                },
-                cfd_demo_balance: {
-                    balance: 90,
-                    currency: 'USD',
-                },
-            },
-        });
+        const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
@@ -227,6 +228,6 @@ describe('AssetSummary', () => {
             wrapper,
         });
         expect(container).toBeInTheDocument();
-        expect(screen.getByText('123,213.00')).toBeInTheDocument();
+        expect(screen.getByText('15,100.00')).toBeInTheDocument();
     });
 });

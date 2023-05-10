@@ -1,4 +1,4 @@
-.transfer-amount-input-wrapper {
+.amount-input-wrapper {
     display: flex;
     flex-direction: column;
 
@@ -8,11 +8,11 @@
     }
 }
 
-.transfer-amount-input-container {
+.amount-input-container {
     position: relative;
 }
 
-.transfer-amount-input {
+.amount-input {
     border: none;
     position: absolute;
     line-height: 30px;

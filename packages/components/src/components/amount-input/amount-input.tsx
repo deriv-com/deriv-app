@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Input from '../input';
 
-type TTransferAmountInput = {
+type TAmountInput = {
     currency: string;
     decimalPoints?: number;
     disabled?: boolean;
@@ -10,32 +10,32 @@ type TTransferAmountInput = {
     maxDigits: number;
 };
 
-const TransferAmountInput = ({
+const AmountInput = ({
     currency,
     decimalPoints = 2,
     disabled = false,
     initialValue = 0,
     label,
     maxDigits,
-}: TTransferAmountInput) => {
+}: TAmountInput) => {
     const [value, setValue] = useState(initialValue);
     const [focus, setFocus] = useState(false);
 
     const displayNumber = (number: number) => number.toLocaleString('en-US', { minimumFractionDigits: decimalPoints });
 
     return (
-        <div className='transfer-amount-input-wrapper'>
+        <div className='amount-input-wrapper'>
             <span>{label}</span>
-            <div className='transfer-amount-input-container'>
+            <div className='amount-input-container'>
                 <Input
-                    className='transfer-amount-input'
+                    className='amount-input'
                     disabled={disabled || focus}
                     type='text'
                     value={`${displayNumber(value)} ${currency}`}
                 />
                 <Input
-                    className='transfer-amount-input'
-                    data-testid='dt_transfer-amount-input'
+                    className='amount-input'
+                    data-testid='dt_amount-input'
                     disabled={disabled}
                     max_characters={displayNumber(Math.pow(10, maxDigits - 1) / decimalPoints).length}
                     onFocus={() => setFocus(true)}
@@ -52,6 +52,6 @@ const TransferAmountInput = ({
     );
 };
 
-Input.displayName = 'TransferAmountInput';
+Input.displayName = 'AmountInput';
 
-export default TransferAmountInput;
+export default AmountInput;

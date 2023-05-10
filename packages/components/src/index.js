@@ -10,6 +10,7 @@
 // export default { Label, Button };
 
 export { default as Accordion } from './components/accordion';
+export { default as AmountInput } from './components/amount-input';
 export { default as AutoHeightWrapper } from './components/auto-height-wrapper';
 export { default as Autocomplete } from './components/autocomplete';
 export { default as AutoSizer } from './components/autosizer';
@@ -105,7 +106,6 @@ export { default as TickPicker } from './components/tick-picker';
 export { default as TickProgress } from './components/tick-progress';
 export { default as Timeline } from './components/timeline';
 export { default as Tooltip } from './components/tooltip';
-export { default as TransferAmountInput } from './components/transfer-amount-input';
 export { default as UILoader } from './components/u-i-loader';
 export { default as VerticalTab } from './components/vertical-tab';
 export { default as Wizard } from './components/wizard';

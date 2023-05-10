@@ -114,15 +114,20 @@ const DetailComponent = ({
 
     const onComplete = (values: FormikValues) => {
         setStatus(STATUS.IS_UPLOADING);
-        uploadFiles(values).then(() => {
-            if (!is_any_failed) {
-                if (is_mt5) {
-                    handlePOIforMT5Complete?.();
-                } else {
-                    setStatus(STATUS.IS_COMPLETED);
+        uploadFiles(values)
+            .then(() => {
+                if (!is_any_failed) {
+                    if (is_mt5) {
+                        handlePOIforMT5Complete?.();
+                    } else {
+                        setStatus(STATUS.IS_COMPLETED);
+                    }
                 }
-            }
-        });
+            })
+            .catch(error => {
+                setStatus(STATUS.IS_FAILED);
+                setError(error.message);
+            });
     };
 
     switch (status) {

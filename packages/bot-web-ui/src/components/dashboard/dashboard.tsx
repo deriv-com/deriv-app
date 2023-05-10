@@ -178,28 +178,6 @@ const Dashboard = ({
         }
     }, [active_tab]);
 
-    React.useEffect(() => {
-        const images = [
-            getImageLocation('ic-new-user-step-two.png'),
-            getImageLocation('ic-new-user-step-three.png'),
-            getImageLocation('ic-new-user-step-four.png'),
-            getImageLocation('ic-new-user-step-five.png'),
-            getImageLocation('ic-new-user-step-six.png'),
-            getImageLocation('ic-new-user-step-seven.png'),
-        ];
-
-        images.forEach(img => {
-            if (!document.getElementById(img)) {
-                const link = document.createElement('link');
-                link.setAttribute('rel', 'preload');
-                link.setAttribute('as', 'image');
-                link.setAttribute('href', img);
-                link.setAttribute('id', img);
-                document.getElementsByTagName('head')[0].appendChild(link);
-            }
-        });
-    }, [has_tour_started]);
-
     const handleTabChange = React.useCallback(
         (tab_index: number) => {
             setActiveTab(tab_index);

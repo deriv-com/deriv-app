@@ -13,6 +13,7 @@ import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 import WalletsBanner from 'Components/wallets-banner';
 import './traders-hub.scss';
+import WalletHeader from 'Components/wallet-header';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();

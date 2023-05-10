@@ -227,6 +227,7 @@ type TUiStore = {
     enableApp: () => void;
     has_real_account_signup_ended: boolean;
     is_cashier_visible: boolean;
+    is_cashier_wallet_modal_visible: boolean;
     is_closing_create_real_account_modal: boolean;
     is_dark_mode_on: boolean;
     is_language_settings_modal_on: boolean;
@@ -235,8 +236,8 @@ type TUiStore = {
     openRealAccountSignup: (value?: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
-    setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setIsCashierWalletModalVisible: (value: boolean) => void;
+    setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     sub_section_index: number;
     setSubSectionIndex: (index: number) => void;
@@ -248,7 +249,6 @@ type TUiStore = {
     toggleSetCurrencyModal: () => void;
     is_ready_to_deposit_modal_visible: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
-    is_cashier_wallet_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
 };
 
@@ -287,7 +287,6 @@ type TTradersHubStore = {
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
     is_real: boolean;
-    is_demo: boolean;
     selectRegion: (region: string) => void;
     is_real_wallets_upgrade_on: boolean;
     toggleWalletsUpgrade: (value: boolean) => void;

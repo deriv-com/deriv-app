@@ -1,4 +1,5 @@
 import { isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 
 /**
  * This function checks whether the current item should have a border at the bottom 'aka "divider" '.
@@ -48,4 +49,68 @@ export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean
         default:
             return 'Unknown';
     }
+};
+
+export const getWalletHeaderButtons = (is_demo: boolean) => {
+    return is_demo
+        ? [
+              {
+                  name: 'Transfer',
+                  text: localize('Transfer'),
+                  icon: 'IcAccountTransfer',
+                  action: () => {
+                      //   console.log('Transfer');
+                  },
+              },
+              {
+                  name: 'Transactions',
+                  text: localize('Transactions'),
+                  icon: 'IcStatement',
+                  action: () => {
+                      //   console.log('Transactions');
+                  },
+              },
+              {
+                  name: 'Deposit',
+                  text: localize('Reset balance'),
+                  icon: 'IcCashierAdd',
+                  action: () => {
+                      //   console.log('Reset balance');
+                  },
+              },
+          ]
+        : [
+              {
+                  name: 'Deposit',
+                  text: localize('Deposit'),
+                  icon: 'IcCashierAdd',
+                  action: () => {
+                      //   console.log('Deposit');
+                  },
+              },
+              {
+                  name: 'Withdraw',
+                  text: localize('Withdraw'),
+                  icon: 'IcCashierMinus',
+                  action: () => {
+                      //   console.log('Withdraw');
+                  },
+              },
+              {
+                  name: 'Transfer',
+                  text: localize('Transfer'),
+                  icon: 'IcAccountTransfer',
+                  action: () => {
+                      //   console.log('Transfer');
+                  },
+              },
+              {
+                  name: 'Transactions',
+                  text: localize('Transactions'),
+                  icon: 'IcStatement',
+                  action: () => {
+                      //   console.log('Transactions');
+                  },
+              },
+          ];
 };

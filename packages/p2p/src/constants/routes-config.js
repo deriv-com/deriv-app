@@ -2,6 +2,7 @@ import React from 'react';
 import { routes } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import AdvertiserPage from '../components/advertiser-page';
+import BuySell from '../components/buy-sell';
 import MyAds from '../components/my-ads';
 import MyProfile from '../components/my-profile';
 import Orders from '../components/orders';
@@ -12,6 +13,12 @@ const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../compon
 // Order matters
 const initRoutesConfig = () => {
     return [
+        {
+            path: routes.p2p_buy_sell,
+            component: BuySell,
+            getTitle: () => localize('Deriv P2P'),
+            default: true,
+        },
         {
             path: routes.p2p_advertiser_page,
             component: AdvertiserPage,

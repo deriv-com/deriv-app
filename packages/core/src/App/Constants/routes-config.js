@@ -295,6 +295,12 @@ const getModules = () => {
                     icon_component: 'IcDp2p',
                     routes: [
                         {
+                            path: routes.p2p_buy_sell,
+                            component: P2P,
+                            getTitle: () => localize('Deriv P2P'),
+                            default: true,
+                        },
+                        {
                             path: routes.p2p_advertiser_page,
                             component: P2P,
                             getTitle: () => localize('Deriv P2P'),

@@ -1,3 +1,1 @@
-import CashierOnboardingTitle from './cashier-onboarding-title';
-
-export { CashierOnboardingTitle };
+export { default as CashierOnboardingTitle } from './cashier-onboarding-title';

@@ -1,16 +1,24 @@
 import React from 'react';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+import CashierBreadcrumb from '../cashier-breadcrumb';
 import './page-container.scss';
 
-const PageContainer: React.FC<React.PropsWithChildren<unknown>> = observer(({ children }) => {
+type TProps = {
+    hide_breadcrumb?: boolean;
+};
+
+const PageContainer: React.FC<React.PropsWithChildren<TProps>> = observer(({ hide_breadcrumb = false, children }) => {
     const { client } = useStore();
     const { is_authorize } = client;
+    const is_loading = !is_authorize;
 
     return (
-        <ThemedScrollbars className='page-container'>
-            <div className='page-container__content'>{is_authorize ? children : <Loading is_fullscreen={false} />}</div>
-        </ThemedScrollbars>
+        <div className='page-container'>
+            {!hide_breadcrumb && <CashierBreadcrumb />}
+            {is_loading && <Loading is_fullscreen={false} />}
+            {!is_loading && <ThemedScrollbars>{children}</ThemedScrollbars>}
+        </div>
     );
 });
 

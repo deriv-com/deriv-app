@@ -20,18 +20,17 @@ const host_map = {
 
 let location_url: Location, default_language: string;
 
-const isUrl = (str: string) => {
-    let url;
-    try {
-        url = new URL(str);
-    } catch (err) {
-        return false;
-    }
-    return true;
-};
+function isURL(str: string) {
+    const res = str.match(
+        /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
+    );
+    return res !== null;
+}
 
 export const legacyUrlForLanguage = (target_language: string, url: string = window.location.href) => {
-    if (default_language !== 'EN') return url;
+    if (isURL(default_language)) {
+        return url;
+    }
     return url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
 };
 

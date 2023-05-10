@@ -54,6 +54,6 @@ export const getSwapFreeAccount = (): TAccountType => ({
     title_and_type: localize('Swap-Free'),
     icon: 'SwapFree',
     description: localize(
-        'Trade CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs swap-free.'
+        'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs.'
     ),
 });

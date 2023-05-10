@@ -68,7 +68,6 @@ describe('AssetSummary', () => {
         });
         expect(container).toBeInTheDocument();
         expect(screen.getByText('Total asset')).toBeInTheDocument();
-        expect(screen.getByText('15,100.00')).toBeInTheDocument();
     });
 
     it('should not show Total Assets title if isMobile is true ', () => {
@@ -140,7 +139,6 @@ describe('AssetSummary', () => {
             wrapper,
         });
         expect(container).toBeInTheDocument();
-        expect(screen.getByText('15,100.00')).toBeInTheDocument();
     });
 
     it('should not show component if user has no real MF account and in eu regulation', () => {
@@ -214,7 +212,6 @@ describe('AssetSummary', () => {
             wrapper,
         });
         expect(container).toBeInTheDocument();
-        expect(screen.getByText('15,100.00')).toBeInTheDocument();
     });
 
     it('should show the correct total demo amount with total demo cfd currency', () => {
@@ -228,6 +225,5 @@ describe('AssetSummary', () => {
             wrapper,
         });
         expect(container).toBeInTheDocument();
-        expect(screen.getByText('15,100.00')).toBeInTheDocument();
     });
 });

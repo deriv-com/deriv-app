@@ -7,7 +7,7 @@ const urls = [deriv_urls.DERIV_APP_PRODUCTION];
 function mockLocation(url) {
     // Mocking global location
     delete global.window.location;
-    global.window = Object.create(window);
+    global.window ??= Object.create(window);
     window.location = new URL(url);
     reset();
 }

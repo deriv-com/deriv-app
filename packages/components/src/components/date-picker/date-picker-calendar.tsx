@@ -6,21 +6,41 @@ import Calendar from '../calendar';
 import { useBlockScroll } from '../../hooks';
 
 type TDatePickerCalendarProps = {
-    value: string | null;
+    value: string;
     alignment?: string;
     is_datepicker_visible: boolean;
-    calendar_el_ref: React.RefObject<HTMLElement>;
+    calendar_el_ref: React.RefObject<HTMLDivElement>;
     parent_ref: React.RefObject<HTMLElement>;
     portal_id: string;
     style: React.CSSProperties;
     placement: string;
-    onHover?: (hovered_date: string) => void;
     onSelect: (formatted_date: string, keep_open: boolean) => void;
     calendar_view?: 'date' | 'month' | 'year' | 'decade';
     keep_open: boolean;
+    footer: string;
+    has_today_btn: boolean;
+    holidays: Array<{
+        dates: string[];
+        descrip: string;
+    }>;
+    onChangeCalendarMonth: (start_of_month: string) => void;
+    start_date: string;
+    disable_days: number[];
+    disabled_days: number[];
+    events: Array<{
+        dates: string[];
+        descrip: string;
+    }>;
+    has_range_selection: boolean;
+    onHover: (selected_date: moment.MomentInput | null) => void;
+    should_show_today: boolean;
 };
 
-const DatePickerCalendar = React.forwardRef<HTMLDivElement, TDatePickerCalendarProps>(
+type TCalendarRef = {
+    setSelectedDate?: (date: string) => void;
+};
+
+const DatePickerCalendar = React.forwardRef<TCalendarRef, TDatePickerCalendarProps>(
     ({ alignment, is_datepicker_visible, parent_ref, portal_id, style, placement, ...props }, ref) => {
         const css_transition_classnames = {
             enter: classNames('dc-datepicker__picker--enter', {

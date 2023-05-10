@@ -20,7 +20,7 @@ type TCalendarProps = {
     start_date: string;
     value: string;
     disable_days: number[];
-    calendar_view: string;
+    calendar_view?: string;
     calendar_el_ref: React.RefObject<HTMLDivElement>;
     disabled_days: number[];
     events: Array<{

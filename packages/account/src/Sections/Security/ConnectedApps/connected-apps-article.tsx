@@ -5,7 +5,8 @@ import AccountArticle from 'Components/article';
 const openAPIManagingWebsite = () => {
     window.open(
         'https://community.deriv.com/t/api-tokens-managing-access-on-third-party-applications-and-mobile-apps/29159',
-        '_blank'
+        '_blank',
+        'noopener'
     );
 };
 

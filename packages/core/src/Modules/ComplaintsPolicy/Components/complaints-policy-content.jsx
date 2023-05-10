@@ -482,11 +482,9 @@ const Content = ({ is_uk, landing_company_shortcode, mt5_login_list }) => {
 
     const complaints_procedure = [
         {
-            id: 'complaints_procedure_title',
             title: localize('Financial commission complaints procedure'),
         },
         {
-            id: 'filing_complaints',
             title: localize('1. Filing complaints'),
             list: [
                 <Localize
@@ -507,7 +505,6 @@ const Content = ({ is_uk, landing_company_shortcode, mt5_login_list }) => {
             ],
         },
         {
-            id: 'investigation_phase',
             title: localize('2. Investigation phase'),
             list: [
                 <Localize
@@ -528,7 +525,6 @@ const Content = ({ is_uk, landing_company_shortcode, mt5_login_list }) => {
             ],
         },
         {
-            id: 'determination_phase',
             title: localize('3. Determination phase'),
             list: [
                 <React.Fragment key={0}>
@@ -556,7 +552,6 @@ const Content = ({ is_uk, landing_company_shortcode, mt5_login_list }) => {
             ],
         },
         {
-            id: 'awards_and_orders',
             title: localize('4. Awards and orders'),
             list: [
                 <Localize
@@ -582,7 +577,6 @@ const Content = ({ is_uk, landing_company_shortcode, mt5_login_list }) => {
             ],
         },
         {
-            id: 'disclaimer',
             title: localize('5. Disclaimer'),
             content: {
                 text: localize(
@@ -592,63 +586,54 @@ const Content = ({ is_uk, landing_company_shortcode, mt5_login_list }) => {
         },
     ];
 
-    const can_show_complaints_procedure = /^(svg|labuan|vanuatu|maltainvest)$/.test(landing_company_shortcode);
+    const can_show_complaints_procedure = /^(svg|labuan|vanuatu)$/.test(landing_company_shortcode);
     const eu_policy_clauses = ['introduction', 'fair_treatment', 'general_queries', 'complaints'];
-    const non_eu_policy_clauses = [
-        'introduction',
-        'fair_treatment',
-        'complaints_and_disputes',
-        'complaints_procedure_title',
-        'filing_complaints',
-        'investigation_phase',
-        'determination_phase',
-        'awards_and_orders',
-        'disclaimer',
-    ];
+    const non_eu_policy_clauses = ['introduction', 'fair_treatment', 'complaints_and_disputes'];
 
-    const modal_content = [...policy_content, ...(can_show_complaints_procedure ? complaints_procedure : [])]
-        .filter(row =>
+    const modal_content = [
+        ...policy_content.filter(row =>
             landing_company_shortcode === 'maltainvest'
                 ? eu_policy_clauses.includes(row.id)
                 : non_eu_policy_clauses.includes(row.id)
-        )
-        .map((row, index) => (
-            <div key={index} className='complaints-policy__section'>
-                <div className='complaints-policy__section-title'>{row.title}</div>
-                {row.list && (
-                    <div className='complaints-policy__list'>
-                        {row.list.map((item, i) => (
-                            <div key={i} className='complaints-policy__list-item'>
-                                {item}
+        ),
+        ...(can_show_complaints_procedure ? complaints_procedure : []),
+    ].map((row, index) => (
+        <div key={index} className='complaints-policy__section'>
+            <div className='complaints-policy__section-title'>{row.title}</div>
+            {row.list && (
+                <div className='complaints-policy__list'>
+                    {row.list.map((item, i) => (
+                        <div key={i} className='complaints-policy__list-item'>
+                            {item}
+                        </div>
+                    ))}
+                </div>
+            )}
+            {row.content && (
+                <div className='complaints-policy__section-content'>
+                    {row.content.text}
+                    {row.content.sub_content?.map((item, i) => (
+                        <div key={i} className='complaints-policy__subsection'>
+                            <div className='complaints-policy__subsection-title'>{item.title}</div>
+                            <div className='complaints-policy__subsection-content'>
+                                {item?.text}
+                                {item.bullets && (
+                                    <div className='complaints-policy__subsection-bullet'>
+                                        {item.bullets.map((bullet, j) => (
+                                            <div key={j} className='complaints-policy__list-item'>
+                                                {bullet}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                                {item?.ending_text}
                             </div>
-                        ))}
-                    </div>
-                )}
-                {row.content && (
-                    <div className='complaints-policy__section-content'>
-                        {row.content.text}
-                        {row.content.sub_content?.map((item, i) => (
-                            <div key={i} className='complaints-policy__subsection'>
-                                <div className='complaints-policy__subsection-title'>{item.title}</div>
-                                <div className='complaints-policy__subsection-content'>
-                                    {item?.text}
-                                    {item.bullets && (
-                                        <div className='complaints-policy__subsection-bullet'>
-                                            {item.bullets.map((bullet, j) => (
-                                                <div key={j} className='complaints-policy__list-item'>
-                                                    {bullet}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )}
-                                    {item?.ending_text}
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                )}
-            </div>
-        ));
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
+    ));
 
     return (
         <div className='complaints-policy'>

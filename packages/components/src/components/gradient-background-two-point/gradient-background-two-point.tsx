@@ -1,31 +1,31 @@
 import React, { CSSProperties } from 'react';
-import './gradient-background-wallet-icon.scss';
+import './gradient-background-two-point.scss';
 
-type TGradientBackgroundWalletIcon = {
+type TGradientBackgroundTwoPoint = {
     blurRadius?: number;
     backgroundColor: CSSProperties['backgroundColor'];
     primaryColor: CSSProperties['background'];
     secondaryColor: CSSProperties['background'];
 };
 
-const GradientBackgroundWalletIcon: React.FC<React.PropsWithChildren<TGradientBackgroundWalletIcon>> = ({
+const GradientBackgroundTwoPoint: React.FC<React.PropsWithChildren<TGradientBackgroundTwoPoint>> = ({
     children,
     blurRadius = 48,
     backgroundColor,
     primaryColor,
     secondaryColor,
 }) => (
-    <div className='gradient-background-wallet-icon' style={{ backgroundColor }}>
+    <div className='gradient-background-two-point' style={{ backgroundColor }}>
         <div
-            className='gradient-background-wallet-icon__primary'
+            className='gradient-background-two-point__primary'
             style={{ filter: `blur(${blurRadius}px)`, background: primaryColor }}
         />
         <div
-            className='gradient-background-wallet-icon__secondary'
+            className='gradient-background-two-point__secondary'
             style={{ filter: `blur(${blurRadius}px)`, background: secondaryColor }}
         />
-        {children && <div className='gradient-background-wallet-icon__children'>{children}</div>}
+        {children && <div className='gradient-background-two-point__children'>{children}</div>}
     </div>
 );
 
-export default GradientBackgroundWalletIcon;
+export default GradientBackgroundTwoPoint;

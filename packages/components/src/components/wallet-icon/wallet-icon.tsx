@@ -1,6 +1,6 @@
 import React, { CSSProperties } from 'react';
 import Icon from '../icon';
-import { GradientBackgroundWalletIcon } from '../gradient-background-wallet-icon';
+import { GradientBackgroundTwoPoint } from '../gradient-background-two-point';
 import './wallet-icon.scss';
 import classNames from 'classnames';
 
@@ -24,7 +24,7 @@ const WalletIcon = ({ icon, iconSize = 24, primaryColor, secondaryColor, rounded
     return (
         <div className={`wallet-icon wallet-icon--${size}`}>
             <div className='wallet-icon__background'>
-                <GradientBackgroundWalletIcon
+                <GradientBackgroundTwoPoint
                     blurRadius={getBlurRadius(size)}
                     backgroundColor='var(--general-main-2)'
                     primaryColor={primaryColor}

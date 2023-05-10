@@ -1,14 +1,14 @@
 import React from 'react';
 import { Modal } from '@deriv/components';
-import CashierWalletModalHeader from './cashier-wallet-modal-header';
-import CashierWalletModalBody from './cashier-wallet-modal-body';
+import WalletModalHeader from './wallet-modal-header';
+import WalletModalBody from './wallet-modal-body';
 import { observer, useStore } from '@deriv/stores';
 
-const CashierWalletModal = observer(() => {
+const WalletModal = observer(() => {
     const store = useStore();
     const {
         client: { balance, currency, landing_company_shortcode: shortcode },
-        ui: { is_dark_mode_on, is_cashier_wallet_modal_visible, is_mobile, setIsCashierWalletModalVisible },
+        ui: { is_dark_mode_on, is_wallet_modal_visible, is_mobile, setIsWalletModalVisible },
         traders_hub: { is_demo },
     } = store;
 
@@ -20,7 +20,7 @@ const CashierWalletModal = observer(() => {
     const [is_wallet_name_visible, setIsWalletNameVisible] = React.useState<boolean>(true);
 
     const closeModal = () => {
-        setIsCashierWalletModalVisible(false);
+        setIsWalletModalVisible(false);
         setActiveTabIndex(0);
     };
 
@@ -40,11 +40,11 @@ const CashierWalletModal = observer(() => {
         return () => {
             el_tab_content?.removeEventListener('scroll', handleScroll);
         };
-    }, [active_tab_index, is_cashier_wallet_modal_visible, is_mobile]);
+    }, [active_tab_index, is_wallet_modal_visible, is_mobile]);
 
     return (
-        <Modal is_open={is_cashier_wallet_modal_visible} className='cashier-wallet-modal' portalId='app_contents'>
-            <CashierWalletModalHeader
+        <Modal is_open={is_wallet_modal_visible} className='wallet-modal' portalId='app_contents'>
+            <WalletModalHeader
                 balance={balance}
                 closeModal={closeModal}
                 currency={currency}
@@ -54,7 +54,7 @@ const CashierWalletModal = observer(() => {
                 shortcode={shortcode}
                 is_wallet_name_visible={is_wallet_name_visible}
             />
-            <CashierWalletModalBody
+            <WalletModalBody
                 active_tab_index={active_tab_index}
                 is_dark={is_dark_mode_on}
                 is_demo={is_demo}
@@ -67,4 +67,4 @@ const CashierWalletModal = observer(() => {
     );
 });
 
-export default CashierWalletModal;
+export default WalletModal;

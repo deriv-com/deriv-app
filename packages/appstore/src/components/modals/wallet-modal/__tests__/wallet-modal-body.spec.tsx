@@ -2,10 +2,10 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
-import CashierWalletModalBody from '../cashier-wallet-modal-body';
+import WalletModalBody from '../wallet-modal-body';
 
-describe('CashierWalletModalBody', () => {
-    let mocked_props: React.ComponentProps<typeof CashierWalletModalBody>;
+describe('WalletModalBody', () => {
+    let mocked_props: React.ComponentProps<typeof WalletModalBody>;
 
     beforeEach(() => {
         mocked_props = {
@@ -13,7 +13,7 @@ describe('CashierWalletModalBody', () => {
             is_dark: false,
             is_demo: true,
             setActiveTabIndex: jest.fn(),
-            show_wallet_name: true,
+            is_wallet_name_visible: true,
             wallet_type: 'demo',
         };
     });
@@ -23,7 +23,7 @@ describe('CashierWalletModalBody', () => {
     };
 
     it('Should render proper tabs for demo wallet with proper content', () => {
-        renderWithRouter(<CashierWalletModalBody {...mocked_props} />);
+        renderWithRouter(<WalletModalBody {...mocked_props} />);
 
         expect(screen.getByText('Transfer')).toBeInTheDocument();
         expect(screen.getByText('Transfer Demo')).toBeInTheDocument();
@@ -32,7 +32,7 @@ describe('CashierWalletModalBody', () => {
     });
 
     it('Shoud trigger setActiveTabIndex callback when the user clicked on the tab', () => {
-        renderWithRouter(<CashierWalletModalBody {...mocked_props} />);
+        renderWithRouter(<WalletModalBody {...mocked_props} />);
 
         const el_transactions_tab = screen.getByText('Transactions');
         userEvent.click(el_transactions_tab);

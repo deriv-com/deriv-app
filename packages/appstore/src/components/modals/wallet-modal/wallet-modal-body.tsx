@@ -4,7 +4,7 @@ import { Tabs, ThemedScrollbars } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { getCashierOptions, TWalletType } from './provider';
 
-type TCashierWalletModalBodyProps = {
+type TWalletModalBodyProps = {
     active_tab_index: number;
     is_dark: boolean;
     is_demo: boolean;
@@ -13,13 +13,13 @@ type TCashierWalletModalBodyProps = {
     wallet_type: TWalletType;
 };
 
-const CashierWalletModalBody = React.forwardRef<HTMLDivElement, TCashierWalletModalBodyProps>(
+const WalletModalBody = React.forwardRef<HTMLDivElement, TWalletModalBodyProps>(
     ({ active_tab_index, is_dark, is_demo, setActiveTabIndex, is_wallet_name_visible, wallet_type = 'p2p' }, ref) => {
         return (
             <Tabs
                 active_icon_color={is_dark ? 'var(--badge-white)' : ''}
                 active_index={active_tab_index}
-                className={classNames('cashier-wallet-modal__tabs', {
+                className={classNames('wallet-modal__tabs', {
                     'content-scrolled': !is_wallet_name_visible,
                 })}
                 has_active_line={false}
@@ -45,6 +45,6 @@ const CashierWalletModalBody = React.forwardRef<HTMLDivElement, TCashierWalletMo
     }
 );
 
-CashierWalletModalBody.displayName = 'CashierWalletModalBody';
+WalletModalBody.displayName = 'WalletModalBody';
 
-export default CashierWalletModalBody;
+export default WalletModalBody;

@@ -5,9 +5,9 @@ import { Badge, GradientBackground, Icon, Text, Watermark } from '@deriv/compone
 import { formatMoney } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getWalletCurrencyIcon } from 'Constants/utils';
-import { getCashierWalletModalBackgrounds } from 'Constants/wallet-backgrounds';
+import { getWalletModalBackgrounds } from 'Constants/wallet-backgrounds';
 
-type TCashierWalletModalHeaderProps = {
+type TWalletModalHeaderProps = {
     balance?: string | number;
     currency: string;
     is_dark: boolean;
@@ -18,7 +18,7 @@ type TCashierWalletModalHeaderProps = {
     is_wallet_name_visible: boolean;
 };
 
-const CashierWalletModalHeader = ({
+const WalletModalHeader = ({
     balance,
     closeModal,
     currency,
@@ -27,8 +27,8 @@ const CashierWalletModalHeader = ({
     is_mobile,
     shortcode,
     is_wallet_name_visible,
-}: TCashierWalletModalHeaderProps) => {
-    const header_class_name = 'cashier-wallet-modal__header';
+}: TWalletModalHeaderProps) => {
+    const header_class_name = 'wallet-modal__header';
 
     const getBadgeLabel = React.useCallback(() => {
         if (is_demo) return localize('Demo');
@@ -90,7 +90,7 @@ const CashierWalletModalHeader = ({
     }, [is_demo, currency]);
 
     return (
-        <GradientBackground {...getCashierWalletModalBackgrounds(getBackgroundName())}>
+        <GradientBackground {...getWalletModalBackgrounds(getBackgroundName())}>
             {is_demo && <Watermark image={`url(${is_dark ? DemoDark : DemoLight})`} opacity={is_dark ? 0.32 : 0.24} />}
             <div
                 className={classNames(header_class_name, {
@@ -136,4 +136,4 @@ const CashierWalletModalHeader = ({
     );
 };
 
-export default CashierWalletModalHeader;
+export default WalletModalHeader;

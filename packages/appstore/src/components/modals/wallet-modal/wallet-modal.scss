@@ -1,4 +1,4 @@
-.dc-modal__container_cashier-wallet-modal {
+.dc-modal__container_wallet-modal {
     display: flex;
     align-items: center;
     position: fixed;
@@ -16,7 +16,7 @@
         z-index: 100;
     }
 
-    .cashier-wallet-modal {
+    .wallet-modal {
         &__header {
             max-width: 128rem;
             width: 100%;
@@ -97,7 +97,7 @@
             @include mobile {
                 padding: 0 1.6rem;
 
-                &--header--cashier-wallet-modal__tabs {
+                &--header--wallet-modal__tabs {
                     overflow-x: auto;
 
                     &::-webkit-scrollbar {

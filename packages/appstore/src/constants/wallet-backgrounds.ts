@@ -1,4 +1,4 @@
-export const getCashierWalletModalBackgrounds = (currency: string) => {
+export const getWalletModalBackgrounds = (currency: string) => {
     let new_currency = currency;
     const is_demo = new_currency === 'demo';
 

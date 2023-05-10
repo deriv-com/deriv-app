@@ -113,7 +113,7 @@ const TradingHubHeader = ({
     toggleReadyToDepositModal,
     toggleNeedRealAccountForCashierModal,
     //Remove after QA testing
-    setIsCashierWalletModalVisible,
+    setIsWalletModalVisible,
 }) => {
     const { pathname } = useLocation();
     const cashier_routes = pathname.startsWith(routes.cashier);
@@ -212,14 +212,14 @@ const TradingHubHeader = ({
                 <MobileWrapper>
                     <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
                     {/* Remove after QA testing */}
-                    <button onClick={() => setIsCashierWalletModalVisible(true)}>Modal</button>
+                    <button onClick={() => setIsWalletModalVisible(true)}>Modal</button>
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
                 <DerivBrandLogo className='trading-hub-header__logo' />
                 <DesktopWrapper>
                     <Divider />
                     {/* Remove after QA testing */}
-                    <button onClick={() => setIsCashierWalletModalVisible(true)}>Open modal</button>
+                    <button onClick={() => setIsWalletModalVisible(true)}>Open modal</button>
                     <TradersHubHomeButton is_dark_mode={is_dark_mode} />
                 </DesktopWrapper>
                 <MenuLinks />
@@ -352,5 +352,5 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     toggleNeedRealAccountForCashierModal: ui.toggleNeedRealAccountForCashierModal,
     content_flag: traders_hub.content_flag,
     //Remove after QA testing
-    setIsCashierWalletModalVisible: ui.setIsCashierWalletModalVisible,
+    setIsWalletModalVisible: ui.setIsWalletModalVisible,
 }))(withRouter(TradingHubHeader));

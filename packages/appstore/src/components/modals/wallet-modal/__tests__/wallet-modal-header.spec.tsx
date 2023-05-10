@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import CashierWalletModalHeader from '../cashier-wallet-modal-header';
+import WalletModalHeader from '../wallet-modal-header';
 
-describe('CashierWalletModalHeader', () => {
-    let mocked_props: React.ComponentProps<typeof CashierWalletModalHeader>;
+describe('WalletModalHeader', () => {
+    let mocked_props: React.ComponentProps<typeof WalletModalHeader>;
 
     beforeEach(() => {
         mocked_props = {
@@ -14,12 +14,13 @@ describe('CashierWalletModalHeader', () => {
             is_dark: false,
             is_demo: true,
             is_mobile: false,
-            show_wallet_name: true,
+            is_wallet_name_visible: true,
+            shortcode: 'SVG',
         };
     });
 
     it('Should render header with proper title, balance, badge and icons', () => {
-        render(<CashierWalletModalHeader {...mocked_props} />);
+        render(<WalletModalHeader {...mocked_props} />);
 
         expect(screen.getByText('Demo USD Wallet')).toBeInTheDocument();
         expect(screen.getByText('Demo')).toBeInTheDocument();
@@ -29,7 +30,7 @@ describe('CashierWalletModalHeader', () => {
     });
 
     it('Should trigger onClose callback when the user clicked on the cross close button', () => {
-        render(<CashierWalletModalHeader {...mocked_props} />);
+        render(<WalletModalHeader {...mocked_props} />);
 
         const el_close_btn = screen.getByTestId('dt_close_icon');
         userEvent.click(el_close_btn);
@@ -38,7 +39,7 @@ describe('CashierWalletModalHeader', () => {
     });
 
     it("Shouldn't show wallet name, badge and currency icon when show_wallet_name is false", () => {
-        render(<CashierWalletModalHeader {...mocked_props} show_wallet_name={false} />);
+        render(<WalletModalHeader {...mocked_props} is_wallet_name_visible={false} />);
 
         expect(screen.queryByText('Demo USD Wallet')).not.toBeInTheDocument();
         expect(screen.queryByText('Demo')).not.toBeInTheDocument();

@@ -4,6 +4,9 @@
     align-items: center;
     gap: 1.6rem;
 
+    &--layout {
+        flex-direction: row;
+    }
     .onfido-sdk-ui-Modal-inner {
         border-radius: 0.8rem;
     }
@@ -11,6 +14,9 @@
     @include mobile() {
         gap: 0.4rem;
 
+        &--layout {
+            flex-direction: column;
+        }
         .onfido-sdk-ui-PageTitle-titleSpan {
             font-size: 2rem;
         }
@@ -39,15 +45,11 @@
 
     &__status-message {
         background-color: var(--transparent-correct-message);
-        width: 51.2rem;
         justify-content: flex-start;
         transition: transform 0.35s ease, opacity 0.35s linear;
         transform-origin: top;
         opacity: 1;
-
-        @include mobile() {
-            width: 32rem;
-        }
+        width: 98%;
 
         &--exit {
             transform: scale(1, 0);
@@ -55,9 +57,12 @@
         }
 
         &_container {
-            margin-bottom: 0.8rem;
+            position: absolute;
+            top: 0.4rem;
             min-height: 3.4rem;
             text-align: center;
+            z-index: 1;
+            width: 100%;
         }
     }
 

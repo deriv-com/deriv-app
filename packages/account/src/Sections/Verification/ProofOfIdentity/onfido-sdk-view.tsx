@@ -33,6 +33,7 @@ type TOnfidoSdkView = {
     getChangeableFields: () => string[];
     handleViewComplete: () => void;
     height?: number | string;
+    is_external?: boolean;
 };
 
 const OnfidoSdkView = ({
@@ -42,6 +43,7 @@ const OnfidoSdkView = ({
     getChangeableFields,
     handleViewComplete,
     height,
+    is_external,
 }: TOnfidoSdkView) => {
     const [api_error, setAPIError] = React.useState<TAPI_error>();
     const [onfido_service_token, setOnfidoToken] = React.useState('');
@@ -235,7 +237,11 @@ const OnfidoSdkView = ({
 
     return (
         <ThemedScrollbars is_bypassed={isMobile()} height={height}>
-            <div className='onfido-container'>
+            <div
+                className={classNames('onfido-container', {
+                    'onfido-container--layout': !is_external && !is_onfido_disabled,
+                })}
+            >
                 {component_to_load || (
                     <CSSTransition
                         appear={!are_details_saved}
@@ -257,33 +263,33 @@ const OnfidoSdkView = ({
                         </div>
                     </CSSTransition>
                 )}
-                <div className={classNames({ 'onfido-container__status-message_container': are_details_saved })}>
-                    <CSSTransition
-                        appear={is_status_message_visible}
-                        in={is_status_message_visible}
-                        timeout={{
-                            exit: 350,
-                        }}
-                        classNames={{
-                            exit: 'onfido-container__status-message--exit',
-                        }}
-                        unmountOnExit
-                    >
-                        <HintBox
-                            className='onfido-container__status-message'
-                            icon='IcAlertAnnounce'
-                            icon_height={16}
-                            icon_width={16}
-                            message={
-                                <Text as='p' size='xxxs'>
-                                    <Localize i18n_default_text='Your personal details have been saved successfully.' />
-                                </Text>
-                            }
-                            is_info
-                        />
-                    </CSSTransition>
-                </div>
                 <div style={{ position: 'relative' }}>
+                    <div className={classNames({ 'onfido-container__status-message_container': are_details_saved })}>
+                        <CSSTransition
+                            appear={is_status_message_visible}
+                            in={is_status_message_visible}
+                            timeout={{
+                                exit: 350,
+                            }}
+                            classNames={{
+                                exit: 'onfido-container__status-message--exit',
+                            }}
+                            unmountOnExit
+                        >
+                            <HintBox
+                                className='onfido-container__status-message'
+                                icon='IcAlertAnnounce'
+                                icon_height={16}
+                                icon_width={16}
+                                message={
+                                    <Text as='p' size='xxxs'>
+                                        <Localize i18n_default_text='Your personal details have been saved successfully.' />
+                                    </Text>
+                                }
+                                is_info
+                            />
+                        </CSSTransition>
+                    </div>
                     {is_onfido_disabled && (
                         <HintBox
                             className='onfido-container__info-message'

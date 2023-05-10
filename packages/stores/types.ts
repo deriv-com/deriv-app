@@ -286,6 +286,7 @@ type TClientStore = {
     setTwoFAStatus: (status: boolean) => void;
     has_changed_two_fa: boolean;
     setTwoFAChangedStatus: (status: boolean) => void;
+    real_account_creation_unlock_date: number;
 };
 
 type TCommonStoreError = {

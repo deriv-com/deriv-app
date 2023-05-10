@@ -8,9 +8,9 @@ import {
     getContractConfig,
     getContractTypeDisplay,
     getContractTypePosition,
-    TContractsKeys,
 } from '../contract';
 
+type TTest = Parameters<typeof getContractTypeDisplay>[0];
 const card_label = localize('Apply');
 const markets_name = localize('AUD/CAD');
 const unsupported_contract = {
@@ -75,10 +75,10 @@ describe('getContractTypeDisplay', () => {
         expect(getContractTypeDisplay('MULTDOWN', true, true)).toEqual(<Localize i18n_default_text='Down' />);
     });
     it('should return an empty string if show_button_name === false and contract_config has no name field', () => {
-        expect(getContractTypeDisplay('TEST' as TContractsKeys, true, false)).toBe('');
+        expect(getContractTypeDisplay('TEST' as TTest, true, false)).toBe('');
     });
     it('should return an empty string if show_button_name === true and contract_config has no name field and no button_name', () => {
-        expect(getContractTypeDisplay('TEST' as TContractsKeys, true, true)).toBe('');
+        expect(getContractTypeDisplay('TEST' as TTest, true, true)).toBe('');
     });
 });
 
@@ -87,6 +87,6 @@ describe('getContractTypePosition', () => {
         expect(getContractTypePosition('NOTOUCH')).toBe('bottom');
     });
     it('should return a top position if such type does not exist', () => {
-        expect(getContractTypePosition('TEST' as TContractsKeys)).toBe('top');
+        expect(getContractTypePosition('TEST' as TTest)).toBe('top');
     });
 });

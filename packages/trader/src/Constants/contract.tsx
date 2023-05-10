@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 
-export type TContractsKeys = keyof ReturnType<typeof getContractConfig>;
+type TContractsKeys = keyof ReturnType<typeof getContractConfig>;
 
 export const getCardLabels = () =>
     ({

@@ -499,7 +499,7 @@ const StaticDashboard = ({
                                             platform='mt5'
                                             appname={localize('Swap-Free')}
                                             description={localize(
-                                                'Trade CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs swap-free.'
+                                                'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs.'
                                             )}
                                             financial_amount={financial_amount}
                                             derived_amount={derived_amount}

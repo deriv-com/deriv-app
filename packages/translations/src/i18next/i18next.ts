@@ -81,7 +81,7 @@ export const getInitialLanguage = () => {
     const local_storage_language = localStorage.getItem(LANGUAGE_KEY);
 
     // check if lang param is not url to prevent client side url redirects
-    if (query_lang && !isUrl(query_lang)) {
+    if (query_lang && Object.keys(getAllowedLanguages()).includes(query_lang.toUpperCase())) {
         const query_lang_uppercase = query_lang.toUpperCase();
         if (isLanguageAvailable(query_lang_uppercase)) {
             localStorage.setItem(LANGUAGE_KEY, query_lang_uppercase);

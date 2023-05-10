@@ -31,7 +31,7 @@ const isUrl = (str: string) => {
 };
 
 export const legacyUrlForLanguage = (target_language: string, url: string = window.location.href) => {
-    if (isUrl(default_language)) return url;
+    if (default_language !== 'EN') return url;
     return url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
 };
 

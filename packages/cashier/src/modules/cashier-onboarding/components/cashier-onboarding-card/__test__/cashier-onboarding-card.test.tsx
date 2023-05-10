@@ -18,7 +18,7 @@ describe('CashierOnboardingCard', () => {
         );
         render(<CashierOnboardingCard {...props} />, { wrapper });
 
-        const container = screen.getByTestId('dt_cashier_onboarding_card_container');
+        const container = screen.getByTestId('dt_cashier_onboarding_card');
 
         userEvent.click(container);
 

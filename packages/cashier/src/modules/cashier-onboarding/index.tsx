@@ -6,8 +6,8 @@ import { useHistory } from 'react-router';
 import { PageContainer } from '../../components/page-container';
 import { useCashierStore } from '../../stores/useCashierStores';
 import {
-    CashierOnboardingCashCard,
     CashierOnboardingCryptoCard,
+    CashierOnboardingFiatCard,
     CashierOnboardingOnrampCard,
     CashierOnboardingP2PCard,
     CashierOnboardingPaymentAgentCard,
@@ -47,7 +47,7 @@ const CashierOnboarding: React.FC<TProps> = observer(({ setSideNotes }) => {
         <PageContainer>
             {should_show_side_notes && <CashierOnboardingSideNotes setSideNotes={setSideNotes} />}
             <CashierOnboardingTitle />
-            <CashierOnboardingCashCard />
+            <CashierOnboardingFiatCard />
             <CashierOnboardingCryptoCard />
             <CashierOnboardingOnrampCard />
             <CashierOnboardingPaymentAgentCard />

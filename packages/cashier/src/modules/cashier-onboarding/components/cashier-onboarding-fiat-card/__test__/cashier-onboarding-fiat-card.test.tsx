@@ -2,9 +2,9 @@ import React from 'react';
 import { mockStore } from '@deriv/stores';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../../cashier-providers';
-import CashierOnboardingCashCard from '../cashier-onboarding-cash-card';
+import CashierOnboardingFiatCard from '../cashier-onboarding-fiat-card';
 
-describe('CashierOnboardingCashCard', () => {
+describe('CashierOnboardingFiatCard', () => {
     test('should call the onClick callback when clicked', async () => {
         const mock = mockStore({
             client: {
@@ -23,7 +23,7 @@ describe('CashierOnboardingCashCard', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <CashierProviders store={mock}>{children}</CashierProviders>
         );
-        render(<CashierOnboardingCashCard />, { wrapper });
+        render(<CashierOnboardingFiatCard />, { wrapper });
 
         const container = screen.getByTestId('dt_cashier_onboarding_card_container');
 

@@ -1,6 +1,5 @@
 import { deriv_urls } from '../constants';
 import { reset, urlFor, websiteUrl, getPath, getContractPath } from '../url';
-import { expect } from '../../../test_utils/test_common';
 
 // Testable URLs
 const urls = [deriv_urls.DERIV_APP_PRODUCTION];

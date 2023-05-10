@@ -74,6 +74,7 @@ export const mocked_props = {
     setTourDialogVisibility: jest.fn(),
     showVideoDialog: jest.fn(),
     performSelfExclusionCheck: jest.fn(),
+    setActiveTabTutorial: jest.fn(),
 };
 
 describe('<Dashboard />', () => {

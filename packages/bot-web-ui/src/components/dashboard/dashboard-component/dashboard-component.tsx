@@ -59,7 +59,7 @@ const DashboardDescription = ({ is_mobile, has_dashboard_strategies }: TDashboar
 const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
     const { load_modal, dashboard } = useDBotStore();
     const { dashboard_strategies } = load_modal;
-    const { setActiveTab, has_started_onboarding_tour } = dashboard;
+    const { setActiveTab, setActiveTabTutorial, has_started_onboarding_tour } = dashboard;
     const has_dashboard_strategies = !!dashboard_strategies?.length;
     const is_mobile = isMobile();
 
@@ -81,7 +81,9 @@ const DashboardComponent = observer(({ handleTabChange }: TMobileIconGuide) => {
                             <DashboardTitle is_mobile={is_mobile} has_dashboard_strategies={has_dashboard_strategies} />
                         )}
                         <DesktopWrapper>
-                            {!has_dashboard_strategies && <UserGuide setActiveTab={setActiveTab} />}
+                            {!has_dashboard_strategies && (
+                                <UserGuide setActiveTab={setActiveTab} setActiveTabTutorial={setActiveTabTutorial} />
+                            )}
                         </DesktopWrapper>
                         <div>
                             <div

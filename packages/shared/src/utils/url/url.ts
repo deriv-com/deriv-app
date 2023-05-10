@@ -33,7 +33,7 @@ const isUrl = (str: string) => {
 export const legacyUrlForLanguage = (target_language: string, url: string = window.location.href) => {
     // validate if default_language is not url to prevent client-side url redirect vulnerability
     const language = target_language && !isUrl(target_language) ? target_language : 'EN';
-    url.replace(new RegExp(`/${default_language}/`, 'i'), `/${language}).trim().toLowerCase()}/`);
+    return url.replace(new RegExp(`/${default_language}/`, 'i'), `/${language}).trim().toLowerCase()}/`);
 };
 
 export const urlForLanguage = (lang: string, url: string = window.location.href) => {

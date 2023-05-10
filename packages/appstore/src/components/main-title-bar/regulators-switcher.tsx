@@ -16,7 +16,7 @@ type SwitcherItemProps = {
 const SwitcherItem = ({ children, is_selected, ...props }: SwitcherItemProps & HTMLAttributes<HTMLDivElement>) => {
     return (
         <div className={classNames('item', { 'is-selected': is_selected })} {...props}>
-            <Text size='xs' weight={is_selected ? 'bold' : 'normal'}>
+            <Text size='xs' weight={is_selected ? 'bold' : 'normal'} color={is_selected ? 'prominent' : 'general'}>
                 {children}
             </Text>
         </div>

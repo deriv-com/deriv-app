@@ -21,6 +21,7 @@ const Icon = React.forwardRef(
             onTouchStart,
             size = 16,
             width,
+            description,
         }: TIconProps,
         ref?: React.ForwardedRef<SVGSVGElement | null>
     ) => {
@@ -70,6 +71,8 @@ const Icon = React.forwardRef(
                         : undefined) as React.CSSProperties & { '--fill-color1': string }
                 }
             >
+                {/* SVG doesn't have an alt attribute, it uses a <desc> child tag instead. We need the <desc> tag for the screenreader */}
+                <desc>{description}</desc>
                 <use xlinkHref={`${getUrlBase(`/public/sprites/${filename}.svg`)}#${sprite_id}`} />
             </svg>
         );

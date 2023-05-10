@@ -20,19 +20,8 @@ const host_map = {
 
 let location_url: Location, default_language: string;
 
-function isURL(str: string) {
-    const res = str.match(
-        /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
-    );
-    return res !== null;
-}
-
-export const legacyUrlForLanguage = (target_language: string, url: string = window.location.href) => {
-    if (isURL(default_language)) {
-        return url;
-    }
-    return url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
-};
+export const legacyUrlForLanguage = (target_language: string, url: string = window.location.href) =>
+    url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
 
 export const urlForLanguage = (lang: string, url: string = window.location.href) => {
     const current_url = new URL(url);
@@ -78,7 +67,7 @@ export const urlFor = (
     }
 
     // validate if default_language is not url to prevent client-side url redirect vulnerability
-    const lang = language?.toLowerCase?.() ?? !isUrl(default_language) ? default_language : 'EN';
+    const lang = language?.toLowerCase?.() ?? default_language;
     let domain = `https://${window.location.hostname}/`;
     if (legacy) {
         if (getPlatformFromUrl().is_staging_deriv_app) {

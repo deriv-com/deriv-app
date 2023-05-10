@@ -167,8 +167,4 @@ export interface AccountListDetail {
     title: string;
 }
 
-// TODO: Remove or update this once stitching is done
-export type TReadyToUpgradeForm = {
-    is_eu: boolean;
-};
 export type TWalletsMigrationStatus = 'ineligible' | 'eligible' | 'in_progress' | 'migrated' | 'failed';

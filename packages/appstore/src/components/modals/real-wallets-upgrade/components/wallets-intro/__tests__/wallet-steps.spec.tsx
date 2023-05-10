@@ -1,5 +1,5 @@
 import React from 'react';
-import WalletSteps from '../wallet-steps';
+import WalletSteps from '../wallets-intro';
 import WalletsImage from 'Assets/svgs/wallets';
 import { render, screen } from '@testing-library/react';
 

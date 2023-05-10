@@ -1,11 +1,17 @@
 import React from 'react';
 import { Text, Icon, Div100vhContainer } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
-import { TStepProps } from 'Types';
+import { TWalletsIntro } from 'Types';
+import getWalletIntroContent from 'Constants/wallet-intro-content-config';
 import './wallet-steps.scss';
 
-const WalletSteps = ({ image, title, description, bullets }: TStepProps) => (
-    <Div100vhContainer className='wallet-steps__content' is_disabled={isDesktop()} height_offset='18.5rem'>
+type TWalletsIntroComponent = {
+    is_eu: boolean;
+    current_step: number;
+};
+
+const WalletsIntroComponent = ({ image, title, description, bullets }: TWalletsIntro) => (
+    <React.Fragment>
         {image}
         <Text
             as='h1'
@@ -38,7 +44,18 @@ const WalletSteps = ({ image, title, description, bullets }: TStepProps) => (
                 )}
             </div>
         ))}
+    </React.Fragment>
+);
+
+const WalletsIntro = ({ is_eu, current_step }: TWalletsIntroComponent) => (
+    <Div100vhContainer className='wallet-steps__content' is_disabled={isDesktop()} height_offset='18.5rem'>
+        {getWalletIntroContent(is_eu).map((step, index) => {
+            if (index === current_step) {
+                return <WalletsIntroComponent key={index} {...step} bullets={step?.bullets || []} />;
+            }
+            return null;
+        })}
     </Div100vhContainer>
 );
 
-export default WalletSteps;
+export default WalletsIntro;

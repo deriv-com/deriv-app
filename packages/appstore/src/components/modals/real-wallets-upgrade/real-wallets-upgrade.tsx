@@ -4,33 +4,28 @@ import { observer } from 'mobx-react-lite';
 import { ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
-import { steps } from 'Constants/wallet-static-steps-config';
-import WalletSteps from './components/wallet-steps';
-
-type TStepComponent = {
-    eu_user: boolean;
-    current_step: number;
-};
-
-// move this in a seperate file
-const StepComponent = ({ eu_user, current_step }: TStepComponent) => (
-    <Modal.Body className='wallet-steps'>
-        {steps(eu_user).map((step, index) => {
-            if (index === current_step - 1) {
-                return <WalletSteps key={index} {...step} bullets={step?.bullets || []} />;
-            }
-            // replace this with the consent form or whatever
-            return null;
-        })}
-    </Modal.Body>
-);
+import WalletsIntro from './components/wallets-intro/wallets-intro';
+import ReadyToUpgradeWallets from './components/ready-to-update-wallets';
 
 const RealWalletsUpgrade = () => {
     const { traders_hub } = useStore();
     const { is_real_wallets_upgrade_on, toggleWalletsUpgrade, content_flag } = traders_hub;
-    const eu_user = content_flag === ContentFlag.EU_REAL || content_flag === ContentFlag.EU_DEMO;
+    const is_eu = content_flag === ContentFlag.EU_REAL || content_flag === ContentFlag.EU_DEMO;
 
-    const [current_step, setCurrentStep] = React.useState(1);
+    const [current_step, setCurrentStep] = React.useState(0);
+    const [is_disabled, setIsDisabled] = React.useState(false);
+
+    React.useEffect(() => {
+        if (!is_real_wallets_upgrade_on) {
+            setCurrentStep(0);
+        }
+    }, [is_real_wallets_upgrade_on]);
+
+    React.useEffect(() => {
+        return () => {
+            setIsDisabled(false);
+        };
+    }, [is_real_wallets_upgrade_on]);
 
     const handleNext = () => {
         setCurrentStep(current_step + 1);
@@ -43,11 +38,68 @@ const RealWalletsUpgrade = () => {
         toggleWalletsUpgrade(false);
     };
 
-    React.useEffect(() => {
-        if (!is_real_wallets_upgrade_on) {
-            setCurrentStep(1);
-        }
-    }, [is_real_wallets_upgrade_on]);
+    const toggleCheckbox = () => {
+        setIsDisabled(!is_disabled);
+    };
+
+    // footer buttons here ( ˶ˆᗜˆ˵ )
+    const DefaultFooter = (
+        <React.Fragment>
+            <Button secondary large className='wallet-steps__footer-button' onClick={handleBack}>
+                {localize('Back')}
+            </Button>
+            <Button primary large className='wallet-steps__footer-button' onClick={handleNext}>
+                {localize('Next')}
+            </Button>
+        </React.Fragment>
+    );
+
+    const InitialFooter = (
+        <React.Fragment>
+            <Button secondary large className='wallet-steps__footer-button' onClick={handleClose}>
+                {localize('Maybe later')}
+            </Button>
+            <Button primary large className='wallet-steps__footer-button' onClick={handleNext}>
+                {localize('Next')}
+            </Button>
+        </React.Fragment>
+    );
+
+    const EndFooter = (
+        <React.Fragment>
+            <Button secondary large className='wallet-steps__footer-button' onClick={handleClose}>
+                {localize('Back')}
+            </Button>
+            <Button primary large className='wallet-steps__footer-button' disabled={!is_disabled} onClick={handleClose}>
+                {localize('Upgrade to Wallets')}
+            </Button>
+        </React.Fragment>
+    );
+
+    const WalletSteps = [
+        //  Feel free to add components here or anywhere in between ( ˶ˆᗜˆ˵ )
+        {
+            name: 'intro_wallets',
+            component: <WalletsIntro is_eu={is_eu} current_step={0} />,
+            footer: InitialFooter,
+        },
+        {
+            name: 'intro_wallets',
+            component: <WalletsIntro is_eu={is_eu} current_step={1} />,
+        },
+        {
+            name: 'intro_wallets',
+            component: <WalletsIntro is_eu={is_eu} current_step={2} />,
+        },
+        {
+            name: 'ready_to_upgrade',
+            component: <ReadyToUpgradeWallets is_eu={is_eu} toggleCheckbox={toggleCheckbox} />,
+            footer: EndFooter,
+        },
+    ];
+
+    const ModalContent = WalletSteps[current_step]?.component;
+    const ModalFooter = WalletSteps[current_step]?.footer || DefaultFooter;
 
     return (
         <React.Fragment>
@@ -63,32 +115,9 @@ const RealWalletsUpgrade = () => {
                             has_close_icon
                             title=' '
                         >
-                            <Modal.Body>
-                                <StepComponent eu_user={eu_user} current_step={current_step} />
-                            </Modal.Body>
-                            <Modal.Footer has_separator>
-                                <Button
-                                    secondary
-                                    large
-                                    onClick={() => {
-                                        if (current_step === 1) {
-                                            handleClose();
-                                            return;
-                                        }
-                                        handleBack();
-                                    }}
-                                >
-                                    {current_step === 1 ? localize('Maybe later') : localize('Back')}
-                                </Button>
-                                <Button
-                                    primary
-                                    large
-                                    onClick={() => {
-                                        handleNext();
-                                    }}
-                                >
-                                    {localize('Next')}
-                                </Button>
+                            <Modal.Body className='wallet-steps'>{ModalContent}</Modal.Body>
+                            <Modal.Footer className='wallet-steps__footer' has_separator>
+                                {ModalFooter}
                             </Modal.Footer>
                         </Modal>
                     </DesktopWrapper>
@@ -99,34 +128,9 @@ const RealWalletsUpgrade = () => {
                             onClose={handleClose}
                             wrapper_classname='wallet-steps'
                         >
-                            <Modal.Body>
-                                <StepComponent eu_user={eu_user} current_step={current_step} />
-                            </Modal.Body>
+                            <Modal.Body>{ModalContent}</Modal.Body>
                             <Modal.Footer className='wallet-steps__footer' has_separator>
-                                <Button
-                                    secondary
-                                    className='wallet-steps__footer-button'
-                                    large
-                                    onClick={() => {
-                                        if (current_step === 1) {
-                                            handleClose();
-                                            return;
-                                        }
-                                        handleBack();
-                                    }}
-                                >
-                                    {current_step === 1 ? localize('Maybe later') : localize('Back')}
-                                </Button>
-                                <Button
-                                    primary
-                                    className='wallet-steps__footer-button'
-                                    large
-                                    onClick={() => {
-                                        handleNext();
-                                    }}
-                                >
-                                    {localize('Next')}
-                                </Button>
+                                {ModalFooter}
                             </Modal.Footer>
                         </MobileDialog>
                     </MobileWrapper>

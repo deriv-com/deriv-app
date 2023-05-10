@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { isMobile, isDesktop } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import ReadyToUpdateWallets from 'Components/ready-to-update-wallets';
+import ReadyToUpdateWallets from 'Components/modals/real-wallets-upgrade/components/ready-to-update-wallets';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -13,7 +13,7 @@ jest.mock('@deriv/shared', () => ({
 
 export const mockRootStore = mockStore({
     client: { is_eu: false, is_high_risk: false },
-    traders_hub: { is_eu_user: false, show_wallet_consent_popup: true, setShouldShowWalletConsentPopup: jest.fn() },
+    traders_hub: { is_eu_user: false },
 });
 
 describe('<ReadyToUpdateWallets />', () => {

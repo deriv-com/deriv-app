@@ -1,15 +1,15 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { TReadyToUpgradeForm } from 'Types';
 
 type TInformationList = {
     name: string;
-    visiblity: boolean;
-    content: React.ReactElement;
+    visibility: boolean;
+    content: JSX.Element;
 };
 
-type TUpgradeInformationList = TReadyToUpgradeForm & {
+type TUpgradeInformationList = {
+    is_eu: boolean;
     text_info_size: string;
     form_line_height: string;
 };
@@ -21,19 +21,19 @@ const getUpgradeInformationList = ({
 }: TUpgradeInformationList): TInformationList[] => [
     {
         name: 'upgrade_info',
-        visiblity: true,
+        visibility: true,
         content: (
             <Localize i18n_default_text='During the upgrade, deposits, withdrawals, transfers, and adding new accounts will be unavailable.' />
         ),
     },
     {
         name: 'open_positions',
-        visiblity: true,
+        visibility: true,
         content: <Localize i18n_default_text="Your open positions won't be affected and you can continue trading." />,
     },
     {
         name: 'deriv_p2p',
-        visiblity: !is_eu,
+        visibility: !is_eu,
         content: (
             <Localize
                 i18n_default_text='<0>Deriv P2P</0> is unavailable in Wallets at this time.'
@@ -43,7 +43,7 @@ const getUpgradeInformationList = ({
     },
     {
         name: 'payment_agents',
-        visiblity: !is_eu,
+        visibility: !is_eu,
         content: (
             <Localize
                 i18n_default_text="You can use <0>Payment agents'</0> services to deposit by adding a Payment Agent Wallet after the upgrade."

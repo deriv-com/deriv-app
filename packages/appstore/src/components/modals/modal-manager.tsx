@@ -19,7 +19,6 @@ import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import FailedVerificationModal from './failed-veriification-modal';
 import AccountTransferModal from 'Components/account-transfer-modal';
-import ReadyToUpdateWallets from 'Components/ready-to-update-wallets';
 import RealWalletsUpgrade from './real-wallets-upgrade/real-wallets-upgrade';
 
 type TCurrentList = DetailsOfEachMT5Loginid & {
@@ -129,7 +128,6 @@ const ModalManager = () => {
     return (
         <React.Fragment>
             {/* TODO: Once everything is merged place this in main component */}
-            <ReadyToUpdateWallets />
             <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />
             <CFDPasswordModal context={store} platform={platform} />
             <CFDDbviOnBoarding context={store} />

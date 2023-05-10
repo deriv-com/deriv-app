@@ -259,8 +259,6 @@ const mock = (): TStores => {
             is_real: false,
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
-            show_wallet_consent_popup: false,
-            setShouldShowWalletConsentPopup: jest.fn(),
             is_real_wallets_upgrade_on: false,
             toggleWalletsUpgrade: jest.fn(),
         },

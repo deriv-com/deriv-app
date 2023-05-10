@@ -1,19 +1,20 @@
 import React from 'react';
-import { Text, Icon } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Checkbox, Text, Icon, Div100vhContainer } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
-import { TReadyToUpgradeForm } from 'Types';
+import { TReadyToUpgradeWallets } from 'Types';
 import WalletsImage from 'Assets/svgs/wallets';
 import getUpgradeInformationList from 'Constants/upgrade-info-lists-config';
 
-const ReadyToUpgradeForm = ({ is_eu }: TReadyToUpgradeForm) => {
+const ReadyToUpgradeWallets = ({ is_eu, toggleCheckbox }: TReadyToUpgradeWallets) => {
     const text_body_size = isMobile() ? 'xs' : 's';
     const text_info_size = isMobile() ? 'xxs' : 'xs';
     const form_line_height = isMobile() ? 'm' : 'l';
+
     return (
-        <React.Fragment>
-            <WalletsImage image='ready_to_update_wallets_image' className='wallet-wrapper--image' />
-            <div className='wallet-wrapper--text'>
+        <Div100vhContainer className='wallet-steps__content' is_disabled={!isMobile()} height_offset='18.5rem'>
+            <WalletsImage image='ready_to_update_wallets_image' className='wallet-steps__image' />
+            <div className='wallet-steps__text'>
                 <Text size={isMobile() ? 'xsm' : 'm'} align='center' weight='bold' line_height={form_line_height}>
                     <Localize i18n_default_text='Ready to upgrade?' />
                 </Text>
@@ -33,11 +34,11 @@ const ReadyToUpgradeForm = ({ is_eu }: TReadyToUpgradeForm) => {
                     />
                 </Text>
             </div>
-            <div className='wallet-wrapper--info-section'>
+            <div className='wallet-steps__info-section'>
                 {getUpgradeInformationList({ is_eu, text_info_size, form_line_height })
-                    .filter(info => info.visiblity)
+                    .filter(info => info.visibility)
                     .map(({ name, content }) => (
-                        <div className='wallet-wrapper--info-section__text' key={name}>
+                        <div className='wallet-steps__info-section-text' key={name}>
                             <Icon icon='ic-info-blue' />
                             <Text size={text_info_size} line_height={form_line_height}>
                                 {content}
@@ -45,8 +46,13 @@ const ReadyToUpgradeForm = ({ is_eu }: TReadyToUpgradeForm) => {
                         </div>
                     ))}
             </div>
-        </React.Fragment>
+            <Checkbox
+                onChange={toggleCheckbox}
+                className='wallet-steps__checkbox'
+                label={localize('I understand and agree to upgrade to Wallets.')}
+            />
+        </Div100vhContainer>
     );
 };
 
-export default ReadyToUpgradeForm;
+export default ReadyToUpgradeWallets;

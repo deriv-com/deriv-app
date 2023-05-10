@@ -15,7 +15,7 @@ type TCashierWalletModalHeaderProps = {
     is_mobile: boolean;
     landing_company_shortcode: string;
     closeModal: VoidFunction;
-    show_wallet_name: boolean;
+    is_wallet_name_visible: boolean;
 };
 
 const CashierWalletModalHeader = ({
@@ -26,12 +26,12 @@ const CashierWalletModalHeader = ({
     is_demo,
     is_mobile,
     landing_company_shortcode: shortcode,
-    show_wallet_name,
+    is_wallet_name_visible,
 }: TCashierWalletModalHeaderProps) => {
     const header_class_name = 'cashier-wallet-modal__header';
 
     const getBadgeLabel = React.useCallback(() => {
-        if (is_demo) return 'Demo';
+        if (is_demo) return localize('Demo');
         if (['svg', 'malta'].includes(shortcode)) return shortcode.toUpperCase();
         return '';
     }, [is_demo, shortcode]);
@@ -94,18 +94,18 @@ const CashierWalletModalHeader = ({
             {is_demo && <Watermark image={`url(${is_dark ? DemoDark : DemoLight})`} opacity={is_dark ? 0.32 : 0.24} />}
             <div
                 className={classNames(header_class_name, {
-                    [`${header_class_name}--hide-title`]: !show_wallet_name,
+                    [`${header_class_name}--hide-title`]: !is_wallet_name_visible,
                 })}
             >
                 <div className={`${header_class_name}__title-wrapper`}>
-                    {show_wallet_name && (
+                    {is_wallet_name_visible && (
                         <div className={classNames(`${header_class_name}__title`)}>
                             <Text
                                 size={is_mobile ? 'xs' : 's'}
                                 as='span'
                                 className={getStylesByClassName(`${header_class_name}__title-wallet`)}
                             >
-                                {is_demo ? 'Demo' : ''} {currency} {localize('Wallet')}
+                                {is_demo ? localize('Demo') : ''} {currency} {localize('Wallet')}
                             </Text>
                             {is_demo ? (
                                 <Badge type='contained' background_color='blue' label={getBadgeLabel()} />
@@ -123,7 +123,7 @@ const CashierWalletModalHeader = ({
                         {formatMoney(currency, balance, true)} {currency}
                     </Text>
                 </div>
-                {show_wallet_name && (
+                {is_wallet_name_visible && (
                     <div className={classNames(`${header_class_name}__currency-icon`)}>
                         <Icon {...getCurrencyIconProps()} data_testid='dt_currency_icon' />
                     </div>

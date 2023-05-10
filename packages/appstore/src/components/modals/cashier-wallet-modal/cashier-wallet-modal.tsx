@@ -17,7 +17,7 @@ const CashierWalletModal = observer(() => {
 
     const tab_content_ref = React.useRef<HTMLDivElement>(null);
     const [active_tab_index, setActiveTabIndex] = React.useState<number>(0);
-    const [show_wallet_name, setShowWalletName] = React.useState<boolean>(true);
+    const [is_wallet_name_visible, setIsWalletNameVisible] = React.useState<boolean>(true);
 
     const closeModal = () => {
         setIsCashierWalletModalVisible(false);
@@ -29,12 +29,12 @@ const CashierWalletModal = observer(() => {
 
         const handleScroll = (e: Event) => {
             const target = e.target as HTMLDivElement;
-            setShowWalletName(!(target.scrollTop > 0));
+            setIsWalletNameVisible(!(target.scrollTop > 0));
         };
 
         if (is_mobile) {
             el_tab_content?.addEventListener('scroll', handleScroll);
-            setShowWalletName(true);
+            setIsWalletNameVisible(true);
         }
 
         return () => {
@@ -52,7 +52,7 @@ const CashierWalletModal = observer(() => {
                 is_demo={is_demo}
                 is_mobile={is_mobile}
                 landing_company_shortcode={landing_company_shortcode}
-                show_wallet_name={show_wallet_name}
+                is_wallet_name_visible={is_wallet_name_visible}
             />
             <CashierWalletModalBody
                 active_tab_index={active_tab_index}
@@ -60,7 +60,7 @@ const CashierWalletModal = observer(() => {
                 is_demo={is_demo}
                 ref={tab_content_ref}
                 setActiveTabIndex={setActiveTabIndex}
-                show_wallet_name={show_wallet_name}
+                is_wallet_name_visible={is_wallet_name_visible}
                 wallet_type={wallet_type}
             />
         </Modal>

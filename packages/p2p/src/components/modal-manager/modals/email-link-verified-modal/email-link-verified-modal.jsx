@@ -33,7 +33,7 @@ const EmailLinkVerifiedModal = () => {
                     large
                     primary
                     onClick={() => {
-                        hideModal();
+                        hideModal({ should_hide_all_modals: true });
                         order_store.confirmOrder(is_buy_order_for_user);
                     }}
                 >

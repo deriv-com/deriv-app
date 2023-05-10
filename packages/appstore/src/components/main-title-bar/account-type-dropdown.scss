@@ -38,35 +38,32 @@
     &--real,
     &--real:focus,
     &--real:hover {
-        border: 1px solid var(--status-info);
-        width: 87%;
+        border: 1px solid var(--status-success);
+        min-width: 87%;
         & > .dc-text {
-            color: var(--status-info);
+            color: var(--status-success);
         }
     }
 
     &--demo,
     &--demo:focus,
     &--demo:hover {
-        border: 1px solid var(--status-success);
+        border: 1px solid var(--status-info);
         width: 90%;
         & > .dc-text {
-            color: var(--status-success);
-            padding-left: 0.8em;
+            color: var(--status-info);
+            padding-left: 0.65em;
         }
     }
     &__icon {
-        &--real,
-        &--demo {
-            transform: none !important;
-        }
+        transform: none;
         &--real {
-            --fill-color1: var(--status-info) !important;
-            right: 1.8rem;
+            --fill-color1: var(--status-success);
+            right: 0.7rem;
         }
         &--demo {
-            --fill-color1: var(--status-success) !important;
-            right: 1.5rem;
+            --fill-color1: var(--status-info);
+            right: 1.4rem;
         }
     }
 }

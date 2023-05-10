@@ -51,7 +51,7 @@ const AppContent = ({ order_id }) => {
         return <Loading is_fullscreen={false} />;
     }
 
-    if (general_store.should_show_dp2p_blocked || general_store.is_p2p_blocked_for_pa) {
+    if (general_store.should_show_dp2p_blocked) {
         return <Dp2pBlocked />;
     }
 

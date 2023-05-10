@@ -31,17 +31,15 @@ const CashierWalletModalBody = React.forwardRef<HTMLDivElement, TCashierWalletMo
                     setActiveTabIndex(index);
                 }}
             >
-                {getCashierOptions(wallet_type)
-                    .map(option => {
-                        return (
-                            <div key={option.label} icon={option.icon} label={option.label}>
-                                <ThemedScrollbars refSetter={ref} is_bypassed={isDesktop()} is_scrollbar_hidden>
-                                    {option.content}
-                                </ThemedScrollbars>
-                            </div>
-                        );
-                    })
-                    .filter(Boolean)}
+                {getCashierOptions(wallet_type).map(option => {
+                    return (
+                        <div key={option.label} icon={option.icon} label={option.label}>
+                            <ThemedScrollbars refSetter={ref} is_bypassed={isDesktop()} is_scrollbar_hidden>
+                                {option.content}
+                            </ThemedScrollbars>
+                        </div>
+                    );
+                })}
             </Tabs>
         );
     }

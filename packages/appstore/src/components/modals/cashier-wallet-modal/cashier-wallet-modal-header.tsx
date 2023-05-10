@@ -13,7 +13,7 @@ type TCashierWalletModalHeaderProps = {
     is_dark: boolean;
     is_demo: boolean;
     is_mobile: boolean;
-    landing_company_shortcode: 'svg' | 'malta';
+    landing_company_shortcode: string;
     closeModal: VoidFunction;
     show_wallet_name: boolean;
 };

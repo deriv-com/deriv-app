@@ -286,6 +286,7 @@ type TTradersHubStore = {
     };
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
+    is_demo: boolean;
     is_real: boolean;
     selectRegion: (region: string) => void;
     is_real_wallets_upgrade_on: boolean;

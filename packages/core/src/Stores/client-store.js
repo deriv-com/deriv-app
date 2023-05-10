@@ -507,11 +507,11 @@ export default class ClientStore extends BaseStore {
 
     get legal_allowed_currencies() {
         const getDefaultAllowedCurrencies = () => {
-            if (this.landing_companies.gaming_company) {
-                return this.landing_companies.gaming_company.legal_allowed_currencies;
+            if (this.landing_companies?.gaming_company) {
+                return this.landing_companies?.gaming_company?.legal_allowed_currencies;
             }
-            if (this.landing_companies.financial_company) {
-                return this.landing_companies.financial_company.legal_allowed_currencies;
+            if (this.landing_companies?.financial_company) {
+                return this.landing_companies?.financial_company?.legal_allowed_currencies;
             }
             return [];
         };

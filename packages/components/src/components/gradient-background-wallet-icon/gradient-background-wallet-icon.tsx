@@ -3,26 +3,26 @@ import './gradient-background-wallet-icon.scss';
 
 type TGradientBackgroundWalletIcon = {
     blurRadius?: number;
-    color: CSSProperties['backgroundColor'];
-    primary: CSSProperties['background'];
-    secondary: CSSProperties['background'];
+    backgroundColor: CSSProperties['backgroundColor'];
+    primaryColor: CSSProperties['background'];
+    secondaryColor: CSSProperties['background'];
 };
 
 const GradientBackgroundWalletIcon: React.FC<React.PropsWithChildren<TGradientBackgroundWalletIcon>> = ({
     children,
     blurRadius = 48,
-    color,
-    primary,
-    secondary,
+    backgroundColor,
+    primaryColor,
+    secondaryColor,
 }) => (
-    <div className='gradient-background-wallet-icon' style={{ backgroundColor: color }}>
+    <div className='gradient-background-wallet-icon' style={{ backgroundColor }}>
         <div
             className='gradient-background-wallet-icon__primary'
-            style={{ filter: `blur(${blurRadius}px)`, background: primary }}
+            style={{ filter: `blur(${blurRadius}px)`, background: primaryColor }}
         />
         <div
             className='gradient-background-wallet-icon__secondary'
-            style={{ filter: `blur(${blurRadius}px)`, background: secondary }}
+            style={{ filter: `blur(${blurRadius}px)`, background: secondaryColor }}
         />
         {children && <div className='gradient-background-wallet-icon__children'>{children}</div>}
     </div>

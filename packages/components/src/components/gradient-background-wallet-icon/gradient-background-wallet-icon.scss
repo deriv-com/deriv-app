@@ -9,17 +9,17 @@
     gap: 50%;
     overflow: hidden;
 
-    &__primary,
-    &__secondary {
-        aspect-ratio: 1;
-        z-index: 0;
-    }
-
     &__primary {
         height: 100%;
+        aspect-ratio: 1;
     }
 
     &__secondary {
         height: 120%;
+        aspect-ratio: 1;
+    }
+
+    &__children {
+        position: absolute;
     }
 }

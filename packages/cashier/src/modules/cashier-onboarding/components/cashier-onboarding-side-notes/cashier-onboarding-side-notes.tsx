@@ -25,7 +25,9 @@ const CashierOnboardingSideNotes: React.FC<TProps> = observer(({ setSideNotes })
 
     if (!is_mobile) return null;
 
-    return is_crypto() ? <CashierOnboardingSideNoteCrypto /> : <CashierOnboardingSideNoteFiat />;
+    if (is_crypto()) return <CashierOnboardingSideNoteCrypto />;
+
+    return <CashierOnboardingSideNoteFiat />;
 });
 
 export default CashierOnboardingSideNotes;

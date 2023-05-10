@@ -35,6 +35,7 @@
 
     .dc-input__wrapper {
         max-width: 67.2rem; // TODO: Kill these fixed widths.
+        margin-top: 2.1rem;
 
         @include mobile {
             max-width: 90vw;
@@ -93,6 +94,7 @@
             &--text {
                 display: flex;
                 flex-direction: column;
+                margin-top: 3.2rem;
                 padding-bottom: 1rem;
             }
         }
@@ -118,7 +120,7 @@
         &-summary {
             color: var(--text-less-prominent);
             font-size: 1.4rem;
-            margin-bottom: -1.6rem;
+            margin-bottom: 0.6rem;
 
             @include mobile {
                 margin: 0.6rem 0;
@@ -137,6 +139,15 @@
                 @include mobile {
                     width: 90vw;
                     margin: 0 1.6rem;
+
+                    .dc-input {
+                        &__wrapper {
+                            margin-top: 2.1rem;
+                        }
+                        &__hint {
+                            margin-top: 0;
+                        }
+                    }
                 }
             }
 
@@ -152,23 +163,46 @@
             justify-content: space-between;
             width: 67.2rem;
 
+            .dc-input {
+                margin-bottom: 2.1rem;
+                margin-top: 2.1rem;
+
+                &__container {
+                    padding: 0 1rem;
+                }
+                &--hint {
+                    margin-bottom: 0;
+                }
+                &__wrapper {
+                    margin-top: 0;
+                }
+            }
+
             @include mobile {
                 flex-direction: column;
                 height: unset;
                 width: unset;
+
+                .dc-input {
+                    &__wrapper {
+                        margin-bottom: 5rem;
+                    }
+                }
             }
         }
         &-field {
             height: 4rem;
             margin-bottom: 0;
             margin-left: 0;
-            margin-top: 4.3rem;
             width: 32.4rem;
 
-            @include mobile {
-                margin: 2.1rem 0;
-            }
+            &--contact-details {
+                margin-bottom: 5.9rem;
 
+                @include mobile {
+                    margin-bottom: 3.7rem;
+                }
+            }
             &--single {
                 width: 18.9rem;
             }
@@ -178,19 +212,26 @@
                 width: 67.2rem;
 
                 @include mobile {
+                    height: 9.8rem;
                     width: 90vw;
                 }
 
-                .dc-input__hint {
-                    top: 9.7rem;
-                }
-                .dc-input__counter {
-                    top: 9.7rem;
-                    right: 0rem;
+                .dc-input {
+                    &__hint {
+                        top: 9.7rem;
+                    }
+                    &___counter {
+                        top: 9.7rem;
+                        right: 0rem;
 
-                    @include mobile {
-                        display: flex;
-                        right: 0;
+                        @include mobile {
+                            display: flex;
+                            right: 0;
+                        }
+                    }
+                    &__textarea {
+                        padding-top: 1rem;
+                        padding-left: 0;
                     }
                 }
             }
@@ -612,7 +653,7 @@
     }
 
     &--border {
-        .dc-input {
+        .dc-input__container {
             border: 1px dashed var(--border-normal);
         }
     }

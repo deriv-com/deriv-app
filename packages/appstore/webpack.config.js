@@ -26,7 +26,7 @@ const svg_loaders = [
                     { removeUselessStrokeAndFill: false },
                     { removeUknownsAndDefaults: false },
                 ],
-                floatPrecision: 2,
+                floatPrecision: 3,
             },
         },
     },

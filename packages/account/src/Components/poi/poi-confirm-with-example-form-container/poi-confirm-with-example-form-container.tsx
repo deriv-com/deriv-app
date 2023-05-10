@@ -79,7 +79,12 @@ const PoiConfirmWithExampleFormContainer = ({
             setRestState({ ...rest_state, ...response.get_settings });
             setChecked(true);
             setIsLoading(false);
-            onFormConfirm?.();
+
+            if (onFormConfirm) {
+                setTimeout(() => {
+                    onFormConfirm();
+                }, 500);
+            }
         }
     };
 

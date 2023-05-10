@@ -12,6 +12,7 @@ import SummaryCardStore from './summary-card-store';
 import ToolbarStore from './toolbar-store';
 import TransactionsStore from './transactions-store';
 import QuickStrategyStore from './quick-strategy-store';
+import BlocksStore from './blocks-store';
 import RoutePromptDialogStore from './route-prompt-dialog-store';
 import DataCollectionStore from './data-collection-store';
 import BlocklyStore from './blockly-store';
@@ -40,6 +41,7 @@ export default class RootStore {
     public toolbar: ToolbarStore;
     public toolbox: ToolboxStore;
     public quick_strategy: QuickStrategyStore;
+    public blocks: BlocksStore;
     public route_prompt_dialog: RoutePromptDialogStore;
     public self_exclusion: SelfExclusionStore;
     public dashboard: DashboardStore;
@@ -66,6 +68,7 @@ export default class RootStore {
         this.toolbar = new ToolbarStore(this);
         this.toolbox = new ToolboxStore(this, core);
         this.quick_strategy = new QuickStrategyStore(this);
+        this.blocks = new BlocksStore(this);
         this.route_prompt_dialog = new RoutePromptDialogStore(this, core);
         this.self_exclusion = new SelfExclusionStore(this, core);
         this.dashboard = new DashboardStore(this);

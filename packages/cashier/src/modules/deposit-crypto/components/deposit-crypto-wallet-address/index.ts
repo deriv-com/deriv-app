@@ -1,3 +1,1 @@
-import DepositCryptoWalletAddress from './deposit-crypto-wallet-address';
-
-export { DepositCryptoWalletAddress };
+export { default as DepositCryptoWalletAddress } from './deposit-crypto-wallet-address';

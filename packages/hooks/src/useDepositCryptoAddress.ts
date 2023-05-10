@@ -1,12 +1,22 @@
-import { useFetch } from '@deriv/api';
+import { useCallback, useEffect } from 'react';
+import { useRequest } from '@deriv/api';
 
 const useDepositCryptoAddress = () => {
-    const { data, ...rest } = useFetch('cashier', { payload: { cashier: 'deposit', provider: 'crypto', type: 'api' } });
-
+    const { data, mutate, ...rest } = useRequest('cashier');
     const deposit_address = typeof data !== 'string' ? data?.deposit?.address : undefined;
+
+    const send = useCallback(
+        () => mutate([{ payload: { cashier: 'deposit', provider: 'crypto', type: 'api' } }]),
+        [mutate]
+    );
+
+    useEffect(() => {
+        send();
+    }, [send]);
 
     return {
         ...rest,
+        resend: send,
         data: deposit_address,
     };
 };

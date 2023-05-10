@@ -1,40 +1,27 @@
 .deposit-crypto-wallet-address {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    &__address-container {
+        display: flex;
+    }
 
     &__hash-container {
-        display: flex;
-        padding: 1rem 1.3rem;
-        margin-top: 1rem;
-        margin-bottom: 2rem;
-        border-radius: $BORDER_RADIUS;
-        background-color: var(--general-section-1);
-        line-height: 0;
-        max-width: 100%;
-
-        .dc-popover__wrapper {
-            margin: 0.3rem 0.3rem 0.3rem 0.6rem;
-
-            .dc-clipboard {
-                width: 1.2rem;
-                height: 1.4rem;
-            }
-        }
+        padding: 0.8rem 1rem;
+        border: 1px solid $color-grey-4;
+        border-radius: $BORDER_RADIUS 0 0 $BORDER_RADIUS;
     }
 
-    &__error {
+    &__action-container {
+        border-width: 1px 1px 1px 0px;
+        border-style: solid;
+        border-color: $color-grey-4;
+        border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
+        padding: 1rem;
+    }
+
+    &__error-container {
         display: flex;
-        justify-content: space-between;
         gap: 0.3rem;
-        width: auto;
         padding: 0.8rem;
-        margin: 2.4rem 0;
         border-radius: $BORDER_RADIUS;
         background-color: $alpha-color-yellow-1;
-    }
-
-    &__refresh-button {
-        margin-bottom: 2rem;
     }
 }

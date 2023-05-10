@@ -9,46 +9,43 @@ import './deposit-crypto-wallet-address.scss';
 const DepositCryptoWalletAddress: React.FC = observer(() => {
     const { ui } = useStore();
     const { is_mobile } = ui;
-    const { data: deposit_crypto_address, isLoading, error, refetch } = useDepositCryptoAddress();
+    const { data: deposit_crypto_address, isLoading, error, resend } = useDepositCryptoAddress();
 
     if (isLoading) return <Loading is_fullscreen={false} />;
 
     if (error) {
         return (
-            <div className='deposit-crypto-wallet-address'>
-                <Text as='p' align='center' size='xs' className='deposit-crypto-wallet-address__error'>
+            <>
+                <Text align='center' size='xs' className='deposit-crypto-wallet-address__error-container'>
                     <Icon width={30} height={20} icon='IcAlertWarning' />
                     {localize(
                         "Unfortunately, we couldn't get the address since our server was down. Please click Refresh to reload the address or try again later."
                     )}
                 </Text>
-                <Button
-                    className='deposit-crypto-wallet-address__refresh-button'
-                    text={localize('Refresh')}
-                    onClick={() => refetch()}
-                    secondary
-                    small
-                />
-            </div>
+                <Button text={localize('Refresh')} onClick={() => resend()} secondary small />
+            </>
         );
     }
 
     return (
-        <div className='deposit-crypto-wallet-address'>
-            <QRCode value={deposit_crypto_address || ''} size={160} includeMargin />
-            <div className='deposit-crypto-wallet-address__hash-container'>
-                <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold' align='center'>
-                    {deposit_crypto_address}
-                </Text>
-                <Clipboard
-                    icon='IcCashierClipboard'
-                    text_copy={deposit_crypto_address || ''}
-                    info_message={is_mobile ? undefined : localize('copy')}
-                    success_message={localize('copied!')}
-                    popoverAlignment={is_mobile ? 'left' : 'bottom'}
-                />
+        <>
+            <QRCode value={deposit_crypto_address || ''} size={160} />
+            <div className='deposit-crypto-wallet-address__address-container'>
+                <div className='deposit-crypto-wallet-address__hash-container'>
+                    <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
+                        {deposit_crypto_address}
+                    </Text>
+                </div>
+                <div className='deposit-crypto-wallet-address__action-container'>
+                    <Clipboard
+                        text_copy={deposit_crypto_address || ''}
+                        info_message={is_mobile ? undefined : localize('copy')}
+                        success_message={localize('copied!')}
+                        popoverAlignment={is_mobile ? 'left' : 'bottom'}
+                    />
+                </div>
             </div>
-        </div>
+        </>
     );
 });
 

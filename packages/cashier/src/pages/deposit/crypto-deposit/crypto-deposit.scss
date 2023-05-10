@@ -25,22 +25,22 @@
             flex-direction: column;
             align-items: center;
 
-            &__text {
-                display: flex;
-                justify-content: space-between;
-                width: auto;
-                padding: 0.8rem;
-                margin: 2.4rem 0;
-                border-radius: $BORDER_RADIUS;
-                background-color: $alpha-color-yellow-1;
-
-                svg {
-                    margin-right: 0.3rem;
-                }
-            }
             .dc-btn {
                 max-width: 6rem;
                 padding: 0.3rem 0.8rem;
+            }
+        }
+
+        .crypto-third-party-alert {
+            background-color: $color-yellow;
+
+            .dc-text {
+                background-color: $color-yellow;
+                color: $color-black-1;
+            }
+
+            .dc-icon {
+                --fill-color1: $color-black-1;
             }
         }
     }

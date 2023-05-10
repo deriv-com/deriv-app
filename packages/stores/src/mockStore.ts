@@ -1,20 +1,11 @@
 import merge from 'lodash.merge';
 import { TStores } from '../types';
 
-const mock = (): TStores => {
+const mock = (): TStores & { is_mock: boolean } => {
     return {
+        is_mock: true,
         client: {
-            accounts: {
-                loginid: {
-                    account_type: 'trading',
-                    created_at: 1674633682,
-                    currency: 'USD',
-                    is_disabled: 0,
-                    is_virtual: 0,
-                    excluded_until: 0,
-                    landing_company_name: 'svg',
-                },
-            },
+            accounts: {},
             active_account_landing_company: '',
             account_limits: {
                 daily_transfers: {
@@ -198,6 +189,7 @@ const mock = (): TStores => {
             setTwoFAStatus: jest.fn(),
             has_changed_two_fa: false,
             setTwoFAChangedStatus: jest.fn(),
+            real_account_creation_unlock_date: 0,
         },
         common: {
             error: {
@@ -253,6 +245,7 @@ const mock = (): TStores => {
             is_ready_to_deposit_modal_visible: false,
             is_need_real_account_for_cashier_modal_visible: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
+            setShouldShowCooldownModal: jest.fn(),
         },
         traders_hub: {
             closeModal: jest.fn(),
@@ -272,6 +265,7 @@ const mock = (): TStores => {
             no_CR_account: false,
             no_MF_account: false,
             setTogglePlatformType: jest.fn(),
+            is_demo: false,
         },
         menu: {
             attach: jest.fn(),

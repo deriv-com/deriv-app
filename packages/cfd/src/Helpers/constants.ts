@@ -106,7 +106,7 @@ const getDXTradeWebTerminalLink = (category: string, token?: string) => {
 };
 
 const getCTraderWebTerminalLink = (category: string, token?: string) => {
-    let url = category === 'real' ? CTRADER_URL : CTRADER_URL;
+    let url = CTRADER_URL;
 
     if (token) {
         url += `?token=${token}`;

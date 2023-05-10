@@ -1,10 +1,11 @@
 import classNames from 'classnames';
 import React from 'react';
 import Text from '../text';
+import { TGetCardLables } from '../types';
 
 type TProgressTicksProps = {
-    current_tick: number;
-    getCardLabels: () => { [key: string]: string }; // TODO Use the one from shared workspace after migration
+    current_tick: number | null;
+    getCardLabels: TGetCardLables;
     ticks_count: number;
 };
 
@@ -20,7 +21,7 @@ const ProgressTicks = ({ current_tick, getCardLabels, ticks_count }: TProgressTi
                     <div
                         key={idx}
                         className={classNames('dc-progress-slider__ticks-step', {
-                            'dc-progress-slider__ticks-step--marked': idx + 1 <= current_tick,
+                            'dc-progress-slider__ticks-step--marked': idx + 1 <= Number(current_tick),
                         })}
                     />
                 ))}

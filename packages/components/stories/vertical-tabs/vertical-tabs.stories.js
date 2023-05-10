@@ -54,7 +54,7 @@ const action_bar_items = [
 const list = [
     {
         default: true,
-        icon: 'IcBrandDtrader',
+        icon: 'IcRebrandingDerivTrader',
         label: 'Option 1',
         value: () => (
             <TextComponent>
@@ -68,7 +68,7 @@ const list = [
     },
     {
         default: false,
-        icon: 'IcBrandDbot',
+        icon: 'IcRebrandingDerivBot',
         label: 'Option 2',
         value: () => (
             <TextComponent>
@@ -99,7 +99,6 @@ stories.add(
                     <VerticalTab
                         header_title='Header'
                         action_bar={action_bar_items}
-                        alignment='center'
                         current_path='/'
                         is_routed={false}
                         is_full_width={boolean('full screen', true)}

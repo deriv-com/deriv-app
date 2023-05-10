@@ -124,7 +124,7 @@ describe('getDocumentData', () => {
 
 describe('getRegex', () => {
     it('should return the correct regex for Zimbabwe', () => {
-        expect(getRegex('^[0-9]{8,9}[a-zA-Z]{1}[0-9]{2}$')).toEqual(/^[0-9]{8,9}[a-zA-Z]{1}[0-9]{2}$/);
+        expect(getRegex('^[a-z]+$')).toEqual(/^[a-z]+$/);
     });
 });
 

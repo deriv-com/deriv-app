@@ -13,10 +13,10 @@ const TransferAmountInput = ({ className, currency, disabled = false, initialVal
     const [value, setValue] = useState(0);
 
     return (
-        <div>
+        <div className='transfer-amount-input-wrapper'>
             <span>{label}</span>
             <Input
-                value={value.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                className='transfer-amount-input'
                 disabled={disabled}
                 onChange={e => {
                     let input_value = e.target.value;
@@ -25,6 +25,7 @@ const TransferAmountInput = ({ className, currency, disabled = false, initialVal
                 }}
                 type={'text'}
                 placeholder={`${value.toLocaleString('en-US', { minimumFractionDigits: 2 })} USD`}
+                value={value.toLocaleString('en-US', { minimumFractionDigits: 2 })}
             />
         </div>
     );

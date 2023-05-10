@@ -1,4 +1,20 @@
 .transfer-amount-input-wrapper {
     display: flex;
     flex-direction: column;
+
+    span {
+        font-size: 14px;
+        line-height: 20px;
+    }
+}
+
+.transfer-amount-input {
+    border: none;
+    line-height: 30px;
+
+    input {
+        font-size: 20px;
+        font-weight: 700;
+        padding: 0;
+    }
 }

@@ -29,7 +29,7 @@ const DepositCryptoWalletAddress: React.FC = observer(() => {
 
     return (
         <>
-            <QRCode value={deposit_crypto_address || ''} size={160} />
+            <QRCode value={deposit_crypto_address || ''} size={is_mobile ? 128 : 160} />
             <div className='deposit-crypto-wallet-address__address-container'>
                 <div className='deposit-crypto-wallet-address__hash-container'>
                     <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>

@@ -1,10 +1,10 @@
 import React from 'react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
-import DepositCryptoTryFiatOnRamp from '../deposit-crypto-try-fiat-onramp';
-import { Router } from 'react-router';
-import { createBrowserHistory } from 'history';
 import userEvent from '@testing-library/user-event';
+import { createBrowserHistory } from 'history';
+import { Router } from 'react-router';
+import DepositCryptoTryFiatOnRamp from '../deposit-crypto-try-fiat-onramp';
 
 describe('DepositCryptoTryFiatOnRamp', () => {
     test('should render correctly', () => {

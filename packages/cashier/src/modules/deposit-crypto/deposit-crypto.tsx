@@ -2,7 +2,12 @@ import React, { useEffect } from 'react';
 import { observer } from '@deriv/stores';
 import { PageContainer } from '../../components/page-container';
 import { useCashierStore } from '../../stores/useCashierStores';
-import { DepositCryptoCurrencyDetails, DepositCryptoTryFiatOnRamp, DepositCryptoWalletAddress } from './components';
+import {
+    DepositCryptoCurrencyDetails,
+    DepositCryptoDisclaimers,
+    DepositCryptoTryFiatOnRamp,
+    DepositCryptoWalletAddress,
+} from './components';
 import './deposit-crypto.scss';
 
 const DepositCrypto: React.FC = observer(() => {
@@ -20,6 +25,7 @@ const DepositCrypto: React.FC = observer(() => {
             <div className='deposit-crypto'>
                 <DepositCryptoCurrencyDetails />
                 <DepositCryptoWalletAddress />
+                <DepositCryptoDisclaimers />
                 <div className='deposit-crypto__divider' />
                 <DepositCryptoTryFiatOnRamp />
                 {/* {is_mobile && <RecentTransaction />} */}

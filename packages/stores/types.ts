@@ -130,7 +130,7 @@ type TMt5StatusServer = Record<'demo' | 'real', TMt5StatusServerType[]>;
 type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
 
 type TClientStore = {
-    accounts: { [k: string]: TAccount };
+    accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
     account_limits: {
@@ -274,7 +274,6 @@ type TClientStore = {
     has_account_error_in_mt5_demo_list: boolean;
     has_account_error_in_dxtrade_real_list: boolean;
     has_account_error_in_dxtrade_demo_list: boolean;
-    real_account_creation_unlock_date: string;
     is_fully_authenticated: boolean;
     states_list: StatesList;
     fetchStatesList: () => Promise<void>;

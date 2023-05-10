@@ -112,9 +112,6 @@
         &-content {
             padding: 0 1.9rem 0 2.4rem;
             margin-bottom: 12rem;
-            @include mobile {
-                padding-bottom: 4rem;
-            }
 
             &--active-keyboard {
                 margin-bottom: 12rem;
@@ -137,8 +134,7 @@
             }
             @include mobile {
                 position: fixed;
-                bottom: 2.6rem;
-                padding: 1rem 2.4rem 8rem;
+                padding: 1rem 2.4rem;
             }
         }
         .dc-autocomplete {

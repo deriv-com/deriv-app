@@ -233,15 +233,19 @@ describe('<CFDPasswordModal/>', () => {
 
     it('should display error message when password contain non-english characters', async () => {
         validPassword.mockReturnValue(false);
-        const user_input = 'demo@deriv.com';
+
+        const store = mockStore(mockRootStore);
+
+        store.client.account_status = { status: [], category: 'Real' };
+        store.client.email = 'demo@deriv.com';
+
         render(
             <Router history={history}>
-                <CFDPasswordModal
-                    {...mock_props}
-                    account_status={{ status: [], category: 'Real' }}
-                    email={user_input}
-                />
-            </Router>
+                <CFDPasswordModal {...mock_props} />
+            </Router>,
+            {
+                wrapper: ({ children }) => <CFDProviders store={store}>{children}</CFDProviders>,
+            }
         );
         const ele_password_input = await screen.findByTestId('dt_mt5_password');
         fireEvent.change(ele_password_input, { target: { value: 'Passwordååøø' } });

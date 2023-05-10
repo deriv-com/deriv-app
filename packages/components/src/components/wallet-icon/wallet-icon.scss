@@ -1,10 +1,9 @@
 .wallet-icon {
-    $parent: &;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0.4rem;
+    border-radius: $BORDER_RADIUS;
     overflow: hidden;
 
     &__background {

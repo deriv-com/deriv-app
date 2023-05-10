@@ -2,15 +2,13 @@ import React, { CSSProperties } from 'react';
 import Icon from '../icon';
 import { GradientBackgroundTwoPoint } from '../gradient-background-two-point';
 import './wallet-icon.scss';
-import classNames from 'classnames';
 
 type TWalletIcon = {
     icon: string;
     iconSize: number | string;
     primaryColor: CSSProperties['backgroundColor'];
     secondaryColor: CSSProperties['backgroundColor'];
-    rounded?: string;
-    size: 'small' | 'medium' | 'large';
+    size?: 'small' | 'medium' | 'large';
 };
 
 const getBlurRadius = (size: string) => {
@@ -20,7 +18,7 @@ const getBlurRadius = (size: string) => {
     return 48;
 };
 
-const WalletIcon = ({ icon, iconSize = 24, primaryColor, secondaryColor, rounded, size = 'medium' }: TWalletIcon) => {
+const WalletIcon = ({ icon, iconSize = 24, primaryColor, secondaryColor, size = 'medium' }: TWalletIcon) => {
     return (
         <div className={`wallet-icon wallet-icon--${size}`}>
             <div className='wallet-icon__background'>
@@ -31,13 +29,7 @@ const WalletIcon = ({ icon, iconSize = 24, primaryColor, secondaryColor, rounded
                     secondaryColor={secondaryColor}
                 />
             </div>
-            <Icon
-                icon={icon}
-                size={iconSize}
-                className={classNames('wallet-icon__icon', {
-                    'wallet-icon__icon--rounded': rounded,
-                })}
-            />
+            <Icon icon={icon} size={iconSize} className='wallet-icon__icon' />
         </div>
     );
 };

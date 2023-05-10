@@ -5,12 +5,19 @@ import React from 'react';
 
 type TUserGuide = {
     setActiveTab: (param: number) => void;
+    setActiveTabTutorial: (active_tab_tutorials: number) => void;
 };
 
-const UserGuide = ({ setActiveTab }: TUserGuide) => {
+const UserGuide = ({ setActiveTab, setActiveTabTutorial }: TUserGuide) => {
     return (
         <div className='tab__dashboard__home__retrigger'>
-            <button data-testid='btn-user-guide' onClick={() => setActiveTab(DBOT_TABS.TUTORIAL)}>
+            <button
+                data-testid='btn-user-guide'
+                onClick={() => {
+                    setActiveTab(DBOT_TABS.TUTORIAL);
+                    setActiveTabTutorial(0);
+                }}
+            >
                 <Icon
                     className='tab__dashboard__home__retrigger__icon'
                     width='2.4rem'

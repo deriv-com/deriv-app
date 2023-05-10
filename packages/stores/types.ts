@@ -1,6 +1,7 @@
 import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
 import { ExchangeRatesStore } from './src/stores';
+import { TLocationList } from '../shared/src/utils/location';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 type TCurrencyConfig = {
@@ -193,6 +194,7 @@ type TClientStore = {
     switched: boolean;
     switch_broadcast: boolean;
     switchEndSignal: () => void;
+    states_list: TLocationList[];
     verification_code: {
         payment_agent_withdraw: string;
         payment_withdraw: string;
@@ -204,6 +206,7 @@ type TClientStore = {
         trading_platform_mt5_password_reset: string;
     };
     email: string;
+    fetchStatesList: () => Promise<unknown>;
     setVerificationCode: (code: string, action: string) => void;
     upgradeable_currencies: TCurrencyConfig[];
     updateAccountStatus: () => Promise<void>;

@@ -181,6 +181,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 trading_platform_mt5_password_reset: '',
             },
             email: '',
+            fetchStatesList: jest.fn(() => Promise.resolve([])),
             setVerificationCode: jest.fn(),
             updateAccountStatus: jest.fn(),
             is_authentication_needed: false,
@@ -212,6 +213,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_changed_two_fa: false,
             setTwoFAChangedStatus: jest.fn(),
             upgradeable_currencies: [],
+            states_list: [],
             real_account_creation_unlock_date: 0,
         },
         common: {

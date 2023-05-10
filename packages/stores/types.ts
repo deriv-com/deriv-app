@@ -116,7 +116,7 @@ type TNotification =
 type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
 
 type TClientStore = {
-    accounts: { [k: string]: TAccount };
+    accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
     account_limits: {
@@ -222,6 +222,7 @@ type TClientStore = {
     setTwoFAStatus: (status: boolean) => void;
     has_changed_two_fa: boolean;
     setTwoFAChangedStatus: (status: boolean) => void;
+    real_account_creation_unlock_date: number;
 };
 
 type TCommonStoreError = {
@@ -250,6 +251,7 @@ type TCommonStore = {
     current_language: string;
     is_language_changing: boolean;
     network_status: { class: string; tooltip: string };
+    getExchangeRate: (from_currency: string, to_currency: string) => Promise<number>;
 };
 
 type TUiStore = {
@@ -283,6 +285,7 @@ type TUiStore = {
     is_ready_to_deposit_modal_visible: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
+    setShouldShowCooldownModal: (value: boolean) => void;
 };
 
 type TMenuStore = {
@@ -322,6 +325,22 @@ type TTradersHubStore = {
     setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    platform_real_balance: {
+        currency: string;
+        balance: number;
+    };
+    cfd_demo_balance: {
+        currency: string;
+        balance: number;
+    };
+    platform_demo_balance: {
+        currency: string;
+        balance: number;
+    };
+    cfd_real_balance: {
+        currency: string;
+        balance: number;
+    };
     financial_restricted_countries: boolean;
     selected_account_type: string;
     no_CR_account: boolean;
@@ -346,6 +365,7 @@ type TRudderstackStore = {
     pageView: () => void;
     reset: () => void;
     track: (event_name: string, options: string) => void;
+    is_demo: boolean;
 };
 
 /**

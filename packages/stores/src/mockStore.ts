@@ -1,20 +1,11 @@
 import merge from 'lodash.merge';
 import { TStores } from '../types';
 
-const mock = (): TStores => {
+const mock = (): TStores & { is_mock: boolean } => {
     return {
+        is_mock: true,
         client: {
-            accounts: {
-                loginid: {
-                    account_type: 'trading',
-                    created_at: 1674633682,
-                    currency: 'USD',
-                    is_disabled: 0,
-                    is_virtual: 0,
-                    excluded_until: 0,
-                    landing_company_name: 'svg',
-                },
-            },
+            accounts: {},
             active_account_landing_company: '',
             trading_platform_available_accounts: [],
             account_limits: {
@@ -224,6 +215,7 @@ const mock = (): TStores => {
             current_language: 'EN',
             is_network_online: false,
             is_language_changing: false,
+            getExchangeRate: jest.fn(),
         },
         ui: {
             app_contents_scroll_ref: {
@@ -270,6 +262,22 @@ const mock = (): TStores => {
             is_real: false,
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
+            platform_real_balance: {
+                currency: '',
+                balance: 0,
+            },
+            cfd_demo_balance: {
+                currency: '',
+                balance: 0,
+            },
+            platform_demo_balance: {
+                currency: '',
+                balance: 0,
+            },
+            cfd_real_balance: {
+                currency: '',
+                balance: 0,
+            },
             financial_restricted_countries: false,
             selected_account_type: 'real',
             no_CR_account: false,

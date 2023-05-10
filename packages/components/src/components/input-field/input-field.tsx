@@ -1,5 +1,5 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import { isCryptocurrency, getCurrencyDisplayCode } from '@deriv/shared';
 import IncrementButtons from './increment-buttons';
 import Input from './input';
@@ -46,9 +46,9 @@ type TInputFieldProps = {
     is_incrementable_on_long_press?: boolean;
     is_incrementable: boolean;
     is_negative_disabled: boolean;
-    is_read_only: boolean;
-    is_signed: boolean;
-    is_unit_at_right: boolean;
+    is_read_only?: boolean;
+    is_signed?: boolean;
+    is_unit_at_right?: boolean;
     label?: string;
     max_length: number;
     max_value?: number;

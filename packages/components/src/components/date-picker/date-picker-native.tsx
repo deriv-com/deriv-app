@@ -1,5 +1,5 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import { toMoment } from '@deriv/shared';
 import Icon from '../icon';
 import Text from '../text';
@@ -97,7 +97,11 @@ const Native = ({
                     {label || (!value && placeholder)}
                 </label>
 
-                <Icon icon='IcCalendar' className='dc-datepicker__calendar-icon' color={disabled && 'disabled'} />
+                <Icon
+                    icon='IcCalendar'
+                    className='dc-datepicker__calendar-icon'
+                    color={disabled ? 'disabled' : undefined}
+                />
 
                 <input
                     ref={input_ref}

@@ -1,5 +1,5 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Calendar from '../calendar';
@@ -62,7 +62,7 @@ const DatePickerCalendar = React.forwardRef<HTMLDivElement, TDatePickerCalendarP
             </CSSTransition>
         );
 
-        useBlockScroll(portal_id && is_datepicker_visible ? parent_ref : null);
+        useBlockScroll(portal_id && is_datepicker_visible ? parent_ref : undefined);
 
         if (portal_id) {
             const portal = document.getElementById(portal_id);

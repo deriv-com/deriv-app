@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { isMobile } from '@deriv/shared';
 import Dropdown from '../dropdown/dropdown';
 import SelectNative from '../select-native/select-native';
@@ -34,7 +34,7 @@ const FilterDropdown = ({
 }: TFilterDropdown) => {
     const [selected_filter, setSelectedFilter] = React.useState(initial_selected_filter ?? filter_list?.[0]?.value);
 
-    const onChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const onChange = (event: { target: { name: string; value: string } }) => {
         setSelectedFilter(event.target.value);
 
         if (typeof handleFilterChange === 'function') {

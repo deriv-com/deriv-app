@@ -62,6 +62,30 @@ const isLanguageAvailable = (lang: string) => {
 
 export const getAllLanguages = () => ALL_LANGUAGES;
 
+// export const getInitialLanguage = () => {
+//     const url_params = new URLSearchParams(window.location.search);
+//     const query_lang = url_params.get('lang');
+//     const local_storage_language = localStorage.getItem(LANGUAGE_KEY);
+
+//     if (query_lang) {
+//         const query_lang_uppercase = query_lang.toUpperCase();
+//         const valid_country_code_regex = /^[A-Z]{2}$/;
+//         if (valid_country_code_regex.test(query_lang_uppercase)) {
+//             localStorage.setItem(LANGUAGE_KEY, query_lang_uppercase);
+//             return encodeURIComponent(query_lang_uppercase);
+//         }
+//     }
+
+//     if (local_storage_language) {
+//         const local_storage_language_uppercase = local_storage_language.toUpperCase();
+//         if (isLanguageAvailable(local_storage_language_uppercase)) {
+//             return encodeURIComponent(local_storage_language_uppercase);
+//         }
+//     }
+
+//     return encodeURIComponent(DEFAULT_LANGUAGE);
+// };
+
 export const getInitialLanguage = () => {
     const url_params = new URLSearchParams(window.location.search);
     const query_lang = url_params.get('lang');
@@ -69,21 +93,19 @@ export const getInitialLanguage = () => {
 
     if (query_lang) {
         const query_lang_uppercase = query_lang.toUpperCase();
-        const valid_country_code_regex = /^[A-Z]{2}$/;
-        if (valid_country_code_regex.test(query_lang_uppercase)) {
+        if (isLanguageAvailable(query_lang_uppercase)) {
             localStorage.setItem(LANGUAGE_KEY, query_lang_uppercase);
             return encodeURIComponent(query_lang_uppercase);
         }
     }
 
     if (local_storage_language) {
-        const local_storage_language_uppercase = local_storage_language.toUpperCase();
-        if (isLanguageAvailable(local_storage_language_uppercase)) {
-            return encodeURIComponent(local_storage_language_uppercase);
+        if (isLanguageAvailable(local_storage_language)) {
+            return local_storage_language;
         }
     }
 
-    return encodeURIComponent(DEFAULT_LANGUAGE);
+    return DEFAULT_LANGUAGE;
 };
 
 const loadLanguageJson = async (lang: string) => {

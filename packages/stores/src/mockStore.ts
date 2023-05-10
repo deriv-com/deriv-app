@@ -199,6 +199,7 @@ const mock = (): TStores => {
             setTwoFAStatus: jest.fn(),
             has_changed_two_fa: false,
             setTwoFAChangedStatus: jest.fn(),
+            real_account_creation_unlock_date: 0,
         },
         common: {
             error: {
@@ -256,6 +257,7 @@ const mock = (): TStores => {
             toggleNeedRealAccountForCashierModal: jest.fn(),
             populateHeaderExtensions: jest.fn(),
             populateSettingsExtensions: jest.fn(),
+            setShouldShowCooldownModal: jest.fn(),
         },
         traders_hub: {
             closeModal: jest.fn(),

@@ -384,6 +384,11 @@ type TNotificationStore = {
     setP2PRedirectTo: () => void;
 };
 
+type TBalance = {
+    currency: string;
+    balance: number;
+};
+
 type TTradersHubStore = {
     closeModal: () => void;
     content_flag: 'low_risk_cr_eu' | 'low_risk_cr_non_eu' | 'high_risk_cr' | 'cr_demo' | 'eu_demo' | 'eu_real' | '';
@@ -406,27 +411,15 @@ type TTradersHubStore = {
     setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
     selectRegion: (region: string) => void;
-    platform_real_balance: {
-        currency: string;
-        balance: number;
-    };
-    cfd_demo_balance: {
-        currency: string;
-        balance: number;
-    };
-    platform_demo_balance: {
-        currency: string;
-        balance: number;
-    };
-    cfd_real_balance: {
-        currency: string;
-        balance: number;
-    };
     financial_restricted_countries: boolean;
     selected_account_type: string;
     no_CR_account: boolean;
     no_MF_account: boolean;
     is_demo: boolean;
+    platform_real_balance: TBalance;
+    cfd_demo_balance: TBalance;
+    platform_demo_balance: TBalance;
+    cfd_real_balance: TBalance;
 };
 
 /**

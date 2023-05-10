@@ -25,7 +25,7 @@ describe('CashierOnboardingFiatCard', () => {
         );
         render(<CashierOnboardingFiatCard />, { wrapper });
 
-        const container = screen.getByTestId('dt_cashier_onboarding_card_container');
+        const container = screen.getByTestId('dt_cashier_onboarding_card');
 
         fireEvent.click(container);
 

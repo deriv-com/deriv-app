@@ -1,7 +1,6 @@
 import React from 'react';
-import { InfiniteLoader as _InfiniteLoader } from 'react-virtualized/dist/es/InfiniteLoader';
+import { InfiniteLoader as _InfiniteLoader, InfiniteLoaderProps, Index, IndexRange } from 'react-virtualized';
 import DataList, { TRow, TRowRenderer } from '../data-list/data-list';
-import { InfiniteLoaderProps, Index, IndexRange } from 'react-virtualized';
 
 const InfiniteLoader = _InfiniteLoader as unknown as React.FC<InfiniteLoaderProps>;
 type TInfiniteDatalist = {

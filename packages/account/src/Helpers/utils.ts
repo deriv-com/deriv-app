@@ -215,3 +215,14 @@ export const generatePlaceholderText = (selected_doc: string) => {
             return localize('Enter your document number');
     }
 };
+
+export const validate =
+    (errors: Record<string, string>, values: Record<string, string>) =>
+    (fn: (value: string) => string, arr: string[], err_msg: string) => {
+        arr.forEach(field => {
+            const value = values[field];
+            if (/^\s+$/.test(value) || (!fn(value) && !errors[field] && !err_msg)) errors[field] = err_msg;
+        });
+    };
+
+export const isFieldImmutable = (field: string, mutable_fields: string[] = []) => !mutable_fields.includes(field);

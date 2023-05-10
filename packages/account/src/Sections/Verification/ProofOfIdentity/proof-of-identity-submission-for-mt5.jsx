@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import { WS } from '@deriv/shared';
+import { WS, toMoment, filterObjProperties, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
 import Unsupported from 'Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
@@ -51,15 +51,54 @@ const POISubmissionForMT5 = ({
             refreshNotifications();
         });
     };
-    const handleIdvSubmit = (values, { setSubmitting, setErrors }) => {
+
+    const makeSettingsRequest = settings => {
+        const request = filterObjProperties(settings, [...getChangeableFields()]);
+
+        if (request.first_name) {
+            request.first_name = request.first_name.trim();
+        }
+        if (request.last_name) {
+            request.last_name = request.last_name.trim();
+        }
+        if (request.date_of_birth) {
+            request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
+        }
+
+        return request;
+    };
+
+    const handleIdvSubmit = async (values, { setSubmitting, setErrors }) => {
         setSubmitting(true);
         const { document_number, document_type } = values;
+
+        const request = makeSettingsRequest(values);
+
+        const data = await WS.setSettings(request);
+
+        if (data.error) {
+            setErrors({ error_message: data.error.message });
+            setSubmitting(false);
+            return;
+        }
+        const get_settings = WS.authorized.storage.getSettings();
+        if (get_settings.error) {
+            setErrors({ error_message: data.error.message });
+            setSubmitting(false);
+            return;
+        }
+
         const submit_data = {
             identity_verification_document_add: 1,
             document_number,
             document_type: document_type.id,
             issuing_country: citizen_data.value,
         };
+
+        if (submit_data.document_type === IDV_NOT_APPLICABLE_OPTION.id) {
+            handlePOIComplete();
+            return;
+        }
 
         WS.send(submit_data).then(response => {
             setSubmitting(false);
@@ -79,6 +118,8 @@ const POISubmissionForMT5 = ({
                         citizen_data={citizen_data}
                         onNext={handleIdvSubmit}
                         has_idv_error={has_idv_error}
+                        getChangeableFields={getChangeableFields}
+                        account_settings={account_settings}
                     />
                 );
             case service_code.onfido: {

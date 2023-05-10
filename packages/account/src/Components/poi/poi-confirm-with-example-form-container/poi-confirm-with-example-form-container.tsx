@@ -8,6 +8,7 @@ import { localize } from '@deriv/translations';
 import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
+import { validate } from 'Helpers/utils';
 
 type TValues = { [p: string]: string };
 
@@ -24,15 +25,6 @@ type TPoiConfirmWithExampleFormContainer = {
     getChangeableFields: () => string[];
     onFormConfirm?: () => void;
 };
-
-const validate =
-    (errors: Record<string, string>, values: Record<string, string>) =>
-    (fn: (value: string) => string, arr: string[], err_msg: string) => {
-        arr.forEach(field => {
-            const value = values[field];
-            if (/^\s+$/.test(value) || (!fn(value) && !errors[field] && !err_msg)) errors[field] = err_msg;
-        });
-    };
 
 const PoiConfirmWithExampleFormContainer = ({
     account_settings,
@@ -68,6 +60,7 @@ const PoiConfirmWithExampleFormContainer = ({
 
         return request;
     };
+
     const onSubmit = async (values: TValues, { setStatus, setSubmitting }: FormikHelpers<TValues>) => {
         if (checked) return;
         setStatus({ msg: '' });
@@ -166,7 +159,7 @@ const PoiConfirmWithExampleFormContainer = ({
                             handleBlur={handleBlur}
                             setFieldValue={setFieldValue}
                             setFieldTouched={setFieldTouched}
-                            disabled_items={[]}
+                            disabled_items={rest_state.changeable_fields}
                             is_rendered_for_onfido
                         />
                         <button

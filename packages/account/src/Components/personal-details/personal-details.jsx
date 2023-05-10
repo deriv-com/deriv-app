@@ -43,7 +43,6 @@ const PersonalDetails = ({
     const { is_appstore } = React.useContext(PlatformContext);
     const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
     const [warning_items, setWarningItems] = React.useState({});
-    const [should_hide_helper_image, setShouldHideHelperImage] = React.useState(false);
     const is_submit_disabled_ref = React.useRef(true);
 
     const isSubmitDisabled = errors => {
@@ -73,6 +72,8 @@ const PersonalDetails = ({
         real_account_signup_target,
     });
 
+    const shouldHideHelperImage = document_id => document_id === IDV_NOT_APPLICABLE_OPTION.id;
+
     const validateIDV = values => {
         const errors = {};
         const { document_type, document_number, document_additional } = values;
@@ -82,23 +83,25 @@ const PersonalDetails = ({
         if (!document_type || !document_type.text) {
             errors.document_type = localize('Please select a document type.');
         }
-        if (needs_additional_document) {
-            const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
-            if (error_message)
-                errors.document_additional =
-                    localize(error_message) + getExampleFormat(document_type.additional?.example_format);
-        }
+        if (!shouldHideHelperImage(document_type?.id)) {
+            if (needs_additional_document) {
+                const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
+                if (error_message)
+                    errors.document_additional =
+                        localize(error_message) + getExampleFormat(document_type.additional?.example_format);
+            }
 
-        if (!document_number) {
-            errors.document_number =
-                localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-        } else if (is_document_number_invalid) {
-            errors.document_number = localize('Please enter a valid ID number.');
-        } else {
-            const format_regex = getRegex(document_type.value);
-            if (!format_regex.test(document_number)) {
+            if (!document_number) {
                 errors.document_number =
-                    localize('Please enter the correct format. ') + getExampleFormat(document_type.example_format);
+                    localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
+            } else if (is_document_number_invalid) {
+                errors.document_number = localize('Please enter a valid ID number.');
+            } else {
+                const format_regex = getRegex(document_type.value);
+                if (!format_regex.test(document_number)) {
+                    errors.document_number =
+                        localize('Please enter the correct format. ') + getExampleFormat(document_type.example_format);
+                }
             }
         }
         return errors;
@@ -130,6 +133,8 @@ const PersonalDetails = ({
 
     const citizen = account_settings?.citizen || residence;
     const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
+
+    const editable_fields = Object.keys(props.value).filter(field => !disabled_items.includes(field)) || [];
 
     return (
         <Formik
@@ -184,25 +189,19 @@ const PersonalDetails = ({
                                             <React.Fragment>
                                                 <FormSubHeader title={localize('Identity verification')} />
                                                 <Field name='document'>
-                                                    {({ field, form }) => {
-                                                        setShouldHideHelperImage(
-                                                            form.values?.document_type?.id ===
-                                                                IDV_NOT_APPLICABLE_OPTION.id
-                                                        );
-                                                        return (
-                                                            <IDVForm
-                                                                selected_country={selected_country}
-                                                                errors={errors}
-                                                                touched={touched}
-                                                                values={values}
-                                                                handleChange={handleChange}
-                                                                handleBlur={handleBlur}
-                                                                setFieldValue={setFieldValue}
-                                                                hide_hint={true}
-                                                                {...field}
-                                                            />
-                                                        );
-                                                    }}
+                                                    {({ field }) => (
+                                                        <IDVForm
+                                                            selected_country={selected_country}
+                                                            errors={errors}
+                                                            touched={touched}
+                                                            values={values}
+                                                            handleChange={handleChange}
+                                                            handleBlur={handleBlur}
+                                                            setFieldValue={setFieldValue}
+                                                            hide_hint={true}
+                                                            {...field}
+                                                        />
+                                                    )}
                                                 </Field>
                                                 <FormSubHeader title={localize('Details')} />
                                             </React.Fragment>
@@ -213,7 +212,8 @@ const PersonalDetails = ({
                                                     <div
                                                         className={classNames({
                                                             'account-form__poi-confirm-example_container':
-                                                                is_qualified_for_idv && !should_hide_helper_image,
+                                                                is_qualified_for_idv &&
+                                                                !shouldHideHelperImage(values?.document_type?.id),
                                                         })}
                                                     >
                                                         <PersonalDetailsForm
@@ -229,7 +229,7 @@ const PersonalDetails = ({
                                                             is_mf={is_mf}
                                                             is_qualified_for_idv={is_qualified_for_idv}
                                                             is_appstore={is_appstore}
-                                                            disabled_items={disabled_items}
+                                                            editable_fields={editable_fields}
                                                             residence_list={residence_list}
                                                             has_real_account={has_real_account}
                                                             is_fully_authenticated={is_fully_authenticated}
@@ -239,7 +239,9 @@ const PersonalDetails = ({
                                                             account_opening_reason_list={account_opening_reason_list}
                                                             should_close_tooltip={should_close_tooltip}
                                                             setShouldCloseTooltip={setShouldCloseTooltip}
-                                                            should_hide_helper_image={should_hide_helper_image}
+                                                            should_hide_helper_image={shouldHideHelperImage(
+                                                                values?.document_type?.id
+                                                            )}
                                                             {...field}
                                                         />
                                                     </div>

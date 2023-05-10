@@ -5,6 +5,7 @@ import {
     getDocumentData,
     getRegex,
     preventEmptyClipboardPaste,
+    isFieldImmutable,
 } from '../utils';
 
 describe('generatePlaceholderText', () => {
@@ -148,5 +149,17 @@ describe('preventEmptyClipboardPaste', () => {
         };
         preventEmptyClipboardPaste(event);
         expect(event.preventDefault).not.toHaveBeenCalled();
+    });
+});
+
+describe('isFieldImmutable', () => {
+    it('should return false if field is mutable', () => {
+        const immutable_field_set = ['test1', 'test2'];
+        expect(isFieldImmutable('test1', immutable_field_set)).toBeFalsy();
+    });
+
+    it('should return true if field is immutable', () => {
+        const mutable_field_set = ['test1', 'test2'];
+        expect(isFieldImmutable('test3', mutable_field_set)).toBeTruthy();
     });
 });

@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, FormikValues, FormikProps, FormikHandlers } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { formatInput, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
 import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative, Text } from '@deriv/components';
 import { getDocumentData, preventEmptyClipboardPaste, generatePlaceholderText } from 'Helpers/utils';
@@ -24,7 +24,6 @@ type TFormProps = {
 
 type TIDVForm = {
     selected_country: ResidenceList[0];
-    is_from_external: boolean;
     hide_hint?: boolean;
     class_name?: string;
 } & FormikHandlers &
@@ -44,11 +43,9 @@ const IDVForm = ({
     const [document_image, setDocumentImage] = React.useState(null);
     const [selected_doc, setSelectedDoc] = React.useState('');
 
-    const { selected_country, is_from_external } = props;
-    // const citizen = account_settings?.citizen || residence;
+    const { selected_country } = props;
 
     const { documents_supported: document_data, has_visual_sample } = selected_country?.identity?.services?.idv || {};
-    // residence_list.find(residence_data => residence_data.value === citizen)?.identity.services?.idv || {};
 
     React.useEffect(() => {
         const document_types = Object.keys(document_data);
@@ -129,11 +126,7 @@ const IDVForm = ({
                                 'proof-of-identity__container--idv': props.hide_hint,
                             })}
                         >
-                            <div
-                                className={classNames('proof-of-identity__inner-container', {
-                                    'btm-spacer': !props.hide_hint,
-                                })}
-                            >
+                            <div className={classNames('proof-of-identity__inner-container')}>
                                 <div className='proof-of-identity__fieldset-container'>
                                     <fieldset
                                         className={classNames({ 'proof-of-identity__fieldset': !props.hide_hint })}
@@ -302,17 +295,6 @@ const IDVForm = ({
                     </div>
                 </div>
             </section>
-            {selected_doc && !props.hide_hint && (
-                <Text
-                    className={classNames('proof-of-identity__text btm-spacer', {
-                        'top-spacer': is_from_external,
-                    })}
-                    align='center'
-                    size='xs'
-                >
-                    <Localize i18n_default_text='Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.' />
-                </Text>
-            )}
         </React.Fragment>
     );
 };

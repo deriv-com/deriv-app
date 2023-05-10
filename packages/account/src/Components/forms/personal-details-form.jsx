@@ -22,6 +22,7 @@ import InlineNoteWithIcon from 'Components/inline-note-with-icon';
 import FormBodySection from 'Components/form-body-section';
 import { Link } from 'react-router-dom';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
+import { isFieldImmutable } from 'Helpers/utils';
 
 const DateOfBirthField = props => (
     <Field name={props.name}>
@@ -85,7 +86,7 @@ const PersonalDetailsForm = ({
         is_qualified_for_idv,
         should_hide_helper_image,
         is_appstore,
-        disabled_items,
+        editable_fields = [],
         has_real_account,
         residence_list,
         is_fully_authenticated,
@@ -107,7 +108,7 @@ const PersonalDetailsForm = ({
             handleToolTipStatus();
             setShouldCloseTooltip(false);
         }
-    }, [should_close_tooltip]);
+    }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
 
     const getLastNameLabel = () => {
         if (is_appstore) return localize('Family name*');
@@ -127,14 +128,14 @@ const PersonalDetailsForm = ({
         );
     };
 
-    const handleToolTipStatus = () => {
+    const handleToolTipStatus = React.useCallback(() => {
         if (is_tax_residence_popover_open) {
             setIsTaxResidencePopoverOpen(false);
         }
         if (is_tin_popover_open) {
             setIsTinPopoverOpen(false);
         }
-    };
+    }, [is_tax_residence_popover_open, is_tin_popover_open]);
 
     const name_dob_clarification_message = (
         <Localize
@@ -195,7 +196,7 @@ const PersonalDetailsForm = ({
                                     key={item.value}
                                     label={item.label}
                                     value={item.value}
-                                    disabled={!!values.salutation && disabled_items.includes('salutation')}
+                                    disabled={!!values.salutation && isFieldImmutable('salutation', editable_fields)}
                                 />
                             ))}
                         </RadioGroup>
@@ -206,7 +207,10 @@ const PersonalDetailsForm = ({
                             required={is_svg || is_appstore}
                             label={is_svg || is_appstore || is_mf ? localize('First name*') : localize('First name')}
                             hint={getFieldHint(localize('first name'))}
-                            disabled={disabled_items.includes('first_name') || (values?.first_name && has_real_account)}
+                            disabled={
+                                isFieldImmutable('first_name', editable_fields) ||
+                                (values?.first_name && has_real_account)
+                            }
                             placeholder={localize('John')}
                             data-testid='first_name'
                         />
@@ -217,7 +221,10 @@ const PersonalDetailsForm = ({
                             required={is_svg || is_appstore}
                             label={getLastNameLabel()}
                             hint={getFieldHint(localize('last name'))}
-                            disabled={disabled_items.includes('last_name') || (values?.last_name && has_real_account)}
+                            disabled={
+                                isFieldImmutable('last_name', editable_fields) ||
+                                (values?.last_name && has_real_account)
+                            }
                             placeholder={localize('Doe')}
                             data-testid='last_name'
                         />
@@ -234,7 +241,8 @@ const PersonalDetailsForm = ({
                             }
                             hint={getFieldHint(localize('date of birth'))}
                             disabled={
-                                disabled_items.includes('date_of_birth') || (values?.date_of_birth && has_real_account)
+                                isFieldImmutable('date_of_birth', editable_fields) ||
+                                (values?.date_of_birth && has_real_account)
                             }
                             placeholder={localize('01-07-1999')}
                             portal_id={is_appstore ? '' : 'modal_root'}
@@ -249,7 +257,7 @@ const PersonalDetailsForm = ({
                                         <Autocomplete
                                             {...field}
                                             disabled={
-                                                disabled_items.includes('place_of_birth') ||
+                                                isFieldImmutable('place_of_birth', editable_fields) ||
                                                 (values?.place_of_birth && has_real_account)
                                             }
                                             data-lpignore='true'
@@ -270,7 +278,7 @@ const PersonalDetailsForm = ({
                                             placeholder={localize('Place of birth')}
                                             name={field.name}
                                             disabled={
-                                                disabled_items.includes('place_of_birth') ||
+                                                isFieldImmutable('place_of_birth', editable_fields) ||
                                                 (values?.place_of_birth && has_real_account)
                                             }
                                             label={is_mf ? localize('Place of birth*') : localize('Place of birth')}
@@ -307,7 +315,7 @@ const PersonalDetailsForm = ({
                                             error={touched.citizen && errors.citizen}
                                             disabled={
                                                 (values?.citizen && is_fully_authenticated) ||
-                                                disabled_items.includes('citizen') ||
+                                                isFieldImmutable('citizen', editable_fields) ||
                                                 (values?.citizen && has_real_account)
                                             }
                                             list_items={residence_list}
@@ -325,7 +333,7 @@ const PersonalDetailsForm = ({
                                             name={field.name}
                                             disabled={
                                                 (values?.citizen && is_fully_authenticated) ||
-                                                disabled_items.includes('citizen') ||
+                                                isFieldImmutable('citizen', editable_fields) ||
                                                 (values?.citizen && has_real_account)
                                             }
                                             label={is_mf ? localize('Citizenship*') : localize('Citizenship')}
@@ -357,7 +365,7 @@ const PersonalDetailsForm = ({
                                 is_svg || is_appstore || is_mf ? localize('Phone number*') : localize('Phone number')
                             }
                             disabled={
-                                disabled_items.includes('phone') ||
+                                isFieldImmutable('phone', editable_fields) ||
                                 (values?.phone &&
                                     has_real_account &&
                                     validPhone(values?.phone) &&
@@ -391,7 +399,7 @@ const PersonalDetailsForm = ({
                                                     }
                                                     list_portal_id='modal_root'
                                                     data-testid='tax_residence'
-                                                    disabled={disabled_items.includes('tax_residence')}
+                                                    disabled={isFieldImmutable('tax_residence', editable_fields)}
                                                 />
                                             </DesktopWrapper>
                                             <MobileWrapper>
@@ -412,7 +420,7 @@ const PersonalDetailsForm = ({
                                                     {...field}
                                                     required
                                                     data_testid='tax_residence_mobile'
-                                                    disabled={disabled_items.includes('tax_residence')}
+                                                    disabled={isFieldImmutable('tax_residence', editable_fields)}
                                                 />
                                             </MobileWrapper>
                                             <div
@@ -451,7 +459,7 @@ const PersonalDetailsForm = ({
                                         warn={warning_items?.tax_identification_number}
                                         data-testid='tax_identification_number'
                                         disabled={
-                                            disabled_items.includes('tax_identification_number') ||
+                                            isFieldImmutable('tax_identification_number', editable_fields) ||
                                             (values?.tax_identification_number && has_real_account)
                                         }
                                     />
@@ -506,7 +514,7 @@ const PersonalDetailsForm = ({
                                             onChange={handleChange}
                                             handleBlur={handleBlur}
                                             error={touched.employment_status && errors.employment_status}
-                                            disabled={disabled_items.includes('employment_status')}
+                                            disabled={isFieldImmutable('employment_status', editable_fields)}
                                         />
                                     </DesktopWrapper>
                                     <MobileWrapper>
@@ -523,7 +531,7 @@ const PersonalDetailsForm = ({
                                                 setFieldTouched('employment_status', true);
                                                 handleChange(e);
                                             }}
-                                            disabled={disabled_items.includes('employment_status')}
+                                            disabled={isFieldImmutable('employment_status', editable_fields)}
                                         />
                                     </MobileWrapper>
                                 </fieldset>
@@ -572,7 +580,7 @@ const PersonalDetailsForm = ({
                                                         : localize('Account opening reason')
                                                 }
                                                 name={field.name}
-                                                disabled={disabled_items.includes('account_opening_reason')}
+                                                disabled={isFieldImmutable('account_opening_reason', editable_fields)}
                                                 is_align_text_left
                                                 list={account_opening_reason_list}
                                                 value={values.account_opening_reason}
@@ -603,7 +611,7 @@ const PersonalDetailsForm = ({
                                                 {...field}
                                                 required
                                                 data_testid='account_opening_reason_mobile'
-                                                disabled={disabled_items.includes('account_opening_reason')}
+                                                disabled={isFieldImmutable('account_opening_reason', editable_fields)}
                                             />
                                         </MobileWrapper>
                                     </React.Fragment>

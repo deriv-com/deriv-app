@@ -1,9 +1,9 @@
 export { default as useAccountTransferVisible } from './useAccountTransferVisible';
+export { default as useCFDAccounts } from './useCFDAccounts';
 export { default as useCFDAllAccounts } from './useCFDAllAccounts';
 export { default as useCFDDemoAccounts } from './useCFDDemoAccounts';
 export { default as useCFDRealAccounts } from './useCFDRealAccounts';
 export { default as useCashierLocked } from './useCashierLocked';
-export { default as useCfdAccounts } from './useCfdAccounts';
 export { default as useCountdown } from './useCountdown';
 export { default as useDepositLocked } from './useDepositLocked';
 export { default as useExchangeRate } from './useExchangeRate';

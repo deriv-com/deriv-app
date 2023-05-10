@@ -27,19 +27,19 @@ const not_supported_high_low = {
 };
 
 describe('getCardLabels', () => {
-    it('should return an object with card labels', () => {
+    it('should return an object with card labels, e.g. such as Apply', () => {
         expect(getCardLabels().APPLY).toEqual(card_label);
     });
 });
 
 describe('getMarketNamesMap', () => {
-    it('should return an object with markets names', () => {
+    it('should return an object with markets names, e.g. such as AUD/CAD', () => {
         expect(getMarketNamesMap().FRXAUDCAD).toEqual(markets_name);
     });
 });
 
 describe('getUnsupportedContracts', () => {
-    it('should return an object with unsupported contracts', () => {
+    it('should return an object with unsupported contracts, e.g. such as Ends Outside', () => {
         expect(getUnsupportedContracts().EXPIRYMISS).toEqual(unsupported_contract);
     });
 });

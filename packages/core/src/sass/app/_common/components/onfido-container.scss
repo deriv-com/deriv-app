@@ -145,10 +145,6 @@
         }
 
         .account-form__section-content {
-            .dc-input__bottom-label > * {
-                font-size: var(--text-size-xxs);
-            }
-
             .account-form__fieldset {
                 margin-bottom: 0;
 
@@ -172,12 +168,6 @@
             &__disabled > * {
                 cursor: not-allowed;
             }
-
-            @include mobile() {
-                .dc-checkbox__label {
-                    font-size: var(--text-size-xxs);
-                }
-            }
         }
     }
 
@@ -198,15 +188,6 @@
 
         &-side-note {
             grid-area: section-side-note;
-
-            .dc-text {
-                color: var(--text-less-prominent);
-                font-size: 1.4rem;
-
-                @include mobile {
-                    font-size: 1.2rem;
-                }
-            }
 
             .account-poa__upload-box-dashboard {
                 @include mobile {

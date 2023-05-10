@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { GetSettings } from '@deriv/api-types';
-import { Checkbox, Loading } from '@deriv/components';
-import { filterObjProperties, toMoment, validLength, validName, WS } from '@deriv/shared';
+import { Checkbox, Loading, Text } from '@deriv/components';
+import { filterObjProperties, isMobile, toMoment, validLength, validName, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';
@@ -159,7 +159,7 @@ const PoiConfirmWithExampleFormContainer = ({
                             handleBlur={handleBlur}
                             setFieldValue={setFieldValue}
                             setFieldTouched={setFieldTouched}
-                            disabled_items={rest_state.changeable_fields}
+                            editable_fields={rest_state.changeable_fields}
                             is_rendered_for_onfido
                         />
                         <button
@@ -170,9 +170,13 @@ const PoiConfirmWithExampleFormContainer = ({
                         >
                             <Checkbox
                                 value={checked}
-                                label={localize(
-                                    'I confirm that the name and date of birth above match my chosen identity document (see below)'
-                                )}
+                                label={
+                                    <Text size={isMobile() ? 'xxs' : 'xs'}>
+                                        {localize(
+                                            'I confirm that the name and date of birth above match my chosen identity document (see below)'
+                                        )}
+                                    </Text>
+                                }
                                 disabled={isSubmitting}
                             />
                         </button>

@@ -20,8 +20,8 @@ type TAPI_error = {
 };
 
 type TService_token = {
-    error: TAPI_error;
-    service_token: { onfido: { token: string } };
+    error?: TAPI_error;
+    service_token?: { onfido?: { token: string } };
 };
 
 type TOnfidoSdkView = {
@@ -149,14 +149,16 @@ const OnfidoSdkView = ({
                             resolve({ error: response.error });
                             return;
                         }
-                        const { token } = response.service_token.onfido;
-                        const in_90_minutes = 1 / 16;
-                        Cookies.set(onfido_cookie_name, token, {
-                            expires: in_90_minutes,
-                            secure: true,
-                            sameSite: 'strict',
-                        });
-                        resolve(token);
+                        if (response.service_token?.onfido) {
+                            const { token } = response.service_token.onfido;
+                            const in_90_minutes = 1 / 16;
+                            Cookies.set(onfido_cookie_name, token, {
+                                expires: in_90_minutes,
+                                secure: true,
+                                sameSite: 'strict',
+                            });
+                            resolve(token);
+                        }
                     });
                 } else {
                     resolve(onfido_cookie);

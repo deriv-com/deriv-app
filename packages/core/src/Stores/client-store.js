@@ -18,6 +18,7 @@ import {
     isStaging,
     isTestLink,
     redirectToLogin,
+    removeCookies,
     routes,
     setCurrencies,
     toMoment,
@@ -72,6 +73,7 @@ export default class ClientStore extends BaseStore {
     account_settings = {};
     account_status = {};
     device_data = {};
+    is_authorize = false;
     is_logging_in = false;
     has_logged_out = false;
     is_landing_company_loaded = false;
@@ -182,6 +184,7 @@ export default class ClientStore extends BaseStore {
             account_settings: observable,
             account_status: observable,
             device_data: observable,
+            is_authorize: observable,
             is_logging_in: observable,
             has_logged_out: observable,
             is_landing_company_loaded: observable,
@@ -244,7 +247,7 @@ export default class ClientStore extends BaseStore {
             all_loginids: computed,
             account_title: computed,
             currency: computed,
-            is_crypto: computed,
+            is_crypto: action.bound,
             default_currency: computed,
             should_allow_authentication: computed,
             is_financial_assessment_incomplete: computed,
@@ -334,6 +337,7 @@ export default class ClientStore extends BaseStore {
             setLoginId: action.bound,
             setAccounts: action.bound,
             setSwitched: action.bound,
+            setIsAuthorize: action.bound,
             setIsLoggingIn: action.bound,
             setPreSwitchAccount: action.bound,
             broadcastAccountChange: action.bound,
@@ -503,11 +507,11 @@ export default class ClientStore extends BaseStore {
 
     get legal_allowed_currencies() {
         const getDefaultAllowedCurrencies = () => {
-            if (this.landing_companies.gaming_company) {
-                return this.landing_companies.gaming_company.legal_allowed_currencies;
+            if (this.landing_companies?.gaming_company) {
+                return this.landing_companies?.gaming_company?.legal_allowed_currencies;
             }
-            if (this.landing_companies.financial_company) {
-                return this.landing_companies.financial_company.legal_allowed_currencies;
+            if (this.landing_companies?.financial_company) {
+                return this.landing_companies?.financial_company?.legal_allowed_currencies;
             }
             return [];
         };
@@ -660,8 +664,8 @@ export default class ClientStore extends BaseStore {
         return this.default_currency;
     }
 
-    get is_crypto() {
-        return isCryptocurrency(this.currency);
+    is_crypto(currency) {
+        return isCryptocurrency(currency || this.currency);
     }
 
     get default_currency() {
@@ -1083,6 +1087,10 @@ export default class ClientStore extends BaseStore {
         this.loginid = loginid;
     }
 
+    setIsAuthorize(value) {
+        this.is_authorize = value;
+    }
+
     getBasicUpgradeInfo() {
         const upgradeable_landing_companies = [
             ...new Set(State.getResponse('authorize.upgradeable_landing_companies')),
@@ -1181,10 +1189,12 @@ export default class ClientStore extends BaseStore {
             };
             Cookies.set('region', getRegion(landing_company_shortcode, residence), { domain });
             Cookies.set('client_information', client_information, { domain });
+            // need to find other way to get the boolean value and set this cookie since `this.is_p2p_enabled` is deprecated and we can't use hooks here
+            Cookies.set('is_p2p_disabled', !this.is_p2p_enabled, { domain });
+
             this.has_cookie_account = true;
         } else {
-            Cookies.remove('region', { domain });
-            Cookies.remove('client_information', { domain });
+            removeCookies('region', 'client_information', 'is_p2p_disabled');
             this.has_cookie_account = false;
         }
     }
@@ -1325,6 +1335,7 @@ export default class ClientStore extends BaseStore {
         if (is_maltainvest_account) {
             currency = form_values.currency;
         }
+        this.root_store.ui.setRealAccountSignupParams(form_values);
         const { document_number, document_type, document_additional, ...required_form_values } = form_values;
         required_form_values.citizen = form_values?.citizen || this.account_settings.citizen || this.residence;
 
@@ -1869,6 +1880,7 @@ export default class ClientStore extends BaseStore {
         }
 
         runInAction(() => (this.is_switching = true));
+        this.setIsAuthorize(false);
         const from_login_id = this.loginid;
         this.resetLocalStorageValues(this.switched);
         SocketCache.clear();
@@ -2650,5 +2662,23 @@ export default class ClientStore extends BaseStore {
     setPrevAccountType = acc_type => {
         this.prev_account_type = acc_type;
     };
+
+    /** @deprecated Use `useIsP2PEnabled` from `@deriv/hooks` package instead.
+     *
+     * This method is being used in `NotificationStore`, Once we get rid of the usage we can remove this method.
+     *
+     * Please `DO NOT` add the type for this method in `TCoreStores` as it is deprecated and shouldn't be used.
+     * */
+    get is_p2p_enabled() {
+        const is_low_risk_cr_eu_real = this.root_store?.traders_hub?.is_low_risk_cr_eu_real;
+
+        const is_p2p_supported_currency = Boolean(
+            this.website_status?.p2p_config?.supported_currencies.includes(this.currency.toLocaleLowerCase())
+        );
+
+        const is_p2p_visible = is_p2p_supported_currency && !this.is_virtual && !is_low_risk_cr_eu_real;
+
+        return is_p2p_visible;
+    }
 }
 /* eslint-enable */

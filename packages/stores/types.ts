@@ -90,7 +90,7 @@ type TNotification =
 type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
 
 type TClientStore = {
-    accounts: { [k: string]: TAccount };
+    accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
     account_limits: {
@@ -219,6 +219,7 @@ type TCommonStore = {
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
     is_language_changing: boolean;
+    getExchangeRate: (from_currency: string, to_currency: string) => Promise<number>;
 };
 
 type TUiStore = {
@@ -289,6 +290,22 @@ type TTradersHubStore = {
     setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    platform_real_balance: {
+        currency: string;
+        balance: number;
+    };
+    cfd_demo_balance: {
+        currency: string;
+        balance: number;
+    };
+    platform_demo_balance: {
+        currency: string;
+        balance: number;
+    };
+    cfd_real_balance: {
+        currency: string;
+        balance: number;
+    };
     financial_restricted_countries: boolean;
     selected_account_type: string;
     no_CR_account: boolean;

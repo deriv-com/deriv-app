@@ -1,12 +1,16 @@
 .page-container {
     width: 100%;
     height: calc(100vh - 17rem);
-    padding-left: 2.4rem;
-    padding-right: 2.4rem;
-    display: flex;
-    flex-direction: column;
+    background-color: var(--general-main-1);
 
     @include mobile {
         height: calc(100vh - 8rem);
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        margin: 2.4rem;
+        gap: 2.4rem;
     }
 }

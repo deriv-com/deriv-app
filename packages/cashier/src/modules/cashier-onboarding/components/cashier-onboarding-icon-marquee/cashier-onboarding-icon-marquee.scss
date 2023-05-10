@@ -1,11 +1,4 @@
 .cashier-onboarding-icon-marquee {
-    margin-top: 1.6rem;
-
-    &__container {
-        display: flex;
-    }
-
-    &__icon {
-        margin-right: 1.2rem;
-    }
+    display: flex;
+    gap: 0.8rem;
 }

@@ -15,7 +15,7 @@ const icons: React.ComponentProps<typeof CashierOnboardingIconMarquee>['icons'] 
     { light: 'IcCashierLocalPaymentMethodsLight', dark: 'IcCashierLocalPaymentMethodsDark' },
 ];
 
-const CashierOnboardingCashCard: React.FC = observer(() => {
+const CashierOnboardingFiatCard: React.FC = observer(() => {
     const { client, ui } = useStore();
     const { general_store } = useCashierStore();
     const { is_crypto } = client;
@@ -60,4 +60,4 @@ const CashierOnboardingCashCard: React.FC = observer(() => {
     );
 });
 
-export default CashierOnboardingCashCard;
+export default CashierOnboardingFiatCard;

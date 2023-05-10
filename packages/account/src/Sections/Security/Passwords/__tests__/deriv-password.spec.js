@@ -3,7 +3,7 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import DerivPassword from '../deriv-password';
 import { WS } from '@deriv/shared';
 
-jest.mock('Assets/ic-brand-deriv-red.svg', () => () => <></>);
+jest.mock('Assets/ic-brand-deriv-red.svg', () => () => 'BrandDerivRed');
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -38,11 +38,21 @@ describe('<DerivPassword />', () => {
                 name: /deriv password/i,
             })
         ).toBeInTheDocument();
+        // expect BrandDerivRed not to be in the document
+        expect(screen.queryByText(/BrandDerivRed/i)).not.toBeInTheDocument();
+        // expect button with text change password to be in the document
+        expect(screen.getByRole('button', { name: /change password/i })).toBeInTheDocument();
+        // expect button with text unlink from to not be in the document
+        expect(screen.queryByText(/unlink from/i)).not.toBeInTheDocument();
     });
 
     test('displays the correct platform information for non-MF clients', () => {
-        const { container } = render(<DerivPassword {...mock_props} landing_company_shortcode='svg' />);
-        expect(container.getElementsByClassName(/passwords-platform__icons/i)).not.toBeNull();
+        render(<DerivPassword {...mock_props} landing_company_shortcode='svg' />);
+        const popover_wrapper = screen.getAllByTestId('dt_popover_wrapper');
+        // expect popover to have length of 4
+        expect(popover_wrapper).toHaveLength(4);
+        // expect button with text change password to be in the document
+        expect(screen.getByRole('button', { name: /change password/i })).toBeInTheDocument();
     });
 
     test('displays the correct platform information for MF clients', () => {
@@ -72,7 +82,7 @@ describe('<DerivPassword />', () => {
         });
     });
 
-    it('displays a button to unlink social identity provider', () => {
+    it('displays a button to unlink social identity provider', async () => {
         const social_props = {
             ...mock_props,
             is_social_signup: true,
@@ -81,5 +91,10 @@ describe('<DerivPassword />', () => {
         render(<DerivPassword {...social_props} />);
         const unlink_button = screen.getByText(/unlink from/i);
         expect(unlink_button).toBeInTheDocument();
+        fireEvent.click(unlink_button);
+
+        await waitFor(() => {
+            expect(WS.verifyEmail).toHaveBeenCalled();
+        });
     });
 });

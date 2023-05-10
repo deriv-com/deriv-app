@@ -191,6 +191,7 @@ type TClientStore = {
     setTwoFAStatus: (status: boolean) => void;
     has_changed_two_fa: boolean;
     setTwoFAChangedStatus: (status: boolean) => void;
+    real_account_creation_unlock_date: number;
 };
 
 type TCommonStoreError = {
@@ -248,6 +249,7 @@ type TUiStore = {
     is_ready_to_deposit_modal_visible: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
+    setShouldShowCooldownModal: (value: boolean) => void;
 };
 
 type TMenuStore = {

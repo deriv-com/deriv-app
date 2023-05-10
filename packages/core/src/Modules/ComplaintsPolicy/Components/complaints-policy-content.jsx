@@ -465,7 +465,7 @@ const Content = ({ is_uk, landing_company_shortcode, mt5_login_list }) => {
                                 components={[
                                     <br key={0} />,
                                     <a
-                                        key={2}
+                                        key={1}
                                         className='link link--orange'
                                         rel='noopener noreferrer'
                                         target='_blank'

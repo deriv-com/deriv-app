@@ -1,0 +1,428 @@
+{
+    "settings": {
+        "token": "a7al5nod4uZ8AIr",
+        "currency": "USD",
+        "symbol": "1HZ25V",
+        "barrier": "0",
+        "basis": "stake",
+        "contract_type": "DIGITDIFF",
+        "duration": 1,
+        "duration_unit": "t",
+        "amount": "8",
+        "markets": {
+            "Derived": {
+                "index": 0,
+                "label": "Derived"
+            },
+            "Continuous Indices": {
+                "index": 1,
+                "label": "Continuous Indices"
+            }
+        },
+        "submarkets": {
+            "Continuous Indices": [ "Volatility 10 (1s) Index", "Volatility 10 Index" ], 
+            "Forex Basket": [],
+            "Daily Reset Indices": [],
+            "Continuous Basket": [],
+            "Jump Indices": []
+        }
+
+    },
+    "custom_variables": {
+        "stakes": {
+            "0": 8,
+            "1": 82,
+            "2": 920,
+            "3": 10100
+        },
+        "stake": 8,
+        "losses": 0,
+        "barrier": 0,
+        "threshold": 0,
+        "last_barrier": ""
+    },
+    "on_tick": [
+        {
+            "type": "INCREASE_VALUE",
+            "variable_source": "CUSTOM_VARS",
+            "variable": "threshold",
+            "increase_by": 1
+        }
+    ],
+    "buy_actions": [
+        {
+            "type": "IF_CONDITION",
+            "variables": [
+                {
+                    "values": [
+                        {
+                            "source": "RESERVED_FUNCTION",
+                            "value": "getLastDigits",
+                            "params": [
+                                {
+                                    "source": "STATIC",
+                                    "value": 2
+                                }
+                            ]
+                        }
+                    ],
+                    "operator": "=="
+                },
+                {
+                    "values": [
+                        {
+                            "source": "RESERVED_FUNCTION",
+                            "value": "getLastDigit"
+                        },
+                        {
+                            "source": "STATIC",
+                            "value": ""
+                        },
+                        {
+                            "source": "RESERVED_FUNCTION",
+                            "value": "getLastDigit"
+                        }
+                    ],
+                    "operator": "&&"
+                },
+                {
+                    "values": [
+                        {
+                            "source": "CUSTOM_VARS",
+                            "value": "threshold"
+                        }
+                    ],
+                    "operator": ">="
+                },
+                {
+                    "values": [
+                        {
+                            "source": "STATIC",
+                            "value": "3"
+                        }
+                    ],
+                    "operator": "&&"
+                },
+                {
+                    "values": [
+                        {
+                            "source": "CUSTOM_VARS",
+                            "value": "last_barrier"
+                        }
+                    ],
+                    "operator": "!="
+                },
+                {
+                    "values": [
+                        {
+                            "source": "RESERVED_FUNCTION",
+                            "value": "getLastDigit"
+                        }
+                    ]
+                }
+            ],
+            "actions": [
+                {
+                    "type": "ASSIGN_VALUE",
+                    "variable_source": "SETTINGS",
+                    "variable": "barrier",
+                    "values": [
+                        {
+                            "source": "RESERVED_FUNCTION",
+                            "value": "getLastDigit"
+                        }
+                    ]
+                },
+                {
+                    "type": "ASSIGN_VALUE",
+                    "variable_source": "CUSTOM_VARS",
+                    "variable": "last_barrier",
+                    "values": [
+                        {
+                            "source": "RESERVED_FUNCTION",
+                            "value": "getLastDigit"
+                        }
+                    ]
+                },
+                {
+                    "type": "RESERVED_FUNCTION",
+                    "action": "buy"
+                },
+                {
+                    "type": "LOG",
+                    "values": [
+                        {
+                            "source": "STATIC",
+                            "value": "Trading for "
+                        },
+                        {
+                            "source": "CUSTOM_VARS",
+                            "value": "stake"
+                        },
+                        {
+                            "source": "STATIC",
+                            "value": " "
+                        },
+                        {
+                            "source": "SETTINGS",
+                            "value": "currency"
+                        },
+                        {
+                            "source": "STATIC",
+                            "value": " not equals to "
+                        },
+                        {
+                            "source": "SETTINGS",
+                            "value": "barrier"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ASSIGN_VALUE",
+            "variable_source": "SETTINGS",
+            "variable": "amount",
+            "values": [
+                {
+                    "source": "CUSTOM_VARS",
+                    "value": "stake"
+                }
+            ]
+        }
+    ],
+    "after_buy_actions": [
+        {
+            "type": "LOG",
+            "values": [
+                {
+                    "source": "STATIC",
+                    "value": "Barrier: "
+                },
+                {
+                    "source": "SETTINGS",
+                    "value": "barrier"
+                }
+            ]
+        },
+        {
+            "type": "LOG",
+            "values": [
+                {
+                    "source": "STATIC",
+                    "value": "Last Digit: "
+                },
+                {
+                    "source": "RESERVED_FUNCTION",
+                    "value": "getLastDigit"
+                }
+            ]
+        },
+        {
+            "type": "IF_CONDITION",
+            "variables": [
+                {
+                    "values": [
+                        {
+                            "source": "RESERVED_FUNCTION",
+                            "value": "getLastDigit"
+                        }
+                    ],
+                    "operator": "=="
+                },
+                {
+                    "values": [
+                        {
+                            "source": "SETTINGS",
+                            "value": "barrier"
+                        }
+                    ]
+                }
+            ],
+            "actions": [
+                {
+                    "type": "INCREASE_VALUE",
+                    "variable_source": "CUSTOM_VARS",
+                    "variable": "losses",
+                    "increase_by": 1
+                },
+                {
+                    "type": "ASSIGN_VALUE",
+                    "variable_source": "CUSTOM_VARS",
+                    "variable": "stake",
+                    "values": [
+                        {
+                            "source": "RESERVED_FUNCTION",
+                            "params": [
+                                {
+                                    "source": "CUSTOM_VARS",
+                                    "value": "stakes"
+                                },
+                                {
+                                    "source": "CUSTOM_VARS",
+                                    "value": "losses"
+                                }
+                            ],
+                            "value": "getObjectValue"
+                        }
+                    ]
+                },
+                {
+                    "type": "LOG",
+                    "color": "error",
+                    "values": [
+                        {
+                            "source": "STATIC",
+                            "value": "Lost!"
+                        }
+                    ]
+                },
+                {
+                    "type": "ASSIGN_VALUE",
+                    "variable_source": "SETTINGS",
+                    "variable": "amount",
+                    "values": [
+                        {
+                            "source": "CUSTOM_VARS",
+                            "value": "stake"
+                        }
+                    ]
+                },
+                {
+                    "type": "RESERVED_FUNCTION",
+                    "action": "buy"
+                },
+                {
+                    "type": "LOG",
+                    "color": "info",
+                    "values": [
+                        {
+                            "source": "STATIC",
+                            "value": "Recovering for "
+                        },
+                        {
+                            "source": "CUSTOM_VARS",
+                            "value": "stake"
+                        },
+                        {
+                            "source": "STATIC",
+                            "value": " "
+                        },
+                        {
+                            "source": "SETTINGS",
+                            "value": "currency"
+                        },
+                        {
+                            "source": "STATIC",
+                            "value": " still not equals to "
+                        },
+                        {
+                            "source": "SETTINGS",
+                            "value": "barrier"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "IF_CONDITION",
+            "variables": [
+                {
+                    "values": [
+                        {
+                            "source": "RESERVED_FUNCTION",
+                            "value": "getLastDigit"
+                        }
+                    ],
+                    "operator": "!="
+                },
+                {
+                    "values": [
+                        {
+                            "source": "SETTINGS",
+                            "value": "barrier"
+                        }
+                    ]
+                }
+            ],
+            "actions": [
+                {
+                    "type": "ASSIGN_VALUE",
+                    "variable_source": "CUSTOM_VARS",
+                    "variable": "losses",
+                    "values": [
+                        {
+                            "source": "STATIC",
+                            "value": 0
+                        }
+                    ]
+                },
+                {
+                    "type": "ASSIGN_VALUE",
+                    "variable_source": "CUSTOM_VARS",
+                    "variable": "last_barrier",
+                    "values": [
+                        {
+                            "source": "STATIC",
+                            "value": ""
+                        }
+                    ]
+                },
+                {
+                    "type": "ASSIGN_VALUE",
+                    "variable_source": "CUSTOM_VARS",
+                    "variable": "stake",
+                    "values": [
+                        {
+                            "source": "RESERVED_FUNCTION",
+                            "params": [
+                                {
+                                    "source": "CUSTOM_VARS",
+                                    "value": "stakes"
+                                },
+                                {
+                                    "source": "STATIC",
+                                    "value": "0"
+                                }
+                            ],
+                            "value": "getObjectValue"
+                        }
+                    ]
+                },
+                {
+                    "type": "ASSIGN_VALUE",
+                    "variable_source": "SETTINGS",
+                    "variable": "amount",
+                    "values": [
+                        {
+                            "source": "CUSTOM_VARS",
+                            "value": "stake"
+                        }
+                    ]
+                },
+                {
+                    "type": "LOG",
+                    "color": "success",
+                    "values": [
+                        {
+                            "source": "STATIC",
+                            "value": "Win!"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "ASSIGN_VALUE",
+            "variable_source": "CUSTOM_VARS",
+            "variable": "threshold",
+            "values": [
+                {
+                    "source": "STATIC",
+                    "value": "0"
+                }
+            ]
+        }
+    ],
+    "result_actions": []
+}

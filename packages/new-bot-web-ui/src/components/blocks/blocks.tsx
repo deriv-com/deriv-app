@@ -1,14 +1,26 @@
-import React, { useState } from 'react';
-import { Dropdown, Autocomplete, Text } from '@deriv/components';
+import React from 'react';
+import { Autocomplete, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { useDBotStore } from 'Stores/useDBotStore';
+import { observer } from '@deriv/stores';
 
 const items = [{ text: 'Derived' }, { text: 'Forex' }, { text: 'Stock Indices' }, { text: 'Commodities' }];
 
 const Blocks: React.FC = () => {
-    const [selected, setSelected] = React.useState(items[0].text);
+    const [selected, setSelected] = React.useState('');
+    const {
+        blocks: { markets_dropdown, loadDataStrategy, exportStrategyToJson },
+    } = useDBotStore();
+
+    React.useEffect(() => {
+        loadDataStrategy();
+    }, []);
 
     return (
         <div className='bot-builder__container'>
+            <button type='button' onClick={() => exportStrategyToJson(items)}>
+                Export Data
+            </button>
             <Text>{localize('1. Trade parameters:')}</Text>
             <div className='bot-builder__item'>
                 <Text>{localize('Market:')}</Text>
@@ -17,7 +29,7 @@ const Blocks: React.FC = () => {
                     className='quick-strategy__dropdown quick-strategy__leading'
                     type='text'
                     label={localize(selected)}
-                    list_items={items}
+                    list_items={markets_dropdown}
                     onItemSelection={({ text }) => {
                         setSelected(text);
                     }}
@@ -28,7 +40,7 @@ const Blocks: React.FC = () => {
                     autoComplete='off'
                     className='quick-strategy__dropdown quick-strategy__leading'
                     type='text'
-                    label={localize(selected)}
+                    // label={localize(selected)}
                     list_items={items}
                     onItemSelection={({ text }) => {
                         setSelected(text);
@@ -39,7 +51,7 @@ const Blocks: React.FC = () => {
                     autoComplete='off'
                     className='quick-strategy__dropdown quick-strategy__leading'
                     type='text'
-                    label={localize(selected)}
+                    // label={localize(selected)}
                     list_items={items}
                     onItemSelection={({ text }) => {
                         setSelected(text);
@@ -52,7 +64,7 @@ const Blocks: React.FC = () => {
                     autoComplete='off'
                     className='quick-strategy__dropdown quick-strategy__leading'
                     type='text'
-                    label={localize(selected)}
+                    // label={localize(selected)}
                     list_items={items}
                     onItemSelection={({ text }) => {
                         setSelected(text);
@@ -64,7 +76,7 @@ const Blocks: React.FC = () => {
                     autoComplete='off'
                     className='quick-strategy__dropdown quick-strategy__leading'
                     type='text'
-                    label={localize(selected)}
+                    // label={localize(selected)}
                     list_items={items}
                     onItemSelection={({ text }) => {
                         setSelected(text);
@@ -77,7 +89,7 @@ const Blocks: React.FC = () => {
                     autoComplete='off'
                     className='quick-strategy__dropdown quick-strategy__leading'
                     type='text'
-                    label={localize(selected)}
+                    // label={localize(selected)}
                     list_items={items}
                     onItemSelection={({ text }) => {
                         setSelected(text);
@@ -88,4 +100,4 @@ const Blocks: React.FC = () => {
     );
 };
 
-export default Blocks;
+export default observer(Blocks);

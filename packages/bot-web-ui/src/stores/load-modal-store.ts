@@ -228,8 +228,8 @@ export default class LoadModalStore implements ILoadModalStore {
         event.target.value = '';
         return true;
     };
-    refreshStrategiesTheme = (stratagy = this.selected_strategy?.xml): void => {
-        load({ block_string: stratagy, drop_event: {}, workspace: this.recent_workspace });
+    refreshStrategiesTheme = (strategy = this.selected_strategy?.xml): void => {
+        load({ block_string: strategy, drop_event: {}, workspace: this.recent_workspace });
     };
     loadFileFromRecent = async (): void => {
         this.is_open_button_loading = true;
@@ -251,8 +251,8 @@ export default class LoadModalStore implements ILoadModalStore {
             workspace: Blockly.derivWorkspace,
         });
         const recent_files = await getSavedWorkspaces();
-        recent_files.map(stratagy => {
-            const { xml, id } = stratagy;
+        recent_files.map(strategy => {
+            const { xml, id } = strategy;
             if (this.selected_strategy.id === id) {
                 Blockly.derivWorkspace.strategy_to_load = xml;
             }

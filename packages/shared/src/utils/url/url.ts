@@ -20,8 +20,24 @@ const host_map = {
 
 let location_url: Location, default_language: string;
 
-export const legacyUrlForLanguage = (target_language: string, url: string = window.location.href) =>
-    url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
+const isUrl = (str: string) => {
+    const pattern = new RegExp(
+        '^(https?:\\/\\/)?' + // protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+            '(\\#[-a-z\\d_]*)?$', // fragment locator
+        'i'
+    );
+    return pattern.test(str);
+};
+
+export const legacyUrlForLanguage = (target_language: string, url: string = window.location.href) => {
+    if (!isUrl(target_language)) {
+        url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
+    }
+};
 
 export const urlForLanguage = (lang: string, url: string = window.location.href) => {
     const current_url = new URL(url);

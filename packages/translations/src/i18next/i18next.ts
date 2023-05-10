@@ -49,19 +49,6 @@ const isStaging = () => /staging-app\.deriv\.com/i.test(window.location.hostname
 
 const isLocal = () => /localhost\.binary\.sx/i.test(window.location.hostname);
 
-const isUrl = (str: string) => {
-    const pattern = new RegExp(
-        '^(https?:\\/\\/)?' + // protocol
-            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
-            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
-            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
-            '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
-            '(\\#[-a-z\\d_]*)?$', // fragment locator
-        'i'
-    );
-    return pattern.test(str);
-};
-
 const isLanguageAvailable = (lang: string) => {
     if (!lang) return false;
 
@@ -80,8 +67,7 @@ export const getInitialLanguage = () => {
     const query_lang = url_params.get('lang');
     const local_storage_language = localStorage.getItem(LANGUAGE_KEY);
 
-    // check if lang param is not url to prevent client side url redirects
-    if (query_lang && Object.keys(ALL_LANGUAGES).includes(query_lang.toUpperCase())) {
+    if (query_lang) {
         const query_lang_uppercase = query_lang.toUpperCase();
         if (isLanguageAvailable(query_lang_uppercase)) {
             localStorage.setItem(LANGUAGE_KEY, query_lang_uppercase);

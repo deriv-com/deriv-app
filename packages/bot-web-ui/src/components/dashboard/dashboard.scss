@@ -450,7 +450,7 @@
     }
 
     &__image {
-        background: $color-grey-2;
+        background: var(--general-section-1);
         text-align: center;
         padding: 0.8rem;
         width: 100%;

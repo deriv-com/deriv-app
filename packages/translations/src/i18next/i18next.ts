@@ -67,24 +67,23 @@ export const getInitialLanguage = () => {
     const query_lang = url_params.get('lang');
     const local_storage_language = localStorage.getItem(LANGUAGE_KEY);
 
-    // Validate and sanitize the lang parameter
-    const match_lang = new RegExp(/[^A-Z_]/);
-
-    if (query_lang && match_lang.test(query_lang)) {
+    if (query_lang) {
         const query_lang_uppercase = query_lang.toUpperCase();
-        if (isLanguageAvailable(query_lang_uppercase)) {
+        const valid_country_code_regex = /^[A-Z]{2}$/;
+        if (valid_country_code_regex.test(query_lang_uppercase)) {
             localStorage.setItem(LANGUAGE_KEY, query_lang_uppercase);
-            return query_lang_uppercase;
+            return encodeURIComponent(query_lang_uppercase);
         }
     }
 
     if (local_storage_language) {
-        if (isLanguageAvailable(local_storage_language)) {
-            return local_storage_language;
+        const local_storage_language_uppercase = local_storage_language.toUpperCase();
+        if (isLanguageAvailable(local_storage_language_uppercase)) {
+            return encodeURIComponent(local_storage_language_uppercase);
         }
     }
 
-    return DEFAULT_LANGUAGE;
+    return encodeURIComponent(DEFAULT_LANGUAGE);
 };
 
 const loadLanguageJson = async (lang: string) => {

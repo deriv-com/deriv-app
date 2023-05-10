@@ -1,191 +1,272 @@
 .wallet-card {
-    $parent: &;
-    box-sizing: border-box;
     position: relative;
     border-radius: 0.8rem;
-    color: $color-black-1 !important;
-
-    &__background {
-        position: absolute;
-        overflow: hidden;
-        z-index: 0;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
-        width: 100%;
-        height: 100%;
-        border-radius: inherit;
-
-        // background-color: lightgreen;
-    }
-
-    &--active {
-        #{$parent}__content {
-            background: $gradient-color-black-5;
-            #{$parent}--dark {
-                background: $gradient-color-white-2;
-            }
-        }
-
-        #{$parent}__background {
-            border: 2px solid $COLOR_CORAL_RED;
-        }
-    }
-
-    &__active-icon {
-        position: absolute;
-        z-index: 2;
-        top: -0.2rem;
-        right: -0.2rem;
-        width: 1.6rem;
-        height: 1.6rem;
-
-        --fill-color1: #{$COLOR_CORAL_RED};
-        --fill-color3: #{$COLOR_WHITE};
-    }
-
-    &__content {
-        position: relative;
-        z-index: 1;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        border-radius: inherit;
-        padding: 1.6rem;
-
-        &:not(.disabled *):hover {
-            background: $gradient-color-black-5;
-        }
-    }
-
-    &__icon-badge {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    &__icon {
-        width: 6.4rem;
-        height: 4rem;
-        display: flex;
-        justify-content: flex-start;
-        border-radius: 0.4rem;
-
-        &--placeholder {
-            background-color: $color-black-1;
-        }
-
-        &--small {
-            width: 4.8rem;
-            height: 3rem;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-            border-radius: $BORDER_RADIUS;
-        }
-    }
-
-    &__jurisdiction-badge {
-        height: fit-content;
-        border: 0.1rem solid $color-black-1;
-        border-radius: 0.2rem;
-        padding-left: 0.4rem;
-        padding-right: 0.4rem;
-        font-size: var(--text-size-xxxs);
-        font-weight: bold;
-    }
-
-    &__wallet_name-balance {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        color: inherit;
-    }
-
-    &__wallet_name {
-        color: inherit;
-        font-size: var(--text-size-xxxs);
-    }
-    &__balance {
-        color: inherit;
-        font-size: var(--text-size-xs);
-        font-weight: bold;
-    }
-
-    &__add-wallet-button {
-        height: 3.2rem;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: center;
-        border: none;
-        border-radius: 0.8rem;
-        background-color: $COLOR_WHITE;
-
-        &-text {
-            font-size: var(--text-size-xs);
-        }
-    }
-
-    &--small {
-        width: 6.4rem !important;
-        height: 4rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: $BORDER_RADIUS;
-
-        #{$parent}__content {
-            padding: 0;
-            align-items: center;
-            justify-content: center;
-        }
-    }
+    box-sizing: border-box;
+    overflow: hidden;
+    background: var(--general-main-2);
 
     &--medium {
         width: 20rem;
         height: 12rem;
+
+        @include mobile {
+            width: 16rem;
+            height: 9.6rem;
+        }
     }
 
     &--large {
         width: 24rem;
         height: 14.4rem;
+
+        @include mobile {
+            width: 21.6rem;
+            height: 12.8rem;
+        }
     }
 
-    &--faded {
-        opacity: 0.72;
+    &__active-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &__background {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__content {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+        padding: 1.6rem;
+        box-sizing: border-box;
+        border-radius: inherit;
+        // border: 2px solid var(--text-red);
+
+        &--active {
+            border: 2px solid var(--text-red);
+        }
+    }
+
+    &__top-wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    &__bottom-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        width: 100%;
     }
 
     &--disabled {
         opacity: 0.32;
     }
 
-    &--dark {
-        color: $COLOR_WHITE !important;
-
-        #{$parent}__content {
-            &:not(.disabled *):hover {
-                background: $gradient-color-white-2;
-            }
-        }
-
-        #{$parent}__background {
-            // background-color: darkgreen;
-        }
-    }
-
-    &:not(&--small) {
-        #{$parent}__active-icon {
-            position: absolute;
-            z-index: 3;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 3.2rem;
-            height: 3.2rem;
-        }
+    &--faded {
+        opacity: 0.72;
     }
 }
+
+// .wallet-card {
+//     $parent: &;
+//     box-sizing: border-box;
+//     position: relative;
+//     border-radius: 0.8rem;
+//     color: $color-black-1 !important;
+
+//     &__background {
+//         position: absolute;
+//         overflow: hidden;
+//         z-index: 0;
+//         top: 0;
+//         bottom: 0;
+//         left: 0;
+//         right: 0;
+//         width: 100%;
+//         height: 100%;
+//         border-radius: inherit;
+
+//         // background-color: lightgreen;
+//     }
+
+//     &--active {
+//         #{$parent}__content {
+//             background: $gradient-color-black-5;
+//             #{$parent}--dark {
+//                 background: $gradient-color-white-2;
+//             }
+//         }
+
+//         #{$parent}__background {
+//             border: 2px solid $COLOR_CORAL_RED;
+//         }
+//     }
+
+//     &__active-icon {
+//         position: absolute;
+//         z-index: 2;
+//         top: -0.2rem;
+//         right: -0.2rem;
+//         width: 1.6rem;
+//         height: 1.6rem;
+
+//         --fill-color1: #{$COLOR_CORAL_RED};
+//         --fill-color3: #{$COLOR_WHITE};
+//     }
+
+//     &__content {
+//         position: relative;
+//         z-index: 1;
+//         width: 100%;
+//         height: 100%;
+//         display: flex;
+//         flex-direction: column;
+//         justify-content: space-between;
+//         border-radius: inherit;
+//         padding: 1.6rem;
+
+//         &:not(.disabled *):hover {
+//             background: $gradient-color-black-5;
+//         }
+//     }
+
+//     &__icon-badge {
+//         display: flex;
+//         justify-content: space-between;
+//     }
+
+//     &__icon {
+//         width: 6.4rem;
+//         height: 4rem;
+//         display: flex;
+//         justify-content: flex-start;
+//         border-radius: 0.4rem;
+
+//         &--placeholder {
+//             background-color: $color-black-1;
+//         }
+
+//         &--small {
+//             width: 4.8rem;
+//             height: 3rem;
+//             display: flex;
+//             flex-direction: row;
+//             align-items: center;
+//             justify-content: center;
+//             border-radius: $BORDER_RADIUS;
+//         }
+//     }
+
+//     &__jurisdiction-badge {
+//         height: fit-content;
+//         border: 0.1rem solid $color-black-1;
+//         border-radius: 0.2rem;
+//         padding-left: 0.4rem;
+//         padding-right: 0.4rem;
+//         font-size: var(--text-size-xxxs);
+//         font-weight: bold;
+//     }
+
+//     &__wallet_name-balance {
+//         display: flex;
+//         flex-direction: column;
+//         justify-content: flex-start;
+//         color: inherit;
+//     }
+
+//     &__wallet_name {
+//         color: inherit;
+//         font-size: var(--text-size-xxxs);
+//     }
+//     &__balance {
+//         color: inherit;
+//         font-size: var(--text-size-xs);
+//         font-weight: bold;
+//     }
+
+//     &__add-wallet-button {
+//         height: 3.2rem;
+//         display: flex;
+//         flex-direction: row;
+//         align-items: center;
+//         justify-content: center;
+//         border: none;
+//         border-radius: 0.8rem;
+//         background-color: $COLOR_WHITE;
+
+//         &-text {
+//             font-size: var(--text-size-xs);
+//         }
+//     }
+
+//     &--small {
+//         width: 6.4rem !important;
+//         height: 4rem;
+//         display: flex;
+//         justify-content: center;
+//         align-items: center;
+//         border-radius: $BORDER_RADIUS;
+
+//         #{$parent}__content {
+//             padding: 0;
+//             align-items: center;
+//             justify-content: center;
+//         }
+//     }
+
+//     &--medium {
+//         width: 20rem;
+//         height: 12rem;
+//     }
+
+//     &--large {
+//         width: 24rem;
+//         height: 14.4rem;
+//     }
+
+//     &--faded {
+//         opacity: 0.72;
+//     }
+
+//     &--disabled {
+//         opacity: 0.32;
+//     }
+
+//     &--dark {
+//         color: $COLOR_WHITE !important;
+
+//         #{$parent}__content {
+//             &:not(.disabled *):hover {
+//                 background: $gradient-color-white-2;
+//             }
+//         }
+
+//         #{$parent}__background {
+//             // background-color: darkgreen;
+//         }
+//     }
+
+//     &:not(&--small) {
+//         #{$parent}__active-icon {
+//             position: absolute;
+//             z-index: 3;
+//             top: 50%;
+//             left: 50%;
+//             transform: translate(-50%, -50%);
+//             width: 3.2rem;
+//             height: 3.2rem;
+//         }
+//     }
+// }

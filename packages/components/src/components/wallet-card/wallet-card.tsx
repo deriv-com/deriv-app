@@ -3,25 +3,28 @@ import './wallet-card.scss';
 import { localize } from '@deriv/translations';
 import Icon from '../icon';
 import Text from '../text';
+import Button from '../button';
 import classNames from 'classnames';
+import Badge from '../badge';
+import { GradientBackground } from '../gradient-background';
 
 type WalletCardProps = {
     active?: boolean;
-    add_wallet?: boolean;
+    has_add_button?: boolean;
     balance?: string;
     currency?: string;
     dark?: boolean;
     disabled?: boolean;
     faded?: boolean;
-    icon?: string;
-    jurisdiction?: string;
+    icon?: JSX.Element;
+    jurisdiction: string;
     size?: 'small' | 'medium' | 'large';
     wallet_name?: string;
 };
 
 const WalletCard = ({
     active,
-    add_wallet,
+    has_add_button,
     balance,
     currency,
     dark,
@@ -32,6 +35,56 @@ const WalletCard = ({
     size,
     wallet_name,
 }: WalletCardProps) => {
+    return (
+        <div
+            className={classNames('wallet-card', {
+                // 'wallet-card--active': active && !disabled,
+                'wallet-card--add-wallet': has_add_button,
+                'wallet-card--disabled': disabled,
+                'wallet-card--dark': dark,
+                'wallet-card--faded': faded,
+                [`wallet-card--${size}`]: size,
+            })}
+        >
+            <div className='wallet-card__background'>
+                <GradientBackground
+                    color='var(--general-main-2)'
+                    primary='#F44336'
+                    secondary='#283991'
+                    tertiary='#F44336'
+                />
+            </div>
+            <Icon
+                className='wallet-card__active-icon'
+                custom_color='var(--text-red)'
+                data_testid='ic-checkmark-circle'
+                icon='IcCheckmarkCircle'
+                size={32}
+            />
+            <div className={`wallet-card__content wallet-card__content--active`}>
+                <div className='wallet-card__top-wrapper'>
+                    {icon}
+                    <Badge custom_color='var(--text-prominent' label={jurisdiction} type='bordered' />
+                </div>
+                <div className='wallet-card__bottom-wrapper'>
+                    {has_add_button && !active ? (
+                        <Button>
+                            <Icon icon='IcAddRounded' size={12} className='wallet-card__add-wallet-button-icon' />+ Add
+                        </Button>
+                    ) : (
+                        <React.Fragment>
+                            <Text color='prominent' size='xxxs'>
+                                USD Wallet
+                            </Text>
+                            <Text color='prominent' weight='bold' size='xs'>
+                                0.00 USD
+                            </Text>
+                        </React.Fragment>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
     return (
         <div
             className={classNames('wallet-card', {
@@ -66,7 +119,7 @@ const WalletCard = ({
                         </div>
                         <div className='wallet-card__active' />
                         <div className='wallet-card__wallet_name-balance'>
-                            {add_wallet ? (
+                            {add_wallet && !active ? (
                                 <button className='wallet-card__add-wallet-button'>
                                     <Icon
                                         icon='IcAddRounded'

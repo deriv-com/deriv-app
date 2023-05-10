@@ -20,7 +20,7 @@ ERRORS=0
 # Checks that every file in the src directory has a corresponding test file. If not, it prints an error message.
 for file in $SRC_FILES
     do
-        if [[ ! "$TEST_FILES" =~ "$file" ]]; then
+        if [[ ! "$TEST_FILES" =~ "${file%.*}" ]]; then
             # If the file is not in the list of test files, print an error message.
             echo "No test file found for: $SRC_DIR/$file"
 

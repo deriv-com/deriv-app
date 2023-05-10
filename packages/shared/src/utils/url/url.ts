@@ -30,8 +30,12 @@ const isUrl = (str: string) => {
     return true;
 };
 
-export const legacyUrlForLanguage = (target_language: string, url: string = window.location.href) =>
-    url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
+export const legacyUrlForLanguage = (target_language: string, url: string = window.location.href) => {
+    if (isUrl(default_language)) {
+        return url.replace(new RegExp(`/EN/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
+    }
+    return url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
+};
 
 export const urlForLanguage = (lang: string, url: string = window.location.href) => {
     const current_url = new URL(url);

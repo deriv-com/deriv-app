@@ -1,10 +1,7 @@
 import * as SocketCache from '_common/base/socket_cache';
-import { reject } from 'lodash';
-
 import { action, computed, makeObservable, observable } from 'mobx';
 import { changeLanguage, getAllowedLanguages } from '@deriv/translations';
 import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
-
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
 import ServerTime from '_common/base/server_time';
@@ -111,7 +108,7 @@ export default class CommonStore extends BaseStore {
             this.is_language_changing = true;
             this.changing_language_timer_id = setTimeout(() => {
                 this.is_language_changing = false;
-            }, 10000);
+            }, 2500);
         }
     }
 
@@ -120,8 +117,8 @@ export default class CommonStore extends BaseStore {
         if (key === 'EN') {
             window.localStorage.setItem('i18n_language', key);
         }
-
-        return new Promise(resolve => {
+        await WS.wait('authorize');
+        return new Promise((resolve, reject) => {
             WS.setSettings({
                 set_settings: 1,
                 preferred_language: key,
@@ -137,6 +134,7 @@ export default class CommonStore extends BaseStore {
                     await changeLanguage(key, () => {
                         this.changeCurrentLanguage(key);
                         BinarySocket.closeAndOpenNewConnection(key);
+                        this.root_store.client.setIsAuthorize(false);
                     });
                     resolve();
                 } catch (e) {

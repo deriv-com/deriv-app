@@ -24,6 +24,6 @@
         "skipDefaultLibCheck": true, // Skip type checking .d.ts files that are included with TypeScript
         "downlevelIteration": true
     },
-    "include": ["utils.d.ts"],
+    "files": ["./types/global.d.ts", "./types/utils.d.ts", "./types/svg.d.ts"],
     "exclude": ["node_modules", "build", "**/*.js", "**/*.jsx"] // *** The files to not type check ***
 }

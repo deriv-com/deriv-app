@@ -128,7 +128,7 @@ type TClientStore = {
     fetchResidenceList: () => Promise<ResidenceList>;
     fetchStatesList: () => Promise<StatesList>;
     getChangeableFields: () => string[];
-    accounts: { [k: string]: TAccount };
+    accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
     account_settings: GetSettings;
     active_account_landing_company: string;
@@ -235,6 +235,7 @@ type TClientStore = {
     has_changed_two_fa: boolean;
     setTwoFAChangedStatus: (status: boolean) => void;
     is_fully_authenticated: boolean;
+    real_account_creation_unlock_date: number;
 };
 
 type TCommonStoreError = {
@@ -295,6 +296,7 @@ type TUiStore = {
     is_ready_to_deposit_modal_visible: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
+    setShouldShowCooldownModal: (value: boolean) => void;
 };
 
 type TMenuStore = {

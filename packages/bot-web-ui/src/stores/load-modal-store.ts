@@ -1,8 +1,16 @@
-import { config, getSavedWorkspaces, load, removeExistingWorkspace, save_types, setColors } from '@deriv/bot-skeleton';
+import {
+    config,
+    getSavedWorkspaces,
+    load,
+    removeExistingWorkspace,
+    save_types,
+    setColors,
+    observer as globalObserver,
+} from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { tabs_title, clearInjectionDiv } from 'Constants/load-modal';
-import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import { action, computed, makeObservable, observable, reaction, autorun } from 'mobx';
 import React from 'react';
 import RootStore from './root-store';
 
@@ -26,6 +34,8 @@ interface ILoadModalStore {
     selected_strategy_id: string[] | string | undefined;
     is_strategy_removed: boolean;
     is_delete_modal_open: boolean;
+    current_workspace_id: string;
+    getSelectedStrategyID: (current_workspace_id: string) => void;
     refreshStrategies: () => void;
     refreshStrategiesTheme: () => void;
     preview_workspace: () => void;
@@ -71,9 +81,11 @@ export default class LoadModalStore implements ILoadModalStore {
             recent_strategies: observable,
             dashboard_strategies: observable,
             selected_strategy_id: observable,
+            current_workspace_id: observable,
             preview_workspace: computed,
             selected_strategy: computed,
             tab_name: computed,
+            getSelectedStrategyID: action.bound,
             refreshStrategies: action.bound,
             refreshStrategiesTheme: action.bound,
             handleFileChange: action.bound,
@@ -114,6 +126,19 @@ export default class LoadModalStore implements ILoadModalStore {
                 }
             }
         );
+
+        const loadStrategies = async () => {
+            try {
+                const timeout = (ms: number) => {
+                    return new Promise(resolve => setTimeout(resolve, ms));
+                };
+                await timeout(1000);
+                this.setDashboardStrategies((await getSavedWorkspaces()) || []);
+            } catch (error) {
+                globalObserver.emit('Error', error);
+            }
+        };
+        loadStrategies();
     }
 
     recent_workspace;
@@ -131,6 +156,7 @@ export default class LoadModalStore implements ILoadModalStore {
     is_strategy_loaded = false;
     is_delete_modal_open = false;
     is_strategy_removed = false;
+    current_workspace_id = '';
 
     get preview_workspace() {
         if (this.tab_name === tabs_title.TAB_LOCAL) return this.local_workspace;
@@ -154,6 +180,10 @@ export default class LoadModalStore implements ILoadModalStore {
         if (this.active_index === 2) return tabs_title.TAB_GOOGLE;
         return '';
     }
+
+    getSelectedStrategyID = (current_workspace_id: string) => {
+        this.current_workspace_id = current_workspace_id;
+    };
 
     setDashboardStrategies(strategies: Array<TWorkspace>) {
         this.dashboard_strategies = strategies;
@@ -198,8 +228,8 @@ export default class LoadModalStore implements ILoadModalStore {
         event.target.value = '';
         return true;
     };
-    refreshStrategiesTheme = (stratagy = this.selected_strategy?.xml): void => {
-        load({ block_string: stratagy, drop_event: {}, workspace: this.recent_workspace });
+    refreshStrategiesTheme = (strategy = this.selected_strategy?.xml): void => {
+        load({ block_string: strategy, drop_event: {}, workspace: this.recent_workspace });
     };
     loadFileFromRecent = async (): void => {
         this.is_open_button_loading = true;
@@ -219,6 +249,13 @@ export default class LoadModalStore implements ILoadModalStore {
             strategy_id: this.selected_strategy.id,
             file_name: this.selected_strategy.name,
             workspace: Blockly.derivWorkspace,
+        });
+        const recent_files = await getSavedWorkspaces();
+        recent_files.map(strategy => {
+            const { xml, id } = strategy;
+            if (this.selected_strategy.id === id) {
+                Blockly.derivWorkspace.strategy_to_load = xml;
+            }
         });
         this.is_open_button_loading = false;
     };
@@ -312,6 +349,7 @@ export default class LoadModalStore implements ILoadModalStore {
 
     previewRecentStrategy = (workspace_id: string): void => {
         this.setSelectedStrategyId(workspace_id);
+        if (!workspace_id) this.setSelectedStrategyId(this.current_workspace_id);
         if (!this.selected_strategy) {
             return;
         }

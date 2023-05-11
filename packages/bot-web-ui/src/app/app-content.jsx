@@ -32,6 +32,7 @@ const AppContent = observer(() => {
     // TODO: Remove this when connect is removed completely
     const combinedStore = { ...DBotStores, core: { ...RootStore } };
 
+    //Do not remove this is for the bot-skeleton package to load blockly with the theme
     React.useEffect(() => {
         setColors(is_dark_mode_on);
     }, [is_dark_mode_on]);

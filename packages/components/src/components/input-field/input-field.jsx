@@ -20,7 +20,6 @@ const InputField = ({
     current_focus,
     data_tip,
     data_value,
-    display_as = 'input',
     decimal_point_change,
     error_messages,
     error_message_alignment,
@@ -222,51 +221,46 @@ const InputField = ({
 
     const is_increment_input = is_incrementable && (type === 'number' || type === 'tel');
 
-    const field =
-        display_as !== 'input' ? (
-            <Text className={classNames('input', classNameInput)} onClick={onClick} as={display_as}>
-                {display_value}
-            </Text>
-        ) : (
-            <Input
-                ariaLabel={ariaLabel}
-                changeValue={changeValue}
-                checked={checked}
-                current_focus={current_focus}
-                className={classNames(
-                    is_increment_input ? 'dc-input-wrapper__input' : '',
-                    inline_prefix ? 'input--has-inline-prefix' : '',
-                    'input',
-                    { 'input--error': has_error },
-                    classNameInput
-                )}
-                classNameDynamicSuffix={classNameDynamicSuffix}
-                classNameInlinePrefix={classNameInlinePrefix}
-                data_tip={data_tip}
-                data_testid={data_testid}
-                data_value={data_value}
-                display_value={display_value}
-                fractional_digits={fractional_digits}
-                has_error={has_error}
-                id={id}
-                inline_prefix={inline_prefix}
-                is_autocomplete_disabled={is_autocomplete_disabled}
-                is_disabled={is_disabled}
-                is_hj_whitelisted={is_hj_whitelisted}
-                is_incrementable={is_increment_input}
-                is_read_only={is_read_only}
-                max_length={max_length}
-                name={name}
-                onBlur={onBlur}
-                onClick={onClick}
-                onKeyPressed={onKeyPressed}
-                placeholder={placeholder}
-                required={required}
-                setCurrentFocus={setCurrentFocus}
-                type={type}
-                inputmode={inputmode}
-            />
-        );
+    const input = (
+        <Input
+            ariaLabel={ariaLabel}
+            changeValue={changeValue}
+            checked={checked}
+            current_focus={current_focus}
+            className={classNames(
+                is_increment_input ? 'dc-input-wrapper__input' : '',
+                inline_prefix ? 'input--has-inline-prefix' : '',
+                'input',
+                { 'input--error': has_error },
+                classNameInput
+            )}
+            classNameDynamicSuffix={classNameDynamicSuffix}
+            classNameInlinePrefix={classNameInlinePrefix}
+            data_tip={data_tip}
+            data_testid={data_testid}
+            data_value={data_value}
+            display_value={display_value}
+            fractional_digits={fractional_digits}
+            has_error={has_error}
+            id={id}
+            inline_prefix={inline_prefix}
+            is_autocomplete_disabled={is_autocomplete_disabled}
+            is_disabled={is_disabled}
+            is_hj_whitelisted={is_hj_whitelisted}
+            is_incrementable={is_increment_input}
+            is_read_only={is_read_only}
+            max_length={max_length}
+            name={name}
+            onBlur={onBlur}
+            onClick={onClick}
+            onKeyPressed={onKeyPressed}
+            placeholder={placeholder}
+            required={required}
+            setCurrentFocus={setCurrentFocus}
+            type={type}
+            inputmode={inputmode}
+        />
+    );
 
     const increment_buttons = (
         <IncrementButtons
@@ -311,10 +305,10 @@ const InputField = ({
                     )}
                 >
                     {increment_buttons}
-                    {field}
+                    {input}
                 </div>
             ) : (
-                field
+                input
             )}
         </Tooltip>
     );
@@ -350,7 +344,6 @@ InputField.propTypes = {
     classNameWrapper: PropTypes.string, // CSS class for the component wrapper
     currency: PropTypes.string,
     current_focus: PropTypes.string,
-    display_as: PropTypes.string,
     decimal_point_change: PropTypes.number, // Specify which decimal point must be updated when the increment/decrement button is pressed
     error_messages: PropTypes.array,
     error_message_alignment: PropTypes.string,

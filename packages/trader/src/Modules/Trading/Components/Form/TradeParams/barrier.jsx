@@ -182,14 +182,13 @@ const Barrier = ({
                         'barrier__fields-barriers-input',
                         `barrier__fields-barriers-${input_class}-input`
                     )}
-                    current_focus={current_focus}
-                    display_as='div'
                     format={format}
                     onChange={onChange}
                     onClick={onClick}
                     is_float
                     is_signed
                     setCurrentFocus={setCurrentFocus}
+                    is_read_only
                 />
                 {barrier_count === 2 && (
                     <LabeledQuantityInputMobile
@@ -207,14 +206,13 @@ const Barrier = ({
                             'barrier__fields-barriers-input',
                             `barrier__fields-barriers-${input_class}-input`
                         )}
-                        current_focus={current_focus}
-                        display_as='div'
                         format={format}
                         onChange={onChange}
                         onClick={onClick}
                         is_float
                         is_signed
                         setCurrentFocus={setCurrentFocus}
+                        is_read_only
                     />
                 )}
             </MobileWrapper>

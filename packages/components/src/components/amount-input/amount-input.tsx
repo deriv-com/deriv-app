@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Input from '../input';
+import Text from '../text';
 
 type TAmountInput = {
     currency: string;

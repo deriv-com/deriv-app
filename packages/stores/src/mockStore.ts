@@ -181,7 +181,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 trading_platform_mt5_password_reset: '',
             },
             email: '',
-            fetchStatesList: jest.fn(() => Promise.resolve([])),
+            fetchStatesList: jest.fn(),
             setVerificationCode: jest.fn(),
             updateAccountStatus: jest.fn(),
             is_authentication_needed: false,

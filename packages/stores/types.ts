@@ -1,4 +1,11 @@
-import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
+import type {
+    Authorize,
+    DetailsOfEachMT5Loginid,
+    GetAccountStatus,
+    GetLimits,
+    LogOutResponse,
+    StatesListResponse,
+} from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
 import { ExchangeRatesStore } from './src/stores';
 import { TLocationList } from '../shared/src/utils/location';
@@ -206,7 +213,7 @@ type TClientStore = {
         trading_platform_mt5_password_reset: string;
     };
     email: string;
-    fetchStatesList: () => Promise<unknown>;
+    fetchStatesList: () => Promise<StatesListResponse>;
     setVerificationCode: (code: string, action: string) => void;
     upgradeable_currencies: TCurrencyConfig[];
     updateAccountStatus: () => Promise<void>;

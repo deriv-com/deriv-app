@@ -58,4 +58,4 @@ const WalletsIntro = ({ is_eu, current_step }: TWalletsIntroComponent) => (
     </Div100vhContainer>
 );
 
-export default WalletsIntro;
+export { WalletsIntro, WalletsIntroComponent };

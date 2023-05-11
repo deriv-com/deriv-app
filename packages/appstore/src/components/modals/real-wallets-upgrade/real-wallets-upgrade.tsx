@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
-import WalletsIntro from './components/wallets-intro/wallets-intro';
+import { WalletsIntro } from './components/wallets-intro/wallets-intro';
 import ReadyToUpgradeWallets from './components/ready-to-update-wallets';
 
 const RealWalletsUpgrade = () => {
@@ -42,7 +42,7 @@ const RealWalletsUpgrade = () => {
         setIsDisabled(!is_disabled);
     };
 
-    // footer buttons here ( ˶ˆᗜˆ˵ )
+    // Footer buttons right here fellas (͠≖ ͜ʖ͠≖)👌
     const DefaultFooter = (
         <React.Fragment>
             <Button secondary large className='wallet-steps__footer-button' onClick={handleBack}>
@@ -77,7 +77,7 @@ const RealWalletsUpgrade = () => {
     );
 
     const WalletSteps = [
-        //  Feel free to add components here or anywhere in between ( ˶ˆᗜˆ˵ )
+        //  Feel free to add components here or anywhere in between 💪(◡̀_◡́҂)
         {
             name: 'intro_wallets',
             component: <WalletsIntro is_eu={is_eu} current_step={0} />,

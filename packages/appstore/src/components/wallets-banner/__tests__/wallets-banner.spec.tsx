@@ -1,11 +1,10 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { isMobile } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { TImageTestID } from 'Assets/svgs/wallets/image-types';
-import WalletsBanner from '../wallets-banner';
 import WalletsBannerUpgrade from '../wallets-banner-upgrade';
 import WalletsBannerUpgrading from '../wallets-banner-upgrading';
 import WalletsBannerReady from '../wallets-banner-ready';

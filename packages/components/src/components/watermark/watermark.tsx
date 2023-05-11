@@ -3,10 +3,10 @@ import './watermark.scss';
 
 type TProps = {
     image: CSSProperties['backgroundImage'];
-    opacity: CSSProperties['opacity'];
+    opacity?: CSSProperties['opacity'];
 };
 
-const Watermark: React.FC<React.PropsWithChildren<TProps>> = ({ image, opacity }) => (
+const Watermark: React.FC<React.PropsWithChildren<TProps>> = ({ image, opacity = 0.16 }) => (
     <div className='watermark' style={{ backgroundImage: image, opacity }} />
 );
 

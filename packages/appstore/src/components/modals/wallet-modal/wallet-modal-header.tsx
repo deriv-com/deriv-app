@@ -2,7 +2,7 @@ import React from 'react';
 import { DemoLight, DemoDark } from '../../../public/images/index';
 import classNames from 'classnames';
 import { Badge, GradientBackground, Icon, Text, Watermark } from '@deriv/components';
-import { formatMoney } from '@deriv/shared';
+import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getWalletCurrencyIcon } from 'Constants/utils';
 import { getWalletModalBackgrounds } from 'Constants/wallet-backgrounds';
@@ -30,10 +30,21 @@ const WalletModalHeader = ({
 }: TWalletModalHeaderProps) => {
     const header_class_name = 'wallet-modal__header';
 
+    const wallet_title = React.useMemo(() => {
+        return `${is_demo ? localize('Demo') : ''} ${getCurrencyDisplayCode(currency)} ${localize('Wallet')}`;
+    }, [currency, is_demo]);
+
     const getBadgeLabel = React.useCallback(() => {
         if (is_demo) return localize('Demo');
-        if (['svg', 'malta'].includes(shortcode)) return shortcode.toUpperCase();
-        return '';
+        switch (shortcode) {
+            case 'svg':
+                return shortcode.toUpperCase();
+            case 'malta':
+            case 'maltainvest':
+                return 'malta'.toUpperCase();
+            default:
+                return '';
+        }
     }, [is_demo, shortcode]);
 
     const getCloseIcon = React.useCallback(() => {
@@ -105,7 +116,7 @@ const WalletModalHeader = ({
                                 as='span'
                                 className={getStylesByClassName(`${header_class_name}__title-wallet`)}
                             >
-                                {is_demo ? localize('Demo') : ''} {currency} {localize('Wallet')}
+                                {wallet_title}
                             </Text>
                             {is_demo ? (
                                 <Badge type='contained' background_color='blue' label={getBadgeLabel()} />
@@ -120,7 +131,7 @@ const WalletModalHeader = ({
                         weight='bold'
                         className={getStylesByClassName(`${header_class_name}__title-balance`)}
                     >
-                        {formatMoney(currency, balance, true)} {currency}
+                        {formatMoney(currency, balance, true)} {getCurrencyDisplayCode(currency)}
                     </Text>
                 </div>
                 {is_wallet_name_visible && (

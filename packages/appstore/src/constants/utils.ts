@@ -32,6 +32,8 @@ export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean
             return 'IcWalletCurrencyEur';
         case 'AUD':
             return 'IcWalletCurrencyAud';
+        case 'GBP':
+            return 'IcWalletCurrencyGbp';
         case 'BTC':
             return is_dark_mode_on ? 'IcWalletBitcoinDark' : 'IcWalletBitcoinLight';
         case 'ETH':

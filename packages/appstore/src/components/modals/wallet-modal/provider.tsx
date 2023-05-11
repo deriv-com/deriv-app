@@ -49,8 +49,8 @@ export const getCashierOptions = (type: TWalletType) => {
                 },
                 {
                     icon: 'IcAdd',
-                    label: localize('Reset balanace'),
-                    content: <p>Reset balanace</p>,
+                    label: localize('Reset balance'),
+                    content: <p>Reset balance</p>,
                 },
             ];
         case 'p2p':

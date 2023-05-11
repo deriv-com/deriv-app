@@ -1,6 +1,5 @@
 import React from 'react';
 import './wallet-card.scss';
-import { localize } from '@deriv/translations';
 import Icon from '../icon';
 import Text from '../text';
 import Button from '../button';
@@ -17,8 +16,8 @@ type WalletCardProps = {
     dark?: boolean;
     disabled?: boolean;
     faded?: boolean;
+    icon: JSX.Element;
     jurisdiction: string;
-    renderIcon: () => JSX.Element | undefined;
     size?: 'small' | 'medium' | 'large';
     wallet_name?: string;
 };
@@ -30,8 +29,8 @@ const WalletCard = ({
     dark,
     disabled,
     faded,
+    icon,
     jurisdiction,
-    renderIcon,
     size,
     wallet_name,
 }: WalletCardProps) => {
@@ -47,7 +46,13 @@ const WalletCard = ({
         >
             {size === 'small' ? (
                 <div className='wallet-card__small-container'>
-                    <WalletIcon icon='IcCurrencyUsd' iconSize={24} primaryColor='#F44336' secondaryColor='#283991' />
+                    <div
+                        className={classNames('wallet-card__small-container-overlay', {
+                            'wallet-card__small-container-overlay--active': active && !disabled,
+                            'wallet-card__small-container-overlay--hover': !disabled,
+                        })}
+                    />
+                    <WalletIcon icon={icon} primaryColor='#F44336' secondaryColor='#283991' />
                 </div>
             ) : (
                 <GradientBackground
@@ -63,7 +68,7 @@ const WalletCard = ({
                         })}
                     >
                         <div className='wallet-card__top-wrapper'>
-                            {renderIcon()}
+                            {icon}
                             <Badge custom_color='var(--text-prominent' label={jurisdiction} type='bordered' />
                         </div>
                         <div className='wallet-card__bottom-wrapper'>

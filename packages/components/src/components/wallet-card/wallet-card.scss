@@ -79,7 +79,22 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        outline: 2px solid var(--text-red);
-        border-radius: 0.4rem;
+
+        &-overlay {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            border-radius: 0.4rem;
+
+            &--active {
+                outline: 2px solid var(--text-red);
+                background: var(--wallets-card-active-gradient-background);
+            }
+
+            &--hover:hover {
+                background: var(--wallets-card-active-gradient-background);
+            }
+        }
     }
 }

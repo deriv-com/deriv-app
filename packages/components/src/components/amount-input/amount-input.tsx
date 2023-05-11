@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { isMobile } from '@deriv/shared';
 import Input from '../input';
 import Text from '../text';
 
@@ -39,7 +40,7 @@ const AmountInput = ({
 
     return (
         <div className='amount-input-wrapper'>
-            <Text size={'xs'}>{label}</Text>
+            <Text size={isMobile() ? 'xxs' : 'xs'}>{label}</Text>
             <div className='amount-input-container'>
                 <Input
                     className='amount-input'

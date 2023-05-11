@@ -1,5 +1,5 @@
 import React from 'react';
-import { Checkbox, Text, Icon, Div100vhContainer } from '@deriv/components';
+import { Checkbox, Text, Icon } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { TReadyToUpgradeWallets } from 'Types';
@@ -12,7 +12,7 @@ const ReadyToUpgradeWallets = ({ is_eu, toggleCheckbox }: TReadyToUpgradeWallets
     const form_line_height = isMobile() ? 'm' : 'l';
 
     return (
-        <Div100vhContainer className='wallet-steps__content' is_disabled={!isMobile()} height_offset='18.5rem'>
+        <div className='wallet-steps__content'>
             <WalletsImage image='ready_to_update_wallets_image' className='wallet-steps__image' />
             <div className='wallet-steps__text'>
                 <Text size={isMobile() ? 'xsm' : 'm'} align='center' weight='bold' line_height={form_line_height}>
@@ -51,7 +51,7 @@ const ReadyToUpgradeWallets = ({ is_eu, toggleCheckbox }: TReadyToUpgradeWallets
                 className='wallet-steps__checkbox'
                 label={localize('I understand and agree to upgrade to Wallets.')}
             />
-        </Div100vhContainer>
+        </div>
     );
 };
 

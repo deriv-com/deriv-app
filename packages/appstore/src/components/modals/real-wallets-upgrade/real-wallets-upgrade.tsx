@@ -5,6 +5,7 @@ import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { WalletsIntro } from './components/wallets-intro/wallets-intro';
 import ReadyToUpgradeWallets from './components/ready-to-update-wallets';
+import './real-wallets-upgrade.scss';
 
 const RealWalletsUpgrade = observer(() => {
     const { traders_hub } = useStore();
@@ -43,36 +44,36 @@ const RealWalletsUpgrade = observer(() => {
 
     // Footer buttons right here fellas (͠≖ ͜ʖ͠≖)👌
     const DefaultFooter = (
-        <React.Fragment>
+        <Modal.Footer className='wallet-steps__footer' has_separator>
             <Button secondary large className='wallet-steps__footer-button' onClick={handleBack}>
                 {localize('Back')}
             </Button>
             <Button primary large className='wallet-steps__footer-button' onClick={handleNext}>
                 {localize('Next')}
             </Button>
-        </React.Fragment>
+        </Modal.Footer>
     );
 
     const InitialFooter = (
-        <React.Fragment>
+        <Modal.Footer className='wallet-steps__footer' has_separator>
             <Button secondary large className='wallet-steps__footer-button' onClick={handleClose}>
                 {localize('Maybe later')}
             </Button>
             <Button primary large className='wallet-steps__footer-button' onClick={handleNext}>
                 {localize('Next')}
             </Button>
-        </React.Fragment>
+        </Modal.Footer>
     );
 
     const EndFooter = (
-        <React.Fragment>
+        <Modal.Footer className='wallet-steps__footer' has_separator>
             <Button secondary large className='wallet-steps__footer-button' onClick={handleBack}>
                 {localize('Back')}
             </Button>
             <Button primary large className='wallet-steps__footer-button' disabled={!is_disabled} onClick={handleClose}>
                 {localize('Upgrade to Wallets')}
             </Button>
-        </React.Fragment>
+        </Modal.Footer>
     );
 
     const WalletSteps = [
@@ -115,9 +116,7 @@ const RealWalletsUpgrade = observer(() => {
                             title=' '
                         >
                             <Modal.Body className='wallet-steps'>{ModalContent}</Modal.Body>
-                            <Modal.Footer className='wallet-steps__footer' has_separator>
-                                {ModalFooter}
-                            </Modal.Footer>
+                            <React.Fragment>{ModalFooter}</React.Fragment>
                         </Modal>
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -126,11 +125,9 @@ const RealWalletsUpgrade = observer(() => {
                             visible={is_real_wallets_upgrade_on}
                             onClose={handleClose}
                             wrapper_classname='wallet-steps'
+                            footer={ModalFooter}
                         >
                             <Modal.Body>{ModalContent}</Modal.Body>
-                            <Modal.Footer className='wallet-steps__footer' has_separator>
-                                {ModalFooter}
-                            </Modal.Footer>
                         </MobileDialog>
                     </MobileWrapper>
                 </React.Fragment>

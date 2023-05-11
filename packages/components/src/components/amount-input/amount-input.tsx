@@ -6,7 +6,7 @@ type TAmountInput = {
     decimalPoints?: number;
     disabled?: boolean;
     initialValue?: number;
-    label?: React.ReactNode;
+    label?: string;
     maxDigits: number;
     onChange?: (value: number) => void;
 };

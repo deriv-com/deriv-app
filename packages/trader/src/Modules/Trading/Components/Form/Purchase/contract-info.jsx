@@ -12,14 +12,14 @@ export const ValueMovement = ({
     currency,
     has_increased,
     is_vanilla,
-    current_value,
+    value,
     show_currency = true,
 }) => (
     <div className='strike--value-container'>
         <div className={classNames('trade-container__price-info-value', { 'strike--info': is_vanilla })}>
             {!has_error_or_not_loaded && (
                 <Money
-                    amount={proposal_info?.obj_contract_basis?.value || current_value}
+                    amount={proposal_info?.obj_contract_basis?.value || value}
                     className={classNames('trade-container__price-info-currency', {
                         'strike--info__value': is_vanilla,
                     })}

@@ -21,19 +21,17 @@ const Barrier = ({
     onChange,
     setCurrentFocus,
     validation_errors,
+    trade_types,
 }) => {
     const [show_modal, setShowModal] = React.useState(false);
-    const contract_type_info =
-        (proposal_info?.CALL?.spot && proposal_info?.CALL) ||
-        proposal_info?.PUT ||
-        (proposal_info?.NOTOUCH?.spot && proposal_info?.NOTOUCH) ||
-        proposal_info?.ONETOUCH;
-    const current_price = contract_type_info?.spot || '';
-    const last_price = usePrevious(current_price);
-    const current_price_has_increased = current_price > last_price;
-    const barrier_price = contract_type_info?.barrier || '';
+    const type_with_current_spot = Object.keys(trade_types).find(type => proposal_info?.[type]?.spot);
+    const contract_info = proposal_info?.[type_with_current_spot];
+    const current_spot = contract_info?.spot || '';
+    const current_barrier_price = contract_info?.barrier || '';
+    const last_price = usePrevious(current_spot);
+    const current_price_has_increased = current_spot > last_price;
     const barrier_title = barrier_count === 1 ? localize('Barrier') : localize('Barriers');
-    const has_error_or_not_loaded = contract_type_info?.has_error || !contract_type_info?.id;
+    const has_error_or_not_loaded = contract_info?.has_error || !contract_info?.id;
 
     if (is_minimized) {
         return barrier_count !== 2 ? (
@@ -132,10 +130,10 @@ const Barrier = ({
                         <Text className='barrier__modal-text' as='span' color='less-prominent' size='xs'>
                             {localize('Current Price')}
                         </Text>
-                        {current_price && (
+                        {current_spot && (
                             <ValueMovement
                                 has_error_or_not_loaded={has_error_or_not_loaded}
-                                current_value={current_price}
+                                value={current_spot}
                                 has_increased={current_price_has_increased}
                                 show_currency={false}
                             />
@@ -147,7 +145,7 @@ const Barrier = ({
                         input_label={localize('Barrier')}
                         type='number'
                         name={barrier_count === 1 ? 'barrier_1' : 'barrier_2'}
-                        additional_class='barrier__modal-input'
+                        wrapper_classname='barrier__modal-input'
                         value={barrier_count === 1 ? barrier_1 : barrier_2}
                         className={`barrier__fields-${input_class}`}
                         classNameInput={classNames(
@@ -166,8 +164,7 @@ const Barrier = ({
                         setCurrentFocus={setCurrentFocus}
                     />
                     <Text className='barrier__modal-price' as='div' color='less-prominent' size='xs'>
-                        {localize('Barrier Price: ')}
-                        {barrier_price}
+                        {localize('Barrier Price:')} {current_barrier_price}
                     </Text>
                 </Modal>
                 <LabeledQuantityInputMobile
@@ -193,7 +190,6 @@ const Barrier = ({
                     is_float
                     is_signed
                     setCurrentFocus={setCurrentFocus}
-                    is_read_only
                 />
                 {barrier_count === 2 && (
                     <LabeledQuantityInputMobile
@@ -219,7 +215,6 @@ const Barrier = ({
                         is_float
                         is_signed
                         setCurrentFocus={setCurrentFocus}
-                        is_read_only
                     />
                 )}
             </MobileWrapper>
@@ -240,6 +235,7 @@ Barrier.propTypes = {
     proposal_info: PropTypes.object,
     setCurrentFocus: PropTypes.func,
     validation_errors: PropTypes.object,
+    trade_types: PropTypes.object,
 };
 
 export default connect(({ modules, ui }) => ({
@@ -253,4 +249,5 @@ export default connect(({ modules, ui }) => ({
     proposal_info: modules.trade.proposal_info,
     setCurrentFocus: ui.setCurrentFocus,
     validation_errors: modules.trade.validation_errors,
+    trade_types: modules.trade.trade_types,
 }))(Barrier);

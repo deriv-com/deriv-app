@@ -174,3 +174,4 @@ export type TWalletCurrency =
     | 'USDT'
     | 'eUSDT'
     | 'tUSDT';
+export type TWalletShortcode = Extract<TJurisdictionData['jurisdiction'], 'svg' | 'malta'>;

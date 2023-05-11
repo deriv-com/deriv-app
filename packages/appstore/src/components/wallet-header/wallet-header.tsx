@@ -5,13 +5,13 @@ import WalletCurrencyCard from './wallet-currency-card';
 import WalletHeaderButtons from './wallet-header-buttons';
 import WalletHeaderTitle from './wallet-header-title';
 import WalletHeaderBalance from './wallet-header-balance';
-import { TAccountCategory, TAccountStatus, TJurisdictionData, TWalletCurrency } from 'Types';
+import { TAccountCategory, TAccountStatus, TWalletShortcode, TWalletCurrency } from 'Types';
 import { getWalletHeaderButtons } from 'Constants/utils';
 import './wallet-header.scss';
 
 type TWalletHeader = {
     account_type: TAccountCategory;
-    shortcode?: Extract<TJurisdictionData['jurisdiction'], 'svg' | 'malta'>;
+    shortcode?: TWalletShortcode;
     currency?: TWalletCurrency;
     balance?: string;
     account_status?: TAccountStatus;

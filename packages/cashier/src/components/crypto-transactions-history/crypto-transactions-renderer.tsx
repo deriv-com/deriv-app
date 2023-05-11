@@ -10,9 +10,10 @@ import { useCashierStore } from '../../stores/useCashierStores';
 
 type TCryptoTransactionsRendererProps = {
     row: TCryptoTransactionDetails;
+    onTooltipClick: VoidFunction;
 };
 
-const CryptoTransactionsRenderer = observer(({ row: crypto }: TCryptoTransactionsRendererProps) => {
+const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TCryptoTransactionsRendererProps) => {
     const { client } = useStore();
     const { transaction_history } = useCashierStore();
     const { cancelCryptoTransaction, showCryptoTransactionsCancelModal, showCryptoTransactionsStatusModal } =
@@ -60,6 +61,8 @@ const CryptoTransactionsRenderer = observer(({ row: crypto }: TCryptoTransaction
         const name = status.name;
         showCryptoTransactionsStatusModal(description, name);
     };
+
+    const is_third_party_transaction = transaction_url?.includes('CP:');
 
     if (isMobile()) {
         return (
@@ -130,6 +133,15 @@ const CryptoTransactionsRenderer = observer(({ row: crypto }: TCryptoTransaction
                         <Text as='p' color='prominent' size='xxs' weight='bold'>
                             {localize('Transaction hash')}
                         </Text>
+                        {is_third_party_transaction && (
+                            <Icon
+                                className='crypto-transactions-history__table-tooltip'
+                                data_testid='dt_crypto_transactions_history_table_tooltip_mobile'
+                                onClick={onTooltipClick}
+                                icon='IcHelpCentre'
+                                custom_color='var(--button-secondary-default)'
+                            />
+                        )}
                     </Table.Cell>
                     <Table.Cell className='crypto-transactions-history__table-hash'>
                         <a
@@ -223,22 +235,34 @@ const CryptoTransactionsRenderer = observer(({ row: crypto }: TCryptoTransaction
                 </Table.Cell>
                 <Table.Cell className='crypto-transactions-history__table-hash'>
                     {transaction_url ? (
-                        <Popover
-                            alignment='right'
-                            className='crypto-transactions-history__table-popover'
-                            message={localize('View transaction on Blockchain')}
-                        >
-                            <a
-                                className='crypto-transactions-history__table-link'
-                                href={transaction_url}
-                                rel='noopener noreferrer'
-                                target='_blank'
+                        <>
+                            <Popover
+                                alignment='right'
+                                className='crypto-transactions-history__table-popover'
+                                message={localize('View transaction on Blockchain')}
                             >
-                                <Text as='p' size='xs' color='red'>
-                                    {status.transaction_hash}
-                                </Text>
-                            </a>
-                        </Popover>
+                                <a
+                                    className='crypto-transactions-history__table-link'
+                                    href={transaction_url}
+                                    rel='noopener noreferrer'
+                                    target='_blank'
+                                >
+                                    <Text as='p' size='xs' color='red'>
+                                        {status.transaction_hash}
+                                    </Text>
+                                </a>
+                            </Popover>
+                            {is_third_party_transaction && (
+                                <Popover
+                                    alignment='right'
+                                    className='crypto-transactions-history__table-tooltip'
+                                    data_testid='dt_crypto_transactions_history_table_tooltip'
+                                    message={localize('The details of this transaction is available on CoinsPaid.')}
+                                >
+                                    <Icon icon='IcHelpCentre' custom_color='var(--button-secondary-default)' />
+                                </Popover>
+                            )}
+                        </>
                     ) : (
                         <Text as='p' size='xs' color='red'>
                             {status.transaction_hash}

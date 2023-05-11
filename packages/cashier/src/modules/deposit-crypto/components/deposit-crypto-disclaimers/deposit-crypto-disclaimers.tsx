@@ -25,6 +25,17 @@ const DepositCryptoDisclaimers: React.FC = observer(() => {
         <div className='deposit-crypto-disclaimers'>
             <InlineMessage title={localize('To avoid loss of funds:')}>
                 <br />
+                {minimum_deposit && (
+                    <li>
+                        <Text size={'xxxs'}>
+                            <Localize
+                                i18n_default_text='A minimum deposit value of <0>{{minimum_deposit}} {{currency}}</0> is required. Otherwise, the funds will be lost and cannot be recovered.'
+                                values={{ minimum_deposit, currency }}
+                                components={[<Text key={0} size={'xxxs'} weight='bold' />]}
+                            />
+                        </Text>
+                    </li>
+                )}
                 <li>
                     <Text size={'xxxs'}>{localize('Do not send other currencies to this address.')}</Text>
                 </li>
@@ -42,16 +53,6 @@ const DepositCryptoDisclaimers: React.FC = observer(() => {
                         />
                     </Text>
                 </li>
-                {minimum_deposit && (
-                    <li>
-                        <Text size={'xxxs'}>
-                            {localize(
-                                'A minimum deposit value of {{minimum_deposit}} {{currency}} is required. Otherwise, the funds will be lost and cannot be recovered.',
-                                { minimum_deposit, currency }
-                            )}
-                        </Text>
-                    </li>
-                )}
             </InlineMessage>
             <Text align='center' size={is_mobile ? 'xxxs' : 'xxs'}>
                 <Localize

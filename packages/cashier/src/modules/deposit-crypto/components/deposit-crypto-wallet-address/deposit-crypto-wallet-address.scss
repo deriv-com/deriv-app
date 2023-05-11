@@ -1,4 +1,9 @@
 .deposit-crypto-wallet-address {
+    &__qrcode-container {
+        padding: 1px;
+        background-color: #fff;
+    }
+
     &__address-container {
         display: flex;
     }
@@ -15,13 +20,5 @@
         border-color: $color-grey-4;
         border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
         padding: 1rem;
-    }
-
-    &__error-container {
-        display: flex;
-        gap: 0.3rem;
-        padding: 0.8rem;
-        border-radius: $BORDER_RADIUS;
-        background-color: $alpha-color-yellow-1;
     }
 }

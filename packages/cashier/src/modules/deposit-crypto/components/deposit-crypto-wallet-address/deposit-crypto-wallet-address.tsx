@@ -1,9 +1,10 @@
 import React from 'react';
-import { Button, Clipboard, Icon, Loading, Text } from '@deriv/components';
+import { Button, Clipboard, InlineMessage, Loading, Text } from '@deriv/components';
 import { useDepositCryptoAddress } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import QRCode from 'qrcode.react';
+import { DepositCryptoDisclaimers } from '../deposit-crypto-disclaimers';
 import './deposit-crypto-wallet-address.scss';
 
 const DepositCryptoWalletAddress: React.FC = observer(() => {
@@ -16,12 +17,12 @@ const DepositCryptoWalletAddress: React.FC = observer(() => {
     if (error) {
         return (
             <>
-                <Text align='center' size='xs' className='deposit-crypto-wallet-address__error-container'>
-                    <Icon width={30} height={20} icon='IcAlertWarning' />
-                    {localize(
+                <InlineMessage
+                    type='error'
+                    message={localize(
                         "Unfortunately, we couldn't get the address since our server was down. Please click Refresh to reload the address or try again later."
                     )}
-                </Text>
+                />
                 <Button text={localize('Refresh')} onClick={() => resend()} secondary small />
             </>
         );
@@ -29,7 +30,11 @@ const DepositCryptoWalletAddress: React.FC = observer(() => {
 
     return (
         <>
-            <QRCode value={deposit_crypto_address || ''} size={is_mobile ? 128 : 160} />
+            <QRCode
+                value={deposit_crypto_address || ''}
+                size={is_mobile ? 128 : 160}
+                className='deposit-crypto-wallet-address__qrcode-container'
+            />
             <div className='deposit-crypto-wallet-address__address-container'>
                 <div className='deposit-crypto-wallet-address__hash-container'>
                     <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
@@ -45,6 +50,7 @@ const DepositCryptoWalletAddress: React.FC = observer(() => {
                     />
                 </div>
             </div>
+            <DepositCryptoDisclaimers />
         </>
     );
 });

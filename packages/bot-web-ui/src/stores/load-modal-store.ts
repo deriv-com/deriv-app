@@ -3,7 +3,7 @@ import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { tabs_title, clearInjectionDiv } from 'Constants/load-modal';
 import { action, computed, makeObservable, observable, reaction } from 'mobx';
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import RootStore from './root-store';
 
 export type TWorkspace = {
@@ -171,7 +171,7 @@ export default class LoadModalStore implements ILoadModalStore {
     }
 
     handleFileChange = (
-        event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
+        event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent | ChangeEvent<HTMLInputElement>,
         is_body = true
     ): boolean => {
         let files;

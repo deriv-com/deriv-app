@@ -102,7 +102,9 @@ export default class DashboardStore implements IDashboardStore {
     active_tab = 0;
     active_tab_tutorials = 0;
     active_tour_step_number = 0;
-    dialog_options = {};
+    dialog_options = {
+        title: '',
+    };
     faq_search_value = null || '';
     getFileArray = [];
     has_builder_token = '';

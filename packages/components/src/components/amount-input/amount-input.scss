@@ -1,28 +1,30 @@
 .amount-input-wrapper {
     display: flex;
     flex-direction: column;
-
-    span {
-        font-size: 14px;
-        line-height: 20px;
-    }
+    padding: 0.8rem;
+    height: 6.6rem;
 }
 
 .amount-input-container {
     position: relative;
+    flex: 1;
 }
 
 .amount-input {
-    border: none;
     position: absolute;
-    line-height: 30px;
-    display: flex;
-    flex-shrink: 1;
+    border: none;
+    flex: 1;
     margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
 
     input {
-        font-size: 20px;
-        font-weight: 700;
-        padding: 0;
+        font-size: var(--text-size-sm);
+        font-weight: var(--text-weight-bold);
+
+        @include mobile {
+            font-size: var(--text-size-s);
+        }
     }
 }

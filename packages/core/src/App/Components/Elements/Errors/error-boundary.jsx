@@ -24,7 +24,7 @@ const ErrorBoundary = observer(({ children }) => {
             window.removeEventListener('error', () => {
                 handleError(error, info);
             });
-    }, [handleError]);
+    }, [error, info]);
 
     return hasError ? <ErrorComponent should_show_refresh={true} /> : children;
 });

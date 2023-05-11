@@ -51,6 +51,7 @@ export { default as FormSubmitButton } from './components/form-submit-button';
 export { default as FormSubmitErrorMessage } from './components/form-submit-error-message';
 export { default as FormCancelButton } from './components/form-cancel-button';
 export * from './components/gradient-background';
+export * from './components/gradient-background-two-point';
 export { default as HintBox } from './components/hint-box';
 export { default as HorizontalSwipe } from './components/horizontal-swipe';
 export { default as Icon } from './components/icon';
@@ -112,5 +113,5 @@ export { default as UnhandledErrorModal } from './components/unhandled-error-mod
 export { default as VerticalTab } from './components/vertical-tab';
 export * from './components/watermark';
 export { default as Wizard } from './components/wizard';
-export * from './components/wallet';
+export * from './components/wallet-icon';
 export * from './hooks';

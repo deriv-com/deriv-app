@@ -8,6 +8,7 @@ type TAmountInput = {
     initialValue?: number;
     label?: React.ReactNode;
     maxDigits: number;
+    onChange?: (value: number) => void;
 };
 
 const AmountInput = ({
@@ -17,11 +18,20 @@ const AmountInput = ({
     initialValue = 0,
     label,
     maxDigits,
+    onChange,
 }: TAmountInput) => {
     const [value, setValue] = useState(initialValue);
     const [focus, setFocus] = useState(false);
 
     const displayNumber = (number: number) => number.toLocaleString('en-US', { minimumFractionDigits: decimalPoints });
+
+    const onChangeHandler = (e: { target: { value: string } }) => {
+        const input_value = e.target.value.replace(/\D/g, '');
+        if (Number(input_value) <= Math.pow(10, maxDigits)) {
+            setValue(Number(input_value) / 100);
+            onChange?.(Number(input_value) / 100);
+        }
+    };
 
     return (
         <div className='amount-input-wrapper'>
@@ -40,10 +50,7 @@ const AmountInput = ({
                     max_characters={displayNumber(Math.pow(10, maxDigits - 1) / decimalPoints).length}
                     onFocus={() => setFocus(true)}
                     onBlur={() => setFocus(false)}
-                    onChange={e => {
-                        const input_value = e.target.value.replace(/\D/g, '');
-                        if (Number(input_value) <= Math.pow(10, maxDigits)) setValue(Number(input_value) / 100);
-                    }}
+                    onChange={onChangeHandler}
                     type='text'
                     value={displayNumber(value)}
                 />

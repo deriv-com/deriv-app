@@ -4,16 +4,17 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isVanillaContract } from '@deriv/shared';
+import { vanilla_financials } from 'Constants/trade-categories';
 
 const generateMessageForVanillaTrade = contract_info => (
     <Localize
-        i18n_default_text='<0>For {{contract_type}}:</0> Get a payout if {{index_name}} is {{strike_status}} than the strike price at the expiry time. Your payout is zero if the market is {{market_status}} or equal to the strike price at the expiry time. You will start making a profit when the payout is higher than your stake.'
+        i18n_default_text='<0>For {{contract_type}}:</0> Your payout will grow by {{number_of_contracts}} for every {{payout_unit}} {{strike_status}} your strike price at the expiry time. You will start making a profit when the payout is higher than your stake.'
         components={[<strong key={0} />]}
         values={{
             contract_type: contract_info.contract_type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
-            index_name: contract_info.display_name,
-            strike_status: contract_info.contract_type === 'VANILLALONGCALL' ? localize('higher') : localize('lower'),
-            market_status: contract_info.contract_type === 'VANILLALONGCALL' ? localize('lower') : localize('higher'),
+            strike_status: contract_info.contract_type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
+            payout_unit: vanilla_financials.includes(contract_info.underlying) ? localize('pip') : localize('point'),
+            number_of_contracts: contract_info.number_of_contracts,
         }}
     />
 );

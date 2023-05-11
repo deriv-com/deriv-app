@@ -79,7 +79,7 @@ const CompositeCalendar: React.FC<TCompositeCalendar> = props => {
     const selectDateRange = (new_from?: number) => {
         hideCalendar();
         applyBatch({
-            from: new_from ? toMoment().startOf('day').subtract(new_from, 'day').add(1, 's') : null,
+            from: new_from ? toMoment().startOf('day').subtract(new_from, 'day').add(1, 's').unix() : null,
             to: toMoment().endOf('day'),
             is_batch: true,
         });

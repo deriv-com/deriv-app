@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import Input from '../input';
 import Text from '../text';
 
@@ -24,7 +24,10 @@ const AmountInput = ({
     const [value, setValue] = useState(initial_value);
     const [focus, setFocus] = useState(false);
 
-    const displayNumber = (number: number) => number.toLocaleString('en-US', { minimumFractionDigits: decimal_points });
+    const displayNumber = useCallback(
+        (number: number) => number.toLocaleString('en-US', { minimumFractionDigits: decimal_points }),
+        [decimal_points]
+    );
 
     const onChangeHandler = (e: { target: { value: string } }) => {
         const input_value = e.target.value.replace(/\D/g, '');

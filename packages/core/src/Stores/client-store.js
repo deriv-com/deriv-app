@@ -2551,10 +2551,14 @@ export default class ClientStore extends BaseStore {
         return high_risk_landing_company || this.account_status.risk_classification === 'high' || restricted_countries;
     }
 
-    get is_low_risk() {
+    async handleLowRiskLandingCompany() {
+        await this.init();
         const { gaming_company, financial_company } = this.landing_companies;
-        const low_risk_landing_company =
-            financial_company?.shortcode === 'maltainvest' && gaming_company?.shortcode === 'svg';
+        return financial_company.shortcode === 'maltainvest' && gaming_company.shortcode === 'svg';
+    }
+
+    get is_low_risk() {
+        const low_risk_landing_company = this.handleLowRiskLandingCompany();
         return (
             low_risk_landing_company ||
             (this.upgradeable_landing_companies?.includes('svg') &&

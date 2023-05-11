@@ -56,7 +56,7 @@ describe('<FileUploader />', () => {
         fireEvent.change(input, { target: { files: [file] } });
 
         await waitFor(() => {
-            expect(input?.files?.length && input.files[0]).toBe(file);
+            expect(input?.files?.[0]).toBe(file);
             expect(input.files).toHaveLength(1);
         });
     });
@@ -110,7 +110,7 @@ describe('<FileUploader />', () => {
 
         await waitFor(() => {
             expect(screen.getByText(/hello\.png/i)).toBeInTheDocument();
-            expect(input?.files?.length && input.files[0]).toBe(file);
+            expect(input?.files?.[0]).toBe(file);
             expect(input.files).toHaveLength(1);
         });
 
@@ -141,7 +141,7 @@ describe('<FileUploader />', () => {
         fireEvent.change(input, { target: { files: [file] } });
         await waitFor(() => {
             expect(screen.getByText(/hello\.pdf/i)).toBeInTheDocument();
-            expect(input?.files?.length && input.files[0]).toBe(file);
+            expect(input?.files?.[0]).toBe(file);
         });
         props.ref.current.upload();
         expect(compressImageFiles).toBeCalled();

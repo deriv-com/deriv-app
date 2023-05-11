@@ -36,55 +36,59 @@ const WalletCard = ({
     wallet_name,
 }: WalletCardProps) => {
     return (
+        <GradientBackground color='var(--general-main-2)' primary='#F44336' secondary='#283991' tertiary='#F44336' />
+    );
+    // new wallet card from here
+    return (
         <div
             className={classNames('wallet-card', {
-                // 'wallet-card--active': active && !disabled,
                 'wallet-card--add-wallet': has_add_button,
-                'wallet-card--disabled': disabled,
                 'wallet-card--dark': dark,
                 'wallet-card--faded': faded,
                 [`wallet-card--${size}`]: size,
+                'wallet-card--disabled': disabled,
+                'wallet-card--active': active && !disabled,
             })}
         >
-            <div className='wallet-card__background'>
-                <GradientBackground
-                    color='var(--general-main-2)'
-                    primary='#F44336'
-                    secondary='#283991'
-                    tertiary='#F44336'
-                />
-            </div>
-            <Icon
+            {/* <Icon
                 className='wallet-card__active-icon'
                 custom_color='var(--text-red)'
                 data_testid='ic-checkmark-circle'
                 icon='IcCheckmarkCircle'
                 size={32}
-            />
-            <div className={`wallet-card__content wallet-card__content--active`}>
-                <div className='wallet-card__top-wrapper'>
-                    {icon}
-                    <Badge custom_color='var(--text-prominent' label={jurisdiction} type='bordered' />
-                </div>
-                <div className='wallet-card__bottom-wrapper'>
-                    {has_add_button && !active ? (
-                        <Button>
-                            <Icon icon='IcAddRounded' size={12} className='wallet-card__add-wallet-button-icon' />+ Add
-                        </Button>
-                    ) : (
-                        <React.Fragment>
-                            <Text color='prominent' size='xxxs'>
-                                USD Wallet
-                            </Text>
-                            <Text color='prominent' weight='bold' size='xs'>
-                                0.00 USD
-                            </Text>
-                        </React.Fragment>
-                    )}
-                </div>
-            </div>
+            /> */}
+            <GradientBackground color='var(--general-main-2)' primary='#F44336' secondary='#283991' tertiary='#F44336'>
+                {/* <div
+                    className={classNames('wallet-card__content', {
+                        'wallet-card__content--hover': !disabled,
+                    })}
+                >
+                    <div className='wallet-card__top-wrapper'>
+                        {icon}
+                        <Badge custom_color='var(--text-prominent' label={jurisdiction} type='bordered' />
+                    </div>
+                    <div className='wallet-card__bottom-wrapper'>
+                        {has_add_button && !active ? (
+                            <Button>
+                                <Icon icon='IcAddRounded' size={12} className='wallet-card__add-wallet-button-icon' />+
+                                Add
+                            </Button>
+                        ) : (
+                            <React.Fragment>
+                                <Text color='prominent' size='xxxs'>
+                                    USD Wallet
+                                </Text>
+                                <Text color='prominent' weight='bold' size='xs'>
+                                    0.00 USD
+                                </Text>
+                            </React.Fragment>
+                        )}
+                    </div>
+                </div> */}
+            </GradientBackground>
         </div>
     );
+    // old wallet card from here
     return (
         <div
             className={classNames('wallet-card', {

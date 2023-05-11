@@ -3,7 +3,7 @@
     border-radius: 0.8rem;
     box-sizing: border-box;
     overflow: hidden;
-    background: var(--general-main-2);
+    // background: var(--general-main-2);
 
     &--medium {
         width: 20rem;
@@ -23,6 +23,10 @@
             width: 21.6rem;
             height: 12.8rem;
         }
+    }
+
+    &--active {
+        border: 2px solid var(--text-red);
     }
 
     &__active-icon {
@@ -49,10 +53,8 @@
         padding: 1.6rem;
         box-sizing: border-box;
         border-radius: inherit;
-        // border: 2px solid var(--text-red);
-
-        &--active {
-            border: 2px solid var(--text-red);
+        &--hover:hover {
+            // background: red;
         }
     }
 

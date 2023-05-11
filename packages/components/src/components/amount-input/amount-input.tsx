@@ -17,7 +17,7 @@ const AmountInput = ({
     disabled = false,
     initialValue = 0,
     label,
-    maxDigits,
+    maxDigits = 8,
     onChange,
 }: TAmountInput) => {
     const [value, setValue] = useState(initialValue);
@@ -58,7 +58,5 @@ const AmountInput = ({
         </div>
     );
 };
-
-Input.displayName = 'AmountInput';
 
 export default AmountInput;

@@ -9,6 +9,7 @@ type TOnfidoSdkView = {
     is_onfido_container_hidden?: boolean;
     onfido_element_id?: string;
     is_confirmed: boolean;
+    data_testid?: string;
 };
 
 const OnfidoSdkView = ({
@@ -16,6 +17,7 @@ const OnfidoSdkView = ({
     is_onfido_container_hidden,
     onfido_element_id = 'onfido',
     is_confirmed,
+    data_testid,
 }: TOnfidoSdkView) => {
     const [is_status_message_visible, setIsStatusMessageVisible] = React.useState(false);
 
@@ -77,6 +79,7 @@ const OnfidoSdkView = ({
                 />
             )}
             <div
+                data-testid={data_testid}
                 id={onfido_element_id}
                 className={classNames({
                     'onfido-container__disabled': is_onfido_disabled,

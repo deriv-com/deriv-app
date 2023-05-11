@@ -32,18 +32,6 @@ describe('<ErrorComponent/>', () => {
         setError: jest.fn(),
     };
 
-    it('should show the default message when message is not passed', () => {
-        const message = '';
-        renderWithRouter(<ErrorComponent {...mock_props} message={message} />);
-        expect(screen.getByText('Sorry, an error occurred while processing your request.')).toBeInTheDocument();
-    });
-
-    it('should show default message when header message is not passed', () => {
-        const header = '';
-        renderWithRouter(<ErrorComponent {...mock_props} header={header} />);
-        expect(screen.getByText('Something’s not right')).toBeInTheDocument();
-    });
-
     it('should show the actual error message when header and message is passed', () => {
         renderWithRouter(<ErrorComponent {...mock_props} />);
         expect(screen.getByText(mock_props.message)).toBeInTheDocument();

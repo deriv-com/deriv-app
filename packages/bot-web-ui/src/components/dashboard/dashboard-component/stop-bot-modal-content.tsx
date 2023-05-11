@@ -20,6 +20,7 @@ const StopBotModalContent = ({
     is_stop_bot_dialog_open,
     closeMultiplierContract,
     onOkButtonClick,
+    toggleStopBotDialog,
 }: TStopBotModalContent) => {
     const confirm_button_text = is_running && is_multiplier ? localize('Keep my contract') : localize('Stop my bot');
     const cancel_button_text = is_running && is_multiplier ? localize('Close my contract') : localize('Back');
@@ -34,7 +35,7 @@ const StopBotModalContent = ({
                 confirm_button_text={confirm_button_text}
                 onConfirm={onOkButtonClick}
                 cancel_button_text={cancel_button_text}
-                onCancel={closeMultiplierContract}
+                onCancel={is_running && is_multiplier ? closeMultiplierContract : toggleStopBotDialog}
                 is_mobile_full_width={false}
                 className={'toolbar__dialog'}
                 has_close_icon

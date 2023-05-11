@@ -6,7 +6,7 @@ type TAmountInput = {
     decimalPoints?: number;
     disabled?: boolean;
     initialValue?: number;
-    label?: React.ReactNode;
+    label?: string;
     maxDigits?: number;
     onChange?: (value: number) => void;
 };
@@ -17,7 +17,7 @@ const AmountInput = ({
     disabled = false,
     initialValue = 0,
     label,
-    maxDigits = 8,
+    maxDigits,
     onChange,
 }: TAmountInput) => {
     const [value, setValue] = useState(initialValue);
@@ -58,5 +58,7 @@ const AmountInput = ({
         </div>
     );
 };
+
+Input.displayName = 'AmountInput';
 
 export default AmountInput;

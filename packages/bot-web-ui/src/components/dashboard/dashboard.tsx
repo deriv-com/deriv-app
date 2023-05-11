@@ -164,13 +164,20 @@ const Dashboard = ({
         const dbot_settings = JSON.parse(localStorage.getItem('dbot_settings') as string);
         const has_onboard_token_set = active_tab === 0 && !dbot_settings?.onboard_tour_token;
         const has_bot_builder_token_set = active_tab === 1 && !dbot_settings?.bot_builder_token;
+        const show_tour_dialog_desktop = (active_tab === 0 && !is_mobile) || active_tab === 1;
+        const show_tour_dialog_mobile = active_tab !== 0 && is_mobile;
         if (has_bot_builder_token_set || has_onboard_token_set) {
             if (is_mobile && has_started_onboarding_tour) {
                 setTourActive(true);
                 setOnBoardTourRunState(true);
             } else {
                 setHasTourEnded(false);
-                setTourDialogVisibility(true);
+                if (show_tour_dialog_mobile || show_tour_dialog_desktop) {
+                    setTourDialogVisibility(true);
+                } else {
+                    setTourActive(true);
+                    setOnBoardTourRunState(true);
+                }
             }
         }
         if (has_started_bot_builder_tour && active_tab !== 1 && is_mobile) {

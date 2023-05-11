@@ -27,7 +27,7 @@ export type TContractUpdateFormProps = {
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (name: string | null) => void;
     status: string;
-    toggleDialog: (e: any) => void; // This function accomodates events for various HTML elements, which have no overlap, so typing it to any
+    toggleDialog: (e: React.MouseEvent<HTMLButtonElement>) => void;
     getContractById: (contract_id: number) => TContractStore;
     is_accumulator?: boolean;
 };

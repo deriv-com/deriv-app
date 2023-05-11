@@ -44,7 +44,7 @@ import {
     getOtherInstrumentsTradingExperienceList,
     getOtherInstrumentsTradingFrequencyList,
 } from './financial-information-list';
-import type { TRootStore } from '@deriv/stores/types';
+import type { TCoreStores } from '@deriv/stores/types';
 import { GetFinancialAssessment, GetFinancialAssessmentResponse } from '@deriv/api-types';
 
 type TConfirmationPage = {
@@ -57,7 +57,7 @@ type TConfirmationModal = {
 } & TConfirmationPage;
 
 type TSubmittedPage = {
-    platform: TRootStore['common']['platform'];
+    platform: TCoreStores['common']['platform'];
 };
 
 const ConfirmationContent = ({ className }: { className?: string }) => {

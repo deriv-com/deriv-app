@@ -1,9 +1,9 @@
 import AccountLimits from 'Components/account-limits/account-limits';
 import 'Components/account-limits/account-limits.scss';
 import { connect } from 'Stores/connect';
-import type { TRootStore } from '@deriv/stores/types';
+import type { TCoreStores } from '@deriv/stores/types';
 
-export default connect(({ client, common, ui }: TRootStore) => ({
+export default connect(({ client, common, ui }: TCoreStores) => ({
     account_limits: client.account_limits,
     currency: client.currency,
     getLimits: client.getLimits,

@@ -1,13 +1,15 @@
 import { localize } from '@deriv/translations';
-import { generateValidationFunction, getDefaultFields } from '@deriv/shared';
-import { TSchema } from 'Types';
+import { TSchema, generateValidationFunction, getDefaultFields } from '@deriv/shared';
+import { GetFinancialAssessment } from '@deriv/api-types';
 
 type TFinancialDetailsConfig = {
     real_account_signup_target: string;
-    financial_assessment: object;
+    financial_assessment: GetFinancialAssessment;
 };
 
-const financial_details_config: (props: { financial_assessment: any }) => TSchema = ({ financial_assessment }) => {
+const financial_details_config: (props: { financial_assessment: GetFinancialAssessment }) => TSchema = ({
+    financial_assessment,
+}) => {
     return {
         account_turnover: {
             supported_in: ['maltainvest'],

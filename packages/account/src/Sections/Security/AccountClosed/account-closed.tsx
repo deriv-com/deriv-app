@@ -4,7 +4,7 @@ import { Modal, Text } from '@deriv/components';
 import { routes, getStaticUrl, PlatformContext } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import type { TRootStore } from '@deriv/stores/types';
+import type { TCoreStores } from '@deriv/stores/types';
 
 type TAccountClosed = {
     logout: () => void;
@@ -47,6 +47,6 @@ const AccountClosed = ({ logout }: TAccountClosed) => {
     );
 };
 
-export default connect(({ client }: TRootStore) => ({
+export default connect(({ client }: TCoreStores) => ({
     logout: client.logout,
 }))(AccountClosed);

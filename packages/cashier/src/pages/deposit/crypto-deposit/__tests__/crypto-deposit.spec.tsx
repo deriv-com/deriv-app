@@ -6,7 +6,6 @@ import { getCurrencyName, isMobile } from '@deriv/shared';
 import CryptoDeposit from '../crypto-deposit';
 import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../../cashier-providers';
-import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),

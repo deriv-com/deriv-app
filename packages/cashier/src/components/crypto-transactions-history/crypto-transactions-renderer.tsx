@@ -236,39 +236,39 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                 <Table.Cell className='crypto-transactions-history__table-hash'>
                     {status &&
                         (transaction_url ? (
-                        <>
-                            <Popover
-                                alignment='right'
-                                className='crypto-transactions-history__table-popover'
-                                message={localize('View transaction on Blockchain')}
-                            >
-                                <a
-                                    className='crypto-transactions-history__table-link'
-                                    href={transaction_url}
-                                    rel='noopener noreferrer'
-                                    target='_blank'
-                                >
-                                    <Text as='p' size='xs' color='red'>
-                                        {status.transaction_hash}
-                                    </Text>
-                                </a>
-                            </Popover>
-                            {is_third_party_transaction && (
+                            <>
                                 <Popover
                                     alignment='right'
-                                    className='crypto-transactions-history__table-tooltip'
-                                    data_testid='dt_crypto_transactions_history_table_tooltip'
-                                    message={localize('The details of this transaction is available on CoinsPaid.')}
+                                    className='crypto-transactions-history__table-popover'
+                                    message={localize('View transaction on Blockchain')}
                                 >
-                                    <Icon icon='IcHelpCentre' custom_color='var(--button-secondary-default)' />
+                                    <a
+                                        className='crypto-transactions-history__table-link'
+                                        href={transaction_url}
+                                        rel='noopener noreferrer'
+                                        target='_blank'
+                                    >
+                                        <Text as='p' size='xs' color='red'>
+                                            {status.transaction_hash}
+                                        </Text>
+                                    </a>
                                 </Popover>
-                            )}
-                        </>
-                    ) : (
-                        <Text as='p' size='xs' color='red'>
-                            {status.transaction_hash}
-                        </Text>
-                    )}
+                                {is_third_party_transaction && (
+                                    <Popover
+                                        alignment='right'
+                                        className='crypto-transactions-history__table-tooltip'
+                                        data_testid='dt_crypto_transactions_history_table_tooltip'
+                                        message={localize('The details of this transaction is available on CoinsPaid.')}
+                                    >
+                                        <Icon icon='IcHelpCentre' custom_color='var(--button-secondary-default)' />
+                                    </Popover>
+                                )}
+                            </>
+                        ) : (
+                            <Text as='p' size='xs' color='red'>
+                                {status.transaction_hash}
+                            </Text>
+                        ))}
                 </Table.Cell>
                 {!is_transaction_clicked && (
                     <Table.Cell>

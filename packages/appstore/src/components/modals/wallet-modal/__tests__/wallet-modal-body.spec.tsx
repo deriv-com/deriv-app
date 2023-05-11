@@ -28,7 +28,7 @@ describe('WalletModalBody', () => {
         expect(screen.getByText('Transfer')).toBeInTheDocument();
         expect(screen.getByText('Transfer Demo')).toBeInTheDocument();
         expect(screen.getByText('Transactions')).toBeInTheDocument();
-        expect(screen.getByText('Reset balanace')).toBeInTheDocument();
+        expect(screen.getByText('Reset balance')).toBeInTheDocument();
     });
 
     it('Shoud trigger setActiveTabIndex callback when the user clicked on the tab', () => {

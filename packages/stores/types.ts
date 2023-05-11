@@ -230,8 +230,8 @@ type TCommonStore = {
     routeTo: (pathname: string) => void;
     changeCurrentLanguage: (new_language: string) => void;
     changeSelectedLanguage: (key: string) => void;
-    current_language?: string;
-    is_language_changing?: boolean;
+    current_language: string;
+    is_language_changing: boolean;
 };
 
 type TUiStore = {

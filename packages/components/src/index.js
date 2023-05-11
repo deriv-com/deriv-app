@@ -113,5 +113,6 @@ export { default as UnhandledErrorModal } from './components/unhandled-error-mod
 export { default as VerticalTab } from './components/vertical-tab';
 export * from './components/watermark';
 export { default as Wizard } from './components/wizard';
+export * from './components/wallet-card';
 export * from './components/wallet-icon';
 export * from './hooks';

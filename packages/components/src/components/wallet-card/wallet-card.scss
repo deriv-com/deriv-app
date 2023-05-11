@@ -1,0 +1,85 @@
+.wallet-card {
+    position: relative;
+    border-radius: 0.8rem;
+
+    &--small {
+        width: 6.4rem;
+        height: 4rem;
+    }
+
+    &--medium {
+        width: 20rem;
+        height: 12rem;
+        @include mobile {
+            width: 16rem;
+            height: 9.6rem;
+        }
+    }
+    &--large {
+        width: 24rem;
+        height: 14.4rem;
+        @include mobile {
+            width: 21.6rem;
+            height: 12.8rem;
+        }
+    }
+    &__active-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        &--small {
+            top: 0;
+            left: 100%;
+            transform: translate(-1.2rem, -0.4rem);
+        }
+    }
+    &__content {
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        height: 100%;
+        padding: 1.6rem;
+        box-sizing: border-box;
+        border-radius: 0.8rem;
+        &--active {
+            border: 2px solid var(--text-red);
+            background: var(--wallets-card-active-gradient-background);
+        }
+        &--hover:hover {
+            background: var(--wallets-card-active-gradient-background);
+        }
+    }
+    &__top-wrapper {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: 100%;
+    }
+    &__bottom-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        width: 100%;
+    }
+    &--disabled {
+        opacity: 0.32;
+    }
+    &--faded {
+        opacity: 0.72;
+    }
+
+    &__small-container {
+        width: 6.4rem;
+        height: 4rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        outline: 2px solid var(--text-red);
+        border-radius: 0.4rem;
+    }
+}

@@ -26,7 +26,7 @@ const AmountInput = ({
     const [focus, setFocus] = useState(false);
 
     const displayNumber = useCallback(
-        (number: number) => number.toLocaleString('en-US', { minimumFractionDigits: decimal_places }),
+        (number: number) => number.toLocaleString(undefined, { minimumFractionDigits: decimal_places }),
         [decimal_places]
     );
 

@@ -1,13 +1,12 @@
 import React from 'react';
 import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, Button } from '@deriv/components';
-import { observer } from 'mobx-react-lite';
 import { ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { WalletsIntro } from './components/wallets-intro/wallets-intro';
 import ReadyToUpgradeWallets from './components/ready-to-update-wallets';
 
-const RealWalletsUpgrade = () => {
+const RealWalletsUpgrade = observer(() => {
     const { traders_hub } = useStore();
     const { is_real_wallets_upgrade_on, toggleWalletsUpgrade, content_flag } = traders_hub;
     const is_eu = content_flag === ContentFlag.EU_REAL || content_flag === ContentFlag.EU_DEMO;
@@ -77,7 +76,7 @@ const RealWalletsUpgrade = () => {
     );
 
     const WalletSteps = [
-        //  Feel free to add components here or anywhere in between 💪(◡̀_◡́҂)
+        //  Feel free to add components here or anywhere in between (👍≖‿‿≖)👍 👍(≖‿‿≖👍)
         {
             name: 'intro_wallets',
             component: <WalletsIntro is_eu={is_eu} current_step={0} />,
@@ -138,6 +137,6 @@ const RealWalletsUpgrade = () => {
             )}
         </React.Fragment>
     );
-};
+});
 
-export default observer(RealWalletsUpgrade);
+export default RealWalletsUpgrade;

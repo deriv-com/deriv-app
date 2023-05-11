@@ -1,6 +1,6 @@
 import React from 'react';
 import WalletsImage from 'Assets/svgs/wallets';
-import { localize } from '@deriv/translations';
+import { localize, Localize } from '@deriv/translations';
 
 type TWalletIntroContent = {
     image: JSX.Element;
@@ -19,10 +19,12 @@ const getWalletIntroContent = (is_eu: boolean): TWalletIntroContent[] => [
             is_eu
                 ? localize('Keep track of your trading funds in one place')
                 : localize('A Wallet for each currency to focus your funds'),
-            !is_eu &&
-                localize('Get one Wallet, get several {{dash}} your choice', {
-                    dash: '\u2014',
-                }),
+            !is_eu && (
+                <Localize
+                    i18n_default_text='Get one Wallet, get several {{dash}} your choice'
+                    values={{ dash: '\u2014' }}
+                />
+            ),
         ],
     },
     {

@@ -48,7 +48,7 @@ type TCompositeCalendarMobile = {
     current_focus: string;
     duration_list: Array<TInputDateRange>;
     onChange: (
-        value: { from: moment.Moment | null; to: moment.Moment; is_batch: boolean },
+        value: { from: moment.Moment | number | null; to: moment.Moment; is_batch: boolean },
         extra_data: { date_range: TInputDateRange }
     ) => void;
     setCurrentFocus: (focus: string) => void;
@@ -79,7 +79,10 @@ const CompositeCalendarMobile = React.memo(
             const new_from = _selected_date_range.duration;
             onChange(
                 {
-                    from: is_today || new_from ? toMoment().startOf('day').subtract(new_from, 'day').add(1, 's') : null,
+                    from:
+                        is_today || new_from
+                            ? toMoment().startOf('day').subtract(new_from, 'day').add(1, 's').unix()
+                            : null,
                     to: toMoment().endOf('day'),
                     is_batch: true,
                 },
@@ -101,7 +104,7 @@ const CompositeCalendarMobile = React.memo(
 
             onChange(
                 {
-                    from: toMoment(new_from).startOf('day').add(1, 's'),
+                    from: toMoment(new_from).startOf('day').add(1, 's').unix(),
                     to: toMoment(new_to).endOf('day'),
                     is_batch: true,
                 },

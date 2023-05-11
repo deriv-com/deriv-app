@@ -124,7 +124,7 @@ const CompositeCalendar: React.FC<TCompositeCalendar> = props => {
     };
 
     const setFromDate = (date: moment.Moment) => {
-        updateState('from', date);
+        updateState('from', date.unix());
         hideCalendar();
     };
 

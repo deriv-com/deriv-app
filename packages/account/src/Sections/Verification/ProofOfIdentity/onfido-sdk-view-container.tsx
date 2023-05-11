@@ -12,6 +12,7 @@ import getOnfidoPhrases from 'Constants/onfido-phrases';
 import MissingPersonalDetails from 'Components/poi/missing-personal-details';
 import PoiConfirmWithExampleFormContainer from 'Components/poi/poi-confirm-with-example-form-container';
 import OnfidoSdkView from 'Sections/Verification/ProofOfIdentity/onfido-sdk-view';
+import { getRandom3DigitNumber } from 'Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
 
 type TAPI_error = {
     code?: string;
@@ -208,7 +209,7 @@ const OnfidoSdkViewContainer = ({
             // Incorporating Exponential_backoff algo to prevent immediate throttling
             token_timeout_ref.current = setTimeout(() => {
                 fetchServiceToken();
-            }, Math.pow(2, retry_count) + Math.random() * 1000);
+            }, Math.pow(2, retry_count) + getRandom3DigitNumber());
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [getOnfidoServiceToken, initOnfido, retry_count]);

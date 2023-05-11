@@ -443,6 +443,7 @@ const AccountTransferForm = observer(
                                             label={localize('To')}
                                             list={to_accounts}
                                             list_height='404'
+                                            initial_height_offset={180}
                                             name='transfer_to'
                                             value={selected_to.value}
                                             onChange={(e: TReactChangeEvent) => {

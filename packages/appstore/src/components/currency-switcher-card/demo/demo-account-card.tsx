@@ -24,7 +24,7 @@ const DemoAccountCard = () => {
             icon='VIRTUAL'
             title={
                 <Text className='demo-account-card__title' size='xs' line_height='s'>
-                    {selected_account_type}
+                    {localize(selected_account_type)}
                 </Text>
             }
             actions={

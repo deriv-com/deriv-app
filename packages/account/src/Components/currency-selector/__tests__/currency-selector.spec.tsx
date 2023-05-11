@@ -190,8 +190,10 @@ describe('<CurrencySelector/>', () => {
             current_currency: '',
             success_message: '',
             error_message: '',
+            error_code: 2,
         },
         goToNextStep: jest.fn(),
+        goToStep: jest.fn(),
         resetRealAccountSignupParams: jest.fn(),
         onSubmit: jest.fn(),
         goToPreviousStep: jest.fn(),
@@ -358,7 +360,7 @@ describe('<CurrencySelector/>', () => {
             value: 150,
         });
         render(
-            <PlatformContext.Provider value={{ is_appstore: true }}>
+            <PlatformContext.Provider value={{ is_appstore: true, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <CurrencySelector {...props} />
             </PlatformContext.Provider>
         );
@@ -394,13 +396,25 @@ describe('<CurrencySelector/>', () => {
         expect(props.onSave).toHaveBeenCalledWith(0, { currency: 'USDC' });
     });
 
-    it('should bypass to next step in case of form error', () => {
+    it('should bypass to next step in case of personal details form error', () => {
         const real_account_signup = {
             ...props.real_account_signup,
-            error_code: 'sample_error_code',
+            error_details: { first_name: 'numbers not allowed' },
         };
+
         render(<CurrencySelector {...props} real_account_signup={real_account_signup} />);
         expect(props.goToNextStep).toHaveBeenCalled();
+        expect(props.resetRealAccountSignupParams).toHaveBeenCalled();
+    });
+
+    it('should bypass to address step in case of address details form error', () => {
+        const real_account_signup = {
+            ...props.real_account_signup,
+            error_details: { address_line_1: 'po box is not allowed' },
+        };
+
+        render(<CurrencySelector {...props} real_account_signup={real_account_signup} />);
+        expect(props.goToStep).toHaveBeenCalledWith(3);
         expect(props.resetRealAccountSignupParams).toHaveBeenCalled();
     });
 });

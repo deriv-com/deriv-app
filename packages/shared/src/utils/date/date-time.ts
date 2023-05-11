@@ -172,7 +172,7 @@ export const isDateValid = (date: moment.MomentInput) => moment(date, 'DD MMM YY
  * @param {String} date        date
  * @param {Number} num_of_days number of days to add
  */
-export const addDays = (date: string, num_of_days: number) => toMoment(date).clone().add(num_of_days, 'day');
+export const addDays = (date: moment.Moment, num_of_days: number) => toMoment(date).clone().add(num_of_days, 'day');
 
 /**
  * add the specified number of weeks to the given date
@@ -186,28 +186,31 @@ export const addWeeks = (date: string, num_of_weeks: number) => toMoment(date).c
  * @param {String} date        date
  * @param {Number} num_of_months number of months to add
  */
-export const addMonths = (date: string, num_of_months: number) => toMoment(date).clone().add(num_of_months, 'month');
+export const addMonths = (date: moment.MomentInput, num_of_months: number) =>
+    toMoment(date).clone().add(num_of_months, 'month');
 
 /**
  * add the specified number of years to the given date
  * @param {String} date        date
  * @param {Number} num_of_years number of years to add
  */
-export const addYears = (date: string, num_of_years: number) => toMoment(date).clone().add(num_of_years, 'year');
+export const addYears = (date: moment.MomentInput, num_of_years: number) =>
+    toMoment(date).clone().add(num_of_years, 'year');
 
 /**
  * subtract the specified number of days from the given date
  * @param {String} date        date
  * @param {Number} num_of_days number of days to subtract
  */
-export const subDays = (date: string, num_of_days: number) => toMoment(date).clone().subtract(num_of_days, 'day');
+export const subDays = (date: moment.MomentInput, num_of_days: number) =>
+    toMoment(date).clone().subtract(num_of_days, 'day');
 
 /**
  * subtract the specified number of months from the given date
  * @param {String} date        date
  * @param {Number} num_of_months number of months to subtract
  */
-export const subMonths = (date: string, num_of_months: number) =>
+export const subMonths = (date: moment.MomentInput, num_of_months: number) =>
     toMoment(date).clone().subtract(num_of_months, 'month');
 
 /**
@@ -215,7 +218,8 @@ export const subMonths = (date: string, num_of_months: number) =>
  * @param {String} date        date
  * @param {Number} num_of_years number of years to subtract
  */
-export const subYears = (date: string, num_of_years: number) => toMoment(date).clone().subtract(num_of_years, 'year');
+export const subYears = (date: moment.MomentInput, num_of_years: number) =>
+    toMoment(date).clone().subtract(num_of_years, 'year');
 
 /**
  * returns the minimum moment between the two passing parameters

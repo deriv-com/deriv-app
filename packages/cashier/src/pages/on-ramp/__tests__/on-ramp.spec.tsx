@@ -1,26 +1,11 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { isMobile, routes } from '@deriv/shared';
-import { useDepositLocked } from '@deriv/hooks';
+import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
 import OnRamp from '../on-ramp';
-import { TRootStore } from 'Types';
 import type { TOnRampProps } from '../on-ramp';
 import CashierProviders from '../../../cashier-providers';
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
-}));
+import { mockStore, TStores } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => {
     return {
@@ -45,47 +30,37 @@ jest.mock('Pages/on-ramp/on-ramp-provider-popup', () => {
     const onRampProviderPopup = () => <div>OnRampProviderPopup</div>;
     return onRampProviderPopup;
 });
+
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
+    useCashierLocked: jest.fn(() => false),
+}));
+const mockUseDepositLocked = useDepositLocked as jest.MockedFunction<typeof useDepositLocked>;
+const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
+
+const cashier_mock = {
+    onramp: {
+        filtered_onramp_providers: [{ name: 'name' }],
+        is_onramp_modal_open: false,
+        onMountOnramp: jest.fn(),
+        onUnmountOnramp: jest.fn(),
+        resetPopup: jest.fn(),
+        setIsOnRampModalOpen: jest.fn(),
+        should_show_dialog: false,
+        onramp_popup_modal_title: 'Title of the onramp popup modal',
+    },
+    general_store: {
+        is_cashier_onboarding: false,
+        is_loading: false,
+        cashier_route_tab_index: 0,
+    },
+};
+
 describe('<OnRamp />', () => {
-    let mockRootStore: DeepPartial<TRootStore>, props: TOnRampProps;
+    let props: TOnRampProps;
 
     beforeEach(() => {
-        mockRootStore = {
-            client: {
-                is_switching: false,
-                account_status: {
-                    status: [],
-                },
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
-            },
-            common: {
-                routeTo: jest.fn(),
-            },
-            modules: {
-                cashier: {
-                    onramp: {
-                        filtered_onramp_providers: [{ name: 'name' }],
-                        is_onramp_modal_open: false,
-                        onMountOnramp: jest.fn(),
-                        onUnmountOnramp: jest.fn(),
-                        resetPopup: jest.fn(),
-                        setIsOnRampModalOpen: jest.fn(),
-                        should_show_dialog: false,
-                        onramp_popup_modal_title: 'Title of the onramp popup modal',
-                    },
-                    general_store: {
-                        is_cashier_onboarding: false,
-                        is_cashier_locked: false,
-                        is_loading: false,
-                        cashier_route_tab_index: 0,
-                    },
-                },
-            },
-        };
         props = {
             setSideNotes: jest.fn(),
             menu_options: [
@@ -107,48 +82,79 @@ describe('<OnRamp />', () => {
                 },
             ],
         };
+        mockUseDepositLocked.mockReturnValue(false);
+        mockUseCashierLocked.mockReturnValue(false);
     });
-    const renderOnRamp = (is_rerender = false) => {
+    const renderOnRamp = (mocked_store: TStores, is_rerender = false) => {
         const ui = (
-            <CashierProviders store={mockRootStore as TRootStore}>
+            <CashierProviders store={mocked_store}>
                 <OnRamp {...props} />
             </CashierProviders>
         );
         return is_rerender ? ui : render(ui);
     };
     it('should render <Loading /> component', () => {
-        if (mockRootStore.modules?.cashier?.general_store) {
-            mockRootStore.modules.cashier.general_store.is_loading = true;
-        }
-        const { rerender } = renderOnRamp() as ReturnType<typeof render>;
+        const mockRootStore = mockStore({
+            client: {
+                account_status: { status: [] },
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+            },
+            modules: {
+                cashier: {
+                    ...cashier_mock,
+                    general_store: {
+                        ...cashier_mock.general_store,
+                        is_loading: true,
+                    },
+                },
+            },
+        });
+        const { rerender } = renderOnRamp(mockRootStore) as ReturnType<typeof render>;
         expect(screen.getByText('Loading')).toBeInTheDocument();
-        if (mockRootStore.modules?.cashier?.general_store) {
-            mockRootStore.modules.cashier.general_store.is_loading = false;
-        }
-        if (mockRootStore.client) {
-            mockRootStore.client.is_switching = true;
-        }
-        rerender(renderOnRamp(true) as JSX.Element);
+        mockRootStore.modules.cashier.general_store.is_loading = false;
+        mockRootStore.client.is_switching = true;
+        rerender(renderOnRamp(mockRootStore, true) as JSX.Element);
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
     it('should render <CashierLocked /> component', () => {
-        if (mockRootStore.modules?.cashier?.general_store) {
-            mockRootStore.modules.cashier.general_store.is_cashier_locked = true;
-        }
-        const { rerender } = renderOnRamp() as ReturnType<typeof render>;
+        const mockRootStore = mockStore({
+            client: {
+                account_status: { status: [] },
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+            },
+            modules: { cashier: cashier_mock },
+        });
+        mockUseCashierLocked.mockReturnValue(true);
+        const { rerender } = renderOnRamp(mockRootStore) as ReturnType<typeof render>;
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
-
-        if (mockRootStore.modules?.cashier?.general_store) {
-            mockRootStore.modules.cashier.general_store.is_cashier_locked = false;
-        }
-        if (mockRootStore.modules?.cashier?.deposit) {
-            mockRootStore.modules.cashier.deposit.is_deposit_locked = useDepositLocked.mockReturnValue(true);
-        }
-        rerender(renderOnRamp(true) as JSX.Element);
+        mockUseDepositLocked.mockReturnValue(true);
+        rerender(renderOnRamp(mockRootStore, true) as JSX.Element);
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });
     it('should render <OnRampProviderCard /> component and "Select payment channel" message', () => {
-        renderOnRamp();
+        const mockRootStore = mockStore({
+            client: {
+                account_status: { status: [] },
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+            },
+            modules: { cashier: cashier_mock },
+        });
+        renderOnRamp(mockRootStore);
         expect(screen.getByText('Select payment channel')).toBeInTheDocument();
         expect(screen.getByText('OnRampProviderCard')).toBeInTheDocument();
     });
@@ -156,10 +162,27 @@ describe('<OnRamp />', () => {
         const modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
-        if (mockRootStore.modules?.cashier?.onramp) {
-            mockRootStore.modules.cashier.onramp.is_onramp_modal_open = true;
-        }
-        renderOnRamp();
+        const mockRootStore = mockStore({
+            client: {
+                account_status: { status: [] },
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+            },
+            modules: {
+                cashier: {
+                    ...cashier_mock,
+                    onramp: {
+                        ...cashier_mock.onramp,
+                        is_onramp_modal_open: true,
+                    },
+                },
+            },
+        });
+        renderOnRamp(mockRootStore);
         expect(screen.getByText('Title of the onramp popup modal')).toBeInTheDocument();
         expect(screen.getByText('OnRampProviderPopup')).toBeInTheDocument();
         document.body.removeChild(modal_root_el);
@@ -169,28 +192,81 @@ describe('<OnRamp />', () => {
         const modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
-        if (mockRootStore.modules?.cashier?.onramp) {
-            mockRootStore.modules.cashier.onramp.is_onramp_modal_open = true;
-        }
-        renderOnRamp();
+        const mockRootStore = mockStore({
+            client: {
+                account_status: { status: [] },
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+            },
+            modules: {
+                cashier: {
+                    ...cashier_mock,
+                    onramp: {
+                        ...cashier_mock.onramp,
+                        is_onramp_modal_open: true,
+                    },
+                },
+            },
+        });
+        renderOnRamp(mockRootStore);
         const close_cross_btn = screen.getByRole('button', { name: '' });
         fireEvent.click(close_cross_btn);
-        expect(mockRootStore.modules?.cashier?.onramp?.setIsOnRampModalOpen).toHaveBeenCalledWith(false);
+        expect(mockRootStore.modules.cashier.onramp.setIsOnRampModalOpen).toHaveBeenCalledWith(false);
         document.body.removeChild(modal_root_el);
     });
     it('should trigger "setSideNotes" callback in Desktop mode', () => {
-        renderOnRamp();
+        const mockRootStore = mockStore({
+            client: {
+                account_status: { status: [] },
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+            },
+            modules: { cashier: cashier_mock },
+        });
+        renderOnRamp(mockRootStore);
         expect(props.setSideNotes).toHaveBeenCalledTimes(1);
     });
     it('should show "What is Fiat onramp?" message and render <ReadMore /> component in Mobile mode', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        renderOnRamp();
+        const mockRootStore = mockStore({
+            client: {
+                account_status: { status: [] },
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+            },
+            modules: { cashier: cashier_mock },
+        });
+        renderOnRamp(mockRootStore);
         expect(screen.getByText('What is Fiat onramp?')).toBeInTheDocument();
         expect(screen.getByText('ReadMore')).toBeInTheDocument();
     });
     it('should have proper menu options in Mobile mode', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        renderOnRamp();
+        const mockRootStore = mockStore({
+            client: {
+                account_status: { status: [] },
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+            },
+            modules: { cashier: cashier_mock },
+        });
+        renderOnRamp(mockRootStore);
         const select = screen.getByTestId('dt_on_ramp_select_native');
         const labels = Array.from(select as any).map((option: any) => option.label);
         expect(labels).toContain('Deposit');
@@ -212,9 +288,21 @@ describe('<OnRamp />', () => {
                 path: routes.cashier_onramp,
             },
         ];
-        renderOnRamp();
+        const mockRootStore = mockStore({
+            client: {
+                account_status: { status: [] },
+                mt5_login_list: [
+                    {
+                        account_type: 'demo',
+                        sub_account_type: 'financial_stp',
+                    },
+                ],
+            },
+            modules: { cashier: cashier_mock },
+        });
+        renderOnRamp(mockRootStore);
         const select = screen.getByTestId('dt_on_ramp_select_native');
         fireEvent.change(select, { target: { value: routes.cashier_deposit } });
-        expect(mockRootStore.common?.routeTo).toHaveBeenCalledTimes(1);
+        expect(mockRootStore.common.routeTo).toHaveBeenCalledTimes(1);
     });
 });

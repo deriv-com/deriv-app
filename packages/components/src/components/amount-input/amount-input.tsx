@@ -48,7 +48,6 @@ const AmountInput = ({
                     className='amount-input'
                     data-testid='dt_amount-input'
                     disabled={disabled}
-                    max_characters={displayNumber(Math.pow(10, max_digits - 1) / decimal_points).length}
                     onFocus={() => setFocus(true)}
                     onBlur={() => setFocus(false)}
                     onChange={onChangeHandler}

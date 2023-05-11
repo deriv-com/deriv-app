@@ -22,18 +22,18 @@ const Barrier = ({
     setCurrentFocus,
     validation_errors,
 }) => {
+    const [show_modal, setShowModal] = React.useState(false);
     const contract_type_info =
         (proposal_info?.CALL?.spot && proposal_info?.CALL) ||
         proposal_info?.PUT ||
         (proposal_info?.NOTOUCH?.spot && proposal_info?.NOTOUCH) ||
         proposal_info?.ONETOUCH;
     const current_price = contract_type_info?.spot || '';
+    const last_price = usePrevious(current_price);
+    const current_price_has_increased = current_price > last_price;
     const barrier_price = contract_type_info?.barrier || '';
     const barrier_title = barrier_count === 1 ? localize('Barrier') : localize('Barriers');
-    const [show_modal, setShowModal] = React.useState(false);
-    const last_price = usePrevious(current_price);
     const has_error_or_not_loaded = contract_type_info?.has_error || !contract_type_info?.id;
-    const current_price_has_increased = current_price > last_price;
 
     if (is_minimized) {
         return barrier_count !== 2 ? (

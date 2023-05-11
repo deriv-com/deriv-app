@@ -147,7 +147,7 @@ const ListItems = React.forwardRef<HTMLDivElement, TListItems>((props, ref) => {
 });
 ListItems.displayName = 'ListItems';
 
-const DropdownList = React.forwardRef((props: TDropDownList) => {
+const DropdownList = (props: TDropDownList) => {
     const { dropdown_ref, list_item_ref, list_wrapper_ref } = props.dropdown_refs || {};
     const {
         active_index,
@@ -216,7 +216,7 @@ const DropdownList = React.forwardRef((props: TDropDownList) => {
         return container && ReactDOM.createPortal(el_dropdown_list, container);
     }
     return el_dropdown_list;
-});
+};
 
 DropdownList.displayName = 'DropdownList';
 

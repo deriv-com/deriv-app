@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import { compressImageFiles, readFiles, DOCUMENT_TYPE, PAGE_TYPE } from '@deriv/shared';
 import { TFile } from 'Types';
 
-type TDocumentSetting = {
+type TDocumentSettings = {
     documentType: keyof typeof DOCUMENT_TYPE;
     pageType: keyof typeof PAGE_TYPE;
     expirationDate: string;
@@ -11,13 +11,13 @@ type TDocumentSetting = {
     lifetimeValid: boolean;
 };
 
-type TProcessedFile = TFile & TDocumentSetting & { message: string };
+type TProcessedFile = TFile & TDocumentSettings & { message: string };
 
 const fileReadErrorMessage = (filename: string) => {
     return localize('Unable to read file {{name}}', { name: filename });
 };
 
-const uploadFile = (file: File, getSocket: () => WebSocket, settings: TDocumentSetting) => {
+const uploadFile = (file: File, getSocket: () => WebSocket, settings: TDocumentSettings) => {
     return new Promise((resolve, reject) => {
         if (!file) {
             reject();

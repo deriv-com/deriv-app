@@ -7,13 +7,13 @@ describe('shuffleArray', () => {
         // using node.js randomBytes method here for simulating window.getRandomValues in shuffleArray function
         Object.defineProperty(global, 'crypto', {
             value: {
-                getRandomValues: (arr: any) => crypto.randomBytes(arr.length),
+                getRandomValues: (arr: Uint32Array) => crypto.randomBytes(arr.length),
             },
         });
     });
 
     it('shuffleArray should return same shuffled array', () => {
-        const arrayEquals = (a: any[], b: any[]) => JSON.stringify(a) === JSON.stringify(b);
+        const arrayEquals = (a: number[], b: number[]) => JSON.stringify(a) === JSON.stringify(b);
 
         const not_shuffled_test_array = [1, 2, 3, 4];
         const test_array = [1, 2, 3, 4];

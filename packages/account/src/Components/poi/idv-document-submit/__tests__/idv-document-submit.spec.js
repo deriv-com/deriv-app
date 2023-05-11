@@ -34,6 +34,12 @@ jest.mock('@deriv/shared', () => ({
     formatInput: jest.fn(() => '5436454364243'),
     WS: {
         send: jest.fn(() => Promise.resolve({ error: '' })),
+        setSettings: jest.fn(() => Promise.resolve({ error: '' })),
+        authorized: {
+            storage: {
+                getSettings: jest.fn(() => Promise.resolve({ error: '' })),
+            },
+        },
     },
 }));
 
@@ -58,14 +64,15 @@ describe('<IdvDocumentSubmit/>', () => {
             },
         },
         is_from_external: false,
+        account_settings: {},
+        getChangeableFields: jest.fn(() => []),
     };
 
     it('should render IdvDocumentSubmit component', () => {
         render(<IdvDocumentSubmit {...mock_props} />);
 
-        expect(screen.getByText(/verify your identity/i)).toBeInTheDocument();
-        expect(screen.getByText(/Please select the document type and enter the ID number/i)).toBeInTheDocument();
-        expect(screen.getByText('DocumentSubmitLogo')).toBeInTheDocument();
+        expect(screen.getByText(/Identity verification/i)).toBeInTheDocument();
+        expect(screen.getByText(/details/i)).toBeInTheDocument();
         expect(screen.queryByText('New ID type name')).not.toBeInTheDocument();
         expect(screen.queryByText('Please select a document type.')).not.toBeInTheDocument();
 
@@ -105,9 +112,6 @@ describe('<IdvDocumentSubmit/>', () => {
         isDesktop.mockReturnValue(false);
         isMobile.mockReturnValue(true);
 
-        const selected_doc_msg =
-            'Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.';
-
         render(<IdvDocumentSubmit {...mock_props} />);
 
         const verifyBtn = screen.getByRole('button', { name: /verify/i });
@@ -118,11 +122,9 @@ describe('<IdvDocumentSubmit/>', () => {
         const document_number_input = screen.getByPlaceholderText('Enter your document number');
         expect(document_number_input.name).toBe('document_number');
         expect(document_number_input).toBeDisabled();
-        expect(screen.queryByText(selected_doc_msg)).not.toBeInTheDocument();
 
         fireEvent.change(document_type_input, { target: { value: 'Test document 2 name' } });
         expect(document_number_input).not.toBeDisabled();
-        expect(screen.getByText(selected_doc_msg)).toBeInTheDocument();
         expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
 
         fireEvent.blur(document_number_input);

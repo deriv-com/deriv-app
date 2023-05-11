@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { GetSettings } from '@deriv/api-types';
 import { Checkbox, HintBox, Loading, Text } from '@deriv/components';
-import { filterObjProperties, toMoment, validLength, validName, WS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { filterObjProperties, isMobile, toMoment, validLength, validName, WS } from '@deriv/shared';
 import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
@@ -46,7 +46,10 @@ const PoiConfirmWithExampleFormContainer = ({
     }, [account_settings]);
 
     const makeSettingsRequest = (settings: TValues) => {
-        const request = filterObjProperties(settings, [...rest_state?.changeable_fields]);
+        const request = filterObjProperties(
+            settings,
+            rest_state?.changeable_fields ? [...rest_state.changeable_fields] : []
+        );
 
         if (request.first_name) {
             request.first_name = request.first_name.trim();
@@ -79,7 +82,12 @@ const PoiConfirmWithExampleFormContainer = ({
             setRestState({ ...rest_state, ...response.get_settings });
             setChecked(true);
             setIsLoading(false);
-            onFormConfirm?.();
+
+            if (onFormConfirm) {
+                setTimeout(() => {
+                    onFormConfirm();
+                }, 500);
+            }
         }
     };
 
@@ -160,7 +168,7 @@ const PoiConfirmWithExampleFormContainer = ({
                             handleBlur={handleBlur}
                             setFieldValue={setFieldValue}
                             setFieldTouched={setFieldTouched}
-                            disabled_items={rest_state.changeable_fields}
+                            editable_fields={rest_state.changeable_fields}
                             is_rendered_for_onfido
                         />
                         <button
@@ -171,9 +179,13 @@ const PoiConfirmWithExampleFormContainer = ({
                         >
                             <Checkbox
                                 value={checked}
-                                label={localize(
-                                    'I confirm that the name and date of birth above match my chosen identity document (see below)'
-                                )}
+                                label={
+                                    <Text size={isMobile() ? 'xxs' : 'xs'}>
+                                        {localize(
+                                            'I confirm that the name and date of birth above match my chosen identity document (see below)'
+                                        )}
+                                    </Text>
+                                }
                                 disabled={isSubmitting}
                             />
                         </button>

@@ -13,7 +13,7 @@ import {
     filterObjProperties,
     isDesktop,
 } from '@deriv/shared';
-import { documentAdditionalError, getRegex, validate } from 'Helpers/utils';
+import { documentAdditionalError, getRegex, validate, removeUndefinedProperties } from 'Helpers/utils';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import IDVForm from 'Components/forms/idv-form';
@@ -55,53 +55,67 @@ const IdvDocumentSubmit = ({
 
     const shouldHideHelperImage = document_id => document_id === IDV_NOT_APPLICABLE_OPTION.id;
 
+    const isDocumentTypeValid = document_type => {
+        if (!document_type?.text) {
+            return localize('Please select a document type.');
+        }
+        return undefined;
+    };
+
+    const isAdditionalDocumentValid = (document_type, document_additional) => {
+        const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
+        if (error_message) {
+            return localize(error_message) + getExampleFormat(document_type.additional?.example_format);
+        }
+        return undefined;
+    };
+
+    const isDocumentNumberValid = (document_number, document_type) => {
+        const is_document_number_invalid = document_number === document_type.example_format;
+        if (!document_number) {
+            return localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
+        } else if (is_document_number_invalid) {
+            return localize('Please enter a valid ID number.');
+        }
+        const format_regex = getRegex(document_type.value);
+        if (!format_regex.test(document_number)) {
+            return localize('Please enter the correct format. ') + getExampleFormat(document_type.example_format);
+        }
+        return undefined;
+    };
+
+    const validateName = (name, min_name, max_name) => {
+        if (name) {
+            if (!validLength(name.trim(), { min: min_name, max: max_name })) {
+                return localize('You should enter 2-50 characters.');
+            } else if (!validName(name)) {
+                return localize('Letters, spaces, periods, hyphens, apostrophes only.');
+            }
+        }
+        return undefined;
+    };
+
     const validateFields = values => {
         const errors = {};
         const { document_type, document_number, document_additional } = values;
         const needs_additional_document = !!document_type.additional;
-        const is_document_number_invalid = document_number === document_type.example_format;
 
-        if (!document_type || !document_type.text) {
-            errors.document_type = localize('Please select a document type.');
-        }
+        errors.document_type = isDocumentTypeValid(document_type);
         if (!shouldHideHelperImage(document_type?.id)) {
             if (needs_additional_document) {
-                const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
-                if (error_message)
-                    errors.document_additional =
-                        localize(error_message) + getExampleFormat(document_type.additional?.example_format);
+                errors.document_additional = isAdditionalDocumentValid(document_type, document_additional);
             }
-            if (!document_number) {
-                errors.document_number =
-                    localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-            } else if (is_document_number_invalid) {
-                errors.document_number = localize('Please enter a valid ID number.');
-            } else {
-                const format_regex = getRegex(document_type.value);
-                if (!format_regex.test(document_number)) {
-                    errors.document_number =
-                        localize('Please enter the correct format. ') + getExampleFormat(document_type.example_format);
-                }
-            }
+            errors.document_number = isDocumentNumberValid(document_number, document_type);
         }
         const required_fields = ['first_name', 'last_name', 'date_of_birth'];
         const validateValues = validate(errors, values);
         validateValues(val => val, required_fields, localize('This field is required'));
         const min_name = 2;
         const max_name = 50;
-        const validateName = (name, field) => {
-            if (name) {
-                if (!validLength(name.trim(), { min: min_name, max: max_name })) {
-                    errors[field] = localize('You should enter 2-50 characters.');
-                } else if (!validName(name)) {
-                    errors[field] = localize('Letters, spaces, periods, hyphens, apostrophes only.');
-                }
-            }
-        };
-        validateName(values.first_name, 'first_name');
-        validateName(values.last_name, 'last_name');
+        errors.first_name = validateName(values.first_name, min_name, max_name);
+        errors.last_name = validateName(values.last_name, min_name, max_name);
 
-        return errors;
+        return removeUndefinedProperties(errors);
     };
 
     const makeSettingsRequest = settings => {
@@ -177,25 +191,23 @@ const IdvDocumentSubmit = ({
                 <div className='proof-of-identity__container proof-of-identity__container--reset'>
                     <FormSubHeader title={localize('Identity verification')} />
                     <Field>
-                        {({ field }) => {
-                            return (
-                                <IDVForm
-                                    errors={errors}
-                                    touched={touched}
-                                    values={values}
-                                    handleChange={handleChange}
-                                    handleBlur={handleBlur}
-                                    setFieldValue={setFieldValue}
-                                    hide_hint={false}
-                                    selected_country={selected_country}
-                                    is_from_external={is_from_external}
-                                    class_name='idv-layout'
-                                    {...field}
-                                />
-                            );
-                        }}
+                        {({ field }) => (
+                            <IDVForm
+                                errors={errors}
+                                touched={touched}
+                                values={values}
+                                handleChange={handleChange}
+                                handleBlur={handleBlur}
+                                setFieldValue={setFieldValue}
+                                hide_hint={false}
+                                selected_country={selected_country}
+                                is_from_external={is_from_external}
+                                class_name='idv-layout'
+                                {...field}
+                            />
+                        )}
                     </Field>
-                    <FormSubHeader title={localize('Identity verification')} />
+                    <FormSubHeader title={localize('Details')} />
                     <Field>
                         {({ field }) => (
                             <div

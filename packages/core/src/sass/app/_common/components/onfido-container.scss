@@ -4,9 +4,13 @@
     align-items: center;
     gap: 1.6rem;
 
-    &--layout {
-        flex-direction: row;
+    &-view_wrapper {
+        position: relative;
+        min-width: 32.8rem;
+        min-height: 50rem;
+        margin: auto;
     }
+
     .onfido-sdk-ui-Modal-inner {
         border-radius: 0.8rem;
     }
@@ -14,9 +18,6 @@
     @include mobile() {
         gap: 0.4rem;
 
-        &--layout {
-            flex-direction: column;
-        }
         .onfido-sdk-ui-PageTitle-titleSpan {
             font-size: 2rem;
         }
@@ -64,12 +65,6 @@
             z-index: 1;
             width: 100%;
         }
-    }
-
-    &__layout {
-        width: 32.8rem;
-        height: 50rem;
-        margin: auto;
     }
 }
 
@@ -132,7 +127,7 @@
             padding: 0.8rem;
             display: flex;
             background: var(--status-alert-background);
-            border-radius: 4px;
+            border-radius: $BORDER_RADIUS;
             gap: 0.8rem;
             line-height: 1.4rem;
         }
@@ -150,10 +145,6 @@
         }
 
         .account-form__section-content {
-            .dc-input__bottom-label > * {
-                font-size: var(--text-size-xxs);
-            }
-
             .account-form__fieldset {
                 margin-bottom: 0;
 
@@ -177,12 +168,6 @@
             &__disabled > * {
                 cursor: not-allowed;
             }
-
-            @include mobile() {
-                .dc-checkbox__label {
-                    font-size: var(--text-size-xxs);
-                }
-            }
         }
     }
 
@@ -203,15 +188,6 @@
 
         &-side-note {
             grid-area: section-side-note;
-
-            .dc-text {
-                color: var(--text-less-prominent);
-                font-size: 1.4rem;
-
-                @include mobile {
-                    font-size: 1.2rem;
-                }
-            }
 
             .account-poa__upload-box-dashboard {
                 @include mobile {

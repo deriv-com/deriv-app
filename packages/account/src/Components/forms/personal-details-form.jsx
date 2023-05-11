@@ -7,66 +7,21 @@ import {
     Dropdown,
     DesktopWrapper,
     MobileWrapper,
-    DateOfBirthPicker,
-    Input,
     Popover,
     RadioGroup,
     SelectNative,
     Text,
 } from '@deriv/components';
-import { getLegalEntityName, isDesktop, isMobile, routes, toMoment, validPhone } from '@deriv/shared';
+import { getLegalEntityName, isDesktop, isMobile, routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
 import InlineNoteWithIcon from 'Components/inline-note-with-icon';
 import FormBodySection from 'Components/form-body-section';
+import { DateOfBirthField, FormInputField } from 'Components/forms/form-fields';
 import { Link } from 'react-router-dom';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 import { isFieldImmutable } from 'Helpers/utils';
-
-const DateOfBirthField = props => (
-    <Field name={props.name}>
-        {({ field: { value }, form: { setFieldValue, errors, touched, setTouched } }) => (
-            <DateOfBirthPicker
-                error={touched.date_of_birth && errors.date_of_birth}
-                onBlur={() =>
-                    setTouched({
-                        ...touched,
-                        date_of_birth: true,
-                    })
-                }
-                onChange={({ target }) =>
-                    setFieldValue(
-                        'date_of_birth',
-                        target?.value ? toMoment(target.value).format('YYYY-MM-DD') : '',
-                        true
-                    )
-                }
-                value={value}
-                portal_id={props.portal_id}
-                {...props}
-            />
-        )}
-    </Field>
-);
-
-const FormInputField = ({ name, optional = false, warn, ...props }) => (
-    <Field name={name}>
-        {({ field, form: { errors, touched } }) => (
-            <Input
-                type='text'
-                required={!optional}
-                name={name}
-                autoComplete='off'
-                maxLength={props.maxLength || 30}
-                error={touched[field.name] && errors[field.name]}
-                warn={warn}
-                {...field}
-                {...props}
-            />
-        )}
-    </Field>
-);
 
 const PersonalDetailsForm = ({
     errors,

@@ -6,6 +6,7 @@ import {
     getRegex,
     preventEmptyClipboardPaste,
     isFieldImmutable,
+    removeUndefinedProperties,
 } from '../utils';
 
 describe('generatePlaceholderText', () => {
@@ -124,7 +125,7 @@ describe('getDocumentData', () => {
 
 describe('getRegex', () => {
     it('should return the correct regex for Zimbabwe', () => {
-        expect(getRegex('^[0-9]{8,9}[a-zA-Z]{1}[0-9]{2}$')).toEqual(/^[0-9]{8,9}[a-zA-Z]{1}[0-9]{2}$/);
+        expect(getRegex('^[a-z]+$')).toEqual(/^[a-z]+$/);
     });
 });
 
@@ -161,5 +162,13 @@ describe('isFieldImmutable', () => {
     it('should return true if field is immutable', () => {
         const mutable_field_set = ['test1', 'test2'];
         expect(isFieldImmutable('test3', mutable_field_set)).toBeTruthy();
+    });
+});
+
+describe('removeUndefinedProperties', () => {
+    it('should remove undefined properties', () => {
+        const data = { name: 'test', age: undefined, email: '', phone: undefined };
+        const new_data = removeUndefinedProperties(data);
+        expect(new_data).toEqual({ name: 'test', email: '' });
     });
 });

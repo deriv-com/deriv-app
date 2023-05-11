@@ -35,7 +35,7 @@ const AmountInput = ({
 
     return (
         <div className='amount-input-wrapper'>
-            <span>{label}</span>
+            <Text size={'xs'}>{label}</Text>
             <div className='amount-input-container'>
                 <Input
                     className='amount-input'

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import WalletHeader from 'Components/wallet-header';
-import { TAccountCategory, TAccountStatus, TJurisdictionData, TWalletSvgCurrency } from 'Types';
+import { TAccountCategory, TAccountStatus, TJurisdictionData, TWalletCurrency } from 'Types';
 import WalletContent from 'Components/wallet-content';
 import './wallet.scss';
 import { CSSTransition } from 'react-transition-group';
@@ -9,7 +9,7 @@ import { CSSTransition } from 'react-transition-group';
 export type TWalletTestAccount = {
     account_status: TAccountStatus;
     balance: string;
-    currency: TWalletSvgCurrency;
+    currency: TWalletCurrency;
     shortcode: Extract<TJurisdictionData['jurisdiction'], 'svg' | 'malta'>;
     account_type: TAccountCategory;
 };

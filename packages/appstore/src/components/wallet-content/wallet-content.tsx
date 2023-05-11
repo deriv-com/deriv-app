@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { TAccountCategory, TAccountStatus, TJurisdictionData, TWalletSvgCurrency } from 'Types';
+import { TAccountCategory, TAccountStatus, TJurisdictionData, TWalletCurrency } from 'Types';
 // import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 // import CFDsListing from 'Components/cfds-listing';
 import { isMobile } from '@deriv/shared';
@@ -14,7 +14,7 @@ import './wallet-content.scss';
 export type TWalletTestAccount = {
     account_status: TAccountStatus;
     balance: string;
-    currency: TWalletSvgCurrency;
+    currency: TWalletCurrency;
     shortcode: Extract<TJurisdictionData['jurisdiction'], 'svg' | 'malta'>;
     account_type: TAccountCategory;
 };

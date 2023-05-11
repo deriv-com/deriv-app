@@ -96,7 +96,7 @@ type TNotification =
     | ((excluded_until: number) => TNotificationMessage);
 
 type TClientStore = {
-    accounts: { [k: string]: TAccount };
+    accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
     account_limits: Partial<AccountLimitsResponse['get_limits']> & {
@@ -194,6 +194,7 @@ type TClientStore = {
     setTwoFAStatus: (status: boolean) => void;
     has_changed_two_fa: boolean;
     setTwoFAChangedStatus: (status: boolean) => void;
+    real_account_creation_unlock_date: number;
 };
 
 type TCommonStoreError = {
@@ -252,6 +253,7 @@ type TUiStore = {
     is_real_acc_signup_on: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
+    setShouldShowCooldownModal: (value: boolean) => void;
 };
 
 type TMenuStore = {
@@ -295,6 +297,7 @@ type TTradersHubStore = {
     selected_account_type: string;
     no_CR_account: boolean;
     no_MF_account: boolean;
+    is_demo: boolean;
 };
 
 /**

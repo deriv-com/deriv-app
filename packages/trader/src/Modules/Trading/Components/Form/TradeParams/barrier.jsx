@@ -28,8 +28,8 @@ const Barrier = ({
     const contract_info = proposal_info?.[type_with_current_spot];
     const current_spot = contract_info?.spot || '';
     const current_barrier_price = contract_info?.barrier || '';
-    const last_price = usePrevious(current_spot);
-    const current_price_has_increased = current_spot > last_price;
+    const previous_spot = usePrevious(current_spot);
+    const has_spot_increased = current_spot > previous_spot;
     const barrier_title = barrier_count === 1 ? localize('Barrier') : localize('Barriers');
     const has_error_or_not_loaded = contract_info?.has_error || !contract_info?.id;
 
@@ -134,12 +134,11 @@ const Barrier = ({
                             <ValueMovement
                                 has_error_or_not_loaded={has_error_or_not_loaded}
                                 value={current_spot}
-                                has_increased={current_price_has_increased}
+                                has_increased={has_spot_increased}
                                 show_currency={false}
                             />
                         )}
                     </div>
-
                     <LabeledQuantityInputMobile
                         id='dt_barrier_input'
                         input_label={localize('Barrier')}

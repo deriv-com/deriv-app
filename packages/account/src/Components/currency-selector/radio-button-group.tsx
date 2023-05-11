@@ -5,7 +5,7 @@ import { Text } from '@deriv/components';
 
 export type TRadioButtonGroup = {
     className: string;
-    is_fiat: boolean;
+    is_fiat?: boolean;
     is_title_enabled?: boolean;
     item_count: number;
     label: string;

@@ -1,0 +1,10 @@
+.watermark {
+    position: absolute;
+    resize: both;
+    overflow: hidden;
+    background-repeat: space;
+    opacity: 0.16;
+    rotate: -30deg;
+    width: 200%;
+    aspect-ratio: 1;
+}

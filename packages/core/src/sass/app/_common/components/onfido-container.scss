@@ -78,6 +78,11 @@
             max-width: unset;
         }
 
+        &--status-message {
+            margin-top: 1.6rem;
+            text-align: center;
+            width: 100%;
+        }
         &_container {
             @include desktop() {
                 border: 1px solid var(--general-active);

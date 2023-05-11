@@ -2,9 +2,9 @@ import React from 'react';
 import classNames from 'classnames';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { GetSettings } from '@deriv/api-types';
-import { Checkbox, Loading } from '@deriv/components';
+import { Checkbox, HintBox, Loading, Text } from '@deriv/components';
 import { filterObjProperties, toMoment, validLength, validName, WS } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
@@ -63,12 +63,12 @@ const PoiConfirmWithExampleFormContainer = ({
 
     const onSubmit = async (values: TValues, { setStatus, setSubmitting }: FormikHelpers<TValues>) => {
         if (checked) return;
-        setStatus({ msg: '' });
+        setStatus({ error: false, msg: '' });
         const request = makeSettingsRequest(values);
         const data = await WS.setSettings(request);
 
         if (data.error) {
-            setStatus({ msg: data.error.message });
+            setStatus({ error: true, msg: data.error.message });
             setSubmitting(false);
         } else {
             const response = await WS.authorized.storage.getSettings();
@@ -148,6 +148,7 @@ const PoiConfirmWithExampleFormContainer = ({
                 isSubmitting,
                 setFieldValue,
                 setFieldTouched,
+                status,
             }) => (
                 <Form className='account-form__poi-confirm-example' onSubmit={handleSubmit}>
                     <FormBody>
@@ -176,6 +177,21 @@ const PoiConfirmWithExampleFormContainer = ({
                                 disabled={isSubmitting}
                             />
                         </button>
+                        {status?.error && (
+                            <div className='account-form__poi-confirm-example--status-message'>
+                                <HintBox
+                                    icon='IcAlertDanger'
+                                    icon_height={16}
+                                    icon_width={16}
+                                    message={
+                                        <Text as='p' size='xxxs'>
+                                            <Localize i18n_default_text='Sorry, an internal error occurred. Hit the above checkbox to try again.' />
+                                        </Text>
+                                    }
+                                    is_danger
+                                />
+                            </div>
+                        )}
                     </FormBody>
                 </Form>
             )}

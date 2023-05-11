@@ -4,7 +4,7 @@ import Text from '../text';
 
 type TAmountInput = {
     currency: string;
-    decimal_points?: number;
+    decimal_places?: number;
     disabled?: boolean;
     initial_value?: number;
     label?: string;
@@ -14,7 +14,7 @@ type TAmountInput = {
 
 const AmountInput = ({
     currency,
-    decimal_points = 2,
+    decimal_places = 2,
     disabled = false,
     initial_value = 0,
     label,
@@ -25,15 +25,15 @@ const AmountInput = ({
     const [focus, setFocus] = useState(false);
 
     const displayNumber = useCallback(
-        (number: number) => number.toLocaleString('en-US', { minimumFractionDigits: decimal_points }),
-        [decimal_points]
+        (number: number) => number.toLocaleString('en-US', { minimumFractionDigits: decimal_places }),
+        [decimal_places]
     );
 
     const onChangeHandler = (e: { target: { value: string } }) => {
         const input_value = e.target.value.replace(/\D/g, '');
         if (Number(input_value) <= Math.pow(10, max_digits)) {
-            setValue(Number(input_value) / 100);
-            onChange?.(Number(input_value) / 100);
+            setValue(Number(input_value) / Math.pow(10, decimal_places));
+            onChange?.(Number(input_value) / Math.pow(10, decimal_places));
         }
     };
 

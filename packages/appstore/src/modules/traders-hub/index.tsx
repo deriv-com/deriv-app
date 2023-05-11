@@ -111,6 +111,48 @@ const TradersHub = () => {
             shortcode: 'svg',
             account_type: 'real',
         },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'BTC',
+            shortcode: 'svg',
+            account_type: 'real',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'LTC',
+            shortcode: 'svg',
+            account_type: 'real',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'USDC',
+            shortcode: 'svg',
+            account_type: 'real',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'USDT',
+            shortcode: 'svg',
+            account_type: 'real',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'eUSDT',
+            shortcode: 'svg',
+            account_type: 'real',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'tUSDT',
+            shortcode: 'svg',
+            account_type: 'real',
+        },
     ];
 
     // just for testing
@@ -128,6 +170,7 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
+                    <WalletHeader account_type='demo' is_open_wallet={false} setIsOpen={fn} />
                     {wallet_test_accounts.map(account => (
                         <Wallet
                             key={`${account.account_type} ${account.shortcode} ${account.currency} `}

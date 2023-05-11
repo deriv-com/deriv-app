@@ -29,5 +29,6 @@
     &--large {
         width: 12.8rem;
         height: 8rem;
+        border-radius: $BORDER_RADIUS * 2;
     }
 }

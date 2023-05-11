@@ -28,23 +28,28 @@ const uploadFile = (file: File, getSocket: () => WebSocket, settings: TDocumentS
 
         let is_file_error = false;
 
-        compressImageFiles([file]).then((files_to_process: File[]) => {
-            readFiles(files_to_process, fileReadErrorMessage, settings).then((processed_files: TProcessedFile[]) => {
-                processed_files.forEach((item: TProcessedFile) => {
-                    if (item.message) {
-                        is_file_error = true;
-                        reject(item);
-                    }
-                });
-                const total_to_upload = processed_files.length;
-                if (is_file_error || !total_to_upload) {
-                    return; // don't start submitting files until all front-end validation checks pass
-                }
+        compressImageFiles([file])
+            .then((files_to_process: File[]) => {
+                readFiles(files_to_process, fileReadErrorMessage, settings).then(
+                    (processed_files: TProcessedFile[]) => {
+                        processed_files.forEach((item: TProcessedFile) => {
+                            if (item.message) {
+                                is_file_error = true;
+                                reject(item);
+                            }
+                        });
+                        const total_to_upload = processed_files.length;
+                        if (is_file_error || !total_to_upload) {
+                            return; // don't start submitting files until all front-end validation checks pass
+                        }
 
-                // send files
-                uploader.upload(processed_files[0]).then(resolve).catch(reject);
-            });
-        });
+                        // send files
+                        uploader.upload(processed_files[0]).then(resolve).catch(reject);
+                    }
+                );
+            })
+            /* eslint-disable no-console */
+            .catch(error => console.error('error: ', error));
     });
 };
 

@@ -3,7 +3,7 @@ import { initReactI18next } from 'react-i18next';
 import { str as crc32 } from 'crc-32';
 import { isLocal, isProduction } from '../../../shared/src/utils/config/config';
 import { isStaging } from '../../../shared/src/utils/url/helpers';
-import { ALL_LANGUAGES, DEFAULT_LANGUAGE, LANGUAGE_KEY, Language } from './config';
+import { ALL_LANGUAGES, DEFAULT_LANGUAGE, Language, STORE_LANGUAGE_KEY } from './config';
 
 export const getAllLanguages = () => ALL_LANGUAGES;
 
@@ -31,7 +31,7 @@ export const getAllowedLanguages = () => {
     return language_list;
 };
 
-const isLanguageAvailable = (lang: string) => {
+export const isLanguageAvailable = (lang: string) => {
     if (!lang) return false;
 
     const selected_language = lang.toUpperCase();
@@ -45,12 +45,12 @@ const isLanguageAvailable = (lang: string) => {
 export const getInitialLanguage = () => {
     const url_params = new URLSearchParams(window.location.search);
     const query_lang = url_params.get('lang');
-    const local_storage_language = localStorage.getItem(LANGUAGE_KEY);
+    const local_storage_language = localStorage.getItem(STORE_LANGUAGE_KEY);
 
     if (query_lang) {
         const query_lang_uppercase = query_lang.toUpperCase();
         if (isLanguageAvailable(query_lang_uppercase)) {
-            localStorage.setItem(LANGUAGE_KEY, query_lang_uppercase);
+            localStorage.setItem(STORE_LANGUAGE_KEY, query_lang_uppercase);
             return query_lang_uppercase;
         }
     }
@@ -102,7 +102,7 @@ export const changeLanguage = async (lang: Language, cb: (lang: Language) => voi
     if (isLanguageAvailable(lang)) {
         await loadLanguageJson(lang);
         await i18n.changeLanguage(lang, () => {
-            localStorage.setItem(LANGUAGE_KEY, lang);
+            localStorage.setItem(STORE_LANGUAGE_KEY, lang);
             cb(lang);
         });
     }

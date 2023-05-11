@@ -1,6 +1,6 @@
 import React from 'react';
 import { initMoment } from '../../../shared/src/utils/date';
-import i18n, { getInitialLanguage } from '../i18next/utils';
+import i18n, { getInitialLanguage } from '../utils/i18next';
 
 const useOnLoadTranslation = () => {
     const [is_loaded, setLoaded] = React.useState(false);

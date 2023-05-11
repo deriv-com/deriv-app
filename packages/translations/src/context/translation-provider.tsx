@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { I18nextProvider } from 'react-i18next';
-import i18n from '../i18next/utils';
+import i18n from '../utils/i18next';
 import useOnLoadTranslation from '../hooks/use-onload-translation';
 
 type TranslationProviderProps = {

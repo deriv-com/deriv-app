@@ -16,13 +16,12 @@ import {
     SelectNative,
 } from '@deriv/components';
 import {
-    urlFor,
     isAccumulatorContract,
     isMobile,
     isMultiplierContract,
     isVanillaContract,
     getTimePercentage,
-    website_name,
+    getUnsupportedContracts,
     getTotalProfit,
     getContractPath,
     getCurrentTick,
@@ -224,26 +223,15 @@ export const OpenPositionsTable = ({
     </React.Fragment>
 );
 
-const portfoliows_href = urlFor('user/portfoliows', { legacy: true });
-
 const getRowAction = row_obj =>
     row_obj.is_unsupported
         ? {
               component: (
                   <Localize
-                      i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
+                      i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
                       values={{
-                          website_name,
+                          trade_type_name: getUnsupportedContracts()[row_obj.type]?.name,
                       }}
-                      components={[
-                          <a
-                              key={0}
-                              className='link link--orange'
-                              rel='noopener noreferrer'
-                              target='_blank'
-                              href={portfoliows_href}
-                          />,
-                      ]}
                   />
               ),
           }

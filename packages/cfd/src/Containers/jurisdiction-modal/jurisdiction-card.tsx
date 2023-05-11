@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text, Popover } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { jurisdiction_contents } from '../../Constants/jurisdiction-contents';
-import { TJurisdictionCardProps } from '../props.types';
+import { getJurisdictionContents } from '../../Constants/jurisdiction-contents';
+import { TJurisdictionCardProps, TJurisdictionCardType } from '../props.types';
 import JurisdictionCardBanner from './jurisdiction-card-banner';
 
 const JurisdictionCard = ({
@@ -25,7 +25,7 @@ const JurisdictionCard = ({
         is_synthetic ? number_of_synthetic_accounts_to_be_shown : number_of_financial_accounts_to_be_shown
     );
 
-    const card_values = jurisdiction_contents[type_of_card as keyof typeof jurisdiction_contents];
+    const card_values = getJurisdictionContents()[type_of_card as TJurisdictionCardType];
 
     const card_data = is_synthetic ? card_values.synthetic_contents : card_values.financial_contents;
 

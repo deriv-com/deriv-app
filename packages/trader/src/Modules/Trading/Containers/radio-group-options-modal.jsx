@@ -36,7 +36,7 @@ const RadioGroupOptionsModal = ({
                 title={modal_title}
             >
                 <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='48px'>
-                    {modal_title.toLowerCase() === 'multiplier' ? (
+                    {modal_title === localize('Multiplier') ? (
                         <MultiplierOptions toggleModal={toggleModal} />
                     ) : (
                         <RadioGroupWithInfoMobile

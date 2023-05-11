@@ -20,6 +20,7 @@ import RootStore from 'Stores';
 import GTM from 'Utils/gtm';
 import './app.scss';
 import Dashboard from 'Components/dashboard';
+import { setColors } from '../../../bot-skeleton/src/scratch/hooks/colours';
 
 const App = ({ passthrough }) => {
     const { root_store, WS } = passthrough;
@@ -29,6 +30,13 @@ const App = ({ passthrough }) => {
     const root_store_instance = React.useRef(new RootStore(root_store, WS, DBot));
     const { app, common, core } = root_store_instance.current;
     const { onMount, onUnmount, showDigitalOptionsMaltainvestError } = app;
+    const {
+        ui: { is_dark_mode_on },
+    } = root_store;
+
+    React.useEffect(() => {
+        setColors(is_dark_mode_on);
+    }, []);
 
     React.useEffect(() => {
         /**

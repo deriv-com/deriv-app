@@ -8,7 +8,6 @@ import RouteWithSubRoutes from './route-with-sub-routes.jsx';
 
 const BinaryRoutes = props => {
     const location = useLocation();
-    const { is_pre_appstore } = props;
     const { is_appstore } = React.useContext(PlatformContext);
     React.useEffect(() => {
         props.pushDataLayer({ event: 'page_load' });
@@ -21,7 +20,7 @@ const BinaryRoutes = props => {
         <React.Suspense fallback={<Loading />}>
             <Prompt when={props.prompt_when} message={props.promptFn} />
             <Switch>
-                {getRoutesConfig({ is_appstore, is_pre_appstore, is_eu_country }).map((route, idx) => (
+                {getRoutesConfig({ is_appstore, is_eu_country }).map((route, idx) => (
                     <RouteWithSubRoutes key={idx} {...route} {...props} />
                 ))}
             </Switch>
@@ -34,5 +33,4 @@ export default connect(({ ui, gtm, client }) => ({
     promptFn: ui.promptFn,
     pushDataLayer: gtm.pushDataLayer,
     isEuropeCountry: client.isEuropeCountry,
-    is_pre_appstore: client.is_pre_appstore,
 }))(BinaryRoutes);

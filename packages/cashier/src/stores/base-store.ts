@@ -156,8 +156,10 @@ export default class BaseStore {
         }
 
         if (properties && properties.length) {
-            // TODO: Check this
-            snapshot = properties.reduce((result, p) => Object.assign(result, { [p]: snapshot[p as keyof this] }), {});
+            snapshot = properties.reduce(
+                (result, p) => Object.assign(result, { [p]: (snapshot as Record<string, unknown>)[p] }),
+                {} as this
+            );
         }
 
         return snapshot;
@@ -263,7 +265,7 @@ export default class BaseStore {
     addRule(property: string, rules: string) {
         this.validation_rules[property as keyof typeof this.validation_rules] = rules;
 
-        // TODO: Check this overload matches
+        // TODO: CHECK THIS TYPE ERROR
         intercept(this, property, change => this.validateProperty(property, change.newValue));
     }
 

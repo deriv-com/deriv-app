@@ -87,10 +87,7 @@ const FinancialDetails = props => {
                                     is_disabled={isDesktop()}
                                 >
                                     <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
-                                        <Localize
-                                            i18n_default_text='We collect information about your employment as part of our due
-                                        diligence obligations, as required by anti-money laundering legislation.'
-                                        />
+                                        <Localize i18n_default_text='We collect information about your employment as part of our due diligence obligations, as required by anti-money laundering legislation.' />
                                     </Text>
                                     <ThemedScrollbars autoHide={!(window.innerHeight < 890)} height={height - 77}>
                                         <div

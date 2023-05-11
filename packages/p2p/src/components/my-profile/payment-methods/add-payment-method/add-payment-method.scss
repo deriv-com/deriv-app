@@ -63,6 +63,10 @@
                 display: table;
                 height: 100%;
             }
+          
+            .dc-input {
+                margin-bottom: 4rem;
+            }
 
             .dc-input--error {
                 margin-bottom: 6rem;
@@ -80,7 +84,9 @@
         }
 
         &__payment-method-field {
-            margin: 3.8rem 0;
+            &--text-area {
+                height: auto;
+            }
         }
     }
 }

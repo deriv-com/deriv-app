@@ -27,7 +27,7 @@ export default class CryptoFiatConverterStore {
 
     converter_from_amount = '';
     converter_to_amount = '';
-    converter_from_error = '';
+    converter_from_error: string | JSX.Element = '';
     converter_to_error = '';
     is_timer_visible = false;
 
@@ -39,7 +39,7 @@ export default class CryptoFiatConverterStore {
         this.converter_to_amount = amount;
     }
 
-    setConverterFromError(error: string): void {
+    setConverterFromError(error: string | JSX.Element): void {
         this.converter_from_error = error;
     }
 
@@ -168,6 +168,6 @@ export default class CryptoFiatConverterStore {
         this.setConverterFromError('');
         this.setConverterToError('');
         this.setIsTimerVisible(false);
-        this.root_store.modules.cashier.general_store.percentageSelectorSelectionStatus(true);
+        this.root_store.modules.cashier?.general_store.percentageSelectorSelectionStatus(true);
     }
 }

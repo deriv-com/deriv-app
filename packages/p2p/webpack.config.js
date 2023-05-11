@@ -146,6 +146,7 @@ module.exports = function (env) {
             {
                 react: 'react',
                 'react-dom': 'react-dom',
+                'react-router-dom': 'react-router-dom',
                 'prop-types': 'prop-types',
                 ...(is_publishing ? {} : { 'lodash.debounce': 'lodash.debounce', formik: 'formik' }),
                 ...publisher_utils.getLocalDerivPackageExternals(__dirname, is_publishing),

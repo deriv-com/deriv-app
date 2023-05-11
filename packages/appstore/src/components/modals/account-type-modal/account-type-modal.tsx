@@ -9,17 +9,17 @@ import { TModalContent, TAccountType, TAccountCard, TTradingPlatformAvailableAcc
 import { TIconTypes } from 'Types';
 import { CFD_PLATFORMS } from '@deriv/shared';
 
-const derived_account: TAccountType = {
+const getDerivedAccount = (): TAccountType => ({
     title_and_type: localize('Derived'),
     icon: 'Derived',
     description: localize('Trade CFDs on MT5 with Derived indices that simulate real-world market movements.'),
-};
+});
 
-const financial_account: TAccountType = {
+const getFinancialAccount = (): TAccountType => ({
     title_and_type: localize('Financial'),
     icon: 'Financial',
     description: localize('Trade CFDs on MT5 with forex, stock indices, commodities, and cryptocurrencies.'),
-};
+});
 
 const AccountCard = ({ selectAccountTypeCard, account_type_card, title_and_type, description, icon }: TAccountCard) => {
     const cardSelection = (cardType: string) => {
@@ -60,19 +60,19 @@ const ModalContent = ({
             {is_synthetic_available && (
                 <AccountCard
                     account_type_card={account_type_card}
-                    selectAccountTypeCard={() => selectAccountTypeCard(`${derived_account.title_and_type}`)}
-                    description={derived_account.description}
-                    title_and_type={derived_account.title_and_type}
-                    icon={derived_account.icon}
+                    selectAccountTypeCard={() => selectAccountTypeCard(`${getDerivedAccount().title_and_type}`)}
+                    description={getDerivedAccount().description}
+                    title_and_type={getDerivedAccount().title_and_type}
+                    icon={getDerivedAccount().icon}
                 />
             )}
             {is_financial_available && (
                 <AccountCard
                     account_type_card={account_type_card}
-                    selectAccountTypeCard={() => selectAccountTypeCard(`${financial_account.title_and_type}`)}
-                    description={financial_account.description}
-                    title_and_type={financial_account.title_and_type}
-                    icon={financial_account.icon}
+                    selectAccountTypeCard={() => selectAccountTypeCard(`${getFinancialAccount().title_and_type}`)}
+                    description={getFinancialAccount().description}
+                    title_and_type={getFinancialAccount().title_and_type}
+                    icon={getFinancialAccount().icon}
                 />
             )}
         </div>
@@ -101,7 +101,7 @@ const MT5AccountTypeModal = () => {
     );
 
     const set_account_type = () =>
-        account_type_card === 'Derived'
+        account_type_card === localize('Derived')
             ? setAccountType({ category: 'real', type: 'synthetic' })
             : setAccountType({ category: 'real', type: 'financial' });
 

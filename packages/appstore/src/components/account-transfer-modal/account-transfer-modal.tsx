@@ -18,7 +18,7 @@ const AccountTransferModal = ({ is_modal_open, toggleModal }: TAccountTransferMo
                 account_transfer: { is_transfer_confirm, should_switch_account },
             },
         },
-        traders_hub: { closeModal, openModal, setSelectedAccount },
+        traders_hub: { closeModal, setSelectedAccount },
     } = useStore();
 
     const history = useHistory();
@@ -43,10 +43,6 @@ const AccountTransferModal = ({ is_modal_open, toggleModal }: TAccountTransferMo
         history.push(routes.cashier_acc_transfer);
     };
 
-    const openAccountSwitcherModal = () => {
-        openModal('currency_selection');
-    };
-
     return (
         <Modal
             className={should_switch_account ? 'account-transfer-modal' : ''}
@@ -59,12 +55,7 @@ const AccountTransferModal = ({ is_modal_open, toggleModal }: TAccountTransferMo
             should_header_stick_body={false}
         >
             <Modal.Body>
-                <AccountTransfer
-                    openAccountSwitcherModal={openAccountSwitcherModal}
-                    onClickDeposit={onClickDeposit}
-                    onClickNotes={onClickNotes}
-                    onClose={toggleModal}
-                />
+                <AccountTransfer onClickDeposit={onClickDeposit} onClickNotes={onClickNotes} onClose={toggleModal} />
             </Modal.Body>
         </Modal>
     );

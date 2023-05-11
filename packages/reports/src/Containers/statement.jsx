@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Text, Clipboard } from '@deriv/components';
-import { extractInfoFromShortcode, isForwardStarting, urlFor, website_name, getContractPath } from '@deriv/shared';
+import { extractInfoFromShortcode, isForwardStarting, getUnsupportedContracts, getContractPath } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import { getSupportedContracts } from '_common/contract';
@@ -52,31 +52,21 @@ const DetailsComponent = ({ message = '', action_type = '' }) => {
     );
 };
 
-const statementws_href = urlFor('user/statementws', { legacy: true });
-
 const getRowAction = row_obj => {
     let action;
     if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
+        const contract_type = extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase();
         action =
-            getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()] &&
+            getSupportedContracts()[contract_type] &&
             !isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time)
                 ? getContractPath(row_obj.id)
                 : {
                       component: (
                           <Localize
-                              i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
+                              i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
                               values={{
-                                  website_name,
+                                  trade_type_name: getUnsupportedContracts()[contract_type]?.name,
                               }}
-                              components={[
-                                  <a
-                                      key={0}
-                                      className='link link--orange'
-                                      rel='noopener noreferrer'
-                                      target='_blank'
-                                      href={statementws_href}
-                                  />,
-                              ]}
                           />
                       ),
                   };

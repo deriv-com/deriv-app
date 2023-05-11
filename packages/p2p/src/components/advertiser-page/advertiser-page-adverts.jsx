@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { InfiniteDataList, Loading, Table, Tabs } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
+import { useStore, observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import Empty from 'Components/empty/empty.jsx';
@@ -10,7 +10,11 @@ import AdvertiserPageRow from './advertiser-page-row.jsx';
 import './advertiser-page.scss';
 
 const AdvertiserPageAdverts = () => {
-    const { advertiser_page_store, general_store } = useStores();
+    const {
+        client: { currency },
+    } = useStore();
+
+    const { advertiser_page_store } = useStores();
 
     const AdvertiserPageRowRenderer = row_props => (
         <AdvertiserPageRow {...row_props} showAdPopup={advertiser_page_store.showAdPopup} />
@@ -43,7 +47,7 @@ const AdvertiserPageAdverts = () => {
                                         <Table.Head>{localize('Limits')}</Table.Head>
                                         <Table.Head>
                                             {localize('Rate (1 {{currency}})', {
-                                                currency: general_store.client.currency,
+                                                currency,
                                             })}
                                         </Table.Head>
                                         <Table.Head>

@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
-import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import { connect } from 'Stores/connect';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
@@ -31,7 +30,6 @@ const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
 };
 
 const Trade = ({
-    contract_type,
     form_components,
     getFirstOpenMarket,
     should_show_active_symbols_loading,
@@ -182,13 +180,7 @@ const Trade = ({
                         </div>
                     </DesktopWrapper>
                     <MobileWrapper>
-                        <ChartLoader
-                            is_visible={
-                                is_chart_loading ||
-                                should_show_active_symbols_loading ||
-                                (isDigitTradeType(contract_type) && !digits[0])
-                            }
-                        />
+                        <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
                         <SwipeableWrapper
                             onChange={onChangeSwipeableIndex}
                             is_disabled={
@@ -318,13 +310,13 @@ const Chart = props => {
         granularity,
         has_alternative_source,
         is_accumulator,
-        is_eu_country,
         is_trade_enabled,
         is_socket_opened,
         main_barrier,
         refToAddTick,
         setChartStatus,
         settings,
+        should_show_eu_content,
         show_digits_stats,
         should_highlight_current_spot,
         symbol,
@@ -378,7 +370,6 @@ const Chart = props => {
             chartControlsWidgets={null}
             chartStatusListener={v => setChartStatus(!v)}
             chartType={chart_type}
-            is_eu_country={is_eu_country}
             initialData={{
                 activeSymbols: JSON.parse(JSON.stringify(active_symbols)),
             }}
@@ -393,12 +384,14 @@ const Chart = props => {
             id='trade'
             isMobile={isMobile()}
             maxTick={isMobile() ? max_ticks : undefined}
-            granularity={granularity}
+            granularity={show_digits_stats || is_accumulator ? 0 : granularity}
             requestAPI={wsSendRequest}
             requestForget={wsForget}
             requestForgetStream={wsForgetStream}
             requestSubscribe={wsSubscribe}
             settings={settings}
+            should_show_eu_content={should_show_eu_content}
+            allowTickChartTypeOnly={show_digits_stats || is_accumulator}
             stateChangeListener={chartStateChange}
             symbol={symbol}
             topWidgets={is_trade_enabled ? topWidgets : null}
@@ -444,7 +437,6 @@ Chart.propTypes = {
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
     is_accumulator: PropTypes.bool,
-    is_eu_country: PropTypes.bool,
     is_trade_enabled: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
     has_alternative_source: PropTypes.bool,
@@ -452,6 +444,7 @@ Chart.propTypes = {
     refToAddTick: PropTypes.func,
     setChartStatus: PropTypes.func,
     settings: PropTypes.object,
+    should_show_eu_content: PropTypes.bool,
     should_highlight_current_spot: PropTypes.bool,
     symbol: PropTypes.string,
     wsForget: PropTypes.func,
@@ -477,14 +470,15 @@ const ChartTrade = connect(({ client, modules, ui, common, contract_trade, portf
         position: ui.is_chart_layout_default ? 'bottom' : 'left',
         theme: ui.is_dark_mode_on ? 'dark' : 'light',
     },
-    is_eu_country: client.is_eu_country,
     last_contract: {
         is_digit_contract: contract_trade.last_contract.is_digit_contract,
         is_ended: contract_trade.last_contract.is_ended,
     },
+    is_accumulator: modules.trade.is_accumulator,
     is_trade_enabled: modules.trade.is_trade_enabled,
     main_barrier: modules.trade.main_barrier_flattened,
     extra_barriers: modules.trade.barriers_flattened,
+    should_show_eu_content: client.should_show_eu_content,
     show_digits_stats: modules.trade.show_digits_stats,
     should_highlight_current_spot: contract_trade.should_highlight_current_spot,
     contract_type: modules.trade.contract_type,

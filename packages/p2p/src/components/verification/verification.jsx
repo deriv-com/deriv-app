@@ -47,7 +47,7 @@ const Verification = ({ should_wrap }) => {
                 general_store.poi_status === 'verified'
                     ? () => {}
                     : () => {
-                          window.location.href = `${general_store.props.poi_url}?ext_platform_url=${routes.cashier_p2p}`;
+                          window.location.href = `${routes.proof_of_identity}?ext_platform_url=${routes.cashier_p2p}`;
                       },
         },
     ];

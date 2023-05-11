@@ -47,19 +47,19 @@ const ConnectedApps = () => {
         [is_modal_open]
     );
 
-    type TC = ReturnType<typeof GetConnectedAppsColumnsTemplate>[number];
+    type TColumn = ReturnType<typeof GetConnectedAppsColumnsTemplate>[number];
 
     const columns_map = React.useMemo(
         () =>
             GetConnectedAppsColumnsTemplate(app_id => handleToggleModal(app_id)).reduce((map, item) => {
                 map[item.col_index] = item;
                 return map;
-            }, {} as { [k in TC['col_index']]: TC }),
+            }, {} as { [k in TColumn['col_index']]: TColumn }),
         [handleToggleModal]
     );
 
     const mobileRowRenderer = React.useCallback(
-        ({ row }: { row: TC['renderCellContent'] }) => (
+        ({ row }: { row: TColumn['renderCellContent'] }) => (
             <div className='data-list__row'>
                 <div className='data-list__col'>
                     <DataList.Cell row={row} column={columns_map.name} />

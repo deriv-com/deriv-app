@@ -30,8 +30,8 @@ const uploadFile = (file: File, getSocket: () => WebSocket, settings: TDocumentS
 
         compressImageFiles([file])
             .then((files_to_process: File[]) => {
-                readFiles(files_to_process, fileReadErrorMessage, settings).then(
-                    (processed_files: TProcessedFile[]) => {
+                readFiles(files_to_process, fileReadErrorMessage, settings)
+                    .then((processed_files: TProcessedFile[]) => {
                         processed_files.forEach((item: TProcessedFile) => {
                             if (item.message) {
                                 is_file_error = true;
@@ -45,8 +45,9 @@ const uploadFile = (file: File, getSocket: () => WebSocket, settings: TDocumentS
 
                         // send files
                         uploader.upload(processed_files[0]).then(resolve).catch(reject);
-                    }
-                );
+                    })
+                    /* eslint-disable no-console */
+                    .catch(error => console.error('error: ', error));
             })
             /* eslint-disable no-console */
             .catch(error => console.error('error: ', error));

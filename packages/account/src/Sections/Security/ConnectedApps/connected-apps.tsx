@@ -26,7 +26,8 @@ const ConnectedApps = () => {
     const [connected_apps, setConnectedApps] = React.useState([]);
 
     React.useEffect(() => {
-        fetchConnectedApps();
+        /* eslint-disable no-console */
+        fetchConnectedApps().catch(error => console.error('error: ', error));
     }, []);
 
     const fetchConnectedApps = async () => {
@@ -77,7 +78,8 @@ const ConnectedApps = () => {
         setLoading(true);
         const response = await WS.authorized.send({ revoke_oauth_app: app_id });
         if (!response.error) {
-            fetchConnectedApps();
+            /* eslint-disable no-console */
+            fetchConnectedApps().catch(error => console.error('error: ', error));
         } else {
             setError(true);
         }

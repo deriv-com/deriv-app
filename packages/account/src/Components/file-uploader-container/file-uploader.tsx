@@ -72,25 +72,28 @@ const FileUploader = React.forwardRef<
         return new Promise((resolve, reject) => {
             compressImageFiles(document_file.files)
                 .then(files_to_process => {
-                    readFiles(files_to_process, fileReadErrorMessage).then(processed_files => {
-                        processed_files.forEach(file => {
-                            if (file.message) {
-                                is_any_file_error = true;
-                                reject(file);
+                    readFiles(files_to_process, fileReadErrorMessage)
+                        .then(processed_files => {
+                            processed_files.forEach(file => {
+                                if (file.message) {
+                                    is_any_file_error = true;
+                                    reject(file);
+                                }
+                            });
+                            const total_to_upload = processed_files.length;
+                            if (is_any_file_error || !total_to_upload) {
+                                onFileDrop(undefined);
+                                return; // don't start submitting files until all front-end validation checks pass
                             }
-                        });
-                        const total_to_upload = processed_files.length;
-                        if (is_any_file_error || !total_to_upload) {
-                            onFileDrop(undefined);
-                            return; // don't start submitting files until all front-end validation checks pass
-                        }
 
-                        // send files
-                        const uploader_promise = uploader
-                            .upload(processed_files[0])
-                            .then((api_response: unknown) => api_response);
-                        resolve(uploader_promise);
-                    });
+                            // send files
+                            const uploader_promise = uploader
+                                .upload(processed_files[0])
+                                .then((api_response: unknown) => api_response);
+                            resolve(uploader_promise);
+                        })
+                        /* eslint-disable no-console */
+                        .catch(error => console.error('error: ', error));
                 })
                 /* eslint-disable no-console */
                 .catch(error => console.error('error: ', error));

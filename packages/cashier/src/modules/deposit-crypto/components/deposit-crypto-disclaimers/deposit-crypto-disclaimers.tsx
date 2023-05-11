@@ -1,5 +1,6 @@
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
+import { useFetch } from '@deriv/api';
+import { InlineMessage, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import './deposit-crypto-disclaimers.scss';
@@ -17,36 +18,41 @@ const DepositCryptoDisclaimers: React.FC = observer(() => {
     const { client, ui } = useStore();
     const { currency } = client;
     const { is_mobile } = ui;
+    const { data } = useFetch('crypto_config');
+    const minimum_deposit = data?.currencies_config[currency]?.minimum_deposit;
 
     return (
         <div className='deposit-crypto-disclaimers'>
-            <div className='deposit-crypto-disclaimers__alert_container'>
-                <Icon size={16} icon='IcAlertWarning' />
-                <div className='deposit-crypto-disclaimers__alert_messages'>
-                    <Text className='deposit-crypto-disclaimers__alert_title' size={'xxxs'} weight='bold'>
-                        {localize('To avoid loss of funds:')}
+            <InlineMessage title={localize('To avoid loss of funds:')}>
+                <br />
+                <li>
+                    <Text size={'xxxs'}>{localize('Do not send other currencies to this address.')}</Text>
+                </li>
+                <li>
+                    <Text size={'xxxs'}>
+                        {localize('Make sure to copy your Deriv account address correctly into your crypto wallet.')}
                     </Text>
-                    <li>
-                        <Text size={'xxxs'}>{localize('Do not send other currencies to this address.')}</Text>
-                    </li>
+                </li>
+                <li>
+                    <Text size={'xxxs'}>
+                        <Localize
+                            i18n_default_text='In your cryptocurrency wallet, make sure to select the <0>{{network_name}} network</0> when you transfer funds to Deriv.'
+                            values={{ network_name: crypto_currency_to_network_mapper[currency] }}
+                            components={[<Text key={0} size={'xxxs'} weight='bold' />]}
+                        />
+                    </Text>
+                </li>
+                {minimum_deposit && (
                     <li>
                         <Text size={'xxxs'}>
                             {localize(
-                                'Make sure to copy your Deriv account address correctly into your crypto wallet.'
+                                'A minimum deposit value of {{minimum_deposit}} {{currency}} is required. Otherwise, the funds will be lost and cannot be recovered.',
+                                { minimum_deposit, currency }
                             )}
                         </Text>
                     </li>
-                    <li>
-                        <Text size={'xxxs'}>
-                            <Localize
-                                i18n_default_text='In your cryptocurrency wallet, make sure to select the <0>{{network_name}} network</0> when you transfer funds to Deriv.'
-                                values={{ network_name: crypto_currency_to_network_mapper[currency] }}
-                                components={[<Text key={0} size={'xxxs'} weight='bold' />]}
-                            />
-                        </Text>
-                    </li>
-                </div>
-            </div>
+                )}
+            </InlineMessage>
             <Text align='center' size={is_mobile ? 'xxxs' : 'xxs'}>
                 <Localize
                     i18n_default_text='<0>Note:</0> You’ll receive an email when your deposit start being processed.'

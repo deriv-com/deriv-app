@@ -197,10 +197,13 @@ export default class OrderStore {
                     this.setErrorMessage(response.error.message);
                 } else {
                     const { p2p_order_list } = response;
+                    const { list } = p2p_order_list || {};
 
-                    this.root_store.general_store.handleNotifications(this.orders, p2p_order_list.list);
-                    p2p_order_list.list?.forEach(order => this.syncOrder(order));
-                    this.setOrders(p2p_order_list.list);
+                    if (list?.length) {
+                        this.root_store.general_store.handleNotifications(this.orders, list);
+                        list.forEach(order => this.syncOrder(order));
+                        this.setOrders(list);
+                    }
                 }
             }
         });

@@ -3,31 +3,31 @@ import Input from '../input';
 
 type TAmountInput = {
     currency: string;
-    decimalPoints?: number;
+    decimal_points?: number;
     disabled?: boolean;
-    initialValue?: number;
+    initial_value?: number;
     label?: string;
-    maxDigits?: number;
+    max_digits?: number;
     onChange?: (value: number) => void;
 };
 
 const AmountInput = ({
     currency,
-    decimalPoints = 2,
+    decimal_points = 2,
     disabled = false,
-    initialValue = 0,
+    initial_value = 0,
     label,
-    maxDigits = 8,
+    max_digits = 8,
     onChange,
 }: TAmountInput) => {
-    const [value, setValue] = useState(initialValue);
+    const [value, setValue] = useState(initial_value);
     const [focus, setFocus] = useState(false);
 
-    const displayNumber = (number: number) => number.toLocaleString('en-US', { minimumFractionDigits: decimalPoints });
+    const displayNumber = (number: number) => number.toLocaleString('en-US', { minimumFractionDigits: decimal_points });
 
     const onChangeHandler = (e: { target: { value: string } }) => {
         const input_value = e.target.value.replace(/\D/g, '');
-        if (Number(input_value) <= Math.pow(10, maxDigits)) {
+        if (Number(input_value) <= Math.pow(10, max_digits)) {
             setValue(Number(input_value) / 100);
             onChange?.(Number(input_value) / 100);
         }
@@ -47,7 +47,7 @@ const AmountInput = ({
                     className='amount-input'
                     data-testid='dt_amount-input'
                     disabled={disabled}
-                    max_characters={displayNumber(Math.pow(10, maxDigits - 1) / decimalPoints).length}
+                    max_characters={displayNumber(Math.pow(10, max_digits - 1) / decimal_points).length}
                     onFocus={() => setFocus(true)}
                     onBlur={() => setFocus(false)}
                     onChange={onChangeHandler}

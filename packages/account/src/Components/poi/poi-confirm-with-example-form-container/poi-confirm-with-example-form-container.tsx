@@ -66,12 +66,12 @@ const PoiConfirmWithExampleFormContainer = ({
 
     const onSubmit = async (values: TValues, { setStatus, setSubmitting }: FormikHelpers<TValues>) => {
         if (checked) return;
-        setStatus({ error: false, msg: '' });
+        setStatus({ error_msg: '' });
         const request = makeSettingsRequest(values);
         const data = await WS.setSettings(request);
 
         if (data.error) {
-            setStatus({ error: true, msg: data.error.message });
+            setStatus({ error_msg: data.error.message });
             setSubmitting(false);
         } else {
             const response = await WS.authorized.storage.getSettings();
@@ -189,7 +189,7 @@ const PoiConfirmWithExampleFormContainer = ({
                                 disabled={isSubmitting}
                             />
                         </button>
-                        {status?.error && (
+                        {status?.error_msg && (
                             <div className='account-form__poi-confirm-example--status-message'>
                                 <HintBox
                                     icon='IcAlertDanger'

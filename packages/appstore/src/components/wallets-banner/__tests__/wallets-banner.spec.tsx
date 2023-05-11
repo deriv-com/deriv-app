@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { isMobile } from '@deriv/shared';
@@ -21,16 +21,11 @@ describe('<WalletsBanner />', () => {
         const mobile: TImageTestID = 'dt_upgrade_mobile';
         const mockRootStore = mockStore({ traders_hub: { toggleWalletsUpgrade: true } });
 
-        render(<WalletsBanner />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
-        });
-
-        it('Should render right button', () => {
+        it('Should render upgrade now button', async () => {
             render(<WalletsBannerUpgrade />, {
                 wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
             });
-            const btn = screen.queryByText('Upgrade now');
-
+            const btn = screen.getByRole('button', { name: /Upgrade now/i });
             expect(btn).toBeInTheDocument();
         });
 

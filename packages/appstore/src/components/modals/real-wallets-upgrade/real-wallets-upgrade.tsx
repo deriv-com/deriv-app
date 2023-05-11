@@ -66,7 +66,7 @@ const RealWalletsUpgrade = observer(() => {
 
     const EndFooter = (
         <React.Fragment>
-            <Button secondary large className='wallet-steps__footer-button' onClick={handleClose}>
+            <Button secondary large className='wallet-steps__footer-button' onClick={handleBack}>
                 {localize('Back')}
             </Button>
             <Button primary large className='wallet-steps__footer-button' disabled={!is_disabled} onClick={handleClose}>

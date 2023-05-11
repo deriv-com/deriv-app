@@ -11,6 +11,12 @@
         height: 20rem;
     }
 
+    &__filter {
+        position: absolute;
+        inset: 0;
+        filter: blur(3rem);
+    }
+
     &__container {
         position: relative;
         width: 100%;

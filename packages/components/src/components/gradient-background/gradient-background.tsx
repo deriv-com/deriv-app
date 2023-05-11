@@ -16,10 +16,12 @@ const GradientBackground: React.FC<React.PropsWithChildren<TProps>> = ({
     tertiary,
 }) => (
     <div className='gradient-background' style={{ backgroundColor: color }}>
-        <div className='gradient-background__container'>
-            <div className='gradient-background__primary' style={{ background: primary }} />
-            <div className='gradient-background__secondary' style={{ background: secondary }} />
-            <div className='gradient-background__tertiary' style={{ background: tertiary }} />
+        <div className='gradient-background__filter'>
+            <div className='gradient-background__container'>
+                <div className='gradient-background__primary' style={{ background: primary }} />
+                <div className='gradient-background__secondary' style={{ background: secondary }} />
+                <div className='gradient-background__tertiary' style={{ background: tertiary }} />
+            </div>
         </div>
         {children && <div className='gradient-background__children'>{children}</div>}
     </div>

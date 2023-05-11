@@ -29,7 +29,6 @@ const WalletHeader = React.memo(
         is_open_wallet,
         setIsOpen,
     }: TWalletHeader) => {
-        // const [is_open, setIsOpen] = React.useState(is_open_wallet);
         const is_demo = account_type === 'demo';
 
         const wallet_btns = getWalletHeaderButtons(is_demo);

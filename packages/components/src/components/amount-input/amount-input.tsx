@@ -31,11 +31,14 @@ const AmountInput = ({
     );
 
     const onChangeHandler: React.ComponentProps<typeof Input>['onChange'] = e => {
-        const input_value = e.target.value.replace(/\D/g, '');
-        if (Number(input_value) <= Math.pow(10, max_digits)) {
-            setValue(Number(input_value) / Math.pow(10, decimal_places));
-            onChange?.(Number(input_value) / Math.pow(10, decimal_places));
-        }
+        const input = e.target.value.replace(/[^\d.]/g, '');
+        const input_digits_length = input.replaceAll('.', '');
+        const has_reached_max_digits = input_digits_length.length > max_digits;
+
+        if (has_reached_max_digits) return;
+
+        setValue(Number(input));
+        onChange?.(Number(input));
     };
 
     return (

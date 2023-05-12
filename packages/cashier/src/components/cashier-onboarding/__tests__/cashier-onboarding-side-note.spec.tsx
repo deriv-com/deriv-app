@@ -34,9 +34,10 @@ describe('<CashierOnboardingSideNote />', () => {
         });
 
     it('should show the proper messages, with fiat currency and can_change_fiat_currency={false} property', () => {
+        if (mockRootStore.client) mockRootStore.client.loginid = 'CR12345678';
         renderCashierOnboardingSideNote();
 
-        expect(screen.getByText('Your fiat account currency is set to USD.')).toBeInTheDocument();
+        expect(screen.getByText('This is your USD account CR12345678')).toBeInTheDocument();
         expect(screen.getByTestId('dt_side_note_text')).toHaveTextContent(
             'If you want to change your account currency, please contact us via live chat.'
         );
@@ -55,11 +56,12 @@ describe('<CashierOnboardingSideNote />', () => {
 
     it('should show the proper messages when is_crypto is true', () => {
         if (mockRootStore.client) mockRootStore.client.currency = 'BTC';
+        if (mockRootStore.client) mockRootStore.client.loginid = 'CR12345678';
         props.is_crypto = true;
 
         renderCashierOnboardingSideNote();
 
-        expect(screen.getByText('This is your BTC account.')).toBeInTheDocument();
+        expect(screen.getByText('This is your BTC account CR12345678')).toBeInTheDocument();
         expect(
             screen.getByText("Don't want to trade in BTC? You can open another cryptocurrency account.")
         ).toBeInTheDocument();

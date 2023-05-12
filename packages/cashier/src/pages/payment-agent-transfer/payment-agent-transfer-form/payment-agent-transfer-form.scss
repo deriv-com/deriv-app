@@ -5,14 +5,28 @@
         display: block !important;
     }
     &__input {
-        margin-bottom: 5.1rem;
+        margin-bottom: 2.55rem;
+
+        .dc-input {
+            &__container {
+                padding: 0.5rem 1rem;
+            }
+        }
 
         &-area {
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
 
-            .dc-input__counter {
-                top: 9.7rem;
-                right: 0;
+            .dc-input {
+                &__counter {
+                    top: 9.7rem;
+                    right: 0;
+                }
+                &__container {
+                    height: 9.8rem;
+                }
+                &__field[type='textarea'] {
+                    height: 8.6rem;
+                }
             }
         }
     }
@@ -31,19 +45,28 @@
                 grid-template-columns: 1fr;
             }
             &-area {
-                margin-bottom: 3.2rem;
+                margin-bottom: 1.6rem;
 
-                .dc-input__counter {
-                    top: 11.7rem;
+                .dc-input {
+                    &__counter {
+                        top: 11.7rem;
+                    }
+                    &__container {
+                        height: 12.1rem;
+                    }
+                    &__field[type='textarea'] {
+                        padding-top: 1rem;
+                    }
                 }
             }
             &:not(:first-child) {
                 margin-left: unset;
-                margin-bottom: 5.3rem;
+                margin-bottom: 2.8rem;
             }
         }
         &__submit-button {
             width: auto;
+            margin-top: 1.6rem;
             padding: 0 1.25rem;
         }
     }

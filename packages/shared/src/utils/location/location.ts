@@ -3,7 +3,7 @@ type TType = {
     value: string;
 };
 
-type TLocationList = TType & {
+export type TLocationList = TType & {
     identity: {
         services: {
             idv: object;

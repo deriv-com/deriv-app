@@ -376,7 +376,7 @@ export default class AccountTransferStore {
         accounts?.forEach((account: TTransferAccount) => {
             const cfd_platforms = {
                 mt5: { name: 'Deriv MT5', icon: 'IcMt5' },
-                dxtrade: { name: 'Deriv X', icon: 'IcDxtrade' },
+                dxtrade: { name: 'Deriv X', icon: 'IcRebranding' },
                 derivez: { name: 'Deriv EZ', icon: 'IcDerivez' },
             };
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

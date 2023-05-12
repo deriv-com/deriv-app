@@ -15,13 +15,9 @@ describe('<CFDServerErrorDialog /> ', () => {
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
     });
-
-    afterAll(() => {
-        document.body.removeChild(modal_root_el);
-    });
-
-    it('should render the component properly', () => {
-        const mockRootStore = {
+    let mockRootStore;
+    beforeEach(() => {
+        mockRootStore = {
             ui: {
                 disableApp: jest.fn(),
                 enableApp: jest.fn(),
@@ -32,11 +28,17 @@ describe('<CFDServerErrorDialog /> ', () => {
                     error_type: 'error_type',
                     has_cfd_error: true,
                     is_cfd_success_dialog_enabled: false,
-                    error_message: 'Sorry, an error occured while processing your request.',
+                    error_message: 'This is a sample error message',
                 },
             },
         };
+    });
 
+    afterAll(() => {
+        document.body.removeChild(modal_root_el);
+    });
+
+    it('should render the component properly', () => {
         const { container } = render(<CFDServerErrorDialog />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
@@ -45,96 +47,55 @@ describe('<CFDServerErrorDialog /> ', () => {
     });
 
     it('should render the proper text and error message', () => {
-        const mockRootStore = {
-            ui: {
-                disableApp: jest.fn(),
-                enableApp: jest.fn(),
-            },
-            modules: {
-                cfd: {
-                    clearCFDError: jest.fn(),
-                    error_type: 'error_type',
-                    has_cfd_error: true,
-                    is_cfd_success_dialog_enabled: false,
-                    error_message: 'Sorry, an error occured while processing your request.',
-                },
-            },
-        };
-
         render(<CFDServerErrorDialog />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });
 
-        expect(screen.getByText(/Sorry, an error occured while processing your request/i)).toBeInTheDocument();
+        expect(screen.getByText(/This is a sample error message/i)).toBeInTheDocument();
         expect(screen.getByRole('button')).toHaveTextContent('OK');
         expect(screen.getByRole('heading')).toHaveTextContent(/Something’s not right/i);
     });
 
     it('should not render the component if has_cfd_error is false', () => {
-        const mockRootStore = {
+        const new_mockRootStore = {
             ui: {
-                disableApp: jest.fn(),
-                enableApp: jest.fn(),
+                ...mockRootStore.ui,
             },
             modules: {
                 cfd: {
-                    clearCFDError: jest.fn(),
-                    error_type: 'error_type',
+                    ...mockRootStore.modules.cfd,
                     has_cfd_error: false,
-                    is_cfd_success_dialog_enabled: false,
-                    error_message: 'Sorry, an error occured while processing your request.',
                 },
             },
         };
-
         render(<CFDServerErrorDialog />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={new_mockRootStore}>{children}</StoreProvider>,
         });
 
-        expect(screen.queryByText(/Sorry, an error occured while processing your request/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/This is a sample error message/i)).not.toBeInTheDocument();
     });
 
     it('should not render the component if is_cfd_success_dialog_enabled', () => {
-        const mockRootStore = {
+        const new_mockRootStore = {
             ui: {
-                disableApp: jest.fn(),
-                enableApp: jest.fn(),
+                ...mockRootStore.ui,
             },
             modules: {
                 cfd: {
-                    clearCFDError: jest.fn(),
-                    error_type: 'error_type',
-                    has_cfd_error: false,
+                    ...mockRootStore.modules.cfd,
                     is_cfd_success_dialog_enabled: true,
-                    error_message: 'Sorry, an error occured while processing your request.',
                 },
             },
         };
 
         render(<CFDServerErrorDialog />, {
-            wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
+            wrapper: ({ children }) => <StoreProvider store={new_mockRootStore}>{children}</StoreProvider>,
         });
 
-        expect(screen.queryByText(/Sorry, an error occured while processing your request/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/This is a sample error message/i)).not.toBeInTheDocument();
     });
 
     it('should clear the component if OK is clicked', () => {
-        const mockRootStore = {
-            ui: {
-                disableApp: jest.fn(),
-                enableApp: jest.fn(),
-            },
-            modules: {
-                cfd: {
-                    clearCFDError: jest.fn(),
-                    error_type: 'error_type',
-                    has_cfd_error: true,
-                    is_cfd_success_dialog_enabled: false,
-                    error_message: 'Sorry, an error occured while processing your request.',
-                },
-            },
-        };
-
         render(<CFDServerErrorDialog />, {
             wrapper: ({ children }) => <StoreProvider store={mockRootStore}>{children}</StoreProvider>,
         });

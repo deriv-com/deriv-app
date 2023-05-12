@@ -48,7 +48,7 @@ const WalletCard = ({
                 <div className='wallet-card__small-container'>
                     <div
                         className={classNames('wallet-card__small-container-overlay', {
-                            'wallet-card__small-container-overlay--active': active && !disabled,
+                            'wallet-card__small-container-overlay--active': active && !disabled && !faded,
                             'wallet-card__small-container-overlay--hover': !disabled,
                         })}
                     />
@@ -63,7 +63,7 @@ const WalletCard = ({
                 >
                     <div
                         className={classNames('wallet-card__content', {
-                            'wallet-card__content--active': active && !disabled,
+                            'wallet-card__content--active': active && !disabled && !faded,
                             'wallet-card__content--hover': !disabled,
                         })}
                     >
@@ -73,15 +73,20 @@ const WalletCard = ({
                             <Badge custom_color='var(--text-prominent' label={jurisdiction} type='bordered' />
                         </div>
                         <div className='wallet-card__bottom-wrapper'>
-                            {has_add_button && !active ? (
-                                <Button>
-                                    <Icon
-                                        icon='IcAddRounded'
-                                        size={12}
-                                        className='wallet-card__add-wallet-button-icon'
-                                    />
-                                    + Add
-                                </Button>
+                            {has_add_button && !active && !faded && !disabled ? (
+                                <Button
+                                    className='wallet-card__add-wallet-button'
+                                    classNameSpan='wallet-card__add-wallet-button-text'
+                                    icon={
+                                        <Icon
+                                            className='wallet-card__add-wallet-button-icon'
+                                            custom_color='$color-black-1'
+                                            icon='IcAddBold'
+                                            size={12}
+                                        />
+                                    }
+                                    text='Add'
+                                />
                             ) : (
                                 <React.Fragment>
                                     <Text color='prominent' size='xxxs'>
@@ -96,7 +101,7 @@ const WalletCard = ({
                     </div>
                 </GradientBackground>
             )}
-            {active && (
+            {active && !disabled && !faded && (
                 <Icon
                     className={classNames('wallet-card__active-icon', {
                         [`wallet-card__active-icon--small`]: size === 'small',

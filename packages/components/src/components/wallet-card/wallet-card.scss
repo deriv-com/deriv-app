@@ -1,10 +1,12 @@
 .wallet-card {
     position: relative;
     border-radius: 0.8rem;
+    overflow: hidden;
 
     &--small {
         width: 6.4rem;
         height: 4rem;
+        overflow: visible;
     }
 
     &--medium {
@@ -78,6 +80,17 @@
         flex-direction: column;
         justify-content: flex-start;
         width: 100%;
+    }
+
+    &__add-wallet-button {
+        background: $color-white;
+        &-icon {
+            align-self: center;
+            margin-right: 0.8rem;
+        }
+        &-text {
+            color: $color-black-1;
+        }
     }
 
     &--disabled {

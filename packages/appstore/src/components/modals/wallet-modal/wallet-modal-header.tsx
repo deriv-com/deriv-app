@@ -87,7 +87,7 @@ const WalletModalHeader = ({
     }, [currency, is_demo, is_mobile]);
 
     const getCurrencyIconProps = React.useCallback(() => {
-        const icon = getWalletCurrencyIcon(is_demo ? 'demo' : currency, is_dark);
+        const icon = getWalletCurrencyIcon(is_demo ? 'demo' : currency, is_dark, true);
         const size = getCurrencyIconSize();
 
         return { icon, ...size };

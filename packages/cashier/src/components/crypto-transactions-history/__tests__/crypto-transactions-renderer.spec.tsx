@@ -1,5 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { isMobile } from '@deriv/shared';
 import CryptoTransactionsRenderer from '../crypto-transactions-renderer';
 import CashierProviders from '../../../cashier-providers';
@@ -134,5 +135,69 @@ describe('<CryptoTransactionsRenderer />', () => {
         expect(
             mockRootStore.modules.cashier.transaction_history.showCryptoTransactionsCancelModal
         ).toHaveBeenCalledTimes(1);
+    });
+
+    it('should display popover when hovering on tooltip for third-party transactions (CoinsPaid)', () => {
+        (isMobile as jest.Mock).mockReturnValue(false);
+        const tooltip_props = {
+            row: {
+                address_hash: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
+                address_url: 'https://explorer.coinspaid.com/CP:Abcd1234',
+                amount: 0.005,
+                id: '3',
+                is_valid_to_cancel: 1,
+                status_code: 'LOCKED',
+                status_message:
+                    "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
+                submit_date: 1640603927,
+                transaction_type: 'withdrawal',
+                transaction_url: 'CP:Abcd1234',
+            },
+        };
+
+        render(<CryptoTransactionsRenderer {...tooltip_props} />, {
+            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+        });
+
+        const crypto_transactions_history_table_tooltip = screen.getByTestId(
+            'dt_crypto_transactions_history_table_tooltip'
+        );
+
+        expect(crypto_transactions_history_table_tooltip).toBeInTheDocument();
+
+        userEvent.hover(crypto_transactions_history_table_tooltip);
+        expect(screen.getByText('The details of this transaction is available on CoinsPaid.')).toBeInTheDocument();
+        userEvent.unhover(crypto_transactions_history_table_tooltip);
+    });
+
+    it('should check whether the tooltip is clickable for third-party transactions (CoinsPaid)', () => {
+        (isMobile as jest.Mock).mockReturnValue(true);
+        const tooltip_props = {
+            row: {
+                address_hash: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
+                address_url: 'https://explorer.coinspaid.com/CP:Abcd1234',
+                amount: 0.005,
+                id: '3',
+                is_valid_to_cancel: 1,
+                status_code: 'LOCKED',
+                status_message:
+                    "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
+                submit_date: 1640603927,
+                transaction_type: 'withdrawal',
+                transaction_url: 'CP:Abcd1234',
+            },
+            onTooltipClick: jest.fn(),
+        };
+
+        render(<CryptoTransactionsRenderer {...tooltip_props} />, {
+            wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
+        });
+
+        const crypto_transactions_history_table_tooltip_mobile = screen.getByTestId(
+            'dt_crypto_transactions_history_table_tooltip_mobile'
+        );
+
+        expect(crypto_transactions_history_table_tooltip_mobile).toBeInTheDocument();
+        fireEvent.click(crypto_transactions_history_table_tooltip_mobile);
     });
 });

@@ -1,5 +1,5 @@
-import { useStore } from '@deriv/stores';
 import { useEffect, useState } from 'react';
+import { useStore } from '@deriv/stores';
 
 type TNotification = {
     order_id: string;

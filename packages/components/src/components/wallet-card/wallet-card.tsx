@@ -90,10 +90,10 @@ const WalletCard = ({
                             ) : (
                                 <React.Fragment>
                                     <Text color='prominent' size='xxxs'>
-                                        USD Wallet
+                                        {wallet_name} Wallet
                                     </Text>
                                     <Text color='prominent' weight='bold' size='xs'>
-                                        0.00 USD
+                                        {balance} {currency}
                                     </Text>
                                 </React.Fragment>
                             )}

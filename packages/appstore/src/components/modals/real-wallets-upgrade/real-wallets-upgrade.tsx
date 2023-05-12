@@ -22,9 +22,7 @@ const RealWalletsUpgrade = observer(() => {
     }, [is_real_wallets_upgrade_on]);
 
     React.useEffect(() => {
-        return () => {
-            setIsDisabled(false);
-        };
+        setIsDisabled(false);
     }, [is_real_wallets_upgrade_on]);
 
     const handleNext = () => {

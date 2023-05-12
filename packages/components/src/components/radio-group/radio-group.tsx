@@ -58,6 +58,7 @@ const RadioGroup = ({
                                 className='dc-radio-group__input'
                                 type='radio'
                                 value={item.props.value}
+                                checked={selected_option === item.props.value}
                                 onChange={onChange}
                                 disabled={item.props.disabled}
                                 required={required}

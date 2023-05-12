@@ -30,7 +30,7 @@ const AmountInput = ({
         [decimal_places]
     );
 
-    const onChangeHandler = (e: { target: { value: string } }) => {
+    const onChangeHandler: React.ComponentProps<typeof Input>['onChange'] = e => {
         const input_value = e.target.value.replace(/\D/g, '');
         if (Number(input_value) <= Math.pow(10, max_digits)) {
             setValue(Number(input_value) / Math.pow(10, decimal_places));

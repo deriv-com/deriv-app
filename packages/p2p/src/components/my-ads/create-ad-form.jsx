@@ -183,18 +183,17 @@ const CreateAdForm = () => {
                                                     </RadioGroup>
                                                 )}
                                             </Field>
-                                            <div className='create-ad-form-summary'>
-                                                <CreateAdSummary
-                                                    market_feed={
-                                                        floating_rate_store.rate_type === ad_type.FLOAT
-                                                            ? floating_rate_store.exchange_rate
-                                                            : null
-                                                    }
-                                                    offer_amount={errors.offer_amount ? '' : values.offer_amount}
-                                                    price_rate={values.rate_type}
-                                                    type={values.type}
-                                                />
-                                            </div>
+                                            <CreateAdSummary
+                                                market_feed={
+                                                    floating_rate_store.rate_type === ad_type.FLOAT
+                                                        ? floating_rate_store.exchange_rate
+                                                        : null
+                                                }
+                                                offer_amount={errors.offer_amount ? '' : values.offer_amount}
+                                                price_rate={values.rate_type}
+                                                type={values.type}
+                                            />
+
                                             <div className='create-ad-form-container'>
                                                 <Field name='offer_amount'>
                                                     {({ field }) => (

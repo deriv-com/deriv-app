@@ -62,16 +62,6 @@
         }
     }
 
-    &-summary {
-        color: var(--text-less-prominent);
-        font-size: 1.4rem;
-        margin-bottom: 0.6rem;
-
-        @include mobile {
-            margin: 0.6rem 0;
-        }
-    }
-
     &-scrollbar {
         height: calc(100% - 2.4rem - 9.2rem);
         position: absolute;

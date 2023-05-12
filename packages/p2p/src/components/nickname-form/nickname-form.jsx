@@ -93,9 +93,9 @@ const NicknameForm = () => {
                                 }}
                             </Field>
                         </div>
-                        <div className='nickname-form__content--ps'>
+                        <Text className='nickname-form__content--ps' color='general' size='xs'>
                             {localize('Once set, your nickname cannot be changed.')}
-                        </div>
+                        </Text>
                     </div>
                     <div className='nickname-form__footer'>
                         <ButtonGroupComponent />

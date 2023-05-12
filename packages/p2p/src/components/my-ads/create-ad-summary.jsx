@@ -8,6 +8,7 @@ import { Localize } from 'Components/i18next';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import { removeTrailingZeros, roundOffDecimal, percentOf } from 'Utils/format-value';
+import './create-ad-summary.scss';
 
 const CreateAdSummary = ({ offer_amount, price_rate, type }) => {
     const {
@@ -34,8 +35,8 @@ const CreateAdSummary = ({ offer_amount, price_rate, type }) => {
 
     if (offer_amount) {
         const components = [
-            <Text key={0} weight='bold' size='xs' color='status-info-blue' />,
-            <Text key={1} weight='normal' size='xs' color='status-info-blue' />,
+            <Text key={0} className='create-ad-summary' weight='bold' size='xs' color='status-info-blue' />,
+            <Text key={1} className='create-ad-summary' weight='normal' size='xs' color='status-info-blue' />,
         ];
         const values = { target_amount: display_offer_amount, target_currency: currency };
         if (price_rate) {
@@ -49,46 +50,58 @@ const CreateAdSummary = ({ offer_amount, price_rate, type }) => {
 
             if (type === buy_sell.BUY) {
                 return (
-                    <Localize
-                        i18n_default_text="You're creating an ad to buy <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> <1>({{ price_rate }} {{local_currency}}/{{ target_currency }})</1>"
-                        components={components}
-                        values={values}
-                    />
+                    <Text className='create-ad-summary' weight='normal' size='xs' color='less-prominent'>
+                        <Localize
+                            i18n_default_text="You're creating an ad to buy <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> <1>({{ price_rate }} {{local_currency}}/{{ target_currency }})</1>"
+                            components={components}
+                            values={values}
+                        />
+                    </Text>
                 );
             }
 
             return (
-                <Localize
-                    i18n_default_text="You're creating an ad to sell <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> <1>({{ price_rate }} {{local_currency}}/{{ target_currency }})</1>"
-                    components={components}
-                    values={values}
-                />
+                <Text className='create-ad-summary' weight='normal' size='xs' color='less-prominent'>
+                    <Localize
+                        i18n_default_text="You're creating an ad to sell <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> <1>({{ price_rate }} {{local_currency}}/{{ target_currency }})</1>"
+                        components={components}
+                        values={values}
+                    />
+                </Text>
             );
         }
 
         if (type === buy_sell.BUY) {
             return (
-                <Localize
-                    i18n_default_text="You're creating an ad to buy <0>{{ target_amount }} {{ target_currency }}</0>..."
-                    components={components}
-                    values={values}
-                />
+                <Text className='create-ad-summary' weight='normal' size='xs' color='less-prominent'>
+                    <Localize
+                        i18n_default_text="You're creating an ad to buy <0>{{ target_amount }} {{ target_currency }}</0>..."
+                        components={components}
+                        values={values}
+                    />
+                </Text>
             );
         }
 
         return (
-            <Localize
-                i18n_default_text="You're creating an ad to sell <0>{{ target_amount }} {{ target_currency }}</0>..."
-                components={components}
-                values={values}
-            />
+            <Text className='create-ad-summary' weight='normal' size='xs' color='less-prominent'>
+                <Localize
+                    i18n_default_text="You're creating an ad to sell <0>{{ target_amount }} {{ target_currency }}</0>..."
+                    components={components}
+                    values={values}
+                />
+            </Text>
         );
     }
 
     return type === buy_sell.BUY ? (
-        <Localize i18n_default_text="You're creating an ad to buy..." />
+        <Text className='create-ad-summary' weight='normal' size='xs' color='less-prominent'>
+            <Localize i18n_default_text="You're creating an ad to buy..." />
+        </Text>
     ) : (
-        <Localize i18n_default_text="You're creating an ad to sell..." />
+        <Text className='create-ad-summary' weight='normal' size='xs' color='less-prominent'>
+            <Localize i18n_default_text="You're creating an ad to sell..." />
+        </Text>
     );
 };
 

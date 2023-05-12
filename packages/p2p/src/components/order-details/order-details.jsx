@@ -216,18 +216,24 @@ const OrderDetails = observer(() => {
                                     }
                                 )}
                             >
-                                {status_string}
+                                <Text line_height='xxl' size='s' weight='bold'>
+                                    {status_string}
+                                </Text>
                             </div>
                             {should_highlight_success && (
-                                <div className='order-details-card__message'>{labels.result_string}</div>
+                                <Text color='general' line_height='xl' size='xs'>
+                                    {labels.result_string}
+                                </Text>
                             )}
                             {!has_timer_expired && (is_pending_order || is_buyer_confirmed_order) && (
-                                <div className='order-details-card__header-amount'>
+                                <Text line_height='xxl' size='m'>
                                     {display_payment_amount} {local_currency}
-                                </div>
+                                </Text>
                             )}
                             <div className='order-details-card__header-id'>
-                                <Localize i18n_default_text='Order ID {{ id }}' values={{ id }} />
+                                <Text color='less-prominent' size='xxs' line_height='l'>
+                                    <Localize i18n_default_text='Order ID {{ id }}' values={{ id }} />
+                                </Text>
                             </div>
                         </div>
                         <div className='order-details-card__header--right'>
@@ -290,6 +296,7 @@ const OrderDetails = observer(() => {
                                             </Button>
                                         </section>
                                         <P2PAccordion
+                                            className='order-details-card__accordion'
                                             icon_close='IcChevronRight'
                                             icon_open='IcChevronDown'
                                             list={order_store?.order_payment_method_details?.map(payment_method => ({

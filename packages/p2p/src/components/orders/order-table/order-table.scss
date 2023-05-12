@@ -33,16 +33,6 @@
         flex-direction: column;
     }
 
-    &-time {
-        border: solid 1px var(--border-normal);
-        border-radius: 16px;
-        width: 78px;
-        height: 24px;
-        padding: 2px;
-        text-align: center;
-        font-size: var(--text-size-xxs);
-        letter-spacing: 1px;
-    }
     &-grid {
         // Sizes are different for inactive due to timeout being full time string.
         grid-template-columns: 1fr 1.5fr 2fr 3fr 1.5fr 1.5fr 2fr;

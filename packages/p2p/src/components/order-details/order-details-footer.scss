@@ -2,9 +2,6 @@
     display: flex;
     justify-content: space-between;
     margin-top: auto;
-    font-size: 1.4rem;
-    line-height: 1.43;
-    color: var(--text-general);
     padding: 1.6rem 2.4rem;
 
     @include mobile {

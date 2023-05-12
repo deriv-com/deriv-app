@@ -62,16 +62,6 @@
         }
     }
 
-    &-summary {
-        color: var(--text-less-prominent);
-        font-size: 1.4rem;
-        margin-bottom: 0.6rem;
-
-        @include mobile {
-            margin: 0.6rem 0;
-        }
-    }
-
     &-scrollbar {
         height: calc(100% - 2.4rem - 9.2rem);
         position: absolute;
@@ -188,6 +178,7 @@
     &-button {
         margin-left: 0.8rem;
     }
+
     &-footer {
         align-items: center;
         background-color: var(--general-main-1);
@@ -215,6 +206,24 @@
         .dc-input__field:disabled {
             color: var(--text-less-prominent);
             -webkit-text-fill-color: var(--text-less-prominent);
+        }
+    }
+
+    &-modal {
+        &--form {
+            height: fit-content !important;
+        }
+        .dc-modal-header__title--edit-ad-form-modal {
+            padding: 2.4rem 2.4rem 0 !important;
+        }
+        .dc-modal__container_edit-ad-form-modal {
+            .dc-modal-footer {
+                padding-top: 0 !important;
+            }
+
+            .dc-modal-header {
+                padding-bottom: 1rem;
+            }
         }
     }
 }

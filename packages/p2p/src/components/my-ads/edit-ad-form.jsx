@@ -485,7 +485,7 @@ const EditAdForm = () => {
                 </React.Fragment>
             )}
             <Modal
-                className='my-ads__modal-error'
+                className='edit-ad-form-modal'
                 is_open={my_ads_store.is_edit_ad_error_modal_visible}
                 small
                 has_close_icon={false}

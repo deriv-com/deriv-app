@@ -1,8 +1,6 @@
 .order-details-timer {
-    font-size: 1.2rem;
-    line-height: 1.5;
-    text-align: center;
-
+    display: flex;
+    flex-direction: column;
     &-counter {
         margin-top: 0.4rem;
         border: 1px solid var(--border-normal);

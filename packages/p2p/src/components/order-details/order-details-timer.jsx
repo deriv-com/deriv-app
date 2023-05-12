@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
+import { Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { secondsToTimer } from 'Utils/date-time';
 import ServerTime from 'Utils/server-time';
@@ -38,8 +39,12 @@ const OrderDetailsTimer = observer(() => {
     if (should_show_order_timer) {
         return (
             <div className='order-details-timer'>
-                <div>{localize('Time left')}</div>
-                <div className='order-details-timer-counter'>{remaining_time}</div>
+                <Text size='xxs' align='center' line_height='m'>
+                    {localize('Time left')}
+                </Text>
+                <Text className='order-details-timer-counter' size='xxs' align='center' line_height='m'>
+                    {remaining_time}
+                </Text>
             </div>
         );
     }

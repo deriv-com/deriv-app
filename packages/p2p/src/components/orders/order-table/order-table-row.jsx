@@ -177,7 +177,11 @@ const OrderRow = ({ row: order }) => {
                         <Table.Cell>{is_buy_order_for_user ? offer_amount : transaction_amount}</Table.Cell>
                         <Table.Cell>
                             {general_store.is_active_tab ? (
-                                <div className='order-table-time'>{remaining_time}</div>
+                                <div className='order-table-row-time'>
+                                    <Text align='center' size='xxs'>
+                                        {remaining_time}
+                                    </Text>
+                                </div>
                             ) : (
                                 is_completed_order && (
                                     <RatingCellRenderer

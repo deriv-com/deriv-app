@@ -28,4 +28,17 @@
     &__info {
         margin-bottom: 1.3rem;
     }
+
+    &--icon {
+        margin-right: 0.8rem;
+    }
+
+    &--scroll {
+        overflow: auto;
+        padding: 1rem 0 0;
+    }
+
+    &--horizontal {
+        padding-right: 0rem;
+    }
 }

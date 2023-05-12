@@ -40,24 +40,14 @@
         &--title {
             margin: 1.4rem 0;
         }
+
         &--text {
             margin-bottom: 1.6rem;
         }
-        &--list {
-            color: var(--text-general);
-            font-size: var(--text-size-xs);
-            line-height: 1.43;
 
-            & li {
-                list-style-type: disc;
-                margin: 0.8rem 1.8rem 0;
-            }
-        }
         &--ps {
-            color: var(--text-general);
             padding-top: 0.5rem;
             margin: 1.6rem 0;
-            font-size: var(--text-size-xs);
             align-self: flex-start;
             width: 100%;
             text-align: center;
@@ -98,33 +88,9 @@
             transform: rotate(180deg);
             width: 3.66rem;
         }
-        &--trailing {
-            color: var(--text-less-prominent);
-            font-size: var(--text-size-xxs);
-        }
 
         @include mobile {
             width: 88%;
-        }
-    }
-
-    &__info {
-        margin-bottom: 1.6rem;
-
-        &_notes {
-            margin-bottom: 2rem;
-        }
-        &--title {
-            color: var(--text-less-prominent);
-            font-size: var(--text-size-xxs);
-        }
-        &--text {
-            color: var(--text-general);
-            font-size: var(--text-size-xs);
-            word-break: break-word;
-        }
-        &--strong {
-            font-weight: bold;
         }
     }
 

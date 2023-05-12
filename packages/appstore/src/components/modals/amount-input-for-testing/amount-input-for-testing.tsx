@@ -5,7 +5,6 @@ const AmountInputForTesting = () => {
     return (
         <div
             style={{
-                background: 'white',
                 padding: 20,
                 border: 'solid red 2px',
             }}

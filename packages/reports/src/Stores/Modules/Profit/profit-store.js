@@ -81,7 +81,7 @@ export default class ProfitTableStore extends BaseStore {
         const response = await WS.profitTable(
             batch_size,
             this.data.length,
-            getDateBoundaries(this.date_from?.unix(), this.date_to?.unix(), 0, false)
+            getDateBoundaries(this.date_from, this.date_to, 0, false)
         );
 
         this.profitTableResponseHandler(response);

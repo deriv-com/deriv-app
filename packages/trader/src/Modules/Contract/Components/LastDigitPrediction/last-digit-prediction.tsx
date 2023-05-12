@@ -93,9 +93,8 @@ const LastDigitPrediction = ({
     const getOffset = () => (isMobile() ? digit_offset_mobile : digit_offset);
 
     const isSelectableDigitType = () => (isMobile() ? trade_type !== 'even_odd' : false);
-
     const digits_array = Object.keys(digits_info)
-        .sort()
+        .sort((a, b) => Number(a) - Number(b))
         .map(spot_time => digits_info[+spot_time]);
     const last_contract_digit = digits_array.slice(-1)[0] || {};
 

@@ -265,6 +265,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             no_CR_account: false,
             no_MF_account: false,
             setTogglePlatformType: jest.fn(),
+            setSelectedAccount: jest.fn(),
+            toggleAccountTransferModal: jest.fn(),
             is_demo: false,
         },
         menu: {

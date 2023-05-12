@@ -12,6 +12,9 @@ describe('<Withdraw />', () => {
             client: {
                 verification_code: { payment_withdraw: 'code' },
             },
+            ui: {
+                is_dark_mode_on: false,
+            },
             modules: {
                 cashier: {
                     general_store: {

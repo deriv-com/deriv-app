@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import { TAccountCategory, TAccountStatus, TWalletCurrency, TWalletShortcode } from 'Types';
 // import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 // import CFDsListing from 'Components/cfds-listing';
 import { isMobile } from '@deriv/shared';
@@ -10,19 +9,6 @@ import ContentDivider from './wallet-content-divider';
 import WalletCFDsListing from 'Components/wallet-cfds-listing';
 import WalletOptionsAndMultipliersListing from 'Components/wallet-options-multipliers-listing';
 import './wallet-content.scss';
-
-export type TWalletTestAccount = {
-    account_status: TAccountStatus;
-    balance: string;
-    currency: TWalletCurrency;
-    shortcode: TWalletShortcode;
-    account_type: TAccountCategory;
-};
-
-type TWallet = {
-    account: TWalletTestAccount;
-    is_open_wallet?: boolean;
-};
 
 const WalletContent = React.memo(({ is_demo, is_eu }: any) => {
     const EUDisclaimer = (

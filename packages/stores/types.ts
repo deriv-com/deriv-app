@@ -31,6 +31,8 @@ type TAccountsList = {
     loginid?: string;
     mt5_login_list?: DetailsOfEachMT5Loginid[];
     title?: string;
+    account_type?: string;
+    account_category?: string;
 }[];
 
 // balance is missing in @deriv/api-types
@@ -101,7 +103,7 @@ type TClientStore = {
             };
         };
     };
-    account_list: TAccountsList;
+    account_list: TAccountsList[];
     account_status: TAccountStatus;
     available_crypto_currencies: string[];
     balance?: string | number;
@@ -293,7 +295,9 @@ type TTradersHubStore = {
     selected_account_type: string;
     no_CR_account: boolean;
     no_MF_account: boolean;
-    setTogglePlatformType: () => void;
+    setTogglePlatformType: (value: string) => void;
+    is_tour_open: boolean;
+    selected_platform_type: string;
 };
 
 /**

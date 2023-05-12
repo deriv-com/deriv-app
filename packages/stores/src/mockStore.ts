@@ -307,7 +307,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTogglePlatformType: jest.fn(),
             selected_region: 'EU',
             openFailedVerificationModal: jest.fn(),
-            multipliers_account_status: ' ',
+            multipliers_account_status: null,
+            toggleAccountTransferModal: jest.fn(),
         },
         menu: {
             attach: jest.fn(),
@@ -315,7 +316,16 @@ const mock = (): TStores & { is_mock: boolean } => {
         },
         gtm: {
             visitorId: ' ',
-            common_variables: ' ',
+            common_variables: {
+                language: '',
+                visitorId: '',
+                currency: '',
+                userId: '',
+                email: '',
+                loggedIn: false,
+                theme: 'dark',
+                platform: '',
+            },
             accountSwitcherListener: jest.fn(),
             pushDataLayer: jest.fn(),
             pushTransactionData: jest.fn(),
@@ -346,7 +356,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             track: jest.fn(),
             is_demo: false,
             setSelectedAccount: jest.fn(),
-            toggleAccountTransferModal: jest.fn(),
         },
     };
 };

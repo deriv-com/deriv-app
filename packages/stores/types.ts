@@ -117,6 +117,16 @@ type TNotificationMessage = {
     timeoutMessage?: (remaining: number | string) => string;
     type: string;
 };
+type TCommonVariables = {
+    language: string;
+    visitorId?: string;
+    currency?: string;
+    userId?: string;
+    email?: string;
+    loggedIn: boolean;
+    theme: string;
+    platform: string;
+};
 
 type TNotification =
     | TNotificationMessage
@@ -278,7 +288,7 @@ type TUiStore = {
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
     notification_messages_ui: JSX.Element | null;
-    real_account_signup_target: string;
+    real_account_signup_target?: string;
     real_account_signup: TRealAccount;
     resetRealAccountSignupParams: () => void;
     openRealAccountSignup: (value?: string) => void;
@@ -343,26 +353,26 @@ type TTradersHubStore = {
     no_MF_account: boolean;
     selected_region: string;
     openFailedVerificationModal: (from_account: string) => void;
-    multipliers_account_status: string | null;
+    multipliers_account_status: 'need_verification' | 'failed' | 'pending' | null;
+    toggleAccountTransferModal: () => void;
 };
 
-type TGtmStore = {
+type TGTMStore = {
     visitorId: string;
-    common_variables: string;
-    accountSwitcherListener: () => void;
-    pushDataLayer: (event: string) => void;
-    pushTransactionData: () => void;
-    eventHandler: () => void;
-    setLoginFlag: () => void;
+    common_variables: TCommonVariables;
+    accountSwitcherListener: () => Promise<void>;
+    pushDataLayer: (event: object) => Promise<void>;
+    pushTransactionData: (response: object, extra_data: object) => void;
+    eventHandler: (event: object) => void;
+    setLoginFlag: (event: string) => void;
 };
 
-type TRudderstackStore = {
-    identifyEvent: () => Promise<void>;
+type TRudderStackStore = {
+    identifyEvent: (event: object) => Promise<void>;
     pageView: () => void;
     reset: () => void;
     track: (event_name: string, options: string) => void;
     setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
-    toggleAccountTransferModal: () => void;
     is_demo: boolean;
 };
 
@@ -379,8 +389,8 @@ export type TCoreStores = {
     modules: any;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
-    gtm: TGtmStore;
-    rudderstack: TRudderstackStore;
+    gtm: TGTMStore;
+    rudderstack: TRudderStackStore;
 };
 
 export type TStores = TCoreStores & {

@@ -136,7 +136,6 @@ export default class GeneralStore extends BaseStore {
             setAdvertiserId: action.bound,
             setAdvertiserBuyLimit: action.bound,
             setAdvertiserSellLimit: action.bound,
-            setAppProps: action.bound,
             setAdvertiserRelationsResponse: action.bound, //TODO: Remove this when backend has fixed is_blocked flag issue
             setErrorCode: action.bound,
             setExternalStores: action.bound,
@@ -631,7 +630,7 @@ export default class GeneralStore extends BaseStore {
     setErrorCode(error_code) {
         this.error_code = error_code;
     }
-    
+
     setExternalStores(external_stores) {
         this.external_stores = external_stores;
     }

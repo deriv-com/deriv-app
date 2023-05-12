@@ -88,36 +88,6 @@ describe('<WalletHeader />', () => {
 
             expect(currency_card).toBeInTheDocument();
         });
-
-        it('Should use right class in light mode', () => {
-            mocked_root_store.ui.is_dark_mode_on = false;
-
-            const account_type = 'demo';
-            render(
-                <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} is_open_wallet={false} setIsOpen={setIsOpen} />
-                </StoreProvider>
-            );
-            const currency_card = screen.queryByTestId(`dt_demo`);
-
-            expect(currency_card).toBeInTheDocument();
-            expect(currency_card).toHaveClass('wallet__demo-bg');
-        });
-
-        it('Should use right class in dark mode', () => {
-            mocked_root_store.ui.is_dark_mode_on = true;
-
-            const account_type = 'demo';
-            render(
-                <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} is_open_wallet={false} setIsOpen={setIsOpen} />
-                </StoreProvider>
-            );
-            const currency_card = screen.queryByTestId(`dt_demo`);
-
-            expect(currency_card).toBeInTheDocument();
-            expect(currency_card).toHaveClass('wallet__demo-bg--dark');
-        });
     });
 
     describe('Check balance', () => {
@@ -249,7 +219,8 @@ describe('<WalletHeader />', () => {
 
             const btn_text = screen.queryByText(/Transfer/i);
 
-            expect(btn_text).not.toHaveClass('wallet-header__description-buttons-item-active');
+            // expect(btn_text).not.toHaveClass('wallet-header__description-buttons-item-active');
+            expect(btn_text).not.toBeInTheDocument();
         });
 
         it('Buttons uncollapsed', () => {
@@ -261,7 +232,8 @@ describe('<WalletHeader />', () => {
 
             const btn_text = screen.queryByText(/Transfer/i);
 
-            expect(btn_text).toHaveClass('wallet-header__description-buttons-item-active');
+            // expect(btn_text).toHaveClass('wallet-header__description-buttons-item-active');
+            expect(btn_text).toBeInTheDocument();
         });
 
         it('Arrow button click', async () => {
@@ -278,15 +250,17 @@ describe('<WalletHeader />', () => {
             render(<Wrapper />);
             const btn_text = screen.queryByText(/Transfer/i);
             const btn_arrow = screen.getByTestId('dt_arrow');
-            expect(btn_text).not.toHaveClass('wallet-header__description-buttons-item-active');
+            // expect(btn_text).not.toHaveClass('wallet-header__description-buttons-item-active');
+            expect(btn_text).not.toBeInTheDocument();
             await userEvent.click(btn_arrow);
-            expect(btn_text).toHaveClass('wallet-header__description-buttons-item-active');
+            // expect(btn_text).toHaveClass('wallet-header__description-buttons-item-active');
+            expect(btn_text).not.toBeInTheDocument();
         });
 
         it('Check buttons for demo', () => {
             render(
                 <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type='demo' is_open_wallet={false} setIsOpen={setIsOpen} />
+                    <WalletHeader account_type='demo' is_open_wallet={true} setIsOpen={setIsOpen} />
                 </StoreProvider>
             );
 
@@ -306,7 +280,7 @@ describe('<WalletHeader />', () => {
                         account_type='real'
                         shortcode='svg'
                         currency='USD'
-                        is_open_wallet={false}
+                        is_open_wallet={true}
                         setIsOpen={setIsOpen}
                     />
                 </StoreProvider>

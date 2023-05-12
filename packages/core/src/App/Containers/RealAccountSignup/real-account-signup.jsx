@@ -400,6 +400,7 @@ const RealAccountSignup = ({
     const closeModal = e => {
         // Do not close modal on external link and popover click event
         if (
+            !e ||
             e?.target.getAttribute('rel') === 'noopener noreferrer' ||
             e?.target.closest('.redirect-notice') ||
             e?.target.closest('.dc-popover__bubble')

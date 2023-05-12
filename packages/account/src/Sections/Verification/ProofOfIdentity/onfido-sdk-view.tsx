@@ -28,6 +28,7 @@ const OnfidoSdkView = ({
             }, 800);
             setTimeout(() => {
                 setIsStatusMessageVisible(false);
+                // the requirement is to hide the message after 5 sec, 4650 here + 350 in CSSTransition to make it smoother
             }, 4650);
         };
 

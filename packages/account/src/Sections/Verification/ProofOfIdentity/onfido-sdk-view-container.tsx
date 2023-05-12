@@ -14,14 +14,14 @@ import PoiConfirmWithExampleFormContainer from 'Components/poi/poi-confirm-with-
 import OnfidoSdkView from 'Sections/Verification/ProofOfIdentity/onfido-sdk-view';
 import { getRandom3DigitNumber } from 'Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
 
-type TAPI_error = {
+type TAPIError = {
     code?: string;
     message?: string;
     type?: string;
 };
 
-type TService_token = {
-    error?: TAPI_error;
+type TServiceToken = {
+    error?: TAPIError;
     service_token?: { onfido?: { token: string } };
 };
 
@@ -45,7 +45,7 @@ const OnfidoSdkViewContainer = ({
     handleViewComplete,
     height,
 }: TOnfidoSdkViewContainer) => {
-    const [api_error, setAPIError] = React.useState<TAPI_error>();
+    const [api_error, setAPIError] = React.useState<TAPIError>();
     const [onfido_service_token, setOnfidoToken] = React.useState('');
     const [missing_personal_details, setMissingPersonalDetails] = React.useState('');
     const [is_status_loading, setStatusLoading] = React.useState(true);
@@ -128,12 +128,12 @@ const OnfidoSdkViewContainer = ({
                 ],
             });
         } catch (err) {
-            setAPIError(err as TAPI_error);
+            setAPIError(err as TAPIError);
         }
     }, [onfido_service_token, onComplete, onfido_documents, onfido_country_code]);
 
     const getOnfidoServiceToken = React.useCallback(
-        (): Promise<string | { error: TAPI_error }> =>
+        (): Promise<string | { error: TAPIError }> =>
             new Promise(resolve => {
                 const onfido_cookie_name = 'onfido_token';
                 const onfido_cookie = Cookies.get(onfido_cookie_name);
@@ -143,7 +143,7 @@ const OnfidoSdkViewContainer = ({
                         service_token: 1,
                         service: 'onfido',
                         country: token_country_code,
-                    }).then((response: TService_token) => {
+                    }).then((response: TServiceToken) => {
                         if (response.error) {
                             resolve({ error: response.error });
                             return;
@@ -166,7 +166,7 @@ const OnfidoSdkViewContainer = ({
         [token_country_code]
     );
 
-    const handleError = (error: TAPI_error) => {
+    const handleError = (error: TAPIError) => {
         switch (error.code) {
             case 'MissingPersonalDetails':
                 setMissingPersonalDetails('all');
@@ -227,7 +227,7 @@ const OnfidoSdkViewContainer = ({
         );
     } else if (retry_count >= 3 && api_error) {
         // Error message will only display if retry count exceeds 3
-        component_to_load = <ErrorMessage error_message={(api_error as TAPI_error)?.message ?? api_error} />;
+        component_to_load = <ErrorMessage error_message={(api_error as TAPIError)?.message ?? api_error} />;
     }
 
     return (

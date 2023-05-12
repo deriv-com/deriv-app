@@ -26,18 +26,24 @@ const AmountInput = ({
 }: TAmountInput) => {
     const [value, setValue] = useState(initial_value);
     const [focus, setFocus] = useState(false);
+    const [isPasting, setIsPasting] = useState(false);
 
     const displayNumber = useCallback(
         (number: number) => number.toLocaleString(locale, { minimumFractionDigits: decimal_places }),
-        [decimal_places]
+        [decimal_places, locale]
     );
 
     const onChangeHandler: React.ComponentProps<typeof Input>['onChange'] = e => {
-        const input_value = e.target.value.replace(/\D/g, '');
+        const input_value = e.target.value.replace(/\D/g, '').replace(/^0+/, '');
+        let newValue = value;
         if (Number(input_value) <= Math.pow(10, max_digits)) {
-            setValue(Number(input_value) / Math.pow(10, decimal_places));
-            onChange?.(Number(input_value) / Math.pow(10, decimal_places));
+            newValue = Number(input_value) / Math.pow(10, decimal_places);
+        } else if (isPasting && value === 0) {
+            newValue = Number(input_value.substring(0, max_digits)) / Math.pow(10, decimal_places);
         }
+        setValue(newValue);
+        onChange?.(newValue);
+        setIsPasting(false);
     };
 
     const onMouseDownHandler: React.ComponentProps<typeof Input>['onMouseDown'] = e => {
@@ -67,8 +73,9 @@ const AmountInput = ({
                     onFocus={() => setFocus(true)}
                     onBlur={() => setFocus(false)}
                     onChange={onChangeHandler}
-                    onMouseDown={onMouseDownHandler}
                     onKeyDown={onKeyDownHandler}
+                    onMouseDown={onMouseDownHandler}
+                    onPaste={() => setIsPasting(true)}
                     type='text'
                     value={displayNumber(value)}
                 />

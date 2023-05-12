@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { KeyboardEventHandler, useCallback, useState } from 'react';
 import { isMobile } from '@deriv/shared';
 import Input from '../input';
 import Text from '../text';
@@ -9,6 +9,7 @@ type TAmountInput = {
     disabled?: boolean;
     initial_value?: number;
     label?: string;
+    locale?: Intl.LocalesArgument;
     max_digits?: number;
     onChange?: (value: number) => void;
 };
@@ -19,6 +20,7 @@ const AmountInput = ({
     disabled = false,
     initial_value = 0,
     label,
+    locale,
     max_digits = 8,
     onChange,
 }: TAmountInput) => {
@@ -26,7 +28,7 @@ const AmountInput = ({
     const [focus, setFocus] = useState(false);
 
     const displayNumber = useCallback(
-        (number: number) => number.toLocaleString(undefined, { minimumFractionDigits: decimal_places }),
+        (number: number) => number.toLocaleString(locale, { minimumFractionDigits: decimal_places }),
         [decimal_places]
     );
 
@@ -36,6 +38,16 @@ const AmountInput = ({
             setValue(Number(input_value) / Math.pow(10, decimal_places));
             onChange?.(Number(input_value) / Math.pow(10, decimal_places));
         }
+    };
+
+    const onMouseDownHandler: React.ComponentProps<typeof Input>['onMouseDown'] = e => {
+        e.preventDefault();
+        e.currentTarget.setSelectionRange(e.currentTarget.value.length, e.currentTarget.value.length);
+        e.currentTarget.focus();
+    };
+
+    const onKeyDownHandler: KeyboardEventHandler<HTMLInputElement> = e => {
+        if (e.code.startsWith('Arrow')) e.preventDefault();
     };
 
     return (
@@ -55,6 +67,8 @@ const AmountInput = ({
                     onFocus={() => setFocus(true)}
                     onBlur={() => setFocus(false)}
                     onChange={onChangeHandler}
+                    onMouseDown={onMouseDownHandler}
+                    onKeyDown={onKeyDownHandler}
                     type='text'
                     value={displayNumber(value)}
                 />

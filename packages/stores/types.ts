@@ -10,7 +10,6 @@ import type { RouteComponentProps } from 'react-router';
 import { ExchangeRatesStore } from './src/stores';
 import { TLocationList } from '../shared/src/utils/location';
 
-type TAccount = NonNullable<Authorize['account_list']>[0];
 type TCurrencyConfig = {
     fractional_digits: number;
     is_deposit_suspended: 0 | 1;
@@ -29,6 +28,9 @@ type TCurrencyConfig = {
     };
     type: 'fiat' | 'crypto';
     value: string;
+};
+type TAccount = NonNullable<Authorize['account_list']>[0] & {
+    balance?: number;
 };
 
 type TAccountsList = {
@@ -359,6 +361,8 @@ type TRudderstackStore = {
     pageView: () => void;
     reset: () => void;
     track: (event_name: string, options: string) => void;
+    setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
+    toggleAccountTransferModal: () => void;
     is_demo: boolean;
 };
 

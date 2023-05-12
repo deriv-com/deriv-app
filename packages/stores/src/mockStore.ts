@@ -345,6 +345,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             reset: jest.fn(),
             track: jest.fn(),
             is_demo: false,
+            setSelectedAccount: jest.fn(),
+            toggleAccountTransferModal: jest.fn(),
         },
     };
 };

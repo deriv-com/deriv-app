@@ -214,7 +214,13 @@ const TradingHubHeader = observer(({ is_acc_switcher_disabled }) => {
 
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
-                <DerivBrandLogo className='trading-hub-header__logo' />
+                <div
+                    className={classNames('`trading-hub-header__logo-wrapper', {
+                        'trading-hub-header__logo-wrapper--cashier': cashier_routes,
+                    })}
+                >
+                    <DerivBrandLogo className='trading-hub-header__logo' />
+                </div>
                 <DesktopWrapper>
                     <Divider />
                     <TradersHubHomeButton is_dark_mode={is_dark_mode} />

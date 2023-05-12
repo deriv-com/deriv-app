@@ -116,11 +116,8 @@ const ContractDetails = ({
                                     id='dt_bt_label'
                                     icon={<Icon icon='IcContractPayout' size={24} />}
                                     label={vanilla_payout_text}
-                                    value={
-                                        `${formatMoney(currency, number_of_contracts, true)} ${getCurrencyDisplayCode(
-                                            currency
-                                        )}` || ' - '
-                                    }
+                                    value={`${number_of_contracts} ${getCurrencyDisplayCode(currency)}` || ' - '}
+                                    should_format={!is_vanilla}
                                 />
                             </React.Fragment>
                         )}

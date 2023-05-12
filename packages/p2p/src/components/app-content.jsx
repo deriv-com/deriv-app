@@ -3,11 +3,10 @@ import { isAction, reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router-dom';
 import { useStores } from 'Stores';
-import { isMobile } from '@deriv/shared';
+import { isMobile, routes } from '@deriv/shared';
 import { Loading, Tabs } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import classNames from 'classnames';
-import AdvertiserPage from 'Components/advertiser-page';
 import Dp2pBlocked from './dp2p-blocked';
 import { localize } from './i18next';
 import NicknameForm from './nickname-form';
@@ -59,7 +58,9 @@ const AppContent = ({ order_id }) => {
     }
 
     if (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) {
-        return <AdvertiserPage />;
+        history.push({ pathname: routes.p2p_advertiser_page });
+
+        return <></>;
     }
 
     return (

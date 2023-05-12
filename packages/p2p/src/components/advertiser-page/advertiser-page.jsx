@@ -1,8 +1,9 @@
 import React from 'react';
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
-import { daysSince, isMobile } from '@deriv/shared';
+import { daysSince, isMobile, routes } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
+import { useHistory } from 'react-router';
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
@@ -28,12 +29,15 @@ const AdvertiserPage = () => {
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
     const info = is_my_advert ? general_store.advertiser_info : advertiser_page_store.counterparty_advertiser_info;
 
+    const history = useHistory();
+
     const {
         basic_verification,
         buy_orders_count,
         created_time,
         first_name,
         full_verification,
+        id,
         is_online,
         last_online_time,
         last_name,
@@ -88,6 +92,18 @@ const AdvertiserPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    React.useEffect(() => {
+        if (id) {
+            const current_query_params = new URLSearchParams(location.search);
+            current_query_params.append('id', id);
+            history.replace({
+                pathname: routes.p2p_advertiser_page,
+                search: current_query_params.toString(),
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id]);
+
     useRegisterModalProps({
         key: 'BlockUserModal',
         props: {
@@ -120,6 +136,7 @@ const AdvertiserPage = () => {
                         buy_sell_store.hideAdvertiserPage();
                         if (general_store.active_index === general_store.path.my_profile)
                             my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
+                        history.push({ pathname: general_store.active_tab_route });
                     }}
                     page_title={localize("Advertiser's page")}
                 />

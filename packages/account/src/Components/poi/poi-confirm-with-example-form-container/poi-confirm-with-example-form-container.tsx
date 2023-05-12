@@ -8,7 +8,7 @@ import { filterObjProperties, isMobile, toMoment, validLength, validName, WS } f
 import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
-import { validate } from 'Helpers/utils';
+import { validate, makeSettingsRequest } from 'Helpers/utils';
 
 type TValues = { [p: string]: string };
 
@@ -41,33 +41,35 @@ const PoiConfirmWithExampleFormContainer = ({
     });
 
     React.useEffect(() => {
+        const initializeFormValues = () => {
+            WS.wait('get_settings').then(() => {
+                const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
+                const form_initial_values = filterObjProperties(account_settings, visible_settings);
+                if (form_initial_values.date_of_birth) {
+                    form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format(
+                        'YYYY-MM-DD'
+                    );
+                }
+                setRestState({
+                    ...rest_state,
+                    changeable_fields: getChangeableFields(),
+                    form_initial_values,
+                });
+                setIsLoading(false);
+            });
+        };
+
         initializeFormValues();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account_settings]);
 
-    const makeSettingsRequest = (settings: TValues) => {
-        const request = filterObjProperties(
-            settings,
-            rest_state?.changeable_fields ? [...rest_state.changeable_fields] : []
-        );
-
-        if (request.first_name) {
-            request.first_name = request.first_name.trim();
-        }
-        if (request.last_name) {
-            request.last_name = request.last_name.trim();
-        }
-        if (request.date_of_birth) {
-            request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
-        }
-
-        return request;
-    };
-
     const onSubmit = async (values: TValues, { setStatus, setSubmitting }: FormikHelpers<TValues>) => {
         if (checked) return;
         setStatus({ error_msg: '' });
-        const request = makeSettingsRequest(values);
+        const request = makeSettingsRequest(
+            values,
+            rest_state?.changeable_fields ? [...rest_state.changeable_fields] : []
+        );
         const data = await WS.setSettings(request);
 
         if (data.error) {
@@ -115,22 +117,6 @@ const PoiConfirmWithExampleFormContainer = ({
 
         setRestState({ ...rest_state, errors: Object.keys(errors).length > 0 });
         return errors;
-    };
-
-    const initializeFormValues = () => {
-        WS.wait('get_settings').then(() => {
-            const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
-            const form_initial_values = filterObjProperties(account_settings, visible_settings);
-            if (form_initial_values.date_of_birth) {
-                form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format('YYYY-MM-DD');
-            }
-            setRestState({
-                ...rest_state,
-                changeable_fields: getChangeableFields(),
-                form_initial_values,
-            });
-            setIsLoading(false);
-        });
     };
 
     const {

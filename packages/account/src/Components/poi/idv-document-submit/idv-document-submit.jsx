@@ -13,7 +13,13 @@ import {
     filterObjProperties,
     isDesktop,
 } from '@deriv/shared';
-import { documentAdditionalError, getRegex, validate, removeUndefinedProperties } from 'Helpers/utils';
+import {
+    documentAdditionalError,
+    getRegex,
+    validate,
+    removeUndefinedProperties,
+    makeSettingsRequest,
+} from 'Helpers/utils';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import IDVForm from 'Components/forms/idv-form';
@@ -118,26 +124,10 @@ const IdvDocumentSubmit = ({
         return removeUndefinedProperties(errors);
     };
 
-    const makeSettingsRequest = settings => {
-        const request = filterObjProperties(settings, changeable_fields);
-
-        if (request.first_name) {
-            request.first_name = request.first_name.trim();
-        }
-        if (request.last_name) {
-            request.last_name = request.last_name.trim();
-        }
-        if (request.date_of_birth) {
-            request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
-        }
-
-        return request;
-    };
-
     const submitHandler = async (values, { setSubmitting, setErrors }) => {
         setSubmitting(true);
 
-        const request = makeSettingsRequest(values);
+        const request = makeSettingsRequest(values, changeable_fields);
 
         const data = await WS.setSettings(request);
 

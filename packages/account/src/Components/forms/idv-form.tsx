@@ -239,6 +239,7 @@ const IDVForm = ({
                                                             onKeyUp(e, 'document_number')
                                                         }
                                                         required
+                                                        label={generatePlaceholderText(selected_doc)}
                                                     />
                                                     {values.document_type.additional?.display_name && (
                                                         <Input

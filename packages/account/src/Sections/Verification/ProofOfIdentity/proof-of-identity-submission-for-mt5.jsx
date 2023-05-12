@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import { WS, toMoment, filterObjProperties, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
+import { WS, IDV_NOT_APPLICABLE_OPTION, makeSettingsRequest } from '@deriv/shared';
 import Unsupported from 'Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
@@ -52,27 +52,11 @@ const POISubmissionForMT5 = ({
         });
     };
 
-    const makeSettingsRequest = settings => {
-        const request = filterObjProperties(settings, [...getChangeableFields()]);
-
-        if (request.first_name) {
-            request.first_name = request.first_name.trim();
-        }
-        if (request.last_name) {
-            request.last_name = request.last_name.trim();
-        }
-        if (request.date_of_birth) {
-            request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
-        }
-
-        return request;
-    };
-
     const handleIdvSubmit = async (values, { setSubmitting, setErrors }) => {
         setSubmitting(true);
         const { document_number, document_type } = values;
 
-        const request = makeSettingsRequest(values);
+        const request = makeSettingsRequest(values, [...getChangeableFields()]);
 
         const data = await WS.setSettings(request);
 

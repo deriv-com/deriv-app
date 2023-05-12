@@ -9,7 +9,7 @@ type TItemWrapper = {
 type TRadioGroup = {
     className?: string;
     name: string;
-    onToggle: (e: ChangeEvent<HTMLInputElement>) => void;
+    onToggle: (e: React.MouseEvent<HTMLInputElement> & { target: { value: string } }) => void;
     required?: boolean;
     selected: string;
 } & TItemWrapper;
@@ -37,7 +37,7 @@ const RadioGroup = ({
         setSelectedOption(selected);
     }, [selected]);
 
-    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const onChange = (e: React.MouseEvent<HTMLInputElement> & { target: { value: string } }) => {
         setSelectedOption(e.target.value);
         onToggle(e);
     };
@@ -59,7 +59,7 @@ const RadioGroup = ({
                                 type='radio'
                                 value={item.props.value}
                                 checked={selected_option === item.props.value}
-                                onChange={onChange}
+                                onClick={onChange}
                                 disabled={item.props.disabled}
                                 required={required}
                             />

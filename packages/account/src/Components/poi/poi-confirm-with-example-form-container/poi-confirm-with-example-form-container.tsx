@@ -41,6 +41,24 @@ const PoiConfirmWithExampleFormContainer = ({
     });
 
     React.useEffect(() => {
+        const initializeFormValues = () => {
+            WS.wait('get_settings').then(() => {
+                const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
+                const form_initial_values = filterObjProperties(account_settings, visible_settings);
+                if (form_initial_values.date_of_birth) {
+                    form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format(
+                        'YYYY-MM-DD'
+                    );
+                }
+                setRestState({
+                    ...rest_state,
+                    changeable_fields: getChangeableFields(),
+                    form_initial_values,
+                });
+                setIsLoading(false);
+            });
+        };
+
         initializeFormValues();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account_settings]);
@@ -99,22 +117,6 @@ const PoiConfirmWithExampleFormContainer = ({
 
         setRestState({ ...rest_state, errors: Object.keys(errors).length > 0 });
         return errors;
-    };
-
-    const initializeFormValues = () => {
-        WS.wait('get_settings').then(() => {
-            const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
-            const form_initial_values = filterObjProperties(account_settings, visible_settings);
-            if (form_initial_values.date_of_birth) {
-                form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format('YYYY-MM-DD');
-            }
-            setRestState({
-                ...rest_state,
-                changeable_fields: getChangeableFields(),
-                form_initial_values,
-            });
-            setIsLoading(false);
-        });
     };
 
     const {

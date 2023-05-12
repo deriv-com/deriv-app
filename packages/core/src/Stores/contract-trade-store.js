@@ -31,7 +31,7 @@ export default class ContractTradeStore extends BaseStore {
         super({ root_store });
 
         makeObservable(this, {
-            accumulator_barriers_data: observable.ref,
+            accumulator_barriers_data: observable.struct,
             clearAccumulatorBarriersData: action.bound,
             contracts: observable.shallow,
             has_error: observable,
@@ -132,9 +132,14 @@ export default class ContractTradeStore extends BaseStore {
     };
 
     get should_highlight_current_spot() {
-        const { accumulators_high_barrier, accumulators_low_barrier, highlighted_spot } =
+        const { accumulators_high_barrier, accumulators_low_barrier, current_symbol_spot } =
             this.accumulator_barriers_data || {};
-        return !!(accumulators_high_barrier && accumulators_low_barrier && !!highlighted_spot);
+        return !!(
+            current_symbol_spot &&
+            accumulators_high_barrier &&
+            accumulators_low_barrier &&
+            (current_symbol_spot >= accumulators_high_barrier || current_symbol_spot <= accumulators_low_barrier)
+        );
     }
 
     get markers_array() {
@@ -147,19 +152,19 @@ export default class ContractTradeStore extends BaseStore {
         if (markers.length) {
             markers[markers.length - 1].is_last_contract = true;
         }
-        const { accumulators_high_barrier, accumulators_low_barrier, current_symbol_spot_time } =
+        const { accumulators_high_barrier, accumulators_low_barrier, previous_symbol_spot_time } =
             this.accumulator_barriers_data || {};
         if (
             trade_type === 'accumulator' &&
             (this.last_contract.contract_info?.status !== 'open' || !this.last_contract.contract_info?.high_barrier) &&
-            current_symbol_spot_time
+            previous_symbol_spot_time
         ) {
             markers.push({
                 type: 'TickContract',
                 contract_info: { is_accumulators_trade_without_contract: true },
                 key: 'accumulators_barriers_without_contract',
                 price_array: [accumulators_high_barrier, accumulators_low_barrier],
-                epoch_array: [current_symbol_spot_time],
+                epoch_array: [previous_symbol_spot_time],
             });
         }
         return markers;

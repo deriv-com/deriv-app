@@ -122,7 +122,7 @@ export default class TradeStore extends BaseStore {
     should_show_active_symbols_loading = false;
 
     // Accumulator trade params
-    // accu_barriers_timeout_id = null;
+    accu_barriers_timeout_id = null;
     accumulator_range_list = [];
     growth_rate = 0.03;
     maximum_payout = 0;
@@ -284,7 +284,7 @@ export default class TradeStore extends BaseStore {
             getFirstOpenMarket: action.bound,
             has_alternative_source: computed,
             initAccountCurrency: action.bound,
-            // accu_barriers_timeout_id: observable,
+            accu_barriers_timeout_id: observable,
             is_multiplier: computed,
             is_symbol_in_active_symbols: computed,
             is_synthetics_available: computed,
@@ -414,6 +414,7 @@ export default class TradeStore extends BaseStore {
     }
 
     resetAccumulatorData() {
+        if (this.accu_barriers_timeout_id) clearTimeout(this.accu_barriers_timeout_id);
         if (!isEmptyObject(this.root_store.contract_trade.accumulator_barriers_data)) {
             this.root_store.contract_trade.clearAccumulatorBarriersData();
         }
@@ -1167,35 +1168,21 @@ export default class TradeStore extends BaseStore {
             this.maximum_ticks = maximum_ticks;
             this.maximum_payout = maximum_payout;
             this.tick_size_barrier = tick_size_barrier;
-            const {
-                accumulator_barriers_data: { accumulators_high_barrier, accumulators_low_barrier } = {},
-                updateAccumulatorBarriersData,
-            } = this.root_store.contract_trade || {};
+            const { updateAccumulatorBarriersData } = this.root_store.contract_trade || {};
             if (updateAccumulatorBarriersData) {
-                if (
-                    spot &&
-                    accumulators_high_barrier &&
-                    (spot > accumulators_high_barrier || spot < accumulators_low_barrier)
-                ) {
-                    updateAccumulatorBarriersData({
-                        highlighted_spot: spot,
-                        highlighted_spot_time: spot_time,
-                    });
-                } else {
-                    updateAccumulatorBarriersData({
-                        highlighted_spot: null,
-                        highlighted_spot_time: null,
-                    });
-                }
-                // clearTimeout(this.accu_barriers_timeout_id);
-                // this.accu_barriers_timeout_id = setTimeout(() => {
                 updateAccumulatorBarriersData({
                     current_symbol_spot: spot,
                     current_symbol_spot_time: spot_time,
-                    accumulators_high_barrier: high_barrier,
-                    accumulators_low_barrier: low_barrier,
                 });
-                // }, 300);
+                // if (this.accu_barriers_timeout_id) clearTimeout(this.accu_barriers_timeout_id);
+                this.accu_barriers_timeout_id = setTimeout(() => {
+                    updateAccumulatorBarriersData({
+                        previous_symbol_spot: spot,
+                        previous_symbol_spot_time: spot_time,
+                        accumulators_high_barrier: high_barrier,
+                        accumulators_low_barrier: low_barrier,
+                    });
+                }, 320);
             }
         }
 
@@ -1464,7 +1451,7 @@ export default class TradeStore extends BaseStore {
         if (this.prev_chart_layout) {
             this.prev_chart_layout.is_used = false;
         }
-        // clearTimeout(this.accu_barriers_timeout_id);
+        this.resetAccumulatorData();
     }
 
     prev_chart_layout = null;

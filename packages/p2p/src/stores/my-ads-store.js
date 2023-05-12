@@ -234,8 +234,18 @@ export default class MyAdsStore extends BaseStore {
                         if (!response.p2p_advert_create.is_visible) {
                             this.setAdvertDetails(response.p2p_advert_create);
                         }
-                        if (this.advert_details?.visibility_status?.includes('advertiser_daily_limit')) {
-                            this.root_store.general_store.showModal({ key: 'AdExceedsDailyLimitModal', props: {} });
+                        if (this.advert_details?.visibility_status?.includes(api_error_codes.AD_EXCEEDS_BALANCE)) {
+                            this.root_store.general_store.showModal({
+                                key: 'AdVisibilityErrorModal',
+                                props: { error_code: api_error_codes.AD_EXCEEDS_BALANCE },
+                            });
+                        } else if (
+                            this.advert_details?.visibility_status?.includes(api_error_codes.AD_EXCEEDS_DAILY_LIMIT)
+                        ) {
+                            this.root_store.general_store.showModal({
+                                key: 'AdVisibilityErrorModal',
+                                props: { error_code: api_error_codes.AD_EXCEEDS_DAILY_LIMIT },
+                            });
                         }
                         this.setShowAdForm(false);
                     }
@@ -616,7 +626,7 @@ export default class MyAdsStore extends BaseStore {
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.client.currency),
+                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.external_stores.client.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
             ],
@@ -626,18 +636,17 @@ export default class MyAdsStore extends BaseStore {
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.client.currency),
+                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.external_stores.client.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.max_transaction ? +v <= values.max_transaction : true),
             ],
             offer_amount: [
                 v => !!v,
                 v => !isNaN(v),
-                v => (values.type === buy_sell.SELL ? v <= general_store.advertiser_info.balance_available : !!v),
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.client.currency),
+                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.external_stores.client.currency),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
                 v => (values.max_transaction ? +v >= values.max_transaction : true),
             ],
@@ -648,7 +657,8 @@ export default class MyAdsStore extends BaseStore {
                     floating_rate_store.rate_type === ad_type.FIXED
                         ? v > 0 &&
                           decimalValidator(v) &&
-                          countDecimalPlaces(v) <= general_store.client.local_currency_config.decimal_places
+                          countDecimalPlaces(v) <=
+                              general_store.external_stores.client.local_currency_config.decimal_places
                         : true,
                 v =>
                     floating_rate_store.rate_type === ad_type.FLOAT
@@ -694,7 +704,6 @@ export default class MyAdsStore extends BaseStore {
         const getOfferAmountMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
             localize('Enter a valid amount'),
-            localize('Max available amount is {{value}}', { value: general_store.advertiser_info.balance_available }),
             localize('Enter a valid amount'),
             localize('{{field_name}} should not be below Min limit', { field_name }),
             localize('{{field_name}} should not be below Max limit', { field_name }),
@@ -774,7 +783,7 @@ export default class MyAdsStore extends BaseStore {
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.client.currency),
+                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.external_stores.client.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
             ],
@@ -784,7 +793,7 @@ export default class MyAdsStore extends BaseStore {
                 v =>
                     v > 0 &&
                     decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.client.currency),
+                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.external_stores.client.currency),
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.max_transaction ? +v <= values.max_transaction : true),
             ],
@@ -795,7 +804,8 @@ export default class MyAdsStore extends BaseStore {
                     this.required_ad_type === ad_type.FIXED
                         ? v > 0 &&
                           decimalValidator(v) &&
-                          countDecimalPlaces(v) <= general_store.client.local_currency_config.decimal_places
+                          countDecimalPlaces(v) <=
+                              general_store.external_stores.client.local_currency_config.decimal_places
                         : true,
                 v =>
                     this.required_ad_type === ad_type.FLOAT

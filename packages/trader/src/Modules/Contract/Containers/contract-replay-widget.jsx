@@ -37,4 +37,4 @@ export const InfoBoxWidget = connect(({ contract_replay, modules }) => ({
 
 // Chart widgets passed into SmartCharts
 export const ChartTopWidgets = () => <TopWidgets InfoBox={<InfoBoxWidget />} is_title_enabled={false} />;
-export const ChartBottomWidgets = () => <BottomWidgets Digits={<DigitsWidget />} />;
+export const ChartBottomWidgets = () => <BottomWidgets Widget={<DigitsWidget />} />;

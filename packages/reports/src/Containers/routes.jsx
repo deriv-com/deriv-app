@@ -13,7 +13,6 @@ const Routes = props => {
 
     return (
         <BinaryRoutes
-            is_pre_appstore={props.is_pre_appstore}
             is_logged_in={props.is_logged_in}
             is_logging_in={props.is_logging_in}
             passthrough={props.passthrough}
@@ -26,7 +25,6 @@ Routes.propTypes = {
     has_error: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
-    is_pre_appstore: PropTypes.bool,
     is_virtual: PropTypes.bool,
     passthrough: PropTypes.object,
 };
@@ -37,7 +35,6 @@ export default withRouter(
     connect(({ client, common }) => ({
         is_logged_in: client.is_logged_in,
         is_logging_in: client.is_logging_in,
-        is_pre_appstore: client.is_pre_appstore,
         error: common.error,
         has_error: common.has_error,
     }))(Routes)

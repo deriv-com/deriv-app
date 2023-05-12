@@ -18,7 +18,7 @@ type TMobileDrawer = {
     width: string;
     alignment: 'left' | 'right';
     is_open: boolean;
-    title: string;
+    title: string | JSX.Element;
     toggle: () => void;
     livechat: React.ReactElement;
     transitionExit: boolean;

@@ -8,10 +8,12 @@ export const contract_category_icon = {
     [localize('Look Backs')]: 'IcLookbacks',
     [localize('Digits')]: 'IcDigits',
     [localize('Multipliers')]: 'IcMultiplier',
+    [localize('Accumulators')]: 'IcCatAccumulator',
 };
 
 export const getContractTypeCategoryIcons = () => ({
     All: 'IcCatAll',
+    Accumulators: 'IcCatAccumulator',
     Options: 'IcCatOptions',
     Multipliers: 'IcCatMultiplier',
 });
@@ -46,7 +48,7 @@ export const getAvailableContractTypes = (contract_types_list, unsupported_list)
                     contract_types: available_contract_types,
                     icon: contract_category_icon[contract_name],
                     component:
-                        contract_name === localize('Multipliers') ? (
+                        contract_name === localize('Accumulators') ? (
                             <span className='dc-vertical-tab__header--new'>{localize('NEW!')}</span>
                         ) : null,
                 };

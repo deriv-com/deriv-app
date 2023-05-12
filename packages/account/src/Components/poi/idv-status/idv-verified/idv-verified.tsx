@@ -1,16 +1,17 @@
+import IdvDocumentVerified from 'Assets/ic-idv-verified.svg';
+import PoaButton from 'Components/poa/poa-button';
 import React from 'react';
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import PoaButton from 'Components/poa/poa-button';
-import IdvDocumentVerified from 'Assets/ic-idv-verified.svg';
 
 type TIdvVerified = {
     needs_poa: boolean;
     is_from_external: boolean;
+    redirect_button: React.ReactNode;
 };
 
-const IdvVerified = ({ needs_poa, is_from_external }: Partial<TIdvVerified>) => {
+const IdvVerified = ({ needs_poa, is_from_external, redirect_button }: Partial<TIdvVerified>) => {
     const header_Text = needs_poa
         ? localize('Your ID is verified. You will also need to submit proof of your address.')
         : localize('ID verification passed');
@@ -21,7 +22,7 @@ const IdvVerified = ({ needs_poa, is_from_external }: Partial<TIdvVerified>) => 
             <Text className='proof-of-identity__text btm-spacer' align='center' weight='bold'>
                 {header_Text}
             </Text>
-            {!!needs_poa && (
+            {needs_poa ? (
                 <React.Fragment>
                     {!isMobile() && (
                         <Text className='text' size='xs' align='center'>
@@ -30,6 +31,8 @@ const IdvVerified = ({ needs_poa, is_from_external }: Partial<TIdvVerified>) => 
                     )}
                     {!is_from_external && <PoaButton custom_text={localize('Submit proof of address')} />}
                 </React.Fragment>
+            ) : (
+                redirect_button
             )}
         </div>
     );

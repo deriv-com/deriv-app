@@ -4,7 +4,14 @@ import { DesktopWrapper, Dropdown, MobileWrapper, Text, SelectNative } from '@de
 import { localize, getLanguage } from '@deriv/translations';
 import classNames from 'classnames';
 
-const TradingAssessmentDropdown = ({ item_list, onChange, values, setFieldValue, setEnableNextSection }) => {
+const TradingAssessmentDropdown = ({
+    disabled_items,
+    item_list,
+    onChange,
+    values,
+    setFieldValue,
+    setEnableNextSection,
+}) => {
     React.useEffect(() => {
         checkIfAllFieldsFilled();
     }, [values]);
@@ -44,6 +51,7 @@ const TradingAssessmentDropdown = ({ item_list, onChange, values, setFieldValue,
                                         list={question?.answer_options}
                                         onChange={e => onChange(e, question.form_control, setFieldValue)}
                                         value={values[question.form_control]}
+                                        disabled={disabled_items.includes(question.form_control)}
                                     />
                                 </DesktopWrapper>
                                 <MobileWrapper>
@@ -60,6 +68,7 @@ const TradingAssessmentDropdown = ({ item_list, onChange, values, setFieldValue,
                                         }}
                                         value={values[question.form_control]}
                                         hide_top_placeholder
+                                        disabled={disabled_items.includes(question.form_control)}
                                     />
                                 </MobileWrapper>
                             </React.Fragment>

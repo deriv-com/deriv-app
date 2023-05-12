@@ -6,6 +6,7 @@ import { getCurrencyName, isMobile } from '@deriv/shared';
 import CryptoDeposit from '../crypto-deposit';
 import { TRootStore } from 'Types';
 import CashierProviders from '../../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -27,6 +28,24 @@ jest.mock('Components/recent-transaction', () => {
     return RecentTransactions;
 });
 
+jest.mock('@deriv/api', () => {
+    return {
+        ...jest.requireActual('@deriv/api'),
+        useFetch: jest.fn(() => ({
+            data: {
+                currencies_config: {
+                    tUSDT: {
+                        minimum_deposit: 2,
+                        minimum_withdrawal: 4.54,
+                    },
+                },
+            },
+            isLoading: false,
+            isSuccess: true,
+        })),
+    };
+});
+
 describe('<CryptoDeposit />', () => {
     let history: ReturnType<typeof createBrowserHistory>;
     const renderWithRouter = (component: JSX.Element, mockRootStore: TRootStore) => {
@@ -39,6 +58,7 @@ describe('<CryptoDeposit />', () => {
     };
 
     it('should show loader', () => {
+        // TODO: use mockStore for tests after TStores type will be updated
         const mockRootStore: DeepPartial<TRootStore> = {
             client: {
                 currency: 'BTC',
@@ -65,6 +85,70 @@ describe('<CryptoDeposit />', () => {
         renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
+    });
+
+    it('should show proper breadcrumbs', () => {
+        const mockRootStore: DeepPartial<TRootStore> = {
+            client: {
+                currency: 'BTC',
+            },
+            modules: {
+                cashier: {
+                    onramp: {
+                        is_deposit_address_loading: false,
+                        api_error: '',
+                        deposit_address: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
+                        pollApiForDepositAddress: jest.fn(),
+                    },
+                    transaction_history: {
+                        crypto_transactions: [{}],
+                        onMount: jest.fn(),
+                    },
+                    general_store: {
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        };
+
+        renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
+
+        expect(screen.getByText(/cashier/i)).toBeInTheDocument();
+        expect(screen.getByText(/deposit cryptocurrencies/i)).toBeInTheDocument();
+    });
+
+    it('should trigger setIsDeposit callback when the user clicks on Cashier breadcrumb', () => {
+        const mockRootStore: DeepPartial<TRootStore> = {
+            client: {
+                currency: 'BTC',
+            },
+            modules: {
+                cashier: {
+                    onramp: {
+                        is_deposit_address_loading: false,
+                        api_error: '',
+                        deposit_address: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
+                        pollApiForDepositAddress: jest.fn(),
+                    },
+                    transaction_history: {
+                        crypto_transactions: [{}],
+                        onMount: jest.fn(),
+                    },
+                    general_store: {
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        };
+
+        renderWithRouter(<CryptoDeposit />, mockRootStore as TRootStore);
+
+        const el_breadcrumb_cashier = screen.queryByText(/cashier/i);
+
+        if (el_breadcrumb_cashier) {
+            fireEvent.click(el_breadcrumb_cashier);
+            expect(mockRootStore.modules?.cashier.general_store.setIsDeposit).toHaveBeenCalledWith(false);
+        }
     });
 
     it('should show proper error message and button', () => {
@@ -371,5 +455,46 @@ describe('<CryptoDeposit />', () => {
         );
 
         expect(screen.getByText('RecentTransactions')).toBeInTheDocument();
+    });
+
+    it('should show AlertBanner for minimum deposit when third-party payment processor is used (CoinsPaid)', () => {
+        const minimum_deposit = 2;
+        const currency = 'tUSDT';
+        const mock = mockStore({
+            client: {
+                currency: 'tUSDT',
+            },
+            modules: {
+                cashier: {
+                    onramp: {
+                        is_deposit_address_loading: false,
+                        api_error: '',
+                        deposit_address: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
+                        pollApiForDepositAddress: jest.fn(),
+                    },
+                    transaction_history: {
+                        crypto_transactions: [{}],
+                        onMount: jest.fn(),
+                    },
+                    general_store: {
+                        setIsDeposit: jest.fn(),
+                    },
+                },
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => {
+            return (
+                <Router history={history}>
+                    <CashierProviders store={mock}>{children}</CashierProviders>;
+                </Router>
+            );
+        };
+        render(<CryptoDeposit />, { wrapper });
+        expect(
+            screen.getByText(
+                `A minimum deposit value of ${minimum_deposit} ${currency} is required. Otherwise, the funds will be lost and cannot be recovered.`
+            )
+        ).toBeInTheDocument();
     });
 });

@@ -9,11 +9,13 @@ import {
     PageOverlay,
     SwipeableWrapper,
     FadeWrapper,
+    usePrevious,
 } from '@deriv/components';
 import {
     getDurationPeriod,
     getDurationUnitText,
     getPlatformRedirect,
+    isAccumulatorContract,
     isDesktop,
     isEmptyObject,
     isMobile,
@@ -28,7 +30,8 @@ import UnsupportedContractModal from 'App/Components/Elements/Modals/Unsupported
 import { SmartChart } from 'Modules/SmartChart';
 import { connect } from 'Stores/connect';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
-import ChartMarker from '../../SmartChart/Components/Markers/marker.jsx';
+import ChartMarker from 'Modules/SmartChart/Components/Markers/marker.jsx';
+import allMarkers from 'Modules/SmartChart/Components/all-markers.jsx';
 
 const ContractReplay = ({
     contract_id,
@@ -74,6 +77,7 @@ const ContractReplay = ({
 
     if (!contract_info.underlying) return null;
 
+    const is_accumulator = isAccumulatorContract(contract_info.contract_type);
     const is_multiplier = isMultiplierContract(contract_info.contract_type);
     const is_vanilla = isVanillaContract(contract_info.contract_type);
 
@@ -82,6 +86,7 @@ const ContractReplay = ({
             contract_info={contract_info}
             contract_update={contract_update}
             contract_update_history={contract_update_history}
+            is_accumulator={is_accumulator}
             is_chart_loading={is_chart_loading}
             is_dark_theme={is_dark_theme}
             is_market_closed={is_market_closed}
@@ -139,6 +144,7 @@ const ContractReplay = ({
                         <div
                             className={classNames('replay-chart__container', {
                                 'replay-chart__container--is-multiplier': isMobile() && is_multiplier,
+                                'vanilla-trade-chart': is_vanilla,
                             })}
                         >
                             <DesktopWrapper>
@@ -146,7 +152,7 @@ const ContractReplay = ({
                             </DesktopWrapper>
                             <ChartLoader is_dark={is_dark_theme} is_visible={is_chart_loading} />
                             <DesktopWrapper>
-                                <ReplayChart />
+                                <ReplayChart is_dark_theme={is_dark_theme} is_accumulator_contract={is_accumulator} />
                             </DesktopWrapper>
                             <MobileWrapper>
                                 {is_digit_contract ? (
@@ -158,7 +164,10 @@ const ContractReplay = ({
                                         </SwipeableWrapper>
                                     </React.Fragment>
                                 ) : (
-                                    <ReplayChart />
+                                    <ReplayChart
+                                        is_dark_theme={is_dark_theme}
+                                        is_accumulator_contract={is_accumulator}
+                                    />
                                 )}
                             </MobileWrapper>
                         </div>
@@ -220,6 +229,8 @@ export default connect(({ common, contract_replay, ui }) => {
 // CHART -----------------------------------------
 
 const Chart = props => {
+    const AccumulatorsShadedBarriers = allMarkers[props.accumulators_barriers_marker?.type];
+
     const isBottomWidgetVisible = () => {
         return isDesktop() && props.is_digit_contract;
     };
@@ -236,6 +247,7 @@ const Chart = props => {
 
         return margin;
     };
+    const prev_start_epoch = usePrevious(props.start_epoch);
 
     return (
         <SmartChart
@@ -263,11 +275,17 @@ const Chart = props => {
             allTicks={props.all_ticks}
             topWidgets={ChartTopWidgets}
             isConnectionOpened={props.is_socket_opened}
-            isStaticChart={false}
+            isStaticChart={
+                // forcing chart reload when start_epoch changes to an earlier epoch for ACCU closed contract:
+                props.is_accumulator_contract && props.end_epoch && props.start_epoch < prev_start_epoch
+            }
             shouldFetchTradingTimes={!props.end_epoch}
             yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
-            shouldFetchTickHistory={getDurationUnitText(getDurationPeriod(props.contract_info)) !== 'seconds'}
+            shouldFetchTickHistory={
+                getDurationUnitText(getDurationPeriod(props.contract_info)) !== 'seconds' ||
+                props.contract_info.status === 'open'
+            }
             contractInfo={props.contract_info}
         >
             {props.markers_array.map(marker => (
@@ -278,11 +296,21 @@ const Chart = props => {
                     is_bottom_widget_visible={isBottomWidgetVisible()}
                 />
             ))}
+            {props.is_accumulator_contract && props.markers_array && (
+                <AccumulatorsShadedBarriers
+                    key={props.accumulators_barriers_marker.key}
+                    is_dark_theme={props.is_dark_theme}
+                    granularity={props.granularity}
+                    is_in_contract_details
+                    {...props.accumulators_barriers_marker}
+                />
+            )}
         </SmartChart>
     );
 };
 
 Chart.propTypes = {
+    accumulators_barriers_marker: PropTypes.object,
     barriers_array: PropTypes.array,
     BottomWidgets: PropTypes.node,
     chartStateChange: PropTypes.func,
@@ -290,6 +318,8 @@ Chart.propTypes = {
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
     InfoBox: PropTypes.node,
+    is_accumulator_contract: PropTypes.bool,
+    is_dark_theme: PropTypes.bool,
     is_digit_contract: PropTypes.bool,
     is_mobile: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
@@ -335,6 +365,7 @@ const ReplayChart = connect(({ modules, ui, common, contract_replay }) => {
     };
 
     return {
+        accumulators_barriers_marker: contract_store.marker,
         end_epoch: contract_config.end_epoch,
         chart_type: contract_config.chart_type,
         start_epoch: contract_config.start_epoch,

@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { isEmptyObject } from '../object';
-import { isUserSold } from '../contract';
-import { TContractInfo } from '../contract/contract-types';
+import { isAccumulatorContract, isUserSold } from '../contract';
+import { TContractInfo, TContractStore } from '../contract/contract-types';
 
 type TTick = {
     ask?: number;
@@ -25,13 +25,7 @@ type TIsSoldBeforeStart = Required<Pick<TContractInfo, 'sell_time' | 'date_start
 type TIsStarted = Required<Pick<TContractInfo, 'is_forward_starting' | 'current_spot_time' | 'date_start'>>;
 
 type TGetEndTime = Pick<TContractInfo, 'is_expired' | 'sell_time' | 'status' | 'tick_count'> &
-    Required<Pick<TContractInfo, 'date_expiry' | 'exit_tick_time' | 'is_path_dependent'>>;
-
-type TGetBuyPrice = {
-    contract_info: {
-        buy_price: number;
-    };
-};
+    Required<Pick<TContractInfo, 'contract_type' | 'date_expiry' | 'exit_tick_time' | 'is_path_dependent'>>;
 
 export const isContractElapsed = (contract_info: TGetEndTime, tick: TTick) => {
     if (isEmptyObject(tick) || isEmptyObject(contract_info)) return false;
@@ -58,6 +52,7 @@ export const isUserCancelled = (contract_info: TContractInfo) => contract_info.s
 
 export const getEndTime = (contract_info: TGetEndTime) => {
     const {
+        contract_type,
         exit_tick_time,
         date_expiry,
         is_expired,
@@ -67,7 +62,7 @@ export const getEndTime = (contract_info: TGetEndTime) => {
         tick_count: is_tick_contract,
     } = contract_info;
 
-    const is_finished = is_expired && status !== 'open';
+    const is_finished = status !== 'open' && (is_expired || isAccumulatorContract(contract_type));
 
     if (!is_finished && !isUserSold(contract_info) && !isUserCancelled(contract_info)) return undefined;
 
@@ -80,7 +75,7 @@ export const getEndTime = (contract_info: TGetEndTime) => {
     return date_expiry > exit_tick_time && !+is_path_dependent ? date_expiry : exit_tick_time;
 };
 
-export const getBuyPrice = (contract_store: TGetBuyPrice) => {
+export const getBuyPrice = (contract_store: TContractStore) => {
     return contract_store.contract_info.buy_price;
 };
 

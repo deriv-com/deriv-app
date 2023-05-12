@@ -115,7 +115,7 @@ export default class ExtendedOrderDetails {
     // orders as active when they're actually expired. This boolean is used
     // as an extra check to ensure orders look expired on FE.
     get has_timer_expired() {
-        const server_time_moment = this.server_time.get();
+        const server_time_moment = toMoment(this.server_time.get());
         const expiry_time_moment = toMoment(this.order_details.expiry_time);
         return server_time_moment.isAfter(expiry_time_moment);
     }

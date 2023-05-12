@@ -15,6 +15,7 @@ const Contract = ({
     contract_types_list,
     is_digit_view,
     is_equal,
+    is_virtual,
     onChange,
     symbol,
     current_language,
@@ -36,6 +37,7 @@ const Contract = ({
             </MobileWrapper>
             <ContractTypeWidget
                 is_equal={is_equal}
+                is_virtual={is_virtual}
                 list={list}
                 name='contract_type'
                 onChange={onChange}
@@ -51,16 +53,18 @@ Contract.propTypes = {
     contract_types_list: PropTypes.object,
     is_digit_view: PropTypes.bool,
     is_equal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    is_virtual: PropTypes.bool,
     onChange: PropTypes.func,
     symbol: PropTypes.string,
     current_language: PropTypes.string,
 };
 
-export default connect(({ modules, common }) => ({
+export default connect(({ modules, client, common }) => ({
     contract_type: modules.trade.contract_type,
     contract_types_list: modules.trade.contract_types_list,
     is_digit_view: modules.trade.is_mobile_digit_view_selected,
     is_equal: modules.trade.is_equal,
+    is_virtual: client.is_virtual,
     onChange: modules.trade.onChange,
     symbol: modules.trade.symbol,
     current_language: common.current_language,

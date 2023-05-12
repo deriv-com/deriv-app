@@ -1,5 +1,5 @@
 import SendBird from 'sendbird';
-import { epochToMoment } from '@deriv/shared';
+import { epochToMoment, toMoment } from '@deriv/shared';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import BaseStore from 'Stores/base_store';
 import ChatMessage, { convertFromChannelMessage } from 'Utils/chat-message';
@@ -15,10 +15,12 @@ export default class SendbirdStore extends BaseStore {
     should_show_chat_modal = false;
     should_show_chat_on_orders = false;
 
+    file_upload_properties = null;
+    is_upload_complete = false;
     messages_ref = null;
+    scroll_debounce = null;
     sendbird_api = null;
     service_token_timeout = null;
-    scroll_debounce = null;
 
     constructor(root_store) {
         // TODO: [mobx-undecorate] verify the constructor arguments and the arguments of this automatically generated super call
@@ -71,6 +73,7 @@ export default class SendbirdStore extends BaseStore {
         this.chat_messages.push(chat_message);
     }
 
+    // TODO: remove when access chat_channel_url from p2p_order_create is activated in BO
     createChatForNewOrder(id) {
         if (!this.chat_channel_url) {
             // If order_information doesn't have chat_channel_url this is a new order
@@ -122,29 +125,37 @@ export default class SendbirdStore extends BaseStore {
         this.should_show_chat_on_orders = should_show_chat_on_orders;
     }
 
+    setChatError() {
+        this.setHasChatError(true);
+        this.setIsChatLoading(false);
+    }
+
     initialiseChatWsConnection() {
+        this.setFileUploadProperties(null);
+        this.setIsUploadComplete(false);
         this.setHasChatError(false);
         this.setIsChatLoading(true);
 
         const { user_id: sendbird_user_id, token: service_token, app_id } = this.chat_info;
-
         this.sendbird_api = new SendBird({ appId: app_id });
-        this.sendbird_api.connect(sendbird_user_id, service_token, (user, error) => {
-            if (error) {
-                // eslint-disable-next-line no-console
-                console.warn(error);
-                this.setHasChatError(true);
-                this.setIsChatLoading(false);
-            } else {
-                const channel_event_handler = new this.sendbird_api.ChannelHandler();
+        this.sendbird_api
+            .connect(sendbird_user_id, service_token, (user, error) => {
+                if (error) {
+                    // TODO: remove console statement and better presentation of warnings to user.
+                    // eslint-disable-next-line no-console
+                    console.warn(error);
+                    this.setChatError();
+                } else {
+                    const channel_event_handler = new this.sendbird_api.ChannelHandler();
 
-                channel_event_handler.onMessageReceived = this.onMessageReceived.bind(this);
-                channel_event_handler.onReadReceiptUpdated = this.onReadReceiptUpdated.bind(this);
-
-                this.sendbird_api.addChannelHandler('channel_event_handler', channel_event_handler);
-                this.initialiseOrderChannel();
-            }
-        });
+                    channel_event_handler.onMessageReceived = this.onMessageReceived.bind(this);
+                    channel_event_handler.onReadReceiptUpdated = this.onReadReceiptUpdated.bind(this);
+                    this.progressHandler = this.progressHandler.bind(this);
+                    this.sendbird_api.addChannelHandler('channel_event_handler', channel_event_handler);
+                    this.initialiseOrderChannel();
+                }
+            })
+            .catch(() => this.setChatError());
     }
 
     initialiseOrderChannel() {
@@ -160,7 +171,7 @@ export default class SendbirdStore extends BaseStore {
                 this.setActiveChatChannel(group_channel);
             }
             this.setIsChatLoading(false);
-        });
+        }).catch(() => this.setChatError());
     }
 
     initialiseOrderMessages() {
@@ -186,15 +197,17 @@ export default class SendbirdStore extends BaseStore {
         const message_type = '';
         const custom_type = '';
 
-        this.active_chat_channel.getPreviousMessagesByTimestamp(
-            timestamp || this.root_store.general_store.props.server_time.get().utc().valueOf(),
-            is_inclusive_of_timestamp,
-            result_size,
-            reverse_results,
-            message_type,
-            custom_type,
-            callback
-        );
+        this.active_chat_channel
+            .getPreviousMessagesByTimestamp(
+                timestamp || toMoment(this.root_store.general_store.server_time.get()).utc().valueOf(),
+                is_inclusive_of_timestamp,
+                result_size,
+                reverse_results,
+                message_type,
+                custom_type,
+                callback
+            )
+            .catch(() => this.setChatError());
     }
 
     handleP2pAdvertiserInfo(response) {
@@ -212,7 +225,7 @@ export default class SendbirdStore extends BaseStore {
             requestWS({ service: 'sendbird', service_token: 1 }).then(service_token_response => {
                 if (service_token_response.error) return;
 
-                const { server_time } = this.root_store.general_store.props;
+                const { server_time } = this.root_store.general_store;
                 const { service_token } = service_token_response;
 
                 this.setChatInfo({
@@ -224,7 +237,7 @@ export default class SendbirdStore extends BaseStore {
                 // Refresh chat token ±1 hour before it expires (BE will refresh the token
                 // when we request within 2 hours of the token expiring)
                 const expiry_moment = epochToMoment(service_token.sendbird.expiry_time);
-                const delay_ms = expiry_moment.diff(server_time.get().clone().subtract(1, 'hour'));
+                const delay_ms = expiry_moment.diff(toMoment(server_time.get()).clone().subtract(1, 'hour'));
 
                 this.service_token_timeout = setTimeout(() => getSendbirdServiceToken(), delay_ms);
             });
@@ -350,6 +363,26 @@ export default class SendbirdStore extends BaseStore {
         };
     }
 
+    setIsUploadComplete(is_upload_complete) {
+        this.is_upload_complete = is_upload_complete;
+    }
+
+    setFileUploadProperties(file_upload_properties) {
+        this.file_upload_properties = file_upload_properties;
+    }
+
+    progressHandler(progress) {
+        const { order_id } = this.root_store.order_store;
+        this.setIsUploadComplete(progress.loaded === progress.total);
+        if (progress.loaded === progress.total) {
+            setTimeout(() => {
+                if (!this.should_show_chat_on_orders && !order_id) {
+                    this.terminateChatWsConnection();
+                }
+            }, 1000);
+        }
+    }
+
     sendFile(file) {
         if (!file) return;
 
@@ -360,14 +393,18 @@ export default class SendbirdStore extends BaseStore {
         params.fileSize = file.size;
         params.mimeType = file.type;
 
-        this.active_chat_channel.sendFileMessage(params, (channel_message, error) => {
-            if (error) {
-                // eslint-disable-next-line no-console
-                console.warn(error);
-            } else {
-                this.addChannelMessage(convertFromChannelMessage(channel_message));
+        this.file_upload_properties = this.active_chat_channel.sendFileMessage(
+            params,
+            this.progressHandler,
+            (channel_message, error) => {
+                if (error) {
+                    // eslint-disable-next-line no-console
+                    console.warn(error);
+                } else if (channel_message.channelUrl === this.chat_channel_url) {
+                    this.addChannelMessage(convertFromChannelMessage(channel_message));
+                }
             }
-        });
+        );
     }
 
     sendMessage(message) {
@@ -385,7 +422,7 @@ export default class SendbirdStore extends BaseStore {
 
         // Add a placeholder message with a pending indicator
         const placeholder_msg_options = {
-            created_at: this.root_store.general_store.props.server_time.get().utc(),
+            created_at: toMoment(this.root_store.general_store.server_time.get()).utc(),
             chat_channel_url: this.active_chat_channel.url,
             message,
             id: msg_identifier,
@@ -417,8 +454,13 @@ export default class SendbirdStore extends BaseStore {
     }
 
     terminateChatWsConnection() {
-        if (this.sendbird_api && typeof this.sendbird_api.disconnect === 'function') {
-            this.sendbird_api.disconnect();
+        if (
+            this.sendbird_api &&
+            typeof this.sendbird_api.disconnect === 'function' &&
+            ((this.file_upload_properties && this.is_upload_complete) || !this.file_upload_properties)
+        ) {
+            // eslint-disable-next-line no-console
+            this.sendbird_api.disconnect().catch(error => console.warn(error));
         }
     }
 }

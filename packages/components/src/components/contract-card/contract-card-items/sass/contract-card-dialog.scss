@@ -72,6 +72,10 @@
             grid-template-rows: auto auto 1fr;
             grid-gap: 1.6rem;
             margin: 1.6rem;
+
+            &-accumulator {
+                grid-template-rows: auto 1fr;
+            }
         }
         @include desktop {
             grid-gap: 0.8rem;

@@ -1,6 +1,6 @@
 import { action, observable, makeObservable } from 'mobx';
 import { isCryptocurrency } from '@deriv/shared';
-import { TWebSocket, TRootStore, TTransactionItem } from 'Types';
+import { TWebSocket, TRootStore, TTransactionItem } from '../types';
 
 export default class TransactionHistoryStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
@@ -90,10 +90,7 @@ export default class TransactionHistoryStore {
     }
 
     sortCryptoTransactions() {
-        // TODO: Check this, using replace on array.
-        this.crypto_transactions.replace(
-            this.crypto_transactions.slice().sort((a, b) => b.submit_date - a.submit_date)
-        );
+        this.crypto_transactions.sort((a, b) => Number(b.submit_date) - Number(a.submit_date));
     }
 
     async cancelCryptoTransaction(transaction_id: string) {

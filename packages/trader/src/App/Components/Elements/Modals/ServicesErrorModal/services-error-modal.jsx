@@ -6,6 +6,7 @@ import { getTitle } from './constants';
 import AuthorizationRequiredModal from './authorization-required-modal.jsx';
 import InsufficientBalanceModal from './insufficient-balance-modal.jsx';
 import CompanyWideLimitExceededModal from './company-wide-limit-exceeded-modal.jsx';
+import AccountVerificationRequiredModal from './account-verification-required-modal.tsx';
 
 const ServicesErrorModal = ({ is_virtual, is_visible, is_logged_in, onConfirm, services_error }) => {
     const { code, message } = services_error;
@@ -30,6 +31,10 @@ const ServicesErrorModal = ({ is_virtual, is_visible, is_logged_in, onConfirm, s
 
     if (code === 'CompanyWideLimitExceeded') {
         return <CompanyWideLimitExceededModal is_visible={is_visible} onConfirm={onConfirm} />;
+    }
+
+    if (code === 'PleaseAuthenticate') {
+        return <AccountVerificationRequiredModal is_visible={is_visible} onConfirm={onConfirm} />;
     }
 
     return (

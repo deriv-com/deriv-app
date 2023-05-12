@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { DesktopWrapper, MobileWrapper, Text, Icon } from '@deriv/components';
+import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
 import { getDecimalPlaces, isMobile, platforms, routes } from '@deriv/shared';
 import { AccountsInfoLoader } from 'App/Components/Layout/Header/Components/Preloader';
-import { BinaryLink } from 'App/Components/Routes';
-import { Localize } from '@deriv/translations';
 import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
@@ -45,11 +43,11 @@ const DefaultHeader = ({
     openRealAccountSignup,
     platform,
     removeNotificationMessage,
-    setIsPreAppStore,
     toggleAccountsDialog,
     toggleNotifications,
     is_landing_company_loaded,
     is_switching,
+    setTogglePlatformType,
 }) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -82,34 +80,6 @@ const DefaultHeader = ({
             return true;
         });
 
-    const Divider = () => {
-        return <div className='header__menu--separator' />;
-    };
-
-    const ExploreTradingHub = () => {
-        const enablePreAppstore = () => setIsPreAppStore(true);
-
-        return (
-            <div className='header__menu__redirect'>
-                <BinaryLink
-                    to={routes.traders_hub}
-                    className='header__menu__redirect--link'
-                    onClick={enablePreAppstore}
-                >
-                    <Text as='p' size='xs'>
-                        <Localize i18n_default_text="Explore Trader's hub" />
-                    </Text>
-                    <Icon
-                        className='trading-hub-header__dtrader--redirect--beta'
-                        icon='IcAppstoreTradingHubBeta'
-                        size={45}
-                    />
-                    <Icon icon='IcArrowRight' size={18} color='red' />
-                </BinaryLink>
-            </div>
-        );
-    };
-
     return (
         <header
             className={classNames('header', {
@@ -126,6 +96,7 @@ const DefaultHeader = ({
                             is_logged_in={is_logged_in}
                             is_logging_in={is_logging_in}
                             platform_config={filterPlatformsForClients(platform_config)}
+                            setTogglePlatformType={setTogglePlatformType}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -136,14 +107,6 @@ const DefaultHeader = ({
                     </MobileWrapper>
                     <MenuLinks />
                 </div>
-                {is_logging_in
-                    ? null
-                    : is_logged_in && (
-                          <DesktopWrapper>
-                              <ExploreTradingHub />
-                              <Divider />
-                          </DesktopWrapper>
-                      )}
                 <div
                     className={classNames('header__menu-right', {
                         'header__menu-right--hidden': isMobile() && is_logging_in,
@@ -228,12 +191,12 @@ DefaultHeader.propTypes = {
     toggleNotifications: PropTypes.func,
     country_standpoint: PropTypes.object,
     history: PropTypes.object,
-    setIsPreAppStore: PropTypes.func,
     is_landing_company_loaded: PropTypes.bool,
     is_switching: PropTypes.bool,
+    setTogglePlatformType: PropTypes.func,
 };
 
-export default connect(({ client, common, ui, notifications }) => ({
+export default connect(({ client, common, ui, notifications, traders_hub }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_type: client.account_type,
     addNotificationMessage: notifications.addNotificationMessage,
@@ -265,6 +228,6 @@ export default connect(({ client, common, ui, notifications }) => ({
     toggleNotifications: notifications.toggleNotificationsModal,
     is_trading_assessment_for_existing_user_enabled: ui.is_trading_assessment_for_existing_user_enabled,
     is_landing_company_loaded: client.is_landing_company_loaded,
-    setIsPreAppStore: client.setIsPreAppStore,
     is_switching: client.is_switching,
+    setTogglePlatformType: traders_hub.setTogglePlatformType,
 }))(withRouter(DefaultHeader));

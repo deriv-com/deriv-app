@@ -2,6 +2,7 @@ import extend from 'extend';
 import {
     formatMoney,
     getEndTime,
+    isAccumulatorContract,
     isDesktop,
     isDigitContract,
     isMobile,
@@ -21,8 +22,11 @@ const createMarkerConfig = (marker_type, x, y, content_config) =>
         content_config,
     });
 
-export const getSpotCount = (contract_info, spot_count) =>
-    isDigitContract(contract_info.contract_type) ? spot_count + 1 : spot_count;
+export const getSpotCount = (contract_info, spot_count) => {
+    if (isDigitContract(contract_info.contract_type)) return spot_count + 1;
+    if (isAccumulatorContract(contract_info.contract_type)) return null;
+    return spot_count;
+};
 
 // -------------------- Lines --------------------
 export const createMarkerEndTime = contract_info => {
@@ -104,8 +108,9 @@ export const createMarkerSpotExit = (contract_info, tick, idx) => {
               align_label: should_show_profit_label ? 'middle' : align_label,
               spot_count,
               spot_profit:
-                  should_show_profit_label &&
-                  `${formatMoney(contract_info.currency, contract_info.profit, true)} ${contract_info.currency}`,
+                  (should_show_profit_label &&
+                      `${formatMoney(contract_info.currency, contract_info.profit, true)} ${contract_info.currency}`) ||
+                  '',
           }
         : {};
 
@@ -113,13 +118,16 @@ export const createMarkerSpotExit = (contract_info, tick, idx) => {
 };
 
 export const createMarkerSpotMiddle = (contract_info, tick, idx) => {
+    const is_accumulator = isAccumulatorContract(contract_info.contract_type);
     const spot_count = getSpotCount(contract_info, idx);
     const spot = tick.tick_display_value;
+    const spot_epoch = is_accumulator ? '' : `${tick.epoch}`;
 
     const marker_config = createMarkerConfig(MARKER_TYPES_CONFIG.SPOT_MIDDLE.type, +tick.epoch, +spot, {
         spot_value: `${spot}`,
-        spot_epoch: `${tick.epoch}`,
+        spot_epoch,
         align_label: tick.align_label,
+        is_value_hidden: is_accumulator,
         spot_count,
     });
     marker_config.type = `${marker_config.type}_${idx}`;

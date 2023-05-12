@@ -4,7 +4,7 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
-import { extractInfoFromShortcode, isForwardStarting, urlFor, website_name, getContractPath } from '@deriv/shared';
+import { extractInfoFromShortcode, isForwardStarting, getUnsupportedContracts, getContractPath } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import CompositeCalendar from '../Components/Form/CompositeCalendar';
@@ -16,31 +16,21 @@ import PlaceholderComponent from '../Components/placeholder-component.jsx';
 import { ReportsMeta } from '../Components/reports-meta.jsx';
 import { getProfitTableColumnsTemplate } from 'Constants/data-table-constants';
 
-const profit_tablews_href = urlFor('user/profit_tablews', { legacy: true });
-
-const getRowAction = row_obj =>
-    getSupportedContracts()[extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase()] &&
-    !isForwardStarting(row_obj.shortcode, row_obj.purchase_time_unix)
+const getRowAction = row_obj => {
+    const contract_type = extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase();
+    return getSupportedContracts()[contract_type] && !isForwardStarting(row_obj.shortcode, row_obj.purchase_time_unix)
         ? getContractPath(row_obj.contract_id)
         : {
               component: (
                   <Localize
-                      i18n_default_text='This trade type is currently not supported on {{website_name}}. Please go to <0>Binary.com</0> for details.'
+                      i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
                       values={{
-                          website_name,
+                          trade_type_name: getUnsupportedContracts()[contract_type]?.name,
                       }}
-                      components={[
-                          <a
-                              key={0}
-                              className='link link--orange'
-                              rel='noopener noreferrer'
-                              target='_blank'
-                              href={profit_tablews_href}
-                          />,
-                      ]}
                   />
               ),
           };
+};
 
 const ProfitTable = ({
     component_icon,

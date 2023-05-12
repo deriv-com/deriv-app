@@ -8,7 +8,7 @@ import { filterObjProperties, isMobile, toMoment, validLength, validName, WS } f
 import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
-import { validate } from 'Helpers/utils';
+import { validate, makeSettingsRequest } from 'Helpers/utils';
 
 type TValues = { [p: string]: string };
 
@@ -45,29 +45,13 @@ const PoiConfirmWithExampleFormContainer = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account_settings]);
 
-    const makeSettingsRequest = (settings: TValues) => {
-        const request = filterObjProperties(
-            settings,
-            rest_state?.changeable_fields ? [...rest_state.changeable_fields] : []
-        );
-
-        if (request.first_name) {
-            request.first_name = request.first_name.trim();
-        }
-        if (request.last_name) {
-            request.last_name = request.last_name.trim();
-        }
-        if (request.date_of_birth) {
-            request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
-        }
-
-        return request;
-    };
-
     const onSubmit = async (values: TValues, { setStatus, setSubmitting }: FormikHelpers<TValues>) => {
         if (checked) return;
         setStatus({ error_msg: '' });
-        const request = makeSettingsRequest(values);
+        const request = makeSettingsRequest(
+            values,
+            rest_state?.changeable_fields ? [...rest_state.changeable_fields] : []
+        );
         const data = await WS.setSettings(request);
 
         if (data.error) {

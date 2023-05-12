@@ -1,4 +1,4 @@
-import { getUrlBase } from '@deriv/shared';
+import { getUrlBase, filterObjProperties, toMoment } from '@deriv/shared';
 
 import { localize } from '@deriv/translations';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
@@ -231,4 +231,20 @@ export const isFieldImmutable = (field: string, mutable_fields: string[] = []) =
 export const removeUndefinedProperties = (obj: Record<string, any>) => {
     Object.keys(obj).forEach(key => obj[key] === undefined && delete obj[key]);
     return obj;
+};
+
+export const makeSettingsRequest = (values: FormikValues, changeable_fields: string[]) => {
+    const request = filterObjProperties(values, changeable_fields);
+
+    if (request.first_name) {
+        request.first_name = request.first_name.trim();
+    }
+    if (request.last_name) {
+        request.last_name = request.last_name.trim();
+    }
+    if (request.date_of_birth) {
+        request.date_of_birth = toMoment(request.date_of_birth).format('YYYY-MM-DD');
+    }
+
+    return request;
 };

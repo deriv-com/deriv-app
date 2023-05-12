@@ -19,26 +19,26 @@ declare global {
         ? ReadonlyMap<DeepPartial<KeyType>, DeepPartial<ValueType>>
         : { [K in keyof T]?: DeepPartial<T[K]> };
 
-    type DeepRequired<Type> = Type extends Error
-        ? Required<Type>
-        : Type extends Map<infer Keys, infer Values>
+    type DeepRequired<T> = T extends Error
+        ? Required<T>
+        : T extends Map<infer Keys, infer Values>
         ? Map<DeepRequired<Keys>, DeepRequired<Values>>
-        : Type extends ReadonlyMap<infer Keys, infer Values>
+        : T extends ReadonlyMap<infer Keys, infer Values>
         ? ReadonlyMap<DeepRequired<Keys>, DeepRequired<Values>>
-        : Type extends WeakMap<infer Keys, infer Values>
+        : T extends WeakMap<infer Keys, infer Values>
         ? WeakMap<DeepRequired<Keys>, DeepRequired<Values>>
-        : Type extends Set<infer Values>
+        : T extends Set<infer Values>
         ? Set<DeepRequired<Values>>
-        : Type extends ReadonlySet<infer Values>
+        : T extends ReadonlySet<infer Values>
         ? ReadonlySet<DeepRequired<Values>>
-        : Type extends WeakSet<infer Values>
+        : T extends WeakSet<infer Values>
         ? WeakSet<DeepRequired<Values>>
-        : Type extends Promise<infer Value>
+        : T extends Promise<infer Value>
         ? Promise<DeepRequired<Value>>
         : // eslint-disable-next-line
-        Type extends {}
-        ? { [Key in keyof Type]-?: DeepRequired<Type[Key]> }
-        : Required<Type>;
+        T extends {}
+        ? { [Key in keyof T]-?: DeepRequired<T[Key]> }
+        : Required<T>;
 }
 
 export {};

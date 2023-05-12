@@ -15,7 +15,7 @@ type TSwitch = {
 };
 
 type TAccountTransferReceipt = RouteComponentProps & {
-    onClose?: () => void;
+    onClose: () => void;
 };
 
 const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferReceipt) => {
@@ -161,7 +161,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                         onClick={() => {
                             toggleSwitchAlert();
                             setShouldSwitchAccount(false);
-                            onClose?.();
+                            onClose();
                         }}
                         secondary
                         large

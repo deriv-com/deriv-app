@@ -122,7 +122,6 @@ export default class TradeStore extends BaseStore {
     should_show_active_symbols_loading = false;
 
     // Accumulator trade params
-    accu_barriers_timeout_id = null;
     accumulator_range_list = [];
     growth_rate = 0.03;
     maximum_payout = 0;
@@ -284,7 +283,6 @@ export default class TradeStore extends BaseStore {
             getFirstOpenMarket: action.bound,
             has_alternative_source: computed,
             initAccountCurrency: action.bound,
-            accu_barriers_timeout_id: observable,
             is_multiplier: computed,
             is_symbol_in_active_symbols: computed,
             is_synthetics_available: computed,
@@ -417,7 +415,6 @@ export default class TradeStore extends BaseStore {
     }
 
     resetAccumulatorData() {
-        if (this.accu_barriers_timeout_id) clearTimeout(this.accu_barriers_timeout_id);
         if (!isEmptyObject(this.root_store.contract_trade.accumulator_barriers_data)) {
             this.root_store.contract_trade.clearAccumulatorBarriersData();
         }
@@ -1176,16 +1173,9 @@ export default class TradeStore extends BaseStore {
                 updateAccumulatorBarriersData({
                     current_symbol_spot: spot,
                     current_symbol_spot_time: spot_time,
+                    accumulators_high_barrier: high_barrier,
+                    accumulators_low_barrier: low_barrier,
                 });
-                // if (this.accu_barriers_timeout_id) clearTimeout(this.accu_barriers_timeout_id);
-                this.accu_barriers_timeout_id = setTimeout(() => {
-                    updateAccumulatorBarriersData({
-                        previous_symbol_spot: spot,
-                        previous_symbol_spot_time: spot_time,
-                        accumulators_high_barrier: high_barrier,
-                        accumulators_low_barrier: low_barrier,
-                    });
-                }, 320);
             }
         }
 

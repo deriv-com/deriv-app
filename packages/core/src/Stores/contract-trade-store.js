@@ -1,5 +1,6 @@
-import { action, computed, observable, toJS, makeObservable, override } from 'mobx';
+import { action, computed, observable, toJS, makeObservable, override, reaction } from 'mobx';
 import {
+    isAccumulatorContract,
     isDesktop,
     isEnded,
     isMultiplierContract,
@@ -25,12 +26,14 @@ export default class ContractTradeStore extends BaseStore {
     prev_granularity = null;
 
     // Accumulator barriers data:
+    accu_barriers_timeout_id = null;
     accumulator_barriers_data = {};
 
     constructor(root_store) {
         super({ root_store });
 
         makeObservable(this, {
+            accu_barriers_timeout_id: observable,
             accumulator_barriers_data: observable.struct,
             clearAccumulatorBarriersData: action.bound,
             contracts: observable.shallow,
@@ -58,18 +61,83 @@ export default class ContractTradeStore extends BaseStore {
 
         this.root_store = root_store;
         this.onSwitchAccount(this.accountSwitchListener);
+
+        reaction(
+            () => this.last_contract.contract_info,
+            () => {
+                if (!isAccumulatorContract(this.last_contract.contract_info?.contract_type)) return;
+                const { current_spot, current_spot_time, current_spot_high_barrier, current_spot_low_barrier, status } =
+                    this.last_contract.contract_info || {};
+                if (current_spot && current_spot_high_barrier && status === 'open') {
+                    this.updateAccumulatorBarriersData({
+                        current_symbol_spot: current_spot,
+                        current_symbol_spot_time: current_spot_time,
+                        accumulators_high_barrier: current_spot_high_barrier,
+                        accumulators_low_barrier: current_spot_low_barrier,
+                        has_open_contract: true,
+                    });
+                } else if (status !== 'open') {
+                    this.clearAccumulatorBarriersData(true);
+                }
+            }
+        );
     }
 
     // -------------------
     // ----- Actions -----
     // -------------------
 
-    clearAccumulatorBarriersData() {
-        this.accumulator_barriers_data = {};
+    clearAccumulatorBarriersData(only_contract_data) {
+        if (this.accu_barriers_timeout_id) clearTimeout(this.accu_barriers_timeout_id);
+        if (only_contract_data) {
+            this.accumulator_barriers_data = {
+                ...this.accumulator_barriers_data,
+                contract_barriers_data: {},
+            };
+        } else this.accumulator_barriers_data = {};
     }
 
-    updateAccumulatorBarriersData({ ...args }) {
-        this.accumulator_barriers_data = { ...this.accumulator_barriers_data, ...args };
+    updateAccumulatorBarriersData({
+        accumulators_high_barrier,
+        accumulators_low_barrier,
+        current_symbol_spot,
+        current_symbol_spot_time,
+        has_open_contract,
+    }) {
+        const first_data_batch = {
+            current_symbol_spot,
+            current_symbol_spot_time,
+        };
+        this.accumulator_barriers_data = {
+            ...this.accumulator_barriers_data,
+            ...(has_open_contract
+                ? {
+                      contract_barriers_data: {
+                          ...this.accumulator_barriers_data.contract_barriers_data,
+                          ...first_data_batch,
+                      },
+                  }
+                : first_data_batch),
+        };
+        this.accu_barriers_timeout_id = setTimeout(() => {
+            const second_data_batch = {
+                previous_symbol_spot: current_symbol_spot,
+                previous_symbol_spot_time: current_symbol_spot_time,
+                accumulators_high_barrier,
+                accumulators_low_barrier,
+            };
+            this.accumulator_barriers_data = {
+                ...this.accumulator_barriers_data,
+                ...(has_open_contract
+                    ? {
+                          contract_barriers_data: {
+                              ...this.accumulator_barriers_data.contract_barriers_data,
+                              ...second_data_batch,
+                          },
+                      }
+                    : second_data_batch),
+            };
+        }, 320);
     }
 
     updateChartType(type) {
@@ -152,19 +220,35 @@ export default class ContractTradeStore extends BaseStore {
         if (markers.length) {
             markers[markers.length - 1].is_last_contract = true;
         }
-        const { accumulators_high_barrier, accumulators_low_barrier, previous_symbol_spot_time } =
-            this.accumulator_barriers_data || {};
-        if (
-            trade_type === 'accumulator' &&
-            (this.last_contract.contract_info?.status !== 'open' || !this.last_contract.contract_info?.high_barrier) &&
-            previous_symbol_spot_time
-        ) {
+        const {
+            accumulators_high_barrier,
+            accumulators_low_barrier,
+            contract_barriers_data,
+            previous_symbol_spot_time,
+        } = this.accumulator_barriers_data || {};
+        const { status } = this.last_contract.contract_info || {};
+        let previous_spot_time = previous_symbol_spot_time;
+        let high_barrier = accumulators_high_barrier;
+        let low_barrier = accumulators_low_barrier;
+        if (status === 'open') {
+            const {
+                accumulators_high_barrier: high,
+                accumulators_low_barrier: low,
+                previous_symbol_spot_time: prev_spot_time,
+            } = contract_barriers_data || {};
+            previous_spot_time = prev_spot_time;
+            high_barrier = high;
+            low_barrier = low;
+        }
+        if (trade_type === 'accumulator' && previous_spot_time && high_barrier) {
             markers.push({
                 type: 'TickContract',
-                contract_info: { is_accumulators_trade_without_contract: true },
-                key: 'accumulators_barriers_without_contract',
-                price_array: [accumulators_high_barrier, accumulators_low_barrier],
-                epoch_array: [previous_symbol_spot_time],
+                contract_info: {
+                    is_accumulators_trade_without_contract: status !== 'open',
+                },
+                key: 'dtrader_accumulator_barriers',
+                price_array: [high_barrier, low_barrier],
+                epoch_array: [previous_spot_time],
             });
         }
         return markers;

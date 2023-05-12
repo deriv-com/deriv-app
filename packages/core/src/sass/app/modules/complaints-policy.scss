@@ -73,6 +73,15 @@
                 padding-left: 0;
             }
         }
+        &-bullet {
+            padding-left: 1.8rem;
+            line-height: 2rem;
+            @include mobile {
+                padding-left: 0;
+                font-size: 1rem;
+                line-height: 1.4rem;
+            }
+        }
     }
     &__list {
         padding: 0.8rem 0 0 1.8rem;

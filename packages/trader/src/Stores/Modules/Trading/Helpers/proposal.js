@@ -29,7 +29,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
         ? { text: 'Payout', value: 'number_of_contracts' }
         : basis_list.find(o => o.value !== store.basis) || {};
 
-    const is_stake = contract_basis.text === 'Stake';
+    const is_stake = contract_basis.value === 'stake';
     const price = is_stake ? stake : proposal[contract_basis.value];
     let has_increased = price > obj_prev_contract_basis.value;
 

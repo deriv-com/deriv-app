@@ -1,9 +1,17 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 
-const Digit = ({ is_latest, is_lost, is_selected, is_won, percentage, value }) => {
-    const display_percentage = percentage && !isNaN(percentage) ? parseFloat(percentage).toFixed(1) : null;
+type TDigit = {
+    is_latest?: boolean;
+    is_lost?: boolean;
+    is_selected?: boolean;
+    is_won?: boolean;
+    percentage: number | null;
+    value: number;
+};
+
+const Digit = ({ is_latest, is_lost, is_selected, is_won, percentage, value }: TDigit) => {
+    const display_percentage = percentage && !isNaN(percentage) ? parseFloat(percentage.toFixed(1)) : null;
     return (
         <React.Fragment>
             <span
@@ -25,16 +33,6 @@ const Digit = ({ is_latest, is_lost, is_selected, is_won, percentage, value }) =
             </span>
         </React.Fragment>
     );
-};
-
-Digit.propTypes = {
-    is_latest: PropTypes.bool,
-    is_lost: PropTypes.bool,
-    is_selected: PropTypes.bool,
-    is_trade_page: PropTypes.bool,
-    is_won: PropTypes.bool,
-    percentage: PropTypes.number,
-    value: PropTypes.number,
 };
 
 export default Digit;

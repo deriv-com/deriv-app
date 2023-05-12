@@ -37,8 +37,8 @@ const RadioGroup = ({
         setSelectedOption(selected);
     }, [selected]);
 
-    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setSelectedOption(e.target.value);
+    const onChange = (e: React.MouseEvent<HTMLInputElement>) => {
+        setSelectedOption(e?.target?.value);
         onToggle(e);
     };
 
@@ -59,7 +59,7 @@ const RadioGroup = ({
                                 type='radio'
                                 value={item.props.value}
                                 checked={selected_option === item.props.value}
-                                onChange={onChange}
+                                onClick={onChange}
                                 disabled={item.props.disabled}
                                 required={required}
                             />

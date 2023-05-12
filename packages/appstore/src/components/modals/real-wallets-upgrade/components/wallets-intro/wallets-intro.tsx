@@ -1,20 +1,31 @@
 import React from 'react';
 import { Text, Icon } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { TWalletsIntro } from 'Types';
+import { observer, useStore } from '@deriv/stores';
 import getWalletsIntroContent from 'Constants/wallets-intro-content-config';
 import './wallets-intro.scss';
+
+type TWalletsIntro = {
+    title: string;
+    description: string;
+    bullets: string[];
+    eu_user?: boolean;
+    image?: React.ReactNode;
+};
 
 type TWalletsIntroComponent = {
     is_eu: boolean;
     current_step: number;
 };
 
-const WalletsIntroComponent = ({ image, title, description, bullets }: TWalletsIntro) => {
-    const text_title_size = isMobile() ? 'xsm' : 'l';
-    const text_body_size = isMobile() ? 's' : 'm';
-    const text_info_size = isMobile() ? 'xs' : 's';
-    const form_line_height = isMobile() ? 'm' : 'l';
+const WalletsIntroComponent = observer(({ image, title, description, bullets }: TWalletsIntro) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
+
+    const text_title_size = is_mobile ? 'xsm' : 'l';
+    const text_body_size = is_mobile ? 's' : 'm';
+    const text_info_size = is_mobile ? 'xs' : 's';
+    const form_line_height = is_mobile ? 'm' : 'l';
+
     return (
         <React.Fragment>
             {image}
@@ -46,7 +57,7 @@ const WalletsIntroComponent = ({ image, title, description, bullets }: TWalletsI
                             <Icon
                                 icon='IcAppstoreTick'
                                 className='wallet-steps__bullet-icon'
-                                size={isMobile() ? 12 : 16}
+                                size={is_mobile ? 12 : 16}
                             />
                             <Text
                                 as='p'
@@ -64,7 +75,7 @@ const WalletsIntroComponent = ({ image, title, description, bullets }: TWalletsI
             ))}
         </React.Fragment>
     );
-};
+});
 
 const WalletsIntro = ({ is_eu, current_step }: TWalletsIntroComponent) => (
     <div className='wallet-steps__content'>

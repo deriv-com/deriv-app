@@ -1,21 +1,27 @@
 import React from 'react';
 import { Checkbox, Text, Icon } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
-import { TReadyToUpgradeWallets } from 'Types';
+import { observer, useStore } from '@deriv/stores';
 import WalletsImage from 'Assets/svgs/wallets';
 import getUpgradeInformationList from 'Constants/upgrade-info-lists-config';
 
-const ReadyToUpgradeWallets = ({ is_eu, toggleCheckbox }: TReadyToUpgradeWallets) => {
-    const text_body_size = isMobile() ? 'xs' : 's';
-    const text_info_size = isMobile() ? 'xxs' : 'xs';
-    const form_line_height = isMobile() ? 'm' : 'l';
+type TReadyToUpgradeWallets = {
+    is_eu: boolean;
+    toggleCheckbox: () => void;
+};
+
+const ReadyToUpgradeWallets = observer(({ is_eu, toggleCheckbox }: TReadyToUpgradeWallets) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
+    const text_body_size = is_mobile ? 'xs' : 's';
+    const text_info_size = is_mobile ? 'xxs' : 'xs';
+    const form_line_height = is_mobile ? 'm' : 'l';
 
     return (
         <div className='wallet-steps__content'>
             <WalletsImage image='ready_to_update_wallets_image' className='wallet-steps__image' />
             <div className='wallet-steps__text'>
-                <Text size={isMobile() ? 'xsm' : 'm'} align='center' weight='bold' line_height={form_line_height}>
+                <Text size={is_mobile ? 'xsm' : 'm'} align='center' weight='bold' line_height={form_line_height}>
                     <Localize i18n_default_text='Ready to upgrade?' />
                 </Text>
                 <Text size={text_body_size} align='center' line_height={form_line_height}>
@@ -53,6 +59,6 @@ const ReadyToUpgradeWallets = ({ is_eu, toggleCheckbox }: TReadyToUpgradeWallets
             />
         </div>
     );
-};
+});
 
 export default ReadyToUpgradeWallets;

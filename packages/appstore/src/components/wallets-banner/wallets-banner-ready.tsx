@@ -4,14 +4,14 @@ import { Button, Icon, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { TWalletsImagesListKeys } from 'Assets/svgs/wallets/image-types';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 
 // just for now for testing purpose, in the future 'is_eu' value will be taken from the store
 type TWalletsBannerReady = {
     is_eu?: boolean;
 };
 
-const WalletsBannerReady = ({ is_eu }: TWalletsBannerReady) => {
+const WalletsBannerReady = observer(({ is_eu }: TWalletsBannerReady) => {
     const {
         client: { logout },
     } = useStore();
@@ -53,6 +53,6 @@ const WalletsBannerReady = ({ is_eu }: TWalletsBannerReady) => {
             <WalletsImage image={image} className='wallets-banner__image wallets-banner__ready-banner-image' />
         </div>
     );
-};
+});
 
 export default WalletsBannerReady;

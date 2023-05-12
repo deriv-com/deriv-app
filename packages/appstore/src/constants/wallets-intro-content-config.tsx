@@ -2,14 +2,7 @@ import React from 'react';
 import WalletsImage from 'Assets/svgs/wallets';
 import { localize, Localize } from '@deriv/translations';
 
-type TWalletsIntroContent = {
-    image: JSX.Element;
-    title: string;
-    description: string;
-    bullets: string[];
-};
-
-const getWalletIsntroContent = (is_eu: boolean): TWalletsIntroContent[] => [
+const getWalletsIntroContent = (is_eu: boolean) => [
     {
         image: <WalletsImage image={is_eu ? 'introducing_wallets_eu' : 'introducing_wallets'} />,
         title: localize('Introducing Wallets'),
@@ -50,4 +43,4 @@ const getWalletIsntroContent = (is_eu: boolean): TWalletsIntroContent[] => [
     },
 ];
 
-export default getWalletIsntroContent;
+export default getWalletsIntroContent;

@@ -13,6 +13,7 @@ import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 import WalletsBanner from 'Components/wallets-banner';
 import './traders-hub.scss';
+import AmountInputForTesting from '../../components/modals/amount-input-for-testing/amount-input-for-testing';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();
@@ -84,6 +85,7 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
+                    <AmountInputForTesting />
                     <WalletsBanner />
                     <MainTitleBar />
                     <DesktopWrapper>

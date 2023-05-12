@@ -10,7 +10,6 @@ import type {
 import type { RouteComponentProps } from 'react-router';
 import { ExchangeRatesStore } from './src/stores';
 
-type TAccount = NonNullable<Authorize['account_list']>[0];
 type TAccountLimitsCollection = {
     level?: string;
     name: string;
@@ -37,6 +36,9 @@ type TAccount_limits = {
     remainder: string | number;
     withdrawal_for_x_days_monetary?: number;
     withdrawal_since_inception_monetary: string | number;
+};
+type TAccount = NonNullable<Authorize['account_list']>[0] & {
+    balance?: number;
 };
 
 type TAccountsList = {
@@ -341,6 +343,8 @@ type TTradersHubStore = {
     selected_account_type: string;
     no_CR_account: boolean;
     no_MF_account: boolean;
+    setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
+    toggleAccountTransferModal: () => void;
     is_demo: boolean;
 };
 

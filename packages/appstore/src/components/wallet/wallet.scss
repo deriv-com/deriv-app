@@ -1,0 +1,34 @@
+.wallet {
+    margin-block-start: 2.4rem;
+    // padding: 2.4rem;
+    background-color: var(--general-main-1);
+    border-radius: $BORDER_RADIUS * 4;
+
+    &__demo {
+        background-color: var(--wallet-demo-bg-color);
+    }
+
+    &__content {
+        padding: 2.4rem;
+    }
+
+    &__transition {
+        &-enter {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        &-enter-active {
+            opacity: 1;
+            transform: translateX(0);
+            transition: opacity 250ms, transform 250ms;
+        }
+        &-exit {
+            opacity: 1;
+        }
+        &-exit-active {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 250ms, transform 250ms;
+        }
+    }
+}

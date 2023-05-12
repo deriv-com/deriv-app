@@ -1,6 +1,7 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import classNames from 'classnames';
+import { CSSTransition } from 'react-transition-group';
 
 type TWalletButton = {
     name: string;
@@ -30,16 +31,16 @@ const WalletHeaderButtons = ({ is_disabled, is_open, btns }: TWalletHeaderButton
                         icon={btn.icon}
                         custom_color={is_disabled ? 'var(--general-disabled)' : 'var(--text-general)'}
                     />
-                    <Text
-                        weight='bold'
-                        color={is_disabled ? 'disabled' : 'general'}
-                        size='xs'
-                        className={classNames('wallet-header__description-buttons-item-text', {
-                            'wallet-header__description-buttons-item-active': is_open,
-                        })}
-                    >
-                        {btn.text}
-                    </Text>
+                    <CSSTransition appear in={is_open} timeout={250} classNames='wallet__transition' unmountOnExit>
+                        <Text
+                            weight='bold'
+                            color={is_disabled ? 'disabled' : 'general'}
+                            size='xs'
+                            className='wallet-header__description-buttons-item-text'
+                        >
+                            {btn.text}
+                        </Text>
+                    </CSSTransition>
                 </div>
             ))}
         </div>

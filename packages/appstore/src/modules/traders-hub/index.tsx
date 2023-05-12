@@ -11,9 +11,10 @@ import { isDesktop, routes, ContentFlag, isMobile } from '@deriv/shared';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
-import WalletsBanner from 'Components/wallets-banner';
 import './traders-hub.scss';
 import WalletHeader from 'Components/wallet-header';
+import Wallet from 'Components/wallet';
+import { TWalletTestAccount } from 'Components/wallet/wallet';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();
@@ -74,6 +75,90 @@ const TradersHub = () => {
         );
     };
 
+    const wallet_test_accounts: TWalletTestAccount[] = [
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'USD',
+            shortcode: 'svg',
+            account_type: 'demo',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'EUR',
+            shortcode: 'malta',
+            account_type: 'real',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'USD',
+            shortcode: 'svg',
+            account_type: 'real',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'ETH',
+            shortcode: 'svg',
+            account_type: 'real',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'AUD',
+            shortcode: 'svg',
+            account_type: 'real',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'BTC',
+            shortcode: 'svg',
+            account_type: 'real',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'LTC',
+            shortcode: 'svg',
+            account_type: 'real',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'USDC',
+            shortcode: 'svg',
+            account_type: 'real',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'USDT',
+            shortcode: 'svg',
+            account_type: 'real',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'eUSDT',
+            shortcode: 'svg',
+            account_type: 'real',
+        },
+        {
+            account_status: '',
+            balance: '0.00',
+            currency: 'tUSDT',
+            shortcode: 'svg',
+            account_type: 'real',
+        },
+    ];
+
+    // just for testing
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    const fn = () => {};
+
     return (
         <>
             <Div100vhContainer
@@ -85,20 +170,13 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
-                    <WalletHeader account_type='demo' />
-                    <WalletHeader currency='AUD' shortcode='svg' />
-                    <WalletHeader currency='EUR' shortcode='svg' is_open_wallet={true} />
-                    <WalletHeader currency='USD' shortcode='malta' />
-                    <WalletHeader currency='BTC' shortcode='svg' />
-                    <WalletHeader currency='ETH' shortcode='svg' />
-                    <WalletHeader currency='USDT' shortcode='svg' />
-                    <WalletHeader currency='eUSDT' shortcode='svg' />
-                    <WalletHeader currency='tUSDT' shortcode='svg' />
-                    <WalletHeader currency='LTC' shortcode='svg' />
-                    <WalletHeader currency='USDC' shortcode='svg' />
-                    <WalletHeader account_status='pending' currency='USD' shortcode='malta' />
-                    <WalletHeader account_status='need_verification' currency='EUR' shortcode='malta' />
-                    <WalletHeader account_status='failed' currency='USD' shortcode='malta' />
+                    <WalletHeader account_type='demo' is_open_wallet={false} setIsOpen={fn} />
+                    {wallet_test_accounts.map(account => (
+                        <Wallet
+                            key={`${account.account_type} ${account.shortcode} ${account.currency} `}
+                            account={account}
+                        />
+                    ))}
                     <MainTitleBar />
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>

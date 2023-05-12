@@ -1,50 +1,21 @@
 import { Dialog, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { observer } from '@deriv/stores';
 import classNames from 'classnames';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { clearInjectionDiv } from 'Constants/load-modal';
 import React from 'react';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { useDBotStore } from 'Stores/useDBotStore';
 import BotPreview from './bot-preview';
 import './index.scss';
 
-type TWorkspace = {
-    id: string;
-    xml: string;
-    name: string;
-    timestamp: number;
-    save_type: string;
-};
+const LocalComponent = observer(() => {
+    const { load_modal, save_modal, dashboard } = useDBotStore();
+    const { handleFileChange, loadFileFromRecent, dashboard_strategies } = load_modal;
+    const { onConfirmSave } = save_modal;
+    const { setActiveTab, setPreviewOnDialog, has_mobile_preview_loaded } = dashboard;
 
-type Nullable<T> = T | null;
-type TLocalComponent = {
-    handleFileChange: (e: React.ChangeEvent<HTMLInputElement>, data: boolean) => boolean;
-    loadFileFromRecent: () => void;
-    onConfirmSave: () => void;
-    onDrop: () => void;
-    handleTabChange: (param: number) => void;
-    previewRecentStrategy: () => void;
-    setActiveTab: (param: number) => void;
-    dashboard_strategies: Array<TWorkspace>;
-    setFileLoaded: (param: boolean) => void;
-    setLoadedLocalFile: (data: Nullable<string>) => void;
-    setTourDialogVisibility: (param: boolean) => boolean;
-    setPreviewOnDialog: (param: boolean) => boolean;
-    has_mobile_preview_loaded: boolean;
-};
-
-const LocalComponent = ({
-    handleFileChange,
-    loadFileFromRecent,
-    onConfirmSave,
-    setActiveTab,
-    dashboard_strategies,
-    setPreviewOnDialog,
-    has_mobile_preview_loaded,
-    handleTabChange,
-}: TLocalComponent) => {
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
     const el_ref = React.useRef<HTMLInputElement | null>(null);
@@ -149,19 +120,6 @@ const LocalComponent = ({
             )}
         </div>
     );
-};
+});
 
-const Local = connect(({ load_modal, save_modal, dashboard }: RootStore) => ({
-    handleFileChange: load_modal.handleFileChange,
-    is_open_button_loading: load_modal.is_open_button_loading,
-    setLoadedLocalFile: load_modal.setLoadedLocalFile,
-    dashboard_strategies: load_modal.dashboard_strategies,
-    onConfirmSave: save_modal.onConfirmSave,
-    setActiveTab: dashboard.setActiveTab,
-    loadFileFromRecent: load_modal.loadFileFromRecent,
-    setFileLoaded: dashboard.setFileLoaded,
-    setPreviewOnDialog: dashboard.setPreviewOnDialog,
-    has_mobile_preview_loaded: dashboard.has_mobile_preview_loaded,
-}))(LocalComponent);
-
-export default Local;
+export default LocalComponent;

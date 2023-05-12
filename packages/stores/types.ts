@@ -2,7 +2,9 @@ import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, L
 import type { RouteComponentProps } from 'react-router';
 import { ExchangeRatesStore } from './src/stores';
 
-type TAccount = NonNullable<Authorize['account_list']>[0];
+type TAccount = NonNullable<Authorize['account_list']>[0] & {
+    balance?: number;
+};
 
 type TAccountsList = {
     account?: {
@@ -293,6 +295,8 @@ type TTradersHubStore = {
     selected_account_type: string;
     no_CR_account: boolean;
     no_MF_account: boolean;
+    setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
+    toggleAccountTransferModal: () => void;
     is_demo: boolean;
 };
 

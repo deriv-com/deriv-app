@@ -23,6 +23,7 @@ export default class GeneralStore extends BaseStore {
     balance;
     cancels_remaining = null;
     contact_info = '';
+    error_code = '';
     external_stores = {};
     feature_level = null;
     formik_ref = null;
@@ -86,6 +87,7 @@ export default class GeneralStore extends BaseStore {
             external_stores: observable,
             feature_level: observable,
             formik_ref: observable,
+            error_code: observable,
             inactive_notification_count: observable,
             is_advertiser: observable,
             is_advertiser_blocked: observable,
@@ -134,6 +136,9 @@ export default class GeneralStore extends BaseStore {
             setAdvertiserId: action.bound,
             setAdvertiserBuyLimit: action.bound,
             setAdvertiserSellLimit: action.bound,
+            setAppProps: action.bound,
+            setAdvertiserRelationsResponse: action.bound, //TODO: Remove this when backend has fixed is_blocked flag issue
+            setErrorCode: action.bound,
             setExternalStores: action.bound,
             setFeatureLevel: action.bound,
             setFormikRef: action.bound,
@@ -196,7 +201,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     blockUnblockUser(should_block, advertiser_id, should_set_is_counterparty_blocked = true) {
-        const { advertiser_page_store, general_store } = this.root_store;
+        const { advertiser_page_store } = this.root_store;
         this.setIsBlockUnblockUserLoading(true);
         requestWS({
             p2p_advertiser_relations: 1,
@@ -204,7 +209,7 @@ export default class GeneralStore extends BaseStore {
         }).then(response => {
             if (response) {
                 if (!response.error) {
-                    general_store.hideModal();
+                    this.hideModal();
                     if (should_set_is_counterparty_blocked) {
                         const { p2p_advertiser_relations } = response;
 
@@ -216,18 +221,9 @@ export default class GeneralStore extends BaseStore {
                         );
                     }
                 } else {
-                    this.setBlockUnblockUserError(response.error.message);
-                    if (!general_store.is_barred && !general_store.isCurrentModal('ErrorModal')) {
-                        general_store.showModal({
-                            key: 'ErrorModal',
-                            props: {
-                                error_message: response.error.message,
-                                error_modal_title: 'Unable to block advertiser',
-                                has_close_icon: false,
-                                width: isMobile() ? '90rem' : '40rem',
-                            },
-                        });
-                    }
+                    const { code, message } = response.error;
+                    this.setErrorCode(code);
+                    this.setBlockUnblockUserError(message);
                 }
             }
             this.setIsBlockUnblockUserLoading(false);
@@ -632,6 +628,10 @@ export default class GeneralStore extends BaseStore {
         this.default_advert_description = default_advert_description;
     }
 
+    setErrorCode(error_code) {
+        this.error_code = error_code;
+    }
+    
     setExternalStores(external_stores) {
         this.external_stores = external_stores;
     }
@@ -865,10 +865,13 @@ export default class GeneralStore extends BaseStore {
             requestWS({ get_account_status: 1 }).then(account_response => {
                 if (!account_response.error) {
                     const { get_account_status } = account_response;
-                    const { authentication } = get_account_status;
+                    const { authentication, status } = get_account_status;
                     const { identity } = authentication;
 
-                    this.setPoiStatus(identity.status);
+                    if (status.includes('cashier_locked')) {
+                        this.setIsBlocked(true);
+                        this.hideModal();
+                    } else this.setPoiStatus(identity.status);
                 }
             });
         }

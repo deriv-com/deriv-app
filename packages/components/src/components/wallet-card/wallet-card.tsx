@@ -67,6 +67,7 @@ const WalletCard = ({
                             'wallet-card__content--hover': !disabled,
                         })}
                     >
+                        <div className='wallet-card__shine' />
                         <div className='wallet-card__top-wrapper'>
                             {icon}
                             <Badge custom_color='var(--text-prominent' label={jurisdiction} type='bordered' />

@@ -3,7 +3,7 @@ import { useHistory } from 'react-router';
 import { observer } from 'mobx-react-lite';
 import { Button, Text } from '@deriv/components';
 import { formatMoney, getCurrencyName, routes } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import BalanceText from 'Components/elements/text/balance-text';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import { TRootStore } from 'Types';
@@ -14,9 +14,10 @@ const default_balance = { balance: 0, currency: 'USD' };
 const RealAccountCard = () => {
     const history = useHistory();
     const store = useStores();
-    const { client, modules, traders_hub }: TRootStore = store;
+    const { client, common, modules, traders_hub }: TRootStore = store;
 
     const { accounts, loginid } = client;
+    const { current_language } = common;
     const { current_list } = modules.cfd;
     const { openModal, is_eu_user } = traders_hub;
     const { balance, currency } = accounts[loginid] || default_balance;
@@ -49,7 +50,7 @@ const RealAccountCard = () => {
                     secondary
                     className='currency-switcher__button'
                 >
-                    {localize('Deposit')}
+                    <Localize key={`currency-switcher__button-text-${current_language}`} i18n_default_text='Deposit' />
                 </Button>
             }
             has_interaction

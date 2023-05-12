@@ -3,7 +3,6 @@ import React, { MouseEventHandler } from 'react';
 import ReactDOM from 'react-dom';
 import { CSSTransition } from 'react-transition-group';
 import Icon from '../icon/icon';
-import { useOnClickOutside } from '../../hooks';
 
 type TPageOverlay = {
     header?: React.ReactNode;

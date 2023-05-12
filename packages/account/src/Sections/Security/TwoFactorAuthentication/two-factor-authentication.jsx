@@ -22,10 +22,11 @@ import TwoFactorAuthenticationArticle from './two-factor-authentication-article.
 const TwoFactorAuthentication = ({
     email_address,
     is_switching,
-    logoutClient,
     setTwoFAStatus,
     getTwoFAStatus,
     has_enabled_two_fa,
+    Notifications,
+    setTwoFAChangedStatus,
 }) => {
     const [is_loading, setLoading] = React.useState(true);
     const [is_qr_loading, setQrLoading] = React.useState(false);
@@ -36,7 +37,7 @@ const TwoFactorAuthentication = ({
 
     React.useEffect(() => {
         getDigitStatus();
-    }, [getDigitStatus]);
+    }, [getDigitStatus, has_enabled_two_fa]);
 
     const generateQrCode = React.useCallback(async () => {
         setQrLoading(true);
@@ -91,7 +92,7 @@ const TwoFactorAuthentication = ({
                 <DigitForm
                     is_enabled={has_enabled_two_fa}
                     setTwoFAStatus={setTwoFAStatus}
-                    logoutClient={logoutClient}
+                    setTwoFAChangedStatus={setTwoFAChangedStatus}
                 />
             </div>
         </ThemedScrollbars>
@@ -140,26 +141,37 @@ const TwoFactorAuthentication = ({
                                 {is_qr_loading ? (
                                     <Loading is_fullscreen={false} />
                                 ) : (
-                                    <>
-                                        <div className='two-factor__qr--wrapper'>
-                                            <QRCode value={qr_secret_key} />
-                                        </div>
+                                    <React.Fragment>
+                                        {qr_secret_key && (
+                                            <div className='two-factor__qr--wrapper'>
+                                                <QRCode value={qr_secret_key} />
+                                            </div>
+                                        )}
 
-                                        <Text as='h4' size='xs' align='center' className='two-factor__qr--message'>
-                                            {localize(
-                                                'If you are unable to scan the QR code, you can manually enter this code instead:'
-                                            )}
-                                        </Text>
-                                        <div className='two-factor__qr--code'>
-                                            <Text size='xs'>{secret_key}</Text>
-                                            <Clipboard
-                                                text_copy={secret_key}
-                                                info_message={localize('Click here to copy key')}
-                                                success_message={localize('Key copied!')}
-                                                className='two-factor__qr--clipboard'
-                                            />
-                                        </div>
-                                    </>
+                                        {secret_key && (
+                                            <React.Fragment>
+                                                <Text
+                                                    as='h4'
+                                                    size='xs'
+                                                    align='center'
+                                                    className='two-factor__qr--message'
+                                                >
+                                                    {localize(
+                                                        'If you are unable to scan the QR code, you can manually enter this code instead:'
+                                                    )}
+                                                </Text>
+                                                <div className='two-factor__qr--code'>
+                                                    <Text size='xs'>{secret_key}</Text>
+                                                    <Clipboard
+                                                        text_copy={secret_key}
+                                                        info_message={localize('Click here to copy key')}
+                                                        success_message={localize('Key copied!')}
+                                                        className='two-factor__qr--clipboard'
+                                                    />
+                                                </div>
+                                            </React.Fragment>
+                                        )}
+                                    </React.Fragment>
                                 )}
                             </div>
                         </Timeline.Item>
@@ -169,7 +181,7 @@ const TwoFactorAuthentication = ({
                             <DigitForm
                                 is_enabled={has_enabled_two_fa}
                                 setTwoFAStatus={setTwoFAStatus}
-                                logoutClient={logoutClient}
+                                setTwoFAChangedStatus={setTwoFAChangedStatus}
                             />
                         </Timeline.Item>
                     </Timeline>
@@ -188,6 +200,7 @@ const TwoFactorAuthentication = ({
                     'two-factor__wrapper-dashboard': is_appstore,
                 })}
             >
+                {Notifications && <Notifications />}
                 {has_enabled_two_fa ? TwoFactorEnabled : TwoFactorDisabled}
             </div>
         </section>
@@ -197,17 +210,19 @@ const TwoFactorAuthentication = ({
 TwoFactorAuthentication.propTypes = {
     email_address: PropTypes.string,
     is_switching: PropTypes.bool,
-    logoutClient: PropTypes.func,
     setTwoFAStatus: PropTypes.func,
     getTwoFAStatus: PropTypes.func,
     has_enabled_two_fa: PropTypes.bool,
+    Notifications: PropTypes.node,
+    setTwoFAChangedStatus: PropTypes.func,
 };
 
-export default connect(({ client }) => ({
+export default connect(({ client, ui }) => ({
     email_address: client.email_address,
     is_switching: client.is_switching,
-    logoutClient: client.logout,
     setTwoFAStatus: client.setTwoFAStatus,
     getTwoFAStatus: client.getTwoFAStatus,
     has_enabled_two_fa: client.has_enabled_two_fa,
+    Notifications: ui.notification_messages_ui,
+    setTwoFAChangedStatus: client.setTwoFAChangedStatus,
 }))(TwoFactorAuthentication);

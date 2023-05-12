@@ -32,6 +32,7 @@ const BalanceText = observer(({ balance, currency, size = 'm', underline_style =
     return (
         <div
             className={classNames('balance-text__container', { 'balance-text--dotted': underline_style === 'dotted' })}
+            data-testid='dt_balance-text__container'
         >
             <Text weight='bold' size={size} className={getTextClassName()}>
                 {formatMoney(currency, balance, true)}

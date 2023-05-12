@@ -85,13 +85,13 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
-                    <AmountInputForTesting />
                     <WalletsBanner />
                     <MainTitleBar />
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>
                             <OptionsAndMultipliersListing />
                             <CFDsListing />
+                            <AmountInputForTesting />
                         </div>
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -110,6 +110,7 @@ const TradersHub = () => {
                         )}
                         {selected_platform_type === 'options' && <OptionsAndMultipliersListing />}
                         {selected_platform_type === 'cfd' && <CFDsListing />}
+                        <AmountInputForTesting />
                     </MobileWrapper>
                     <ModalManager />
                     {scrolled && <TourGuide />}

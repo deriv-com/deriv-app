@@ -210,7 +210,6 @@ type TCommonStoreError = {
 };
 
 type TCommonStore = {
-    current_language: string;
     error: TCommonStoreError;
     has_error: boolean;
     is_from_derivgo: boolean;

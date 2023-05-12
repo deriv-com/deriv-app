@@ -18,18 +18,15 @@ const RealWalletsUpgrade = observer(() => {
     React.useEffect(() => {
         if (!is_real_wallets_upgrade_on) {
             setCurrentStep(0);
+            setIsDisabled(false);
         }
     }, [is_real_wallets_upgrade_on]);
 
-    React.useEffect(() => {
-        setIsDisabled(false);
-    }, [is_real_wallets_upgrade_on]);
-
     const handleNext = () => {
-        setCurrentStep(current_step + 1);
+        setCurrentStep(prev_step => prev_step + 1);
     };
     const handleBack = () => {
-        setCurrentStep(current_step - 1);
+        setCurrentStep(prev_step => prev_step - 1);
     };
 
     const handleClose = () => {
@@ -40,7 +37,6 @@ const RealWalletsUpgrade = observer(() => {
         setIsDisabled(!is_disabled);
     };
 
-    // Footer buttons right here fellas (͠≖ ͜ʖ͠≖)👌
     const DefaultFooter = (
         <Modal.Footer className='wallet-steps__footer' has_separator>
             <Button secondary large className='wallet-steps__footer-button' onClick={handleBack}>
@@ -74,8 +70,8 @@ const RealWalletsUpgrade = observer(() => {
         </Modal.Footer>
     );
 
+    //  TODO: Add the wallet steps right here (͠≖ ͜ʖ͠≖)👌
     const WalletSteps = [
-        //  Feel free to add components here or anywhere in between (👍≖‿‿≖)👍 👍(≖‿‿≖👍)
         {
             name: 'intro_wallets',
             component: <WalletsIntro is_eu={is_eu} current_step={0} />,
@@ -101,35 +97,35 @@ const RealWalletsUpgrade = observer(() => {
 
     return (
         <React.Fragment>
-            {is_real_wallets_upgrade_on && (
-                <React.Fragment>
-                    <DesktopWrapper>
-                        <Modal
-                            is_open={is_real_wallets_upgrade_on}
-                            toggleModal={handleClose}
-                            height='734px'
-                            width='1200px'
-                            should_header_stick_body={false}
-                            has_close_icon
-                            title=' '
-                        >
-                            <Modal.Body className='wallet-steps'>{ModalContent}</Modal.Body>
-                            <React.Fragment>{ModalFooter}</React.Fragment>
-                        </Modal>
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <MobileDialog
-                            portal_element_id='modal_root'
-                            visible={is_real_wallets_upgrade_on}
-                            onClose={handleClose}
-                            wrapper_classname='wallet-steps'
-                            footer={ModalFooter}
-                        >
-                            <Modal.Body>{ModalContent}</Modal.Body>
-                        </MobileDialog>
-                    </MobileWrapper>
-                </React.Fragment>
-            )}
+            is_real_wallets_upgrade_on && (
+            <React.Fragment>
+                <DesktopWrapper>
+                    <Modal
+                        is_open={is_real_wallets_upgrade_on}
+                        toggleModal={handleClose}
+                        height='734px'
+                        width='1200px'
+                        should_header_stick_body={false}
+                        has_close_icon
+                        title=' '
+                    >
+                        <Modal.Body className='wallet-steps'>{ModalContent}</Modal.Body>
+                        {ModalFooter}
+                    </Modal>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <MobileDialog
+                        portal_element_id='modal_root'
+                        visible={is_real_wallets_upgrade_on}
+                        onClose={handleClose}
+                        wrapper_classname='wallet-steps'
+                        footer={ModalFooter}
+                    >
+                        <Modal.Body>{ModalContent}</Modal.Body>
+                    </MobileDialog>
+                </MobileWrapper>
+            </React.Fragment>
+            )
         </React.Fragment>
     );
 });

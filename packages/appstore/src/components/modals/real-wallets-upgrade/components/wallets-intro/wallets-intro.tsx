@@ -13,7 +13,7 @@ type TWalletsIntroComponent = {
 const WalletsIntroComponent = ({ image, title, description, bullets }: TWalletsIntro) => {
     const text_title_size = isMobile() ? 'xsm' : 'l';
     const text_body_size = isMobile() ? 's' : 'm';
-    const text_info_size = isMobile() ? 's' : 'xs';
+    const text_info_size = isMobile() ? 'xs' : 's';
     const form_line_height = isMobile() ? 'm' : 'l';
     return (
         <React.Fragment>

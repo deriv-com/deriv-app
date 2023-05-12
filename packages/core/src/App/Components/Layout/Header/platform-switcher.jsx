@@ -1,6 +1,6 @@
 import 'Sass/app/_common/components/platform-switcher.scss';
 
-import { Icon, Text } from '@deriv/components';
+import { Icon } from '@deriv/components';
 import { getPlatformInformation, isMobile } from '@deriv/shared';
 
 import { CSSTransition } from 'react-transition-group';
@@ -61,11 +61,10 @@ const PlatformSwitcher = ({
                 <Icon
                     className='platform-switcher__icon'
                     icon={getPlatformInformation(app_routing_history).icon}
-                    size={32}
+                    description={getPlatformInformation(app_routing_history).header}
+                    size={120}
                 />
-                <Text as='h1' styles={{ lineHeight: '2.4rem' }} weight='bold'>
-                    {getPlatformInformation(app_routing_history).header}
-                </Text>
+
                 <Icon className='platform-switcher__arrow' icon='IcChevronDownBold' />
             </div>
             <CSSTransition

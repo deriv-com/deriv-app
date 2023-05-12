@@ -9,12 +9,14 @@ import PaymentAgentTransferConfirm from './payment-agent-transfer-confirm';
 import PaymentAgentTransferForm from './payment-agent-transfer-form';
 import PaymentAgentTransferReceipt from './payment-agent-transfer-receipt';
 import { useCashierStore } from '../../stores/useCashierStores';
+import { useCashierLocked } from '@deriv/hooks';
 
 const PaymentAgentTransfer = observer(() => {
     const { client } = useStore();
     const { balance, is_virtual } = client;
     const { general_store, payment_agent_transfer } = useCashierStore();
-    const { is_cashier_locked, is_loading, setActiveTab } = general_store;
+    const { is_loading, setActiveTab } = general_store;
+    const is_cashier_locked = useCashierLocked();
     const {
         container,
         error,

@@ -4,7 +4,6 @@ import { Money, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import {
     epochToMoment,
-    formatMoney,
     toGMTFormat,
     getCancellationPrice,
     isAccumulatorContract,

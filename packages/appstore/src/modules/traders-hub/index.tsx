@@ -19,16 +19,21 @@ const TradersHub = () => {
         is_switching,
         is_logging_in,
         is_account_setting_loaded,
-        account_list,
         accounts,
-        active_accounts,
     } = client;
     const { is_tour_open, content_flag, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
 
-    const can_show_notify = !is_switching && !is_logging_in && is_account_setting_loaded && is_landing_company_loaded;
+    const can_show_notify =
+        !is_switching &&
+        !is_logging_in &&
+        is_account_setting_loaded &&
+        is_landing_company_loaded &&
+        Notifications !== null;
 
     const [scrolled, setScrolled] = React.useState(false);
+    // TODO: delete later. Just for testing purpose
+    const [is_display_test_wallets, setIsDisplayTestWallets] = React.useState(0);
 
     const handleScroll = () => {
         const element = traders_hub_ref?.current;
@@ -63,11 +68,20 @@ const TradersHub = () => {
         );
     };
 
-    // const wallet_accounts = account_list?.filter(account => account?.account_category === 'wallet');
-    // const wallet_accounts = Object.keys(accounts).reduce((res, key) => {
-    //     if (accounts[key]?.account_category === 'wallet') res.push(accounts[key]);
-    //     return res;
-    // }, [] as Array<typeof accounts>);
+    // TODO: delete after testing
+    const SelectJSX = (
+        <select
+            onChange={event => {
+                if (Number(event.target.value) === 0) setIsDisplayTestWallets(0);
+                else setIsDisplayTestWallets(1);
+            }}
+        >
+            <option value={0}>Hide test wallets</option>
+            <option value={1}>Show test wallets</option>
+        </select>
+    );
+
+    // TODO: change it when 'wallet' property will be in authorize response
     const is_wallet_account = Object.keys(accounts).some(key => accounts[key]?.account_category === 'wallet');
 
     return (
@@ -75,14 +89,18 @@ const TradersHub = () => {
             <Div100vhContainer
                 className={classNames('traders-hub--mobile', {
                     'traders-hub--mobile--eu-user': is_eu_user,
-                    'traders-hub__wallets-bg': is_wallet_account,
+                    'traders-hub__wallets-bg': is_wallet_account || is_display_test_wallets,
                 })}
                 height_offset='50px'
                 is_disabled={isDesktop()}
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
+                    {SelectJSX}
+                    {!!is_display_test_wallets && <AccountWithWallets show_test_wallets={!!is_display_test_wallets} />}
                     {is_wallet_account ? <AccountWithWallets /> : <AccountWithoutWallets />}
+                    {/* <AccountWithWallets /> */}
+                    {/* <AccountWithoutWallets /> */}
                     <ModalManager />
                     {/* {scrolled && <TourGuide />} */}
                 </div>

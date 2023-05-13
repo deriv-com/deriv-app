@@ -6,8 +6,8 @@ import WalletContent from 'Components/wallet-content';
 import { CSSTransition } from 'react-transition-group';
 import { formatMoney } from '@deriv/shared';
 import { TCoreStores } from '@deriv/stores/types';
-import './wallet.scss';
 import { TWalletCurrency, TWalletShortcode } from 'Types';
+import './wallet.scss';
 
 type TWallet = {
     account: TCoreStores['client']['accounts'][0];

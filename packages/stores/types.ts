@@ -3,7 +3,7 @@ import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, L
 import type { RouteComponentProps } from 'react-router';
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
-    balance?: number;
+    balance?: string | number;
     landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     is_virtual: number;
 };
@@ -54,7 +54,7 @@ type TAccountsList = {
 
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
-    balance?: number;
+    balance?: string | number;
     landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     is_virtual: number;
 };
@@ -250,7 +250,7 @@ type TUiStore = {
     is_dark_mode_on: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
-    notification_messages_ui: JSX.Element | null;
+    notification_messages_ui: React.ElementType | null;
     openRealAccountSignup: (value?: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;

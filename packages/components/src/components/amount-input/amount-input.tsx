@@ -34,12 +34,15 @@ const AmountInput = ({
     );
 
     const onChangeHandler: React.ComponentProps<typeof Input>['onChange'] = e => {
-        const input_value = e.target.value.replace(/\D/g, '').replace(/^0+/, '');
+        const input_value = e.target.value
+            .replace(/[^\d.,]/g, '')
+            .replace(/[,.](?=.*[,.])/g, '')
+            .replace(/^0+/g, '');
         let newValue = value;
-        if (Number(input_value) <= Math.pow(10, max_digits)) {
-            newValue = Number(input_value) / Math.pow(10, decimal_places);
+        if (input_value.replace(/[.,]/g, '').length <= max_digits) {
+            newValue = Number(input_value.replace(',', '.'));
         } else if (isPasting && value === 0) {
-            newValue = Number(input_value.substring(0, max_digits)) / Math.pow(10, decimal_places);
+            newValue = Number(input_value.replace(',', '.').substring(0, max_digits));
         }
         setValue(newValue);
         onChange?.(newValue);

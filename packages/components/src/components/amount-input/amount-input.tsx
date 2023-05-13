@@ -26,7 +26,7 @@ const AmountInput = ({
 }: TAmountInput) => {
     const [value, setValue] = useState(initial_value);
     const [focus, setFocus] = useState(false);
-    const [isPasting, setIsPasting] = useState(false);
+    const [is_pasting, setIsPasting] = useState(false);
 
     const displayNumber = useCallback(
         (number: number) => number.toLocaleString(locale, { minimumFractionDigits: decimal_places }),
@@ -37,7 +37,7 @@ const AmountInput = ({
         // remove all characters that are not digit / point / comma:
         const input_value = e.target.value.replace(/[^\d.,]/g, '');
         let newValue = value;
-        if (!isPasting) {
+        if (!is_pasting) {
             // handle ATM typing:
             if (input_value.replace(/[.,]/g, '').replace(/^0+/g, '').length <= max_digits)
                 newValue = Number(input_value.replace(/[.,]/g, '')) / Math.pow(10, decimal_places);

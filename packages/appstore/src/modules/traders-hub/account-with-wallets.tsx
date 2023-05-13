@@ -1,5 +1,4 @@
 import { observer, useStore } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
 import Wallet from 'Components/wallet';
 import React from 'react';
 
@@ -16,7 +15,7 @@ const AccountWithWallets = observer(({ show_test_wallets = false }: TProps) => {
         client: { accounts },
     } = useStore();
 
-    const wallet_test_accounts: TCoreStores['client']['accounts'][0][] = [
+    const wallet_test_accounts: typeof accounts[0][] = [
         {
             balance: '10415.24',
             currency: 'USD',
@@ -92,7 +91,7 @@ const AccountWithWallets = observer(({ show_test_wallets = false }: TProps) => {
               .reduce((acc, cur) => {
                   acc.push(accounts[cur]);
                   return acc;
-              }, [] as typeof accounts[]);
+              }, [] as typeof accounts[0][]);
 
     // console.log(
     //     'accounts = ',

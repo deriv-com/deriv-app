@@ -6,12 +6,15 @@ import './currency-switcher-container.scss';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import { TRootStore } from 'Types';
+import TradingPlatformIcon, { PlatformIcons } from 'Assets/svgs/trading-platform';
 
 interface CurrentSwitcherContainerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
     actions?: ReactNode;
     has_interaction?: boolean;
-    icon: Currency;
+    icon: Currency | 'Options';
+    // icon: Currency | keyof typeof PlatformIcons;
     title: ReactNode;
+    show_dropdown?: boolean;
 }
 
 const CurrentSwitcherContainer = ({
@@ -21,6 +24,7 @@ const CurrentSwitcherContainer = ({
     has_interaction = false,
     icon,
     title,
+    show_dropdown = true,
     ...props
 }: CurrentSwitcherContainerProps) => {
     const store = useStores();
@@ -47,6 +51,15 @@ const CurrentSwitcherContainer = ({
         return icon_dropdown;
     };
 
+    // type x = keyof typeof PlatformIcons;
+
+    const NeededIcon = () =>
+        icon === 'Options' ? (
+            <TradingPlatformIcon icon={icon} size={32} className='currency-switcher__currency--icon' />
+        ) : (
+            <CurrencyIcon icon={icon} size={32} className='currency-switcher__currency--icon' />
+        );
+
     return (
         <div
             className={classNames(className, 'currency-switcher-container', {
@@ -54,7 +67,7 @@ const CurrentSwitcherContainer = ({
             })}
         >
             <div className='currency-switcher-container--left'>
-                <CurrencyIcon icon={icon} size={32} className='currency-switcher__currency--icon' />
+                <NeededIcon />
                 <div
                     className={classNames(
                         'currency-switcher-container__content',
@@ -76,7 +89,7 @@ const CurrentSwitcherContainer = ({
             </div>
             <div className='currency-switcher-container--right'>
                 {actions}
-                <Dropdown />
+                {show_dropdown && <Dropdown />}
             </div>
         </div>
     );

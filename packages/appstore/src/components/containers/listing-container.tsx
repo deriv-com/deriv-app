@@ -5,11 +5,13 @@ import TitleCardLoader from 'Components/pre-loader/title-card-loader';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import './listing-container.scss';
+import WalletTransferBlock from 'Components/wallet-content/wallet-transfer-block';
 
 type ListingContainerProps = {
     title: ReactNode;
     description: ReactNode;
     is_deriv_platform?: boolean;
+    wallet_data?: { currency: string; balance: string; loginid: string };
     className?: string;
 };
 
@@ -17,6 +19,7 @@ const ListingContainer = ({
     title,
     description,
     is_deriv_platform = false,
+    wallet_data,
     children,
     className,
 }: ListingContainerProps & Omit<HTMLAttributes<HTMLDivElement>, 'title'>) => {
@@ -42,11 +45,17 @@ const ListingContainer = ({
         return <TitleCardLoader />;
     };
 
+    const Switcher = () => {
+        if (!is_deriv_platform) return null;
+        if (wallet_data) return <WalletTransferBlock wallet_data={wallet_data} />;
+        return <CurrencySwitcherCard />;
+    };
+
     return (
         <div className={classNames('listing-container', className)}>
             <div className='listing-container__top-container'>
                 <Options />
-                {is_deriv_platform && <CurrencySwitcherCard />}
+                <Switcher />
             </div>
             <GridContainer>{children}</GridContainer>
         </div>

@@ -46,6 +46,7 @@ const WalletOptionsAndMultipliersListing = () => {
 
     return (
         <ListingContainer
+            wallet_data={{ currency: 'USD', balance: '1435', loginid: 'CRW123456' }}
             className='wallet-content__border-reset'
             title={<OptionsTitle />}
             description={

@@ -33,7 +33,7 @@ const TradersHub = () => {
 
     const [scrolled, setScrolled] = React.useState(false);
     // TODO: delete later. Just for testing purpose
-    const [is_display_test_wallets, setIsDisplayTestWallets] = React.useState(0);
+    const [is_display_test_wallets, setIsDisplayTestWallets] = React.useState(1);
 
     const handleScroll = () => {
         const element = traders_hub_ref?.current;
@@ -70,15 +70,17 @@ const TradersHub = () => {
 
     // TODO: delete after testing
     const SelectJSX = (
-        <select
-            onChange={event => {
-                if (Number(event.target.value) === 0) setIsDisplayTestWallets(0);
-                else setIsDisplayTestWallets(1);
-            }}
-        >
-            <option value={0}>Hide test wallets</option>
-            <option value={1}>Show test wallets</option>
-        </select>
+        <div>
+            <select
+                onChange={event => {
+                    if (Number(event.target.value) === 0) setIsDisplayTestWallets(0);
+                    else setIsDisplayTestWallets(1);
+                }}
+            >
+                <option value={0}>Hide test wallets</option>
+                <option value={1}>Show test wallets</option>
+            </select>
+        </div>
     );
 
     // TODO: change it when 'wallet' property will be in authorize response
@@ -99,10 +101,8 @@ const TradersHub = () => {
                     {SelectJSX}
                     {!!is_display_test_wallets && <AccountWithWallets show_test_wallets={!!is_display_test_wallets} />}
                     {is_wallet_account ? <AccountWithWallets /> : <AccountWithoutWallets />}
-                    {/* <AccountWithWallets /> */}
-                    {/* <AccountWithoutWallets /> */}
                     <ModalManager />
-                    {/* {scrolled && <TourGuide />} */}
+                    {scrolled && <TourGuide />}
                 </div>
             </Div100vhContainer>
             {is_eu_low_risk && <EUDisclaimer />}

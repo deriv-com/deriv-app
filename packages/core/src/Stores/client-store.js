@@ -1796,7 +1796,8 @@ export default class ClientStore extends BaseStore {
      * Get information required by account switcher
      *
      * @param loginid
-     * @returns {{loginid: *, is_virtual: (number|number|*), icon: string, title: *, account_category: string, account_type: string, is_disabled: boolean}}
+     * @returns {{loginid: *, is_virtual: (number|number|*), icon: string, title: *}
+    //  * , account_category: string, account_type: string, is_disabled: boolean}}
      */
     getAccountInfo(loginid = this.loginid) {
         const account = this.getAccount(loginid);
@@ -1804,12 +1805,12 @@ export default class ClientStore extends BaseStore {
         const is_disabled = account.is_disabled;
         const is_virtual = account.is_virtual;
         const account_title_currency = !is_virtual && currency ? currency : this.account_title;
-        const account_category = account?.account_category || '';
-        const account_type = account?.account_type || '';
+        // const account_category = account?.account_category || '';
+        // const account_type = account?.account_type || '';
 
         return {
-            account_category,
-            account_type,
+            // account_category,
+            // account_type,
             loginid,
             is_disabled,
             is_virtual,

@@ -37,6 +37,19 @@ export type TAccountsList = {
     loginid?: string;
     mt5_login_list?: DetailsOfEachMT5Loginid[];
     title?: string;
-    account_type?: string;
-    account_category?: string;
+    account_type?:
+        | 'doughflow'
+        | 'crypto'
+        | 'p2p'
+        | 'paymentagent'
+        | 'paymentagent_client'
+        | 'affiliate'
+        | 'virtual'
+        | 'standard'
+        | 'binary'
+        | 'mt5'
+        | 'dxtrade'
+        | 'trading'
+        | 'wallet';
+    account_category?: 'trading' | 'wallet';
 };

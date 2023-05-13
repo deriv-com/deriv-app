@@ -2,7 +2,11 @@ import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, L
 
 import type { RouteComponentProps } from 'react-router';
 
-type TAccount = NonNullable<Authorize['account_list']>[0];
+type TAccount = NonNullable<Authorize['account_list']>[0] & {
+    balance?: number;
+    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
+    is_virtual: number;
+};
 
 type TAccountsList = {
     account?: {
@@ -31,8 +35,21 @@ type TAccountsList = {
     loginid?: string;
     mt5_login_list?: DetailsOfEachMT5Loginid[];
     title?: string;
-    account_type?: string;
-    account_category?: string;
+    // account_type?:
+    //     | 'doughflow'
+    //     | 'crypto'
+    //     | 'p2p'
+    //     | 'paymentagent'
+    //     | 'paymentagent_client'
+    //     | 'affiliate'
+    //     | 'virtual'
+    //     | 'standard'
+    //     | 'binary'
+    //     | 'mt5'
+    //     | 'dxtrade'
+    //     | 'trading'
+    //     | 'wallet';
+    // account_category?: 'trading' | 'wallet';
 }[];
 
 // balance is missing in @deriv/api-types
@@ -103,7 +120,7 @@ type TClientStore = {
             };
         };
     };
-    account_list: TAccountsList[];
+    account_list: TAccountsList;
     account_status: TAccountStatus;
     available_crypto_currencies: string[];
     balance?: string | number;

@@ -20,6 +20,8 @@ const TradersHub = () => {
         is_logging_in,
         is_account_setting_loaded,
         account_list,
+        accounts,
+        active_accounts,
     } = client;
     const { is_tour_open, content_flag, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
@@ -61,27 +63,28 @@ const TradersHub = () => {
         );
     };
 
-    const wallet_accounts = account_list?.filter(account => account?.account_category === 'wallet');
-    // console.log('accounts = ', accounts, ', account_list = ', account_list, ', wallet accounts = ', wallet_accounts);
+    // const wallet_accounts = account_list?.filter(account => account?.account_category === 'wallet');
+    // const wallet_accounts = Object.keys(accounts).reduce((res, key) => {
+    //     if (accounts[key]?.account_category === 'wallet') res.push(accounts[key]);
+    //     return res;
+    // }, [] as Array<typeof accounts>);
+    const is_wallet_account = Object.keys(accounts).some(key => accounts[key]?.account_category === 'wallet');
 
     return (
         <>
             <Div100vhContainer
                 className={classNames('traders-hub--mobile', {
                     'traders-hub--mobile--eu-user': is_eu_user,
+                    'traders-hub__wallets-bg': is_wallet_account,
                 })}
                 height_offset='50px'
                 is_disabled={isDesktop()}
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
-                    {wallet_accounts.length ? (
-                        <AccountWithWallets accounts={wallet_accounts} />
-                    ) : (
-                        <AccountWithoutWallets />
-                    )}
+                    {is_wallet_account ? <AccountWithWallets /> : <AccountWithoutWallets />}
                     <ModalManager />
-                    {scrolled && <TourGuide />}
+                    {/* {scrolled && <TourGuide />} */}
                 </div>
             </Div100vhContainer>
             {is_eu_low_risk && <EUDisclaimer />}

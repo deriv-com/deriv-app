@@ -175,3 +175,9 @@ export type TWalletCurrency =
     | 'eUSDT'
     | 'tUSDT';
 export type TWalletShortcode = Extract<TJurisdictionData['jurisdiction'], 'svg' | 'malta'>;
+export type TLinkedTo = {
+    loginid?: string;
+    platform?: string;
+    balance?: string;
+    currency?: string;
+};

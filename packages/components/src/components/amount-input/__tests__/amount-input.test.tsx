@@ -4,10 +4,16 @@ import userEvent from '@testing-library/user-event';
 import AmountInput from '../amount-input';
 
 describe('<AmountInput/>', () => {
-    it('should render with the initial value of "0.00"', () => {
-        render(<AmountInput currency='USD' max_digits={8} />);
+    it('should render with the initial value of "0.00" if {initial_value} is not specified', () => {
+        render(<AmountInput currency='USD' />);
         const input = screen.getByTestId('dt_amount-input');
         expect(input).toHaveDisplayValue('0.00');
+    });
+
+    it('should render with the correct initial value if {initial_value} was supplied', () => {
+        render(<AmountInput currency='USD' max_digits={8} initial_value={42} />);
+        const input = screen.getByTestId('dt_amount-input');
+        expect(input).toHaveDisplayValue('42.00');
     });
 
     it('should not change the value on non-numeric and non-"." inputs', () => {
@@ -29,10 +35,10 @@ describe('<AmountInput/>', () => {
     });
 
     it('should add commas for big values', () => {
-        render(<AmountInput currency='USD' max_digits={8} />);
+        render(<AmountInput currency='USD' max_digits={9} />);
         const input = screen.getByTestId('dt_amount-input');
-        userEvent.type(input, '12345678');
-        expect(input).toHaveDisplayValue('123,456.78');
+        userEvent.type(input, '123456789');
+        expect(input).toHaveDisplayValue('1,234,567.89');
     });
 
     it('should not remove "0.00" when backspacing', () => {
@@ -57,5 +63,21 @@ describe('<AmountInput/>', () => {
         expect(input).toHaveDisplayValue('0.00000');
         userEvent.type(input, '12345678');
         expect(input).toHaveDisplayValue('123.45678');
+    });
+
+    it('should allow pasting numbers and then interpret those correctly', () => {
+        render(<AmountInput currency='USD' />);
+        const input = screen.getByTestId('dt_amount-input');
+        const values = [
+            ['123', '123.00'],
+            ['123.42', '123.42'],
+            ['123,42', '123.42'],
+            ['123,000.00', '123,000.00'],
+        ];
+        values.forEach(pair => {
+            userEvent.clear(input);
+            userEvent.paste(input, pair[0]);
+            expect(input).toHaveDisplayValue(pair[1]);
+        });
     });
 });

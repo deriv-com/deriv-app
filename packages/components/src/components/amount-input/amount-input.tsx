@@ -34,16 +34,28 @@ const AmountInput = ({
     );
 
     const onChangeHandler: React.ComponentProps<typeof Input>['onChange'] = e => {
-        const input_value = e.target.value
-            .replace(/[^\d.,]/g, '')
-            .replace(/[,.](?=.*[,.])/g, '')
-            .replace(/^0+/g, '');
+        // remove all characters that are not digit / point / comma:
+        const input_value = e.target.value.replace(/[^\d.,]/g, '');
         let newValue = value;
-        if (input_value.replace(/[.,]/g, '').length <= max_digits) {
-            newValue = Number(input_value.replace(',', '.'));
-        } else if (isPasting && value === 0) {
-            newValue = Number(input_value.replace(',', '.').substring(0, max_digits));
+        if (!isPasting) {
+            // handle ATM typing:
+            if (input_value.replace(/[.,]/g, '').replace(/^0+/g, '').length <= max_digits)
+                newValue = Number(input_value.replace(/[.,]/g, '')) / Math.pow(10, decimal_places);
+        } else {
+            // handle pasting:
+            const pasted_string = input_value.substring(displayNumber(value).length);
+            // get the presumable thing the user want to paste:
+            const pasted_value = pasted_string.replace(/[,.](?=.*[,.])/g, '').replace(',', '.');
+            if (!pasted_value) return;
+            if (value === 0) {
+                // handle pasting when there's nothing entered before it:
+                newValue = Number(pasted_value.substring(0, pasted_value.includes('.') ? max_digits + 1 : max_digits));
+            } else if (input_value.replace(/[.,]/g, '').replace(/^0+/g, '').length <= max_digits) {
+                // handle pasting when there's something entered before it and there's space for the pasted value:
+                newValue = Number(input_value.replace(/[.,]/g, '')) / Math.pow(10, decimal_places);
+            }
         }
+
         setValue(newValue);
         onChange?.(newValue);
         setIsPasting(false);

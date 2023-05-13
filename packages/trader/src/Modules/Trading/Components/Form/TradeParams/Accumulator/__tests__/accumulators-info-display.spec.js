@@ -15,12 +15,12 @@ jest.mock('Stores/connect.js', () => ({
 }));
 
 describe('AccumulatorsInfoDisplay', () => {
-    it('should render correct Maximum payout and Maximum ticks', () => {
+    it('should render correct Max. payout and Max. ticks', () => {
         render(<AccumulatorsInfoDisplay />);
         expect(screen.getByRole('group')).toHaveClass('trade-container__fieldset accu-info-display');
-        expect(screen.getByText(/maximum payout/i)).toBeInTheDocument();
+        expect(screen.getByText(/max. payout/i)).toBeInTheDocument();
         expect(screen.getByText('10,000.00 USD')).toBeInTheDocument();
-        expect(screen.getByText(/maximum ticks/i)).toBeInTheDocument();
+        expect(screen.getByText(/max. ticks/i)).toBeInTheDocument();
         expect(screen.getByText('250 ticks')).toBeInTheDocument();
     });
 });

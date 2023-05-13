@@ -25,6 +25,7 @@ export const getHasDivider = (current_item_index: number, list_size: number, ava
 export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_modal = false) => {
     switch (currency) {
         case 'demo':
+            if (is_modal) return 'IcWalletDerivDemoLight';
             return is_dark_mode_on ? 'IcWalletDerivDemoDark' : 'IcWalletDerivDemoLight';
         case 'USD':
             return 'IcWalletCurrencyUsd';

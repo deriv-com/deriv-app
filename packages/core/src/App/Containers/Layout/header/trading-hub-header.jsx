@@ -117,7 +117,6 @@ const TradingHubHeader = ({
     const { pathname } = useLocation();
     const cashier_routes = pathname.startsWith(routes.cashier);
     const is_mf = loginid?.startsWith('MF');
-
     const filterPlatformsForClients = payload =>
         payload.filter(config => {
             if (config.link_to === routes.mt5) {
@@ -145,30 +144,22 @@ const TradingHubHeader = ({
         }
     };
 
-    const CashierMobileLinks = () => (
-        <React.Fragment>
-            <div className='trading-hub-header__menu-right--items--notifications__cashier'>
-                <ShowNotifications
-                    is_notifications_visible={is_notifications_visible}
-                    notifications_count={notifications_count}
-                    toggleNotifications={toggleNotifications}
-                />
-            </div>
-            <div className='trading-hub-header__menu-right--items--account-toggle'>
-                <AccountInfo
-                    acc_switcher_disabled_message={acc_switcher_disabled_message}
-                    account_type={account_type}
-                    balance={formatMoney(currency, balance, true)}
-                    is_disabled={is_acc_switcher_disabled}
-                    is_eu={is_eu}
-                    is_virtual={is_virtual}
-                    currency={currency}
-                    country_standpoint={country_standpoint}
-                    is_dialog_on={is_acc_switcher_on}
-                    toggleDialog={toggleAccountsDialog}
-                />
-            </div>
-        </React.Fragment>
+    const AccountInfoComponent = React.useCallback(
+        () => (
+            <AccountInfo
+                acc_switcher_disabled_message={acc_switcher_disabled_message}
+                account_type={account_type}
+                balance={formatMoney(currency, balance, true)}
+                is_disabled={is_acc_switcher_disabled}
+                is_eu={is_eu}
+                is_virtual={is_virtual}
+                currency={currency}
+                country_standpoint={country_standpoint}
+                is_dialog_on={is_acc_switcher_on}
+                toggleDialog={toggleAccountsDialog}
+            />
+        ),
+        [is_acc_switcher_on]
     );
 
     const DefaultMobileLinks = () => (
@@ -222,7 +213,13 @@ const TradingHubHeader = ({
 
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
-                <DerivBrandLogo className='trading-hub-header__logo' />
+                <div
+                    className={classNames('`trading-hub-header__logo-wrapper', {
+                        'trading-hub-header__logo-wrapper--cashier': cashier_routes,
+                    })}
+                >
+                    <DerivBrandLogo className='trading-hub-header__logo' />
+                </div>
                 <DesktopWrapper>
                     <Divider />
                     <TradersHubHomeButton is_dark_mode={is_dark_mode} />
@@ -259,18 +256,7 @@ const TradingHubHeader = ({
                         </Popover>
                         {cashier_routes && (
                             <div className='trading-hub-header__menu-right--items--account-toggle'>
-                                <AccountInfo
-                                    acc_switcher_disabled_message={acc_switcher_disabled_message}
-                                    account_type={account_type}
-                                    balance={formatMoney(currency, balance, true)}
-                                    is_disabled={is_acc_switcher_disabled}
-                                    is_eu={is_eu}
-                                    is_virtual={is_virtual}
-                                    currency={currency}
-                                    country_standpoint={country_standpoint}
-                                    is_dialog_on={is_acc_switcher_on}
-                                    toggleDialog={toggleAccountsDialog}
-                                />
+                                <AccountInfoComponent />
                             </div>
                         )}
                     </div>
@@ -280,7 +266,22 @@ const TradingHubHeader = ({
             <MobileWrapper>
                 <div className='trading-hub-header__mobile-parent'>
                     <div className='trading-hub-header__menu-middle'>
-                        {cashier_routes ? <CashierMobileLinks /> : <DefaultMobileLinks />}
+                        {cashier_routes ? (
+                            <React.Fragment>
+                                <div className='trading-hub-header__menu-right--items--notifications__cashier'>
+                                    <ShowNotifications
+                                        is_notifications_visible={is_notifications_visible}
+                                        notifications_count={notifications_count}
+                                        toggleNotifications={toggleNotifications}
+                                    />
+                                </div>
+                                <div className='trading-hub-header__menu-right--items--account-toggle'>
+                                    <AccountInfoComponent />
+                                </div>
+                            </React.Fragment>
+                        ) : (
+                            <DefaultMobileLinks />
+                        )}
                     </div>
                 </div>
                 <RealAccountSignup />

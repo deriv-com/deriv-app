@@ -1,4 +1,4 @@
-import { TPlatformContext, TPoaStatusProps } from 'Types';
+import { TPoaStatusProps } from 'Types';
 
 import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
 import { Icon } from '@deriv/components';
@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 
 export const Verified = ({ needs_poi, redirect_button }: TPoaStatusProps) => {
-    const { is_appstore }: TPlatformContext = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     const message = localize('Your proof of address is verified');
     if (needs_poi) {

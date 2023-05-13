@@ -27,6 +27,7 @@ const AmountInput = ({
     const [value, setValue] = useState(initial_value);
     const [focus, setFocus] = useState(false);
     const [is_pasting, setIsPasting] = useState(false);
+    const [is_fully_selected, setIsFullySelected] = useState(false);
 
     const displayNumber = useCallback(
         (number: number) => number.toLocaleString(locale, { minimumFractionDigits: decimal_places }),
@@ -43,31 +44,33 @@ const AmountInput = ({
                 newValue = Number(input_value.replace(/[.,]/g, '')) / Math.pow(10, decimal_places);
         } else {
             // handle pasting:
-            const pasted_string = input_value.substring(displayNumber(value).length);
-            // get the presumable thing the user want to paste:
+            const pasted_string = is_fully_selected ? input_value : input_value.substring(displayNumber(value).length);
+            // understand the thing the user want to paste:
             const pasted_value = pasted_string.replace(/[,.](?=.*[,.])/g, '').replace(',', '.');
-            if (!pasted_value) return;
-            if (value === 0) {
-                // handle pasting when there's nothing entered before it:
+            if (value === 0 || is_fully_selected) {
+                // handle pasting when there's nothing entered before it, or it is overridden:
                 newValue = Number(pasted_value.substring(0, pasted_value.includes('.') ? max_digits + 1 : max_digits));
             } else if (input_value.replace(/[.,]/g, '').replace(/^0+/g, '').length <= max_digits) {
                 // handle pasting when there's something entered before it and there's space for the pasted value:
                 newValue = Number(input_value.replace(/[.,]/g, '')) / Math.pow(10, decimal_places);
             }
         }
-
         setValue(newValue);
         onChange?.(newValue);
         setIsPasting(false);
+        setIsFullySelected(false);
     };
 
     const onMouseDownHandler: React.ComponentProps<typeof Input>['onMouseDown'] = e => {
         e.preventDefault();
         e.currentTarget.setSelectionRange(e.currentTarget.value.length, e.currentTarget.value.length);
         e.currentTarget.focus();
+        setIsFullySelected(false);
     };
 
     const onKeyDownHandler: KeyboardEventHandler<HTMLInputElement> = e => {
+        if (e.currentTarget.selectionStart === 0 && e.currentTarget.selectionEnd === displayNumber(value).length)
+            setIsFullySelected(true);
         if (e.code.startsWith('Arrow')) e.preventDefault();
     };
 

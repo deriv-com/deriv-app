@@ -223,23 +223,18 @@ export default class ContractTradeStore extends BaseStore {
         const {
             accumulators_high_barrier,
             accumulators_low_barrier,
-            contract_barriers_data,
             previous_symbol_spot_time,
+            contract_barriers_data: {
+                accumulators_high_barrier: contract_high_barrier = accumulators_high_barrier,
+                accumulators_low_barrier: contract_low_barrier = accumulators_low_barrier,
+                previous_symbol_spot_time: contract_prev_spot_time = previous_symbol_spot_time,
+            } = {},
         } = this.accumulator_barriers_data || {};
         const { status } = this.last_contract.contract_info || {};
-        let previous_spot_time = previous_symbol_spot_time;
-        let high_barrier = accumulators_high_barrier;
-        let low_barrier = accumulators_low_barrier;
-        if (status === 'open') {
-            const {
-                accumulators_high_barrier: high,
-                accumulators_low_barrier: low,
-                previous_symbol_spot_time: prev_spot_time,
-            } = contract_barriers_data || {};
-            previous_spot_time = prev_spot_time;
-            high_barrier = high;
-            low_barrier = low;
-        }
+        const [previous_spot_time, high_barrier, low_barrier] =
+            status === 'open'
+                ? [contract_prev_spot_time, contract_high_barrier, contract_low_barrier]
+                : [previous_symbol_spot_time, accumulators_high_barrier, accumulators_low_barrier];
         if (trade_type === 'accumulator' && previous_spot_time && high_barrier) {
             markers.push({
                 type: 'TickContract',

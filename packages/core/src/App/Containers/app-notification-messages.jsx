@@ -121,6 +121,7 @@ const AppNotificationMessages = ({
                   'document_needs_action',
                   'identity',
                   'poi_name_mismatch',
+                  'poinc_upload_limited',
                   'poi_expired',
                   'poi_failed',
                   'poi_verified',

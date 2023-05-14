@@ -1,7 +1,8 @@
 import { Field, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { FormSubmitButton, Text, ThemedScrollbars } from '@deriv/components';
+import { FormSubmitButton, Loading, Text, ThemedScrollbars } from '@deriv/components';
+import { usePaymentAgentList } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { reorderCurrencies, routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -13,7 +14,6 @@ const CRYPTO_CURRENCY_TYPE = 'crypto';
 
 const ChooseCurrency = ({
     account_list,
-    all_payment_agent_list,
     available_crypto_currencies,
     closeRealAccountSignup,
     continueRouteAfterChooseCrypto,
@@ -30,25 +30,27 @@ const ChooseCurrency = ({
     const [form_error] = React.useState('');
     const [form_value] = React.useState({ crypto: '' });
 
+    const { data: all_payment_agent_list, isLoading: is_loading } = usePaymentAgentList();
+
     React.useEffect(() => {
         return () => setShouldShowAllAvailableCurrencies(false);
     }, [setShouldShowAllAvailableCurrencies]);
 
-    const hasAllCryptos = () => {
-        return (
-            legal_allowed_currencies?.filter(
-                currency =>
-                    currency.type === CRYPTO_CURRENCY_TYPE && !account_list.some(x => x.title === currency.value)
-            ).length === 0
-        );
-    };
+    const getReorderedCryptoCurrencies = React.useMemo(() => {
+        const hasAllCryptos = () => {
+            return (
+                legal_allowed_currencies?.filter(
+                    currency =>
+                        currency.type === CRYPTO_CURRENCY_TYPE && !account_list.some(x => x.title === currency.value)
+                ).length === 0
+            );
+        };
 
-    const addNewCryptoAccount = () => {
-        openRealAccountSignup(deposit_target === routes.cashier_pa ? 'add_currency' : 'add_crypto');
-        setShouldShowCancel(true);
-    };
+        const addNewCryptoAccount = () => {
+            openRealAccountSignup(deposit_target === routes.cashier_pa ? 'add_currency' : 'add_crypto');
+            setShouldShowCancel(true);
+        };
 
-    const getReorderedCryptoCurrencies = () => {
         const allowed_currencies_payment_agent_availability = CurrencyProvider.currenciesPaymentAgentAvailability(
             legal_allowed_currencies,
             all_payment_agent_list,
@@ -86,7 +88,17 @@ const ChooseCurrency = ({
         }
 
         return reorderCryptoCurrencies;
-    };
+    }, [
+        account_list,
+        all_payment_agent_list,
+        available_crypto_currencies,
+        deposit_target,
+        has_fiat,
+        legal_allowed_currencies,
+        should_show_all_available_currencies,
+        openRealAccountSignup,
+        setShouldShowCancel,
+    ]);
 
     const doSwitch = async value => {
         const target_account = account_list.filter(account => account.title === value);
@@ -123,29 +135,33 @@ const ChooseCurrency = ({
                             : localize('Choose one of your accounts or add a new cryptocurrency account')}
                     </Text>
                     <ThemedScrollbars>
-                        <CurrencyRadioButtonGroup
-                            id='crypto_currency'
-                            className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                            item_count={getReorderedCryptoCurrencies().length}
-                        >
-                            {getReorderedCryptoCurrencies().map(currency => (
-                                <Field
-                                    key={currency.value}
-                                    component={CurrencyRadioButton}
-                                    name='currency'
-                                    id={currency.value}
-                                    label={currency.name}
-                                    icon={currency.icon}
-                                    second_line_label={currency.second_line_label}
-                                    onClick={currency.onClick}
-                                    selected={
-                                        currency.is_disabled || deposit_target === routes.cashier_pa
-                                            ? !currency.has_payment_agent
-                                            : false
-                                    }
-                                />
-                            ))}
-                        </CurrencyRadioButtonGroup>
+                        {is_loading ? (
+                            <Loading is_fullscreen={false} />
+                        ) : (
+                            <CurrencyRadioButtonGroup
+                                id='crypto_currency'
+                                className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                                item_count={getReorderedCryptoCurrencies.length}
+                            >
+                                {getReorderedCryptoCurrencies.map(currency => (
+                                    <Field
+                                        key={currency.value}
+                                        component={CurrencyRadioButton}
+                                        name='currency'
+                                        id={currency.value}
+                                        label={currency.name}
+                                        icon={currency.icon}
+                                        second_line_label={currency.second_line_label}
+                                        onClick={currency.onClick}
+                                        selected={
+                                            currency.is_disabled || deposit_target === routes.cashier_pa
+                                                ? !currency.has_payment_agent
+                                                : false
+                                        }
+                                    />
+                                ))}
+                            </CurrencyRadioButtonGroup>
+                        )}
                     </ThemedScrollbars>
                     <FormSubmitButton
                         className='currency-selector__button'
@@ -162,7 +178,6 @@ const ChooseCurrency = ({
 
 ChooseCurrency.propTypes = {
     account_list: PropTypes.array,
-    all_payment_agent_list: PropTypes.array,
     available_crypto_currencies: PropTypes.array,
     closeRealAccountSignup: PropTypes.func,
     continueRouteAfterChooseCrypto: PropTypes.func,
@@ -179,7 +194,6 @@ ChooseCurrency.propTypes = {
 
 export default connect(({ client, modules, ui }) => ({
     account_list: client.account_list,
-    all_payment_agent_list: modules.cashier.payment_agent.all_payment_agent_list,
     available_crypto_currencies: client.available_crypto_currencies,
     closeRealAccountSignup: ui.closeRealAccountSignup,
     continueRouteAfterChooseCrypto: ui.continueRouteAfterChooseCrypto,

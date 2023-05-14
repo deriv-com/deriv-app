@@ -13,6 +13,7 @@ export const populateVerificationStatus = account_status => {
     const allow_poinc_resubmission = account_status.status.some(status => status === 'allow_poinc_resubmission');
     const is_age_verified = account_status.status.some(status => status === 'age_verification');
     const is_idv_disallowed = account_status.status.some(status => status === 'idv_disallowed');
+    const poa_address_mismatch = account_status.status.some(status => status === 'poa_address_mismatch');
 
     const identity_status = identity.status;
     const document_status = document.status;
@@ -44,5 +45,6 @@ export const populateVerificationStatus = account_status => {
         needs_poinc,
         needs_verification,
         onfido,
+        poa_address_mismatch,
     };
 };

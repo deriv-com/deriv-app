@@ -1154,8 +1154,8 @@ export default class NotificationStore extends BaseStore {
             },
             poinc_upload_limited: {
                 key: 'poinc_upload_limited',
-                header: localize("You've reached the limit of uploading your documents"),
-                message: localize('Please check your email inbox for more details.'),
+                header: localize("You've reached the limit of uploading your documents."),
+                message: localize('Please check your email'),
                 type: 'danger',
             },
             resticted_mt5_with_pending_poa: {

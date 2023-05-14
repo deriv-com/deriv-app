@@ -2,7 +2,13 @@ import classNames from 'classnames';
 import React from 'react';
 import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
-import { useOnrampVisible, useAccountTransferVisible, useIsRealAccountNeededForCashier } from '@deriv/hooks';
+import {
+    useOnrampVisible,
+    useAccountTransferVisible,
+    useIsRealAccountNeededForCashier,
+    useIsP2PEnabled,
+    usePaymentAgentTransferVisible,
+} from '@deriv/hooks';
 import { isMobile, routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, getAllowedLanguages, Localize } from '@deriv/translations';
@@ -201,13 +207,13 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_eu,
     } = client;
     const { cashier } = modules;
-    const { general_store, payment_agent_transfer, payment_agent } = cashier;
-    const { is_p2p_enabled } = general_store;
-    const { is_payment_agent_transfer_visible } = payment_agent_transfer;
+    const { payment_agent } = cashier;
     const { is_payment_agent_visible } = payment_agent;
-    const { show_eu_related_content } = traders_hub;
+    const { show_eu_related_content, setTogglePlatformType } = traders_hub;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
+    const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
+    const { data: is_p2p_enabled } = useIsP2PEnabled();
 
     const liveChat = useLiveChat();
     const [is_open, setIsOpen] = React.useState(false);
@@ -500,6 +506,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         is_logging_in={is_logging_in}
                                         platform_config={platform_config}
                                         toggleDrawer={toggleDrawer}
+                                        setTogglePlatformType={setTogglePlatformType}
                                     />
                                 </MobileDrawer.SubHeader>
                             )}
@@ -514,7 +521,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         <MenuLink
                                             link_to={routes.traders_hub}
                                             icon={is_dark_mode ? 'IcAppstoreHomeDark' : 'IcAppstoreTradersHubHome'}
-                                            text={localize("Trader's hub")}
+                                            text={localize("Trader's Hub")}
                                             onClickLink={toggleDrawer}
                                         />
                                     </MobileDrawer.Item>

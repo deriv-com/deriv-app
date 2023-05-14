@@ -1,20 +1,11 @@
 import merge from 'lodash.merge';
-import type { TStores } from './useStore';
+import { TStores } from '../types';
 
-const mock = (): TStores => {
+const mock = (): TStores & { is_mock: boolean } => {
     return {
+        is_mock: true,
         client: {
-            accounts: {
-                loginid: {
-                    account_type: 'trading',
-                    created_at: 1674633682,
-                    currency: 'USD',
-                    is_disabled: 0,
-                    is_virtual: 0,
-                    excluded_until: 0,
-                    landing_company_name: 'svg',
-                },
-            },
+            accounts: {},
             active_account_landing_company: '',
             account_limits: {
                 daily_transfers: {
@@ -126,11 +117,13 @@ const mock = (): TStores => {
             has_maltainvest_account: false,
             initialized_broadcast: false,
             is_account_setting_loaded: false,
+            is_authorize: false,
             is_deposit_lock: false,
             is_dxtrade_allowed: false,
             is_eu: false,
             is_financial_account: false,
             is_financial_information_incomplete: false,
+            is_low_risk: false,
             is_identity_verification_needed: false,
             is_landing_company_loaded: false,
             is_logged_in: false,
@@ -188,11 +181,15 @@ const mock = (): TStores => {
             switched: false,
             switch_broadcast: false,
             switchEndSignal: jest.fn(),
-            is_crypto: false,
+            is_crypto: jest.fn(),
+            dxtrade_accounts_list: [],
+            default_currency: 'USD',
+            resetVirtualBalance: jest.fn(),
             has_enabled_two_fa: false,
             setTwoFAStatus: jest.fn(),
             has_changed_two_fa: false,
             setTwoFAChangedStatus: jest.fn(),
+            real_account_creation_unlock_date: 0,
         },
         common: {
             changeCurrentLanguage: jest.fn(),
@@ -250,6 +247,7 @@ const mock = (): TStores => {
             is_ready_to_deposit_modal_visible: false,
             is_need_real_account_for_cashier_modal_visible: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
+            setShouldShowCooldownModal: jest.fn(),
         },
         traders_hub: {
             closeModal: jest.fn(),
@@ -264,6 +262,14 @@ const mock = (): TStores => {
             is_real: false,
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
+            financial_restricted_countries: false,
+            selected_account_type: 'real',
+            no_CR_account: false,
+            no_MF_account: false,
+            setTogglePlatformType: jest.fn(),
+            setSelectedAccount: jest.fn(),
+            toggleAccountTransferModal: jest.fn(),
+            is_demo: false,
         },
         menu: {
             attach: jest.fn(),
@@ -281,10 +287,9 @@ const mock = (): TStores => {
             setP2PRedirectTo: jest.fn(),
         },
         modules: {},
-        counter: {
-            count: 0,
-            increment: jest.fn(),
-            decrement: jest.fn(),
+        exchange_rates: {
+            data: undefined,
+            update: jest.fn(),
             unmount: jest.fn(),
         },
     };

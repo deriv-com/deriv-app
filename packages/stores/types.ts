@@ -2,7 +2,9 @@ import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, L
 import type { RouteComponentProps } from 'react-router';
 import { ExchangeRatesStore } from './src/stores';
 
-type TAccount = NonNullable<Authorize['account_list']>[0];
+type TAccount = NonNullable<Authorize['account_list']>[0] & {
+    balance?: number;
+};
 
 type TAccountsList = {
     account?: {
@@ -90,7 +92,7 @@ type TNotification =
 type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
 
 type TClientStore = {
-    accounts: { [k: string]: TAccount };
+    accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
     account_limits: {
@@ -191,6 +193,7 @@ type TClientStore = {
     setTwoFAStatus: (status: boolean) => void;
     has_changed_two_fa: boolean;
     setTwoFAChangedStatus: (status: boolean) => void;
+    real_account_creation_unlock_date: number;
 };
 
 type TCommonStoreError = {
@@ -248,6 +251,7 @@ type TUiStore = {
     is_ready_to_deposit_modal_visible: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
+    setShouldShowCooldownModal: (value: boolean) => void;
 };
 
 type TMenuStore = {
@@ -291,6 +295,9 @@ type TTradersHubStore = {
     selected_account_type: string;
     no_CR_account: boolean;
     no_MF_account: boolean;
+    setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
+    toggleAccountTransferModal: () => void;
+    is_demo: boolean;
 };
 
 /**

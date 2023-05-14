@@ -1,15 +1,31 @@
 import { datadogLogs } from '@datadog/browser-logs';
+import { formatDate, formatTime } from '@deriv/shared';
 
 const DATADOG_CLIENT_TOKEN = process.env.DATADOG_CLIENT_TOKEN ?? '';
-const DATADOG_SESSION_SAMPLE_RATE = process.env.DATADOG_SESSION_SAMPLE_RATE ?? 10;
-const CIRCLE_TAG = process.env.CIRCLE_TAG ?? 'NO_VERSION';
+const isProduction = process.env.CIRCLE_JOB === 'release_production';
+const isStaging = process.env.CIRCLE_JOB === 'release_staging';
+
+let dataDogSessionSampleRate = 0;
+let dataDogVersion = '';
+let dataDogEnv = '';
+
+if (isProduction) {
+    dataDogVersion = `deriv-app-${process.env.CIRCLE_TAG}`;
+    dataDogSessionSampleRate = +process.env.DATADOG_SESSION_SAMPLE_RATE ?? 10;
+    dataDogEnv = 'production';
+} else if (isStaging) {
+    dataDogVersion = `deriv-app-staging-v${formatDate(new Date(), 'YYYYMMDD')}-${formatTime(Date.now(), 'HH:mm')}`;
+    dataDogSessionSampleRate = 100;
+    dataDogEnv = 'staging';
+}
 
 datadogLogs.init({
     clientToken: DATADOG_CLIENT_TOKEN,
     site: 'datadoghq.com',
-    sessionSampleRate: DATADOG_SESSION_SAMPLE_RATE,
+    sessionSampleRate: dataDogSessionSampleRate,
     service: 'Dbot',
-    version: `deriv-app-${CIRCLE_TAG}`,
+    version: dataDogVersion,
+    env: dataDogEnv,
 });
 
 const REQUESTS = [

@@ -14,12 +14,14 @@ type ListingContainerProps = {
     is_deriv_platform?: boolean;
     wallet_account?: TCoreStores['client']['accounts'][0];
     className?: string;
+    is_outside_grid_container?: boolean;
 };
 
 const ListingContainer = ({
     title,
     description,
     is_deriv_platform = false,
+    is_outside_grid_container,
     wallet_account,
     children,
     className,
@@ -58,7 +60,7 @@ const ListingContainer = ({
                 <Options />
                 <Switcher />
             </div>
-            <GridContainer>{children}</GridContainer>
+            {is_outside_grid_container ? children : <GridContainer>{children}</GridContainer>}
         </div>
     );
 };

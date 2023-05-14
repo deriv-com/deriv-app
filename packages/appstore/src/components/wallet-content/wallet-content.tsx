@@ -34,7 +34,7 @@ const WalletContent = React.memo(({ is_demo, is_eu, account }: TProps) => {
             })}
         >
             <ContentDivider is_demo_divider={is_demo} />
-            <WalletCfdsListing />
+            <WalletCfdsListing account={account} />
             <ContentDivider />
             <WalletOptionsAndMultipliersListing account={account} />
             {is_eu && !is_demo && EUDisclaimer}

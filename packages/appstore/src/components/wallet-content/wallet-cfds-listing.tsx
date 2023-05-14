@@ -1,16 +1,16 @@
 import React from 'react';
-import { Text, StaticUrl } from '@deriv/components';
+import { Text, StaticUrl, Button } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
-import { useStores } from 'Stores/index';
-import { observer } from 'mobx-react-lite';
-import AddOptionsAccount from 'Components/add-options-account';
-import { isMobile, formatMoney } from '@deriv/shared';
+import { formatMoney, isCryptocurrency, routes } from '@deriv/shared';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
+import { TCoreStores } from '@deriv/stores/types';
+import { useStore, observer } from '@deriv/stores';
+import { useHistory } from 'react-router';
 
 type TDetailedExistingAccount = AvailableAccount &
     TDetailsOfEachMT5Loginid &
@@ -18,41 +18,37 @@ type TDetailedExistingAccount = AvailableAccount &
         key: string;
     };
 
-const WalletCFDsListing = () => {
+type TProps = {
+    account: TCoreStores['client']['accounts'][0];
+    fiat_wallet_currency?: string;
+};
+
+const WalletCFDsListing = observer(({ account: wallet_account, fiat_wallet_currency = 'USD' }: TProps) => {
+    const history = useHistory();
     const {
         client,
         modules: { cfd },
         traders_hub,
-        common,
         ui,
-    } = useStores();
+    } = useStore();
     const {
         available_dxtrade_accounts,
         combined_cfd_mt5_accounts,
         selected_region,
-        has_any_real_account,
-        startTrade,
         is_real,
         getExistingAccounts,
-        getAccount,
         selected_account_type,
         is_eu_user,
         is_demo_low_risk,
         no_MF_account,
-        toggleAccountTransferModal,
         is_demo,
-        openFailedVerificationModal,
-        showTopUpModal,
         no_CR_account,
-        setSelectedAccount,
         CFDs_restricted_countries,
     } = traders_hub;
 
-    const { toggleCompareAccountsModal, setAccountType } = cfd;
-    const { is_landing_company_loaded, real_account_creation_unlock_date } = client;
-    const { setAppstorePlatform } = common;
-    const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
-    const has_no_real_account = !has_any_real_account;
+    const { toggleCompareAccountsModal } = cfd;
+    const { is_landing_company_loaded } = client;
+    const { is_mobile } = ui;
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
@@ -65,66 +61,41 @@ const WalletCFDsListing = () => {
         return null;
     };
 
-    const no_real_mf_account_eu_regulator = no_MF_account && is_eu_user && is_real;
+    const { is_virtual, landing_company_shortcode, currency } = wallet_account;
+    const is_eu = landing_company_shortcode === 'maltainvest' || landing_company_shortcode === 'malta';
 
-    const no_real_cr_non_eu_regulator = no_CR_account && !is_eu_user && is_real;
+    const is_fiat = !isCryptocurrency(currency) && currency !== 'USDT';
 
-    const AddDerivAccount = () => {
-        if (is_real) {
-            if (no_CR_account && !is_eu_user) {
-                return (
-                    <div className='cfd-full-row'>
-                        <AddOptionsAccount />
-                    </div>
-                );
-            } else if (no_MF_account && is_eu_user) {
-                return (
-                    <div className='cfd-full-row'>
-                        <AddOptionsAccount />
-                    </div>
-                );
-            }
-        }
-        return null;
-    };
+    const CryptoCFDs = () => (
+        <div className='wallet-content__cfd-crypto'>
+            <Text size='s' weight='bold' line_height='xxl' as='p' className='wallet-content__cfd-crypto-title'>
+                <Localize
+                    i18n_default_text='To trade CFDs, you’ll need to use your {{fiat_wallet_currency}} Wallet. Click Transfer to move your {{currency}} to your {{fiat_wallet_currency}} Wallet.'
+                    values={{ fiat_wallet_currency, currency }}
+                />
+            </Text>
+            <Button
+                onClick={(e: MouseEvent) => {
+                    e.stopPropagation();
+                    history.push(routes.cashier_acc_transfer);
+                }}
+                className='wallet-content__cfd-crypto-button'
+                primary_light
+            >
+                {localize('Transfer')}
+            </Button>
+        </div>
+    );
 
-    return (
-        <ListingContainer
-            className='wallet-content__border-reset'
-            title={
-                !isMobile() && (
-                    <div className='cfd-accounts__title'>
-                        <Text size='sm' line_height='m' weight='bold' color='prominent'>
-                            {localize('CFDs')}
-                        </Text>
-                        <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
-                            <Text key={0} color='red' size='xxs' weight='bold' styles={{ marginLeft: '1rem' }}>
-                                <Localize i18n_default_text={accounts_sub_text} />
-                            </Text>
-                        </div>
-                    </div>
-                )
-            }
-            description={
-                <Text size='xs' line_height='s'>
-                    <Localize
-                        i18n_default_text={
-                            'Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'
-                        }
-                        components={[<StaticUrl key={0} className='options' href='/trade-types/cfds' />]}
-                    />
-                </Text>
-            }
-        >
-            {isMobile() && (
+    const FiatCFDs = () => (
+        <React.Fragment>
+            {is_mobile && (
                 <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
                     <Text size='xs' color='red' weight='bold' line_height='s'>
                         <Localize i18n_default_text={accounts_sub_text} />
                     </Text>
                 </div>
             )}
-
-            <AddDerivAccount />
 
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                 <Text line_height='m' weight='bold' color='prominent'>
@@ -151,33 +122,6 @@ const WalletCFDsListing = () => {
                                 description={existing_account.description}
                                 key={existing_account.key}
                                 has_divider={(!is_eu_user || is_demo) && getHasDivider(index, list_size, 3)}
-                                onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
-                                    if (existing_account.action_type === 'get') {
-                                        if (real_account_creation_unlock_date && no_real_mf_account_eu_regulator) {
-                                            setShouldShowCooldownModal(true);
-                                        } else if (no_real_cr_non_eu_regulator || no_real_mf_account_eu_regulator) {
-                                            openDerivRealAccountNeededModal();
-                                        } else {
-                                            setAccountType({
-                                                category: selected_account_type,
-                                                type: existing_account.market_type,
-                                            });
-                                            setAppstorePlatform(existing_account.platform);
-                                            getAccount();
-                                        }
-                                    } else if (existing_account.action_type === 'multi-action') {
-                                        const button_name = e?.currentTarget?.name;
-                                        if (button_name === 'transfer-btn') {
-                                            toggleAccountTransferModal();
-                                            setSelectedAccount(existing_account);
-                                        } else if (button_name === 'topup-btn') {
-                                            showTopUpModal(existing_account);
-                                            setAppstorePlatform(existing_account.platform);
-                                        } else {
-                                            startTrade(existing_account.platform, existing_account);
-                                        }
-                                    }
-                                }}
                                 mt5_acc_auth_status={has_mt5_account_status}
                                 selected_mt5_jurisdiction={{
                                     platform: existing_account.platform,
@@ -185,7 +129,6 @@ const WalletCFDsListing = () => {
                                     type: existing_account.market_type,
                                     jurisdiction: existing_account.landing_company_short,
                                 }}
-                                openFailedVerificationModal={openFailedVerificationModal}
                             />
                         );
                     })}
@@ -225,18 +168,6 @@ const WalletCFDsListing = () => {
                                 description={existing_account.login}
                                 platform={account.platform}
                                 key={`trading_app_card_${existing_account.login}`}
-                                onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
-                                    const button_name = e?.currentTarget?.name;
-                                    if (button_name === 'transfer-btn') {
-                                        toggleAccountTransferModal();
-                                        setSelectedAccount(existing_account);
-                                    } else if (button_name === 'topup-btn') {
-                                        showTopUpModal(existing_account);
-                                        setAppstorePlatform(account.platform);
-                                    } else {
-                                        startTrade(account.platform, existing_account);
-                                    }
-                                }}
                             />
                         ))
                     ) : (
@@ -248,18 +179,6 @@ const WalletCFDsListing = () => {
                             name={account.name}
                             platform={account.platform}
                             description={account.description}
-                            onAction={() => {
-                                if ((has_no_real_account || no_CR_account) && is_real) {
-                                    openDerivRealAccountNeededModal();
-                                } else {
-                                    setAccountType({
-                                        category: selected_account_type,
-                                        type: account.market_type,
-                                    });
-                                    setAppstorePlatform(account.platform);
-                                    getAccount();
-                                }
-                            }}
                             key={`trading_app_card_${account.name}`}
                         />
                     );
@@ -267,8 +186,41 @@ const WalletCFDsListing = () => {
             ) : (
                 <PlatformLoader />
             )}
+        </React.Fragment>
+    );
+
+    return (
+        <ListingContainer
+            className='wallet-content__border-reset'
+            title={
+                !is_mobile && (
+                    <div className='cfd-accounts__title'>
+                        <Text size='sm' line_height='m' weight='bold' color='prominent'>
+                            {localize('CFDs')}
+                        </Text>
+                        <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
+                            <Text key={0} color='red' size='xxs' weight='bold' styles={{ marginLeft: '1rem' }}>
+                                <Localize i18n_default_text={accounts_sub_text} />
+                            </Text>
+                        </div>
+                    </div>
+                )
+            }
+            description={
+                <Text size='xs' line_height='s'>
+                    <Localize
+                        i18n_default_text={
+                            'Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'
+                        }
+                        components={[<StaticUrl key={0} className='options' href='/trade-types/cfds' />]}
+                    />
+                </Text>
+            }
+            is_outside_grid_container={!is_fiat}
+        >
+            {is_fiat ? <FiatCFDs /> : <CryptoCFDs />}
         </ListingContainer>
     );
-};
+});
 
-export default observer(WalletCFDsListing);
+export default WalletCFDsListing;

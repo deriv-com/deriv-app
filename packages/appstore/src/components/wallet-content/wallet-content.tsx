@@ -1,16 +1,21 @@
 import React from 'react';
 import classNames from 'classnames';
-// import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
-// import CFDsListing from 'Components/cfds-listing';
+import ContentDivider from './wallet-content-divider';
 import { isMobile } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import ContentDivider from './wallet-content-divider';
-import WalletCFDsListing from 'Components/wallet-cfds-listing';
-import WalletOptionsAndMultipliersListing from 'Components/wallet-options-multipliers-listing';
+import { TCoreStores } from '@deriv/stores/types';
+import WalletCfdsListing from './wallet-cfds-listing';
+import WalletOptionsAndMultipliersListing from './wallet-option-multipliers-listing';
 import './wallet-content.scss';
 
-const WalletContent = React.memo(({ is_demo, is_eu }: any) => {
+type TProps = {
+    is_demo: boolean;
+    is_eu: boolean;
+    account: TCoreStores['client']['accounts'][0];
+};
+
+const WalletContent = React.memo(({ is_demo, is_eu, account }: TProps) => {
     const EUDisclaimer = (
         <div className='wallet-content__disclaimer'>
             <Text align='left' className='wallet-content__disclaimer-text' size={isMobile() ? 'xxxs' : 'xs'}>
@@ -29,10 +34,10 @@ const WalletContent = React.memo(({ is_demo, is_eu }: any) => {
             })}
         >
             <ContentDivider is_demo_divider={is_demo} />
-            <WalletCFDsListing />
+            <WalletCfdsListing />
             <ContentDivider />
-            <WalletOptionsAndMultipliersListing />
-            {is_eu && EUDisclaimer}
+            <WalletOptionsAndMultipliersListing account={account} />
+            {is_eu && !is_demo && EUDisclaimer}
         </div>
     );
 });

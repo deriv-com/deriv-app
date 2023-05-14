@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import WalletHeader from 'Components/wallet-header';
-// import { TAccountCategory, TAccountStatus, TWalletCurrency, TWalletShortcode } from 'Types';
 import WalletContent from 'Components/wallet-content';
 import { CSSTransition } from 'react-transition-group';
 import { formatMoney } from '@deriv/shared';
@@ -34,7 +33,7 @@ const Wallet = React.memo(({ account, is_open_wallet }: TWallet) => {
                 setIsOpen={setIsOpen}
             />
             <CSSTransition appear in={is_open} timeout={250} classNames='wallet__transition' unmountOnExit>
-                <WalletContent is_demo={is_demo} is_eu={shortcode === 'malta'} />
+                <WalletContent is_demo={!!is_demo} is_eu={shortcode === 'malta'} account={account} />
             </CSSTransition>
         </div>
     );

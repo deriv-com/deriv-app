@@ -277,6 +277,7 @@ const mock = (): TStores => {
             setTogglePlatformType: jest.fn(),
             is_tour_open: false,
             selected_platform_type: '',
+            available_platforms: [],
         },
         menu: {
             attach: jest.fn(),

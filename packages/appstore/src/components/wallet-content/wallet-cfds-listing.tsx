@@ -9,10 +9,8 @@ import { isMobile, formatMoney } from '@deriv/shared';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
-import GetMoreAccounts from 'Components/get-more-accounts';
 import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
-import './wallet-cfds-listing.scss';
 
 type TDetailedExistingAccount = AvailableAccount &
     TDetailsOfEachMT5Loginid &
@@ -37,8 +35,6 @@ const WalletCFDsListing = () => {
         is_real,
         getExistingAccounts,
         getAccount,
-        toggleAccountTypeModalVisibility,
-        can_get_more_cfd_mt5_accounts,
         selected_account_type,
         is_eu_user,
         is_demo_low_risk,
@@ -193,14 +189,6 @@ const WalletCFDsListing = () => {
                             />
                         );
                     })}
-                    {can_get_more_cfd_mt5_accounts && (
-                        <GetMoreAccounts
-                            onClick={toggleAccountTypeModalVisibility}
-                            icon='IcAppstoreGetMoreAccounts'
-                            title={localize('Get more')}
-                            description={localize('Get more Deriv MT5 account with different type and jurisdiction.')}
-                        />
-                    )}
                 </>
             ) : (
                 <PlatformLoader />

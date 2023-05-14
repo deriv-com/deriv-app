@@ -4,14 +4,15 @@ import GridContainer from 'Components/containers/grid-container';
 import TitleCardLoader from 'Components/pre-loader/title-card-loader';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
-import './listing-container.scss';
+import { TCoreStores } from '@deriv/stores/types';
 import WalletTransferBlock from 'Components/wallet-content/wallet-transfer-block';
+import './listing-container.scss';
 
 type ListingContainerProps = {
     title: ReactNode;
     description: ReactNode;
     is_deriv_platform?: boolean;
-    wallet_data?: { currency: string; balance: string; loginid: string };
+    wallet_account?: TCoreStores['client']['accounts'][0];
     className?: string;
 };
 
@@ -19,7 +20,7 @@ const ListingContainer = ({
     title,
     description,
     is_deriv_platform = false,
-    wallet_data,
+    wallet_account,
     children,
     className,
 }: ListingContainerProps & Omit<HTMLAttributes<HTMLDivElement>, 'title'>) => {
@@ -47,7 +48,7 @@ const ListingContainer = ({
 
     const Switcher = () => {
         if (!is_deriv_platform) return null;
-        if (wallet_data) return <WalletTransferBlock wallet_data={wallet_data} />;
+        if (wallet_account) return <WalletTransferBlock wallet_account={wallet_account} />;
         return <CurrencySwitcherCard />;
     };
 

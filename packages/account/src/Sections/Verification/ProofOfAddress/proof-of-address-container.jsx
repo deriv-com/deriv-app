@@ -32,6 +32,7 @@ const ProofOfAddressContainer = ({
         has_submitted_poa: false,
         document_status: null,
         is_age_verified: false,
+        poa_address_mismatch: false,
     });
 
     React.useEffect(() => {
@@ -45,6 +46,7 @@ const ProofOfAddressContainer = ({
                     needs_poa,
                     document_status,
                     is_age_verified,
+                    poa_address_mismatch,
                 } = populateVerificationStatus(get_account_status);
                 const has_submitted_poa = document_status === PoaStatusCodes.pending && !allow_poa_resubmission;
 
@@ -59,6 +61,7 @@ const ProofOfAddressContainer = ({
                             document_status,
                             has_submitted_poa,
                             is_age_verified,
+                            poa_address_mismatch,
                         },
                     },
                     () => {
@@ -87,6 +90,7 @@ const ProofOfAddressContainer = ({
         resubmit_poa,
         has_submitted_poa,
         is_age_verified,
+        poa_address_mismatch,
     } = authentication_status;
 
     const from_platform = getPlatformRedirect(app_routing_history);
@@ -112,11 +116,13 @@ const ProofOfAddressContainer = ({
         (!is_age_verified && !allow_poa_resubmission && document_status === 'none' && is_mx_mlt)
     )
         return <NotRequired />;
-    if (has_submitted_poa) return <Submitted needs_poi={needs_poi} redirect_button={redirect_button} />;
+    if (has_submitted_poa && !poa_address_mismatch)
+        return <Submitted needs_poi={needs_poi} redirect_button={redirect_button} />;
     if (
         resubmit_poa ||
         allow_poa_resubmission ||
-        (has_restricted_mt5_account && ['expired', 'rejected', 'suspected'].includes(document_status))
+        (has_restricted_mt5_account && ['expired', 'rejected', 'suspected'].includes(document_status)) ||
+        poa_address_mismatch
     ) {
         return <ProofOfAddressForm is_resubmit onSubmit={() => onSubmit({ needs_poi })} />;
     }

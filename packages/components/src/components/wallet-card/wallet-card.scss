@@ -52,7 +52,7 @@
             border: 2px solid var(--text-red);
             background: var(--wallets-card-active-gradient-background);
         }
-        &--hover:hover {
+        &--default:hover {
             background: var(--wallets-card-active-gradient-background);
         }
     }
@@ -119,7 +119,7 @@
                 background: var(--wallets-card-active-gradient-background);
             }
 
-            &--hover:hover {
+            &--default:hover {
                 background: var(--wallets-card-active-gradient-background);
             }
         }

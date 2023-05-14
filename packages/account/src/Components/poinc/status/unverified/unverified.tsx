@@ -13,7 +13,7 @@ export const PoincUnverified = ({ onReSubmit }: TPoincUnverified) => (
         message={localize('Income verification failed')}
         text={
             <Localize
-                i18n_default_text="We are unable to verify your income. <0 /> Please check the email we've sent you for further information."
+                i18n_default_text="We were unable to verify your income. <0 /> Please check the email we've sent you for further information."
                 components={[<br key={0} />]}
             />
         }

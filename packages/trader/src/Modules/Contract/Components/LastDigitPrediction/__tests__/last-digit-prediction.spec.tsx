@@ -9,7 +9,7 @@ const mocked_props = {
     barrier: 1,
     digits: [0, 2, 3, 4, 5],
     digits_info: {
-        1544707344: {
+        '1544707344': {
             digit: 6,
             spot: '123.456',
         },

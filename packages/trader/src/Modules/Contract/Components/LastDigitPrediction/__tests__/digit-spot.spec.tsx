@@ -19,7 +19,7 @@ describe('<DigitSpot />', () => {
         expect(last_digit).toBeInTheDocument();
         expect(last_digit).toHaveClass('digits__digit-spot-last');
     });
-    it('should render last digit of current_spot', () => {
+    it('should render empty elements', () => {
         mocked_props.current_spot = null;
         render(<DigitSpot {...mocked_props} />);
         expect(screen.getByTestId('dt_digits_digit_spot_value')).toBeEmptyDOMElement();

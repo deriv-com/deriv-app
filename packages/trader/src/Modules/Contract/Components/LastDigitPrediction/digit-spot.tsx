@@ -18,7 +18,7 @@ const DigitSpot = ({ current_spot, is_selected_winning, is_lost, is_won }: TDigi
             className='digits__digit-spot-value'
             data-testid='dt_digits_digit_spot_value'
         >
-            {current_spot ? current_spot.slice(0, -1) : ''}
+            {current_spot?.slice(0, -1)}
         </Text>
         <span
             className={classNames('digits__digit-spot-last', {
@@ -28,7 +28,7 @@ const DigitSpot = ({ current_spot, is_selected_winning, is_lost, is_won }: TDigi
             })}
             data-testid='dt_digits_digit_spot_last'
         >
-            {current_spot ? current_spot.slice(-1) : ''}
+            {current_spot?.slice(-1)}
         </span>
     </React.Fragment>
 );

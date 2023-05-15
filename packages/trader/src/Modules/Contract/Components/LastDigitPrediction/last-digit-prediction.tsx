@@ -6,18 +6,17 @@ import DigitDisplay from './digit-display';
 import LastDigitPointer from './last-digit-pointer';
 import { ProposalOpenContract, TicksStreamResponse } from '@deriv/api-types';
 
-type TLastDigitPrediction = {
-    barrier: React.ComponentProps<typeof DigitDisplay>['barrier'];
+type TLastDigitPrediction = Pick<
+    React.ComponentProps<typeof DigitDisplay>,
+    'barrier' | 'is_digit_contract' | 'has_entry_spot' | 'onLastDigitSpot'
+> & {
     contract_type?: string;
     digits: number[];
-    digits_info: { [key: number]: { digit: number; spot: string } };
+    digits_info: { [key: string]: { digit: number; spot: string } };
     dimension: number;
-    is_digit_contract?: React.ComponentProps<typeof DigitDisplay>['is_digit_contract'];
-    has_entry_spot: React.ComponentProps<typeof DigitDisplay>['has_entry_spot'];
     is_ended?: boolean;
     is_trade_page: boolean;
     onDigitChange: (event: { target: { name: string; value: number } }) => void;
-    onLastDigitSpot: React.ComponentProps<typeof DigitDisplay>['onLastDigitSpot'];
     selected_digit: number | boolean;
     status?: ProposalOpenContract['status'];
     tick?: TicksStreamResponse['tick'];
@@ -81,8 +80,8 @@ const LastDigitPrediction = ({
         } = {
             DIGITMATCH: (val: number | null) => val === barrier,
             DIGITDIFF: (val: number | null) => val !== barrier && barrier !== null && !isNaN(barrier),
-            DIGITOVER: (val: number | null) => val !== null && barrier !== null && val > barrier,
-            DIGITUNDER: (val: number | null) => val !== null && barrier !== null && val < barrier,
+            DIGITOVER: (val: number | null) => !!(val && barrier) && val > barrier,
+            DIGITUNDER: (val: number | null) => !!(val && barrier) && val < barrier,
             DIGITODD: (val: number | null) => val !== null && Boolean(val % 2),
             DIGITEVEN: (val: number | null) => val !== null && !(val % 2),
         };
@@ -94,7 +93,7 @@ const LastDigitPrediction = ({
 
     const isSelectableDigitType = () => (isMobile() ? trade_type !== 'even_odd' : false);
     const digits_array = Object.keys(digits_info)
-        .sort((a, b) => Number(a) - Number(b))
+        .sort((a, b) => +a - +b)
         .map(spot_time => digits_info[+spot_time]);
     const last_contract_digit = digits_array.slice(-1)[0] || {};
 
@@ -111,7 +110,7 @@ const LastDigitPrediction = ({
     // latest last digit refers to digit and spot values from latest price
     // latest contract digit refers to digit and spot values from last digit contract in contracts array
     const latest_tick_pip_size = tick ? +tick.pip_size : null;
-    const latest_tick_ask_price = tick && tick.ask ? tick.ask.toFixed(latest_tick_pip_size ?? undefined) : null;
+    const latest_tick_ask_price = tick?.ask && latest_tick_pip_size ? tick.ask.toFixed(latest_tick_pip_size) : null;
     const latest_tick_digit = latest_tick_ask_price ? +(latest_tick_ask_price.split('').pop() || '') : null;
     const position = tick ? getOffset()[latest_tick_digit || -1] : getOffset()[last_contract_digit.digit];
     const latest_digit = !(is_won || is_lost)

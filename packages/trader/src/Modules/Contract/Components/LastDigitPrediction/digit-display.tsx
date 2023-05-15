@@ -9,31 +9,29 @@ import DigitSpot from './digit-spot';
 import LastDigitStat from './last-digit-stat';
 import { ProposalOpenContract } from '@deriv/api-types';
 
-type TDigitDisplay = {
-    barrier: number | null;
-    is_digit_contract?: boolean;
-    has_entry_spot: boolean;
-    is_lost: React.ComponentProps<typeof Digit>['is_lost'] | React.ComponentProps<typeof DigitSpot>['is_lost'];
-    is_max: React.ComponentProps<typeof LastDigitStat>['is_max'];
-    is_min: React.ComponentProps<typeof LastDigitStat>['is_min'];
-    is_won: React.ComponentProps<typeof Digit>['is_won'] | React.ComponentProps<typeof DigitSpot>['is_won'];
-    onSelect: ((digit_value: number) => void) | null;
-    latest_digit: {
-        digit: number | null;
-        spot: string | null;
+type TDigitDisplay = Pick<React.ComponentProps<typeof DigitSpot>, 'is_lost' | 'is_won'> &
+    Pick<React.ComponentProps<typeof Digit>, 'is_lost' | 'is_won'> &
+    Pick<React.ComponentProps<typeof LastDigitStat>, 'is_max' | 'is_min'> & {
+        barrier: number | null;
+        is_digit_contract?: boolean;
+        has_entry_spot: boolean;
+        onSelect: ((digit_value: number) => void) | null;
+        latest_digit: {
+            digit: number | null;
+            spot: string | null;
+        };
+        selected_digit: number | boolean;
+        status: ProposalOpenContract['status'];
+        stats?: number | null;
+        value: number;
+        onLastDigitSpot?: (value: {
+            spot: TDigitDisplay['latest_digit']['spot'];
+            is_lost: TDigitDisplay['is_lost'];
+            is_selected_winning: boolean;
+            is_latest: boolean;
+            is_won: TDigitDisplay['is_won'];
+        }) => void;
     };
-    selected_digit: number | boolean;
-    status: ProposalOpenContract['status'];
-    stats?: number | null;
-    value: number;
-    onLastDigitSpot?: (value: {
-        spot: TDigitDisplay['latest_digit']['spot'];
-        is_lost: TDigitDisplay['is_lost'];
-        is_selected_winning: boolean;
-        is_latest: boolean;
-        is_won: TDigitDisplay['is_won'];
-    }) => void;
-};
 const DigitDisplay = ({
     barrier,
     is_digit_contract,

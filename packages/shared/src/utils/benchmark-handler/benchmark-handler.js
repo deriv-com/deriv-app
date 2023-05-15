@@ -1,3 +1,12 @@
+/**
+ * The function is intended to be used as a callback for the React Profiler.
+ * @param {string} id
+ * @param {'mount'|'update'|'nested-update'} phase
+ * @param {number} actual_time
+ * @param {number} base_duration
+ * @param {number} start_time
+ * @param {number} commit_time
+ */
 export const benchmarkHandler = (id, phase, actual_time, base_duration, start_time, commit_time) => {
     if (phase === 'mount') {
         // send to data layer

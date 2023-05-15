@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Icon, Text, Button } from '@deriv/components';
 import { isMobile, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { connect } from '../../Stores/connect';
 import RootStore from 'Stores/index';
 
 type TIconWithMessage = {

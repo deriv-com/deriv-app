@@ -1,37 +1,40 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { GetSettings } from '@deriv/api-types';
+import { useFetch, useRequest } from '@deriv/api';
 import { Checkbox, HintBox, Loading, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { filterObjProperties, isMobile, toMoment, validLength, validName, WS } from '@deriv/shared';
-import FormBody from 'Components/form-body';
-import LoadErrorMessage from 'Components/load-error-message';
-import PersonalDetailsForm from 'Components/forms/personal-details-form';
-import { validate, makeSettingsRequest } from 'Helpers/utils';
-
-type TValues = { [p: string]: string };
+import {
+    filterObjProperties,
+    isEmptyObject,
+    isMobile,
+    removeEmptyPropertiesFromObject,
+    toMoment,
+    WS,
+} from '@deriv/shared';
+import FormBody from '../../form-body';
+import LoadErrorMessage from '../../load-error-message';
+import PersonalDetailsForm from '../../forms/personal-details-form.jsx';
+import { makeSettingsRequest, validate, validateName } from '../../../Helpers/utils';
+import { TInputFieldsValues } from 'Types';
 
 type TRestState = {
-    api_error: string;
+    api_error?: string;
     show_form: boolean;
     errors?: boolean;
-    form_initial_values: TValues;
+    form_initial_values: TInputFieldsValues;
     changeable_fields: string[];
 };
 
 type TPoiConfirmWithExampleFormContainer = {
-    account_settings: GetSettings;
     getChangeableFields: () => string[];
     onFormConfirm?: () => void;
 };
 
 const PoiConfirmWithExampleFormContainer = ({
-    account_settings,
     getChangeableFields,
     onFormConfirm,
 }: TPoiConfirmWithExampleFormContainer) => {
-    const [is_loading, setIsLoading] = React.useState(true);
     const [checked, setChecked] = React.useState(false);
     const [rest_state, setRestState] = React.useState<TRestState>({
         show_form: true,
@@ -40,98 +43,92 @@ const PoiConfirmWithExampleFormContainer = ({
         api_error: '',
     });
 
+    const { data: account_settings_data, error, isLoading: is_loading_init } = useFetch('get_settings');
+    const { isLoading: is_loading_update, mutateAsync } = useRequest('set_settings');
+
     React.useEffect(() => {
-        const initializeFormValues = () => {
-            WS.wait('get_settings').then(() => {
-                const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
-                const form_initial_values = filterObjProperties(account_settings, visible_settings);
-                if (form_initial_values.date_of_birth) {
-                    form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format(
-                        'YYYY-MM-DD'
-                    );
-                }
-                setRestState({
-                    ...rest_state,
-                    changeable_fields: getChangeableFields(),
-                    form_initial_values,
-                });
-                setIsLoading(false);
+        if (error?.message) {
+            setRestState(prevState => ({ ...prevState, api_error: error.message }));
+        }
+    }, [error]);
+
+    React.useEffect(() => {
+        if (account_settings_data) {
+            const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
+            const form_initial_values = filterObjProperties(account_settings_data, visible_settings);
+            if (form_initial_values.date_of_birth) {
+                form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format('YYYY-MM-DD');
+            }
+            setRestState({
+                ...rest_state,
+                changeable_fields: getChangeableFields(),
+                form_initial_values: { ...form_initial_values },
             });
-        };
+        }
+    }, [account_settings_data]);
 
-        initializeFormValues();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [account_settings]);
-
-    const onSubmit = async (values: TValues, { setStatus, setSubmitting }: FormikHelpers<TValues>) => {
+    const onSubmit = async (
+        values: TInputFieldsValues,
+        { setStatus, setSubmitting }: FormikHelpers<TInputFieldsValues>
+    ) => {
         if (checked) return;
         setStatus({ error_msg: '' });
         const request = makeSettingsRequest(
             values,
             rest_state?.changeable_fields ? [...rest_state.changeable_fields] : []
         );
-        const data = await WS.setSettings(request);
 
-        if (data.error) {
-            setStatus({ error_msg: data.error.message });
+        try {
+            const update_data_response = await mutateAsync([{ payload: request }]);
+            if (update_data_response) {
+                setChecked(true);
+
+                //TODO: remove additional getSettings request after implementation useFetch in personal-details
+                const response = await WS.authorized.storage.getSettings();
+                if (response.error) {
+                    setRestState({ ...rest_state, api_error: response.error.message });
+                    return;
+                }
+                setRestState({ ...rest_state, ...response.get_settings });
+                setChecked(true);
+
+                if (onFormConfirm) {
+                    setTimeout(() => {
+                        onFormConfirm();
+                    }, 500);
+                }
+            }
+        } catch (e) {
+            setStatus({ error_msg: e?.message });
+        } finally {
             setSubmitting(false);
-        } else {
-            const response = await WS.authorized.storage.getSettings();
-            if (response.error) {
-                setRestState({ ...rest_state, api_error: response.error.message });
-                return;
-            }
-            setRestState({ ...rest_state, ...response.get_settings });
-            setChecked(true);
-            setIsLoading(false);
-
-            if (onFormConfirm) {
-                setTimeout(() => {
-                    onFormConfirm();
-                }, 500);
-            }
         }
     };
 
-    const validateFields = (values: TValues) => {
-        const errors: TValues = {};
+    const validateFields = (values: TInputFieldsValues) => {
+        const errors: TInputFieldsValues = { first_name: '', last_name: '' };
         const validateValues = validate(errors, values);
-
         const required_fields = ['first_name', 'last_name', 'date_of_birth'];
-
         validateValues(val => val, required_fields, localize('This field is required'));
-
-        const min_name = 2;
-        const max_name = 50;
-        const validateName = (name: string, field: string) => {
-            if (name) {
-                if (!validLength(name.trim(), { min: min_name, max: max_name })) {
-                    errors[field] = localize('You should enter 2-50 characters.');
-                } else if (!validName(name)) {
-                    errors[field] = localize('Letters, spaces, periods, hyphens, apostrophes only.');
-                }
-            }
-        };
-        validateName(values.first_name, 'first_name');
-        validateName(values.last_name, 'last_name');
-
-        setRestState({ ...rest_state, errors: Object.keys(errors).length > 0 });
-        return errors;
+        errors.first_name = validateName(values.first_name);
+        errors.last_name = validateName(values.last_name);
+        setRestState({ ...rest_state, errors: !isEmptyObject(removeEmptyPropertiesFromObject(errors)) });
+        return removeEmptyPropertiesFromObject(errors);
     };
 
-    const {
-        form_initial_values: { ...form_initial_values },
-        api_error,
-    } = rest_state;
+    if (rest_state.api_error) return <LoadErrorMessage error_message={rest_state.api_error} />;
 
-    if (api_error) return <LoadErrorMessage error_message={api_error} />;
-
-    if (is_loading) {
+    if (is_loading_init) {
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
 
     return (
-        <Formik initialValues={form_initial_values} enableReinitialize onSubmit={onSubmit} validate={validateFields}>
+        <Formik
+            initialValues={rest_state.form_initial_values}
+            enableReinitialize
+            onSubmit={onSubmit}
+            validate={validateFields}
+        >
             {({
                 values,
                 errors,
@@ -160,7 +157,8 @@ const PoiConfirmWithExampleFormContainer = ({
                         <button
                             type='submit'
                             className={classNames('account-form__poi-confirm-example--button', {
-                                'account-form__poi-confirm-example--button__disabled': checked,
+                                'account-form__poi-confirm-example--button__disabled':
+                                    checked || !isEmptyObject(errors),
                             })}
                         >
                             <Checkbox
@@ -172,7 +170,7 @@ const PoiConfirmWithExampleFormContainer = ({
                                         )}
                                     </Text>
                                 }
-                                disabled={isSubmitting}
+                                disabled={isSubmitting || is_loading_update}
                             />
                         </button>
                         {status?.error_msg && (

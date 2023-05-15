@@ -7,17 +7,12 @@ import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { cryptoMathRandom, isMobile, WS } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
-import ErrorMessage from 'Components/error-component';
-import getOnfidoPhrases from 'Constants/onfido-phrases';
-import MissingPersonalDetails from 'Components/poi/missing-personal-details';
-import PoiConfirmWithExampleFormContainer from 'Components/poi/poi-confirm-with-example-form-container';
-import OnfidoSdkView from 'Sections/Verification/ProofOfIdentity/onfido-sdk-view';
-
-type TAPIError = {
-    code?: string;
-    message?: string;
-    type?: string;
-};
+import ErrorMessage from '../../../Components/error-component';
+import getOnfidoPhrases from '../../../Constants/onfido-phrases';
+import MissingPersonalDetails from '../../../Components/poi/missing-personal-details';
+import PoiConfirmWithExampleFormContainer from '../../../Components/poi/poi-confirm-with-example-form-container';
+import OnfidoSdkView from './onfido-sdk-view';
+import { TAPIError } from 'Types';
 
 type TServiceToken = {
     error?: TAPIError;
@@ -25,7 +20,6 @@ type TServiceToken = {
 };
 
 type TOnfidoSdkViewContainer = {
-    account_settings: GetSettings;
     country_code: string;
     documents_supported:
         | string[]
@@ -37,7 +31,6 @@ type TOnfidoSdkViewContainer = {
 };
 
 const OnfidoSdkViewContainer = ({
-    account_settings,
     country_code,
     documents_supported,
     getChangeableFields,
@@ -246,7 +239,6 @@ const OnfidoSdkViewContainer = ({
                     >
                         <div className='account-form__poi-confirm-example_wrapper account-form__poi-confirm-example_container'>
                             <PoiConfirmWithExampleFormContainer
-                                account_settings={account_settings}
                                 getChangeableFields={getChangeableFields}
                                 onFormConfirm={onConfirm}
                             />

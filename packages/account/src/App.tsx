@@ -1,4 +1,5 @@
 import React from 'react';
+import { APIProvider } from '@deriv/api';
 import Routes from './Containers/routes';
 import ResetTradingPassword from './Containers/reset-trading-password';
 import { MobxContentProvider } from './Stores/connect';
@@ -19,8 +20,10 @@ const App = ({ passthrough }: TAppProps) => {
 
     return (
         <MobxContentProvider store={root_store}>
-            <Routes />
-            <ResetTradingPassword />
+            <APIProvider>
+                <Routes />
+                <ResetTradingPassword />
+            </APIProvider>
         </MobxContentProvider>
     );
 };

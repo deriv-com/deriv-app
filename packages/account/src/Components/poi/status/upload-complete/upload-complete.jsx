@@ -3,9 +3,9 @@ import { PropTypes } from 'prop-types';
 import { Icon, Text } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import PoaButton from 'Components/poa/poa-button';
-import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
-import IconMessageContent from 'Components/icon-message-content';
+import PoaButton from '../../../poa/poa-button';
+import { ContinueTradingButton } from '../../../poa/continue-trading-button/continue-trading-button';
+import IconMessageContent from '../../../icon-message-content';
 
 export const UploadComplete = ({ needs_poa, redirect_button, is_from_external, is_manual_upload = false }) => {
     const { is_appstore } = React.useContext(PlatformContext);

@@ -1,4 +1,4 @@
-import { getUrlBase, filterObjProperties, toMoment } from '@deriv/shared';
+import { getUrlBase, filterObjProperties, toMoment, validLength, validName } from '@deriv/shared';
 
 import { localize } from '@deriv/translations';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
@@ -247,4 +247,15 @@ export const makeSettingsRequest = (values: FormikValues, changeable_fields: str
     }
 
     return request;
+};
+
+export const validateName = (name: string) => {
+    if (name) {
+        if (!validLength(name.trim(), { min: 2, max: 50 })) {
+            return localize('You should enter 2-50 characters.');
+        } else if (!validName(name)) {
+            return localize('Letters, spaces, periods, hyphens, apostrophes only.');
+        }
+    }
+    return '';
 };

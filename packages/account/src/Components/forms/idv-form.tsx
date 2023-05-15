@@ -5,7 +5,7 @@ import { ResidenceList } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 import { formatInput, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
 import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative, Text } from '@deriv/components';
-import { getDocumentData, preventEmptyClipboardPaste, generatePlaceholderText } from 'Helpers/utils';
+import { getDocumentData, preventEmptyClipboardPaste, generatePlaceholderText } from '../../Helpers/utils';
 
 type TDocumentList = Array<{
     id: string;

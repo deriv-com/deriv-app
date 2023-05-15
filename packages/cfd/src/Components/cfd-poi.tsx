@@ -1,6 +1,8 @@
-import { ProofOfIdentityContainerForMt5 } from '@deriv/account';
-import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
 import React from 'react';
+import { GetAccountStatus, GetSettings, ResidenceList } from '@deriv/api-types';
+//TODO: remove this ts-ignore once ProofOfIdentityContainerForMt5 is converted to TS
+// @ts-ignore
+import ProofOfIdentityContainerForMt5 from '@deriv/account/src/Sections/Verification/ProofOfIdentity/proof-of-identity-container-for-mt5.jsx';
 import RootStore from '../Stores/index';
 import { connect } from '../Stores/connect';
 

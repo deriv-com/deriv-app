@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { WS, IDV_NOT_APPLICABLE_OPTION, makeSettingsRequest } from '@deriv/shared';
-import Unsupported from 'Components/poi/status/unsupported';
+import Unsupported from '../../../Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
 import { IdvDocSubmitOnSignup } from '../../../Components/poi/poi-form-on-signup/idv-doc-submit-on-signup/idv-doc-submit-on-signup';
@@ -116,7 +116,6 @@ const POISubmissionForMT5 = ({
                         {({ setRef, height }) => (
                             <div ref={setRef} style={{ height }}>
                                 <OnfidoUpload
-                                    account_settings={account_settings}
                                     getChangeableFields={getChangeableFields}
                                     country_code={country_code}
                                     documents_supported={documents_supported}

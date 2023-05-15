@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import IconMessageContent from 'Components/icon-message-content';
+import IconMessageContent from '../icon-message-content';
 
 const UnsupportedFailed = ({ error }) => (
     <IconMessageContent

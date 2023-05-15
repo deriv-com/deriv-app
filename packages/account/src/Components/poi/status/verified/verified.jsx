@@ -1,7 +1,7 @@
 import { Icon } from '@deriv/components';
-import IconMessageContent from 'Components/icon-message-content';
+import IconMessageContent from '../../../icon-message-content';
 import { PlatformContext } from '@deriv/shared';
-import PoaButton from 'Components/poa/poa-button';
+import PoaButton from '../../../poa/poa-button';
 import { PropTypes } from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';

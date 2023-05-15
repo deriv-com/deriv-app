@@ -20,13 +20,15 @@ const OnfidoSdkView = ({
     data_testid,
 }: TOnfidoSdkView) => {
     const [is_status_message_visible, setIsStatusMessageVisible] = React.useState(false);
+    const transition_in_timeout_ref = React.useRef<ReturnType<typeof setTimeout>>();
+    const transition_out_timeout_ref = React.useRef<ReturnType<typeof setTimeout>>();
 
     React.useEffect(() => {
         const onConfirm = () => {
-            setTimeout(() => {
+            transition_in_timeout_ref.current = setTimeout(() => {
                 setIsStatusMessageVisible(true);
             }, 800);
-            setTimeout(() => {
+            transition_out_timeout_ref.current = setTimeout(() => {
                 setIsStatusMessageVisible(false);
                 // the requirement is to hide the message after 5 sec, 4650 here + 350 in CSSTransition to make it smoother
             }, 4650);
@@ -36,6 +38,13 @@ const OnfidoSdkView = ({
             onConfirm();
         }
     }, [is_confirmed]);
+
+    React.useEffect(() => {
+        return () => {
+            clearTimeout(transition_in_timeout_ref.current);
+            clearTimeout(transition_out_timeout_ref.current);
+        };
+    }, []);
 
     return (
         <div className='onfido-container-view_wrapper'>

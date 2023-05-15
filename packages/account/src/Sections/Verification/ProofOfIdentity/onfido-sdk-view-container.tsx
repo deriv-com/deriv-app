@@ -52,7 +52,6 @@ const OnfidoSdkViewContainer = ({
     const [is_onfido_disabled, setIsOnfidoDisabled] = React.useState(true);
     const token_timeout_ref = React.useRef<ReturnType<typeof setTimeout>>();
     const [is_confirmed, setIsConfirmed] = React.useState(false);
-
     // IDV country code - Alpha ISO2. Onfido country code - Alpha ISO3
     // Ensures that any form of country code passed here is supported.
     const onfido_country_code =
@@ -210,6 +209,9 @@ const OnfidoSdkViewContainer = ({
                 fetchServiceToken();
             }, Math.pow(2, retry_count) + cryptoMathRandom() * 1000);
         }
+        return () => {
+            clearTimeout(token_timeout_ref);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [getOnfidoServiceToken, initOnfido, retry_count]);
 

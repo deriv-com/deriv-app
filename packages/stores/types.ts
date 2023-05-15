@@ -1,4 +1,3 @@
-import { BrandConfig } from '../appstore/src/constants/platform-config';
 import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
 
 import type { RouteComponentProps } from 'react-router';
@@ -301,7 +300,8 @@ type TTradersHubStore = {
     setTogglePlatformType: (value: string) => void;
     is_tour_open: boolean;
     selected_platform_type: string;
-    available_platforms: BrandConfig[];
+    // TODO: must be BrandConfig type but can't import it from appstore. Maybe we need to create the same type in 'stores' package. Have to think about this!
+    available_platforms: any[];
     CFDs_restricted_countries: boolean;
     is_demo_low_risk: boolean;
     selected_region: 'Non-EU' | 'EU' | 'All';

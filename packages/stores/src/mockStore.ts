@@ -252,6 +252,7 @@ const mock = (): TStores => {
             is_ready_to_deposit_modal_visible: false,
             is_need_real_account_for_cashier_modal_visible: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
+            is_onscreen_keyboard_active: false,
         },
         traders_hub: {
             closeModal: jest.fn(),

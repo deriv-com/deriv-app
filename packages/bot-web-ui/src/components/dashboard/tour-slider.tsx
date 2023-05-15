@@ -137,7 +137,7 @@ const TourSlider = ({
                             weight='less-prominent'
                             line_height='s'
                             size='xxs'
-                        >{`${step_key}/7`}</Text>
+                        >{`${step_key}/6`}</Text>
                         <Text
                             color='prominent'
                             weight='--text-less-prominent'

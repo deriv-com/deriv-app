@@ -184,7 +184,7 @@ const Dashboard = ({
             setBotBuilderTourState(false);
             setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
         }
-    }, [active_tab, DBOT_TABS]);
+    }, [active_tab]);
 
     const handleTabChange = React.useCallback(
         (tab_index: number) => {

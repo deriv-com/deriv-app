@@ -8,7 +8,6 @@ import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
 import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import { getImageLocation } from '../../public-path';
 import RunPanel from '../run-panel';
 import BotNotification from './bot-notification';
 import DashboardComponent from './dashboard-component';
@@ -82,7 +81,7 @@ const Dashboard = ({
     setTourDialogVisibility,
     setHasTourEnded,
 }: TDashboard) => {
-    const { BOT_BUILDER, CHART } = DBOT_TABS;
+    const { DASHBOARD, BOT_BUILDER, CHART } = DBOT_TABS;
     const is_tour_complete = React.useRef(true);
     let bot_tour_token: string | number = '';
     let onboard_tour_token: string | number = '';
@@ -107,7 +106,7 @@ const Dashboard = ({
     };
 
     React.useEffect(() => {
-        if (active_tab === 1) {
+        if (active_tab === BOT_BUILDER) {
             if (is_drawer_open) {
                 initTrashCan(400);
             } else {
@@ -117,15 +116,15 @@ const Dashboard = ({
                 window.dispatchEvent(new Event('resize')); // make the trash can work again after resize
             }, 500);
         }
-        if (active_tab === 0 && has_file_loaded) {
+        if (active_tab === DASHBOARD && has_file_loaded) {
             onEntered();
         }
-        if (active_tab === 0) {
+        if (active_tab === DASHBOARD) {
             setTourType('onboard_tour');
             onboard_tour_token = getTourSettings('token');
             setOnBoardingTokenCheck(onboard_tour_token);
         }
-        if (active_tab === 1 && !has_started_onboarding_tour) {
+        if (active_tab === BOT_BUILDER && !has_started_onboarding_tour) {
             setTourType('bot_builder');
             bot_tour_token = getTourSettings('token');
             setBotBuilderTokenCheck(bot_tour_token);
@@ -162,10 +161,10 @@ const Dashboard = ({
 
     React.useEffect(() => {
         const dbot_settings = JSON.parse(localStorage.getItem('dbot_settings') as string);
-        const has_onboard_token_set = active_tab === 0 && !dbot_settings?.onboard_tour_token;
-        const has_bot_builder_token_set = active_tab === 1 && !dbot_settings?.bot_builder_token;
-        const show_tour_dialog_desktop = (active_tab === 0 && !is_mobile) || active_tab === 1;
-        const show_tour_dialog_mobile = active_tab !== 0 && is_mobile;
+        const has_onboard_token_set = active_tab === DASHBOARD && !dbot_settings?.onboard_tour_token;
+        const has_bot_builder_token_set = active_tab === BOT_BUILDER && !dbot_settings?.bot_builder_token;
+        const show_tour_dialog_desktop = (active_tab === DASHBOARD && !is_mobile) || active_tab === BOT_BUILDER;
+        const show_tour_dialog_mobile = active_tab !== DASHBOARD && is_mobile;
         if (has_bot_builder_token_set || has_onboard_token_set) {
             if (is_mobile && has_started_onboarding_tour) {
                 setTourActive(true);
@@ -180,12 +179,12 @@ const Dashboard = ({
                 }
             }
         }
-        if (has_started_bot_builder_tour && active_tab !== 1 && is_mobile) {
+        if (has_started_bot_builder_tour && active_tab !== BOT_BUILDER && is_mobile) {
             setTourActive(false);
             setBotBuilderTourState(false);
             setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
         }
-    }, [active_tab]);
+    }, [active_tab, DBOT_TABS]);
 
     const handleTabChange = React.useCallback(
         (tab_index: number) => {
@@ -208,12 +207,12 @@ const Dashboard = ({
             <div className='dashboard__main'>
                 <div
                     className={classNames('dashboard__container', {
-                        'dashboard__container--active': has_tour_started && active_tab === 0 && is_mobile,
+                        'dashboard__container--active': has_tour_started && active_tab === DASHBOARD && is_mobile,
                     })}
                 >
                     <TourTriggrerDialog />
                     {has_tour_started &&
-                        active_tab === 0 &&
+                        active_tab === DASHBOARD &&
                         (is_mobile ? (
                             <TourSlider />
                         ) : (

@@ -8,6 +8,7 @@ import {
     switch_to_tick_chart,
     isCallPut,
     getContractTypesConfig,
+    getBarrierPipSize,
 } from '@deriv/shared';
 import ContractStore from './contract-store';
 import BaseStore from './base-store';
@@ -225,23 +226,43 @@ export default class ContractTradeStore extends BaseStore {
         const {
             accumulators_high_barrier,
             accumulators_low_barrier,
+            previous_symbol_spot,
             previous_symbol_spot_time,
             contract_barriers_data: {
                 accumulators_high_barrier: contract_high_barrier = accumulators_high_barrier,
                 accumulators_low_barrier: contract_low_barrier = accumulators_low_barrier,
+                previous_symbol_spot: contract_prev_spot = previous_symbol_spot,
                 previous_symbol_spot_time: contract_prev_spot_time = previous_symbol_spot_time,
             } = {},
         } = this.accumulator_barriers_data || {};
         const { status } = this.last_contract.contract_info || {};
-        const [previous_spot_time, high_barrier, low_barrier] =
+        const [high_barrier, low_barrier, previous_spot, previous_spot_time] =
             status === 'open'
-                ? [contract_prev_spot_time, contract_high_barrier, contract_low_barrier]
-                : [previous_symbol_spot_time, accumulators_high_barrier, accumulators_low_barrier];
+                ? [contract_high_barrier, contract_low_barrier, contract_prev_spot, contract_prev_spot_time]
+                : [
+                      accumulators_high_barrier,
+                      accumulators_low_barrier,
+                      previous_symbol_spot,
+                      previous_symbol_spot_time,
+                  ];
         if (trade_type === 'accumulator' && previous_spot_time && high_barrier) {
+            const pip_size = getBarrierPipSize(high_barrier);
+            const high_barrier_difference = (high_barrier - previous_spot)?.toFixed(pip_size);
+            const low_barrier_difference = (previous_spot - low_barrier)?.toFixed(pip_size);
+            // console.log(
+            //     `high_barrier: ${high_barrier}, previous_spot: ${previous_spot}, unrounded difference: ${high_barrier - previous_spot}`
+            // );
+            // console.log(
+            //     `low_barrier: ${low_barrier}, previous_spot: ${previous_spot}, unrounded difference: ${previous_spot - low_barrier}`
+            // );
             markers.push({
                 type: 'TickContract',
                 contract_info: {
-                    is_accumulators_trade_without_contract: status !== 'open',
+                    is_accumulator_trade_without_contract: status !== 'open',
+                    accu_barriers_difference: {
+                        high: `+${high_barrier_difference}`,
+                        low: `-${low_barrier_difference}`,
+                    },
                 },
                 key: 'dtrader_accumulator_barriers',
                 price_array: [high_barrier, low_barrier],

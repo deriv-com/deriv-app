@@ -144,13 +144,14 @@ const draw_path = (ctx, { zoom, top, left, icon }) => {
 const draw_shaded_barriers = ({
     ctx,
     start_left,
+    text,
     top,
     bottom,
     stroke_color,
     fill_color,
     has_persistent_borders,
     scale,
-    previous_tick_color,
+    previous_tick,
 }) => {
     const end_left = ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
     const end_top = ctx.canvas.offsetHeight - ctx.canvas.parentElement.stx.xaxisHeight;
@@ -167,6 +168,18 @@ const draw_shaded_barriers = ({
     ctx.strokeStyle = stroke_color;
 
     if (is_top_visible || has_persistent_borders) {
+        // draw difference between high barrier and previous spot price
+        if (text?.high) {
+            render_label({
+                color: stroke_color,
+                ctx,
+                font: '14px IBM Plex Sans',
+                text: text?.high,
+                text_align: 'right',
+                x: end_left - 1,
+                y: displayed_top - 10,
+            });
+        }
         // draw bottom barrier with arrow
         ctx.fillStyle = stroke_color;
         ctx.beginPath();
@@ -178,25 +191,40 @@ const draw_shaded_barriers = ({
         ctx.fill();
         ctx.stroke();
     }
-
-    ctx.save();
+    const global_composite_operation = ctx.globalCompositeOperation;
     ctx.globalCompositeOperation = 'destination-over';
-    if (previous_tick_color) {
+    if (previous_tick?.color) {
         // draw previous tick marker
-        ctx.fillStyle = previous_tick_color;
+        ctx.save();
+        ctx.strokeStyle = previous_tick?.color;
+        ctx.fillStyle = previous_tick?.color;
         ctx.beginPath();
-        ctx.arc(start_left - 1 * scale, middle_top, 2 * scale, 0, Math.PI * 2);
+        ctx.arc(start_left - 1 * scale, middle_top, previous_tick?.radius, 0, Math.PI * 2);
         ctx.fill();
+        ctx.stroke();
+        ctx.restore();
     }
     // draw dashed line between barriers to visually accentuate that they're related to the previous tick
     ctx.beginPath();
-    ctx.setLineDash([2, 3]);
-    ctx.moveTo(start_left + 1.5 * scale, middle_top);
+    ctx.setLineDash([2, 4]);
+    ctx.moveTo(start_left + previous_tick?.radius, middle_top);
     ctx.lineTo(end_left, middle_top);
     ctx.stroke();
-    ctx.restore();
+    ctx.globalCompositeOperation = global_composite_operation;
 
     if (is_bottom_visible || has_persistent_borders) {
+        // draw difference between low barrier and previous spot price
+        if (text?.low) {
+            render_label({
+                color: stroke_color,
+                ctx,
+                font: '14px IBM Plex Sans',
+                text: text?.low,
+                text_align: 'right',
+                x: end_left - 1,
+                y: displayed_bottom + 12,
+            });
+        }
         // draw bottom barrier with arrow
         ctx.fillStyle = stroke_color;
         ctx.beginPath();
@@ -213,13 +241,18 @@ const draw_shaded_barriers = ({
     ctx.fillRect(start_left, displayed_top, end_left - start_left, Math.abs(displayed_bottom - displayed_top));
 };
 
-const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
-    const scale = calc_scale(zoom);
+const render_label = ({ color, ctx, font, text, text_align, tick: { zoom, left, top } = {}, x, y }) => {
+    const scale = zoom && calc_scale(zoom);
     const size = Math.floor(scale * 3 + 7);
-    ctx.font = `${size}px Roboto`;
+    if (color) ctx.fillStyle = color;
+    if (text_align) ctx.textAlign = text_align || 'start';
+    ctx.font = font || `${size}px Roboto`;
+
     text.split(/\n/).forEach((line, idx) => {
         const w = Math.ceil(ctx.measureText(line).width);
-        ctx.fillText(line, left - 5 - w, top + idx * size + 1);
+        const x_coord = x || left - 5 - w;
+        const y_coord = y || top + idx * size + 1;
+        ctx.fillText(line, x_coord, y_coord);
     });
 };
 
@@ -249,11 +282,12 @@ const TickContract = RawMarkerMaker(
         is_in_contract_details,
         granularity,
         contract_info: {
+            accu_barriers_difference,
             contract_type,
             // exit_tick_time,
             status,
             profit,
-            is_accumulators_trade_without_contract,
+            is_accumulator_trade_without_contract,
             is_sold,
             // tick_stream,
             tick_count,
@@ -283,17 +317,21 @@ const TickContract = RawMarkerMaker(
         const previous_tick = ticks[ticks.length - 2] || exit;
         const opacity = is_sold ? calc_opacity(start.left, exit.left) : '';
 
-        if (start && is_accumulators_trade_without_contract) {
+        if (start && is_accumulator_trade_without_contract) {
             // draw 2 barriers with a shade between them for ACCU trade without contracts
             draw_shaded_barriers({
                 ctx,
                 start_left: start.left,
                 fill_color: getColor({ status: 'accu_shade', is_dark_theme }),
                 stroke_color: getColor({ status: 'open', is_dark_theme }),
-                previous_tick_color: getColor({ status: 'fg', is_dark_theme }) + opacity,
+                previous_tick: {
+                    color: getColor({ status: 'fg', is_dark_theme }) + opacity,
+                    radius: 2 * scale,
+                },
                 top: barrier,
                 bottom: barrier_2,
                 scale,
+                text: accu_barriers_difference,
             });
             return;
         }
@@ -313,8 +351,12 @@ const TickContract = RawMarkerMaker(
                 stroke_color: getColor({ status: 'won', is_dark_theme }),
                 top: barrier,
                 bottom: barrier_2,
-                previous_tick_color: !is_in_contract_details && color + opacity,
+                previous_tick: !is_in_contract_details && {
+                    color: color + opacity,
+                    radius: 1.5 * scale,
+                },
                 scale,
+                text: !is_in_contract_details && accu_barriers_difference,
             });
         }
         if (is_in_contract_details) return;

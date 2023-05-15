@@ -1,4 +1,4 @@
-import { action, computed, observable, toJS, makeObservable, override, reaction } from 'mobx';
+import { action, computed, observable, toJS, makeObservable, override, reaction, runInAction } from 'mobx';
 import {
     isAccumulatorContract,
     isDesktop,
@@ -104,7 +104,7 @@ export default class ContractTradeStore extends BaseStore {
         current_symbol_spot_time,
         has_open_contract,
     }) {
-        const first_data_batch = {
+        const barriers_data = {
             current_symbol_spot,
             current_symbol_spot_time,
         };
@@ -114,29 +114,31 @@ export default class ContractTradeStore extends BaseStore {
                 ? {
                       contract_barriers_data: {
                           ...this.accumulator_barriers_data.contract_barriers_data,
-                          ...first_data_batch,
+                          ...barriers_data,
                       },
                   }
-                : first_data_batch),
+                : barriers_data),
         };
         this.accu_barriers_timeout_id = setTimeout(() => {
-            const second_data_batch = {
-                previous_symbol_spot: current_symbol_spot,
-                previous_symbol_spot_time: current_symbol_spot_time,
-                accumulators_high_barrier,
-                accumulators_low_barrier,
-            };
-            this.accumulator_barriers_data = {
-                ...this.accumulator_barriers_data,
-                ...(has_open_contract
-                    ? {
-                          contract_barriers_data: {
-                              ...this.accumulator_barriers_data.contract_barriers_data,
-                              ...second_data_batch,
-                          },
-                      }
-                    : second_data_batch),
-            };
+            runInAction(() => {
+                const delayed_barriers_data = {
+                    previous_symbol_spot: current_symbol_spot,
+                    previous_symbol_spot_time: current_symbol_spot_time,
+                    accumulators_high_barrier,
+                    accumulators_low_barrier,
+                };
+                this.accumulator_barriers_data = {
+                    ...this.accumulator_barriers_data,
+                    ...(has_open_contract
+                        ? {
+                              contract_barriers_data: {
+                                  ...this.accumulator_barriers_data.contract_barriers_data,
+                                  ...delayed_barriers_data,
+                              },
+                          }
+                        : delayed_barriers_data),
+                };
+            });
         }, 320);
     }
 

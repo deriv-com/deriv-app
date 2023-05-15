@@ -4,11 +4,18 @@ import { Form, Formik, FormikHelpers } from 'formik';
 import { GetSettings } from '@deriv/api-types';
 import { Checkbox, HintBox, Loading, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { filterObjProperties, isMobile, toMoment, validLength, validName, WS } from '@deriv/shared';
+import {
+    filterObjProperties,
+    isEmptyObject,
+    isMobile,
+    removeEmptyPropertiesFromObject,
+    toMoment,
+    WS,
+} from '@deriv/shared';
 import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
-import { validate, makeSettingsRequest } from 'Helpers/utils';
+import { makeSettingsRequest, validate, validateName } from 'Helpers/utils';
 
 type TValues = { [p: string]: string };
 
@@ -101,22 +108,11 @@ const PoiConfirmWithExampleFormContainer = ({
 
         validateValues(val => val, required_fields, localize('This field is required'));
 
-        const min_name = 2;
-        const max_name = 50;
-        const validateName = (name: string, field: string) => {
-            if (name) {
-                if (!validLength(name.trim(), { min: min_name, max: max_name })) {
-                    errors[field] = localize('You should enter 2-50 characters.');
-                } else if (!validName(name)) {
-                    errors[field] = localize('Letters, spaces, periods, hyphens, apostrophes only.');
-                }
-            }
-        };
-        validateName(values.first_name, 'first_name');
-        validateName(values.last_name, 'last_name');
+        errors.first_name = validateName(values.first_name);
+        errors.last_name = validateName(values.last_name);
 
-        setRestState({ ...rest_state, errors: Object.keys(errors).length > 0 });
-        return errors;
+        setRestState({ ...rest_state, errors: !isEmptyObject(removeEmptyPropertiesFromObject(errors)) });
+        return removeEmptyPropertiesFromObject(errors);
     };
 
     const {
@@ -160,7 +156,8 @@ const PoiConfirmWithExampleFormContainer = ({
                         <button
                             type='submit'
                             className={classNames('account-form__poi-confirm-example--button', {
-                                'account-form__poi-confirm-example--button__disabled': checked,
+                                'account-form__poi-confirm-example--button__disabled':
+                                    checked || !isEmptyObject(errors),
                             })}
                         >
                             <Checkbox

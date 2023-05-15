@@ -4,21 +4,14 @@ import classNames from 'classnames';
 import { Button } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
-import {
-    WS,
-    IDV_NOT_APPLICABLE_OPTION,
-    toMoment,
-    validLength,
-    validName,
-    filterObjProperties,
-    isDesktop,
-} from '@deriv/shared';
+import { WS, IDV_NOT_APPLICABLE_OPTION, toMoment, filterObjProperties, isDesktop } from '@deriv/shared';
 import {
     documentAdditionalError,
     getRegex,
     validate,
     removeUndefinedProperties,
     makeSettingsRequest,
+    validateName,
 } from 'Helpers/utils';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
@@ -90,16 +83,16 @@ const IdvDocumentSubmit = ({
         return undefined;
     };
 
-    const validateName = (name, min_name, max_name) => {
-        if (name) {
-            if (!validLength(name.trim(), { min: min_name, max: max_name })) {
-                return localize('You should enter 2-50 characters.');
-            } else if (!validName(name)) {
-                return localize('Letters, spaces, periods, hyphens, apostrophes only.');
-            }
-        }
-        return undefined;
-    };
+    // const validateName = (name, min_name, max_name) => {
+    //     if (name) {
+    //         if (!validLength(name.trim(), { min: min_name, max: max_name })) {
+    //             return localize('You should enter 2-50 characters.');
+    //         } else if (!validName(name)) {
+    //             return localize('Letters, spaces, periods, hyphens, apostrophes only.');
+    //         }
+    //     }
+    //     return undefined;
+    // };
 
     const validateFields = values => {
         const errors = {};
@@ -116,10 +109,8 @@ const IdvDocumentSubmit = ({
         const required_fields = ['first_name', 'last_name', 'date_of_birth'];
         const validateValues = validate(errors, values);
         validateValues(val => val, required_fields, localize('This field is required'));
-        const min_name = 2;
-        const max_name = 50;
-        errors.first_name = validateName(values.first_name, min_name, max_name);
-        errors.last_name = validateName(values.last_name, min_name, max_name);
+        errors.first_name = validateName(values.first_name);
+        errors.last_name = validateName(values.last_name);
 
         return removeUndefinedProperties(errors);
     };

@@ -1,13 +1,13 @@
 import React from 'react';
 import ModalManager from 'Components/modals/modal-manager';
 import TourGuide from 'Modules/tour-guide/tour-guide';
-import { isDesktop, ContentFlag, isMobile } from '@deriv/shared';
-import { Div100vhContainer, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { isDesktop, ContentFlag } from '@deriv/shared';
+import { Div100vhContainer } from '@deriv/components';
 import classNames from 'classnames';
 import AccountWithWallets from './account-with-wallets';
 import AccountWithoutWallets from './account-without-wallets';
 import { useStore, observer } from '@deriv/stores';
+import EUDisclaimer from 'Components/eu-disclaimer';
 import './traders-hub.scss';
 
 const TradersHub = () => {
@@ -54,19 +54,6 @@ const TradersHub = () => {
     const is_eu_low_risk = content_flag === ContentFlag.LOW_RISK_CR_EU;
 
     if (!is_logged_in) return null;
-
-    const EUDisclaimer = () => {
-        return (
-            <div className='disclaimer'>
-                <Text align='left' className='disclaimer-text' size={isMobile() ? 'xxxs' : 'xs'}>
-                    <Localize
-                        i18n_default_text='<0>EU statutory disclaimer</0>: CFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. <0>71% of retail investor accounts lose money when trading CFDs with this provider</0>. You should consider whether you understand how CFDs work and whether you can afford to take the high risk of losing your money.'
-                        components={[<strong key={0} />]}
-                    />
-                </Text>
-            </div>
-        );
-    };
 
     // TODO: delete after testing
     const SelectJSX = (

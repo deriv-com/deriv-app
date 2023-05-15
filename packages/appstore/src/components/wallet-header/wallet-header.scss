@@ -1,18 +1,12 @@
 .wallet-header {
-    // margin-block-start: 2.4rem;
     padding: 2.4rem;
     background-color: var(--general-main-1);
     border-radius: $BORDER_RADIUS * 4;
-    // border-top-left-radius: $BORDER_RADIUS * 4;
-    // border-top-right-radius: $BORDER_RADIUS * 4;
     height: 12.8rem;
 
     &__demo {
         position: relative;
         background-color: var(--wallet-demo-bg-color);
-        // border-radius: $BORDER_RADIUS * 4;
-        // border-top-left-radius: $BORDER_RADIUS * 4;
-        // border-top-right-radius: $BORDER_RADIUS * 4;
     }
     &__demo:before {
         content: ' ';
@@ -22,7 +16,7 @@
         top: 0;
         width: 100%;
         height: 100%;
-        opacity: 0.2;
+        opacity: 0.1;
         background-image: url('./../../public/images/wallet-demo-bg.svg');
         background-repeat: repeat;
         background-position: 3% 30%;

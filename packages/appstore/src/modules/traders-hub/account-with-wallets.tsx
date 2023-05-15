@@ -1,6 +1,6 @@
-import { observer, useStore } from '@deriv/stores';
-import Wallet from 'Components/wallet';
 import React from 'react';
+import Wallet from 'Components/containers/wallet';
+import { observer, useStore } from '@deriv/stores';
 
 // TODO: delete it after testing
 type TProps = {

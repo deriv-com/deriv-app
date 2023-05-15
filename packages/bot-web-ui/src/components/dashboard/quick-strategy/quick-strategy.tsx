@@ -4,14 +4,12 @@ import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import React from 'react';
 import { useDBotStore } from 'Stores/useDBotStore';
-import type { TRootStore } from 'Types';
 import { QuickStrategyContainer } from './quick-strategy-components';
 
 const QuickStrategy = observer(() => {
     const is_mobile = isMobile();
     const { quick_strategy, run_panel } = useDBotStore();
-    // TODO: type assertion should be removed once is_onscreen_keyboard_active is added to TCoreStores in @deriv/stores/types
-    const { ui } = useStore() as TRootStore;
+    const { ui } = useStore();
     const {
         is_strategy_modal_open,
         loadDataStrategy,

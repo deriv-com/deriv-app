@@ -246,6 +246,7 @@ type TUiStore = {
     is_ready_to_deposit_modal_visible: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
+    is_onscreen_keyboard_active: boolean;
 };
 
 type TMenuStore = {

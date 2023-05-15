@@ -227,8 +227,11 @@
         background: var(--brand-dark-grey);
         align-items: center;
         text-decoration: none;
-        padding: 0.2rem;
         border-radius: $BORDER_RADIUS;
+
+        &-icon {
+            margin-left: 0.6rem;
+        }
 
         &-text {
             padding: 0.5rem;

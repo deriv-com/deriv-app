@@ -7,7 +7,6 @@ import { TJurisdictionModalFootNoteProps } from '../props.types';
 const FooterNote = ({
     account_status,
     account_type,
-    context,
     card_classname,
     jurisdiction_selected_shortcode,
     should_restrict_bvi_account_creation,
@@ -17,12 +16,16 @@ const FooterNote = ({
 
     const { poa_pending } = getAuthenticationStatusInfo(account_status);
 
-    if (jurisdiction_selected_shortcode === 'svg') {
+    if (jurisdiction_selected_shortcode === 'svg' && account_type !== 'all') {
         return (
             <Localize
                 i18n_default_text='Add your Deriv MT5 <0>{{account_type_name}}</0> account under Deriv (SVG) LLC (company no. 273 LLC 2020).'
                 values={{ account_type_name }}
             />
+        );
+    } else if (jurisdiction_selected_shortcode === 'svg' && account_type === 'all') {
+        return (
+            <Localize i18n_default_text='Add your Deriv cTrader account under Deriv (SVG) LLC (company no. 273 LLC 2020).' />
         );
     } else if (
         (jurisdiction_selected_shortcode === 'bvi' && should_restrict_bvi_account_creation) ||

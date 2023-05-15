@@ -107,7 +107,8 @@ export const PlatformsDesktopDownload = ({
                 <Icon
                     className='cfd-trade-modal__dxtrade-button-icon'
                     icon={`IcBrand${platforms_icons()}Wordmark`}
-                    size={36}
+                    width={60}
+                    height={38}
                 />
                 <div className='cfd-trade-modal__dxtrade-button-text'>
                     <Text color='colored-background' size='xxs' weight='bold'>

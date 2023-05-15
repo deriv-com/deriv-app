@@ -210,7 +210,7 @@ const OnfidoSdkViewContainer = ({
             }, Math.pow(2, retry_count) + cryptoMathRandom() * 1000);
         }
         return () => {
-            clearTimeout(token_timeout_ref);
+            clearTimeout(token_timeout_ref.current);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [getOnfidoServiceToken, initOnfido, retry_count]);

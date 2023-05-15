@@ -98,7 +98,7 @@ const WalletCFDsListing = observer(({ account: wallet_account, fiat_wallet_curre
                 </Text>
             </div>
             {is_landing_company_loaded ? (
-                <>
+                <React.Fragment>
                     {combined_cfd_mt5_accounts.map((existing_account: TDetailedExistingAccount, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
                         const has_mt5_account_status = existing_account.status
@@ -127,7 +127,7 @@ const WalletCFDsListing = observer(({ account: wallet_account, fiat_wallet_curre
                             />
                         );
                     })}
-                </>
+                </React.Fragment>
             ) : (
                 <PlatformLoader />
             )}

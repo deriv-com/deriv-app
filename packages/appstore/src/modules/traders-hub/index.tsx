@@ -87,7 +87,7 @@ const TradersHub = () => {
     const is_wallet_account = Object.keys(accounts).some(key => accounts[key]?.account_category === 'wallet');
 
     return (
-        <>
+        <React.Fragment>
             <Div100vhContainer
                 className={classNames('traders-hub--mobile', {
                     'traders-hub--mobile--eu-user': is_eu_user,
@@ -106,7 +106,7 @@ const TradersHub = () => {
                 </div>
             </Div100vhContainer>
             {is_eu_low_risk && <EUDisclaimer />}
-        </>
+        </React.Fragment>
     );
 };
 

@@ -33,14 +33,14 @@ const WalletTransferBlock = ({ wallet_account }: TProps) => {
             has_interaction
             show_dropdown={false}
         >
-            <>
+            <React.Fragment>
                 <Text weight='bold' size={'xs'} color='prominent'>
                     {formatMoney(currency, balance, true)} {currency}
                 </Text>
                 <Text size={'xxs'} color='less-prominent'>
                     {loginid}
                 </Text>
-            </>
+            </React.Fragment>
         </CurrencySwitcherContainer>
     );
 };

@@ -207,7 +207,7 @@ const draw_shaded_barriers = ({
     // draw dashed line between barriers to visually accentuate that they're related to the previous tick
     ctx.beginPath();
     ctx.setLineDash([2, 4]);
-    ctx.moveTo(start_left + previous_tick?.radius, middle_top);
+    ctx.moveTo(start_left + (previous_tick?.radius || 0), middle_top);
     ctx.lineTo(end_left, middle_top);
     ctx.stroke();
     ctx.globalCompositeOperation = global_composite_operation;

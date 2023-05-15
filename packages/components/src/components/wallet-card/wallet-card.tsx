@@ -16,7 +16,7 @@ type TWalletCardProps = {
     badgeText: string;
     size?: 'small' | 'medium' | 'large';
     wallet_name?: string;
-    wallet_state?: 'active' | 'add' | 'default' | 'disabled' | 'faded';
+    wallet_state?: 'active' | 'add' | 'added' | 'default' | 'disabled' | 'faded';
 };
 
 const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
@@ -56,21 +56,7 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
                         <Badge custom_color='var(--text-prominent' label={badgeText} type='bordered' />
                     </div>
                     <div className='wallet-card__bottom-wrapper'>
-                        {wallet_state === 'add' ? (
-                            <Button
-                                className='wallet-card__add-wallet-button'
-                                classNameSpan='wallet-card__add-wallet-button-text'
-                                icon={
-                                    <Icon
-                                        className='wallet-card__add-wallet-button-icon'
-                                        custom_color='$color-black-1'
-                                        icon='IcAddBold'
-                                        size={12}
-                                    />
-                                }
-                                text='Add'
-                            />
-                        ) : (
+                        {wallet_state !== 'add' && wallet_state !== 'added' ? (
                             <React.Fragment>
                                 <Text className='wallet-card__bottom-wrapper-wallet-name' color='prominent'>
                                     {wallet_name} {localize('Wallet')}
@@ -79,6 +65,22 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
                                     {balance} {currency}
                                 </Text>
                             </React.Fragment>
+                        ) : (
+                            <Button
+                                className={classNames('wallet-card__wallet-button', {
+                                    [`wallet-card__wallet-button--${wallet_state}`]: wallet_state,
+                                })}
+                                classNameSpan='wallet-card__wallet-button-text'
+                                icon={
+                                    <Icon
+                                        className='wallet-card__wallet-button-icon'
+                                        custom_color='$color-black-1'
+                                        icon={wallet_state === 'added' ? 'IcCheckmarkBold' : 'IcAddBold'}
+                                        size={12}
+                                    />
+                                }
+                                text={wallet_state === 'added' ? ' Added' : 'Add'}
+                            />
                         )}
                     </div>
                 </div>

@@ -102,7 +102,7 @@
         }
     }
 
-    &__add-wallet-button {
+    &__wallet-button {
         background: $color-white;
         &-icon {
             align-self: center;
@@ -110,6 +110,9 @@
         }
         &-text {
             color: $color-black-1;
+        }
+        &--added {
+            opacity: 0.32;
         }
     }
 

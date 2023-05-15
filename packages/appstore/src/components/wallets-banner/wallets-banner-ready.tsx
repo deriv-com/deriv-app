@@ -2,7 +2,6 @@ import React from 'react';
 import WalletsImage from 'Assets/svgs/wallets';
 import { Button, Icon, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
 import { TWalletsImagesListKeys } from 'Assets/svgs/wallets/image-types';
 import { observer, useStore } from '@deriv/stores';
 
@@ -14,14 +13,15 @@ type TWalletsBannerReady = {
 const WalletsBannerReady = observer(({ is_eu }: TWalletsBannerReady) => {
     const {
         client: { logout },
+        ui: { is_mobile },
     } = useStore();
 
-    const image: TWalletsImagesListKeys = isMobile()
+    const image: TWalletsImagesListKeys = is_mobile
         ? `ready_mobile${is_eu ? '_eu' : ''}`
         : `ready_desktop${is_eu ? '_eu' : ''}`;
-    const title_size = isMobile() ? 'xs' : 'sm';
-    const description_size = isMobile() ? 'xxxs' : 'xs';
-    const tick_size = isMobile() ? 16 : 24;
+    const title_size = is_mobile ? 'xs' : 'sm';
+    const description_size = is_mobile ? 'xxxs' : 'xs';
+    const tick_size = is_mobile ? 16 : 24;
 
     const onButtonClickHandler = async () => {
         await logout();
@@ -47,7 +47,7 @@ const WalletsBannerReady = observer(({ is_eu }: TWalletsBannerReady) => {
                     has_effect
                     text={localize('Log out')}
                     primary
-                    large={!isMobile()}
+                    large={!is_mobile}
                 />
             </div>
             <WalletsImage image={image} className='wallets-banner__image wallets-banner__ready-banner-image' />

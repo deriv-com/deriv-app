@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ReadyToUpgradeWallets from '../ready-to-upgrade-wallets';
 
-describe('ReadyToUpdateWallets', () => {
+describe('ReadyToUpgradeWallets', () => {
     const toggleCheckbox = jest.fn();
     it('should render', () => {
         const { container } = render(<ReadyToUpgradeWallets is_eu={false} toggleCheckbox={toggleCheckbox} />);

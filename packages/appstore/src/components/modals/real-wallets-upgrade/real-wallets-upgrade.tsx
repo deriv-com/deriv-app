@@ -4,7 +4,7 @@ import { ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { WalletsIntro } from './components/wallets-intro/wallets-intro';
-import ReadyToUpgradeWallets from './components/ready-to-update-wallets';
+import ReadyToUpgradeWallets from './components/ready-to-upgrade-wallets';
 import './real-wallets-upgrade.scss';
 
 const RealWalletsUpgrade = observer(() => {

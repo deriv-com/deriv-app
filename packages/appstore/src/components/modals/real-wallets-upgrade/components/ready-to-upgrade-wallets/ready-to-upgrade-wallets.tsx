@@ -4,6 +4,7 @@ import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import WalletsImage from 'Assets/svgs/wallets';
 import getUpgradeInformationList from 'Constants/upgrade-info-lists-config';
+import './ready-to-upgrade-wallets.scss';
 
 type TReadyToUpgradeWallets = {
     is_eu: boolean;

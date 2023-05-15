@@ -37,7 +37,11 @@ const QuickStrategyContainer = (props: TQuickStrategyProps) => {
                     component: <MarketOption key={symbol.text} symbol={symbol} />,
                     ...symbol,
                 }))
-                .filter(option => option.group !== 'Cryptocurrencies'), // Until Crypto enabled for Dbot
+                // Until Crypto enabled for Dbot
+                .filter(option => option.group !== 'Cryptocurrencies')
+                .filter(
+                    option => option.text !== 'Volatility 150 (1s) Index' && option.text !== 'Volatility 250 (1s) Index'
+                ),
         [symbol_dropdown]
     );
 

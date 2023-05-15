@@ -112,8 +112,8 @@ export default class SaveModalStore implements ISaveModalStore {
                 load_modal: { setRecentStrategies },
             } = this.root_store;
             localForage.setItem('saved_workspaces', LZString.compress(JSON.stringify(workspace)));
-            const updated_stratagies = await getSavedWorkspaces();
-            setRecentStrategies(updated_stratagies);
+            const updated_strategies = await getSavedWorkspaces();
+            setRecentStrategies(updated_strategies);
             const {
                 dashboard: { setStrategySaveType },
             } = this.root_store;

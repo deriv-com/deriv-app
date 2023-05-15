@@ -52,7 +52,7 @@ const validateTransfer = (
         errors.description = localize('Please enter a valid description.');
     }
 
-    return errors;
+    return Object.fromEntries(Object.entries(errors).filter(([_, v]) => !!v));
 };
 
 const PaymentAgentTransferForm = observer(() => {
@@ -89,6 +89,13 @@ const PaymentAgentTransferForm = observer(() => {
         }
     };
 
+    // in case coming back from confirmation screen, populate the recent data to be edited
+    const initial_transfer_form_values = {
+        loginid: transfer_to || '',
+        amount: amount?.toString() || '',
+        description: description || '',
+    };
+
     return (
         <div
             className='cashier__wrapper payment-agent-transfer-form__container'
@@ -106,12 +113,8 @@ const PaymentAgentTransferForm = observer(() => {
                 </Text>
             </DesktopWrapper>
             <Formik
-                initialValues={{
-                    // in case coming back from confirmation screen, populate the recent data to be edited
-                    loginid: transfer_to || '',
-                    amount: amount?.toString() || '',
-                    description: description || '',
-                }}
+                initialValues={initial_transfer_form_values}
+                isInitialValid={!Object.keys(validateTransferPassthrough(initial_transfer_form_values)).length}
                 validate={validateTransferPassthrough}
                 onSubmit={onTransferPassthrough}
             >
@@ -122,7 +125,7 @@ const PaymentAgentTransferForm = observer(() => {
                                 <Input
                                     {...field}
                                     onChange={e => {
-                                        setErrorMessage('');
+                                        setErrorMessage({ code: '', message: '' });
                                         handleChange(e);
                                     }}
                                     className='payment-agent-transfer-form__input'
@@ -141,7 +144,7 @@ const PaymentAgentTransferForm = observer(() => {
                                 <Input
                                     {...field}
                                     onChange={e => {
-                                        setErrorMessage('');
+                                        setErrorMessage({ code: '', message: '' });
                                         handleChange(e);
                                     }}
                                     className='payment-agent-transfer-form__input dc-input--no-placeholder'
@@ -170,7 +173,7 @@ const PaymentAgentTransferForm = observer(() => {
                                 <Input
                                     {...field}
                                     onChange={e => {
-                                        setErrorMessage('');
+                                        setErrorMessage({ code: '', message: '' });
                                         handleChange(e);
                                     }}
                                     className='payment-agent-transfer-form__input-area'

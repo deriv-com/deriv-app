@@ -83,6 +83,6 @@ export const getJurisdictionVanuatuContents = (): TJurisdictionCardItems => ({
             description: localize('Vanuatu Financial Services Commission'),
         },
     ],
-    synthetic_verification_docs: ['selfie', 'identity_document', 'name_and_address'],
-    financial_verification_docs: ['selfie', 'identity_document', 'name_and_address'],
+    synthetic_verification_docs: ['document_number', 'name_and_address'],
+    financial_verification_docs: ['document_number', 'name_and_address'],
 });

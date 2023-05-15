@@ -29,7 +29,9 @@ const RecentComponent = ({
 }: TRecentComponent) => {
     React.useEffect(() => {
         setStrategySaveType('');
-        getSavedWorkspaces().then(recent_strategies => setDashboardStrategies(recent_strategies));
+        setTimeout(() => {
+            getSavedWorkspaces().then(recent_strategies => setDashboardStrategies(recent_strategies));
+        }, 0);
         //this dependency is used when we use the save modal popup
     }, [strategy_save_type]);
 

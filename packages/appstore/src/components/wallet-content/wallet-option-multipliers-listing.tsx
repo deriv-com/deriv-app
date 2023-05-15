@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, StaticUrl } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import { BrandConfig } from 'Constants/platform-config';
 import TradingAppCard from 'Components/containers/trading-app-card';
@@ -26,13 +26,13 @@ const WalletOptionsAndMultipliersListing = observer(({ account }: TProps) => {
         if (!is_virtual && is_eu && !is_mobile) {
             return (
                 <Text size='sm' line_height='m' weight='bold' color='prominent'>
-                    <Localize i18n_default_text='Multipliers' />
+                    {localize('Multipliers')}
                 </Text>
             );
         } else if (!is_mobile) {
             return (
                 <Text size='sm' line_height='m' weight='bold'>
-                    <Localize i18n_default_text='Options & Multipliers' />
+                    {localize('Options & Multipliers')}
                 </Text>
             );
         }

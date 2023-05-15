@@ -19,11 +19,11 @@ type TDetailedExistingAccount = AvailableAccount &
     };
 
 type TProps = {
-    account: TCoreStores['client']['accounts'][0];
+    wallet_account: TCoreStores['client']['accounts'][0];
     fiat_wallet_currency?: string;
 };
 
-const WalletCFDsListing = observer(({ account: wallet_account, fiat_wallet_currency = 'USD' }: TProps) => {
+const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'USD' }: TProps) => {
     const history = useHistory();
     const {
         client,

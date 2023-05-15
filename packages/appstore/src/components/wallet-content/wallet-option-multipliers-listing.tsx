@@ -10,16 +10,16 @@ import { TCoreStores } from '@deriv/stores/types';
 import { useStore, observer } from '@deriv/stores';
 
 type TProps = {
-    account: TCoreStores['client']['accounts'][0];
+    wallet_account: TCoreStores['client']['accounts'][0];
 };
 
-const WalletOptionsAndMultipliersListing = observer(({ account }: TProps) => {
+const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps) => {
     const { traders_hub, client, ui } = useStore();
     const { is_mobile } = ui;
     const { is_landing_company_loaded } = client;
     const { available_platforms } = traders_hub;
 
-    const { is_virtual, landing_company_shortcode } = account;
+    const { is_virtual, landing_company_shortcode } = wallet_account;
     const is_eu = landing_company_shortcode === 'maltainvest' || landing_company_shortcode === 'malta';
 
     const OptionsTitle = () => {
@@ -62,7 +62,7 @@ const WalletOptionsAndMultipliersListing = observer(({ account }: TProps) => {
 
     return (
         <ListingContainer
-            wallet_account={account}
+            wallet_account={wallet_account}
             className='wallet-content__border-reset'
             title={<OptionsTitle />}
             description={listing_container_description}

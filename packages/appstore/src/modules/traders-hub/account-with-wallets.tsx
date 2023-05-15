@@ -107,7 +107,7 @@ const AccountWithWallets = observer(({ show_test_wallets = false }: TProps) => {
             {wallet_accounts.map((account, index) => (
                 <Wallet
                     key={`${account.account_type} ${account.landing_company_shortcode} ${account.currency} ${index}`}
-                    account={account}
+                    wallet_account={account}
                 />
             ))}
         </React.Fragment>

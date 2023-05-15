@@ -38,6 +38,7 @@ const AccountSwitcher = ({
     history,
     is_dark_mode_on,
     is_eu,
+    is_eu_user,
     is_landing_company_loaded,
     is_low_risk,
     is_high_risk,
@@ -313,7 +314,7 @@ const AccountSwitcher = ({
                                             <Button
                                                 id='dt_core_account-switcher_add-new-account'
                                                 onClick={() => {
-                                                    if (real_account_creation_unlock_date && is_eu) {
+                                                    if (real_account_creation_unlock_date && (is_eu || is_eu_user)) {
                                                         closeAccountsDialog();
                                                         setShouldShowCooldownModal(true);
                                                     } else openRealAccountSignup(account);
@@ -543,6 +544,7 @@ AccountSwitcher.propTypes = {
     history: PropTypes.object,
     is_dark_mode_on: PropTypes.bool,
     is_eu: PropTypes.bool,
+    is_eu_user: PropTypes.bool,
     is_landing_company_loaded: PropTypes.bool,
     is_low_risk: PropTypes.bool,
     is_high_risk: PropTypes.bool,
@@ -584,6 +586,7 @@ const account_switcher = withRouter(
         country_standpoint: client.country_standpoint,
         is_dark_mode_on: ui.is_dark_mode_on,
         is_eu: client.is_eu,
+        is_eu_user: traders_hub.is_eu_user,
         is_landing_company_loaded: client.is_landing_company_loaded,
         is_low_risk: client.is_low_risk,
         is_high_risk: client.is_high_risk,

@@ -19,7 +19,7 @@ const ReadyToDepositModal = observer(() => {
 
     const createAccount = () => {
         onClose();
-        if (real_account_creation_unlock_date) {
+        if (real_account_creation_unlock_date && is_eu_user) {
             return setShouldShowCooldownModal(true);
         } else if (is_eu_user) {
             return openRealAccountSignup('maltainvest');

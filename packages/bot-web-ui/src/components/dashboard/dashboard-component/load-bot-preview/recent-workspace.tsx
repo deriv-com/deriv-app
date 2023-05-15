@@ -84,7 +84,9 @@ const RecentWorkspace = ({
                 break;
             }
             case 'save': {
-                toggleSaveModal();
+                setTimeout(() => {
+                    toggleSaveModal();
+                }, 10); // made this async to give it a split second delay
                 break;
             }
             case 'delete': {

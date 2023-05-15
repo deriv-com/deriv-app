@@ -72,10 +72,10 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
                             />
                         ) : (
                             <React.Fragment>
-                                <Text color='prominent' size='xxxs'>
+                                <Text className='wallet-card__bottom-wrapper-wallet-name' color='prominent'>
                                     {wallet_name} {localize('Wallet')}
                                 </Text>
-                                <Text color='prominent' weight='bold' size='xs'>
+                                <Text className='wallet-card__bottom-wrapper-balance' color='prominent' weight='bold'>
                                     {balance} {currency}
                                 </Text>
                             </React.Fragment>

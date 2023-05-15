@@ -55,6 +55,10 @@
         &--default:hover {
             background: var(--wallets-card-active-gradient-background);
         }
+
+        @include mobile {
+            padding: 0.8rem;
+        }
     }
 
     &__shine {
@@ -80,6 +84,22 @@
         flex-direction: column;
         justify-content: flex-start;
         width: 100%;
+
+        &-wallet-name {
+            font-size: var(--text-size-xxxs);
+
+            @include mobile {
+                font-size: var(--text-size-xxxxs);
+            }
+        }
+
+        &-balance {
+            font-size: var(--text-size-xs);
+
+            @include mobile {
+                font-size: var(--text-size-xxs);
+            }
+        }
     }
 
     &__add-wallet-button {

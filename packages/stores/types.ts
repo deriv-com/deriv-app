@@ -216,6 +216,7 @@ type TCommonStore = {
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
     is_language_changing: boolean;
+    is_socket_opened: boolean;
 };
 
 type TUiStore = {
@@ -245,7 +246,19 @@ type TUiStore = {
     toggleSetCurrencyModal: () => void;
     is_ready_to_deposit_modal_visible: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
+    is_chart_layout_default: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
+    populateFooterExtensions: (
+        footer_extensions:
+            | [
+                  {
+                      position?: string;
+                      Component?: React.FunctionComponent;
+                      has_right_separator?: boolean;
+                  }
+              ]
+            | []
+    ) => void;
 };
 
 type TMenuStore = {

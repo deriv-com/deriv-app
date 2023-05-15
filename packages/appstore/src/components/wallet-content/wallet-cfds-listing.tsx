@@ -35,22 +35,20 @@ const WalletCFDsListing = observer(({ account: wallet_account, fiat_wallet_curre
         available_dxtrade_accounts,
         combined_cfd_mt5_accounts,
         selected_region,
-        is_real,
         getExistingAccounts,
         selected_account_type,
-        is_eu_user,
         is_demo_low_risk,
-        no_MF_account,
-        is_demo,
-        no_CR_account,
         CFDs_restricted_countries,
     } = traders_hub;
+
+    const { is_virtual, landing_company_shortcode, currency } = wallet_account;
+    const is_eu = landing_company_shortcode === 'maltainvest' || landing_company_shortcode === 'malta';
 
     const { toggleCompareAccountsModal } = cfd;
     const { is_landing_company_loaded } = client;
     const { is_mobile } = ui;
     const accounts_sub_text =
-        !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
+        !is_eu || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
     const getMT5AccountAuthStatus = (current_acc_status: string) => {
         if (current_acc_status === 'proof_failed') {
@@ -60,9 +58,6 @@ const WalletCFDsListing = observer(({ account: wallet_account, fiat_wallet_curre
         }
         return null;
     };
-
-    const { is_virtual, landing_company_shortcode, currency } = wallet_account;
-    const is_eu = landing_company_shortcode === 'maltainvest' || landing_company_shortcode === 'malta';
 
     const is_fiat = !isCryptocurrency(currency) && currency !== 'USDT';
 
@@ -121,7 +116,7 @@ const WalletCFDsListing = observer(({ account: wallet_account, fiat_wallet_curre
                                 platform={existing_account.platform}
                                 description={existing_account.description}
                                 key={existing_account.key}
-                                has_divider={(!is_eu_user || is_demo) && getHasDivider(index, list_size, 3)}
+                                has_divider={(!is_eu || !!is_virtual) && getHasDivider(index, list_size, 3)}
                                 mt5_acc_auth_status={has_mt5_account_status}
                                 selected_mt5_jurisdiction={{
                                     platform: existing_account.platform,
@@ -136,7 +131,7 @@ const WalletCFDsListing = observer(({ account: wallet_account, fiat_wallet_curre
             ) : (
                 <PlatformLoader />
             )}
-            {!is_eu_user && !CFDs_restricted_countries && (
+            {!is_eu && !CFDs_restricted_countries && (
                 <div className='cfd-full-row'>
                     <hr className='divider' />
                 </div>

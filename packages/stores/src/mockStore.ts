@@ -278,6 +278,11 @@ const mock = (): TStores => {
             is_tour_open: false,
             selected_platform_type: '',
             available_platforms: [],
+            CFDs_restricted_countries: false,
+            is_demo_low_risk: false,
+            selected_region: 'All',
+            getExistingAccounts: jest.fn(),
+            available_dxtrade_accounts: [],
         },
         menu: {
             attach: jest.fn(),

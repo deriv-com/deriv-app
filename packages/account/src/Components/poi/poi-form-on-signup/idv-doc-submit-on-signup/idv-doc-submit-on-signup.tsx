@@ -9,7 +9,7 @@ import {
     IDV_NOT_APPLICABLE_OPTION,
     removeEmptyPropertiesFromObject,
 } from '@deriv/shared';
-import { documentAdditionalError, getRegex, validate, validateName, removeUndefinedProperties } from 'Helpers/utils';
+import { documentAdditionalError, getRegex, validate, validateName } from 'Helpers/utils';
 import FormSubHeader from 'Components/form-sub-header';
 import IDVForm from 'Components/forms/idv-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';

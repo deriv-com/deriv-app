@@ -16,14 +16,13 @@ import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
 import { makeSettingsRequest, validate, validateName } from 'Helpers/utils';
-
-type TValues = { [p: string]: string };
+import { TInputFieldValues } from 'Types';
 
 type TRestState = {
     api_error: string;
     show_form: boolean;
     errors?: boolean;
-    form_initial_values: TValues;
+    form_initial_values: TInputFieldValues;
     changeable_fields: string[];
 };
 
@@ -70,7 +69,10 @@ const PoiConfirmWithExampleFormContainer = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [account_settings]);
 
-    const onSubmit = async (values: TValues, { setStatus, setSubmitting }: FormikHelpers<TValues>) => {
+    const onSubmit = async (
+        values: TInputFieldValues,
+        { setStatus, setSubmitting }: FormikHelpers<TInputFieldValues>
+    ) => {
         if (checked) return;
         setStatus({ error_msg: '' });
         const request = makeSettingsRequest(
@@ -100,8 +102,8 @@ const PoiConfirmWithExampleFormContainer = ({
         }
     };
 
-    const validateFields = (values: TValues) => {
-        const errors: TValues = {};
+    const validateFields = (values: TInputFieldValues) => {
+        const errors: TInputFieldValues = {};
         const validateValues = validate(errors, values);
 
         const required_fields = ['first_name', 'last_name', 'date_of_birth'];

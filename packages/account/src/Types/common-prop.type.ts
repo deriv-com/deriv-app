@@ -101,3 +101,5 @@ export type TPersonalDetailsForm = {
     should_close_tooltip?: boolean;
     setShouldCloseTooltip?: (should_close_tooltip: boolean) => void;
 } & FormikProps<FormikValues>;
+
+export type TInputFieldValues = Record<string, string>;

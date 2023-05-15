@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentTransferForm from '../payment-agent-transfer-form';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
+import { expect } from '@jest/globals';
 
 jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules', () => ({
     __esModule: true,
@@ -69,16 +70,11 @@ describe('<PaymentAgentTransferForm />', () => {
         expect(screen.getByTestId('dt_payment_agent_transfer_form_container')).toBeInTheDocument();
     });
 
-    it('should show an error if client login id or amount is not provided', async () => {
+    it('should have the submit button disabled if no data is filled (initially)', async () => {
         renderPaymentAgentTransferForm();
 
         const submit_button = screen.getByRole('button');
-        fireEvent.click(submit_button);
-
-        await waitFor(() => {
-            expect(screen.getByText('Please enter a valid client login ID.')).toBeInTheDocument();
-            expect(screen.getByText('This field is required.')).toBeInTheDocument();
-        });
+        expect(submit_button).toBeDisabled();
     });
 
     it('should show an error if the login id is not valid', async () => {

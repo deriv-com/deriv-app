@@ -60,13 +60,7 @@
                 }
             }
             &-footer {
-                position: absolute;
-                bottom: 0;
                 width: 100%;
-                &-gradient {
-                    height: 12rem;
-                    background: linear-gradient(transparent, var(--general-main-2));
-                }
                 &-text {
                     background: var(--brand-secondary);
                     height: 4rem;
@@ -84,7 +78,7 @@
             flex-direction: column;
             gap: 1.2rem;
             height: 100%;
-            margin: 0 2rem 2rem;
+            margin: 0 2rem;
         }
     }
 
@@ -115,8 +109,8 @@
     &__footnotes-container {
         display: flex;
         flex-direction: column;
-        gap: 2rem;
-        margin: 2rem;
+        gap: 1rem;
+        margin: 1rem;
         @include desktop {
             min-height: 6rem;
         }
@@ -180,10 +174,10 @@
         transition: all 0.25s ease-in;
         width: 28rem;
         &.synthetic {
-            min-height: 46rem;
+            min-height: 48rem;
         }
         &.financial {
-            min-height: 52rem;
+            min-height: 54rem;
         }
         @include mobile {
             height: 48rem;

@@ -61,22 +61,21 @@ const JurisdictionCardFront = ({
                     </React.Fragment>
                 ))}
             </div>
+            {disabled && (
+                <div className={`${card_classname}__card-content-footer`}>
+                    <Text
+                        as='div'
+                        weight='bold'
+                        color='colored-background'
+                        align='center'
+                        size='xs'
+                        className={`${card_classname}__card-content-footer-text`}
+                    >
+                        <Localize i18n_default_text='Added' />
+                    </Text>
+                </div>
+            )}
         </div>
-        {disabled && (
-            <div className={`${card_classname}__card-content-footer`}>
-                <div className={`${card_classname}__card-content-footer-gradient`} />
-                <Text
-                    as='div'
-                    weight='bold'
-                    color='colored-background'
-                    align='center'
-                    size='xs'
-                    className={`${card_classname}__card-content-footer-text`}
-                >
-                    <Localize i18n_default_text='Added' />
-                </Text>
-            </div>
-        )}
     </div>
 );
 

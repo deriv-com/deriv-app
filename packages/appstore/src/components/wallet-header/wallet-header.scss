@@ -99,6 +99,10 @@
             display: flex;
             flex-direction: column;
             padding-inline: 2.4rem;
+
+            &-title {
+                align-self: flex-end;
+            }
         }
 
         &-arrow-icon {

@@ -397,7 +397,7 @@ export default class TradeStore extends BaseStore {
             () => {
                 this.setValidationRules(getValidationRules());
                 this.changeDurationValidationRules();
-                if (this.amount !== '0') {
+                if (!this.amount) {
                     this.validateAllProperties();
                 }
             }

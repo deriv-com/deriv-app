@@ -249,6 +249,7 @@ export default class LoadModalStore implements ILoadModalStore {
             strategy_id: this.selected_strategy.id,
             file_name: this.selected_strategy.name,
             workspace: Blockly.derivWorkspace,
+            from: this.selected_strategy.save_type,
         });
         const recent_files = await getSavedWorkspaces();
         recent_files.map(strategy => {

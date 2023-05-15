@@ -1,4 +1,4 @@
-import { cloneObject } from '@deriv/shared';
+import { cloneObject, toMoment } from '@deriv/shared';
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import { createExtendedOrderDetails } from 'Utils/orders';
 import { requestWS, subscribeWS } from 'Utils/websocket';
@@ -13,8 +13,12 @@ export default class OrderStore {
             cancellation_block_duration: observable,
             cancellation_count_period: observable,
             cancellation_limit: observable,
+            date_from: observable,
+            date_to: observable,
             error_code: observable,
             error_message: observable,
+            filtered_date_range: observable,
+            handleDateChange: action.bound,
             has_more_items_to_load: observable,
             is_invalid_verification_link_modal_open: observable,
             is_loading: observable,
@@ -88,8 +92,11 @@ export default class OrderStore {
     cancellation_block_duration = 0;
     cancellation_count_period = 0;
     cancellation_limit = 0;
+    date_from = null;
+    date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
     error_code = '';
     error_message = '';
+    filtered_date_range = null;
     has_more_items_to_load = false;
     is_invalid_verification_link_modal_open = false;
     is_loading = false;
@@ -188,6 +195,12 @@ export default class OrderStore {
                 }
             }
         });
+    }
+
+    handleDateChange(date_values, { date_range } = {}) {
+        this.filtered_date_range = date_range;
+        this.date_from = date_values?.from ?? (date_values.is_batch ? null : this.date_from);
+        this.date_to = date_values?.to ?? this.date_to;
     }
 
     getP2POrderList() {

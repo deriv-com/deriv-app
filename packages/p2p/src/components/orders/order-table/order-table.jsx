@@ -1,15 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ButtonToggle } from '@deriv/components';
+import { ButtonToggle, Icon } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import ToggleContainer from 'Components/misc/toggle-container.jsx';
+import CompositeCalendar from 'Components/composite-calendar';
 import { order_list } from 'Constants/order-list';
 import { useStores } from 'Stores';
 import OrderTableContent from './order-table-content.jsx';
 
 const OrderTable = ({ showDetails }) => {
-    const { general_store } = useStores();
+    const { general_store, order_store } = useStores();
+    const { date_from, date_to, filtered_date_range, handleDateChange } = order_store;
 
     const orders_list_filters = [
         {
@@ -25,6 +27,11 @@ const OrderTable = ({ showDetails }) => {
     ];
 
     const is_active_tab = general_store.order_table_type === order_list.ACTIVE;
+
+    const onClickDownload = () => {
+        //TODO: to be added after api integration(based on file type and source)
+    };
+
     return (
         <React.Fragment>
             <div className='orders-tab'>
@@ -40,6 +47,21 @@ const OrderTable = ({ showDetails }) => {
                             has_rounded_button
                         />
                     </ToggleContainer>
+                    {!is_active_tab && (
+                        <div className='orders-tab__header-search'>
+                            <CompositeCalendar
+                                input_date_range={filtered_date_range}
+                                onChange={handleDateChange}
+                                from={date_from}
+                                to={date_to}
+                            />
+                            <Icon
+                                icon='IcCashierDownload'
+                                className='orders-tab__header-search-icon'
+                                onClick={onClickDownload}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
             <OrderTableContent showDetails={showDetails} is_active={is_active_tab} />

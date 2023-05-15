@@ -4,15 +4,15 @@ import classNames from 'classnames';
 import { Button } from '@deriv/components';
 import { Formik, Field } from 'formik';
 import { localize } from '@deriv/translations';
-import { WS, IDV_NOT_APPLICABLE_OPTION, toMoment, filterObjProperties, isDesktop } from '@deriv/shared';
 import {
-    documentAdditionalError,
-    getRegex,
-    validate,
-    removeUndefinedProperties,
-    makeSettingsRequest,
-    validateName,
-} from 'Helpers/utils';
+    WS,
+    IDV_NOT_APPLICABLE_OPTION,
+    toMoment,
+    filterObjProperties,
+    isDesktop,
+    removeEmptyPropertiesFromObject,
+} from '@deriv/shared';
+import { documentAdditionalError, getRegex, validate, makeSettingsRequest, validateName } from 'Helpers/utils';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import IDVForm from 'Components/forms/idv-form';
@@ -83,17 +83,6 @@ const IdvDocumentSubmit = ({
         return undefined;
     };
 
-    // const validateName = (name, min_name, max_name) => {
-    //     if (name) {
-    //         if (!validLength(name.trim(), { min: min_name, max: max_name })) {
-    //             return localize('You should enter 2-50 characters.');
-    //         } else if (!validName(name)) {
-    //             return localize('Letters, spaces, periods, hyphens, apostrophes only.');
-    //         }
-    //     }
-    //     return undefined;
-    // };
-
     const validateFields = values => {
         const errors = {};
         const { document_type, document_number, document_additional } = values;
@@ -112,7 +101,7 @@ const IdvDocumentSubmit = ({
         errors.first_name = validateName(values.first_name);
         errors.last_name = validateName(values.last_name);
 
-        return removeUndefinedProperties(errors);
+        return removeEmptyPropertiesFromObject(errors);
     };
 
     const submitHandler = async (values, { setSubmitting, setErrors }) => {

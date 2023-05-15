@@ -3,8 +3,13 @@ import { Formik, Field, FormikValues, FormikHelpers, FormikErrors } from 'formik
 import { localize } from '@deriv/translations';
 import classNames from 'classnames';
 import { Button } from '@deriv/components';
-import { filterObjProperties, toMoment, validLength, validName, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
-import { documentAdditionalError, getRegex, validate, removeUndefinedProperties } from 'Helpers/utils';
+import {
+    filterObjProperties,
+    toMoment,
+    IDV_NOT_APPLICABLE_OPTION,
+    removeEmptyPropertiesFromObject,
+} from '@deriv/shared';
+import { documentAdditionalError, getRegex, validate, validateName, removeUndefinedProperties } from 'Helpers/utils';
 import FormSubHeader from 'Components/form-sub-header';
 import IDVForm from 'Components/forms/idv-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
@@ -61,17 +66,6 @@ export const IdvDocSubmitOnSignup = ({
         return undefined;
     };
 
-    const validateName = (name: string, min_name: number, max_name: number) => {
-        if (name) {
-            if (!validLength(name.trim(), { min: min_name, max: max_name })) {
-                return localize('You should enter 2-50 characters.');
-            } else if (!validName(name)) {
-                return localize('Letters, spaces, periods, hyphens, apostrophes only.');
-            }
-        }
-        return undefined;
-    };
-
     const validateFields = (values: FormikValues) => {
         const errors: FormikErrors<FormikValues> = {};
         const { document_type, document_number, document_additional } = values;
@@ -87,12 +81,10 @@ export const IdvDocSubmitOnSignup = ({
         const required_fields = ['first_name', 'last_name', 'date_of_birth'];
         const validateValues = validate(errors, values);
         validateValues(val => val, required_fields, localize('This field is required'));
-        const min_name = 2;
-        const max_name = 50;
-        errors.first_name = validateName(values.first_name, min_name, max_name);
-        errors.last_name = validateName(values.last_name, min_name, max_name);
+        errors.first_name = validateName(values.first_name);
+        errors.last_name = validateName(values.last_name);
 
-        return removeUndefinedProperties(errors);
+        return removeEmptyPropertiesFromObject(errors);
     };
 
     const visible_settings = ['first_name', 'last_name', 'date_of_birth'];

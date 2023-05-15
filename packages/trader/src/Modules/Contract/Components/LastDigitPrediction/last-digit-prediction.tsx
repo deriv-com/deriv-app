@@ -112,7 +112,7 @@ const LastDigitPrediction = ({
     const latest_tick_pip_size = tick ? +tick.pip_size : null;
     const latest_tick_ask_price = tick?.ask && latest_tick_pip_size ? tick.ask.toFixed(latest_tick_pip_size) : null;
     const latest_tick_digit = latest_tick_ask_price ? +(latest_tick_ask_price.split('').pop() || '') : null;
-    const position = tick ? getOffset()[latest_tick_digit || -1] : getOffset()[last_contract_digit.digit];
+    const position = tick ? getOffset()[latest_tick_digit ?? -1] : getOffset()[last_contract_digit.digit];
     const latest_digit = !(is_won || is_lost)
         ? { digit: latest_tick_digit, spot: latest_tick_ask_price }
         : last_contract_digit;

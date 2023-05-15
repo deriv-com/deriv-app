@@ -10,11 +10,11 @@ type TLastDigitStat = {
 
 const LastDigitStat = ({ is_max, is_min, is_selected, percentage }: TLastDigitStat) => {
     // interpolate color opacity within 7.5 to 12.5 range
-    let opacity = ((percentage || 0) - 10) / 4;
+    let opacity = ((percentage ?? 0) - 10) / 4;
     opacity = Math.min(Math.max(opacity, -1), +1);
     opacity = ((opacity + 1) / 2) * 0.85 + 0.15;
     const w = 339.292;
-    let p = (20 * (percentage || 0) - 102) / 3 / 100;
+    let p = (20 * (percentage ?? 0) - 102) / 3 / 100;
     p = Math.max(Math.min(p, 0.66), 0.06);
 
     return (

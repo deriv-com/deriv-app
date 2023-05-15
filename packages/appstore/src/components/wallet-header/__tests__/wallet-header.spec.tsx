@@ -111,7 +111,7 @@ describe('<WalletHeader />', () => {
                     <WalletHeader account_type={account_type} balance={balance} currency={currency} shortcode='svg' />
                 </StoreProvider>
             );
-            const balance_label = screen.queryByText(`${balance} ${currency}`);
+            const balance_label = screen.queryByText('2,345.56 EUR');
 
             expect(balance_label).toBeInTheDocument();
         });

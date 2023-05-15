@@ -39,7 +39,8 @@ const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV
 
 const HOISTED_PACKAGES = {
     react: path.resolve(__dirname, '../../../node_modules/react'),
-    'react-dom': path.resolve(__dirname, '../../../node_modules/react-dom'),
+    'react-dom': path.resolve(__dirname, '../../../node_modules/react-dom/profiling'), // Profiling build to use for production
+    'scheduler/tracing': path.resolve(__dirname, '../../../node_modules/scheduler/tracing-profiling'),
     'react-router': path.resolve(__dirname, '../../../node_modules/react-router'),
     'react-router-dom': path.resolve(__dirname, '../../../node_modules/react-router-dom'),
     mobx: path.resolve(__dirname, '../../../node_modules/mobx'),

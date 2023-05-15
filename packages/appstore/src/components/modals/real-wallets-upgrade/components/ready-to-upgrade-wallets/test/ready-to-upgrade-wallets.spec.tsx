@@ -1,21 +1,35 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ReadyToUpgradeWallets from '../ready-to-upgrade-wallets';
+import { StoreProvider, mockStore } from '@deriv/stores';
+
+let mock = mockStore({});
+
+const checkContainerReadyToUpgradeWallets = () => {
+    const toggleCheckbox = jest.fn();
+    const wrapper = ({ children }: { children: JSX.Element }) => <StoreProvider store={mock}>{children}</StoreProvider>;
+
+    const { container } = render(<ReadyToUpgradeWallets is_eu={false} toggleCheckbox={toggleCheckbox} />, {
+        wrapper,
+    });
+    expect(container).toBeInTheDocument();
+};
 
 describe('ReadyToUpgradeWallets', () => {
-    const toggleCheckbox = jest.fn();
+    beforeEach(() => {
+        mock = mockStore({});
+    });
     it('should render', () => {
-        const { container } = render(<ReadyToUpgradeWallets is_eu={false} toggleCheckbox={toggleCheckbox} />);
-        expect(container).toBeInTheDocument();
+        checkContainerReadyToUpgradeWallets();
     });
 
     it('should render checkbox', () => {
-        render(<ReadyToUpgradeWallets is_eu={false} toggleCheckbox={toggleCheckbox} />);
+        checkContainerReadyToUpgradeWallets();
         expect(screen.getByRole('checkbox')).toBeInTheDocument();
     });
 
     it('should render info section based on region', () => {
-        render(<ReadyToUpgradeWallets is_eu={false} toggleCheckbox={toggleCheckbox} />);
+        checkContainerReadyToUpgradeWallets();
         expect(
             screen.getByText(
                 'During the upgrade, deposits, withdrawals, transfers, and adding new accounts will be unavailable.'

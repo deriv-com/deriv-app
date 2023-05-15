@@ -1,3 +1,7 @@
+/*
+// This file will be removed from code after releasing the wallets project
+*/
+
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, ButtonToggle } from '@deriv/components';
 import { ContentFlag, routes } from '@deriv/shared';

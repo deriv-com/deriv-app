@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
-import { isDigitTradeType } from 'Modules/Trading/Helpers/digits';
 import { connect } from 'Stores/connect';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
@@ -31,7 +30,6 @@ const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
 };
 
 const Trade = ({
-    contract_type,
     form_components,
     getFirstOpenMarket,
     should_show_active_symbols_loading,
@@ -182,13 +180,7 @@ const Trade = ({
                         </div>
                     </DesktopWrapper>
                     <MobileWrapper>
-                        <ChartLoader
-                            is_visible={
-                                is_chart_loading ||
-                                should_show_active_symbols_loading ||
-                                (isDigitTradeType(contract_type) && !digits[0])
-                            }
-                        />
+                        <ChartLoader is_visible={is_chart_loading || should_show_active_symbols_loading} />
                         <SwipeableWrapper
                             onChange={onChangeSwipeableIndex}
                             is_disabled={
@@ -392,13 +384,14 @@ const Chart = props => {
             id='trade'
             isMobile={isMobile()}
             maxTick={isMobile() ? max_ticks : undefined}
-            granularity={granularity}
+            granularity={show_digits_stats || is_accumulator ? 0 : granularity}
             requestAPI={wsSendRequest}
             requestForget={wsForget}
             requestForgetStream={wsForgetStream}
             requestSubscribe={wsSubscribe}
             settings={settings}
             should_show_eu_content={should_show_eu_content}
+            allowTickChartTypeOnly={show_digits_stats || is_accumulator}
             stateChangeListener={chartStateChange}
             symbol={symbol}
             topWidgets={is_trade_enabled ? topWidgets : null}
@@ -481,6 +474,7 @@ const ChartTrade = connect(({ client, modules, ui, common, contract_trade, portf
         is_digit_contract: contract_trade.last_contract.is_digit_contract,
         is_ended: contract_trade.last_contract.is_ended,
     },
+    is_accumulator: modules.trade.is_accumulator,
     is_trade_enabled: modules.trade.is_trade_enabled,
     main_barrier: modules.trade.main_barrier_flattened,
     extra_barriers: modules.trade.barriers_flattened,

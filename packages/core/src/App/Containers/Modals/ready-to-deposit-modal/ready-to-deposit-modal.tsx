@@ -5,7 +5,7 @@ import { useStore, observer } from '@deriv/stores';
 import './ready-to-deposit-modal.scss';
 
 const ReadyToDepositModal = observer(() => {
-    const { ui, traders_hub } = useStore();
+    const { ui, traders_hub, client } = useStore();
     const { is_eu_user } = traders_hub;
     const {
         is_ready_to_deposit_modal_visible: is_open,
@@ -13,11 +13,18 @@ const ReadyToDepositModal = observer(() => {
         disableApp,
         enableApp,
         openRealAccountSignup,
+        setShouldShowCooldownModal,
     } = ui;
+    const { real_account_creation_unlock_date } = client;
 
     const createAccount = () => {
         onClose();
-        return is_eu_user ? openRealAccountSignup('maltainvest') : openRealAccountSignup();
+        if (real_account_creation_unlock_date) {
+            return setShouldShowCooldownModal(true);
+        } else if (is_eu_user) {
+            return openRealAccountSignup('maltainvest');
+        }
+        return openRealAccountSignup();
     };
 
     return (

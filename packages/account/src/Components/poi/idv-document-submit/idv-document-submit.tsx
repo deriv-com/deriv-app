@@ -54,6 +54,7 @@ const IdvDocumentSubmit = ({
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
     const [selected_doc, setSelectedDoc] = React.useState<string | null>(null);
+    const [input_value, setInputValue] = React.useState('');
 
     const document_data = selected_country.identity.services.idv.documents_supported;
 
@@ -254,14 +255,17 @@ const IdvDocumentSubmit = ({
                                                         type='text'
                                                         label={localize('Choose the document type')}
                                                         list_items={document_list}
-                                                        value={values.document_type.text ?? ''}
+                                                        value={values.document_type.text ?? input_value}
                                                         onBlur={(e: FormikValues) => {
                                                             handleBlur(e);
                                                             if (!getDocument(e.target.value)) {
                                                                 resetDocumentItemSelected(setFieldValue);
                                                             }
                                                         }}
-                                                        onChange={handleChange}
+                                                        onChange={(e: FormikValues) => {
+                                                            setInputValue(e.target.value);
+                                                            handleChange(e);
+                                                        }}
                                                         onItemSelection={(item: {
                                                             id: string;
                                                             text: string;

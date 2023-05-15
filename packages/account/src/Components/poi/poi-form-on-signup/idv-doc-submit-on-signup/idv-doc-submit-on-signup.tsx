@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, Field, FormikValues, FormikHelpers, FormikErrors } from 'formik';
+import { Formik, Field, FormikValues, FormikHelpers, FormikErrors, FieldProps } from 'formik';
 import { localize } from '@deriv/translations';
 import classNames from 'classnames';
 import { Button } from '@deriv/components';
@@ -138,7 +138,7 @@ export const IdvDocSubmitOnSignup = ({
                     <section className='mt5-layout__container'>
                         <FormSubHeader title={localize('Identity verification')} />
                         <Field>
-                            {({ field }) => {
+                            {({ field }: FieldProps<FormikValues>) => {
                                 return (
                                     <IDVForm
                                         errors={errors}
@@ -149,7 +149,6 @@ export const IdvDocSubmitOnSignup = ({
                                         setFieldValue={setFieldValue}
                                         hide_hint={false}
                                         selected_country={citizen_data}
-                                        is_from_external
                                         class_name='idv-layout'
                                         {...field}
                                     />
@@ -158,7 +157,7 @@ export const IdvDocSubmitOnSignup = ({
                         </Field>
                         <FormSubHeader title={localize('Identity verification')} />
                         <Field>
-                            {({ field }) => (
+                            {({ field }: FieldProps<FormikValues>) => (
                                 <div
                                     className={classNames({
                                         'account-form__poi-confirm-example_container': !shouldHideHelperImage(

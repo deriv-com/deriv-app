@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Field, FormikValues, FormikProps, FormikHandlers } from 'formik';
+import { Field, FormikValues, FormikProps, FormikHandlers, FormikState } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 import { formatInput, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
@@ -19,14 +19,15 @@ type TDocumentList = Array<{
 type TFormProps = {
     document_type: TDocumentList[0];
     document_number: string;
-    document_additional: string;
+    document_additional?: string;
+    error_message?: string;
 };
 
 type TIDVForm = {
     selected_country: ResidenceList[0];
     hide_hint?: boolean;
     class_name?: string;
-} & FormikHandlers &
+} & Partial<FormikHandlers> &
     FormikProps<TFormProps>;
 
 const IDVForm = ({
@@ -40,7 +41,7 @@ const IDVForm = ({
     ...props
 }: TIDVForm) => {
     const [document_list, setDocumentList] = React.useState<TDocumentList>([]);
-    const [document_image, setDocumentImage] = React.useState(null);
+    const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [selected_doc, setSelectedDoc] = React.useState('');
 
     const { selected_country } = props;
@@ -48,42 +49,47 @@ const IDVForm = ({
     const { documents_supported: document_data, has_visual_sample } = selected_country?.identity?.services?.idv ?? {};
 
     React.useEffect(() => {
-        const document_types = Object.keys(document_data);
-        if (document_types.length === 0) return;
-        const filtered_documents = ['gh', 'ng'].includes(selected_country.value)
-            ? document_types.filter(d => d !== 'voter_id')
-            : document_types;
+        if (document_data && selected_country && selected_country.value) {
+            const document_types = Object.keys(document_data);
+            if (document_types.length === 0) return;
+            const filtered_documents = ['gh', 'ng'].includes(selected_country.value)
+                ? document_types.filter(d => d !== 'voter_id')
+                : document_types;
 
-        setDocumentList([
-            ...filtered_documents.map(key => {
-                const { display_name, format } = document_data[key];
-                const { new_display_name, example_format, sample_image } = getDocumentData(selected_country.value, key);
-                const needs_additional_document = !!document_data[key].additional;
+            setDocumentList([
+                ...filtered_documents.map(key => {
+                    const { display_name, format } = document_data[key];
+                    const { new_display_name, example_format, sample_image } = getDocumentData(
+                        selected_country.value ?? '',
+                        key
+                    );
+                    const needs_additional_document = !!document_data[key].additional;
 
-                if (needs_additional_document) {
+                    if (needs_additional_document) {
+                        return {
+                            id: key,
+                            text: new_display_name || display_name,
+                            additional: {
+                                display_name: document_data[key].additional?.display_name,
+                                format: document_data[key].additional?.format,
+                            },
+                            value: format,
+                            sample_image,
+                            example_format,
+                        };
+                    }
                     return {
                         id: key,
                         text: new_display_name || display_name,
-                        additional: {
-                            display_name: document_data[key].additional?.display_name,
-                            format: document_data[key].additional?.format,
-                        },
                         value: format,
                         sample_image,
                         example_format,
                     };
-                }
-                return {
-                    id: key,
-                    text: new_display_name || display_name,
-                    value: format,
-                    sample_image,
-                    example_format,
-                };
-            }),
-            IDV_NOT_APPLICABLE_OPTION,
-        ]);
-    }, [document_data]);
+                }),
+                IDV_NOT_APPLICABLE_OPTION,
+            ]);
+        }
+    }, [document_data, selected_country]);
 
     const resetDocumentItemSelected = () => {
         setFieldValue(
@@ -153,7 +159,7 @@ const IDVForm = ({
                                                                     }
                                                                 }}
                                                                 onChange={handleChange}
-                                                                onItemSelection={item => {
+                                                                onItemSelection={(item: Record<string, string>) => {
                                                                     if (
                                                                         item.text === 'No results found' ||
                                                                         !item.text
@@ -164,7 +170,7 @@ const IDVForm = ({
                                                                         setFieldValue('document_type', item, true);
                                                                         setSelectedDoc(item.id);
                                                                         if (has_visual_sample) {
-                                                                            setDocumentImage(item.sample_image || '');
+                                                                            setDocumentImage(item.sample_image ?? '');
                                                                         }
                                                                     }
                                                                 }}
@@ -193,7 +199,7 @@ const IDVForm = ({
                                                                     );
                                                                     if (has_visual_sample) {
                                                                         setDocumentImage(
-                                                                            selected_document.sample_image
+                                                                            selected_document.sample_image ?? ''
                                                                         );
                                                                     }
                                                                 }
@@ -219,7 +225,7 @@ const IDVForm = ({
                                                         name='document_number'
                                                         bottom_label={
                                                             values.document_type &&
-                                                            getExampleFormat(values.document_type.example_format)
+                                                            getExampleFormat(values.document_type.example_format ?? '')
                                                         }
                                                         disabled={
                                                             !values.document_type.id ||

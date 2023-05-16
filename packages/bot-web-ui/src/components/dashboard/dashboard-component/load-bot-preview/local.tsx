@@ -24,7 +24,6 @@ type TLocalComponent = {
     loadFileFromRecent: () => void;
     onConfirmSave: () => void;
     onDrop: () => void;
-    handleTabChange: (param: number) => void;
     previewRecentStrategy: () => void;
     setActiveTab: (param: number) => void;
     dashboard_strategies: Array<TWorkspace>;

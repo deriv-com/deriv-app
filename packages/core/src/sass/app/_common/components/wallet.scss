@@ -1,3 +1,8 @@
+$usdt: (
+    'light': linear-gradient(to right, #a4d7d8, #9fddde, #99e2e3, #92e8e9, #8bedee),
+    'dark': linear-gradient(to right, #0d4342, #0e4e4d, #0e5958, #0d6464, #0c7070),
+);
+
 $wallet-bg-color: (
     'usd': (
         'light': linear-gradient(to right, #f2bfba, #e8b4c0, #d6acc7, #bca7cc, #9ca3cc),
@@ -11,6 +16,33 @@ $wallet-bg-color: (
         'light': linear-gradient(to right, #a9e5ba, #b9e8ad, #cdea9f, #e5ea93, #ffe88a),
         'dark': linear-gradient(to right, #214f3e, #2e5937, #44622a, #60681b, #816b0d),
     ),
+    'btc': (
+        'light': linear-gradient(to right, #fbdbb4, #fbdeb3, #fbe2b1, #fae5b1, #f9e9b0),
+        'dark': linear-gradient(to right, #664419, #6d4c19, #735519, #785e19, #7d6819),
+    ),
+    'demo': (
+        'light': linear-gradient(to right, #693227, #6f3129, #75302b, #7a2e2e, #802c31),
+        'dark': linear-gradient(to right, #fcd1c8, #fdc7bf, #febdb7, #ffb3b1, #ffa8ac),
+    ),
+    'p2p': (
+        'light': linear-gradient(to right, #fcd1c8, #fdc7bf, #febdb7, #ffb3b1, #ffa8ac),
+        'dark': linear-gradient(to right, #693227, #6f3129, #75302b, #7a2e2e, #802c31),
+    ),
+    'eth': (
+        'light': linear-gradient(to right, #c1c2d1, #c2c4d3, #c3c6d5, #c4c8d7, #c5cad9),
+        'dark': linear-gradient(to right, #383a48, #3f4251, #474b59, #4f5462, #575d6b),
+    ),
+    'ltc': (
+        'light': linear-gradient(to right, #dfe0e0, #e3e4e4, #e6e8e8, #eaecec, #eef0f0),
+        'dark': linear-gradient(to right, #4f5253, #575b5c, #5f6364, #676c6d, #6f7576),
+    ),
+    'usdc': (
+        'light': linear-gradient(to right, #bbd4ed, #aecbef, #a4c1f1, #9db7f1, #99acf1),
+        'dark': linear-gradient(to right, #1b3956, #12385f, #0c3667, #10336e, #1b2f74),
+    ),
+    'usdt': $usdt,
+    'eusdt': $usdt,
+    'tusdt': $usdt,
 );
 
 /// Wallet background color generator

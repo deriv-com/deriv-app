@@ -464,6 +464,9 @@
 
     &__progress-bar {
         margin-bottom: 1.6rem;
+        .progress-bar-circle:first-child {
+            display: none;
+        }
     }
 
     &__status {
@@ -555,6 +558,7 @@
 
                 .progress-bar-circle {
                     opacity: 0.16;
+                    display: none;
                 }
             }
 

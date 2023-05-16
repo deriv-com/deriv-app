@@ -192,7 +192,7 @@ const TourSlider = ({
                 {!has_started_onboarding_tour && content_data && <Accordion content_data={content_data} expanded />}
                 <div className='dbot-slider__status'>
                     <div className='dbot-slider__progress-bar'>
-                        {step !== 1 && (
+                        {((has_started_onboarding_tour && step !== 1) || !has_started_onboarding_tour) && (
                             <ProgressBarOnboarding
                                 step={step}
                                 amount_of_steps={Object.keys(

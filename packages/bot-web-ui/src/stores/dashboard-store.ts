@@ -303,6 +303,7 @@ export default class DashboardStore implements IDashboardStore {
         if (step === 7) {
             this.onCloseTour();
             this.setTourEnd(tour_type);
+            if (isMobile()) this.setTourDialogVisibility(true);
         }
         if (!has_started_onboarding_tour && step === 3) {
             this.onCloseTour();

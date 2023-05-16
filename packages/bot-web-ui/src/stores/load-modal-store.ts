@@ -229,7 +229,9 @@ export default class LoadModalStore implements ILoadModalStore {
         return true;
     };
     refreshStrategiesTheme = (strategy = this.selected_strategy?.xml): void => {
-        load({ block_string: strategy, drop_event: {}, workspace: this.recent_workspace });
+        setTimeout(() => {
+            load({ block_string: strategy, drop_event: {}, workspace: this.recent_workspace });
+        }, 0);
     };
     loadFileFromRecent = async (): void => {
         this.is_open_button_loading = true;

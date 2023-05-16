@@ -33,6 +33,7 @@ type TLocalComponent = {
     setTourDialogVisibility: (param: boolean) => boolean;
     setPreviewOnDialog: (param: boolean) => boolean;
     has_mobile_preview_loaded: boolean;
+    setActiveTabTutorial: (param: boolean) => void;
 };
 
 const LocalComponent = ({
@@ -43,7 +44,7 @@ const LocalComponent = ({
     dashboard_strategies,
     setPreviewOnDialog,
     has_mobile_preview_loaded,
-    handleTabChange,
+    setActiveTabTutorial,
 }: TLocalComponent) => {
     const file_input_ref = React.useRef<HTMLInputElement | null>(null);
     const [is_file_supported, setIsFileSupported] = React.useState<boolean>(true);
@@ -88,6 +89,7 @@ const LocalComponent = ({
                                 <button
                                     onClick={() => {
                                         setActiveTab(DBOT_TABS.TUTORIAL);
+                                        setActiveTabTutorial(0);
                                     }}
                                 >
                                     <Icon
@@ -161,6 +163,7 @@ const Local = connect(({ load_modal, save_modal, dashboard }: RootStore) => ({
     loadFileFromRecent: load_modal.loadFileFromRecent,
     setFileLoaded: dashboard.setFileLoaded,
     setPreviewOnDialog: dashboard.setPreviewOnDialog,
+    setActiveTabTutorial: dashboard.setActiveTabTutorial,
     has_mobile_preview_loaded: dashboard.has_mobile_preview_loaded,
 }))(LocalComponent);
 

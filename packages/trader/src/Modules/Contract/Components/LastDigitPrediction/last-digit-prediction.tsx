@@ -79,11 +79,11 @@ const LastDigitPrediction = ({
             [key: string]: (val: number | null) => boolean;
         } = {
             DIGITMATCH: (val: number | null) => val === barrier,
-            DIGITDIFF: (val: number | null) => val !== barrier && barrier !== null && !isNaN(barrier),
+            DIGITDIFF: (val: number | null) => val !== barrier && !!barrier && !isNaN(barrier),
             DIGITOVER: (val: number | null) => !!(val && barrier) && val > barrier,
             DIGITUNDER: (val: number | null) => !!(val && barrier) && val < barrier,
-            DIGITODD: (val: number | null) => val !== null && Boolean(val % 2),
-            DIGITEVEN: (val: number | null) => val !== null && !(val % 2),
+            DIGITODD: (val: number | null) => !!val && Boolean(val % 2),
+            DIGITEVEN: (val: number | null) => !!val && !(val % 2),
         };
         if (!contract_type || !barrier_map[contract_type]) return null;
         return barrier_map[contract_type](num) ? num : null;

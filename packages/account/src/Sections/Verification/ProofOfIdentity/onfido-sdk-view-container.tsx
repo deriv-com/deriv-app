@@ -49,7 +49,7 @@ const OnfidoSdkViewContainer = ({
     const [missing_personal_details, setMissingPersonalDetails] = React.useState('');
     const [is_status_loading, setStatusLoading] = React.useState(true);
     const [retry_count, setRetryCount] = React.useState(0);
-    const [is_onfido_disabled, setIsOnfidoDisabled] = React.useState(true);
+    const [is_onfido_disabled, setIsOnfidoDisabled] = React.useState(false);
     const token_timeout_ref = React.useRef<ReturnType<typeof setTimeout>>();
     const [is_confirmed, setIsConfirmed] = React.useState(false);
     // IDV country code - Alpha ISO2. Onfido country code - Alpha ISO3
@@ -127,6 +127,8 @@ const OnfidoSdkViewContainer = ({
             });
         } catch (err) {
             setAPIError(err as TAPIError);
+        } finally {
+            setIsOnfidoDisabled(true);
         }
     }, [onfido_service_token, onComplete, onfido_documents, onfido_country_code]);
 

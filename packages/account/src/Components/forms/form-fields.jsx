@@ -5,21 +5,13 @@ import { toMoment } from '@deriv/shared';
 
 export const DateOfBirthField = ({ name, portal_id, ...rest }) => (
     <Field name={name}>
-        {({ field: { value }, form: { setFieldValue, errors, touched, setTouched } }) => (
+        {({ field: { value }, form: { setFieldValue, errors, touched, setFieldTouched } }) => (
             <DateOfBirthPicker
                 error={touched.date_of_birth && errors.date_of_birth}
                 name={name}
-                onBlur={() =>
-                    setTouched({
-                        date_of_birth: true,
-                    })
-                }
+                onBlur={() => setFieldTouched(name)}
                 onChange={({ target }) =>
-                    setFieldValue(
-                        'date_of_birth',
-                        target?.value ? toMoment(target.value).format('YYYY-MM-DD') : '',
-                        true
-                    )
+                    setFieldValue(name, target?.value ? toMoment(target.value).format('YYYY-MM-DD') : '', true)
                 }
                 value={value}
                 portal_id={portal_id}

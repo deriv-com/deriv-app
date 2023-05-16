@@ -3,14 +3,13 @@ import { Field } from 'formik';
 import { DateOfBirthPicker, Input } from '@deriv/components';
 import { toMoment } from '@deriv/shared';
 
-export const DateOfBirthField = props => (
-    <Field name={props.name}>
+export const DateOfBirthField = ({ name, portal_id, ...rest }) => (
+    <Field name={name}>
         {({ field: { value }, form: { setFieldValue, errors, touched, setTouched } }) => (
             <DateOfBirthPicker
                 error={touched.date_of_birth && errors.date_of_birth}
                 onBlur={() =>
                     setTouched({
-                        ...touched,
                         date_of_birth: true,
                     })
                 }
@@ -22,8 +21,8 @@ export const DateOfBirthField = props => (
                     )
                 }
                 value={value}
-                portal_id={props.portal_id}
-                {...props}
+                portal_id={portal_id}
+                {...rest}
             />
         )}
     </Field>
@@ -35,7 +34,6 @@ export const FormInputField = ({ name, optional = false, warn, ...props }) => (
             <Input
                 type='text'
                 required={!optional}
-                name={name}
                 autoComplete='off'
                 maxLength={props.maxLength || 30}
                 error={touched[field.name] && errors[field.name]}

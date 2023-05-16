@@ -11,20 +11,20 @@ describe('<AmountInput/>', () => {
     });
 
     it('should render with the correct initial value if {initial_value} was supplied', () => {
-        render(<AmountInput currency='USD' max_digits={8} initial_value={42} />);
+        render(<AmountInput currency='USD' initial_value={42} />);
         const input = screen.getByTestId('dt_amount-input');
         expect(input).toHaveDisplayValue('42.00');
     });
 
     it('should not change the value on non-numeric and non-"." inputs', () => {
-        render(<AmountInput currency='USD' max_digits={8} />);
+        render(<AmountInput currency='USD' />);
         const input = screen.getByTestId('dt_amount-input');
         userEvent.type(input, 'abcdef!@#$%^&*()_+-={}[];\'"|\\/,.<>');
         expect(input).toHaveDisplayValue('0.00');
     });
 
     it('should change the value like an ATM, i.e. from right to left, when entering digits', () => {
-        render(<AmountInput currency='USD' max_digits={8} />);
+        render(<AmountInput currency='USD' />);
         const input = screen.getByTestId('dt_amount-input');
         userEvent.type(input, '1');
         expect(input).toHaveDisplayValue('0.01');
@@ -42,7 +42,7 @@ describe('<AmountInput/>', () => {
     });
 
     it('should not remove "0.00" when backspacing', () => {
-        render(<AmountInput currency='USD' max_digits={8} />);
+        render(<AmountInput currency='USD' />);
         const input = screen.getByTestId('dt_amount-input');
         userEvent.type(input, '100');
         expect(input).toHaveDisplayValue('1.00');

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import Field from '../field';
 import Text from '../text/text';
 
@@ -18,6 +18,7 @@ export type TInputProps = {
     hint?: React.ReactNode;
     id?: string;
     initial_character_count?: number;
+    inputMode?: HTMLAttributes<HTMLInputElement | HTMLTextAreaElement>['inputMode'];
     input_id?: string;
     is_relative_hint?: boolean;
     label_className?: string;

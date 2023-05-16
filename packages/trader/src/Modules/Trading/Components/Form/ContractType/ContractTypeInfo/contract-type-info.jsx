@@ -40,6 +40,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
 
     return (
         <Carousel
+            test_id='dt_contract-type-info'
             className='contract-type-info'
             bullet_color='var(--text-disabled)'
             active_bullet_color='var(--brand-red-coral)'

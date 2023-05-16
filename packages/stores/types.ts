@@ -218,6 +218,14 @@ type TCommonStore = {
     is_language_changing: boolean;
 };
 
+type TToastConfig = {
+    key?: number;
+    content: string;
+    timeout?: number;
+    is_bottom?: boolean;
+    type?: string;
+};
+
 type TUiStore = {
     app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     current_focus: string | null;
@@ -246,6 +254,8 @@ type TUiStore = {
     is_ready_to_deposit_modal_visible: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
+    addToast: (toast_config: TToastConfig) => void;
+    removeToast: (key: number) => void;
 };
 
 type TMenuStore = {

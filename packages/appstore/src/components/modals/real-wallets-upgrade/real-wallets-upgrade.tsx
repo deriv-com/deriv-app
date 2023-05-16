@@ -116,35 +116,35 @@ const RealWalletsUpgrade = observer(() => {
 
     return (
         <React.Fragment>
-            is_real_wallets_upgrade_on && (
-            <React.Fragment>
-                <DesktopWrapper>
-                    <Modal
-                        is_open={is_real_wallets_upgrade_on}
-                        toggleModal={handleClose}
-                        height='734px'
-                        width='1200px'
-                        should_header_stick_body={false}
-                        has_close_icon
-                        title=' '
-                    >
-                        <Modal.Body className='wallet-steps'>{ModalContent}</Modal.Body>
-                        {ModalFooter}
-                    </Modal>
-                </DesktopWrapper>
-                <MobileWrapper>
-                    <MobileDialog
-                        portal_element_id='modal_root'
-                        visible={is_real_wallets_upgrade_on}
-                        onClose={handleClose}
-                        wrapper_classname='wallet-steps'
-                        footer={ModalFooter}
-                    >
-                        <Modal.Body>{ModalContent}</Modal.Body>
-                    </MobileDialog>
-                </MobileWrapper>
-            </React.Fragment>
-            )
+            {is_real_wallets_upgrade_on && (
+                <React.Fragment>
+                    <DesktopWrapper>
+                        <Modal
+                            is_open={is_real_wallets_upgrade_on}
+                            toggleModal={handleClose}
+                            height='734px'
+                            width='1200px'
+                            should_header_stick_body={false}
+                            has_close_icon
+                            title=' '
+                        >
+                            <Modal.Body className='wallet-steps'>{ModalContent}</Modal.Body>
+                            {ModalFooter}
+                        </Modal>
+                    </DesktopWrapper>
+                    <MobileWrapper>
+                        <MobileDialog
+                            portal_element_id='modal_root'
+                            visible={is_real_wallets_upgrade_on}
+                            onClose={handleClose}
+                            wrapper_classname='wallet-steps'
+                            footer={ModalFooter}
+                        >
+                            <Modal.Body>{ModalContent}</Modal.Body>
+                        </MobileDialog>
+                    </MobileWrapper>
+                </React.Fragment>
+            )}
         </React.Fragment>
     );
 });

@@ -77,7 +77,7 @@ const CompositeCalendar = props => {
 
     const selectDateRange = new_from => {
         hideCalendar();
-        applyBatch({
+        onChange({
             from: new_from ? toMoment().startOf('day').subtract(new_from, 'day').add(1, 's').unix() : null,
             to: toMoment().endOf('day').unix(),
             is_batch: true,
@@ -122,12 +122,8 @@ const CompositeCalendar = props => {
         hideCalendar();
     };
 
-    const applyBatch = values => {
-        onChange(values);
-    };
-
     const apply = (key, value) => {
-        applyBatch({
+        onChange({
             [key]: value,
         });
     };

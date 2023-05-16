@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, DatePicker, Icon, InputField, MobileDialog } from '@deriv/components';
-import { localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import CalendarFooter from './calendar-footer';
 import RadioButton from './radio-button';
 import './composite-calendar-mobile.scss';
 
@@ -12,8 +13,8 @@ const CompositeCalendarMobile = React.memo(
     ({ input_date_range, current_focus, duration_list, onChange, setCurrentFocus }) => {
         const date_range = input_date_range || duration_list.find(range => range.value === 'all_time');
 
-        const [from, setFrom] = React.useState(from && toMoment(from).format('DD MMM YYYY'));
-        const [to, setTo] = React.useState(to && toMoment(to).format('DD MMM YYYY'));
+        const [from, setFrom] = React.useState(null);
+        const [to, setTo] = React.useState(null);
         const [is_open, setIsOpen] = React.useState(false);
 
         const [applied_date_range, setAppliedDateRange] = React.useState(date_range);
@@ -93,29 +94,6 @@ const CompositeCalendarMobile = React.memo(
             }
         };
 
-        const getMobileFooter = () => {
-            return (
-                <div className='composite-calendar-modal__actions'>
-                    <Button
-                        className='composite-calendar-modal__actions__cancel'
-                        text={localize('Cancel')}
-                        onClick={() => setIsOpen(false)}
-                        has_effect
-                        secondary
-                        large
-                    />
-                    <Button
-                        className='composite-calendar-modal__actions__ok'
-                        text={localize('OK')}
-                        onClick={applyDateRange}
-                        has_effect
-                        primary
-                        large
-                    />
-                </div>
-            );
-        };
-
         const onDateRangeChange = _date_range => {
             setSelectedDateRange(
                 duration_list.find(range => _date_range && range.value === _date_range.value) || _date_range
@@ -151,7 +129,7 @@ const CompositeCalendarMobile = React.memo(
                     has_content_scroll
                     onClose={() => setIsOpen(false)}
                     content_height_offset='94px'
-                    footer={getMobileFooter()}
+                    footer={<CalendarFooter setIsOpen={setIsOpen} applyDateRange={applyDateRange} />}
                 >
                     <div className='composite-calendar-modal'>
                         <div className='composite-calendar-modal__radio-group'>

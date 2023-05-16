@@ -2,20 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
+import './radio-button.scss';
 
 const RadioButton = ({ id, className, selected_value, value, label, onChange }) => {
     return (
         <label
             htmlFor={id}
-            className={classNames('composite-calendar-modal__radio', className, {
-                'composite-calendar-modal__radio--selected': selected_value === value,
+            className={classNames('radio-button', className, {
+                'radio-button--selected': selected_value === value,
             })}
             onClick={() => onChange({ label, value })}
         >
-            <input className='composite-calendar-modal__radio-input' id={id} type='radio' value={value} />
+            <input className='radio-button__input' id={id} type='radio' value={value} />
             <span
-                className={classNames('composite-calendar-modal__radio-circle', {
-                    'composite-calendar-modal__radio-circle--selected': selected_value === value,
+                className={classNames('radio-button__circle', {
+                    'radio-button__circle--selected': selected_value === value,
                 })}
             />
             <Text

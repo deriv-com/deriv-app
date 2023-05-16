@@ -1,78 +1,43 @@
 .composite-calendar-modal {
-    @include mobile {
-        &__actions {
-            display: flex;
-            padding: 1.6rem;
-            border-top: 2px solid var(--border-disabled);
+    &__actions {
+        display: flex;
+        padding: 1.6rem;
+        border-top: 2px solid var(--border-disabled);
 
-            > * {
-                flex: 1;
-                margin: 0.8rem;
-            }
-            &-today {
-                width: 100%;
-            }
+        > * {
+            flex: 1;
+            margin: 0.8rem;
         }
-        &__radio-group {
-            padding: 1.6rem 1.6rem 0;
+        &-today {
+            width: 100%;
+        }
+    }
+    &__radio-group {
+        padding: 1.6rem 1.6rem 0;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        box-shadow: inset 0px -1px 0px var(--general-section-1);
+    }
+
+    &__custom {
+        padding: 16px;
+        &__wrapper {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            box-shadow: inset 0px -1px 0px var(--general-section-1);
         }
-
-        &__radio {
+        &-radio {
+            display: inline-flex;
+        }
+        &-date-range {
+            margin: 0.8rem;
             display: flex;
-            align-items: center;
-            padding: 0.7rem 0.8rem;
-            border: 1px solid;
-            border-color: var(--border-normal);
-            border-radius: 4px;
-            margin: 0.8rem 0.8rem 2.4rem;
+            flex-direction: column;
 
-            &-input {
-                display: none;
+            &-start-date {
+                margin: 1.6rem 0;
             }
-            &-circle {
-                border: 2px solid var(--text-less-prominent);
-                border-radius: 50%;
-                box-shadow: 0 0 1px 0 var(--shadow-menu);
-                width: 1.6rem;
-                height: 1.6rem;
-                transition: all 0.3s ease-in-out;
-                margin-right: 0.8rem;
-                align-self: center;
-
-                &--selected {
-                    border-width: 4px;
-                    border-color: var(--brand-red-coral);
-                    background: $color-white;
-                }
-            }
-            &--selected {
-                border-color: var(--brand-secondary);
-                font-weight: bold;
-            }
-        }
-        &__custom {
-            padding: 16px;
-            &__wrapper {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-            }
-            &-radio {
-                display: inline-flex;
-            }
-            &-date-range {
-                margin: 0.8rem;
-                display: flex;
-                flex-direction: column;
-
-                &-start-date {
-                    margin: 1.6rem 0;
-                }
-                &-end-date {
-                    margin-bottom: 0.8rem;
-                }
+            &-end-date {
+                margin-bottom: 0.8rem;
             }
         }
     }

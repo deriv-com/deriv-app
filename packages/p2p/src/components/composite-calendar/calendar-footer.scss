@@ -1,0 +1,10 @@
+.calendar-footer {
+    display: flex;
+    padding: 1.6rem;
+    border-top: 2px solid var(--border-disabled);
+
+    > * {
+        flex: 1;
+        margin: 0.8rem;
+    }
+}

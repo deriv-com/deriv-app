@@ -519,7 +519,10 @@ export default class MyProfileStore extends BaseStore {
                         this.setTradePartnersList(partners_list);
                     }
                 } else {
-                    general_store.setBlockUnblockUserError(response.error.message);
+                    const { code, message } = response.error;
+
+                    general_store.setErrorCode(code);
+                    general_store.setBlockUnblockUserError(message);
                 }
             }
             this.setIsBlockUserTableLoading(false);

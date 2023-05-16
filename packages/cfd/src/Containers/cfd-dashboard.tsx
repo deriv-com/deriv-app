@@ -250,11 +250,20 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
             setIsRealEnabled(true);
             setIsDemoEnabled(true);
         }
-        if (window.location.hash === '#demo') {
+        if (props.location.hash === '#demo') {
             setIsDemoEnabled(true);
             setActiveIndex(1);
         }
     });
+
+    React.useEffect(() => {
+        if (props.location.hash === '#real') {
+            setActiveIndex(0);
+        }
+        if (props.location.hash === '#demo-all' || props.location.hash === '#demo') {
+            setActiveIndex(1);
+        }
+    }, [props.location.hash]);
 
     const openResetPassword = () => {
         if (!/reset-password/.test(props.location.hash)) {

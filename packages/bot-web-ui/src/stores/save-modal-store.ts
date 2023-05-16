@@ -65,13 +65,13 @@ export default class SaveModalStore implements ISaveModalStore {
         return errors;
     };
 
-    async addStrategyToWorkspace(
+    addStrategyToWorkspace = async (
         workspace_id: string,
         is_local: boolean,
         save_as_collection: boolean,
         bot_name: string,
         xml: string
-    ) {
+    ) => {
         try {
             const workspace = await getSavedWorkspaces();
             const current_workspace_index = workspace.findIndex(strategy => strategy.id === workspace_id);
@@ -121,7 +121,7 @@ export default class SaveModalStore implements ISaveModalStore {
         } catch (error) {
             globalObserver.emit('Error', error);
         }
-    }
+    };
 
     async onConfirmSave({ is_local, save_as_collection, bot_name }) {
         this.setButtonStatus(button_status.LOADING);

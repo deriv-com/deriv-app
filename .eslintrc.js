@@ -1,5 +1,5 @@
 module.exports = {
-    extends: ['deriv'],
+    extends: ['deriv-beta'],
     overrides: [
         {
             files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],

@@ -1,3 +1,3 @@
 module.exports = {
-    ...require('prettier-config-deriv'),
+    ...require('prettier-config-deriv-beta'),
 };

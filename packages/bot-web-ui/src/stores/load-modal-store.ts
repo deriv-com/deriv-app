@@ -193,11 +193,8 @@ export default class LoadModalStore implements ILoadModalStore {
     }
 
     async getDashboardStrategies() {
-        setTimeout(() => {
-            getSavedWorkspaces().then(recent_strategies => {
-                this.dashboard_strategies = recent_strategies;
-            });
-        }, 1000);
+        const recent_strategies = await getSavedWorkspaces();
+        this.dashboard_strategies = recent_strategies;
     }
 
     handleFileChange = (
@@ -229,7 +226,9 @@ export default class LoadModalStore implements ILoadModalStore {
         return true;
     };
     refreshStrategiesTheme = (strategy = this.selected_strategy?.xml): void => {
-        load({ block_string: strategy, drop_event: {}, workspace: this.recent_workspace });
+        setTimeout(() => {
+            load({ block_string: strategy, drop_event: {}, workspace: this.recent_workspace });
+        }, 0);
     };
     loadFileFromRecent = async (): void => {
         this.is_open_button_loading = true;
@@ -298,7 +297,7 @@ export default class LoadModalStore implements ILoadModalStore {
                     this.local_workspace.dispose();
                     this.local_workspace = null;
                     this.setLoadedLocalFile(null);
-                });
+                }, 0);
             }
         }
 

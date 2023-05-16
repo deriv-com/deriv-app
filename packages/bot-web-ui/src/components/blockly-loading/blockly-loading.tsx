@@ -4,9 +4,8 @@ import { observer } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const BlocklyLoading = observer(() => {
-    const {
-        blockly_store: { is_loading },
-    } = useDBotStore();
+    const { blockly_store } = useDBotStore();
+    const { is_loading } = blockly_store;
     return (
         <>
             {is_loading && (

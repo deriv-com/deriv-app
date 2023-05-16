@@ -198,6 +198,7 @@
         --wallets-banner-dot-color: #{$color-grey-6};
         --wallets-banner-active-dot-color: #{$color-red};
         --wallets-card-active-gradient-background: #{$gradient-color-black-5};
+        --wallet-demo-bg-color: #{$wallet-demo-bg-color};
     }
     .theme--dark {
         // General
@@ -314,5 +315,6 @@
         --wallets-banner-dot-color: #{$color-grey-6};
         --wallets-banner-active-dot-color: #{$color-red};
         --wallets-card-active-gradient-background: #{$gradient-color-white-2};
+        --wallet-demo-bg-color: #{$wallet-demo-bg-color};
     }
 }

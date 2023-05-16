@@ -174,6 +174,7 @@ export type TJurisdictionCardProps = {
     account_status: GetAccountStatus;
     account_type: string;
     disabled: boolean;
+    is_onfido_design: boolean;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     type_of_card: TJurisdictionCardType;
@@ -264,6 +265,8 @@ export type TJurisdictionModalContentWrapperProps = TJurisdictionModalCommonProp
     jurisdiction_selected_shortcode: string;
     real_financial_accounts_existing_data: TExistingData;
     real_synthetic_accounts_existing_data: TExistingData;
+    residence: string;
+    residence_list: ResidenceList[];
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
@@ -280,6 +283,7 @@ export type TJurisdictionModalProps = TJurisdictionModalCommonProps & {
 export type TJurisdictionModalContentProps = {
     account_status: GetAccountStatus;
     account_type: string;
+    is_onfido_design: boolean;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];

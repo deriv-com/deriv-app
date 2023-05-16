@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import { TJurisdictionCardItemVerification } from 'Components/props.types';
 import { getJurisdictionContents } from '../../Constants/jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardProps } from '../props.types';
 import JurisdictionCardBack from './jurisdiction-card-back';
@@ -9,6 +10,7 @@ const JurisdictionCard = ({
     account_status,
     account_type,
     disabled,
+    is_onfido_design,
     jurisdiction_selected_shortcode,
     setJurisdictionSelectedShortcode,
     type_of_card,
@@ -17,9 +19,6 @@ const JurisdictionCard = ({
     const is_synthetic = account_type === 'synthetic';
     const card_values = getJurisdictionContents()[type_of_card];
     const card_data = is_synthetic ? card_values.synthetic_contents : card_values.financial_contents;
-    const verification_docs = is_synthetic
-        ? card_values?.synthetic_verification_docs
-        : card_values?.financial_verification_docs;
     const [is_card_flipped, setIsCardFlipped] = React.useState(false);
     const is_card_selected = jurisdiction_selected_shortcode === type_of_card;
 
@@ -31,6 +30,16 @@ const JurisdictionCard = ({
         event.stopPropagation();
         setIsCardFlipped(!is_card_flipped);
     };
+
+    const getResolvedVerificationDocs = (
+        verification_docs_list?: TJurisdictionCardItemVerification
+    ): TJurisdictionCardItemVerification => {
+        return is_onfido_design ? ['selfie', 'identity_document', 'name_and_address'] : verification_docs_list || [];
+    };
+
+    const verification_docs = getResolvedVerificationDocs(
+        is_synthetic ? card_values?.synthetic_verification_docs : card_values?.financial_verification_docs
+    );
 
     return (
         <div className='cfd-card-perspective'>

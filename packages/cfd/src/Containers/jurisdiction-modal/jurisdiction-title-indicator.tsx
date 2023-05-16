@@ -26,7 +26,7 @@ const JurisdictionTitleIndicator = ({
 
     const getVerificationIconVariant = (verification_document: TJurisdictionCardItemVerificationItem): string => {
         let icon_variant: TJurisdictionCardVerificationStatus = 'Default';
-        if (type_of_card === Jurisdiction.BVI || type_of_card === Jurisdiction.LABUAN) {
+        if ([Jurisdiction.BVI, Jurisdiction.VANUATU, Jurisdiction.LABUAN].includes(type_of_card)) {
             if (verification_document === 'document_number') {
                 if (poi_pending_for_bvi_labuan) {
                     icon_variant = 'Pending';
@@ -36,7 +36,7 @@ const JurisdictionTitleIndicator = ({
                     icon_variant = 'Verified';
                 }
             }
-        } else if (type_of_card === Jurisdiction.VANUATU || type_of_card === Jurisdiction.MALTA_INVEST) {
+        } else if (type_of_card === Jurisdiction.MALTA_INVEST) {
             if (verification_document === 'selfie' || verification_document === 'identity_document') {
                 if (poi_pending_for_vanuatu_maltainvest) {
                     icon_variant = 'Pending';

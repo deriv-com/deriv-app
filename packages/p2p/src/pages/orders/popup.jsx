@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Button, Checkbox, Modal, Text, useSafeState } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { localize } from 'Components/i18next';
 import FormError from 'Components/form/error.jsx';
 
 const FormWithConfirmation = ({

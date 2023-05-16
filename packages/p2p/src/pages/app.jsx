@@ -8,7 +8,7 @@ import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import AppContent from 'Components/app-content.jsx';
-import { setLanguage } from 'Components/i18next/index.js';
+import { setLanguage } from 'Components/i18next';
 import { ModalManager, ModalManagerContextProvider } from 'Components/modal-manager/index.js';
 import './app.scss';
 

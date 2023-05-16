@@ -9,7 +9,7 @@ import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
 import AppContent from 'Components/app-content.jsx';
 import { setLanguage } from 'Components/i18next';
-import { ModalManager, ModalManagerContextProvider } from 'Components/modal-manager/index.js';
+import { ModalManager, ModalManagerContextProvider } from 'Components/modal-manager';
 import './app.scss';
 
 // TODO: Add back props to get root_store to pass to StoreProvider component

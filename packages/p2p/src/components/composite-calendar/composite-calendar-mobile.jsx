@@ -132,12 +132,12 @@ const CompositeCalendarMobile = ({ input_date_range, current_focus, duration_lis
                     <div className='composite-calendar-modal__radio-group'>
                         {duration_list
                             .filter(({ value }) => value !== 'today')
-                            .map(duration => (
+                            .map(({ value, label }) => (
                                 <RadioButton
-                                    id={`composite-calendar-modal__radio__${duration.value}`}
-                                    key={duration.value}
-                                    value={duration.value}
-                                    label={duration.label}
+                                    id={`composite-calendar-modal__radio__${value}`}
+                                    key={value}
+                                    value={value}
+                                    label={label}
                                     selected_value={selected_date_range.value}
                                     onChange={onDateRangeChange}
                                 />

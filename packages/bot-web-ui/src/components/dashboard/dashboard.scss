@@ -421,6 +421,9 @@
 
     &--tour-position {
         top: 0;
+        .progress-bar-circle:first-child {
+            display: none;
+        }
     }
 
     &--active {

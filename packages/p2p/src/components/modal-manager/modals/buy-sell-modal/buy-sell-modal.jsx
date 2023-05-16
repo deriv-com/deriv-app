@@ -19,10 +19,10 @@ import { reaction } from 'mobx';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import BuySellForm from 'Components/buy-sell/buy-sell-form.jsx';
-import BuySellFormReceiveAmount from 'Components/buy-sell/buy-sell-form-receive-amount.jsx';
+import BuySellForm from 'Pages/buy-sell/buy-sell-form.jsx';
+import BuySellFormReceiveAmount from 'Pages/buy-sell/buy-sell-form-receive-amount.jsx';
 import NicknameForm from 'Components/nickname-form';
-import AddPaymentMethodForm from 'Components/my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
+import AddPaymentMethodForm from 'Pages/my-profile/payment-methods/add-payment-method/add-payment-method-form.jsx';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 

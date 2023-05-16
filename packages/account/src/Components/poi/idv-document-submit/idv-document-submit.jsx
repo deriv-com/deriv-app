@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Button } from '@deriv/components';
-import { Formik, Field } from 'formik';
+import { Formik } from 'formik';
 import { localize } from '@deriv/translations';
 import {
     WS,
@@ -160,51 +160,41 @@ const IdvDocumentSubmit = ({
             }) => (
                 <div className='proof-of-identity__container proof-of-identity__container--reset'>
                     <FormSubHeader title={localize('Identity verification')} />
-                    <Field>
-                        {({ field }) => (
-                            <IDVForm
-                                errors={errors}
-                                touched={touched}
-                                values={values}
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
-                                setFieldValue={setFieldValue}
-                                hide_hint={false}
-                                selected_country={selected_country}
-                                is_from_external={is_from_external}
-                                class_name='idv-layout'
-                                {...field}
-                            />
-                        )}
-                    </Field>
-                    <FormSubHeader title={localize('Details')} />
-                    <Field>
-                        {({ field }) => (
-                            <div
-                                className={classNames({
-                                    'account-form__poi-confirm-example_container': !shouldHideHelperImage(
-                                        values?.document_type?.id
-                                    ),
-                                })}
-                            >
-                                <PersonalDetailsForm
-                                    errors={errors}
-                                    touched={touched}
-                                    values={values}
-                                    handleChange={handleChange}
-                                    handleBlur={handleBlur}
-                                    setFieldValue={setFieldValue}
-                                    setFieldTouched={setFieldTouched}
-                                    is_qualified_for_idv={true}
-                                    is_appstore
-                                    should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                                    editable_fields={changeable_fields}
-                                    {...field}
-                                />
-                            </div>
-                        )}
-                    </Field>
+                    <IDVForm
+                        errors={errors}
+                        touched={touched}
+                        values={values}
+                        handleChange={handleChange}
+                        handleBlur={handleBlur}
+                        setFieldValue={setFieldValue}
+                        hide_hint={false}
+                        selected_country={selected_country}
+                        is_from_external={is_from_external}
+                        class_name='idv-layout'
+                    />
 
+                    <FormSubHeader title={localize('Details')} />
+                    <div
+                        className={classNames({
+                            'account-form__poi-confirm-example_container': !shouldHideHelperImage(
+                                values?.document_type?.id
+                            ),
+                        })}
+                    >
+                        <PersonalDetailsForm
+                            errors={errors}
+                            touched={touched}
+                            values={values}
+                            handleChange={handleChange}
+                            handleBlur={handleBlur}
+                            setFieldValue={setFieldValue}
+                            setFieldTouched={setFieldTouched}
+                            is_qualified_for_idv={true}
+                            is_appstore
+                            should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
+                            editable_fields={changeable_fields}
+                        />
+                    </div>
                     <FormFooter className='proof-of-identity__footer'>
                         {isDesktop() && (
                             <Button className='back-btn' onClick={handleBack} type='button' has_effect large secondary>
@@ -229,6 +219,8 @@ const IdvDocumentSubmit = ({
 };
 
 IdvDocumentSubmit.propTypes = {
+    account_settings: PropTypes.object,
+    getChangeableFields: PropTypes.func,
     handleBack: PropTypes.func,
     handleViewComplete: PropTypes.func,
     is_from_external: PropTypes.bool,

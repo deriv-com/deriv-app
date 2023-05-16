@@ -86,9 +86,7 @@ const CompositeCalendarMobile = ({ input_date_range, current_focus, duration_lis
 
         if (key === 'from') {
             setFrom(value);
-        }
-
-        if (key === 'to') {
+        } else {
             setTo(value);
         }
     };
@@ -114,7 +112,7 @@ const CompositeCalendarMobile = ({ input_date_range, current_focus, duration_lis
                 <InputField
                     data_testid='dt_calendar_input'
                     current_focus={current_focus}
-                    is_read_only={true}
+                    is_read_only
                     icon={() => <Icon icon='IcCalendarDatefrom' className='inline-icon' />}
                     onClick={openDialog}
                     setCurrentFocus={setCurrentFocus}
@@ -133,7 +131,7 @@ const CompositeCalendarMobile = ({ input_date_range, current_focus, duration_lis
                 <div className='composite-calendar-modal'>
                     <div className='composite-calendar-modal__radio-group'>
                         {duration_list
-                            .filter(duration => duration.value !== 'today')
+                            .filter(({ value }) => value !== 'today')
                             .map(duration => (
                                 <RadioButton
                                     id={`composite-calendar-modal__radio__${duration.value}`}
@@ -159,7 +157,7 @@ const CompositeCalendarMobile = ({ input_date_range, current_focus, duration_lis
                         <div className='composite-calendar-modal__custom-date-range'>
                             <DatePicker
                                 className='composite-calendar-modal__custom-date-range-start-date'
-                                is_nativepicker={true}
+                                is_nativepicker
                                 placeholder={localize('Start date')}
                                 value={from}
                                 max_date={max_date}
@@ -167,7 +165,7 @@ const CompositeCalendarMobile = ({ input_date_range, current_focus, duration_lis
                             />
                             <DatePicker
                                 className='composite-calendar-modal__custom-date-range-end-date'
-                                is_nativepicker={true}
+                                is_nativepicker
                                 placeholder={localize('End date')}
                                 value={to}
                                 max_date={today}

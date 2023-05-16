@@ -13,8 +13,7 @@ const isActive = (from, to, flag) => {
 
 const CalendarSideList = ({ items, from, to }) => (
     <ul className='calendar-side-list'>
-        {items.map(item => {
-            const { duration, ...rest_of_props } = item;
+        {items.map(({ duration, ...rest_of_props }) => {
             const is_active = isActive(from, to, duration);
             return <ListItem key={duration} is_active={is_active} {...rest_of_props} />;
         })}

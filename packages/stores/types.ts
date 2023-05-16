@@ -291,6 +291,7 @@ type TTradersHubStore = {
     setShouldShowWalletConsentPopup: (value: boolean) => void;
     is_real_wallets_upgrade_on: boolean;
     toggleWalletsUpgrade: (value: boolean) => void;
+    openFailedVerificationModal: (selected_account_type: Record<string, any>) => void;
     financial_restricted_countries: boolean;
     selected_account_type: string;
     no_CR_account: boolean;

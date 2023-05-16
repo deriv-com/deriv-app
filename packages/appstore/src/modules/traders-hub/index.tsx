@@ -13,6 +13,7 @@ import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 import WalletsBanner from 'Components/wallets-banner';
 import './traders-hub.scss';
+import WalletHeader from 'Components/wallet-header';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();
@@ -84,7 +85,20 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
-                    <WalletsBanner />
+                    <WalletHeader account_type='demo' />
+                    <WalletHeader currency='AUD' shortcode='svg' />
+                    <WalletHeader currency='EUR' shortcode='svg' is_open_wallet={true} />
+                    <WalletHeader currency='USD' shortcode='malta' />
+                    <WalletHeader currency='BTC' shortcode='svg' />
+                    <WalletHeader currency='ETH' shortcode='svg' />
+                    <WalletHeader currency='USDT' shortcode='svg' />
+                    <WalletHeader currency='eUSDT' shortcode='svg' />
+                    <WalletHeader currency='tUSDT' shortcode='svg' />
+                    <WalletHeader currency='LTC' shortcode='svg' />
+                    <WalletHeader currency='USDC' shortcode='svg' />
+                    <WalletHeader account_status='pending' currency='USD' shortcode='malta' />
+                    <WalletHeader account_status='need_verification' currency='EUR' shortcode='malta' />
+                    <WalletHeader account_status='failed' currency='USD' shortcode='malta' />
                     <MainTitleBar />
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>

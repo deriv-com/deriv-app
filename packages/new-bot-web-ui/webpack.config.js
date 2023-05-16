@@ -110,6 +110,7 @@ module.exports = function (env) {
                 Stores: path.resolve(__dirname, './src/stores'),
                 Utils: path.resolve(__dirname, './src/utils'),
                 Types: path.resolve(__dirname, 'src/types'),
+                Services: path.resolve(__dirname, 'src/services'),
             },
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },

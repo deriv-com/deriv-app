@@ -25,14 +25,15 @@ export type TDurationOptions = {
 };
 
 export type TMarket = {
-    index: number;
-    label: string;
+    text: string;
+    value: string;
 };
 
 export type TMarketDropdown = Array<TMarket>;
 
 export type TQSCache = {
     selected_market?: TMarket;
+    selected_submarket?: string;
     selected_symbol?: TMarketOption;
     input_stake?: string;
     input_loss?: string;

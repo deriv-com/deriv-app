@@ -91,7 +91,7 @@ const AppContent = observer(() => {
     ) : (
         // TODO: remove MobxContentProvider when all connect method is removed
         <MobxContentProvider store={combinedStore}>
-            <BlocklyLoading />
+            {/* <BlocklyLoading /> */} {/* !TODO: temporary commented*/}
             <div className='bot-dashboard bot'>
                 <Audio />
                 <BotFooterExtensions />

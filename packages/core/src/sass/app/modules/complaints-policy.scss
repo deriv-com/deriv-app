@@ -102,6 +102,11 @@
             &-prefix {
                 padding-right: 0.8rem;
             }
+
+            &-underlined {
+                text-decoration-line: underline;
+                -webkit-text-decoration-line: underline;
+            }
         }
     }
 }

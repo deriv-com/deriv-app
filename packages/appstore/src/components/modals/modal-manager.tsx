@@ -127,7 +127,6 @@ const ModalManager = () => {
 
     return (
         <React.Fragment>
-            {/* TODO: Once everything is merged place this in main component */}
             <JurisdictionModal context={store} openPasswordModal={openRealPasswordModal} />
             <CFDPasswordModal context={store} platform={platform} />
             <CFDDbviOnBoarding context={store} />

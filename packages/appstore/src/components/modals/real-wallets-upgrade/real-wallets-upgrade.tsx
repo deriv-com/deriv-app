@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React from 'react';
 import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, Button } from '@deriv/components';
 import { ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -13,81 +13,59 @@ const RealWalletsUpgrade = observer(() => {
     const is_eu = content_flag === ContentFlag.EU_REAL || content_flag === ContentFlag.EU_DEMO;
 
     const [current_step, setCurrentStep] = React.useState(0);
-    const [is_disabled, setIsDisabled] = React.useState(false);
+    const [checked, toggleCheckbox] = React.useReducer(prev => !prev, false);
 
     React.useEffect(() => {
         if (!is_real_wallets_upgrade_on) {
             setCurrentStep(0);
-            setIsDisabled(false);
+            toggleCheckbox();
         }
-    }, [is_real_wallets_upgrade_on]);
+    }, [is_real_wallets_upgrade_on, checked]);
 
-    const handleNext = () => {
-        setCurrentStep(prev_step => prev_step + 1);
-    };
+    const handleNext = () => setCurrentStep(prev_step => prev_step + 1);
 
-    const handleBack = () => {
-        setCurrentStep(prev_step => prev_step - 1);
-    };
+    const handleBack = () => setCurrentStep(prev_step => prev_step - 1);
 
-    const handleClose = () => {
-        toggleWalletsUpgrade(false);
-    };
+    const handleClose = () => toggleWalletsUpgrade(false);
 
-    const toggleCheckbox = useCallback(() => {
-        setIsDisabled(prevDisabled => !prevDisabled);
-    }, []);
+    const DefaultFooter = (
+        <Modal.Footer className='wallet-steps__footer' has_separator>
+            <Button secondary large className='wallet-steps__footer-button' onClick={handleBack}>
+                {localize('Back')}
+            </Button>
+            <Button primary large className='wallet-steps__footer-button' onClick={handleNext}>
+                {localize('Next')}
+            </Button>
+        </Modal.Footer>
+    );
 
-    const DefaultFooter = useMemo(
+    const InitialFooter = (
+        <Modal.Footer className='wallet-steps__footer' has_separator>
+            <Button secondary large className='wallet-steps__footer-button' onClick={handleClose}>
+                {localize('Maybe later')}
+            </Button>
+            <Button primary large className='wallet-steps__footer-button' onClick={handleNext}>
+                {localize('Next')}
+            </Button>
+        </Modal.Footer>
+    );
+
+    const EndFooter = React.useMemo(
         () => (
             <Modal.Footer className='wallet-steps__footer' has_separator>
                 <Button secondary large className='wallet-steps__footer-button' onClick={handleBack}>
                     {localize('Back')}
                 </Button>
-                <Button primary large className='wallet-steps__footer-button' onClick={handleNext}>
-                    {localize('Next')}
-                </Button>
-            </Modal.Footer>
-        ),
-        []
-    );
-
-    const InitialFooter = useMemo(
-        () => (
-            <Modal.Footer className='wallet-steps__footer' has_separator>
-                <Button secondary large className='wallet-steps__footer-button' onClick={handleClose}>
-                    {localize('Maybe later')}
-                </Button>
-                <Button primary large className='wallet-steps__footer-button' onClick={handleNext}>
-                    {localize('Next')}
-                </Button>
-            </Modal.Footer>
-        ),
-        []
-    );
-
-    const EndFooter = useMemo(
-        () => (
-            <Modal.Footer className='wallet-steps__footer' has_separator>
-                <Button secondary large className='wallet-steps__footer-button' onClick={handleBack}>
-                    {localize('Back')}
-                </Button>
-                <Button
-                    primary
-                    large
-                    className='wallet-steps__footer-button'
-                    disabled={!is_disabled}
-                    onClick={handleClose}
-                >
+                <Button primary large className='wallet-steps__footer-button' disabled={!checked} onClick={handleClose}>
                     {localize('Upgrade to Wallets')}
                 </Button>
             </Modal.Footer>
         ),
-        [is_disabled]
+        [checked, handleClose, handleBack]
     );
 
-    //  TODO: Add the wallet steps right here (͠≖ ͜ʖ͠≖)👌
-    const WalletSteps = useMemo(
+    //  TODO: Add the remaining wallet steps component here
+    const WalletSteps = React.useMemo(
         () => [
             {
                 name: 'intro_wallets',
@@ -104,15 +82,18 @@ const RealWalletsUpgrade = observer(() => {
             },
             {
                 name: 'ready_to_upgrade',
-                component: <ReadyToUpgradeWallets is_eu={is_eu} toggleCheckbox={toggleCheckbox} />,
+                component: <ReadyToUpgradeWallets is_eu={is_eu} value={checked} toggleCheckbox={toggleCheckbox} />,
                 footer: EndFooter,
             },
         ],
-        [is_eu, InitialFooter, EndFooter, toggleCheckbox]
+        [is_eu, current_step, checked, InitialFooter, EndFooter]
     );
 
-    const ModalContent = useMemo(() => WalletSteps[current_step]?.component, [WalletSteps, current_step]);
-    const ModalFooter = useMemo(
+    const ModalContent = React.useMemo(
+        () => WalletSteps[current_step].component || WalletSteps[0].component,
+        [WalletSteps, current_step]
+    );
+    const ModalFooter = React.useMemo(
         () => WalletSteps[current_step]?.footer || DefaultFooter,
         [WalletSteps, current_step, DefaultFooter]
     );

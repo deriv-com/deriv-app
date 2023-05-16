@@ -8,10 +8,11 @@ import './ready-to-upgrade-wallets.scss';
 
 type TReadyToUpgradeWallets = {
     is_eu: boolean;
+    value: boolean;
     toggleCheckbox: () => void;
 };
 
-const ReadyToUpgradeWallets = observer(({ is_eu, toggleCheckbox }: TReadyToUpgradeWallets) => {
+const ReadyToUpgradeWallets = observer(({ is_eu, value, toggleCheckbox }: TReadyToUpgradeWallets) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     const text_body_size = is_mobile ? 'xs' : 's';
@@ -20,7 +21,7 @@ const ReadyToUpgradeWallets = observer(({ is_eu, toggleCheckbox }: TReadyToUpgra
 
     return (
         <div className='wallet-steps__content'>
-            <WalletsImage image='ready_to_update_wallets_image' className='wallet-steps__image' />
+            <WalletsImage image='ready_to_upgrade_wallets_image' className='wallet-steps__image' />
             <div className='wallet-steps__text'>
                 <Text size={is_mobile ? 'xsm' : 'm'} align='center' weight='bold' line_height={form_line_height}>
                     <Localize i18n_default_text='Ready to upgrade?' />
@@ -54,6 +55,7 @@ const ReadyToUpgradeWallets = observer(({ is_eu, toggleCheckbox }: TReadyToUpgra
                     ))}
             </div>
             <Checkbox
+                value={value}
                 onChange={toggleCheckbox}
                 className='wallet-steps__checkbox'
                 label={localize('I understand and agree to upgrade to Wallets.')}

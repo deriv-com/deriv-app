@@ -79,6 +79,41 @@
                 &-text {
                     margin-left: 0.8rem;
                 }
+
+                &-transition {
+                    &-enter {
+                        transform: translateX(-1rem);
+                        opacity: 0;
+                    }
+
+                    &-enter-active {
+                        transition: all 250ms ease-in-out;
+                        transform: translateX(0);
+                        position: relative;
+                        opacity: 1;
+                    }
+
+                    &-enter-done {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+
+                    &-exit {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+
+                    &-exit-active {
+                        transition: all 250ms ease-in-out;
+                        transform: translateX(-1rem);
+                        position: relative;
+                        opacity: 0;
+                    }
+
+                    &-exit-done {
+                        opacity: 0;
+                    }
+                }
             }
         }
     }

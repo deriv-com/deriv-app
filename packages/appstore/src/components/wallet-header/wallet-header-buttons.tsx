@@ -31,7 +31,13 @@ const WalletHeaderButtons = ({ is_disabled, is_open, btns }: TWalletHeaderButton
                         icon={btn.icon}
                         custom_color={is_disabled ? 'var(--general-disabled)' : 'var(--text-general)'}
                     />
-                    <CSSTransition appear in={is_open} timeout={250} classNames='wallet__transition' unmountOnExit>
+                    <CSSTransition
+                        appear
+                        in={is_open}
+                        timeout={250}
+                        classNames='wallet-header__description-buttons-item-transition'
+                        unmountOnExit
+                    >
                         <Text
                             weight='bold'
                             color={is_disabled ? 'disabled' : 'general'}

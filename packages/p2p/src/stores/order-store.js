@@ -25,6 +25,7 @@ export default class OrderStore {
             order_payment_method_details: observable,
             order_rerender_timeout: observable,
             rating_value: observable,
+            should_show_email_link_expired_modal: observable,
             user_email_address: observable,
             verification_code: observable,
             verification_link_error_message: observable,
@@ -71,6 +72,7 @@ export default class OrderStore {
             setUserEmailAddress: action.bound,
             setVerificationCode: action.bound,
             setVerificationLinkErrorMessage: action.bound,
+            shouldShowEmailLinkExpiredModal: action.bound,
         });
 
         this.root_store = root_store;
@@ -100,6 +102,7 @@ export default class OrderStore {
     order_payment_method_details = null;
     order_rerender_timeout = null;
     rating_value = 0;
+    should_show_email_link_expired_modal = false;
     user_email_address = '';
     verification_code = '';
     verification_link_error_message = '';
@@ -491,6 +494,8 @@ export default class OrderStore {
                             () => general_store.showModal({ key: 'EmailLinkVerifiedModal', props: {} }),
                             650
                         );
+
+                        this.shouldShowEmailLinkExpiredModal(true);
                     } else if (response.error) {
                         const { code, message } = response?.error;
 
@@ -609,5 +614,9 @@ export default class OrderStore {
 
     setVerificationLinkErrorMessage(verification_link_error_message) {
         this.verification_link_error_message = verification_link_error_message;
+    }
+
+    shouldShowEmailLinkExpiredModal(should_show_email_link_expired_modal) {
+        this.should_show_email_link_expired_modal = should_show_email_link_expired_modal;
     }
 }

@@ -116,6 +116,7 @@ const OrderDetails = observer(() => {
             order_store.setOrderPaymentMethodDetails(undefined);
             order_store.setOrderId(null);
             order_store.setActiveOrder(null);
+            order_store.shouldShowEmailLinkExpiredModal(false);
             setP2POrderProps({
                 order_id: order_store.order_id,
                 redirectToOrderDetails: general_store.redirectToOrderDetails,
@@ -133,6 +134,7 @@ const OrderDetails = observer(() => {
 
     React.useEffect(() => {
         if (
+            order_store.should_show_email_link_expired_modal &&
             verification_pending === 0 &&
             !is_buy_order_for_user &&
             status_string !== 'Expired' &&

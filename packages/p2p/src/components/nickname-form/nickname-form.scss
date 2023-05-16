@@ -64,6 +64,7 @@
     }
     &-field {
         flex: 1;
+        height: 4rem;
         margin-bottom: unset;
 
         &:not(:first-child) {
@@ -74,6 +75,10 @@
             display: flex;
             margin-bottom: 1.6rem;
             width: 32.8rem;
+
+            @include mobile {
+                margin-left: 3.9rem;
+            }
         }
         &--textarea {
             margin-top: 4.3rem;
@@ -97,9 +102,7 @@
         }
 
         @include mobile {
-            margin-left: 5vw;
-            margin-right: 5vw;
-            width: 100vw;
+            width: 88%;
         }
     }
     &-info {

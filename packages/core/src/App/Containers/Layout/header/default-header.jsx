@@ -47,6 +47,7 @@ const DefaultHeader = ({
     toggleNotifications,
     is_landing_company_loaded,
     is_switching,
+    setTogglePlatformType,
 }) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -95,6 +96,7 @@ const DefaultHeader = ({
                             is_logged_in={is_logged_in}
                             is_logging_in={is_logging_in}
                             platform_config={filterPlatformsForClients(platform_config)}
+                            setTogglePlatformType={setTogglePlatformType}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -191,9 +193,10 @@ DefaultHeader.propTypes = {
     history: PropTypes.object,
     is_landing_company_loaded: PropTypes.bool,
     is_switching: PropTypes.bool,
+    setTogglePlatformType: PropTypes.func,
 };
 
-export default connect(({ client, common, ui, notifications }) => ({
+export default connect(({ client, common, ui, notifications, traders_hub }) => ({
     acc_switcher_disabled_message: ui.account_switcher_disabled_message,
     account_type: client.account_type,
     addNotificationMessage: notifications.addNotificationMessage,
@@ -226,4 +229,5 @@ export default connect(({ client, common, ui, notifications }) => ({
     is_trading_assessment_for_existing_user_enabled: ui.is_trading_assessment_for_existing_user_enabled,
     is_landing_company_loaded: client.is_landing_company_loaded,
     is_switching: client.is_switching,
+    setTogglePlatformType: traders_hub.setTogglePlatformType,
 }))(withRouter(DefaultHeader));

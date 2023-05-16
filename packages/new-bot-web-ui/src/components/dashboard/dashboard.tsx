@@ -233,7 +233,7 @@ const Dashboard = ({
                             <ReactJoyrideWrapper steps={DBOT_ONBOARDING} spotlightClicks hideCloseButton />
                         ))}
                     <Tabs
-                        active_index={active_tab}
+                        active_index={1} //!TODO: temporary changed from active_tab
                         className='dashboard__tabs'
                         onTabItemChange={onEntered}
                         onTabItemClick={handleTabChange}

@@ -6,6 +6,8 @@ import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
 
+jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
+
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Popover: jest.fn(props => props.is_open && <span>{props.message}</span>),

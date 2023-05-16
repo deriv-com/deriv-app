@@ -175,6 +175,9 @@ const TradeModal = ({
                     <a href={mobileDownloadLink(platform, 'android')} target='_blank' rel='noopener noreferrer'>
                         <Icon icon='IcInstallationGoogle' width={135} height={40} />
                     </a>
+                    <a href={mobileDownloadLink(platform, 'huawei')} target='_blank' rel='noopener noreferrer'>
+                        <Icon icon='IcInstallationHuawei' width={135} height={40} />
+                    </a>
                 </div>
                 <div className='cfd-trade-modal__download-center-options--qrcode'>{getPlatformQRCode(platform)}</div>
             </div>

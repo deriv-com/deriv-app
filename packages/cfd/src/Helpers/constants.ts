@@ -44,6 +44,9 @@ const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
 const DERIVEZ_URL = 'https://dqwsqxuu0r6t9.cloudfront.net/';
+const DERIVEZ_IOS_APP_URL = 'https://apps.apple.com/my/app/deriv-go/id1550561298';
+const DERIVEZ_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.app&pli=1';
+const DERIVEZ_HUAWEI_APP_URL = 'https://appgallery.huawei.com/#/app/C103801913';
 
 const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503';
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
@@ -72,13 +75,13 @@ const getPlatformDXTradeDownloadLink = (platform?: 'ios' | 'android' | 'huawei')
 const getPlatformDerivEZDownloadLink = (platform: 'ios' | 'android' | 'huawei') => {
     switch (platform) {
         case 'ios':
-            return 'a';
+            return DERIVEZ_IOS_APP_URL;
         case 'android':
-            return 'a';
+            return DERIVEZ_ANDROID_APP_URL;
         case 'huawei':
-            return 'a';
+            return DERIVEZ_HUAWEI_APP_URL;
         default:
-            return '';
+            return DERIVEZ_URL;
     }
 };
 

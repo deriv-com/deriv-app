@@ -23,6 +23,7 @@ export default class GeneralStore extends BaseStore {
     balance;
     cancels_remaining = null;
     contact_info = '';
+    counterparty_advertiser_id = null;
     error_code = '';
     external_stores = {};
     feature_level = null;
@@ -30,6 +31,7 @@ export default class GeneralStore extends BaseStore {
     inactive_notification_count = 0;
     is_advertiser = false;
     is_advertiser_blocked = null;
+    is_advertiser_info_subscribed = false;
     is_blocked = false;
     is_block_unblock_user_loading = false;
     is_block_user_modal_open = false;
@@ -84,6 +86,7 @@ export default class GeneralStore extends BaseStore {
             advertiser_relations_response: observable, //TODO: Remove this when backend has fixed is_blocked flag issue
             block_unblock_user_error: observable,
             balance: observable,
+            counterparty_advertiser_id: observable,
             external_stores: observable,
             feature_level: observable,
             formik_ref: observable,
@@ -91,6 +94,7 @@ export default class GeneralStore extends BaseStore {
             inactive_notification_count: observable,
             is_advertiser: observable,
             is_advertiser_blocked: observable,
+            is_advertiser_info_subscribed: observable,
             is_blocked: observable,
             is_block_unblock_user_loading: observable,
             is_block_user_modal_open: observable,
@@ -121,6 +125,7 @@ export default class GeneralStore extends BaseStore {
             should_show_dp2p_blocked: computed,
             blockUnblockUser: action.bound,
             createAdvertiser: action.bound,
+            setCounterpartyAdvertiserId: action.bound,
             getWebsiteStatus: action.bound,
             handleNotifications: action.bound,
             redirectToOrderDetails: action.bound,
@@ -146,6 +151,7 @@ export default class GeneralStore extends BaseStore {
             saveFormState: action.bound,
             setInactiveNotificationCount: action.bound,
             setIsAdvertiser: action.bound,
+            setIsAdvertiserInfoSubscribed: action.bound,
             setIsBlocked: action.bound,
             setIsHighRisk: action.bound,
             setIsListed: action.bound,
@@ -309,7 +315,7 @@ export default class GeneralStore extends BaseStore {
         const { order_store } = this.root_store;
         const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
 
-        new_orders.forEach(new_order => {
+        new_orders?.forEach(new_order => {
             const order_info = createExtendedOrderDetails(
                 new_order,
                 this.external_stores.client.loginid,
@@ -637,6 +643,10 @@ export default class GeneralStore extends BaseStore {
         this.contact_info = contact_info;
     }
 
+    setCounterpartyAdvertiserId(counterparty_advertiser_id) {
+        this.counterparty_advertiser_id = counterparty_advertiser_id;
+    }
+
     setDefaultAdvertDescription(default_advert_description) {
         this.default_advert_description = default_advert_description;
     }
@@ -675,6 +685,10 @@ export default class GeneralStore extends BaseStore {
 
     setIsAdvertiserBlocked(is_advertiser_blocked) {
         this.is_advertiser_blocked = is_advertiser_blocked;
+    }
+
+    setIsAdvertiserInfoSubscribed(is_advertiser_info_subscribed) {
+        this.is_advertiser_info_subscribed = is_advertiser_info_subscribed;
     }
 
     setIsBlocked(is_blocked) {
@@ -854,6 +868,7 @@ export default class GeneralStore extends BaseStore {
             this.setPaymentInfo(payment_info);
             this.setShouldShowRealName(!!show_name);
             this.setIsRestricted(false);
+            this.setIsAdvertiserInfoSubscribed(true);
 
             if (upgradable_daily_limits) this.showDailyLimitIncreaseNotification();
         } else {

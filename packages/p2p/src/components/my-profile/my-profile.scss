@@ -26,6 +26,7 @@
         @include mobile {
             display: block;
             padding: 0 1.6rem;
+            height: calc(100% - 5rem);
             width: 100vw;
 
             .dc-mobile-full-page-modal {

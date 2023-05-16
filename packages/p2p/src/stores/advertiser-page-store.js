@@ -43,6 +43,7 @@ export default class AdvertiserPageStore extends BaseStore {
             advertiser_details_name: computed,
             getCounterpartyAdvertiserList: action.bound,
             handleTabItemClick: action.bound,
+            onAdvertiserIdUpdate: action.bound,
             onCancel: action.bound,
             onCancelClick: action.bound,
             onConfirmClick: action.bound,
@@ -96,7 +97,10 @@ export default class AdvertiserPageStore extends BaseStore {
             requestWS({
                 p2p_advert_list: 1,
                 counterparty_type: this.counterparty_type,
-                advertiser_id: this.advertiser_details_id,
+                advertiser_id:
+                    general_store.counterparty_advertiser_id && general_store.is_advertiser_info_subscribed
+                        ? general_store.counterparty_advertiser_id
+                        : this.advertiser_details_id,
                 offset: startIndex,
                 limit: general_store.list_item_limit,
                 ...(buy_sell_store.selected_local_currency
@@ -120,21 +124,24 @@ export default class AdvertiserPageStore extends BaseStore {
     setAdvertiserInfo(response) {
         const { general_store } = this.root_store;
 
-        if (response.error) {
-            this.setErrorMessage(response.error);
-        } else {
-            const { p2p_advertiser_info } = response;
-            this.setCounterpartyAdvertiserInfo(p2p_advertiser_info);
+        if (response) {
+            if (response.error) {
+                this.setErrorMessage(response.error);
+                this.onUnmount();
+            } else {
+                const { p2p_advertiser_info } = response;
+                this.setCounterpartyAdvertiserInfo(p2p_advertiser_info);
 
-            // TODO: uncomment this when BE has fixed is_blocked flag issue for block user overlay
-            // this.setIsCounterpartyAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
+                // TODO: uncomment this when BE has fixed is_blocked flag issue for block user overlay
+                // this.setIsCounterpartyAdvertiserBlocked(!!p2p_advertiser_info.is_blocked);
 
-            // TODO: remove this when above issue is fixed
-            this.setIsCounterpartyAdvertiserBlocked(
-                general_store.advertiser_relations_response.some(
-                    advertiser => p2p_advertiser_info.id === advertiser.id
-                ) || !!p2p_advertiser_info.is_blocked
-            );
+                // TODO: remove this when above issue is fixed
+                this.setIsCounterpartyAdvertiserBlocked(
+                    general_store.advertiser_relations_response.some(
+                        advertiser => p2p_advertiser_info.id === advertiser.id
+                    ) || !!p2p_advertiser_info.is_blocked
+                );
+            }
         }
 
         this.setIsLoading(false);
@@ -184,16 +191,36 @@ export default class AdvertiserPageStore extends BaseStore {
     }
 
     onMount() {
+        if (this.advertiser_details_id) {
+            this.advertiser_info_subscription = subscribeWS(
+                {
+                    p2p_advertiser_info: 1,
+                    id: this.advertiser_details_id,
+                    subscribe: 1,
+                },
+                [this.setAdvertiserInfo]
+            );
+        }
+    }
+
+    onAdvertiserIdUpdate() {
+        const { general_store } = this.root_store;
         this.setIsLoading(true);
 
-        this.advertiser_info_subscription = subscribeWS(
-            {
+        if (general_store.counterparty_advertiser_id && general_store.is_advertiser_info_subscribed) {
+            requestWS({
                 p2p_advertiser_info: 1,
-                id: this.advertiser_details_id,
-                subscribe: 1,
-            },
-            [this.setAdvertiserInfo]
-        );
+                id: general_store.counterparty_advertiser_id,
+            }).then(response => {
+                if (response.error) {
+                    this.setErrorMessage(response.error);
+                } else {
+                    this.setAdvertiserInfo(response);
+                    // force reload adverts list
+                    this.loadMoreAdvertiserAdverts({ startIndex: 0 });
+                }
+            });
+        }
     }
 
     onSubmit() {

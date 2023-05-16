@@ -7,7 +7,6 @@ import { isMobile } from '@deriv/shared';
 import { Loading, Tabs } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import classNames from 'classnames';
-import AdvertiserPage from 'Components/advertiser-page';
 import Dp2pBlocked from './dp2p-blocked';
 import { localize } from './i18next';
 import NicknameForm from './nickname-form';
@@ -58,8 +57,9 @@ const AppContent = ({ order_id }) => {
         return <NicknameForm />;
     }
 
+    // return empty or else the tabs will be shown above when displaying the advertiser page
     if (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) {
-        return <AdvertiserPage />;
+        return <></>;
     }
 
     return (

@@ -52,8 +52,9 @@ export const buildDurationConfig = (
     const duration_min_max = durations.min_max[contract.start_type as keyof typeof durations.min_max];
     const obj_min = getDurationFromString(contract.min_contract_duration);
     const obj_max = getDurationFromString(contract.max_contract_duration);
+    const new_durations = Object.create(durations);
 
-    durations.min_max[contract.start_type as keyof typeof durations.min_max][
+    new_durations.min_max[contract.start_type as keyof typeof durations.min_max][
         contract.expiry_type as keyof typeof duration_min_max
     ] = {
         min: convertDurationUnit(obj_min.duration, obj_min.unit, 's') || 0,

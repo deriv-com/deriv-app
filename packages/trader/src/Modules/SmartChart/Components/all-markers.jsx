@@ -168,20 +168,14 @@ const draw_shaded_barriers = ({
     ctx.strokeStyle = stroke_color;
 
     if (is_top_visible || has_persistent_borders) {
+        ctx.fillStyle = stroke_color;
         // draw difference between high barrier and previous spot price
         if (text?.high) {
-            render_label({
-                color: stroke_color,
-                ctx,
-                font: '14px IBM Plex Sans',
-                text: text?.high,
-                text_align: 'right',
-                x: end_left - 1,
-                y: displayed_top - 10,
-            });
+            ctx.textAlign = 'right';
+            ctx.font = '14px IBM Plex Sans';
+            ctx.fillText(text?.high, end_left - 1, displayed_top - 10);
         }
-        // draw bottom barrier with arrow
-        ctx.fillStyle = stroke_color;
+        // draw top barrier with an arrow
         ctx.beginPath();
         ctx.setLineDash([]);
         ctx.moveTo(end_left, displayed_top);
@@ -191,42 +185,36 @@ const draw_shaded_barriers = ({
         ctx.fill();
         ctx.stroke();
     }
-    const global_composite_operation = ctx.globalCompositeOperation;
-    ctx.globalCompositeOperation = 'destination-over';
-    if (previous_tick?.color) {
-        // draw previous tick marker
-        ctx.save();
-        ctx.strokeStyle = previous_tick?.color;
-        ctx.fillStyle = previous_tick?.color;
-        ctx.beginPath();
-        ctx.arc(start_left - 1 * scale, middle_top, previous_tick?.radius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
-        ctx.restore();
-    }
-    // draw dashed line between barriers to visually accentuate that they're related to the previous tick
-    ctx.beginPath();
-    ctx.setLineDash([2, 4]);
-    ctx.moveTo(start_left + (previous_tick?.radius || 0), middle_top);
-    ctx.lineTo(end_left, middle_top);
-    ctx.stroke();
-    ctx.globalCompositeOperation = global_composite_operation;
-
-    if (is_bottom_visible || has_persistent_borders) {
-        // draw difference between low barrier and previous spot price
-        if (text?.low) {
-            render_label({
-                color: stroke_color,
-                ctx,
-                font: '14px IBM Plex Sans',
-                text: text?.low,
-                text_align: 'right',
-                x: end_left - 1,
-                y: displayed_bottom + 12,
-            });
+    if (middle_top < end_top) {
+        const global_composite_operation = ctx.globalCompositeOperation;
+        ctx.globalCompositeOperation = 'destination-over';
+        if (previous_tick?.color) {
+            // draw previous tick marker
+            ctx.strokeStyle = previous_tick?.color;
+            ctx.fillStyle = previous_tick?.color;
+            ctx.beginPath();
+            ctx.arc(start_left - 1 * scale, middle_top, previous_tick?.radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
         }
-        // draw bottom barrier with arrow
+        // draw horizontal dashed line between barriers to accentuate that they're related to previous tick
+        ctx.strokeStyle = stroke_color;
+        ctx.beginPath();
+        ctx.setLineDash([2, 4]);
+        ctx.moveTo(start_left + (previous_tick?.radius || 0), middle_top);
+        ctx.lineTo(end_left, middle_top);
+        ctx.stroke();
+        ctx.globalCompositeOperation = global_composite_operation;
+    }
+    if (is_bottom_visible || has_persistent_borders) {
         ctx.fillStyle = stroke_color;
+        // draw difference between low barrier and previous spot price
+        if (text?.low && displayed_bottom + 12 < end_top) {
+            ctx.textAlign = 'right';
+            ctx.font = '14px IBM Plex Sans';
+            ctx.fillText(text?.low, end_left - 1, displayed_bottom + 12);
+        }
+        // draw bottom barrier with an arrow
         ctx.beginPath();
         ctx.setLineDash([]);
         ctx.moveTo(end_left, displayed_bottom);
@@ -241,22 +229,18 @@ const draw_shaded_barriers = ({
     ctx.fillRect(start_left, displayed_top, end_left - start_left, Math.abs(displayed_bottom - displayed_top));
 };
 
-const render_label = ({ color, ctx, font, text, text_align, tick: { zoom, left, top } = {}, x, y }) => {
-    const scale = zoom && calc_scale(zoom);
+const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
+    const scale = calc_scale(zoom);
     const size = Math.floor(scale * 3 + 7);
-    if (color) ctx.fillStyle = color;
-    if (text_align) ctx.textAlign = text_align || 'start';
-    ctx.font = font || `${size}px Roboto`;
-
+    ctx.font = `${size}px Roboto`;
     text.split(/\n/).forEach((line, idx) => {
         const w = Math.ceil(ctx.measureText(line).width);
-        const x_coord = x || left - 5 - w;
-        const y_coord = y || top + idx * size + 1;
-        ctx.fillText(line, x_coord, y_coord);
+        ctx.fillText(line, left - 5 - w, top + idx * size + 1);
     });
 };
 
 const shadowed_text = ({ ctx, color, is_dark_theme, text, left, top, scale }) => {
+    ctx.save();
     ctx.textAlign = 'center';
     const size = Math.floor(scale * 12);
     ctx.font = `bold ${size}px BinarySymbols, Roboto`;
@@ -269,6 +253,7 @@ const shadowed_text = ({ ctx, color, is_dark_theme, text, left, top, scale }) =>
     for (let i = 0; i < (is_firefox ? 1 : 5); ++i) {
         ctx.fillText(text, left, top);
     }
+    ctx.restore();
 };
 
 const TickContract = RawMarkerMaker(

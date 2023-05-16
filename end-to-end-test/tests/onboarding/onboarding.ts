@@ -84,13 +84,25 @@ export default class OnboardingFlow {
                 break;
             }
         }
-        await this.page.waitForSelector('#dt_core_set-residence-form_signup-residence-select');
-        await this.page.click('#dt_core_set-residence-form_signup-residence-select');
-        await expect(this.page.getByText(process.env.ACCOUNT_RESIDENCE!)).toBeVisible();
-        await this.page.getByText(process.env.ACCOUNT_RESIDENCE!).click();
+        await Promise.all([
+            this.page.waitForSelector('#dt_core_set-residence-form_signup-residence-select'),
+            await this.page.click('#dt_core_set-residence-form_signup-residence-select'),
+        ]);
+        const RISK_LEVEL = process.env.RISK_LEVEL;
+        const ACCOUNT_CITIZENSHIP =
+            RISK_LEVEL === 'low_risk'
+                ? process.env.ACCOUNT_CITIZENSHIP_LOW_RISK
+                : process.env.ACCOUNT_CITIZENSHIP_HIGH_RISK;
+        const ACCOUNT_RESIDENCE =
+            RISK_LEVEL === 'low_risk'
+                ? process.env.ACCOUNT_RESIDENCE_LOW_RISK
+                : process.env.ACCOUNT_RESIDENCE_HIGH_RISK;
+
+        await expect(this.page.getByText(ACCOUNT_RESIDENCE!)).toBeVisible();
+        await this.page.getByText(ACCOUNT_RESIDENCE!).click();
         await this.page.click('#dt_core_set-citizenship-form_signup-citizenship-select');
-        await expect(this.page.getByText(process.env.ACCOUNT_CITIZENSHIP!)).toBeVisible();
-        await this.page.getByText(process.env.ACCOUNT_CITIZENSHIP!).click();
+        await expect(this.page.getByText(ACCOUNT_CITIZENSHIP!)).toBeVisible();
+        await this.page.getByText(ACCOUNT_CITIZENSHIP!).click();
         await this.page.getByRole('dialog').getByRole('button', { name: 'Next' }).click();
         await expect(this.page.getByText(/Keep your account secure/)).toBeVisible();
         await this.page.locator('#dt_core_account-signup-modal_account-signup-password-field');

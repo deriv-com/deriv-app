@@ -13,7 +13,7 @@ To run the End to End test you need to first install playwright on your machine 
 
 then
 
-`npx plauwright test` to start the tests to run. (You also can pass `--debug` option to this command to it to run them in headless browser and check them visually separated by different browsers eg. Chromium, Firefox or Edge)
+`npx playwright test` to start the tests to run. (You also can pass `--debug` option to this command to it to run them in headless browser and check them visually separated by different browsers eg. Chromium, Firefox or Edge)
 
 ## Project structure
 

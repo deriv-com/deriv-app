@@ -178,28 +178,28 @@ const OnfidoSdkViewContainer = ({
         }
     };
 
-    const fetchServiceToken = () => {
-        getOnfidoServiceToken().then(response_token => {
-            if (typeof response_token !== 'string' && response_token?.error) {
-                handleError(response_token.error);
-                setStatusLoading(false);
-                setRetryCount(retry_count + 1);
-            } else if (typeof response_token === 'string') {
-                setOnfidoToken(response_token);
-                initOnfido().then(() => {
-                    setStatusLoading(false);
-                });
-            }
-            if (token_timeout_ref.current) clearTimeout(token_timeout_ref.current);
-        });
-    };
-
     const onConfirm = () => {
         setIsConfirmed(true);
         setIsOnfidoDisabled(false);
     };
 
     React.useEffect(() => {
+        const fetchServiceToken = () => {
+            getOnfidoServiceToken().then(response_token => {
+                if (typeof response_token !== 'string' && response_token?.error) {
+                    handleError(response_token.error);
+                    setStatusLoading(false);
+                    setRetryCount(retry_count + 1);
+                } else if (typeof response_token === 'string') {
+                    setOnfidoToken(response_token);
+                    initOnfido().then(() => {
+                        setStatusLoading(false);
+                    });
+                }
+                if (token_timeout_ref.current) clearTimeout(token_timeout_ref.current);
+            });
+        };
+
         // retry state will re-run the token fetching
         if (retry_count === 0) {
             fetchServiceToken();
@@ -212,7 +212,6 @@ const OnfidoSdkViewContainer = ({
         return () => {
             clearTimeout(token_timeout_ref.current);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [getOnfidoServiceToken, initOnfido, retry_count]);
 
     let component_to_load;

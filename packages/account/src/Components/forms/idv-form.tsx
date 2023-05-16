@@ -38,13 +38,12 @@ const IDVForm = ({
     handleChange,
     setFieldValue,
     class_name,
-    ...props
+    selected_country,
+    hide_hint,
 }: TIDVForm) => {
     const [document_list, setDocumentList] = React.useState<TDocumentList>([]);
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [selected_doc, setSelectedDoc] = React.useState('');
-
-    const { selected_country } = props;
 
     const { documents_supported: document_data, has_visual_sample } = selected_country?.identity?.services?.idv ?? {};
 
@@ -129,14 +128,12 @@ const IDVForm = ({
                     <div className='poi-form-on-signup__fields'>
                         <div
                             className={classNames('proof-of-identity__container', {
-                                'proof-of-identity__container--idv': props.hide_hint,
+                                'proof-of-identity__container--idv': hide_hint,
                             })}
                         >
                             <div className={classNames('proof-of-identity__inner-container')}>
                                 <div className='proof-of-identity__fieldset-container'>
-                                    <fieldset
-                                        className={classNames({ 'proof-of-identity__fieldset': !props.hide_hint })}
-                                    >
+                                    <fieldset className={classNames({ 'proof-of-identity__fieldset': !hide_hint })}>
                                         <Field name='document'>
                                             {({ field }: FormikValues) => (
                                                 <React.Fragment>
@@ -214,7 +211,7 @@ const IDVForm = ({
                                     </fieldset>
                                     <fieldset
                                         className={classNames({
-                                            'proof-of-identity__fieldset-input': !props.hide_hint,
+                                            'proof-of-identity__fieldset-input': !hide_hint,
                                         })}
                                     >
                                         <Field name='document_number'>

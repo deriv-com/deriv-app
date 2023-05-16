@@ -4,7 +4,7 @@ import { WS, IDV_NOT_APPLICABLE_OPTION, makeSettingsRequest } from '@deriv/share
 import Unsupported from 'Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
-import { IdvDocSubmitOnSignup } from '../../../Components/poi/poi-form-on-signup/idv-doc-submit-on-signup/idv-doc-submit-on-signup';
+import { IdvDocSubmitOnSignup } from 'Components/poi/poi-form-on-signup/idv-doc-submit-on-signup/idv-doc-submit-on-signup';
 import { AutoHeightWrapper } from '@deriv/components';
 
 const POISubmissionForMT5 = ({

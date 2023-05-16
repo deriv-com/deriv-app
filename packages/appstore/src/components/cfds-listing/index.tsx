@@ -20,6 +20,8 @@ type TDetailedExistingAccount = AvailableAccount &
         key: string;
     };
 
+//starting compare account modal implementation
+
 const CFDsListing = () => {
     const {
         client,

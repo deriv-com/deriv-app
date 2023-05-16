@@ -1,6 +1,6 @@
 .wallet-card {
     position: relative;
-    border-radius: 0.8rem;
+    border-radius: $BORDER_RADIUS_2;
     overflow: hidden;
 
     &--small {
@@ -17,6 +17,7 @@
             height: 9.6rem;
         }
     }
+
     &--large {
         width: 24rem;
         height: 14.4rem;
@@ -25,6 +26,7 @@
             height: 12.8rem;
         }
     }
+
     &__active-icon {
         position: absolute;
         top: 50%;
@@ -37,6 +39,7 @@
             transform: translate(-1.2rem, -0.4rem);
         }
     }
+
     &__content {
         position: absolute;
         display: flex;
@@ -47,17 +50,21 @@
         height: 100%;
         padding: 1.6rem;
         box-sizing: border-box;
-        border-radius: 0.8rem;
+        border-radius: $BORDER_RADIUS_2;
+
         &--active {
             border: 2px solid var(--text-red);
             background: var(--wallets-card-active-gradient-background);
         }
+
         &--default:hover {
             background: var(--wallets-card-active-gradient-background);
         }
 
-        @include mobile {
-            padding: 0.8rem;
+        &--medium {
+            @include mobile {
+                padding: 0.8rem;
+            }
         }
     }
 
@@ -79,6 +86,7 @@
         justify-content: space-between;
         width: 100%;
     }
+
     &__bottom-wrapper {
         display: flex;
         flex-direction: column;
@@ -104,13 +112,16 @@
 
     &__wallet-button {
         background: $color-white;
+
         &-icon {
             align-self: center;
             margin-right: 0.8rem;
         }
+
         &-text {
             color: $color-black-1;
         }
+
         &--added {
             opacity: 0.32;
         }
@@ -119,6 +130,7 @@
     &--disabled {
         opacity: 0.32;
     }
+
     &--faded {
         opacity: 0.72;
     }
@@ -135,7 +147,7 @@
             width: 100%;
             height: 100%;
             z-index: 1;
-            border-radius: 0.4rem;
+            border-radius: $BORDER_RADIUS;
 
             &--active {
                 outline: 2px solid var(--text-red);

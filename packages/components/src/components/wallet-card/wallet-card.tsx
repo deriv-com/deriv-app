@@ -13,7 +13,7 @@ type TWalletCardProps = {
     balance?: string;
     currency?: string;
     icon: JSX.Element;
-    badgeText: string;
+    badge_text: string;
     size?: 'small' | 'medium' | 'large';
     wallet_name?: string;
     wallet_state?: 'active' | 'add' | 'added' | 'default' | 'disabled' | 'faded';
@@ -23,7 +23,7 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
     balance,
     currency,
     icon,
-    badgeText,
+    badge_text,
     size,
     wallet_name,
     wallet_state = 'default',
@@ -47,13 +47,14 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
             <GradientBackground color='var(--general-main-2)' primary='#F44336' secondary='#283991' tertiary='#F44336'>
                 <div
                     className={classNames('wallet-card__content', {
+                        [`wallet-card__content--${size}`]: size,
                         [`wallet-card__content--${wallet_state}`]: wallet_state,
                     })}
                 >
                     <div className='wallet-card__shine' />
                     <div className='wallet-card__top-wrapper'>
                         {icon}
-                        <Badge custom_color='var(--text-prominent' label={badgeText} type='bordered' />
+                        <Badge custom_color='var(--text-prominent' label={badge_text} type='bordered' />
                     </div>
                     <div className='wallet-card__bottom-wrapper'>
                         {wallet_state !== 'add' && wallet_state !== 'added' ? (

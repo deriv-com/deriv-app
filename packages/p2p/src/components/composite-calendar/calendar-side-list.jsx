@@ -11,7 +11,7 @@ const isActive = (from, to, flag) => {
     return Math.ceil(to / 86400) - Math.ceil(from / 86400) === flag;
 };
 
-const SideList = ({ items, from, to }) => (
+const CalendarSideList = ({ items, from, to }) => (
     <ul className='calendar-side-list'>
         {items.map(item => {
             const { duration, ...rest_of_props } = item;
@@ -21,10 +21,10 @@ const SideList = ({ items, from, to }) => (
     </ul>
 );
 
-SideList.propTypes = {
+CalendarSideList.propTypes = {
     from: PropTypes.number,
     items: PropTypes.array,
     to: PropTypes.number,
 };
 
-export default SideList;
+export default CalendarSideList;

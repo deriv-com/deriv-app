@@ -1,8 +1,9 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import React from 'react';
 import { Calendar } from '@deriv/components';
-import { addMonths, diffInMonths, epochToMoment, subMonths, toMoment } from '@deriv/shared';
+import { addMonths, subMonths, toMoment } from '@deriv/shared';
+import { shouldDisableDate, validateFromArrows, validateToArrows } from 'Utils/calendar';
 
 const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }) => {
     const [left_pane_date, setLeftPaneDate] = React.useState(subMonths(value, 1).unix());
@@ -11,39 +12,6 @@ const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }) => {
     const navigateFrom = e => {
         setLeftPaneDate(e.unix());
         setRightPaneDate(addMonths(e, 1).unix());
-    };
-
-    /**
-     * Only allow previous months to be available to navigate. Disable other periods
-     *
-     * @param date
-     * @param range
-     * @returns {boolean}
-     */
-    const validateFromArrows = (date, range) => {
-        return range === 'year' || diffInMonths(epochToMoment(left_pane_date), date) !== -1;
-    };
-
-    /**
-     * Validate values to be date_from < date_to
-     */
-    const shouldDisableDate = date => {
-        return isPeriodDisabled(date.unix());
-    };
-
-    /**
-     * Only allow next month to be available to navigate (unless next month is in the future).
-     * Disable other periods
-     *
-     * @param date
-     * @param range
-     * @returns {boolean}
-     */
-    const validateToArrows = (date, range) => {
-        if (range === 'year') return true; // disallow year arrows
-        const r_date = epochToMoment(right_pane_date).startOf('month');
-        if (diffInMonths(toMoment().startOf('month'), r_date) === 0) return true; // future months are disallowed
-        return diffInMonths(r_date, date) !== 1;
     };
 
     const navigateTo = e => {
@@ -62,7 +30,7 @@ const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }) => {
                     calendar_date={left_pane_date}
                     calendar_view='date'
                     navigateTo={navigateFrom}
-                    isPeriodDisabled={validateFromArrows}
+                    isPeriodDisabled={(date, range) => validateFromArrows(date, range, left_pane_date)}
                     hide_disabled_periods={true}
                     switchView={() => ({})}
                 />
@@ -71,7 +39,7 @@ const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }) => {
                     calendar_date={left_pane_date}
                     selected_date={value}
                     date_format='YYYY-MM-DD'
-                    isPeriodDisabled={shouldDisableDate}
+                    isPeriodDisabled={date => shouldDisableDate(date, isPeriodDisabled)}
                     hide_others={true}
                     updateSelected={updateSelectedDate}
                 />
@@ -80,7 +48,7 @@ const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }) => {
                 <Calendar.Header
                     calendar_date={right_pane_date}
                     calendar_view='date'
-                    isPeriodDisabled={validateToArrows}
+                    isPeriodDisabled={(date, range) => validateToArrows(date, range, right_pane_date)}
                     navigateTo={navigateTo}
                     hide_disabled_periods
                     switchView={() => ({})}
@@ -90,7 +58,7 @@ const TwoMonthPicker = React.memo(({ onChange, isPeriodDisabled, value }) => {
                     calendar_date={right_pane_date}
                     selected_date={value}
                     date_format='YYYY-MM-DD'
-                    isPeriodDisabled={shouldDisableDate}
+                    isPeriodDisabled={date => shouldDisableDate(date, isPeriodDisabled)}
                     hide_others
                     updateSelected={updateSelectedDate}
                 />

@@ -1,14 +1,15 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import Loadable from 'react-loadable';
+import { observer } from 'mobx-react-lite';
 import { DesktopWrapper, InputField, MobileWrapper, useOnClickOutside } from '@deriv/components';
-import { localize } from '@deriv/translations';
 import { daysFromTodayTo, epochToMoment, toMoment } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+import { isPeriodDisabledFrom, isPeriodDisabledTo } from 'Utils/calendar.js';
 import CompositeCalendarMobile from './composite-calendar-mobile.jsx';
 import SideList from './calendar-side-list.jsx';
 import CalendarIcon from './calendar-icon.jsx';
-import { observer } from 'mobx-react-lite';
-import { useStore } from '@deriv/stores';
 
 const TwoMonthPicker = Loadable({
     loader: () => import(/* webpackChunkName: "two-month-picker" */ './two-month-picker.jsx'),
@@ -27,7 +28,7 @@ const CompositeCalendar = props => {
 
     const [show_to, setShowTo] = React.useState(false);
     const [show_from, setShowFrom] = React.useState(false);
-    const list = [
+    const duration_list = [
         {
             value: 'all_time',
             label: localize('All time'),
@@ -131,20 +132,12 @@ const CompositeCalendar = props => {
         });
     };
 
-    const isPeriodDisabledTo = date => {
-        return date + 1 <= from || date > toMoment().endOf('day').unix();
-    };
-
-    const isPeriodDisabledFrom = date => {
-        return date - 1 >= to;
-    };
-
     return (
         <React.Fragment>
             <DesktopWrapper>
-                <div id='dt_composite_calendar_inputs' className='composite-calendar__input-fields'>
+                <div id='composite_calendar_inputs' className='composite-calendar__input-fields'>
                     <InputField
-                        id='dt_calendar_input_from'
+                        id='calendar_input_from'
                         current_focus={current_focus}
                         is_read_only
                         placeholder={localize('Date from')}
@@ -155,7 +148,7 @@ const CompositeCalendar = props => {
                         name='from_date'
                     />
                     <InputField
-                        id='dt_calendar_input_to'
+                        id='calendar_input_to'
                         current_focus={current_focus}
                         is_read_only
                         placeholder={localize('Date to')}
@@ -168,20 +161,28 @@ const CompositeCalendar = props => {
                 </div>
                 {show_to && (
                     <div className='composite-calendar' ref={wrapper_ref}>
-                        <SideList from={from} to={to} items={list} />
-                        <TwoMonthPicker value={to} onChange={setToDate} isPeriodDisabled={isPeriodDisabledTo} />
+                        <SideList from={from} to={to} items={duration_list} />
+                        <TwoMonthPicker
+                            value={to}
+                            onChange={setToDate}
+                            isPeriodDisabled={date => isPeriodDisabledTo(date, from)}
+                        />
                     </div>
                 )}
                 {show_from && (
                     <div className='composite-calendar' ref={wrapper_ref}>
-                        <SideList from={from} to={to} items={list} />
-                        <TwoMonthPicker value={from} onChange={setFromDate} isPeriodDisabled={isPeriodDisabledFrom} />
+                        <SideList from={from} to={to} items={duration_list} />
+                        <TwoMonthPicker
+                            value={from}
+                            onChange={setFromDate}
+                            isPeriodDisabled={date => isPeriodDisabledFrom(date, to)}
+                        />
                     </div>
                 )}
             </DesktopWrapper>
             <MobileWrapper>
                 <CompositeCalendarMobile
-                    duration_list={list}
+                    duration_list={duration_list}
                     current_focus={current_focus}
                     setCurrentFocus={setCurrentFocus}
                     {...props}
@@ -190,8 +191,6 @@ const CompositeCalendar = props => {
         </React.Fragment>
     );
 };
-
-CompositeCalendar.displayName = 'CompositeCalendar';
 
 CompositeCalendar.propTypes = {
     from: PropTypes.number,

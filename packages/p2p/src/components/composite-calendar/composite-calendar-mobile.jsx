@@ -1,38 +1,11 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, DatePicker, Icon, InputField, MobileDialog, Text } from '@deriv/components';
+import PropTypes from 'prop-types';
+import { Button, DatePicker, Icon, InputField, MobileDialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { toMoment } from '@deriv/shared';
+import RadioButton from './radio-button';
 import './composite-calendar-mobile.scss';
 
-export const RadioButton = ({ id, className, selected_value, value, label, onChange }) => {
-    return (
-        <label
-            htmlFor={id}
-            className={classNames('composite-calendar-modal__radio', className, {
-                'composite-calendar-modal__radio--selected': selected_value === value,
-            })}
-            onClick={() => onChange({ label, value })}
-        >
-            <input className='composite-calendar-modal__radio-input' id={id} type='radio' value={value} />
-            <span
-                className={classNames('composite-calendar-modal__radio-circle', {
-                    'composite-calendar-modal__radio-circle--selected': selected_value === value,
-                })}
-            />
-            <Text
-                as='p'
-                color='prominent'
-                size='xs'
-                line_height='unset'
-                weight={selected_value === value ? 'bold' : 'normal'}
-            >
-                {label}
-            </Text>
-        </label>
-    );
-};
 const CUSTOM_KEY = 'custom';
 
 const CompositeCalendarMobile = React.memo(
@@ -198,7 +171,7 @@ const CompositeCalendarMobile = React.memo(
                         <div className='composite-calendar-modal__custom'>
                             <div className='composite-calendar-modal__custom__wrapper'>
                                 <RadioButton
-                                    id={'composite-calendar-modal__custom-radio'}
+                                    id='composite-calendar-modal__custom-radio'
                                     className='composite-calendar-modal__custom-radio'
                                     value={CUSTOM_KEY}
                                     label={localize('Custom')}

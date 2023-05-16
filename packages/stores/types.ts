@@ -145,6 +145,7 @@ type TClientStore = {
     is_pending_proof_of_ownership: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
+    is_high_risk: boolean;
     is_trading_experience_incomplete: boolean;
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
@@ -343,13 +344,10 @@ type TTradersHubStore = {
     setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
     toggleAccountTransferModal: () => void;
     is_demo: boolean;
+    show_wallet_consent_popup: boolean;
+    setShouldShowWalletConsentPopup: (value: boolean) => void;
     is_real_wallets_upgrade_on: boolean;
     toggleWalletsUpgrade: (value: boolean) => void;
-    financial_restricted_countries: boolean;
-    selected_account_type: string;
-    no_CR_account: boolean;
-    no_MF_account: boolean;
-    setTogglePlatformType: () => void;
 };
 
 /**

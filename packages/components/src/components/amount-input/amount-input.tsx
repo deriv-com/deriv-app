@@ -81,7 +81,7 @@ const AmountInput = ({
                 <Input
                     className='amount-input'
                     disabled={disabled || focus}
-                    type='text'
+                    type='number'
                     value={`${displayNumber(value)} ${currency}`}
                 />
                 <Input
@@ -94,7 +94,7 @@ const AmountInput = ({
                     onKeyDown={onKeyDownHandler}
                     onMouseDown={onMouseDownHandler}
                     onPaste={() => setIsPasting(true)}
-                    type='text'
+                    type='number'
                     value={displayNumber(value)}
                 />
             </div>

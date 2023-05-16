@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Formik, Field, Form } from 'formik';
+import { Formik, Form } from 'formik';
 import {
     Modal,
     AutoHeightWrapper,
@@ -207,65 +207,55 @@ const PersonalDetails = ({
                                         {is_qualified_for_idv && (
                                             <React.Fragment>
                                                 <FormSubHeader title={localize('Identity verification')} />
-                                                <Field name='document'>
-                                                    {({ field }) => (
-                                                        <IDVForm
-                                                            selected_country={selected_country}
-                                                            errors={errors}
-                                                            touched={touched}
-                                                            values={values}
-                                                            handleChange={handleChange}
-                                                            handleBlur={handleBlur}
-                                                            setFieldValue={setFieldValue}
-                                                            hide_hint={true}
-                                                            {...field}
-                                                        />
-                                                    )}
-                                                </Field>
+                                                <IDVForm
+                                                    selected_country={selected_country}
+                                                    errors={errors}
+                                                    touched={touched}
+                                                    values={values}
+                                                    handleChange={handleChange}
+                                                    handleBlur={handleBlur}
+                                                    setFieldValue={setFieldValue}
+                                                    hide_hint={true}
+                                                />
                                                 <FormSubHeader title={localize('Details')} />
                                             </React.Fragment>
                                         )}
                                         <React.Fragment>
-                                            <Field>
-                                                {({ field }) => (
-                                                    <div
-                                                        className={classNames({
-                                                            'account-form__poi-confirm-example_container':
-                                                                is_qualified_for_idv &&
-                                                                !shouldHideHelperImage(values?.document_type?.id),
-                                                        })}
-                                                    >
-                                                        <PersonalDetailsForm
-                                                            errors={errors}
-                                                            touched={touched}
-                                                            values={values}
-                                                            handleChange={handleChange}
-                                                            handleBlur={handleBlur}
-                                                            setFieldValue={setFieldValue}
-                                                            setFieldTouched={setFieldTouched}
-                                                            is_virtual={is_virtual}
-                                                            is_svg={is_svg}
-                                                            is_mf={is_mf}
-                                                            is_qualified_for_idv={is_qualified_for_idv}
-                                                            is_appstore={is_appstore}
-                                                            editable_fields={editable_fields}
-                                                            residence_list={residence_list}
-                                                            has_real_account={has_real_account}
-                                                            is_fully_authenticated={is_fully_authenticated}
-                                                            closeRealAccountSignup={closeRealAccountSignup}
-                                                            salutation_list={salutation_list}
-                                                            warning_items={warning_items}
-                                                            account_opening_reason_list={account_opening_reason_list}
-                                                            should_close_tooltip={should_close_tooltip}
-                                                            setShouldCloseTooltip={setShouldCloseTooltip}
-                                                            should_hide_helper_image={shouldHideHelperImage(
-                                                                values?.document_type?.id
-                                                            )}
-                                                            {...field}
-                                                        />
-                                                    </div>
-                                                )}
-                                            </Field>
+                                            <div
+                                                className={classNames({
+                                                    'account-form__poi-confirm-example_container':
+                                                        is_qualified_for_idv &&
+                                                        !shouldHideHelperImage(values?.document_type?.id),
+                                                })}
+                                            >
+                                                <PersonalDetailsForm
+                                                    errors={errors}
+                                                    touched={touched}
+                                                    values={values}
+                                                    handleChange={handleChange}
+                                                    handleBlur={handleBlur}
+                                                    setFieldValue={setFieldValue}
+                                                    setFieldTouched={setFieldTouched}
+                                                    is_virtual={is_virtual}
+                                                    is_svg={is_svg}
+                                                    is_mf={is_mf}
+                                                    is_qualified_for_idv={is_qualified_for_idv}
+                                                    is_appstore={is_appstore}
+                                                    editable_fields={editable_fields}
+                                                    residence_list={residence_list}
+                                                    has_real_account={has_real_account}
+                                                    is_fully_authenticated={is_fully_authenticated}
+                                                    closeRealAccountSignup={closeRealAccountSignup}
+                                                    salutation_list={salutation_list}
+                                                    warning_items={warning_items}
+                                                    account_opening_reason_list={account_opening_reason_list}
+                                                    should_close_tooltip={should_close_tooltip}
+                                                    setShouldCloseTooltip={setShouldCloseTooltip}
+                                                    should_hide_helper_image={shouldHideHelperImage(
+                                                        values?.document_type?.id
+                                                    )}
+                                                />
+                                            </div>
                                         </React.Fragment>
                                     </div>
                                 </ThemedScrollbars>

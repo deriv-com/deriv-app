@@ -8,6 +8,7 @@ export const DateOfBirthField = ({ name, portal_id, ...rest }) => (
         {({ field: { value }, form: { setFieldValue, errors, touched, setTouched } }) => (
             <DateOfBirthPicker
                 error={touched.date_of_birth && errors.date_of_birth}
+                name={name}
                 onBlur={() =>
                     setTouched({
                         date_of_birth: true,

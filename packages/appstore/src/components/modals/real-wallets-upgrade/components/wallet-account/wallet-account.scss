@@ -1,0 +1,29 @@
+.wallet-account {
+    width: 28.8rem;
+    height: 4.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    border: 0.1rem solid $color-grey-2;
+    border-radius: 0.8rem;
+
+    &__details {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+        margin-left: 1.6rem;
+
+        &-name {
+            font-size: 1.2rem;
+        }
+
+        &-balance {
+            font-size: 1rem;
+        }
+    }
+
+    &__icon {
+        margin-left: 1.6rem;
+    }
+}

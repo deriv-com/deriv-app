@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Field, FormikValues, FormikProps, FormikHandlers } from 'formik';
+import { Field, FormikProps, FormikHandlers, FieldProps } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 import { formatInput, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
@@ -134,8 +134,8 @@ const IDVForm = ({
                             <div className={classNames('proof-of-identity__inner-container')}>
                                 <div className='proof-of-identity__fieldset-container'>
                                     <fieldset className={classNames({ 'proof-of-identity__fieldset': !hide_hint })}>
-                                        <Field name='document'>
-                                            {({ field }: FormikValues) => (
+                                        <Field name='document_type'>
+                                            {({ field }: FieldProps) => (
                                                 <React.Fragment>
                                                     <DesktopWrapper>
                                                         <div className='document-dropdown'>
@@ -179,7 +179,10 @@ const IDVForm = ({
                                                         <SelectNative
                                                             {...field}
                                                             name='document_type'
-                                                            error={touched.document_type && errors.document_type}
+                                                            error={
+                                                                touched.document_type &&
+                                                                (errors.document_type as string | undefined)
+                                                            }
                                                             label={localize('Choose the document type')}
                                                             placeholder={localize('Please select')}
                                                             list_items={document_list}
@@ -215,7 +218,7 @@ const IDVForm = ({
                                         })}
                                     >
                                         <Field name='document_number'>
-                                            {({ field }: FormikValues) => (
+                                            {({ field }: FieldProps) => (
                                                 <React.Fragment>
                                                     <Input
                                                         {...field}

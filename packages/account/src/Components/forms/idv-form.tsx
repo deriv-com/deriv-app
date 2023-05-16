@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Field, FormikValues, FormikProps, FormikHandlers, FormikState } from 'formik';
+import { Field, FormikValues, FormikProps, FormikHandlers } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 import { formatInput, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';

@@ -3,12 +3,12 @@ import { Text, StatusBadge } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { getStatusBadgeConfig } from '@deriv/account';
 import { useStore } from '@deriv/stores';
-import { TWalletSvgCurrency, TAccountStatus } from 'Types';
+import { TWalletCurrency, TAccountStatus } from 'Types';
 
 type TWalletHeaderBalance = {
     account_status: TAccountStatus;
     balance: string;
-    currency: TWalletSvgCurrency;
+    currency: TWalletCurrency;
 };
 
 const WalletHeaderBalance = React.memo(({ account_status, balance, currency }: TWalletHeaderBalance) => {
@@ -42,7 +42,12 @@ const WalletHeaderBalance = React.memo(({ account_status, balance, currency }: T
                 <StatusBadge account_status={account_status} icon={badge_icon} text={badge_text} />
             ) : (
                 <React.Fragment>
-                    <Text key={0} color='less-prominent' size='xxs'>
+                    <Text
+                        key={0}
+                        color='less-prominent'
+                        size='xxs'
+                        className='wallet-header__balance-title-amount-title'
+                    >
                         {localize('Wallet balance')}
                     </Text>
                     {balance_amount}

@@ -17,7 +17,7 @@
         top: 0;
         width: 100%;
         height: 100%;
-        opacity: 0.2;
+        opacity: 0.1;
         background-image: url('./../../public/images/wallet-demo-bg.svg');
         background-repeat: repeat;
         background-position: 3% 30%;
@@ -51,8 +51,6 @@
         }
 
         &-badge {
-            border: 1px solid var(--text-general);
-            padding-inline: 0.4rem;
             margin-left: 0.8rem;
         }
 
@@ -101,6 +99,10 @@
             display: flex;
             flex-direction: column;
             padding-inline: 2.4rem;
+
+            &-title {
+                align-self: flex-end;
+            }
         }
 
         &-arrow-icon {

@@ -5,8 +5,6 @@ import { Div100vhContainer, Icon, useOnClickOutside } from '@deriv/components';
 import { routes, isDesktop, isMobile, getActivePlatform } from '@deriv/shared';
 import { BinaryLink } from 'App/Components/Routes';
 
-import 'Sass/app/_common/components/platform-dropdown.scss';
-
 const PlatformBox = ({ platform: { icon, description } }) => (
     <React.Fragment>
         <div className='platform-dropdown__list-platform-background' />

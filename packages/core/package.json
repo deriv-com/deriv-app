@@ -7,7 +7,6 @@
     "scripts": {
         "start": "npm run test && npm run serve",
         "serve": "f() { echo \"Serving...\" && sudo ./node_modules/.bin/webpack serve --config \"./build/webpack.config.js\" --env open $1;}; f",
-        "serve:qa": "f() { echo \"Serving...\" && ./node_modules/.bin/webpack serve --config \"./build/webpack.config.js\" --env open $1 --env IS_QAWOLF=true;}; f",
         "build": "f () { webpack --config \"./build/webpack.config.js\" --env base=$1 --env IS_CRYPTO_APP=${IS_CRYPTO_APP:-false};}; f",
         "build:travis": "echo \"No build:travis specified\"",
         "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",

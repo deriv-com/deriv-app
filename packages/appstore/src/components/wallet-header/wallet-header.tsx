@@ -5,44 +5,26 @@ import WalletCurrencyCard from './wallet-currency-card';
 import WalletHeaderButtons from './wallet-header-buttons';
 import WalletHeaderTitle from './wallet-header-title';
 import WalletHeaderBalance from './wallet-header-balance';
-import './wallet-header.scss';
-import { TAccountCategory, TAccountStatus, TWalletMaltaCurrency, TWalletSvgCurrency } from 'Types';
+import { TAccountCategory, TAccountStatus, TJurisdictionData, TWalletCurrency } from 'Types';
 import { getWalletHeaderButtons } from 'Constants/utils';
+import { formatMoney } from '@deriv/shared';
+import './wallet-header.scss';
 
-type TWalletHeaderCommon = {
+type TWalletHeader = {
+    account_type?: TAccountCategory;
+    shortcode?: Extract<TJurisdictionData['jurisdiction'], 'svg' | 'malta'>;
+    currency?: TWalletCurrency;
     balance?: string;
+    account_status?: TAccountStatus;
     is_open_wallet?: boolean;
 };
-
-type TWalletHeaderDemo = TWalletHeaderCommon & {
-    account_type: Extract<TAccountCategory, 'demo'>;
-    account_status?: never;
-    jurisdiction?: never;
-    currency?: never;
-};
-
-type TWalletHeaderSvg = TWalletHeaderCommon & {
-    account_status?: TAccountStatus;
-    account_type?: Extract<TAccountCategory, 'real'>;
-    jurisdiction: 'svg';
-    currency: TWalletSvgCurrency;
-};
-
-type TWalletHeaderMalta = TWalletHeaderCommon & {
-    account_status?: TAccountStatus;
-    account_type?: Extract<TAccountCategory, 'real'>;
-    jurisdiction: 'malta';
-    currency: TWalletMaltaCurrency;
-};
-
-type TWalletHeader = TWalletHeaderDemo | TWalletHeaderSvg | TWalletHeaderMalta;
 
 const WalletHeader = React.memo(
     ({
         account_status = '',
         balance = '0.00',
         currency = 'USD',
-        jurisdiction = 'svg',
+        shortcode = 'svg',
         account_type = 'real',
         is_open_wallet = false,
     }: TWalletHeader) => {
@@ -64,11 +46,15 @@ const WalletHeader = React.memo(
                 <div className='wallet-header__container'>
                     <WalletCurrencyCard account_type={account_type} currency={currency} />
                     <div className='wallet-header__description'>
-                        <WalletHeaderTitle is_demo={is_demo} currency={currency} jurisdiction={jurisdiction} />
+                        <WalletHeaderTitle is_demo={is_demo} currency={currency} shortcode={shortcode} />
                         <WalletHeaderButtons is_disabled={!!account_status} is_open={is_open} btns={wallet_btns} />
                     </div>
                     <div className='wallet-header__balance'>
-                        <WalletHeaderBalance account_status={account_status} balance={balance} currency={currency} />
+                        <WalletHeaderBalance
+                            account_status={account_status}
+                            balance={formatMoney(currency, balance, true)}
+                            currency={currency}
+                        />
                         <Icon
                             data_testid='dt_arrow'
                             onClick={onArrowClickHandler}

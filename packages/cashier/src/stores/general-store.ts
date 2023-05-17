@@ -3,7 +3,7 @@ import { isCryptocurrency, routes } from '@deriv/shared';
 import Constants from 'Constants/constants';
 import BaseStore from './base-store';
 import PaymentAgentStore from './payment-agent-store';
-import type { TRootStore, TWebSocket } from 'Types';
+import type { TRootStore, TWebSocket } from '../types';
 
 export default class GeneralStore extends BaseStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
@@ -58,7 +58,7 @@ export default class GeneralStore extends BaseStore {
         );
     }
 
-    active_container = Constants.containers.deposit;
+    active_container: keyof typeof Constants.containers = Constants.containers.deposit;
     cashier_route_tab_index = 0;
     deposit_target = '';
     has_set_currency = false;
@@ -160,7 +160,7 @@ export default class GeneralStore extends BaseStore {
 
             if (is_logged_in) {
                 if (!switched) {
-                    payment_agent.setPaymentAgentList().then(payment_agent.filterPaymentAgentList);
+                    payment_agent.setPaymentAgentList().then(() => payment_agent.filterPaymentAgentList());
                     // check if withdrawal limit is reached
                     // if yes, this will trigger to show a notification
                     await withdraw.check10kLimit();
@@ -224,7 +224,7 @@ export default class GeneralStore extends BaseStore {
     }
 
     setActiveTab(container: string): void {
-        this.active_container = container;
+        this.active_container = container as keyof typeof Constants.containers;
     }
 
     accountSwitcherListener() {

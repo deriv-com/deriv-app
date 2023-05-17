@@ -1,6 +1,6 @@
 import 'Sass/app/modules/trading-mobile.scss';
 
-import { Div100vhContainer, Modal, Money, Tabs, ThemedScrollbars, usePreventIOSZoom, Popover } from '@deriv/components';
+import { Div100vhContainer, Modal, Tabs, ThemedScrollbars, usePreventIOSZoom, Popover } from '@deriv/components';
 
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
 import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
@@ -201,7 +201,6 @@ export default connect(({ client, modules, ui }) => ({
 }))(TradeParamsModal);
 
 const TradeParamsMobile = ({
-    currency,
     toggleModal,
     isVisible,
     setAmountTabIdx,
@@ -230,21 +229,12 @@ const TradeParamsMobile = ({
     h_duration,
     d_duration,
     // basis
-    basis_list,
-    basis,
 }) => {
     const getDurationText = () => {
         const duration = duration_units_list.find(d => d.value === duration_unit);
         return `${duration_value} ${
             duration && (duration_value > 1 ? localize(duration.text) : localize(duration.text.slice(0, -1)))
         }`;
-    };
-
-    const getAmountText = () => {
-        const has_selected_tab_idx = typeof amount_tab_idx !== 'undefined';
-        const active_index = has_selected_tab_idx ? amount_tab_idx : basis_list.findIndex(b => b.value === basis);
-
-        return <Money currency={currency} show_currency amount={active_index === 1 ? payout_value : stake_value} />;
     };
 
     const getHeaderContent = tab_key => {
@@ -273,7 +263,7 @@ const TradeParamsMobile = ({
                                 'trade-params__header-value--has-error': has_amount_error,
                             })}
                         >
-                            {has_amount_error ? localize('Error') : getAmountText()}
+                            {'100.00 USD'}
                         </div>
                     </div>
                 );

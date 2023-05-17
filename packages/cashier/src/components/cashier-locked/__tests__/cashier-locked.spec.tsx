@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CashierLocked from '../cashier-locked';
-import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
+import { useCashierLocked, useDepositLocked, useWithdrawLocked } from '@deriv/hooks';
 import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 
@@ -9,14 +9,17 @@ jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useDepositLocked: jest.fn(() => false),
     useCashierLocked: jest.fn(() => false),
+    useWithdrawLocked: jest.fn(() => false),
 }));
 const mockUseDepositLocked = useDepositLocked as jest.MockedFunction<typeof useDepositLocked>;
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
+const mockUseWithdrawLocked = useWithdrawLocked as jest.MockedFunction<typeof useWithdrawLocked>;
 
 describe('<CashierLocked />', () => {
     beforeEach(() => {
         mockUseDepositLocked.mockReturnValue(false);
         mockUseCashierLocked.mockReturnValue(false);
+        mockUseWithdrawLocked.mockReturnValue(false);
     });
 
     it('should show the proper message if there is a crypto cashier maintenance', () => {
@@ -45,11 +48,11 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if crypto withdrawal is suspended', () => {
+        (useWithdrawLocked as jest.Mock).mockReturnValue(true);
         const mock_root_store = mockStore({
             client: {
                 account_status: { cashier_validation: ['system_maintenance'] },
                 current_currency_type: 'crypto',
-                is_withdrawal_lock: true,
                 mt5_login_list: [
                     {
                         account_type: 'demo',
@@ -71,6 +74,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if crypto deposit is suspended', () => {
+        (useDepositLocked as jest.Mock).mockReturnValue(true);
         const mock_root_store = mockStore({
             client: {
                 account_status: { cashier_validation: ['system_maintenance'] },
@@ -414,7 +418,8 @@ describe('<CashierLocked />', () => {
         ).toBeInTheDocument();
     });
 
-    it('should show the proper message if the client has self-exluded from the website', () => {
+    it('should show the proper message if the client has self-excluded from the website', () => {
+        (useDepositLocked as jest.Mock).mockReturnValue(true);
         const mock_root_store = mockStore({
             client: {
                 account_status: { cashier_validation: ['SelfExclusion'] },
@@ -441,6 +446,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has unwelcome_status', () => {
+        (useDepositLocked as jest.Mock).mockReturnValue(true);
         const mock_root_store = mockStore({
             client: {
                 account_status: { cashier_validation: ['unwelcome_status'] },
@@ -463,11 +469,11 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has no_withdrawal_or_trading_status', () => {
+        useWithdrawLocked.mockReturnValue(true);
         const mock_root_store = mockStore({
             client: {
                 account_status: { cashier_validation: ['no_withdrawal_or_trading_status'] },
                 current_currency_type: 'fiat',
-                is_withdrawal_lock: true,
                 mt5_login_list: [
                     {
                         account_type: 'demo',
@@ -487,11 +493,12 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has withdrawal_locked_status', () => {
+        (useDepositLocked as jest.Mock).mockReturnValue(false);
+        (useWithdrawLocked as jest.Mock).mockReturnValue(true);
         const mock_root_store = mockStore({
             client: {
                 account_status: { cashier_validation: ['withdrawal_locked_status'] },
                 current_currency_type: 'fiat',
-                is_withdrawal_lock: true,
                 mt5_login_list: [
                     {
                         account_type: 'demo',
@@ -511,11 +518,12 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has only_pa_withdrawals_allowed_status', () => {
+        (useDepositLocked as jest.Mock).mockReturnValue(false);
+        (useWithdrawLocked as jest.Mock).mockReturnValue(true);
         const mock_root_store = mockStore({
             client: {
                 account_status: { cashier_validation: ['only_pa_withdrawals_allowed_status'] },
                 current_currency_type: 'fiat',
-                is_withdrawal_lock: true,
                 mt5_login_list: [
                     {
                         account_type: 'demo',
@@ -557,6 +565,7 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show cashier locked message if the client has a combo of deposit and withdrawal locked reasons', () => {
+        (useDepositLocked as jest.Mock).mockReturnValue(false);
         const mock_root_store = mockStore({
             client: {
                 account_status: { cashier_validation: ['no_withdrawal_or_trading_status', 'unwelcome_status'] },
@@ -581,11 +590,12 @@ describe('<CashierLocked />', () => {
     });
 
     it('should show the proper message if the client has PACommisionWithdrawalLimit', () => {
+        (useDepositLocked as jest.Mock).mockReturnValue(false);
+        (useWithdrawLocked as jest.Mock).mockReturnValue(true);
         const mock_root_store = mockStore({
             client: {
                 account_status: { cashier_validation: ['PACommisionWithdrawalLimit'] },
                 current_currency_type: 'fiat',
-                is_withdrawal_lock: true,
                 mt5_login_list: [
                     {
                         account_type: 'demo',

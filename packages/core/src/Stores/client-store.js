@@ -151,6 +151,7 @@ export default class ClientStore extends BaseStore {
     prev_real_account_loginid = '';
     p2p_advertiser_info = {};
     prev_account_type = 'demo';
+    external_url_params = {};
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -158,6 +159,9 @@ export default class ClientStore extends BaseStore {
 
         makeObservable(this, {
             loginid: observable,
+            external_url_params: observable,
+            setExternalParams: action.bound,
+            redirectToLegacyPlatform: action.bound,
             preferred_language: observable,
             upgrade_info: observable,
             email: observable,
@@ -731,6 +735,7 @@ export default class ClientStore extends BaseStore {
         return this.account_status?.status?.some(status_name => status_name === 'deposit_locked');
     }
 
+    // @deprecated use `useWithdrawLock` hook from `@deriv/hooks` instead
     get is_withdrawal_lock() {
         return this.account_status?.status?.some(status_name => status_name === 'withdrawal_locked');
     }
@@ -973,7 +978,18 @@ export default class ClientStore extends BaseStore {
         return this.isBotAllowed();
     }
 
-    getIsMarketTypeMatching = (account, market_type) => {
+    setExternalParams = params => {
+        this.external_url_params = params;
+    };
+
+    redirectToLegacyPlatform = () => {
+        const { url, should_redirect } = this.external_url_params;
+        if (should_redirect) {
+            window.location.replace(url);
+        }
+    };
+
+     getIsMarketTypeMatching = (account, market_type) => {
         if (market_type === 'synthetic') {
             return account.market_type === market_type || account.market_type === 'gaming';
         } else if (market_type === 'all') {
@@ -1091,11 +1107,13 @@ export default class ClientStore extends BaseStore {
      * @param loginid
      */
     resetLocalStorageValues(loginid) {
+        this.is_switching = true;
         this.accounts[loginid].accepted_bch = 0;
         LocalStore.setObject(storage_key, this.accounts);
         LocalStore.set('active_loginid', loginid);
         this.syncWithLegacyPlatforms(loginid, toJS(this.accounts));
         this.loginid = loginid;
+        this.is_switching = false;
     }
 
     setIsAuthorize(value) {

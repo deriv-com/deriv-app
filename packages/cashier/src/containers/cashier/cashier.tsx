@@ -25,7 +25,7 @@ import { TRoute } from '../../types';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
-import type { TStores } from '@deriv/stores';
+import { TStores } from '@deriv/stores/types';
 import './cashier.scss';
 
 type TCashierProps = RouteComponentProps & {

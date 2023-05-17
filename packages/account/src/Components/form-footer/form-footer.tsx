@@ -1,14 +1,14 @@
 import React from 'react';
 import { PlatformContext } from '@deriv/shared';
 import classNames from 'classnames';
-import { TPlatformContext } from 'Types';
 
 export type TFormFooter = {
     className?: string;
 };
 
 const FormFooter = ({ children, className }: React.PropsWithChildren<TFormFooter>) => {
-    const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
+
     return (
         <div
             className={classNames('account-form__footer', className, {

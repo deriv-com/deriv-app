@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
+import merge from 'lodash.merge';
 import { useSubscription } from '@deriv/api';
 import useStore from '../useStore';
-import merge from 'lodash.merge';
 
 const ExchangeRatesProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     const { data, subscribe } = useSubscription('exchange_rates');

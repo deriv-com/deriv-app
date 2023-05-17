@@ -18,7 +18,7 @@ const App = () => {
     const { balance, is_logging_in } = client;
     const { setOnRemount } = modules?.cashier?.general_store;
 
-    const { notification_messages_ui: Notifications, is_mobile } = ui;
+    const { is_mobile } = ui;
     const { setP2POrderProps } = notifications;
 
     const history = useHistory();
@@ -190,7 +190,6 @@ const App = () => {
     return (
         // TODO Wrap components with StoreProvider during routing p2p card
         <main className='p2p-cashier'>
-            <Notifications />
             <ModalManagerContextProvider>
                 <ModalManager />
                 <AppContent order_id={order_id} />

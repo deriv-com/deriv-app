@@ -1,13 +1,13 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierOnboardingSideNote from '../cashier-onboarding-side-note';
-import type { TRootStore } from 'Types';
+import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 
 describe('<CashierOnboardingSideNote />', () => {
-    let mockRootStore: DeepPartial<TRootStore>;
+    let mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 currency: 'USD',
             },
@@ -21,7 +21,7 @@ describe('<CashierOnboardingSideNote />', () => {
                     },
                 },
             },
-        };
+        });
     });
 
     const props = {
@@ -45,6 +45,7 @@ describe('<CashierOnboardingSideNote />', () => {
 
     it('should trigger onClick callback when the client clicks the "live chat" link', () => {
         window.LC_API = {
+            on_chat_ended: jest.fn(),
             open_chat_window: jest.fn(),
         };
         renderCashierOnboardingSideNote();

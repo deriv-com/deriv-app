@@ -8,9 +8,9 @@
         "node": "^16.16.0"
     },
     "scripts": {
-        "build": "rimraf dist && webpack --progress",
+        "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress",
         "build:travis": "rimraf dist && webpack",
-        "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' webpack --progress --watch\" \"tsc -w --noEmit --preserveWatchOutput\"",
+        "serve": "rimraf dist && concurrently \"cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch\" \"tsc -w --noEmit --preserveWatchOutput\"",
         "start": "rimraf dist && npm run test && npm run serve",
         "deploy": "echo \"No deploy specified\"",
         "deploy:clean": "echo \"No deploy:clean specified\"",

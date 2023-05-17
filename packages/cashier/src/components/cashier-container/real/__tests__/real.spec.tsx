@@ -24,6 +24,7 @@ describe('<Real />', () => {
                 clearIframe: jest.fn(),
                 iframe_height: 100,
                 iframe_url: 'https://www.test_url.com',
+                changeTheme: jest.fn(),
             },
             deposit: {
                 onMountDeposit: jest.fn(),

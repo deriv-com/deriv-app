@@ -93,6 +93,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         has_active_real_account: has_real_account,
         is_from_restricted_country,
         realAccountSignup,
+        redirectToLegacyPlatform
     } = client;
     const {
         closeRealAccountSignup,
@@ -232,6 +233,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         {
             body: local_props => (
                 <FinishedAddCurrency
+                    redirectToLegacyPlatform={redirectToLegacyPlatform}
                     prev={local_props.state_value.previous_currency}
                     current={local_props.state_value.current_currency}
                     onSubmit={closeModalThenOpenCashier}
@@ -303,7 +305,6 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
             currency: curr,
         });
     };
-
     const closeModalthenOpenWelcomeModal = curr => {
         closeRealAccountSignup();
         setParams({
@@ -418,6 +419,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
             return;
         }
         closeRealAccountSignup();
+        redirectToLegacyPlatform();
     };
 
     const onErrorConfirm = () => {

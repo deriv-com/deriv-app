@@ -1,4 +1,4 @@
-import RenderHTML from 'react-render-html';
+import React from 'react';
 import { translate as i18nTranslate } from '../../common/i18n';
 import { getLanguage } from '../../common/lang';
 import AppIdMap from '../../common/appIdResolver';
@@ -101,7 +101,7 @@ export const translate = (input, params = []) => {
         }
     });
 
-    return RenderHTML(translatedString);
+    return <div dangerouslySetInnerHTML={{ __html: translatedString }} />;
 };
 
 export const getExtension = () => {

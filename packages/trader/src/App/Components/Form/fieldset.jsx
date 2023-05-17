@@ -3,7 +3,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Popover } from '@deriv/components';
 
-const Fieldset = ({ children, className, header, header_tooltip, is_center, onMouseEnter, onMouseLeave }) => {
+const Fieldset = ({
+    children,
+    className,
+    header,
+    header_tooltip,
+    is_center,
+    is_tooltip_disabled,
+    onMouseEnter,
+    onMouseLeave,
+}) => {
     const fieldset_header_class = classNames('trade-container__fieldset-header', {
         'center-text': is_center,
         'trade-container__fieldset-header--inline': header_tooltip,
@@ -26,6 +35,7 @@ const Fieldset = ({ children, className, header, header_tooltip, is_center, onMo
                             message={header_tooltip}
                             margin={216}
                             relative_render
+                            disable_target_icon={is_tooltip_disabled}
                         />
                     )}
                 </div>
@@ -45,6 +55,7 @@ Fieldset.propTypes = {
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     header_tooltip: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     is_center: PropTypes.bool,
+    is_tooltip_disabled: PropTypes.bool,
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
 };

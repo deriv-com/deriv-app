@@ -1,6 +1,8 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { ServerTime, ApiHelpers, setColors } from '@deriv/bot-skeleton';
+// !TODO: define setColors()
+// import { setColors } from '@deriv/bot-skeleton';
+import { ApiHelpers, ServerTime, api_base } from 'Services';
 import {
     Audio,
     BotFooterExtensions,
@@ -9,7 +11,6 @@ import {
     NetworkToastPopup,
     RoutePromptDialog,
 } from 'Components';
-import BlocklyLoading from '../components/blockly-loading';
 import { MobxContentProvider } from 'Stores/connect';
 import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -33,7 +34,7 @@ const AppContent = observer(() => {
     const combinedStore = { ...DBotStores, core: { ...RootStore } };
 
     React.useEffect(() => {
-        setColors(is_dark_mode_on);
+        // setColors(is_dark_mode_on);
     }, [is_dark_mode_on]);
 
     React.useEffect(() => {
@@ -63,6 +64,7 @@ const AppContent = observer(() => {
     }, [client.is_options_blocked, client.account_settings.country_code]);
 
     React.useEffect(() => {
+        api_base.init();
         GTM.init(combinedStore);
         ServerTime.init(common);
         app.setDBotEngineStores(combinedStore);

@@ -1,6 +1,6 @@
 import React from 'react';
+import { ScrollbarsContainer } from 'Components/scrollbars-container/scrollbars-container';
 import { Div100vhContainer, DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { ScrollbarsContainer } from 'Components/scrollbars-container/scrollbars-container.jsx';
 
 type TFormBody = {
     scroll_offset?: string;

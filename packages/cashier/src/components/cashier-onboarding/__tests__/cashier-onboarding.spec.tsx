@@ -4,7 +4,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import CashierOnboarding from '../cashier-onboarding';
 import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
-import type { TRootStore } from 'Types';
+import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 
 jest.mock('@deriv/hooks', () => {
@@ -17,9 +17,9 @@ jest.mock('@deriv/hooks', () => {
 });
 
 describe('<CashierOnboarding />', () => {
-    let mockRootStore: DeepPartial<TRootStore>;
+    let mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 accounts: { CR90000001: { is_virtual: 0, currency: 'USD' } },
                 account_status: {
@@ -64,7 +64,7 @@ describe('<CashierOnboarding />', () => {
                     },
                 },
             },
-        };
+        });
     });
 
     const props = () => ({
@@ -279,7 +279,7 @@ describe('<CashierOnboarding />', () => {
 
         const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_with_dp2p_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes(
+            node.textContent?.includes(
                 'Deposit with your local currency via peer-to-peer exchange with fellow traders in your country.'
             )
         );
@@ -302,7 +302,7 @@ describe('<CashierOnboarding />', () => {
 
         const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_with_dp2p_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes(
+            node.textContent?.includes(
                 'Deposit with your local currency via peer-to-peer exchange with fellow traders in your country.'
             )
         );
@@ -322,7 +322,7 @@ describe('<CashierOnboarding />', () => {
 
         const node_list = screen.getAllByTestId('dt_cashier_onboarding_detail_div');
         const deposit_with_dp2p_detail_div = Array.from(node_list).find(node =>
-            node.textContent.includes(
+            node.textContent?.includes(
                 'Deposit with your local currency via peer-to-peer exchange with fellow traders in your country.'
             )
         );

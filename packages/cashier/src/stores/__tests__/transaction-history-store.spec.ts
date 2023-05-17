@@ -1,6 +1,7 @@
 import TransactionHistoryStore from '../transaction-history-store';
 import { configure } from 'mobx';
-import { TRootStore, TWebSocket } from 'Types';
+import { TStatusCode, TTransactionType, TRootStore, TWebSocket } from '../../types';
+import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
@@ -13,19 +14,20 @@ describe('TransactionHistoryStore', () => {
             amount: 0.0005531,
             id: '175',
             is_valid_to_cancel: 1,
-            status_code: 'LOCKED',
+            status_code: 'LOCKED' as TStatusCode,
             status_message:
                 'We`re reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won`t be able to cancel.',
             submit_date: 1648811322,
-            transaction_type: 'withdrawal',
+            transaction_hash: '0x2dbf00eb6dbbcb1a962d7f1c82b8cff889a579f23af417a8b62442dd49bd8a51',
+            transaction_type: 'withdrawal' as TTransactionType,
         },
     ];
-    const root_store: DeepPartial<TRootStore> = {
+    const root_store = mockStore({
         client: {
             currency: 'BTC',
             switched: false,
         },
-    };
+    });
     const WS: DeepPartial<TWebSocket> = {
         authorized: {
             cashierPayments: () =>
@@ -54,7 +56,7 @@ describe('TransactionHistoryStore', () => {
     it('should subscribe to crypto transactions', async () => {
         const spyUpdateCryptoTransactions = jest.spyOn(transaction_history_store, 'updateCryptoTransactions');
 
-        transaction_history_store.getCryptoTransactions();
+        await transaction_history_store.getCryptoTransactions();
         expect(spyUpdateCryptoTransactions).toHaveBeenCalledWith(crypto_transactions);
         expect(transaction_history_store.crypto_transactions).toEqual(crypto_transactions);
     });
@@ -68,10 +70,11 @@ describe('TransactionHistoryStore', () => {
                 amount: 0.0005531,
                 id: '175',
                 is_valid_to_cancel: 0,
-                status_code: 'CANCELLED',
+                status_code: 'CANCELLED' as TStatusCode,
                 status_message: 'You’ve cancelled your withdrawal request.',
                 submit_date: 1649048412,
-                transaction_type: 'withdrawal',
+                transaction_hash: '0x2dbf00eb6dbbcb1a962d7f1c82b8cff889a579f23af417a8b62442dd49bd8a51',
+                transaction_type: 'withdrawal' as TTransactionType,
             },
             {
                 address_hash: 'tb1ql7w62elx9ucw4pj1lgw4l028hmuw80sndtntxt',
@@ -80,11 +83,12 @@ describe('TransactionHistoryStore', () => {
                 amount: 0.0005531,
                 id: '176',
                 is_valid_to_cancel: 1,
-                status_code: 'LOCKED',
+                status_code: 'LOCKED' as TStatusCode,
                 status_message:
                     'We`re reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won`t be able to cancel.',
                 submit_date: 1649048412,
-                transaction_type: 'withdrawal',
+                transaction_hash: '0x2dbf00eb6dbbcb1a962d7f1c82b8cff889a579f23af417a8b62442dd49bd8a51',
+                transaction_type: 'withdrawal' as TTransactionType,
             },
         ];
 

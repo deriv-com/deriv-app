@@ -735,6 +735,7 @@ export default class ClientStore extends BaseStore {
         return this.account_status?.status?.some(status_name => status_name === 'deposit_locked');
     }
 
+    // @deprecated use `useWithdrawLock` hook from `@deriv/hooks` instead
     get is_withdrawal_lock() {
         return this.account_status?.status?.some(status_name => status_name === 'withdrawal_locked');
     }

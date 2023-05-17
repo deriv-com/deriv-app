@@ -21,25 +21,27 @@ const RawMarkerMaker = draw_callback => {
 };
 
 const dark_theme = {
+    accu_contract_shade: '#00a79e14',
+    accu_shade: '#377cfc14',
+    accu_shade_crossed: '#cc2e3d14',
     open: '#377cfc',
     won: '#00a79e',
     lost: '#cc2e3d',
     sold: '#ffad3a',
     fg: '#ffffff',
     bg: '#0e0e0e',
-    accu_shade: '#377cfc14',
-    accu_contract_shade: '#00a79e14',
 };
 
 const light_theme = {
+    accu_contract_shade: '#4bb4b314',
+    accu_shade: '#377cfc14',
+    accu_shade_crossed: '#ec3f3f14',
     open: '#377cfc',
     won: '#4bb4b3',
     lost: '#ec3f3f',
     sold: '#ffad3a',
     fg: '#333333',
     bg: '#ffffff',
-    accu_shade: '#377cfc14',
-    accu_contract_shade: '#4bb4b314',
 };
 
 function getColor({ status, profit, is_dark_theme, is_vanilla }) {
@@ -143,8 +145,8 @@ const draw_path = (ctx, { zoom, top, left, icon }) => {
 
 const draw_shaded_barriers = ({
     ctx,
+    labels,
     start_left,
-    text,
     top,
     bottom,
     stroke_color,
@@ -170,10 +172,10 @@ const draw_shaded_barriers = ({
     if (is_top_visible || has_persistent_borders) {
         ctx.fillStyle = stroke_color;
         // draw difference between high barrier and previous spot price
-        if (text?.high) {
+        if (labels?.top) {
             ctx.textAlign = 'right';
             ctx.font = '14px IBM Plex Sans';
-            ctx.fillText(text?.high, end_left - 1, displayed_top - 10);
+            ctx.fillText(labels?.top, end_left - 1, displayed_top - 10);
         }
         // draw top barrier with an arrow
         ctx.beginPath();
@@ -209,10 +211,10 @@ const draw_shaded_barriers = ({
     if (is_bottom_visible || has_persistent_borders) {
         ctx.fillStyle = stroke_color;
         // draw difference between low barrier and previous spot price
-        if (text?.low && displayed_bottom + 12 < end_top) {
+        if (labels?.bottom && displayed_bottom + 12 < end_top) {
             ctx.textAlign = 'right';
             ctx.font = '14px IBM Plex Sans';
-            ctx.fillText(text?.low, end_left - 1, displayed_bottom + 12);
+            ctx.fillText(labels?.bottom, end_left - 1, displayed_bottom + 12);
         }
         // draw bottom barrier with an arrow
         ctx.beginPath();
@@ -272,6 +274,7 @@ const TickContract = RawMarkerMaker(
             // exit_tick_time,
             status,
             profit,
+            has_crossed_accu_barriers,
             is_accumulator_trade_without_contract,
             is_sold,
             // tick_stream,
@@ -307,8 +310,12 @@ const TickContract = RawMarkerMaker(
             draw_shaded_barriers({
                 ctx,
                 start_left: start.left,
-                fill_color: getColor({ status: 'accu_shade', is_dark_theme }),
-                stroke_color: getColor({ status: 'open', is_dark_theme }),
+                fill_color: getColor({
+                    status: has_crossed_accu_barriers ? 'accu_shade_crossed' : 'accu_shade',
+                    is_dark_theme,
+                }),
+
+                stroke_color: getColor({ status: has_crossed_accu_barriers ? 'lost' : 'open', is_dark_theme }),
                 previous_tick: {
                     color: getColor({ status: 'fg', is_dark_theme }) + opacity,
                     radius: 2 * scale,
@@ -316,7 +323,7 @@ const TickContract = RawMarkerMaker(
                 top: barrier,
                 bottom: barrier_2,
                 scale,
-                text: accu_barriers_difference,
+                labels: accu_barriers_difference,
             });
             return;
         }
@@ -330,10 +337,18 @@ const TickContract = RawMarkerMaker(
             draw_shaded_barriers({
                 ctx,
                 start_left: is_in_contract_details ? previous_tick.left : start.left,
-                fill_color: getColor({ status: 'accu_contract_shade', is_dark_theme }),
+                fill_color: getColor({
+                    status:
+                        has_crossed_accu_barriers || status === 'lost' ? 'accu_shade_crossed' : 'accu_contract_shade',
+                    is_dark_theme,
+                }),
+
                 // we should show barrier lines in contract details even when they are outside of the chart:
                 has_persistent_borders: is_in_contract_details,
-                stroke_color: getColor({ status: 'won', is_dark_theme }),
+                stroke_color: getColor({
+                    status: has_crossed_accu_barriers || status === 'lost' ? 'lost' : 'won',
+                    is_dark_theme,
+                }),
                 top: barrier,
                 bottom: barrier_2,
                 previous_tick: !is_in_contract_details && {
@@ -341,7 +356,7 @@ const TickContract = RawMarkerMaker(
                     radius: 1.5 * scale,
                 },
                 scale,
-                text: !is_in_contract_details && accu_barriers_difference,
+                labels: !is_in_contract_details && accu_barriers_difference,
             });
         }
         if (is_in_contract_details) return;

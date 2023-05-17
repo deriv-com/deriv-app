@@ -1157,6 +1157,7 @@ export default class TradeStore extends BaseStore {
                 maximum_payout,
                 high_barrier,
                 low_barrier,
+                relative_barrier_size,
                 spot,
                 spot_time,
             } = this.proposal_info.ACCU;
@@ -1171,10 +1172,11 @@ export default class TradeStore extends BaseStore {
             const { updateAccumulatorBarriersData } = this.root_store.contract_trade || {};
             if (updateAccumulatorBarriersData) {
                 updateAccumulatorBarriersData({
-                    current_symbol_spot: spot,
-                    current_symbol_spot_time: spot_time,
                     accumulators_high_barrier: high_barrier,
                     accumulators_low_barrier: low_barrier,
+                    current_symbol_spot: spot,
+                    current_symbol_spot_time: spot_time,
+                    relative_barrier_size,
                 });
             }
         }

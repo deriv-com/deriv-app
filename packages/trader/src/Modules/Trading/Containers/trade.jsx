@@ -298,6 +298,7 @@ const Chart = props => {
         all_positions,
         topWidgets,
         charts_ref,
+        has_crossed_accu_barriers,
         updateGranularity,
         updateChartType,
         active_symbols,
@@ -318,7 +319,6 @@ const Chart = props => {
         settings,
         should_show_eu_content,
         show_digits_stats,
-        should_highlight_current_spot,
         symbol,
         wsForget,
         wsForgetStream,
@@ -415,7 +415,7 @@ const Chart = props => {
                     all_positions={all_positions}
                     current_symbol_spot={current_symbol_spot}
                     current_symbol_spot_time={current_symbol_spot_time}
-                    should_highlight_current_spot={should_highlight_current_spot}
+                    has_crossed_accu_barriers={has_crossed_accu_barriers}
                     symbol={symbol}
                 />
             )}
@@ -435,6 +435,7 @@ Chart.propTypes = {
     exportLayout: PropTypes.func,
     end_epoch: PropTypes.number,
     granularity: PropTypes.number,
+    has_crossed_accu_barriers: PropTypes.bool,
     is_accumulator: PropTypes.bool,
     is_trade_enabled: PropTypes.bool,
     is_socket_opened: PropTypes.bool,
@@ -444,7 +445,6 @@ Chart.propTypes = {
     setChartStatus: PropTypes.func,
     settings: PropTypes.object,
     should_show_eu_content: PropTypes.bool,
-    should_highlight_current_spot: PropTypes.bool,
     symbol: PropTypes.string,
     wsForget: PropTypes.func,
     wsForgetStream: PropTypes.func,
@@ -455,6 +455,7 @@ Chart.propTypes = {
 const ChartTrade = connect(({ client, modules, ui, common, contract_trade, portfolio }) => ({
     accumulator_barriers_data: contract_trade.accumulator_barriers_data,
     all_positions: portfolio.all_positions,
+    has_crossed_accu_barriers: contract_trade.has_crossed_accu_barriers,
     is_socket_opened: common.is_socket_opened,
     granularity: contract_trade.granularity,
     chart_type: contract_trade.chart_type,
@@ -479,7 +480,6 @@ const ChartTrade = connect(({ client, modules, ui, common, contract_trade, portf
     extra_barriers: modules.trade.barriers_flattened,
     should_show_eu_content: client.should_show_eu_content,
     show_digits_stats: modules.trade.show_digits_stats,
-    should_highlight_current_spot: contract_trade.should_highlight_current_spot,
     contract_type: modules.trade.contract_type,
     symbol: modules.trade.symbol,
     exportLayout: modules.trade.exportLayout,

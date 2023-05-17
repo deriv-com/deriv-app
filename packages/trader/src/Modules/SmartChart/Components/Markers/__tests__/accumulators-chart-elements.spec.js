@@ -23,7 +23,7 @@ describe('AccumulatorsChartElements', () => {
         ],
         current_symbol_spot: 9478.34,
         current_symbol_spot_time: 1234567890,
-        should_highlight_current_spot: false,
+        has_crossed_accu_barriers: false,
         symbol: 'test symbol',
     };
 
@@ -36,7 +36,7 @@ describe('AccumulatorsChartElements', () => {
     });
 
     it('should render AccumulatorsChartElements with CurrentSpotEmphasizer', () => {
-        mock_props.should_highlight_current_spot = true;
+        mock_props.has_crossed_accu_barriers = true;
         render(<AccumulatorsChartElements {...mock_props} />);
 
         const tooltip_arr = screen.getAllByText('AccumulatorsProfitLossTooltip');

@@ -38,8 +38,8 @@ export default class CashierStore {
         this.general_store = new GeneralStore(WS, root_store);
         this.iframe = new IframeStore(root_store);
         this.onramp = new OnRampStore(WS, root_store);
-        this.payment_agent = new PaymentAgentStore({ root_store, WS });
-        this.payment_agent_transfer = new PaymentAgentTransferStore({ root_store, WS });
+        this.payment_agent = new PaymentAgentStore(WS, root_store);
+        this.payment_agent_transfer = new PaymentAgentTransferStore(WS, root_store);
         this.transaction_history = new TransactionHistoryStore(WS, root_store);
         this.withdraw = new WithdrawStore(WS, root_store);
     }

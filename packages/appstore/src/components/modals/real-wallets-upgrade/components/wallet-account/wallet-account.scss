@@ -7,6 +7,10 @@
     border: 0.1rem solid $color-grey-2;
     border-radius: 0.8rem;
 
+    @include mobile {
+        width: 24.4rem;
+    }
+
     &__details {
         display: flex;
         flex-direction: column;

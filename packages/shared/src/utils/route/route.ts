@@ -1,5 +1,5 @@
 // Checks if pathname matches route. (Works even with query string /?)
-
+import React from 'react';
 // TODO: Add test cases for this
 type TRoute = {
     component?: React.ElementType;

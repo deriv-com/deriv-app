@@ -19,6 +19,7 @@ const WalletContent = React.memo(({ is_demo, is_eu, wallet_account }: TProps) =>
             className={classNames('wallet-content', {
                 'wallet-content__demo': is_demo,
             })}
+            data-testid='dt_wallet-content'
         >
             <ContentDivider is_demo_divider={is_demo} />
             <WalletCfdsListing wallet_account={wallet_account} />

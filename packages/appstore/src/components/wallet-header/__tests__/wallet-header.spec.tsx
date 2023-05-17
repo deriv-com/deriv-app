@@ -7,7 +7,7 @@ import WalletHeader from '..';
 import { TAccountStatus } from 'Types';
 import { getStatusBadgeConfig } from '@deriv/account';
 
-const mocked_root_store = mockStore({});
+const mockedRootStore = mockStore({});
 const setIsOpen = jest.fn();
 
 jest.mock('@deriv/account', () => ({
@@ -20,7 +20,7 @@ describe('<WalletHeader />', () => {
         it('Should render right currency card for DEMO', () => {
             const account_type = 'demo';
             render(
-                <StoreProvider store={mocked_root_store}>
+                <StoreProvider store={mockedRootStore}>
                     <WalletHeader account_type={account_type} is_open_wallet={false} setIsOpen={setIsOpen} />
                 </StoreProvider>
             );
@@ -34,7 +34,7 @@ describe('<WalletHeader />', () => {
             const currency = 'AUD';
             const dt_currency = currency.toLowerCase();
             render(
-                <StoreProvider store={mocked_root_store}>
+                <StoreProvider store={mockedRootStore}>
                     <WalletHeader
                         account_type={account_type}
                         currency={currency}
@@ -54,7 +54,7 @@ describe('<WalletHeader />', () => {
             const currency = 'ETH';
             const dt_currency = currency.toLowerCase();
             render(
-                <StoreProvider store={mocked_root_store}>
+                <StoreProvider store={mockedRootStore}>
                     <WalletHeader
                         account_type={account_type}
                         currency={currency}
@@ -74,7 +74,7 @@ describe('<WalletHeader />', () => {
             const currency = 'EUR';
             const dt_currency = currency.toLowerCase();
             render(
-                <StoreProvider store={mocked_root_store}>
+                <StoreProvider store={mockedRootStore}>
                     <WalletHeader
                         account_type={account_type}
                         currency={currency}
@@ -96,7 +96,7 @@ describe('<WalletHeader />', () => {
             const balance = '2345.56';
             const currency = 'EUR';
             render(
-                <StoreProvider store={mocked_root_store}>
+                <StoreProvider store={mockedRootStore}>
                     <WalletHeader
                         account_type={account_type}
                         balance={balance}
@@ -116,7 +116,7 @@ describe('<WalletHeader />', () => {
             const account_type = 'real';
             const currency = 'EUR';
             render(
-                <StoreProvider store={mocked_root_store}>
+                <StoreProvider store={mockedRootStore}>
                     <WalletHeader
                         account_type={account_type}
                         currency={currency}
@@ -138,7 +138,7 @@ describe('<WalletHeader />', () => {
             const account_type = 'real';
             const currency = 'EUR';
             render(
-                <StoreProvider store={mocked_root_store}>
+                <StoreProvider store={mockedRootStore}>
                     <WalletHeader
                         account_status={account_status}
                         account_type={account_type}
@@ -163,7 +163,7 @@ describe('<WalletHeader />', () => {
             const account_type = 'real';
             const currency = 'EUR';
             render(
-                <StoreProvider store={mocked_root_store}>
+                <StoreProvider store={mockedRootStore}>
                     <WalletHeader
                         account_status={account_status}
                         account_type={account_type}
@@ -189,7 +189,7 @@ describe('<WalletHeader />', () => {
             const account_type = 'real';
             const currency = 'EUR';
             render(
-                <StoreProvider store={mocked_root_store}>
+                <StoreProvider store={mockedRootStore}>
                     <WalletHeader
                         account_status={account_status}
                         account_type={account_type}
@@ -212,7 +212,7 @@ describe('<WalletHeader />', () => {
     describe('Check buttons', () => {
         it('Buttons collapsed', () => {
             render(
-                <StoreProvider store={mocked_root_store}>
+                <StoreProvider store={mockedRootStore}>
                     <WalletHeader account_type='demo' is_open_wallet={false} setIsOpen={setIsOpen} />
                 </StoreProvider>
             );
@@ -224,7 +224,7 @@ describe('<WalletHeader />', () => {
 
         it('Buttons uncollapsed', () => {
             render(
-                <StoreProvider store={mocked_root_store}>
+                <StoreProvider store={mockedRootStore}>
                     <WalletHeader account_type='demo' is_open_wallet={true} setIsOpen={setIsOpen} />
                 </StoreProvider>
             );
@@ -239,7 +239,7 @@ describe('<WalletHeader />', () => {
                 const [is_open, wrapperSetIsOpen] = React.useState(false);
 
                 return (
-                    <StoreProvider store={mocked_root_store}>
+                    <StoreProvider store={mockedRootStore}>
                         <WalletHeader account_type='demo' is_open_wallet={is_open} setIsOpen={wrapperSetIsOpen} />
                     </StoreProvider>
                 );
@@ -256,7 +256,7 @@ describe('<WalletHeader />', () => {
 
         it('Check buttons for demo', () => {
             render(
-                <StoreProvider store={mocked_root_store}>
+                <StoreProvider store={mockedRootStore}>
                     <WalletHeader account_type='demo' is_open_wallet={true} setIsOpen={setIsOpen} />
                 </StoreProvider>
             );
@@ -272,7 +272,7 @@ describe('<WalletHeader />', () => {
 
         it('Check buttons for real', () => {
             render(
-                <StoreProvider store={mocked_root_store}>
+                <StoreProvider store={mockedRootStore}>
                     <WalletHeader
                         account_type='real'
                         shortcode='svg'

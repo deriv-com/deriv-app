@@ -1,5 +1,4 @@
 import React from 'react';
-import renderHTML from 'react-render-html';
 import { useSelector } from 'react-redux';
 
 const FirstStepTarget = () => (
@@ -59,7 +58,7 @@ function createReactNode(id, style, current_node, parent_node) {
         parentDiv.insertBefore(new_account_position, current_account_position);
     }
 
-    return <div dangerouslySetInnerHTML={{ __html: renderHTML(new_account_position.outerHTML) }} />;
+    return <div dangerouslySetInnerHTML={{ __html: new_account_position.outerHTML }} />;
 }
 
 const TourTargets = () => {

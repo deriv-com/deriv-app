@@ -33,7 +33,12 @@ const EUDisclaimer = observer(({ is_wallet, wrapperClassName, textClassName }: T
 
     return (
         <div className={wrapperClassName ?? 'disclaimer'}>
-            <Text align='left' className={textClassName ?? 'disclaimer-text'} size={is_mobile ? 'xxxs' : 'xs'}>
+            <Text
+                align='left'
+                className={textClassName ?? 'disclaimer-text'}
+                size={is_mobile ? 'xxxs' : 'xs'}
+                data-testid='dt_disclaimer_text'
+            >
                 {disclaimer_text}
             </Text>
         </div>

@@ -1,17 +1,16 @@
 import classNames from 'classnames';
 import React from 'react';
-import { TJurisdictionCardItemVerification } from 'Components/props.types';
+import { Jurisdiction } from '@deriv/shared';
 import { getJurisdictionContents } from '../../Constants/jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardProps } from '../props.types';
 import JurisdictionCardBack from './jurisdiction-card-back';
 import JurisdictionCardFront from './jurisdiction-card-front';
-import { Jurisdiction } from '@deriv/shared';
 
 const JurisdictionCard = ({
     account_status,
     account_type,
     disabled,
-    is_onfido_design,
+    is_onfido_design = false,
     jurisdiction_selected_shortcode,
     setJurisdictionSelectedShortcode,
     type_of_card,

@@ -6,7 +6,7 @@ import JurisdictionCard from './jurisdiction-card';
 const JurisdictionModalContent = ({
     account_status,
     account_type,
-    is_onfido_design,
+    is_onfido_design = false,
     is_virtual,
     jurisdiction_selected_shortcode,
     setJurisdictionSelectedShortcode,

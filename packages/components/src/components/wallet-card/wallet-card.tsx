@@ -37,9 +37,9 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
         {size === 'small' ? (
             <div className='wallet-card__small-container'>
                 <div
-                    className={classNames('wallet-card__small-container-overlay', {
-                        [`wallet-card__small-container-overlay--${wallet_state}`]: wallet_state,
-                    })}
+                    className={`wallet-card__small-container-overlay wallet-card__small-container-overlay--${
+                        wallet_state === 'add' || wallet_state === 'added' ? 'default' : wallet_state
+                    }`}
                 />
                 <WalletIcon icon={icon} primaryColor='#F44336' secondaryColor='#283991' />
             </div>

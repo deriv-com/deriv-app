@@ -126,19 +126,6 @@ export default class LoadModalStore implements ILoadModalStore {
                 }
             }
         );
-
-        const loadStrategies = async () => {
-            try {
-                const timeout = (ms: number) => {
-                    return new Promise(resolve => setTimeout(resolve, ms));
-                };
-                await timeout(1000);
-                this.setDashboardStrategies((await getSavedWorkspaces()) || []);
-            } catch (error) {
-                globalObserver.emit('Error', error);
-            }
-        };
-        loadStrategies();
     }
 
     recent_workspace;
@@ -226,9 +213,7 @@ export default class LoadModalStore implements ILoadModalStore {
         return true;
     };
     refreshStrategiesTheme = (strategy = this.selected_strategy?.xml): void => {
-        setTimeout(() => {
-            load({ block_string: strategy, drop_event: {}, workspace: this.recent_workspace });
-        }, 0);
+        if (strategy) load({ block_string: strategy, drop_event: {}, workspace: this.recent_workspace });
     };
     loadFileFromRecent = async (): void => {
         this.is_open_button_loading = true;

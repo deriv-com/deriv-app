@@ -68,13 +68,14 @@ const InputGroup = ({ children, className }) => {
     );
 };
 
+const autocomplete_value = 'none';
 const TaxResidenceSelect = ({ field, errors, setFieldValue, values, is_changeable, residence_list }) => (
     <React.Fragment>
         <DesktopWrapper>
             <Autocomplete
                 {...field}
                 data-lpignore='true'
-                autoComplete='new-password' // prevent chrome autocomplete
+                autoComplete={autocomplete_value} // prevent chrome autocomplete
                 type='text'
                 label={localize('Tax residence*')}
                 error={errors.tax_residence}
@@ -603,7 +604,7 @@ export const PersonalDetailsForm = ({
                                                                 <Autocomplete
                                                                     {...field}
                                                                     data-lpignore='true'
-                                                                    autoComplete='new-password' // prevent chrome autocomplete
+                                                                    autoComplete={autocomplete_value} // prevent chrome autocomplete
                                                                     type='text'
                                                                     label={localize('Title*')}
                                                                     error={errors.salutation}
@@ -707,7 +708,7 @@ export const PersonalDetailsForm = ({
                                                             <Autocomplete
                                                                 {...field}
                                                                 data-lpignore='true'
-                                                                autoComplete='new-password' // prevent chrome autocomplete
+                                                                autoComplete={autocomplete_value} // prevent chrome autocomplete
                                                                 type='text'
                                                                 label={
                                                                     is_svg
@@ -779,7 +780,7 @@ export const PersonalDetailsForm = ({
                                                             <Autocomplete
                                                                 {...field}
                                                                 data-lpignore='true'
-                                                                autoComplete='new-password' // prevent chrome autocomplete
+                                                                autoComplete={autocomplete_value} // prevent chrome autocomplete
                                                                 type='text'
                                                                 label={
                                                                     is_eu
@@ -1051,7 +1052,7 @@ export const PersonalDetailsForm = ({
                                                                             <Autocomplete
                                                                                 {...field}
                                                                                 data-lpignore='true'
-                                                                                autoComplete='new-password' // prevent chrome autocomplete
+                                                                                autoComplete={autocomplete_value} // prevent chrome autocomplete
                                                                                 type='text'
                                                                                 label={localize(
                                                                                     'State/Province (optional)'

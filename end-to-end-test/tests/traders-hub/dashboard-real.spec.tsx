@@ -16,11 +16,11 @@ test.describe("Trader's Hub Dashboard", () => {
     test('It should have the regulator switcher for low risk and no regulator switcher for high risk', async ({
         page,
     }) => {
-        const regulator_switcher = await page.getByText('Regulation:');
+        const regulator_switcher = await page.getByText('Regulation:').count();
         if (process.env.RISK_LEVEL === 'low_risk') {
-            expect(regulator_switcher).toBeDefined();
+            expect(regulator_switcher).toEqual(1);
         } else {
-            expect(regulator_switcher).toBeNull();
+            expect(regulator_switcher).toEqual(0);
         }
     });
 

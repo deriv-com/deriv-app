@@ -216,6 +216,11 @@
             }
         }
     }
+    .account-form__footer {
+        @include desktop {
+            position: relative;
+        }
+    }
 }
 
 .proof-of-identity__container.mt5-layout {

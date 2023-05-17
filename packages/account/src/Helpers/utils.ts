@@ -193,7 +193,7 @@ export const getDocumentData = (country_code: string, document_type: string) => 
     );
 };
 
-export const preventEmptyClipboardPaste = (e: ClipboardEvent) => {
+export const preventEmptyClipboardPaste = (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const clipboardData = (e.clipboardData ?? window.clipboardData).getData('text');
     if (clipboardData.length === 0) {
         e.preventDefault();

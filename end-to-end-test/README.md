@@ -15,6 +15,10 @@ then
 
 `npx playwright test` to start the tests to run. (You also can pass `--debug` option to this command to it to run them in headless browser and check them visually separated by different browsers eg. Chromium, Firefox or Edge)
 
+`npm run test:e2e` to run the tests from within the root `directory`.
+
+`npm run test:e2e-dev` to run the tests from within the root `directory` with trace enabled and show the test report.
+
 ## Project structure
 
 ### `.env` file

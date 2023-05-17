@@ -3,10 +3,9 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable, Text, Clipboard } from '@deriv/components';
-import { extractInfoFromShortcode, isForwardStarting, getUnsupportedContracts, getContractPath } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { extractInfoFromShortcode, isForwardStarting, getContractPath } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
-import { getSupportedContracts } from '_common/contract';
 import { connect } from 'Stores/connect';
 import { getStatementTableColumnsTemplate } from '../Constants/data-table-constants';
 import PlaceholderComponent from '../Components/placeholder-component.jsx';
@@ -57,19 +56,9 @@ const getRowAction = row_obj => {
     if (row_obj.id && ['buy', 'sell'].includes(row_obj.action_type)) {
         const contract_type = extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase();
         action =
-            getSupportedContracts()[contract_type] &&
-            !isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time)
-                ? getContractPath(row_obj.id)
-                : {
-                      component: (
-                          <Localize
-                              i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
-                              values={{
-                                  trade_type_name: getUnsupportedContracts()[contract_type]?.name,
-                              }}
-                          />
-                      ),
-                  };
+            contract_type &&
+            !isForwardStarting(row_obj.shortcode, row_obj.purchase_time || row_obj.transaction_time) &&
+            getContractPath(row_obj.id);
     } else if (row_obj.action_type === 'withdrawal') {
         if (row_obj.withdrawal_details && row_obj.longcode) {
             action = {

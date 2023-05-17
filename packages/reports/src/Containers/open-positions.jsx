@@ -21,13 +21,12 @@ import {
     isMultiplierContract,
     isVanillaContract,
     getTimePercentage,
-    getUnsupportedContracts,
     getTotalProfit,
     getContractPath,
     getCurrentTick,
     getGrowthRatePercentage,
 } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import { getContractDurationType } from '../Helpers/market-underlying';
 
@@ -223,19 +222,7 @@ export const OpenPositionsTable = ({
     </React.Fragment>
 );
 
-const getRowAction = row_obj =>
-    row_obj.is_unsupported
-        ? {
-              component: (
-                  <Localize
-                      i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
-                      values={{
-                          trade_type_name: getUnsupportedContracts()[row_obj.type]?.name,
-                      }}
-                  />
-              ),
-          }
-        : getContractPath(row_obj.id);
+const getRowAction = row_obj => getContractPath(row_obj.id);
 
 /*
  * After refactoring transactionHandler for creating positions,

@@ -4,11 +4,10 @@ import { PropTypes as MobxPropTypes } from 'mobx-react';
 import React from 'react';
 import { withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, DataList, DataTable } from '@deriv/components';
-import { extractInfoFromShortcode, isForwardStarting, getUnsupportedContracts, getContractPath } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { extractInfoFromShortcode, isForwardStarting, getContractPath } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { ReportsTableRowLoader } from '../Components/Elements/ContentLoader';
 import CompositeCalendar from '../Components/Form/CompositeCalendar';
-import { getSupportedContracts } from '_common/contract';
 
 import { connect } from 'Stores/connect';
 import EmptyTradeHistoryMessage from '../Components/empty-trade-history-message.jsx';
@@ -18,18 +17,11 @@ import { getProfitTableColumnsTemplate } from 'Constants/data-table-constants';
 
 const getRowAction = row_obj => {
     const contract_type = extractInfoFromShortcode(row_obj.shortcode).category.toUpperCase();
-    return getSupportedContracts()[contract_type] && !isForwardStarting(row_obj.shortcode, row_obj.purchase_time_unix)
-        ? getContractPath(row_obj.contract_id)
-        : {
-              component: (
-                  <Localize
-                      i18n_default_text="The {{trade_type_name}} contract details aren't currently available. We're working on making them available soon."
-                      values={{
-                          trade_type_name: getUnsupportedContracts()[contract_type]?.name,
-                      }}
-                  />
-              ),
-          };
+    return (
+        contract_type &&
+        !isForwardStarting(row_obj.shortcode, row_obj.purchase_time_unix) &&
+        getContractPath(row_obj.contract_id)
+    );
 };
 
 const ProfitTable = ({

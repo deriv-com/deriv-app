@@ -4,7 +4,6 @@ const paths = require('vinyl-paths');
 const rev = require('gulp-rev');
 const through = require('through2');
 const concat = require('gulp-concat-util');
-// const concatCss = require('gulp-concat-css');
 const { addToManifest } = require('./revision');
 
 gulp.task(
@@ -28,26 +27,3 @@ gulp.task(
             .on('end', () => done());
     })
 );
-
-gulp.task(
-    'copy-js',
-    gulp.parallel(done => {
-        gulp.src(['./node_modules/@deriv/deriv-charts/dist/*.smartcharts.*']).pipe(gulp.dest('www/js/'));
-        done();
-    })
-);
-
-// gulp.task(
-//     'bundle-css',
-//     gulp.parallel(done => {
-//         gulp.src([
-//             'node_modules/jquery-ui-css/jquery-ui.min.css',
-//             './node_modules/@deriv/deriv-charts/dist/smartcharts.css',
-//         ])
-//             .pipe(concatCss('bundle.css'))
-//             .pipe(rev())
-//             .pipe(through.obj(addToManifest))
-//             .pipe(gulp.dest('www/css'));
-//         done();
-//     })
-// );

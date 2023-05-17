@@ -65,7 +65,6 @@ gulp.task(
         'copy-binary-style-css',
         'copy-virtualized-style-css',
         'copy-binary-style-img',
-        'copy-js',
         'pull-blockly-translations',
         done => {
             genHtml(true);
@@ -84,7 +83,6 @@ gulp.task(
         'copy-binary-style-css',
         'copy-virtualized-style-css',
         'copy-binary-style-img',
-        'copy-js',
         'pull-blockly-translations'
     )
 );

@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
     entry: path.join(__dirname, 'src', 'botPage', 'bot', 'cli.js'),
@@ -34,5 +35,8 @@ module.exports = {
             banner: '#!/usr/bin/env node',
             raw: true,
         }),
+        new CopyWebpackPlugin([
+            { from: './node_modules/@deriv/deriv-charts/dist/*.smartcharts.*', to: path.resolve(__dirname), flatten: true },
+        ]),
     ],
 };

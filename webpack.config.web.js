@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const production = process.env.NODE_ENV === 'production';
 
@@ -11,6 +12,9 @@ const plugins = [
         jQuery: 'jquery',
         'window.jQuery': 'jquery',
     }),
+    new CopyWebpackPlugin([
+        { from: './node_modules/@deriv/deriv-charts/dist/*.smartcharts.*', to: path.resolve(__dirname), flatten: true },
+    ]),
 ];
 
 const productionPlugins = () => {

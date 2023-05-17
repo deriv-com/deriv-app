@@ -2,12 +2,6 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
-type TInformationList = {
-    name: string;
-    visibility: boolean;
-    content: JSX.Element;
-};
-
 type TUpgradeInformationList = {
     is_eu: boolean;
     text_info_size: string;
@@ -18,7 +12,7 @@ const getUpgradeInformationList = ({
     is_eu,
     text_info_size,
     form_line_height,
-}: TUpgradeInformationList): TInformationList[] => [
+}: TUpgradeInformationList) => [
     {
         name: 'upgrade_info',
         visibility: true,

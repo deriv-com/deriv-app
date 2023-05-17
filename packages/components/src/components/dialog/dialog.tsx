@@ -11,7 +11,7 @@ type TDialog = {
     cancel_button_text?: string;
     className?: string;
     confirm_button_text?: string;
-    dismissable: boolean;
+    dismissable?: boolean;
     disableApp?: () => void;
     enableApp?: () => void;
     has_close_icon: boolean;

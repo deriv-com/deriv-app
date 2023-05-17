@@ -1,0 +1,33 @@
+.wallet-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $BORDER_RADIUS;
+    overflow: hidden;
+
+    &__background {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    &__icon {
+        z-index: 1;
+    }
+
+    &--small {
+        width: 4rem;
+        height: 2.4rem;
+    }
+
+    &--medium {
+        width: 6.4rem;
+        height: 4rem;
+    }
+
+    &--large {
+        width: 12.8rem;
+        height: 8rem;
+    }
+}

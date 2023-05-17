@@ -22,10 +22,12 @@ const MainTitleBar = () => {
     return (
         <React.Fragment>
             <DesktopWrapper>
+                {/* TODO: This is for testing purposes only */}
+                <button onClick={() => setShouldShowWalletConsentPopup(true)}>Click to see Modal</button>
                 <div className='main-title-bar'>
                     <div className='main-title-bar__right'>
-                        <Text size='m' weight='bold'>
-                            {localize("Trader's hub")}
+                        <Text size='m' weight='bold' color='prominent'>
+                            {localize("Trader's Hub")}
                         </Text>
                         <AccountTypeDropdown />
                     </div>
@@ -34,13 +36,15 @@ const MainTitleBar = () => {
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
-                <Text weight='bold' className='main-title-bar__text'>
-                    {localize("Trader's hub")}
+                <Text weight='bold' className='main-title-bar__text' color='prominent'>
+                    {localize("Trader's Hub")}
                 </Text>
                 <div className='main-title-bar-mobile'>
                     <div className='main-title-bar-mobile--account-type-dropdown'>
                         <AccountTypeDropdown />
                     </div>
+                    {/* TODO: This is for testing purposes only */}
+                    <button onClick={() => setShouldShowWalletConsentPopup(true)}>Click to see Modal</button>
                     {is_low_risk_cr_real_account && is_landing_company_loaded ? (
                         <div className='main-title-bar-mobile--regulator'>
                             {!is_switching ? (

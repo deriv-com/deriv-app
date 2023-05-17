@@ -16,16 +16,15 @@ type BalanceTextProps = {
 };
 
 const BalanceText = ({ balance, currency, size = 'm', underline_style = 'none' }: BalanceTextProps) => {
-    const { client, traders_hub } = useStores();
+    const { traders_hub } = useStores();
     const { selected_account_type } = traders_hub;
-    const { has_active_real_account } = client;
 
     const getTextClassName = () => {
         if (selected_account_type === 'demo') {
-            return has_active_real_account ? 'balance-text__text--demo' : 'balance-text__text--amount';
+            return 'balance-text__text--demo';
         }
         if (selected_account_type === 'real') {
-            return has_active_real_account ? 'balance-text__text--real' : 'balance-text__text--no-amount';
+            return 'balance-text__text--real';
         }
         return '';
     };

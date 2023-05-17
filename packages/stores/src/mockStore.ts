@@ -24,7 +24,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             accounts: {},
             is_social_signup: false,
             active_account_landing_company: '',
-            account_settings: {},
             account_limits: {
                 account_balance: 300000,
                 daily_transfers: {

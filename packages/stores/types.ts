@@ -195,6 +195,7 @@ type TClientStore = {
     setTwoFAStatus: (status: boolean) => void;
     has_changed_two_fa: boolean;
     setTwoFAChangedStatus: (status: boolean) => void;
+    has_any_real_account: boolean;
     real_account_creation_unlock_date: number;
 };
 

@@ -1,4 +1,4 @@
-import InputField from './input-field.jsx';
+import InputField from './input-field';
 import './input-field.scss';
 
 export default InputField;

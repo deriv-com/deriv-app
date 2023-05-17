@@ -5,21 +5,22 @@ const mock = (): TStores & { is_mock: boolean } => {
     return {
         is_mock: true,
         client: {
+            account_settings: {},
             accounts: {},
             active_account_landing_company: '',
             account_limits: {
                 daily_transfers: {
                     dxtrade: {
-                        allowed: false,
-                        available: false,
+                        allowed: 0,
+                        available: 0,
                     },
                     internal: {
-                        allowed: false,
-                        available: false,
+                        allowed: 0,
+                        available: 0,
                     },
                     mt5: {
-                        allowed: false,
-                        available: false,
+                        allowed: 0,
+                        available: 0,
                     },
                 },
             },
@@ -243,6 +244,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             sub_section_index: 0,
             toggleReadyToDepositModal: jest.fn(),
             is_ready_to_deposit_modal_visible: false,
+            is_real_acc_signup_on: false,
             is_need_real_account_for_cashier_modal_visible: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
             setShouldShowCooldownModal: jest.fn(),

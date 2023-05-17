@@ -428,17 +428,11 @@ const Content = ({ is_uk, landing_company_shortcode, mt5_login_list }) => {
                         title: localize('4.6. Your decision'),
                         text: (
                             <Localize
-                                i18n_default_text='If we are unable to resolve your complaint or you are not satisfied with the outcome, you can escalate your complaint to the <0>Office of the Arbiter for Financial Services</0>.<1/><2/>Filing complaints with the Office of the Arbiter for Financial Services'
+                                i18n_default_text='If we are unable to resolve your complaint or you are not satisfied with the outcome, you can escalate your complaint to the Office of the Arbiter for Financial Services.<0/><1/><2>Filing complaints with the Office of the Arbiter for Financial Services</2>'
                                 components={[
-                                    <a
-                                        key={0}
-                                        className='link link--orange'
-                                        rel='noopener noreferrer'
-                                        target='_blank'
-                                        href='https://www.financialarbiter.org.mt/'
-                                    />,
+                                    <br key={0} />,
                                     <br key={1} />,
-                                    <br key={2} />,
+                                    <span key={2} className='complaints-policy__list-item-underlined' />,
                                 ]}
                             />
                         ),
@@ -461,7 +455,7 @@ const Content = ({ is_uk, landing_company_shortcode, mt5_login_list }) => {
                         ],
                         ending_text: (
                             <Localize
-                                i18n_default_text='<0/>For more information on submitting a complaint with the Office of the Arbiter for Financial Services, <1>please see their guidance</1>.'
+                                i18n_default_text='<0/>For more information on submitting a complaint with the Office of the Arbiter for Financial Services, please <1>see their guidance</1>.'
                                 components={[
                                     <br key={0} />,
                                     <a

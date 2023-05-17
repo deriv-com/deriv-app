@@ -32,7 +32,7 @@ module.exports = function (env) {
             disableHostCheck: true,
         },
         mode: is_release ? 'production' : 'development',
-        devtool: is_release ? undefined : 'eval-cheap-module-source-map',
+        devtool: is_release ? 'source-map' : 'eval-cheap-module-source-map',
         target: 'web',
         module: {
             rules: [

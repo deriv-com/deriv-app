@@ -21,8 +21,8 @@ describe('AccumulatorsChartElements', () => {
                 },
             },
         ],
-        current_symbol_spot: 9478.34,
-        current_symbol_spot_time: 1234567890,
+        current_spot: 9478.34,
+        current_spot_time: 1234567890,
         has_crossed_accu_barriers: false,
         symbol: 'test symbol',
     };

@@ -1174,8 +1174,8 @@ export default class TradeStore extends BaseStore {
                 updateAccumulatorBarriersData({
                     accumulators_high_barrier: high_barrier,
                     accumulators_low_barrier: low_barrier,
-                    current_symbol_spot: spot,
-                    current_symbol_spot_time: spot_time,
+                    current_spot: spot,
+                    current_spot_time: spot_time,
                     relative_barrier_size,
                 });
             }

@@ -102,56 +102,54 @@ export const IdvDocSubmitOnSignup = ({
                 dirty,
                 values,
             }) => (
-                <Form>
-                    <div className='proof-of-identity__container proof-of-identity__container--reset mt5-layout'>
-                        <section className='mt5-layout__container'>
-                            <FormSubHeader title={localize('Identity verification')} />
-                            <IDVForm
+                <Form className='proof-of-identity__container proof-of-identity__container--reset mt5-layout'>
+                    <section className='mt5-layout__container'>
+                        <FormSubHeader title={localize('Identity verification')} />
+                        <IDVForm
+                            errors={errors}
+                            touched={touched}
+                            values={values}
+                            handleChange={handleChange}
+                            handleBlur={handleBlur}
+                            setFieldValue={setFieldValue}
+                            hide_hint={false}
+                            selected_country={citizen_data}
+                            class_name='idv-layout'
+                        />
+                        <FormSubHeader title={localize('Identity verification')} />
+                        <div
+                            className={classNames({
+                                'account-form__poi-confirm-example_container': !shouldHideHelperImage(
+                                    values?.document_type?.id
+                                ),
+                            })}
+                        >
+                            <PersonalDetailsForm
                                 errors={errors}
                                 touched={touched}
                                 values={values}
                                 handleChange={handleChange}
                                 handleBlur={handleBlur}
                                 setFieldValue={setFieldValue}
-                                hide_hint={false}
-                                selected_country={citizen_data}
-                                class_name='idv-layout'
+                                setFieldTouched={setFieldTouched}
+                                is_qualified_for_idv={true}
+                                is_appstore
+                                should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
+                                editable_fields={changeable_fields}
                             />
-                            <FormSubHeader title={localize('Identity verification')} />
-                            <div
-                                className={classNames({
-                                    'account-form__poi-confirm-example_container': !shouldHideHelperImage(
-                                        values?.document_type?.id
-                                    ),
-                                })}
-                            >
-                                <PersonalDetailsForm
-                                    errors={errors}
-                                    touched={touched}
-                                    values={values}
-                                    handleChange={handleChange}
-                                    handleBlur={handleBlur}
-                                    setFieldValue={setFieldValue}
-                                    setFieldTouched={setFieldTouched}
-                                    is_qualified_for_idv={true}
-                                    is_appstore
-                                    should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
-                                    editable_fields={changeable_fields}
-                                />
-                            </div>
-                        </section>
-                        <FormFooter className='proof-of-identity__footer'>
-                            <Button
-                                className='proof-of-identity__submit-button'
-                                type='submit'
-                                has_effect
-                                is_disabled={!dirty || isSubmitting || !isValid}
-                                text={localize('Next')}
-                                large
-                                primary
-                            />
-                        </FormFooter>
-                    </div>
+                        </div>
+                    </section>
+                    <FormFooter className='proof-of-identity__footer'>
+                        <Button
+                            className='proof-of-identity__submit-button'
+                            type='submit'
+                            has_effect
+                            is_disabled={!dirty || isSubmitting || !isValid}
+                            text={localize('Next')}
+                            large
+                            primary
+                        />
+                    </FormFooter>
                 </Form>
             )}
         </Formik>

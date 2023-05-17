@@ -57,7 +57,7 @@ const AssetSummary = observer(() => {
                                     ? platform_real_balance.currency || ''
                                     : platform_demo_account?.currency || default_currency
                             }
-                            balance={is_real ? real_total_balance : demo_total_balance}
+                            balance={is_real ? real_total_balance : 10000}
                             underline_style='dotted'
                         />
                     </Popover>

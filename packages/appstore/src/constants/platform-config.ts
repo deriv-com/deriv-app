@@ -35,7 +35,7 @@ export const getAppstorePlatforms = (): PlatformConfig[] => [
     {
         name: getPlatformSettingsAppstore('trader').name,
         app_desc: localize('Options and multipliers trading platform.'),
-        link_to: routes.trade,
+        link_to: routes.bot,
     },
     {
         name: getPlatformSettingsAppstore('dbot').name,

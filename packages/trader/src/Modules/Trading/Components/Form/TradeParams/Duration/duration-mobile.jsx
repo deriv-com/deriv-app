@@ -280,22 +280,6 @@ const Duration = ({
                                     />
                                 </div>
                             );
-                        case 'm':
-                            return (
-                                <div label={duration_unit_option.text} key={duration_unit_option.value}>
-                                    <NumpadWrapper
-                                        basis_option={selected_basis_option()}
-                                        has_amount_error={has_amount_error}
-                                        toggleModal={toggleModal}
-                                        duration_unit_option={duration_unit_option}
-                                        selected_duration={m_duration}
-                                        setDurationError={setDurationError}
-                                        setSelectedDuration={setSelectedDuration}
-                                        stake_value={stake_value}
-                                        payout_value={payout_value}
-                                    />
-                                </div>
-                            );
                         case 'h':
                             return (
                                 <div label={duration_unit_option.text} key={duration_unit_option.value}>

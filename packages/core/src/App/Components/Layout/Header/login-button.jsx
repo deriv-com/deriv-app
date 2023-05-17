@@ -1,22 +1,23 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button } from '@deriv/components';
-import { redirectToLogin } from '@deriv/shared';
-import { getLanguage, localize } from '@deriv/translations';
+import { redirectToSignUp } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 
-const LoginButton = ({ className }) => (
+const LoginButton = ({ className, is_appstore }) => (
     <Button
         id='dt_login_button'
         className={className}
         has_effect
         text={localize('Log in')}
-        onClick={() => redirectToLogin(false, getLanguage())}
+        onClick={() => redirectToSignUp({ is_appstore })}
         tertiary
     />
 );
 
 LoginButton.propTypes = {
     className: PropTypes.string,
+    is_appstore: PropTypes.bool,
 };
 
 export { LoginButton };

@@ -39,5 +39,4 @@ const WalletCurrencyCard = observer(({ account_type, currency }: TWalletCurrency
         </div>
     );
 });
-WalletCurrencyCard.displayName = 'WalletCurrencyCard';
 export default WalletCurrencyCard;

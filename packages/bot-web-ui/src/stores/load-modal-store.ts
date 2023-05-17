@@ -42,7 +42,7 @@ interface ILoadModalStore {
     handleFileChange: (
         event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
         is_body: boolean
-    ) => boolean;
+    ) => Promise<boolean>;
     loadFileFromLocal: () => void;
     onActiveIndexChange: () => void;
     onDriveConnect: () => void;
@@ -184,10 +184,10 @@ export default class LoadModalStore implements ILoadModalStore {
         this.dashboard_strategies = recent_strategies;
     }
 
-    handleFileChange = (
+    handleFileChange = async (
         event: React.MouseEvent | React.FormEvent<HTMLFormElement> | DragEvent,
         is_body = true
-    ): boolean => {
+    ): Promise<boolean> => {
         let files;
         if (event.type === 'drop') {
             event.stopPropagation();
@@ -203,11 +203,7 @@ export default class LoadModalStore implements ILoadModalStore {
         if (!is_body) {
             if (file.name.includes('xml')) {
                 this.setLoadedLocalFile(file);
-                try {
-                    this.getDashboardStrategies();
-                } catch (error) {
-                    globalObserver.emit('Error', error);
-                }
+                await this.getDashboardStrategies();
             } else {
                 return false;
             }

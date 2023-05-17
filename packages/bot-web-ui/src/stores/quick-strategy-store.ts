@@ -350,11 +350,7 @@ export default class QuickStrategyStore {
                 });
         }
         if (this.is_strategy_modal_open) {
-            try {
-                this.loadDataStrategy();
-            } catch (error) {
-                globalObserver.emit('Error', error);
-            }
+            await this.loadDataStrategy();
         }
     }
 

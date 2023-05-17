@@ -29,11 +29,11 @@ const RecentComponent = ({
 }: TRecentComponent) => {
     React.useEffect(() => {
         setStrategySaveType('');
+        const getStrategies = async () => {
+            const recent_strategies = await getSavedWorkspaces();
+            setDashboardStrategies(recent_strategies);
+        };
         try {
-            const getStrategies = async () => {
-                const recent_strategies = await getSavedWorkspaces();
-                setDashboardStrategies(recent_strategies);
-            };
             getStrategies();
         } catch (error) {
             globalObserver.emit('Error', error);

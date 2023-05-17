@@ -71,7 +71,7 @@ const TradeModal = ({
     const downloadCenterAppOption = (platform_type: TCFDsPlatformType) => {
         if (platform_type === 'dxtrade') {
             return (
-                <>
+                <React.Fragment>
                     <div className='cfd-trade-modal__download-center-app--option'>
                         <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                             {localize('Run Deriv X on your browser')}
@@ -90,14 +90,13 @@ const TradeModal = ({
                         size={isMobile() ? 'xxxs' : 'xxs'}
                         weight='bold'
                     >
-                        {' '}
                         {localize(`Download Deriv X on your phone to trade with the Deriv X account`)}
                     </Text>
-                </>
+                </React.Fragment>
             );
         } else if (platform_type === 'derivez') {
             return (
-                <>
+                <React.Fragment>
                     <div className='cfd-trade-modal__download-center-app--option'>
                         <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                             {localize('Run Deriv EZ on your browser')}
@@ -116,10 +115,9 @@ const TradeModal = ({
                         size={isMobile() ? 'xxxs' : 'xxs'}
                         weight='bold'
                     >
-                        {' '}
                         {localize(`Download Deriv Go on your phone to trade with the Deriv Ez account`)}
                     </Text>
-                </>
+                </React.Fragment>
             );
         }
         return undefined;

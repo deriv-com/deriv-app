@@ -24,12 +24,15 @@ const AutoHeightWrapper = (props: TAutoHeightWrapperProps) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const updateHeight = () =>
-        setHeight(
-            child_client_height_ref.current > props.default_height
-                ? child_client_height_ref.current - (props.height_offset || 0)
-                : props.default_height
-        );
+    const updateHeight = () => {
+        if (props.default_height) {
+            setHeight(
+                child_client_height_ref.current > props.default_height
+                    ? child_client_height_ref.current - (props.height_offset || 0)
+                    : props.default_height
+            );
+        }
+    };
 
     const setRef = (ref: HTMLFormElement | null) => {
         if (Number.isInteger(ref?.clientHeight) && ref?.clientHeight !== prev_child_client_height) {

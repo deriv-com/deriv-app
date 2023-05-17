@@ -33,7 +33,6 @@ type TOnfidoSdkViewContainer = {
     getChangeableFields: () => string[];
     handleViewComplete: () => void;
     height?: number | string;
-    is_external?: boolean;
 };
 
 const OnfidoSdkViewContainer = ({

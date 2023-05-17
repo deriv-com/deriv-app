@@ -4,14 +4,15 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useCurrentAccountDetails } from '@deriv/hooks';
 import CryptoWithdrawForm from '../crypto-withdraw-form';
 import CashierProviders from '../../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/hooks');
 
 describe('<CryptoWithdrawForm />', () => {
     (useCurrentAccountDetails as jest.Mock).mockReturnValue({ icon: 'icon' });
-    let mockRootStore;
+    let mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 currency: 'BTC',
                 verification_code: { payment_withdraw: 'code' },
@@ -39,7 +40,7 @@ describe('<CryptoWithdrawForm />', () => {
                     },
                 },
             },
-        };
+        });
     });
 
     const renderCryptoWithdrawForm = () => {

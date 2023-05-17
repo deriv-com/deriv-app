@@ -8,11 +8,7 @@ type TUpgradeInformationList = {
     form_line_height: string;
 };
 
-const getUpgradeInformationList = ({
-    is_eu,
-    text_info_size,
-    form_line_height,
-}: TUpgradeInformationList) => [
+const getUpgradeInformationList = ({ is_eu, text_info_size, form_line_height }: TUpgradeInformationList) => [
     {
         name: 'upgrade_info',
         visibility: true,

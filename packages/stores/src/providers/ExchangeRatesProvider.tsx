@@ -15,7 +15,7 @@ const ExchangeRatesProvider = ({ children }: React.PropsWithChildren<unknown>) =
 
     useEffect(() => {
         if (data) {
-            const exchange_rates = data;
+            const { exchange_rates } = data;
 
             if (exchange_rates) update(prev => merge(prev, exchange_rates));
         }

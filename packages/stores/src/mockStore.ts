@@ -199,6 +199,7 @@ const mock = (): TStores => {
             setTwoFAStatus: jest.fn(),
             has_changed_two_fa: false,
             setTwoFAChangedStatus: jest.fn(),
+            real_account_creation_unlock_date: '',
         },
         common: {
             error: {
@@ -254,6 +255,7 @@ const mock = (): TStores => {
             is_ready_to_deposit_modal_visible: false,
             is_need_real_account_for_cashier_modal_visible: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
+            setShouldShowCooldownModal: jest.fn(),
         },
         traders_hub: {
             closeModal: jest.fn(),
@@ -286,6 +288,7 @@ const mock = (): TStores => {
             selected_region: 'All',
             getExistingAccounts: jest.fn(),
             available_dxtrade_accounts: [],
+            is_demo: false,
         },
         menu: {
             attach: jest.fn(),

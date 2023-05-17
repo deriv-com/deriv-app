@@ -8,6 +8,7 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
 import { TCoreStores } from '@deriv/stores/types';
 import { useStore, observer } from '@deriv/stores';
+import { useContentFlag } from '@deriv/hooks';
 
 type TProps = {
     wallet_account: TCoreStores['client']['accounts'][0];
@@ -15,24 +16,23 @@ type TProps = {
 
 const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps) => {
     const { traders_hub, client, ui } = useStore();
-    const { is_mobile } = ui;
-    const { is_landing_company_loaded } = client;
-    const { available_platforms } = traders_hub;
+    const { is_mobile, setShouldShowCooldownModal, openRealAccountSignup } = ui;
+    const { is_landing_company_loaded, is_eu, has_maltainvest_account, real_account_creation_unlock_date } = client;
+    const { available_platforms, is_eu_user, is_real, no_MF_account, no_CR_account, is_demo } = traders_hub;
 
-    const { is_virtual, landing_company_shortcode } = wallet_account;
-    const is_eu = landing_company_shortcode === 'maltainvest' || landing_company_shortcode === 'malta';
+    const { low_risk_cr_non_eu, low_risk_cr_eu, high_risk_cr, cr_demo } = useContentFlag();
 
     const OptionsTitle = () => {
-        if (!is_virtual && is_eu && !is_mobile) {
-            return (
-                <Text size='sm' line_height='m' weight='bold' color='prominent'>
-                    {localize('Multipliers')}
-                </Text>
-            );
-        } else if (!is_mobile) {
+        if ((low_risk_cr_non_eu || high_risk_cr || cr_demo) && !is_mobile) {
             return (
                 <Text size='sm' line_height='m' weight='bold'>
                     {localize('Options & Multipliers')}
+                </Text>
+            );
+        } else if ((low_risk_cr_eu || is_eu) && !is_mobile) {
+            return (
+                <Text size='sm' line_height='m' weight='bold' color='prominent'>
+                    {localize('Multipliers')}
                 </Text>
             );
         }
@@ -40,7 +40,7 @@ const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps)
     };
 
     const listing_container_description =
-        is_virtual || !is_eu ? (
+        low_risk_cr_non_eu || high_risk_cr || cr_demo ? (
             <Text size='xs' line_height='s'>
                 <Localize
                     i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the
@@ -68,14 +68,42 @@ const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps)
             description={listing_container_description}
             is_deriv_platform
         >
+            {is_real && (no_CR_account || no_MF_account) && (
+                <div className='full-row'>
+                    <TradingAppCard
+                        action_type='get'
+                        availability='All'
+                        clickable_icon
+                        name={localize('Deriv account')}
+                        description={localize('Get a real Deriv account, start trading and manage your funds.')}
+                        icon='Options'
+                        onAction={() => {
+                            if (no_MF_account) {
+                                if (real_account_creation_unlock_date) {
+                                    setShouldShowCooldownModal(true);
+                                } else {
+                                    openRealAccountSignup('maltainvest');
+                                }
+                            } else {
+                                openRealAccountSignup();
+                            }
+                        }}
+                    />
+                </div>
+            )}
+
             {is_landing_company_loaded ? (
                 available_platforms.map((available_platform: BrandConfig, index: number) => (
                     <TradingAppCard
                         key={`trading_app_card_${available_platform.name}`}
                         {...available_platform}
-                        action_type='trade'
+                        action_type={
+                            is_demo || (!no_CR_account && !is_eu_user) || (has_maltainvest_account && is_eu_user)
+                                ? 'trade'
+                                : 'none'
+                        }
                         is_deriv_platform
-                        has_divider={(!is_eu || !!is_virtual) && getHasDivider(index, available_platforms.length, 3)}
+                        has_divider={(!is_eu_user || is_demo) && getHasDivider(index, available_platforms.length, 3)}
                     />
                 ))
             ) : (

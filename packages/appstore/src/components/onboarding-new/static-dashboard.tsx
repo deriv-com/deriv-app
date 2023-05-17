@@ -547,7 +547,7 @@ const StaticDashboard = ({
                                     platform='derivez'
                                     appname={localize('Deriv EZ')}
                                     description={localize(
-                                        'Trade CFDs on forex, commodities, cryptocurrencies, stocks, stock indices, and derived indices.'
+                                        'This account offers CFDs on an easy-to-get-started CFD trading platform.'
                                     )}
                                     loginid={loginid}
                                     currency={currency}

@@ -219,7 +219,6 @@ describe('<WalletHeader />', () => {
 
             const btn_text = screen.queryByText(/Transfer/i);
 
-            // expect(btn_text).not.toHaveClass('wallet-header__description-buttons-item-active');
             expect(btn_text).not.toBeInTheDocument();
         });
 
@@ -232,7 +231,6 @@ describe('<WalletHeader />', () => {
 
             const btn_text = screen.queryByText(/Transfer/i);
 
-            // expect(btn_text).toHaveClass('wallet-header__description-buttons-item-active');
             expect(btn_text).toBeInTheDocument();
         });
 
@@ -250,11 +248,10 @@ describe('<WalletHeader />', () => {
             render(<Wrapper />);
             const btn_text = screen.queryByText(/Transfer/i);
             const btn_arrow = screen.getByTestId('dt_arrow');
-            // expect(btn_text).not.toHaveClass('wallet-header__description-buttons-item-active');
+
             expect(btn_text).not.toBeInTheDocument();
             await userEvent.click(btn_arrow);
-            // expect(btn_text).toHaveClass('wallet-header__description-buttons-item-active');
-            expect(btn_text).not.toBeInTheDocument();
+            expect(screen.queryByText(/Transfer/i)).toBeInTheDocument();
         });
 
         it('Check buttons for demo', () => {

@@ -5,30 +5,12 @@ import { Button, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { routes, formatMoney } from '@deriv/shared';
 import { TCoreStores } from '@deriv/stores/types';
-import { number } from 'prop-types';
 
-type TWalletTransferBlock = {
+type TProps = {
     wallet_account: TCoreStores['client']['accounts'][0];
 };
 
-type TWalletBalanceAndLoginid = {
-    currency: string;
-    balance: string | number;
-    loginid: string;
-};
-
-export const WalletBalanceAndLoginid = ({ currency, balance, loginid }: TWalletBalanceAndLoginid) => (
-    <React.Fragment>
-        <Text weight='bold' size='xs' color='prominent'>
-            {balance} {currency}
-        </Text>
-        <Text size='xxs' color='less-prominent'>
-            {loginid}
-        </Text>
-    </React.Fragment>
-);
-
-const WalletTransferBlock = ({ wallet_account }: TWalletTransferBlock) => {
+const WalletTransferBlock = ({ wallet_account }: TProps) => {
     const history = useHistory();
     const { currency, balance, loginid } = wallet_account;
 
@@ -51,11 +33,14 @@ const WalletTransferBlock = ({ wallet_account }: TWalletTransferBlock) => {
             has_interaction
             show_dropdown={false}
         >
-            <WalletBalanceAndLoginid
-                currency={currency || 'USD'}
-                balance={formatMoney(currency, balance, true)}
-                loginid={loginid || ''}
-            />
+            <React.Fragment>
+                <Text weight='bold' size='xs' color='prominent'>
+                    {formatMoney(currency, balance, true)} {currency}
+                </Text>
+                <Text size='xxs' color='less-prominent'>
+                    {loginid}
+                </Text>
+            </React.Fragment>
         </CurrencySwitcherContainer>
     );
 };

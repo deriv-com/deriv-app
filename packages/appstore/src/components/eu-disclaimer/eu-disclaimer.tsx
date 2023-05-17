@@ -32,7 +32,7 @@ const EUDisclaimer = observer(({ is_wallet, wrapperClassName, textClassName }: T
     );
 
     return (
-        <div className={wrapperClassName ?? 'disclaimer'}>
+        <div className={wrapperClassName ?? 'disclaimer'} data-testid='dt_disclaimer_wrapper'>
             <Text
                 align='left'
                 className={textClassName ?? 'disclaimer-text'}

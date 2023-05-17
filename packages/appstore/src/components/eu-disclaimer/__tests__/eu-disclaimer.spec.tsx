@@ -31,31 +31,33 @@ describe('<EUDisclaimer />', () => {
         expect(eu_statutory_disclaimer).not.toBeInTheDocument();
     });
 
-    it('Check classes when don\t pass the props', () => {
-        const { container } = render(
+    it('Check classes when dont pass the props', () => {
+        render(
             <StoreProvider store={mockedRootStore}>
                 <EUDisclaimer />
             </StoreProvider>
         );
 
+        const wrapper = screen.queryByTestId('dt_disclaimer_wrapper');
         const text = screen.queryByTestId('dt_disclaimer_text');
 
-        expect(container.childNodes[0]).toHaveClass('disclaimer');
+        expect(wrapper).toHaveClass('disclaimer');
         expect(text).toHaveClass('disclaimer-text');
     });
 
     it('Check classes when pass the props', () => {
-        const { container } = render(
+        render(
             <StoreProvider store={mockedRootStore}>
                 <EUDisclaimer wrapperClassName='wrapper-class' textClassName='text-class' />
             </StoreProvider>
         );
 
+        const wrapper = screen.queryByTestId('dt_disclaimer_wrapper');
         const text = screen.queryByTestId('dt_disclaimer_text');
 
-        expect(container.childNodes[0]).not.toHaveClass('disclaimer');
+        expect(wrapper).not.toHaveClass('disclaimer');
         expect(text).not.toHaveClass('disclaimer-text');
-        expect(container.childNodes[0]).toHaveClass('wrapper-class');
+        expect(wrapper).toHaveClass('wrapper-class');
         expect(text).toHaveClass('text-class');
     });
 });

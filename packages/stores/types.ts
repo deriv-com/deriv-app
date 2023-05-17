@@ -1,6 +1,6 @@
 import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
-
 import type { RouteComponentProps } from 'react-router';
+import { AvailableAccount, BrandConfig } from './src/types/appstore.types';
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: string | number;
@@ -283,6 +283,14 @@ type TTradersHubStore = {
             login: string;
             sub_title: string;
             icon: 'Derived' | 'Financial' | 'Options' | 'CFDs';
+            status?: string;
+            action_type: 'get' | 'none' | 'trade' | 'dxtrade' | 'multi-action';
+            key: string;
+            name: string;
+            landing_company_short?: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
+            platform?: string;
+            description?: string;
+            market_type?: 'all' | 'financial' | 'synthetic';
         }[];
     openModal: (modal_id: string, props?: unknown) => void;
     selected_account: {
@@ -297,7 +305,7 @@ type TTradersHubStore = {
     setShouldShowWalletConsentPopup: (value: boolean) => void;
     is_real_wallets_upgrade_on: boolean;
     toggleWalletsUpgrade: (value: boolean) => void;
-    openFailedVerificationModal: (selected_account_type: Record<string, any>) => void;
+    openFailedVerificationModal: (selected_account_type: Record<string, unknown>) => void;
     financial_restricted_countries: boolean;
     selected_account_type: string;
     no_CR_account: boolean;
@@ -305,13 +313,12 @@ type TTradersHubStore = {
     setTogglePlatformType: (value: string) => void;
     is_tour_open: boolean;
     selected_platform_type: string;
-    // TODO: must be BrandConfig type but can't import it from appstore. Maybe we need to create the same type in 'stores' package. Have to think about this!
-    available_platforms: any[];
+    available_platforms: BrandConfig[];
     CFDs_restricted_countries: boolean;
     is_demo_low_risk: boolean;
     selected_region: 'Non-EU' | 'EU' | 'All';
-    getExistingAccounts: (platform: string, market_type: string) => Record<string, any>[];
-    available_dxtrade_accounts: Record<string, any>[];
+    getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
+    available_dxtrade_accounts: AvailableAccount[];
     is_demo: boolean;
 };
 

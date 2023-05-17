@@ -6,17 +6,10 @@ import { formatMoney, isCryptocurrency, routes } from '@deriv/shared';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
-import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
 import { TCoreStores } from '@deriv/stores/types';
 import { useStore, observer } from '@deriv/stores';
 import { useHistory } from 'react-router';
-
-type TDetailedExistingAccount = AvailableAccount &
-    TDetailsOfEachMT5Loginid &
-    Actions & {
-        key: string;
-    };
 
 type TProps = {
     wallet_account: TCoreStores['client']['accounts'][0];
@@ -39,16 +32,16 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
         selected_account_type,
         is_demo_low_risk,
         CFDs_restricted_countries,
+        is_eu_user,
     } = traders_hub;
 
-    const { is_virtual, landing_company_shortcode, currency } = wallet_account;
-    const is_eu = landing_company_shortcode === 'maltainvest' || landing_company_shortcode === 'malta';
+    const { is_virtual, currency } = wallet_account;
 
     const { toggleCompareAccountsModal } = cfd;
     const { is_landing_company_loaded } = client;
     const { is_mobile } = ui;
     const accounts_sub_text =
-        !is_eu || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
+        !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
     const getMT5AccountAuthStatus = (current_acc_status: string) => {
         if (current_acc_status === 'proof_failed') {
@@ -99,7 +92,7 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
             </div>
             {is_landing_company_loaded ? (
                 <React.Fragment>
-                    {combined_cfd_mt5_accounts.map((existing_account: TDetailedExistingAccount, index: number) => {
+                    {combined_cfd_mt5_accounts.map((existing_account, index) => {
                         const list_size = combined_cfd_mt5_accounts.length;
                         const has_mt5_account_status = existing_account.status
                             ? getMT5AccountAuthStatus(existing_account.status)
@@ -116,7 +109,7 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
                                 platform={existing_account.platform}
                                 description={existing_account.description}
                                 key={existing_account.key}
-                                has_divider={(!is_eu || !!is_virtual) && getHasDivider(index, list_size, 3)}
+                                has_divider={(!is_eu_user || !!is_virtual) && getHasDivider(index, list_size, 3)}
                                 mt5_acc_auth_status={has_mt5_account_status}
                                 selected_mt5_jurisdiction={{
                                     platform: existing_account.platform,
@@ -131,7 +124,7 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
             ) : (
                 <PlatformLoader />
             )}
-            {!is_eu && !CFDs_restricted_countries && (
+            {!is_eu_user && !CFDs_restricted_countries && (
                 <div className='cfd-full-row'>
                     <hr className='divider' />
                 </div>

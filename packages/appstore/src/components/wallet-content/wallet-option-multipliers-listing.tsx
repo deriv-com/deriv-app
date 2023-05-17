@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, StaticUrl } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
-import { BrandConfig } from 'Constants/platform-config';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
@@ -15,12 +14,11 @@ type TProps = {
 };
 
 const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps) => {
+    const { low_risk_cr_non_eu, low_risk_cr_eu, high_risk_cr, cr_demo } = useContentFlag();
     const { traders_hub, client, ui } = useStore();
     const { is_mobile, setShouldShowCooldownModal, openRealAccountSignup } = ui;
     const { is_landing_company_loaded, is_eu, has_maltainvest_account, real_account_creation_unlock_date } = client;
     const { available_platforms, is_eu_user, is_real, no_MF_account, no_CR_account, is_demo } = traders_hub;
-
-    const { low_risk_cr_non_eu, low_risk_cr_eu, high_risk_cr, cr_demo } = useContentFlag();
 
     const OptionsTitle = () => {
         if ((low_risk_cr_non_eu || high_risk_cr || cr_demo) && !is_mobile) {
@@ -93,7 +91,7 @@ const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps)
             )}
 
             {is_landing_company_loaded ? (
-                available_platforms.map((available_platform: BrandConfig, index: number) => (
+                available_platforms.map((available_platform, index) => (
                     <TradingAppCard
                         key={`trading_app_card_${available_platform.name}`}
                         {...available_platform}

@@ -24,10 +24,9 @@ const WalletsBannerUpgrade = observer(() => {
                 </div>
                 <Button
                     className='wallets-banner__upgrade-banner-button'
-                    has_effect
                     text={localize('Upgrade now')}
                     primary
-                    large={!is_mobile}
+                    large
                     onClick={() => toggleWalletsUpgrade(true)}
                 />
             </div>

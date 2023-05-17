@@ -44,10 +44,9 @@ const WalletsBannerReady = observer(({ is_eu }: TWalletsBannerReady) => {
                 <Button
                     onClick={onButtonClickHandler}
                     className='wallets-banner__ready-banner-button'
-                    has_effect
                     text={localize('Log out')}
                     primary
-                    large={!is_mobile}
+                    large
                 />
             </div>
             <WalletsImage image={image} className='wallets-banner__image wallets-banner__ready-banner-image' />

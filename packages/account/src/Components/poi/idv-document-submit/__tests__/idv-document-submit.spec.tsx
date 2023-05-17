@@ -2,7 +2,6 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import IdvDocumentSubmit from '../idv-document-submit';
-import { FormikValues } from 'formik';
 
 jest.mock('react-router');
 jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
@@ -123,7 +122,7 @@ describe('<IdvDocumentSubmit/>', () => {
         expect(document_number_input).toBeDisabled();
 
         fireEvent.change(document_type_input, { target: { value: 'Test document 2 name' } });
-        expect(document_number_input).not.toBeDisabled();
+        expect(document_number_input).toBeEnabled();
         expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
 
         fireEvent.blur(document_number_input);
@@ -137,7 +136,7 @@ describe('<IdvDocumentSubmit/>', () => {
         await waitFor(() => {
             expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
             expect(screen.queryByText(/please enter a valid ID number/i)).not.toBeInTheDocument();
-            expect(verifyBtn).not.toBeDisabled();
+            expect(verifyBtn).toBeEnabled();
         });
 
         fireEvent.click(verifyBtn);

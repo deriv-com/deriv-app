@@ -151,6 +151,7 @@ export default class ClientStore extends BaseStore {
     prev_real_account_loginid = '';
     p2p_advertiser_info = {};
     prev_account_type = 'demo';
+    external_url_params = {};
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -158,6 +159,9 @@ export default class ClientStore extends BaseStore {
 
         makeObservable(this, {
             loginid: observable,
+            external_url_params: observable,
+            setExternalParams: action.bound,
+            redirectToLegacyPlatform: action.bound,
             preferred_language: observable,
             upgrade_info: observable,
             email: observable,
@@ -973,6 +977,17 @@ export default class ClientStore extends BaseStore {
         return this.isBotAllowed();
     }
 
+    setExternalParams = params => {
+        this.external_url_params = params;
+    };
+
+    redirectToLegacyPlatform = () => {
+        const { url, should_redirect } = this.external_url_params;
+        if (should_redirect) {
+            window.location.replace(url);
+        }
+    };
+
     getIsMarketTypeMatching = (account, market_type) =>
         market_type === 'synthetic'
             ? account.market_type === market_type || account.market_type === 'gaming'
@@ -1080,11 +1095,13 @@ export default class ClientStore extends BaseStore {
      * @param loginid
      */
     resetLocalStorageValues(loginid) {
+        this.is_switching = true;
         this.accounts[loginid].accepted_bch = 0;
         LocalStore.setObject(storage_key, this.accounts);
         LocalStore.set('active_loginid', loginid);
         this.syncWithLegacyPlatforms(loginid, toJS(this.accounts));
         this.loginid = loginid;
+        this.is_switching = false;
     }
 
     setIsAuthorize(value) {

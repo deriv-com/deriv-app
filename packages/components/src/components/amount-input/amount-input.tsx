@@ -1,4 +1,4 @@
-import React, { KeyboardEventHandler, useCallback, useState } from 'react';
+import React, { KeyboardEventHandler, useCallback, useEffect, useState } from 'react';
 import { isMobile } from '@deriv/shared';
 import Input from '../input';
 import Text from '../text';
@@ -28,13 +28,24 @@ const AmountInput = ({
     const [focus, setFocus] = useState(false);
     const [is_pasting, setIsPasting] = useState(false);
     const [is_fully_selected, setIsFullySelected] = useState(false);
+    const [caret_position, setCaretPosition] = useState(0);
+    const [target, setTarget] = useState<React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>['target']>();
 
     const displayNumber = useCallback(
         (number: number) => number.toLocaleString(locale, { minimumFractionDigits: decimal_places }),
         [decimal_places, locale]
     );
 
+    useEffect(() => {
+        // update caret position every time the value changes (this happens after onChange)
+        target?.setSelectionRange(
+            displayNumber(value).length - caret_position,
+            displayNumber(value).length - caret_position
+        );
+    }, [value]);
+
     const onChangeHandler: React.ComponentProps<typeof Input>['onChange'] = e => {
+        if (!target) setTarget(e.target);
         // remove all characters that are not digit / point / comma:
         const input_value = e.target.value.replace(/[^\d.,]/g, '');
         let newValue = value;
@@ -62,16 +73,15 @@ const AmountInput = ({
     };
 
     const onMouseDownHandler: React.ComponentProps<typeof Input>['onMouseDown'] = e => {
-        e.preventDefault();
-        e.currentTarget.setSelectionRange(e.currentTarget.value.length, e.currentTarget.value.length);
-        e.currentTarget.focus();
-        setIsFullySelected(false);
+        if (e.currentTarget.selectionStart !== null && e.currentTarget.selectionEnd !== null) {
+            setCaretPosition(e.currentTarget.value.length - e.currentTarget.selectionEnd);
+        }
     };
 
     const onKeyDownHandler: KeyboardEventHandler<HTMLInputElement> = e => {
-        if (e.currentTarget.selectionStart === 0 && e.currentTarget.selectionEnd === displayNumber(value).length)
-            setIsFullySelected(true);
-        if (e.code.startsWith('Arrow')) e.preventDefault();
+        if (e.currentTarget.selectionStart !== null && e.currentTarget.selectionEnd !== null) {
+            setCaretPosition(e.currentTarget.value.length - e.currentTarget.selectionEnd);
+        }
     };
 
     return (

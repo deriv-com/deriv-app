@@ -1,9 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { TRADERS_HUB_URL, switchAccountType } from '../utils';
+import { TRADERS_HUB_URL, switchAccountType } from '../../utils';
 
 test.describe("Trader's Hub Dashboard", () => {
     test.beforeEach(async ({ page }) => {
-        await Promise.all([page.goto(TRADERS_HUB_URL), switchAccountType(page, 'Demo', 'Real')]);
+        await page.goto(TRADERS_HUB_URL);
+        await switchAccountType(page, 'Demo', 'Real');
     });
 
     test('It should switch from Real to Demo', async ({ page }) => {
@@ -25,7 +26,7 @@ test.describe("Trader's Hub Dashboard", () => {
 
     test('It should switch to EU for low risk', async ({ page }) => {
         if (process.env.RISK_LEVEL === 'low_risk') {
-            await page.getByText('EU', { exact: true }).click();
+            await page.getByText('EU', { exact: true }).first().click();
             expect(await page.locator('text=Multipliers trading platform.')).toBeDefined();
         }
     });

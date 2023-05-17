@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { TRADERS_HUB_URL, switchAccountType } from '../utils';
+import { TRADERS_HUB_URL, switchAccountType } from '../../utils';
 
 test.describe("Trader's Hub Dashboard", () => {
     test.beforeEach(async ({ page }) => {

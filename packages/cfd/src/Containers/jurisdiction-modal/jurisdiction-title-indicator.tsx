@@ -26,8 +26,8 @@ const JurisdictionTitleIndicator = ({
 
     const getVerificationIconVariant = (verification_document: TJurisdictionCardItemVerificationItem): string => {
         let icon_variant: TJurisdictionCardVerificationStatus = 'Default';
-        if ([Jurisdiction.BVI, Jurisdiction.VANUATU, Jurisdiction.LABUAN].includes(type_of_card)) {
-            if (verification_document === 'document_number') {
+        if ([Jurisdiction.BVI, Jurisdiction.LABUAN].includes(type_of_card)) {
+            if (['document_number', 'selfie', 'identity_document'].includes(verification_document)) {
                 if (poi_pending_for_bvi_labuan) {
                     icon_variant = 'Pending';
                 } else if (poi_resubmit_for_bvi_labuan) {
@@ -36,8 +36,8 @@ const JurisdictionTitleIndicator = ({
                     icon_variant = 'Verified';
                 }
             }
-        } else if (type_of_card === Jurisdiction.MALTA_INVEST) {
-            if (verification_document === 'selfie' || verification_document === 'identity_document') {
+        } else if ([Jurisdiction.VANUATU, Jurisdiction.MALTA_INVEST].includes(type_of_card)) {
+            if (['document_number', 'selfie', 'identity_document'].includes(verification_document)) {
                 if (poi_pending_for_vanuatu_maltainvest) {
                     icon_variant = 'Pending';
                 } else if (poi_resubmit_for_vanuatu_maltainvest) {

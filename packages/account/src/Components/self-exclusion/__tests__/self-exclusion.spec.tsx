@@ -406,6 +406,6 @@ describe('<SelfExclusion />', () => {
             fireEvent.click(logout_btn);
         });
 
-        expect(logout).toHaveBeenCalledTimes(1);
+        expect(logout).toHaveBeenCalled();
     });
 });

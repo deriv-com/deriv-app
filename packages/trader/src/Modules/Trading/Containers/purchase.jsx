@@ -13,6 +13,7 @@ const Purchase = ({
     basis,
     contract_type,
     currency,
+    growth_rate,
     has_cancellation,
     is_accumulator,
     is_market_closed,
@@ -70,6 +71,7 @@ const Purchase = ({
                     info={info}
                     key={index}
                     index={getSortedIndex(index, type)}
+                    growth_rate={growth_rate}
                     has_cancellation={has_cancellation}
                     is_disabled={is_disabled}
                     is_accumulator={is_accumulator}
@@ -129,6 +131,7 @@ Purchase.propTypes = {
     active_positions: PropTypes.array,
     basis: PropTypes.string,
     currency: PropTypes.string,
+    growth_rate: PropTypes.number,
     has_cancellation: PropTypes.bool,
     is_accumulator: PropTypes.bool,
     is_multiplier: PropTypes.bool,
@@ -151,6 +154,7 @@ export default connect(({ modules, portfolio, ui }) => ({
     basis: modules.trade.basis,
     contract_type: modules.trade.contract_type,
     currency: modules.trade.currency,
+    growth_rate: modules.trade.growth_rate,
     has_cancellation: modules.trade.has_cancellation,
     is_accumulator: modules.trade.is_accumulator,
     is_multiplier: modules.trade.is_multiplier,

@@ -82,6 +82,13 @@ export type TBinaryRoutes = {
     is_logging_in: boolean;
 };
 
+export type TPOIStatus = {
+    needs_poa?: boolean;
+    redirect_button?: React.ReactElement;
+    is_from_external?: boolean;
+    is_manual_upload?: boolean;
+};
+
 export type TPersonalDetailsForm = {
     warning_items?: Record<string, string>;
     is_virtual?: boolean;

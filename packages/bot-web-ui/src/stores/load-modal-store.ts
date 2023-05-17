@@ -126,19 +126,6 @@ export default class LoadModalStore implements ILoadModalStore {
                 }
             }
         );
-
-        const loadStrategies = async () => {
-            try {
-                const timeout = (ms: number) => {
-                    return new Promise(resolve => setTimeout(resolve, ms));
-                };
-                await timeout(1000);
-                this.setDashboardStrategies((await getSavedWorkspaces()) || []);
-            } catch (error) {
-                globalObserver.emit('Error', error);
-            }
-        };
-        loadStrategies();
     }
 
     recent_workspace;
@@ -193,11 +180,8 @@ export default class LoadModalStore implements ILoadModalStore {
     }
 
     async getDashboardStrategies() {
-        setTimeout(() => {
-            getSavedWorkspaces().then(recent_strategies => {
-                this.dashboard_strategies = recent_strategies;
-            });
-        }, 1000);
+        const recent_strategies = await getSavedWorkspaces();
+        this.dashboard_strategies = recent_strategies;
     }
 
     handleFileChange = (
@@ -298,7 +282,7 @@ export default class LoadModalStore implements ILoadModalStore {
                     this.local_workspace.dispose();
                     this.local_workspace = null;
                     this.setLoadedLocalFile(null);
-                });
+                }, 0);
             }
         }
 

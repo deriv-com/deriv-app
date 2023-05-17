@@ -641,11 +641,13 @@ export default class RunPanelStore {
     onUnmount() {
         const { journal, summary_card, transactions } = this.root_store;
 
-        this.unregisterBotListeners();
-        this.disposeReactionsFn();
-        journal.disposeReactionsFn();
-        summary_card.disposeReactionsFn();
-        transactions.disposeReactionsFn();
+        if (!this.is_running) {
+            this.unregisterBotListeners();
+            this.disposeReactionsFn();
+            journal.disposeReactionsFn();
+            summary_card.disposeReactionsFn();
+            transactions.disposeReactionsFn();
+        }
 
         observer.unregisterAll('ui.log.error');
         observer.unregisterAll('ui.log.notify');

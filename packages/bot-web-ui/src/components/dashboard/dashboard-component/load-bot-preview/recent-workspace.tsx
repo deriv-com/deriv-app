@@ -67,10 +67,14 @@ const RecentWorkspace = ({
     const viewRecentStrategy = (type: string) => {
         if (is_mobile && type === STRATEGY.PREVIEW_LIST) {
             setPreviewOnDialog(true);
-            previewRecentStrategy(workspace.id);
+            setTimeout(() => {
+                previewRecentStrategy(workspace.id);
+            }, 0); // made this async to give it a split second delay
         }
         if (selected_strategy_id !== workspace.id || (active_tab === 0 && type === STRATEGY.PREVIEW)) {
-            previewRecentStrategy(workspace.id);
+            setTimeout(() => {
+                previewRecentStrategy(workspace.id);
+            }, 0); // made this async to give it a split second delay
         }
 
         switch (type) {

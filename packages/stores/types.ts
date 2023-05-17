@@ -1,8 +1,18 @@
-import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
-
+import type {
+    AccountLimitsResponse,
+    Authorize,
+    DetailsOfEachMT5Loginid,
+    GetAccountStatus,
+    GetLimits,
+    GetSettings,
+    LogOutResponse,
+} from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
+import { ExchangeRatesStore } from './src/stores';
 
-type TAccount = NonNullable<Authorize['account_list']>[0];
+type TAccount = NonNullable<Authorize['account_list']>[0] & {
+    balance?: number;
+};
 
 type TAccountsList = {
     account?: {
@@ -35,7 +45,6 @@ type TAccountsList = {
 
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
-    balance?: number;
     landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     is_virtual: number;
 };
@@ -88,19 +97,16 @@ type TNotification =
     | ((excluded_until: number) => TNotificationMessage);
 
 type TClientStore = {
-    accounts: { [k: string]: TAccount };
+    accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
-    account_limits: {
-        daily_transfers?: {
-            [k: string]: {
-                allowed: boolean;
-                available: boolean;
-            };
-        };
+    account_limits: Partial<AccountLimitsResponse['get_limits']> & {
+        is_loading?: boolean;
+        api_initial_load_error?: string;
     };
     account_list: TAccountsList;
-    account_status: GetAccountStatus;
+    account_settings: GetSettings;
+    account_status?: Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;
@@ -109,7 +115,7 @@ type TClientStore = {
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
-    getLimits: () => { get_limits?: GetLimits };
+    getLimits: () => Promise<{ get_limits?: GetLimits }>;
     has_active_real_account: boolean;
     has_logged_out: boolean;
     has_maltainvest_account: boolean;
@@ -118,12 +124,14 @@ type TClientStore = {
     is_deposit_lock: boolean;
     is_dxtrade_allowed: boolean;
     is_eu: boolean;
+    is_authorize: boolean;
     is_financial_account: boolean;
     is_financial_information_incomplete: boolean;
     is_identity_verification_needed: boolean;
     is_landing_company_loaded: boolean;
     is_logged_in: boolean;
     is_logging_in: boolean;
+    is_low_risk: boolean;
     is_pending_proof_of_ownership: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
@@ -157,7 +165,7 @@ type TClientStore = {
     setLogout: (status?: boolean) => void;
     setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
-    switchAccount: (value?: string) => void;
+    switchAccount: (value?: string) => Promise<void>;
     switched: boolean;
     switch_broadcast: boolean;
     switchEndSignal: () => void;
@@ -179,11 +187,15 @@ type TClientStore = {
     mt5_login_list: DetailsOfEachMT5Loginid[];
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
-    is_crypto: boolean;
+    is_crypto: (currency?: string) => boolean;
+    dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
+    default_currency: string;
+    resetVirtualBalance: () => Promise<void>;
     has_enabled_two_fa: boolean;
     setTwoFAStatus: (status: boolean) => void;
     has_changed_two_fa: boolean;
     setTwoFAChangedStatus: (status: boolean) => void;
+    real_account_creation_unlock_date: number;
 };
 
 type TCommonStoreError = {
@@ -225,7 +237,7 @@ type TUiStore = {
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
     notification_messages_ui: JSX.Element | null;
-    openRealAccountSignup: (value: string) => void;
+    openRealAccountSignup: (value?: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
@@ -239,8 +251,10 @@ type TUiStore = {
     toggleReadyToDepositModal: () => void;
     toggleSetCurrencyModal: () => void;
     is_ready_to_deposit_modal_visible: boolean;
+    is_real_acc_signup_on: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
+    setShouldShowCooldownModal: (value: boolean) => void;
 };
 
 type TMenuStore = {
@@ -277,8 +291,18 @@ type TTradersHubStore = {
     };
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
+    setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    openFailedVerificationModal: (selected_account_type: string) => void;
+    multipliers_account_status: string;
+    financial_restricted_countries: boolean;
+    selected_account_type: string;
+    no_CR_account: boolean;
+    no_MF_account: boolean;
+    setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
+    toggleAccountTransferModal: () => void;
+    is_demo: boolean;
 };
 
 /**
@@ -291,7 +315,11 @@ export type TCoreStores = {
     ui: TUiStore;
     // This should be `any` as this property will be handled in each package.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    modules: any;
+    modules: Record<string, any>;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
+};
+
+export type TStores = TCoreStores & {
+    exchange_rates: ExchangeRatesStore;
 };

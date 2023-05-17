@@ -67,6 +67,7 @@
         // General
         --general-main-1: #{$color-white};
         --general-main-2: #{$color-white};
+        --general-main-3: #{$color-grey-1};
         --general-section-1: #{$color-grey-2};
         --general-section-2: #{$color-grey-2};
         --general-section-3: #{$color-grey-11};
@@ -78,6 +79,7 @@
         --general-active: #{$color-grey-5};
         // Icons and Texts
         --text-general: #{$color-black-1};
+        --text-primary: #{$color-grey-1};
         --text-less-prominent: #{$color-grey-1};
         --text-prominent: #{$color-black-1};
         --text-disabled: #{$color-grey-1};
@@ -129,12 +131,15 @@
         // Border
         --border-normal: #{$color-grey-5};
         --border-normal-1: #{$color-grey-5};
+        --border-normal-2: #{$color-grey-5};
+        --border-normal-3: #{$color-grey-6};
         --border-hover: #{$color-grey-1};
         --border-hover-1: #{$color-black-9};
         --border-active: var(--brand-secondary);
         --border-disabled: #{$color-grey-3};
         // Fill
         --fill-normal: #{$color-white};
+        --fill-normal-1: #{$color-grey};
         --fill-hover: #{$color-grey-1};
         --fill-active: var(--brand-secondary);
         --fill-disabled: #{$color-grey-3};
@@ -191,6 +196,7 @@
         // General
         --general-main-1: #{$color-black};
         --general-main-2: #{$color-black-3};
+        --general-main-3: #{$color-black-4};
         --general-section-1: #{$color-black-3};
         --general-section-2: #{$color-black};
         --general-section-3: #{$color-black-5};
@@ -205,6 +211,7 @@
         --text-prominent: #{$color-white};
         --text-general: #{$color-grey};
         --text-less-prominent: #{$color-grey-7};
+        --text-primary: #{$color-grey-1};
         --text-disabled: #{$color-black-6};
         --text-profit-success: #{$color-green-3};
         --text-loss-danger: #{$color-red-2};
@@ -250,12 +257,15 @@
         // Border
         --border-normal: #{$color-black-8};
         --border-normal-1: #{$color-grey-5};
+        --border-normal-2: #{$color-grey-1};
+        --border-normal-3: #{$color-grey-7};
         --border-hover: #{$color-grey-7};
         --border-hover-1: #{$color-black-9};
         --border-active: var(--brand-secondary);
         --border-disabled: #{$color-black-4};
         // Fill
         --fill-normal: #{$color-black};
+        --fill-normal-1: #{$color-black-1};
         --fill-hover: #{$color-grey-7};
         --fill-active: var(--brand-secondary);
         --fill-disabled: #{$color-black-4};

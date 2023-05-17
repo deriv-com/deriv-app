@@ -133,6 +133,8 @@ export interface AvailableAccount {
     market_type?: 'all' | 'financial' | 'synthetic';
     icon: keyof typeof PlatformIcons;
     availability: RegionAvailability;
+    short_code_and_region?: string;
+    login?: string;
 }
 
 export type Currency =

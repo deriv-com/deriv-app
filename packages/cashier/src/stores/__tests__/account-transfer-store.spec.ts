@@ -1,13 +1,14 @@
 import AccountTransferStore from '../account-transfer-store';
 import { getCurrencies, validNumber, CFD_PLATFORMS } from '@deriv/shared';
 import { configure } from 'mobx';
-import type { TTransferAccount, TRootStore, TWebSocket } from 'Types';
+import type { TTransferAccount, TWebSocket, TRootStore } from '../../types';
+import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
 let accounts: TTransferAccount[],
     account_transfer_store: AccountTransferStore,
-    root_store: DeepPartial<TRootStore>,
+    root_store: TRootStore,
     WS: DeepPartial<TWebSocket>;
 
 const CR_eUSDT_account: TTransferAccount = {
@@ -135,7 +136,7 @@ beforeEach(() => {
         }),
         wait: jest.fn(),
     };
-    root_store = {
+    root_store = mockStore({
         client: {
             account_status: {
                 status: ['status'],
@@ -183,8 +184,8 @@ beforeEach(() => {
             },
             combined_cfd_mt5_accounts: [],
         },
-    };
-    account_transfer_store = new AccountTransferStore(WS as TWebSocket, root_store as TRootStore);
+    }) as TRootStore;
+    account_transfer_store = new AccountTransferStore(WS as TWebSocket, root_store);
 });
 
 jest.mock('@deriv/shared', () => ({
@@ -347,7 +348,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set transfer fee equal to 2', () => {
-        getCurrencies.mockReturnValueOnce({ USD: { transfer_between_accounts: { fees: { BTC: 2 } } } });
+        (getCurrencies as jest.Mock).mockReturnValueOnce({ USD: { transfer_between_accounts: { fees: { BTC: 2 } } } });
         account_transfer_store.setSelectedFrom({ currency: 'USD' });
         account_transfer_store.setSelectedTo({ currency: 'BTC' });
         account_transfer_store.setTransferFee();
@@ -356,7 +357,9 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set transfer fee equal to 0 if transfer fee is undefined', () => {
-        getCurrencies.mockReturnValueOnce({ USD: { transfer_between_accounts: { fees: { BTC: undefined } } } });
+        (getCurrencies as jest.Mock).mockReturnValueOnce({
+            USD: { transfer_between_accounts: { fees: { BTC: undefined } } },
+        });
         account_transfer_store.setSelectedFrom({ currency: 'USD' });
         account_transfer_store.setSelectedTo({ currency: 'BTC' });
         account_transfer_store.setTransferFee();
@@ -379,7 +382,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set proper transfer limit for mt5 transfer', () => {
-        getCurrencies.mockReturnValueOnce({
+        (getCurrencies as jest.Mock).mockReturnValueOnce({
             USD: { transfer_between_accounts: { limits_mt5: { min: 1, max: 10 } } },
         });
 
@@ -390,7 +393,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set proper transfer limit for dxtrade transfer', () => {
-        getCurrencies.mockReturnValueOnce({
+        (getCurrencies as jest.Mock).mockReturnValueOnce({
             USD: { transfer_between_accounts: { limits_dxtrade: { min: 10, max: 100 } } },
         });
 
@@ -401,7 +404,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set proper transfer limit for other types of transfers', () => {
-        getCurrencies.mockReturnValueOnce({
+        (getCurrencies as jest.Mock).mockReturnValueOnce({
             USD: { transfer_between_accounts: { balance: 500, limits: { min: 100, max: 1000 } } },
         });
 
@@ -412,7 +415,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set max transfer limit equal to the current "selected from" balance, if there is no max transfer fee in response', () => {
-        getCurrencies.mockReturnValueOnce({
+        (getCurrencies as jest.Mock).mockReturnValueOnce({
             USD: { transfer_between_accounts: { balance: 500, limits: { min: 100 } } },
         });
 
@@ -423,7 +426,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set min transfer limit equal to null, if there is no min transfer fee in response', () => {
-        getCurrencies.mockReturnValueOnce({
+        (getCurrencies as jest.Mock).mockReturnValueOnce({
             USD: { transfer_between_accounts: { balance: 500, limits: { max: 1000 } } },
         });
 
@@ -543,9 +546,9 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set transferred amount in receipt', () => {
-        account_transfer_store.setReceiptTransfer({ amount: 1000 });
+        account_transfer_store.setReceiptTransfer({ amount: '1000' });
 
-        expect(account_transfer_store.receipt.amount_transferred).toBe(1000);
+        expect(account_transfer_store.receipt.amount_transferred).toBe('1000');
     });
 
     it('should switch the value of selected_from and selected_to, if new value of selected_from is the same as the current selected_to', async () => {
@@ -704,10 +707,9 @@ describe('AccountTransferStore', () => {
         await account_transfer_store.sortAccountsTransfer({ accounts });
         await account_transfer_store.requestTransferBetweenAccounts({ amount: 10 });
 
-        expect(account_transfer_store.root_store.modules.cashier.general_store.setLoading.mock.calls).toEqual([
-            [true],
-            [false],
-        ]);
+        expect(
+            (account_transfer_store.root_store.modules.cashier.general_store.setLoading as jest.Mock).mock.calls
+        ).toEqual([[true], [false]]);
     });
 
     it('should call WS.mt5LoginList and WS.balanceAll methods to update the balance for mt account when calling requestTransferBetweenAccounts', async () => {
@@ -747,31 +749,31 @@ describe('AccountTransferStore', () => {
         const spyValidateTransferFromAmount = jest.spyOn(account_transfer_store, 'validateTransferFromAmount');
         account_transfer_store.setSelectedFrom({ currency: 'USD' });
         account_transfer_store.setSelectedTo({ currency: 'BTC' });
-        account_transfer_store.setTransferPercentageSelectorResult(10);
+        account_transfer_store.setTransferPercentageSelectorResult('10');
         const { onChangeConverterFromAmount, setConverterFromAmount } =
             account_transfer_store.root_store.modules.cashier.crypto_fiat_converter;
 
-        expect(setConverterFromAmount).toHaveBeenCalledWith(10);
+        expect(setConverterFromAmount).toHaveBeenCalledWith('10');
         expect(spyValidateTransferFromAmount).toHaveBeenCalledTimes(1);
-        expect(onChangeConverterFromAmount).toHaveBeenCalledWith({ target: { value: 10 } }, 'USD', 'BTC');
+        expect(onChangeConverterFromAmount).toHaveBeenCalledWith({ target: { value: '10' } }, 'USD', 'BTC');
     });
 
     it('should set transfer percentage selector result if selected_from.balance = 0', () => {
         const spyValidateTransferFromAmount = jest.spyOn(account_transfer_store, 'validateTransferFromAmount');
         account_transfer_store.setSelectedFrom({ balance: 0, currency: 'USD' });
         account_transfer_store.setSelectedTo({ currency: 'BTC' });
-        account_transfer_store.setTransferPercentageSelectorResult(0);
+        account_transfer_store.setTransferPercentageSelectorResult('0');
         const { onChangeConverterFromAmount, setConverterFromAmount } =
             account_transfer_store.root_store.modules.cashier.crypto_fiat_converter;
 
-        expect(setConverterFromAmount).toHaveBeenCalledWith(0);
+        expect(setConverterFromAmount).toHaveBeenCalledWith('0');
         expect(spyValidateTransferFromAmount).toHaveBeenCalledTimes(1);
-        expect(onChangeConverterFromAmount).toHaveBeenCalledWith({ target: { value: 0 } }, 'USD', 'BTC');
+        expect(onChangeConverterFromAmount).toHaveBeenCalledWith({ target: { value: '0' } }, 'USD', 'BTC');
     });
 
     it('should reset crypto fiat converter if amount = 0 and selected_from.balance > 0', () => {
         account_transfer_store.setSelectedFrom({ balance: 10, currency: 'USD' });
-        account_transfer_store.setTransferPercentageSelectorResult(0);
+        account_transfer_store.setTransferPercentageSelectorResult('0');
 
         expect(
             account_transfer_store.root_store.modules.cashier.crypto_fiat_converter.resetConverter
@@ -779,7 +781,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set timer visibility and percentage selector selection status to false when calling  setTransferPercentageSelectorResult method', () => {
-        account_transfer_store.setTransferPercentageSelectorResult(10);
+        account_transfer_store.setTransferPercentageSelectorResult('10');
         const { crypto_fiat_converter, general_store } = account_transfer_store.root_store.modules.cashier;
 
         expect(crypto_fiat_converter.setIsTimerVisible).toHaveBeenCalledWith(false);
@@ -805,7 +807,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set error message, if converter_from_amount is not valid number when calling validateTransferFromAmount method', () => {
-        validNumber.mockReturnValueOnce({ is_ok: false, message: 'Validation error' });
+        (validNumber as jest.Mock).mockReturnValueOnce({ is_ok: false, message: 'Validation error' });
         account_transfer_store.validateTransferFromAmount();
 
         expect(
@@ -823,7 +825,7 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set error message, if converter_to_amount is not valid number when calling validateTransferToAmount method', () => {
-        validNumber.mockReturnValueOnce({ is_ok: false, message: 'Validation error' });
+        (validNumber as jest.Mock).mockReturnValueOnce({ is_ok: false, message: 'Validation error' });
         account_transfer_store.validateTransferToAmount();
 
         expect(

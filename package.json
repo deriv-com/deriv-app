@@ -87,6 +87,7 @@
         "json2csv": "^5.0.6",
         "lint-staged": "^8.1.7",
         "loader-utils": "^3.2.0",
+        "node-sass": "^4.14.1",
         "notifyjs-browser": "^0.4.2",
         "prettier-eslint-cli": "^5.0.1",
         "prop-types": "^15.8.1",

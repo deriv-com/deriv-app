@@ -284,7 +284,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             multipliers_account_status: '',
             openFailedVerificationModal: jest.fn(),
             setTogglePlatformType: jest.fn(),
-            setSelectedAccount: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
         },
         menu: {

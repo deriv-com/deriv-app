@@ -78,7 +78,7 @@ export type TTradingPlatformAvailableAccount = {
     shortcode: 'bvi' | 'labuan' | 'maltainvest' | 'svg' | 'vanuatu';
     sub_account_type: string;
     account_type?: 'real' | 'demo';
-    landing_company_short?: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'svg';
+    landing_company_short?: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
 };
 
 export type TExistingData = DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];

@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import { WS, IDV_NOT_APPLICABLE_OPTION, makeSettingsRequest } from '@deriv/shared';
+import { WS, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
 import Unsupported from 'Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
 import { IdvDocSubmitOnSignup } from 'Components/poi/poi-form-on-signup/idv-doc-submit-on-signup/idv-doc-submit-on-signup';
 import { AutoHeightWrapper } from '@deriv/components';
+import { makeSettingsRequest } from 'Helpers/utils';
 
 const POISubmissionForMT5 = ({
     account_settings,
@@ -66,8 +67,9 @@ const POISubmissionForMT5 = ({
             return;
         }
         const get_settings = WS.authorized.storage.getSettings();
+
         if (get_settings.error) {
-            setErrors({ error_message: data.error.message });
+            setErrors({ error_message: get_settings.error.message });
             setSubmitting(false);
             return;
         }

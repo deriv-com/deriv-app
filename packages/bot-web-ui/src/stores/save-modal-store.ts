@@ -152,7 +152,7 @@ export default class SaveModalStore implements ISaveModalStore {
 
         if (active_tab === 0) {
             const workspace_id = selected_strategy_id || Blockly.utils.genUid();
-            this.addStrategyToWorkspace(workspace_id, is_local, save_as_collection, bot_name, xml);
+            await this.addStrategyToWorkspace(workspace_id, is_local, save_as_collection, bot_name, xml);
         } else {
             saveWorkspaceToRecent(xml, is_local ? save_types.LOCAL : save_types.GOOGLE_DRIVE);
         }

@@ -203,7 +203,11 @@ export default class LoadModalStore implements ILoadModalStore {
         if (!is_body) {
             if (file.name.includes('xml')) {
                 this.setLoadedLocalFile(file);
-                this.getDashboardStrategies();
+                try {
+                    this.getDashboardStrategies();
+                } catch (error) {
+                    globalObserver.emit('Error', error);
+                }
             } else {
                 return false;
             }

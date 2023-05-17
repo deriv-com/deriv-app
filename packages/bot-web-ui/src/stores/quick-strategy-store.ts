@@ -1,6 +1,6 @@
 import { computed, observable, action, runInAction, makeObservable } from 'mobx';
 import { localize } from '@deriv/translations';
-import { ApiHelpers, config, load } from '@deriv/bot-skeleton';
+import { ApiHelpers, config, load, observer as globalObserver } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import GTM from 'Utils/gtm';
 import { getSetting, storeSetting } from 'Utils/settings';
@@ -185,14 +185,14 @@ export default class QuickStrategyStore {
         this.input_duration_value = duration_value;
     }
 
-    onChangeDropdownItem(type: TDropdownItems, value: string, setFieldValue: TSetFieldValue): void {
+    async onChangeDropdownItem(type: TDropdownItems, value: string, setFieldValue: TSetFieldValue): void {
         if (!value) {
             return;
         }
 
         const field_map = this.getFieldMap(type);
         if (type === 'symbol') {
-            this.updateTradeTypeDropdown(value, setFieldValue);
+            await this.updateTradeTypeDropdown(value, setFieldValue);
 
             const symbol = this.symbol_dropdown.find(item => item.value === value);
 
@@ -201,7 +201,7 @@ export default class QuickStrategyStore {
                 setFieldValue(field_map?.field_name, symbol.text);
             }
         } else if (type === 'trade-type') {
-            this.updateDurationDropdown(this.selected_symbol.value, value, setFieldValue);
+            await this.updateDurationDropdown(this.selected_symbol.value, value, setFieldValue);
 
             const trade_type = this.trade_type_dropdown.find(item => item.value === value);
 
@@ -210,7 +210,7 @@ export default class QuickStrategyStore {
                 setFieldValue(field_map?.field_name, trade_type.text);
             }
         } else if (type === 'duration-unit') {
-            this.updateDurationValue(value, setFieldValue);
+            await this.updateDurationValue(value, setFieldValue);
 
             const duration_unit = this.duration_unit_dropdown.find(item => item.value === value);
 
@@ -344,10 +344,17 @@ export default class QuickStrategyStore {
                 })
                 .then(() => {
                     this.root_store.run_panel.onRunButtonClick();
+                })
+                .catch(error => {
+                    globalObserver.emit('Error', error);
                 });
         }
         if (this.is_strategy_modal_open) {
-            this.loadDataStrategy();
+            try {
+                this.loadDataStrategy();
+            } catch (error) {
+                globalObserver.emit('Error', error);
+            }
         }
     }
 
@@ -482,7 +489,7 @@ export default class QuickStrategyStore {
         }
         if (first_duration_unit) {
             this.setSelectedDurationUnit(first_duration_unit);
-            this.updateDurationValue(
+            await this.updateDurationValue(
                 this.qs_cache?.selected_duration_unit?.value || this.selected_duration_unit.value,
                 setFieldValue
             );

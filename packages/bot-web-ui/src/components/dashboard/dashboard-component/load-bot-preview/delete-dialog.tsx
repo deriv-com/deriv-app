@@ -37,9 +37,9 @@ const DeleteDialog = ({
         });
     };
 
-    const onHandleChange = (type: string, param: boolean) => {
+    const onHandleChange = async (type: string, param: boolean) => {
         if (type === 'confirm') {
-            removeBotStrategy(selected_strategy_id);
+            await removeBotStrategy(selected_strategy_id);
             setOpenSettings('delete', true);
         }
         onToggleDeleteDialog(param);

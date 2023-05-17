@@ -25,6 +25,12 @@
         "downlevelIteration": true,
         "paths": { "@deriv/*": ["./packages/*/src"] }
     },
+    "include": ["utils.d.ts"],
+    "ts-node": {
+        "compilerOptions": {
+            "module": "commonjs"
+        }
+    },
     "files": ["./types/global.d.ts", "./types/utils.d.ts", "./types/svg.d.ts"],
     "exclude": ["node_modules", "build", "**/*.js", "**/*.jsx"] // *** The files to not type check ***
 }

@@ -1,34 +1,26 @@
 import merge from 'lodash.merge';
 import { TStores } from '../types';
 
-const mock = (): TStores => {
+const mock = (): TStores & { is_mock: boolean } => {
     return {
+        is_mock: true,
         client: {
-            accounts: {
-                loginid: {
-                    account_type: 'trading',
-                    created_at: 1674633682,
-                    currency: 'USD',
-                    is_disabled: 0,
-                    is_virtual: 0,
-                    excluded_until: 0,
-                    landing_company_name: 'svg',
-                },
-            },
+            account_settings: {},
+            accounts: {},
             active_account_landing_company: '',
             account_limits: {
                 daily_transfers: {
                     dxtrade: {
-                        allowed: false,
-                        available: false,
+                        allowed: 0,
+                        available: 0,
                     },
                     internal: {
-                        allowed: false,
-                        available: false,
+                        allowed: 0,
+                        available: 0,
                     },
                     mt5: {
-                        allowed: false,
-                        available: false,
+                        allowed: 0,
+                        available: 0,
                     },
                 },
             },
@@ -198,6 +190,7 @@ const mock = (): TStores => {
             setTwoFAStatus: jest.fn(),
             has_changed_two_fa: false,
             setTwoFAChangedStatus: jest.fn(),
+            real_account_creation_unlock_date: 0,
         },
         common: {
             error: {
@@ -251,8 +244,10 @@ const mock = (): TStores => {
             sub_section_index: 0,
             toggleReadyToDepositModal: jest.fn(),
             is_ready_to_deposit_modal_visible: false,
+            is_real_acc_signup_on: false,
             is_need_real_account_for_cashier_modal_visible: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
+            setShouldShowCooldownModal: jest.fn(),
         },
         traders_hub: {
             closeModal: jest.fn(),
@@ -274,6 +269,9 @@ const mock = (): TStores => {
             openFailedVerificationModal: jest.fn(),
             financial_restricted_countries: false,
             setTogglePlatformType: jest.fn(),
+            setSelectedAccount: jest.fn(),
+            toggleAccountTransferModal: jest.fn(),
+            is_demo: false,
         },
         menu: {
             attach: jest.fn(),

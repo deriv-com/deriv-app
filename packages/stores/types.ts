@@ -9,8 +9,8 @@ import type {
     GetSettings,
     LogOutResponse,
 } from '@deriv/api-types';
+import type { ExchangeRatesStore } from './src/stores';
 import type { RouteComponentProps } from 'react-router';
-import { ExchangeRatesStore } from './src/stores';
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: number;

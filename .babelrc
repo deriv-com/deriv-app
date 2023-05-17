@@ -14,7 +14,7 @@
             "> 1%"
           ]
         },
-        "loose": true,
+        "loose": false,
         "useBuiltIns": "usage",
         "corejs": "3.18"
       }

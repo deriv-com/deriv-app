@@ -35,15 +35,14 @@ const productionPlugins = () => {
                     warnings: false,
                 },
             }),
-        ]
+        ];
     }
     return [];
-}
+};
 
 module.exports = {
     entry: {
         bot: path.join(__dirname, 'src', 'botPage', 'view'),
-        index: path.join(__dirname, 'src', 'indexPage'),
     },
     output: {
         filename: production ? '[name].min.js' : '[name].js',
@@ -61,6 +60,16 @@ module.exports = {
                 test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: 'babel-loader',
+            },
+            {
+                test: /\.(css|scss|sass)$/,
+                use: ['style-loader', 'css-loader', 'sass-loader'],
+            },
+            {
+                test: /\.(png|jpg|jpeg|gif|svg)$/,
+                use: {
+                    loader: 'file-loader',
+                },
             },
         ],
     },

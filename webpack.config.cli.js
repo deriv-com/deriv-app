@@ -16,6 +16,16 @@ module.exports = {
                 exclude: /node_modules/,
                 use: 'babel-loader',
             },
+            {
+                test: /\.(css|scss|sass)$/,
+                use: ['style-loader', 'css-loader', 'sass-loader'],
+            },
+            {
+                test: /\.(png|jpg|jpeg|gif|svg)$/,
+                use: {
+                    loader: 'file-loader',
+                },
+            },
         ],
     },
     plugins: [

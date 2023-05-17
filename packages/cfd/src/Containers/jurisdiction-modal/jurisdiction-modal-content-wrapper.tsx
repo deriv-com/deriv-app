@@ -83,7 +83,7 @@ const JurisdictionModalContentWrapper = ({
 
     const is_idv_country =
         residence_list.find(elem => elem?.value === residence)?.identity?.services?.idv?.is_country_supported === 1;
-    const has_idv_attempts = account_status?.authentication?.identity?.services?.idv?.submissions_left > 0;
+    const has_idv_attempts = (account_status?.authentication?.identity?.services?.idv?.submissions_left ?? 0) > 0;
     const is_onfido_design = !is_idv_country || (is_idv_country && !has_idv_attempts);
 
     const isNextButtonDisabled = () => {

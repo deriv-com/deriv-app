@@ -266,7 +266,7 @@ export type TJurisdictionModalContentWrapperProps = TJurisdictionModalCommonProp
     real_financial_accounts_existing_data: TExistingData;
     real_synthetic_accounts_existing_data: TExistingData;
     residence: string;
-    residence_list: ResidenceList[];
+    residence_list: ResidenceList;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;

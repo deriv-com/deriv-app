@@ -6,6 +6,7 @@ import {
     getRegex,
     preventEmptyClipboardPaste,
     isFieldImmutable,
+    getExampleFormat,
 } from '../utils';
 
 describe('generatePlaceholderText', () => {
@@ -161,5 +162,15 @@ describe('isFieldImmutable', () => {
     it('should return true if field is immutable', () => {
         const mutable_field_set = ['test1', 'test2'];
         expect(isFieldImmutable('test3', mutable_field_set)).toBeTruthy();
+    });
+});
+
+describe('getExampleFormat', () => {
+    it('should return the correct example format for Zimbabwe', () => {
+        expect(getExampleFormat('081234567F53')).toEqual('Example: 081234567F53');
+    });
+
+    it('should return empty string when no example format is provided', () => {
+        expect(getExampleFormat('')).toEqual('');
     });
 });

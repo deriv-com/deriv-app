@@ -5,7 +5,7 @@ import { ResidenceList } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 import { formatInput, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
 import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative, Text } from '@deriv/components';
-import { getDocumentData, preventEmptyClipboardPaste, generatePlaceholderText } from 'Helpers/utils';
+import { getDocumentData, preventEmptyClipboardPaste, generatePlaceholderText, getExampleFormat } from 'Helpers/utils';
 
 type TDocumentList = Array<{
     id: string;
@@ -104,9 +104,6 @@ const IDVForm = ({
         );
     };
 
-    const getExampleFormat = (example_format: string) => {
-        return example_format ? localize('Example: ') + example_format : '';
-    };
     const getDocument = (text: string) => {
         return document_list.find(d => d.text === text);
     };
@@ -131,7 +128,11 @@ const IDVForm = ({
                                 'proof-of-identity__container--idv': hide_hint,
                             })}
                         >
-                            <div className={classNames('proof-of-identity__inner-container')}>
+                            <div
+                                className={classNames('proof-of-identity__inner-container', {
+                                    'proof-of-identity__inner-container--incl-image': document_image,
+                                })}
+                            >
                                 <div className='proof-of-identity__fieldset-container'>
                                     <fieldset className={classNames({ 'proof-of-identity__fieldset': !hide_hint })}>
                                         <Field name='document_type'>
@@ -156,7 +157,7 @@ const IDVForm = ({
                                                                     }
                                                                 }}
                                                                 onChange={handleChange}
-                                                                onItemSelection={(item: Record<string, string>) => {
+                                                                onItemSelection={(item: TDocumentList[0]) => {
                                                                     if (
                                                                         item.text === 'No results found' ||
                                                                         !item.text

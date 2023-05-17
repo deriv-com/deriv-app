@@ -90,6 +90,10 @@
                 padding: 1.6rem;
             }
 
+            @include mobile() {
+                margin-bottom: 4rem;
+            }
+
             .account__scrollbars_container {
                 padding: 0;
 
@@ -222,10 +226,23 @@
             @include desktop {
                 margin-bottom: unset;
             }
+            @include mobile {
+                margin-bottom: 2rem;
+            }
             &-input {
                 @include desktop {
                     margin-bottom: unset;
                 }
+            }
+        }
+    }
+    .proof-of-identity__inner-container {
+        @include desktop {
+            &--incl-image {
+                display: grid;
+                align-items: center;
+                column-gap: 1.5rem;
+                grid-template-columns: auto 0.5fr;
             }
         }
     }

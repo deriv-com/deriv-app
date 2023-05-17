@@ -1,4 +1,11 @@
-import { getUrlBase, filterObjProperties, toMoment, validLength, validName } from '@deriv/shared';
+import {
+    getUrlBase,
+    filterObjProperties,
+    toMoment,
+    validLength,
+    validName,
+    IDV_NOT_APPLICABLE_OPTION,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
 import { FormikErrors, FormikValues } from 'formik';
@@ -253,3 +260,37 @@ export const validateName = (name: string) => {
     }
     return '';
 };
+
+export const getExampleFormat = (example_format: string) =>
+    example_format ? localize('Example: ') + example_format : '';
+
+export const isDocumentTypeValid = (document_type: FormikValues) => {
+    if (!document_type?.text) {
+        return localize('Please select a document type.');
+    }
+    return undefined;
+};
+
+export const isAdditionalDocumentValid = (document_type: FormikValues, document_additional: string) => {
+    const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
+    if (error_message) {
+        return localize(error_message) + getExampleFormat(document_type.additional?.example_format);
+    }
+    return undefined;
+};
+
+export const isDocumentNumberValid = (document_number: string, document_type: FormikValues) => {
+    const is_document_number_invalid = document_number === document_type.example_format;
+    if (!document_number) {
+        return localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
+    } else if (is_document_number_invalid) {
+        return localize('Please enter a valid ID number.');
+    }
+    const format_regex = getRegex(document_type.value);
+    if (!format_regex.test(document_number)) {
+        return localize('Please enter the correct format. ') + getExampleFormat(document_type.example_format);
+    }
+    return undefined;
+};
+
+export const shouldHideHelperImage = (document_id: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;

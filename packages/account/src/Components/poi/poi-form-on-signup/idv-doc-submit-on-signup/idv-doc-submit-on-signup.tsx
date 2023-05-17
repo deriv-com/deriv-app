@@ -3,13 +3,15 @@ import { Formik, FormikValues, FormikHelpers, FormikErrors, Form } from 'formik'
 import { localize } from '@deriv/translations';
 import classNames from 'classnames';
 import { Button } from '@deriv/components';
+import { filterObjProperties, toMoment, removeEmptyPropertiesFromObject } from '@deriv/shared';
 import {
-    filterObjProperties,
-    toMoment,
-    IDV_NOT_APPLICABLE_OPTION,
-    removeEmptyPropertiesFromObject,
-} from '@deriv/shared';
-import { documentAdditionalError, getRegex, validate, validateName } from 'Helpers/utils';
+    validate,
+    validateName,
+    isDocumentTypeValid,
+    isAdditionalDocumentValid,
+    isDocumentNumberValid,
+    shouldHideHelperImage,
+} from 'Helpers/utils';
 import FormSubHeader from 'Components/form-sub-header';
 import IDVForm from 'Components/forms/idv-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
@@ -35,37 +37,6 @@ export const IdvDocSubmitOnSignup = ({
     account_settings,
     getChangeableFields,
 }: TIdvDocSubmitOnSignup) => {
-    const shouldHideHelperImage = (document_id: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
-
-    const isDocumentTypeValid = (document_type: FormikValues) => {
-        if (!document_type?.text) {
-            return localize('Please select a document type.');
-        }
-        return undefined;
-    };
-
-    const isAdditionalDocumentValid = (document_type: FormikValues, document_additional: string) => {
-        const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
-        if (error_message) {
-            return localize(error_message) + getExampleFormat(document_type.additional?.example_format);
-        }
-        return undefined;
-    };
-
-    const isDocumentNumberValid = (document_number: string, document_type: FormikValues) => {
-        const is_document_number_invalid = document_number === document_type.example_format;
-        if (!document_number) {
-            return localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-        } else if (is_document_number_invalid) {
-            return localize('Please enter a valid ID number.');
-        }
-        const format_regex = getRegex(document_type.value);
-        if (!format_regex.test(document_number)) {
-            return localize('Please enter the correct format. ') + getExampleFormat(document_type.example_format);
-        }
-        return undefined;
-    };
-
     const validateFields = (values: FormikValues) => {
         const errors: FormikErrors<FormikValues> = {};
         const { document_type, document_number, document_additional } = values;
@@ -107,8 +78,6 @@ export const IdvDocSubmitOnSignup = ({
         document_number: '',
         ...form_initial_values,
     };
-
-    const getExampleFormat = (example_format: string) => (example_format ? localize('Example: ') + example_format : '');
 
     return (
         <Formik

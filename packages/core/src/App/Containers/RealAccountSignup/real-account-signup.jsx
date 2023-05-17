@@ -93,7 +93,7 @@ const RealAccountSignup = observer(({ history, state_index, is_trading_experienc
         has_active_real_account: has_real_account,
         is_from_restricted_country,
         realAccountSignup,
-        redirectToLegacyPlatform
+        redirectToLegacyPlatform,
     } = client;
     const {
         closeRealAccountSignup,

@@ -5,7 +5,6 @@ import {
     getDXTradeWebTerminalLink,
     getDerivEzWebTerminalLink,
     platformsText,
-    DERIVEZ_URL,
     platformsIcons,
     mobileDownloadLink,
 } from './constants';

@@ -115,7 +115,7 @@ const getDXTradeWebTerminalLink = (category: string, token?: string) => {
 };
 
 const getDerivEzWebTerminalLink = (category: string, token?: string) => {
-    let url = category === 'real' ? DERIVEZ_URL : DERIVEZ_URL;
+    let url = DERIVEZ_URL;
 
     if (token) {
         url += `?token=${token}`;

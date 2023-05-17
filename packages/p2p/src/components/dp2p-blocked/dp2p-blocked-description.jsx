@@ -14,7 +14,17 @@ const Dp2pBlockedDescription = () => {
             );
         } else if (general_store.is_high_risk && !general_store.is_blocked) {
             return <Localize i18n_default_text='To enable this feature you must complete the following:' />;
+        } else if (general_store.should_show_poa) {
+            return (
+                <Localize
+                    i18n_default_text='Please submit your <0>proof of address</0>. You can use Deriv P2P after we’ve verified your documents.'
+                    components={[
+                        <a key={0} className='link' rel='noopener noreferrer' href={'/account/proof-of-address'} />,
+                    ]}
+                />
+            );
         }
+
         return (
             <Localize
                 i18n_default_text='Please use <0>live chat</0> to contact our Customer Support team for help.'

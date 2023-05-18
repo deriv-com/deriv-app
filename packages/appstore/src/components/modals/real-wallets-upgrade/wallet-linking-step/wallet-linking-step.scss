@@ -1,0 +1,46 @@
+.wallet-linking-step {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    &__description {
+        margin-top: 0.8rem;
+    }
+
+    &__content {
+        margin-top: 5.6rem;
+        padding: 0 1.6rem;
+    }
+
+    &__title-wrapper {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        gap: 36.1rem;
+        margin-top: 2.4rem;
+
+        @include mobile {
+            display: none;
+        }
+    }
+
+    &__title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28.8rem;
+
+        &-text {
+            width: fit-content;
+            padding: 0.4rem 0.8rem;
+            border-radius: 2.4rem;
+            text-align: center;
+            font-size: var(--text-size-xxxs);
+            background-color: var(--general-section-2);
+        }
+    }
+}

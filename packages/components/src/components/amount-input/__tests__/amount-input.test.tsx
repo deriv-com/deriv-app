@@ -76,6 +76,7 @@ describe('<AmountInput/>', () => {
         ];
         values.forEach(pair => {
             userEvent.clear(input);
+            userEvent.click(input);
             userEvent.paste(input, pair[0]);
             expect(input).toHaveDisplayValue(pair[1]);
         });

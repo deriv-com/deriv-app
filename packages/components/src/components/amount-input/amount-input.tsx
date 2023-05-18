@@ -58,7 +58,7 @@ const AmountInput = ({
         } else {
             // handle pasting:
             const selection_length = selection.selectionEnd - selection.selectionStart;
-            const pasted_string_length = e.target.value.length - selection_length - displayNumber(value).length;
+            const pasted_string_length = e.target.value.length + selection_length - displayNumber(value).length;
             const pasted_string = e.target.value.substring(
                 selection.selectionStart,
                 selection.selectionStart + pasted_string_length

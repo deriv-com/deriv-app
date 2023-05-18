@@ -19,6 +19,7 @@ const MainTitleBar = () => {
         content_flag,
         setShouldShowWalletConsentPopup,
         toggleWalletsUpgrade,
+        toggleWalletsMigrationFailedPopup,
     } = traders_hub;
     const { is_landing_company_loaded, is_switching } = client;
     const is_low_risk_cr_real_account =
@@ -41,7 +42,7 @@ const MainTitleBar = () => {
                 {/* TODO: This is for testing purposes only */}
                 <button onClick={() => setShouldShowWalletConsentPopup(true)}>Click to see Modal</button>
                 {/* TODO: This is for testing purposes only */}
-                <button>Modal wallet migration failed</button>
+                <button onClick={() => toggleWalletsMigrationFailedPopup(true)}>Modal wallet migration failed</button>
                 <div className='main-title-bar'>
                     <div className='main-title-bar__right'>
                         <Text size='m' weight='bold' color='prominent'>
@@ -64,7 +65,9 @@ const MainTitleBar = () => {
                     {/* TODO: This is for testing purposes only */}
                     <button onClick={() => setShouldShowWalletConsentPopup(true)}>Click to see Modal</button>
                     {/* TODO: This is for testing purposes only */}
-                    <button>Modal wallet migration failed</button>
+                    <button onClick={() => toggleWalletsMigrationFailedPopup(true)}>
+                        Modal wallet migration failed
+                    </button>
                     {is_low_risk_cr_real_account && is_landing_company_loaded ? (
                         <div className='main-title-bar-mobile--regulator'>
                             {!is_switching ? (

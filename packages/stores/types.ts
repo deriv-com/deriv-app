@@ -297,6 +297,8 @@ type TTradersHubStore = {
     no_CR_account: boolean;
     no_MF_account: boolean;
     setTogglePlatformType: () => void;
+    is_wallet_migration_failed: boolean;
+    toggleWalletsMigrationFailedPopup: (value: boolean) => void;
 };
 
 /**

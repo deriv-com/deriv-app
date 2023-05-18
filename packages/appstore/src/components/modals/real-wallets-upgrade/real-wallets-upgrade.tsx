@@ -1,11 +1,10 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, Button, useOnClickOutside } from '@deriv/components';
 import './components/wallet-steps.scss';
 import WalletSteps from './components/wallet-steps';
 import { ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import { steps } from 'Constants/wallet-static-steps-config';
 
 const RealWalletsUpgrade = () => {

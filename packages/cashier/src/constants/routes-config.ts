@@ -58,9 +58,9 @@ const initRoutesConfig = (): TRouteConfig[] => [
                 icon_component: 'IcDp2p',
             },
             {
-                path: routes.cashier_p2p_verification,
+                path: routes.p2p_verification,
                 component: P2P,
-                getTitle: () => localize('Deriv P2P'),
+                getTitle: () => localize('P2P verification'),
                 icon_component: 'IcDp2p',
                 is_invisible: true,
             },

@@ -33,7 +33,7 @@ const Wallet = React.memo(({ wallet_account, is_open_wallet }: TWallet) => {
                 is_open_wallet={is_open}
                 setIsOpen={setIsOpen}
             />
-            <CSSTransition appear in={is_open} timeout={250} classNames='wallet__content-transition' unmountOnExit>
+            <CSSTransition appear in={is_open} timeout={240} classNames='wallet__content-transition' unmountOnExit>
                 <WalletContent is_demo={!!is_demo} is_eu={shortcode === 'malta'} wallet_account={wallet_account} />
             </CSSTransition>
         </div>

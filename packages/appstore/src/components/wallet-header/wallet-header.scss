@@ -87,7 +87,7 @@
                     }
 
                     &-enter-active {
-                        transition: all 250ms ease-in-out;
+                        transition: all 240ms ease-in-out;
                         transform: translateX(0);
                         position: relative;
                         opacity: 1;
@@ -104,7 +104,7 @@
                     }
 
                     &-exit-active {
-                        transition: all 250ms ease-in-out;
+                        transition: all 240ms ease-in-out;
                         transform: translateX(-1rem);
                         position: relative;
                         opacity: 0;

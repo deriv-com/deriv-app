@@ -34,7 +34,7 @@ const WalletHeaderButtons = ({ is_disabled, is_open, btns }: TWalletHeaderButton
                     <CSSTransition
                         appear
                         in={is_open}
-                        timeout={250}
+                        timeout={240}
                         classNames='wallet-header__description-buttons-item-transition'
                         unmountOnExit
                     >

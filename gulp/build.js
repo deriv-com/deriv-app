@@ -63,7 +63,6 @@ gulp.task(
         'bundle-js',
         'copy-jquery-img',
         'copy-binary-style-css',
-        'copy-virtualized-style-css',
         'copy-binary-style-img',
         'pull-blockly-translations',
         done => {
@@ -81,7 +80,6 @@ gulp.task(
         'build-dev-static',
         'copy-jquery-img',
         'copy-binary-style-css',
-        'copy-virtualized-style-css',
         'copy-binary-style-img',
         'pull-blockly-translations'
     )

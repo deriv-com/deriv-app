@@ -9,7 +9,7 @@ import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/fo
 const EmailLinkVerifiedModal = () => {
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { order_store } = useStores();
-    const { amount_display, is_buy_order_for_user, local_currency, rate } = order_store.order_information;
+    const { amount_display, is_buy_order_for_user, local_currency, rate } = order_store.order_information || {};
     const amount = removeTrailingZeros(
         formatMoney(local_currency, amount_display * roundOffDecimal(rate, setDecimalPlaces(rate, 6)), true)
     );

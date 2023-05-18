@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, useHistory, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { reaction } from 'mobx';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
@@ -14,14 +14,13 @@ import { ModalManager, ModalManagerContextProvider } from './modal-manager';
 import Routes from './routes/routes.jsx';
 import './app.scss';
 
-// TODO: Add back props to get root_store to pass to StoreProvider component
 const App = () => {
     const { notifications, client, ui, common, modules } = useStore();
     const { balance, is_logging_in } = client;
     const { setOnRemount } = modules?.cashier?.general_store;
 
     const { is_mobile } = ui;
-    const { setP2POrderProps } = notifications;
+    const { setP2POrderProps, setP2PRedirectTo } = notifications;
 
     const history = useHistory();
     const location = useLocation();
@@ -33,12 +32,18 @@ const App = () => {
     const [order_id, setOrderId] = React.useState(null);
     const [action_param, setActionParam] = React.useState();
     const [code_param, setCodeParam] = React.useState();
-    const [should_show_profile, setShouldShowProfile] = React.useState(false);
 
     React.useEffect(() => {
         general_store.setExternalStores({ client, common, modules, notifications, ui });
         general_store.setWebsocketInit(WS);
         general_store.getWebsiteStatus();
+
+        setP2PRedirectTo({
+            routeToMyProfile: () => {
+                history.push(routes.p2p_my_profile);
+                general_store.setActiveIndex(3);
+            },
+        });
 
         // Check if advertiser info has been subscribed to before the user navigates to
         // /advertiser?=id{counterparty_advertiser_id} from the url
@@ -93,7 +98,6 @@ const App = () => {
             general_store.setActiveIndex(2);
         } else if (/\/my-profile$/.test(location.pathname)) {
             history.push(routes.p2p_my_profile);
-            setShouldShowProfile(true);
             general_store.setActiveIndex(3);
         } else if (/\/advertiser$/.test(location.pathname)) {
             if (location.search || general_store.counterparty_advertiser_id) {
@@ -193,9 +197,9 @@ const App = () => {
         setLanguage(lang);
     }, [lang]);
 
-    React.useEffect(() => {
-        if (should_show_profile) general_store.redirectTo('my_profile');
-    }, [should_show_profile]);
+    const navigateToOrderDetails = id => {
+        history.push({ pathname: routes.p2p_orders, search: `?order=${id}` });
+    };
 
     React.useEffect(() => {
         if (order_id) {
@@ -206,6 +210,7 @@ const App = () => {
             order_id,
             redirectToOrderDetails: general_store.redirectToOrderDetails,
             setIsRatingModalOpen: order_store.setIsRatingModalOpen,
+            navigateToOrderDetails,
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [order_id]);
@@ -234,8 +239,7 @@ const App = () => {
     }
 
     return (
-        // TODO Wrap components with StoreProvider during routing p2p card
-        <Router>
+        <>
             <main className='p2p-cashier'>
                 <ModalManagerContextProvider>
                     <ModalManager />
@@ -243,7 +247,7 @@ const App = () => {
                     <Routes />
                 </ModalManagerContextProvider>
             </main>
-        </Router>
+        </>
     );
 };
 

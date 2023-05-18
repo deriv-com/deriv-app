@@ -36,7 +36,11 @@ module.exports = {
             raw: true,
         }),
         new CopyWebpackPlugin([
-            { from: './node_modules/@deriv/deriv-charts/dist/*.smartcharts.*', to: path.resolve(__dirname), flatten: true },
+            {
+                from: './node_modules/@deriv/deriv-charts/dist/*.smartcharts.*',
+                to: path.resolve(__dirname),
+                flatten: true,
+            },
         ]),
     ],
 };

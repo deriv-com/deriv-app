@@ -99,7 +99,6 @@ const getModules = () => {
             getTitle: () => localize('Deriv X'),
         },
         {
-            // TODO
             path: routes.compare_cfds,
             component: compareCFDs,
             getTitle: () => localize('Compare CFD accounts'),

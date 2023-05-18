@@ -1,16 +1,16 @@
-.compare-cfd-header__container {
-    position: relative;
+.compare-cfd-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: center;
 
-    &___navigation {
-        position: absolute;
-        left: 10px;
+    &-navigation {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
     }
 
-    &___title {
-        position: absolute;
-        text-align: center;
+    &-title {
+        flex: 1;
     }
 }

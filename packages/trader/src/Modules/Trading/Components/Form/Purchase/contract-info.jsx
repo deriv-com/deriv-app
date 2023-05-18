@@ -33,6 +33,7 @@ const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_i
 const ContractInfo = ({
     basis,
     currency,
+    growth_rate,
     has_increased,
     is_loading,
     is_accumulator,
@@ -113,7 +114,7 @@ const ContractInfo = ({
                                         {!is_accumulator ? (
                                             <Money amount={stake} currency={currency} show_currency />
                                         ) : (
-                                            !is_loading && `${getGrowthRatePercentage(proposal_info?.growth_rate)}%`
+                                            !is_loading && `${getGrowthRatePercentage(growth_rate)}%`
                                         )}
                                     </Text>
                                 </div>
@@ -227,6 +228,7 @@ const ContractInfo = ({
 ContractInfo.propTypes = {
     basis: PropTypes.string,
     currency: PropTypes.string,
+    growth_rate: PropTypes.number,
     has_increased: PropTypes.bool,
     is_accumulator: PropTypes.bool,
     is_multiplier: PropTypes.bool,

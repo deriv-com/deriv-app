@@ -4,18 +4,12 @@ import { localize } from '@deriv/translations';
 import { SelectBlockField } from '.';
 
 const BlocksFields = ({
-    selected_market,
     markets_dropdown,
-    setSelectedMarket,
-    selected_submarket,
     submarkets_dropdown,
-    setSelectedSubmarket,
     values,
     setFieldValue,
     onHideDropdownList,
     onChangeDropdownItem,
-    selected_symbol,
-    setSelectedSymbol,
     symbols_dropdown,
     onScrollStopDropdownList,
 }: any) => {
@@ -24,8 +18,6 @@ return(<>
     <div className='bot-builder__item'>
         <Text>{localize('Market:')}</Text>
         <SelectBlockField
-            selected={selected_market}
-            setSelected={setSelectedMarket}//
             values={values}
             setFieldValue={setFieldValue}
             onHideDropdownList={onHideDropdownList}
@@ -38,8 +30,6 @@ return(<>
         />
         <Text>&nbsp;&#9658;&nbsp;</Text>
         <SelectBlockField
-            selected={selected_submarket}
-            setSelected={setSelectedSubmarket}//
             values={values}
             setFieldValue={setFieldValue}
             onHideDropdownList={onHideDropdownList}
@@ -52,8 +42,6 @@ return(<>
         />
         <Text>&nbsp;&#9658;&nbsp;</Text>
         <SelectBlockField
-            selected={selected_symbol}
-            setSelected={setSelectedSymbol}//
             values={values}
             setFieldValue={setFieldValue}
             onHideDropdownList={onHideDropdownList}
@@ -64,16 +52,46 @@ return(<>
             select_value={localize('symbol')}
             onScrollStopDropdownList={onScrollStopDropdownList}
         />
-            {/* <Autocomplete
-                autoComplete='off'
-                className='quick-strategy__dropdown quick-strategy__leading'
-                type='text'
-                label={localize(selected)}
-                list_items={items}
-                onItemSelection={({ text }) => {
-                    setSelected(text);
-                }}
-            /> */}
+    </div>
+    <div className='bot-builder__item'>
+        <Text>{localize('Trade type:')}</Text>
+        <SelectBlockField
+            values={values}
+            setFieldValue={setFieldValue}
+            onHideDropdownList={onHideDropdownList}
+            onChangeDropdownItem={onChangeDropdownItem}
+            name_field={'bot-builder__trade-type'}
+            label={localize('trade type 1')}
+            dropdown={markets_dropdown}
+            select_value={localize('trade-type 1')}
+            onScrollStopDropdownList={onScrollStopDropdownList}
+        />
+        <Text>&nbsp;&#9658;&nbsp;</Text>
+        <SelectBlockField
+            values={values}
+            setFieldValue={setFieldValue}
+            onHideDropdownList={onHideDropdownList}
+            onChangeDropdownItem={onChangeDropdownItem}
+            name_field={'bot-builder__trade-type'}
+            label={localize('trade type 2')}
+            dropdown={markets_dropdown}
+            select_value={localize('trade-type 2')}
+            onScrollStopDropdownList={onScrollStopDropdownList}
+        />
+    </div>
+    <div className='bot-builder__item'>
+        <Text>{localize('Contract type:')}</Text>
+        <SelectBlockField
+            values={values}
+            setFieldValue={setFieldValue}
+            onHideDropdownList={onHideDropdownList}
+            onChangeDropdownItem={onChangeDropdownItem}
+            name_field={'bot-builder__contract-type'}
+            label={localize('Contract type')}
+            dropdown={markets_dropdown}
+            select_value={localize('contract-type')}
+            onScrollStopDropdownList={onScrollStopDropdownList}
+        />
     </div>
 </>);
 };

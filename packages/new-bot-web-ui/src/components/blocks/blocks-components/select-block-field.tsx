@@ -3,8 +3,6 @@ import { Autocomplete, Text } from '@deriv/components';
 import { Field } from 'formik';
 
 const SelectBlockField = ({
-    selected,
-    setSelected,
     values,
     setFieldValue,
     onHideDropdownList,
@@ -23,22 +21,20 @@ return(<>
                 {...field}
                 autoComplete='off'
                 type='text'
-                // label={selected || dropdown ? dropdown[0]?.value : label}
                 label={label}
                 list_items={dropdown}
-                // disabled={dropdown?.length === 1}
-                // onHideDropdownList={() => {
-                //      console.log('values[field.name]', values[field.name], values)
-                //     onHideDropdownList(
-                //         select_value,
-                //         values[field.name],
-                //         setFieldValue
-                //     );
-                // }}
+                disabled={dropdown?.length === 1}
+                onHideDropdownList={() => {
+                    onHideDropdownList(
+                        select_value,
+                        values[field.name],
+                        setFieldValue
+                    );
+                }}
                 onItemSelection={({ value }: { value: string }) => {
                     onChangeDropdownItem(select_value, value, setFieldValue);
                 }}
-                // onScrollStop={() => onScrollStopDropdownList(select_value)}
+                onScrollStop={() => onScrollStopDropdownList(select_value)}
                 />
         )}
     </Field>

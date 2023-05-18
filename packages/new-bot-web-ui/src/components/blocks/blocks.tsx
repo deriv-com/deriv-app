@@ -9,15 +9,17 @@ import { BlocksFields } from './blocks-components';
 const Blocks: React.FC = () => {
     const {
         blocks: { 
-            markets_dropdown, 
+            initial_values,
             loadDataStrategy, 
-            exportStrategyToJson, 
-            initial_values, 
+            markets_dropdown, 
             submarkets_dropdown,
+            symbols_dropdown,
+            trade_type_category_dropdown,
+            trade_type_dropdown,
             onHideDropdownList,
             onChangeDropdownItem,
-            symbols_dropdown,
             onScrollStopDropdownList,
+            exportStrategyToJson,
         },
     } = useDBotStore();
 
@@ -54,10 +56,12 @@ const Blocks: React.FC = () => {
                             <BlocksFields
                                 markets_dropdown={markets_dropdown}
                                 submarkets_dropdown={submarkets_dropdown}
+                                symbols_dropdown={symbols_dropdown}
+                                trade_type_category_dropdown={trade_type_category_dropdown}
+                                trade_type_dropdown={trade_type_dropdown}
                                 onChangeDropdownItem={onChangeDropdownItem}
                                 onHideDropdownList={onHideDropdownList}
                                 setFieldValue={setFieldValue}
-                                symbols_dropdown={symbols_dropdown}
                                 onScrollStopDropdownList={onScrollStopDropdownList}
                                 // handleChange={handleChange}
                                 // onChangeInputValue={onChangeInputValue}

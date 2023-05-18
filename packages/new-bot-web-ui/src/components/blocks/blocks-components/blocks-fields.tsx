@@ -6,11 +6,13 @@ import { SelectBlockField } from '.';
 const BlocksFields = ({
     markets_dropdown,
     submarkets_dropdown,
+    symbols_dropdown,
+    trade_type_category_dropdown,
+    trade_type_dropdown,
     values,
     setFieldValue,
     onHideDropdownList,
     onChangeDropdownItem,
-    symbols_dropdown,
     onScrollStopDropdownList,
 }: any) => {
     
@@ -60,10 +62,10 @@ return(<>
             setFieldValue={setFieldValue}
             onHideDropdownList={onHideDropdownList}
             onChangeDropdownItem={onChangeDropdownItem}
-            name_field={'bot-builder__trade-type'}
-            label={localize('trade type 1')}
-            dropdown={markets_dropdown}
-            select_value={localize('trade-type 1')}
+            name_field={'bot-builder__trade_type_category'}
+            label={localize('Trade type categories')}
+            dropdown={trade_type_category_dropdown}
+            select_value={localize('trade_type_category')}
             onScrollStopDropdownList={onScrollStopDropdownList}
         />
         <Text>&nbsp;&#9658;&nbsp;</Text>
@@ -72,10 +74,10 @@ return(<>
             setFieldValue={setFieldValue}
             onHideDropdownList={onHideDropdownList}
             onChangeDropdownItem={onChangeDropdownItem}
-            name_field={'bot-builder__trade-type'}
-            label={localize('trade type 2')}
-            dropdown={markets_dropdown}
-            select_value={localize('trade-type 2')}
+            name_field={'bot-builder__trade_type'}
+            label={localize('Trade types')}
+            dropdown={trade_type_dropdown}
+            select_value={localize('trade_type')}
             onScrollStopDropdownList={onScrollStopDropdownList}
         />
     </div>
@@ -86,10 +88,10 @@ return(<>
             setFieldValue={setFieldValue}
             onHideDropdownList={onHideDropdownList}
             onChangeDropdownItem={onChangeDropdownItem}
-            name_field={'bot-builder__contract-type'}
+            name_field={'bot-builder__contract_type'}
             label={localize('Contract type')}
             dropdown={markets_dropdown}
-            select_value={localize('contract-type')}
+            select_value={localize('contract_type')}
             onScrollStopDropdownList={onScrollStopDropdownList}
         />
     </div>

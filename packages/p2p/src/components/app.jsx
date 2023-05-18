@@ -14,7 +14,6 @@ import { ModalManager, ModalManagerContextProvider } from './modal-manager';
 import Routes from './routes/routes.jsx';
 import './app.scss';
 
-// TODO: Add back props to get root_store to pass to StoreProvider component
 const App = () => {
     const { notifications, client, ui, common, modules } = useStore();
     const { balance, is_logging_in } = client;
@@ -240,7 +239,6 @@ const App = () => {
     }
 
     return (
-        // TODO Wrap components with StoreProvider during routing p2p card
         <>
             <main className='p2p-cashier'>
                 <ModalManagerContextProvider>

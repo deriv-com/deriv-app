@@ -1,5 +1,27 @@
 .wallets-migration-failed {
+    &--mobile {
+        padding: 1.6rem;
+    }
+
     &__title {
         margin-bottom: 2.4rem;
+
+        &--mobile {
+            margin-bottom: 1.6rem;
+        }
+    }
+
+    &__footer {
+        padding: 0 2.4rem 2.4rem;
+
+        &--mobile {
+            margin-bottom: 0 1.6rem 1.6rem;
+        }
+    }
+
+    &__text {
+        &--mobile {
+            font-size: 1.2rem !important;
+        }
     }
 }

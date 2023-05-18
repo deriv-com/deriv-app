@@ -27,7 +27,7 @@ const AmountInput = ({
     const [value, setValue] = useState(initial_value);
     const [focus, setFocus] = useState(false);
     const [is_pasting, setIsPasting] = useState(false);
-    const [caret_position, setCaretPosition] = useState(0);
+    const [caret_right_offset, setCaretRightOffset] = useState(0);
     const [selection, setSelection] = useState<{
         selectionStart: number;
         selectionEnd: number;
@@ -41,7 +41,7 @@ const AmountInput = ({
 
     useEffect(() => {
         // update caret position every time the value changes (this happens after onChange)
-        const updated_caret_position = displayNumber(value).length - caret_position;
+        const updated_caret_position = displayNumber(value).length - caret_right_offset;
         target?.setSelectionRange(updated_caret_position, updated_caret_position);
         setSelection({ selectionStart: updated_caret_position, selectionEnd: updated_caret_position });
     }, [value]);
@@ -70,7 +70,7 @@ const AmountInput = ({
                 .replace(/[^\d.,]/g, '')
                 .replace(/[,.](?=.*[,.])/g, '')
                 .replace(',', '.');
-            if ((value === 0 && caret_position === 0) || selection_length === displayNumber(value).length) {
+            if ((value === 0 && caret_right_offset === 0) || selection_length === displayNumber(value).length) {
                 // handle pasting when there's nothing entered before it, or it is overridden:
                 newValue = Number(pasted_value.substring(0, pasted_value.includes('.') ? max_digits + 1 : max_digits));
             } else if (input_value.replace(/[.,]/g, '').replace(/^0+/g, '').length <= max_digits) {
@@ -85,7 +85,7 @@ const AmountInput = ({
 
     const onMouseDownHandler: React.ComponentProps<typeof Input>['onMouseDown'] = e => {
         if (e.currentTarget.selectionStart !== null && e.currentTarget.selectionEnd !== null) {
-            setCaretPosition(e.currentTarget.value.length - e.currentTarget.selectionEnd);
+            setCaretRightOffset(e.currentTarget.value.length - e.currentTarget.selectionEnd);
             setSelection({
                 selectionStart: e.currentTarget.selectionStart,
                 selectionEnd: e.currentTarget.selectionEnd,
@@ -95,7 +95,7 @@ const AmountInput = ({
 
     const onKeyDownHandler: KeyboardEventHandler<HTMLInputElement> = e => {
         if (e.currentTarget.selectionStart !== null && e.currentTarget.selectionEnd !== null) {
-            setCaretPosition(e.currentTarget.value.length - e.currentTarget.selectionEnd);
+            setCaretRightOffset(e.currentTarget.value.length - e.currentTarget.selectionEnd);
             setSelection({
                 selectionStart: e.currentTarget.selectionStart,
                 selectionEnd: e.currentTarget.selectionEnd,

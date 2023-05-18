@@ -5,6 +5,8 @@
     justify-content: center;
     border-radius: $BORDER_RADIUS;
     overflow: hidden;
+    width: 100%;
+    height: 100%;
 
     &__background {
         position: absolute;
@@ -12,18 +14,18 @@
         height: 100%;
     }
 
-    &--small {
-        width: 4rem;
-        height: 2.4rem;
-    }
+    // &--small {
+    //     width: 4rem;
+    //     height: 2.4rem;
+    // }
 
-    &--medium {
-        width: 6.4rem;
-        height: 4rem;
-    }
+    // &--medium {
+    //     width: 6.4rem;
+    //     height: 4rem;
+    // }
 
-    &--large {
-        width: 12.8rem;
-        height: 8rem;
-    }
+    // &--large {
+    //     width: 12.8rem;
+    //     height: 8rem;
+    // }
 }

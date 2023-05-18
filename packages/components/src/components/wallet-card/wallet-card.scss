@@ -1,17 +1,81 @@
 .wallet-card {
+    $parent: &;
+
     position: relative;
-    border-radius: $BORDER_RADIUS_2;
-    overflow: hidden;
+    border-radius: $BORDER_RADIUS;
+
+    &__container {
+        border-radius: inherit;
+        width: 100%;
+        height: 100%;
+
+        &:after {
+            background: var(--wallets-card-active-gradient-background);
+            border-radius: inherit;
+            content: '';
+            height: 100%;
+            left: 0;
+            opacity: 0;
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
+
+        &:hover {
+            &:after {
+                opacity: 1;
+            }
+        }
+    }
+
+    &__content {
+        position: relative;
+        z-index: 1;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.6rem;
+    }
+
+    &--active {
+        #{$parent}__container {
+            &:after {
+                opacity: 1;
+            }
+        }
+
+        .wallet-icon {
+            border: 2px solid var(--text-red);
+        }
+    }
 
     &--small {
         width: 6.4rem;
         height: 4rem;
-        overflow: visible;
+
+        #{$parent}__container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #{$parent}__active-icon {
+            position: absolute;
+            top: 0;
+            left: 100%;
+            transform: translate(-1.2rem, -0.4rem);
+            width: unset;
+            height: unset;
+        }
     }
 
-    &--medium {
+    &--normal {
         width: 20rem;
         height: 12rem;
+
         @include mobile {
             width: 16rem;
             height: 9.6rem;
@@ -21,6 +85,7 @@
     &--large {
         width: 24rem;
         height: 14.4rem;
+
         @include mobile {
             width: 21.6rem;
             height: 12.8rem;
@@ -29,43 +94,13 @@
 
     &__active-icon {
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-
-        &--small {
-            top: 0;
-            left: 100%;
-            transform: translate(-1.2rem, -0.4rem);
-        }
-    }
-
-    &__content {
-        position: absolute;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
         width: 100%;
         height: 100%;
-        padding: 1.6rem;
-        box-sizing: border-box;
-        border-radius: $BORDER_RADIUS_2;
-
-        &--active {
-            border: 2px solid var(--text-red);
-            background: var(--wallets-card-active-gradient-background);
-        }
-
-        &--default:hover {
-            background: var(--wallets-card-active-gradient-background);
-        }
-
-        &--medium {
-            @include mobile {
-                padding: 0.8rem;
-            }
-        }
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 
     &__shine {
@@ -113,15 +148,6 @@
     &__wallet-button {
         background: $color-white;
 
-        &-icon {
-            align-self: center;
-            margin-right: 0.8rem;
-        }
-
-        &-text {
-            color: $color-black-1;
-        }
-
         &--added {
             opacity: 0.32;
         }
@@ -133,30 +159,5 @@
 
     &--faded {
         opacity: 0.72;
-    }
-
-    &__small-container {
-        width: 6.4rem;
-        height: 4rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        &-overlay {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            border-radius: $BORDER_RADIUS;
-
-            &--active {
-                outline: 2px solid var(--text-red);
-                background: var(--wallets-card-active-gradient-background);
-            }
-
-            &--default:hover {
-                background: var(--wallets-card-active-gradient-background);
-            }
-        }
     }
 }

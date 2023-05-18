@@ -4,27 +4,30 @@ import './wallet-icon.scss';
 
 type TWalletIcon = {
     icon: JSX.Element;
-    primaryColor: CSSProperties['backgroundColor'];
-    secondaryColor: CSSProperties['backgroundColor'];
-    size?: 'small' | 'medium' | 'large';
+    primary_color: CSSProperties['backgroundColor'];
+    secondary_color: CSSProperties['backgroundColor'];
+    // size?: 'small' | 'normal' | 'medium' | 'large';
+    size?: number;
+    className?: string;
 };
 
-const getBlurRadius = (size: string) => {
-    if (size === 'small') return 16;
-    if (size === 'medium') return 24;
+// const getBlurRadius = (size: string) => {
+//     if (size === 'small') return 16;
+//     if (size === 'normal') return 24;
+//     if (size === 'medium') return 32;
 
-    return 48;
-};
+//     return 48;
+// };
 
-const WalletIcon = ({ icon, primaryColor, secondaryColor, size = 'medium' }: TWalletIcon) => {
+const WalletIcon = ({ icon, primary_color, secondary_color, size = 24, className }: TWalletIcon) => {
     return (
-        <div className={`wallet-icon wallet-icon--${size}`}>
+        <div className={`wallet-icon wallet-icon--${size} ${className}`}>
             <div className='wallet-icon__background'>
                 <GradientBackgroundTwoPoint
-                    blurRadius={getBlurRadius(size)}
+                    blurRadius={size}
                     backgroundColor='var(--general-main-2)'
-                    primaryColor={primaryColor}
-                    secondaryColor={secondaryColor}
+                    primaryColor={primary_color}
+                    secondaryColor={secondary_color}
                 >
                     {icon}
                 </GradientBackgroundTwoPoint>

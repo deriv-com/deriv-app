@@ -22,7 +22,7 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
             default_value: account_settings.salutation ?? '',
             rules: [['req', localize('Salutation is required.')]],
         },
-        first_name: {
+        last_name: {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.first_name ?? '',
             rules: [
@@ -31,7 +31,7 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
                 ['name', getErrorMessages().name()],
             ],
         },
-        last_name: {
+        first_name: {
             supported_in: ['svg', 'iom', 'malta', 'maltainvest'],
             default_value: account_settings.last_name ?? '',
             rules: [

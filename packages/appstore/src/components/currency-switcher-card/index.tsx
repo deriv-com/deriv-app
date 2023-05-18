@@ -14,9 +14,9 @@ const CurrencySwitcherCard = () => {
     const has_mf_account = is_eu_user && has_maltainvest_account;
 
     if (is_real && (has_cr_account || has_mf_account)) {
-        return <RealAccountSwitcher />;
-    } else if (is_demo) {
         return <DemoAccountCard />;
+    } else if (is_demo) {
+        return <RealAccountSwitcher />;
     }
     return null;
 };

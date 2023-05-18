@@ -6,13 +6,14 @@ import './cfds-listing.scss';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import AddOptionsAccount from 'Components/add-options-account';
-import { isMobile, formatMoney } from '@deriv/shared';
+import { isMobile, formatMoney, routes } from '@deriv/shared';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import GetMoreAccounts from 'Components/get-more-accounts';
 import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
+import { useHistory } from 'react-router';
 
 type TDetailedExistingAccount = AvailableAccount &
     TDetailsOfEachMT5Loginid &
@@ -21,6 +22,7 @@ type TDetailedExistingAccount = AvailableAccount &
     };
 
 const CFDsListing = () => {
+    const history = useHistory();
     const {
         client,
         modules: { cfd },
@@ -172,7 +174,7 @@ const CFDsListing = () => {
                                     } else if (existing_account.action_type === 'multi-action') {
                                         const button_name = e?.currentTarget?.name;
                                         if (button_name === 'transfer-btn') {
-                                            toggleAccountTransferModal();
+                                            history.push(routes.cashier_deposit);
                                             setSelectedAccount(existing_account);
                                         } else if (button_name === 'topup-btn') {
                                             showTopUpModal(existing_account);

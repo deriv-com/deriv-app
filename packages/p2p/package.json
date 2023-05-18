@@ -15,10 +15,10 @@
     },
     "scripts": {
         "test:eslint": "eslint \"./src/**/*.?(js|ts|jsx|tsx)\"",
-        "build": "rimraf lib && webpack --progress",
+        "build": "rimraf lib && NODE_OPTIONS='-r ts-node/register' webpack --progress",
         "build:publish": "deriv-publisher prepublish && lerna exec --scope=@deriv/shared --scope=@deriv/components -- npm run build:travis -- && rimraf lib && cross-env NODE_ENV=production NPM_PUBLISHING_MODE=1 webpack --progress; deriv-publisher postpublish",
         "build:travis": "rimraf lib && webpack",
-        "serve": "rimraf lib && cross-env BUILD_MODE='serve' webpack --progress --watch",
+        "serve": "rimraf lib && cross-env BUILD_MODE='serve' NODE_OPTIONS='-r ts-node/register' webpack --progress --watch",
         "start": "rimraf lib && npm run test && npm run serve",
         "deploy": "echo \"No deploy specified\"",
         "deploy:clean": "echo \"No deploy:clean specified\"",

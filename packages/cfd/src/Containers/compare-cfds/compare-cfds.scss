@@ -1,0 +1,16 @@
+.compare-cfd-header__container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    &___navigation {
+        position: absolute;
+        left: 10px;
+    }
+
+    &___title {
+        position: absolute;
+        text-align: center;
+    }
+}

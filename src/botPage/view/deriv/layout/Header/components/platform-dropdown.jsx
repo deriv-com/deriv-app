@@ -28,19 +28,19 @@ const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcher
                         const related_deriv_origin = getRelatedDeriveOrigin();
                         platform.link = `${related_deriv_origin.origin}/?lang=${localStorage
                             .getItem('lang')
-                            .toLowerCase()}`;
+                            .toLowerCase() || '?lang=en'}`;
                     }
                     if (platform.title === 'DBot') {
                         const related_deriv_origin = getRelatedDeriveOrigin();
                         platform.link = `${related_deriv_origin.origin}/?lang=${localStorage
                             .getItem('lang')
-                            .toLowerCase()}`;
+                            .toLowerCase() || '?lang=en'}`;
                     }
                     if (platform.title === 'SmartTrader') {
                         const related_deriv_origin = getRelatedDeriveOrigin();
                         platform.link = `https://${related_deriv_origin.prefix}smarttrader.deriv.${
                             related_deriv_origin.extension
-                        }/${localStorage.getItem('lang').toLowerCase()}`;
+                            }/${localStorage.getItem('lang').toLowerCase() || 'en'}`;
                     }
 
                     const is_binary_bot = platform.title === 'Binary Bot' && location.pathname === '/';

@@ -2,11 +2,14 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, Button, useOnClickOutside } from '@deriv/components';
 import './components/wallet-steps.scss';
+import './real-wallets-upgrade.scss';
 import WalletSteps from './components/wallet-steps';
 import { ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
 import { steps } from 'Constants/wallet-static-steps-config';
+import WalletLink from './components/wallet-link/wallet-link-wrapper';
+import WalletLinkingStep from './wallet-linking-step/wallet-linking-step';
 
 const RealWalletsUpgrade = () => {
     const { traders_hub } = useStore();
@@ -15,7 +18,7 @@ const RealWalletsUpgrade = () => {
 
     const wallets_upgrade_ref = React.useRef<HTMLDivElement>(null);
 
-    const [currentStep, setCurrentStep] = React.useState(1);
+    const [currentStep, setCurrentStep] = React.useState(4);
 
     const emdash = '\u2014';
 
@@ -84,8 +87,9 @@ const RealWalletsUpgrade = () => {
                                 has_close_icon
                                 title=' '
                             >
-                                <Modal.Body>
-                                    <StepComponent />
+                                <Modal.Body className='real-wallets-upgrade__modal-body'>
+                                    {/* <StepComponent /> */}
+                                    <WalletLinkingStep />
                                 </Modal.Body>
                                 <Modal.Footer has_separator>
                                     <Button
@@ -122,7 +126,8 @@ const RealWalletsUpgrade = () => {
                             wrapper_classname='wallet-steps'
                         >
                             <Modal.Body>
-                                <StepComponent />
+                                {/* <StepComponent /> */}
+                                <WalletLink />
                             </Modal.Body>
                             <Modal.Footer className='wallet-steps__footer' has_separator>
                                 <Button

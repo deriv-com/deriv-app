@@ -1,13 +1,14 @@
 import IframeStore from '../iframe-store';
 import { configure } from 'mobx';
-import { TRootStore } from 'Types';
+import { TRootStore } from '../../types';
+import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
-let iframe_store: IframeStore, root_store: DeepPartial<TRootStore>;
+let iframe_store: IframeStore, root_store: TRootStore;
 
 beforeEach(() => {
-    root_store = {
+    root_store = mockStore({
         client: {
             setVerificationCode: jest.fn(),
         },
@@ -23,8 +24,8 @@ beforeEach(() => {
             is_dark_mode_on: true,
             is_mobile: false,
         },
-    };
-    iframe_store = new IframeStore(root_store as TRootStore);
+    }) as TRootStore;
+    iframe_store = new IframeStore(root_store);
 });
 
 describe('IframeStore', () => {

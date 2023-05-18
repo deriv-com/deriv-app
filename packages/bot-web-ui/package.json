@@ -19,8 +19,8 @@
     },
     "scripts": {
         "start": "npm run test && npm run serve",
-        "serve": "echo \"Serving...\" && webpack --progress --watch",
-        "build": "f () { npm run build:skeleton && webpack --progress --env base=$1 ;}; f",
+        "serve": "echo \"Serving...\" && NODE_OPTIONS='-r ts-node/register' webpack --progress --watch",
+        "build": "f () { npm run build:skeleton && NODE_OPTIONS='-r ts-node/register' webpack --progress --env base=$1 ;}; f",
         "build:skeleton": "lerna exec --scope @deriv/bot-skeleton -- npm run build",
         "build:travis": "echo \"No build:travis specified\"",
         "test:eslint": "eslint \"./src/**/*.?(js|jsx|ts|tsx)\"",

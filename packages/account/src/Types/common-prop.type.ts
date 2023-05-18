@@ -119,3 +119,10 @@ export type TFile = {
     type: string;
     webkitRelativePath: string;
 };
+
+export type TPOIStatus = {
+    needs_poa?: boolean;
+    redirect_button?: React.ReactElement;
+    is_from_external?: boolean;
+    is_manual_upload?: boolean;
+};

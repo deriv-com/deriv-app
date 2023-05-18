@@ -40,6 +40,15 @@ export type TInputProps = {
     trailing_icon?: React.ReactElement;
     type?: string;
     value?: string | number;
+    // onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    // onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onKeyUp?: React.FormEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    // onKeyDown?: React.FormEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    // onFocus?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    // onPaste?: (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    // trailing_icon?: React.ReactElement | null;
+    // type: string;
+    // value?: string;
     warn?: string;
     readOnly?: boolean;
     is_autocomplete_disabled?: string;
@@ -112,7 +121,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                     })}
                 >
                     <div
-                        className={classNames('dc-input__container', className, {
+                        className={classNames('dc-input__container', {
                             'dc-input__container--disabled': disabled,
                             'dc-input__container--error': error,
                         })}

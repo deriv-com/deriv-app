@@ -1,6 +1,7 @@
 import DepositStore from '../deposit-store';
 import { configure } from 'mobx';
-import { TRootStore, TWebSocket } from 'Types';
+import { TRootStore, TWebSocket } from '../../types';
+import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
@@ -8,7 +9,7 @@ describe('DepositStore', () => {
     let deposit_store: DepositStore;
 
     beforeEach(() => {
-        const root_store: DeepPartial<TRootStore> = {
+        const root_store = mockStore({
             client: {
                 is_virtual: false,
                 updateAccountStatus: jest.fn(),
@@ -33,7 +34,7 @@ describe('DepositStore', () => {
                     },
                 },
             },
-        };
+        });
         const WS: DeepPartial<TWebSocket> = {
             authorized: {
                 cashier: jest.fn(() => Promise.resolve({ cashier: 'https://cashier.deriv.com' })),

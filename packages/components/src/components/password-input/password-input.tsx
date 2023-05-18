@@ -31,7 +31,7 @@ const PasswordInput = ({
                 className={classNames('dc-password-input__field', className)}
                 trailing_icon={
                     <Icon
-                        icon={should_show_password ? 'IcPasswordEyeVisible' : 'IcPasswordEyeHide'}
+                        icon={should_show_password ? 'IcPasswordEyeHide' : 'IcPasswordEyeVisible'}
                         className='dc-password-input__visibility-icon'
                         onClick={togglePasswordVisibility}
                         color='secondary'

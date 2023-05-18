@@ -101,7 +101,13 @@ const RadioButton = ({
                         {id && /^(UST|eUSDT|tUSDT)$/i.test(id) && <USTPopover id={id} />}
                         <div className='label currency-list__item-text'>
                             <div className='currency-list__item-label'>{label}</div>
-                            <div className='currency-list__item-code'>({getCurrencyDisplayCode(id)})</div>
+                            <div className='currency-list__item-code'>
+                                (
+                                {id === 'AUD' || id === 'EUR'
+                                    ? getCurrencyDisplayCode(id).toLowerCase()
+                                    : getCurrencyDisplayCode(id)}
+                                )
+                            </div>
                         </div>
                     </React.Fragment>
                 )}

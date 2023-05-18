@@ -15,6 +15,7 @@ type FormSubmitButton = React.ButtonHTMLAttributes<HTMLButtonElement> & {
     cancel_icon: React.ReactElement;
     is_loading: boolean;
     onCancel: () => void;
+    isCFD?: boolean;
 };
 
 const FormSubmitButton = ({
@@ -29,16 +30,18 @@ const FormSubmitButton = ({
     is_loading,
     label,
     onCancel,
+    isCFD = false,
     ...props
 }: Partial<FormSubmitButton>) => {
+    const class_obj = isCFD
+        ? classNames('dc-form-submit-button', className, {
+              'dc-form-submit-button--absolute': is_absolute,
+              'dc-form-submit-button--center': !!is_center,
+              'dc-form-submit-button--relative': !is_absolute,
+          })
+        : '';
     return (
-        <div
-            className={classNames('dc-form-submit-button', className, {
-                'dc-form-submit-button--absolute': is_absolute,
-                'dc-form-submit-button--center': !!is_center,
-                'dc-form-submit-button--relative': !is_absolute,
-            })}
-        >
+        <div className={class_obj}>
             {!!form_error && (
                 <Text
                     as='p'
@@ -50,15 +53,19 @@ const FormSubmitButton = ({
                 </Text>
             )}
             {has_cancel && (
-                <Button
-                    has_effect
-                    onClick={onCancel}
-                    text={cancel_label}
-                    type='button'
-                    secondary
-                    large
-                    icon={cancel_icon}
-                />
+                <>
+                    <Button
+                        has_effect
+                        onClick={onCancel}
+                        text={cancel_label}
+                        type='button'
+                        secondary
+                        large
+                        icon={cancel_icon}
+                    />
+                    <br />
+                    <br />
+                </>
             )}
             <Button
                 has_effect

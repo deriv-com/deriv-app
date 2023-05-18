@@ -535,10 +535,6 @@ export default class GeneralStore extends BaseStore {
             if (this.ws_subscriptions) {
                 this.setIsLoading(false);
             }
-
-            this.external_stores.notifications.setP2PRedirectTo({
-                redirectTo: this.redirectTo,
-            });
         });
     }
 

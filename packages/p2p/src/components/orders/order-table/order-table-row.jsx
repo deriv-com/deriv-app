@@ -182,7 +182,7 @@ const OrderRow = ({ row: order }) => {
                                 is_completed_order && (
                                     <RatingCellRenderer
                                         has_review_details={has_review_details}
-                                        is_reviewable={is_order_reviewable}
+                                        is_reviewable={!!is_order_reviewable}
                                         rating={rating}
                                         onClickUserRatingButton={() => {
                                             should_show_order_details.current = false;
@@ -249,7 +249,7 @@ const OrderRow = ({ row: order }) => {
                                     {is_completed_order && (
                                         <RatingCellRenderer
                                             has_review_details={has_review_details}
-                                            is_reviewable={is_order_reviewable}
+                                            is_reviewable={!!is_order_reviewable}
                                             rating={rating}
                                             onClickUserRatingButton={() => {
                                                 should_show_order_details.current = false;

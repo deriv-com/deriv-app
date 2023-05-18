@@ -2,7 +2,6 @@ import 'Styles/account.scss';
 
 import { FadeWrapper, Icon, Loading, PageOverlay, Text, VerticalTab } from '@deriv/components';
 import { PlatformContext, getSelectedRoute, isMobile, matchRoute, routes as shared_routes } from '@deriv/shared';
-import AccountLimitInfo from '../Sections/Security/AccountLimits/account-limits-info.jsx';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'Stores/connect';
@@ -76,12 +75,10 @@ const PageOverlayWrapper = ({
             <VerticalTab
                 title={selected_route.getTitle()}
                 onClickClose={onClickClose}
-                alignment='center'
                 is_collapsible={false}
                 is_grid
                 is_floating
                 className='dashboard'
-                classNameHeader='account__inset_header'
                 current_path={location.pathname}
                 is_routed
                 is_full_width
@@ -95,9 +92,7 @@ const PageOverlayWrapper = ({
     return (
         <PageOverlay header={localize('Settings')} onClickClose={routeToPrevious} is_from_app={is_from_derivgo}>
             <VerticalTab
-                alignment='center'
                 is_floating
-                classNameHeader='account__inset_header'
                 current_path={location.pathname}
                 is_routed
                 is_full_width
@@ -111,7 +106,6 @@ const PageOverlayWrapper = ({
 
 const Account = ({
     active_account_landing_company,
-    currency,
     history,
     is_from_derivgo,
     is_logged_in,
@@ -168,25 +162,6 @@ const Account = ({
         history.push(shared_routes.personal_details);
     }
 
-    const action_bar_items = [
-        {
-            onClick: () => {
-                routeBackInApp(history);
-            },
-            icon: 'IcCross',
-            title: localize('Close'),
-        },
-    ];
-
-    const is_account_limits_route = selected_content.path === routes.account_limits;
-
-    if (is_account_limits_route) {
-        action_bar_items.push({
-            // eslint-disable-next-line react/display-name
-            component: () => <AccountLimitInfo currency={currency} is_virtual={is_virtual} />,
-        });
-    }
-
     if (!is_logged_in && is_logging_in) {
         return <Loading is_fullscreen className='account__initial-loader' />;
     }
@@ -214,7 +189,6 @@ const Account = ({
 
 Account.propTypes = {
     active_account_landing_company: PropTypes.string,
-    currency: PropTypes.string,
     history: PropTypes.object,
     is_from_derivgo: PropTypes.bool,
     is_logged_in: PropTypes.bool,
@@ -233,7 +207,6 @@ Account.propTypes = {
 
 export default connect(({ client, common, ui }) => ({
     active_account_landing_company: client.landing_company_shortcode,
-    currency: client.currency,
     is_from_derivgo: common.is_from_derivgo,
     is_logged_in: client.is_logged_in,
     is_logging_in: client.is_logging_in,

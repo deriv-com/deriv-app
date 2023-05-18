@@ -1,6 +1,10 @@
 .floating-rate {
     display: flex;
     flex-direction: column;
+    margin-top: 2.1rem;
+    @include mobile {
+        margin-bottom: 6.5rem !important;
+    }
     &__field {
         display: flex;
         align-items: center;
@@ -213,10 +217,4 @@ button.dc-input-wrapper__button {
 .mobile-layout {
     display: flex;
     flex-direction: column;
-}
-
-.p2p-my-ads__form-field {
-    @include mobile {
-        height: auto !important;
-    }
 }

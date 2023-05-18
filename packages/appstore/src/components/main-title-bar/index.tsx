@@ -40,6 +40,8 @@ const MainTitleBar = () => {
             <DesktopWrapper>
                 {/* TODO: This is for testing purposes only */}
                 <button onClick={() => setShouldShowWalletConsentPopup(true)}>Click to see Modal</button>
+                {/* TODO: This is for testing purposes only */}
+                <button>Modal wallet migration failed</button>
                 <div className='main-title-bar'>
                     <div className='main-title-bar__right'>
                         <Text size='m' weight='bold' color='prominent'>
@@ -61,6 +63,8 @@ const MainTitleBar = () => {
                     </div>
                     {/* TODO: This is for testing purposes only */}
                     <button onClick={() => setShouldShowWalletConsentPopup(true)}>Click to see Modal</button>
+                    {/* TODO: This is for testing purposes only */}
+                    <button>Modal wallet migration failed</button>
                     {is_low_risk_cr_real_account && is_landing_company_loaded ? (
                         <div className='main-title-bar-mobile--regulator'>
                             {!is_switching ? (

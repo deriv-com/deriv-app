@@ -4,6 +4,19 @@ import { ExchangeRatesStore } from './src/stores';
 
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
+type TCtraderAccountsList = {
+    account_id?: string;
+    account_type?: 'real' | 'demo';
+    balance?: number;
+    currency?: string;
+    display_balance?: string;
+    display_login?: string;
+    landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu' | 'seychelles';
+    login?: string;
+    market_type?: 'financial' | 'synthetic' | 'all';
+    platform?: string;
+};
+
 type TAccountsList = {
     account?: {
         balance?: string | number;
@@ -184,6 +197,7 @@ type TClientStore = {
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     is_crypto: boolean;
+    ctrader_accounts_list: TCtraderAccountsList[];
     dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
     default_currency: string;
     resetVirtualBalance: () => Promise<void>;

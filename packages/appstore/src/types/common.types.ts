@@ -53,15 +53,15 @@ export type TJurisdictionData = Record<
 >;
 
 export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
+    account_id?: string;
     display_login?: string;
-    landing_company_short?: string;
     short_code_and_region?: string;
     mt5_acc_auth_status?: string | null;
     selected_mt5_jurisdiction?: TOpenAccountTransferMeta &
         TJurisdictionData & {
             platform?: string;
         };
-
+    platform?: string;
     openFailedVerificationModal?: (from_account: string) => void;
 };
 

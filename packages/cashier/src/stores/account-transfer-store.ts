@@ -18,7 +18,7 @@ import { localize } from '@deriv/translations';
 import AccountTransferGetSelectedError from '../pages/account-transfer/account-transfer-get-selected-error';
 import Constants from '../constants/constants';
 import ErrorStore from './error-store';
-import type { TRootStore, TWebSocket, TAccount, TTransferAccount, TPlatformIcon } from '../types';
+import type { TRootStore, TWebSocket, TAccount, TTransferAccount } from '../types';
 
 const hasTransferNotAllowedLoginid = (loginid?: string) => loginid?.startsWith('MX');
 
@@ -237,20 +237,14 @@ export default class AccountTransferStore {
     }
 
     setTransferLimit() {
-        const is_mt_transfer = this.selected_from.is_mt || this.selected_to.is_mt;
-        const is_dxtrade_transfer = this.selected_from.is_dxtrade || this.selected_to.is_dxtrade;
-        const is_derivez_transfer = this.selected_from.is_derivez || this.selected_to.is_derivez;
+        const transfer_limits = [
+            { limits: 'limits_mt5', is_transfer: this.selected_from.is_mt || this.selected_to.is_mt },
+            { limits: 'limits_dxtrade', is_transfer: this.selected_from.is_dxtrade || this.selected_to.is_dxtrade },
+            { limits: 'limits_ctrader', is_transfer: this.selected_from.is_ctrader || this.selected_to.is_ctrader },
+            { limits: 'limits_derivez', is_transfer: this.selected_from.is_derivez || this.selected_to.is_derivez },
+        ];
 
-        let limits_key;
-        if (is_mt_transfer) {
-            limits_key = 'limits_mt5';
-        } else if (is_dxtrade_transfer) {
-            limits_key = 'limits_dxtrade';
-        } else if (is_derivez_transfer) {
-            limits_key = 'limits_derivez';
-        } else {
-            limits_key = 'limits';
-        }
+        const limits_key = transfer_limits.find(option => option.is_transfer)?.limits || 'limits';
 
         const transfer_limit = getPropertyValue(getCurrencies(), [
             this.selected_from.currency || '',
@@ -310,6 +304,18 @@ export default class AccountTransferStore {
                 if (found_account === undefined) return account;
 
                 return { ...account, ...found_account, account_type: CFD_PLATFORMS.MT5 };
+            }
+            if (
+                //TODO: "ctrader" account_type should be added into api-types TransferBetweenAccountsResponse.accounts.account_type
+                account.account_type === CFD_PLATFORMS.CTRADER &&
+                Array.isArray(ctrader_accounts_list) &&
+                ctrader_accounts_list.length
+            ) {
+                const found_account = ctrader_accounts_list.find(acc => acc.account_id === account.loginid);
+
+                if (found_account === undefined) return account;
+
+                return { ...account, ...found_account, account_type: CFD_PLATFORMS.CTRADER };
             }
             if (
                 account.account_type === CFD_PLATFORMS.DXTRADE &&
@@ -379,6 +385,7 @@ export default class AccountTransferStore {
         accounts?.forEach((account: TTransferAccount) => {
             const cfd_platforms = {
                 mt5: { name: 'Deriv MT5', icon: 'IcMt5' },
+                ctrader: { name: 'Deriv cTrader', icon: 'IcBrandCtrader' },
                 dxtrade: { name: 'Deriv X', icon: 'IcRebranding' },
                 derivez: { name: 'Deriv EZ', icon: 'IcDerivez' },
             };
@@ -412,13 +419,15 @@ export default class AccountTransferStore {
                           platform: account.account_type,
                           is_eu: this.root_store.client.is_eu,
                       })} ${this.root_store.client.is_eu ? '' : non_eu_accounts}`
-                    : `${cfd_text_display} ${getCFDAccountDisplay({
-                          market_type: account.market_type,
-                          sub_account_type: account.sub_account_type,
-                          platform: account.account_type,
-                          is_eu: this.root_store.client.is_eu,
-                          is_transfer_form: true,
-                      })}`;
+                    : `${cfd_text_display} ${
+                          getCFDAccountDisplay({
+                              market_type: account.market_type,
+                              sub_account_type: account.sub_account_type,
+                              platform: account.account_type,
+                              is_eu: this.root_store.client.is_eu,
+                              is_transfer_form: true,
+                          }) || ''
+                      }`;
             const account_text_display = is_cfd
                 ? cfd_account_text_display
                 : getCurrencyDisplayCode(
@@ -438,11 +447,13 @@ export default class AccountTransferStore {
                     is_cfd && account.account_type === CFD_PLATFORMS.MT5 && combined_cfd_mt5_account
                         ? `${combined_cfd_mt5_account.sub_title}${short_code_and_region}`
                         : account_text_display,
-                value: account.loginid,
+                //TODO: ask BE to add broker code (CTR) to cTrader loginid value
+                value: account.account_type === CFD_PLATFORMS.CTRADER ? `CTR${account.loginid}` : account.loginid,
                 balance: account.balance,
                 currency: account.currency,
                 is_crypto: isCryptocurrency(account.currency),
                 is_mt: account.account_type === CFD_PLATFORMS.MT5,
+                is_ctrader: account.account_type === CFD_PLATFORMS.CTRADER,
                 is_dxtrade: account.account_type === CFD_PLATFORMS.DXTRADE,
                 is_derivez: account.account_type === CFD_PLATFORMS.DERIVEZ,
                 ...(is_cfd && {
@@ -648,6 +659,17 @@ export default class AccountTransferStore {
                         // update the balance for account switcher by renewing the dxtrade_login_list_response
                         responseTradingPlatformAccountsList(dxtrade_login_list_response);
                         // update total balance since Dxtrade total only comes in non-stream balance call
+                        setBalanceOtherAccounts(balance_response.balance);
+                    });
+                }
+                // if one of the accounts was ctrader
+                if (account.account_type === CFD_PLATFORMS.CTRADER) {
+                    Promise.all([
+                        this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.CTRADER),
+                        this.WS.balanceAll(),
+                    ]).then(([ctrader_login_list_response, balance_response]) => {
+                        // update the balance for account switcher by renewing the ctrader_login_list_response
+                        responseTradingPlatformAccountsList(ctrader_login_list_response);
                         setBalanceOtherAccounts(balance_response.balance);
                     });
                 }

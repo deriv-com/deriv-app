@@ -23,6 +23,10 @@
             "name": "Deriv MT5",
             "icon": "IcRebrandingDmt5"
         },
+        "ctrader": {
+            "name": "Deriv cTrader",
+            "icon": "IcBrandCtrader"
+        },
         "dxtrade": {
             "name": "Deriv X",
             "icon": "IcRebrandingDxtrade"

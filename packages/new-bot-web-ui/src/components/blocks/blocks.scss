@@ -1,5 +1,4 @@
 .bot-builder__wrapper {
-
     .bot-builder__container {
         position: absolute;
         border: 1px solid rgb(6, 34, 48);
@@ -7,7 +6,7 @@
         margin: 1rem;
         padding: 0.5rem;
         background-color: rgb(6, 78, 114);
-    
+
         .dc-input {
             background: rgb(249, 249, 249);
         }
@@ -27,9 +26,9 @@
     .bot-builder__item {
         display: grid;
         grid-template-rows: repeat(4, auto);
-        grid-template-columns: 0.5fr 0.7fr 0.1fr 0.7fr 0.1fr 0.7fr;
+        grid-template-columns: 0.6fr 0.8fr 0.1fr 0.8fr 0.1fr 0.8fr;
         align-items: center;
-        padding: 0.5rem;
+        padding: 0.85rem;
         border: 1px solid #a5a5a5;
         border-radius: 0.4rem;
         background-color: rgb(229, 229, 229);
@@ -39,4 +38,3 @@
 .bot-builder {
     z-index: 0 !important; //!TODO: temporary changed
 }
-

@@ -6,8 +6,6 @@ import { observer } from '@deriv/stores';
 import { Form, Formik, FormikProps } from 'formik';
 import { BlocksFields } from './blocks-components';
 
-const items = [{ text: 'Derived' }, { text: 'Forex' }, { text: 'Stock Indices' }, { text: 'Commodities' }];
-
 const Blocks: React.FC = () => {
     const {
         blocks: { 
@@ -20,75 +18,21 @@ const Blocks: React.FC = () => {
             selected_submarket, 
             submarkets_dropdown,
             setSelectedSubmarket,
-            onHideDropdownList
+            onHideDropdownList,
+            onChangeDropdownItem,
+            selected_symbol,
+            setSelectedSymbol,
+            symbols_dropdown,
+            onScrollStopDropdownList,
         },
     } = useDBotStore();
 
-    console.log('Blocks selected_submarket', selected_submarket,'selected_market', selected_market, 'submarkets_dropdown', submarkets_dropdown, 'markets_dropdown', markets_dropdown);
-    
-    
-    // const [selected, setSelected] = React.useState('');
+    // console.log('Blocks selected_submarket', selected_submarket,'selected_market', selected_market, 'submarkets_dropdown', submarkets_dropdown, 'markets_dropdown', markets_dropdown);
 
     React.useEffect(() => {
         loadDataStrategy();
         initial_values
     }, []);
-
-    // const [symbols, setSymbols] = React.useState([]);
-    // const [markets, setMarkets] = React.useState([]);
-    // const [selected_symbol, setSelectedSymbol] = React.useState("");
-    // const [price, setPrice] = React.useState(0);
-
-
-    
-
-    // let displayed_symbols = symbols.filter(
-    //   (s) => s.market_display_name === selected_market
-    // );
-    // const selected_symbol_object = symbols.find(
-    //   (s) => s.symbol === selected_symbol
-    // );
-    // const displayed_selected_symbol = selected_symbol_object?.display_name;
-    // const exchange_is_open = selected_symbol_object?.exchange_is_open;
-    // React.useEffect(() => {
-    //   api
-    //     .send({
-    //       active_symbols: "brief",
-    //       product_type: "basic",
-    //     })
-    //     .then((response) => {
-    //       setSymbols(response.active_symbols);
-    //       setMarkets([
-    //         ...new Set(response.active_symbols.map((s) => s.market_display_name)),
-    //       ]);
-    //     });
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, []);
-    // React.useEffect(() => {
-    //   api.forgetAll("ticks").then(() => {
-    //     if (exchange_is_open) {
-    //       const tick = api.subscribe({ ticks: selected_symbol });
-    //       tick.subscribe(({ tick }) => {
-    //         setPrice(tick.quote);
-    //       });
-    //     }
-    //   });
-    // }, [selected_symbol, exchange_is_open]);
-  
-    // const handleSelectChange = (new_value, is_symbols_dropdown) => {
-    //   if (is_symbols_dropdown) {
-    //     const new_symbol = symbols.find(
-    //       (s) => new_value === s.display_name
-    //     ).symbol;
-    //     setSelectedSymbol(new_symbol);
-    //   } else {
-    //     setSelectedMarket(new_value);
-    //     setSelectedSymbol(
-    //       symbols.find((s) => s.market_display_name === new_value).symbol
-    //     );
-    //   }
-    // };
-
 
     return (
         <div className='bot-builder__wrapper'>
@@ -113,7 +57,7 @@ const Blocks: React.FC = () => {
                         setFieldValue,
                         submitForm,
                     }: FormikProps<any>) => {
-                        console.log('values', values);
+                        // console.log('values', values);
                         
                         return (
                         <Form
@@ -126,9 +70,13 @@ const Blocks: React.FC = () => {
                                 selected_submarket={selected_submarket}
                                 submarkets_dropdown={submarkets_dropdown}
                                 setSelectedSubmarket={setSelectedSubmarket}
-                                // onChangeDropdownItem={onChangeDropdownItem}
+                                onChangeDropdownItem={onChangeDropdownItem}
                                 onHideDropdownList={onHideDropdownList}
                                 setFieldValue={setFieldValue}
+                                selected_symbol={selected_symbol}
+                                setSelectedSymbol={setSelectedSymbol}
+                                symbols_dropdown={symbols_dropdown}
+                                onScrollStopDropdownList={onScrollStopDropdownList}
                                 // handleChange={handleChange}
                                 // onChangeInputValue={onChangeInputValue}
                                 // setCurrentFocus={setCurrentFocus}

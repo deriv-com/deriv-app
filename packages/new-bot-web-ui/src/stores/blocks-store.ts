@@ -2,6 +2,7 @@ import { computed, observable, action, makeObservable, runInAction } from 'mobx'
 // import config_data from '../strategies/default.json';
 import { getSetting, storeSetting } from 'Utils/settings';
 import RootStore from './root-store';
+import GTM from 'Utils/gtm';
 import {
     TMarket,
     TMarketDropdown,
@@ -10,10 +11,11 @@ import {
     TSelectedValuesSelect,
     TQSCache,
 } from '../components/blocks/blocks.types';
-// import {ApiHelpers, ActiveSymbols} from 'Services';
-import { api } from "../services/api/api";
+// import {ApiHelpers, ActiveSymbols} from 'Services/api';
 import {config} from '../constants/config-blocks';
 import { localize } from '@deriv/translations';
+import ApiHelpers from '../services/api/api-helpers';
+import ActiveSymbols from '../services/api/active-symbols';
 
 export default class BlocksStore {
     root_store: RootStore;
@@ -27,17 +29,19 @@ export default class BlocksStore {
             initial_values: computed,
             markets_dropdown: observable,
             submarkets_dropdown: observable,
-            symbol_dropdown: observable,
+            symbols_dropdown: observable,
             setMarketsDropdown: action.bound,
             setSelectedMarket: action.bound,
             setSelectedSubmarket: action.bound,
+            setSelectedSymbol: action.bound,
             getFieldMap: action.bound,
             onHideDropdownList: action.bound,
             loadDataStrategy: action.bound,
             updateMarketsDropdown: action.bound,
-
             processed_symbols: observable,
             active_symbols: observable,
+            onChangeDropdownItem: action.bound,
+            onScrollStopDropdownList: action.bound,
         });
 
         this.root_store = root_store;
@@ -45,26 +49,24 @@ export default class BlocksStore {
 
     selected_market: TMarket = (this.qs_cache.selected_market as TMarket) || {};
     selected_submarket: any = (this.qs_cache.selected_submarket) || {};
-    selected_symbol: TMarketOption = (this.qs_cache.symbol as TMarketOption) || {};
+    selected_symbol: TMarketOption = (this.qs_cache.selected_symbol as TMarketOption) || {};
     markets_dropdown: TMarketDropdown = [];
     submarkets_dropdown: TMarketDropdown = [];
-    symbol_dropdown: any = [];
+    symbols_dropdown: any = [];
     processed_symbols: any = {};
-
     active_symbols = [];
     disabled_markets = [];
     disabled_symbols = ['frxGBPNOK', 'frxUSDNOK', 'frxUSDNEK', 'frxUSDSEK']; // These are only forward-starting.
     disabled_submarkets = ['energy', 'step_index', 'crash_index'];
-    is_initialised = false;
+    is_initialised: boolean = false;
 
     get initial_values() {
         const init = {
             'bot-builder__market': this.getFieldValue(this.markets_dropdown, this.selected_market.value) || '',
             'bot-builder__submarket': this.getFieldValue(this.submarkets_dropdown, this.selected_submarket.value) || '',
-            'bot-builder__symbol': this.getFieldValue(this.symbol_dropdown, this.selected_symbol.value) || '',
+            'bot-builder__symbol': this.getFieldValue(this.symbols_dropdown, this.selected_symbol.value) || '',
         };
         storeSetting('strategy', this.qs_cache);
-        console.log('initial_values: ', init);
         
         return init;
     }
@@ -75,15 +77,18 @@ export default class BlocksStore {
         this.markets_dropdown = markets;
     }
 
-    setTypesSubmarketsDropdown(types_submarkets_options: TMarketOption): void {
-        console.log('setTypesSubmarketsDropdown types_submarkets_options', types_submarkets_options);
-        
-        this.submarkets_dropdown = types_submarkets_options;
+    setSubmarketsDropdown(submarkets): void {
+        console.log('setSubmarketsDropdown submarkets', submarkets);
+        this.submarkets_dropdown = submarkets;
+    }
+
+    setSymbolsDropdown(symbols): void {
+        console.log('setSymbolsDropdown symbols', symbols);
+        this.symbols_dropdown = symbols;
     }
 
     setSelectedMarket(market): void {
         console.log('setSelectedMarket market: ', market);
-        
         this.qs_cache.selected_market = market;
         this.selected_market = market;
         // delete this.qs_cache.selected_submarket;
@@ -91,57 +96,16 @@ export default class BlocksStore {
 
     setSelectedSubmarket(submarket): void {
         console.log('setSelectedSubmarket submarket', submarket);
-        
+        if(!submarket) return;
         this.qs_cache.selected_submarket = submarket;
         this.selected_submarket = submarket;
     }
 
-    onChangeDropdownItem(type: TDropdownItems, value: string, setFieldValue: TSetFieldValue): void {
-        console.log('onChangeDropdownItem', 'type: ', type, 'value', value);
-        
-        if (!value) {
-            return;
-        }
-
-        // const field_map = this.getFieldMap(type);
-        // if (type === 'symbol') {
-        //     this.updateTradeTypeDropdown(value, setFieldValue);
-
-        //     const symbol = this.symbol_dropdown.find(item => item.value === value);
-
-        //     if (symbol) {
-        //         this.setSelectedSubmarket(symbol);
-        //         setFieldValue(field_map?.field_name, symbol.text);
-        //     }
-
-
-        // } else if (type === 'trade-type') {
-        //     this.updateDurationDropdown(this.selected_symbol.value, value, setFieldValue);
-
-        //     const trade_type = this.trade_type_dropdown.find(item => item.value === value);
-
-        //     if (trade_type) {
-        //         this.setSelectedTradeType(trade_type);
-        //         setFieldValue(field_map?.field_name, trade_type.text);
-        //     }
-        // } else if (type === 'duration-unit') {
-        //     this.updateDurationValue(value, setFieldValue);
-
-        //     const duration_unit = this.duration_unit_dropdown.find(item => item.value === value);
-
-        //     if (duration_unit) {
-        //         this.setSelectedDurationUnit(duration_unit);
-        //         setFieldValue(field_map?.field_name, duration_unit.text);
-        //     }
-        // } else if (type === 'type-strategy') {
-        //     const typeStrategy = this.types_strategies_dropdown.find(item => item.value === value);
-
-        //     if (typeStrategy) {
-        //         this.setSelectedTypeStrategy(typeStrategy);
-        //         this.setActiveTypeStrategyIndex(typeStrategy.index);
-        //         setFieldValue(field_map?.field_name, typeStrategy.text);
-        //     }
-        // }
+    setSelectedSymbol(symbol): void {
+        if(!symbol) return;
+        console.log('setSelectedSymbol symbol', symbol);
+        this.qs_cache.selected_symbol = symbol;
+        this.selected_symbol = symbol;
     }
 
     isMarketClosed(market_name) {
@@ -272,121 +236,164 @@ export default class BlocksStore {
         }, {});
     }
 
+    async updateMarketsDropdown(select_value, value, setFieldValue) {
+        console.log('1');
+        
+        if(value){
+            console.log('value', value);
+            this.setSelectedMarket(value);
+        }
 
-    async updateMarketsDropdown() { //change name
-        // const {
-        //     settings: { markets },
-        // } = config_data;
-        // const { active_symbols } = await ApiHelpers.instance;
-        // const { active_symbols2 } = await ActiveSymbols.instance;
-        // const { active_symbols, error } = await WS?.authorized?.activeSymbols();
+        const { active_symbols } = ApiHelpers.instance;
+        console.log('ApiHelpers active_symbols', active_symbols);
+        this.active_symbols = active_symbols.active_symbols;
 
+        this.processed_symbols = this.processActiveSymbols();
+        const markets = this.getMarketDropdownOptions();
 
-        api
-        .send({
-          active_symbols: "brief",
-          product_type: "basic",
-        })
-        .then((response) => {
-            console.log('response.active_symbols', response.active_symbols);
-            this.active_symbols = response.active_symbols;
-
-            this.processed_symbols = this.processActiveSymbols();
-            // const markets = [...new Set(this.getMarketDropdownOptions())];
-            const markets = this.getMarketDropdownOptions();
-            console.log('markets: ', markets, 'this.processed_symbols: ', this.processed_symbols);
-
-            const market_name = markets.find(m => {
-                    if( this.selected_market && m[0] === this.selected_market){
-                    return m[1];
-                }else{
-                    return 'synthetic_index';
-                }
-            })[1];
+        const types_markets = markets.map(m => ({
+            index: m[0],
+            text: m[0],
+            value: m[0],
+        }));
+        
+        this.setMarketsDropdown(types_markets);
+        let first_market = types_markets[0];
+        if (this.selected_market && markets.some(e => e.value === this.selected_market.value)) {
+            first_market = this.selected_market;
+            runInAction(() => {
+                first_market.value = this.getFieldValue(markets, this.selected_market.value);
+            });
+        } else {
+            delete this.qs_cache.selected_market;
+        }
+        if (first_market) {
+            this.setSelectedMarket(first_market);
+            console.log('first market m', first_market);
             
+            await this.updateSubmarketsDropdown(null, first_market, setFieldValue);
 
-            const submarkets = this.getSubmarketDropdownOptions(market_name);
-            console.log('submarkets: ', submarkets, 'this.selected_market', this.selected_market, 'qwe', market_name);
-    
-            // const types_markets = Object.values(markets).map(m => ({
-            //     index: m.index,
-            //     text: m.label,
-            //     value: m.label,
-            // }));
-            const types_markets = markets.map(m => ({
-                // index: m.index,
-                text: m[0],
-                value: m[0],
-            }));
-            
-            this.setMarketsDropdown(types_markets);
-
-            const types_submarkets = submarkets.map(m => ({
-                // index: m.index,
-                text: m[1],
-                value: m[1],
-            }));
-            this.setTypesSubmarketsDropdown(types_submarkets);
-            
-            let first_market = types_markets[0];
-            
-            if (this.selected_market && markets.some(e => e.value === this.selected_market.value)) {
-                first_market = this.selected_market;
-                runInAction(() => {
-                    first_market.value = this.getFieldValue(markets, this.selected_market.value);
-                });
-            } else {
-                delete this.qs_cache.selected_market;
+            if (setFieldValue) {
+                setFieldValue('strategy__market', first_market.text);
             }
-            if (first_market) {
-                this.setSelectedMarket(first_market);
-                // await this.updateDurationDropdown(
-                //     this.selected_symbol.value,
-                //     this.selected_trade_type.value,
-                //     setFieldValue
-                // );
-    
-                if (setFieldValue) {
-                    setFieldValue('bot-builder__market', first_market.value);
-                }
-                //!TODO 
-                // this.setSelectedMarket(first_market);
+        }
+    }
+
+    async updateSubmarketsDropdown(select_value, market, setFieldValue) {
+        console.log('2');
+        const submarkets_dropdown = [];
+        const current_market = market || this.selected_market.value || this.markets_dropdown[0]?.value;
+        const filtered = this.active_symbols.map((s) => {
+            if( current_market === s.market_display_name){
+                return s.submarket_display_name;
             }
         });
-    }
-
-    getSubmarketDropdownOptions(market) {
-        const submarket_options = [];
-        const market_obj = this.processed_symbols[market];
-
-        if (market_obj) {
-            const { submarkets } = market_obj;
-
-            Object.keys(submarkets).forEach(submarket_name => {
-                const { display_name } = submarkets[submarket_name];
-                const submarket_display_name =
-                    display_name + (this.isSubmarketClosed(submarket_name) ? ` ${localize('(Closed)')}` : '');
-                submarket_options.push([submarket_display_name, submarket_name]);
+        
+        const uniq_submarkets = [...new Set(filtered)];
+        uniq_submarkets.map((s) => {
+            if(s){
+                submarkets_dropdown.push({
+                    value: s,
+                    text: s
+                })
+            }
+        });
+        const { active_symbols } = ApiHelpers.instance;
+        console.log('7active_symbols', active_symbols);
+        
+        const submarkets = active_symbols.getSubmarketDropdownOptions(current_market);
+        console.log('submarkets', submarkets);
+        
+        const types_submarkets = submarkets.map(subm => ({
+            index: subm[0],
+            text: subm[0],
+            value: subm[0],
+        }));
+        let first_submarket = types_submarkets[0];
+        if (this.selected_submarket && submarkets.some(e => e.value === this.selected_submarket.value)) {
+            first_submarket = this.selected_submarket;
+            runInAction(() => {
+                first_submarket.value = this.getFieldValue(submarkets, this.selected_submarket.value);
             });
+        } else {
+            delete this.qs_cache.selected_submarket;
         }
+        if (first_submarket) {
+            console.log('hiiiii', first_submarket);
+            
+            this.setSelectedSubmarket(first_submarket);
+            await this.updateSymbolDropdown(null, first_submarket, setFieldValue);
 
-        if (submarket_options.length === 0) {
-            return config.NOT_AVAILABLE_DROPDOWN_OPTIONS;
+            if (setFieldValue) {
+                setFieldValue('strategy__submarket', first_submarket.text);
+            }
         }
-        if (market === 'synthetic_index') {
-            submarket_options.sort(a => (a[1] === 'random_index' ? -1 : 1));
-        }
-
-        return this.sortDropdownOptions(submarket_options, this.isSubmarketClosed);
+        
+        console.log('updateSubmarketsDropdown submarkets_dropdown:', submarkets_dropdown, 'uniq_submarkets: ', uniq_submarkets);
+        this.setSubmarketsDropdown(submarkets_dropdown);
     }
 
-    updateSubmarketsDropdown(submarket) {
+    async updateSymbolDropdown(select_value, submarket, setFieldValue) {
+        console.log('3');
+        const { active_symbols } = ApiHelpers.instance;
+        const symbols = active_symbols.getAllSymbols(/* should_be_open */ true);
+        console.log('symbols', symbols);
+        const current_submarket = submarket || this.selected_submarket.value || this.qs_cache.selected_submarket?.value;
+        const symbols_dropdown = [];
+        symbols.map((symbol: TSymbol) => {
+            // console.log('current_submarket', current_submarket, 'symbol.submarket_display: ', symbol.submarket_display );
+            
+            if(current_submarket === symbol.submarket_display){
+                if(symbol){
+                    symbols_dropdown.push({
+                        group: symbol.submarket_display,
+                        text: symbol.symbol_display,
+                        value: symbol.symbol_display, //symbol.symbol
+                    });
+                }
+            };
+        });
+        console.log('symbols_dropdown', symbols_dropdown);
 
+        this.setSymbolsDropdown(symbols_dropdown);
+
+        if (!this.selected_symbol.value && symbols_dropdown.length) {
+            console.log('my case');
+            
+            this.selected_symbol = symbols_dropdown[0];
+        }
+
+        const new_symbols = active_symbols.getSymbolDropdownOptions(current_submarket);
+        
+        const types_symbols = new_symbols.map(s => ({
+            index: s[0],
+            text: s[0],
+            value: s[0],
+        }));
+        let first_symbol = types_symbols[0];
+        console.log('types_symbols', types_symbols);
+        
+        if (this.selected_submarket && new_symbols.some(e => e.value === this.selected_symbol?.value)) {
+            first_symbol = this.selected_symbol;
+            runInAction(() => {
+                first_symbol.value = this.getFieldValue(new_symbols, this.selected_symbol?.value);
+            });
+        } else {
+            delete this.qs_cache.selected_symbol;
+        }
+        if (first_symbol) {
+            this.setSelectedSymbol(first_symbol);
+
+            if (setFieldValue) {
+                setFieldValue('strategy__symbol', first_symbol.text);
+            }
+        }
     }
 
     async loadDataStrategy() {
         await this.updateMarketsDropdown();
         await this.updateSubmarketsDropdown();
+        await this.updateSymbolDropdown();
     }
 
     getFieldValue = (list_items: TDropdowns, value: string): string => {
@@ -415,6 +422,12 @@ export default class BlocksStore {
                 selected: this.selected_submarket,
                 setSelected: this.setSelectedSubmarket,
             },
+            symbol: {
+                field_name: 'bot-builder__symbol',
+                dropdown: this.symbols_dropdown,
+                selected: this.selected_symbol,
+                setSelected: this.setSelectedSymbol,
+            },
         };
         
         return field_mapping[type];
@@ -429,15 +442,12 @@ export default class BlocksStore {
         link.click();
     };
 
-
     onHideDropdownList(type, value, setFieldValue): void {
-        console.log('type', type, 'value', value);
+        console.log('onHideDropdownList type', type, 'value', value);
         
         const field_map = this.getFieldMap(type);
-        console.log('field_map', field_map.dropdown);
         
-        const item = field_map.dropdown?.find(i => i.value.toLowerCase() === value.toLowerCase()) || field_map.selected;
-        console.log('item', item);
+        const item = field_map.dropdown?.find(i => i.value?.toLowerCase() === value?.toLowerCase()) || field_map.selected;
         
 
         if (!item) {
@@ -450,9 +460,50 @@ export default class BlocksStore {
         }
 
         if (item !== field_map.selected) {
-            console.log('3', item, field_map.selected);
             field_map.setSelected(item);
         }
         
     }
+
+    async onChangeDropdownItem(type: any, value: string, setFieldValue: any): void {
+        
+        if (!value) {
+            return;
+        }
+
+        const field_map = await this.getFieldMap(type);
+        console.log('onChangeDropdownItem', 'type', type, 'value', value, field_map);
+        
+        if (type === 'market') {
+
+            this.updateSubmarketsDropdown(null, value, setFieldValue);
+            const market = this.markets_dropdown.find(item => item.value === value);
+
+            if (market) {
+                this.setSelectedMarket(market);
+                setFieldValue(field_map?.field_name, market.text);
+            }
+
+        } else if (type === 'submarket') {
+
+            this.updateSymbolDropdown(null, value, setFieldValue);
+            const submarket = this.submarkets_dropdown.find(item => item.value === value);
+
+            if (submarket) {
+                this.setSelectedSubmarket(submarket);
+                setFieldValue(field_map?.field_name, submarket.text);
+            }
+        } else if (type === 'symbol') {
+            const symbol = this.symbols_dropdown.find(item => item.value === value);
+
+            if (symbol) {
+                this.setSelectedSymbol(symbol);
+                setFieldValue(field_map?.field_name, symbol.text);
+            }
+        }
+    }
+
+    onScrollStopDropdownList = (type: any): void => {
+        GTM.pushDataLayer({ event: `dbot_strategy_scroll_${type}` });
+    };
 }

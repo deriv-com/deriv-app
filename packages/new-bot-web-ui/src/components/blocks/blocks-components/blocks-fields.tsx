@@ -1,7 +1,7 @@
 import React from 'react';
-import { Autocomplete, Text } from '@deriv/components';
+import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { Field } from 'formik';
+import { SelectBlockField } from '.';
 
 const BlocksFields = ({
     selected_market,
@@ -13,63 +13,57 @@ const BlocksFields = ({
     values,
     setFieldValue,
     onHideDropdownList,
+    onChangeDropdownItem,
+    selected_symbol,
+    setSelectedSymbol,
+    symbols_dropdown,
+    onScrollStopDropdownList,
 }: any) => {
+    
 return(<>
     <div className='bot-builder__item'>
         <Text>{localize('Market:')}</Text>
-        <Field name={'bot-builder__market'} key={0} id={0}>
-            {({ field }: any) => (
-                <Autocomplete
-                    {...field}
-                    autoComplete='off'
-                    className={'quick-strategy__dropdown quick-strategy__leading'}
-                    type='text'
-                    label={localize('Markets')}
-                    list_items={markets_dropdown}
-                    disabled={markets_dropdown?.length === 1}
-                    onHideDropdownList={() => {
-                         console.log('values[field.name]', values[field.name], values)
-                        onHideDropdownList(
-                            'market',
-                            values[field.name],
-                            setFieldValue
-                        );
-                    }}
-                    // onItemSelection={({ value }: { value: string }) => {
-                    //     onChangeDropdownItem(select_value, value, setFieldValue);
-                    // }}
-                    onItemSelection={(selected_item) => {
-                        setSelectedMarket(selected_item);
-                    }}
-                    // onScrollStop={() => onScrollStopDropdownList(select_value)}
-                    />
-            )}
-        </Field>
+        <SelectBlockField
+            selected={selected_market}
+            setSelected={setSelectedMarket}//
+            values={values}
+            setFieldValue={setFieldValue}
+            onHideDropdownList={onHideDropdownList}
+            onChangeDropdownItem={onChangeDropdownItem}
+            name_field={'bot-builder__market'}
+            label={localize('Markets')}
+            dropdown={markets_dropdown}
+            select_value={localize('market')}
+            onScrollStopDropdownList={onScrollStopDropdownList}
+        />
         <Text>&nbsp;&#9658;&nbsp;</Text>
-        <Field name={'bot-builder__submarket'} key={1} id={1}>
-            {({ field }: any) => (
-                <Autocomplete
-                    autoComplete='off'
-                    className='quick-strategy__dropdown quick-strategy__leading'
-                    type='text'
-                    label={localize('Submarkets')}
-                    list_items={submarkets_dropdown}
-                    onHideDropdownList={() => {
-                        onHideDropdownList(
-                            'submarket',
-                            values[field.name],
-                            setFieldValue
-                        );
-                    }}
-                    onItemSelection={(selected_item) => {
-                        console.log('selected_item', selected_item);
-                        
-                        setSelectedSubmarket(selected_item.text);
-                    }}
-                />
-            )}
-        </Field>
+        <SelectBlockField
+            selected={selected_submarket}
+            setSelected={setSelectedSubmarket}//
+            values={values}
+            setFieldValue={setFieldValue}
+            onHideDropdownList={onHideDropdownList}
+            onChangeDropdownItem={onChangeDropdownItem}
+            name_field={'bot-builder__submarket'}
+            label={localize('Submarkets')}
+            dropdown={submarkets_dropdown}
+            select_value={localize('submarket')}
+            onScrollStopDropdownList={onScrollStopDropdownList}
+        />
         <Text>&nbsp;&#9658;&nbsp;</Text>
+        <SelectBlockField
+            selected={selected_symbol}
+            setSelected={setSelectedSymbol}//
+            values={values}
+            setFieldValue={setFieldValue}
+            onHideDropdownList={onHideDropdownList}
+            onChangeDropdownItem={onChangeDropdownItem}
+            name_field={'bot-builder__symbol'}
+            label={localize('Symbols')}
+            dropdown={symbols_dropdown}
+            select_value={localize('symbol')}
+            onScrollStopDropdownList={onScrollStopDropdownList}
+        />
             {/* <Autocomplete
                 autoComplete='off'
                 className='quick-strategy__dropdown quick-strategy__leading'

@@ -44,14 +44,14 @@ const POISubmissionForMT5 = ({
         }
     }, [citizen_data]);
 
-    const handlePOIComplete = () => {
+    const handlePOIComplete = React.useCallback(() => {
         if (onStateChange && typeof onStateChange === 'function') {
             onStateChange(identity_status_codes.pending);
         }
         WS.authorized.getAccountStatus().then(() => {
             refreshNotifications();
         });
-    };
+    }, []);
 
     const handleIdvSubmit = async (values, { setSubmitting, setErrors }) => {
         setSubmitting(true);

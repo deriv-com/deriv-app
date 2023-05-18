@@ -50,7 +50,7 @@ const POISubmission = ({
         }
     };
 
-    const handleViewComplete = () => {
+    const handleViewComplete = React.useCallback(() => {
         if (onStateChange && typeof onStateChange === 'function') {
             onStateChange(identity_status_codes.pending);
         }
@@ -59,7 +59,7 @@ const POISubmission = ({
         WS.authorized.getAccountStatus().then(() => {
             refreshNotifications();
         });
-    };
+    }, []);
 
     const handleBack = () => setSubmissionStatus(submission_status_code.selecting);
 

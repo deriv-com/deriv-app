@@ -59,7 +59,7 @@ const PercentageSelector = ({
             if (percentage_selector_block) {
                 if (
                     i < (e as TCalculateAmountInputEvent).target.id ||
-                    (i === +(e as TCalculateAmountInputEvent).target.id && !is_percentage_selected)
+                    (i === Number((e as TCalculateAmountInputEvent).target.id) && !is_percentage_selected)
                 ) {
                     percentage_selector_block.style.backgroundColor = 'var(--status-success)';
                 } else {

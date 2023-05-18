@@ -340,6 +340,8 @@ type TTradersHubStore = {
     setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
     toggleAccountTransferModal: () => void;
     is_demo: boolean;
+    platform_configuration: Array<Record<string, any>>;
+    setPlatFormConfig: (platform_configuration: Array<Record<string, any>>) => void;
 };
 
 /**

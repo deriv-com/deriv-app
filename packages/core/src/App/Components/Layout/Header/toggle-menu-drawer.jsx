@@ -168,7 +168,7 @@ const MenuLink = observer(
     }
 );
 
-const ToggleMenuDrawer = observer(({ platform_config }) => {
+const ToggleMenuDrawer = observer(({ platform_configuration }) => {
     const { common, ui, client, traders_hub, modules } = useStore();
     const { app_routing_history, current_language, is_language_changing } = common;
     const { disableApp, enableApp, is_dark_mode_on: is_dark_mode, setDarkMode: toggleTheme } = ui;
@@ -502,7 +502,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         is_landing_company_loaded={is_landing_company_loaded}
                                         is_logged_in={is_logged_in}
                                         is_logging_in={is_logging_in}
-                                        platform_config={platform_config}
+                                        platform_configuration={platform_configuration}
                                         toggleDrawer={toggleDrawer}
                                         setTogglePlatformType={setTogglePlatformType}
                                     />

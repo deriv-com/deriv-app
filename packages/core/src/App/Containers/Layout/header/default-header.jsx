@@ -10,7 +10,6 @@ import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { connect } from 'Stores/connect';
-import platform_config from 'App/Constants/platform-config';
 import { withRouter } from 'react-router-dom';
 
 const DefaultHeader = ({
@@ -43,6 +42,7 @@ const DefaultHeader = ({
     notifications_count,
     openRealAccountSignup,
     platform,
+    platform_configuration,
     removeNotificationMessage,
     toggleAccountsDialog,
     toggleNotifications,
@@ -96,13 +96,13 @@ const DefaultHeader = ({
                             is_landing_company_loaded={is_landing_company_loaded}
                             is_logged_in={is_logged_in}
                             is_logging_in={is_logging_in}
-                            platform_config={filterPlatformsForClients(platform_config)}
+                            platform_configuration={filterPlatformsForClients(platform_configuration)}
                             setTogglePlatformType={setTogglePlatformType}
                             current_language={current_language}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
-                        <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
+                        <ToggleMenuDrawer platform_configuration={filterPlatformsForClients(platform_configuration)} />
                         {header_extension && is_logged_in && (
                             <div className='header__menu-left-extensions'>{header_extension}</div>
                         )}
@@ -226,6 +226,7 @@ export default connect(({ client, common, ui, notifications, traders_hub }) => (
     notifications_count: notifications.notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
     platform: common.platform,
+    platform_configuration: traders_hub.platform_configuration,
     removeNotificationMessage: notifications.removeNotificationMessage,
     toggleAccountsDialog: ui.toggleAccountsDialog,
     toggleNotifications: notifications.toggleNotificationsModal,

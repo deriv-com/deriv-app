@@ -5,7 +5,6 @@ import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { routes, isMobile, getDecimalPlaces, platforms } from '@deriv/shared';
 import { AccountActions, MenuLinks, PlatformSwitcher } from 'App/Components/Layout/Header';
-import platform_config from 'App/Constants/platform-config';
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import NewVersionNotification from 'App/Containers/new-version-notification.jsx';
@@ -45,6 +44,7 @@ const DTraderHeader = ({
     notifications_count,
     openRealAccountSignup,
     platform,
+    platform_configuration,
     removeNotificationMessage,
     toggleAccountsDialog,
     toggleNotifications,
@@ -102,12 +102,12 @@ const DTraderHeader = ({
                     <DesktopWrapper>
                         <PlatformSwitcher
                             app_routing_history={app_routing_history}
-                            platform_config={filterPlatformsForClients(platform_config)}
+                            platform_configuration={filterPlatformsForClients(platform_configuration)}
                             setTogglePlatformType={setTogglePlatformType}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
-                        <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
+                        <ToggleMenuDrawer platform_configuration={filterPlatformsForClients(platform_configuration)} />
 
                         {header_extension && is_logged_in && (
                             <div className='header__menu-left-extensions'>{header_extension}</div>
@@ -234,6 +234,7 @@ export default connect(({ client, common, ui, notifications, traders_hub }) => (
     is_notifications_visible: notifications.is_notifications_visible,
     is_route_modal_on: ui.is_route_modal_on,
     is_virtual: client.is_virtual,
+    platform_configuration: traders_hub.platform_configuration,
     notifications_count: notifications.notifications.length,
     openRealAccountSignup: ui.openRealAccountSignup,
     platform: common.platform,

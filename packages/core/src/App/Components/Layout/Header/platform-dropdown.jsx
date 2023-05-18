@@ -43,7 +43,7 @@ const PlatformDropdownContent = ({ platform, app_routing_history }) => {
     );
 };
 
-const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, setTogglePlatformType }) => {
+const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_configuration, setTogglePlatformType }) => {
     const history = useHistory();
 
     const TradersHubRedirect = () => {
@@ -86,7 +86,7 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, s
     const platform_dropdown = (
         <div className='platform-dropdown'>
             <Div100vhContainer className='platform-dropdown__list' height_offset='15rem' is_disabled={isDesktop()}>
-                {platform_config.map(platform => {
+                {platform_configuration.map(platform => {
                     return (
                         <div key={platform.name} onClick={closeDrawer} ref={ref}>
                             <PlatformDropdownContent platform={platform} app_routing_history={app_routing_history} />

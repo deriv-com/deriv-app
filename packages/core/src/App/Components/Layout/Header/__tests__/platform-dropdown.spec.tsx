@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { PlatformDropdown, PlatformBox } from '../platform-dropdown';
 
 type TMockPlatformDropdown = {
-    platform_config: {
+    platform_configuration: {
         link_to?: string;
         href?: string;
         name: string;
@@ -22,11 +22,11 @@ jest.mock('Stores/connect.js', () => ({
             Component,
 }));
 
-const MockPlatformDropdown = ({ platform_config }: TMockPlatformDropdown) => {
+const MockPlatformDropdown = ({ platform_configuration }: TMockPlatformDropdown) => {
     return (
         <BrowserRouter>
             <PlatformDropdown
-                platform_config={platform_config}
+                platform_configuration={platform_configuration}
                 app_routing_history={[{ pathname: '' }]}
                 closeDrawer={jest.fn()}
             />
@@ -55,7 +55,7 @@ describe('PlatformDropdown component', () => {
     it('should render proper component base on the "link_to" property', () => {
         const { rerender } = render(
             <MockPlatformDropdown
-                platform_config={[
+                platform_configuration={[
                     {
                         link_to: '/test',
                         name: 'DTrader',
@@ -68,7 +68,7 @@ describe('PlatformDropdown component', () => {
 
         rerender(
             <MockPlatformDropdown
-                platform_config={[
+                platform_configuration={[
                     {
                         href: '/test',
                         name: 'DTrader',

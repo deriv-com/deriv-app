@@ -1,6 +1,49 @@
 import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, LogOutResponse } from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
-import { AvailableAccount, BrandConfig } from './src/types/appstore.types';
+
+type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
+
+type TIconTypes =
+    | 'Derived'
+    | 'Financial'
+    | 'BinaryBot'
+    | 'BinaryBotBlue'
+    | 'DBot'
+    | 'Demo'
+    | 'DerivGo'
+    | 'DerivGoBlack'
+    | 'DerivLogo'
+    | 'DerivTradingLogo'
+    | 'DerivX'
+    | 'DropDown'
+    | 'DTrader'
+    | 'Options'
+    | 'SmartTrader'
+    | 'SmartTraderBlue'
+    | 'CFDs';
+
+interface AvailableAccount {
+    name: string;
+    is_item_blurry?: boolean;
+    has_applauncher_account?: boolean;
+    sub_title?: string;
+    description?: string;
+    is_visible?: boolean;
+    is_disabled?: boolean;
+    platform?: string;
+    market_type?: 'all' | 'financial' | 'synthetic';
+    icon: TIconTypes;
+    availability: TRegionAvailability;
+    short_code_and_region?: string;
+    login?: string;
+}
+
+type BrandConfig = {
+    name: string;
+    icon: TIconTypes;
+    availability: TRegionAvailability;
+    is_deriv_platform?: boolean;
+};
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: string | number;

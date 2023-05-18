@@ -30,7 +30,7 @@ export const getUrlSmartTrader = () => {
     return `${base_link}/${i18n_language.toLowerCase()}/trading.html`;
 };
 
-export const getUrlBinaryBot = (lang: boolean) => {
+export const getUrlBinaryBot = (is_language_required: boolean) => {
     const { is_deriv_app } = getPlatformFromUrl();
 
     const url_lang = getlangFromUrl();
@@ -38,7 +38,7 @@ export const getUrlBinaryBot = (lang: boolean) => {
 
     const base_link = is_deriv_app ? deriv_urls.BINARYBOT_PRODUCTION : deriv_urls.BINARYBOT_STAGING;
 
-    return lang ? `${base_link}/?l=${i18n_language.toLowerCase()}` : base_link;
+    return is_language_required ? `${base_link}/?l=${i18n_language.toLowerCase()}` : base_link;
 };
 
 export const getPlatformFromUrl = (domain = window.location.hostname) => {

@@ -26,6 +26,7 @@ const DTraderHeader = ({
     client_notifications,
     currency,
     country_standpoint,
+    current_language,
     disableApp,
     enableApp,
     header_extension,
@@ -104,6 +105,7 @@ const DTraderHeader = ({
                             app_routing_history={app_routing_history}
                             platform_config={filterPlatformsForClients(platform_config)}
                             setTogglePlatformType={setTogglePlatformType}
+                            current_language={current_language}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -244,4 +246,5 @@ export default connect(({ client, common, ui, notifications, traders_hub }) => (
     toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
     has_any_real_account: client.has_any_real_account,
     setTogglePlatformType: traders_hub.setTogglePlatformType,
+    current_language: common.current_language,
 }))(withRouter(DTraderHeader));

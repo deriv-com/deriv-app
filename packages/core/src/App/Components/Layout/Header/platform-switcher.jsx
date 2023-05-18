@@ -34,6 +34,7 @@ const PlatformSwitcher = ({
             if (name === 'Binary Bot') {
                 data.href = getUrlBinaryBot(true);
             }
+            return data;
         });
     }, [current_language]);
 

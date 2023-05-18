@@ -27,7 +27,7 @@ const AppContent = observer(() => {
         ui: { is_dark_mode_on },
     } = RootStore;
     const DBotStores = useDBotStore();
-    const { app, blocks: { loadDataStrategy } } = DBotStores;
+    const { app } = DBotStores;
     const { showDigitalOptionsMaltainvestError } = app;
 
     // TODO: Remove this when connect is removed completely
@@ -64,7 +64,6 @@ const AppContent = observer(() => {
     }, [client.is_options_blocked, client.account_settings.country_code]);
 
     React.useEffect(() => {
-        loadDataStrategy();
         api_base.init();
         GTM.init(combinedStore);
         ServerTime.init(common);

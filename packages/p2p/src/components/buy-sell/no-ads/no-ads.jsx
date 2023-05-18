@@ -4,8 +4,8 @@ import { useHistory } from 'react-router-dom';
 import { Button, Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import './no-ads.scss';
 import { routes } from '@deriv/shared';
+import './no-ads.scss';
 
 const NoAds = () => {
     const { buy_sell_store, general_store, my_ads_store } = useStores();

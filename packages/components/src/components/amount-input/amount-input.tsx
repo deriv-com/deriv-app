@@ -1,4 +1,4 @@
-import React, { KeyboardEventHandler, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { isMobile } from '@deriv/shared';
 import Input from '../input';
 import Text from '../text';
@@ -50,9 +50,9 @@ const AmountInput = ({
         if (!target) setTarget(e.target);
         let newValue = value;
         if (!is_pasting) {
+            // handle ATM typing:
             // remove all characters that are not digit / point / comma:
             const input_value = e.target.value.replace(/[^\d.,]/g, '');
-            // handle ATM typing:
             if (input_value.replace(/[.,]/g, '').replace(/^0+/g, '').length <= max_digits)
                 newValue = Number(input_value.replace(/[.,]/g, '')) / Math.pow(10, decimal_places);
         } else {
@@ -65,17 +65,25 @@ const AmountInput = ({
             );
             // remove all characters that are not digit / point / comma:
             const input_value = e.target.value.replace(/[^\d.,]/g, '');
-            // understand the thing user wants to paste:
+            // understand the value user wants to paste:
             const pasted_value = pasted_string
-                .replace(/[^\d.,]/g, '')
-                .replace(/[,.](?=.*[,.])/g, '')
-                .replace(',', '.');
-            if ((value === 0 && caret_right_offset === 0) || selection_length === displayNumber(value).length) {
-                // handle pasting when there's nothing entered before it, or it is overridden:
-                newValue = Number(pasted_value.substring(0, pasted_value.includes('.') ? max_digits + 1 : max_digits));
-            } else if (input_value.replace(/[.,]/g, '').replace(/^0+/g, '').length <= max_digits) {
-                // handle pasting when there's something entered before it and there's space for the pasted value:
-                newValue = Number(input_value.replace(/[.,]/g, '')) / Math.pow(10, decimal_places);
+                .replace(/[^\d.,]/g, '') // remove all characters that are not digit / point / comma
+                .replace(/[,.](?=.*[,.])/g, '') // leave only the last point / comma
+                .replace(',', '.'); // make the last point / comma separator a point
+            if (pasted_value.replace('.', '')) {
+                // if the value is a valid non-empty string, handle the two scenarios:
+                if ((value === 0 && caret_right_offset === 0) || selection_length === displayNumber(value).length) {
+                    // handle pasting when there's nothing entered before it, or it is overridden (intention: reset value):
+                    newValue = Number(
+                        pasted_value.substring(
+                            0,
+                            pasted_value.includes('.') ? max_digits + 1 : max_digits - decimal_places
+                        )
+                    );
+                } else if (input_value.replace(/[.,]/g, '').replace(/^0+/g, '').length <= max_digits) {
+                    // handle pasting when there's something entered before it and there's space for the pasted value (intention: add to value):
+                    newValue = Number(input_value.replace(/[.,]/g, '')) / Math.pow(10, decimal_places);
+                }
             }
         }
         setValue(newValue);
@@ -83,17 +91,9 @@ const AmountInput = ({
         onChange?.(newValue);
     };
 
-    const onMouseDownHandler: React.ComponentProps<typeof Input>['onMouseDown'] = e => {
-        if (e.currentTarget.selectionStart !== null && e.currentTarget.selectionEnd !== null) {
-            setCaretRightOffset(e.currentTarget.value.length - e.currentTarget.selectionEnd);
-            setSelection({
-                selectionStart: e.currentTarget.selectionStart,
-                selectionEnd: e.currentTarget.selectionEnd,
-            });
-        }
-    };
-
-    const onKeyDownHandler: KeyboardEventHandler<HTMLInputElement> = e => {
+    const inputActionHandler = (e: {
+        currentTarget: { value: string; selectionStart: number | null; selectionEnd: number | null };
+    }) => {
         if (e.currentTarget.selectionStart !== null && e.currentTarget.selectionEnd !== null) {
             setCaretRightOffset(e.currentTarget.value.length - e.currentTarget.selectionEnd);
             setSelection({
@@ -121,8 +121,9 @@ const AmountInput = ({
                     onFocus={() => setFocus(true)}
                     onBlur={() => setFocus(false)}
                     onChange={onChangeHandler}
-                    onKeyDown={onKeyDownHandler}
-                    onMouseDown={onMouseDownHandler}
+                    onKeyDown={inputActionHandler}
+                    onMouseDown={inputActionHandler}
+                    onMouseUp={inputActionHandler}
                     onPaste={() => setIsPasting(true)}
                     type='text'
                     inputMode='numeric'

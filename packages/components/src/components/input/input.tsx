@@ -30,6 +30,7 @@ export type TInputProps = {
     onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onMouseDown?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onMouseUp?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onPaste?: React.ClipboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -142,6 +143,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                                 onChange={props.onChange}
                                 onKeyDown={props.onKeyDown}
                                 onMouseDown={props.onMouseDown}
+                                onMouseUp={props.onMouseUp}
                                 onPaste={props.onPaste}
                                 disabled={disabled}
                                 data-lpignore={props.type === 'password' ? undefined : true}

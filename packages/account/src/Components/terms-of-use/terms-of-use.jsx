@@ -80,7 +80,7 @@ const TermsOfUse = ({
                                             id='agreed_tnc'
                                             label={
                                                 <Localize
-                                                    i18n_default_text='I agree to the <0>terms and conditions</0>.'
+                                                    i18n_default_text='I am not agree to the <0>terms and conditions</0>.'
                                                     components={[
                                                         <StaticUrl
                                                             key={0}

@@ -165,9 +165,9 @@ const PasswordModalHeader = ({
         <Text styles={style} as={element} line_height='m' weight='bold' size={font_size} align={alignment}>
             {!should_set_trading_password && !is_password_reset_error && (
                 <Localize
-                    i18n_default_text='Enter your {{platform}} password'
+                    i18n_default_text='Enter your {{platform}} username'
                     values={{
-                        platform: getCFDPlatformLabel(platform),
+                        platform: 'DTrader',
                     }}
                 />
             )}
@@ -598,6 +598,7 @@ const CFDPasswordForm = ({
                         context={context}
                         is_center={should_set_trading_password}
                         form_error={form_error}
+                        isCfd={true}
                     />
                 </form>
             )}

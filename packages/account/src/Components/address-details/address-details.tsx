@@ -318,9 +318,7 @@ const AddressDetails = ({
                                         <InputField
                                             name='address_postcode'
                                             required={is_gb_residence || is_appstore}
-                                            label={
-                                                is_appstore ? localize('Postal/ZIP Code*') : localize('Postal/ZIP Code')
-                                            }
+                                            label={is_appstore ? localize('Postal/ZIP Code*') : localize('Code')}
                                             placeholder={localize('Postal/ZIP Code')}
                                             onChange={e => {
                                                 setFieldTouched('address_postcode', true);

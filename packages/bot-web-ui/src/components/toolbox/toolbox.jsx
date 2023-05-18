@@ -119,7 +119,7 @@ const Toolbox = ({
                                                 <div className='db-toolbox__label'>
                                                     {localize(category.getAttribute('name'))}
                                                 </div>
-                                                {has_sub_category && (
+                                                {has_sub_category && category.getAttribute('name') !== 'Utility' && (
                                                     <div
                                                         className={classNames('db-toolbox__category-arrow', {
                                                             'db-toolbox__category-arrow--active': is_sub_category_open,

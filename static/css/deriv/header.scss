@@ -10,9 +10,9 @@
 .header {
     left: 0px;
     top: 0px;
-    background: var(--general-main-1);
-    border-top: none;
-    border-bottom: none;
+    background: var(--general-main-1) !important;
+    border-top: none !important;
+    border-bottom: none !important;
     height: 48px;
     display: flex;
     transition: opacity 0.3s;

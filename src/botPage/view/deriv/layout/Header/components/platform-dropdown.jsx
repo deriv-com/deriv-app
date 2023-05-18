@@ -40,7 +40,7 @@ const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcher
                         const related_deriv_origin = getRelatedDeriveOrigin();
                         platform.link = `https://${related_deriv_origin.prefix}smarttrader.deriv.${
                             related_deriv_origin.extension
-                            }/${localStorage.getItem('lang').toLowerCase() || 'en'}`;
+                        }/${localStorage.getItem('lang').toLowerCase() || 'en'}`;
                     }
 
                     const is_binary_bot = platform.title === 'Binary Bot' && location.pathname === '/';

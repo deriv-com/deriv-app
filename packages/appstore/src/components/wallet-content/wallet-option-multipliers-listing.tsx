@@ -14,20 +14,20 @@ type TProps = {
 };
 
 const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps) => {
-    const { low_risk_cr_non_eu, low_risk_cr_eu, high_risk_cr, cr_demo } = useContentFlag();
+    const { is_low_risk_cr_non_eu, is_low_risk_cr_eu, is_high_risk_cr, is_cr_demo } = useContentFlag();
     const { traders_hub, client, ui } = useStore();
     const { is_mobile, setShouldShowCooldownModal, openRealAccountSignup } = ui;
     const { is_landing_company_loaded, is_eu, has_maltainvest_account, real_account_creation_unlock_date } = client;
     const { available_platforms, is_eu_user, is_real, no_MF_account, no_CR_account, is_demo } = traders_hub;
 
     const OptionsTitle = () => {
-        if ((low_risk_cr_non_eu || high_risk_cr || cr_demo) && !is_mobile) {
+        if ((is_low_risk_cr_non_eu || is_high_risk_cr || is_cr_demo) && !is_mobile) {
             return (
                 <Text size='sm' line_height='m' weight='bold'>
                     {localize('Options & Multipliers')}
                 </Text>
             );
-        } else if ((low_risk_cr_eu || is_eu) && !is_mobile) {
+        } else if ((is_low_risk_cr_eu || is_eu) && !is_mobile) {
             return (
                 <Text size='sm' line_height='m' weight='bold' color='prominent'>
                     {localize('Multipliers')}
@@ -38,7 +38,7 @@ const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps)
     };
 
     const listing_container_description =
-        low_risk_cr_non_eu || high_risk_cr || cr_demo ? (
+        is_low_risk_cr_non_eu || is_high_risk_cr || is_cr_demo ? (
             <Text size='xs' line_height='s'>
                 <Localize
                     i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the

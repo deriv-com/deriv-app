@@ -10,12 +10,12 @@ describe('useContentFlag', () => {
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useContentFlag(), { wrapper });
-        expect(result.current.cr_demo).toBe(true);
-        expect(result.current.eu_demo).toBe(false);
-        expect(result.current.eu_real).toBe(false);
-        expect(result.current.high_risk_cr).toBe(false);
-        expect(result.current.low_risk_cr_eu).toBe(false);
-        expect(result.current.low_risk_cr_non_eu).toBe(false);
+        expect(result.current.is_cr_demo).toBe(true);
+        expect(result.current.is_eu_demo).toBe(false);
+        expect(result.current.is_eu_real).toBe(false);
+        expect(result.current.is_high_risk_cr).toBe(false);
+        expect(result.current.is_low_risk_cr_eu).toBe(false);
+        expect(result.current.is_low_risk_cr_non_eu).toBe(false);
     });
 
     test('should return true for eu_demo when content flag is eu_demo', async () => {
@@ -24,12 +24,12 @@ describe('useContentFlag', () => {
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useContentFlag(), { wrapper });
-        expect(result.current.cr_demo).toBe(false);
-        expect(result.current.eu_demo).toBe(true);
-        expect(result.current.eu_real).toBe(false);
-        expect(result.current.high_risk_cr).toBe(false);
-        expect(result.current.low_risk_cr_eu).toBe(false);
-        expect(result.current.low_risk_cr_non_eu).toBe(false);
+        expect(result.current.is_cr_demo).toBe(false);
+        expect(result.current.is_eu_demo).toBe(true);
+        expect(result.current.is_eu_real).toBe(false);
+        expect(result.current.is_high_risk_cr).toBe(false);
+        expect(result.current.is_low_risk_cr_eu).toBe(false);
+        expect(result.current.is_low_risk_cr_non_eu).toBe(false);
     });
 
     test('should return true for eu_real when content flag is eu_real', async () => {
@@ -38,12 +38,12 @@ describe('useContentFlag', () => {
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useContentFlag(), { wrapper });
-        expect(result.current.cr_demo).toBe(false);
-        expect(result.current.eu_demo).toBe(false);
-        expect(result.current.eu_real).toBe(true);
-        expect(result.current.high_risk_cr).toBe(false);
-        expect(result.current.low_risk_cr_eu).toBe(false);
-        expect(result.current.low_risk_cr_non_eu).toBe(false);
+        expect(result.current.is_cr_demo).toBe(false);
+        expect(result.current.is_eu_demo).toBe(false);
+        expect(result.current.is_eu_real).toBe(true);
+        expect(result.current.is_high_risk_cr).toBe(false);
+        expect(result.current.is_low_risk_cr_eu).toBe(false);
+        expect(result.current.is_low_risk_cr_non_eu).toBe(false);
     });
 
     test('should return true for high_risk_cr when content flag is high_risk_cr', async () => {
@@ -52,12 +52,12 @@ describe('useContentFlag', () => {
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useContentFlag(), { wrapper });
-        expect(result.current.cr_demo).toBe(false);
-        expect(result.current.eu_demo).toBe(false);
-        expect(result.current.eu_real).toBe(false);
-        expect(result.current.high_risk_cr).toBe(true);
-        expect(result.current.low_risk_cr_eu).toBe(false);
-        expect(result.current.low_risk_cr_non_eu).toBe(false);
+        expect(result.current.is_cr_demo).toBe(false);
+        expect(result.current.is_eu_demo).toBe(false);
+        expect(result.current.is_eu_real).toBe(false);
+        expect(result.current.is_high_risk_cr).toBe(true);
+        expect(result.current.is_low_risk_cr_eu).toBe(false);
+        expect(result.current.is_low_risk_cr_non_eu).toBe(false);
     });
 
     test('should return true for low_risk_cr_eu when content flag is low_risk_cr_eu', async () => {
@@ -66,12 +66,12 @@ describe('useContentFlag', () => {
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useContentFlag(), { wrapper });
-        expect(result.current.cr_demo).toBe(false);
-        expect(result.current.eu_demo).toBe(false);
-        expect(result.current.eu_real).toBe(false);
-        expect(result.current.high_risk_cr).toBe(false);
-        expect(result.current.low_risk_cr_eu).toBe(true);
-        expect(result.current.low_risk_cr_non_eu).toBe(false);
+        expect(result.current.is_cr_demo).toBe(false);
+        expect(result.current.is_eu_demo).toBe(false);
+        expect(result.current.is_eu_real).toBe(false);
+        expect(result.current.is_high_risk_cr).toBe(false);
+        expect(result.current.is_low_risk_cr_eu).toBe(true);
+        expect(result.current.is_low_risk_cr_non_eu).toBe(false);
     });
 
     test('should return true for low_risk_cr_non_eu when content flag is low_risk_cr_non_eu', async () => {
@@ -80,11 +80,11 @@ describe('useContentFlag', () => {
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useContentFlag(), { wrapper });
-        expect(result.current.cr_demo).toBe(false);
-        expect(result.current.eu_demo).toBe(false);
-        expect(result.current.eu_real).toBe(false);
-        expect(result.current.high_risk_cr).toBe(false);
-        expect(result.current.low_risk_cr_eu).toBe(false);
-        expect(result.current.low_risk_cr_non_eu).toBe(true);
+        expect(result.current.is_cr_demo).toBe(false);
+        expect(result.current.is_eu_demo).toBe(false);
+        expect(result.current.is_eu_real).toBe(false);
+        expect(result.current.is_high_risk_cr).toBe(false);
+        expect(result.current.is_low_risk_cr_eu).toBe(false);
+        expect(result.current.is_low_risk_cr_non_eu).toBe(true);
     });
 });

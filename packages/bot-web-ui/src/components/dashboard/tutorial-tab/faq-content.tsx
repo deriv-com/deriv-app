@@ -34,9 +34,9 @@ const FAQ = ({ type, content, src }: TDescription) => {
 };
 
 const FAQContent = observer(({ faq_list, hide_header = false }: TFAQContent) => {
-    const {
-        dashboard: { faq_search_value },
-    } = useDBotStore();
+    const { dashboard } = useDBotStore();
+
+    const { faq_search_value } = dashboard;
 
     const getList = () => {
         return faq_list.map(({ title, description }: TFAQList) => ({

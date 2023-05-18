@@ -44,14 +44,14 @@ export const getAppstorePlatforms = (): PlatformConfig[] => [
     },
     {
         name: getPlatformSettingsAppstore('smarttrader').name,
-        app_desc: localize('Our legacy options trading platform.'),
+        app_desc: localize('Our legacy options trading platform sd.'),
         link_to: getUrlSmartTrader(),
         is_external: true,
     },
     {
         name: getPlatformSettingsAppstore('bbot').name,
-        app_desc: localize('Our legacy automated trading platform.'),
-        link_to: getUrlBinaryBot(),
+        app_desc: localize('Our legacy automated trading platform sda.'),
+        link_to: getUrlBinaryBot(true),
         is_external: true,
     },
     {

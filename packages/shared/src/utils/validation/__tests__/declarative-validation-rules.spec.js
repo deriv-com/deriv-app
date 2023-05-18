@@ -1,5 +1,4 @@
-import { validAddress, initFormErrorMessages } from '../declarative-validation-rules';
-
+import { validAddress, initFormErrorMessages, validLetterSymbol } from '../declarative-validation-rules';
 const form_error_messages = {
     address: () => '',
     empty_address: () => '',
@@ -39,5 +38,14 @@ describe('validAddress', () => {
     it('should not accept special characters other then the permitted ones', () => {
         const not_permitted_characters = '§±!$%^&*+=\\?{}[]|';
         [...not_permitted_characters].forEach(c => expect(validAddress(c).is_ok).toBe(false));
+    });
+});
+describe('validLetterSymbol', () => {
+    test('returns true for valid letter symbol', () => {
+        const validSymbols = ['A', 'z', 'abc', 'John', "O'Neil", 'Doe - Smith'];
+
+        validSymbols.forEach(symbol => {
+            expect(validLetterSymbol(symbol)).toBe(true);
+        });
     });
 });

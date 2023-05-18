@@ -1,11 +1,10 @@
 import React from 'react';
 import { isAction, reaction } from 'mobx';
-import { observer } from 'mobx-react-lite';
 import { useHistory } from 'react-router-dom';
 import { useStores } from 'Stores';
 import { isMobile } from '@deriv/shared';
 import { Loading, Tabs } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import classNames from 'classnames';
 import Dp2pBlocked from './dp2p-blocked';
 import { localize } from './i18next';

@@ -174,54 +174,59 @@ export const OpenPositionsTable = ({
     row_size,
     totals,
     is_empty,
-}) => (
-    <React.Fragment>
-        {is_loading ? (
-            <PlaceholderComponent
-                is_loading={is_loading}
-                empty_message_component={EmptyTradeHistoryMessage}
-                component_icon={component_icon}
-                localized_message={localize('You have no open positions yet.')}
-            />
-        ) : (
-            currency && (
-                <div className='reports__content'>
-                    <DesktopWrapper>
-                        <EmptyPlaceholderWrapper component_icon={component_icon} is_empty={is_empty}>
-                            <DataTable
-                                className={className}
-                                columns={columns}
-                                preloaderCheck={preloaderCheck}
-                                footer={totals}
-                                data_source={active_positions}
-                                getRowAction={getRowAction}
-                                getRowSize={() => row_size}
-                                content_loader={ReportsTableRowLoader}
-                            >
-                                <PlaceholderComponent is_loading={is_loading} />
-                            </DataTable>
-                        </EmptyPlaceholderWrapper>
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <EmptyPlaceholderWrapper component_icon={component_icon} is_empty={is_empty}>
-                            <DataList
-                                className={className}
-                                data_source={active_positions}
-                                footer={totals}
-                                rowRenderer={mobileRowRenderer}
-                                getRowAction={getRowAction}
-                                row_gap={8}
-                                keyMapper={item => item?.id}
-                            >
-                                <PlaceholderComponent is_loading={is_loading} />
-                            </DataList>
-                        </EmptyPlaceholderWrapper>
-                    </MobileWrapper>
-                </div>
-            )
-        )}
-    </React.Fragment>
-);
+}) => {
+    const bug_active_positions = active_positions.map(item => {
+        return { ...item, purchase: 100 };
+    });
+    return (
+        <React.Fragment>
+            {is_loading ? (
+                <PlaceholderComponent
+                    is_loading={is_loading}
+                    empty_message_component={EmptyTradeHistoryMessage}
+                    component_icon={component_icon}
+                    localized_message={localize('You have no open positions yet.')}
+                />
+            ) : (
+                currency && (
+                    <div className='reports__content'>
+                        <DesktopWrapper>
+                            <EmptyPlaceholderWrapper component_icon={component_icon} is_empty={is_empty}>
+                                <DataTable
+                                    className={className}
+                                    columns={columns}
+                                    preloaderCheck={preloaderCheck}
+                                    footer={totals}
+                                    data_source={active_positions}
+                                    getRowAction={getRowAction}
+                                    getRowSize={() => row_size}
+                                    content_loader={ReportsTableRowLoader}
+                                >
+                                    <PlaceholderComponent is_loading={is_loading} />
+                                </DataTable>
+                            </EmptyPlaceholderWrapper>
+                        </DesktopWrapper>
+                        <MobileWrapper>
+                            <EmptyPlaceholderWrapper component_icon={component_icon} is_empty={is_empty}>
+                                <DataList
+                                    className={className}
+                                    data_source={bug_active_positions}
+                                    footer={totals}
+                                    rowRenderer={mobileRowRenderer}
+                                    getRowAction={getRowAction}
+                                    row_gap={8}
+                                    keyMapper={item => item?.id}
+                                >
+                                    <PlaceholderComponent is_loading={is_loading} />
+                                </DataList>
+                            </EmptyPlaceholderWrapper>
+                        </MobileWrapper>
+                    </div>
+                )
+            )}
+        </React.Fragment>
+    );
+};
 
 const getRowAction = row_obj =>
     row_obj.is_unsupported

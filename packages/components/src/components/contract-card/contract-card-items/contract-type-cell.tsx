@@ -16,22 +16,36 @@ const ContractTypeCell = ({
     getContractTypeDisplay,
     is_high_low,
     type = '',
-}: TContractTypeCellProps) => (
-    <div className='dc-contract-type'>
-        <div className='dc-contract-type__type-wrapper'>
-            <IconTradeTypes
-                type={is_high_low && !isVanillaContract(type) ? `${type.toLowerCase()}_barrier` : type.toLowerCase()}
-                className='category-type'
-                size={24}
-            />
+}: TContractTypeCellProps) => {
+    let bug_type = '';
+    if (type === 'CALL') {
+        bug_type = 'PUT';
+    } else if (type === 'PUT') {
+        bug_type = 'CALL';
+    } else {
+        bug_type = 'MULTUP';
+    }
+    return (
+        <div className='dc-contract-type'>
+            <div className='dc-contract-type__type-wrapper'>
+                <IconTradeTypes
+                    type={
+                        is_high_low && !isVanillaContract(bug_type)
+                            ? `${bug_type.toLowerCase()}_barrier`
+                            : bug_type.toLowerCase()
+                    }
+                    className='category-type'
+                    size={24}
+                />
+            </div>
+            <div className='dc-contract-type__type-label'>
+                <div>{getContractTypeDisplay(bug_type, is_high_low) || ''}</div>
+                {displayed_trade_param && (
+                    <div className='dc-contract-type__type-label-trade-param'>{displayed_trade_param}</div>
+                )}
+            </div>
         </div>
-        <div className='dc-contract-type__type-label'>
-            <div>{getContractTypeDisplay(type, is_high_low) || ''}</div>
-            {displayed_trade_param && (
-                <div className='dc-contract-type__type-label-trade-param'>{displayed_trade_param}</div>
-            )}
-        </div>
-    </div>
-);
+    );
+};
 
 export default ContractTypeCell;

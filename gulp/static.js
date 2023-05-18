@@ -42,11 +42,6 @@ gulp.task(
 );
 
 gulp.task(
-    'copy-binary-style-css',
-    gulp.series(() => gulp.src('node_modules/binary-style/binary.css').pipe(gulp.dest('www/css')))
-);
-
-gulp.task(
     'copy-binary-style-img',
     gulp.series(() => gulp.src('node_modules/binary-style/src/images/**').pipe(gulp.dest('www/image/binary-style')))
 );

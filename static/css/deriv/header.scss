@@ -10,7 +10,9 @@
 .header {
     left: 0px;
     top: 0px;
-    background-color: var(--general-main-1);
+    background: var(--general-main-1);
+    border-top: none;
+    border-bottom: none;
     height: 48px;
     display: flex;
     transition: opacity 0.3s;

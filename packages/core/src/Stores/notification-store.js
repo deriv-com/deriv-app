@@ -335,6 +335,11 @@ export default class NotificationStore extends BaseStore {
 
             this.handlePOAAddressMismatchNotifications();
 
+            // TODO: Update logic when BE API is integrated [Wallets]
+            if (window.location.pathname !== routes.traders_hub) {
+                this.showFailedWalletsUpgradeNotification();
+            }
+
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
             } else {
@@ -1564,6 +1569,27 @@ export default class NotificationStore extends BaseStore {
             ),
             type: 'info',
             should_show_again: true,
+        });
+    };
+
+    showFailedWalletsUpgradeNotification = () => {
+        this.addNotificationMessage({
+            key: 'failed_wallets_upgrade',
+            header: localize('Sorry for the interruption'),
+            message: localize(
+                "We're unable to complete with the Wallet upgrade. Please try again later or contact us via live chat."
+            ),
+            action: {
+                onClick: () => {
+                    window.LC_API.open_chat_window();
+                    this.removeNotificationMessage({
+                        key: this.client_notifications.failed_wallets_upgrade.key,
+                        should_show_again: false,
+                    });
+                },
+                text: localize('Go to live chat'),
+            },
+            type: 'danger',
         });
     };
 

@@ -15,7 +15,7 @@ type TJurisdictionContent = {
     bvi: TJurisdictionCardItems;
 };
 
-export const jurisdiction_contents: TJurisdictionContent = {
+export const getJurisdictionContents = (): TJurisdictionContent => ({
     svg: {
         is_over_header_available: false,
         header: localize('St. Vincent & Grenadines'),
@@ -103,4 +103,4 @@ export const jurisdiction_contents: TJurisdictionContent = {
             `${localize('Leverage up to 1:1000')}`,
         ],
     },
-};
+});

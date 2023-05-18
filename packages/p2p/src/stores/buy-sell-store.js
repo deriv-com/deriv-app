@@ -95,7 +95,6 @@ export default class BuySellStore extends BaseStore {
             modal_title: computed,
             rendered_items: computed,
             should_filter_by_payment_method: computed,
-            getSupportedPaymentMethods: action.bound,
             getWebsiteStatus: action.bound,
             handleChange: action.bound,
             handleSubmit: action.bound,
@@ -232,20 +231,6 @@ export default class BuySellStore extends BaseStore {
         }
     }
 
-    getSupportedPaymentMethods(payment_method_names) {
-        const { my_profile_store } = this.root_store;
-
-        //Get all payment methods supported in the country
-        const payment_methods = payment_method_names?.filter(
-            payment_method_name =>
-                Object.entries(my_profile_store.available_payment_methods).findIndex(
-                    payment_method => payment_method[1].display_name === payment_method_name
-                ) !== -1
-        );
-
-        return payment_methods;
-    }
-
     getWebsiteStatus() {
         requestWS({ website_status: 1 }).then(response => {
             if (response) {
@@ -363,10 +348,6 @@ export default class BuySellStore extends BaseStore {
 
                             list.forEach(new_item => {
                                 const old_item_idx = old_items.findIndex(old_item => old_item.id === new_item.id);
-
-                                new_item.payment_method_names = this.getSupportedPaymentMethods(
-                                    new_item.payment_method_names
-                                );
 
                                 if (old_item_idx > -1) {
                                     old_items[old_item_idx] = new_item;
@@ -726,10 +707,6 @@ export default class BuySellStore extends BaseStore {
                                 // Added a check to prevent console errors
                                 if (response?.error) return;
                                 const { p2p_advert_info } = response;
-
-                                p2p_advert_info.payment_method_names = this.getSupportedPaymentMethods(
-                                    p2p_advert_info.payment_method_names
-                                );
 
                                 if (this.selected_ad_state?.id === p2p_advert_info.id) {
                                     this.setSelectedAdState(p2p_advert_info);

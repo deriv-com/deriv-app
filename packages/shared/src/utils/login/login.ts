@@ -10,7 +10,8 @@ export const redirectToLogin = (is_logged_in: boolean, language: string, has_par
         const redirect_url = has_params ? window.location.href : `${l.protocol}//${l.host}${l.pathname}`;
         sessionStorage.setItem('redirect_url', redirect_url);
         setTimeout(() => {
-            window.location.href = loginUrl({ language });
+            const new_href = loginUrl({ language });
+            window.location.href = new_href;
         }, redirect_delay);
     }
 };

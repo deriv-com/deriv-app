@@ -9,6 +9,7 @@ const isStaging = process.env.CIRCLE_JOB === 'release_staging';
 let dataDogSessionSampleRate = 0;
 let dataDogSessionReplaySampleRate = 0;
 let dataDogVersion = '';
+let dataDogEnv = '';
 let serviceName = '';
 
 if (isProduction) {
@@ -16,11 +17,13 @@ if (isProduction) {
     dataDogVersion = `deriv-app-${process.env.CIRCLE_TAG}`;
     dataDogSessionReplaySampleRate = +process.env.DATADOG_SESSION_REPLAY_SAMPLE_RATE! ?? 1;
     dataDogSessionSampleRate = +process.env.DATADOG_SESSION_SAMPLE_RATE! ?? 10;
+    dataDogEnv = 'production';
 } else if (isStaging) {
     serviceName = 'staging-app.deriv.com';
     dataDogVersion = `deriv-app-staging-v${formatDate(new Date(), 'YYYYMMDD')}-${formatTime(Date.now(), 'HH:mm')}`;
     dataDogSessionReplaySampleRate = 100;
     dataDogSessionSampleRate = 100;
+    dataDogEnv = 'staging';
 }
 
 datadogRum.init({
@@ -28,7 +31,7 @@ datadogRum.init({
     clientToken: isStaging || isProduction ? DATADOG_CLIENT_TOKEN : '',
     site: 'datadoghq.com',
     service: serviceName,
-    env: 'production',
+    env: dataDogEnv,
     sessionSampleRate: dataDogSessionSampleRate,
     sessionReplaySampleRate: dataDogSessionReplaySampleRate,
     trackUserInteractions: true,

@@ -36,11 +36,11 @@ const CryptoDeposit = observer(() => {
     }, [pollApiForDepositAddress]);
 
     const option_list = [
-        { text: <Localize i18n_default_text='Binance Smart Chain' />, value: 1 },
-        { text: <Localize i18n_default_text='Polygon (Matic)' />, value: 2 },
-        { text: <Localize i18n_default_text='Tron' />, value: 3 },
-        { text: <Localize i18n_default_text='Ethereum (ERC20)' />, value: 4 },
-        { text: <Localize i18n_default_text='Ethereum (ETH)' />, value: 5 },
+        { text: localize('Binance Smart Chain'), value: '1' },
+        { text: localize('Polygon (Matic)'), value: '2' },
+        { text: localize('Tron'), value: '3' },
+        { text: localize('Ethereum (ERC20)'), value: '4' },
+        { text: localize('Ethereum (ETH)'), value: '5' },
     ];
 
     const [option_message, setOptionMessage] = useState<JSX.Element | string>('');

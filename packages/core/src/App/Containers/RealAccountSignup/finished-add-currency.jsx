@@ -8,6 +8,7 @@ const FinishedAddCurrency = ({
     current,
     closeRealAccountSignup,
     deposit_target,
+    redirectToLegacyPlatform,
     deposit_real_account_signup_target,
     history,
     onSubmit,
@@ -22,11 +23,13 @@ const FinishedAddCurrency = ({
         if (deposit_target === routes.cashier_deposit) {
             setIsDeposit(true);
         }
+        redirectToLegacyPlatform();
     };
 
     const onCancel = () => {
         closeRealAccountSignup();
         setIsDeposit(false);
+        redirectToLegacyPlatform();
     };
 
     return (

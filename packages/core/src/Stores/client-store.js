@@ -236,6 +236,7 @@ export default class ClientStore extends BaseStore {
             has_fiat: computed,
             current_fiat_currency: computed,
             current_landing_company: computed,
+            default_landing_company: computed,
             account_list: computed,
             has_real_mt5_login: computed,
             has_real_dxtrade_login: computed,
@@ -603,6 +604,15 @@ export default class ClientStore extends BaseStore {
                 company => this.landing_companies[company]?.shortcode === this.landing_company_shortcode
             );
         return landing_company ? this.landing_companies[landing_company] : undefined;
+    }
+
+    get default_landing_company() {
+        const available_landing_companies = this.landing_company_shortcode;
+
+        const difference_array = this.upgradeable_landing_companies.filter(
+            landing_company => !available_landing_companies.includes(landing_company)
+        );
+        return difference_array;
     }
 
     get account_list() {

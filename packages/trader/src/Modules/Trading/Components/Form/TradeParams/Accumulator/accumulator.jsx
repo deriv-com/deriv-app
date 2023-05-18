@@ -21,7 +21,7 @@ const Accumulator = ({ accumulator_range_list, growth_rate, onChange, tick_size_
     return (
         <Fieldset
             className={classNames('trade-container__fieldset', 'accumulator')}
-            header={localize('Growth Rate')}
+            header={localize('Growth rate')}
             is_center
             header_tooltip={localize(
                 'Your stake will grow at {{growth_rate}}% per tick as long as the current spot price remains within ±{{tick_size_barrier}} from the previous spot price.',

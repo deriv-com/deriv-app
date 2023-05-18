@@ -1,9 +1,11 @@
+import type { Moment } from 'moment';
 import type {
     AccountLimitsResponse,
     Authorize,
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
+    ProposalOpenContract,
     GetSettings,
     LogOutResponse,
 } from '@deriv/api-types';
@@ -58,6 +60,12 @@ type TMenuItem = {
     login_only: boolean;
     onClick: boolean | (() => void);
     text: () => string;
+};
+
+type TAddToastProps = {
+    key: string;
+    content: string;
+    type: string;
 };
 
 type TButtonProps = {
@@ -158,11 +166,13 @@ type TClientStore = {
     }) => DetailsOfEachMT5Loginid[];
     standpoint: {
         iom: string;
+        malta: string;
     };
     setAccountStatus: (status?: GetAccountStatus) => void;
     setBalanceOtherAccounts: (balance: number) => void;
     setInitialized: (status?: boolean) => void;
     setLogout: (status?: boolean) => void;
+    setVisibilityRealityCheck: (value: boolean) => void;
     setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
     switchAccount: (value?: string) => Promise<void>;
@@ -220,6 +230,7 @@ type TCommonStore = {
     platform: string;
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
+    server_time?: Moment;
     changeCurrentLanguage: (new_language: string) => void;
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
@@ -227,6 +238,7 @@ type TCommonStore = {
 };
 
 type TUiStore = {
+    addToast: (toast_config: TAddToastProps) => void;
     app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;
     current_focus: string | null;
     disableApp: () => void;
@@ -235,12 +247,14 @@ type TUiStore = {
     is_cashier_visible: boolean;
     is_closing_create_real_account_modal: boolean;
     is_dark_mode_on: boolean;
+    is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
     notification_messages_ui: JSX.Element | null;
     openRealAccountSignup: (value?: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
+    setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     sub_section_index: number;
@@ -251,11 +265,33 @@ type TUiStore = {
     toggleLanguageSettingsModal: () => void;
     toggleReadyToDepositModal: () => void;
     toggleSetCurrencyModal: () => void;
+    removeToast: (key: string) => void;
     is_ready_to_deposit_modal_visible: boolean;
+    reports_route_tab_index: number;
+    should_show_cancellation_warning: boolean;
+    toggleCancellationWarning: (state_change: boolean) => void;
+    toggleUnsupportedContractModal: (state_change: boolean) => void;
+    toggleReports: (is_visible: boolean) => void;
     is_real_acc_signup_on: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
     setShouldShowCooldownModal: (value: boolean) => void;
+};
+
+type TPortfolioStore = {
+    active_positions: ProposalOpenContract[];
+    error: TCommonStoreError;
+    getPositionById: (id: number) => ProposalOpenContract;
+    is_loading: boolean;
+    is_multiplier: boolean;
+    onClickCancel: (contract_id: number) => void;
+    onClickSell: (contract_id: number) => void;
+    onMount: () => void;
+    removePositionById: (id: number) => void;
+};
+
+type TContractStore = {
+    getContractById: (id: number) => ProposalOpenContract;
 };
 
 type TMenuStore = {
@@ -314,6 +350,8 @@ export type TCoreStores = {
     common: TCommonStore;
     menu: TMenuStore;
     ui: TUiStore;
+    portfolio: TPortfolioStore;
+    contract_trade: TContractStore;
     // This should be `any` as this property will be handled in each package.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     modules: Record<string, any>;

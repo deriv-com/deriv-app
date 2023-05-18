@@ -8,6 +8,7 @@ import { BinaryLink } from 'App/Components/Routes';
 import PropTypes from 'prop-types';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { connect } from 'Stores/connect';
+import platform_config from 'App/Constants/platform-config';
 
 const Divider = () => {
     return <div className='dashboard-platform-header__divider' />;
@@ -105,7 +106,6 @@ const DashboardPlatformHeader = ({
     is_notifications_visible,
     is_settings_modal_on,
     notifications_count,
-    platform_configuration,
     settings_extension,
     toggleNotifications,
     toggleSettingsModal,
@@ -122,7 +122,7 @@ const DashboardPlatformHeader = ({
         <header className='dashboard-platform-header'>
             <div className='dashboard-platform-header__menu-left'>
                 <MobileWrapper>
-                    <ToggleMenuDrawer platform_configuration={filterPlatformsForClients(platform_configuration)} />
+                    <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
                 <DesktopWrapper>
@@ -179,7 +179,7 @@ DashboardPlatformHeader.propTypes = {
     is_settings_modal_on: PropTypes.bool,
 };
 
-export default connect(({ client, common, notifications, trader_hub, ui }) => ({
+export default connect(({ client, common, notifications, ui }) => ({
     app_routing_history: common.app_routing_history,
     balance: client.balance,
     currency: client.currency,
@@ -190,6 +190,5 @@ export default connect(({ client, common, notifications, trader_hub, ui }) => ({
     is_mt5_allowed: client.is_mt5_allowed,
     is_notifications_visible: notifications.is_notifications_visible,
     notifications_count: notifications.notifications.length,
-    platform_configuration: trader_hub.platform_configuration,
     toggleNotifications: notifications.toggleNotificationsModal,
 }))(withRouter(DashboardPlatformHeader));

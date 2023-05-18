@@ -4,7 +4,6 @@ import BaseStore from './base-store';
 import { localize } from '@deriv/translations';
 import { isEuCountry } from '_common/utility';
 import { getMultipliersAccountStatus } from './Helpers/client';
-import platform_config from 'App/Constants/platform-config';
 
 export default class TradersHubStore extends BaseStore {
     available_platforms = [];
@@ -29,15 +28,12 @@ export default class TradersHubStore extends BaseStore {
     };
     is_account_transfer_modal_open = false;
     selected_account = {};
-    platform_configuration = [...platform_config];
 
     constructor(root_store) {
         super({ root_store });
 
         makeObservable(this, {
             account_type_card: observable,
-            platform_configuration: observable,
-            setPlatFormConfig: action.bound,
             available_cfd_accounts: observable,
             available_dxtrade_accounts: observable,
             available_mt5_accounts: observable,
@@ -212,10 +208,6 @@ export default class TradersHubStore extends BaseStore {
 
         this.selected_account_type = 'real';
         this.selected_region = 'Non-EU';
-    }
-
-    setPlatFormConfig(platform_configuration = []) {
-        this.platform_configuration = platform_configuration;
     }
 
     selectAccountTypeCard(account_type_card) {

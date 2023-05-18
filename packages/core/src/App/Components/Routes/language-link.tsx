@@ -4,8 +4,6 @@ import { observer, useStore } from '@deriv/stores';
 import { useTranslation } from 'react-i18next';
 import { Icon } from '@deriv/components';
 import { getAllowedLanguages } from '@deriv/translations';
-import { getUrlBinaryBot, getUrlSmartTrader } from '@deriv/shared';
-import { toJS } from 'mobx';
 
 export type TLanguageLink = {
     icon_classname?: string;
@@ -16,24 +14,9 @@ export type TLanguageLink = {
 
 const LanguageLink = observer(({ icon_classname, is_clickable = false, lang, toggleModal }: TLanguageLink) => {
     const { i18n } = useTranslation();
-    const { common, traders_hub } = useStore();
-    const { platform_configuration, setPlatFormConfig } = traders_hub;
+    const { common } = useStore();
     const { changeSelectedLanguage, current_language } = common;
     const is_active = current_language === lang;
-
-    const updatePlatformConfigLanguage = () => {
-        const tmp_array = [...platform_configuration];
-        const updated_array = tmp_array.map(data => {
-            if (data.name === 'Binary Bot') {
-                data.link_to = getUrlBinaryBot(true);
-            }
-            if (data.name === 'SmartTrader') {
-                data.link_to = getUrlSmartTrader();
-            }
-            return data;
-        });
-        setPlatFormConfig(updated_array);
-    };
 
     const link: React.ReactNode = (
         <React.Fragment>
@@ -73,7 +56,6 @@ const LanguageLink = observer(({ icon_classname, is_clickable = false, lang, tog
                     onClick={async () => {
                         await changeSelectedLanguage(lang);
                         await i18n.changeLanguage?.(lang);
-                        updatePlatformConfigLanguage(lang);
                         toggleModal?.();
                     }}
                     className={classNames('settings-language__language-link', {

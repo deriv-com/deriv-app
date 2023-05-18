@@ -6,6 +6,7 @@ import { DesktopWrapper, Icon, MobileWrapper, Popover, Text, Button } from '@der
 import { routes, platforms, formatMoney } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { ToggleNotifications, MenuLinks } from 'App/Components/Layout/Header';
+import platform_config from 'App/Constants/platform-config';
 import ToggleMenuDrawer from 'App/Components/Layout/Header/toggle-menu-drawer.jsx';
 import { connect } from 'Stores/connect';
 import { BinaryLink } from 'App/Components/Routes';
@@ -97,7 +98,6 @@ const TradingHubHeader = ({
     modal_data,
     notifications_count,
     platform,
-    platform_configuration,
     setIsOnboardingVisited,
     toggleIsTourOpen,
     toggleNotifications,
@@ -220,7 +220,7 @@ const TradingHubHeader = ({
         >
             <div className='trading-hub-header__menu-left'>
                 <MobileWrapper>
-                    <ToggleMenuDrawer platform_configuration={filterPlatformsForClients(platform_configuration)} />
+                    <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
 
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
@@ -365,5 +365,4 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
     toggleNeedRealAccountForCashierModal: ui.toggleNeedRealAccountForCashierModal,
     content_flag: traders_hub.content_flag,
-    platform_configuration: traders_hub.platform_configuration,
 }))(withRouter(TradingHubHeader));

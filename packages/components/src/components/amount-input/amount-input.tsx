@@ -44,7 +44,7 @@ const AmountInput = ({
         const updated_caret_position = displayNumber(value).length - caret_right_offset;
         target?.setSelectionRange(updated_caret_position, updated_caret_position);
         setSelection({ selectionStart: updated_caret_position, selectionEnd: updated_caret_position });
-    }, [value]);
+    }, [value, target, displayNumber]);
 
     const onChangeHandler: React.ComponentProps<typeof Input>['onChange'] = e => {
         if (!target) setTarget(e.target);

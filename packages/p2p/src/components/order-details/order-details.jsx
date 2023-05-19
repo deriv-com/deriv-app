@@ -215,18 +215,19 @@ const OrderDetails = observer(() => {
                                         'order-details-card__header-status--success': should_highlight_success,
                                     }
                                 )}
+                                as='p'
                                 line_height='s'
                                 weight='bold'
                             >
                                 {status_string}
                             </Text>
                             {should_highlight_success && (
-                                <Text line_height='xl' size='xs'>
+                                <Text as='p' line_height='xl' size='xs'>
                                     {labels.result_string}
                                 </Text>
                             )}
                             {!has_timer_expired && (is_pending_order || is_buyer_confirmed_order) && (
-                                <Text line_height='xxl' size='m'>
+                                <Text size='m'>
                                     {display_payment_amount} {local_currency}
                                 </Text>
                             )}

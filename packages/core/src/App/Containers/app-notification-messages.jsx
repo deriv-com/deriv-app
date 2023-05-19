@@ -159,7 +159,7 @@ const AppNotificationMessages = ({
     const getNotificationSublist = () => {
         if (window.location.pathname === routes.cashier_deposit) {
             return filtered_excluded_notifications.filter(message =>
-                message.key.includes('switched_to_real', 'failed_wallets_upgrade') ? message : null
+                message.key.some(msg => msg === 'switched_to_real') ? message : null
             );
         }
         return filtered_excluded_notifications.slice(0, notifications_limit);

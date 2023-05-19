@@ -1518,27 +1518,6 @@ export default class NotificationStore extends BaseStore {
         }
     };
 
-    showFailedWalletsUpgradeNotification = () => {
-        this.addNotificationMessage({
-            key: 'failed_wallets_upgrade',
-            header: localize('Sorry for the interruption'),
-            message: localize(
-                "We're unable to complete with the Wallet upgrade. Please try again later or contact us via live chat."
-            ),
-            action: {
-                onClick: () => {
-                    window.LC_API.open_chat_window();
-                    this.removeNotificationMessage({
-                        key: this.client_notifications.failed_wallets_upgrade.key,
-                        should_show_again: false,
-                    });
-                },
-                text: localize('Go to live chat'),
-            },
-            type: 'danger',
-        });
-    };
-
     showPOAAddressMismatchWarningNotification = () => {
         this.addNotificationMessage({
             key: 'poa_address_mismatch_warning',
@@ -1600,4 +1579,25 @@ export default class NotificationStore extends BaseStore {
             this.p2p_completed_orders = response?.p2p_order_list?.list || [];
         }
     }
+
+    showFailedWalletsUpgradeNotification = () => {
+        this.addNotificationMessage({
+            key: 'failed_wallets_upgrade',
+            header: localize('Sorry for the interruption'),
+            message: localize(
+                "We're unable to complete with the Wallet upgrade. Please try again later or contact us via live chat."
+            ),
+            action: {
+                onClick: () => {
+                    window.LC_API.open_chat_window();
+                    this.removeNotificationMessage({
+                        key: this.client_notifications.failed_wallets_upgrade.key,
+                        should_show_again: false,
+                    });
+                },
+                text: localize('Go to live chat'),
+            },
+            type: 'danger',
+        });
+    };
 }

@@ -1,44 +1,40 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import RealWalletsUpgrade from 'Components/modals/real-wallets-upgrade';
+import WalletsMigrationFailed from '../wallets-migration-failed';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
-    Modal: () => <div>Modal</div>,
 }));
 
-describe('<RealWalletsUpgrade />', () => {
-    test('should render the Modal', async () => {
-        const mock = mockStore({
-            traders_hub: {
-                is_real_wallets_upgrade_on: true,
-                toggleWalletsUpgrade: true,
-            },
-        });
+const mockRootStore = mockStore({
+    traders_hub: {
+        is_wallet_migration_failed: false,
+        toggleWalletsMigrationFailedPopup: jest.fn(),
+    },
+});
+
+describe('<WalletsMigrationFailed />', () => {
+    test('Should render the Modal', async () => {
+        mockRootStore.traders_hub.is_wallet_migration_failed = true;
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <StoreProvider store={mockRootStore}>{children}</StoreProvider>
         );
 
-        const { container } = render(<RealWalletsUpgrade />, { wrapper });
+        const { container } = render(<WalletsMigrationFailed />, { wrapper });
 
         expect(container).toBeInTheDocument();
     });
 
-    test('should not render the Modal if is_real_wallets_upgrade_on is false', () => {
-        const mock = mockStore({
-            traders_hub: {
-                is_real_wallets_upgrade_on: false,
-                toggleWalletsUpgrade: false,
-            },
-        });
+    test('Should not render the Modal if is_wallet_migration_failed is false', () => {
+        mockRootStore.traders_hub.is_wallet_migration_failed = false;
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <StoreProvider store={mockRootStore}>{children}</StoreProvider>
         );
 
-        const { container } = render(<RealWalletsUpgrade />, { wrapper });
+        const { container } = render(<WalletsMigrationFailed />, { wrapper });
 
         expect(container).toBeEmptyDOMElement();
     });

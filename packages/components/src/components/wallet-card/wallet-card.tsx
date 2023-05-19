@@ -4,21 +4,23 @@ import Badge from '../badge';
 import Button from '../button';
 import Icon from '../icon';
 import Text from '../text';
-import './wallet-card.scss';
 import { isMobile } from '@deriv/shared';
+import { WalletIcon } from '../wallet-icon';
+import './wallet-card.scss';
 
-type TWalletCardProps = {
-    balance?: string;
-    currency?: string;
-    icon: string;
-    jurisdiction_title: string;
-    name?: string;
-    size?: 'small' | 'normal' | 'large';
-    state?: 'active' | 'add' | 'added' | 'default' | 'disabled' | 'faded';
-    type?: 'fiat' | 'payment' | 'app';
+type TSizes = {
+    // TODO: This type need to be updated
+    [key: string]: any;
 };
 
-const sizes = {
+type TWalletCardProps = {
+    // TODO: This type should be updated when the response is ready
+    wallet: any;
+    size?: 'small' | 'normal' | 'large';
+    state?: 'active' | 'add' | 'added' | 'default' | 'disabled' | 'faded';
+};
+
+const sizes: TSizes = {
     fiat: {
         small: 24,
         normal: 32,
@@ -53,30 +55,44 @@ const sizes = {
 };
 
 const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
-    balance = '10,0000', // just for testing
-    currency = 'usd', // just for testing
-    icon,
-    jurisdiction_title = 'svg', // just for testing
-    name,
+    wallet,
     size = 'normal',
     state = 'default',
-    type,
 }) => {
     const IconComponent = () => {
+        const is_app_single = wallet.type === 'app' && !wallet.wallet_icon;
+        const is_app_linked = wallet.type === 'app' && wallet.wallet_icon;
+        const type_sizes = sizes[wallet.type as keyof TSizes];
+
         return (
             <React.Fragment>
-                {type === 'fiat' && <Icon icon={icon} size={sizes.fiat[size]} />}
-                {type === 'payment' && (
-                    <Icon icon={icon} width={sizes.payment[size].width} height={sizes.payment[size].height} />
+                {wallet.type === 'fiat' && (
+                    <Icon icon={wallet.icon} size={type_sizes[size as keyof typeof type_sizes]} />
                 )}
-                {type === 'app' && <Icon icon={icon} size={sizes.fiat[size]} />}
+                {wallet.type === 'payment' && (
+                    <Icon icon={wallet.icon} width={type_sizes[size].width} height={type_sizes[size].height} />
+                )}
+                {wallet.type === 'app' && (
+                    <React.Fragment>
+                        {is_app_single && <Icon icon={wallet.icon} size={type_sizes.single[size]} />}
+                        {is_app_linked && (
+                            <WalletIcon
+                                app_icon={wallet.icon}
+                                wallet_icon={wallet.wallet_icon}
+                                size={sizes.app.linked[size]}
+                                currency={wallet.currency}
+                                type={wallet.type}
+                            />
+                        )}
+                    </React.Fragment>
+                )}
             </React.Fragment>
         );
     };
 
     return (
         <div className={`wallet-card wallet-card--${size} wallet-card--${state}`}>
-            <div className={`wallet-card__container wallet-card__${currency}-bg`}>
+            <div className={`wallet-card__container wallet-card__${wallet.currency}-bg`}>
                 {size === 'small' && <IconComponent />}
                 {size !== 'small' && (
                     <div className='wallet-card__content'>
@@ -84,21 +100,25 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
 
                         <div className='wallet-card__top-wrapper'>
                             <IconComponent />
-                            <Badge custom_color='var(--text-prominent)' label={jurisdiction_title} type='bordered' />
+                            <Badge
+                                custom_color='var(--text-prominent)'
+                                label={wallet.jurisdiction_title}
+                                type='bordered'
+                            />
                         </div>
 
                         <div className='wallet-card__bottom-wrapper'>
                             {state !== 'add' && state !== 'added' ? (
                                 <React.Fragment>
                                     <Text className='wallet-card__bottom-wrapper-wallet-name' color='prominent'>
-                                        {name} {localize('Wallet')}
+                                        {wallet.name} {localize('Wallet')}
                                     </Text>
                                     <Text
                                         className='wallet-card__bottom-wrapper-balance'
                                         color='prominent'
                                         weight='bold'
                                     >
-                                        {balance} {currency}
+                                        {wallet.balance} {wallet.currency}
                                     </Text>
                                 </React.Fragment>
                             ) : (

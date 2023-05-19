@@ -2,18 +2,21 @@ import React from 'react';
 import { Div100vhContainer, Modal, usePreventIOSZoom } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useTraderStore } from 'Stores/useTraderStores';
-import { getGrowthRatePercentage, getTickSizeBarrierPercentage } from '@deriv/shared';
+import { getGrowthRatePercentage, getTickSizeBarrierPercentage, isEmptyObject } from '@deriv/shared';
 import MultiplierOptions from 'Modules/Trading/Containers/Multiplier/multiplier-options.jsx';
 import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroupWithInfoMobile';
 import { observer, useStore } from '@deriv/stores';
 
 const RadioGroupOptionsModal = observer(({ is_open, modal_title, toggleModal }) => {
-    const { accumulator_range_list, growth_rate, onChange, tick_size_barrier } = useTraderStore();
+    const { accumulator_range_list, growth_rate, onChange, tick_size_barrier, proposal_info } = useTraderStore();
     const {
         ui: { enableApp, disableApp },
     } = useStore();
+
     // Fix to prevent iOS from zooming in erratically on quick taps
     usePreventIOSZoom();
+    const has_error_or_not_loaded =
+        proposal_info?.ACCU?.has_error || !proposal_info?.ACCU?.id || isEmptyObject(proposal_info);
 
     return (
         <React.Fragment>
@@ -44,6 +47,7 @@ const RadioGroupOptionsModal = observer(({ is_open, modal_title, toggleModal }) 
                                     tick_size_barrier: getTickSizeBarrierPercentage(tick_size_barrier),
                                 }
                             )}
+                            is_tooltip_disabled={has_error_or_not_loaded}
                             items_list={accumulator_range_list.map(value => ({
                                 text: `${getGrowthRatePercentage(value)}%`,
                                 value,

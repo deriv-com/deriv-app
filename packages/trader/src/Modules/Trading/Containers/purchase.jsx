@@ -19,6 +19,7 @@ const Purchase = observer(({ is_market_closed }) => {
         currency,
         is_accumulator,
         is_multiplier,
+        growth_rate,
         has_cancellation,
         is_purchase_enabled,
         is_vanilla,
@@ -70,6 +71,7 @@ const Purchase = observer(({ is_market_closed }) => {
                     info={info}
                     key={index}
                     index={getSortedIndex(index, type)}
+                    growth_rate={growth_rate}
                     has_cancellation={has_cancellation}
                     is_disabled={is_disabled}
                     is_accumulator={is_accumulator}

@@ -9,29 +9,27 @@ import { useTraderStore } from 'Stores/useTraderStores';
 const AccumulatorsInfoDisplay = observer(() => {
     const { currency, maximum_payout, maximum_ticks } = useTraderStore();
 
-    const labels = [localize('Maximum payout'), localize('Maximum ticks')].map((label, index) => (
-        <Text key={index} size='xxs' weight='bold'>
-            {label}
-        </Text>
-    ));
-
-    const values = [
-        <Money key={0} amount={maximum_payout} show_currency currency={currency} />,
-        localize('{{maximum_ticks}} {{ticks}}', {
-            maximum_ticks,
-            ticks: maximum_ticks === 1 ? 'tick' : 'ticks',
-        }),
-    ].map((value_component, index) => (
-        <Text key={index} size='xxs' align='right'>
-            {value_component}
-        </Text>
-    ));
+    const content = [
+        {
+            label: localize('Maximum payout'),
+            value: <Money amount={maximum_payout} show_currency currency={currency} />,
+        },
+        {
+            label: localize('Maximum ticks'),
+            value: `${maximum_ticks || 0} ${maximum_ticks === 1 ? localize('tick') : localize('ticks')}`,
+        },
+    ];
 
     return (
         <Fieldset className={classNames('trade-container__fieldset', 'accu-info-display')}>
-            {[labels, values].map((text, index) => (
-                <div key={index} className='accu-info-display__column'>
-                    {text}
+            {content.map(({ label, value }) => (
+                <div key={label} className='accu-info-display__row'>
+                    <Text size='xxs' weight='bold' line_height='xxs'>
+                        {label}
+                    </Text>
+                    <Text size='xxs' align='right'>
+                        {value}
+                    </Text>
                 </div>
             ))}
         </Fieldset>

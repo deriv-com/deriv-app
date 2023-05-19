@@ -4,7 +4,7 @@ import { DesktopWrapper, InputField, MobileWrapper, useOnClickOutside } from '@d
 import { localize } from '@deriv/translations';
 import { daysFromTodayTo, toMoment } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import type { TStores } from '@deriv/stores';
+import type { TCoreStores } from '@deriv/stores/types';
 import CompositeCalendarMobile from './composite-calendar-mobile';
 import SideList from './side-list';
 import CalendarIcon from './calendar-icon';
@@ -13,7 +13,7 @@ import moment from 'moment';
 
 type TCompositeCalendar = {
     current_focus: string;
-    onChange: (values: { [key: string]: moment.Moment }) => void;
+    onChange: (values: { to?: moment.Moment; from?: moment.Moment; is_batch?: boolean }) => void;
     setCurrentFocus: () => void;
     to: number;
     from: number;
@@ -78,8 +78,8 @@ const CompositeCalendar: React.FC<TCompositeCalendar> = props => {
 
     const selectDateRange = (new_from?: number) => {
         hideCalendar();
-        applyBatch({
-            from: new_from ? toMoment().startOf('day').subtract(new_from, 'day').add(1, 's').unix() : null,
+        onChange({
+            from: new_from ? toMoment().startOf('day').subtract(new_from, 'day').add(1, 's') : undefined,
             to: toMoment().endOf('day'),
             is_batch: true,
         });
@@ -120,36 +120,19 @@ const CompositeCalendar: React.FC<TCompositeCalendar> = props => {
     );
 
     const setToDate = (date: moment.Moment) => {
-        updateState('to', toMoment(date).endOf('day'));
+        onChange({ to: toMoment(date).endOf('day') });
     };
 
     const setFromDate = (date: moment.Moment) => {
-        updateState('from', date.unix());
+        onChange({ from: toMoment(date) });
         hideCalendar();
-    };
-
-    const updateState = (key: string, value: moment.Moment | number) => {
-        apply(key, value);
-        hideCalendar();
-    };
-
-    const applyBatch = (values: { [key: string]: any }) => {
-        onChange(values);
-    };
-
-    const apply = (key: string, value: any) => {
-        applyBatch({
-            [key]: value,
-        });
     };
 
     const isPeriodDisabledTo = (date: moment.Moment) => {
-        return date.clone().add(1, 'days').isSameOrBefore(from) || date.isAfter(toMoment().endOf('day'));
+        return date.unix() < from || date.unix() > toMoment().endOf('day').unix();
     };
 
-    const isPeriodDisabledFrom = (date: moment.Moment) => {
-        return moment(date).subtract(1, 'days').isSameOrAfter(to);
-    };
+    const isPeriodDisabledFrom = (date: moment.Moment) => date.unix() > to;
 
     return (
         <React.Fragment>
@@ -203,7 +186,7 @@ const CompositeCalendar: React.FC<TCompositeCalendar> = props => {
 CompositeCalendar.displayName = 'CompositeCalendar';
 
 export default React.memo(
-    connect(({ ui }: TStores) => ({
+    connect(({ ui }: TCoreStores) => ({
         current_focus: ui.current_focus,
         setCurrentFocus: ui.setCurrentFocus,
     }))(CompositeCalendar)

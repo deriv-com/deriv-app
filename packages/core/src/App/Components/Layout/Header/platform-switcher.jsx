@@ -25,18 +25,16 @@ const PlatformSwitcher = ({
 
     const is_close_drawer_fired_ref = React.useRef(false);
 
-    let platform_array = platform_config;
-
     React.useEffect(() => {
         const update_platform_array = [...platform_config];
-        platform_array = update_platform_array.map(data => {
+        update_platform_array.map(data => {
             const { name } = data;
             if (name === 'Binary Bot') {
                 data.href = getUrlBinaryBot(true);
             }
             return data;
         });
-    }, [current_language]);
+    }, [current_language, platform_config]);
 
     React.useEffect(() => {
         if (is_close_drawer_fired_ref.current) {
@@ -92,7 +90,7 @@ const PlatformSwitcher = ({
                 unmountOnExit
             >
                 <PlatformDropdown
-                    platform_config={platform_array}
+                    platform_config={platform_config}
                     closeDrawer={closeDrawer}
                     current_language={current_language}
                     app_routing_history={app_routing_history}
@@ -106,6 +104,7 @@ const PlatformSwitcher = ({
 PlatformSwitcher.propTypes = {
     platform_config: PropTypes.array,
     toggleDrawer: PropTypes.func,
+    current_language: PropTypes.func,
     app_routing_history: PropTypes.array,
     is_landing_company_loaded: PropTypes.bool,
     is_logged_in: PropTypes.bool,

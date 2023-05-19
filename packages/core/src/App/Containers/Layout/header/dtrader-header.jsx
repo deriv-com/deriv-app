@@ -180,6 +180,7 @@ DTraderHeader.propTypes = {
     app_routing_history: PropTypes.array,
     balance: PropTypes.string,
     client_notifications: PropTypes.object,
+    current_language: PropTypes.string,
     currency: PropTypes.string,
     disableApp: PropTypes.func,
     enableApp: PropTypes.func,

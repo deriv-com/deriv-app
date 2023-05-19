@@ -17,6 +17,7 @@ const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_i
                     })}
                     currency={currency}
                     show_currency
+                    should_format={!is_vanilla}
                 />
             )}
         </div>

@@ -15,7 +15,7 @@ const WalletsMigrationFailed = observer(() => {
     };
 
     const handLiveChatButtonClick = () => {
-        window.LC_API.open_chat_window();
+        window.LC_API?.open_chat_window();
         toggleWalletsMigrationFailedPopup(false);
     };
 

@@ -114,7 +114,7 @@
         }
 
         &-field {
-            @include desktop() {
+            @include desktop {
                 display: flex;
             }
         }

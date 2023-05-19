@@ -14,6 +14,8 @@ import classNames from 'classnames';
 import WalletsBanner from 'Components/wallets-banner';
 import './traders-hub.scss';
 import WalletHeader from 'Components/wallet-header';
+import CardCarousel from 'Components/card-carousel';
+import { CarouselItem } from 'Components/card-carousel/card-carousel';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();
@@ -74,6 +76,11 @@ const TradersHub = () => {
         );
     };
 
+    const items = Array.from({ length: 20 }).map((_, i) => ({
+        id: i,
+        src: `https://picsum.photos/500?idx=${i}`,
+    }));
+
     return (
         <>
             <Div100vhContainer
@@ -85,6 +92,14 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
+                    <CardCarousel
+                        items={items}
+                        renderItem={({ item, isSnapPoint }) => (
+                            <CarouselItem key={item.id} isSnapPoint={isSnapPoint}>
+                                <img src={item.src} width='160px' height='96px' alt='' style={{ padding: '2.4rem' }} />
+                            </CarouselItem>
+                        )}
+                    />
                     <WalletHeader account_type='demo' />
                     <WalletHeader currency='AUD' shortcode='svg' />
                     <WalletHeader currency='EUR' shortcode='svg' is_open_wallet={true} />

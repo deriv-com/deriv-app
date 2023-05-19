@@ -306,7 +306,6 @@ export default class AccountTransferStore {
                 return { ...account, ...found_account, account_type: CFD_PLATFORMS.MT5 };
             }
             if (
-                //TODO: "ctrader" account_type should be added into api-types TransferBetweenAccountsResponse.accounts.account_type
                 account.account_type === CFD_PLATFORMS.CTRADER &&
                 Array.isArray(ctrader_accounts_list) &&
                 ctrader_accounts_list.length

@@ -15,6 +15,7 @@ const OrderDetailsFooter = observer(() => {
         should_show_complain_and_received_button,
         should_show_only_received_button,
         should_show_only_complain_button,
+        chat_channel_url,
     } = order_store.order_information;
 
     const [should_show_complain_modal, setShouldShowComplainModal] = React.useState(false);
@@ -50,10 +51,10 @@ const OrderDetailsFooter = observer(() => {
                 <div className='order-details-card__footer'>
                     <div className='order-details-card__footer--right'>
                         <Button.Group>
-                            <Button large secondary onClick={showCancelOrderModal}>
+                            <Button large secondary onClick={showCancelOrderModal} is_disabled={!chat_channel_url}>
                                 <Localize i18n_default_text='Cancel order' />
                             </Button>
-                            <Button large primary onClick={showConfirmOrderModal}>
+                            <Button large primary onClick={showConfirmOrderModal} is_disabled={!chat_channel_url}>
                                 <Localize i18n_default_text="I've paid" />
                             </Button>
                         </Button.Group>

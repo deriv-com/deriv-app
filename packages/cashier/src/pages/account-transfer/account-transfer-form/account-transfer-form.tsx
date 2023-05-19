@@ -66,15 +66,15 @@ const AccountOption = ({ account, idx }: TAccountsList) => {
     );
 };
 
-let accounts_from: Array<TAccount> = [];
-let accounts_to: Array<TAccount> = [];
-let derivez_accounts_from: Array<TAccount> = [];
-let derivez_accounts_to: Array<TAccount> = [];
-let dxtrade_accounts_from: Array<TAccount> = [];
-let dxtrade_accounts_to: Array<TAccount> = [];
-let mt_accounts_from: Array<TAccount> = [];
-let mt_accounts_to: Array<TAccount> = [];
-let remaining_transfers: boolean | undefined;
+let accounts_from: TAccount[] = [];
+let accounts_to: TAccount[] = [];
+let derivez_accounts_from: TAccount[] = [];
+let derivez_accounts_to: TAccount[] = [];
+let dxtrade_accounts_from: TAccount[] = [];
+let dxtrade_accounts_to: TAccount[] = [];
+let mt_accounts_from: TAccount[] = [];
+let mt_accounts_to: TAccount[] = [];
+let remaining_transfers: number | undefined;
 
 const AccountTransferForm = observer(
     ({ error, onClickDeposit, onClickNotes, setSideNotes }: TAccountTransferFormProps) => {
@@ -150,7 +150,8 @@ const AccountTransferForm = observer(
             });
             if (!is_ok) return message;
 
-            if (selected_from.balance && +selected_from.balance < +amount) return localize('Insufficient balance');
+            if (selected_from.balance && Number(selected_from.balance) < Number(amount))
+                return localize('Insufficient balance');
 
             return undefined;
         };
@@ -319,7 +320,7 @@ const AccountTransferForm = observer(
             remaining_transfers = getRemainingTransfers();
 
             const hint =
-                remaining_transfers && +remaining_transfers === 1
+                remaining_transfers && Number(remaining_transfers) === 1
                     ? localize('You have {{number}} transfer remaining for today.', { number: remaining_transfers })
                     : localize('You have {{number}} transfers remaining for today.', { number: remaining_transfers });
             setTransferToHint(hint);
@@ -390,7 +391,7 @@ const AccountTransferForm = observer(
                     }}
                     onSubmit={() => {
                         requestTransferBetweenAccounts({
-                            amount: account_transfer_amount ? +account_transfer_amount : 0,
+                            amount: account_transfer_amount ? Number(account_transfer_amount) : 0,
                         });
                     }}
                     validateOnBlur={false}
@@ -527,7 +528,7 @@ const AccountTransferForm = observer(
                                         >
                                             <div className='account-transfer-form__crypto--percentage-selector'>
                                                 <PercentageSelector
-                                                    amount={selected_from.balance ? +selected_from.balance : 0}
+                                                    amount={selected_from.balance ? Number(selected_from.balance) : 0}
                                                     currency={selected_from.currency || ''}
                                                     from_account={selected_from.value}
                                                     getCalculatedAmount={setTransferPercentageSelectorResult}
@@ -592,10 +593,10 @@ const AccountTransferForm = observer(
                                             type='submit'
                                             is_disabled={
                                                 isSubmitting ||
-                                                (remaining_transfers && !+remaining_transfers) ||
+                                                (remaining_transfers && !Number(remaining_transfers)) ||
                                                 !!selected_from.error ||
                                                 !!selected_to.error ||
-                                                (selected_from.balance && !+selected_from.balance) ||
+                                                (selected_from.balance && !Number(selected_from.balance)) ||
                                                 !!converter_from_error ||
                                                 !!converter_to_error ||
                                                 !!errors.amount ||

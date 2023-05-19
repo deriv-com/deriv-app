@@ -92,9 +92,6 @@ export const getPlatformInformation = (routing_history: TRoutingHistory) => {
         return { header: platform_name.SmartTrader, icon: getPlatformSettings('smarttrader').icon };
     }
 
-    if (isNavigationFromExternalPlatform(routing_history, routes.binarybot)) {
-        return { header: platform_name.BinaryBot, icon: getPlatformSettings('bbot').icon };
-    }
     return { header: platform_name.DTrader, icon: getPlatformSettings('trader').icon };
 };
 

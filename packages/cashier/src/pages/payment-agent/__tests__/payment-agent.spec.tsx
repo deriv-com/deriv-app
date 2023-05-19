@@ -4,8 +4,8 @@ import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
 import PaymentAgent from '../payment-agent';
 import CashierProviders from '../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
 import { useCashierLocked } from '@deriv/hooks';
-import { mockStore, TStores } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -38,7 +38,7 @@ const cashier_mock = {
 };
 
 describe('<PaymentAgent />', () => {
-    const renderPaymentAgent = (mock_root_store: TStores) => {
+    const renderPaymentAgent = (mock_root_store: ReturnType<typeof mockStore>) => {
         return render(
             <Router history={createBrowserHistory()}>
                 <CashierProviders store={mock_root_store}>

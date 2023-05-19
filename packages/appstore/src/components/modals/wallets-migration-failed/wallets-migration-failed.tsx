@@ -1,12 +1,15 @@
 import React from 'react';
-import { DesktopWrapper, Text, MobileWrapper, useOnClickOutside, Modal, Button } from '@deriv/components';
+import { Text, useOnClickOutside, Modal, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import './wallets-migration-failed.scss';
 
 const WalletsMigrationFailed = observer(() => {
-    const { traders_hub } = useStore();
+    const { traders_hub, ui } = useStore();
     const { is_wallet_migration_failed, setWalletsMigrationFailedPopup } = traders_hub;
+    const { is_mobile } = ui;
+
+    const mobile_add_class = is_mobile ? '--mobile' : '';
 
     const wallets_migration_failed_ref = React.useRef<HTMLDivElement>(null);
 
@@ -28,85 +31,45 @@ const WalletsMigrationFailed = observer(() => {
     return (
         <React.Fragment>
             {is_wallet_migration_failed && (
-                <React.Fragment>
-                    <DesktopWrapper>
-                        <Modal
-                            is_open={is_wallet_migration_failed}
-                            toggleModal={handleClose}
-                            width='44rem'
-                            should_header_stick_body={false}
-                            has_close_icon={false}
-                        >
-                            <div ref={wallets_migration_failed_ref}>
-                                <Modal.Body>
-                                    <Text
-                                        as='h1'
-                                        size='s'
-                                        color='prominent'
-                                        weight='bold'
-                                        className='wallets-migration-failed__title'
-                                    >
-                                        {localize('Sorry for the interruption')}
-                                    </Text>
-                                    <Text size='xs'>
-                                        {localize(
-                                            "We're unable to complete with the Wallet upgrade. Please try again later or contact us via live chat."
-                                        )}
-                                    </Text>
-                                </Modal.Body>
-                                <Modal.Footer className='wallets-migration-failed__footer'>
-                                    <Button secondary large onClick={handLiveChatButtonClick}>
-                                        {localize('Go to live chat')}
-                                    </Button>
-                                    <Button primary large onClick={handleClose}>
-                                        {localize('Back to Trader’s Hub')}
-                                    </Button>
-                                </Modal.Footer>
-                            </div>
-                        </Modal>
-                    </DesktopWrapper>
-                    <MobileWrapper>
-                        <Modal
-                            is_open={is_wallet_migration_failed}
-                            toggleModal={handleClose}
-                            width='32.3rem'
-                            should_header_stick_body={false}
-                            has_close_icon={false}
-                        >
-                            <div ref={wallets_migration_failed_ref}>
-                                <Modal.Body className='wallets-migration-failed--mobile'>
-                                    <Text
-                                        as='h1'
-                                        size='xs'
-                                        color='prominent'
-                                        weight='bold'
-                                        className='wallets-migration-failed__title--mobile'
-                                    >
-                                        {localize('Sorry for the interruption')}
-                                    </Text>
-                                    <Text size='xxs'>
-                                        {localize(
-                                            "We're unable to complete with the Wallet upgrade. Please try again later or contact us via live chat."
-                                        )}
-                                    </Text>
-                                </Modal.Body>
-                                <Modal.Footer className='wallets-migration-failed__footer--mobile'>
-                                    <Button secondary large onClick={handLiveChatButtonClick}>
-                                        {localize('Go to live chat')}
-                                    </Button>
-                                    <Button
-                                        primary
-                                        large
-                                        onClick={handleClose}
-                                        classNameSpan='wallets-migration-failed__text--mobile'
-                                    >
-                                        {localize('Back to Trader’s Hub')}
-                                    </Button>
-                                </Modal.Footer>
-                            </div>
-                        </Modal>
-                    </MobileWrapper>
-                </React.Fragment>
+                <Modal
+                    is_open={is_wallet_migration_failed}
+                    toggleModal={handleClose}
+                    width={is_mobile ? '32.3rem' : '44rem'}
+                    should_header_stick_body={false}
+                    has_close_icon={false}
+                >
+                    <div ref={wallets_migration_failed_ref}>
+                        <Modal.Body className={`wallets-migration-failed${mobile_add_class}`}>
+                            <Text
+                                as='h1'
+                                size={is_mobile ? 'xs' : 's'}
+                                color='prominent'
+                                weight='bold'
+                                className={`wallets-migration-failed__title${mobile_add_class}`}
+                            >
+                                {localize('Sorry for the interruption')}
+                            </Text>
+                            <Text size={is_mobile ? 'xxs' : 'xs'}>
+                                {localize(
+                                    "We're unable to complete with the Wallet upgrade. Please try again later or contact us via live chat."
+                                )}
+                            </Text>
+                        </Modal.Body>
+                        <Modal.Footer className={`wallets-migration-failed__footer${mobile_add_class}`}>
+                            <Button secondary large onClick={handLiveChatButtonClick}>
+                                {localize('Go to live chat')}
+                            </Button>
+                            <Button
+                                primary
+                                large
+                                onClick={handleClose}
+                                classNameSpan={`wallets-migration-failed__text${mobile_add_class}`}
+                            >
+                                {localize('Back to Trader’s Hub')}
+                            </Button>
+                        </Modal.Footer>
+                    </div>
+                </Modal>
             )}
         </React.Fragment>
     );

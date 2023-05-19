@@ -16,11 +16,19 @@ import './traders-hub.scss';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();
-    const { notification_messages_ui: Notifications } = ui;
-    const { is_landing_company_loaded, is_logged_in, is_switching, is_logging_in, is_account_setting_loaded } = client;
+    const { notification_messages_ui: Notifications, openRealAccountSignup, is_from_signup_account } = ui;
+    const {
+        is_landing_company_loaded,
+        is_logged_in,
+        is_switching,
+        is_logging_in,
+        is_account_setting_loaded,
+        has_active_real_account,
+    } = client;
     const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
 
+    const eu_user_closed_real_account_first_time = localStorage.getItem('eu_user_closed_real_account_first_time');
     const can_show_notify = !is_switching && !is_logging_in && is_account_setting_loaded && is_landing_company_loaded;
 
     const [scrolled, setScrolled] = React.useState(false);
@@ -31,6 +39,16 @@ const TradersHub = () => {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     };
+    React.useEffect(() => {
+        if (
+            !has_active_real_account &&
+            is_logged_in &&
+            is_from_signup_account &&
+            !eu_user_closed_real_account_first_time
+        ) {
+            openRealAccountSignup();
+        }
+    }, []);
 
     React.useEffect(() => {
         setTimeout(() => {

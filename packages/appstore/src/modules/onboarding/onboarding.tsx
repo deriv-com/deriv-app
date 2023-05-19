@@ -27,9 +27,10 @@ type TOnboardingProps = {
 const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) => {
     const history = useHistory();
     const number_of_steps = Object.keys(contents);
-    const { traders_hub, client } = useStores();
+    const { traders_hub, client, ui } = useStores();
     const { toggleIsTourOpen, selectAccountType, is_demo_low_risk, content_flag } = traders_hub;
     const { is_eu_country, is_logged_in, is_landing_company_loaded, prev_account_type, setPrevAccountType } = client;
+    const { setIsFromSignupAccount } = ui;
     const [step, setStep] = React.useState<number>(1);
 
     const prevStep = () => {
@@ -59,6 +60,8 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
         content_flag === ContentFlag.EU_REAL ||
         content_flag === ContentFlag.EU_DEMO;
 
+    const eu_user_closed_real_account_first_time =
+        localStorage.getItem('eu_user_closed_real_account_first_time') || false;
     const is_eu_user = (is_logged_in && eu_user) || (!is_logged_in && is_eu_country);
     const onboarding_step = number_of_steps[step - 1];
 
@@ -74,6 +77,11 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
 
     if (!is_logged_in || !is_landing_company_loaded) {
         return <EmptyOnboarding />;
+    }
+
+    if (is_logged_in && is_eu_user && !eu_user_closed_real_account_first_time) {
+        setIsFromSignupAccount(true);
+        history.push(routes.traders_hub);
     }
 
     return (

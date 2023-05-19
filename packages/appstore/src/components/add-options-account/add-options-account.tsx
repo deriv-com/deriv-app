@@ -37,7 +37,7 @@ const AddOptions = () => {
                                 openRealAccountSignup('maltainvest');
                             }
                         } else {
-                            openRealAccountSignup();
+                            openRealAccountSignup('svg');
                         }
                     }}
                     is_disabled={false}

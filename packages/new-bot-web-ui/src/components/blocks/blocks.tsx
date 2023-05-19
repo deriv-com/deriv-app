@@ -8,10 +8,10 @@ import { BlocksFields } from './blocks-components';
 
 const Blocks: React.FC = () => {
     const {
-        blocks: { 
+        blocks: {
             initial_values,
-            loadDataStrategy, 
-            markets_dropdown, 
+            loadDataStrategy,
+            markets_dropdown,
             submarkets_dropdown,
             symbols_dropdown,
             trade_type_category_dropdown,
@@ -30,55 +30,47 @@ const Blocks: React.FC = () => {
     return (
         <div className='bot-builder__wrapper'>
             <div className='bot-builder__container'>
-                <Text color='less-prominent'>{localize('1. Trade parameters:')}</Text>
+                <div className='bot-builder__header'>
+                    <Text color='colored-background'>{localize('1. Trade parameters:')}</Text>
+                </div>
                 <Formik
                     initialValues={initial_values}
-                    onSubmit={(values) => {
+                    onSubmit={values => {
                         exportStrategyToJson(values);
-                        console.log(JSON.stringify(values, null, 2));
-                        }
-                    }
+                        // console.log(JSON.stringify(values, null, 2));
+                    }}
                     enableReinitialize={true}
                     validateOnMount={true}
                 >
-                    {({
-                        errors,
-                        handleChange,
-                        values,
-                        isSubmitting,
-                        setFieldValue,
-                        submitForm,
-                    }: FormikProps<any>) => {
+                    {({ errors, handleChange, values, isSubmitting, setFieldValue, submitForm }: FormikProps<any>) => {
                         return (
-                        <Form
-                            className={'bot-builder__form'}
-                        >
-                            <BlocksFields
-                                markets_dropdown={markets_dropdown}
-                                submarkets_dropdown={submarkets_dropdown}
-                                symbols_dropdown={symbols_dropdown}
-                                trade_type_category_dropdown={trade_type_category_dropdown}
-                                trade_type_dropdown={trade_type_dropdown}
-                                onChangeDropdownItem={onChangeDropdownItem}
-                                onHideDropdownList={onHideDropdownList}
-                                setFieldValue={setFieldValue}
-                                onScrollStopDropdownList={onScrollStopDropdownList}
-                                // handleChange={handleChange}
-                                // onChangeInputValue={onChangeInputValue}
-                                // setCurrentFocus={setCurrentFocus}
-                                values={values}
-                                // errors={errors}
-                            />
-                            <button type='submit' disabled={isSubmitting}>
-                                Save strategy
-                            </button>
-                        </Form>
-                    );
-                }}
+                            <Form className={'bot-builder__form'}>
+                                <BlocksFields
+                                    markets_dropdown={markets_dropdown}
+                                    submarkets_dropdown={submarkets_dropdown}
+                                    symbols_dropdown={symbols_dropdown}
+                                    trade_type_category_dropdown={trade_type_category_dropdown}
+                                    trade_type_dropdown={trade_type_dropdown}
+                                    onChangeDropdownItem={onChangeDropdownItem}
+                                    onHideDropdownList={onHideDropdownList}
+                                    setFieldValue={setFieldValue}
+                                    onScrollStopDropdownList={onScrollStopDropdownList}
+                                    // handleChange={handleChange}
+                                    // onChangeInputValue={onChangeInputValue}
+                                    // setCurrentFocus={setCurrentFocus}
+                                    values={values}
+                                    // errors={errors}
+                                />
+                                <button type='submit' disabled={isSubmitting}>
+                                    Save strategy
+                                </button>
+                            </Form>
+                        );
+                    }}
                 </Formik>
             </div>
         </div>
-    )
+    );
 };
 
 export default observer(Blocks);

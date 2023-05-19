@@ -66,16 +66,16 @@ const AccountOption = ({ account, idx }: TAccountsList) => {
     );
 };
 
-let accounts_from: Array<TAccount> = [];
-let accounts_to: Array<TAccount> = [];
-let derivez_accounts_from: Array<TAccount> = [];
-let derivez_accounts_to: Array<TAccount> = [];
-let dxtrade_accounts_from: Array<TAccount> = [];
-let dxtrade_accounts_to: Array<TAccount> = [];
-let mt_accounts_from: Array<TAccount> = [];
-let mt_accounts_to: Array<TAccount> = [];
-let ctrader_accounts_from: Array<TAccount> = [];
-let ctrader_accounts_to: Array<TAccount> = [];
+let accounts_from: TAccount[] = [];
+let accounts_to: TAccount[] = [];
+let ctrader_accounts_from: TAccount[] = [];
+let ctrader_accounts_to: TAccount[] = [];
+let derivez_accounts_from: TAccount[] = [];
+let derivez_accounts_to: TAccount[] = [];
+let dxtrade_accounts_from: TAccount[] = [];
+let dxtrade_accounts_to: TAccount[] = [];
+let mt_accounts_from: TAccount[] = [];
+let mt_accounts_to: TAccount[] = [];
 let remaining_transfers: number | undefined;
 
 const AccountTransferForm = observer(

@@ -34,32 +34,48 @@ const useInputATMFormatter = (initial?: number, options?: TOprions) => {
         (e: DeepPartial<React.ChangeEvent<HTMLInputElement>> | React.ChangeEvent<HTMLInputElement>) => {
             const new_value = e?.target?.value || '';
             const unformatted = unFormatLocaleStringifyNumber(new_value, locale);
-            // @ts-expect-error shouldn't convert the type to number because we will lose the trailing zeros.
+            // @ts-expect-error shouldn't cast to number because we will lose the trailing zeros.
             const shifted = Math.fround(unformatted * 10).toFixed(fraction_digits);
-            // @ts-expect-error shouldn't convert the type to number because we will lose the trailing zeros.
+            // @ts-expect-error shouldn't cast to number because we will lose the trailing zeros.
             const un_shifted = Math.fround(unformatted / 10).toFixed(fraction_digits);
             const unformatted_fraction = unformatted.split('.')?.[1]?.length || fraction_digits;
 
-            // If the user is pasting, we don't need to shift the decimal point, We just need to format the value.
+            // If the user is pasting, we don't need to shift the decimal point,
+            // We just need to format the value.
             if (is_pasting.current) {
                 is_pasting.current = false;
                 return onChangeDecimal({ target: { value: unformatted } });
             }
 
-            // The new value has one more decimal places than the fraction_digits, so we need to shift the decimal point to the left.
-            if (unformatted_fraction - 1 === fraction_digits) return onChangeDecimal({ target: { value: shifted } });
+            // The new value has one more decimal places than the fraction_digits,
+            // so we need to shift the decimal point to the left.
+            if (unformatted_fraction - 1 === fraction_digits) {
+                return onChangeDecimal({ target: { value: shifted } });
+            }
 
-            // The new value has one less decimal places than the fraction_digits, so we need to shift the decimal point to the right.
-            if (unformatted_fraction + 1 === fraction_digits) return onChangeDecimal({ target: { value: un_shifted } });
+            // The new value has one less decimal places than the fraction_digits,
+            // so we need to shift the decimal point to the right.
+            if (unformatted_fraction + 1 === fraction_digits) {
+                return onChangeDecimal({ target: { value: un_shifted } });
+            }
 
-            // The new value has the same number of decimal places as the fraction_digits, so we don't need to shift the decimal point.
-            if (unformatted_fraction === fraction_digits) return onChangeDecimal({ target: { value: unformatted } });
+            // The new value has the same number of decimal places as the fraction_digits,
+            // so we don't need to shift the decimal point.
+            if (unformatted_fraction === fraction_digits) {
+                return onChangeDecimal({ target: { value: unformatted } });
+            }
 
-            // The new value has more decimal places than the fraction_digits, so we chop the extra decimal points.
-            if (unformatted_fraction - 1 > fraction_digits) return onChangeDecimal({ target: { value: unformatted } });
+            // The new value has more decimal places than the fraction_digits,
+            // so we chop the extra decimal points.
+            if (unformatted_fraction - 1 > fraction_digits) {
+                return onChangeDecimal({ target: { value: unformatted } });
+            }
 
-            // The new value has less decimal places than the fraction_digits, so we add the missing extra decimal point.
-            if (unformatted_fraction + 1 < fraction_digits) return onChangeDecimal({ target: { value: unformatted } });
+            // The new value has less decimal places than the fraction_digits,
+            // so we add the missing extra decimal point.
+            if (unformatted_fraction + 1 < fraction_digits) {
+                return onChangeDecimal({ target: { value: unformatted } });
+            }
 
             return onChangeDecimal({ target: { value: unformatted } });
         },

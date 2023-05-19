@@ -63,8 +63,8 @@ const useInputDecimalFormatter = (initial?: number, options?: TOptions) => {
     );
 
     useEffect(() => {
-        setValue(`${initial || ''}`);
-    }, [initial]);
+        if (initial) onChange({ target: { value: `${initial}` } });
+    }, [initial, onChange]);
 
     return { value, onChange };
 };

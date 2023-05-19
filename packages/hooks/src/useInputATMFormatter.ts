@@ -88,7 +88,7 @@ const useInputATMFormatter = (initial?: number, options?: TOprions) => {
     );
 
     useEffect(() => {
-        onChange({ target: { value: `${initial}` } });
+        if (initial) onChange({ target: { value: `${initial}` } });
     }, [initial, onChange]);
 
     return { value: formatted_value, onChange, onPaste };

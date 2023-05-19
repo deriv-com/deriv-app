@@ -1,13 +1,13 @@
 import classNames from 'classnames';
 import React from 'react';
 import { isCryptocurrency, getLimitOrderAmount, isValidToSell, addComma } from '@deriv/shared';
-import ContractCardItem from './contract-card-item.jsx';
-import ToggleCardDialog from './toggle-card-dialog.jsx';
+import ContractCardItem from './contract-card-item';
+import ToggleCardDialog from './toggle-card-dialog';
 import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
-import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
-import { TGeneralContractCardBodyProps } from './contract-card-body.js';
+import { ResultStatusIcon } from '../result-overlay/result-overlay';
+import { TGeneralContractCardBodyProps } from './contract-card-body';
 
 type TTurbosCardBody = Pick<
     TGeneralContractCardBodyProps,

@@ -10,7 +10,7 @@ import {
     isAccumulatorContract,
     isTurbosContract,
 } from '@deriv/shared';
-import ContractTypeCell from './contract-type-cell.jsx';
+import ContractTypeCell from './contract-type-cell';
 import Button from '../../button';
 import Icon from '../../icon';
 import Text from '../../text';

@@ -807,6 +807,14 @@ const CFDPasswordModal = ({
         const jurisdiction_label =
             jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
         const mt5_platform_label = jurisdiction_selected_shortcode !== 'maltainvest' ? 'MT5' : '';
+        const accountTypes = () => {
+            if (platform === 'dxtrade' && type_label === 'Derived') {
+                return 'Synthetic';
+            } else if (platform === 'derivez' || platform === 'ctrader') {
+                return 'CFD';
+            }
+            return type_label;
+        };
 
         if (category === 'real') {
             return (
@@ -815,7 +823,7 @@ const CFDPasswordModal = ({
                         i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}} {{jurisdiction_selected_shortcode}}</1> account. '
                         values={{
                             // TODO: remove below condition once deriv x changes are completed
-                            type: platform === 'dxtrade' && type_label === 'Derived' ? 'Synthetic' : type_label,
+                            type: accountTypes(),
                             platform:
                                 platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : getCFDPlatformLabel(platform),
                             category: category_label,
@@ -841,7 +849,7 @@ const CFDPasswordModal = ({
             <Localize
                 i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account.'
                 values={{
-                    type: type_label,
+                    type: accountTypes(),
                     platform: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
                     category: category_label,
                 }}

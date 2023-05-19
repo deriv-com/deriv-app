@@ -91,9 +91,9 @@ const AmountInput = ({
         onChange?.(newValue);
     };
 
-    const inputActionHandler = (e: {
-        currentTarget: { value: string; selectionStart: number | null; selectionEnd: number | null };
-    }) => {
+    const inputActionHandler: React.ComponentProps<typeof Input>['onMouseDown'] &
+        React.ComponentProps<typeof Input>['onMouseUp'] &
+        React.ComponentProps<typeof Input>['onKeyDown'] = e => {
         if (e.currentTarget.selectionStart !== null && e.currentTarget.selectionEnd !== null) {
             setCaretRightOffset(e.currentTarget.value.length - e.currentTarget.selectionEnd);
             setSelection({

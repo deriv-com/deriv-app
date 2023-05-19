@@ -15,41 +15,30 @@ const WalletsMigrationFailed = observer(() => {
     };
 
     const handLiveChatButtonClick = () => {
+        window.LC_API.open_chat_window();
         toggleWalletsMigrationFailedPopup(false);
-        window.LiveChatWidget?.call('maximize');
     };
 
     const validateClickOutside = (e: MouseEvent) => {
-        // console.log('TRALALA');
-        // return is_wallet_migration_failed && !wallets_migration_failed_ref?.current?.contains(e.target as Node);
-
-        // anywhere outside the modal should close the modal
-        if (wallets_migration_failed_ref.current && !wallets_migration_failed_ref.current.contains(e.target as Node)) {
-            // console.log('Validate FALSE');
-            return false;
-        }
-        // console.log('Validate TRUE');
-        return true;
+        return is_wallet_migration_failed && !wallets_migration_failed_ref?.current?.contains(e.target as Node);
     };
 
-    // useOnClickOutside(wallets_migration_failed_ref, handleClose, validateClickOutside);
+    useOnClickOutside(wallets_migration_failed_ref, handleClose, validateClickOutside);
 
     return (
         <React.Fragment>
             {is_wallet_migration_failed && (
                 <React.Fragment>
                     <DesktopWrapper>
-                        {/* <div ref={wallets_migration_failed_ref}> */}
                         <Modal
                             is_open={is_wallet_migration_failed}
                             toggleModal={handleClose}
-                            // height='20rem'
                             width='44rem'
                             should_header_stick_body={false}
                             has_close_icon={false}
                         >
-                            <Modal.Body>
-                                <React.Fragment>
+                            <div ref={wallets_migration_failed_ref}>
+                                <Modal.Body>
                                     <Text
                                         as='h1'
                                         size='s'
@@ -64,30 +53,28 @@ const WalletsMigrationFailed = observer(() => {
                                             "We're unable to complete with the Wallet upgrade. Please try again later or contact us via live chat."
                                         )}
                                     </Text>
-                                </React.Fragment>
-                            </Modal.Body>
-                            <Modal.Footer className='wallets-migration-failed__footer'>
-                                <Button secondary large onClick={handLiveChatButtonClick}>
-                                    {localize('Go to live chat')}
-                                </Button>
-                                <Button primary large onClick={handleClose}>
-                                    {localize('Back to Trader’s Hub')}
-                                </Button>
-                            </Modal.Footer>
+                                </Modal.Body>
+                                <Modal.Footer className='wallets-migration-failed__footer'>
+                                    <Button secondary large onClick={handLiveChatButtonClick}>
+                                        {localize('Go to live chat')}
+                                    </Button>
+                                    <Button primary large onClick={handleClose}>
+                                        {localize('Back to Trader’s Hub')}
+                                    </Button>
+                                </Modal.Footer>
+                            </div>
                         </Modal>
-                        {/* </div> */}
                     </DesktopWrapper>
                     <MobileWrapper>
                         <Modal
                             is_open={is_wallet_migration_failed}
                             toggleModal={handleClose}
-                            // height='16rem'
                             width='32.3rem'
                             should_header_stick_body={false}
                             has_close_icon={false}
                         >
-                            <Modal.Body className='wallets-migration-failed--mobile'>
-                                <React.Fragment>
+                            <div ref={wallets_migration_failed_ref}>
+                                <Modal.Body className='wallets-migration-failed--mobile'>
                                     <Text
                                         as='h1'
                                         size='xs'
@@ -102,21 +89,21 @@ const WalletsMigrationFailed = observer(() => {
                                             "We're unable to complete with the Wallet upgrade. Please try again later or contact us via live chat."
                                         )}
                                     </Text>
-                                </React.Fragment>
-                            </Modal.Body>
-                            <Modal.Footer className='wallets-migration-failed__footer--mobile'>
-                                <Button secondary large onClick={handLiveChatButtonClick}>
-                                    {localize('Go to live chat')}
-                                </Button>
-                                <Button
-                                    primary
-                                    large
-                                    onClick={handleClose}
-                                    classNameSpan='wallets-migration-failed__text--mobile'
-                                >
-                                    {localize('Back to Trader’s Hub')}
-                                </Button>
-                            </Modal.Footer>
+                                </Modal.Body>
+                                <Modal.Footer className='wallets-migration-failed__footer--mobile'>
+                                    <Button secondary large onClick={handLiveChatButtonClick}>
+                                        {localize('Go to live chat')}
+                                    </Button>
+                                    <Button
+                                        primary
+                                        large
+                                        onClick={handleClose}
+                                        classNameSpan='wallets-migration-failed__text--mobile'
+                                    >
+                                        {localize('Back to Trader’s Hub')}
+                                    </Button>
+                                </Modal.Footer>
+                            </div>
                         </Modal>
                     </MobileWrapper>
                 </React.Fragment>

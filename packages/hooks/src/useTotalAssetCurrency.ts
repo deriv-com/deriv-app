@@ -19,4 +19,5 @@ const useRealTotalAssetCurrency = () => {
 
     return is_crypto() ? currency_if_is_crypto : currency;
 };
+
 export default useRealTotalAssetCurrency;

@@ -2,12 +2,12 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { isCryptocurrency, getLimitOrderAmount, isValidToSell } from '@deriv/shared';
-import ContractCardItem from './contract-card-item.jsx';
-import ToggleCardDialog from './toggle-card-dialog.jsx';
+import ContractCardItem from './contract-card-item';
+import ToggleCardDialog from './toggle-card-dialog';
 import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
-import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
+import { ResultStatusIcon } from '../result-overlay/result-overlay';
 
 const AccumulatorCardBody = ({
     addToast,

@@ -108,6 +108,11 @@
             }
         }
     }
+    @include mobile {
+        .dc-autocomplete__field {
+            border: none;
+        }
+    }
 }
 
 .sendbird-fileviewer__header-delete {

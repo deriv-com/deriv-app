@@ -59,24 +59,24 @@ const DerivPassword = ({ email, is_social_signup, social_identity_provider }) =>
                     <div className='passwords-platform__icons'>
                         <Popover alignment='bottom' message={platform_name_trader}>
                             <Icon
-                                icon={`${getPlatformSettings('trader').icon  }-dashboard`}
+                                icon={`${getPlatformSettings('trader').icon}-dashboard`}
                                 size={32}
                                 description='trader'
                             />
                         </Popover>
                         <Popover alignment='bottom' message={platform_name_dbot}>
-                            <Icon icon={`${getPlatformSettings('dbot').icon  }-dashboard`} size={32} description='dbot' />
+                            <Icon icon={`${getPlatformSettings('dbot').icon}-dashboard`} size={32} description='dbot' />
                         </Popover>
                         <Popover alignment='bottom' message={platform_name_smarttrader}>
                             <Icon
-                                icon={`${getPlatformSettings('smarttrader').icon  }-dashboard`}
+                                icon={`${getPlatformSettings('smarttrader').icon}-dashboard`}
                                 size={32}
                                 description='smarttrader'
                             />
                         </Popover>
                         <Popover alignment='bottom' message={platform_name_go}>
                             <Icon
-                                icon={`${getPlatformSettings('go').icon  }-dashboard`}
+                                icon={`${getPlatformSettings('go').icon}-dashboard`}
                                 size={32}
                                 description='derivgo'
                             />

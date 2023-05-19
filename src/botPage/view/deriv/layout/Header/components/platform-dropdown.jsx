@@ -28,13 +28,13 @@ const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcher
                         const related_deriv_origin = getRelatedDeriveOrigin();
                         platform.link = `${related_deriv_origin.origin}/?lang=${localStorage
                             .getItem('lang')
-                            .toLowerCase() || '?lang=en'}`;
+                            .toLowerCase() || 'en'}`;
                     }
                     if (platform.title === 'DBot') {
                         const related_deriv_origin = getRelatedDeriveOrigin();
                         platform.link = `${related_deriv_origin.origin}/?lang=${localStorage
                             .getItem('lang')
-                            .toLowerCase() || '?lang=en'}`;
+                            .toLowerCase() || 'en'}`;
                     }
                     if (platform.title === 'SmartTrader') {
                         const related_deriv_origin = getRelatedDeriveOrigin();

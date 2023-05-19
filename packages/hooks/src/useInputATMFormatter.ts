@@ -2,14 +2,16 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 import useInputDecimalFormatter from './useInputDecimalFormatter';
 
 const unFormatLocaleStringifyNumber = (input: string, locale: Intl.LocalesArgument) => {
-    const parts = (1234.5).toLocaleString(locale).match(/(\D+)/g);
-    let unformatted = input;
+    const parts = (12345.6789).toLocaleString(locale).match(/(\D+)/g);
 
-    if (parts) {
-        unformatted = unformatted.split(parts[0]).join('');
-        unformatted = unformatted.split(parts[1]).join('.');
+    if (parts && parts.length > 1) {
+        const is_reverse = parts[parts.length - 1] !== '.';
+        const decimal = parts[parts.length - 1];
+        const thousand = parts[0];
 
-        return unformatted;
+        if (is_reverse) return input.replaceAll(decimal, 'x').replaceAll(thousand, '').replaceAll('x', '.');
+
+        return input.replaceAll(thousand, '');
     }
 
     return input;
@@ -88,8 +90,15 @@ const useInputATMFormatter = (initial?: number, options?: TOprions) => {
     );
 
     useEffect(() => {
-        if (initial) onChange({ target: { value: `${initial}` } });
-    }, [initial, onChange]);
+        if (initial) {
+            is_pasting.current = true;
+            onChange({
+                target: {
+                    value: `${Number(initial).toLocaleString(locale, { minimumFractionDigits: fraction_digits })}`,
+                },
+            });
+        }
+    }, [fraction_digits, initial, locale, onChange]);
 
     return { value: formatted_value, onChange, onPaste };
 };

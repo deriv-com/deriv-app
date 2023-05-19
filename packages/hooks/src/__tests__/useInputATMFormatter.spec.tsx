@@ -32,7 +32,7 @@ describe('useInputATMFormatter', () => {
     test('should format the initial value correctly when locale is es-ES', async () => {
         const { result } = renderHook(() => useInputATMFormatter(12345.678, { locale: 'es-ES' }));
 
-        expect(result.current.value).toBe('123.456,78');
+        expect(result.current.value).toBe('12.345,67');
     });
 
     test('should shift the numbers to left while user is typing', () => {

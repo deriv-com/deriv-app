@@ -385,7 +385,7 @@ export default class AccountTransferStore {
         accounts?.forEach((account: TTransferAccount) => {
             const cfd_platforms = {
                 mt5: { name: 'Deriv MT5', icon: 'IcMt5' },
-                ctrader: { name: 'Deriv cTrader', icon: 'IcBrandCtrader' },
+                ctrader: { name: 'Deriv cTrader', icon: 'IcBrand' },
                 dxtrade: { name: 'Deriv X', icon: 'IcRebranding' },
                 derivez: { name: 'Deriv EZ', icon: 'IcDerivez' },
             };
@@ -400,6 +400,7 @@ export default class AccountTransferStore {
                         sub_account_type: account.sub_account_type,
                         platform: account.account_type,
                         is_eu: this.root_store.client.is_eu,
+                        is_transfer_form: true,
                     })) ||
                 ''
             }`;
@@ -448,7 +449,7 @@ export default class AccountTransferStore {
                         ? `${combined_cfd_mt5_account.sub_title}${short_code_and_region}`
                         : account_text_display,
                 //TODO: ask BE to add broker code (CTR) to cTrader loginid value
-                value: account.account_type === CFD_PLATFORMS.CTRADER ? `CTR${account.loginid}` : account.loginid,
+                value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,
                 is_crypto: isCryptocurrency(account.currency),

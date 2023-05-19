@@ -45,7 +45,7 @@ const AccountOption = ({ account, idx }: TAccountsList) => {
 
             <div className='account-transfer-form__currency-wrapper'>
                 <Text size='xxs' line_height='xs' styles={{ color: 'prominent', fontWeight: 'inherit' }}>
-                    {!is_deriv_account ? account.text : getCurrencyName(account.currency)}
+                    {!is_deriv_account ? getCurrencyName(account.currency) : account.text}
                 </Text>
                 {!account.is_derivez && (
                     <Text size='xxxs' align='left' color='less-prominent'>
@@ -58,7 +58,7 @@ const AccountOption = ({ account, idx }: TAccountsList) => {
                 <Money
                     amount={account.balance}
                     currency={account.currency}
-                    has_sign={Boolean(account.balance && account.balance < 0)}
+                    has_sign={Boolean(account.balance && Number(account.balance) < 0)}
                     show_currency
                 />
             </span>
@@ -76,7 +76,7 @@ let mt_accounts_from: Array<TAccount> = [];
 let mt_accounts_to: Array<TAccount> = [];
 let ctrader_accounts_from: Array<TAccount> = [];
 let ctrader_accounts_to: Array<TAccount> = [];
-let remaining_transfers: boolean | undefined;
+let remaining_transfers: number | undefined;
 
 const AccountTransferForm = observer(
     ({ error, onClickDeposit, onClickNotes, setSideNotes }: TAccountTransferFormProps) => {

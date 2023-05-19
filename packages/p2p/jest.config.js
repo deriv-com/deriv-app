@@ -9,19 +9,13 @@ module.exports = {
         '^Assets/(.*)$': '<rootDir>/src/assets/$1',
         '^Components/(.*)$': '<rootDir>/src/components/$1',
         '^Constants/(.*)$': '<rootDir>/src/constants/$1',
+        '^Pages/(.*)$': '<rootDir>/src/pages/$1',
         '^Stores/(.*)$': '<rootDir>/src/stores/$1',
         '^Stores$': '<rootDir>/src/stores/index',
         '^Translations/(.*)$': '<rootDir>/src/translations/$1',
         '^Utils/(.*)$': '<rootDir>/src/utils/$1',
     },
-    testPathIgnorePatterns: [
-        '/scripts/',
-        '/translations/',
-        '/crowdin/',
-        // TODO: Update the test files once the major features are done
-        // This is a temporary change, I hope
-        '/src/components/order*',
-    ],
+    testPathIgnorePatterns: ['/scripts/', '/translations/', '/crowdin/'],
     coveragePathIgnorePatterns: [
         '<rootDir>/.eslintrc.js',
         '<rootDir>/jest.config.js',

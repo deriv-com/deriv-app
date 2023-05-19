@@ -38,4 +38,24 @@ describe('<WalletsMigrationFailed />', () => {
 
         expect(container).toBeEmptyDOMElement();
     });
+
+    // test('Should close the Modal when user clicks on Back to traders hub button', async () => {
+    //     mockRootStore.traders_hub.is_wallet_migration_failed = true;
+
+    //     const wrapper = ({ children }: { children: JSX.Element }) => (
+    //         <StoreProvider store={mockRootStore}>{children}</StoreProvider>
+    //     );
+
+    //     const { container } = render(<WalletsMigrationFailed />, { wrapper });
+
+    //     expect(container).toBeInTheDocument();
+
+    //     // const close_button = screen.getByRole('button', { name: 'Back to Trader’s Hub' });
+    //     const close_button = screen.getByText(/back to trader/i);
+    //     expect(close_button).toBeInTheDocument();
+
+    //     await userEvent.click(close_button);
+
+    //     expect(container).toBeEmptyDOMElement();
+    // });
 });

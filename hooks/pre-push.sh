@@ -55,6 +55,10 @@ function main() {
             npm run test:eslint $package
         fi
 
+        if isJavascriptModified 'bot-web-ui'; then
+            npm run eslint --fix \"./src/**/*.?(js|jsx|ts|tsx|spec.ts|spec.js|spec.tsx|spec.tsx)\" 'bot-web-ui'
+        fi
+
         if isStyleModified $package; then
             npm run test:stylelint $package
         fi

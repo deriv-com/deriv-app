@@ -12,7 +12,7 @@ const type = (
         if (replace) new_value = char;
         if (char === 'BACKSPACE') new_value = `${input.current.value.substring(0, input.current.value.length - 1)}`;
 
-        act(() => input.current.onChangeHandler(new_value));
+        act(() => input.current.onChange({ target: { value: new_value } }));
     });
 };
 

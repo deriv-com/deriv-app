@@ -9,9 +9,10 @@ const useInputDecimalFormatter = (initial?: number, options?: TOptions) => {
     const [value, setValue] = useState('');
     const { fraction_digits = 2, with_sign = false } = options || {};
 
-    const onChangeHandler = useCallback(
-        (new_value: string) => {
+    const onChange = useCallback(
+        (e: DeepPartial<React.ChangeEvent<HTMLInputElement>> | React.ChangeEvent<HTMLInputElement>) => {
             setValue(old_value => {
+                const new_value = e?.target?.value || '';
                 const isEmpty = new_value === '';
 
                 // The field has been cleared, So we return the new value.
@@ -33,7 +34,6 @@ const useInputDecimalFormatter = (initial?: number, options?: TOptions) => {
                 // The field value is 0, So we return the new value without any calculations.
                 if (left === '0' && !has_right) return new_value;
 
-                // final bool isNumber = num.tryParse(new_value.text) != null;
                 const is_number = !isNaN(Number(new_value));
 
                 // The input value is not a valid number, So we return the old value.
@@ -64,7 +64,7 @@ const useInputDecimalFormatter = (initial?: number, options?: TOptions) => {
         setValue(`${initial || ''}`);
     }, [initial]);
 
-    return { value, onChangeHandler };
+    return { value, onChange };
 };
 
 export default useInputDecimalFormatter;

@@ -1,13 +1,7 @@
 import { epochToMoment, formatMilliseconds, getDiffDuration } from '../date';
 import { localize } from '@deriv/translations';
 import moment from 'moment';
-
-type TGetDurationPeriod = {
-    date_start: number;
-    purchase_time: number;
-    date_expiry: number;
-    tick_count?: number;
-};
+import { TContractInfo } from '../contract';
 
 export const getDurationUnitValue = (obj_duration: moment.Duration) => {
     const duration_ms = obj_duration.asMilliseconds() / 1000;
@@ -78,11 +72,11 @@ export const getDurationUnitText = (obj_duration: moment.Duration, should_ignore
     return unit_map.s.name;
 };
 
-export const getDurationPeriod = (contract_info: TGetDurationPeriod) =>
+export const getDurationPeriod = (contract_info: TContractInfo) =>
     getDiffDuration(
-        +epochToMoment(contract_info.date_start || contract_info.purchase_time),
-        +epochToMoment(contract_info.date_expiry)
+        +epochToMoment(contract_info.date_start || contract_info.purchase_time || 0),
+        +epochToMoment(contract_info.date_expiry || 0)
     );
 
-export const getDurationTime = (contract_info: TGetDurationPeriod) =>
+export const getDurationTime = (contract_info: TContractInfo) =>
     contract_info.tick_count ? contract_info.tick_count : getDurationUnitValue(getDurationPeriod(contract_info));

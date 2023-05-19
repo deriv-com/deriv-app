@@ -156,7 +156,6 @@ const PositionsDrawerCard = ({
             getContractPath={getContractPath}
             is_multiplier={is_multiplier}
             is_positions
-            is_turbos={is_turbos}
             is_unsupported={is_unsupported}
             onClickRemove={onClickRemove}
             profit_loss={profit_loss}

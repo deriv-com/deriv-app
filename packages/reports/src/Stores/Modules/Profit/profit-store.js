@@ -12,7 +12,7 @@ const delay_on_scroll_time = 150;
 export default class ProfitTableStore extends BaseStore {
     data = [];
     date_from = null;
-    date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
+    date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's');
     error = '';
     has_loaded_all = false;
     is_loading = false;
@@ -171,7 +171,7 @@ export default class ProfitTableStore extends BaseStore {
 
     clearDateFilter() {
         this.date_from = null;
-        this.date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's').unix();
+        this.date_to = toMoment().startOf('day').add(1, 'd').subtract(1, 's');
     }
 
     handleDateChange(date_values, { date_range } = {}) {

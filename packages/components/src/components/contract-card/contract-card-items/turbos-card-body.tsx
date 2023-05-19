@@ -7,33 +7,26 @@ import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
-import { TContractInfo, TGetContractUpdateConfig } from '@deriv/shared/src/utils/contract/contract-types';
-import { TContractStore } from '@deriv/shared/src/utils/helpers/validation-rules';
+import { TGeneralContractCardBodyProps } from './contract-card-body.js';
 
-type TToastConfig = {
-    key?: string;
-    content: string;
-    timeout?: number;
-    is_bottom?: boolean;
-    type: string;
-};
-
-type TTurbosCardBody = {
-    addToast: (toast_config: TToastConfig) => void;
-    connectWithContractUpdate?: (Component: React.ComponentType) => React.ComponentType;
-    contract_info: TContractInfo;
-    contract_update?: TGetContractUpdateConfig['contract_update'];
-    currency: string;
-    current_focus?: string | null;
-    error_message_alignment?: string;
-    getCardLabels: () => { [key: string]: string };
-    getContractById: (contract_id: number) => TContractStore;
-    is_sold: boolean;
-    onMouseLeave: () => void;
-    removeToast: (key: string) => void;
+type TTurbosCardBody = Pick<
+    TGeneralContractCardBodyProps,
+    | 'addToast'
+    | 'connectWithContractUpdate'
+    | 'contract_info'
+    | 'contract_update'
+    | 'currency'
+    | 'current_focus'
+    | 'error_message_alignment'
+    | 'getCardLabels'
+    | 'getContractById'
+    | 'is_sold'
+    | 'onMouseLeave'
+    | 'removeToast'
+    | 'setCurrentFocus'
+    | 'status'
+> & {
     progress_slider_mobile_el: React.ReactNode;
-    setCurrentFocus: (value: string | null) => void;
-    status: string | null;
 };
 
 const TurbosCardBody = ({
@@ -115,7 +108,7 @@ const TurbosCardBody = ({
                 <MobileWrapper>
                     <div className='dc-contract-card__status'>
                         {is_sold ? (
-                            <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={profit && profit > 0} />
+                            <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={!!profit && profit > 0} />
                         ) : (
                             progress_slider_mobile_el
                         )}

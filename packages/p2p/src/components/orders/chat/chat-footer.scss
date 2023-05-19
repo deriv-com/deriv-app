@@ -1,4 +1,4 @@
-&__footer {
+.chat-footer {
     background-color: var(--general-main-1);
     border-top: 2px solid var(--general-section-1);
     max-height: 33.333%;
@@ -39,7 +39,7 @@
     &-input {
         position: relative;
         height: calc(100% - 1.6rem - 2.6rem);
-        margin: 1.6rem 2.4rem 0.8rem;
+        margin: 1.6rem 2.4rem 2.8rem;
     }
 
     .dc-input {

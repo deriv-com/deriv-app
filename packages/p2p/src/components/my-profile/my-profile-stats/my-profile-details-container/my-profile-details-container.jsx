@@ -7,7 +7,7 @@ import './my-profile-details-container.scss';
 const MyProfileDetailsContainer = () => (
     <div className='my-profile-details-container'>
         <MyProfileName />
-        <div className='my-profile-details-container--table'>
+        <div className='my-profile-details-container__table'>
             <MyProfileBalance />
             <MyProfileDetailsTable />
         </div>

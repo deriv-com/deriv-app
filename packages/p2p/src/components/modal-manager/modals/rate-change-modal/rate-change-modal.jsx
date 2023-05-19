@@ -26,13 +26,13 @@ const RateChangeModal = ({ currency }) => {
             is_open={is_modal_open && floating_rate_store.is_market_rate_changed}
             toggleModal={closeModal}
             small
-            className='rate-changed-modal'
+            className='rate-change-modal'
         >
             <Modal.Body>
                 <Text
                     as='p'
                     align='left'
-                    className='rate-changed-modal__message'
+                    className='rate-change-modal__message'
                     size={isMobile() ? 'xxs' : 'xs'}
                     line_height='s'
                 >
@@ -42,7 +42,7 @@ const RateChangeModal = ({ currency }) => {
                     />
                 </Text>
             </Modal.Body>
-            <Modal.Footer className='rate-changed-modal__button'>
+            <Modal.Footer className='rate-change-modal__button'>
                 <Button onClick={closeModal} text={localize('Try again')} primary large />
             </Modal.Footer>
         </Modal>

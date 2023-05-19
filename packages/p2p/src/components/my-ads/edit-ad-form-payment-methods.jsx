@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
-import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
+import PaymentMethodCard from 'Components/my-profile/payment-methods/payment-method-card';
 import { localize } from 'Components/i18next';
-import BuyAdPaymentMethodsList from './buy-ad-payment-methods-list.jsx';
-import SellAdPaymentMethodsList from './sell-ad-payment-methods-list.jsx';
+import BuyAdPaymentMethodsList from 'Components/my-ads/buy-ad-payment-methods-list.jsx';
+import SellAdPaymentMethodsList from 'Components/my-ads/sell-ad-payment-methods-list.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelectedMethods, touched }) => {

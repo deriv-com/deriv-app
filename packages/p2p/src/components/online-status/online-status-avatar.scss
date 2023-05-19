@@ -1,0 +1,21 @@
+.online-status-avatar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    height: fit-content;
+
+    &-text {
+        position: absolute;
+    }
+
+    & .online-status-icon {
+        position: absolute;
+        bottom: -0.1px;
+        right: -0.1px;
+        margin: 0;
+        border-radius: 50%;
+        transform: scale(1.1);
+    }
+}

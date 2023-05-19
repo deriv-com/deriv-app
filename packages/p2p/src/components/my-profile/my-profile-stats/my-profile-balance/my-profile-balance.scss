@@ -13,16 +13,16 @@
         }
     }
 
-    &--column {
+    &__column {
         flex-direction: column;
     }
 
-    &--icon {
+    &__icon {
         cursor: pointer;
         margin-left: 0.5rem;
     }
 
-    &--row {
+    &__row {
         display: flex;
         flex-direction: row;
         align-items: center;

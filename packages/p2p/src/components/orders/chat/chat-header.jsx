@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import ExtendedOrderDetails from 'Utils/orders';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
+import './chat-header.scss';
 
 const ChatHeaderBody = observer(() => {
     const { order_store, sendbird_store } = useStores();
@@ -15,26 +16,19 @@ const ChatHeaderBody = observer(() => {
 
     return (
         <React.Fragment>
-            <div className='order-chat__header-icon' style={{ backgroundColor: icon_background_colour }}>
+            <div className='chat-header-icon' style={{ backgroundColor: icon_background_colour }}>
                 <Text size='xs' color='colored-background' line_height='m'>
                     {short_nickname}
                 </Text>
             </div>
-            <div className='order-chat__header-user'>
-                <Text
-                    as='p'
-                    className='order-chat__header-user-name'
-                    color='prominent'
-                    line_height='m'
-                    size='s'
-                    weight='bold'
-                >
+            <div className='chat-header-user'>
+                <Text as='p' className='chat-header-user-name' color='prominent' line_height='m' size='s' weight='bold'>
                     {other_user_details.name}
                 </Text>
                 {sendbird_store.last_other_user_activity && (
                     <Text
                         as='p'
-                        className='order-chat__header-user-timestamp'
+                        className='chat-header-user-timestamp'
                         color='less-prominent'
                         line_height='m'
                         size={isMobile() ? 'xxs' : 'xs'}
@@ -53,7 +47,7 @@ const ChatHeader = () => {
     }
 
     return (
-        <div className='order-chat__header'>
+        <div className='chat-header'>
             <ChatHeaderBody />
         </div>
     );

@@ -28,7 +28,7 @@ const BuySell = () => {
 
     const onScroll = event => {
         if (!buy_sell_store.show_advertiser_page) {
-            previous_scroll_top.current = event.target.scrollTop;
+            previous_scroll_top.current = event?.target?.scrollTop;
         }
     };
 

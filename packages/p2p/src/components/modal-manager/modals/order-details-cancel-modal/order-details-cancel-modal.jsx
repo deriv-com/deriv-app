@@ -4,7 +4,7 @@ import { useIsMounted } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
-import FormError from 'Components/form/error.jsx';
+import FormError from 'Components/form/form-submit-error-message';
 import { useModalManagerContext } from '../../modal-manager-context';
 
 const OrderDetailsCancelModal = () => {
@@ -31,7 +31,7 @@ const OrderDetailsCancelModal = () => {
 
     return (
         <Modal
-            className='cancel-modal'
+            className='order-details-cancel-modal'
             has_close_icon={false}
             is_open={is_modal_open}
             toggleModal={hideModal}
@@ -65,13 +65,13 @@ const OrderDetailsCancelModal = () => {
                         />
                     </Text>
                 )}
-                <div className='cancel-modal__warning'>
+                <div className='order-details-cancel-modal__warning'>
                     <Text color='loss-danger' size='xs'>
                         <Localize i18n_default_text='Please do not cancel if you have already made payment.' />
                     </Text>
                 </div>
             </Modal.Body>
-            <Modal.Footer className='cancel-modal__footer'>
+            <Modal.Footer className='order-details-cancel-modal__footer'>
                 {order_store.error_message && <FormError message={order_store.error_message} />}
                 <Button.Group>
                     <Button secondary large onClick={cancelOrderRequest}>

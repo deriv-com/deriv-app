@@ -4,7 +4,7 @@ import { Dropdown, Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { useOnClickOutside } from '../../../../components/src/hooks';
-import './advertiser-page.scss';
+import './advertiser-page-dropdown-menu.scss';
 
 const AdvertiserPageDropdownMenu = () => {
     const dropdown_menu_ref = React.useRef();
@@ -18,9 +18,9 @@ const AdvertiserPageDropdownMenu = () => {
 
     return (
         !advertiser_page_store.is_counterparty_advertiser_blocked && (
-            <div className='advertiser-page__menu-dots-toggle'>
+            <div className='advertiser-page-dropdown-menu__dots-toggle'>
                 <Icon
-                    className='advertiser-page__menu-dots-icon'
+                    className='advertiser-page-dropdown-menu__dots-icon'
                     icon='IcMenuDots'
                     onClick={() =>
                         advertiser_page_store.setIsDropdownMenuVisible(!advertiser_page_store.is_dropdown_menu_visible)
@@ -30,11 +30,11 @@ const AdvertiserPageDropdownMenu = () => {
                 {advertiser_page_store.is_dropdown_menu_visible && (
                     <div
                         ref={dropdown_menu_ref}
-                        className='advertiser-page__dropdown'
+                        className='advertiser-page-dropdown-menu'
                         onClick={advertiser_page_store.showBlockUserModal}
                     >
                         <Dropdown
-                            className='advertiser-page__dropdown-container'
+                            className='advertiser-page-dropdown-menu__container'
                             is_align_text_right
                             list={['Block']}
                             name='block_user_dropdown'

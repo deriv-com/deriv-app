@@ -1,0 +1,262 @@
+@mixin popoverIcons($background-color, $height, $width) {
+    align-items: center;
+    background-color: $background-color;
+    cursor: pointer;
+    display: flex;
+    height: $height;
+    justify-content: center;
+    width: $width;
+}
+
+.my-ads-table {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    &__add {
+        align-items: center;
+        border: 1px solid var(--border-normal);
+        border-radius: 4px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        padding: 0.3rem 0.5rem;
+
+        &--disabled {
+            cursor: not-allowed;
+        }
+    }
+
+    &__body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__create {
+        margin: 1.6rem;
+        width: 90vw;
+
+        &-container {
+            border-top: 2px solid var(--general-section-1);
+        }
+    }
+
+    &__payment-method {
+        display: flex;
+        flex-wrap: wrap;
+
+        &--label {
+            align-items: center;
+            border-radius: 0.4rem;
+            border: 1px solid var(--border-normal);
+            display: flex;
+            flex-direction: row;
+            margin: 0.25rem;
+            padding: 0 0.8rem;
+            width: fit-content;
+
+            @include mobile {
+                height: 2.4rem;
+                margin: 0.25rem 0.5rem 0.25rem 0;
+            }
+        }
+    }
+
+    &__price {
+        color: var(--text-profit-success);
+        font-weight: bold;
+
+        .display-layout {
+            display: flex;
+            flex-direction: column;
+        }
+    }
+
+    &__popovers {
+        background-color: var(--general-main-1);
+        display: flex;
+        height: 99%;
+        justify-content: center;
+        min-width: 14rem;
+        padding: 1.6rem;
+        position: absolute;
+        right: 0;
+        top: 0;
+
+        &--disable {
+            cursor: not-allowed !important;
+
+            @include mobile {
+                background-color: var(--checkbox-disabled-grey) !important;
+            }
+        }
+
+        @include mobile {
+            display: flex;
+            justify-content: unset;
+        }
+
+        div {
+            margin: auto;
+        }
+
+        &__activate {
+            @include popoverIcons(none, 3.2rem, 3.2rem);
+
+            @include desktop {
+                &:hover {
+                    background-color: var(--general-hover);
+                }
+            }
+
+            @include mobile {
+                @include popoverIcons(var(--status-warning), 100%, 6rem);
+            }
+        }
+
+        &__deactivate {
+            @include popoverIcons(none, 3.2rem, 3.2rem);
+
+            @include desktop {
+                &:hover {
+                    background-color: var(--general-hover);
+                }
+            }
+
+            @include mobile {
+                @include popoverIcons(#85acb0, 100%, 6rem);
+            }
+        }
+
+        &__delete {
+            @include popoverIcons(none, 3.2rem, 3.2rem);
+
+            @include desktop {
+                &:hover {
+                    background-color: var(--general-hover);
+                }
+            }
+
+            @include mobile {
+                @include popoverIcons(var(--brand-red-coral), 100%, 6rem);
+            }
+        }
+
+        &__edit {
+            @include popoverIcons(none, 3.2rem, 3.2rem);
+
+            @include desktop {
+                &:hover {
+                    background-color: var(--general-hover);
+                }
+            }
+
+            @include mobile {
+                @include popoverIcons(var(--status-info), 100%, 6rem);
+            }
+        }
+    }
+
+    &__available {
+        align-items: flex-start;
+        flex-flow: column;
+        justify-content: center;
+        width: 85%;
+
+        &-progress {
+            margin-bottom: 0.4rem;
+
+            @include mobile {
+                margin: 0.4rem 0;
+            }
+        }
+    }
+
+    &__row {
+        padding: 1.6rem;
+        grid-template-columns: 1.7fr repeat(2, 2fr) repeat(2, 2.3fr) 1.5fr;
+
+        .dc-table__cell:last-child {
+            word-break: unset;
+        }
+
+        @include mobile {
+            grid-template-columns: unset;
+            padding: 1.6rem;
+            width: 100%;
+        }
+
+        &__type-and-status {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+        }
+
+        &-details {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        &-disabled {
+            .dc-table__cell {
+                color: var(--text-disabled);
+            }
+
+            .dc-progress-indicator {
+                &__container {
+                    background-color: var(--general-section-1);
+                }
+                &__bar {
+                    background-color: var(--general-disabled);
+                }
+            }
+
+            .dc-text {
+                &:not(.ad-status--inactive) {
+                    color: var(--text-disabled);
+                }
+            }
+        }
+
+        &-methods {
+            display: flex;
+            flex-wrap: wrap;
+        }
+    }
+
+    &__status {
+        width: 100%;
+
+        &-warning {
+            align-items: center;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            width: 100%;
+
+            @include mobile {
+                align-items: center;
+                display: flex;
+                justify-content: unset;
+                width: unset;
+                gap: 1rem;
+            }
+        }
+    }
+
+    &--disabled {
+        .dc-table__cell {
+            color: var(--text-disabled);
+        }
+
+        .dc-progress-indicator {
+            &__container {
+                background-color: var(--general-section-1);
+            }
+            &__bar {
+                background-color: var(--general-disabled);
+            }
+        }
+    }
+}

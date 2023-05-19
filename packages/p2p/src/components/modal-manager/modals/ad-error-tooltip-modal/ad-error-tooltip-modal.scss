@@ -1,0 +1,17 @@
+.ad-error-tooltip-modal {
+    &--form {
+        height: fit-content !important;
+    }
+    .dc-modal-header__title--add-error-tooltip-modal {
+        padding: 2.4rem 2.4rem 0 !important;
+    }
+    .dc-modal__container_add-error-tooltip-modal {
+        .dc-modal-footer {
+            padding-top: 0 !important;
+        }
+
+        .dc-modal-header {
+            padding-bottom: 1rem;
+        }
+    }
+}

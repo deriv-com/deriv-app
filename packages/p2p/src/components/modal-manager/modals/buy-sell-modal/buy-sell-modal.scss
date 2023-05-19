@@ -1,4 +1,4 @@
-.buy-sell__modal {
+.buy-sell-modal {
     opacity: 1 !important;
 
     @include mobile {
@@ -223,13 +223,13 @@
     }
 }
 
-.buy-sell__modal-content {
+.buy-sell-modal-content {
     .dc-input {
         margin-bottom: unset;
     }
 }
-.dc-modal__container_buy-sell__modal {
-    .dc-modal-header--buy-sell__modal {
+.dc-modal__container_buy-sell-modal {
+    .dc-modal-header--buy-sell-modal {
         border-bottom: 2px solid var(--general-section-5);
     }
 

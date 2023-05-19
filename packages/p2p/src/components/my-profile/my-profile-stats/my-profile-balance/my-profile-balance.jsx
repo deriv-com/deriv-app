@@ -34,13 +34,13 @@ const MyProfileBalance = () => {
                     />
                 </Modal.Footer>
             </Modal>
-            <div className='my-profile-balance--column'>
-                <div className='my-profile-balance--row'>
+            <div className='my-profile-balance__column'>
+                <div className='my-profile-balance__row'>
                     <Text color='less-prominent' line_height='m' size={isMobile() ? 'xxxs' : 'xs'}>
                         <Localize i18n_default_text='Available Deriv P2P balance' />
                     </Text>
                     <Icon
-                        className='my-profile-balance--icon'
+                        className='my-profile-balance__icon'
                         color='disabled'
                         icon='IcInfoOutline'
                         onClick={() => setIsBalanceTooltipOpen(true)}

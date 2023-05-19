@@ -15,7 +15,7 @@
         }
     }
 
-    &--column {
+    &__column {
         display: flex;
         flex-direction: column;
     }
@@ -29,14 +29,14 @@
         }
     }
 
-    &--privacy {
+    &__privacy {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         width: 100%;
     }
 
-    &--rating {
+    &__rating {
         display: flex;
         flex-direction: row;
         padding: 0.8rem 0;

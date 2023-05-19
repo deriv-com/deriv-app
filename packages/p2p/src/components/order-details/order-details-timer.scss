@@ -1,0 +1,10 @@
+.order-details-timer {
+    display: flex;
+    flex-direction: column;
+    &-counter {
+        margin-top: 0.4rem;
+        border: 1px solid var(--border-normal);
+        border-radius: 16px;
+        padding: 0.4rem 0.8rem;
+    }
+}

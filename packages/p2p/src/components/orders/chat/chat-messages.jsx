@@ -8,6 +8,7 @@ import ChatMessageReceipt from 'Components/orders/chat/chat-message-receipt.jsx'
 import ChatMessageText from 'Components/orders/chat/chat-message-text.jsx';
 import { useStores } from 'Stores';
 import ChatMessage from 'Utils/chat-message';
+import './chat-messages.scss';
 
 const ChatMessages = observer(() => {
     const { sendbird_store } = useStores();
@@ -38,7 +39,7 @@ const ChatMessages = observer(() => {
         return (
             <ThemedScrollbars
                 autohide
-                className='order-chat__messages'
+                className='chat-messages'
                 height='unset'
                 refSetter={scroll_ref}
                 onScroll={event => sendbird_store.onMessagesScroll(event)}
@@ -52,7 +53,7 @@ const ChatMessages = observer(() => {
                     return (
                         <React.Fragment key={chat_message.id}>
                             {should_render_date && (
-                                <div className='order-chat__messages-date'>
+                                <div className='chat-messages-date'>
                                     <Text align='center' color='less-prominent' lh='m' size='xs' weight='bold'>
                                         {message_date}
                                     </Text>
@@ -60,8 +61,8 @@ const ChatMessages = observer(() => {
                             )}
                             <div
                                 className={classNames(
-                                    'order-chat__messages-item',
-                                    `order-chat__messages-item--${is_my_message ? 'outgoing' : 'incoming'}`
+                                    'chat-messages-item',
+                                    `chat-messages-item--${is_my_message ? 'outgoing' : 'incoming'}`
                                 )}
                             >
                                 {chat_message.message_type === ChatMessage.TYPE_USER && (
@@ -70,7 +71,7 @@ const ChatMessages = observer(() => {
                                 {chat_message.message_type === ChatMessage.TYPE_FILE &&
                                     (isImageType(chat_message.file_type) ? (
                                         <a
-                                            className='order-chat__messages-item-image'
+                                            className='chat-messages-item-image'
                                             href={chat_message.url}
                                             rel='noopener noreferrer'
                                             target='_blank'
@@ -80,7 +81,7 @@ const ChatMessages = observer(() => {
                                     ) : (
                                         <ChatMessageText colour={message_colour}>
                                             <a
-                                                className='order-chat__messages-item-file'
+                                                className='chat-messages-item-file'
                                                 href={chat_message.url}
                                                 rel='noopener noreferrer'
                                                 target='_blank'
@@ -89,7 +90,7 @@ const ChatMessages = observer(() => {
                                             </a>
                                         </ChatMessageText>
                                     ))}
-                                <div className={`order-chat__messages-item-timestamp`}>
+                                <div className={`chat-messages-item-timestamp`}>
                                     <Text color='less-prominent' line_height='s' size='xxxs'>
                                         {formatMilliseconds(chat_message.created_at, 'HH:mm', true)}
                                     </Text>
@@ -109,7 +110,7 @@ const ChatMessages = observer(() => {
         );
     }
 
-    return <div className='order-chat__messages' />;
+    return <div className='chat-messages' />;
 });
 
 ChatMessages.displayName = 'ChatMessages';

@@ -1,4 +1,4 @@
-.buy-sell__header {
+.buy-sell-header {
     display: flex;
     flex-direction: column;
 
@@ -74,16 +74,17 @@
         }
 
         &--filter {
-            align-self: center;
             border: 1px solid var(--border-normal);
             border-radius: 4px;
             display: flex;
             margin-left: 0.8rem;
+            margin-top: 2.5rem;
             padding: 1.3rem;
 
             @include mobile {
                 justify-self: center;
                 margin-left: 0;
+                margin-top: 0;
             }
         }
 
@@ -95,6 +96,6 @@
     }
 }
 
-.buy-sell__header-position-static {
+.buy-sell-header-position-static {
     position: static;
 }

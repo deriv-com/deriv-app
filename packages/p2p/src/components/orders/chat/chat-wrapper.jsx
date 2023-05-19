@@ -11,11 +11,11 @@ const ChatWrapper = observer(({ children, is_modal_open }) => {
 
     return isMobile() ? (
         <MobileFullPageModal
-            className='order-chat'
+            className='chat'
             height_offset='80px'
             is_flex
             is_modal_open={is_modal_open}
-            page_header_className='order-chat__header'
+            page_header_className='chat__header'
             pageHeaderReturnFn={() => {
                 sendbird_store.setShouldShowChatModal(false);
                 sendbird_store.setShouldShowChatOnOrders(false);

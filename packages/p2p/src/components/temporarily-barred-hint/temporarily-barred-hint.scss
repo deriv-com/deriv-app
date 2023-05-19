@@ -1,0 +1,17 @@
+.temporarily-barred-hint {
+    .dc-hint-box {
+        margin-top: 1.6rem;
+
+        &__icon {
+            @include mobile {
+                align-self: flex-start;
+                min-width: 16px;
+                min-height: 16px;
+            }
+        }
+
+        @include mobile {
+            margin: 1rem 2rem;
+        }
+    }
+}

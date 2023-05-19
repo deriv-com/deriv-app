@@ -7,58 +7,6 @@
         overflow-y: auto;
     }
 
-    &__dropdown {
-        box-shadow: 0 1rem 2rem var(--shadow-menu);
-        border-radius: $BORDER_RADIUS;
-        cursor: pointer;
-        position: absolute;
-        right: 0;
-        z-index: 2;
-
-        .dc-dropdown__display {
-            background-color: var(--general-main-2);
-            border: 1px solid var(--general-active);
-
-            span {
-                background-color: var(--general-main-2);
-            }
-
-            &-placeholder {
-                top: auto;
-            }
-        }
-
-        &-container {
-            margin-top: 0;
-        }
-
-        &:hover {
-            .dc-dropdown__display {
-                background-color: var(--border-normal);
-                border: 1px solid var(--border-normal);
-
-                span {
-                    background-color: var(--border-normal);
-                }
-            }
-        }
-    }
-
-    &__menu-dots-icon {
-        cursor: pointer;
-        margin-bottom: 0.8rem;
-    }
-
-    &__menu-dots-toggle {
-        position: absolute;
-        right: 2.4rem;
-
-        @include mobile {
-            bottom: 0.8rem;
-            right: 1.2rem;
-        }
-    }
-
     &__page-return-header {
         position: relative;
     }
@@ -209,79 +157,6 @@
         margin-top: 0.35rem;
     }
 
-    &__stats {
-        border-bottom: none;
-        display: flex;
-        grid-template-columns: repeat(3, 1fr);
-        height: 5rem;
-        justify-content: space-between;
-        margin: 2rem 0;
-        width: 100%;
-
-        @include mobile {
-            grid-template-columns: repeat(2, 1fr);
-            margin: 0.6rem;
-            width: 90vw;
-        }
-
-        &-cell {
-            display: grid;
-            min-width: 20rem;
-            text-align: center;
-            margin-right: 10rem;
-
-            @include mobile {
-                min-width: 12rem;
-
-                &:nth-child(5) {
-                    min-width: 16rem;
-                }
-            }
-
-            &-buy {
-                margin-left: 0.5rem;
-                margin-top: 0.14rem;
-            }
-
-            &-completion {
-                display: flex;
-
-                @include mobile {
-                    flex-direction: row;
-                    justify-content: center;
-                    padding-left: 0.5rem;
-                }
-            }
-
-            &-separator {
-                border-right: 1px solid #ededed;
-                margin-right: 2rem;
-
-                @include mobile {
-                    margin: 0px 3rem 0 -4rem;
-                }
-            }
-        }
-
-        &--wrapper {
-            align-items: center;
-            display: flex;
-
-            @media (max-height: 580px) {
-                height: 5rem;
-            }
-            @include mobile {
-                display: flex;
-                justify-content: center;
-                flex: none;
-
-                background-color: var(--general-main-1);
-                z-index: 1;
-                transition: transform 0.25s linear, opacity 0.25s ease;
-                transform-origin: top;
-            }
-        }
-    }
     &__cell {
         @include mobile {
             display: block;
@@ -300,11 +175,13 @@
             }
         }
     }
+
     &__payment-methods-list {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
     }
+
     &__payment-method {
         display: flex;
         flex-wrap: wrap;
@@ -318,86 +195,6 @@
 
         @include mobile {
             padding: 0.4rem;
-            font-size: 8px;
-        }
-    }
-    &__adverts {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-
-        &-button {
-            align-items: center;
-            display: flex;
-            justify-content: center;
-
-            @include mobile {
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-start;
-                margin-top: 1rem;
-            }
-        }
-        &-table {
-            display: flex;
-            flex: 1;
-            flex-direction: column;
-
-            @include mobile {
-                display: flex;
-                flex-flow: column;
-                width: 100vw;
-            }
-
-            &-body {
-                flex: 1;
-                display: flex;
-                flex-direction: column;
-            }
-        }
-
-        &-table_row {
-            padding: 1.6rem;
-            grid-template-columns: 3fr 2fr 2.5fr 1fr;
-
-            @include mobile {
-                grid-template-columns: 2fr 1fr;
-                min-height: 105px;
-                padding: 1.6rem;
-                width: 100vw;
-            }
-        }
-
-        &-tabs {
-            width: 228px;
-        }
-
-        .dc-tabs__item {
-            @include mobile {
-                width: 50%;
-            }
-        }
-
-        &-list {
-            height: calc(100% - 200px);
-
-            @include mobile {
-                height: calc(100% - 236px);
-            }
-        }
-
-        &-scrollbar {
-            @include tablet-up {
-                height: calc(100vh - 527px);
-            }
-
-            position: absolute;
-
-            @include mobile {
-                bottom: 0;
-                max-height: calc(100vh - 440px) !important;
-                position: fixed;
-            }
         }
     }
 
@@ -411,6 +208,7 @@
             }
         }
     }
+
     &__data-list {
         flex: 1;
 

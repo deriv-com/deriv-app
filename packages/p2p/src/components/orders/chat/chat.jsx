@@ -15,7 +15,7 @@ const Chat = observer(() => {
 
     if (sendbird_store.is_chat_loading) {
         return (
-            <div className='order-chat'>
+            <div className='chat'>
                 <Loading is_fullscreen={false} />;
             </div>
         );
@@ -23,12 +23,12 @@ const Chat = observer(() => {
 
     if (sendbird_store.has_chat_error) {
         return (
-            <div className='order-chat'>
-                <div className='order-chat__error'>
+            <div className='chat'>
+                <div className='chat__error'>
                     <Text as='p' color='prominent' line_height='m' size='s'>
                         <Localize i18n_default_text='Oops, something went wrong' />
                     </Text>
-                    <div className='order-chat__error-retry'>
+                    <div className='chat__error-retry'>
                         <Button
                             has_effect
                             large
@@ -45,7 +45,7 @@ const Chat = observer(() => {
 
     return (
         <ChatWrapper is_modal_open={sendbird_store.should_show_chat_modal}>
-            <div className='order-chat'>
+            <div className='chat'>
                 <ChatHeader />
                 <ChatMessages />
                 <ChatFooter />

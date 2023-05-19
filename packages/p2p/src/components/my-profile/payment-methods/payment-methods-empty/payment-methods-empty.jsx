@@ -13,14 +13,14 @@ const PaymentMethodsEmpty = () => {
             <DesktopWrapper>
                 <div className='payment-methods-empty'>
                     <Icon icon='IcPaymentMethodsWallet' height={159} width={256} />
-                    <Text className='payment-methods-empty--text' line_height='m' size='s' weight='bold'>
+                    <Text className='payment-methods-empty__text' line_height='m' size='s' weight='bold'>
                         <Localize i18n_default_text='You haven’t added any payment methods yet' />
                     </Text>
                     <Text line_height='m' size='s'>
                         <Localize i18n_default_text='Hit the button below to add payment methods.' />
                     </Text>
                     <Button
-                        className='payment-methods-empty--button'
+                        className='payment-methods-empty__button'
                         has_effect
                         large
                         primary
@@ -40,18 +40,18 @@ const PaymentMethodsEmpty = () => {
                 >
                     <Icon
                         icon='IcPaymentMethodsWallet'
-                        className='payment-methods-empty--icon'
+                        className='payment-methods-empty__icon'
                         height={159}
                         width={256}
                     />
-                    <Text className='payment-methods-empty--text' line_height='m' size='s' weight='bold'>
+                    <Text className='payment-methods-empty__text' line_height='m' size='s' weight='bold'>
                         <Localize i18n_default_text='You haven’t added any payment methods yet' />
                     </Text>
                     <Text line_height='m' size='s'>
                         <Localize i18n_default_text='Hit the button below to add payment methods.' />
                     </Text>
                     <Button
-                        className='payment-methods-empty--button'
+                        className='payment-methods-empty__button'
                         has_effect
                         large
                         primary

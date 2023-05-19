@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
 import { Button, Checkbox, Modal, Text, useSafeState } from '@deriv/components';
 import { localize } from '../i18next';
-import FormError from '../form/error.jsx';
+import FormError from 'Components/form/form-submit-error-message';
 
 const FormWithConfirmation = ({
     cancel_text,

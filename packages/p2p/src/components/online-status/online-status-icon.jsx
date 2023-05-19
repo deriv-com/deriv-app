@@ -2,13 +2,14 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
+import './online-status-icon.scss';
 
 const OnlineStatusIcon = ({ is_online, size = '1em' }) => {
     return (
         <div
-            className={classNames('online-status__icon', {
-                'online-status__icon--offline': !is_online,
-                'online-status__icon--online': !!is_online,
+            className={classNames('online-status-icon', {
+                'online-status-icon--offline': !is_online,
+                'online-status-icon--online': !!is_online,
             })}
             style={{
                 width: size,

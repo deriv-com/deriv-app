@@ -18,7 +18,7 @@ const EmailLinkVerifiedModal = () => {
         <Modal has_close_icon is_open={is_modal_open} renderTitle={() => <></>} toggleModal={hideModal} width='440px'>
             <Modal.Body className='email-verified-modal'>
                 <Icon icon='IcEmailVerificationLinkValid' size='128' />
-                <Text className='email-verified-modal--text' color='prominent' size='s' weight='bold'>
+                <Text className='email-verified-modal__text' color='prominent' size='s' weight='bold'>
                     <Localize i18n_default_text="We've verified your order" />
                 </Text>
                 <Text align='center' color='prominent' size='s'>
@@ -28,7 +28,7 @@ const EmailLinkVerifiedModal = () => {
                     />
                 </Text>
             </Modal.Body>
-            <Modal.Footer className='email-verified-modal--footer'>
+            <Modal.Footer className='email-verified-modal__footer'>
                 <Button
                     large
                     primary

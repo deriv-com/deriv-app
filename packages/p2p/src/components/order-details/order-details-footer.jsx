@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button } from '@deriv/components';
+import { Button, Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import OrderDetailsComplainModal from './order-details-complain-modal.jsx';
+import './order-details-footer.scss';
 
 const OrderDetailsFooter = observer(() => {
     const { general_store, order_store } = useStores();
@@ -48,14 +49,18 @@ const OrderDetailsFooter = observer(() => {
     if (should_show_cancel_and_paid_button) {
         return (
             <React.Fragment>
-                <div className='order-details-card__footer'>
-                    <div className='order-details-card__footer--right'>
+                <div className='order-details-footer'>
+                    <div className='order-details-footer--right'>
                         <Button.Group>
                             <Button large secondary onClick={showCancelOrderModal} is_disabled={!chat_channel_url}>
-                                <Localize i18n_default_text='Cancel order' />
+                                <Text color='general' line_height='s' size='xs' weight='bold'>
+                                    <Localize i18n_default_text='Cancel order' />
+                                </Text>
                             </Button>
                             <Button large primary onClick={showConfirmOrderModal} is_disabled={!chat_channel_url}>
-                                <Localize i18n_default_text="I've paid" />
+                                <Text color='colored-background' line_height='s' size='xs' weight='bold'>
+                                    <Localize i18n_default_text="I've paid" />
+                                </Text>
                             </Button>
                         </Button.Group>
                     </div>
@@ -67,14 +72,18 @@ const OrderDetailsFooter = observer(() => {
     if (should_show_complain_and_received_button) {
         return (
             <React.Fragment>
-                <div className='order-details-card__footer'>
-                    <div className='order-details-card__footer--right'>
+                <div className='order-details-footer'>
+                    <div className='order-details-footer--right'>
                         <Button.Group>
                             <Button large tertiary onClick={showComplainOrderModal}>
-                                <Localize i18n_default_text='Complain' />
+                                <Text color='general' line_height='s' size='xs'>
+                                    <Localize i18n_default_text='Complain' />
+                                </Text>
                             </Button>
                             <Button large primary onClick={showConfirmOrderModal}>
-                                <Localize i18n_default_text="I've received payment" />
+                                <Text color='general' line_height='s' size='xs'>
+                                    <Localize i18n_default_text="I've received payment" />
+                                </Text>
                             </Button>
                         </Button.Group>
                     </div>
@@ -92,10 +101,12 @@ const OrderDetailsFooter = observer(() => {
     if (should_show_only_complain_button) {
         return (
             <React.Fragment>
-                <div className='order-details-card__footer'>
-                    <div className='order-details-card__footer--right'>
+                <div className='order-details-footer'>
+                    <div className='order-details-footer--right'>
                         <Button large tertiary onClick={showComplainOrderModal}>
-                            <Localize i18n_default_text='Complain' />
+                            <Text color='general' line_height='s' size='xs'>
+                                <Localize i18n_default_text='Complain' />
+                            </Text>
                         </Button>
                     </div>
                 </div>
@@ -112,10 +123,12 @@ const OrderDetailsFooter = observer(() => {
     if (should_show_only_received_button) {
         return (
             <React.Fragment>
-                <div className='order-details-card__footer'>
-                    <div className='order-details-card__footer--right'>
+                <div className='order-details-footer'>
+                    <div className='order-details-footer--right'>
                         <Button large primary onClick={showConfirmOrderModal}>
-                            <Localize i18n_default_text="I've received payment" />
+                            <Text color='general' line_height='s' size='xs'>
+                                <Localize i18n_default_text="I've received payment" />
+                            </Text>
                         </Button>
                     </div>
                 </div>

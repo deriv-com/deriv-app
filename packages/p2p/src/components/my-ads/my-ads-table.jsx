@@ -4,12 +4,13 @@ import { Button, HintBox, InfiniteDataList, Loading, Table, Text } from '@deriv/
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
-import Empty from 'Components/empty/empty.jsx';
+import Empty from 'Components/p2p-empty/p2p-empty.jsx';
 import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
 import { TableError } from 'Components/table/table-error.jsx';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
+import './my-ads-table.scss';
 
 const getHeaders = offered_currency => [
     { text: localize('Ad ID') },
@@ -78,7 +79,7 @@ const MyAdsTable = () => {
         return (
             <React.Fragment>
                 {floating_rate_store.change_ad_alert && (
-                    <div className='p2p-my-ads__warning'>
+                    <div className='my-ads__warning'>
                         <HintBox
                             icon='IcAlertWarning'
                             message={
@@ -90,7 +91,7 @@ const MyAdsTable = () => {
                         />
                     </div>
                 )}
-                <div className='p2p-my-ads__header'>
+                <div className='my-ads__header'>
                     {isDesktop() && (
                         <Button
                             is_disabled={general_store.is_barred}
@@ -104,22 +105,22 @@ const MyAdsTable = () => {
                     <ToggleAds />
                 </div>
                 <Table
-                    className={classNames('p2p-my-ads__table', {
-                        'p2p-my-ads__table--disabled': !general_store.is_listed || general_store.is_barred,
+                    className={classNames('my-ads-table', {
+                        'my-ads-table--disabled': !general_store.is_listed || general_store.is_barred,
                     })}
                 >
                     {isDesktop() && (
                         <Table.Header>
-                            <Table.Row className='p2p-my-ads__table-row'>
+                            <Table.Row className='my-ads-table__row'>
                                 {getHeaders(currency).map(header => (
                                     <Table.Head key={header.text}>{header.text}</Table.Head>
                                 ))}
                             </Table.Row>
                         </Table.Header>
                     )}
-                    <Table.Body className='p2p-my-ads__table-body'>
+                    <Table.Body className='my-ads-table__body'>
                         <InfiniteDataList
-                            data_list_className='p2p-my-ads__data-list'
+                            data_list_className='my-ads__data-list'
                             has_more_items_to_load={my_ads_store.has_more_items_to_load}
                             items={my_ads_store.adverts}
                             keyMapperFn={item => item.id}
@@ -129,9 +130,9 @@ const MyAdsTable = () => {
                     </Table.Body>
                 </Table>
                 {isMobile() && (
-                    <div className='p2p-my-ads__create-container'>
+                    <div className='my-ads__create-container'>
                         <Button
-                            className='p2p-my-ads__create'
+                            className='my-ads__create'
                             is_disabled={general_store.is_barred}
                             large
                             onClick={my_ads_store.onClickCreate}

@@ -133,7 +133,7 @@ const BuyAdPaymentMethodsList = ({
                                     {({ field }) =>
                                         my_ads_store.current_method.key === key &&
                                         my_ads_store.current_method.is_deleted ? (
-                                            <div className='p2p-my-ads--border' ref={deleted_autocomplete_ref}>
+                                            <div className='my-ads--border' ref={deleted_autocomplete_ref}>
                                                 <Autocomplete
                                                     {...field}
                                                     autoComplete='off' // prevent chrome autocomplete
@@ -270,7 +270,7 @@ const BuyAdPaymentMethodsList = ({
                             {({ setFieldValue }) => (
                                 <Field name='payment_method'>
                                     {({ field }) => (
-                                        <div className='p2p-my-ads--border'>
+                                        <div className='my-ads--border'>
                                             <Autocomplete
                                                 {...field}
                                                 autoComplete='off' // prevent chrome autocomplete
@@ -324,7 +324,7 @@ const BuyAdPaymentMethodsList = ({
                 {({ setFieldValue }) => (
                     <Field name='payment_method'>
                         {({ field }) => (
-                            <div className='p2p-my-ads--border'>
+                            <div className='my-ads--border'>
                                 <Autocomplete
                                     {...field}
                                     autoComplete='off' // prevent chrome autocomplete

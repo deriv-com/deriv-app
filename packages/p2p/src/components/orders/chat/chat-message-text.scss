@@ -1,0 +1,11 @@
+.chat-message-text {
+    border-radius: 1.6rem;
+    max-width: 100%;
+    padding: 0.8rem 1.6rem;
+    width: fit-content;
+    word-break: break-word;
+
+    > p {
+        white-space: pre-wrap;
+    }
+}

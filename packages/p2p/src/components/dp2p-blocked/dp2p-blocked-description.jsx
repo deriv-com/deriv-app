@@ -26,7 +26,7 @@ const Dp2pBlockedDescription = () => {
     };
 
     return (
-        <Text className='dp2p-blocked__description' align='center' color='prominent' line_height='m' size='xs'>
+        <Text align='center' color='prominent' line_height='m' size='xs'>
             {getBlockedDescription()}
         </Text>
     );

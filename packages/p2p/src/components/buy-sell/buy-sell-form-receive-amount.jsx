@@ -4,12 +4,13 @@ import { getFormattedText } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import { roundOffDecimal } from 'Utils/format-value';
 import { useStores } from 'Stores';
+import './buy-sell-form-receive-amount.scss';
 
 const BuySellFormReceiveAmount = () => {
     const { buy_sell_store } = useStores();
 
     return (
-        <div className='buy-sell__modal-receive-amount'>
+        <div className='buy-sell-form-receive-amount'>
             <Text as='p' color='less-prominent' line_height='m' size='xxs'>
                 {buy_sell_store?.is_sell_advert ? (
                     <Localize i18n_default_text="You'll receive" />

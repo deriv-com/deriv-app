@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Icon, Text } from '@deriv/components';
-import './empty.scss';
+import './p2p-empty.scss';
 
 const P2pEmpty = ({ className, children, has_tabs, icon, title }) => {
     return (

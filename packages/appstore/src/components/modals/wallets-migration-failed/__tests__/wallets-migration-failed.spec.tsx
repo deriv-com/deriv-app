@@ -10,7 +10,7 @@ jest.mock('@deriv/components', () => ({
 const mockRootStore = mockStore({
     traders_hub: {
         is_wallet_migration_failed: false,
-        toggleWalletsMigrationFailedPopup: jest.fn(),
+        setWalletsMigrationFailedPopup: jest.fn(),
     },
 });
 

@@ -111,7 +111,7 @@ export default class TradersHubStore extends BaseStore {
             show_wallet_consent_popup: observable,
             setShouldShowWalletConsentPopup: action.bound,
             toggleWalletsUpgrade: action.bound,
-            toggleWalletsMigrationFailedPopup: action.bound,
+            setWalletsMigrationFailedPopup: action.bound,
         });
 
         reaction(
@@ -827,7 +827,7 @@ export default class TradersHubStore extends BaseStore {
         this.is_real_wallets_upgrade_on = value;
     }
 
-    toggleWalletsMigrationFailedPopup(value) {
+    setWalletsMigrationFailedPopup(value) {
         this.is_wallet_migration_failed = value;
     }
 }

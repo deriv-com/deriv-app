@@ -279,7 +279,7 @@ const mock = (): TStores => {
             no_MF_account: false,
             setTogglePlatformType: jest.fn(),
             is_wallet_migration_failed: false,
-            toggleWalletsMigrationFailedPopup: jest.fn(),
+            setWalletsMigrationFailedPopup: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

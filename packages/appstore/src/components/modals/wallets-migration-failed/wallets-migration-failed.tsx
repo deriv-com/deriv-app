@@ -6,17 +6,17 @@ import './wallets-migration-failed.scss';
 
 const WalletsMigrationFailed = observer(() => {
     const { traders_hub } = useStore();
-    const { is_wallet_migration_failed, toggleWalletsMigrationFailedPopup } = traders_hub;
+    const { is_wallet_migration_failed, setWalletsMigrationFailedPopup } = traders_hub;
 
     const wallets_migration_failed_ref = React.useRef<HTMLDivElement>(null);
 
     const handleClose = () => {
-        toggleWalletsMigrationFailedPopup(false);
+        setWalletsMigrationFailedPopup(false);
     };
 
     const handLiveChatButtonClick = () => {
         window.LC_API?.open_chat_window();
-        toggleWalletsMigrationFailedPopup(false);
+        setWalletsMigrationFailedPopup(false);
     };
 
     const validateClickOutside = (e: MouseEvent) => {

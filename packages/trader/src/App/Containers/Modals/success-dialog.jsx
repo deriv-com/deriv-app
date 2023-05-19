@@ -48,7 +48,7 @@ const SuccessDialog = ({
                     <Checkmark className='bottom-right-overlay' />
                 </div>
                 {!heading && (
-                    <Text as='h2' weight='bold' className='dc-modal-header__title'>
+                    <Text as='h2' weight='bold' size='s' className='dc-modal-header__title'>
                         <Localize i18n_default_text='Success!' />
                     </Text>
                 )}

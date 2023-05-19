@@ -15,7 +15,7 @@ const mockRootStore = mockStore({
 });
 
 describe('<WalletsMigrationFailed />', () => {
-    test('Should render the Modal', async () => {
+    test('Should render the Modal', () => {
         mockRootStore.traders_hub.is_wallet_migration_failed = true;
 
         const wrapper = ({ children }: { children: JSX.Element }) => (

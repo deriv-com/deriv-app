@@ -48,13 +48,13 @@ const AmountInput = ({
 
     const onChangeHandler: React.ComponentProps<typeof Input>['onChange'] = e => {
         if (!target) setTarget(e.target);
-        let newValue = value;
+        let new_value = value;
         if (!is_pasting) {
             // handle ATM typing:
             // remove all characters that are not digit / point / comma:
             const input_value = e.target.value.replace(/[^\d.,]/g, '');
             if (input_value.replace(/[.,]/g, '').replace(/^0+/g, '').length <= max_digits)
-                newValue = Number(input_value.replace(/[.,]/g, '')) / Math.pow(10, decimal_places);
+                new_value = Number(input_value.replace(/[.,]/g, '')) / Math.pow(10, decimal_places);
         } else {
             // handle pasting:
             const selection_length = selection.selectionEnd - selection.selectionStart;
@@ -74,7 +74,7 @@ const AmountInput = ({
                 // if the value is a valid non-empty string, handle the two scenarios:
                 if ((value === 0 && caret_right_offset === 0) || selection_length === displayNumber(value).length) {
                     // handle pasting when there's nothing entered before it, or it is overridden (intention: reset value):
-                    newValue = Number(
+                    new_value = Number(
                         pasted_value.substring(
                             0,
                             pasted_value.includes('.') ? max_digits + 1 : max_digits - decimal_places
@@ -82,13 +82,13 @@ const AmountInput = ({
                     );
                 } else if (input_value.replace(/[.,]/g, '').replace(/^0+/g, '').length <= max_digits) {
                     // handle pasting when there's something entered before it and there's space for the pasted value (intention: add to value):
-                    newValue = Number(input_value.replace(/[.,]/g, '')) / Math.pow(10, decimal_places);
+                    new_value = Number(input_value.replace(/[.,]/g, '')) / Math.pow(10, decimal_places);
                 }
             }
         }
-        setValue(newValue);
+        setValue(new_value);
         setIsPasting(false);
-        onChange?.(newValue);
+        onChange?.(new_value);
     };
 
     const inputActionHandler: React.ComponentProps<typeof Input>['onMouseDown'] &

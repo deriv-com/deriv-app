@@ -18,7 +18,7 @@ import { localize } from '@deriv/translations';
 import AccountTransferGetSelectedError from '../pages/account-transfer/account-transfer-get-selected-error';
 import Constants from '../constants/constants';
 import ErrorStore from './error-store';
-import type { TRootStore, TWebSocket, TAccount, TTransferAccount } from '../types';
+import type { TRootStore, TWebSocket, TAccount, TTransferAccount, TPlatformIcon } from '../types';
 
 const hasTransferNotAllowedLoginid = (loginid?: string) => loginid?.startsWith('MX');
 
@@ -97,7 +97,7 @@ export default class AccountTransferStore {
             account_status,
         } = this.root_store.client;
 
-        if (!account_status.status) return false;
+        if (!account_status?.status) return false;
 
         const need_financial_assessment =
             is_financial_account && (is_financial_information_incomplete || is_trading_experience_incomplete);
@@ -448,7 +448,6 @@ export default class AccountTransferStore {
                     is_cfd && account.account_type === CFD_PLATFORMS.MT5 && combined_cfd_mt5_account
                         ? `${combined_cfd_mt5_account.sub_title}${short_code_and_region}`
                         : account_text_display,
-                //TODO: ask BE to add broker code (CTR) to cTrader loginid value
                 value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,

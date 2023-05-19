@@ -302,6 +302,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setP2PRedirectTo: jest.fn(),
         },
         portfolio: {
+            positions: [],
             active_positions: [],
             error: {
                 header: '',

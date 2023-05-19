@@ -517,7 +517,7 @@ const OpenPositions = ({
         }
     };
 
-    if (error) return <p>{error}</p>;
+    if (error) return <p>{typeof error === 'string' ? error : error.message}</p>;
 
     const getColumns = () => {
         if (is_multiplier_selected) {

@@ -20,6 +20,7 @@ const withRouter = <T extends object>(Component: React.ComponentType<T>) => {
     return WrapperComponent;
 };
 
+//TODO: will fix this in a sepeate PR (rupato-deriv)
 // const PlatformSwitcherComponent = withRouter(PlatformSwitcher);
 
 // describe('PlatformSwitcher component', () => {

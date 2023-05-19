@@ -19,19 +19,7 @@ describe('JurisdictionCardFront', () => {
         card_classname: 'jurisdiction_test',
         toggleCardFlip: jest.fn(),
         card_values: {
-            financial_contents: [
-                {
-                    key: '',
-                    title: '',
-                    description: '',
-                    title_indicators: {
-                        type: 'displayText' as const,
-                        display_text: '',
-                        display_text_skin_color: '',
-                    },
-                },
-            ],
-            synthetic_contents: [
+            contents: [
                 {
                     key: '',
                     title: '',

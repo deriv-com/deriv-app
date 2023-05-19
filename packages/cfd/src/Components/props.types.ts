@@ -92,7 +92,7 @@ export type TJurisdictionCardSection = {
     title: string;
     title_indicators?: TJurisdictionCardSectionTitleIndicators;
     description?: string;
-    clickable_description?: Array<TClickableDescription>;
+    clickable_description?: TClickableDescription[];
 };
 
 export type TJurisdictionCardVerificationStatus = 'Pending' | 'Verified' | 'Failed' | 'Default';
@@ -104,16 +104,14 @@ export type TJurisdictionCardItemVerificationItem =
     | 'name_and_address'
     | 'not_applicable';
 
-export type TJurisdictionCardItemVerification = Array<TJurisdictionCardItemVerificationItem>;
+export type TJurisdictionCardItemVerification = TJurisdictionCardItemVerificationItem[];
 
 export type TJurisdictionCardItems = {
     header: string;
     over_header?: string;
-    synthetic_contents: Array<TJurisdictionCardSection>;
-    financial_contents: Array<TJurisdictionCardSection>;
+    contents: TJurisdictionCardSection[];
     is_over_header_available: boolean;
-    synthetic_verification_docs?: TJurisdictionCardItemVerification;
-    financial_verification_docs?: TJurisdictionCardItemVerification;
+    verification_docs?: TJurisdictionCardItemVerification;
 };
 
 export type TJurisdictionVerificationSection = {

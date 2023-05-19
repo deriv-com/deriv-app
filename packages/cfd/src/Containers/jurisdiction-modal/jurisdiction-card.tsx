@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Jurisdiction } from '@deriv/shared';
-import { getJurisdictionContents } from '../../Constants/jurisdiction-contents/jurisdiction-contents';
+import { getJurisdictionContentsFor } from '../../Constants/jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardProps } from '../props.types';
 import JurisdictionCardBack from './jurisdiction-card-back';
 import JurisdictionCardFront from './jurisdiction-card-front';
@@ -17,13 +17,11 @@ const JurisdictionCard = ({
 }: TJurisdictionCardProps) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
     const is_synthetic = account_type === 'synthetic';
-    const card_values = getJurisdictionContents()[type_of_card];
-    const card_data = is_synthetic ? card_values.synthetic_contents : card_values.financial_contents;
+    const card_values = getJurisdictionContentsFor(type_of_card, is_synthetic);
+    const card_data = card_values.contents;
     const [is_card_flipped, setIsCardFlipped] = React.useState(false);
     const is_card_selected = jurisdiction_selected_shortcode === type_of_card;
-    let verification_docs = is_synthetic
-        ? card_values?.synthetic_verification_docs
-        : card_values?.financial_verification_docs;
+    let verification_docs = card_values.verification_docs;
 
     const cardSelection = (cardType: string) => {
         setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);

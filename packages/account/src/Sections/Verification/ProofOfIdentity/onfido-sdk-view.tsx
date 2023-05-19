@@ -10,6 +10,7 @@ type TOnfidoSdkView = {
     onfido_element_id?: string;
     is_confirmed: boolean;
     data_testid?: string;
+    is_onfido_initialized?: boolean;
 };
 
 const OnfidoSdkView = ({
@@ -18,6 +19,7 @@ const OnfidoSdkView = ({
     onfido_element_id = 'onfido',
     is_confirmed,
     data_testid,
+    is_onfido_initialized,
 }: TOnfidoSdkView) => {
     const [is_status_message_visible, setIsStatusMessageVisible] = React.useState(false);
     const transition_in_timeout_ref = React.useRef<ReturnType<typeof setTimeout>>();
@@ -74,7 +76,7 @@ const OnfidoSdkView = ({
                     />
                 </CSSTransition>
             </div>
-            {is_onfido_disabled && (
+            {is_onfido_disabled && is_onfido_initialized && (
                 <HintBox
                     className='onfido-container__info-message'
                     icon='IcInfoBlue'

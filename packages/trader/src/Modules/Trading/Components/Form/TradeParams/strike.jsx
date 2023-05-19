@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import BarriersList from './barriers-list';
 import { DesktopWrapper, InputField, MobileWrapper, Dropdown, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { getContractSubtype, toMoment } from '@deriv/shared';
+import { toMoment } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import StrikeParamModal from 'Modules/Trading/Containers/strike-param-modal';
@@ -46,11 +46,15 @@ const Strike = ({
                     header={localize('Strike price')}
                     header_tooltip={
                         <Localize
-                            i18n_default_text='<0>For {{trade_type}}:</0> You will get a payout if the market price is {{payout_status}} this price <0>at the expiry time.</0> Otherwise, your payout will be zero.'
+                            i18n_default_text='<0>{{trade_type}}:</0> You will get a payout if the market price is {{payout_status}} this price <0>at the expiry time.</0> Otherwise, your payout will be zero.'
                             components={[<strong key={0} />]}
                             values={{
-                                trade_type: getContractSubtype(vanilla_trade_type),
-                                payout_status: vanilla_trade_type === 'VANILLALONGCALL' ? 'above' : 'below',
+                                trade_type:
+                                    vanilla_trade_type === 'VANILLALONGCALL'
+                                        ? localize('For Call')
+                                        : localize('For Put'),
+                                payout_status:
+                                    vanilla_trade_type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
                             }}
                         />
                     }

@@ -1,5 +1,6 @@
 import React from 'react';
 import { extractInfoFromShortcode, getContractSubtype, isHighLow, isTurbosContract } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { Icon, Popover, IconTradeTypes } from '@deriv/components';
 import { getMarketName, getTradeTypeName } from '../Helpers/market-underlying';
 import classNames from 'classnames';
@@ -29,6 +30,8 @@ const MarketSymbolIconRow = ({
     const info_from_shortcode = extractInfoFromShortcode(payload.shortcode);
     const is_high_low = isHighLow({ shortcode_info: info_from_shortcode });
     const is_turbos = isTurbosContract(info_from_shortcode.category || '');
+    const turbos_category_name =
+        getContractSubtype(info_from_shortcode.category as string) === 'Long' ? localize('Long') : localize('Short');
 
     // We need the condition to update the label for vanilla trade type since the label doesn't match with the trade type key unlike other contracts
     const category_label = is_vanilla
@@ -67,7 +70,7 @@ const MarketSymbolIconRow = ({
                         alignment='top'
                         message={
                             is_turbos
-                                ? getContractSubtype(info_from_shortcode.category as string)
+                                ? turbos_category_name
                                 : getTradeTypeName(info_from_shortcode.category as string, is_high_low)
                         }
                         is_bubble_hover_enabled

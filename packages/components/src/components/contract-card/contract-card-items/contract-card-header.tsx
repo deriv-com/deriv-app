@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
+import { localize } from '@deriv/translations';
 import {
     isHighLow,
     getCurrentTick,
@@ -79,7 +80,8 @@ const ContractCardHeader = ({
             },
             {
                 is_param_displayed: is_turbos,
-                displayed_param: getContractSubtype(contract_type || ''),
+                displayed_param:
+                    getContractSubtype(contract_type || '') === 'Long' ? localize('Long') : localize('Short'),
             },
         ],
         [multiplier, growth_rate, is_accumulator, is_turbos, contract_type]

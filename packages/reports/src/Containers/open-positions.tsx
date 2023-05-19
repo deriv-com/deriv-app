@@ -517,7 +517,7 @@ const OpenPositions = ({
         }
     };
 
-    if (error) return <p>{typeof error === 'string' ? error : error.message}</p>;
+    if (error) return <p>{error}</p>;
 
     const getColumns = () => {
         if (is_multiplier_selected) {
@@ -639,7 +639,9 @@ const OpenPositions = ({
                                 list_items={contract_types_list}
                                 value={contract_type_value}
                                 should_show_empty_option={false}
-                                onChange={e => setContractTypeValue(e.target.value)}
+                                onChange={(e: React.ChangeEvent<HTMLSelectElement> & { target: { value: string } }) =>
+                                    setContractTypeValue(e.target.value)
+                                }
                             />
                             {is_accumulator_selected && (
                                 <SelectNative
@@ -647,7 +649,9 @@ const OpenPositions = ({
                                     list_items={accumulators_rates_list}
                                     value={accumulator_rate}
                                     should_show_empty_option={false}
-                                    onChange={e => setAccumulatorRate(e.target.value)}
+                                    onChange={(
+                                        e: React.ChangeEvent<HTMLSelectElement> & { target: { value: string } }
+                                    ) => setAccumulatorRate(e.target.value)}
                                 />
                             )}
                         </div>

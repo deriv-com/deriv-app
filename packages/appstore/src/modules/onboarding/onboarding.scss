@@ -33,7 +33,9 @@
         height: 100%;
 
         @include mobile {
-            height: 60%;
+            height: calc(100% - 22rem);
+            overflow: auto;
+            overflow-x: hidden;
         }
     }
 

@@ -133,6 +133,7 @@ const getSpreadsFromTitleIndicators = (
 ): TJurisdictionCardSectionTitleIndicators | undefined => {
     switch (card_type) {
         case Jurisdiction.SVG:
+        case Jurisdiction.LABUAN:
             return is_synthetic
                 ? undefined
                 : {
@@ -141,27 +142,12 @@ const getSpreadsFromTitleIndicators = (
                       display_text_skin_color: 'violet-dark',
                   };
         case Jurisdiction.BVI:
-            return is_synthetic
-                ? undefined
-                : {
-                      type: 'displayText',
-                      display_text: localize('0.5 pips'),
-                      display_text_skin_color: 'violet-dark',
-                  };
         case Jurisdiction.VANUATU:
             return is_synthetic
                 ? undefined
                 : {
                       type: 'displayText',
                       display_text: localize('0.5 pips'),
-                      display_text_skin_color: 'violet-dark',
-                  };
-        case Jurisdiction.LABUAN:
-            return is_synthetic
-                ? undefined
-                : {
-                      type: 'displayText',
-                      display_text: localize('0.6 pips'),
                       display_text_skin_color: 'violet-dark',
                   };
         case Jurisdiction.MALTA_INVEST:

@@ -33,8 +33,8 @@ const SummaryCard = ({
             getContractTypeDisplay={getContractTypeDisplay}
             has_progress_slider={!is_multiplier}
             is_mobile={is_mobile}
-            is_sold={is_contract_completed}
             server_time={server_time}
+            is_sold={is_contract_completed}
         />
     );
 

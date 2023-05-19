@@ -73,7 +73,7 @@ const PersonalDetailsForm = ({
             : is_asterisk_needed
             ? localize('Last name*')
             : localize('Last name');
-        const dob_label = is_appstore || is_asterisk_needed ? localize('First name*') : localize('First name');
+        const dob_label = is_appstore || is_asterisk_needed ? localize('Date of birth*') : localize('Date of birth');
 
         return {
             first_name_label,

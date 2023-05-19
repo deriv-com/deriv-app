@@ -15,6 +15,7 @@ describe('<OnfidoSdkView/>', () => {
         data_testid: 'dt_onfido_element',
         is_confirmed: false,
         is_onfido_container_hidden: false,
+        is_onfido_initialized: true,
         is_onfido_disabled: true,
     };
 

@@ -39,10 +39,10 @@ const OrderDetailsTimer = observer(() => {
     if (should_show_order_timer) {
         return (
             <div className='order-details-timer'>
-                <Text size='xxs' align='center' line_height='m'>
+                <Text size='xxs' align='center'>
                     {localize('Time left')}
                 </Text>
-                <Text className='order-details-timer-counter' size='xxs' align='center' line_height='m'>
+                <Text className='order-details-timer__counter' size='xxs' align='center'>
                     {remaining_time}
                 </Text>
             </div>

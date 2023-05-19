@@ -83,13 +83,7 @@ const BuySellRow = ({ row: advert }) => {
                     />
                     <div className='buy-sell-row__advertiser-name'>
                         <div className='buy-sell__cell--container__row'>
-                            <Text
-                                className='buy-sell-row__advertiser-name--text'
-                                size='xs'
-                                line_height='m'
-                                color='general'
-                                weight='bold'
-                            >
+                            <Text className='buy-sell-row__advertiser-name--text' size='xs' weight='bold'>
                                 {advertiser_name}
                             </Text>
                             <TradeBadge trade_count={advertiser_details.completed_orders_count} />
@@ -118,13 +112,13 @@ const BuySellRow = ({ row: advert }) => {
                 </div>
                 <div className='buy-sell-row__information'>
                     <div className='buy-sell-row__rate'>
-                        <Text as='div' color='general' line_height='m' size='xxs'>
+                        <Text as='div' size='xxs'>
                             <Localize i18n_default_text='Rate (1 {{currency}})' values={{ currency }} />
                         </Text>
-                        <Text as='div' color='profit-success' line_height='m' size='s' weight='bold'>
+                        <Text as='div' color='profit-success' weight='bold'>
                             {display_effective_rate} {local_currency}
                         </Text>
-                        <Text as='div' color='less-prominent' line_height='m' size='xxs'>
+                        <Text as='div' color='less-prominent' size='xxs'>
                             <Localize
                                 i18n_default_text='Limits {{ min_order }}–{{ max_order }} {{ currency }}'
                                 values={{
@@ -140,7 +134,7 @@ const BuySellRow = ({ row: advert }) => {
                             payment_method_names.map((payment_method, key) => {
                                 return (
                                     <div className='buy-sell-row__payment-method' key={key}>
-                                        <Text color='general' line-height='l' size='xxxs'>
+                                        <Text line_height='l' size='xxxs'>
                                             {payment_method}
                                         </Text>
                                     </div>
@@ -148,7 +142,7 @@ const BuySellRow = ({ row: advert }) => {
                             })
                         ) : (
                             <div className='buy-sell-row__payment-method'>
-                                <Text color='general' line-height='l' size='xxxs'>
+                                <Text line_height='l' size='xxxs'>
                                     -
                                 </Text>
                             </div>
@@ -224,7 +218,7 @@ const BuySellRow = ({ row: advert }) => {
                 {min_order_amount_limit_display}&ndash;{max_order_amount_limit_display} {account_currency}
             </Table.Cell>
             <Table.Cell>
-                <Text color='profit-success' size='xs' line-height='m' weight='bold'>
+                <Text color='profit-success' size='xs' weight='bold'>
                     {display_effective_rate} {local_currency}
                 </Text>
             </Table.Cell>
@@ -234,7 +228,7 @@ const BuySellRow = ({ row: advert }) => {
                         payment_method_names.map((payment_method, key) => {
                             return (
                                 <div className='buy-sell-row__payment-method--label' key={key}>
-                                    <Text color='general' size='xs' line-height='l'>
+                                    <Text size='xs' line_height='l'>
                                         {payment_method}
                                     </Text>
                                 </div>
@@ -242,7 +236,7 @@ const BuySellRow = ({ row: advert }) => {
                         })
                     ) : (
                         <div className='buy-sell-row__payment-method--label'>
-                            <Text color='general' size='xs' line-height='l'>
+                            <Text size='xs' line_height='l'>
                                 -
                             </Text>
                         </div>

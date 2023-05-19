@@ -19,13 +19,7 @@ const BlockUserTableError = ({ error_message }) => {
                         height={128}
                         width={128}
                     />
-                    <Text
-                        align='center'
-                        className='block-user-table-error__text'
-                        line_height='m'
-                        size='s'
-                        weight='bold'
-                    >
+                    <Text align='center' className='block-user-table-error__text' weight='bold'>
                         <Localize i18n_default_text={error_message} />
                     </Text>
                 </div>
@@ -44,13 +38,7 @@ const BlockUserTableError = ({ error_message }) => {
                         height={128}
                         width={128}
                     />
-                    <Text
-                        align='center'
-                        className='block-user-table-error__text'
-                        line_height='m'
-                        size='s'
-                        weight='bold'
-                    >
+                    <Text align='center' className='block-user-table-error__text' weight='bold'>
                         <Localize i18n_default_text={error_message} />
                     </Text>
                 </MobileFullPageModal>

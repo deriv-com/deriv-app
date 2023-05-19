@@ -5,7 +5,7 @@ import './chat-message-text.scss';
 
 const ChatMessageText = React.memo(({ children, colour }) => (
     <div className='chat-message-text'>
-        <Text as='p' color={colour} line_height='m' size='xs'>
+        <Text as='p' color={colour} size='xs'>
             {children}
         </Text>
     </div>

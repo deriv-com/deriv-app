@@ -34,9 +34,9 @@ const AdvertiserPageStats = () => {
         return (
             <React.Fragment>
                 <Table className='advertiser-page-stats__wrapper'>
-                    <Table.Row className='advertiser-page-stats'>
+                    <Table.Row className='advertiser-page-stats__row'>
                         <Table.Cell className='advertiser-page-stats__cell'>
-                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
+                            <Text as='p' color='less-prominent' size='xxxs'>
                                 <Localize
                                     i18n_default_text='Buy completion  <0>30d</0>'
                                     components={[
@@ -49,13 +49,13 @@ const AdvertiserPageStats = () => {
                                     ]}
                                 />
                             </Text>
-                            <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                            <Text as='p' color='prominent' size='xs' weight='bold'>
                                 {buy_completion_rate ? `${buy_completion_rate}% (${buy_orders_count})` : '-'}
                             </Text>
                         </Table.Cell>
                         <div className='advertiser-page-stats__cell-separator' />
                         <Table.Cell className='advertiser-page-stats__cell'>
-                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
+                            <Text as='p' color='less-prominent' size='xxxs'>
                                 <Localize
                                     i18n_default_text='Avg. pay time  <0>30d</0>'
                                     components={[
@@ -79,9 +79,9 @@ const AdvertiserPageStats = () => {
                     </Table.Row>
                 </Table>
                 <Table className='advertiser-page-stats__wrapper'>
-                    <Table.Row className='advertiser-page-stats'>
+                    <Table.Row className='advertiser-page-stats__row'>
                         <Table.Cell className='advertiser-page-stats__cell'>
-                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
+                            <Text as='p' color='less-prominent' size='xxxs'>
                                 <Localize
                                     i18n_default_text='Sell completion  <0>30d</0>'
                                     components={[
@@ -94,13 +94,13 @@ const AdvertiserPageStats = () => {
                                     ]}
                                 />
                             </Text>
-                            <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                            <Text as='p' color='prominent' size='xs' weight='bold'>
                                 {sell_completion_rate ? `${sell_completion_rate}% (${sell_orders_count})` : '-'}
                             </Text>
                         </Table.Cell>
                         <div className='advertiser-page-stats__cell-separator' />
                         <Table.Cell className='advertiser-page-stats__cell'>
-                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
+                            <Text as='p' color='less-prominent' size='xxxs'>
                                 <Localize
                                     i18n_default_text='Avg. release time  <0>30d</0>'
                                     components={[
@@ -124,9 +124,9 @@ const AdvertiserPageStats = () => {
                     </Table.Row>
                 </Table>
                 <Table className='advertiser-page-stats__wrapper'>
-                    <Table.Row className='advertiser-page-stats'>
+                    <Table.Row className='advertiser-page-stats__row'>
                         <Table.Cell className='advertiser-page-stats__cell'>
-                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
+                            <Text as='p' color='less-prominent' size='xxxs'>
                                 <Localize
                                     i18n_default_text='Trade volume  <0>30d</0>'
                                     components={[
@@ -139,7 +139,7 @@ const AdvertiserPageStats = () => {
                                     ]}
                                 />
                             </Text>
-                            <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                            <Text as='p' color='prominent' size='xs' weight='bold'>
                                 {buy_orders_amount && sell_orders_amount ? (
                                     <Money
                                         amount={Number(buy_orders_amount) + Number(sell_orders_amount)}
@@ -153,10 +153,10 @@ const AdvertiserPageStats = () => {
                         </Table.Cell>
                         <div className='advertiser-page-stats__cell-separator' />
                         <Table.Cell className='advertiser-page-stats__cell'>
-                            <Text as='p' color='less-prominent' line_height='m' size='xxxs'>
+                            <Text as='p' color='less-prominent' size='xxxs'>
                                 <Localize i18n_default_text='Trade partners' />
                             </Text>
-                            <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
+                            <Text as='p' color='prominent' size='xs' weight='bold'>
                                 {partner_count || '0'}
                             </Text>
                         </Table.Cell>
@@ -169,9 +169,9 @@ const AdvertiserPageStats = () => {
     return (
         <React.Fragment>
             <Table className='advertiser-page-stats__wrapper'>
-                <Table.Row className='advertiser-page-stats'>
+                <Table.Row className='advertiser-page-stats__row'>
                     <Table.Cell className='advertiser-page-stats__cell'>
-                        <Text as='p' color='less-prominent' line_height='m' size='xs'>
+                        <Text as='p' color='less-prominent' size='xs'>
                             <Localize
                                 i18n_default_text='Buy completion  <0>30d</0>'
                                 components={[
@@ -184,13 +184,13 @@ const AdvertiserPageStats = () => {
                                 ]}
                             />
                         </Text>
-                        <Text as='p' color='prominent' line_height='m' size='m' weight='bold'>
+                        <Text as='p' color='prominent' size='m' weight='bold'>
                             {buy_completion_rate ? `${buy_completion_rate}% (${buy_orders_count})` : '-'}
                         </Text>
                     </Table.Cell>
                     <div className='advertiser-page-stats__cell-separator' />
                     <Table.Cell className='advertiser-page-stats__cell'>
-                        <Text as='p' color='less-prominent' line_height='m' size='xs'>
+                        <Text as='p' color='less-prominent' size='xs'>
                             <Localize
                                 i18n_default_text='Sell completion  <0>30d</0>'
                                 components={[
@@ -203,13 +203,13 @@ const AdvertiserPageStats = () => {
                                 ]}
                             />
                         </Text>
-                        <Text as='p' color='prominent' line_height='m' size='m' weight='bold'>
+                        <Text as='p' color='prominent' size='m' weight='bold'>
                             {sell_completion_rate ? `${sell_completion_rate}% (${sell_orders_count})` : '-'}
                         </Text>
                     </Table.Cell>
                     <div className='advertiser-page-stats__cell-separator' />
                     <Table.Cell className='advertiser-page-stats__cell'>
-                        <Text as='p' color='less-prominent' line_height='m' size='xs'>
+                        <Text as='p' color='less-prominent' size='xs'>
                             <Localize
                                 i18n_default_text='Trade volume  <0>30d</0>'
                                 components={[
@@ -222,7 +222,7 @@ const AdvertiserPageStats = () => {
                                 ]}
                             />
                         </Text>
-                        <Text as='p' color='prominent' line_height='m' size='m' weight='bold'>
+                        <Text as='p' color='prominent' size='m' weight='bold'>
                             {buy_orders_amount && sell_orders_amount ? (
                                 <Money
                                     amount={Number(buy_orders_amount) + Number(sell_orders_amount)}
@@ -237,9 +237,9 @@ const AdvertiserPageStats = () => {
                 </Table.Row>
             </Table>
             <Table className='advertiser-page-stats__wrapper'>
-                <Table.Row className='advertiser-page-stats'>
+                <Table.Row className='advertiser-page-stats__row'>
                     <Table.Cell className='advertiser-page-stats__cell'>
-                        <Text as='p' color='less-prominent' line_height='m' size='xs'>
+                        <Text as='p' color='less-prominent' size='xs'>
                             <Localize
                                 i18n_default_text='Avg. pay time  <0>30d</0>'
                                 components={[
@@ -262,7 +262,7 @@ const AdvertiserPageStats = () => {
                     </Table.Cell>
                     <div className='advertiser-page-stats__cell-separator' />
                     <Table.Cell className='advertiser-page-stats__cell'>
-                        <Text as='p' color='less-prominent' line_height='m' size='xs'>
+                        <Text as='p' color='less-prominent' size='xs'>
                             <Localize
                                 i18n_default_text='Avg. release time  <0>30d</0>'
                                 components={[
@@ -285,10 +285,10 @@ const AdvertiserPageStats = () => {
                     </Table.Cell>
                     <div className='advertiser-page-stats__cell-separator' />
                     <Table.Cell className='advertiser-page-stats__cell'>
-                        <Text as='p' color='less-prominent' line_height='m' size='xs'>
+                        <Text as='p' color='less-prominent' size='xs'>
                             <Localize i18n_default_text='Trade partners' />
                         </Text>
-                        <Text as='p' color='prominent' line_height='m' size='m' weight='bold'>
+                        <Text as='p' color='prominent' size='m' weight='bold'>
                             {partner_count || '0'}
                         </Text>
                     </Table.Cell>

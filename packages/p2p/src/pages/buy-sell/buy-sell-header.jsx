@@ -7,8 +7,8 @@ import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize } from 'Components/i18next';
-import ToggleContainer from 'Components/misc/toggle-container.jsx';
-import SortDropdown from 'Pages/buy-sell/sort-dropdown.jsx';
+import ToggleContainer from 'Components/toggle-container/toggle-container';
+import SortDropdown from 'Pages/buy-sell/sort-dropdown';
 import { useStores } from 'Stores';
 import CurrencyDropdown from 'Pages/buy-sell/currency-dropdown.jsx';
 import 'Pages/buy-sell/buy-sell-header.scss';
@@ -71,14 +71,14 @@ const BuySellHeader = ({ table_type }) => {
     return (
         <div
             className={classNames('buy-sell-header', {
-                'buy-sell-header-position-static': !!buy_sell_store.api_error_message,
+                'buy-sell-header__position-static': !!buy_sell_store.api_error_message,
             })}
         >
-            <div className='buy-sell-header-container'>
+            <div className='buy-sell-header__container'>
                 <ToggleContainer>
                     <ButtonToggle
                         buttons_arr={getBuySellFilters()}
-                        className='buy-sell-header-filters'
+                        className='buy-sell-header__filters'
                         is_animated
                         name='filter'
                         onChange={buy_sell_store.onChangeTableType}
@@ -87,8 +87,8 @@ const BuySellHeader = ({ table_type }) => {
                     />
                 </ToggleContainer>
                 <div
-                    className={classNames('buy-sell-header-row', {
-                        'buy-sell-header-row--selector': is_currency_selector_visible,
+                    className={classNames('buy-sell-header__row', {
+                        'buy-sell-header__row--selector': is_currency_selector_visible,
                     })}
                 >
                     {is_currency_selector_visible && <CurrencyDropdown />}
@@ -99,7 +99,7 @@ const BuySellHeader = ({ table_type }) => {
                     />
                     <SortDropdown />
                     <Icon
-                        className='buy-sell-header-row--filter'
+                        className='buy-sell-header__row--filter'
                         icon='IcFilter'
                         onClick={() => general_store.showModal({ key: 'FilterModal', props: {} })}
                         size={40}

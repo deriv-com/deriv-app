@@ -90,13 +90,13 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                 is_left_swipe
                 right_hidden_component={
                     <React.Fragment>
-                        <div className='my-ads-table__popovers__edit' onClick={handleOnEdit}>
+                        <div className='my-ads-table__popovers-edit' onClick={handleOnEdit}>
                             <Icon custom_color='var(--general-main-1)' icon='IcEdit' />
                         </div>
                         <div
                             onClick={onClickActivateDeactivate}
                             className={classNames(
-                                `my-ads-table__popovers__${is_advert_active ? 'activate' : 'deactivate'}`,
+                                `my-ads-table__popovers--${is_advert_active ? 'activate' : 'deactivate'}`,
                                 {
                                     'my-ads-table__popovers--disable':
                                         general_store.is_barred || is_activate_ad_disabled,
@@ -109,7 +109,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             />
                         </div>
 
-                        <div className='my-ads-table__popovers__delete'>
+                        <div className='my-ads-table__popovers-delete'>
                             <Icon icon='IcDelete' custom_color='var(--general-main-1)' onClick={onClickDelete} />
                         </div>
                     </React.Fragment>
@@ -121,11 +121,11 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             'my-ads-table__row-disabled': !is_advert_active,
                         })}
                     >
-                        <Text color='less-prominent' line_height='m' size='xxs'>
+                        <Text color='less-prominent' size='xxs'>
                             <Localize i18n_default_text='Ad ID {{advert_id}} ' values={{ advert_id: id }} />
                         </Text>
                         <div className='my-ads-table__row__type-and-status'>
-                            <Text color={ad_pause_color} line_height='m' size='s' weight='bold'>
+                            <Text color={ad_pause_color} weight='bold'>
                                 <Localize
                                     i18n_default_text='{{ad_type}} {{ account_currency }}'
                                     values={{ account_currency, ad_type: is_buy_advert ? 'Buy' : 'Sell' }}
@@ -144,11 +144,11 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             )}
                         </div>
                         <div className='my-ads-table__row-details'>
-                            <Text color='profit-success' line_height='m' size='xxs'>
+                            <Text color='profit-success' size='xxs'>
                                 {`${formatMoney(account_currency, amount_dealt, true)}`} {account_currency}&nbsp;
                                 {is_buy_advert ? localize('Bought') : localize('Sold')}
                             </Text>
-                            <Text color='less-prominent' line_height='m' size='xxs'>
+                            <Text color='less-prominent' size='xxs'>
                                 {amount_display} {account_currency}
                             </Text>
                         </div>
@@ -158,10 +158,10 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             total={amount}
                         />
                         <div className='my-ads-table__row-details'>
-                            <Text color='less-prominent' line_height='m' size='xxs'>
+                            <Text color='less-prominent' size='xxs'>
                                 <Localize i18n_default_text='Limits' />
                             </Text>
-                            <Text color='less-prominent' line_height='m' size='xxs'>
+                            <Text color='less-prominent' size='xxs'>
                                 <Localize
                                     i18n_default_text='Rate (1 {{account_currency}})'
                                     values={{ account_currency }}
@@ -169,14 +169,13 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             </Text>
                         </div>
                         <div className='my-ads-table__row-details'>
-                            <Text color={ad_pause_color} line_height='m' size='xxs'>
+                            <Text color={ad_pause_color} size='xxs'>
                                 {min_order_amount_display} - {max_order_amount_display} {account_currency}
                             </Text>
                             <Text
                                 color={
                                     general_store.is_listed && !general_store.is_barred ? 'profit-success' : 'disabled'
                                 }
-                                line_height='m'
                                 size='xs'
                                 weight='bold'
                             >
@@ -193,7 +192,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                                 payment_method_names.map((payment_method, key) => {
                                     return (
                                         <div className='my-ads-table__payment-method--label' key={key}>
-                                            <Text color={ad_pause_color} size='xxxs' line-height='l'>
+                                            <Text color={ad_pause_color} size='xxxs' line_height='l'>
                                                 {payment_method}
                                             </Text>
                                         </div>
@@ -259,7 +258,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             payment_method_names.map((payment_method, key) => {
                                 return (
                                     <div className='my-ads-table__payment-method--label' key={key}>
-                                        <Text color={ad_pause_color} size='xs' line-height='l'>
+                                        <Text color={ad_pause_color} size='xs' line_height='l'>
                                             {payment_method}
                                         </Text>
                                     </div>
@@ -298,7 +297,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             <Popover
                                 alignment='bottom'
                                 className={classNames(
-                                    `my-ads-table__popovers__${is_advert_active ? 'activate' : 'deactivate'}`,
+                                    `my-ads-table__popovers--${is_advert_active ? 'activate' : 'deactivate'}`,
                                     {
                                         'my-ads-table__popovers--disable':
                                             general_store.is_barred || is_activate_ad_disabled,
@@ -317,7 +316,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                         <div onClick={handleOnEdit}>
                             <Popover
                                 alignment='bottom'
-                                className={classNames('my-ads-table__popovers__deactivate', {
+                                className={classNames('my-ads-table__popovers--deactivate', {
                                     'my-ads-table__popovers--disable':
                                         general_store.is_barred || is_activate_ad_disabled,
                                 })}
@@ -329,7 +328,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                         <div onClick={onClickDelete}>
                             <Popover
                                 alignment='bottom'
-                                className={classNames('my-ads-table__popovers__delete', {
+                                className={classNames('my-ads-table__popovers-delete', {
                                     'my-ads-table__popovers--disable':
                                         general_store.is_barred || is_activate_ad_disabled,
                                 })}

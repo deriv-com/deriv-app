@@ -172,12 +172,12 @@ const EditAdForm = () => {
                                 <div className='edit-ad-form'>
                                     <Form noValidate>
                                         <ThemedScrollbars
-                                            className='edit-ad-form-scrollbar'
+                                            className='edit-ad-form__scrollbar'
                                             is_scrollbar_hidden={isMobile()}
                                         >
                                             <EditAdFormWrapper>
-                                                <div className='edit-ad-form-scrollbar-container'>
-                                                    <div className='edit-ad-form-summary'>
+                                                <div className='edit-ad-form__scrollbar-container'>
+                                                    <div className='edit-ad-form__summary'>
                                                         <EditAdSummary
                                                             offer_amount={
                                                                 errors.offer_amount ? '' : values.offer_amount
@@ -186,7 +186,7 @@ const EditAdForm = () => {
                                                             type={values.type}
                                                         />
                                                     </div>
-                                                    <div className='edit-ad-form-container'>
+                                                    <div className='edit-ad-form__container'>
                                                         <Field name='offer_amount'>
                                                             {({ field }) => (
                                                                 <Input
@@ -197,7 +197,7 @@ const EditAdForm = () => {
                                                                     error={touched.offer_amount && errors.offer_amount}
                                                                     label={localize('Total amount')}
                                                                     className={classNames(
-                                                                        'edit-ad-form-field',
+                                                                        'edit-ad-form__field',
                                                                         'edit-ad-form__offer-amt'
                                                                     )}
                                                                     trailing_icon={
@@ -207,7 +207,6 @@ const EditAdForm = () => {
                                                                                     ? 'less-prominent'
                                                                                     : 'prominent'
                                                                             }
-                                                                            line_height='m'
                                                                             size={isDesktop() ? 'xxs' : 's'}
                                                                         >
                                                                             {account_currency}
@@ -244,7 +243,7 @@ const EditAdForm = () => {
                                                             {({ field }) =>
                                                                 my_ads_store.required_ad_type === ad_type.FLOAT ? (
                                                                     <FloatingRate
-                                                                        className='edit-ad-form-field'
+                                                                        className='edit-ad-form__field'
                                                                         data_testid='float_rate_type'
                                                                         error_messages={errors.rate_type}
                                                                         fiat_currency={account_currency}
@@ -281,8 +280,8 @@ const EditAdForm = () => {
                                                                                 account_currency,
                                                                             }
                                                                         )}
-                                                                        label_className='edit-ad-form-label--focused'
-                                                                        className='edit-ad-form-field'
+                                                                        label_className='edit-ad-form__label--focused'
+                                                                        className='edit-ad-form__field'
                                                                         trailing_icon={
                                                                             <Text
                                                                                 color={
@@ -290,7 +289,6 @@ const EditAdForm = () => {
                                                                                         ? 'less-prominent'
                                                                                         : 'prominent'
                                                                                 }
-                                                                                line_height='m'
                                                                                 size={isDesktop() ? 'xxs' : 's'}
                                                                             >
                                                                                 {local_currency}
@@ -308,7 +306,7 @@ const EditAdForm = () => {
                                                             }
                                                         </Field>
                                                     </div>
-                                                    <div className='edit-ad-form-container'>
+                                                    <div className='edit-ad-form__container'>
                                                         <Field name='min_transaction'>
                                                             {({ field }) => (
                                                                 <Input
@@ -321,7 +319,7 @@ const EditAdForm = () => {
                                                                         errors.min_transaction
                                                                     }
                                                                     label={localize('Min order')}
-                                                                    className='edit-ad-form-field'
+                                                                    className='edit-ad-form__field'
                                                                     trailing_icon={
                                                                         <Text
                                                                             color={
@@ -329,7 +327,6 @@ const EditAdForm = () => {
                                                                                     ? 'less-prominent'
                                                                                     : 'prominent'
                                                                             }
-                                                                            line_height='m'
                                                                             size={isDesktop() ? 'xxs' : 's'}
                                                                         >
                                                                             {account_currency}
@@ -354,7 +351,7 @@ const EditAdForm = () => {
                                                                         errors.max_transaction
                                                                     }
                                                                     label={localize('Max order')}
-                                                                    className='edit-ad-form-field'
+                                                                    className='edit-ad-form__field'
                                                                     trailing_icon={
                                                                         <Text
                                                                             color={
@@ -362,7 +359,6 @@ const EditAdForm = () => {
                                                                                     ? 'less-prominent'
                                                                                     : 'prominent'
                                                                             }
-                                                                            line_height='m'
                                                                             size={isDesktop() ? 'xxs' : 's'}
                                                                         >
                                                                             {account_currency}
@@ -393,7 +389,7 @@ const EditAdForm = () => {
                                                                         error={
                                                                             touched.contact_info && errors.contact_info
                                                                         }
-                                                                        className='edit-ad-form-field edit-ad-form-field--textarea'
+                                                                        className='edit-ad-form__field edit-ad-form__field--textarea'
                                                                         initial_character_count={contact_info.length}
                                                                         required
                                                                         has_character_counter
@@ -419,7 +415,7 @@ const EditAdForm = () => {
                                                                 hint={localize(
                                                                     'This information will be visible to everyone.'
                                                                 )}
-                                                                className='edit-ad-form-field edit-ad-form-field--textarea'
+                                                                className='edit-ad-form__field edit-ad-form__field--textarea'
                                                                 initial_character_count={
                                                                     description ? description.length : 0
                                                                 }
@@ -428,7 +424,7 @@ const EditAdForm = () => {
                                                             />
                                                         )}
                                                     </Field>
-                                                    <div className='edit-ad-form-payment-methods--text'>
+                                                    <div className='edit-ad-form__payment-methods--text'>
                                                         <Text color='prominent'>
                                                             <Localize i18n_default_text='Payment methods' />
                                                         </Text>
@@ -448,9 +444,9 @@ const EditAdForm = () => {
                                                         touched={setIsPaymentMethodTouched}
                                                     />
                                                 </div>
-                                                <div className='edit-ad-form-container edit-ad-form-footer'>
+                                                <div className='edit-ad-form__container edit-ad-form__footer'>
                                                     <Button
-                                                        className='edit-ad-form-button'
+                                                        className='edit-ad-form__button'
                                                         secondary
                                                         large
                                                         onClick={() => handleEditAdFormCancel(dirty)}
@@ -459,7 +455,7 @@ const EditAdForm = () => {
                                                         <Localize i18n_default_text='Cancel' />
                                                     </Button>
                                                     <Button
-                                                        className='edit-ad-form-button'
+                                                        className='edit-ad-form__button'
                                                         has_effect
                                                         primary
                                                         large
@@ -485,7 +481,7 @@ const EditAdForm = () => {
                 </React.Fragment>
             )}
             <Modal
-                className='edit-ad-form-modal'
+                className='edit-ad-form__modal'
                 is_open={my_ads_store.is_edit_ad_error_modal_visible}
                 small
                 has_close_icon={false}

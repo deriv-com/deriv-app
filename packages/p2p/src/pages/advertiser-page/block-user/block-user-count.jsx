@@ -57,7 +57,7 @@ const BlockUserCount = () => {
                     message={getMessage()}
                 >
                     <Icon className='block-user-count__container--icon' icon='IcUserBlockedOutline' size={16} />
-                    <Text color='less-prominent' line_height='m' size={isDesktop() ? 'xs' : 14}>
+                    <Text color='less-prominent' size={isDesktop() ? 'xs' : 14}>
                         {user_blocked_count}
                     </Text>
                 </Popover>

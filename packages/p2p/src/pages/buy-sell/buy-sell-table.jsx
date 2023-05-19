@@ -77,11 +77,7 @@ const BuySellTable = ({ onScroll }) => {
                                     <RadioGroup.Item
                                         key={key}
                                         value={list_item.value}
-                                        label={
-                                            <Text color='prominent' size='s'>
-                                                {list_item.text}
-                                            </Text>
-                                        }
+                                        label={<Text color='prominent'>{list_item.text}</Text>}
                                     />
                                 );
                             })}

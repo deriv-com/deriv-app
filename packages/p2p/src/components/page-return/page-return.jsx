@@ -10,7 +10,7 @@ const PageReturn = ({ className, onClick, page_title }) => {
             <div onClick={onClick} className='page-return__button'>
                 <Icon icon='IcArrowLeftBold' size={16} />
             </div>
-            <Text size='s' color='general' line_height='l' weight='bold'>
+            <Text line_height='l' weight='bold'>
                 {page_title}
             </Text>
         </div>

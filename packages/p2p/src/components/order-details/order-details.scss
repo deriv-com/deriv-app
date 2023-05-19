@@ -19,7 +19,7 @@ $card-width: 456px;
         }
     }
 
-    &--body {
+    &__body {
         display: flex;
         flex-direction: column;
     }
@@ -127,6 +127,7 @@ $card-width: 456px;
             justify-content: space-between;
         }
     }
+
     &__header {
         display: flex;
         justify-content: space-between;

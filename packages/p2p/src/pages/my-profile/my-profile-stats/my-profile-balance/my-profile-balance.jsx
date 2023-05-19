@@ -36,7 +36,7 @@ const MyProfileBalance = () => {
             </Modal>
             <div className='my-profile-balance__column'>
                 <div className='my-profile-balance__row'>
-                    <Text color='less-prominent' line_height='m' size={isMobile() ? 'xxxs' : 'xs'}>
+                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
                         <Localize i18n_default_text='Available Deriv P2P balance' />
                     </Text>
                     <Icon
@@ -47,7 +47,7 @@ const MyProfileBalance = () => {
                         size={isMobile() ? 12 : 16}
                     />
                 </div>
-                <Text className='my-profile-balance__amount' color='prominent' line_height='m' size='m' weight='bold'>
+                <Text className='my-profile-balance__amount' color='prominent' size='m' weight='bold'>
                     <Money amount={general_store.advertiser_info.balance_available} currency={currency} show_currency />
                 </Text>
             </div>

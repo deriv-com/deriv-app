@@ -242,7 +242,7 @@ const QuickAddModal = ({ advert }) => {
                 <React.Fragment>
                     {my_ads_store.should_show_add_payment_method && (
                         <Icon
-                            className='quick-add-modal--icon'
+                            className='quick-add-modal__icon'
                             icon='icArrowLeftBold'
                             onClick={() => {
                                 setShouldCloseAllModals(false);
@@ -260,13 +260,13 @@ const QuickAddModal = ({ advert }) => {
             {my_ads_store.should_show_add_payment_method ? (
                 <Modal.Body
                     className={classNames({
-                        'quick-add-modal--scroll': my_profile_store.selected_payment_method,
+                        'quick-add-modal__scroll': my_profile_store.selected_payment_method,
                     })}
                 >
                     <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
                 </Modal.Body>
             ) : (
-                <Modal.Body className='quick-add-modal--horizontal'>
+                <Modal.Body className='quick-add-modal__horizontal'>
                     <Text color='prominent' size='xs'>
                         <Localize i18n_default_text='You may choose up to 3 payment methods for this ad.' />
                     </Text>

@@ -7,17 +7,10 @@ import './ad-type.scss';
 const AdType = ({ ad_pause_color, float_rate }) => {
     return (
         <div className='ad-type'>
-            <Text
-                as='span'
-                className='ad-type__badge'
-                color={ad_pause_color}
-                line_height='xs'
-                size='xxs'
-                weight='normal'
-            >
+            <Text as='span' className='ad-type__badge' color={ad_pause_color} line_height='xs' size='xxs'>
                 {localize('Float')}
             </Text>
-            <Text as='span' color={ad_pause_color} line_height='xxs' size='xxs' weight='normal'>
+            <Text as='span' color={ad_pause_color} line_height='xxs' size='xxs'>
                 {float_rate}%
             </Text>
         </div>

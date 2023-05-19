@@ -58,7 +58,7 @@ const Verification = ({ should_wrap }) => {
                 <Icon icon='IcCashierSendEmail' className='verification__icon' size={102} />
                 <div className='verification__text'>
                     <div className='verification__text-title'>
-                        <Text color='general' line_height='m' size='s' weight='bold'>
+                        <Text weight='bold'>
                             <Localize i18n_default_text='Please register with us!' />
                         </Text>
                     </div>

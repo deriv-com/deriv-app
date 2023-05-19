@@ -205,7 +205,7 @@ const OrderDetails = observer(() => {
                 <div className='order-details-card'>
                     <div className='order-details-card__header'>
                         <div className='order-details-card__header--left'>
-                            <div
+                            <Text
                                 className={classNames(
                                     'order-details-card__header-status',
                                     'order-details-card__header-status--info',
@@ -215,13 +215,13 @@ const OrderDetails = observer(() => {
                                         'order-details-card__header-status--success': should_highlight_success,
                                     }
                                 )}
+                                line_height='s'
+                                weight='bold'
                             >
-                                <Text line_height='xxl' size='s' weight='bold'>
-                                    {status_string}
-                                </Text>
-                            </div>
+                                {status_string}
+                            </Text>
                             {should_highlight_success && (
-                                <Text color='general' line_height='xl' size='xs'>
+                                <Text line_height='xl' size='xs'>
                                     {labels.result_string}
                                 </Text>
                             )}
@@ -370,7 +370,7 @@ const OrderDetails = observer(() => {
                             <React.Fragment>
                                 <MyProfileSeparatorContainer.Line className='order-details-card--rating__line' />
                                 <div className='order-details-card__ratings'>
-                                    <Text color='prominent' size='s' weight='bold'>
+                                    <Text color='prominent' weight='bold'>
                                         <Localize i18n_default_text='Your transaction experience' />
                                     </Text>
                                     <div className='order-details-card__ratings--row'>

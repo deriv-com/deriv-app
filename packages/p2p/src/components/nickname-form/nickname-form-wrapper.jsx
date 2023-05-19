@@ -9,7 +9,7 @@ const NicknameFormWrapper = ({ children }) => {
     const { general_store } = useStores();
 
     if (isMobile()) {
-        return <div data-testid='mobile_nickname_form'>{children}</div>;
+        return <div data-testid='dt_mobile_nickname_form'>{children}</div>;
     }
 
     return (

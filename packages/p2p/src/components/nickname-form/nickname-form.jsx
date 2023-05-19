@@ -74,13 +74,7 @@ const NicknameForm = () => {
                 <Form className='nickname-form__wrapper' noValidate>
                     <div className='nickname-form__content nickname-form__content__centre'>
                         <Icon icon='IcCashierP2pUser' width='128' height='128' />
-                        <Text
-                            as='h5'
-                            size='s'
-                            weight='bold'
-                            line_height='unset'
-                            className='nickname-form__content--title'
-                        >
+                        <Text as='h5' weight='bold' line_height='unset' className='nickname-form__content--title'>
                             {localize('Choose a nickname')}
                         </Text>
                         <Text as='p' size='xs' line_height='unset' className='nickname-form__content--text'>
@@ -93,7 +87,7 @@ const NicknameForm = () => {
                                 }}
                             </Field>
                         </div>
-                        <Text className='nickname-form__content--ps' color='general' size='xs'>
+                        <Text className='nickname-form__content--ps' size='xs'>
                             {localize('Once set, your nickname cannot be changed.')}
                         </Text>
                     </div>

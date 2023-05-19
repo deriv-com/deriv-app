@@ -50,7 +50,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
         return (
             <Table.Row className='advertiser-page-adverts__table-row'>
                 <Table.Cell className='advertiser-page__cell'>
-                    <Text size='xxs' line_height='m'>
+                    <Text size='xxs'>
                         <Localize
                             i18n_default_text='Rate (1 {{currency}})'
                             values={{
@@ -58,11 +58,11 @@ const AdvertiserPageRow = ({ row: advert }) => {
                             }}
                         />
                     </Text>
-                    <Text color='profit-success' size='s' weight='bold' line_height='m'>
+                    <Text color='profit-success' weight='bold'>
                         {display_effective_rate} {local_currency}
                     </Text>
                     <div className='advertiser-page__cell-limit'>
-                        <Text size='xxs' line_height='m'>
+                        <Text size='xxs'>
                             <Localize
                                 i18n_default_text='Limits {{min_order_amount_limit_display}}-{{max_order_amount_limit_display}} {{currency}}'
                                 values={{
@@ -78,7 +78,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
                             ? payment_method_names.map((payment_method, key) => {
                                   return (
                                       <div className='advertiser-page__payment-method' key={key}>
-                                          <Text color='general' line-height='l' size='xxxs'>
+                                          <Text line_height='l' size='xxxs'>
                                               {payment_method}
                                           </Text>
                                       </div>
@@ -104,7 +104,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
         <Table.Row className='advertiser-page-adverts__table-row'>
             <Table.Cell>{`${min_order_amount_limit_display}-${max_order_amount_limit_display} ${currency}`}</Table.Cell>
             <Table.Cell>
-                <Text color='profit-success' line-height='m' size='xs' weight='bold'>
+                <Text color='profit-success' size='xs' weight='bold'>
                     {display_effective_rate} {local_currency}
                 </Text>
             </Table.Cell>
@@ -114,7 +114,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
                         ? payment_method_names.map((payment_method, key) => {
                               return (
                                   <div className='advertiser-page__payment-method' key={key}>
-                                      <Text color='general' size='xs' line-height='l'>
+                                      <Text size='xs' line_height='l'>
                                           {payment_method}
                                       </Text>
                                   </div>

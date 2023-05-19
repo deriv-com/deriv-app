@@ -12,7 +12,7 @@ const OrderDetailsWrapper = ({ children, page_title }) => {
         <div data-testid='order-details-wrapper-mobile'>
             <MobileFullPageModal
                 className='order-details'
-                body_className='order-details--body'
+                body_className='order-details__body'
                 height_offset='80px'
                 is_flex
                 is_modal_open

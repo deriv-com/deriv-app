@@ -165,7 +165,7 @@ const AdvertiserPage = () => {
                         />
                         <div className='advertiser-page__header-name--column'>
                             <div className='advertiser-page__header-name'>
-                                <Text color='prominent' line-height='m' size='s' weight='bold'>
+                                <Text color='prominent' weight='bold'>
                                     {advertiser_page_store.advertiser_details_name}
                                 </Text>
                                 {first_name && last_name && (

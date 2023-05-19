@@ -41,7 +41,7 @@ const MyProfileName = () => {
             <div className='my-profile-name__name'>
                 <div className='my-profile-name__privacy'>
                     <div className='my-profile-name__column'>
-                        <Text color='prominent' weight='bold' size='s' line_height='m'>
+                        <Text color='prominent' weight='bold'>
                             {general_store.nickname}
                         </Text>
                         <MobileWrapper>

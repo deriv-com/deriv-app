@@ -9,7 +9,7 @@ const PaymentMethodCardMenu = ({ payment_method }) => {
 
     return (
         <div className='payment-method-card-menu'>
-            <Text className='payment-method-card-menu__text' color='prominent' size='s'>
+            <Text className='payment-method-card-menu__text' color='prominent'>
                 <Localize i18n_default_text='Edit' />
             </Text>
             <Text
@@ -19,7 +19,6 @@ const PaymentMethodCardMenu = ({ payment_method }) => {
                     my_profile_store.setPaymentMethodToDelete(payment_method);
                     my_profile_store.setIsConfirmDeleteModalOpen(true);
                 }}
-                size='s'
             >
                 <Localize i18n_default_text='Delete' />
             </Text>

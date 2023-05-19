@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import { ButtonToggle } from '@deriv/components';
-import ToggleContainer from 'Components/misc/toggle-container.jsx';
+import ToggleContainer from 'Components/toggle-container/toggle-container';
 import { localize } from 'Components/i18next';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';

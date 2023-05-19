@@ -31,7 +31,7 @@ const FormWithConfirmation = ({
                         is_open={should_show_popup}
                         portalId='modal_root'
                         renderTitle={() => (
-                            <Text color='prominent' line-height='m' size='s' weight='bold'>
+                            <Text color='prominent' weight='bold'>
                                 {title}
                             </Text>
                         )}
@@ -40,7 +40,7 @@ const FormWithConfirmation = ({
                     >
                         <Modal.Body>
                             <div className='orders__popup-content'>
-                                <Text color='prominent' line_height='m' size='xs'>
+                                <Text color='prominent' size='xs'>
                                     {message}
                                 </Text>
                                 <div className='orders__popup-field'>
@@ -122,7 +122,7 @@ const FormWithoutConfirmation = ({
             is_open={should_show_popup}
             portalId='modal_root'
             renderTitle={() => (
-                <Text color='prominent' line-height='m' size='s' weight='bold'>
+                <Text color='prominent' weight='bold'>
                     {title}
                 </Text>
             )}
@@ -131,7 +131,7 @@ const FormWithoutConfirmation = ({
         >
             <Modal.Body>
                 <div className='orders__popup-content'>
-                    <Text color='prominent' line_height='m' size='xs'>
+                    <Text color='prominent' size='xs'>
                         {message}
                     </Text>
                     {should_confirm_payment && (

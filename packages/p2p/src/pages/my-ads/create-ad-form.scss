@@ -17,20 +17,20 @@
         @include mobile {
             max-width: 90vw;
 
-            .create-ad-form-field {
+            .create-ad-form__field {
                 margin-bottom: 0;
             }
         }
     }
 
-    &-label {
+    &__label {
         &--focused {
             color: var(--text-prominent);
             background-color: var(--general-main-1);
         }
     }
 
-    &-payment-methods {
+    &__payment-methods {
         &--empty {
             max-width: 67.2rem;
             padding: 1.2rem 0;
@@ -44,7 +44,7 @@
         }
     }
 
-    &-radio-group {
+    &__radio-group {
         display: flex;
         margin-top: unset;
         padding-bottom: 1.2rem;
@@ -62,7 +62,7 @@
         }
     }
 
-    &-scrollbar {
+    &__scrollbar {
         height: calc(100% - 2.4rem - 9.2rem);
         position: absolute;
         width: calc(100% - 4.8rem);
@@ -94,7 +94,7 @@
         }
     }
 
-    &-container {
+    &__container {
         display: flex;
         height: 8rem;
         justify-content: space-between;
@@ -128,7 +128,7 @@
         }
     }
 
-    &-field {
+    &__field {
         height: 4rem;
         margin-bottom: 0;
         margin-left: 0;
@@ -185,11 +185,11 @@
         }
     }
 
-    &-button {
+    &__button {
         margin-left: 0.8rem;
     }
 
-    &-footer {
+    &__footer {
         align-items: center;
         background-color: var(--general-main-1);
         display: flex;

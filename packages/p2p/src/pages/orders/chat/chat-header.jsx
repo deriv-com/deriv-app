@@ -17,12 +17,12 @@ const ChatHeaderBody = observer(() => {
     return (
         <React.Fragment>
             <div className='chat-header-icon' style={{ backgroundColor: icon_background_colour }}>
-                <Text size='xs' color='colored-background' line_height='m'>
+                <Text size='xs' color='colored-background'>
                     {short_nickname}
                 </Text>
             </div>
             <div className='chat-header-user'>
-                <Text as='p' className='chat-header-user-name' color='prominent' line_height='m' size='s' weight='bold'>
+                <Text as='p' className='chat-header-user-name' color='prominent' weight='bold'>
                     {other_user_details.name}
                 </Text>
                 {sendbird_store.last_other_user_activity && (
@@ -30,7 +30,6 @@ const ChatHeaderBody = observer(() => {
                         as='p'
                         className='chat-header-user-timestamp'
                         color='less-prominent'
-                        line_height='m'
                         size={isMobile() ? 'xxs' : 'xs'}
                     >
                         {sendbird_store.last_other_user_activity}

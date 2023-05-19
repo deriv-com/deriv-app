@@ -175,28 +175,28 @@ const BuySellForm = props => {
 
                     return (
                         <Form noValidate>
-                            <div className='buy-sell-form-content'>
-                                <div className='buy-sell-form-field-wrapper'>
-                                    <div className='buy-sell-form-field'>
-                                        <Text as='p' color='less-prominent' line_height='m' size='xxs'>
+                            <div className='buy-sell-form__content'>
+                                <div className='buy-sell-form__field-wrapper'>
+                                    <div className='buy-sell-form__field'>
+                                        <Text as='p' color='less-prominent' size='xxs'>
                                             {buy_sell_store.is_buy_advert ? (
                                                 <Localize i18n_default_text='Seller' />
                                             ) : (
                                                 <Localize i18n_default_text='Buyer' />
                                             )}
                                         </Text>
-                                        <Text as='p' color='general' line_height='m' size='xs'>
+                                        <Text as='p' size='xs'>
                                             {advertiser_details.name}
                                         </Text>
                                     </div>
-                                    <div className='buy-sell-form-field'>
-                                        <Text as='p' color='less-prominent' line_height='m' size='xxs'>
+                                    <div className='buy-sell-form__field'>
+                                        <Text as='p' color='less-prominent' size='xxs'>
                                             <Localize
                                                 i18n_default_text='Rate (1 {{ currency }})'
                                                 values={{ currency: buy_sell_store.account_currency }}
                                             />
                                         </Text>
-                                        <Text as='p' color='general' line_height='m' size='xs'>
+                                        <Text as='p' size='xs'>
                                             {display_effective_rate} {local_currency}
                                         </Text>
                                     </div>
@@ -207,7 +207,6 @@ const BuySellForm = props => {
                                             as='p'
                                             className='buy-sell-form-payment-method--title'
                                             color='less-prominent'
-                                            line_height='m'
                                             size='xxs'
                                         >
                                             <Localize i18n_default_text='Payment methods' />
@@ -225,7 +224,7 @@ const BuySellForm = props => {
                                                             icon={`IcCashier${method}`}
                                                             size={16}
                                                         />
-                                                        <Text as='p' color='general' line_height='m' size='xs'>
+                                                        <Text as='p' size='xs'>
                                                             {payment_method}
                                                         </Text>
                                                     </div>
@@ -239,16 +238,16 @@ const BuySellForm = props => {
                                                         icon='IcCashierEwallet'
                                                         size={16}
                                                     />
-                                                    <Text as='p' color='general' line_height='m' size='xs'>
+                                                    <Text as='p' size='xs'>
                                                         {payment_method}
                                                     </Text>
                                                 </div>
                                             );
                                         })}
                                 </div>
-                                <div className='buy-sell-form-field-wrapper'>
-                                    <div className='buy-sell-form-field'>
-                                        <Text as='p' color='less-prominent' line_height='m' size='xxs'>
+                                <div className='buy-sell-form__field-wrapper'>
+                                    <div className='buy-sell-form__field'>
+                                        <Text as='p' color='less-prominent' size='xxs'>
                                             {buy_sell_store.is_buy_advert ? (
                                                 <Localize i18n_default_text="Seller's instructions" />
                                             ) : (
@@ -260,7 +259,7 @@ const BuySellForm = props => {
                                             .replace(/([\r\n]){2,}/g, '\n\n')
                                             .split('\n')
                                             .map((text, idx) => (
-                                                <Text key={idx} as='p' color='general' line_height='m' size='xs'>
+                                                <Text key={idx} as='p' size='xs'>
                                                     {text || '-'}
                                                 </Text>
                                             ))}
@@ -274,12 +273,11 @@ const BuySellForm = props => {
                                                 as='p'
                                                 className='buy-sell-form-payment-method--title'
                                                 color='less-prominent'
-                                                line_height='m'
                                                 size='xxs'
                                             >
                                                 <Localize i18n_default_text='Receive payment to' />
                                             </Text>
-                                            <Text as='p' color='prominent' line_height='m' size='xxs'>
+                                            <Text as='p' color='prominent' size='xxs'>
                                                 {my_profile_store.advertiser_has_payment_methods ? (
                                                     <Localize i18n_default_text='You may choose up to 3.' />
                                                 ) : (
@@ -393,9 +391,9 @@ const BuySellForm = props => {
                                                         />
                                                     }
                                                     is_relative_hint
-                                                    className='buy-sell-form-field'
+                                                    className='buy-sell-form__field'
                                                     trailing_icon={
-                                                        <Text color='less-prominent' line-height='m' size='xs'>
+                                                        <Text color='less-prominent' size='xs'>
                                                             {buy_sell_store.account_currency}
                                                         </Text>
                                                     }
@@ -425,8 +423,8 @@ const BuySellForm = props => {
                                         </Field>
                                         {isDesktop() && (
                                             <div
-                                                className={classNames('buy-sell-form-field', {
-                                                    'buy-sell-form-field--disable': should_disable_field,
+                                                className={classNames('buy-sell-form__field', {
+                                                    'buy-sell-form__field--disable': should_disable_field,
                                                 })}
                                             >
                                                 <BuySellFormReceiveAmount />
@@ -437,7 +435,7 @@ const BuySellForm = props => {
                                 {buy_sell_store.is_sell_advert && (
                                     <React.Fragment>
                                         {!payment_method_names && (
-                                            <div className='buy-sell-form-field--textarea'>
+                                            <div className='buy-sell-form__field--textarea'>
                                                 <Field name='payment_info'>
                                                     {({ field }) => (
                                                         <Input
@@ -460,7 +458,7 @@ const BuySellForm = props => {
                                                 </Field>
                                             </div>
                                         )}
-                                        <div className='buy-sell-form-field--textarea'>
+                                        <div className='buy-sell-form__field--textarea'>
                                             <Field name='contact_info'>
                                                 {({ field }) => (
                                                     <Input

@@ -53,7 +53,7 @@ const OrderDetailsFooter = observer(() => {
                     <div className='order-details-footer--right'>
                         <Button.Group>
                             <Button large secondary onClick={showCancelOrderModal} is_disabled={!chat_channel_url}>
-                                <Text color='general' line_height='s' size='xs' weight='bold'>
+                                <Text line_height='s' size='xs' weight='bold'>
                                     <Localize i18n_default_text='Cancel order' />
                                 </Text>
                             </Button>
@@ -76,12 +76,12 @@ const OrderDetailsFooter = observer(() => {
                     <div className='order-details-footer--right'>
                         <Button.Group>
                             <Button large tertiary onClick={showComplainOrderModal}>
-                                <Text color='general' line_height='s' size='xs'>
+                                <Text color='loss-danger' line_height='s' size='xs' weight='bold'>
                                     <Localize i18n_default_text='Complain' />
                                 </Text>
                             </Button>
                             <Button large primary onClick={showConfirmOrderModal}>
-                                <Text color='general' line_height='s' size='xs'>
+                                <Text line_height='s' size='xs'>
                                     <Localize i18n_default_text="I've received payment" />
                                 </Text>
                             </Button>
@@ -104,7 +104,7 @@ const OrderDetailsFooter = observer(() => {
                 <div className='order-details-footer'>
                     <div className='order-details-footer--right'>
                         <Button large tertiary onClick={showComplainOrderModal}>
-                            <Text color='general' line_height='s' size='xs'>
+                            <Text color='loss-danger' line_height='s' size='xs' weight='bold'>
                                 <Localize i18n_default_text='Complain' />
                             </Text>
                         </Button>
@@ -126,7 +126,7 @@ const OrderDetailsFooter = observer(() => {
                 <div className='order-details-footer'>
                     <div className='order-details-footer--right'>
                         <Button large primary onClick={showConfirmOrderModal}>
-                            <Text color='general' line_height='s' size='xs'>
+                            <Text line_height='s' size='xs'>
                                 <Localize i18n_default_text="I've received payment" />
                             </Text>
                         </Button>

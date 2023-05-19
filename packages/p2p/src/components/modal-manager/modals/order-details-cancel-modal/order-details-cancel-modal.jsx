@@ -36,7 +36,7 @@ const OrderDetailsCancelModal = () => {
             is_open={is_modal_open}
             toggleModal={hideModal}
             renderTitle={() => (
-                <Text color='prominent' line-height='m' size='s' weight='bold'>
+                <Text color='prominent' weight='bold'>
                     <Localize i18n_default_text='Do you want to cancel this order?' />
                 </Text>
             )}

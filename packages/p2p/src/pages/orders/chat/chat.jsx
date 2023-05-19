@@ -25,7 +25,7 @@ const Chat = observer(() => {
         return (
             <div className='chat'>
                 <div className='chat__error'>
-                    <Text as='p' color='prominent' line_height='m' size='s'>
+                    <Text as='p' color='prominent'>
                         <Localize i18n_default_text='Oops, something went wrong' />
                     </Text>
                     <div className='chat__error-retry'>

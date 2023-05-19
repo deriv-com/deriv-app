@@ -70,7 +70,7 @@ const MyProfileDetailsTable = () => {
             </div>
             {upgradable_daily_limits && (
                 <Text as='div' className='my-profile-details-table__limit'>
-                    <Text color='less-prominent' line-height='l' size='xxs'>
+                    <Text color='less-prominent' line_height='l' size='xxs'>
                         <Localize
                             i18n_default_text='Want to increase your daily limits to <0>{{max_daily_buy}} {{currency}}</0> (buy) and <1>{{max_daily_sell}} {{currency}}</1> (sell)?'
                             components={[<strong key={0} />, <strong key={1} />]}

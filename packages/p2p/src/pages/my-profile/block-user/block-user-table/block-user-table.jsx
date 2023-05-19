@@ -49,13 +49,7 @@ const BlockUserTable = () => {
 
     if (my_profile_store.search_term && my_profile_store.rendered_trade_partners_list.length === 0) {
         return (
-            <Text
-                align='center'
-                className='block-user-table__text'
-                line_height='m'
-                size='s'
-                weight={isMobile() ? 'normal' : 'bold'}
-            >
+            <Text align='center' className='block-user-table__text' weight={isMobile() ? 'normal' : 'bold'}>
                 {localize('There are no matching name.')}
             </Text>
         );

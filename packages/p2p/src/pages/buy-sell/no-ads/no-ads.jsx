@@ -17,17 +17,10 @@ const NoAds = () => {
             <Icon icon='IcCashierNoAds' size={128} />
             {is_default_currency ? (
                 <React.Fragment>
-                    <Text
-                        align='center'
-                        className='no-ads__title'
-                        color='general'
-                        line_height='m'
-                        size='s'
-                        weight='bold'
-                    >
+                    <Text align='center' className='no-ads__title' weight='bold'>
                         <Localize i18n_default_text='No ads for this currency 😞' />
                     </Text>
-                    <Text className='no-ads__message' align='center' color='general' line_height='m' size='s'>
+                    <Text className='no-ads__message' align='center'>
                         <Localize i18n_default_text='Looking to buy or sell USD? You can post your own ad for others to respond.' />
                     </Text>
                     <Button
@@ -47,7 +40,7 @@ const NoAds = () => {
                     </Button>
                 </React.Fragment>
             ) : (
-                <Text align='center' className='no-ads__title' color='general' line_height='m' size='s' weight='bold'>
+                <Text align='center' className='no-ads__title' weight='bold'>
                     <Localize i18n_default_text='No ads for this currency at the moment 😞' />
                 </Text>
             )}

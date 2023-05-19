@@ -9,7 +9,7 @@ import './online-status-avatar.scss';
 const OnlineStatusAvatar = ({ is_online, nickname, size, text_size }) => {
     return (
         <div className='online-status-avatar'>
-            <Text className='online-status-avatar-text' color='colored-background' line_height='m' size={text_size}>
+            <Text className='online-status-avatar__text' color='colored-background' size={text_size}>
                 {getShortNickname(nickname)}
             </Text>
 

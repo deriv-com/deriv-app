@@ -17,7 +17,7 @@ const BlockUserModal = ({ advertiser_name, is_advertiser_blocked, onCancel, onSu
             is_open={is_modal_open && !general_store.block_unblock_user_error}
             small
             title={
-                <Text color='prominent' size='s' weight='bold'>
+                <Text color='prominent' weight='bold'>
                     {is_advertiser_blocked ? (
                         <Localize
                             i18n_default_text='Unblock {{advertiser_name}}?'

@@ -11,12 +11,7 @@ const MyProfilePrivacy = () => {
     return (
         <div className='my-profile-privacy'>
             <div className='my-profile-privacy__toggle-container'>
-                <Text
-                    className='my-profile-privacy__label'
-                    color='prominent'
-                    line_height='m'
-                    size={isDesktop() ? 'xs' : 'xxs'}
-                >
+                <Text className='my-profile-privacy__label' color='prominent' size={isDesktop() ? 'xs' : 'xxs'}>
                     <Localize i18n_default_text='Show my real name' />
                 </Text>
                 <Text color='less-prominent' size='xxxs'>

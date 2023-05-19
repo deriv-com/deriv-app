@@ -7,25 +7,13 @@
         }
     }
 
-    &-body {
-        position: relative;
-        display: block;
-        padding-top: 2.4rem;
-
-        @include mobile {
-            & > form {
-                height: fit-content !important;
-            }
+    &__content {
+        .dc-input {
+            margin-bottom: unset;
         }
     }
 
-    &-danger {
-        margin-bottom: 1.6rem;
-        width: fit-content;
-        align-items: flex-start;
-    }
-
-    &-field {
+    &__field {
         margin-bottom: 0 !important;
         flex: 1;
         height: 4rem;
@@ -79,6 +67,24 @@
                 margin-top: 1rem; // Compensate for label.
             }
         }
+    }
+
+    &-body {
+        position: relative;
+        display: block;
+        padding-top: 2.4rem;
+
+        @include mobile {
+            & > form {
+                height: fit-content !important;
+            }
+        }
+    }
+
+    &-danger {
+        margin-bottom: 1.6rem;
+        width: fit-content;
+        align-items: flex-start;
     }
 
     &-form {
@@ -227,11 +233,6 @@
     }
 }
 
-.buy-sell-form-content {
-    .dc-input {
-        margin-bottom: unset;
-    }
-}
 .dc-modal__container_buy-sell-form {
     .dc-modal-header--buy-sell-form {
         border-bottom: 2px solid var(--general-section-5);

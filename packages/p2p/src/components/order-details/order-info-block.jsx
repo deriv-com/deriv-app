@@ -9,7 +9,7 @@ const OrderInfoBlock = ({ className, label, value, size = 'xxs', weight = 'norma
         <Text as='p' color='prominent' size={size} weight={weight}>
             {label}
         </Text>
-        <Text className='order-info-block-value' color='general' line_height='s' size='xs'>
+        <Text className='order-info-block-value' line_height='s' size='xs'>
             {value}
         </Text>
     </div>

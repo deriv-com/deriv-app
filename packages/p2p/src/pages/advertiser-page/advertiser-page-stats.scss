@@ -1,16 +1,18 @@
 .advertiser-page-stats {
-    border-bottom: none;
-    display: flex;
-    grid-template-columns: repeat(3, 1fr);
-    height: 5rem;
-    justify-content: space-between;
-    margin: 2rem 0;
-    width: 100%;
+    &__row {
+        border-bottom: none;
+        display: flex;
+        grid-template-columns: repeat(3, 1fr);
+        height: 5rem;
+        justify-content: space-between;
+        margin: 2rem 0;
+        width: 100%;
 
-    @include mobile {
-        grid-template-columns: repeat(2, 1fr);
-        margin: 0.6rem;
-        width: 90vw;
+        @include mobile {
+            grid-template-columns: repeat(2, 1fr);
+            margin: 0.6rem;
+            width: 90vw;
+        }
     }
 
     &__cell {

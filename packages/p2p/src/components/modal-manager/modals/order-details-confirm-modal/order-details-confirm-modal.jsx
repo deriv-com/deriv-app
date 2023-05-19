@@ -31,7 +31,7 @@ const OrderDetailsConfirmModal = () => {
                 toggleModal={hideModal}
                 has_close_icon
                 renderTitle={() => (
-                    <Text color='prominent' line-height='m' size='s' weight='bold'>
+                    <Text color='prominent' weight='bold'>
                         {is_buy_order_for_user ? (
                             <Localize i18n_default_text='Payment confirmation' />
                         ) : (
@@ -42,7 +42,7 @@ const OrderDetailsConfirmModal = () => {
                 width='440px'
             >
                 <Modal.Body>
-                    <Text color='general' line-height='m' size='xs'>
+                    <Text size='xs'>
                         {is_buy_order_for_user ? (
                             <Localize
                                 i18n_default_text='Have you paid {{amount}} {{currency}} to {{other_user_name}}?'

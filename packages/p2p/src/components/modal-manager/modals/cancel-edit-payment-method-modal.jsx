@@ -15,7 +15,7 @@ const CancelEditPaymentMethodModal = () => {
             is_open={is_modal_open}
             small
             title={
-                <Text color='prominent' size='s' weight='bold'>
+                <Text color='prominent' weight='bold'>
                     <Localize i18n_default_text='Cancel your edits?' />
                 </Text>
             }

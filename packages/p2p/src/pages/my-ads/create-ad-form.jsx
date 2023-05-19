@@ -159,14 +159,17 @@ const CreateAdForm = () => {
                     return (
                         <div className='create-ad-form' data-testid='dp2p-create-ad-form_container'>
                             <Form noValidate>
-                                <ThemedScrollbars className='create-ad-form-scrollbar' is_scrollbar_hidden={isMobile()}>
+                                <ThemedScrollbars
+                                    className='create-ad-form__scrollbar'
+                                    is_scrollbar_hidden={isMobile()}
+                                >
                                     <CreateAdFormWrapper>
-                                        <div className='create-ad-form-scrollbar-container'>
+                                        <div className='create-ad-form__scrollbar-container'>
                                             <Field name='type'>
                                                 {({ field }) => (
                                                     <RadioGroup
                                                         {...field}
-                                                        className='create-ad-form-radio-group'
+                                                        className='create-ad-form__radio-group'
                                                         name='type'
                                                         onToggle={event => onChangeAdTypeHandler(event.target.value)}
                                                         selected={values.type}
@@ -194,7 +197,7 @@ const CreateAdForm = () => {
                                                 type={values.type}
                                             />
 
-                                            <div className='create-ad-form-container'>
+                                            <div className='create-ad-form__container'>
                                                 <Field name='offer_amount'>
                                                     {({ field }) => (
                                                         <Input
@@ -204,14 +207,13 @@ const CreateAdForm = () => {
                                                             type='text'
                                                             error={touched.offer_amount && errors.offer_amount}
                                                             label={localize('Total amount')}
-                                                            className={classNames('create-ad-form-field', {
+                                                            className={classNames('create-ad-form__field', {
                                                                 'create-ad-form__offer-amt__sell-ad':
                                                                     values.type === buy_sell.SELL,
                                                             })}
                                                             trailing_icon={
                                                                 <Text
                                                                     color={isDesktop() ? 'less-prominent' : 'prominent'}
-                                                                    line_height='m'
                                                                     size={isDesktop() ? 'xxs' : 's'}
                                                                 >
                                                                     {currency}
@@ -247,7 +249,7 @@ const CreateAdForm = () => {
                                                     {({ field }) =>
                                                         floating_rate_store.rate_type === ad_type.FLOAT ? (
                                                             <FloatingRate
-                                                                className='create-ad-form-field'
+                                                                className='create-ad-form__field'
                                                                 data_testid='float_rate_type'
                                                                 error_messages={errors.rate_type}
                                                                 fiat_currency={currency}
@@ -278,13 +280,12 @@ const CreateAdForm = () => {
                                                                 label={localize('Fixed rate (1 {{currency}})', {
                                                                     currency,
                                                                 })}
-                                                                className='create-ad-form-field'
+                                                                className='create-ad-form__field'
                                                                 trailing_icon={
                                                                     <Text
                                                                         color={
                                                                             isDesktop() ? 'less-prominent' : 'prominent'
                                                                         }
-                                                                        line_height='m'
                                                                         size={isDesktop() ? 'xxs' : 's'}
                                                                     >
                                                                         {local_currency_config.currency}
@@ -299,7 +300,7 @@ const CreateAdForm = () => {
                                                     }
                                                 </Field>
                                             </div>
-                                            <div className='create-ad-form-container'>
+                                            <div className='create-ad-form__container'>
                                                 <Field name='min_transaction'>
                                                     {({ field }) => (
                                                         <Input
@@ -309,11 +310,10 @@ const CreateAdForm = () => {
                                                             type='text'
                                                             error={touched.min_transaction && errors.min_transaction}
                                                             label={localize('Min order')}
-                                                            className='create-ad-form-field'
+                                                            className='create-ad-form__field'
                                                             trailing_icon={
                                                                 <Text
                                                                     color={isDesktop() ? 'less-prominent' : 'prominent'}
-                                                                    line_height='m'
                                                                     size={isDesktop() ? 'xxs' : 's'}
                                                                 >
                                                                     {currency}
@@ -335,11 +335,10 @@ const CreateAdForm = () => {
                                                             type='text'
                                                             error={touched.max_transaction && errors.max_transaction}
                                                             label={localize('Max order')}
-                                                            className='create-ad-form-field'
+                                                            className='create-ad-form__field'
                                                             trailing_icon={
                                                                 <Text
                                                                     color={isDesktop() ? 'less-prominent' : 'prominent'}
-                                                                    line_height='m'
                                                                     size={isDesktop() ? 'xxs' : 's'}
                                                                 >
                                                                     {currency}
@@ -354,7 +353,7 @@ const CreateAdForm = () => {
                                                 </Field>
                                             </div>
                                             {is_sell_advert && (
-                                                <div className='create-ad-form-field--contact-details'>
+                                                <div className='create-ad-form__field--contact-details'>
                                                     <Field name='contact_info'>
                                                         {({ field }) => (
                                                             <Input
@@ -368,7 +367,7 @@ const CreateAdForm = () => {
                                                                     </Text>
                                                                 }
                                                                 error={touched.contact_info && errors.contact_info}
-                                                                className='create-ad-form-field create-ad-form-field--textarea'
+                                                                className='create-ad-form__field create-ad-form__field--textarea'
                                                                 initial_character_count={
                                                                     general_store.contact_info.length
                                                                 }
@@ -397,7 +396,7 @@ const CreateAdForm = () => {
                                                             </Text>
                                                         }
                                                         hint={localize('This information will be visible to everyone.')}
-                                                        className='create-ad-form-field create-ad-form-field--textarea'
+                                                        className='create-ad-form__field create-ad-form__field--textarea'
                                                         initial_character_count={
                                                             general_store.default_advert_description.length
                                                         }
@@ -407,7 +406,7 @@ const CreateAdForm = () => {
                                                     />
                                                 )}
                                             </Field>
-                                            <div className='create-ad-form-payment-methods--text'>
+                                            <div className='create-ad-form__payment-methods--text'>
                                                 <Text color='prominent'>
                                                     <Localize i18n_default_text='Payment methods' />
                                                 </Text>
@@ -424,9 +423,9 @@ const CreateAdForm = () => {
                                                 is_sell_advert={is_sell_advert}
                                             />
                                         </div>
-                                        <div className='create-ad-form-container create-ad-form-footer'>
+                                        <div className='create-ad-form__container create-ad-form__footer'>
                                             <Button
-                                                className='create-ad-form-button'
+                                                className='create-ad-form__button'
                                                 secondary
                                                 large
                                                 onClick={onCleanup}
@@ -435,7 +434,7 @@ const CreateAdForm = () => {
                                                 <Localize i18n_default_text='Cancel' />
                                             </Button>
                                             <Button
-                                                className='create-ad-form-button'
+                                                className='create-ad-form__button'
                                                 primary
                                                 large
                                                 is_disabled={

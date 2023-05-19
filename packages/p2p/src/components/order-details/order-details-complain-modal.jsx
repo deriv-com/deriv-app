@@ -10,7 +10,7 @@ import 'Components/order-details/order-details-complain-modal.scss';
 
 const ComplainExplanation = () => (
     <div className='order-details-complain-modal__explanation'>
-        <Text size='xxs' line_height='m' color='general'>
+        <Text size='xxs'>
             <Localize i18n_default_text="If your complaint isn't listed here, please contact our Customer Support team." />
         </Text>
     </div>
@@ -95,7 +95,7 @@ const OrderDetailsComplainModal = ({
             toggleModal={hideComplainOrderModal}
             has_close_icon
             renderTitle={() => (
-                <Text color='prominent' line-height='m' size='s' weight='bold'>
+                <Text color='prominent' weight='bold'>
                     <Localize i18n_default_text="What's your complaint?" />
                 </Text>
             )}

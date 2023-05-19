@@ -9,9 +9,7 @@ const P2pEmpty = ({ className, children, has_tabs, icon, title }) => {
         <div className={classNames(className, 'p2p-empty', { 'p2p-empty--no-tabs': !has_tabs })}>
             <Icon icon={icon} className='p2p-empty-icon' size={128} />
             <div className='p2p-empty-title'>
-                <Text color='general' line_height='m' size='s' weight='bold'>
-                    {title}
-                </Text>
+                <Text weight='bold'>{title}</Text>
             </div>
             {children}
         </div>

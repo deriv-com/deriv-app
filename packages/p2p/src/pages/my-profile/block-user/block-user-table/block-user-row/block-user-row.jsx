@@ -30,9 +30,7 @@ const BlockUserRow = ({ row: advertiser }) => {
                 >
                     <UserAvatar nickname={name} size={32} text_size='s' />
                     <div className='block-user-row__cell-container'>
-                        <Text size='xs' line_height='m' color='general'>
-                            {name}
-                        </Text>
+                        <Text size='xs'>{name}</Text>
                     </div>
                 </div>
             </Table.Cell>

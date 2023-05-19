@@ -28,20 +28,14 @@ const EmailVerificationModal = (
         >
             <Modal.Body className='email-verification-modal__body'>
                 <Icon icon='IcEmailSentP2p' size='128' />
-                <Text
-                    align='center'
-                    className='email-verification-modal__email_text'
-                    color='prominent'
-                    size='s'
-                    weight='bold'
-                >
+                <Text align='center' className='email-verification-modal__email_text' color='prominent' weight='bold'>
                     <Localize
                         i18n_default_text="We've sent you an email at {{user_email_address}}.<0 />Please click the verification link in the email to verify your order."
                         components={[<br key={0} />]}
                         values={{ user_email_address }}
                     />
                 </Text>
-                <Text align='center' color='prominent' size='s'>
+                <Text align='center' color='prominent'>
                     {/* TODO: Uncomment when time is available in BE response */}
                     <Localize i18n_default_text='The verification link expires in 10 minutes' />
                 </Text>

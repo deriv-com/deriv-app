@@ -41,6 +41,11 @@ jest.mock('@deriv/shared', () => ({
             },
         },
     },
+    filterObjProperties: jest.fn(() => ({
+        first_name: 'test',
+        last_name: 'test',
+        date_of_birth: '1970-01-01',
+    })),
 }));
 
 describe('<IdvDocumentSubmit/>', () => {
@@ -75,7 +80,7 @@ describe('<IdvDocumentSubmit/>', () => {
         expect(screen.queryByText('Please select a document type.')).not.toBeInTheDocument();
 
         const inputs = screen.getAllByRole<HTMLTextAreaElement>('textbox');
-        expect(inputs.length).toBe(2);
+        expect(inputs.length).toBe(5);
         expect(inputs[0].name).toBe('document_type');
         expect(inputs[1].name).toBe('document_number');
     });

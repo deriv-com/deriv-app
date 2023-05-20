@@ -29,7 +29,7 @@ const DepositCryptoDisclaimers: React.FC = observer(() => {
                     <li>
                         <Text size={'xxxs'}>
                             <Localize
-                                i18n_default_text='A minimum deposit value of <0>{{minimum_deposit}} {{currency}}</0> is required. Otherwise, the funds will be lost and cannot be recovered.'
+                                i18n_default_text='A minimum deposit value of <0>{{minimum_deposit}}</0> {{currency}} is required. Otherwise, the funds will be lost and cannot be recovered.'
                                 values={{ minimum_deposit, currency }}
                                 components={[<Text key={0} size={'xxxs'} weight='bold' />]}
                             />

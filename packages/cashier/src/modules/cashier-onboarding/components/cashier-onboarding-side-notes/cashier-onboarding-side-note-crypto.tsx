@@ -1,5 +1,4 @@
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
 import { getCurrencyDisplayCode, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
@@ -29,17 +28,11 @@ const CashierOnboardingSideNoteCrypto: React.FC = observer(() => {
                 }
             )}
             hide_paddings={!is_mobile}
-        >
-            <div
-                className='cashier-onboarding-side-notes__link cashier-onboarding-side-notes__link-container'
-                onClick={onClick}
-            >
-                <Text size={is_mobile ? 'xxxs' : 'xxs'} color='red'>
-                    {localize('Manage your accounts')}
-                </Text>
-                <Icon icon='IcChevronRight' color='red' />
-            </div>
-        </SideNoteCard>
+            action={{
+                onClick,
+                label: localize('Manage your accounts'),
+            }}
+        />
     );
 });
 

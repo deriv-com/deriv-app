@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { observer, useStore } from '@deriv/stores';
 import CashierOnboardingSideNoteCrypto from './cashier-onboarding-side-note-crypto';
 import CashierOnboardingSideNoteFiat from './cashier-onboarding-side-note-fiat';
-import './cashier-onboarding-side-notes.scss';
 
 type TProps = {
     setSideNotes: React.Dispatch<React.SetStateAction<JSX.Element[]>>;

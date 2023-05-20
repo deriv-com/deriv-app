@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
-import { CryptoConfig, getCurrencyName } from '@deriv/shared';
+import { useCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 
@@ -8,17 +8,17 @@ const DepositCryptoCurrencyDetails: React.FC = observer(() => {
     const { client, ui } = useStore();
     const { currency } = client;
     const { is_mobile } = ui;
-    const currency_icon = `IcCurrency-${currency.toLowerCase()}`;
-    const currency_name = getCurrencyName(currency);
-    const currency_display_code = CryptoConfig.get()[currency].display_code;
+    const currency_config = useCurrencyConfig(currency);
+
+    if (!currency_config.data) return null;
 
     return (
         <>
-            <Icon icon={currency_icon} size={64} />
+            <Icon icon={currency_config.data.icon} size={64} />
             <Text align='center' size={is_mobile ? 'xs' : 's'} weight='bold'>
-                {localize('Send only {{currency_name}} ({{currency_display_code}}) to this address.', {
-                    currency_name,
-                    currency_display_code,
+                {localize('Send only {{currency_name}} ({{currency_code}}) to this address.', {
+                    currency_name: currency_config.data.name,
+                    currency_code: currency_config.data.code,
                 })}
             </Text>
         </>

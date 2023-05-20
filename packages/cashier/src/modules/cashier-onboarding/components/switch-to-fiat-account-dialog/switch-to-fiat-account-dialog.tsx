@@ -10,6 +10,7 @@ type TProps = {
     onSwitchDone: VoidFunction;
 };
 
+// Todo: Use forwardRef and useImperativeHandle to expose the closeDialog function to the parent component.
 const SwitchToFiatAccountDialog: React.FC<TProps> = observer(({ is_visible = false, onCancel, onSwitchDone }) => {
     const { client } = useStore();
     const { switchAccount } = client;

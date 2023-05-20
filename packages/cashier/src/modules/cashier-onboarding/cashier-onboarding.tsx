@@ -29,7 +29,7 @@ const CashierOnboarding: React.FC<TProps> = observer(({ setSideNotes }) => {
     const { can_change_fiat_currency, available_crypto_currencies, is_crypto } = client;
     const is_fiat_user = !is_crypto() && !can_change_fiat_currency;
     const is_crypto_user = is_crypto() && available_crypto_currencies.length > 0;
-    const should_show_side_notes = is_fiat_user || is_crypto_user;
+    const should_show_side_notes = is_fiat_user || is_crypto_user; // ?[QUESTION] Why do we need this to render the side notes conditionally?
     const has_set_currency = useHasSetCurrency();
 
     useEffect(() => {
@@ -38,6 +38,7 @@ const CashierOnboarding: React.FC<TProps> = observer(({ setSideNotes }) => {
         return () => {
             setIsCashierOnboarding(false);
             if (!has_set_currency && window.location.pathname.includes(routes.cashier)) {
+                // ?[QUESTION] What does this if condition exactly do?
                 history.push(routes.trade);
                 toggleSetCurrencyModal();
             }

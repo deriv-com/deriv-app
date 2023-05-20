@@ -16,29 +16,7 @@ describe('SideNoteCard', () => {
         );
         render(<SideNoteCard {...props} />, { wrapper });
 
-        expect(screen.getByText(props.title)).toBeInTheDocument();
-        expect(screen.getByText(props.description)).toBeInTheDocument();
-    });
-
-    test('should render the given children', async () => {
-        const props: React.ComponentProps<typeof SideNoteCard> = {
-            title: 'foo',
-            description: 'bar',
-        };
-        const mock = mockStore({});
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
-        render(
-            <SideNoteCard {...props}>
-                <div>children</div>
-            </SideNoteCard>,
-            { wrapper }
-        );
-
-        expect(screen.getByText(props.title)).toBeInTheDocument();
-        expect(screen.getByText(props.description)).toBeInTheDocument();
-        expect(screen.getByText('children')).toBeInTheDocument();
+        expect(screen.getByText('foo')).toBeInTheDocument();
+        expect(screen.getByText('bar')).toBeInTheDocument();
     });
 });

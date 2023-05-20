@@ -11,8 +11,8 @@ const styles = {
         scrollSnapType: 'x mandatory',
     },
     item: {
-        width: '250px',
-        height: '250px',
+        width: '160px',
+        height: '96px',
         flexShrink: 0,
     },
     itemSnapPoint: {

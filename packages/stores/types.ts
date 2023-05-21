@@ -16,16 +16,8 @@ type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: number;
 };
 
-type TCtraderAccountsList = {
-    account_id?: string;
-    account_type?: 'real' | 'demo';
-    balance?: number;
-    currency?: string;
+type TCtraderAccountsList = DetailsOfEachMT5Loginid & {
     display_balance?: string;
-    display_login?: string;
-    landing_company_short?: 'bvi' | 'labuan' | 'malta' | 'maltainvest' | 'svg' | 'vanuatu' | 'seychelles';
-    login?: string;
-    market_type?: 'financial' | 'synthetic' | 'all';
     platform?: string;
 };
 

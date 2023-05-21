@@ -2,14 +2,15 @@ import { configure } from 'mobx';
 import { waitFor } from '@testing-library/react';
 import { routes, ContentFlag } from '@deriv/shared';
 import GeneralStore from '../general-store';
-import type { TWebSocket, TRootStore } from 'Types';
+import type { TWebSocket, TRootStore } from '../../types';
+import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
-let general_store: GeneralStore, root_store: DeepPartial<TRootStore>, WS: DeepPartial<TWebSocket>;
+let general_store: GeneralStore, root_store: ReturnType<typeof mockStore>, WS: DeepPartial<TWebSocket>;
 
 beforeEach(() => {
-    root_store = {
+    root_store = mockStore({
         client: {
             account_list: [{ is_virtual: false, title: 'USD' }],
             account_status: {
@@ -71,7 +72,7 @@ beforeEach(() => {
             toggleSetCurrencyModal: jest.fn(),
         },
         traders_hub: { content_flag: ContentFlag.CR_DEMO },
-    };
+    });
     WS = {
         authorized: {
             p2pAdvertiserInfo: jest.fn().mockResolvedValueOnce({ error: { code: 'advertiser_error' } }),
@@ -83,11 +84,10 @@ beforeEach(() => {
 
 describe('GeneralStore', () => {
     it('should set function on remount', () => {
-        // TODO: Check this
-        // const remountFunc = () => 'function';
+        // TODO: use the actual function smh
         general_store.setOnRemount('function');
 
-        expect(general_store.onRemount).toBe('function');
+        expect(general_store.onRemount).toEqual('function');
     });
 
     it('should return false if the client currency is equal to USD when is_crypto property was called', () => {
@@ -126,7 +126,7 @@ describe('GeneralStore', () => {
     });
 
     it('should calculate proper percentage for account transfer container', () => {
-        general_store.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount = 500;
+        general_store.root_store.modules.cashier.crypto_fiat_converter.converter_from_amount = '500';
         general_store.root_store.modules.cashier.account_transfer.selected_from.balance = 10000;
         general_store.setActiveTab('account_transfer');
         general_store.calculatePercentage();
@@ -137,7 +137,7 @@ describe('GeneralStore', () => {
     it('should calculate proper percentage for other containers', () => {
         general_store.root_store.client.balance = '9000';
         general_store.setActiveTab('deposit');
-        general_store.calculatePercentage(1000);
+        general_store.calculatePercentage('1000');
 
         expect(general_store.percentage).toBe(11);
     });
@@ -223,7 +223,9 @@ describe('GeneralStore', () => {
                 pathname: routes.cashier_pa,
             },
         }));
-        general_store.root_store.modules.cashier.payment_agent.filterPaymentAgentList.mockResolvedValueOnce([]);
+        (
+            general_store.root_store.modules.cashier.payment_agent.filterPaymentAgentList as jest.Mock
+        ).mockResolvedValueOnce([]);
         general_store.root_store.client.is_logged_in = true;
         await general_store.onMountCommon(false);
 

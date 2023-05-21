@@ -41,7 +41,7 @@ module.exports = function (env) {
             'poa-submitted': 'Components/poa/status/submitted',
             'poa-unverified': 'Components/poa/status/unverified',
             'poa-verified': 'Components/poa/status/verified',
-            'poi-poa-docs-submitted': 'Components/poi-poa-docs-submitted/poi-poa-docs-submitted.jsx',
+            'poi-poa-docs-submitted': 'Components/poi-poa-docs-submitted/poi-poa-docs-submitted',
             'poi-expired': 'Components/poi/status/expired',
             'poi-missing-personal-details': 'Components/poi/missing-personal-details',
             'poi-unsupported': 'Components/poi/status/unsupported',

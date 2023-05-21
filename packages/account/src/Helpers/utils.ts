@@ -224,11 +224,11 @@ export const generatePlaceholderText = (selected_doc: string) => {
 };
 
 export const validate =
-    (errors: FormikErrors<FormikValues>, values: Record<string, string>) =>
+    (errors: Record<string, string>, values: Record<string, string>) =>
     (fn: (value: string) => string, arr: string[], err_msg: string) => {
         arr.forEach(field => {
             const value = values[field];
-            if (/^\s+$/.test(value) || (!fn(value) && !errors[field] && !err_msg)) errors[field] = err_msg;
+            if (!fn(value) && !errors[field]) errors[field] = err_msg;
         });
     };
 

@@ -52,8 +52,13 @@ export const IdvDocSubmitOnSignup = ({
         const required_fields = ['first_name', 'last_name', 'date_of_birth'];
         const validateValues = validate(errors, values);
         validateValues(val => val, required_fields, localize('This field is required'));
-        errors.first_name = validateName(values.first_name);
-        errors.last_name = validateName(values.last_name);
+
+        if (values.first_name) {
+            errors.first_name = validateName(values.first_name);
+        }
+        if (values.last_name) {
+            errors.last_name = validateName(values.last_name);
+        }
 
         return removeEmptyPropertiesFromObject(errors);
     };

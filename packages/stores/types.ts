@@ -236,10 +236,6 @@ type TCommonStore = {
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
     server_time?: Moment;
-    changeCurrentLanguage: (new_language: string) => void;
-    changeSelectedLanguage: (key: string) => void;
-    current_language: string;
-    is_language_changing: boolean;
     setMobileLanguageMenuOpen: (is_mobile_language_menu_open: boolean) => void;
 };
 

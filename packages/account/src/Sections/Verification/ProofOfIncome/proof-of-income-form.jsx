@@ -153,6 +153,7 @@ const ProofOfIncomeForm = ({
                                                             setStatus({ msg: '' });
                                                         }}
                                                         required
+                                                        hide_top_placeholder
                                                     />
                                                 </MobileWrapper>
                                             </React.Fragment>

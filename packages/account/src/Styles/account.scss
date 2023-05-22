@@ -2286,6 +2286,11 @@ $MIN_HEIGHT_FLOATING: calc(
                     padding: 1.6rem 2.4rem;
                 }
             }
+            .form-body {
+                @include desktop {
+                    z-index: 5;
+                }
+            }
         }
 
         .icon {

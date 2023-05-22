@@ -27,6 +27,7 @@ type TIDVForm = {
     selected_country: ResidenceList[0];
     hide_hint?: boolean;
     class_name?: string;
+    can_skip_document_verification: boolean;
 } & Partial<FormikHandlers> &
     FormikProps<TFormProps>;
 
@@ -40,12 +41,21 @@ const IDVForm = ({
     class_name,
     selected_country,
     hide_hint,
+    can_skip_document_verification = false,
 }: TIDVForm) => {
     const [document_list, setDocumentList] = React.useState<TDocumentList>([]);
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [selected_doc, setSelectedDoc] = React.useState('');
 
     const { documents_supported: document_data, has_visual_sample } = selected_country?.identity?.services?.idv ?? {};
+
+    const default_document = {
+        id: '',
+        text: '',
+        value: '',
+        example_format: '',
+        sample_image: '',
+    };
 
     React.useEffect(() => {
         if (document_data && selected_country && selected_country.value) {
@@ -55,57 +65,49 @@ const IDVForm = ({
                 ? document_types.filter(d => d !== 'voter_id')
                 : document_types;
 
-            setDocumentList([
-                ...filtered_documents.map(key => {
-                    const { display_name, format } = document_data[key];
-                    const { new_display_name, example_format, sample_image } = getDocumentData(
-                        selected_country.value ?? '',
-                        key
-                    );
-                    const needs_additional_document = !!document_data[key].additional;
+            const new_document_list = filtered_documents.map(key => {
+                const { display_name, format } = document_data[key];
+                const { new_display_name, example_format, sample_image } = getDocumentData(
+                    selected_country.value ?? '',
+                    key
+                );
+                const needs_additional_document = !!document_data[key].additional;
 
-                    if (needs_additional_document) {
-                        return {
-                            id: key,
-                            text: new_display_name || display_name,
-                            additional: {
-                                display_name: document_data[key].additional?.display_name,
-                                format: document_data[key].additional?.format,
-                            },
-                            value: format,
-                            sample_image,
-                            example_format,
-                        };
-                    }
+                if (needs_additional_document) {
                     return {
                         id: key,
                         text: new_display_name || display_name,
+                        additional: {
+                            display_name: document_data[key].additional?.display_name,
+                            format: document_data[key].additional?.format,
+                        },
                         value: format,
                         sample_image,
                         example_format,
                     };
-                }),
-                IDV_NOT_APPLICABLE_OPTION,
-            ]);
+                }
+                return {
+                    id: key,
+                    text: new_display_name || display_name,
+                    value: format,
+                    sample_image,
+                    example_format,
+                };
+            });
+            if (can_skip_document_verification) {
+                setDocumentList([...new_document_list, IDV_NOT_APPLICABLE_OPTION]);
+            } else {
+                setDocumentList([...new_document_list]);
+            }
         }
-    }, [document_data, selected_country]);
+    }, [document_data, selected_country, can_skip_document_verification]);
 
     const resetDocumentItemSelected = () => {
-        setFieldValue(
-            'document_type',
-            {
-                id: '',
-                text: '',
-                value: '',
-                example_format: '',
-                sample_image: '',
-            },
-            true
-        );
+        setFieldValue('document_type', default_document, true);
     };
 
     const getDocument = (text: string) => {
-        return document_list.find(d => d.text === text);
+        return document_list.find(d => d.text === text) ?? default_document;
     };
 
     const onKeyUp = (e: { target: HTMLInputElement }, document_name: string) => {
@@ -116,6 +118,18 @@ const IDVForm = ({
             ? formatInput(example_format, current_input ?? e.target.value, '-')
             : e.target.value;
         setFieldValue(document_name, current_input, true);
+    };
+
+    const bindDocumentData = (item: TDocumentList[0]) => {
+        setFieldValue('document_type', item, true);
+        setSelectedDoc(item?.id);
+        if (item?.id === IDV_NOT_APPLICABLE_OPTION.id) {
+            setFieldValue('document_number', '', true);
+            setFieldValue('document_additional', '', true);
+        }
+        if (has_visual_sample) {
+            setDocumentImage(item.sample_image ?? '');
+        }
     };
 
     return (
@@ -165,11 +179,7 @@ const IDVForm = ({
                                                                         setSelectedDoc('');
                                                                         resetDocumentItemSelected();
                                                                     } else {
-                                                                        setFieldValue('document_type', item, true);
-                                                                        setSelectedDoc(item.id);
-                                                                        if (has_visual_sample) {
-                                                                            setDocumentImage(item.sample_image ?? '');
-                                                                        }
+                                                                        bindDocumentData(item);
                                                                     }
                                                                 }}
                                                                 required
@@ -191,19 +201,7 @@ const IDVForm = ({
                                                             onChange={e => {
                                                                 handleChange(e);
                                                                 const selected_document = getDocument(e.target.value);
-                                                                if (selected_document) {
-                                                                    setSelectedDoc(selected_document.id);
-                                                                    setFieldValue(
-                                                                        'document_type',
-                                                                        selected_document,
-                                                                        true
-                                                                    );
-                                                                    if (has_visual_sample) {
-                                                                        setDocumentImage(
-                                                                            selected_document.sample_image ?? ''
-                                                                        );
-                                                                    }
-                                                                }
+                                                                bindDocumentData(selected_document);
                                                             }}
                                                             use_text={true}
                                                             required

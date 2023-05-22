@@ -33,7 +33,7 @@ type TAccountTransferFormProps = {
 };
 
 const AccountOption = ({ account, idx }: TAccountsList) => {
-    const is_deriv_account = account.is_dxtrade || account.is_ctrader || account.is_mt || account.is_derivez;
+    const is_cfd_account = account.is_dxtrade || account.is_ctrader || account.is_mt || account.is_derivez;
 
     return (
         <React.Fragment key={idx}>
@@ -45,7 +45,7 @@ const AccountOption = ({ account, idx }: TAccountsList) => {
 
             <div className='account-transfer-form__currency-wrapper'>
                 <Text size='xxs' line_height='xs' styles={{ color: 'prominent', fontWeight: 'inherit' }}>
-                    {!is_deriv_account ? getCurrencyName(account.currency) : account.text}
+                    {!is_cfd_account ? getCurrencyName(account.currency) : account.text}
                 </Text>
                 {!account.is_derivez && (
                     <Text size='xxxs' align='left' color='less-prominent'>

@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isCryptocurrency } from '@deriv/shared';
 import Icon from '../icon';
 import './wallet-icon.scss';
 
@@ -9,7 +8,7 @@ type TWalletIconProps = {
     has_bg?: boolean;
     icon: string;
     size: string;
-    type: string;
+    type: 'fiat' | 'crypto';
 };
 
 const sizes: any = {
@@ -52,16 +51,14 @@ const sizes: any = {
     },
 };
 
-const WalletIcon = ({ currency, has_bg = false, icon, size = 'medium', type = 'fiat' }: TWalletIconProps) => {
-    const is_fiat = !isCryptocurrency(currency || '') && currency !== 'USDT';
-
+const WalletIcon = ({ currency, has_bg = false, icon, size = 'medium', type }: TWalletIconProps) => {
     /**
-     * Icon sizes are different when using wallet-icon with background, as a card
+     * The sizes of icons vary when utilizing the wallet-icon with a background, such as a card.
      */
     let icon_size = size;
     if (has_bg) {
-        if (size === 'small' && !is_fiat) icon_size = 'xxsmall';
-        if (size === 'medium' && !is_fiat) icon_size = 'small';
+        if (size === 'small' && type === 'crypto') icon_size = 'xxsmall';
+        if (size === 'medium' && type === 'crypto') icon_size = 'small';
         if (size === 'large') icon_size = 'xlarge';
     }
 
@@ -71,8 +68,8 @@ const WalletIcon = ({ currency, has_bg = false, icon, size = 'medium', type = 'f
 
     return (
         <div className={classNames('wallet-icon', { [`wallet-icon--${size} wallet-card__${currency}-bg`]: !!has_bg })}>
-            {is_fiat && <Icon icon={icon} size={sizes[type][icon_size]} />}
-            {!is_fiat && (
+            {type === 'fiat' && <Icon icon={icon} size={sizes[type][icon_size]} />}
+            {type === 'crypto' && (
                 <Icon icon={icon} width={sizes[type][icon_size].width} height={sizes[type][icon_size].height} />
             )}
         </div>

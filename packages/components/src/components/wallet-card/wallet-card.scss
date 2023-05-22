@@ -41,14 +41,12 @@
     }
 
     &--active {
+        border: 2px solid var(--text-red);
+
         #{$parent}__container {
             &:after {
                 opacity: 1;
             }
-        }
-
-        .wallet-icon {
-            border: 2px solid var(--text-red);
         }
     }
 
@@ -69,6 +67,7 @@
             transform: translate(-1.2rem, -0.4rem);
             width: unset;
             height: unset;
+            z-index: 1;
         }
     }
 
@@ -101,6 +100,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        z-index: 1;
     }
 
     &__shine {

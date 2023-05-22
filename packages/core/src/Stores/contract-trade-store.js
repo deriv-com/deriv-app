@@ -105,10 +105,10 @@ export default class ContractTradeStore extends BaseStore {
     updateAccumulatorBarriersData({
         accumulators_high_barrier,
         accumulators_low_barrier,
+        barrier_spot_distance,
         current_spot,
         current_spot_time,
         has_open_contract,
-        relative_barrier_size,
     }) {
         const barriers_data = {
             current_spot,
@@ -128,10 +128,10 @@ export default class ContractTradeStore extends BaseStore {
         this.accu_barriers_timeout_id = setTimeout(() => {
             runInAction(() => {
                 const delayed_barriers_data = {
-                    previous_spot_time: current_spot_time,
                     accumulators_high_barrier,
                     accumulators_low_barrier,
-                    relative_barrier_size,
+                    barrier_spot_distance,
+                    previous_spot_time: current_spot_time,
                 };
                 this.accumulator_barriers_data = {
                     ...this.accumulator_barriers_data,
@@ -231,20 +231,20 @@ export default class ContractTradeStore extends BaseStore {
         const {
             accumulators_high_barrier,
             accumulators_low_barrier,
+            barrier_spot_distance,
             previous_spot_time,
-            relative_barrier_size,
             contract_barriers_data: {
                 accumulators_high_barrier: contract_high_barrier = accumulators_high_barrier,
                 accumulators_low_barrier: contract_low_barrier = accumulators_low_barrier,
                 previous_spot_time: contract_prev_spot_time = previous_spot_time,
-                relative_barrier_size: contract_relative_barrier_size = relative_barrier_size,
+                barrier_spot_distance: contract_barrier_spot_distance = barrier_spot_distance,
             } = {},
         } = this.accumulator_barriers_data || {};
         const { status } = this.last_contract.contract_info || {};
-        const [high_barrier, low_barrier, prev_spot_time, barriers_difference] =
+        const [high_barrier, low_barrier, barriers_difference, prev_spot_time] =
             status === 'open'
-                ? [contract_high_barrier, contract_low_barrier, contract_prev_spot_time, contract_relative_barrier_size]
-                : [accumulators_high_barrier, accumulators_low_barrier, previous_spot_time, relative_barrier_size];
+                ? [contract_high_barrier, contract_low_barrier, contract_barrier_spot_distance, contract_prev_spot_time]
+                : [accumulators_high_barrier, accumulators_low_barrier, barrier_spot_distance, previous_spot_time];
         if (trade_type === 'accumulator' && prev_spot_time && high_barrier) {
             markers.push({
                 type: 'TickContract',

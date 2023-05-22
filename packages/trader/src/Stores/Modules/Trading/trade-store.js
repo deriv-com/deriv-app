@@ -1150,6 +1150,7 @@ export default class TradeStore extends BaseStore {
         }
         if (this.is_accumulator && this.proposal_info?.ACCU) {
             const {
+                barrier_spot_distance,
                 maximum_ticks,
                 ticks_stayed_in,
                 tick_size_barrier,
@@ -1157,7 +1158,6 @@ export default class TradeStore extends BaseStore {
                 maximum_payout,
                 high_barrier,
                 low_barrier,
-                relative_barrier_size,
                 spot,
                 spot_time,
             } = this.proposal_info.ACCU;
@@ -1174,9 +1174,9 @@ export default class TradeStore extends BaseStore {
                 updateAccumulatorBarriersData({
                     accumulators_high_barrier: high_barrier,
                     accumulators_low_barrier: low_barrier,
+                    barrier_spot_distance,
                     current_spot: spot,
                     current_spot_time: spot_time,
-                    relative_barrier_size,
                 });
             }
         }

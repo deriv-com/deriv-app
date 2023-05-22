@@ -194,6 +194,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTwoFAChangedStatus: jest.fn(),
             has_any_real_account: false,
             real_account_creation_unlock_date: 0,
+            trading_platform_available_accounts: [],
         },
         common: {
             error: {
@@ -219,6 +220,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_network_online: false,
             server_time: undefined,
             is_language_changing: false,
+            setAppstorePlatform: jest.fn(),
         },
         ui: {
             app_contents_scroll_ref: {
@@ -285,6 +287,11 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTogglePlatformType: jest.fn(),
             setSelectedAccount: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
+            is_account_type_modal_visible: false,
+            toggleAccountTypeModalVisibility: jest.fn(),
+            account_type_card: '',
+            selectAccountTypeCard: jest.fn(),
+            getAccount: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

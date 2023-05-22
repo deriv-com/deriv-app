@@ -18,20 +18,3 @@ export type TAccountCard = {
     icon: string;
     selectAccountTypeCard: React.Dispatch<React.SetStateAction<string>>;
 };
-
-export type TTradingPlatformAvailableAccount = {
-    market_type: 'financial' | 'gaming';
-    name: string;
-    requirements: {
-        after_first_deposit: {
-            financial_assessment: string[];
-        };
-        compliance: {
-            mt5: string[];
-            tax_information: string[];
-        };
-        signup: string[];
-    };
-    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
-    sub_account_type: string;
-};

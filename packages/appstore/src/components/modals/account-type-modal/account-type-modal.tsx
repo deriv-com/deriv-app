@@ -1,11 +1,10 @@
 import React from 'react';
 import { Button, Modal, DesktopWrapper, MobileDialog, MobileWrapper, UILoader, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
-import { useStores } from 'Stores/index';
+import { useStore, observer } from '@deriv/stores';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
-import { TModalContent, TAccountType, TAccountCard, TTradingPlatformAvailableAccount } from './types';
+import { TModalContent, TAccountType, TAccountCard } from './types';
 import { TIconTypes } from 'Types';
 import { CFD_PLATFORMS } from '@deriv/shared';
 
@@ -79,8 +78,8 @@ const ModalContent = ({
     );
 };
 
-const MT5AccountTypeModal = () => {
-    const { traders_hub, ui, client, modules, common } = useStores();
+const MT5AccountTypeModal = observer(() => {
+    const { traders_hub, ui, client, modules, common } = useStore();
     const {
         is_account_type_modal_visible,
         toggleAccountTypeModalVisibility,
@@ -93,11 +92,11 @@ const MT5AccountTypeModal = () => {
     const { enableApp, disableApp } = ui;
     const { setAppstorePlatform } = common;
     const is_financial_available = trading_platform_available_accounts.some(
-        (available_account: TTradingPlatformAvailableAccount) => available_account.market_type === 'financial'
+        available_account => available_account.market_type === 'financial'
     );
 
     const is_synthetic_available = trading_platform_available_accounts.some(
-        (available_account: TTradingPlatformAvailableAccount) => available_account.market_type === 'gaming'
+        available_account => available_account.market_type === 'gaming'
     );
 
     const set_account_type = () =>
@@ -119,7 +118,7 @@ const MT5AccountTypeModal = () => {
                         toggleModal={toggleAccountTypeModalVisibility}
                         type='button'
                         height='664px'
-                        width={'1200px'}
+                        width='1200px'
                     >
                         <ModalContent
                             account_type_card={account_type_card}
@@ -176,5 +175,6 @@ const MT5AccountTypeModal = () => {
             </React.Suspense>
         </div>
     );
-};
-export default observer(MT5AccountTypeModal);
+});
+
+export default MT5AccountTypeModal;

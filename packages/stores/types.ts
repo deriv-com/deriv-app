@@ -73,6 +73,23 @@ type TButtonProps = {
     text: string;
 };
 
+type TTradingPlatformAvailableAccount = {
+    market_type: 'financial' | 'gaming';
+    name: string;
+    requirements: {
+        after_first_deposit: {
+            financial_assessment: string[];
+        };
+        compliance: {
+            mt5: string[];
+            tax_information: string[];
+        };
+        signup: string[];
+    };
+    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
+    sub_account_type: string;
+};
+
 type TNotificationMessage = {
     action?: {
         onClick: () => void;
@@ -207,6 +224,7 @@ type TClientStore = {
     setTwoFAChangedStatus: (status: boolean) => void;
     has_any_real_account: boolean;
     real_account_creation_unlock_date: number;
+    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
 };
 
 type TCommonStoreError = {
@@ -235,6 +253,7 @@ type TCommonStore = {
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
     is_language_changing: boolean;
+    setAppstorePlatform: (platform: string) => void;
 };
 
 type TUiStore = {
@@ -340,6 +359,11 @@ type TTradersHubStore = {
     setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
     toggleAccountTransferModal: () => void;
     is_demo: boolean;
+    is_account_type_modal_visible: boolean;
+    toggleAccountTypeModalVisibility: () => void;
+    account_type_card: string;
+    selectAccountTypeCard: React.Dispatch<React.SetStateAction<string>>;
+    getAccount: () => void;
 };
 
 /**

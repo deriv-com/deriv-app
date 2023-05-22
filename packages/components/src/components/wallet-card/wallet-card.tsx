@@ -16,76 +16,25 @@ type TSizes = {
 type TWalletCardProps = {
     // TODO: This type should be updated when the response is ready
     wallet: any;
-    size?: 'small' | 'normal' | 'large';
+    size?: 'small' | 'medium' | 'large';
     state?: 'active' | 'add' | 'added' | 'default' | 'disabled' | 'faded';
-};
-
-const sizes: TSizes = {
-    fiat: {
-        small: 24,
-        normal: 32,
-        large: 32,
-    },
-    payment: {
-        small: {
-            width: 48,
-            height: 30,
-        },
-        normal: {
-            width: isMobile() ? 48 : 64,
-            height: isMobile() ? 30 : 40,
-        },
-        large: {
-            width: 64,
-            height: 40,
-        },
-    },
-    app: {
-        single: {
-            small: 24,
-            normal: 24,
-            large: 24,
-        },
-        linked: {
-            small: 'normal',
-            normal: 'normal',
-            large: 'normal',
-        },
-    },
 };
 
 const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
     wallet,
-    size = 'normal',
+    size = 'medium',
     state = 'default',
 }) => {
     const IconComponent = () => {
-        const is_app_single = wallet.type === 'app' && !wallet.wallet_icon;
-        const is_app_linked = wallet.type === 'app' && wallet.wallet_icon;
-        const type_sizes = sizes[wallet.type as keyof TSizes];
+        let icon_size = wallet.type === 'app' ? 'medium' : 'large';
+        if (size === 'small') icon_size = 'medium';
+        if (size === 'medium') icon_size = isMobile() && wallet.type === 'crypto' ? 'medium' : 'large';
 
         return (
             <React.Fragment>
-                {wallet.type === 'fiat' && (
-                    <Icon icon={wallet.icon} size={type_sizes[size as keyof typeof type_sizes]} />
-                )}
-                {wallet.type === 'payment' && (
-                    <Icon icon={wallet.icon} width={type_sizes[size].width} height={type_sizes[size].height} />
-                )}
-                {wallet.type === 'app' && (
-                    <React.Fragment>
-                        {is_app_single && <Icon icon={wallet.icon} size={type_sizes.single[size]} />}
-                        {is_app_linked && (
-                            <WalletIcon
-                                app_icon={wallet.icon}
-                                wallet_icon={wallet.wallet_icon}
-                                size={sizes.app.linked[size]}
-                                currency={wallet.currency}
-                                type={wallet.type}
-                            />
-                        )}
-                    </React.Fragment>
-                )}
+                {wallet.type !== 'app' && <WalletIcon type={wallet.type} icon={wallet.icon} size={icon_size} />}
+                {/* TODO: Update this after app-icon created */}
+                {wallet.type === 'app' && <div />}
             </React.Fragment>
         );
     };

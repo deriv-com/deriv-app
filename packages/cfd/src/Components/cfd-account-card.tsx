@@ -17,6 +17,7 @@ import {
     TTradingPlatformAccounts,
 } from './props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { FormikValues } from 'formik';
 
 const account_icons: { [key: string]: TAccountIconValues } = {
     mt5: {
@@ -431,7 +432,7 @@ const CFDAccountCardComponent = ({
                             platform === CFD_PLATFORMS.MT5 &&
                             type.category === 'demo' &&
                             existing_accounts_data?.length &&
-                            existing_accounts_data?.map((acc, index) => (
+                            existing_accounts_data?.map((acc: FormikValues, index: number) => (
                                 <div className='cfd-account-card__item' key={index}>
                                     {acc?.display_balance && is_logged_in && acc.landing_company_short === 'labuan' && (
                                         <div className='cfd-account-card__item--banner'>
@@ -538,7 +539,7 @@ const CFDAccountCardComponent = ({
                             is_logged_in &&
                             platform === CFD_PLATFORMS.MT5 &&
                             type.category === 'real' &&
-                            existing_accounts_data?.map((acc, index) => (
+                            existing_accounts_data?.map((acc: FormikValues, index: number) => (
                                 <div className='cfd-account-card__item' key={index}>
                                     {existing_data?.display_balance && is_logged_in && !show_eu_related_content && (
                                         <div className='cfd-account-card__item--banner'>

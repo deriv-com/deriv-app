@@ -695,7 +695,6 @@ export const icons =
         'IcRebrandingDerivGoDashboard',
         'IcRebrandingDerivTraderDashboard',
         'IcRebrandingDerivTrader',
-        'IcRebrandingDerivX',
         'IcRebrandingDerivxWordmark',
         'IcRebrandingDerivx',
         'IcRebrandingDmt5Dashboard',

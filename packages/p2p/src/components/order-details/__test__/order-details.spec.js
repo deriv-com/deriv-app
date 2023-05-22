@@ -2,7 +2,6 @@ import React from 'react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { useStores } from 'Stores';
 import { render, screen } from '@testing-library/react';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import OrderDetails from '../order-details.jsx';
 
 const mock_order_info = {
@@ -90,7 +89,12 @@ jest.mock('Stores', () => ({
 
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
     ...jest.requireActual('Components/modal-manager/modal-manager-context'),
-    useModalManagerContext: jest.fn(),
+    useModalManagerContext: jest.fn(() => ({
+        isCurrentModal: false,
+        showModal: () => {},
+        hideModal: () => {},
+        useRegisterModalProps: () => {},
+    })),
 }));
 
 jest.mock('@deriv/shared', () => ({
@@ -122,12 +126,6 @@ describe('<OrderDetails/>', () => {
             buy_sell_store: { ...mock_buy_sell_store },
             general_store: { ...mock_general_store },
         });
-        useModalManagerContext.mockImplementation(() => ({
-            isCurrentModal: false,
-            showModal: () => {},
-            hideModal: () => {},
-            useRegisterModalProps: () => {},
-        }));
         render(<OrderDetails onPageReturn={jest.fn()} />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
         });
@@ -146,12 +144,6 @@ describe('<OrderDetails/>', () => {
             buy_sell_store: { ...mock_buy_sell_store },
             general_store: { ...mock_general_store },
         });
-        useModalManagerContext.mockImplementation(() => ({
-            isCurrentModal: false,
-            showModal: () => {},
-            hideModal: () => {},
-            useRegisterModalProps: () => {},
-        }));
         render(<OrderDetails onPageReturn={jest.fn()} />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
         });
@@ -168,12 +160,6 @@ describe('<OrderDetails/>', () => {
             buy_sell_store: { ...mock_buy_sell_store },
             general_store: { ...mock_general_store },
         });
-        useModalManagerContext.mockImplementation(() => ({
-            isCurrentModal: false,
-            showModal: () => {},
-            hideModal: () => {},
-            useRegisterModalProps: () => {},
-        }));
         render(<OrderDetails onPageReturn={jest.fn()} />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
         });
@@ -190,12 +176,6 @@ describe('<OrderDetails/>', () => {
             buy_sell_store: { ...mock_buy_sell_store },
             general_store: { ...mock_general_store },
         });
-        useModalManagerContext.mockImplementation(() => ({
-            isCurrentModal: false,
-            showModal: () => {},
-            hideModal: () => {},
-            useRegisterModalProps: () => {},
-        }));
         render(<OrderDetails onPageReturn={jest.fn()} />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
         });
@@ -213,12 +193,6 @@ describe('<OrderDetails/>', () => {
             buy_sell_store: { ...mock_buy_sell_store },
             general_store: { ...mock_general_store },
         });
-        useModalManagerContext.mockImplementation(() => ({
-            isCurrentModal: false,
-            showModal: () => {},
-            hideModal: () => {},
-            useRegisterModalProps: () => {},
-        }));
         render(<OrderDetails onPageReturn={jest.fn()} />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
         });
@@ -234,12 +208,6 @@ describe('<OrderDetails/>', () => {
             buy_sell_store: { ...mock_buy_sell_store },
             general_store: { ...mock_general_store },
         });
-        useModalManagerContext.mockImplementation(() => ({
-            isCurrentModal: false,
-            showModal: () => {},
-            hideModal: () => {},
-            useRegisterModalProps: () => {},
-        }));
         render(<OrderDetails onPageReturn={jest.fn()} />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
         });
@@ -256,12 +224,6 @@ describe('<OrderDetails/>', () => {
             buy_sell_store: { ...mock_buy_sell_store },
             general_store: { ...mock_general_store },
         });
-        useModalManagerContext.mockImplementation(() => ({
-            isCurrentModal: false,
-            showModal: () => {},
-            hideModal: () => {},
-            useRegisterModalProps: () => {},
-        }));
         render(<OrderDetails onPageReturn={jest.fn()} />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
         });

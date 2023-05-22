@@ -187,6 +187,7 @@ const PersonalDetails = ({
                                                     handleBlur={handleBlur}
                                                     setFieldValue={setFieldValue}
                                                     hide_hint={true}
+                                                    can_skip_document_verification={true}
                                                 />
                                                 <FormSubHeader title={localize('Details')} />
                                             </React.Fragment>

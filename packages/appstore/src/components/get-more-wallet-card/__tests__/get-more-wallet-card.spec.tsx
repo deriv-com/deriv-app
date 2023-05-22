@@ -14,7 +14,7 @@ describe('GetMoreWalletCard', () => {
         expect(container).toBeInTheDocument();
     });
 
-    it('should render the correct icon and text and classname', () => {
+    it('should render the correct text and classname', () => {
         const mock = mockStore({});
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>

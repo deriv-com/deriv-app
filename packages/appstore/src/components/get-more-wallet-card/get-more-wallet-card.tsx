@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Icon, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 
-const GetMoreWalletCard: React.FC = () => {
+const GetMoreWalletCard = () => {
     return (
         <div className='get-more-wallet-card'>
             <div className='get-more-wallet-card--column'>

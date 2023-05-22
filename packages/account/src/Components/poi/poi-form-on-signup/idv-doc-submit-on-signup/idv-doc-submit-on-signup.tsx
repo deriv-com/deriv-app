@@ -129,7 +129,7 @@ export const IdvDocSubmitOnSignup = ({
         }
 
         if (!document_number) {
-            const document_name = document_type.text.toLowerCase();
+            const document_name = document_type?.text?.toLowerCase();
 
             errors.document_number =
                 localize('Please enter your {{document_name}}. ', { document_name }) +

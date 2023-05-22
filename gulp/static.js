@@ -40,8 +40,3 @@ gulp.task(
     'copy-jquery-img',
     gulp.series(() => gulp.src('node_modules/jquery-ui-css/images/*').pipe(gulp.dest('www/css/images')))
 );
-
-gulp.task(
-    'copy-binary-style-img',
-    gulp.series(() => gulp.src('node_modules/binary-style/src/images/**').pipe(gulp.dest('www/image/binary-style')))
-);

@@ -13,7 +13,15 @@ const plugins = [
         'window.jQuery': 'jquery',
     }),
     new CopyWebpackPlugin([
-        { from: './node_modules/@deriv/deriv-charts/dist/*.smartcharts.*', to: path.resolve(__dirname), flatten: true },
+        {
+            from: 'node_modules/@deriv/deriv-charts/dist/*.smartcharts.*',
+            to: path.resolve(__dirname),
+            flatten: true,
+        },
+        {
+            from: 'node_modules/binary-style/src/images/favicons',
+            to: '../image/favicons',
+        },
     ]),
 ];
 

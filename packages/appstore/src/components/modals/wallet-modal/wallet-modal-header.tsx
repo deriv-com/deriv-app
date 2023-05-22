@@ -1,11 +1,11 @@
 import React from 'react';
-import { DemoLight, DemoDark } from '../../../public/images/index';
+//TODO: uncomment when backgrounds for modal will be ready
+// import { DemoLight, DemoDark } from '../../../public/images/index';
 import classNames from 'classnames';
-import { Badge, GradientBackground, Icon, Text, Watermark } from '@deriv/components';
+import { Badge, Icon, Text, Watermark } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getWalletCurrencyIcon } from 'Constants/utils';
-import { getWalletModalBackgrounds } from 'Constants/wallet-backgrounds';
 
 type TWalletModalHeaderProps = {
     balance?: string | number;
@@ -28,7 +28,7 @@ const WalletModalHeader = ({
     shortcode,
     is_wallet_name_visible,
 }: TWalletModalHeaderProps) => {
-    const header_class_name = 'wallet-modal__header';
+    const header_class_name = 'modal-header';
 
     const wallet_title = React.useMemo(() => {
         return `${is_demo ? localize('Demo') : ''} ${getCurrencyDisplayCode(currency)} ${localize('Wallet')}`;
@@ -93,57 +93,46 @@ const WalletModalHeader = ({
         return { icon, ...size };
     }, [currency, getCurrencyIconSize, is_dark, is_demo]);
 
-    const getBackgroundName = React.useCallback(() => {
-        if (is_demo) {
-            return 'demo';
-        }
-        return currency.toLowerCase();
-    }, [is_demo, currency]);
-
     return (
-        <GradientBackground {...getWalletModalBackgrounds(getBackgroundName())}>
-            {is_demo && <Watermark image={`url(${is_dark ? DemoDark : DemoLight})`} opacity={is_dark ? 0.32 : 0.24} />}
-            <div
-                className={classNames(header_class_name, {
-                    [`${header_class_name}--hide-title`]: !is_wallet_name_visible,
-                })}
-            >
-                <div className={`${header_class_name}__title-wrapper`}>
-                    {is_wallet_name_visible && (
-                        <div className={classNames(`${header_class_name}__title`)}>
-                            <Text
-                                size={is_mobile ? 'xs' : 's'}
-                                as='span'
-                                className={getStylesByClassName(`${header_class_name}__title-wallet`)}
-                            >
-                                {wallet_title}
-                            </Text>
-                            {is_demo ? (
-                                <Badge type='contained' background_color='blue' label={getBadgeLabel()} />
-                            ) : (
-                                <Badge type='bordered' label={getBadgeLabel()} />
-                            )}
-                        </div>
-                    )}
+        <div
+            className={classNames(header_class_name, {
+                [`${header_class_name}--hidden-title`]: !is_wallet_name_visible,
+            })}
+            style={{ backgroundColor: '#FBDDDD' }}
+        >
+            {/* TODO: uncomment when backgrounds for modal will be ready
+            {is_demo && <Watermark image={`url(${is_dark ? DemoDark : DemoLight})`} opacity={is_dark ? 0.32 : 0.24} />} */}
+            <div className={`${header_class_name}__title-wrapper`}>
+                <div className={classNames(`${header_class_name}__title title-visibility`)}>
                     <Text
-                        as='p'
-                        size={is_mobile ? 'xsm' : 'm'}
-                        weight='bold'
-                        className={getStylesByClassName(`${header_class_name}__title-balance`)}
+                        size={is_mobile ? 'xs' : 's'}
+                        as='span'
+                        className={getStylesByClassName(`${header_class_name}__title-wallet`)}
                     >
-                        {formatMoney(currency, balance, true)} {getCurrencyDisplayCode(currency)}
+                        {wallet_title}
                     </Text>
+                    {is_demo ? (
+                        <Badge type='contained' background_color='blue' label={getBadgeLabel()} />
+                    ) : (
+                        <Badge type='bordered' label={getBadgeLabel()} />
+                    )}
                 </div>
-                {is_wallet_name_visible && (
-                    <div className={classNames(`${header_class_name}__currency-icon`)}>
-                        <Icon {...getCurrencyIconProps()} data_testid='dt_currency_icon' />
-                    </div>
-                )}
-                <div className={classNames(`${header_class_name}__close-icon`)}>
-                    <Icon icon={getCloseIcon()} onClick={closeModal} data_testid='dt_close_icon' />
-                </div>
+                <Text
+                    as='p'
+                    size={is_mobile ? 'xsm' : 'm'}
+                    weight='bold'
+                    className={getStylesByClassName(`${header_class_name}__title-balance`)}
+                >
+                    {formatMoney(currency, balance, true)} {getCurrencyDisplayCode(currency)}
+                </Text>
             </div>
-        </GradientBackground>
+            <div className={classNames(`${header_class_name}__currency-icon icon-visibility`)}>
+                <Icon {...getCurrencyIconProps()} data_testid='dt_currency_icon' />
+            </div>
+            <div className={classNames(`${header_class_name}__close-icon`)}>
+                <Icon icon={getCloseIcon()} onClick={closeModal} data_testid='dt_close_icon' />
+            </div>
+        </div>
     );
 };
 

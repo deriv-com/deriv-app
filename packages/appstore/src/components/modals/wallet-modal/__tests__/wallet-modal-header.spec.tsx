@@ -37,12 +37,4 @@ describe('WalletModalHeader', () => {
 
         expect(mocked_props.closeModal).toHaveBeenCalledTimes(1);
     });
-
-    it("Shouldn't show wallet name, badge and currency icon when show_wallet_name is false", () => {
-        render(<WalletModalHeader {...mocked_props} is_wallet_name_visible={false} />);
-
-        expect(screen.queryByText('Demo USD Wallet')).not.toBeInTheDocument();
-        expect(screen.queryByText('Demo')).not.toBeInTheDocument();
-        expect(screen.queryByTestId('dt_currency_icon')).not.toBeInTheDocument();
-    });
 });

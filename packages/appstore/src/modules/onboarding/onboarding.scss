@@ -51,26 +51,33 @@
             margin-top: 1rem;
         }
 
+        &-description {
+            @include mobile {
+                height: 8rem;
+            }
+
+            &__header {
+                line-height: 3rem;
+
+                @include mobile {
+                    margin-bottom: 1rem;
+                }
+            }
+
+            &__text {
+                line-height: 2rem;
+                margin-top: 0.8rem;
+
+                @include mobile {
+                    margin-top: 0;
+                    margin-bottom: 1.5rem;
+                    padding: 0 2rem;
+                }
+            }
+        }
+
         &__progress-bar {
-            margin-top: 2rem;
-        }
-
-        &-header {
-            line-height: 3rem;
-
-            @include mobile {
-                margin-bottom: 1rem;
-            }
-        }
-
-        &-text {
-            line-height: 2rem;
-            margin-top: 0.8rem;
-            @include mobile {
-                margin-top: 0;
-                margin-bottom: 1.5rem;
-                padding: 0 2rem;
-            }
+            margin-top: 3rem;
         }
 
         &-buttons {

@@ -27,9 +27,10 @@ type TOnboardingProps = {
 const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) => {
     const history = useHistory();
     const number_of_steps = Object.keys(contents);
-    const { traders_hub, client } = useStores();
+    const { traders_hub, client, ui } = useStores();
     const { toggleIsTourOpen, selectAccountType, is_demo_low_risk, content_flag } = traders_hub;
     const { is_eu_country, is_logged_in, is_landing_company_loaded, prev_account_type, setPrevAccountType } = client;
+    const { is_mobile } = ui;
     const [step, setStep] = React.useState<number>(1);
 
     const prevStep = () => {
@@ -70,7 +71,7 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
 
     const footer_header_text = is_eu_user ? eu_footer_header : footer_header;
 
-    const footer_desctiption = is_eu_user ? eu_footer_text : footer_text;
+    const footer_description = is_eu_user ? eu_footer_text : footer_text;
 
     if (!is_logged_in || !is_landing_company_loaded) {
         return <EmptyOnboarding />;
@@ -94,12 +95,26 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
             </div>
             <div className='onboarding-footer'>
                 <div className='onboarding-footer-wrapper'>
-                    <Text as='h2' weight='bold' size='sm' align='center' className='onboarding-footer-header'>
-                        {footer_header_text}
-                    </Text>
-                    <Text as='p' size='xs' align='center' className='onboarding-footer-text'>
-                        {footer_desctiption}
-                    </Text>
+                    <div className='onboarding-footer-description'>
+                        <Text
+                            as='h2'
+                            weight='bold'
+                            size={is_mobile ? 's' : 'sm'}
+                            align='center'
+                            className='onboarding-footer-description__header'
+                        >
+                            {footer_header_text}
+                        </Text>
+                        <Text
+                            as='p'
+                            size={is_mobile ? 'xxs' : 'xs'}
+                            align='center'
+                            line_height={is_mobile && 's'}
+                            className='onboarding-footer-description__text'
+                        >
+                            {footer_description}
+                        </Text>
+                    </div>
                     {isDesktop() && (
                         <div className='onboarding-footer-buttons'>
                             <Button secondary onClick={prevStep} style={step === 1 ? { visibility: 'hidden' } : {}}>

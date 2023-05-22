@@ -32,7 +32,9 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
 
         return (
             <React.Fragment>
-                {wallet.type !== 'app' && <WalletIcon type={wallet.type} icon={wallet.icon} size={icon_size} />}
+                {wallet.type !== 'app' && (
+                    <WalletIcon type={wallet.type} icon={wallet.icon} size={icon_size} currency={wallet.currency} />
+                )}
                 {/* TODO: Update this after app-icon created */}
                 {wallet.type === 'app' && <div />}
             </React.Fragment>

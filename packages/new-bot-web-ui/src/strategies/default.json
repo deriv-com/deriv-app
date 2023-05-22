@@ -2,54 +2,33 @@
     "settings": {
         "token": "a7al5nod4uZ8AIr",
         "currency": "USD",
-        "symbol": "1HZ25V",
+        "symbol": "1HZ75V",
         "barrier": "0",
         "basis": "stake",
         "contract_type": "DIGITDIFF",
         "duration": 1,
         "duration_unit": "t",
-        "amount": "8",
-        "markets": {
-            "Derived": {
-                "index": 0,
-                "label": "Derived"
-            },
-            "Continuous Indices": {
-                "index": 1,
-                "label": "Continuous Indices"
-            }
-        },
-        "submarkets": {
-            "Continuous Indices": [ "Volatility 10 (1s) Index", "Volatility 10 Index" ], 
-            "Forex Basket": [],
-            "Daily Reset Indices": [],
-            "Continuous Basket": [],
-            "Jump Indices": []
-        }
-
+        "amount": "0.35"
     },
     "custom_variables": {
         "stakes": {
-            "0": 8,
-            "1": 82,
-            "2": 920,
-            "3": 10100
+            "0": 0.35,
+            "1": 3.5,
+            "2": 40,
+            "3": 450
         },
-        "stake": 8,
+        "stake": 0.35,
         "losses": 0,
         "barrier": 0,
-        "threshold": 0,
         "last_barrier": ""
     },
-    "on_tick": [
-        {
-            "type": "INCREASE_VALUE",
-            "variable_source": "CUSTOM_VARS",
-            "variable": "threshold",
-            "increase_by": 1
-        }
+    "on_load": [
+       
     ],
-    "buy_actions": [
+    "on_tick": [
+       
+    ],
+    "on_before_buy": [
         {
             "type": "IF_CONDITION",
             "variables": [
@@ -72,33 +51,22 @@
                     "values": [
                         {
                             "source": "RESERVED_FUNCTION",
-                            "value": "getLastDigit"
-                        },
-                        {
-                            "source": "STATIC",
-                            "value": ""
-                        },
-                        {
-                            "source": "RESERVED_FUNCTION",
-                            "value": "getLastDigit"
-                        }
-                    ],
-                    "operator": "&&"
-                },
-                {
-                    "values": [
-                        {
-                            "source": "CUSTOM_VARS",
-                            "value": "threshold"
-                        }
-                    ],
-                    "operator": ">="
-                },
-                {
-                    "values": [
-                        {
-                            "source": "STATIC",
-                            "value": "3"
+                            "value": "concat",
+                            "params": [
+                                {
+                                    "type": "array",
+                                    "values": [
+                                        {
+                                            "source": "RESERVED_FUNCTION",
+                                            "value": "getLastDigit"
+                                        },
+                                        {
+                                            "source": "RESERVED_FUNCTION",
+                                            "value": "getLastDigit"
+                                        }
+                                    ]
+                                }
+                            ]
                         }
                     ],
                     "operator": "&&"
@@ -116,12 +84,22 @@
                     "values": [
                         {
                             "source": "RESERVED_FUNCTION",
-                            "value": "getLastDigit"
+                            "value": "getLastDigit",
+                            "parse": "string"
                         }
                     ]
                 }
             ],
             "actions": [
+                {
+                    "type": "LOG",
+                    "values": [
+                        {
+                            "source": "STATIC",
+                            "value": "Condition met!!!!!!! "
+                        }
+                    ]
+                },
                 {
                     "type": "ASSIGN_VALUE",
                     "variable_source": "SETTINGS",
@@ -129,7 +107,8 @@
                     "values": [
                         {
                             "source": "RESERVED_FUNCTION",
-                            "value": "getLastDigit"
+                            "value": "getLastDigit",
+                            "parse": "string"
                         }
                     ]
                 },
@@ -191,7 +170,7 @@
             ]
         }
     ],
-    "after_buy_actions": [
+    "on_after_buy": [
         {
             "type": "LOG",
             "values": [
@@ -411,18 +390,7 @@
                     ]
                 }
             ]
-        },
-        {
-            "type": "ASSIGN_VALUE",
-            "variable_source": "CUSTOM_VARS",
-            "variable": "threshold",
-            "values": [
-                {
-                    "source": "STATIC",
-                    "value": "0"
-                }
-            ]
         }
     ],
-    "result_actions": []
+    "on_contract_finish": []
 }

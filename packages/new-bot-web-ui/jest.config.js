@@ -11,6 +11,7 @@ module.exports = {
         '^Constants/(.*)$': '<rootDir>/src/constants/$1',
         '^Stores/(.*)$': '<rootDir>/src/stores/$1',
         '^Utils/(.*)$': '<rootDir>/src/utils/$1',
+        '^Services/(.*)$': '<rootDir>/src/services/$1',
     },
     collectCoverageFrom: ['**/*.{js,jsx,ts,tsx}', '!**/node_modules/**'],
 };

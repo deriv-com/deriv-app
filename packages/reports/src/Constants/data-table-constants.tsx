@@ -469,7 +469,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
         ),
     },
     {
-        title: isMobile() ? localize('Total stake') : localize('Stake'),
+        title: isMobile() ? localize('Total stake') : localize('Initial stake'),
         col_index: isMobile() ? 'purchase' : 'buy_price',
         renderCellContent: ({ row_obj }: TCellContentProps) => {
             if (row_obj.contract_info) {

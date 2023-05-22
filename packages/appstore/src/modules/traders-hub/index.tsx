@@ -8,15 +8,7 @@ import OptionsAndMultipliersListing from 'Components/options-multipliers-listing
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import { useStores } from 'Stores/index';
 import { isDesktop, routes, ContentFlag, isMobile } from '@deriv/shared';
-import {
-    DesktopWrapper,
-    MobileWrapper,
-    ButtonToggle,
-    Div100vhContainer,
-    Text,
-    WalletCard,
-    Icon,
-} from '@deriv/components';
+import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 import WalletsBanner from 'Components/wallets-banner';
@@ -93,40 +85,10 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
-                    Small Card Currency - Default
-                    <WalletCard icon='IcCurrencyUsd' size='small' />
-                    Small Card Currency - Active
-                    <WalletCard icon='IcCurrencyUsd' size='small' wallet_state='active' />
-                    {/* Small Card Currency - Added
-                    <WalletCard icon='IcCurrencyUsd' size='small' wallet_state='added' />
-                    Small Card Currency - Disabled
-                    <WalletCard icon='IcCurrencyUsd' size='small' wallet_state='disabled' />
-                    Small Card Payment
-                    <WalletCard icon={<Icon icon='IcCashierBitcoinLight' />} size='small' /> */}
-                    Normal Card
-                    <WalletCard icon='IcCurrencyUsd' wallet_name='USD Currency' />
-                    large Card
-                    <WalletCard icon='IcCurrencyUsd' size='large' wallet_name='USD Currency' />
-                    large Card
-                    <WalletCard
-                        icon='IcCashierBitcoinLight'
-                        size='large'
-                        wallet_name='BTC Wallet'
-                        is_currency={false}
-                    />
-                    large Card
-                    <WalletCard icon='IcCurrencyUsd' size='large' wallet_name='USD Currency' wallet_state='active' />
-                    large Card - Add
-                    <WalletCard icon='IcCurrencyUsd' size='large' wallet_name='USD Currency' wallet_state='add' />
-                    large Card - Added
-                    <WalletCard icon='IcCurrencyUsd' size='large' wallet_name='USD Currency' wallet_state='added' />
-                    <br />
-                    <br />
-                    <br />
-                    <WalletHeader currency='USD' shortcode='malta' />
                     <WalletHeader account_type='demo' />
                     <WalletHeader currency='AUD' shortcode='svg' />
                     <WalletHeader currency='EUR' shortcode='svg' is_open_wallet={true} />
+                    <WalletHeader currency='USD' shortcode='malta' />
                     <WalletHeader currency='BTC' shortcode='svg' />
                     <WalletHeader currency='ETH' shortcode='svg' />
                     <WalletHeader currency='USDT' shortcode='svg' />

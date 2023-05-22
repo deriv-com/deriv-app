@@ -32,7 +32,7 @@ export const validAddress = (value: string, options?: TOptions) => {
             is_ok: false,
             message: form_error_messages.maxNumber(70),
         };
-    } else if (!/^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{0,70}$/u.test(value)) {
+    } else if (!/^[\p{L}\p{Nd}\s'’.,:;()\u00b0@#/-]{0,70}$/u.test(value)) {
         return {
             is_ok: false,
             message: form_error_messages.address(),

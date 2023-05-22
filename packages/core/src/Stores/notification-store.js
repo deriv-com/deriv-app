@@ -1524,7 +1524,6 @@ export default class NotificationStore extends BaseStore {
         this.p2p_redirect_to = p2p_redirect_to;
     }
 
-    //TODO (yauheni-kryzhyk): this method is not used. leaving this for the upcoming new pop-up notifications implementation
     setShouldShowPopups(should_show_popups) {
         this.should_show_popups = should_show_popups;
     }

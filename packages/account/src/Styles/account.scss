@@ -11,6 +11,7 @@ $MIN_HEIGHT_FLOATING: calc(
         @include mobile {
             overflow-x: hidden;
             overflow-y: auto;
+            width: auto;
         }
     }
 

@@ -37,9 +37,13 @@ module.exports = {
         }),
         new CopyWebpackPlugin([
             {
-                from: './node_modules/@deriv/deriv-charts/dist/*.smartcharts.*',
-                to: path.resolve(__dirname),
+                from: 'node_modules/@deriv/deriv-charts/dist/*.smartcharts.*',
+                to: path.resolve(__dirname, 'www/js'),
                 flatten: true,
+            },
+            {
+                from: 'node_modules/binary-style/src/images/favicons',
+                to: path.resolve(__dirname, 'www/image/favicons'),
             },
         ]),
     ],

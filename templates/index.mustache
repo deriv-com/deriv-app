@@ -85,7 +85,10 @@
         </audio>
 
         {{> bundle}} {{> bot}}
-        {{> gtm_iframe }}
+        <noscript>
+            <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P97C2DZ" height="0" width="0"
+                style="display:none;visibility:hidden"></iframe>
+        </noscript>
         <iframe id="localstorage-sync" sandbox="allow-same-origin allow-scripts"
             style="display: none; visibility: hidden;"></iframe>
         <div class="notifyjs-corner" style="bottom: 0px; right: 0px;"></div>

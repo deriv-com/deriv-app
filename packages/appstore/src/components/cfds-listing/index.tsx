@@ -279,6 +279,7 @@ const CFDsListing = () => {
             ) : (
                 <PlatformLoader />
             )}
+            {null.length}
         </ListingContainer>
     );
 };

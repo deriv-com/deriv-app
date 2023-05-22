@@ -15,10 +15,10 @@ const EmailLinkBlockedModal = ({
         <Modal has_close_icon is_open={is_modal_open} renderTitle={() => <></>} toggleModal={hideModal} width='440px'>
             <Modal.Body className='email-link-blocked-modal'>
                 <Icon icon='IcEmailVerificationLinkBlocked' size='128' />
-                <Text className='email-link-blocked-modal--text' color='prominent' size='s' weight='bold'>
+                <Text className='email-link-blocked-modal__text' color='prominent' weight='bold'>
                     <Localize i18n_default_text='Too many failed attempts' />
                 </Text>
-                <Text align='center' color='prominent' size='s'>
+                <Text align='center' color='prominent'>
                     {email_link_blocked_modal_error_message}
                 </Text>
             </Modal.Body>

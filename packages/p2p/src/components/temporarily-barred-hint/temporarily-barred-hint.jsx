@@ -9,7 +9,7 @@ const TemporarilyBarredHint = () => {
 
     if (general_store.is_barred) {
         return (
-            <div className='p2p-cashier__barred-user'>
+            <div className='temporarily-barred-hint'>
                 <HintBox
                     icon='IcAlertWarning'
                     message={

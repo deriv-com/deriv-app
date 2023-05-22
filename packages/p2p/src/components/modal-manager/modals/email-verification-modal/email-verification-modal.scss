@@ -4,23 +4,23 @@
 }
 
 .email-verification-modal {
-    &--body {
+    &__body {
         align-items: center;
         display: flex;
         flex-direction: column;
     }
 
-    &--email_text {
+    &__email_text {
         margin: 2.4rem 0;
     }
 
-    &--footer {
+    &__footer {
         @include mobile {
             justify-content: center;
         }
     }
 
-    &--reason {
+    &__reason {
         display: flex;
         flex-direction: row;
         gap: 1.6rem;
@@ -31,7 +31,7 @@
         }
     }
 
-    &--receive_email_text {
+    &__receive_email_text {
         cursor: pointer;
         margin: 3rem 0 0.6rem;
 

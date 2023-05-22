@@ -47,7 +47,7 @@ const FloatingRate = ({
     return (
         <div className={classNames(className, 'floating-rate')}>
             <section className={classNames('floating-rate__field', { 'mobile-layout': isMobile() })}>
-                <Text as='div' size='s' weight='normal' line_height='xs' className='floating-rate__field--prefix'>
+                <Text as='div' line_height='xs' className='floating-rate__field--prefix'>
                     {localize('at')}
                 </Text>
                 <InputField
@@ -81,7 +81,6 @@ const FloatingRate = ({
                         as='span'
                         size='xxs'
                         color='hint'
-                        weight='normal'
                         line_height='xxs'
                         className='floating-rate__mkt-rate--label'
                     >
@@ -91,7 +90,6 @@ const FloatingRate = ({
                         as='span'
                         size='xxs'
                         color='prominent'
-                        weight='normal'
                         line_height='xs'
                         className='floating-rate__mkt-rate--msg'
                     >
@@ -101,25 +99,11 @@ const FloatingRate = ({
                 </div>
             </section>
             {error_messages ? (
-                <Text
-                    as='div'
-                    size='xxs'
-                    color='loss-danger'
-                    weight='normal'
-                    line_height='xs'
-                    className='floating-rate__error-message'
-                >
+                <Text as='div' size='xxs' color='loss-danger' line_height='xs' className='floating-rate__error-message'>
                     {error_messages}
                 </Text>
             ) : (
-                <Text
-                    as='div'
-                    size='xxs'
-                    color='status-info-blue'
-                    weight='normal'
-                    line_height='xs'
-                    className='floating-rate__hint'
-                >
+                <Text as='div' size='xxs' color='status-info-blue' line_height='xs' className='floating-rate__hint'>
                     {localize('Your rate is')} ={' '}
                     {removeTrailingZeros(
                         formatMoney(local_currency, roundOffDecimal(market_feed, decimal_place), true, decimal_place)

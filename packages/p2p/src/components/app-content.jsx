@@ -5,14 +5,14 @@ import { useStore } from '@deriv/stores';
 import { isAction, reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
-import AdvertiserPage from 'Components/advertiser-page/advertiser-page.jsx';
-import BuySell from './buy-sell/buy-sell.jsx';
+import AdvertiserPage from 'Pages/advertiser-page/advertiser-page.jsx';
+import BuySell from 'Pages/buy-sell/buy-sell.jsx';
 import Dp2pBlocked from './dp2p-blocked';
 import { localize } from './i18next';
-import MyAds from './my-ads/my-ads.jsx';
-import MyProfile from './my-profile';
+import MyAds from 'Pages/my-ads/my-ads.jsx';
+import MyProfile from 'Pages/my-profile';
 import NicknameForm from './nickname-form';
-import Orders from './orders/orders.jsx';
+import Orders from 'Pages/orders/orders.jsx';
 import TemporarilyBarredHint from './temporarily-barred-hint';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useP2PNotificationCount } from '@deriv/hooks';
@@ -66,7 +66,7 @@ const AppContent = ({ order_id }) => {
     return (
         <Tabs
             active_index={general_store.active_index}
-            className='p2p-cashier__tabs'
+            className='p2p__tabs'
             header_fit_content={!isMobile()}
             is_100vw={isMobile()}
             is_scrollable

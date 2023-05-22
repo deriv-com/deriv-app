@@ -7,7 +7,7 @@ import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 const UserAvatar = React.memo(({ className, nickname, size, text_size }) => {
     return (
         <div
-            className={classNames('dp2p-avatar', className)}
+            className={classNames('user-avatar', className)}
             style={{
                 backgroundColor: generateHexColourFromNickname(nickname),
                 height: `${size}px`,

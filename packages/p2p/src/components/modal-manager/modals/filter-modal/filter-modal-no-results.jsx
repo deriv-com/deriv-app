@@ -6,10 +6,10 @@ import './filter-modal-no-results.scss';
 
 const FilterModalNoResults = ({ text }) => (
     <div className='filter-modal-no-result'>
-        <Text as='h2' size='s' align='center' weight='bold' className='filter-modal-no-result__title'>
+        <Text as='h2' align='center' weight='bold' className='filter-modal-no-result__title'>
             {localize('No results for "{{text}}".', { text, interpolation: { escapeValue: false } })}
         </Text>
-        <Text as='p' size='s' align='center' className='filter-modal-no-result__subtitle'>
+        <Text as='p' align='center' className='filter-modal-no-result__subtitle'>
             {localize('Check your spelling or use a different term.')}
         </Text>
     </div>

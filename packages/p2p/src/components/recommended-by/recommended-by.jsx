@@ -26,7 +26,7 @@ const RecommendedBy = ({ recommended_average, recommended_count }) => {
         <React.Fragment>
             <Popover
                 alignment='top'
-                className='recommended-by--container'
+                className='recommended-by__container'
                 message={getRecommendedMessage()}
                 onClick={
                     isMobile()
@@ -41,7 +41,7 @@ const RecommendedBy = ({ recommended_average, recommended_count }) => {
                 }
             >
                 <Icon
-                    className='recommended-by--icon'
+                    className='recommended-by__icon'
                     custom_color='var(--status-success)'
                     icon='IcThumbsUp'
                     size={14}

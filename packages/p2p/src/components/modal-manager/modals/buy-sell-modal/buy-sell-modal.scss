@@ -1,4 +1,4 @@
-.buy-sell__modal {
+.buy-sell-modal {
     opacity: 1 !important;
 
     @include mobile {
@@ -7,7 +7,7 @@
         }
     }
 
-    &-body {
+    &__body {
         position: relative;
         display: block;
         padding-top: 2.4rem;
@@ -19,10 +19,19 @@
         }
     }
 
-    &-danger {
-        margin-bottom: 1.6rem;
-        width: fit-content;
-        align-items: flex-start;
+    &__footer {
+        @include mobile {
+            border-top: 2px solid var(--general-section-1);
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            margin-top: auto;
+            padding: 1.6rem;
+        }
+    }
+
+    &__layout {
+        padding: unset;
     }
 
     &-field {
@@ -80,48 +89,8 @@
         }
     }
 
-    &-form {
+    &__form {
         height: fit-content !important;
-    }
-
-    &-footer {
-        @include mobile {
-            border-top: 2px solid var(--general-section-1);
-            display: flex;
-            flex-direction: row;
-            justify-content: flex-end;
-            margin-top: auto;
-            padding: 1.6rem;
-        }
-    }
-
-    &--input {
-        display: flex;
-        gap: 2rem;
-        flex-direction: column;
-        padding: 0 2.4rem 2rem;
-        margin-bottom: 2rem;
-        .dc-input__wrapper {
-            margin-right: 0.2rem;
-            margin-bottom: unset;
-        }
-
-        &-field {
-            @include desktop() {
-                display: flex;
-            }
-        }
-        @include mobile {
-            .dc-input {
-                &__container {
-                    width: 100%;
-                    padding: 0.5rem 1rem 0.5rem 1.2rem;
-                }
-                &__wrapper {
-                    margin: 0.8rem 0.2rem 1.4rem 0;
-                }
-            }
-        }
     }
 
     &-hintbox {
@@ -135,7 +104,7 @@
         }
     }
 
-    &-icon {
+    &__icon {
         margin-right: 0.8rem;
     }
 
@@ -172,11 +141,38 @@
         }
     }
 
-    &-receive-amount {
+    &--danger {
+        margin-bottom: 1.6rem;
+        width: fit-content;
+        align-items: flex-start;
+    }
+
+    &--input {
+        display: flex;
+        gap: 2rem;
+        flex-direction: column;
+        padding: 0 2.4rem 2rem;
+        margin-bottom: 2rem;
+        .dc-input__wrapper {
+            margin-right: 0.2rem;
+            margin-bottom: unset;
+        }
+
+        &-field {
+            @include desktop {
+                display: flex;
+            }
+        }
         @include mobile {
-            border-top: 1px solid var(--general-section-2);
-            padding: 0.8rem 1.6rem;
-            background-color: var(--general-main-1);
+            .dc-input {
+                &__container {
+                    width: 100%;
+                    padding: 0.5rem 1rem 0.5rem 1.2rem;
+                }
+                &__wrapper {
+                    margin: 0.8rem 0.2rem 1.4rem 0;
+                }
+            }
         }
     }
 
@@ -217,22 +213,18 @@
         }
     }
 
-    &--layout {
-        padding: unset;
-    }
-
     &--error-message {
         padding: 0 2.4rem;
     }
 }
 
-.buy-sell__modal-content {
+.buy-sell-modal__content {
     .dc-input {
         margin-bottom: unset;
     }
 }
-.dc-modal__container_buy-sell__modal {
-    .dc-modal-header--buy-sell__modal {
+.dc-modal__container_buy-sell-modal {
+    .dc-modal-header--buy-sell-modal {
         border-bottom: 2px solid var(--general-section-5);
     }
 

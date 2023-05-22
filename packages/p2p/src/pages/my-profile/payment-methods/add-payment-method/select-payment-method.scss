@@ -1,0 +1,11 @@
+.select-payment-method {
+    height: 30vh;
+
+    @include mobile {
+        height: 100%;
+    }
+
+    &__hint {
+        padding: 0.2rem 0 0 1.6rem;
+    }
+}

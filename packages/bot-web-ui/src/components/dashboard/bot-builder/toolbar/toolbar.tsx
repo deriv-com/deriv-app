@@ -23,7 +23,7 @@ const Toolbar = observer(() => {
     const { toggleSaveModal } = save_modal;
     const { toggleLoadModal } = load_modal;
     const { loadDataStrategy } = quick_strategy;
-    const { is_drawer_open, is_running, is_stop_button_disabled, is_stop_button_visible, onRunButtonClick } = run_panel;
+    const { is_running } = run_panel;
 
     const confirm_button_text = is_running ? localize('Yes') : localize('OK');
     const cancel_button_text = is_running ? localize('No') : localize('Cancel');

@@ -20,37 +20,36 @@ const withRouter = <T extends object>(Component: React.ComponentType<T>) => {
     return WrapperComponent;
 };
 
-//TODO: will fix this in a sepeate PR (rupato-deriv)
-// const PlatformSwitcherComponent = withRouter(PlatformSwitcher);
+const PlatformSwitcherComponent = withRouter(PlatformSwitcher);
 
-// describe('PlatformSwitcher component', () => {
-//     it('should render <PlatformSwitcherLoader /> component if "app_routing_history" is an empty array or undefined', () => {
-//         render(<PlatformSwitcherComponent app_routing_history={[{ pathname: '' }]} />);
-//         const div_element = screen.getByTestId('dt_platform_switcher_preloader');
-//         expect(div_element).toBeInTheDocument();
-//     });
+describe('PlatformSwitcher component', () => {
+    it('should render <PlatformSwitcherLoader /> component if "app_routing_history" is an empty array or undefined', () => {
+        render(<PlatformSwitcherComponent app_routing_history={[{ pathname: '' }]} is_logged_in />);
+        const div_element = screen.getByTestId('dt_platform_switcher_preloader');
+        expect(div_element).toBeInTheDocument();
+    });
 
-//     it('should have "platform-switcher__preloader--is-mobile" class if "app_routing_history" is an empty array or undefined and "isMobile" is "true"', () => {
-//         render(<PlatformSwitcherComponent app_routing_history={[{ pathname: '' }]} />);
-//         const div_element = screen.getByTestId('dt_platform_switcher_preloader');
-//         expect(div_element).toHaveClass('platform-switcher__preloader--is-mobile');
-//     });
+    it('should have "platform-switcher__preloader--is-mobile" class if "app_routing_history" is an empty array or undefined and "isMobile" is "true"', () => {
+        render(<PlatformSwitcherComponent app_routing_history={[{ pathname: '' }]} is_logged_in />);
+        const div_element = screen.getByTestId('dt_platform_switcher_preloader');
+        expect(div_element).toHaveClass('platform-switcher__preloader--is-mobile');
+    });
 
-//     it('should render "platform-switcher" if "app_routing_history" is not an empty array', () => {
-//         render(<PlatformSwitcherComponent app_routing_history={[{ pathname: 'test' }]} />);
-//         const div_element = screen.getByTestId('dt_platform_switcher');
-//         expect(div_element).toBeInTheDocument();
-//     });
+    it('should render "platform-switcher" if "app_routing_history" is not an empty array', () => {
+        render(<PlatformSwitcherComponent app_routing_history={[{ pathname: 'test' }]} />);
+        const div_element = screen.getByTestId('dt_platform_switcher');
+        expect(div_element).toBeInTheDocument();
+    });
 
-//     it('should not have "platform-switcher--active" class if "app_routing_history" is not an empty array and "is_open" is "false"', () => {
-//         render(<PlatformSwitcherComponent app_routing_history={[{ pathname: 'test' }]} />);
-//         const div_element = screen.getByTestId('dt_platform_switcher');
-//         expect(div_element).not.toHaveClass('platform-switcher--active');
-//     });
+    it('should not have "platform-switcher--active" class if "app_routing_history" is not an empty array and "is_open" is "false"', () => {
+        render(<PlatformSwitcherComponent app_routing_history={[{ pathname: 'test' }]} />);
+        const div_element = screen.getByTestId('dt_platform_switcher');
+        expect(div_element).not.toHaveClass('platform-switcher--active');
+    });
 
-//     it('should have "platform-switcher--is-mobile" class if "app_routing_history" is not an empty array and "isMobile" is "true"', () => {
-//         render(<PlatformSwitcherComponent app_routing_history={[{ pathname: 'test' }]} />);
-//         const div_element = screen.getByTestId('dt_platform_switcher');
-//         expect(div_element).toHaveClass('platform-switcher--is-mobile');
-//     });
-// });
+    it('should have "platform-switcher--is-mobile" class if "app_routing_history" is not an empty array and "isMobile" is "true"', () => {
+        render(<PlatformSwitcherComponent app_routing_history={[{ pathname: 'test' }]} />);
+        const div_element = screen.getByTestId('dt_platform_switcher');
+        expect(div_element).toHaveClass('platform-switcher--is-mobile');
+    });
+});

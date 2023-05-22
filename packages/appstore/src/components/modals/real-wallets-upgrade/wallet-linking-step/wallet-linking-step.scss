@@ -5,6 +5,10 @@
     align-items: center;
     justify-content: center;
 
+    @include mobile {
+        height: calc(100vh - 15rem);
+    }
+
     &__page-title {
         font-size: var(--text-size-m);
 

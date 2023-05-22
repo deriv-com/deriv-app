@@ -15,7 +15,6 @@ const getConfig = prefix => ({
     bundle_css: `<link href="css/${getManifest('bundle.css')}" rel="stylesheet" />`,
     index_css: `<link href="css/${getManifest('index.css')}" rel="stylesheet" />`,
     bot_css: `<link href="css/${getManifest('bot.css')}" rel="stylesheet" />`,
-    seo_title: translate('Bot trading |  Automated trading system – Deriv'),
     seo_description: translate(
         'Automate your trades with Deriv’s bot trading platform, no coding needed. Trade now on forex, synthetic indices, commodities, stock indices, and more.'
     ),
@@ -62,7 +61,4 @@ gulp.task(
     })
 );
 
-gulp.task(
-    'build',
-    gulp.parallel('bundle-js', 'build-dev-js', 'build-dev-static', 'pull-blockly-translations')
-);
+gulp.task('build', gulp.parallel('bundle-js', 'build-dev-js', 'build-dev-static', 'pull-blockly-translations'));

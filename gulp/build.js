@@ -1,5 +1,3 @@
-import { translate } from '../src/common/i18n';
-
 const gulp = require('gulp');
 const connect = require('gulp-connect');
 const mustache = require('gulp-mustache');
@@ -15,9 +13,6 @@ const getConfig = prefix => ({
     bundle_css: `<link href="css/${getManifest('bundle.css')}" rel="stylesheet" />`,
     index_css: `<link href="css/${getManifest('index.css')}" rel="stylesheet" />`,
     bot_css: `<link href="css/${getManifest('bot.css')}" rel="stylesheet" />`,
-    seo_description: translate(
-        'Automate your trades with Deriv’s bot trading platform, no coding needed. Trade now on forex, synthetic indices, commodities, stock indices, and more.'
-    ),
     gtm_iframe:
         '<!-- Google Tag Manager (noscript) --> <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P97C2DZ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> <!-- End Google Tag Manager (noscript) -->',
 });

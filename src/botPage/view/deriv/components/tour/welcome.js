@@ -43,7 +43,7 @@ const SixthStep = () => (
 
 function welcome(closeTourPermanently, continueTour) {
     const { is_logged } = useSelector(state => state.client);
-
+    // [TODO]: Translations are not working
     const steps = [
         {
             title: 'Take a quick tour',

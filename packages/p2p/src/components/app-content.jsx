@@ -29,7 +29,7 @@ const AppContent = ({ order_id }) => {
                 if (isAction(setP2POrderProps)) {
                     setP2POrderProps({
                         order_id,
-                        redirectToOrderDetails: general_store.redirectToOrderDetails,
+                        setP2POrderTab: general_store.setP2POrderTab,
                         setIsRatingModalOpen: is_open => {
                             if (is_open) {
                                 showModal({ key: 'RatingModal' });

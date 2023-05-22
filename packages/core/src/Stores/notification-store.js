@@ -597,7 +597,7 @@ export default class NotificationStore extends BaseStore {
                       }
                     : {
                           onClick: () => {
-                              this.p2p_order_props.redirectToOrderDetails(order_id);
+                              this.p2p_order_props.setP2POrderTab(order_id);
                               this.p2p_order_props.navigateToOrderDetails(order_id);
                               this.setP2POrderProps({
                                   ...this.p2p_order_props,

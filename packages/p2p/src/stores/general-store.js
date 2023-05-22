@@ -128,7 +128,7 @@ export default class GeneralStore extends BaseStore {
             setCounterpartyAdvertiserId: action.bound,
             getWebsiteStatus: action.bound,
             handleNotifications: action.bound,
-            redirectToOrderDetails: action.bound,
+            setP2POrderTab: action.bound,
             showCompletedOrderNotification: action.bound,
             handleTabClick: action.bound,
             onMount: action.bound,
@@ -380,7 +380,7 @@ export default class GeneralStore extends BaseStore {
         this.updateP2pNotifications(notifications);
     }
 
-    redirectToOrderDetails(order_id) {
+    setP2POrderTab(order_id) {
         const { order_store } = this.root_store;
         this.redirectTo('orders');
         this.setOrderTableType(order_list.INACTIVE);
@@ -400,7 +400,7 @@ export default class GeneralStore extends BaseStore {
                     if (order_store.order_id === order_id) {
                         order_store.setIsRatingModalOpen(true);
                     }
-                    this.redirectToOrderDetails(order_id);
+                    this.setP2POrderTab(order_id);
                 },
                 text: localize('Give feedback'),
             },

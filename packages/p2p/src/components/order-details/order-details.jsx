@@ -118,7 +118,7 @@ const OrderDetails = observer(() => {
             order_store.setActiveOrder(null);
             setP2POrderProps({
                 order_id: order_store.order_id,
-                redirectToOrderDetails: general_store.redirectToOrderDetails,
+                setP2POrderTab: general_store.setP2POrderTab,
                 setIsRatingModalOpen: is_open => (is_open ? showRatingModal : hideModal),
             });
             history.replace({

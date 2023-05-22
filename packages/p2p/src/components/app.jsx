@@ -208,7 +208,7 @@ const App = () => {
         }
         setP2POrderProps({
             order_id,
-            redirectToOrderDetails: general_store.redirectToOrderDetails,
+            setP2POrderTab: general_store.setP2POrderTab,
             setIsRatingModalOpen: order_store.setIsRatingModalOpen,
             navigateToOrderDetails,
         });

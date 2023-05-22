@@ -1,3 +1,4 @@
+// TODO: Remove this file once we have the real API response
 const wallets = [
     {
         name: 'USD Wallet',
@@ -26,6 +27,19 @@ const wallets = [
         type: 'app',
         app: 'mt5',
         linked_wallet: 'deriv demo',
+        state: 'default',
+        jurisdiction_title: 'svg',
+        is_demo: true,
+    },
+    {
+        name: 'MT5 Derived Demo',
+        currency: 'usd',
+        icon: 'IcRebrandingMt5Logo',
+        wallet_icon: null,
+        balance: '879',
+        type: 'app',
+        app: 'mt5',
+        linked_wallet: null,
         state: 'default',
         jurisdiction_title: 'svg',
         is_demo: true,

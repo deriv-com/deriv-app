@@ -129,8 +129,11 @@ export const IdvDocSubmitOnSignup = ({
         }
 
         if (!document_number) {
+            const document_name = document_type.text.toLowerCase();
+
             errors.document_number =
-                localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
+                localize('Please enter your {{document_name}}. ', { document_name }) +
+                getExampleFormat(document_type.example_format);
         } else if (is_document_number_invalid) {
             errors.document_number = localize('Please enter a valid ID number.');
         } else {

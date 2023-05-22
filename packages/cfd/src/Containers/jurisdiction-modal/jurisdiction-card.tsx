@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
+import { Jurisdiction } from '@deriv/shared';
 import { getJurisdictionContents } from '../../Constants/jurisdiction-contents/jurisdiction-contents';
 import { TJurisdictionCardProps } from '../props.types';
 import JurisdictionCardBack from './jurisdiction-card-back';
@@ -9,6 +10,7 @@ const JurisdictionCard = ({
     account_status,
     account_type,
     disabled,
+    is_onfido_design = false,
     jurisdiction_selected_shortcode,
     setJurisdictionSelectedShortcode,
     type_of_card,
@@ -17,11 +19,11 @@ const JurisdictionCard = ({
     const is_synthetic = account_type === 'synthetic';
     const card_values = getJurisdictionContents()[type_of_card];
     const card_data = is_synthetic ? card_values.synthetic_contents : card_values.financial_contents;
-    const verification_docs = is_synthetic
-        ? card_values?.synthetic_verification_docs
-        : card_values?.financial_verification_docs;
     const [is_card_flipped, setIsCardFlipped] = React.useState(false);
     const is_card_selected = jurisdiction_selected_shortcode === type_of_card;
+    let verification_docs = is_synthetic
+        ? card_values?.synthetic_verification_docs
+        : card_values?.financial_verification_docs;
 
     const cardSelection = (cardType: string) => {
         setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);
@@ -31,6 +33,10 @@ const JurisdictionCard = ({
         event.stopPropagation();
         setIsCardFlipped(!is_card_flipped);
     };
+
+    if ([Jurisdiction.BVI, Jurisdiction.VANUATU, Jurisdiction.LABUAN].includes(type_of_card) && is_onfido_design) {
+        verification_docs = ['selfie', 'identity_document', 'name_and_address'];
+    }
 
     return (
         <div className='cfd-card-perspective'>

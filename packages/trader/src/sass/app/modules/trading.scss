@@ -131,13 +131,21 @@
         &.accu-info-display {
             height: 7rem;
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
             padding: 1.5rem 1.6rem;
 
-            .accu-info-display__column {
+            .accu-info-display__row {
                 display: flex;
-                flex-direction: column;
+                height: 2rem;
                 justify-content: space-between;
+                align-items: center;
+                span {
+                    line-height: 1rem;
+                    &:not(:first-child) {
+                        flex-shrink: 0;
+                    }
+                }
             }
         }
         .dc-datepicker {
@@ -705,7 +713,7 @@
         cursor: not-allowed;
 
         &__caption {
-            width: 17.2rem;
+            width: 18rem;
             height: 4rem;
             color: var(--text-less-prominent);
             text-align: center;

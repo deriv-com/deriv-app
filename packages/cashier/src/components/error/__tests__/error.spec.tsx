@@ -8,6 +8,10 @@ describe('<Error />', () => {
     it('should show the "Email verification failed" message, and "Resend email" button', () => {
         const error = {
             code: 'InvalidToken',
+            fields: '',
+            message: '',
+            onClickButton: jest.fn(),
+            setErrorMessage: jest.fn(),
         };
         render(<Error error={error} />);
         expect(screen.getByText('Email verification failed')).toBeInTheDocument();
@@ -19,6 +23,10 @@ describe('<Error />', () => {
         const history = createBrowserHistory();
         const error = {
             code: 'ASK_FIX_DETAILS',
+            fields: '',
+            message: '',
+            onClickButton: jest.fn(),
+            setErrorMessage: jest.fn(),
         };
         render(
             <Router history={history}>
@@ -34,6 +42,9 @@ describe('<Error />', () => {
         const error = {
             code: 'WrongResponse',
             message: 'Oops, you have an error!',
+            fields: '',
+            onClickButton: jest.fn(),
+            setErrorMessage: jest.fn(),
         };
         render(<Error error={error} />);
 
@@ -45,6 +56,9 @@ describe('<Error />', () => {
         const error = {
             code: 'PaymentAgentWithdrawError',
             message: 'Oops, you have an error with withdrawal!',
+            fields: '',
+            onClickButton: jest.fn(),
+            setErrorMessage: jest.fn(),
         };
         render(<Error error={error} />);
 
@@ -55,6 +69,9 @@ describe('<Error />', () => {
         const error = {
             code: '',
             message: 'Default error',
+            fields: '',
+            onClickButton: jest.fn(),
+            setErrorMessage: jest.fn(),
         };
         render(<Error error={error} />);
 
@@ -62,14 +79,16 @@ describe('<Error />', () => {
     });
 
     it('should clear an error.message if one of the buttons ["Resend email", "Update my details", "Try again"] was clicked', () => {
-        const checkButton = (btn_name, error_code) => {
+        const checkButton = (btn_name: string, error_code: string) => {
             const history = createBrowserHistory();
             const error = {
                 code: error_code,
-                setErrorMessage({ code, message }) {
+                fields: '',
+                setErrorMessage({ code, message }: { code: string; message: string }) {
                     this.message = message;
                 },
                 message: '',
+                onClickButton: jest.fn(),
             };
             const { unmount } = render(
                 <Router history={history}>

@@ -21,6 +21,8 @@ const JurisdictionModalContentWrapper = ({
     openPasswordModal,
     real_financial_accounts_existing_data,
     real_synthetic_accounts_existing_data,
+    residence,
+    residence_list,
     setJurisdictionSelectedShortcode,
     should_restrict_bvi_account_creation,
     should_restrict_vanuatu_account_creation,
@@ -78,6 +80,11 @@ const JurisdictionModalContentWrapper = ({
     const is_vanuatu_selected = jurisdiction_selected_shortcode === Jurisdiction.VANUATU;
     const is_labuan_selected = jurisdiction_selected_shortcode === Jurisdiction.LABUAN;
     const is_maltainvest_selected = jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST;
+
+    const is_idv_country =
+        residence_list.find(elem => elem?.value === residence)?.identity?.services?.idv?.is_country_supported === 1;
+    const has_idv_attempts = (account_status?.authentication?.identity?.services?.idv?.submissions_left ?? 0) > 0;
+    const is_onfido_design = !is_idv_country || (is_idv_country && !has_idv_attempts);
 
     const isNextButtonDisabled = () => {
         if (jurisdiction_selected_shortcode) {
@@ -158,6 +165,7 @@ const JurisdictionModalContentWrapper = ({
                 account_status={account_status}
                 account_type={account_type.type}
                 financial_available_accounts={financial_available_accounts}
+                is_onfido_design={is_onfido_design}
                 is_virtual={is_virtual}
                 real_financial_accounts_existing_data={real_financial_accounts_existing_data}
                 real_synthetic_accounts_existing_data={real_synthetic_accounts_existing_data}
@@ -213,6 +221,8 @@ export default connect(({ modules: { cfd }, client, traders_hub }: RootStore) =>
     jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
     real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
     real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
+    residence: client.residence,
+    residence_list: client.residence_list,
     setJurisdictionSelectedShortcode: cfd.setJurisdictionSelectedShortcode,
     should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
     should_restrict_vanuatu_account_creation: client.should_restrict_vanuatu_account_creation,

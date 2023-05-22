@@ -28,7 +28,7 @@ describe('EmptyState', () => {
         expect(container).toBeInTheDocument();
     });
 
-    it('should render correctly with the correct balance and text', () => {
+    it('should render correctly with the correct text', () => {
         const mock = mockStore({});
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>

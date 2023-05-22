@@ -23,13 +23,13 @@ const withRouter = <T extends object>(Component: React.ComponentType<T>) => {
 const PlatformSwitcherComponent = withRouter(PlatformSwitcher);
 
 describe('PlatformSwitcher component', () => {
-    it('should render <PlatformSwitcherLoader /> component if "app_routing_history" is an empty array or undefined', () => {
+    it('should render <PlatformSwitcherLoader /> component if "app_routing_history" is an empty array', () => {
         render(<PlatformSwitcherComponent app_routing_history={[{ pathname: '' }]} is_logged_in />);
         const div_element = screen.getByTestId('dt_platform_switcher_preloader');
         expect(div_element).toBeInTheDocument();
     });
 
-    it('should have "platform-switcher__preloader--is-mobile" class if "app_routing_history" is an empty array or undefined and "isMobile" is "true"', () => {
+    it('should have "platform-switcher__preloader--is-mobile" class if "app_routing_history" is an empty array and "isMobile" is "true"', () => {
         render(<PlatformSwitcherComponent app_routing_history={[{ pathname: '' }]} is_logged_in />);
         const div_element = screen.getByTestId('dt_platform_switcher_preloader');
         expect(div_element).toHaveClass('platform-switcher__preloader--is-mobile');

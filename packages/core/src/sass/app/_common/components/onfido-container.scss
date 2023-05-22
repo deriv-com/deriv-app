@@ -11,12 +11,16 @@
         margin: auto;
     }
 
+    .account-form__poi-confirm-example_container {
+        margin-bottom: 0;
+    }
+
     .onfido-sdk-ui-Modal-inner {
         border-radius: 0.8rem;
     }
 
     @include mobile() {
-        gap: 0.4rem;
+        padding: 1.6rem;
 
         .onfido-sdk-ui-PageTitle-titleSpan {
             font-size: 2rem;
@@ -84,14 +88,16 @@
             width: 100%;
         }
         &_container {
+            border: 1px solid var(--general-active);
+            border-radius: 0.8rem;
+
             @include desktop() {
-                border: 1px solid var(--general-active);
-                border-radius: 0.8rem;
                 padding: 1.6rem;
             }
 
             @include mobile() {
-                margin-bottom: 4rem;
+                margin-bottom: 7rem;
+                padding: 1.6rem 1.6rem 0;
             }
 
             .account__scrollbars_container {
@@ -99,6 +105,10 @@
 
                 &--grid-layout {
                     height: auto !important;
+
+                    @include mobile() {
+                        padding: 0 1.6rem;
+                    }
                 }
 
                 .account-form__section {
@@ -119,6 +129,10 @@
             opacity: 1;
             padding: 1.6rem;
             max-width: 67rem;
+
+            @include mobile() {
+                padding-inline: 0;
+            }
 
             &--exit {
                 transform: scale(1, 0);

@@ -64,18 +64,8 @@ gulp.task(
 );
 
 gulp.task(
-    'i18n-html',
-    gulp.series('i18n-xml', () =>
-        gulp
-            .src('templates/*.mustache')
-            .pipe(scanner(options, customTransform))
-            .pipe(gulp.dest('./'))
-    )
-);
-
-gulp.task(
     'i18n',
-    gulp.series('i18n-html', () =>
+    gulp.series(() =>
         gulp
             .src(['src/**/*.js', 'src/**/*.jsx', '!src/common/translations/*.js'])
             .pipe(scanner(options, customTransform))

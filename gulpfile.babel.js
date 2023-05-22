@@ -100,7 +100,7 @@ gulp.task(
     'watch-html',
     gulp.series(done => {
         gulp.watch(
-            ['templates/**/*'],
+            ['templates/*'],
             {
                 debounceTimeout: 1000,
             },

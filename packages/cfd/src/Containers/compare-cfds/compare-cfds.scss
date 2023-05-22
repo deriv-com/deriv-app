@@ -1,16 +1,18 @@
 .compare-cfd-header {
     display: flex;
     align-items: center;
-    justify-content: center;
-
+    justify-content: space-between;
     &-navigation {
         display: flex;
         align-items: center;
         gap: 8px;
         cursor: pointer;
     }
-
     &-title {
         flex: 1;
+        &__mobile {
+            text-align: left;
+            padding: 1rem;
+        }
     }
 }

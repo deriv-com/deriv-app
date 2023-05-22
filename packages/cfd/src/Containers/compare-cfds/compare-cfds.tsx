@@ -1,14 +1,14 @@
 import React from 'react';
 import { observer } from 'mobx-react';
-import { Text, Icon, PageOverlay } from '@deriv/components';
+import { Text, Icon, PageOverlay, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { routes } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { useHistory } from 'react-router-dom';
 
 const CompareCFDs = () => {
     const history = useHistory();
 
-    const Header = (
+    const DesktopHeader = (
         <div className='compare-cfd-header'>
             <div
                 className='compare-cfd-header-navigation'
@@ -29,16 +29,24 @@ const CompareCFDs = () => {
         </div>
     );
 
-    const Cards = (
-        <div>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates, doloremque?</p>
-        </div>
-    );
-
     return (
-        <PageOverlay header={Header} is_from_app={routes.traders_hub}>
-            {Cards}
-        </PageOverlay>
+        <React.Fragment>
+            <DesktopWrapper>
+                <PageOverlay header={DesktopHeader} is_from_app={routes.traders_hub}>
+                    Desktop wrapper
+                </PageOverlay>
+            </DesktopWrapper>
+            <MobileWrapper>
+                <PageOverlay
+                    header={localize('Compare CFDs accounts')}
+                    header_classname='compare-cfd-header-title__mobile'
+                    is_from_app={!routes.traders_hub}
+                    onClickClose={() => history.push(routes.traders_hub)}
+                >
+                    mobile wrapper
+                </PageOverlay>
+            </MobileWrapper>
+        </React.Fragment>
     );
 };
 

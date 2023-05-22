@@ -793,7 +793,7 @@ export const PersonalDetailsForm = ({
                                                                 onItemSelection={({ value, text }) =>
                                                                     setFieldValue('citizen', value ? text : '', true)
                                                                 }
-                                                                id={'password'}
+                                                                id={'citizenship_dropdown'}
                                                                 required={is_eu}
                                                             />
                                                         )}

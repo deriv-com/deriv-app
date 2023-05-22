@@ -12,6 +12,6 @@ export const PoincLimited = () => (
                 components={[<br key={0} />]}
             />
         }
-        icon={<Icon icon='IcPoincUnverified' size={128} />}
+        icon={<Icon icon='IcPoincLimited' size={128} />}
     />
 );

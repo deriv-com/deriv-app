@@ -35,8 +35,3 @@ gulp.task(
     'static',
     gulp.series('static-css', () => gulp.src(['static/**', '!static/css/*']).pipe(gulp.dest('./www')))
 );
-
-gulp.task(
-    'copy-jquery-img',
-    gulp.series(() => gulp.src('node_modules/jquery-ui-css/images/*').pipe(gulp.dest('www/css/images')))
-);

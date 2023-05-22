@@ -56,26 +56,13 @@ gulp.task(
 
 gulp.task(
     'build-min',
-    gulp.series(
-        'static',
-        'webpack-prod',
-        'bundle-js',
-        'copy-jquery-img',
-        'pull-blockly-translations',
-        done => {
-            genHtml(true);
-            done();
-        }
-    )
+    gulp.series('static', 'webpack-prod', 'bundle-js', 'pull-blockly-translations', done => {
+        genHtml(true);
+        done();
+    })
 );
 
 gulp.task(
     'build',
-    gulp.parallel(
-        'bundle-js',
-        'build-dev-js',
-        'build-dev-static',
-        'copy-jquery-img',
-        'pull-blockly-translations'
-    )
+    gulp.parallel('bundle-js', 'build-dev-js', 'build-dev-static', 'pull-blockly-translations')
 );

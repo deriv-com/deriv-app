@@ -3,7 +3,7 @@
     flex-direction: column;
     gap: 3rem;
     background-color: var(--general-hover);
-    height: inherit;
+    height: 100%;
 
     .onboarding-header {
         margin-left: 2.5rem;
@@ -33,7 +33,7 @@
         height: 100%;
 
         @include mobile {
-            height: calc(100% - 24rem);
+            height: calc(100% - 22rem);
             overflow: auto;
             overflow-x: hidden;
         }

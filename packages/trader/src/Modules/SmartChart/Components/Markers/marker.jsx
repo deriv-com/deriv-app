@@ -30,7 +30,11 @@ const ChartMarker = ({ marker_config, marker_content_props, is_bottom_widget_vis
         return <ContentComponent {...toJS(marker_content_props)} />;
     }, [marker_content_props]);
 
-    return <FastMarker markerRef={onRef}>{getMemoizedComponent()}</FastMarker>;
+    return (
+        <FastMarker markerRef={onRef} className={marker_props.className}>
+            {getMemoizedComponent()}
+        </FastMarker>
+    );
 };
 
 ChartMarker.propTypes = {

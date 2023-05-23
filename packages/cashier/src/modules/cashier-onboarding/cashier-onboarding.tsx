@@ -14,7 +14,6 @@ import {
     CashierOnboardingSideNotes,
     CashierOnboardingTitle,
 } from './components';
-import './cashier-onboarding.scss';
 
 type TProps = {
     setSideNotes: React.Dispatch<React.SetStateAction<JSX.Element[]>>;
@@ -47,15 +46,13 @@ const CashierOnboarding: React.FC<TProps> = observer(({ setSideNotes }) => {
 
     return (
         <PageContainer hide_breadcrumb>
-            <div className='cashier-onboarding'>
-                {should_show_side_notes && <CashierOnboardingSideNotes setSideNotes={setSideNotes} />}
-                <CashierOnboardingTitle />
-                <CashierOnboardingFiatCard />
-                <CashierOnboardingCryptoCard />
-                <CashierOnboardingOnrampCard />
-                <CashierOnboardingPaymentAgentCard />
-                <CashierOnboardingP2PCard />
-            </div>
+            <CashierOnboardingTitle />
+            <CashierOnboardingFiatCard />
+            <CashierOnboardingCryptoCard />
+            <CashierOnboardingOnrampCard />
+            <CashierOnboardingPaymentAgentCard />
+            <CashierOnboardingP2PCard />
+            {should_show_side_notes && <CashierOnboardingSideNotes setSideNotes={setSideNotes} />}
         </PageContainer>
     );
 });

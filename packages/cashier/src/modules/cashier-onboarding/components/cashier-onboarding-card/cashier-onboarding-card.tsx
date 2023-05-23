@@ -15,11 +15,15 @@ const CashierOnboardingCard: React.FC<React.PropsWithChildren<TProps>> = observe
         const { is_dark_mode_on, is_mobile } = ui;
 
         return (
-            <div>
+            <div className='cashier-onboarding-card'>
                 <Text size={is_mobile ? 's' : 'sm'} weight='bold' color='prominent'>
                     {title}
                 </Text>
-                <div className='cashier-onboarding-card' data-testid='dt_cashier_onboarding_card' onClick={onClick}>
+                <div
+                    className='cashier-onboarding-card__container'
+                    data-testid='dt_cashier_onboarding_card'
+                    onClick={onClick}
+                >
                     <div className='cashier-onboarding-card__content'>
                         <Text size={is_mobile ? 'xxs' : 'xs'} className='cashier-onboarding-card__description'>
                             {description}

@@ -20,5 +20,25 @@
         flex-direction: row;
         align-items: center;
         gap: 0.4rem;
+        cursor: pointer;
+
+        :hover {
+            text-decoration: underline;
+        }
+    }
+
+    &__bullets {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.8rem;
+
+        &--item {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 0.4rem;
+            align-self: stretch;
+        }
     }
 }

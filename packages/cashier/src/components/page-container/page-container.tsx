@@ -15,9 +15,13 @@ const PageContainer: React.FC<React.PropsWithChildren<TProps>> = observer(({ hid
 
     return (
         <div className='page-container'>
-            {!hide_breadcrumb && <CashierBreadcrumb />}
             {is_loading && <Loading is_fullscreen={false} />}
-            {!is_loading && <ThemedScrollbars>{children}</ThemedScrollbars>}
+            {!is_loading && (
+                <ThemedScrollbars className='page-container__content'>
+                    {!hide_breadcrumb && <CashierBreadcrumb />}
+                    {children}
+                </ThemedScrollbars>
+            )}
         </div>
     );
 });

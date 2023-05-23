@@ -682,6 +682,7 @@ export default withRouter(
         currency: client.currency,
         error: portfolio.error,
         getPositionById: portfolio.getPositionById,
+        is_accumulator: portfolio.is_accumulator,
         is_loading: portfolio.is_loading,
         is_multiplier: portfolio.is_multiplier,
         NotificationMessages: ui.notification_messages_ui,

@@ -317,6 +317,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             },
             getPositionById: jest.fn(),
             is_loading: false,
+            is_accumulator: false,
             is_multiplier: false,
             onClickCancel: jest.fn(),
             onClickSell: jest.fn(),

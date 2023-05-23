@@ -123,6 +123,7 @@ export default class TradeStore extends BaseStore {
 
     // Accumulator trade params
     accumulator_range_list = [];
+    barrier_spot_distance = 0;
     growth_rate = 0.03;
     maximum_payout = 0;
     maximum_ticks = 0;
@@ -205,6 +206,7 @@ export default class TradeStore extends BaseStore {
             barrier_1: observable,
             barrier_2: observable,
             barrier_count: observable,
+            barrier_spot_distance: observable,
             barriers: observable,
             basis_list: observable,
             basis: observable,
@@ -1170,7 +1172,7 @@ export default class TradeStore extends BaseStore {
             this.tick_size_barrier = tick_size_barrier;
             const accumulator_barriers_data =
                 this.root_store.contract_trade.accumulator_barriers_data[this.symbol] || {};
-            if (!accumulator_barriers_data.accumulators_high_barrier && barrier_spot_distance && this.pip_size) {
+            if (!accumulator_barriers_data.accumulators_high_barrier && this.pip_size) {
                 this.root_store.contract_trade.updateAccumulatorBarriersData({
                     ...accumulator_barriers_data,
                     barrier_spot_distance,

@@ -1,10 +1,10 @@
 import React from 'react';
+import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
+import { connect } from 'Stores/connect';
 // TODO Remove this after smartcharts is replaced
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
 import RootStore from 'Stores/index';
-import { connect } from 'Stores/connect';
 import ToolbarWidgets from './toolbar-widgets';
 
 interface TChartProps {

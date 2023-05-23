@@ -145,17 +145,4 @@
             }
         }
     }
-
-    &__card {
-        width: 24rem;
-        height: 14.4rem;
-        border-radius: $BORDER_RADIUS;
-        background: #333;
-
-        @include mobile {
-            width: 21.6rem;
-            height: 12.8rem;
-            margin-bottom: 1.2rem;
-        }
-    }
 }

@@ -292,6 +292,7 @@ const mock = (): TStores => {
             setP2POrderProps: jest.fn(),
             showAccountSwitchToRealNotification: jest.fn(),
             setP2PRedirectTo: jest.fn(),
+            showSuccessWalletsUpgradeNotification: jest.fn(),
         },
         modules: {},
         counter: {

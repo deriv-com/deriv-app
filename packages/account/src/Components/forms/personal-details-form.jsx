@@ -423,10 +423,7 @@ const PersonalDetailsForm = ({
                                         placeholder={localize('Tax Identification Number')}
                                         warn={warning_items?.tax_identification_number}
                                         data-testid='tax_identification_number'
-                                        disabled={
-                                            isFieldImmutable('tax_identification_number', editable_fields) ||
-                                            (values?.tax_identification_number && has_real_account)
-                                        }
+                                        disabled={isFieldImmutable('tax_identification_number', editable_fields)}
                                     />
                                     <div
                                         data-testid='tax_identification_number_pop_over'

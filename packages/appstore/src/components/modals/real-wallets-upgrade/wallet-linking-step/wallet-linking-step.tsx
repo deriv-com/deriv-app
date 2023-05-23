@@ -4,14 +4,14 @@ import './wallet-linking-step.scss';
 import { Text, ThemedScrollbars } from '@deriv/components';
 
 type TWalletLinkingStep = {
-    title: string;
+    // title: string;
 };
 
-const WalletLinkingStep = ({ title }: TWalletLinkingStep) => {
+const WalletLinkingStep = ({ data }) => {
     return (
         <div className='wallet-linking-step'>
             <Text as='div' className='wallet-linking-step__page-title' weight='bold'>
-                {title}
+                {data.title}
             </Text>
             <Text as='div' className='wallet-linking-step__description' size='s'>
                 This is how we link your accounts with your new Wallet.
@@ -29,7 +29,7 @@ const WalletLinkingStep = ({ title }: TWalletLinkingStep) => {
                 </Text>
             </div>
             <ThemedScrollbars className='wallet-linking-step__content'>
-                <WalletLinkWrapper />
+                <WalletLinkWrapper account_list={data.account_list} />
                 {/* <WalletLinkWrapper /> */}
             </ThemedScrollbars>
         </div>

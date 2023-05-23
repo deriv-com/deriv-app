@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSubscription } from '@deriv/api';
 import useStore from '../useStore';
-import { reaction } from 'mobx';
 import merge from 'lodash.merge';
 
 const WebsiteStatusProvider = ({ children }: React.PropsWithChildren<unknown>) => {

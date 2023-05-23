@@ -21,7 +21,6 @@ const OrderDetailsFooter = observer(() => {
     const [should_show_complain_modal, setShouldShowComplainModal] = React.useState(false);
 
     React.useEffect(() => {
-        // TODO: Refactor this to use useStore later
         const website_status = setInterval(() => {
             order_store.getWebsiteStatus();
         }, 10000);

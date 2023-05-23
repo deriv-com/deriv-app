@@ -5,6 +5,7 @@ import { fireEvent, render, screen, waitFor, within } from '@testing-library/rea
 import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
+import { shouldShowIdentityInformation, isDocumentTypeValid, isAdditionalDocumentValid } from 'Helpers/utils';
 
 jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
 
@@ -24,6 +25,13 @@ jest.mock('../../real-account-signup/helpers/utils.ts', () => ({
         warnings: mock_warnings,
         errors: mock_errors,
     })),
+}));
+
+jest.mock('Helpers/utils', () => ({
+    ...jest.requireActual('Helpers/utils'),
+    isDocumentTypeValid: jest.fn(() => undefined),
+    shouldShowIdentityInformation: jest.fn(() => false),
+    isAdditionalDocumentValid: jest.fn(() => undefined),
 }));
 
 const mock_warnings = {};
@@ -743,5 +751,93 @@ describe('<PersonalDetails/>', () => {
         renderwithRouter(<PersonalDetails {...new_props} />);
         const el_tax_residence = screen.getByTestId('selected_value');
         expect(el_tax_residence).toHaveTextContent('Malta');
+    });
+
+    it('should validate idv values when a document type is selected', async () => {
+        shouldShowIdentityInformation.mockReturnValue(true);
+        const new_props = {
+            ...props,
+            is_mf: false,
+            value: {
+                ...props.value,
+                document_type: {
+                    value: 'national_id',
+                    text: 'National ID',
+                },
+                document_number: '123456789',
+            },
+            residence_list: [
+                {
+                    value: 'tc',
+                    identity: {
+                        services: {
+                            idv: {
+                                documents_supported: {
+                                    document_1: {
+                                        display_name: 'Test document 1 name',
+                                        format: '5436454364243',
+                                    },
+                                    document_2: {
+                                        display_name: 'Test document 2 name',
+                                        format: 'A54321',
+                                    },
+                                },
+                                has_visual_sample: true,
+                            },
+                        },
+                    },
+                },
+            ],
+        };
+        renderwithRouter(<PersonalDetails {...new_props} />);
+
+        await waitFor(() => {
+            expect(isDocumentTypeValid).toHaveBeenCalled();
+            expect(isAdditionalDocumentValid).not.toHaveBeenCalled();
+        });
+    });
+
+    it('should validate idv values along with additional docuement number when a document type is selected', async () => {
+        shouldShowIdentityInformation.mockReturnValue(true);
+        const new_props = {
+            ...props,
+            is_mf: false,
+            value: {
+                ...props.value,
+                document_type: {
+                    value: 'national_id',
+                    text: 'National ID',
+                    additional: '12345',
+                },
+                document_number: '123456789',
+            },
+            residence_list: [
+                {
+                    value: 'tc',
+                    identity: {
+                        services: {
+                            idv: {
+                                documents_supported: {
+                                    document_1: {
+                                        display_name: 'Test document 1 name',
+                                        format: '5436454364243',
+                                    },
+                                    document_2: {
+                                        display_name: 'Test document 2 name',
+                                        format: 'A54321',
+                                    },
+                                },
+                                has_visual_sample: true,
+                            },
+                        },
+                    },
+                },
+            ],
+        };
+        renderwithRouter(<PersonalDetails {...new_props} />);
+
+        await waitFor(() => {
+            expect(isAdditionalDocumentValid).toHaveBeenCalled();
+        });
     });
 });

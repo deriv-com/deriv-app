@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Field, FormikProps, FormikHandlers, FieldProps } from 'formik';
+import { Field, FormikProps, FieldProps, useFormikContext } from 'formik';
 import { ResidenceList } from '@deriv/api-types';
 import { localize } from '@deriv/translations';
 import { formatInput, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
@@ -27,28 +27,18 @@ type TIDVForm = {
     selected_country: ResidenceList[0];
     hide_hint?: boolean;
     class_name?: string;
-    can_skip_document_verification: boolean;
-} & Partial<FormikHandlers> &
-    FormikProps<TFormProps>;
+    can_skip_document_verification?: boolean;
+};
 
-const IDVForm = ({
-    errors,
-    touched,
-    values,
-    handleBlur,
-    handleChange,
-    setFieldValue,
-    class_name,
-    selected_country,
-    hide_hint,
-    can_skip_document_verification = false,
-}: TIDVForm) => {
+const IDVForm = ({ class_name, selected_country, hide_hint, can_skip_document_verification = false }: TIDVForm) => {
     const [document_list, setDocumentList] = React.useState<TDocumentList>([]);
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [selected_doc, setSelectedDoc] = React.useState('');
 
     const { documents_supported: document_data, has_visual_sample } = selected_country?.identity?.services?.idv ?? {};
 
+    const { errors, touched, values, handleBlur, handleChange, setFieldValue }: FormikProps<TFormProps> =
+        useFormikContext();
     const default_document = {
         id: '',
         text: '',
@@ -156,7 +146,6 @@ const IDVForm = ({
                                                         <div className='document-dropdown'>
                                                             <Autocomplete
                                                                 {...field}
-                                                                name='document_type'
                                                                 data-lpignore='true'
                                                                 error={touched.document_type && errors.document_type}
                                                                 autoComplete='off'

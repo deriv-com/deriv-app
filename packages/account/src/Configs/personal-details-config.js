@@ -237,6 +237,7 @@ const personalDetailsConfig = (
             account_status,
             residence,
             account_settings,
+            real_account_signup_target,
         },
         passthrough: ['residence_list', 'is_fully_authenticated', 'has_real_account'],
         icon: 'IcDashboardPersonalDetails',

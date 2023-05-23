@@ -558,6 +558,12 @@
             flex-direction: column;
             justify-content: center;
         }
+
+        @include desktop() {
+            .onfido-container {
+                padding-top: 1.6rem;
+            }
+        }
     }
 
     &__form {
@@ -577,7 +583,7 @@
         }
     }
     @include mobile {
-        overflow: hidden;
+        overflow: initial;
         grid-template-rows: 7rem minmax(10rem, 1fr);
         &__heading {
             padding: unset;

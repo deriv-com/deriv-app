@@ -1464,9 +1464,7 @@ export default class ClientStore extends BaseStore {
                 Object.keys(account).forEach(param => {
                     const param_to_set = param === 'country' ? 'residence' : param;
                     const value_to_set = typeof account[param] === 'undefined' ? '' : account[param];
-                    if (param_to_set !== 'loginid') {
-                        this.accounts[account.loginid][param_to_set] = value_to_set;
-                    }
+                    this.accounts[account.loginid][param_to_set] = value_to_set;
                 });
             }
         });

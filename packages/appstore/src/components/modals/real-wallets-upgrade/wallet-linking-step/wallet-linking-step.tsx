@@ -29,7 +29,10 @@ const WalletLinkingStep = ({ data }) => {
                 </Text>
             </div>
             <ThemedScrollbars className='wallet-linking-step__content'>
-                <WalletLinkWrapper account_list={data.account_list} />
+                {data.wallets.map((accounts, index) => {
+                    // console.log(accounts);
+                    return <WalletLinkWrapper key={index} account_list={accounts.account_list} />;
+                })}
                 {/* <WalletLinkWrapper /> */}
             </ThemedScrollbars>
         </div>

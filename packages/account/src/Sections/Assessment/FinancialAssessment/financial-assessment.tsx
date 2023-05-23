@@ -14,8 +14,8 @@ import {
     SelectNative,
     Text,
 } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
-import { routes, isMobile, isDesktop, platforms, PlatformContext, WS } from '@deriv/shared';
+import { connect } from 'Stores/connect';
+import { routes, isMobile, isDesktop, PlatformContext, WS, platforms } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import LeaveConfirm from 'Components/leave-confirm';
 import IconMessageContent from 'Components/icon-message-content';
@@ -57,7 +57,23 @@ type TConfirmationModal = {
 } & TConfirmationPage;
 
 type TSubmittedPage = {
-    platform: TCoreStores['common']['platform'];
+    platform: keyof typeof platforms;
+    routeBackInApp: TCoreStores['common']['routeBackInApp'];
+};
+
+type TFinancialAssessmentProps = {
+    is_authentication_needed: boolean;
+    is_financial_account: boolean;
+    is_mf: boolean;
+    is_svg: boolean;
+    is_trading_experience_incomplete: boolean;
+    is_financial_information_incomplete: boolean;
+    is_virtual: boolean;
+    platform: keyof typeof platforms;
+    refreshNotifications: TCoreStores['notifications']['refreshNotifications'];
+    routeBackInApp: TCoreStores['common']['routeBackInApp'];
+    setFinancialAndTradingAssessment: TCoreStores['client']['setFinancialAndTradingAssessment'];
+    updateAccountStatus: TCoreStores['client']['updateAccountStatus'];
 };
 
 const ConfirmationContent = ({ className }: { className?: string }) => {
@@ -129,14 +145,11 @@ const ConfirmationPage = ({ toggleModal, onSubmit }: TConfirmationPage) => (
         </div>
     </div>
 );
-
-const SubmittedPage = observer(({ platform }: TSubmittedPage) => {
+const SubmittedPage = ({ platform, routeBackInApp }: TSubmittedPage) => {
     const history = useHistory();
-    const { common } = useStore();
-    const { routeBackInApp } = common;
 
     const onClickButton = () => {
-        if (platform && platforms[platform].is_hard_redirect) {
+        if (platforms[platform].is_hard_redirect) {
             window.location.href = platforms[platform].url;
         } else {
             routeBackInApp(history);
@@ -189,30 +202,23 @@ const SubmittedPage = observer(({ platform }: TSubmittedPage) => {
             </div>
         </IconMessageContent>
     );
-});
+};
 
-const FinancialAssessment = observer(() => {
+const FinancialAssessment = ({
+    is_authentication_needed,
+    is_financial_account,
+    is_mf,
+    is_svg,
+    is_trading_experience_incomplete,
+    is_financial_information_incomplete,
+    is_virtual,
+    platform,
+    refreshNotifications,
+    routeBackInApp,
+    setFinancialAndTradingAssessment,
+    updateAccountStatus,
+}: TFinancialAssessmentProps) => {
     const history = useHistory();
-    const { client, common, notifications } = useStore();
-
-    const {
-        is_authentication_needed,
-        is_financial_account,
-        is_svg,
-        is_financial_information_incomplete,
-        is_trading_experience_incomplete,
-        is_virtual,
-        updateAccountStatus,
-        landing_company_shortcode,
-        setFinancialAndTradingAssessment,
-    } = client;
-
-    const { platform, routeBackInApp } = common;
-
-    const { refreshNotifications } = notifications;
-
-    const is_mf = landing_company_shortcode === 'maltainvest';
-
     const { is_appstore } = React.useContext(PlatformContext);
     const [is_loading, setIsLoading] = React.useState(true);
     const [is_confirmation_visible, setIsConfirmationVisible] = React.useState(false);
@@ -353,7 +359,7 @@ const FinancialAssessment = observer(() => {
     if (api_initial_load_error) return <LoadErrorMessage error_message={api_initial_load_error} />;
     if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button={is_appstore} />;
     if (isMobile() && is_authentication_needed && !is_mf && is_submit_success)
-        return <SubmittedPage platform={platform} />;
+        return <SubmittedPage platform={platform} routeBackInApp={routeBackInApp} />;
 
     const setInitialFormData = () => {
         const form_data = {
@@ -1064,6 +1070,19 @@ const FinancialAssessment = observer(() => {
             </Formik>
         </React.Fragment>
     );
-});
+};
 
-export default withRouter(FinancialAssessment);
+export default connect(({ client, common, notifications }: TCoreStores) => ({
+    is_authentication_needed: client.is_authentication_needed,
+    is_financial_account: client.is_financial_account,
+    is_mf: client.landing_company_shortcode === 'maltainvest',
+    is_svg: client.is_svg,
+    is_financial_information_incomplete: client.is_financial_information_incomplete,
+    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
+    is_virtual: client.is_virtual,
+    platform: common.platform,
+    refreshNotifications: notifications.refreshNotifications,
+    routeBackInApp: common.routeBackInApp,
+    setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
+    updateAccountStatus: client.updateAccountStatus,
+}))(withRouter(FinancialAssessment));

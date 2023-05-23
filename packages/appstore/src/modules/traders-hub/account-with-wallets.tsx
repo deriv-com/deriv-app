@@ -98,7 +98,7 @@ const AccountWithWallets = observer(({ show_test_wallets = false }: TProps) => {
         : Object.keys(accounts)
               .filter(key => accounts[key]?.account_category === 'wallet')
               .reduce((acc, cur) => {
-                  acc.push(accounts[cur]);
+                  acc.push({ ...accounts[cur], loginid: cur });
                   return acc;
               }, [] as typeof accounts[0][]);
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { getCFDPlatformLabel } from '@deriv/shared';
-import { Text, Button, Icon, Money, Popover } from '@deriv/components';
+import { Text, Button, Icon, Popover } from '@deriv/components';
 import { TPasswordBoxProps } from './props.types';
 import { localize } from '@deriv/translations';
 

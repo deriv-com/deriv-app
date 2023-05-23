@@ -22,15 +22,18 @@ const JurisdictionCard = ({
     const number_of_financial_accounts_to_be_shown = financial_available_accounts?.length;
     const number_of_all_accounts_to_be_shown = all_market_type_available_accounts?.length;
 
+    const account_types_condition = () => {
+        if (is_synthetic) {
+            return number_of_synthetic_accounts_to_be_shown;
+        } else if (is_financial) {
+            return number_of_financial_accounts_to_be_shown;
+        }
+        return number_of_all_accounts_to_be_shown;
+    };
+
     const is_synthetic = account_type === 'synthetic';
     const is_financial = account_type === 'financial';
-    const [number_of_cards] = React.useState(
-        is_synthetic
-            ? number_of_synthetic_accounts_to_be_shown
-            : is_financial
-            ? number_of_financial_accounts_to_be_shown
-            : number_of_all_accounts_to_be_shown
-    );
+    const [number_of_cards] = React.useState(account_types_condition());
 
     const card_values = getJurisdictionContents()[type_of_card as TJurisdictionCardType];
 

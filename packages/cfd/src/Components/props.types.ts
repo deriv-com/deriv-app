@@ -1,5 +1,7 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
+export type TMobilePlatforms = 'ios' | 'android' | 'huawei';
+
 export type TCFDPlatform = 'dxtrade' | 'mt5';
 
 export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'ctrader';

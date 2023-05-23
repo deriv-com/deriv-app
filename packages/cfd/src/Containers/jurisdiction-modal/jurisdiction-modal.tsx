@@ -84,13 +84,16 @@ const JurisdictionModal = ({
         available_account => available_account.market_type === 'all'
     );
 
-    const modal_title = show_eu_related_content
-        ? localize('Jurisdiction for your Deriv MT5 CFDs account')
-        : account_type.type !== 'all'
-        ? localize('Choose a jurisdiction for your MT5 {{account_type}} account', {
-              account_type: account_type.type === 'synthetic' ? 'Derived' : 'Financial',
-          })
-        : localize('Choose a jurisdiction for your cTrader account');
+    const modalTitle = () => {
+        if (show_eu_related_content) {
+            return localize('Jurisdiction for your Deriv MT5 CFDs account');
+        } else if (account_type.type !== 'all') {
+            return localize('Choose a jurisdiction for your MT5 {{account_type}} account', {
+                account_type: account_type.type === 'synthetic' ? 'Derived' : 'Financial',
+            });
+        }
+        return localize('Choose a jurisdiction for your cTrader account');
+    };
 
     const is_svg_selected = jurisdiction_selected_shortcode === 'svg';
     const is_bvi_selected = jurisdiction_selected_shortcode === 'bvi';
@@ -242,7 +245,7 @@ const JurisdictionModal = ({
                         enableApp={enableApp}
                         exit_classname='cfd-modal--custom-exit'
                         is_open={is_jurisdiction_modal_visible}
-                        title={modal_title}
+                        title={modalTitle()}
                         toggleModal={toggleJurisdictionModal}
                         type='button'
                         context={context}
@@ -254,7 +257,7 @@ const JurisdictionModal = ({
                 <MobileWrapper>
                     <MobileDialog
                         portal_element_id='deriv_app'
-                        title={modal_title}
+                        title={modalTitle()}
                         context={context}
                         visible={is_jurisdiction_modal_visible}
                         onClose={toggleJurisdictionModal}

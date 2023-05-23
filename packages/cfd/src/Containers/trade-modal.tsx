@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, Icon, Money } from '@deriv/components';
 import { TTradingPlatformAccounts, TCFDDashboardContainer, TCFDsPlatformType } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { CFD_PLATFORMS, getCFDAccountKey, isMobile, capitalizeFirstLetter, mobileOSDetect } from '@deriv/shared';
+import { CFD_PLATFORMS, getCFDAccountKey, isMobile, capitalizeFirstLetter } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getPlatformQRCode, mobileDownloadLink, PlatformsDesktopDownload } from '../Helpers/config';
 import { platformsText, CTRADER_DOWNLOAD_LINK } from '../Helpers/constants';
@@ -53,6 +53,20 @@ const PlatformIconsAndDescriptions = (platform: TCFDsPlatformType, is_demo: stri
     );
 };
 
+const CTraderAndDerivEZDescription = (platform: TCFDsPlatformType) => {
+    const description = platform === 'derivez' ? 'Deriv EZ' : 'cTrader';
+    return (
+        <div className='cfd-trade-modal__login-specs-item'>
+            <Text className='cfd-trade-modal--paragraph'>
+                <Localize
+                    i18n_default_text='Use your Deriv account email and password to login into the {{ platform }} platform.'
+                    values={{ platform: description }}
+                />
+            </Text>
+        </div>
+    );
+};
+
 const TradeModal = ({
     mt5_trade_account,
     is_eu_user,
@@ -63,19 +77,6 @@ const TradeModal = ({
     is_demo,
     platform,
 }: TTradeModalProps) => {
-    const CTraderAndDerivEZDescription = () => {
-        const description = platform === 'derivez' ? 'Deriv EZ' : 'cTrader';
-        return (
-            <div className='cfd-trade-modal__login-specs-item'>
-                <Text className='cfd-trade-modal--paragraph'>
-                    <Localize
-                        i18n_default_text='Use your Deriv account email and password to login into the {{ platform }} platform.'
-                        values={{ platform: description }}
-                    />
-                </Text>
-            </div>
-        );
-    };
     const downloadCenterAppOption = (account_type: TCFDsPlatformType) => {
         if (account_type === 'dxtrade') {
             return (
@@ -158,7 +159,7 @@ const TradeModal = ({
                 )}
             </div>
             <div className='cfd-trade-modal__login-specs'>
-                {platform !== 'dxtrade' && <CTraderAndDerivEZDescription />}
+                {platform !== 'dxtrade' && <CTraderAndDerivEZDescription platform={platform} />}
                 {platform === 'dxtrade' && (
                     <React.Fragment>
                         <div className='cfd-trade-modal__login-specs-item'>
@@ -182,7 +183,7 @@ const TradeModal = ({
                                             getTitle(mt5_trade_account.market_type, is_eu_user),
                                             mt5_trade_account.account_type,
                                             account_type,
-                                            (mt5_trade_account as DetailsOfEachMT5Loginid)?.server
+                                            mt5_trade_account?.server
                                         );
                                         toggleModal();
                                     }}

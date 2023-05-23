@@ -1,5 +1,5 @@
 import { OSDetect } from '@deriv/shared';
-import { TCFDsPlatformType } from 'Components/props.types';
+import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
 
 const platformsText = (platform: TCFDsPlatformType) => {
     switch (platform) {
@@ -39,7 +39,7 @@ const getTopUpConfig = () => {
     };
 };
 
-const getPlatformDXTradeDownloadLink = (platform?: 'ios' | 'android' | 'huawei') => {
+const getPlatformDXTradeDownloadLink = (platform?: TMobilePlatforms) => {
     switch (platform) {
         case 'ios':
             return DXTRADE_IOS_APP_URL;
@@ -50,7 +50,7 @@ const getPlatformDXTradeDownloadLink = (platform?: 'ios' | 'android' | 'huawei')
     }
 };
 
-const getPlatformCTraderDownloadLink = (platform: 'ios' | 'android' | 'huawei') => {
+const getPlatformCTraderDownloadLink = (platform: TMobilePlatforms) => {
     switch (platform) {
         case 'ios':
             return CTRADER_IOS_APP_URL;
@@ -63,7 +63,7 @@ const getPlatformCTraderDownloadLink = (platform: 'ios' | 'android' | 'huawei') 
     }
 };
 
-const getPlatformDerivEZDownloadLink = (platform: 'ios' | 'android' | 'huawei') => {
+const getPlatformDerivEZDownloadLink = (platform: TMobilePlatforms) => {
     switch (platform) {
         case 'ios':
             return 'a';

@@ -16,12 +16,14 @@ const JurisdictionModalContent = ({
 }: TJurisdictionModalContentProps) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
 
-    const cardsToBeShown = (type_of_card: string) =>
-        account_type === 'synthetic'
-            ? synthetic_available_accounts?.some(account => account.shortcode === type_of_card)
-            : account_type === 'all'
-            ? all_market_type_available_accounts?.some(account => account.shortcode === type_of_card)
-            : financial_available_accounts?.some(account => account.shortcode === type_of_card);
+    const cardsToBeShown = (type_of_card: string) => {
+        if (account_type === 'synthetic') {
+            return synthetic_available_accounts?.some(account => account.shortcode === type_of_card);
+        } else if (account_type === 'all') {
+            return all_market_type_available_accounts?.some(account => account.shortcode === type_of_card);
+        }
+        return financial_available_accounts?.some(account => account.shortcode === type_of_card);
+    };
 
     const disableCard = (type_of_card: string) => {
         if (is_virtual && type_of_card !== 'svg') {

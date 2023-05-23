@@ -1,31 +1,33 @@
-.wallet-cards-carousel {
-    // -ms-overflow-style: none;
-    // scrollbar-width: none;
-    // position: relative;
+$card-width: 16rem;
+$card-height: 9.6rem;
+$shift-for-edge-cards: calc((100vw - #{$card-width}) / 2);
 
-    &__pagination {
-        padding: 1rem;
-    }
+.wallet-cards-carousel {
+    margin-bottom: 2.4rem;
 
     &__scroll {
         position: relative;
         display: flex;
         overflow: auto;
         scroll-snap-type: x mandatory;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
 
     &__item {
-        width: 16rem;
-        height: 9.6rem;
+        width: $card-width;
+        height: $card-height;
         flex-shrink: 0;
-        margin-right: calc(((100vw - 16rem) / 2) - 6rem);
+        margin-right: 2.4rem;
 
         &--first {
-            margin-left: calc((100vw - 16rem) / 2);
+            margin-left: $shift-for-edge-cards;
         }
 
         &--last {
-            margin-right: calc((100vw - 16rem) / 2);
+            margin-right: $shift-for-edge-cards;
         }
 
         &--snap-point {

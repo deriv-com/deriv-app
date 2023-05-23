@@ -1,20 +1,4 @@
 .wallet-steps {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    place-content: center;
-
-    @include mobile {
-        padding: 0;
-    }
-
-    &__content {
-        max-width: 77.6rem;
-        margin: 0 auto;
-        text-align: center;
-        padding-top: 5rem;
-    }
-
     &__title {
         padding-top: 2rem;
 
@@ -65,15 +49,6 @@
 
         &-icon {
             margin-right: 1rem;
-        }
-    }
-
-    &__footer {
-        @include mobile {
-            justify-content: center;
-            &-button {
-                width: 50%;
-            }
         }
     }
 }

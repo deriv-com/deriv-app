@@ -1,10 +1,10 @@
 const gulp = require('gulp');
 const del = require('del');
 const paths = require('vinyl-paths');
-const rev = require('gulp-rev');
-const through = require('through2');
+// const rev = require('gulp-rev');
+// const through = require('through2');
 const concat = require('gulp-concat-util');
-const { addToManifest } = require('./revision');
+// const { addToManifest } = require('./revision');
 
 gulp.task(
     'clean-bundle',
@@ -21,8 +21,6 @@ gulp.task(
             './node_modules/blockly/msg/messages.js',
         ])
             .pipe(concat('bundle.js'))
-            .pipe(rev())
-            .pipe(through.obj(addToManifest))
             .pipe(gulp.dest('www/js/'))
             .on('end', () => done());
     })

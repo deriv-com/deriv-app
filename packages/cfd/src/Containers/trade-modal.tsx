@@ -53,7 +53,7 @@ const PlatformIconsAndDescriptions = (platform: TCFDsPlatformType, is_demo: stri
     );
 };
 
-const CTraderAndDerivEZDescription = (platform: TCFDsPlatformType) => {
+const CTraderAndDerivEZDescription = (platform: string) => {
     const description = platform === 'derivez' ? 'Deriv EZ' : 'cTrader';
     return (
         <div className='cfd-trade-modal__login-specs-item'>

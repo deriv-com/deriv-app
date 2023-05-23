@@ -19,7 +19,7 @@ const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
 const CTRADER_DOWNLOAD_LINK = 'https://ctrader.com/download/';
 
-const CTRADER_URL = 'https://ct.deriv.com/';
+const CTRADER_URL = 'https://id-ct-uat.deriv.com/brokeroauth/success';
 
 const DERIVEZ_URL = 'https://dqwsqxuu0r6t9.cloudfront.net/';
 

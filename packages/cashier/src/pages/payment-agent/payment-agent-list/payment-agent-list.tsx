@@ -37,7 +37,7 @@ const PaymentAgentList = observer(({ setSideNotes }: TProps) => {
         } else {
             setSideNotes?.([]);
         }
-    }, [setSideNotes, general_store.is_loading, payment_agent.is_try_withdraw_successful]);
+    }, [setSideNotes, general_store.is_loading, payment_agent.is_try_withdraw_successful, current_language]);
 
     return (
         <div className='payment-agent-list cashier__wrapper--align-left'>

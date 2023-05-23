@@ -1,7 +1,7 @@
 import React from 'react';
 import StoreContext from './storeContext';
-import { ExchangeRatesStore } from './stores';
-import { ExchangeRatesProvider } from './providers';
+import { ExchangeRatesStore, WebsiteStatusStore } from './stores';
+import { ExchangeRatesProvider, WebsiteStatusProvider } from './providers';
 import type { TCoreStores, TStores } from '../types';
 
 const StoreProvider = ({ children, store }: React.PropsWithChildren<{ store: TCoreStores }>) => {
@@ -13,6 +13,7 @@ const StoreProvider = ({ children, store }: React.PropsWithChildren<{ store: TCo
         return {
             ...store,
             exchange_rates: new ExchangeRatesStore(),
+            website_status: new WebsiteStatusStore(),
         };
     }, [store]);
 
@@ -26,7 +27,9 @@ const StoreProvider = ({ children, store }: React.PropsWithChildren<{ store: TCo
 
     return (
         <StoreContext.Provider value={memoizedValue}>
-            <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
+            <WebsiteStatusProvider>
+                <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
+            </WebsiteStatusProvider>
         </StoreContext.Provider>
     );
 };

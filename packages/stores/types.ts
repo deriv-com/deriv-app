@@ -10,7 +10,7 @@ import type {
     LogOutResponse,
 } from '@deriv/api-types';
 import type { RouteComponentProps } from 'react-router';
-import { ExchangeRatesStore } from './src/stores';
+import { ExchangeRatesStore, WebsiteStatusStore } from './src/stores';
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: number;
@@ -361,4 +361,5 @@ export type TCoreStores = {
 
 export type TStores = TCoreStores & {
     exchange_rates: ExchangeRatesStore;
+    website_status: WebsiteStatusStore;
 };

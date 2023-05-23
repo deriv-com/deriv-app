@@ -24,7 +24,7 @@ const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps)
         if ((is_low_risk_cr_non_eu || is_high_risk_cr || is_cr_demo) && !is_mobile) {
             return (
                 <Text size='sm' line_height='m' weight='bold'>
-                    {localize('Options & Multipliers')}
+                    {localize('Options & multipliers')}
                 </Text>
             );
         } else if ((is_low_risk_cr_eu || is_eu) && !is_mobile) {
@@ -41,8 +41,7 @@ const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps)
         is_low_risk_cr_non_eu || is_high_risk_cr || is_cr_demo ? (
             <Text size='xs' line_height='s'>
                 <Localize
-                    i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the
-        upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
+                    i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
                     components={[
                         <StaticUrl key={0} className='options' href='trade-types/options/' />,
                         <StaticUrl key={1} className='options' href='trade-types/multiplier/' />,
@@ -52,7 +51,7 @@ const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps)
         ) : (
             <Text size='xs' line_height='s'>
                 <Localize
-                    i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>Multipliers</0>.'
+                    i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>multipliers</0>.'
                     components={[<StaticUrl key={0} className='options' href='trade-types/multiplier/' />]}
                 />
             </Text>

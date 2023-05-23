@@ -3,6 +3,11 @@ import type { Authorize, DetailsOfEachMT5Loginid, GetAccountStatus, GetLimits, L
 import type { RouteComponentProps } from 'react-router';
 import { ExchangeRatesStore } from './src/stores';
 
+type TNetworkOptions = {
+    tooltip: string;
+    class: string;
+};
+
 type TAccount = NonNullable<Authorize['account_list']>[0];
 
 type TAccountsList = {
@@ -216,6 +221,7 @@ type TCommonStore = {
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
     is_language_changing: boolean;
+    network_status: TNetworkOptions;
 };
 
 type TUiStore = {

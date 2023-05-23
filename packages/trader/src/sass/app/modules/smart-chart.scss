@@ -72,20 +72,25 @@
                 }
             }
             &-bold {
-                width: 20px;
-                height: 20px;
+                width: 2rem;
+                height: 2rem;
                 border-width: 0.2rem;
                 background-color: rgba(255, 255, 255, 0.3);
-                // background-color: var(--general-main-1);
                 &:after {
                     content: '';
-                    width: 6px;
-                    height: 6px;
+                    width: 0.6rem;
+                    height: 0.6rem;
                     border-radius: 50%;
                     background-color: var(--brand-secondary);
+                    @include mobile {
+                        width: 0.4rem;
+                        height: 0.4rem;
+                    }
                 }
                 @include mobile {
-                    border-width: 0.2rem;
+                    width: 1.6rem;
+                    height: 1.6rem;
+                    border-width: 0.1rem;
                 }
             }
         }

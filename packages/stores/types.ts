@@ -283,6 +283,7 @@ export type TPortfolioStore = {
     active_positions: TPortfolioStore['positions'];
     error: string;
     getPositionById: (id: number) => TPortfolioStore['positions'][number];
+    is_accumulator: boolean;
     is_loading: boolean;
     is_multiplier: boolean;
     onClickCancel: (contract_id?: number) => void;

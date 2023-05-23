@@ -18,8 +18,6 @@ jobs:
           node-version: 16.x
       - name: install, bootstrap and make test coverage
         run: |
-          touch .env
-          echo NODE_ENV=development >> .env
           npm install
           npm run bootstrap
           npm run build:all

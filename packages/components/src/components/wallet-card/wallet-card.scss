@@ -1,6 +1,4 @@
 .wallet-card {
-    $parent: &;
-
     position: relative;
     border-radius: $BORDER_RADIUS;
 
@@ -26,6 +24,16 @@
                 opacity: 1;
             }
         }
+
+        &--active:after {
+            opacity: 1;
+        }
+
+        &--small {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     }
 
     &__content {
@@ -38,42 +46,28 @@
         justify-content: space-between;
         align-items: center;
         padding: 1.6rem;
+
+        &--medium {
+            @include mobile {
+                padding: 0.8rem;
+            }
+        }
     }
 
     &--active {
         border: 2px solid var(--text-red);
-
-        #{$parent}__container {
-            &:after {
-                opacity: 1;
-            }
-        }
     }
 
     &--small {
         width: 6.4rem;
         height: 4rem;
-
-        #{$parent}__container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #{$parent}__active-icon {
-            position: absolute;
-            top: 0;
-            left: 100%;
-            transform: translate(-1.2rem, -0.4rem);
-            width: unset;
-            height: unset;
-            z-index: 1;
-        }
+        border-radius: $BORDER_RADIUS;
     }
 
     &--medium {
         width: 20rem;
         height: 12rem;
+        border-radius: $BORDER_RADIUS_2;
 
         @include mobile {
             width: 16rem;
@@ -84,6 +78,7 @@
     &--large {
         width: 24rem;
         height: 14.4rem;
+        border-radius: $BORDER_RADIUS_2;
 
         @include mobile {
             width: 21.6rem;
@@ -101,6 +96,16 @@
         justify-content: center;
         align-items: center;
         z-index: 1;
+
+        &--small {
+            position: absolute;
+            top: 0;
+            left: 100%;
+            transform: translate(-1.2rem, -0.4rem);
+            width: unset;
+            height: unset;
+            z-index: 1;
+        }
     }
 
     &__shine {

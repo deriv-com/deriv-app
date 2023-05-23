@@ -43,10 +43,12 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
 
     return (
         <div className={`wallet-card wallet-card--${size} wallet-card--${state}`}>
-            <div className={`wallet-card__container wallet-card__${wallet.currency}-bg`}>
+            <div
+                className={`wallet-card__container wallet-card__container--${state} wallet-card__container--${size} wallet-card__${wallet.currency}-bg`}
+            >
                 {size === 'small' && <IconComponent />}
                 {size !== 'small' && (
-                    <div className='wallet-card__content'>
+                    <div className={`wallet-card__content wallet-card__content--${size}`}>
                         <div className='wallet-card__shine' />
 
                         <div className='wallet-card__top-wrapper'>
@@ -93,7 +95,7 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
                 )}
             </div>
             {state === 'active' && (
-                <div className='wallet-card__active-icon'>
+                <div className={`wallet-card__active-icon wallet-card__active-icon--${size}`}>
                     <Icon
                         color='brand'
                         data_testid='ic-checkmark-circle'

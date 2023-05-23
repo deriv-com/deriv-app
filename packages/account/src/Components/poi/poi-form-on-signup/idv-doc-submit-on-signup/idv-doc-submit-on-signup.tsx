@@ -95,32 +95,11 @@ export const IdvDocSubmitOnSignup = ({
             validateOnChange
             validateOnBlur
         >
-            {({
-                errors,
-                handleBlur,
-                handleChange,
-                isSubmitting,
-                isValid,
-                setFieldValue,
-                setFieldTouched,
-                touched,
-                dirty,
-                values,
-            }) => (
+            {({ isSubmitting, isValid, dirty, values }) => (
                 <Form className='proof-of-identity__container proof-of-identity__container--reset mt5-layout'>
                     <section className='mt5-layout__container'>
                         <FormSubHeader title={localize('Identity verification')} />
-                        <IDVForm
-                            errors={errors}
-                            touched={touched}
-                            values={values}
-                            handleChange={handleChange}
-                            handleBlur={handleBlur}
-                            setFieldValue={setFieldValue}
-                            hide_hint={false}
-                            selected_country={citizen_data}
-                            class_name='idv-layout'
-                        />
+                        <IDVForm hide_hint={false} selected_country={citizen_data} class_name='idv-layout' />
                         <FormSubHeader title={localize('Identity verification')} />
                         <div
                             className={classNames({
@@ -130,13 +109,6 @@ export const IdvDocSubmitOnSignup = ({
                             })}
                         >
                             <PersonalDetailsForm
-                                errors={errors}
-                                touched={touched}
-                                values={values}
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
-                                setFieldValue={setFieldValue}
-                                setFieldTouched={setFieldTouched}
                                 is_qualified_for_idv={true}
                                 is_appstore
                                 should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}

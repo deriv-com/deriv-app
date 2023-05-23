@@ -2,11 +2,12 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import IdvDocumentSubmit from '../idv-document-submit';
+import { isDocumentNumberValid } from 'Helpers/utils';
 
 jest.mock('react-router');
 jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
-jest.mock('Helpers/utils.ts', () => ({
-    ...jest.requireActual('Helpers/utils.ts'),
+jest.mock('Helpers/utils', () => ({
+    ...jest.requireActual('Helpers/utils'),
     getDocumentData: jest.fn((country_code, key) => {
         const data = {
             tc: {
@@ -24,7 +25,7 @@ jest.mock('Helpers/utils.ts', () => ({
         };
         return data[country_code][key];
     }),
-    getRegex: jest.fn(() => /5436454364243/i),
+    isDocumentNumberValid: jest.fn(() => undefined),
 }));
 
 jest.mock('@deriv/shared', () => ({
@@ -58,8 +59,14 @@ describe('<IdvDocumentSubmit/>', () => {
                 services: {
                     idv: {
                         documents_supported: {
-                            document_1: { display_name: 'Test document 1 name', format: '5436454364243' },
-                            document_2: { display_name: 'Test document 2 name', format: 'A54321' },
+                            document_1: {
+                                display_name: 'Test document 1 name',
+                                format: '5436454364243',
+                            },
+                            document_2: {
+                                display_name: 'Test document 2 name',
+                                format: 'A54321',
+                            },
                         },
                         has_visual_sample: true,
                     },
@@ -129,15 +136,15 @@ describe('<IdvDocumentSubmit/>', () => {
         fireEvent.change(document_type_input, { target: { value: 'Test document 2 name' } });
         expect(document_number_input).toBeEnabled();
         expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
-
+        (isDocumentNumberValid as jest.Mock).mockReturnValueOnce('please enter your document number');
         fireEvent.blur(document_number_input);
         expect(await screen.findByText(/please enter your document number/i)).toBeInTheDocument();
 
-        fireEvent.keyUp(document_number_input);
+        (isDocumentNumberValid as jest.Mock).mockReturnValueOnce('please enter the correct format');
         fireEvent.change(document_number_input, { target: { value: 'A-32523' } });
         expect(await screen.findByText(/please enter the correct format/i)).toBeInTheDocument();
 
-        fireEvent.change(document_number_input, { target: { value: '5436454364243' } });
+        fireEvent.change(document_number_input, { target: { value: '5436454364234' } });
         await waitFor(() => {
             expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
             expect(screen.queryByText(/please enter a valid ID number/i)).not.toBeInTheDocument();

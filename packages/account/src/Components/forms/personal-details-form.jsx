@@ -1,5 +1,5 @@
 import React from 'react';
-import { Field } from 'formik';
+import { Field, useFormikContext } from 'formik';
 import classNames from 'classnames';
 import {
     Autocomplete,
@@ -16,6 +16,8 @@ import { getLegalEntityName, isDesktop, isMobile, routes, validPhone } from '@de
 import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
+import PoiNameMismatchExample from 'Assets/ic-poi-name-mismatch-example.svg';
+import PoiDobMismatchExample from 'Assets/ic-poi-dob-mismatch-example.svg';
 import InlineNoteWithIcon from 'Components/inline-note-with-icon';
 import FormBodySection from 'Components/form-body-section';
 import { DateOfBirthField, FormInputField } from 'Components/forms/form-fields';
@@ -23,17 +25,7 @@ import { Link } from 'react-router-dom';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 import { isFieldImmutable } from 'Helpers/utils';
 
-const PersonalDetailsForm = ({
-    errors,
-    touched,
-    values,
-    setFieldValue,
-    handleChange,
-    handleBlur,
-    warning_items,
-    setFieldTouched,
-    ...props
-}) => {
+const PersonalDetailsForm = props => {
     const {
         is_virtual,
         is_mf,
@@ -51,12 +43,15 @@ const PersonalDetailsForm = ({
         is_rendered_for_onfido,
         should_close_tooltip,
         setShouldCloseTooltip,
+        warning_items,
+        status,
     } = props;
     const autocomplete_value = 'none';
-    const PoiNameDobExampleIcon = PoiNameDobExample;
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
+
+    const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
 
     React.useEffect(() => {
         if (should_close_tooltip) {
@@ -64,6 +59,17 @@ const PersonalDetailsForm = ({
             setShouldCloseTooltip(false);
         }
     }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
+
+    const imageLoader = () => {
+        switch (status) {
+            case 'POI_NAME_MISMATCH':
+                return <PoiNameMismatchExample />;
+            case 'POI_DOB_MISMATCH':
+                return <PoiDobMismatchExample />;
+            default:
+                return <PoiNameDobExample />;
+        }
+    };
 
     const getNameAndDobLabels = () => {
         const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_qualified_for_idv;
@@ -118,7 +124,7 @@ const PersonalDetailsForm = ({
             )}
             <FormBodySection
                 has_side_note={(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image}
-                side_note={<PoiNameDobExampleIcon />}
+                side_note={imageLoader()}
             >
                 <fieldset className='account-form__fieldset'>
                     {'salutation' in values && (

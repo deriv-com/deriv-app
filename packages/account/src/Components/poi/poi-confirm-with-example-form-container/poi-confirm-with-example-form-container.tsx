@@ -148,17 +148,7 @@ const PoiConfirmWithExampleFormContainer = ({
             }) => (
                 <Form className='account-form__poi-confirm-example' onSubmit={handleSubmit}>
                     <FormBody>
-                        <PersonalDetailsForm
-                            errors={errors}
-                            touched={touched}
-                            values={values}
-                            handleChange={handleChange}
-                            handleBlur={handleBlur}
-                            setFieldValue={setFieldValue}
-                            setFieldTouched={setFieldTouched}
-                            editable_fields={rest_state.changeable_fields}
-                            is_rendered_for_onfido
-                        />
+                        <PersonalDetailsForm editable_fields={rest_state.changeable_fields} is_rendered_for_onfido />
                         <button
                             type='submit'
                             className={classNames('account-form__poi-confirm-example--button', {

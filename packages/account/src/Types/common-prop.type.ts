@@ -89,24 +89,23 @@ export type TPOIStatus = {
     is_manual_upload?: boolean;
 };
 
-export type TPersonalDetailsForm = {
-    warning_items?: Record<string, string>;
-    is_virtual?: boolean;
-    is_mf?: boolean;
-    is_svg?: boolean;
-    is_qualified_for_idv?: boolean;
-    should_hide_helper_image: boolean;
-    is_appstore?: boolean;
-    editable_fields: Array<string>;
-    has_real_account?: boolean;
-    residence_list?: ResidenceList;
-    is_fully_authenticated?: boolean;
-    account_opening_reason_list?: Record<string, string>[];
-    closeRealAccountSignup: () => void;
-    salutation_list?: Record<string, string>[];
-    is_rendered_for_onfido?: boolean;
-    should_close_tooltip?: boolean;
-    setShouldCloseTooltip?: (should_close_tooltip: boolean) => void;
-} & FormikProps<FormikValues>;
-
 export type TInputFieldValues = Record<string, string>;
+
+export type TIDVForm = {
+    document_type: {
+        id: string;
+        text: string;
+        value: string;
+        example_format: string;
+        sample_image: string;
+        additional?: string;
+    };
+    document_number: string;
+    document_additional?: string;
+};
+
+export type TPersonalDetailsForm = {
+    first_name: string;
+    last_name: string;
+    date_of_birth: string;
+};

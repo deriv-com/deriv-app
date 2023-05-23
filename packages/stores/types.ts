@@ -49,6 +49,7 @@ type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: string | number;
     landing_company_shortcode?: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     is_virtual: number;
+    account_category?: 'wallet' | 'trading';
 };
 
 type TAccountsList = {
@@ -85,6 +86,7 @@ type TActiveAccount = TAccount & {
     balance?: string | number;
     landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     is_virtual: number;
+    account_category?: 'wallet' | 'trading';
 };
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };

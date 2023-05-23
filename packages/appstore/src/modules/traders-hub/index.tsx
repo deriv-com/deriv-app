@@ -14,7 +14,6 @@ import classNames from 'classnames';
 import WalletsBanner from 'Components/wallets-banner';
 import './traders-hub.scss';
 import WalletHeader from 'Components/wallet-header';
-import AmountInputForTesting from '../../components/modals/amount-input-for-testing/amount-input-for-testing';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();
@@ -105,7 +104,6 @@ const TradersHub = () => {
                         <div className='traders-hub__main-container'>
                             <OptionsAndMultipliersListing />
                             <CFDsListing />
-                            <AmountInputForTesting />
                         </div>
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -124,7 +122,6 @@ const TradersHub = () => {
                         )}
                         {selected_platform_type === 'options' && <OptionsAndMultipliersListing />}
                         {selected_platform_type === 'cfd' && <CFDsListing />}
-                        <AmountInputForTesting />
                     </MobileWrapper>
                     <ModalManager />
                     {scrolled && <TourGuide />}

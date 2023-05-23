@@ -11,9 +11,7 @@ import { isDesktop, routes, ContentFlag, isMobile } from '@deriv/shared';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
-import WalletHeader from 'Components/wallet-header';
 import WalletCardsCarousel from 'Components/wallet-cards-carousel';
-// import { WalletCardsCarouselItem } from 'Components/wallet-cards-carousel/wallet-cards-carousel';
 import './traders-hub.scss';
 
 const TradersHub = () => {
@@ -43,6 +41,7 @@ const TradersHub = () => {
         }, 100);
     }, [is_tour_open]);
 
+    // TODO: just for testing purpose. Delete it later
     const items = React.useMemo(
         () =>
             Array.from({ length: 20 }).map((_, i) => ({
@@ -95,28 +94,7 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
-                    <WalletCardsCarousel
-                        items={items}
-                        // renderItem={({ item, isSnapPoint }) => (
-                        //     <WalletCardsCarouselItem key={item.id} isSnapPoint={isSnapPoint}>
-                        //         <img src={item.src} width='160px' height='96px' />
-                        //     </WalletCardsCarouselItem>
-                        // )}
-                    />
-                    {/* <WalletHeader account_type='demo' />
-                    <WalletHeader currency='AUD' shortcode='svg' />
-                    <WalletHeader currency='EUR' shortcode='svg' is_open_wallet={true} />
-                    <WalletHeader currency='USD' shortcode='malta' />
-                    <WalletHeader currency='BTC' shortcode='svg' />
-                    <WalletHeader currency='ETH' shortcode='svg' />
-                    <WalletHeader currency='USDT' shortcode='svg' />
-                    <WalletHeader currency='eUSDT' shortcode='svg' />
-                    <WalletHeader currency='tUSDT' shortcode='svg' />
-                    <WalletHeader currency='LTC' shortcode='svg' />
-                    <WalletHeader currency='USDC' shortcode='svg' />
-                    <WalletHeader account_status='pending' currency='USD' shortcode='malta' />
-                    <WalletHeader account_status='need_verification' currency='EUR' shortcode='malta' />
-                    <WalletHeader account_status='failed' currency='USD' shortcode='malta' /> */}
+                    <WalletCardsCarousel items={items} />
                     <MainTitleBar />
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>

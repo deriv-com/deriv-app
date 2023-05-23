@@ -1,103 +1,108 @@
 import React from 'react';
-import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import Badge from '../badge';
 import Button from '../button';
 import Icon from '../icon';
 import Text from '../text';
-import { GradientBackground } from '../gradient-background';
+import { isMobile } from '@deriv/shared';
 import { WalletIcon } from '../wallet-icon';
 import './wallet-card.scss';
 
 type TWalletCardProps = {
-    balance?: string;
-    currency?: string;
-    icon: JSX.Element;
-    badge_text: string;
+    // TODO: This type should be updated when the response is ready
+    wallet: any;
     size?: 'small' | 'medium' | 'large';
-    wallet_name?: string;
-    wallet_state?: 'active' | 'add' | 'added' | 'default' | 'disabled' | 'faded';
+    state?: 'active' | 'add' | 'added' | 'default' | 'disabled' | 'faded';
 };
 
 const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
-    balance,
-    currency,
-    icon,
-    badge_text,
-    size,
-    wallet_name,
-    wallet_state = 'default',
-}) => (
-    <div
-        className={classNames('wallet-card', {
-            [`wallet-card--${size}`]: size,
-            [`wallet-card--${wallet_state}`]: wallet_state,
-        })}
-    >
-        {size === 'small' ? (
-            <div className='wallet-card__small-container'>
-                <div
-                    className={`wallet-card__small-container-overlay wallet-card__small-container-overlay--${
-                        wallet_state === 'add' || wallet_state === 'added' ? 'default' : wallet_state
-                    }`}
-                />
-                <WalletIcon icon={icon} primaryColor='#F44336' secondaryColor='#283991' />
-            </div>
-        ) : (
-            <GradientBackground color='var(--general-main-2)' primary='#F44336' secondary='#283991' tertiary='#F44336'>
-                <div
-                    className={classNames('wallet-card__content', {
-                        [`wallet-card__content--${size}`]: size,
-                        [`wallet-card__content--${wallet_state}`]: wallet_state,
-                    })}
-                >
-                    <div className='wallet-card__shine' />
-                    <div className='wallet-card__top-wrapper'>
-                        {icon}
-                        <Badge custom_color='var(--text-prominent' label={badge_text} type='bordered' />
-                    </div>
-                    <div className='wallet-card__bottom-wrapper'>
-                        {wallet_state !== 'add' && wallet_state !== 'added' ? (
-                            <React.Fragment>
-                                <Text className='wallet-card__bottom-wrapper-wallet-name' color='prominent'>
-                                    {wallet_name} {localize('Wallet')}
-                                </Text>
-                                <Text className='wallet-card__bottom-wrapper-balance' color='prominent' weight='bold'>
-                                    {balance} {currency}
-                                </Text>
-                            </React.Fragment>
-                        ) : (
-                            <Button
-                                className={classNames('wallet-card__wallet-button', {
-                                    [`wallet-card__wallet-button--${wallet_state}`]: wallet_state,
-                                })}
-                                classNameSpan='wallet-card__wallet-button-text'
-                                icon={
-                                    <Icon
-                                        className='wallet-card__wallet-button-icon'
-                                        custom_color='$color-black-1'
-                                        icon={wallet_state === 'added' ? 'IcCheckmarkBold' : 'IcAddBold'}
-                                        size={12}
-                                    />
-                                }
-                                text={wallet_state === 'added' ? ' Added' : 'Add'}
+    wallet,
+    size = 'medium',
+    state = 'default',
+}) => {
+    const IconComponent = () => {
+        let icon_size = wallet.icon_type === 'app' ? 'medium' : 'large';
+        if (size === 'small') icon_size = 'medium';
+        if (size === 'medium') icon_size = isMobile() && wallet.icon_type === 'crypto' ? 'medium' : 'large';
+
+        return (
+            <React.Fragment>
+                {wallet.icon_type !== 'app' && (
+                    <WalletIcon
+                        type={wallet.icon_type}
+                        icon={wallet.icon}
+                        size={icon_size}
+                        currency={wallet.currency}
+                    />
+                )}
+                {/* TODO: Update this after app-icon created */}
+                {wallet.icon_type === 'app' && <div />}
+            </React.Fragment>
+        );
+    };
+
+    return (
+        <div className={`wallet-card wallet-card--${size} wallet-card--${state}`}>
+            <div className={`wallet-card__container wallet-card__${wallet.currency}-bg`}>
+                {size === 'small' && <IconComponent />}
+                {size !== 'small' && (
+                    <div className='wallet-card__content'>
+                        <div className='wallet-card__shine' />
+
+                        <div className='wallet-card__top-wrapper'>
+                            <IconComponent />
+                            <Badge
+                                custom_color='var(--text-prominent)'
+                                label={wallet.jurisdiction_title}
+                                type='bordered'
                             />
-                        )}
+                        </div>
+
+                        <div className='wallet-card__bottom-wrapper'>
+                            {state !== 'add' && state !== 'added' ? (
+                                <React.Fragment>
+                                    <Text className='wallet-card__bottom-wrapper-wallet-name' color='prominent'>
+                                        {wallet.name} {localize('Wallet')}
+                                    </Text>
+                                    <Text
+                                        className='wallet-card__bottom-wrapper-balance'
+                                        color='prominent'
+                                        weight='bold'
+                                    >
+                                        {wallet.balance} {wallet.currency}
+                                    </Text>
+                                </React.Fragment>
+                            ) : (
+                                <Button
+                                    className={`wallet-card__wallet-button wallet-card__wallet-button--${state}`}
+                                    classNameSpan='wallet-card__wallet-button-text'
+                                    icon={
+                                        <Icon
+                                            className='wallet-card__wallet-button-icon'
+                                            custom_color='$color-black-1'
+                                            icon={state === 'added' ? 'IcCheckmarkBold' : 'IcAddBold'}
+                                            size={12}
+                                        />
+                                    }
+                                    text={state === 'added' ? localize('Added') : localize('Add')}
+                                    is_disabled={state === 'added'}
+                                />
+                            )}
+                        </div>
                     </div>
+                )}
+            </div>
+            {state === 'active' && (
+                <div className='wallet-card__active-icon'>
+                    <Icon
+                        color='brand'
+                        data_testid='ic-checkmark-circle'
+                        icon='IcCheckmarkCircle'
+                        size={size === 'small' ? 16 : 32}
+                    />
                 </div>
-            </GradientBackground>
-        )}
-        {wallet_state === 'active' && (
-            <Icon
-                className={classNames('wallet-card__active-icon', {
-                    [`wallet-card__active-icon--small`]: size === 'small',
-                })}
-                color='brand'
-                data_testid='ic-checkmark-circle'
-                icon='IcCheckmarkCircle'
-                size={size === 'small' ? 16 : 32}
-            />
-        )}
-    </div>
-);
+            )}
+        </div>
+    );
+};
 export default WalletCard;

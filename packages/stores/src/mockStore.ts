@@ -272,6 +272,7 @@ const mock = (): TStores => {
             setShouldShowWalletConsentPopup: jest.fn(),
             is_real_wallets_upgrade_on: false,
             toggleWalletsUpgrade: jest.fn(),
+            openFailedVerificationModal: jest.fn(),
             financial_restricted_countries: false,
             selected_account_type: 'real',
             no_CR_account: false,

@@ -7,32 +7,36 @@
         width: 100%;
         height: 100%;
 
-        &:after {
-            background: var(--wallets-card-active-gradient-background);
-            border-radius: inherit;
-            content: '';
-            height: 100%;
-            left: 0;
-            opacity: 0;
-            position: absolute;
-            top: 0;
-            width: 100%;
-        }
-
-        &:hover {
-            &:after {
-                opacity: 1;
-            }
-        }
-
-        &--active:after {
-            opacity: 1;
-        }
-
         &--small {
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        &-fade {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            background: var(--wallets-card-active-gradient-background);
+            border-radius: inherit;
+
+            &--active {
+                opacity: 1;
+            }
+        }
+
+        &:hover & {
+            &-fade {
+                opacity: 1;
+                &--disabled,
+                &--faded,
+                &--added {
+                    opacity: 0;
+                }
+            }
         }
     }
 

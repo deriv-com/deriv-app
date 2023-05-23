@@ -7,6 +7,7 @@ import Text from '../text';
 import { isMobile } from '@deriv/shared';
 import { WalletIcon } from '../wallet-icon';
 import './wallet-card.scss';
+import classNames from 'classnames';
 
 type TWalletCardProps = {
     // TODO: This type should be updated when the response is ready
@@ -46,6 +47,11 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
             <div
                 className={`wallet-card__container wallet-card__container--${state} wallet-card__container--${size} wallet-card__${wallet.currency}-bg`}
             >
+                <div
+                    className={classNames('wallet-card__container-fade', {
+                        [`wallet-card__container-fade--${state}`]: state,
+                    })}
+                />
                 {size === 'small' && <IconComponent />}
                 {size !== 'small' && (
                     <div className={`wallet-card__content wallet-card__content--${size}`}>

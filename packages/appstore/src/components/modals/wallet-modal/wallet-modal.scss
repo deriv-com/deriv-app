@@ -38,8 +38,6 @@
             .dc-mobile-dialog__wallet-mobile-dialog__wrapper {
                 .modal-header {
                     height: 12.2rem;
-                    position: fixed;
-                    z-index: 1;
                     transition: height 0.2s ease;
 
                     .title-visibility {
@@ -154,6 +152,20 @@
             padding: 0 1.6rem;
             font-size: var(--text-size-xs);
         }
+    }
+}
+
+.header-background {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    background-color: #fbdddd;
+
+    @include mobile {
+        position: fixed;
+        z-index: 1;
     }
 }
 

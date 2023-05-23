@@ -138,7 +138,7 @@ const AppNotificationMessages = ({
                   'has_changed_two_fa',
                   'svg_needs_poi',
                   'svg_poi_expired',
-                  'switched_to_real',
+                  'success_wallets_upgrade',
               ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
 
@@ -156,10 +156,7 @@ const AppNotificationMessages = ({
             : excluded_notifications.includes(message.key)
     );
 
-    const notifications_sublist =
-        window.location.pathname === routes.cashier_deposit
-            ? filtered_excluded_notifications.filter(message => message.key.includes('switched_to_real'))
-            : filtered_excluded_notifications.slice(0, notifications_limit);
+    const notifications_sublist = filtered_excluded_notifications.slice(0, notifications_limit);
 
     if (!should_show_popups) return null;
 

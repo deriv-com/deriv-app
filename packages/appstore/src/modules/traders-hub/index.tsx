@@ -11,11 +11,10 @@ import { isDesktop, routes, ContentFlag, isMobile } from '@deriv/shared';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
-import WalletsBanner from 'Components/wallets-banner';
-import './traders-hub.scss';
 import WalletHeader from 'Components/wallet-header';
-import CardCarousel from 'Components/card-carousel';
-import { CarouselItem } from 'Components/card-carousel/card-carousel';
+import WalletCardsCarousel from 'Components/wallet-cards-carousel';
+// import { WalletCardsCarouselItem } from 'Components/wallet-cards-carousel/wallet-cards-carousel';
+import './traders-hub.scss';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();
@@ -43,6 +42,15 @@ const TradersHub = () => {
             }, 200);
         }, 100);
     }, [is_tour_open]);
+
+    const items = React.useMemo(
+        () =>
+            Array.from({ length: 20 }).map((_, i) => ({
+                id: i,
+                src: `https://picsum.photos/500?idx=${i}`,
+            })),
+        []
+    );
 
     const eu_title = content_flag === ContentFlag.EU_DEMO || content_flag === ContentFlag.EU_REAL || is_eu_user;
 
@@ -76,11 +84,6 @@ const TradersHub = () => {
         );
     };
 
-    const items = Array.from({ length: 20 }).map((_, i) => ({
-        id: i,
-        src: `https://picsum.photos/500?idx=${i}`,
-    }));
-
     return (
         <>
             <Div100vhContainer
@@ -92,15 +95,15 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
-                    <CardCarousel
+                    <WalletCardsCarousel
                         items={items}
-                        renderItem={({ item, isSnapPoint }) => (
-                            <CarouselItem key={item.id} isSnapPoint={isSnapPoint}>
-                                <img src={item.src} width='160px' height='96px' alt='' style={{ padding: '2.4rem' }} />
-                            </CarouselItem>
-                        )}
+                        // renderItem={({ item, isSnapPoint }) => (
+                        //     <WalletCardsCarouselItem key={item.id} isSnapPoint={isSnapPoint}>
+                        //         <img src={item.src} width='160px' height='96px' />
+                        //     </WalletCardsCarouselItem>
+                        // )}
                     />
-                    <WalletHeader account_type='demo' />
+                    {/* <WalletHeader account_type='demo' />
                     <WalletHeader currency='AUD' shortcode='svg' />
                     <WalletHeader currency='EUR' shortcode='svg' is_open_wallet={true} />
                     <WalletHeader currency='USD' shortcode='malta' />
@@ -113,7 +116,7 @@ const TradersHub = () => {
                     <WalletHeader currency='USDC' shortcode='svg' />
                     <WalletHeader account_status='pending' currency='USD' shortcode='malta' />
                     <WalletHeader account_status='need_verification' currency='EUR' shortcode='malta' />
-                    <WalletHeader account_status='failed' currency='USD' shortcode='malta' />
+                    <WalletHeader account_status='failed' currency='USD' shortcode='malta' /> */}
                     <MainTitleBar />
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>

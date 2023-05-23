@@ -1,0 +1,35 @@
+.wallet-cards-carousel {
+    // -ms-overflow-style: none;
+    // scrollbar-width: none;
+    // position: relative;
+
+    &__pagination {
+        padding: 1rem;
+    }
+
+    &__scroll {
+        position: relative;
+        display: flex;
+        overflow: auto;
+        scroll-snap-type: x mandatory;
+    }
+
+    &__item {
+        width: 16rem;
+        height: 9.6rem;
+        flex-shrink: 0;
+        margin-right: calc(((100vw - 16rem) / 2) - 6rem);
+
+        &--first {
+            margin-left: calc((100vw - 16rem) / 2);
+        }
+
+        &--last {
+            margin-right: calc((100vw - 16rem) / 2);
+        }
+
+        &--snap-point {
+            scroll-snap-align: center;
+        }
+    }
+}

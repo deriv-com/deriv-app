@@ -17,4 +17,51 @@ module.exports = {
             webpack: { config: webpackConfig({}) },
         },
     },
+    plugins: ['simple-import-sort'],
+    rules: {
+        'simple-import-sort/imports': 'error',
+        'simple-import-sort/exports': 'error',
+    },
+    overrides: [
+        {
+            files: ['**/*.js', '**/*.ts', '**/*.tsx', '**/*.jsx'],
+            rules: {
+                'simple-import-sort/imports': [
+                    'error',
+                    {
+                        groups: [
+                            [
+                                'public-path',
+                                // `react` first, then packages starting with a character
+                                '^react$',
+                                '^[a-z]',
+                                // Packages starting with `@`
+                                '^@',
+                                // Packages starting with `~`
+                                '^~',
+                                '^Components',
+                                '^Constants',
+                                '^Utils',
+                                '^Types',
+                                '^Stores',
+                                // Imports starting with `../`
+                                '^\\.\\.(?!/?$)',
+                                '^\\.\\./?$',
+                                // Imports starting with `./`
+                                '^\\./(?=.*/)(?!/?$)',
+                                '^\\.(?!/?$)',
+                                '^\\./?$',
+                                // Style imports
+                                '^.+\\.s?css$',
+                                // Side effect imports
+                                '^\\u0000',
+                                // Delete the empty line copied as the next line of the last import
+                                '\\s*',
+                            ],
+                        ],
+                    },
+                ],
+            },
+        },
+    ],
 };

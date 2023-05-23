@@ -14,7 +14,7 @@ import { withRouter } from 'react-router-dom';
 const PlatformSwitcher = ({
     toggleDrawer,
     app_routing_history,
-    platform_config,
+    platform_config = [],
     current_language,
     is_landing_company_loaded,
     is_logged_in,

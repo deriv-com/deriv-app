@@ -9,8 +9,6 @@ require('./webpack');
 const getConfig = prefix => ({
     index: `<script src="js/${prefix ? getManifest(`index${prefix}.js`) : 'index.js'}"></script>`,
     bot: `<script src="js/${prefix ? getManifest(`bot${prefix}.js`) : 'bot.js'}"></script>`,
-    bundle: `<script src="js/bundle.js"></script>`,
-    // bot_css: `<link href="css/${getManifest('bot.css')}" rel="stylesheet" />`,
 });
 
 const genHtml = min =>

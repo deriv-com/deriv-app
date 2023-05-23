@@ -2,6 +2,7 @@ import { localize } from '@deriv/translations';
 
 export type TDxCompanies = ReturnType<typeof getDxCompanies>;
 export type TMtCompanies = ReturnType<typeof getMtCompanies>;
+export type TDerivezCompanies = ReturnType<typeof getDerivezCompanies>;
 
 export const getDxCompanies = () => {
     const synthetic_config = {
@@ -122,6 +123,12 @@ export const getMtCompanies = (is_eu: boolean) => {
                 title: localize('Real'),
                 short_title: all_config.short_title,
             },
+            derivez: {
+                mt5_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('Real'),
+                short_title: all_config.short_title,
+            },
             synthetic: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
@@ -175,6 +182,32 @@ export const getMtCompanies = (is_eu: boolean) => {
                 leverage: financial_stp_config.leverage,
                 title: localize('Financial STP'),
                 short_title: financial_stp_config.short_title,
+            },
+        },
+    };
+};
+
+export const getDerivezCompanies = () => {
+    const all_config = {
+        account_type: '',
+        leverage: 500,
+        short_title: localize('All'),
+    };
+    return {
+        demo: {
+            all: {
+                derivez_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('Demo All'),
+                short_title: all_config.short_title,
+            },
+        },
+        real: {
+            all: {
+                derivez_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('All'),
+                short_title: all_config.short_title,
             },
         },
     };

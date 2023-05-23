@@ -1,7 +1,7 @@
 import { action, computed, observable, reaction, runInAction, makeObservable, override } from 'mobx';
 import { getAccountListKey, getAccountTypeFields, CFD_PLATFORMS, WS } from '@deriv/shared';
 import BaseStore from 'Stores/base-store';
-import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
+import { getDxCompanies, getMtCompanies, getDerivezCompanies } from './Helpers/cfd-config';
 
 export default class CFDStore extends BaseStore {
     is_compare_accounts_visible = false;
@@ -181,6 +181,12 @@ export default class CFDStore extends BaseStore {
     get dxtrade_companies() {
         return getDxCompanies();
     }
+
+    // eslint-disable-next-line class-methods-use-this
+    get derivez_companies() {
+        return getDerivezCompanies();
+    }
+
     get has_created_account_for_selected_jurisdiction() {
         return this.account_type.type === 'synthetic'
             ? this.real_synthetic_accounts_existing_data?.some(
@@ -572,6 +578,14 @@ export default class CFDStore extends BaseStore {
             case CFD_PLATFORMS.MT5: {
                 response = await WS.authorized.mt5Deposit({
                     to_mt5: this.current_account.login,
+                });
+                break;
+            }
+            case CFD_PLATFORMS.DERIVEZ: {
+                response = await WS.authorized.send({
+                    trading_platform_deposit: 1,
+                    platform: CFD_PLATFORMS.DERIVEZ,
+                    to_account: this.current_account.account_id,
                 });
                 break;
             }

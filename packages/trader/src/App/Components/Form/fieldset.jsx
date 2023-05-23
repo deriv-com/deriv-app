@@ -30,7 +30,7 @@ const Fieldset = ({
                     {header_tooltip && (
                         <span
                             className={classNames('', {
-                                'trade-container__fieldset-header--disabled': is_tooltip_disabled,
+                                'trade-container__fieldset-header--tooltip-disabled': is_tooltip_disabled,
                             })}
                         >
                             <Popover

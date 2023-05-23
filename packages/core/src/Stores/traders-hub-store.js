@@ -28,7 +28,6 @@ export default class TradersHubStore extends BaseStore {
     };
     is_account_transfer_modal_open = false;
     selected_account = {};
-    show_wallet_consent_popup = false;
     is_real_wallets_upgrade_on = false;
 
     constructor(root_store) {
@@ -76,7 +75,6 @@ export default class TradersHubStore extends BaseStore {
             openRealWalletsUpgrade: action.bound,
             closeRealWalletsUpgrade: action.bound,
             financial_restricted_countries: computed,
-            CFDs_restricted_countries: computed,
             openDemoCFDAccount: action.bound,
             openModal: action.bound,
             openRealAccount: action.bound,
@@ -98,8 +96,6 @@ export default class TradersHubStore extends BaseStore {
             toggleIsTourOpen: action.bound,
             toggleRegulatorsCompareModal: action.bound,
             showTopUpModal: action.bound,
-            show_wallet_consent_popup: observable,
-            setShouldShowWalletConsentPopup: action.bound,
             toggleWalletsUpgrade: action.bound,
         });
 
@@ -152,10 +148,6 @@ export default class TradersHubStore extends BaseStore {
                 this.selected_region = default_region();
             }
         );
-    }
-
-    setShouldShowWalletConsentPopup(value) {
-        this.show_wallet_consent_popup = value;
     }
 
     async setSwitchEU() {

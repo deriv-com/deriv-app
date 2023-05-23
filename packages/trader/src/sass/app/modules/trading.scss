@@ -85,6 +85,9 @@
                 display: flex;
                 justify-content: flex-end;
             }
+            &--tooltip-disabled {
+                pointer-events: none !important;
+            }
         }
         &-info {
             @include typeface(--paragraph-left-normal-black);

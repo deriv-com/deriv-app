@@ -1,5 +1,6 @@
 import { action, computed, observable, toJS, makeObservable, override, runInAction } from 'mobx';
 import {
+    extractInfoFromShortcode,
     isAccumulatorContract,
     isDesktop,
     isEnded,
@@ -7,10 +8,9 @@ import {
     LocalStore,
     switch_to_tick_chart,
     isCallPut,
+    getAccumulatorBarriers,
     getContractTypesConfig,
     isEmptyObject,
-    extractInfoFromShortcode,
-    getAccumulatorBarriers,
 } from '@deriv/shared';
 import ContractStore from './contract-store';
 import BaseStore from './base-store';

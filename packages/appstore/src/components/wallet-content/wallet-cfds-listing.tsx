@@ -109,7 +109,7 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
                                 platform={existing_account.platform}
                                 description={existing_account.description}
                                 key={existing_account.key}
-                                has_divider={(!is_eu_user || !!is_virtual) && getHasDivider(index, list_size, 3)}
+                                has_divider={getHasDivider(index, list_size, 3)}
                                 mt5_acc_auth_status={has_mt5_account_status}
                                 selected_mt5_jurisdiction={{
                                     platform: existing_account.platform,
@@ -123,11 +123,6 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
                 </React.Fragment>
             ) : (
                 <PlatformLoader />
-            )}
-            {!is_eu_user && !CFDs_restricted_countries && (
-                <div className='cfd-full-row'>
-                    <hr className='divider' />
-                </div>
             )}
             {available_dxtrade_accounts?.length > 0 && (
                 <div className='cfd-full-row'>

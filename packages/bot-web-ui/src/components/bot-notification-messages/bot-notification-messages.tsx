@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 
 interface TBotNotificationMessagesProps {
     is_drawer_open: boolean;
@@ -14,6 +14,8 @@ const BotNotificationMessages = ({ is_drawer_open, Notifications }: TBotNotifica
             'notifications-container--is-panel-open': is_drawer_open,
         })}
     >
+        {' '}
+        <></>
         <Notifications />
     </div>
 );

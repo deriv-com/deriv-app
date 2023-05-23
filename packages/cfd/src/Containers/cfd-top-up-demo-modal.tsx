@@ -6,7 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import RootStore from '../Stores/index';
 import { connect } from '../Stores/connect';
-import { TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
+import { TCTraderCompanies, TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { getTopUpConfig } from '../Helpers/constants';
 
 type TExtendedCurrentAccount = DetailsOfEachMT5Loginid & {
@@ -17,6 +17,7 @@ type TExtendedCurrentAccount = DetailsOfEachMT5Loginid & {
 
 type TCFDTopUpDemoModalProps = {
     dxtrade_companies: TDxCompanies;
+    ctrader_companies: TCTraderCompanies;
     mt5_companies: TMtCompanies;
     current_account?: TExtendedCurrentAccount;
     closeSuccessTopUpModal: () => void;
@@ -31,6 +32,7 @@ type TCFDTopUpDemoModalProps = {
 
 const CFDTopUpDemoModal = ({
     dxtrade_companies,
+    ctrader_companies,
     mt5_companies,
     current_account,
     closeSuccessTopUpModal,
@@ -43,11 +45,11 @@ const CFDTopUpDemoModal = ({
     topUpVirtual,
 }: TCFDTopUpDemoModalProps) => {
     const getAccountTitle = React.useCallback(() => {
-        if ((!mt5_companies && !dxtrade_companies) || !current_account) return '';
+        if ((!mt5_companies && !dxtrade_companies && !ctrader_companies) || !current_account) return '';
         return mt5_companies[current_account.category as keyof TMtCompanies][
             current_account.type as keyof TMtCompanies['demo' | 'real']
         ].title;
-    }, [mt5_companies, dxtrade_companies, current_account]);
+    }, [mt5_companies, dxtrade_companies, ctrader_companies, current_account]);
 
     const onCloseSuccess = () => {
         closeSuccessTopUpModal();
@@ -55,7 +57,7 @@ const CFDTopUpDemoModal = ({
 
     const platform_title = getCFDPlatformLabel(platform);
 
-    if ((!mt5_companies && !dxtrade_companies) || !current_account) return null;
+    if ((!mt5_companies && !dxtrade_companies && !ctrader_companies) || !current_account) return null;
 
     const { minimum_amount, additional_amount } = getTopUpConfig();
 
@@ -193,5 +195,6 @@ export default connect(({ ui, modules }: RootStore) => ({
     current_account: modules.cfd.current_account,
     dxtrade_companies: modules.cfd.dxtrade_companies,
     mt5_companies: modules.cfd.mt5_companies,
+    ctrader_companies: modules.cfd.ctrader_companies,
     topUpVirtual: modules.cfd.topUpVirtual,
 }))(CFDTopUpDemoModal);

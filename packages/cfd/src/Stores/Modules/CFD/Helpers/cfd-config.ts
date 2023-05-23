@@ -2,6 +2,7 @@ import { localize } from '@deriv/translations';
 
 export type TDxCompanies = ReturnType<typeof getDxCompanies>;
 export type TMtCompanies = ReturnType<typeof getMtCompanies>;
+export type TCTraderCompanies = ReturnType<typeof getCTraderCompanies>;
 
 export const getDxCompanies = () => {
     const synthetic_config = {
@@ -41,6 +42,32 @@ export const getDxCompanies = () => {
                 leverage: financial_config.leverage,
                 title: localize('Financial'),
                 short_title: financial_config.short_title,
+            },
+        },
+    };
+};
+
+export const getCTraderCompanies = () => {
+    const all_config = {
+        account_type: '',
+        leverage: 500,
+        short_title: localize('All'),
+    };
+    return {
+        demo: {
+            all: {
+                ctrader_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('Demo All'),
+                short_title: all_config.short_title,
+            },
+        },
+        real: {
+            all: {
+                dxtrade_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('All'),
+                short_title: all_config.short_title,
             },
         },
     };
@@ -111,6 +138,12 @@ export const getMtCompanies = (is_eu: boolean) => {
         },
         real: {
             all: {
+                mt5_account_type: all_config.account_type,
+                leverage: all_config.leverage,
+                title: localize('Real'),
+                short_title: all_config.short_title,
+            },
+            ctrader: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
                 title: localize('Real'),

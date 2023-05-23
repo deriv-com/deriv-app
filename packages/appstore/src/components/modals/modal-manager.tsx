@@ -47,6 +47,7 @@ const ModalManager = () => {
         getRealFinancialAccountsExistingData,
         current_account,
         dxtrade_companies,
+        ctrader_companies,
         mt5_companies,
         topUpVirtual,
     } = modules.cfd;
@@ -134,6 +135,7 @@ const ModalManager = () => {
             <CFDTopUpDemoModal
                 context={store}
                 dxtrade_companies={dxtrade_companies}
+                ctrader_companies={ctrader_companies}
                 mt5_companies={mt5_companies}
                 current_account={current_account}
                 closeSuccessTopUpModal={closeSuccessTopUpModal}

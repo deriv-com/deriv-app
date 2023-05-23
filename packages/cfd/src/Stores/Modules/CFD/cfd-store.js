@@ -1,7 +1,7 @@
 import { action, computed, observable, reaction, runInAction, makeObservable, override } from 'mobx';
 import { getAccountListKey, getAccountTypeFields, CFD_PLATFORMS, WS } from '@deriv/shared';
 import BaseStore from 'Stores/base-store';
-import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
+import { getDxCompanies, getMtCompanies, getCTraderCompanies } from './Helpers/cfd-config';
 
 export default class CFDStore extends BaseStore {
     is_compare_accounts_visible = false;
@@ -180,6 +180,10 @@ export default class CFDStore extends BaseStore {
     // eslint-disable-next-line class-methods-use-this
     get dxtrade_companies() {
         return getDxCompanies();
+    }
+    // eslint-disable-next-line class-methods-use-this
+    get ctrader_companies() {
+        return getCTraderCompanies();
     }
     get has_created_account_for_selected_jurisdiction() {
         return this.account_type.type === 'synthetic'
@@ -566,6 +570,14 @@ export default class CFDStore extends BaseStore {
                 response = await WS.authorized.send({
                     trading_platform_deposit: 1,
                     platform: CFD_PLATFORMS.DXTRADE,
+                    to_account: this.current_account.account_id,
+                });
+                break;
+            }
+            case CFD_PLATFORMS.CTRADER: {
+                response = await WS.authorized.send({
+                    trading_platform_deposit: 1,
+                    platform: CFD_PLATFORMS.CTRADER,
                     to_account: this.current_account.account_id,
                 });
                 break;

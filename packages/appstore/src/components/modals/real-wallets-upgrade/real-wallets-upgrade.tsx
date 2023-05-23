@@ -8,8 +8,8 @@ import { ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useStore } from '@deriv/stores';
 import { steps } from 'Constants/wallet-static-steps-config';
-import WalletLink from './components/wallet-link/wallet-link-wrapper';
 import WalletLinkingStep from './wallet-linking-step/wallet-linking-step';
+import mock_wallet_migration_response from '../../../constants/mock_wallet_migration_response';
 
 const RealWalletsUpgrade = () => {
     const { traders_hub } = useStore();
@@ -44,20 +44,26 @@ const RealWalletsUpgrade = () => {
     const StepComponent = () => {
         return (
             <React.Fragment>
-                {step_config.map((step, index) => {
-                    if (index === currentStep - 1) {
-                        return (
-                            <WalletSteps
-                                key={index}
-                                icon={step?.icon}
-                                title={step?.title}
-                                description={step?.description}
-                                bullets={step?.bullets || []}
-                            />
-                        );
-                    }
-                    return null;
-                })}
+                {currentStep - 1 < step_config.length
+                    ? step_config.map((step, index) => {
+                          if (index === currentStep - 1) {
+                              return (
+                                  <WalletSteps
+                                      key={index}
+                                      icon={step?.icon}
+                                      title={step?.title}
+                                      description={step?.description}
+                                      bullets={step?.bullets || []}
+                                  />
+                              );
+                          }
+                          return null;
+                      })
+                    : mock_wallet_migration_response.map((step, index) => {
+                          if (index === currentStep - step_config.length - 1)
+                              return <WalletLinkingStep key={index} data={step} />;
+                          return null;
+                      })}
             </React.Fragment>
         );
     };
@@ -88,8 +94,11 @@ const RealWalletsUpgrade = () => {
                                 title=' '
                             >
                                 <Modal.Body className='real-wallets-upgrade__modal-body'>
-                                    {/* <StepComponent /> */}
-                                    <WalletLinkingStep />
+                                    <StepComponent />
+                                    {/* <p>{balance?.balance}</p>
+                                    <p>{wallet_migration?.status}</p> */}
+                                    {/* <WalletLinkingStep /> */}
+                                    {/* {walletMigrationSteps.landing_company} */}
                                 </Modal.Body>
                                 <Modal.Footer has_separator>
                                     <Button
@@ -126,8 +135,8 @@ const RealWalletsUpgrade = () => {
                             wrapper_classname='wallet-steps'
                         >
                             <Modal.Body>
-                                {/* <StepComponent /> */}
-                                <WalletLink />
+                                <StepComponent />
+                                {/* <WalletLinkingStep title='Non-EU USD Accounts' /> */}
                             </Modal.Body>
                             <Modal.Footer className='wallet-steps__footer' has_separator>
                                 <Button

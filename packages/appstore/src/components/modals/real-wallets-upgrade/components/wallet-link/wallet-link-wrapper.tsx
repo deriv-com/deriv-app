@@ -3,19 +3,24 @@ import { Icon, Text } from '@deriv/components';
 import WalletAccount from '../wallet-account/wallet-account';
 import './wallet-link-wrapper.scss';
 
-const WalletLinkWrapper = () => {
+const WalletLinkWrapper = ({ account_list }) => {
     return (
         <div className='wallet-link-wrapper'>
             <div className='wallet-link-wrapper__accounts'>
                 <Text className='wallet-link-wrapper__title-text wallet-link-wrapper__accounts-title'>
                     Your current trading account(s)
                 </Text>
-                <WalletAccount balance='0.00' currency='USD' icon='IcCurrencyUsd' name='MT5 Derived SVG' />
-                <WalletAccount balance='0.00' currency='USD' icon='IcCurrencyUsd' name='MT5 Derived SVG' />
-                <WalletAccount balance='0.00' currency='USD' icon='IcCurrencyUsd' name='MT5 Derived SVG' />
-                <WalletAccount balance='0.00' currency='USD' icon='IcCurrencyUsd' name='MT5 Derived SVG' />
-                <WalletAccount balance='0.00' currency='USD' icon='IcCurrencyUsd' name='MT5 Derived SVG' />
-                <WalletAccount balance='0.00' currency='USD' icon='IcCurrencyUsd' name='MT5 Derived SVG' />
+                {account_list.map((account, index) => {
+                    return (
+                        <WalletAccount
+                            key={index}
+                            balance={account.balance}
+                            currency={account.currency}
+                            icon={account.icon}
+                            name={account.account_name}
+                        />
+                    );
+                })}
             </div>
             <div className='wallet-link-wrapper__link'>
                 <div className='wallet-link-wrapper__link-bracket' />

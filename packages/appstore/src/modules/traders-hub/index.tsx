@@ -14,6 +14,7 @@ import classNames from 'classnames';
 import WalletsBanner from 'Components/wallets-banner';
 import './traders-hub.scss';
 import WalletHeader from 'Components/wallet-header';
+import FiatTransactionListItem from '../../components/fiat-transaction-list';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();
@@ -104,6 +105,37 @@ const TradersHub = () => {
                         <div className='traders-hub__main-container'>
                             <OptionsAndMultipliersListing />
                             <CFDsListing />
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                }}
+                            >
+                                <FiatTransactionListItem
+                                    amount={123.45}
+                                    balance_after={499.99}
+                                    action_type='deposit'
+                                    account_name='Bitcoin account'
+                                    account_type='real'
+                                    currency='USD'
+                                />
+                                <FiatTransactionListItem
+                                    amount={123.45}
+                                    balance_after={499.99}
+                                    action_type='deposit'
+                                    account_name='Bitcoin account'
+                                    account_type='real'
+                                    currency='USD'
+                                />
+                                <FiatTransactionListItem
+                                    amount={123.45}
+                                    balance_after={499.99}
+                                    action_type='deposit'
+                                    account_name='Bitcoin account'
+                                    account_type='real'
+                                    currency='USD'
+                                />
+                            </div>
                         </div>
                     </DesktopWrapper>
                     <MobileWrapper>

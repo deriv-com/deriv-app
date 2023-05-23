@@ -1,0 +1,22 @@
+.fiat-transaction-list-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 16px;
+
+    & > span {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    & > div {
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+
+        & > span {
+            gap: 0;
+        }
+    }
+}

@@ -18,8 +18,6 @@ const MainTitleBar = () => {
         handleTabItemClick,
         toggleRegulatorsCompareModal,
         content_flag,
-        setShouldShowWalletConsentPopup,
-        toggleWalletsUpgrade,
         setWalletsMigrationFailedPopup,
     } = traders_hub;
     const { is_landing_company_loaded, is_switching } = client;
@@ -31,8 +29,6 @@ const MainTitleBar = () => {
     return (
         <React.Fragment>
             <DesktopWrapper>
-                {/* TODO: This is for testing purposes only */}
-                <button onClick={() => setShouldShowWalletConsentPopup(true)}>Click to see Modal</button>
                 {/* TODO: This is for testing purposes only */}
                 <button onClick={() => setWalletsMigrationFailedPopup(true)}>Modal wallet migration failed</button>
                 {/* TODO: Add logic to show and hide the banner here */}
@@ -58,8 +54,6 @@ const MainTitleBar = () => {
                     <div className='main-title-bar-mobile--account-type-dropdown'>
                         <AccountTypeDropdown />
                     </div>
-                    {/* TODO: This is for testing purposes only */}
-                    <button onClick={() => setShouldShowWalletConsentPopup(true)}>Click to see Modal</button>
                     {/* TODO: This is for testing purposes only */}
                     <button onClick={() => setWalletsMigrationFailedPopup(true)}>Modal wallet migration failed</button>
                     {is_low_risk_cr_real_account && is_landing_company_loaded ? (

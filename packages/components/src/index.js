@@ -10,6 +10,7 @@
 // export default { Label, Button };
 
 export { default as Accordion } from './components/accordion';
+export { default as AmountInput } from './components/amount-input';
 export { default as AutoHeightWrapper, TAutoHeightWrapperChildProps } from './components/auto-height-wrapper';
 export { default as Autocomplete } from './components/autocomplete';
 export { default as AutoSizer } from './components/autosizer';
@@ -113,5 +114,6 @@ export { default as UnhandledErrorModal } from './components/unhandled-error-mod
 export { default as VerticalTab } from './components/vertical-tab';
 export * from './components/watermark';
 export { default as Wizard } from './components/wizard';
+export * from './components/wallet-card';
 export * from './components/wallet-icon';
 export * from './hooks';

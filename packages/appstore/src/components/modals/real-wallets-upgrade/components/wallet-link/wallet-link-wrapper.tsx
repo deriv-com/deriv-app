@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
+import { Icon, Text, WalletCard } from '@deriv/components';
 import WalletAccount from '../wallet-account/wallet-account';
 import './wallet-link-wrapper.scss';
 
@@ -32,7 +32,18 @@ const WalletLinkWrapper = ({ account_list }) => {
                 <Text className='wallet-link-wrapper__title-text wallet-link-wrapper__card-wrapper-title'>
                     Your new Wallet
                 </Text>
-                <div className='wallet-link-wrapper__card' />
+                <WalletCard
+                    wallet={{
+                        name: 'USD',
+                        balance: '0.00',
+                        currency: 'USD',
+                        icon: 'IcCurrencyUsd',
+                        jurisdiction_title: 'SVG',
+                        icon_type: 'fiat',
+                    }}
+                    size='large'
+                    state='active'
+                />
             </div>
         </div>
     );

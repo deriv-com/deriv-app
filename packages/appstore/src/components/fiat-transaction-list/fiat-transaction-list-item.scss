@@ -2,20 +2,22 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    height: 72px;
     padding: 16px;
 
-    & > span {
+    & span {
         display: flex;
         flex-direction: column;
         gap: 4px;
     }
 
-    & > div {
+    & div {
         display: flex;
         flex-direction: row;
         gap: 8px;
 
-        & > span {
+        & span {
             gap: 0;
         }
     }

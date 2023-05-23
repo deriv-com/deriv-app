@@ -44,14 +44,14 @@ const CashierOnboarding: React.FC<TProps> = observer(({ setSideNotes }) => {
     }, [has_set_currency, history, setIsCashierOnboarding, toggleSetCurrencyModal]);
 
     return (
-        <PageContainer>
-            {should_show_side_notes && <CashierOnboardingSideNotes setSideNotes={setSideNotes} />}
+        <PageContainer hide_breadcrumb>
             <CashierOnboardingTitle />
             <CashierOnboardingFiatCard />
             <CashierOnboardingCryptoCard />
             <CashierOnboardingOnrampCard />
             <CashierOnboardingPaymentAgentCard />
             <CashierOnboardingP2PCard />
+            {should_show_side_notes && <CashierOnboardingSideNotes setSideNotes={setSideNotes} />}
         </PageContainer>
     );
 });

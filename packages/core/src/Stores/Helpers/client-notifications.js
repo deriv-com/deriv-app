@@ -78,4 +78,4 @@ export const excluded_notifications = isMobile()
           'switched_to_real',
       ];
 
-export const priority_toast_messages = ['svg', 'need_fa', 'p2p_daily_limit_increase'];
+export const priority_toast_messages = ['svg', 'need_fa', 'p2p_daily_limit_increase', 'success_wallets_upgrade'];

@@ -13,6 +13,6 @@ module.exports = {
     testRegex: '(/__tests__/.*|(\\.)(test|spec))\\.(js|jsx|tsx|ts)?$',
     transformIgnorePatterns: [
         '/node_modules/(?!@enykeev/react-virtualized).+\\.js$',
-        '/node_modules/(?!react-query-devtools).+\\.js$',
+        '/node_modules/@tanstack/react-query-devtools',
     ],
 };

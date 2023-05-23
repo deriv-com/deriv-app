@@ -1446,10 +1446,8 @@ export default class NotificationStore extends BaseStore {
             },
             svg_needs_poi_poa: {
                 key: 'svg_needs_poi_poa',
-                header: localize('Account verification required'),
-                message: (
-                    <Localize i18n_default_text='Please submit your proof of identity and proof of address to verify your account and continue trading.' />
-                ),
+                header: localize('Let’s get your account verified'),
+                message: <Localize i18n_default_text='Please submit your proof of identity and proof of address.' />,
                 type: 'warning',
                 action: {
                     route: routes.proof_of_identity,
@@ -1458,38 +1456,32 @@ export default class NotificationStore extends BaseStore {
             },
             svg_needs_poa: {
                 key: 'svg_needs_poa',
-                header: localize('Proof of address required'),
-                message: (
-                    <Localize i18n_default_text='Please submit your proof of address to verify your account and continue trading.' />
-                ),
+                header: localize('Let’s get your address verified'),
+                message: <Localize i18n_default_text='Please submit your proof of address.' />,
                 type: 'warning',
                 action: {
                     route: routes.proof_of_address,
-                    text: localize('Submit proof of address'),
+                    text: localize('Submit now'),
                 },
             },
             svg_needs_poi: {
                 key: 'svg_needs_poi',
-                header: localize('Proof of identity required'),
-                message: (
-                    <Localize i18n_default_text='Please submit your proof of identity to verify your account and continue trading.' />
-                ),
+                header: localize('Let’s get your identity verified'),
+                message: <Localize i18n_default_text='Please submit your proof of identity.' />,
                 type: 'warning',
                 action: {
                     route: routes.proof_of_identity,
-                    text: localize('Submit proof of identity'),
+                    text: localize('Submit now'),
                 },
             },
             svg_poi_expired: {
                 key: 'svg_poi_expired',
                 header: localize('Your proof of identity is expired'),
-                message: (
-                    <Localize i18n_default_text='Your proof of identity has expired. Please submit a new proof of identity to verify your account and continue trading.' />
-                ),
+                message: <Localize i18n_default_text='Please submit a new proof of identity.' />,
                 type: 'warning',
                 action: {
                     route: routes.proof_of_identity,
-                    text: localize('Submit proof of identity'),
+                    text: localize('Resubmit now'),
                 },
             },
         };

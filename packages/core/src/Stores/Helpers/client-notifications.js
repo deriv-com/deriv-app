@@ -62,7 +62,7 @@ export const getCashierValidations = cashier_arr => {
 };
 
 export const excluded_notifications = isMobile()
-    ? ['contract_sold', 'switched_to_real']
+    ? ['contract_sold', 'switched_to_real', 'success_wallets_upgrade']
     : [
           'you_are_offline',
           'password_changed',

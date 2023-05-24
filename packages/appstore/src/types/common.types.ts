@@ -168,3 +168,9 @@ export interface AccountListDetail {
 }
 
 export type TWalletsMigrationStatus = 'ineligible' | 'eligible' | 'in_progress' | 'migrated' | 'failed';
+export type TAccountStatus = 'pending' | 'failed' | 'need_verification' | '';
+export type TWalletCurrency =
+    | Extract<Currency, 'USD' | 'EUR' | 'AUD' | 'BTC' | 'ETH' | 'LTC' | 'USDC'>
+    | 'USDT'
+    | 'eUSDT'
+    | 'tUSDT';

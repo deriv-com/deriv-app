@@ -26,15 +26,16 @@ const ReadyToDepositModal = observer(() => {
             title={localize('Ready to deposit and trade for real?')}
             confirm_button_text={localize('Add real account')}
             onConfirm={createAccount}
-            cancel_button_text={localize('Stay in demo')}
+            cancel_button_text={localize('Maybe later')}
             onCancel={onClose}
             is_closed_on_cancel
             disableApp={disableApp}
             enableApp={enableApp}
             is_closed_on_confirm
             is_visible={is_open}
-            dismissable={false}
+            dismissable={true}
             has_close_icon={false}
+            onEscapeButtonCancel={onClose}
         >
             {localize('You need a real Deriv account to access the cashier.')}
         </Dialog>

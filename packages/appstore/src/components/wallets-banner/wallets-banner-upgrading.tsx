@@ -2,20 +2,23 @@ import React from 'react';
 import WalletsImage from 'Assets/svgs/wallets';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
 import { TWalletsImagesListKeys } from 'Assets/svgs/wallets/image-types';
+import { observer, useStore } from '@deriv/stores';
 
 // just for now for testing purpose, in the future 'is_eu' value will be taken from the store
 type TWalletsBannerUpgrading = {
     is_eu?: boolean;
 };
 
-const WalletsBannerUpgrading = ({ is_eu }: TWalletsBannerUpgrading) => {
-    const image: TWalletsImagesListKeys = isMobile()
+const WalletsBannerUpgrading = observer(({ is_eu }: TWalletsBannerUpgrading) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
+
+    const image: TWalletsImagesListKeys = is_mobile
         ? `upgrading_mobile${is_eu ? '_eu' : ''}`
         : `upgrading_desktop${is_eu ? '_eu' : ''}`;
-    const title_size = isMobile() ? 'xs' : 'sm';
-    const description_size = isMobile() ? 'xxxs' : 'xs';
+    const title_size = is_mobile ? 'xs' : 'sm';
+    const description_size = is_mobile ? 'xxxs' : 'xs';
 
     return (
         <div className='wallets-banner__container wallets-banner__upgrading-banner'>
@@ -37,6 +40,6 @@ const WalletsBannerUpgrading = ({ is_eu }: TWalletsBannerUpgrading) => {
             <WalletsImage image={image} className='wallets-banner__image wallets-banner__upgrading-banner-image' />
         </div>
     );
-};
+});
 
 export default WalletsBannerUpgrading;

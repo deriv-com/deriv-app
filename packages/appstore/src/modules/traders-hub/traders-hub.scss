@@ -1,9 +1,12 @@
 .traders-hub {
-    width: 100%;
-    padding: 2.4rem 4rem;
+    max-width: 123.2rem;
+    margin: auto;
+    padding: 2.4rem 0;
+    background-color: var(--general-section-1);
 
     @include mobile {
         padding: 2rem;
+        width: 100%;
     }
 
     &__main-container {
@@ -21,6 +24,7 @@
 
     &--mobile {
         overflow: scroll !important;
+        background-color: var(--general-section-1);
 
         &--eu-user {
             @include mobile {

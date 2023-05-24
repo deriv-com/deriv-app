@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import Field from '../field';
 import Text from '../text/text';
 
-type TInputProps = {
+export type TInputProps = {
     autoComplete?: string;
     bottom_label?: string;
     className?: string;
@@ -18,6 +18,7 @@ type TInputProps = {
     hint?: React.ReactNode;
     id?: string;
     initial_character_count?: number;
+    inputMode?: HTMLAttributes<HTMLInputElement | HTMLTextAreaElement>['inputMode'];
     input_id?: string;
     is_relative_hint?: boolean;
     label_className?: string;
@@ -26,10 +27,13 @@ type TInputProps = {
     max_characters?: number;
     maxLength?: number;
     name?: string;
-    onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onFocus?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onPaste?: (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onMouseDown?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onMouseUp?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onPaste?: React.ClipboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     placeholder?: string;
     required?: boolean;
     trailing_icon?: React.ReactElement;
@@ -103,69 +107,76 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                         'dc-input--bottom-label-active': bottom_label,
                     })}
                 >
-                    {leading_icon &&
-                        React.cloneElement(leading_icon, {
-                            className: classNames('dc-input__leading-icon', leading_icon.props.className),
+                    <div
+                        className={classNames('dc-input__container', className, {
+                            'dc-input__container--disabled': disabled,
+                            'dc-input__container--error': error,
                         })}
-                    {props.type === 'textarea' ? (
-                        <textarea
-                            ref={ref}
-                            data-testid={data_testId}
-                            {...props}
-                            className={classNames('dc-input__field dc-input__textarea', {
-                                'dc-input__field--placeholder-visible': !label && props.placeholder,
+                    >
+                        {leading_icon &&
+                            React.cloneElement(leading_icon, {
+                                className: classNames('dc-input__leading-icon', leading_icon.props.className),
                             })}
-                            onChange={changeHandler}
-                            disabled={disabled}
-                            id={input_id}
-                            maxLength={maxLength}
-                        />
-                    ) : (
-                        <input
-                            ref={ref}
-                            data-testid={data_testId}
-                            {...props}
-                            className={classNames('dc-input__field', field_className, {
-                                'dc-input__field--placeholder-visible': !label && props.placeholder,
+                        {props.type === 'textarea' ? (
+                            <textarea
+                                ref={ref}
+                                data-testid={data_testId}
+                                {...props}
+                                className={classNames('dc-input__field dc-input__textarea', {
+                                    'dc-input__field--placeholder-visible': !label && props.placeholder,
+                                })}
+                                onChange={changeHandler}
+                                disabled={disabled}
+                                id={input_id}
+                                maxLength={maxLength}
+                            />
+                        ) : (
+                            <input
+                                ref={ref}
+                                data-testid={data_testId}
+                                {...props}
+                                className={classNames('dc-input__field', field_className, {
+                                    'dc-input__field--placeholder-visible': !label && props.placeholder,
+                                })}
+                                onFocus={props.onFocus}
+                                onBlur={props.onBlur}
+                                onChange={props.onChange}
+                                onKeyDown={props.onKeyDown}
+                                onMouseDown={props.onMouseDown}
+                                onMouseUp={props.onMouseUp}
+                                onPaste={props.onPaste}
+                                disabled={disabled}
+                                data-lpignore={props.type === 'password' ? undefined : true}
+                                id={input_id}
+                                aria-label={label as string}
+                                maxLength={maxLength}
+                            />
+                        )}
+                        {trailing_icon &&
+                            React.cloneElement(trailing_icon, {
+                                className: classNames('dc-input__trailing-icon', trailing_icon.props.className),
                             })}
-                            onFocus={props.onFocus}
-                            onBlur={props.onBlur}
-                            onChange={props.onChange}
-                            onPaste={props.onPaste}
-                            disabled={disabled}
-                            data-lpignore={props.type === 'password' ? undefined : true}
-                            id={input_id}
-                            aria-label={label as string}
-                            maxLength={maxLength}
-                        />
-                    )}
-                    {trailing_icon &&
-                        React.cloneElement(trailing_icon, {
-                            className: classNames('dc-input__trailing-icon', trailing_icon.props.className),
-                        })}
-                    {label && (
-                        <label className={classNames('dc-input__label', label_className)} htmlFor={props.id}>
-                            {label}
-                        </label>
-                    )}
-                    {!has_footer && (
-                        <React.Fragment>
-                            {error && <Field className={classNameError} message={error} type='error' />}
-                            {warn && <Field className={classNameWarn} message={warn} type='warn' />}
-                            {!error && hint && !is_relative_hint && (
-                                <div className='dc-input__hint'>
-                                    <Text
-                                        as='p'
-                                        color='less-prominent'
-                                        size='xxs'
-                                        className={classNames(classNameHint)}
-                                    >
-                                        {hint}
-                                    </Text>
-                                </div>
-                            )}
-                        </React.Fragment>
-                    )}
+                        {label && (
+                            <label className={classNames('dc-input__label', label_className)} htmlFor={props.id}>
+                                {label}
+                            </label>
+                        )}
+                    </div>
+                    <div>
+                        {!has_footer && (
+                            <React.Fragment>
+                                {error && <Field className={classNameError} message={error} type='error' />}
+                                {warn && <Field className={classNameWarn} message={warn} type='warn' />}
+                                {!error && hint && !is_relative_hint && (
+                                    <div className='dc-input__hint'>
+                                        <Text as='p' color='less-prominent' size='xxs' className={classNameHint}>
+                                            {hint}
+                                        </Text>
+                                    </div>
+                                )}
+                            </React.Fragment>
+                        )}
+                    </div>
                 </div>
                 {has_footer && (
                     // Added like below for backward compatibility.

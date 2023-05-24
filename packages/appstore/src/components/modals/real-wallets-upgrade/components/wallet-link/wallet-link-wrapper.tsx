@@ -45,10 +45,10 @@ const WalletLinkWrapper = ({ wallet_details, account_list }: TWalletLinkWrapper)
                 </div>
             </div>
             <div className='wallet-link-wrapper__card-wrapper'>
+                <WalletCard wallet={wallet_details} size='large' state='default' />
                 <Text className='wallet-link-wrapper__title-text wallet-link-wrapper__card-wrapper-title'>
                     {localize('Your new Wallet')}
                 </Text>
-                <WalletCard wallet={wallet_details} size='large' state='default' />
             </div>
         </div>
     );

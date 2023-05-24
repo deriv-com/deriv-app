@@ -98,16 +98,7 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
-                    <hr />
-                    <h1>My own</h1>
-                    <WalletCardsCarouselMyOwnImplementation items={items} />
-                    <hr />
-                    <h1>React-snap-carousel</h1>
                     <WalletCardsCarousel items={items} />
-                    <hr />
-                    <h1>React-multi-carousel</h1>
-                    <NewCarousel />
-                    <hr />
                     <MainTitleBar />
                     <DesktopWrapper>
                         <div className='traders-hub__main-container'>

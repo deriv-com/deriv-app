@@ -10,8 +10,6 @@ $shift-for-edge-cards: calc((100vw - #{$card-width}) / 2);
         display: flex;
         overflow: auto;
         scroll-snap-type: x mandatory;
-        // scroll-margin-left: $shift-for-edge-cards;
-        // scroll-padding-inline: $shift-for-edge-cards;
 
         &::-webkit-scrollbar {
             display: none;
@@ -23,7 +21,7 @@ $shift-for-edge-cards: calc((100vw - #{$card-width}) / 2);
         height: $card-height;
         flex-shrink: 0;
         margin-right: 2.4rem;
-        // scroll-margin-left: $shift-for-edge-cards;
+        scroll-snap-align: center;
 
         &--first {
             margin-left: $shift-for-edge-cards;
@@ -31,10 +29,6 @@ $shift-for-edge-cards: calc((100vw - #{$card-width}) / 2);
 
         &--last {
             margin-right: $shift-for-edge-cards;
-        }
-
-        &--snap-point {
-            scroll-snap-align: center;
         }
     }
 

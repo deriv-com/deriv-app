@@ -1,73 +1,74 @@
 import { useState, useCallback, useEffect, useLayoutEffect } from 'react';
 
-export interface SnapCarouselResult {
+export interface WalletCardsCarouselResult {
     readonly pages: number[];
     readonly activePageIndex: number;
     readonly prev: () => void;
     readonly next: () => void;
     readonly goTo: (pageIndex: number) => void;
-    readonly refresh: () => void;
     readonly scrollRef: (el: HTMLElement | null) => void;
 }
 
-export interface SnapCarouselOptions {
-    readonly axis?: 'x' | 'y';
-}
-
-interface SnapCarouselState {
+interface WalletCardsCarouselState {
     readonly pages: number[];
     readonly activePageIndex: number;
 }
 
-export const useWalletCardCarousel = ({ axis = 'x' }: SnapCarouselOptions = {}): SnapCarouselResult => {
-    // const dimension = axis === 'x' ? 'width' : 'height';
-    const scrollDimension = axis === 'x' ? 'scrollWidth' : 'scrollHeight';
-    const clientDimension = axis === 'x' ? 'clientWidth' : 'clientHeight';
-    const nearSidePos = axis === 'x' ? 'left' : 'top';
-    // const farSidePos = axis === 'x' ? 'right' : 'bottom';
-    const scrollPos = axis === 'x' ? 'scrollLeft' : 'scrollTop';
+export const useWalletCardCarousel = (): WalletCardsCarouselResult => {
+    const scrollDimension = 'scrollWidth';
+    const clientDimension = 'clientWidth';
+    const nearSidePos = 'left';
+    const scrollPos = 'scrollLeft';
 
     const [scrollEl, setScrollEl] = useState<HTMLElement | null>(null);
+    const [shift_for_first_item, setShiftForFirstTime] = useState(0);
     // NOTE: `pages` & `activePageIndex` are modelled as a single state object
-    // to ensure they don't become out of sync with one another. (i.e. would rather
-    // not implicitly rely on set state batching)
-    const [{ pages, activePageIndex }, setCarouselState] = useState<SnapCarouselState>({
+    // to ensure they don't become out of sync with one another
+    const [{ pages, activePageIndex }, setCarouselState] = useState<WalletCardsCarouselState>({
         pages: [],
         activePageIndex: 0,
     });
 
     const refreshActivePage = useCallback(
-        (calculatedPages: number[]) => {
+        (calculatedPages: number[], ready = false) => {
             if (!scrollEl) {
                 return;
             }
+            if (calculatedPages.length < 2) {
+                setCarouselState({ pages: calculatedPages, activePageIndex: 0 });
+                return;
+            }
+
             // https://excalidraw.com/#json=1ztbZ26T3ri14SiJBZlt4,Rqa2mjiaYJesnfPYEiBdPQ
             const hasScrolledToEnd =
                 Math.floor(scrollEl[scrollDimension] - scrollEl[scrollPos]) <= scrollEl[clientDimension];
             if (hasScrolledToEnd) {
                 // If scrolled to the end, set page to last as it may not end up with an
                 // offset of 0 due to scroll capping.
-                // (it's not quite aligned with how snapping works, but good enough for now)
                 setCarouselState({ pages: calculatedPages, activePageIndex: pages.length - 1 });
                 return;
             }
             const items = Array.from(scrollEl.children);
             const scrollPort = scrollEl.getBoundingClientRect();
-            const offsets = pages.map(page => {
+            const offsets = calculatedPages.map(page => {
                 const leadIndex = page;
                 const leadEl = items[leadIndex] as HTMLElement;
-                // assert(leadEl instanceof HTMLElement, 'Expected HTMLElement');
                 const scrollSpacing = getEffectiveScrollSpacing(scrollEl, leadEl, nearSidePos);
                 const rect = leadEl.getBoundingClientRect();
                 const offset = rect[nearSidePos] - scrollPort[nearSidePos] - scrollSpacing;
-                return Math.abs(offset);
+                return offset;
             });
-            const minOffset = Math.min(...offsets);
-            const nextActivePageIndex = offsets.indexOf(minOffset);
+
+            // set offset for 1st element
+            if (ready) setShiftForFirstTime(offsets[0]);
+
+            const step = offsets[1] - offsets[0];
+            const nextActivePageIndex = offsets.indexOf(
+                offsets.find(offset => offset >= shift_for_first_item - step / 2) || shift_for_first_item
+            );
             setCarouselState({ pages: calculatedPages, activePageIndex: nextActivePageIndex });
         },
-        [scrollEl, scrollDimension, scrollPos, clientDimension, nearSidePos]
-        // [scrollEl, scrollDimension, scrollPos, clientDimension, nearSidePos]
+        [pages.length, scrollEl, shift_for_first_item]
     );
 
     const getPages = useCallback(() => {
@@ -75,8 +76,8 @@ export const useWalletCardCarousel = ({ axis = 'x' }: SnapCarouselOptions = {}):
             return;
         }
         const items = Array.from(scrollEl.children) as HTMLElement[];
-        const calculatedPages = items.map((item, index) => index);
-        refreshActivePage(calculatedPages);
+        const calculatedPages = items.map((_, index) => index);
+        refreshActivePage(calculatedPages, true);
     }, [refreshActivePage, scrollEl]);
 
     // define pages array in the beginning
@@ -87,7 +88,6 @@ export const useWalletCardCarousel = ({ axis = 'x' }: SnapCarouselOptions = {}):
     // On scroll we only need to refresh the current page as it won't impact `pages`.
     useEffect(() => {
         const handle = () => {
-            // TODO: Consider debouncing / throttling
             refreshActivePage(pages);
         };
 
@@ -112,7 +112,6 @@ export const useWalletCardCarousel = ({ axis = 'x' }: SnapCarouselOptions = {}):
             return;
         }
         const scrollSpacing = getEffectiveScrollSpacing(scrollEl, leadEl, nearSidePos);
-        // NOTE: I've tried `leadEl.scrollIntoView` but it often fails in chrome on Mac OS.
         scrollEl.scrollTo({
             behavior: 'smooth',
             [nearSidePos]: getOffset(leadEl, leadEl.parentElement)[nearSidePos] - scrollSpacing,
@@ -131,7 +130,6 @@ export const useWalletCardCarousel = ({ axis = 'x' }: SnapCarouselOptions = {}):
         prev: handlePrev,
         next: handleNext,
         goTo: handleGoTo,
-        refresh: getPages,
         pages,
         activePageIndex,
         scrollRef: setScrollEl,
@@ -199,8 +197,7 @@ const getScrollPaddingUsedValue = (el: HTMLElement, pos: 'left' | 'top') => {
         const value = parseInt(scrollPadding);
         return (el.clientWidth / 100) * value;
     }
-    // e.g. calc(10% + 10px) // NOTE: We could in theory resolve this...
-    // throw new Error(invalidMsg);
+
     return 0;
 };
 

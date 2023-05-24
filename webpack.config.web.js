@@ -22,6 +22,10 @@ const plugins = [
             from: 'node_modules/binary-style/src/images/favicons',
             to: '../image/favicons',
         },
+        {
+            from: 'public',
+            to: '../public',
+        },
     ]),
 ];
 

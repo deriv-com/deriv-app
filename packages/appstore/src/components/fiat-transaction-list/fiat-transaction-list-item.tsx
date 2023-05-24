@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Statement } from '@deriv/api-types';
 import { isMobile } from '@deriv/shared';
 import { Text, WalletCard } from '@deriv/components';
@@ -12,7 +12,7 @@ type TFiatTransactionListItem = Pick<StatementTransaction, 'amount' | 'balance_a
         | 'reset_balance';
     account_name: string;
     currency: string;
-    wallet: any;
+    wallet: any; // TODO update type when WalletCard's props have it
 };
 
 const FiatTransactionListItem = ({
@@ -23,6 +23,16 @@ const FiatTransactionListItem = ({
     currency,
     wallet,
 }: TFiatTransactionListItem) => {
+    const formatAmount = useCallback(
+        (value: number) => value.toLocaleString(undefined, { minimumFractionDigits: 2 }),
+        []
+    );
+
+    const formatActionType = useCallback(
+        (value: string) => value[0].toUpperCase() + value.substring(1).replace(/_/, ' '),
+        []
+    );
+
     return (
         <div className='fiat-transaction-list-item'>
             <div>
@@ -34,7 +44,7 @@ const FiatTransactionListItem = ({
                         weight='lighter'
                         line_height={isMobile() ? 's' : 'm'}
                     >
-                        {action_type[0].toUpperCase() + action_type.substring(1).replace(/_/, ' ')}
+                        {formatActionType(action_type)}
                     </Text>
                     <Text
                         size={isMobile() ? 'xxxs' : 'xxs'}
@@ -53,8 +63,7 @@ const FiatTransactionListItem = ({
                     weight='bold'
                     line_height={isMobile() ? 's' : 'm'}
                 >
-                    {(amount > 0 ? '+' : '') + amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}{' '}
-                    {currency}
+                    {(amount > 0 ? '+' : '') + formatAmount(amount)} {currency}
                 </Text>
                 <Text
                     size={isMobile() ? 'xxxxs' : 'xxxs'}
@@ -62,7 +71,7 @@ const FiatTransactionListItem = ({
                     weight='lighter'
                     line_height={isMobile() ? 'm' : 's'}
                 >
-                    Balance: {balance_after.toLocaleString(undefined, { minimumFractionDigits: 2 })} {currency}
+                    Balance: {formatAmount(balance_after)} {currency}
                 </Text>
             </span>
         </div>

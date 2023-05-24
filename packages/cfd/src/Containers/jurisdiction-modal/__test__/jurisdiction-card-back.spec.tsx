@@ -5,6 +5,7 @@ import JurisdictionCardBack from '../jurisdiction-card-back';
 describe('<JurisdictionCardBack />', () => {
     type TMockProps = {
         card_classname: string;
+        disabled: boolean;
         toggleCardFlip: jest.Mock;
         is_card_selected: boolean;
         verification_docs: (
@@ -18,6 +19,7 @@ describe('<JurisdictionCardBack />', () => {
 
     const mock_props: TMockProps = {
         card_classname: 'test_classname',
+        disabled: false,
         is_card_selected: false,
         toggleCardFlip: jest.fn(),
         verification_docs: [],

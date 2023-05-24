@@ -19,7 +19,11 @@ const WalletLinkWrapper = ({ wallet_details, account_list }: TWalletLinkWrapper)
     return (
         <div className='wallet-link-wrapper'>
             <div className='wallet-link-wrapper__accounts'>
-                <Text as='div' className='wallet-link-wrapper__title-text wallet-link-wrapper__accounts-title'>
+                <Text
+                    as='div'
+                    className='wallet-link-wrapper__title-text wallet-link-wrapper__accounts-title'
+                    color='prominent'
+                >
                     {localize('Your current trading account(s)')}
                 </Text>
                 {account_list.map((account, index) => {
@@ -46,7 +50,10 @@ const WalletLinkWrapper = ({ wallet_details, account_list }: TWalletLinkWrapper)
             </div>
             <div className='wallet-link-wrapper__card-wrapper'>
                 <WalletCard wallet={wallet_details} size='large' state='default' />
-                <Text className='wallet-link-wrapper__title-text wallet-link-wrapper__card-wrapper-title'>
+                <Text
+                    className='wallet-link-wrapper__title-text wallet-link-wrapper__card-wrapper-title'
+                    color='prominent'
+                >
                     {localize('Your new Wallet')}
                 </Text>
             </div>

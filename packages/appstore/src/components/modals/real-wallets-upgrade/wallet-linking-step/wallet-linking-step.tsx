@@ -11,22 +11,35 @@ type TWalletLinkingStep = {
 const WalletLinkingStep = ({ data }: TWalletLinkingStep) => {
     return (
         <div className='wallet-linking-step'>
-            <Text as='div' className='wallet-linking-step__page-title' weight='bold'>
+            <Text as='div' className='wallet-linking-step__page-title' color='prominent' weight='bold'>
                 {localize(data.title)}
             </Text>
-            <Text as='div' className='wallet-linking-step__description' size='s'>
+            <Text as='div' className='wallet-linking-step__description' color='prominent' size='s'>
                 {localize('This is how we link your accounts with your new Wallet.')}
             </Text>
-            <Text as='span' className='wallet-linking-step__note wallet-linking-step__title-text' size='xxs'>
+            <Text
+                as='span'
+                className='wallet-linking-step__note wallet-linking-step__title-text'
+                color='prominent'
+                size='xxs'
+            >
                 {localize(
                     'Your existing funds will remain in your trading account(s) and can be transferred to your Wallet after the upgrade.'
                 )}
             </Text>
             <div className='wallet-linking-step__title-small'>
-                <Text className='wallet-linking-step__title-text wallet-linking-step__title-small-text' size='xxxs'>
+                <Text
+                    className='wallet-linking-step__title-text wallet-linking-step__title-small-text'
+                    color='prominent'
+                    size='xxxs'
+                >
                     {localize('Your current trading account(s)')}
                 </Text>
-                <Text className='wallet-linking-step__title-text wallet-linking-step__title-small-text' size='xxxs'>
+                <Text
+                    className='wallet-linking-step__title-text wallet-linking-step__title-small-text'
+                    color='prominent'
+                    size='xxxs'
+                >
                     {localize('Your new Wallet(s)')}
                 </Text>
             </div>

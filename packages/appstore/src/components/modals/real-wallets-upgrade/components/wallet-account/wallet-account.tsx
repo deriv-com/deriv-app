@@ -14,10 +14,10 @@ const WalletAccount = ({ balance, name, currency, icon }: TWalletAccount) => {
         <div className='wallet-account'>
             <Icon className='wallet-account__icon' icon={icon} size={24} />
             <div className='wallet-account__details'>
-                <Text as='div' className='wallet-account__details-name'>
+                <Text as='div' className='wallet-account__details-name' color='prominent'>
                     {name}
                 </Text>
-                <Text as='div' className='wallet-account__details-balance' weight='bold'>
+                <Text as='div' className='wallet-account__details-balance' color='prominent' weight='bold'>
                     {balance} {currency}
                 </Text>
             </div>

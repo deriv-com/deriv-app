@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Text } from '@deriv/components';
 import { formatMoney, CFD_PLATFORMS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
+import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { TPlatform } from 'Types';
 
 import './static-cfd-account-manager.scss';
@@ -78,7 +78,7 @@ const StaticCFDAccountManager = ({
                 {platform === CFD_PLATFORMS.MT5 &&
                     !is_eu_user &&
                     (type === 'financial' ? (
-                        <TradigPlatformIconProps
+                        <TradingPlatformIconProps
                             icon='Financial'
                             size={icon_size}
                             className={classNames('static-cfd-account-manager--cfds', {
@@ -87,7 +87,7 @@ const StaticCFDAccountManager = ({
                             })}
                         />
                     ) : (
-                        <TradigPlatformIconProps
+                        <TradingPlatformIconProps
                             icon='Derived'
                             size={icon_size}
                             className={classNames('static-cfd-account-manager--cfds', {
@@ -99,7 +99,7 @@ const StaticCFDAccountManager = ({
                 {platform === CFD_PLATFORMS.MT5 &&
                     is_eu_user &&
                     (type === 'financial' ? (
-                        <TradigPlatformIconProps
+                        <TradingPlatformIconProps
                             icon='CFDs'
                             size={icon_size}
                             className={classNames('static-cfd-account-manager--cfds', {
@@ -108,7 +108,7 @@ const StaticCFDAccountManager = ({
                             })}
                         />
                     ) : (
-                        <TradigPlatformIconProps
+                        <TradingPlatformIconProps
                             icon='Derived'
                             size={icon_size}
                             className={classNames('static-cfd-account-manager--cfds', {
@@ -118,7 +118,7 @@ const StaticCFDAccountManager = ({
                     ))}
 
                 {platform === CFD_PLATFORMS.DXTRADE && (
-                    <TradigPlatformIconProps
+                    <TradingPlatformIconProps
                         icon='DerivX'
                         size={icon_size}
                         className={classNames('static-cfd-account-manager--cfds', {
@@ -128,7 +128,7 @@ const StaticCFDAccountManager = ({
                     />
                 )}
                 {platform === 'options' && (
-                    <TradigPlatformIconProps
+                    <TradingPlatformIconProps
                         icon='Options'
                         size={icon_size}
                         className={is_blurry.icon || is_last_step ? 'static-cfd-account-manager__icon--blurry' : ''}

@@ -2,11 +2,10 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { isMobile, isDesktop, routes, ContentFlag } from '@deriv/shared';
 import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
-import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
+import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getTradingHubContents } from 'Constants/trading-hub-content';
 import { useHistory } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { observer, useStore } from '@deriv/stores';
 import EmptyOnboarding from './empty-onboarding';
 
 type TOnboardingProps = {
@@ -24,10 +23,10 @@ type TOnboardingProps = {
     >;
 };
 
-const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) => {
+const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboardingProps) => {
     const history = useHistory();
     const number_of_steps = Object.keys(contents);
-    const { traders_hub, client } = useStores();
+    const { traders_hub, client } = useStore();
     const { toggleIsTourOpen, selectAccountType, is_demo_low_risk, content_flag } = traders_hub;
     const { is_eu_country, is_logged_in, is_landing_company_loaded, prev_account_type, setPrevAccountType } = client;
     const [step, setStep] = React.useState<number>(1);
@@ -70,7 +69,7 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
 
     const footer_header_text = is_eu_user ? eu_footer_header : footer_header;
 
-    const footer_desctiption = is_eu_user ? eu_footer_text : footer_text;
+    const footer_description = is_eu_user ? eu_footer_text : footer_text;
 
     if (!is_logged_in || !is_landing_company_loaded) {
         return <EmptyOnboarding />;
@@ -80,7 +79,7 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
         <div className='onboarding-wrapper'>
             <div className='onboarding-header'>
                 <div className='onboarding-header--deriv-logo'>
-                    <TradigPlatformIconProps icon={'DerivLogo'} />
+                    <TradingPlatformIconProps icon={'DerivLogo'} />
                 </div>
                 <Icon
                     icon='IcCross'
@@ -98,7 +97,7 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
                         {footer_header_text}
                     </Text>
                     <Text as='p' size='xs' align='center' className='onboarding-footer-text'>
-                        {footer_desctiption}
+                        {footer_description}
                     </Text>
                     {isDesktop() && (
                         <div className='onboarding-footer-buttons'>
@@ -154,6 +153,6 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
             </div>
         </div>
     );
-};
+});
 
-export default observer(Onboarding);
+export default Onboarding;

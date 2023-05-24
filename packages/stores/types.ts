@@ -132,6 +132,7 @@ type TClientStore = {
     is_deposit_lock: boolean;
     is_dxtrade_allowed: boolean;
     is_eu: boolean;
+    is_eu_country: boolean;
     is_authorize: boolean;
     is_financial_account: boolean;
     is_financial_information_incomplete: boolean;
@@ -146,6 +147,7 @@ type TClientStore = {
     is_trading_experience_incomplete: boolean;
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
+    is_language_loaded: boolean;
     landing_company_shortcode: string;
     local_currency_config: {
         currency: string;
@@ -207,6 +209,10 @@ type TClientStore = {
     setTwoFAChangedStatus: (status: boolean) => void;
     has_any_real_account: boolean;
     real_account_creation_unlock_date: number;
+    prev_account_type: string;
+    is_demo_low_risk: boolean;
+    setAccountType: (account_type: string) => void;
+    setPrevAccountType: (account_type: string) => void;
 };
 
 type TCommonStoreError = {
@@ -341,6 +347,10 @@ type TTradersHubStore = {
     setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
     toggleAccountTransferModal: () => void;
     is_demo: boolean;
+    toggleIsTourOpen: (is_tour_open: boolean) => void;
+    selectAccountType: (account_type: string) => void;
+    is_demo_low_risk: boolean;
+    CFDs_restricted_countries: boolean;
 };
 
 /**

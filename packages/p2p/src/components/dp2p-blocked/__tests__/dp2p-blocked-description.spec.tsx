@@ -44,6 +44,6 @@ describe('<Dp2pBlockedDescription />', () => {
             },
         });
         render(<Dp2pBlockedDescription />);
-        expect(screen.getByTestId('dt_default-dp2p-blocked-description')).toBeInTheDocument();
+        expect(screen.getByText(/to contact our Customer Support team for help./)).toBeInTheDocument();
     });
 });

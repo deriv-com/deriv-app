@@ -16,14 +16,12 @@ const Dp2pBlockedDescription = () => {
             return <Localize i18n_default_text='To enable this feature you must complete the following:' />;
         }
         return (
-            <div data-testid='dt_default-dp2p-blocked-description'>
-                <Localize
-                    i18n_default_text='Please use <0>live chat</0> to contact our Customer Support team for help.'
-                    components={[
-                        <span key={0} className='link link--orange' onClick={() => window.LC_API.open_chat_window()} />,
-                    ]}
-                />
-            </div>
+            <Localize
+                i18n_default_text='Please use <0>live chat</0> to contact our Customer Support team for help.'
+                components={[
+                    <span key={0} className='link link--orange' onClick={() => window.LC_API.open_chat_window()} />,
+                ]}
+            />
         );
     };
 

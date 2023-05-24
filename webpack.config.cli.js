@@ -22,9 +22,23 @@ module.exports = {
                 use: ['style-loader', 'css-loader', 'sass-loader'],
             },
             {
-                test: /\.(png|jpg|jpeg|gif|svg|woff|woff2|eot|ttf|otf)$/,
+                test: /\.(png|jpg|jpeg|gif|svg)$/,
                 use: {
                     loader: 'file-loader',
+                    options: {
+                        name: '[name].[ext]',
+                        outputPath: '../image/',
+                    },
+                },
+            },
+            {
+                test: /\.(woff|woff2|eot|ttf|otf)$/,
+                use: {
+                    loader: 'file-loader',
+                    options: {
+                        name: '[name].[ext]',
+                        outputPath: '../font/',
+                    },
                 },
             },
         ],

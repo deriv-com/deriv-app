@@ -9,13 +9,14 @@ import { useComponentVisibility } from '../../hooks/useComponentVisibility';
 import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from './constants';
 import './index.scss';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { observer } from 'mobx-react';
 
 type TRecentWorkspace = {
     index: number;
     workspace: { [key: string]: string };
 };
 
-const RecentWorkspace = ({ workspace, index }: TRecentWorkspace) => {
+const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const { dashboard, load_modal, save_modal } = useDBotStore();
     const { active_tab, setActiveTab, setPreviewOnDialog } = dashboard;
     const { toggleSaveModal } = save_modal;
@@ -175,6 +176,6 @@ const RecentWorkspace = ({ workspace, index }: TRecentWorkspace) => {
             </MobileWrapper>
         </div>
     );
-};
+});
 
 export default RecentWorkspace;

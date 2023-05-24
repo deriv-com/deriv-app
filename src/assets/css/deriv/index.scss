@@ -1,17 +1,17 @@
-@import "colors-binary";
-@import "constants-deriv";
-@import "constants";
-@import "theme";
-@import "mixins";
-@import "common";
-@import "inline-icons";
-@import "fonts";
-@import "settings-language";
-@import "devices";
-@import "header";
-@import "footer";
-@import "popover";
-@import "modal";
+@import 'colors-binary';
+@import 'constants-deriv';
+@import 'constants';
+@import 'theme';
+@import 'mixins';
+@import 'common';
+@import 'inline-icons';
+@import 'fonts';
+@import 'settings-language';
+@import 'devices';
+@import 'header';
+@import 'footer';
+@import 'popover';
+@import 'modal';
 
 .header {
     font-size: $FONT_BASE;
@@ -26,13 +26,13 @@ a:hover {
 }
 
 // Make summary panel to cover full viewport
-.ui-dialog[aria-describedby="summaryPanel"] {
-  @include mobile {
-    width: 100vw !important;
-    height: auto !important;
-    top: 0;
-    left: 0;
-  }
+.ui-dialog[aria-describedby='summaryPanel'] {
+    @include mobile {
+        width: 100vw !important;
+        height: auto !important;
+        top: 0;
+        left: 0;
+    }
 }
 
 #summaryPanel {
@@ -50,7 +50,7 @@ a:hover {
 
 .content-row {
     overflow-x: auto;
-    &-table{
+    &-table {
         overflow-x: auto;
         @include mobile {
             width: 760px;
@@ -73,13 +73,13 @@ a:hover {
             max-width: 90vw;
         }
     }
-    &-bootstrap{
-        &-info{
+    &-bootstrap {
+        &-info {
             @include mobile {
                 white-space: break-spaces !important;
             }
         }
-        &-base{
+        &-base {
             @include mobile {
                 background-position: left !important;
             }

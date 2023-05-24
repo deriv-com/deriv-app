@@ -1,4 +1,5 @@
-.cq-chart-control-bottom .cq-chart-controls .ciq-menu .cq-menu-dropdown.cq-menu-dropdown-enter-done, .cq-chart-control-bottom .cq-chart-controls .ciq-menu .cq-menu-dropdown.cq-menu-dropdown-enter-active {
+.cq-chart-control-bottom .cq-chart-controls .ciq-menu .cq-menu-dropdown.cq-menu-dropdown-enter-done,
+.cq-chart-control-bottom .cq-chart-controls .ciq-menu .cq-menu-dropdown.cq-menu-dropdown-enter-active {
     transform: translateX(-40%) translateY(0em);
 }
 
@@ -7,11 +8,11 @@
 }
 
 .cq-categorical-display {
-    .cq-item, 
+    .cq-item,
     .cq-active-item,
     .empty-category,
     .cq-filter,
-    .cq-lookup-input>input,
+    .cq-lookup-input > input,
     .category-title,
     .empty-category {
         font-size: 0.8em;
@@ -23,6 +24,6 @@
         padding: 0 0.8em 0.8em;
     }
     .category.category-has-subtitle {
-        padding-top: 4em
+        padding-top: 4em;
     }
 }

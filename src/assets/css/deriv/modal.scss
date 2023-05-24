@@ -1,4 +1,4 @@
-@import "devices";
+@import 'devices';
 @import 'color';
 
 .modal {
@@ -47,10 +47,10 @@
                 justify-content: center;
                 align-items: center;
                 color: $white;
-                padding:0;
+                padding: 0;
                 font-size: 1rem;
                 &:after {
-                    content: "\00d7";
+                    content: '\00d7';
                     font-weight: 200;
                     font-size: 18px;
                     margin-top: -2px;
@@ -62,64 +62,64 @@
         & .input-row {
             margin: 1rem 0;
         }
-        & .reset_component{
-            & p{
-                    margin: 1rem 0.7rem 1.2rem;
+        & .reset_component {
+            & p {
+                margin: 1rem 0.7rem 1.2rem;
             }
         }
     }
-    &-reset{
-     
-        & .modal__container{
+    &-reset {
+        & .modal__container {
             width: 600px;
         }
-        & .reset__footer{
-            border-top:1px solid #ddd;
+        & .reset__footer {
+            border-top: 1px solid #ddd;
             margin-top: 0.5rem;
             padding: 0.4rem 0.4rem 0.3rem;
             width: 100%;
-            display:flex;
+            display: flex;
             justify-content: flex-end;
-            @include mobile{
-                .reset__footer{
+            @include mobile {
+                .reset__footer {
                     padding: 0.3rem;
                 }
             }
-            & .button-primary{
+            & .button-primary {
                 margin-right: 0;
             }
-            & button{
+            & button {
                 margin: 0.5rem 0.4rem 0.5rem 0;
                 float: right;
                 font-size: 1rem;
             }
         }
-          &:after {
-                content: '';
-                position: fixed;
-                top: 0;
-                left: 0;
-                height: 100vh;
-                width: 100%;
-                z-index: 0;
-                background: #aaa;
-                opacity: .3;
+        &:after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100%;
+            z-index: 0;
+            background: #aaa;
+            opacity: 0.3;
         }
     }
-    &-logout, &-account-switcher{
+    &-logout,
+    &-account-switcher {
         background: #aaaaaa4d;
-        & .logout-dialog{
+        & .logout-dialog {
             &__warning-text {
                 padding: 0.4rem 0.3rem 0.4rem 0.7rem;
             }
         }
-        & .modal__container{
+        & .modal__container {
             width: 600px;
         }
-        & .ui-widget-content{
-           border: unset;
+        & .ui-widget-content {
+            border: unset;
 
-            &:before{
+            &:before {
                 width: 100%;
                 display: flex;
                 justify-content: flex-end;
@@ -127,15 +127,14 @@
                 border-top: solid 1px #ddd;
             }
         }
-        & .ui-dialog-buttonset{
+        & .ui-dialog-buttonset {
             display: flex;
             justify-content: flex-end;
             padding: 0 0.3rem;
         }
-        & .button-primary{
+        & .button-primary {
             height: 38px;
             margin-left: 5px;
         }
     }
-    
 }

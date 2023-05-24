@@ -3,13 +3,13 @@
 @import './deriv/devices.scss';
 
 @keyframes animate-circle {
-    0% { 
+    0% {
         transform: translate(-50%, -50%) scale(0);
     }
-    50% { 
+    50% {
         transform: translate(-50%, -50%) scale(1);
     }
-    100% { 
+    100% {
         transform: translate(-50%, -50%) scale(0);
     }
 }
@@ -66,7 +66,8 @@
             &:hover {
                 @include toolbox-runButton-hover;
             }
-            &[disabled], &[disabled]:hover {
+            &[disabled],
+            &[disabled]:hover {
                 @include toolbox-runButton-disabled;
             }
         }
@@ -171,7 +172,7 @@
 }
 
 #summaryPanel {
-    .react-grid-Row .react-grid-Cell:last-child, 
+    .react-grid-Row .react-grid-Cell:last-child,
     .react-grid-Row .react-grid-Cell:nth-last-child(2) {
         text-align: right;
     }
@@ -189,7 +190,7 @@
     font-size: 1rem;
     height: 1.85rem !important;
     margin-top: 0.25rem;
-    font-family: "IBM Plex Sans",sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
 }
 
 .form--sc-views__input .sc-input {
@@ -216,7 +217,7 @@
     padding: 0px !important;
 
     &.ui-widget-content {
-        input[type=text] {
+        input[type='text'] {
             height: 40px;
             width: 100%;
         }
@@ -226,7 +227,7 @@
         }
         .input-row {
             margin: 1em 0;
-            
+
             &.last {
                 margin-bottom: 0;
             }
@@ -234,7 +235,8 @@
     }
 }
 
-#load-dialog, #save-dialog {
+#load-dialog,
+#save-dialog {
     .integration-option {
         margin: 0.5em;
     }
@@ -305,8 +307,8 @@
     &.running {
         p {
             color: #468847;
-            background-color: #DFF0D8;
-            border-color: #D6E9C6;
+            background-color: #dff0d8;
+            border-color: #d6e9c6;
         }
     }
 }
@@ -473,7 +475,8 @@
 }
 
 .gd-popup {
-    .button, .button-disabled {
+    .button,
+    .button-disabled {
         span {
             width: 120px;
         }

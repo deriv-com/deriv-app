@@ -123,7 +123,7 @@
         background: var(--general-hover);
     }
     & img {
-        padding: 0 .8rem;
+        padding: 0 0.8rem;
     }
 }
 
@@ -133,7 +133,7 @@
     align-self: center;
     padding: 0 1em;
     color: var(--text-general);
-    
+
     &--is-mobile {
         padding: 0 1em 0 0;
         margin-right: 0;
@@ -192,9 +192,9 @@
     background: var(--general-section-1);
     margin: 0 0.1em;
 }
-.react-tiny-popover-container{
+.react-tiny-popover-container {
     z-index: 10000;
-    @include mobile{
+    @include mobile {
         display: none;
     }
 }

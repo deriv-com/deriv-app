@@ -3,12 +3,10 @@
 $LINE_HEIGHT: 1.25;
 $FONT_SIZE_S: 0.85em;
 
-$LANGUAGE_DIRECTION : ltr;
-$IS_LTR : true;
+$LANGUAGE_DIRECTION: ltr;
+$IS_LTR: true;
 
-$FONT_STACK: 'IBM Plex Sans',
-sans-serif; // same variable/value exists in @binary-com/binary-style/constants.scss with roboto instead of IBM
-
+$FONT_STACK: 'IBM Plex Sans', sans-serif; // same variable/value exists in @binary-com/binary-style/constants.scss with roboto instead of IBM
 
 $black: #000;
 $white: #fff;
@@ -36,7 +34,7 @@ $FONT_SCALE: 1.15;
 :root {
     --content-width: 1000px;
     --readable-content-width: 700px;
-    
+
     --border-radius: 3px;
     --page-padding: 0.5em;
     --header-height: 3rem;
@@ -54,11 +52,11 @@ $FONT_SCALE: 1.15;
     --disabled-color: #f2f2f2;
     --static-circle-diameter: 0.5rem;
     --dynamic-circle-diameter: 1.5rem;
-    
+
     --animator-circle-position-top: 44%;
     --language-direction: $LANGUAGE_DIRECTION;
     --is-ltr: $IS_LTR;
-    
+
     --color-control-border: #dadada;
     --color-active: #ff992a;
     --color-nav: #a1aab3;
@@ -88,13 +86,12 @@ $FONT_SCALE: 1.15;
     --color-dark-green: $darkPositiveColor;
     --color-driv-red: #ff444f;
 
-    
     --control-padding: 0.33em;
     --control-padding-l: 0.5em 1em;
-    
+
     --box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.25);
     --font-stack: $FONT_STACK;
-    
+
     --font-size-xxl: $FONT_BASE * $FONT_SCALE * $FONT_SCALE * $FONT_SCALE; // 1.520875rem =~ 24px
     --font-size-xl: $FONT_BASE * $FONT_SCALE * $FONT_SCALE; // 1.3225rem   =~ 21px
     --font-size-l: $FONT_BASE * $FONT_SCALE; // 1.15rem     =~ 18px

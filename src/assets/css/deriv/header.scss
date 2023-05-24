@@ -1,4 +1,4 @@
-@import "./devices.scss";
+@import './devices.scss';
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@700&display=swap');
 
 @mixin position_center {
@@ -71,7 +71,7 @@
             align-self: center;
             border-bottom: 1px solid var(--general-section-1);
 
-            >* {
+            > * {
                 display: inline-flex;
                 flex: 1;
             }
@@ -147,7 +147,7 @@
                     background: var(--state-hover);
                 }
 
-                >span {
+                > span {
                     align-self: center;
                 }
             }
@@ -156,7 +156,7 @@
         &-right {
             justify-content: flex-end;
 
-            >* {
+            > * {
                 align-self: center;
             }
 
@@ -165,7 +165,7 @@
                 height: 100%;
                 text-align: right;
 
-                &>svg {
+                & > svg {
                     max-height: 80%;
                     margin-right: 10px;
                 }
@@ -173,7 +173,7 @@
         }
 
         &-left {
-            >* {
+            > * {
                 align-self: center;
             }
         }
@@ -305,7 +305,6 @@
             align-items: center;
             border-bottom: 1px solid var(--general-section-2);
             padding: 0 16px;
-
         }
 
         &-content {
@@ -324,7 +323,6 @@
             display: flex;
             align-items: center;
             justify-content: space-around;
-
         }
     }
 
@@ -425,7 +423,7 @@
                 padding: 10px 24px 10px 16px;
                 display: flex;
 
-                >img {
+                > img {
                     width: 16px;
                     height: 16px;
                     margin: 2px 8px 0 0;
@@ -485,7 +483,7 @@
             }
         }
 
-        >img {
+        > img {
             height: 24px;
             width: 24px;
 
@@ -502,7 +500,7 @@
             padding: 0 16px;
             cursor: pointer;
 
-            >* {
+            > * {
                 align-self: center;
             }
 
@@ -607,14 +605,12 @@
                     font-size: $FONT_SIZE_S;
                     line-height: 20px;
                 }
-
             }
         }
     }
 
     .account {
         &__switcher {
-
             border-radius: 4px;
 
             @include mobile {
@@ -622,7 +618,6 @@
                 background: var(--general-main-2);
                 box-shadow: 0 8px 16px 0 var(--shadow-menu);
             }
-
 
             &-footer {
                 display: flex;
@@ -799,7 +794,6 @@
                 }
 
                 h3.ui-state-active {
-
                     .header__expand,
                     .header__expand-light {
                         transform: rotate(180deg);
@@ -811,7 +805,6 @@
                             transform: rotate(0deg);
                         }
                     }
-
                 }
 
                 .ui-accordion-header {
@@ -909,7 +902,6 @@
                         font-weight: bold;
                     }
                 }
-
             }
 
             &-tab {
@@ -962,8 +954,6 @@
                     }
                 }
             }
-
-
 
             &-list {
                 padding: 0 !important;
@@ -1114,7 +1104,7 @@
             align-items: center;
             border-bottom: 1px solid var(--general-section-1);
 
-            >img {
+            > img {
                 border-right: 1px solid var(--general-section-1);
                 padding: 6px 8px;
             }
@@ -1186,7 +1176,7 @@
         height: 72px;
 
         &-header {
-            font-size: var(--font-size-l);;
+            font-size: var(--font-size-l);
         }
 
         &-logo {

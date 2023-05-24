@@ -83,7 +83,7 @@ ul.bullet {
     .logo-parent {
         margin-left: 21px;
     }
-    .half-width  p {
+    .half-width p {
         padding: 0 20px 0 20px;
     }
 }
@@ -98,8 +98,9 @@ ul.bullet {
     .half-width {
         width: 100%;
     }
-    .half-width p, .half-width img {
-        margin: 1em; 
+    .half-width p,
+    .half-width img {
+        margin: 1em;
     }
     .bottom-image {
         display: none;

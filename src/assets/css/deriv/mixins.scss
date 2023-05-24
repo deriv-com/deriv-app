@@ -280,7 +280,8 @@
         line-height: 1.5;
     }
 
-    &:disabled, &[disabled] {
+    &:disabled,
+    &[disabled] {
         opacity: 0.32;
         cursor: not-allowed !important;
     }
@@ -290,7 +291,8 @@
         background: var(--button-primary-default);
         color: var(--text-colored-background) !important;
 
-        &:focus, &:hover {
+        &:focus,
+        &:hover {
             background: var(--button-primary-hover);
         }
         &:active:not([disabled]) {
@@ -303,12 +305,12 @@
 
         @if ($size == 'large') {
             border: 2px solid var(--button-secondary-default);
-        }
-        @else {
+        } @else {
             border: 1px solid var(--button-secondary-default);
         }
 
-        &:focus, &:hover {
+        &:focus,
+        &:hover {
             background: var(--button-secondary-hover);
         }
         &:active:not([disabled]) {
@@ -319,7 +321,8 @@
         background: var(--button-tertiary-default);
         color: var(--brand-red-coral) !important;
 
-        &:focus, &:hover {
+        &:focus,
+        &:hover {
             background: var(--button-tertiary-hover);
         }
         &:active:not([disabled]) {
@@ -330,7 +333,8 @@
         background: transparent;
         color: var(--brand-red-coral) !important;
 
-        &:focus:not([disabled]), &:hover:not([disabled]) {
+        &:focus:not([disabled]),
+        &:hover:not([disabled]) {
             text-decoration: underline !important;
         }
     }

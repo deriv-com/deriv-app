@@ -15,7 +15,8 @@
     box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     margin: 0em;
     max-width: 100%;
@@ -56,7 +57,7 @@ html, body {
     width: 100%;
 
     //fix for chrome, safari comment box by unsetting cordinates
-    //new classname is added to the body from blockly as blocklyMinimalBody so targetting that 
+    //new classname is added to the body from blockly as blocklyMinimalBody so targetting that
     & foreignObject body,
     & foreignobject body,
     .blocklyMinimalBody {
@@ -82,7 +83,6 @@ html, body {
     #blocklyArea {
         height: 86%;
     }
-
 }
 .acc-info__balance {
     color: var(--text-profit-success);
@@ -95,7 +95,7 @@ html, body {
     text-align: center;
     text-transform: default;
 }
-.acc-info__balance.acc-info__balance--no-currency-text{
+.acc-info__balance.acc-info__balance--no-currency-text {
     font-size: 0.875rem;
     font-weight: 700;
     line-height: 0;
@@ -103,48 +103,46 @@ html, body {
     /* margin-right: 0.8rem; */
     pointer-events: none;
     text-align: center;
-    color:#333;
+    color: #333;
     margin: 0px auto;
 }
-    .notifyjs-bootstrap-base,
-    .notifyjs-bootstrap-success,
-    .notifyjs-bootstrap-warn,
-    .notifyjs-bootstrap-error {
-        white-space: unset !important;
-        max-width: 40vw;
+.notifyjs-bootstrap-base,
+.notifyjs-bootstrap-success,
+.notifyjs-bootstrap-warn,
+.notifyjs-bootstrap-error {
+    white-space: unset !important;
+    max-width: 40vw;
+    min-height: 30px;
+    padding: 8px 30px !important;
+    word-break: break-word !important;
+    @include mobile {
+        max-width: 80vw !important;
+    }
+}
+.notifyjs-corner {
+    @include mobile {
         min-height: 30px;
-        padding: 8px 30px !important;
-        word-break: break-word !important;
-        @include mobile {
-            max-width: 80vw !important;
-        }
+        font-size: 12px;
     }
-    .notifyjs-corner{
-        @include mobile {
-            min-height: 30px;
-            font-size: 12px;
-            }
-    }
+}
 
-    .notifyjs-bootstrap-base span{
-        @include mobile {
+.notifyjs-bootstrap-base span {
+    @include mobile {
         min-height: 30px;
         max-width: 40vw;
         // padding: 2px;
         word-break: break-word;
-        }
-
     }
-    [data-notify-text], [data-notify-html] {
-        @include mobile {
+}
+[data-notify-text],
+[data-notify-html] {
+    @include mobile {
         white-space: break-spaces !important;
         position: relative;
         max-width: 40vw !important;
         word-break: break-word;
-        }
     }
-
-
+}
 
 .barspinner {
     position: fixed;
@@ -258,5 +256,3 @@ label {
     overflow: auto;
     z-index: 10001 !important;
 }
-
-

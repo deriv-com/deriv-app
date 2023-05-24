@@ -14,7 +14,7 @@
     color: $white !important;
 }
 
-.blocklyTreeRow.blocklyTreeSelected .blocklyTreeIcon.blocklyTreeIconOpen, 
+.blocklyTreeRow.blocklyTreeSelected .blocklyTreeIcon.blocklyTreeIconOpen,
 .blocklyTreeRow.blocklyTreeSelected .blocklyTreeIcon.blocklyTreeIconClosedLtr {
     filter: invert(100%);
 }
@@ -63,7 +63,7 @@
     border-right: 0.063em solid;
     width: 11em;
     transition: width 0.3s ease-in-out;
-    @media(max-width: $desktop-width) {
+    @media (max-width: $desktop-width) {
         width: 0;
         &__toolbox-open {
             width: 11em;
@@ -121,7 +121,7 @@
 .blocklyTreeRow {
     margin-bottom: 0px !important;
     height: 1.9em !important;
-    padding-top: 0.250em;
+    padding-top: 0.25em;
 }
 
 .blocklyToolboxDiv {

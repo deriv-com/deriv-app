@@ -2,7 +2,7 @@
     @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@700&display=swap');
     font-family: 'IBM Plex Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: antialiased;
     align-items: center;
     align-self: center;
     display: flex;
@@ -41,11 +41,11 @@
         border: 0;
         height: 32px;
         border-radius: 4px;
-        transition: all .2s cubic-bezier(.65,.05,.36,1);
+        transition: all 0.2s cubic-bezier(0.65, 0.05, 0.36, 1);
         outline: 0;
         position: relative;
         text-decoration: none;
-        text-transform: none!important;
+        text-transform: none !important;
 
         &:hover {
             background: #eb3e48;

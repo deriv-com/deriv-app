@@ -4,7 +4,7 @@
     padding: 0em;
     width: 40px;
     height: 40px;
-    font-size: 1.500em;
+    font-size: 1.5em;
 }
 
 @mixin toolbox-button-focus {
@@ -27,7 +27,10 @@
     z-index: 0;
     overflow: auto;
 
-    #runButton[disabled], #runButton[disabled]:hover, #stopButton[disabled], #stopButton[disabled] {
+    #runButton[disabled],
+    #runButton[disabled]:hover,
+    #stopButton[disabled],
+    #stopButton[disabled] {
         @include toolbox-runButton-disabled;
     }
 
@@ -53,7 +56,7 @@
         height: 15px;
         margin: 0 5px;
         user-select: none;
-        width: 2px;        
+        width: 2px;
     }
 }
 
@@ -63,6 +66,6 @@ button {
         margin: 3px auto;
         height: 13px;
         top: initial;
-        left: initial;  
+        left: initial;
     }
 }

@@ -13,8 +13,8 @@ export const getCashierOptions = (type: TWalletType) => {
                     icon: 'IcAdd',
                     label: localize('Deposit'),
                     //Remove Lorem ipsum text after QA testing (testing scroll behaviour)
-                    content: isMobile() ? (
-                        <div style={{ padding: '1.6rem 0' }}>
+                    content: (
+                        <div style={{ padding: `${isMobile() ? '1.6rem 0' : '2.4rem 0'}`, textAlign: 'justify' }}>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas euismod lectus odio, sed
                             pulvinar ex eleifend eu. Quisque elementum pellentesque felis. Maecenas elementum vitae
                             purus sed ullamcorper. In quis tempus diam, non posuere ipsum. Quisque viverra in mauris
@@ -68,8 +68,6 @@ export const getCashierOptions = (type: TWalletType) => {
                             efficitur justo, posuere cursus ligula metus eu sapien. Nullam posuere mi et ante aliquet, a
                             accumsan nulla iaculis. Interdum et malesuada fames ac ante ipsum primis in faucibus.
                         </div>
-                    ) : (
-                        <p>Deposit Real</p>
                     ),
                 },
                 { icon: 'IcMinus', label: localize('Withdraw'), content: <p>Withdraw Real</p> },

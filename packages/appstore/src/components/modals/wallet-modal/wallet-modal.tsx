@@ -60,6 +60,7 @@ const WalletModal = observer(() => {
                 active_tab_index={active_tab_index}
                 is_dark={is_dark_mode_on}
                 is_demo={is_demo}
+                is_mobile={is_mobile}
                 is_wallet_name_visible={is_wallet_name_visible}
                 setActiveTabIndex={setActiveTabIndex}
                 wallet_type={wallet_type}

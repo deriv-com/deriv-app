@@ -1,5 +1,6 @@
 import React from 'react';
 import { Statement } from '@deriv/api-types';
+import { isMobile } from '@deriv/shared';
 import { Text, WalletCard } from '@deriv/components';
 
 type StatementTransaction = DeepRequired<Statement>['transactions'][0];
@@ -27,20 +28,35 @@ const FiatTransactionListItem = ({
             <div>
                 <WalletCard wallet={wallet} size='small' />
                 <span>
-                    <Text size='s' color='less-prominent' weight='lighter' line_height='xs'>
+                    <Text
+                        size={isMobile() ? 'xxs' : 's'}
+                        color='less-prominent'
+                        weight='lighter'
+                        line_height={isMobile() ? 'xs' : 'xs'}
+                    >
                         {action_type[0].toUpperCase() + action_type.substring(1).replace(/_/, ' ')}
                     </Text>
-                    <Text size='s' color='prominent' weight='bold' line_height='xs'>
+                    <Text
+                        size={isMobile() ? 'xxs' : 's'}
+                        color='prominent'
+                        weight='bold'
+                        line_height={isMobile() ? 'xs' : 'xs'}
+                    >
                         {account_name}
                     </Text>
                 </span>
             </div>
             <span>
-                <Text size='s' color={amount > 0 ? 'profit-success' : 'loss-danger'} weight='bold' line_height='xs'>
+                <Text
+                    size={isMobile() ? 'xxs' : 's'}
+                    color={amount > 0 ? 'profit-success' : 'loss-danger'}
+                    weight='bold'
+                    line_height={isMobile() ? 'xxs' : 'xs'}
+                >
                     {(amount > 0 ? '+' : '') + amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}{' '}
                     {currency}
                 </Text>
-                <Text size='xs' color='less-prominent' weight='lighter' line_height='xxs'>
+                <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' weight='lighter' line_height='xxs'>
                     Balance: {balance_after.toLocaleString(undefined, { minimumFractionDigits: 2 })} {currency}
                 </Text>
             </span>

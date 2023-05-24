@@ -166,6 +166,49 @@ const TradersHub = () => {
                         )}
                         {selected_platform_type === 'options' && <OptionsAndMultipliersListing />}
                         {selected_platform_type === 'cfd' && <CFDsListing />}
+                        <div
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                            }}
+                        >
+                            <FiatTransactionListItem
+                                amount={123.45}
+                                balance_after={523.45}
+                                action_type='initial_fund'
+                                account_name='Demo account'
+                                currency='USD'
+                                wallet={{
+                                    currency: 'usd',
+                                    icon: 'IcWalletDerivDemoLight',
+                                    icon_type: 'fiat',
+                                }}
+                            />
+                            <FiatTransactionListItem
+                                amount={-100}
+                                balance_after={400}
+                                action_type='withdrawal'
+                                account_name='USD account'
+                                currency='USD'
+                                wallet={{
+                                    currency: 'usd',
+                                    icon: 'IcWalletCurrencyUsd',
+                                    icon_type: 'fiat',
+                                }}
+                            />
+                            <FiatTransactionListItem
+                                amount={500}
+                                balance_after={500}
+                                action_type='transfer'
+                                account_name='Bitcoin account'
+                                currency='USD'
+                                wallet={{
+                                    currency: 'BTC',
+                                    icon: 'IcWalletBitcoinLight',
+                                    icon_type: 'crypto',
+                                }}
+                            />
+                        </div>
                     </MobileWrapper>
                     <ModalManager />
                     {scrolled && <TourGuide />}

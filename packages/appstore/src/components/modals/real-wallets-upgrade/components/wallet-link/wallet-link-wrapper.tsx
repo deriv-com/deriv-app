@@ -48,7 +48,7 @@ const WalletLinkWrapper = ({ wallet_details, account_list }: TWalletLinkWrapper)
                 <Text className='wallet-link-wrapper__title-text wallet-link-wrapper__card-wrapper-title'>
                     {localize('Your new Wallet')}
                 </Text>
-                <WalletCard wallet={wallet_details} size='large' state='active' />
+                <WalletCard wallet={wallet_details} size='large' state='default' />
             </div>
         </div>
     );

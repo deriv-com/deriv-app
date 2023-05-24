@@ -284,6 +284,7 @@ type TPortfolioStore = {
     getPositionById: (id: number) => ProposalOpenContract;
     is_loading: boolean;
     is_multiplier: boolean;
+    is_accumulator: boolean;
     onClickCancel: (contract_id: number) => void;
     onClickSell: (contract_id: number) => void;
     onMount: () => void;

@@ -3,9 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { Checklist } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
-import { localize } from '../i18next';
-import './dp2p-blocked-checklist.scss';
+import { useStores } from 'Stores/index'; // remove index when store migration to ts is done
+import { localize } from '@deriv/translations';
 
 const Dp2pBlockedChecklist = () => {
     const { general_store } = useStores();

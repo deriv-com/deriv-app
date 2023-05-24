@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStores } from 'Stores/index'; //remove index when store migration to ts is done
 import { Localize } from '../i18next';
 
 const Dp2pBlockedDescription = () => {
@@ -16,12 +16,14 @@ const Dp2pBlockedDescription = () => {
             return <Localize i18n_default_text='To enable this feature you must complete the following:' />;
         }
         return (
-            <Localize
-                i18n_default_text='Please use <0>live chat</0> to contact our Customer Support team for help.'
-                components={[
-                    <span key={0} className='link link--orange' onClick={() => window.LC_API.open_chat_window()} />,
-                ]}
-            />
+            <div data-testid='dt_default-dp2p-blocked-description'>
+                <Localize
+                    i18n_default_text='Please use <0>live chat</0> to contact our Customer Support team for help.'
+                    components={[
+                        <span key={0} className='link link--orange' onClick={() => window.LC_API.open_chat_window()} />,
+                    ]}
+                />
+            </div>
         );
     };
 

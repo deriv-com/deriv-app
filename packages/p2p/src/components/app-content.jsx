@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import AdvertiserPage from 'Pages/advertiser-page/advertiser-page.jsx';
 import BuySell from 'Pages/buy-sell/buy-sell.jsx';
-import Dp2pBlocked from './dp2p-blocked';
+import Dp2pBlocked from 'Components/dp2p-blocked';
 import { localize } from './i18next';
 import MyAds from 'Pages/my-ads/my-ads.jsx';
 import MyProfile from 'Pages/my-profile';

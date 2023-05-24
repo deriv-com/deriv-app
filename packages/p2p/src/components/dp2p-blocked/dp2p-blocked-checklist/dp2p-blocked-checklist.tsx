@@ -4,7 +4,7 @@ import { Checklist } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores/index'; // remove index when store migration to ts is done
-import { localize } from '@deriv/translations';
+import { localize } from 'Components/i18next';
 
 const Dp2pBlockedChecklist = () => {
     const { general_store } = useStores();

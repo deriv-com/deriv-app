@@ -11,7 +11,14 @@ import classNames from 'classnames';
 
 type TWalletCardProps = {
     // TODO: This type should be updated when the response is ready
-    wallet: any;
+    wallet: {
+        balance: string;
+        currency: string;
+        icon: string;
+        icon_type: string;
+        jurisdiction_title: string;
+        name: string;
+    };
     size?: 'small' | 'medium' | 'large';
     state?: 'active' | 'add' | 'added' | 'default' | 'disabled' | 'faded';
 };

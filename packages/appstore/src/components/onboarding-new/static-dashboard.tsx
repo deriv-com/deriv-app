@@ -108,6 +108,7 @@ const StaticDashboard = observer(
                     className={classNames('static-dashboard', {
                         'static-dashboard--eu': eu_user,
                     })}
+                    style={isMobile() && eu_user ? { height: '100%' } : {}}
                 >
                     {(isDesktop() || (isMobile() && index === 0)) && (
                         <div className='static-dashboard-wrapper__bordered--with-margin'>
@@ -258,21 +259,30 @@ const StaticDashboard = observer(
                                     'static-dashboard-wrapper__body--apps--with-gap': has_account,
                                 })}
                             >
-                                <div className='static-dashboard-wrapper__body--apps-item'>
-                                    <StaticTradingAppCard
-                                        icon='DTrader'
-                                        name='Deriv Trader'
-                                        description={
-                                            eu_user
-                                                ? localize('Multipliers trading platform.')
-                                                : localize('Options and multipliers trading platform.')
-                                        }
-                                        availability='All'
-                                        has_applauncher_account={has_applauncher_account}
-                                        is_item_blurry={is_blurry.platformlauncher}
-                                        has_divider={!eu_user}
-                                    />
-                                </div>
+                                {eu_user ? (
+                                    <div className='static-dashboard-wrapper__body--apps-item'>
+                                        <StaticTradingAppCard
+                                            icon='DTrader'
+                                            name='Deriv Trader'
+                                            description={localize('Multipliers trading platform.')}
+                                            availability='All'
+                                            has_applauncher_account={has_applauncher_account}
+                                            is_item_blurry={is_blurry.platformlauncher}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className='static-dashboard-wrapper__body--apps-item'>
+                                        <StaticTradingAppCard
+                                            icon='DTrader'
+                                            name='Deriv Trader'
+                                            description={localize('Options and multipliers trading platform.')}
+                                            availability='All'
+                                            has_applauncher_account={has_applauncher_account}
+                                            is_item_blurry={is_blurry.platformlauncher}
+                                            has_divider
+                                        />
+                                    </div>
+                                )}
 
                                 {!eu_user && (
                                     <React.Fragment>
@@ -466,49 +476,25 @@ const StaticDashboard = observer(
                                         is_eu_user={is_eu_user}
                                     />
                                 )}
-
                                 {!is_eu_user && !CFDs_restricted_countries && (
-                                    <React.Fragment>
-                                        <StaticCFDAccountManager
-                                            type='financial'
-                                            platform='mt5'
-                                            appname={localize('Financial')}
-                                            description={localize(
-                                                'Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
-                                            )}
-                                            financial_amount={financial_amount}
-                                            derived_amount={derived_amount}
-                                            loginid={loginid}
-                                            currency={currency}
-                                            has_account={has_account}
-                                            is_last_step={is_last_step}
-                                            is_blurry={is_blurry}
-                                            is_onboarding_animated={is_onboarding_animated}
-                                            is_financial_last_step={is_financial_last_step}
-                                            is_eu_user={is_eu_user}
-                                        />
-                                        {isMobile() && !has_account && <Divider />}
-                                        {!financial_restricted_countries && (
-                                            <StaticCFDAccountManager
-                                                type='swap_free'
-                                                platform='mt5'
-                                                appname={localize('Swap-Free')}
-                                                description={localize(
-                                                    'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs.'
-                                                )}
-                                                financial_amount={financial_amount}
-                                                derived_amount={derived_amount}
-                                                loginid={loginid}
-                                                currency={currency}
-                                                has_account={has_account}
-                                                is_last_step={is_last_step}
-                                                is_blurry={is_blurry}
-                                                is_onboarding_animated={is_onboarding_animated}
-                                                is_financial_last_step={is_financial_last_step}
-                                                is_eu_user={is_eu_user}
-                                            />
+                                    <StaticCFDAccountManager
+                                        type='financial'
+                                        platform='mt5'
+                                        appname={localize('Financial')}
+                                        description={localize(
+                                            'Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
                                         )}
-                                    </React.Fragment>
+                                        financial_amount={financial_amount}
+                                        derived_amount={derived_amount}
+                                        loginid={loginid}
+                                        currency={currency}
+                                        has_account={has_account}
+                                        is_last_step={is_last_step}
+                                        is_blurry={is_blurry}
+                                        is_onboarding_animated={is_onboarding_animated}
+                                        is_financial_last_step={is_financial_last_step}
+                                        is_eu_user={is_eu_user}
+                                    />
                                 )}
                                 {isDesktop() && has_account && !eu_user && (
                                     <StaticGetMoreAccounts

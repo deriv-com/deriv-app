@@ -1,6 +1,6 @@
 import { action, observable, makeObservable } from 'mobx';
 import { getDecimalPlaces } from '@deriv/shared';
-import { TRootStore, TWebSocket } from 'Types';
+import { TRootStore, TWebSocket } from '../types';
 
 export default class CryptoFiatConverterStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {

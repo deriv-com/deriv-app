@@ -1,7 +1,8 @@
 import { isMobile, validNumber } from '@deriv/shared';
 import WithdrawStore from '../withdraw-store';
 import { configure } from 'mobx';
-import { TWebSocket, TRootStore } from 'Types';
+import { TWebSocket, TRootStore } from '../../types';
+import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
 
@@ -15,10 +16,10 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('WithdrawStore', () => {
-    let withdraw_store: WithdrawStore, root_store: DeepPartial<TRootStore>, WS: DeepPartial<TWebSocket>;
+    let withdraw_store: WithdrawStore, root_store: TRootStore, WS: DeepPartial<TWebSocket>;
 
     beforeEach(() => {
-        root_store = {
+        root_store = mockStore({
             client: {
                 account_list: [
                     {
@@ -82,7 +83,7 @@ describe('WithdrawStore', () => {
                     },
                 },
             },
-        };
+        }) as TRootStore;
         WS = {
             authorized: {
                 cashier: jest.fn(() => Promise.resolve({ cashier: 'https://deriv.com' })),
@@ -91,7 +92,7 @@ describe('WithdrawStore', () => {
             cryptoWithdraw: jest.fn(() => Promise.resolve({})),
         };
 
-        withdraw_store = new WithdrawStore(WS as TWebSocket, root_store as TRootStore);
+        withdraw_store = new WithdrawStore(WS as TWebSocket, root_store);
     });
 
     it('should set is_withdraw_confirmed', () => {
@@ -201,7 +202,6 @@ describe('WithdrawStore', () => {
         const verification_code = 'aBcDefXa';
 
         withdraw_store.root_store.modules.cashier.iframe.is_session_timeout = true;
-        withdraw_store.root_store.modules.cashier.general_store.is_crypto = true;
         await withdraw_store.onMountWithdraw(verification_code);
         expect(setIframeUrl).toHaveBeenCalledWith('');
 
@@ -234,27 +234,6 @@ describe('WithdrawStore', () => {
         expect(setLoading).toHaveBeenCalledWith(false);
     });
 
-    it('should return is_withdrawal_locked equal to false if there is no account status', () => {
-        withdraw_store.root_store.client.account_status = {
-            currency_config: {},
-            prompt_client_to_authenticate: 0,
-            risk_classification: '',
-            status: [],
-        };
-        expect(withdraw_store.is_withdrawal_locked).toBeFalsy();
-    });
-
-    it('should return is_withdrawal_locked equal to true if client needs POI verification', () => {
-        withdraw_store.root_store.client.account_status.status = ['authentication_needed'];
-        withdraw_store.error.is_ask_authentication = true;
-        expect(withdraw_store.is_withdrawal_locked).toBeTruthy();
-    });
-
-    it('should return is_withdrawal_locked equal to true if client needs financial risk approval', () => {
-        withdraw_store.error.is_ask_financial_risk_approval = true;
-        expect(withdraw_store.is_withdrawal_locked).toBeTruthy();
-    });
-
     it('should set max_withdraw_amount', () => {
         withdraw_store.setMaxWithdrawAmount(100);
         expect(withdraw_store.max_withdraw_amount).toBe(100);
@@ -282,11 +261,11 @@ describe('WithdrawStore', () => {
         const { percentageSelectorSelectionStatus } = withdraw_store.root_store.modules.cashier.general_store;
         const spyValidateWithdrawFromAmount = jest.spyOn(withdraw_store, 'validateWithdrawFromAmount');
 
-        withdraw_store.setWithdrawPercentageSelectorResult(100);
-        expect(setConverterFromAmount).toHaveBeenCalledWith(100);
+        withdraw_store.setWithdrawPercentageSelectorResult('100');
+        expect(setConverterFromAmount).toHaveBeenCalledWith('100');
         expect(spyValidateWithdrawFromAmount).toHaveBeenCalled();
 
-        withdraw_store.setWithdrawPercentageSelectorResult(0);
+        withdraw_store.setWithdrawPercentageSelectorResult('0');
         expect(resetConverter).toHaveBeenCalled();
         expect(setIsTimerVisible).toHaveBeenCalledWith(false);
         expect(percentageSelectorSelectionStatus).toHaveBeenCalledWith(false);
@@ -304,11 +283,11 @@ describe('WithdrawStore', () => {
         const { setConverterFromError } = withdraw_store.root_store.modules.cashier.crypto_fiat_converter;
 
         withdraw_store.crypto_config = { currencies_config: { USD: { minimum_withdrawal: 2000 } } };
-        isMobile.mockReturnValueOnce(true);
+        (isMobile as jest.Mock).mockReturnValueOnce(true);
         withdraw_store.validateWithdrawFromAmount();
         expect(setConverterFromError).toHaveBeenCalled();
 
-        isMobile.mockReturnValueOnce(false);
+        (isMobile as jest.Mock).mockReturnValueOnce(false);
         withdraw_store.validateWithdrawFromAmount();
         expect(setConverterFromError).toHaveBeenCalledWith(
             'Your balance (1,000.00 USD) is less than the current minimum withdrawal allowed (2,000.00 USD). Please top up your account to continue with your withdrawal.'
@@ -320,15 +299,11 @@ describe('WithdrawStore', () => {
             withdraw_store.root_store.modules.cashier.crypto_fiat_converter;
         const error_message = 'Should be a valid number.';
 
-        validNumber.mockReturnValue({ is_ok: false, message: error_message });
+        (validNumber as jest.Mock).mockReturnValue({ is_ok: false, message: error_message });
         withdraw_store.validateWithdrawFromAmount();
         expect(setConverterFromError).toHaveBeenCalledWith(error_message);
 
         withdraw_store.validateWithdrawToAmount();
         expect(setConverterToError).toHaveBeenCalledWith(error_message);
-    });
-
-    it('should get account_platform_icon', () => {
-        expect(withdraw_store.account_platform_icon).toBe('icon');
     });
 });

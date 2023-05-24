@@ -17,6 +17,7 @@ import {
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { useStore, observer } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { FormikValues } from 'formik';
 
 const account_icons: { [key: string]: TAccountIconValues } = {
     mt5: {
@@ -438,7 +439,7 @@ const CFDAccountCardComponent = observer(
                                 platform === CFD_PLATFORMS.MT5 &&
                                 type.category === 'demo' &&
                                 existing_accounts_data?.length &&
-                                existing_accounts_data?.map((acc, index) => (
+                                existing_accounts_data?.map((acc: FormikValues, index: number) => (
                                     <div className='cfd-account-card__item' key={index}>
                                         {acc?.display_balance &&
                                             is_logged_in &&
@@ -551,7 +552,7 @@ const CFDAccountCardComponent = observer(
                                 is_logged_in &&
                                 platform === CFD_PLATFORMS.MT5 &&
                                 type.category === 'real' &&
-                                existing_accounts_data?.map((acc, index) => (
+                                existing_accounts_data?.map((acc: FormikValues, index: number) => (
                                     <div className='cfd-account-card__item' key={index}>
                                         {existing_data?.display_balance && is_logged_in && !show_eu_related_content && (
                                             <div className='cfd-account-card__item--banner'>

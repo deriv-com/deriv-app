@@ -30,7 +30,7 @@ describe('CompareAccountsModal', () => {
             modules: {
                 cfd: {
                     is_compare_accounts_visible: true,
-                    toggleCompareAccounts: jest.fn(),
+                    toggleCompareAccountsModal: jest.fn(),
                     openPasswordModal: jest.fn(),
                 },
             },
@@ -98,6 +98,6 @@ describe('CompareAccountsModal', () => {
             expect(screen.getAllByText(/account information/i)[0]).toBeInTheDocument();
         });
         fireEvent.click(screen.getByText(/account information/i));
-        expect(mock_props.modules.cfd.toggleCompareAccounts).toHaveBeenCalled();
+        expect(mock_props.modules.cfd.toggleCompareAccountsModal).toHaveBeenCalled();
     });
 });

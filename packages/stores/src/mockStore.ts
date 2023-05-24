@@ -219,7 +219,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_network_online: false,
             server_time: undefined,
             is_language_changing: false,
-            server_time: undefined,
         },
         ui: {
             app_contents_scroll_ref: {

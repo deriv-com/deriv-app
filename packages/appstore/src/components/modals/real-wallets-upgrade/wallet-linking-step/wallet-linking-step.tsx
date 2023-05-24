@@ -5,14 +5,14 @@ import WalletLinkWrapper, { TWalletLinkWrapper } from '../components/wallet-link
 import './wallet-linking-step.scss';
 
 type TWalletLinkingStep = {
-    data: { title: string; currency: string; landing_company_name: string; wallets: Array<TWalletLinkWrapper> };
+    data: { title: string; wallets: TWalletLinkWrapper[] };
 };
 
 const WalletLinkingStep = ({ data }: TWalletLinkingStep) => {
     return (
         <div className='wallet-linking-step'>
             <Text as='div' className='wallet-linking-step__page-title' weight='bold'>
-                {data.title}
+                {localize(data.title)}
             </Text>
             <Text as='div' className='wallet-linking-step__description' size='s'>
                 {localize('This is how we link your accounts with your new Wallet.')}

@@ -1,12 +1,12 @@
 import React from 'react';
-import { Icon, Text, WalletCard, TWalletCardProps } from '@deriv/components';
+import { Icon, Text, WalletCard } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import WalletAccount from '../wallet-account/wallet-account';
 import './wallet-link-wrapper.scss';
 import classNames from 'classnames';
 
 export type TWalletLinkWrapper = {
-    wallet_details: TWalletCardProps;
+    wallet_details: React.ComponentProps<typeof WalletCard>;
     account_list: {
         balance: string;
         currency: string;
@@ -19,7 +19,7 @@ const WalletLinkWrapper = ({ wallet_details, account_list }: TWalletLinkWrapper)
     return (
         <div className='wallet-link-wrapper'>
             <div className='wallet-link-wrapper__accounts'>
-                <Text className='wallet-link-wrapper__title-text wallet-link-wrapper__accounts-title'>
+                <Text as='div' className='wallet-link-wrapper__title-text wallet-link-wrapper__accounts-title'>
                     {localize('Your current trading account(s)')}
                 </Text>
                 {account_list.map((account, index) => {

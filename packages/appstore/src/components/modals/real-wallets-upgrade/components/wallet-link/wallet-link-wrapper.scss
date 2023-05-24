@@ -129,7 +129,6 @@
 
     &__card-wrapper {
         position: relative;
-        height: 100%;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -145,6 +144,9 @@
         }
 
         @include mobile {
+            display: block;
+            height: 14rem;
+
             &-title {
                 display: block;
                 position: absolute;

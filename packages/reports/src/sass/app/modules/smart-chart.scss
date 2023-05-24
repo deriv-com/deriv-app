@@ -74,6 +74,7 @@
             &-bold {
                 width: 2rem;
                 height: 2rem;
+                margin-left: -1rem;
                 border-width: 0.2rem;
                 background-color: rgba(255, 255, 255, 0.3);
                 &:after {
@@ -88,8 +89,10 @@
                     }
                 }
                 @include mobile {
-                    width: 1.2rem;
-                    height: 1.2rem;
+                    width: 1.6rem;
+                    height: 1.6rem;
+                    margin-left: -0.7rem;
+                    margin-top: 0.6rem;
                     border-width: 0.1rem;
                 }
             }

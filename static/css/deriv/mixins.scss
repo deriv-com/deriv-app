@@ -345,7 +345,7 @@
     @if $size == 'small' {
         height: 24px;
         border-width: 1px;
-        font-size: $FONT_SIZE_XS !important;
+        font-size: var(--font-size-xs) !important;
         padding: 0 8px;
         min-width: 48px;
     }

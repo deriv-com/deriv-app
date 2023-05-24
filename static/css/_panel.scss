@@ -1,12 +1,6 @@
 @import 'color';
 @import 'toolbox';
 @import './deriv/devices.scss';
-@import 'constants';
-
-$STATIC_CIRCLE_DIAMETER: 0.5rem;
-$DYNAMIC_CIRCLE_DIAMETER: 1.5rem;
-$DISABLED_COLOR: #F2F2F2;
-$ANIMATOR_CIRCLE_POSITION_TOP: 44%;
 
 @keyframes animate-circle {
     0% { 
@@ -157,16 +151,16 @@ $ANIMATOR_CIRCLE_POSITION_TOP: 44%;
         outline: none;
     }
     .react-grid-Grid {
-        border: 1px solid $DISABLED_COLOR;
+        border: 1px solid var(--disabled-color);
     }
     .react-grid-Cell {
-        border-bottom: 1px solid $DISABLED_COLOR;
-        border-right: 1px solid $DISABLED_COLOR;
+        border-bottom: 1px solid var(--disabled-color);
+        border-right: 1px solid var(--disabled-color);
     }
     .react-grid-HeaderCell {
         font-size: 11px;
-        border-bottom: 1px solid $DISABLED_COLOR;
-        border-right: 1px solid $DISABLED_COLOR;
+        border-bottom: 1px solid var(--disabled-color);
+        border-right: 1px solid var(--disabled-color);
         padding-left: 8px !important;
         display: flex !important;
         align-items: center;
@@ -305,7 +299,7 @@ $ANIMATOR_CIRCLE_POSITION_TOP: 44%;
         text-align: center;
         padding: 4px 8px;
         border-radius: 4px;
-        background-color: $COLOR_YELLOW;
+        background-color: var(--color-yellow);
     }
 
     &.running {
@@ -373,14 +367,14 @@ $ANIMATOR_CIRCLE_POSITION_TOP: 44%;
             &::after {
                 content: '';
                 position: absolute;
-                width: $STATIC_CIRCLE_DIAMETER;
-                height: $STATIC_CIRCLE_DIAMETER;
+                width: var(--static-circle-diameter);
+                height: var(--static-circle-diameter);
                 border-radius: 100%;
-                border: 0.25rem solid $DISABLED_COLOR;
+                border: 0.25rem solid var(--disabled-color);
                 display: block;
-                background-color: $DISABLED_COLOR;
+                background-color: var(--disabled-color);
                 right: 50%;
-                top: $ANIMATOR_CIRCLE_POSITION_TOP;
+                top: var(--dynamic-circle-diameter);
                 transform: translate(50%, -50%);
                 z-index: 1;
             }
@@ -389,14 +383,14 @@ $ANIMATOR_CIRCLE_POSITION_TOP: 44%;
                 &::before {
                     content: '';
                     position: absolute;
-                    width: $DYNAMIC_CIRCLE_DIAMETER;
-                    height: $DYNAMIC_CIRCLE_DIAMETER;
-                    background-color: $COLOR_ORANGE;
+                    width: var(--dynamic-circle-diameter);
+                    height: var(--dynamic-circle-diameter);
+                    background-color: var(--color-orange);
                     border-radius: 100%;
                     opacity: 0.32;
                     animation: animate-circle 0.8s infinite;
                     transform: translate(-50%, -50%);
-                    top: $ANIMATOR_CIRCLE_POSITION_TOP;
+                    top: var(--dynamic-circle-diameter);
                     animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
                     z-index: 1;
                 }
@@ -404,14 +398,14 @@ $ANIMATOR_CIRCLE_POSITION_TOP: 44%;
 
             &.complete {
                 &::after {
-                    border: 0.25em solid $COLOR_ORANGE;
+                    border: 0.25em solid var(--color-orange);
                 }
             }
         }
 
         .tooltip {
             padding: 4px;
-            background-color: $COLOR_YELLOW;
+            background-color: var(--color-yellow);
             border-radius: 4px;
             position: relative;
 
@@ -426,7 +420,7 @@ $ANIMATOR_CIRCLE_POSITION_TOP: 44%;
                 position: absolute;
                 top: -8px;
                 transform: translate(-50%, -50%);
-                border: 10px solid $COLOR_YELLOW;
+                border: 10px solid var(--color-yellow);
                 border-top-color: transparent;
                 border-left-color: transparent;
                 border-right-color: transparent;
@@ -442,9 +436,9 @@ $ANIMATOR_CIRCLE_POSITION_TOP: 44%;
     &__progress-bar {
         position: absolute;
         height: 4px;
-        background-color: $DISABLED_COLOR;
+        background-color: var(--disabled-color);
         left: 50%;
-        top: $ANIMATOR_CIRCLE_POSITION_TOP;
+        top: var(--dynamic-circle-diameter);
         transform: translate(-50%, -50%);
         width: calc(100% - 16.5rem);
 
@@ -460,7 +454,7 @@ $ANIMATOR_CIRCLE_POSITION_TOP: 44%;
 
         &.active {
             &::after {
-                background-color: $COLOR_ORANGE;
+                background-color: var(--color-orange);
                 width: 50%;
                 animation: animate-progress 0.5s 1;
                 animation-fill-mode: forwards;
@@ -469,7 +463,7 @@ $ANIMATOR_CIRCLE_POSITION_TOP: 44%;
 
         &.complete {
             &::after {
-                background-color: $COLOR_ORANGE;
+                background-color: var(--color-orange);
                 width: 100%;
                 animation: animate-progress-complete 0.5s 1;
                 animation-fill-mode: forwards;

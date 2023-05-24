@@ -11,14 +11,11 @@
 @import 'virtualized';
 @import 'deriv/devices.scss';
 
-
 * {
     box-sizing: border-box;
 }
 
-
-html,
-body {
+html, body {
     height: 100%;
     margin: 0em;
     max-width: 100%;

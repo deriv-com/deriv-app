@@ -5,7 +5,7 @@
     }
     #footer-menu {
         h4 {
-            font-size: $FONT_SIZE_S;
+            font-size: var(--font-size-s);
         }
         ul {
             padding: 0px;
@@ -32,7 +32,7 @@
             font-weight: 100;
         }
         a {
-            color: $COLOR_GRAY;
+            color: var(--color-gray);
         }
         p, .fld-risk-warning legend {
             color: #a8a8a8; // stylelint-disable color-no-hex
@@ -41,15 +41,15 @@
         }
         .fld-risk-warning {
             margin-bottom: 30px;
-            border-color: $COLOR_DARK_GRAY;
+            border-color: var(---color-dark-gray);
 
             legend {
                 text-transform: uppercase;
             }
         }
         .about-binary {
-            border-top: 1px solid $COLOR_DARK_GRAY;
-            border-bottom: 1px solid $COLOR_DARK_GRAY;
+            border-top: 1px solid var(---color-dark-gray);
+            border-bottom: 1px solid var(---color-dark-gray);
             padding: 10px 0;
             margin-bottom: 10px;
 
@@ -67,7 +67,7 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background-color: $COLOR_YELLOW;
+            background-color: var(--color-yellow);
             z-index: 999;
         }
         #site-status-message {
@@ -136,8 +136,8 @@
     }
     #end-note {
         line-height: 25px;
-        background: $COLOR_RED;
-        font-size: $FONT_SIZE_XS;
+        background: var(--color-red);
+        font-size: var(--font-size-xs);
         position: fixed;
         bottom: 0;
         z-index: 100 !important;
@@ -145,7 +145,7 @@
     }
     #status_notification {
         animation: moveInBottom 0.2s ease-in;
-        background-color: $COLOR_ORANGE;
+        background-color: var(--color-orange);
         display: none;
         align-items: center;
         padding: 10px 7px;
@@ -158,7 +158,7 @@
 
         &_text {
             color: $white;
-            font-size: $FONT_SIZE_S;
+            font-size: var(--font-size-s);
             margin: 0 auto 0 0;
         }
         &_type {

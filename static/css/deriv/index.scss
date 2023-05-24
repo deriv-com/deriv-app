@@ -18,7 +18,7 @@
     font-family: $FONT_STACK;
 }
 .footer {
-    font-size: $FONT_SIZE_XXS;
+    font-size: var(--font-size-xxs);
     font-family: $FONT_STACK;
 }
 a:hover {
@@ -121,7 +121,7 @@ a:hover {
         }
 
         .error {
-            color: $COLOR_RED;
+            color: var(--color-red);
             margin-bottom: 0;
         }
     }

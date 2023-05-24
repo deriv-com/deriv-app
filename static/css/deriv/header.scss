@@ -134,7 +134,7 @@
                 justify-content: space-evenly;
                 transition: background-color 0.3s;
                 cursor: pointer;
-                font-size: $FONT_SIZE_N;
+                font-size: var(--font-size-n);
                 color: var(--text-general) !important;
                 font-weight: 300;
                 text-transform: none;
@@ -209,7 +209,7 @@
         &-balance {
             padding: 0 8px;
             color: var(--text-profit-success);
-            font-size: $FONT_SIZE_N;
+            font-size: var(--font-size-n);
             font-weight: bold;
         }
 
@@ -384,7 +384,7 @@
 
         &-header {
             text-align: center;
-            font-size: $FONT_SIZE_N;
+            font-size: var(--font-size-n);
             font-weight: 600;
             padding: 10px 0;
             border-bottom: 1px solid var(--border-normal);
@@ -442,7 +442,7 @@
             }
 
             &-desc {
-                font-size: $FONT_SIZE_XS;
+                font-size: var(--font-size-xs);
                 color: var(--text-prominent);
                 line-height: 1.5;
                 padding-right: 8px;
@@ -467,7 +467,7 @@
             }
 
             &-desc {
-                font-size: $FONT_SIZE_XS;
+                font-size: var(--font-size-xs);
                 color: var(--text-less-prominent);
             }
         }
@@ -477,7 +477,7 @@
             margin: 8px 0 0 auto;
             height: 24px !important;
             float: left;
-            font-size: $FONT_SIZE_XS;
+            font-size: var(--font-size-xs);
 
             @include mobile {
                 width: 90px;
@@ -511,7 +511,7 @@
             }
 
             &-header {
-                font-size: $FONT_SIZE_N;
+                font-size: var(--font-size-n);
                 line-height: 24px;
                 font-weight: bold;
                 color: var(--text-general);
@@ -598,7 +598,7 @@
                 }
 
                 &-name {
-                    font-size: $FONT_SIZE_N;
+                    font-size: var(--font-size-n);
                     font-weight: 700;
                     line-height: 24px;
                 }
@@ -707,7 +707,7 @@
 
                 &-text {
                     color: var(--brand-red-coral);
-                    font-size: $FONT_SIZE_XS;
+                    font-size: var(--font-size-xs);
 
                     &:hover {
                         text-decoration: underline;
@@ -770,7 +770,7 @@
             }
 
             &-loginid {
-                font-size: $FONT_SIZE_XXS;
+                font-size: var(--font-size-xxs);
                 color: var(--text-less-prominent);
                 line-height: 1.4;
                 font-weight: normal;
@@ -785,7 +785,7 @@
                     background-color: var(--general-main-2);
                     color: var(--text-prominent);
                     font-weight: 600;
-                    font-size: $FONT_SIZE_N;
+                    font-size: var(--font-size-n);
                     line-height: 1.75;
                     border: none;
                     padding: 0;
@@ -1000,7 +1000,7 @@
 
                 &-text {
                     margin: 0 16px 12px;
-                    font-size: $FONT_SIZE_XXS;
+                    font-size: var(--font-size-xxs);
                     color: var(--text-less-prominent);
                     line-height: 1.4;
                 }
@@ -1121,7 +1121,7 @@
 
             &-text {
                 padding: 12px 16px;
-                font-size: $FONT_SIZE_N;
+                font-size: var(--font-size-n);
                 font-weight: 600;
             }
         }
@@ -1161,7 +1161,7 @@
 
                 &-item {
                     &-text {
-                        font-size: $FONT_SIZE_N;
+                        font-size: var(--font-size-n);
                         color: var(--text-general);
                         font-weight: normal;
                     }
@@ -1186,7 +1186,7 @@
         height: 72px;
 
         &-header {
-            font-size: $FONT_SIZE_L;
+            font-size: var(--font-size-l);;
         }
 
         &-logo {
@@ -1245,7 +1245,7 @@
         }
 
         &-text {
-            font-size: $FONT_SIZE_N;
+            font-size: var(--font-size-n);
             color: var(--text-prominent);
 
             &-bold {

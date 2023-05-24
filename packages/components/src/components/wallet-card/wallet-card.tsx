@@ -47,6 +47,7 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
             <div
                 className={`wallet-card__container wallet-card__container--${state} wallet-card__container--${size} wallet-card__${wallet.currency}-bg`}
             >
+                <div className={`wallet-card__shine wallet-card__shine--${size}`} />
                 <div
                     className={classNames('wallet-card__container-fade', {
                         [`wallet-card__container-fade--${state}`]: state,
@@ -55,8 +56,6 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
                 {size === 'small' && <IconComponent />}
                 {size !== 'small' && (
                     <div className={`wallet-card__content wallet-card__content--${size}`}>
-                        <div className='wallet-card__shine' />
-
                         <div className='wallet-card__top-wrapper'>
                             <IconComponent />
                             <Badge

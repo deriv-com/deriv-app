@@ -1219,9 +1219,10 @@ export default class TradeStore extends BaseStore {
             // When this happens we want to populate the list of barrier choices to choose from since the value cannot be specified manually
             if (this.is_vanilla) {
                 const { barrier_choices, max_stake, min_stake } = response.error.details;
+
                 this.setStakeBoundary(contract_type, min_stake, max_stake);
                 this.setStrikeChoices(barrier_choices);
-                if (!this.strike_price_choices.includes(this.barrier_1)) {
+                if (barrier_choices.length > 0 && !this.strike_price_choices.includes(this.barrier_1)) {
                     // Since on change of duration `proposal` API call is made which returns a new set of barrier values.
                     // The new list is set and the mid value is assigned
                     const index = Math.floor(this.strike_price_choices.length / 2);

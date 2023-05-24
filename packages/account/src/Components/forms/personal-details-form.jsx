@@ -16,8 +16,8 @@ import { getLegalEntityName, isDesktop, isMobile, routes, validPhone } from '@de
 import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
-import PoiNameMismatchExample from 'Assets/ic-poi-name-mismatch-example.svg';
-import PoiDobMismatchExample from 'Assets/ic-poi-dob-mismatch-example.svg';
+import PoiNameExample from 'Assets/ic-poi-name-example.svg';
+import PoiDobExample from 'Assets/ic-poi-dob-example.svg';
 import InlineNoteWithIcon from 'Components/inline-note-with-icon';
 import FormBodySection from 'Components/form-body-section';
 import { DateOfBirthField, FormInputField } from 'Components/forms/form-fields';
@@ -63,9 +63,9 @@ const PersonalDetailsForm = props => {
     const imageLoader = () => {
         switch (status) {
             case 'POI_NAME_MISMATCH':
-                return <PoiNameMismatchExample />;
+                return <PoiNameExample />;
             case 'POI_DOB_MISMATCH':
-                return <PoiDobMismatchExample />;
+                return <PoiDobExample />;
             default:
                 return <PoiNameDobExample />;
         }
@@ -227,9 +227,7 @@ const PersonalDetailsForm = props => {
                                     <DesktopWrapper>
                                         <Autocomplete
                                             {...field}
-                                            disabled={
-                                                isFieldImmutable('place_of_birth', editable_fields)
-                                            }
+                                            disabled={isFieldImmutable('place_of_birth', editable_fields)}
                                             data-lpignore='true'
                                             autoComplete={autocomplete_value} // prevent chrome autocomplete
                                             type='text'
@@ -247,9 +245,7 @@ const PersonalDetailsForm = props => {
                                         <SelectNative
                                             placeholder={localize('Place of birth')}
                                             name={field.name}
-                                            disabled={
-                                                isFieldImmutable('place_of_birth', editable_fields)
-                                            }
+                                            disabled={isFieldImmutable('place_of_birth', editable_fields)}
                                             label={is_mf ? localize('Place of birth*') : localize('Place of birth')}
                                             list_items={residence_list}
                                             value={values.place_of_birth}

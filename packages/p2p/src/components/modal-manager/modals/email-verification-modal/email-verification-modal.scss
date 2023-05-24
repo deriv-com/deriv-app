@@ -10,8 +10,13 @@
         flex-direction: column;
     }
 
-    &--email_text {
-        margin: 2.4rem 0;
+    &--email {
+        &__text {
+            margin: 2.4rem 0;
+        }
+        &__title {
+            margin-top: 1.5rem;
+        }
     }
 
     &--footer {

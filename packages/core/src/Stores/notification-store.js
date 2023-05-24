@@ -1583,7 +1583,7 @@ export default class NotificationStore extends BaseStore {
         const { logout } = client;
         this.addNotificationMessage({
             key: 'success_wallets_upgrade',
-            header: localize('Your wallets are ready'),
+            header: localize('Your Wallets are ready'),
             message: localize(
                 'To complete the upgrade, please log out and log in again to add more accounts and make transactions with your Wallets.'
             ),

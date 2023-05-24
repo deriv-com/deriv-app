@@ -1,4 +1,5 @@
 export { default as useAccountTransferVisible } from './useAccountTransferVisible';
+export { default as useBalance } from './useBalance';
 export { default as useCFDAllAccounts } from './useCFDAllAccounts';
 export { default as useCFDDemoAccounts } from './useCFDDemoAccounts';
 export { default as useCFDRealAccounts } from './useCFDRealAccounts';
@@ -29,5 +30,4 @@ export { default as usePlatformRealAccounts } from './usePlatformRealAccounts';
 export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useVerifyEmail } from './useVerifyEmail';
-export { default as useBalance } from './useBalance';
 export { default as useWalletMigration } from './useWalletMigration';

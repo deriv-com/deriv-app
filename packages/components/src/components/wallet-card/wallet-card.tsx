@@ -9,13 +9,13 @@ import { WalletIcon } from '../wallet-icon';
 import './wallet-card.scss';
 import classNames from 'classnames';
 
-type TWalletCardProps = {
+export type TWalletCardProps = {
     // TODO: This type should be updated when the response is ready
     wallet: {
         balance: string;
         currency: string;
         icon: string;
-        icon_type: string;
+        icon_type: 'fiat' | 'crypto' | 'app';
         jurisdiction_title: string;
         name: string;
     };

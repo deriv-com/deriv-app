@@ -6,6 +6,8 @@ import { observer, useStore } from '@deriv/stores';
 import { WalletsIntro } from './components/wallets-intro/wallets-intro';
 import ReadyToUpgradeWallets from './components/ready-to-upgrade-wallets';
 import './real-wallets-upgrade.scss';
+import WalletLinkingStep from './wallet-linking-step/wallet-linking-step';
+import mock_wallet_migration_response from '../../../constants/mock_wallet_migration_response';
 
 const RealWalletsUpgrade = observer(() => {
     const { traders_hub } = useStore();
@@ -97,6 +99,15 @@ const RealWalletsUpgrade = observer(() => {
                 component: <WalletsIntro is_eu={is_eu} current_step={2} />,
             },
             {
+                component: <WalletLinkingStep data={mock_wallet_migration_response[0]} />,
+            },
+            {
+                component: <WalletLinkingStep data={mock_wallet_migration_response[1]} />,
+            },
+            {
+                component: <WalletLinkingStep data={mock_wallet_migration_response[2]} />,
+            },
+            {
                 name: 'ready_to_upgrade',
                 component: <ReadyToUpgradeWallets is_eu={is_eu} value={is_disabled} toggleCheckbox={toggleCheckbox} />,
                 footer: EndFooter,
@@ -140,7 +151,7 @@ const RealWalletsUpgrade = observer(() => {
                             wrapper_classname='wallet-steps'
                             footer={ModalFooter}
                         >
-                            <Modal.Body>{ModalContent}</Modal.Body>
+                            <Modal.Body className='wallet-steps'>{ModalContent}</Modal.Body>
                         </MobileDialog>
                     </MobileWrapper>
                 </React.Fragment>

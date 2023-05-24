@@ -1,7 +1,6 @@
 import React from 'react';
 import { useSubscription } from '@deriv/api';
 import useStore from '../useStore';
-import { observer } from 'mobx-react-lite';
 import { useWS } from '@deriv/shared';
 import merge from 'lodash.merge';
 
@@ -37,4 +36,4 @@ const WebsiteStatusProvider = ({ children }: React.PropsWithChildren<unknown>) =
     return <React.Fragment>{children}</React.Fragment>;
 };
 
-export default observer(WebsiteStatusProvider);
+export default WebsiteStatusProvider;

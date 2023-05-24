@@ -228,8 +228,7 @@ const PersonalDetailsForm = props => {
                                         <Autocomplete
                                             {...field}
                                             disabled={
-                                                isFieldImmutable('place_of_birth', editable_fields) ||
-                                                (values?.place_of_birth && has_real_account)
+                                                isFieldImmutable('place_of_birth', editable_fields)
                                             }
                                             data-lpignore='true'
                                             autoComplete={autocomplete_value} // prevent chrome autocomplete
@@ -249,8 +248,7 @@ const PersonalDetailsForm = props => {
                                             placeholder={localize('Place of birth')}
                                             name={field.name}
                                             disabled={
-                                                isFieldImmutable('place_of_birth', editable_fields) ||
-                                                (values?.place_of_birth && has_real_account)
+                                                isFieldImmutable('place_of_birth', editable_fields)
                                             }
                                             label={is_mf ? localize('Place of birth*') : localize('Place of birth')}
                                             list_items={residence_list}

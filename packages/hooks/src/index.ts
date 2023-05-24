@@ -1,4 +1,5 @@
 export { default as useAccountTransferVisible } from './useAccountTransferVisible';
+export { default as useCfdAccounts } from './useCfdAccounts';
 export { default as useCFDAllAccounts } from './useCFDAllAccounts';
 export { default as useCFDDemoAccounts } from './useCFDDemoAccounts';
 export { default as useCFDRealAccounts } from './useCFDRealAccounts';

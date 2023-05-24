@@ -344,8 +344,6 @@ type TTradersHubStore = {
     setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
     toggleAccountTransferModal: () => void;
     is_demo: boolean;
-    show_wallet_consent_popup: boolean;
-    setShouldShowWalletConsentPopup: (value: boolean) => void;
     is_real_wallets_upgrade_on: boolean;
     toggleWalletsUpgrade: (value: boolean) => void;
 };

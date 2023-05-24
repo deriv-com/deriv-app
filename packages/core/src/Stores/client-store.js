@@ -1107,10 +1107,6 @@ export default class ClientStore extends BaseStore {
         this.is_authorize = value;
     }
 
-    setIsAuthorize(value) {
-        this.is_authorize = value;
-    }
-
     getBasicUpgradeInfo() {
         const upgradeable_landing_companies = [
             ...new Set(State.getResponse('authorize.upgradeable_landing_companies')),

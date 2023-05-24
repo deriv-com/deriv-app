@@ -29,7 +29,7 @@ const WebsiteStatusProvider = ({ children }: React.PropsWithChildren<unknown>) =
         } else {
             subscribe();
         }
-    }, [loginid, subscribe]);
+    }, [is_logged_in, is_logging_in, loginid, subscribe]);
 
     return <React.Fragment>{children}</React.Fragment>;
 };

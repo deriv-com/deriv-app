@@ -119,8 +119,8 @@ type TNotification =
 type TStandPoint = {
     financial_company: string;
     gaming_company: string;
-    iom: string;
-    malta: string;
+    iom: boolean;
+    malta: boolean;
     maltainvest: boolean;
     svg: boolean;
 };
@@ -146,7 +146,7 @@ type TClientStore = {
         api_initial_load_error?: string;
     };
     account_list: TAccountsList;
-    account_status?: Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
+    account_status: Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;

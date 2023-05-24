@@ -19,8 +19,8 @@ const WebsiteStatusProvider = ({ children }: React.PropsWithChildren<unknown>) =
     React.useEffect(() => {
         // handles case where the response from website_status is different when client is logged in/out, we need to re-subscribe in that case
         // refer to socket-general.js
+        if (is_subscribed) unsubscribe();
         if (is_logged_in || is_logging_in) {
-            if (is_subscribed) unsubscribe();
             WS.get()
                 .expectResponse('authorize')
                 .then(() => {

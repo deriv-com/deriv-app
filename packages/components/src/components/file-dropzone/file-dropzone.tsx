@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { ReactElement, ReactNode, RefObject } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import Dropzone, { DropzoneOptions } from 'react-dropzone';
+import Dropzone, { DropzoneOptions, DropzoneRef } from 'react-dropzone';
 import { truncateFileName } from '@deriv/shared';
 import Text from '../text';
 
@@ -91,17 +91,23 @@ const PreviewSingle = (props: TPreviewSingle) => {
 const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) => {
     const { validation_error_message, message } = props;
 
-    const RenderErrorMessage = React.useCallback(() => {
-        if (typeof message === 'function') return <>{message(open)}</>;
+    const RenderErrorMessage = React.useCallback(
+        ({ open }: DropzoneRef) => {
+            if (typeof message === 'function') return <>{message(open)}</>;
 
-        return <>{message}</>;
-    }, [message]);
+            return <>{message}</>;
+        },
+        [message]
+    );
 
-    const RenderValidationErrorMessage = React.useCallback(() => {
-        if (typeof validation_error_message === 'function') return <>{validation_error_message(open)}</>;
+    const RenderValidationErrorMessage = React.useCallback(
+        ({ open }: DropzoneRef) => {
+            if (typeof validation_error_message === 'function') return <>{validation_error_message(open)}</>;
 
-        return <>{validation_error_message}</>;
-    }, [validation_error_message]);
+            return <>{validation_error_message}</>;
+        },
+        [validation_error_message]
+    );
 
     const dropzone_ref = React.useRef(null);
 
@@ -140,7 +146,7 @@ const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) =
                             timeout={150}
                             no_text={noClick}
                         >
-                            <RenderErrorMessage />
+                            <RenderErrorMessage open={open} />
                         </FadeInMessage>
                         <FadeInMessage
                             // message shown on hover if files are accepted onDrag
@@ -180,7 +186,7 @@ const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) =
                             timeout={150}
                             color='loss-danger'
                         >
-                            <RenderValidationErrorMessage />
+                            <RenderValidationErrorMessage open={open} />
                         </FadeInMessage>
                     </div>
                 </div>

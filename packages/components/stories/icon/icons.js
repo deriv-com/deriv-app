@@ -56,6 +56,7 @@ export const icons =
         'IcAppstoreWalletUsdLight',
         'IcAppstoreWalletUsdcLight',
         'IcAppstoreWalletUsdtLight',
+        'IcAppstoreWalletsLink',
         'IcAppstoreWarning',
     ],
     'brand': [

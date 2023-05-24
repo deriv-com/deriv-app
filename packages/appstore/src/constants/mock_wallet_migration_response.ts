@@ -2,10 +2,17 @@ const mock_wallet_migration_response = [
     {
         title: 'Non-EU USD accounts',
         currency: 'USD',
-        landing_company_name: 'svg',
+        landing_company_name: 'SVG',
         wallets: [
             {
-                landing_company_name: 'svg',
+                wallet_details: {
+                    balance: '0.00',
+                    currency: 'USD',
+                    icon: 'IcCurrencyUsd',
+                    icon_type: 'fiat',
+                    jurisdiction_title: 'SVG',
+                    name: 'USD',
+                },
                 account_list: [
                     {
                         balance: '1000.00',
@@ -68,10 +75,17 @@ const mock_wallet_migration_response = [
     {
         title: 'EU-regulated USD accounts',
         currency: 'USD',
-        landing_company_name: 'malta',
+        landing_company_name: 'MALTA',
         wallets: [
             {
-                landing_company_name: 'svg',
+                wallet_details: {
+                    balance: '0.00',
+                    currency: 'USD',
+                    icon: 'IcCurrencyUsd',
+                    icon_type: 'fiat',
+                    jurisdiction_title: 'MALTA',
+                    name: 'USD',
+                },
                 account_list: [
                     {
                         balance: '1000.00',
@@ -93,7 +107,14 @@ const mock_wallet_migration_response = [
         title: 'Cryptocurrency accounts',
         wallets: [
             {
-                landing_company_name: 'svg',
+                wallet_details: {
+                    balance: '0.00',
+                    currency: 'BTC',
+                    icon: 'IcCashierBitcoinLight',
+                    icon_type: 'crypto',
+                    jurisdiction_title: 'SVG',
+                    name: 'Bitcoin',
+                },
                 account_list: [
                     {
                         balance: '0.00212012',
@@ -104,7 +125,14 @@ const mock_wallet_migration_response = [
                 ],
             },
             {
-                landing_company_name: 'svg',
+                wallet_details: {
+                    balance: '0.00',
+                    currency: 'ETH',
+                    icon: 'IcCashierEthereumLight',
+                    icon_type: 'crypto',
+                    jurisdiction_title: 'SVG',
+                    name: 'Ethereum',
+                },
                 account_list: [
                     {
                         balance: '0.00212012',

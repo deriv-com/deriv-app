@@ -1,10 +1,11 @@
 import { routes } from '@deriv/shared';
-import { TRootStore } from 'Types';
+import { mockStore } from '@deriv/stores';
 import AccountPromptDialogStore from '../account-prompt-dialog-store';
+import { TRootStore } from '../../types';
 
 describe('AccountPromptDialogStore', () => {
     let account_prompt_dialog_store: AccountPromptDialogStore;
-    const root_store: DeepPartial<TRootStore> = {
+    const root_store = mockStore({
         common: {
             routeTo: jest.fn(),
         },
@@ -29,10 +30,9 @@ describe('AccountPromptDialogStore', () => {
                 },
             },
         },
-    };
+    });
 
     beforeEach(() => {
-        // TODO: Check this
         account_prompt_dialog_store = new AccountPromptDialogStore(root_store as TRootStore);
     });
 

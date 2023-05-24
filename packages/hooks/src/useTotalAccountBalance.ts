@@ -1,4 +1,4 @@
-import { useStore } from '@deriv/stores';
+import useExchangeRate from './useExchangeRate';
 import useRealTotalAssetCurrency from './useTotalAssetCurrency';
 
 /**
@@ -9,13 +9,14 @@ import useRealTotalAssetCurrency from './useTotalAssetCurrency';
  */
 
 const useTotalAccountBalance = (accounts: { balance?: number; currency?: string }[]) => {
-    const { exchange_rates } = useStore();
     const total_assets_real_currency = useRealTotalAssetCurrency();
+    const { getRate } = useExchangeRate();
 
     if (!accounts.length) return { balance: 0, currency: total_assets_real_currency };
+
     const balance = accounts.reduce((total, account) => {
-        const base_rate = exchange_rates.data?.rates?.[total_assets_real_currency] || 1;
-        const rate = exchange_rates.data?.rates?.[account.currency || total_assets_real_currency] || 1;
+        const base_rate = getRate(total_assets_real_currency || '');
+        const rate = getRate(account.currency || total_assets_real_currency || '');
         const exchange_rate = base_rate / rate;
 
         return total + (account.balance || 0) * exchange_rate;

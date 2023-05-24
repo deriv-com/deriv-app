@@ -1,13 +1,11 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { observer } from 'mobx-react';
+import { useDBotStore } from 'Stores/useDBotStore';
 
-type TWorkspaceControl = {
-    onZoomInOutClick: (param: boolean) => void;
-};
-
-const WorkspaceControl = ({ onZoomInOutClick }: TWorkspaceControl) => (
+const WorkspaceControl = observer(() => {
+    const { dashboard } = useDBotStore();
+    const { onZoomInOutClick } = dashboard;
     <div className='load-strategy__preview-workspace-controls'>
         <Icon
             icon={'IcAddRounded'}
@@ -21,9 +19,7 @@ const WorkspaceControl = ({ onZoomInOutClick }: TWorkspaceControl) => (
             custom_color='$color-black-1'
             onClick={() => onZoomInOutClick(false)}
         />
-    </div>
-);
+    </div>;
+});
 
-export default connect(({ dashboard }: RootStore) => ({
-    onZoomInOutClick: dashboard.onZoomInOutClick,
-}))(WorkspaceControl);
+export default WorkspaceControl;

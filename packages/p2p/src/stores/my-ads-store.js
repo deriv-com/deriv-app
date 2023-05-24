@@ -618,35 +618,28 @@ export default class MyAdsStore extends BaseStore {
 
     validateCreateAdForm(values) {
         const { general_store, floating_rate_store } = this.root_store;
+        const client_currency_decimal_places = getDecimalPlaces(general_store.external_stores.client.currency);
+        const local_currency_decimal_places = general_store.external_stores.client.local_currency_config.decimal_places;
         const validations = {
             default_advert_description: [v => !v || lengthValidator(v), v => !v || textValidator(v)],
             max_transaction: [
                 v => !!v,
                 v => !isNaN(v),
-                v =>
-                    v > 0 &&
-                    decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.external_stores.client.currency),
+                v => v > 0 && decimalValidator(v) && countDecimalPlaces(v) <= client_currency_decimal_places,
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
             ],
             min_transaction: [
                 v => !!v,
                 v => !isNaN(v),
-                v =>
-                    v > 0 &&
-                    decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.external_stores.client.currency),
+                v => v > 0 && decimalValidator(v) && countDecimalPlaces(v) <= client_currency_decimal_places,
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.max_transaction ? +v <= values.max_transaction : true),
             ],
             offer_amount: [
                 v => !!v,
                 v => !isNaN(v),
-                v =>
-                    v > 0 &&
-                    decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.external_stores.client.currency),
+                v => v > 0 && decimalValidator(v) && countDecimalPlaces(v) <= client_currency_decimal_places,
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
                 v => (values.max_transaction ? +v >= values.max_transaction : true),
             ],
@@ -655,10 +648,7 @@ export default class MyAdsStore extends BaseStore {
                 v => !isNaN(v),
                 v =>
                     floating_rate_store.rate_type === ad_type.FIXED
-                        ? v > 0 &&
-                          decimalValidator(v) &&
-                          countDecimalPlaces(v) <=
-                              general_store.external_stores.client.local_currency_config.decimal_places
+                        ? v > 0 && decimalValidator(v) && countDecimalPlaces(v) <= local_currency_decimal_places
                         : true,
                 v =>
                     floating_rate_store.rate_type === ad_type.FLOAT
@@ -703,32 +693,40 @@ export default class MyAdsStore extends BaseStore {
 
         const getOfferAmountMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
-            localize('Enter a valid amount'),
-            localize('Enter a valid amount'),
+            localize('Only numbers are allowed.'),
+            localize('Only up to {{client_currency_decimal_places}} decimals are allowed.', {
+                client_currency_decimal_places,
+            }),
             localize('{{field_name}} should not be below Min limit', { field_name }),
             localize('{{field_name}} should not be below Max limit', { field_name }),
         ];
 
         const getMaxTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
-            localize('Enter a valid amount'),
-            localize('Enter a valid amount'),
+            localize('Only numbers are allowed.'),
+            localize('Only up to {{client_currency_decimal_places}} decimals are allowed.', {
+                client_currency_decimal_places,
+            }),
             localize('{{field_name}} should not exceed Amount', { field_name }),
             localize('{{field_name}} should not be below Min limit', { field_name }),
         ];
 
         const getMinTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
-            localize('Enter a valid amount'),
-            localize('Enter a valid amount'),
+            localize('Only numbers are allowed.'),
+            localize('Only up to {{client_currency_decimal_places}} decimals are allowed.', {
+                client_currency_decimal_places,
+            }),
             localize('{{field_name}} should not exceed Amount', { field_name }),
             localize('{{field_name}} should not exceed Max limit', { field_name }),
         ];
 
         const getPriceRateMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
-            localize('Enter a valid amount'),
-            localize('Enter a valid amount'),
+            localize('Only numbers are allowed.'),
+            localize('Only up to {{local_currency_decimal_places}} decimals are allowed.', {
+                local_currency_decimal_places,
+            }),
             localize("Enter a value that's within -{{limit}}% to +{{limit}}%", {
                 limit: floating_rate_store.float_rate_offset_limit,
             }),
@@ -775,25 +773,21 @@ export default class MyAdsStore extends BaseStore {
 
     validateEditAdForm(values) {
         const { general_store, floating_rate_store } = this.root_store;
+        const client_currency_decimal_places = getDecimalPlaces(general_store.external_stores.client.currency);
+        const local_currency_decimal_places = general_store.external_stores.client.local_currency_config.decimal_places;
         const validations = {
             description: [v => !v || lengthValidator(v), v => !v || textValidator(v)],
             max_transaction: [
                 v => !!v,
                 v => !isNaN(v),
-                v =>
-                    v > 0 &&
-                    decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.external_stores.client.currency),
+                v => v > 0 && decimalValidator(v) && countDecimalPlaces(v) <= client_currency_decimal_places,
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.min_transaction ? +v >= values.min_transaction : true),
             ],
             min_transaction: [
                 v => !!v,
                 v => !isNaN(v),
-                v =>
-                    v > 0 &&
-                    decimalValidator(v) &&
-                    countDecimalPlaces(v) <= getDecimalPlaces(general_store.external_stores.client.currency),
+                v => v > 0 && decimalValidator(v) && countDecimalPlaces(v) <= client_currency_decimal_places,
                 v => (values.offer_amount ? +v <= values.offer_amount : true),
                 v => (values.max_transaction ? +v <= values.max_transaction : true),
             ],
@@ -802,10 +796,7 @@ export default class MyAdsStore extends BaseStore {
                 v => !isNaN(v),
                 v =>
                     this.required_ad_type === ad_type.FIXED
-                        ? v > 0 &&
-                          decimalValidator(v) &&
-                          countDecimalPlaces(v) <=
-                              general_store.external_stores.client.local_currency_config.decimal_places
+                        ? v > 0 && decimalValidator(v) && countDecimalPlaces(v) <= local_currency_decimal_places
                         : true,
                 v =>
                     this.required_ad_type === ad_type.FLOAT
@@ -848,24 +839,30 @@ export default class MyAdsStore extends BaseStore {
 
         const getMaxTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
-            localize('Enter a valid amount'),
-            localize('Enter a valid amount'),
+            localize('Only numbers are allowed.'),
+            localize('Only up to {{client_currency_decimal_places}} decimals are allowed.', {
+                client_currency_decimal_places,
+            }),
             localize('{{field_name}} should not exceed Amount', { field_name }),
             localize('{{field_name}} should not be below Min limit', { field_name }),
         ];
 
         const getMinTransactionLimitMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
-            localize('Enter a valid amount'),
-            localize('Enter a valid amount'),
+            localize('Only numbers are allowed.'),
+            localize('Only up to {{client_currency_decimal_places}} decimals are allowed.', {
+                client_currency_decimal_places,
+            }),
             localize('{{field_name}} should not exceed Amount', { field_name }),
             localize('{{field_name}} should not exceed Max limit', { field_name }),
         ];
 
         const getPriceRateMessages = field_name => [
             localize('{{field_name}} is required', { field_name }),
-            localize('Enter a valid amount'),
-            localize('Enter a valid amount'),
+            localize('Only numbers are allowed.'),
+            localize('Only up to {{local_currency_decimal_places}} decimals are allowed.', {
+                local_currency_decimal_places,
+            }),
             localize("Enter a value that's within -{{limit}}% to +{{limit}}%", {
                 limit: floating_rate_store.float_rate_offset_limit,
             }),

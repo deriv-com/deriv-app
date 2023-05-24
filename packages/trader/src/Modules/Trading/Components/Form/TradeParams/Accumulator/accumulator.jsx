@@ -8,7 +8,8 @@ import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const Accumulator = observer(() => {
-    const { accumulator_range_list, growth_rate, onChange, tick_size_barrier, proposal_info } = useTraderStore();
+    const { accumulator_range_list, growth_rate, is_accumulator, onChange, tick_size_barrier, proposal_info } =
+        useTraderStore();
 
     // splitting accumulator_range_list into rows containing 5 values each:
     const arr_arr_numbers = accumulator_range_list.reduce((acc, _el, index) => {
@@ -25,7 +26,7 @@ const Accumulator = observer(() => {
             className={classNames('trade-container__fieldset', 'accumulator')}
             header={localize('Accumulate')}
             is_center
-            is_tooltip_disabled={has_error_or_not_loaded}
+            is_tooltip_disabled={has_error_or_not_loaded && is_accumulator}
             header_tooltip={localize(
                 'Your stake will grow by {{growth_rate}}% at every tick starting from the second tick, as long as the price remains within a range of ±{{tick_size_barrier}} from the previous tick price.',
                 {

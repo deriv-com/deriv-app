@@ -10,8 +10,7 @@ import 'react-virtualized/styles.css';
 import 'binary-style/binary.css';
 import store from './deriv/store';
 import App from './deriv/app';
-import '../../../static/css/index.scss';
-import '../../../static/css/bot.scss';
+import '../../assets/css/index.scss';
 
 ReactDOM.render(
     <Provider store={store}>

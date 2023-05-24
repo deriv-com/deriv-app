@@ -1,0 +1,28 @@
+.cq-chart-control-bottom .cq-chart-controls .ciq-menu .cq-menu-dropdown.cq-menu-dropdown-enter-done, .cq-chart-control-bottom .cq-chart-controls .ciq-menu .cq-menu-dropdown.cq-menu-dropdown-enter-active {
+    transform: translateX(-40%) translateY(0em);
+}
+
+.ciq-list .ciq-list-item {
+    font-size: 0.8em;
+}
+
+.cq-categorical-display {
+    .cq-item, 
+    .cq-active-item,
+    .empty-category,
+    .cq-filter,
+    .cq-lookup-input>input,
+    .category-title,
+    .empty-category {
+        font-size: 0.8em;
+    }
+    .category-title {
+        font-weight: bold;
+    }
+    .empty-category {
+        padding: 0 0.8em 0.8em;
+    }
+    .category.category-has-subtitle {
+        padding-top: 4em
+    }
+}

@@ -1,0 +1,105 @@
+// $FONT_BASE: 15px;
+// $FONT_SCALE: 1.2;
+$LINE_HEIGHT: 1.25;
+$FONT_SIZE_S: 0.85em;
+
+$LANGUAGE_DIRECTION : ltr;
+$IS_LTR : true;
+
+$FONT_STACK: 'IBM Plex Sans',
+sans-serif; // same variable/value exists in @binary-com/binary-style/constants.scss with roboto instead of IBM
+
+
+$black: #000;
+$white: #fff;
+$primaryBrandColor: #2a3052;
+$darkPrimaryBrandColor: #15212d;
+$secondaryBrandColor: #e98024;
+$contentColor: #000;
+$contentInverseColor: #fff;
+$secondaryContentColor: #c2c2c2;
+$borderColor: #dedede;
+$fillColor: #f2f2f2;
+$positiveColor: #2e8836;
+$darkPositiveColor: #14602b;
+$negativeColor: #c03;
+$noticeColor: #fef1cf;
+$chartColor: #6b8fb9;
+$chartAreaColor: rgba(128, 179, 236, 0.3);
+$lightBlue: #29abe2;
+$darkGray: #44484c;
+$darkWhite: #ccc;
+
+$FONT_BASE: 1rem;
+$FONT_SCALE: 1.15;
+
+:root {
+    --content-width: 1000px;
+    --readable-content-width: 700px;
+    
+    --border-radius: 3px;
+    --page-padding: 0.5em;
+    --header-height: 3rem;
+    --header-height-mobile: 5rem;
+    --box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.25);
+
+    --font-size-s: $FONT_SIZE_S;
+    --font-size-xs: calc($FONT_BASE / $FONT_SCALE / $FONT_SCALE); // .75614rem   =~ 12px
+
+    --color-orange: #e98024;
+    --color-red: #c03;
+    --color-yellow: #fef1cf;
+    --color-gray: #dedede;
+    --color-dark-gray: #44484c;
+    --disabled-color: #f2f2f2;
+    --static-circle-diameter: 0.5rem;
+    --dynamic-circle-diameter: 1.5rem;
+    
+    --animator-circle-position-top: 44%;
+    --language-direction: $LANGUAGE_DIRECTION;
+    --is-ltr: $IS_LTR;
+    
+    --color-control-border: #dadada;
+    --color-active: #ff992a;
+    --color-nav: #a1aab3;
+    --color-nav-active: #929ca6;
+    --color-nav-border: $primaryBrandColor;
+    --color-orange: $secondaryBrandColor;
+    --color-dark-orange: #d17320;
+    --color-light-blue: $lightBlue;
+    --color-blue: $primaryBrandColor;
+    --color-blue-shade: #394171;
+    --color-dark-blue: $darkPrimaryBrandColor;
+    --color-sharp-red: #cc2e3d;
+
+    --color-black: $black;
+    --color-white: $white;
+    --color-dark-white: #ccc;
+
+    --color-lighter-blue: #4a76b8;
+    --color-red: $negativeColor;
+    --color-yellow: $noticeColor;
+    --color-light-gray: $fillColor;
+    --color-gray: $borderColor;
+    --color-dark-gray: #44484c;
+    --color-green: $positiveColor;
+
+    --color-gray-shade: $secondaryContentColor;
+    --color-dark-green: $darkPositiveColor;
+    --color-driv-red: #ff444f;
+
+    
+    --control-padding: 0.33em;
+    --control-padding-l: 0.5em 1em;
+    
+    --box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.25);
+    --font-stack: $FONT_STACK;
+    
+    --font-size-xxl: $FONT_BASE * $FONT_SCALE * $FONT_SCALE * $FONT_SCALE; // 1.520875rem =~ 24px
+    --font-size-xl: $FONT_BASE * $FONT_SCALE * $FONT_SCALE; // 1.3225rem   =~ 21px
+    --font-size-l: $FONT_BASE * $FONT_SCALE; // 1.15rem     =~ 18px
+    --font-size-n: $FONT_BASE; // 1rem        =~ 16px
+    --font-size-s: calc($FONT_BASE / $FONT_SCALE); // .86957rem   =~ 14px
+    --font-size-xs: calc($FONT_BASE / $FONT_SCALE / $FONT_SCALE); // .75614rem   =~ 12px
+    --font-size-xxs: calc($FONT_BASE / $FONT_SCALE / $FONT_SCALE / $FONT_SCALE); // .65752rem   =~ 10px
+}

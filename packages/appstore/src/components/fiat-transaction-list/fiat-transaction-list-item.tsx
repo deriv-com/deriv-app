@@ -29,18 +29,18 @@ const FiatTransactionListItem = ({
                 <WalletCard wallet={wallet} size='small' />
                 <span>
                     <Text
-                        size={isMobile() ? 'xxs' : 's'}
+                        size={isMobile() ? 'xxxs' : 'xxs'}
                         color='less-prominent'
                         weight='lighter'
-                        line_height={isMobile() ? 'xs' : 'xs'}
+                        line_height={isMobile() ? 's' : 'm'}
                     >
                         {action_type[0].toUpperCase() + action_type.substring(1).replace(/_/, ' ')}
                     </Text>
                     <Text
-                        size={isMobile() ? 'xxs' : 's'}
+                        size={isMobile() ? 'xxxs' : 'xxs'}
                         color='prominent'
                         weight='bold'
-                        line_height={isMobile() ? 'xs' : 'xs'}
+                        line_height={isMobile() ? 's' : 'm'}
                     >
                         {account_name}
                     </Text>
@@ -48,15 +48,20 @@ const FiatTransactionListItem = ({
             </div>
             <span>
                 <Text
-                    size={isMobile() ? 'xxs' : 's'}
+                    size={isMobile() ? 'xxxs' : 'xxs'}
                     color={amount > 0 ? 'profit-success' : 'loss-danger'}
                     weight='bold'
-                    line_height={isMobile() ? 'xxs' : 'xs'}
+                    line_height={isMobile() ? 's' : 'm'}
                 >
                     {(amount > 0 ? '+' : '') + amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}{' '}
                     {currency}
                 </Text>
-                <Text size={isMobile() ? 'xxxs' : 'xs'} color='less-prominent' weight='lighter' line_height='xxs'>
+                <Text
+                    size={isMobile() ? 'xxxxs' : 'xxxs'}
+                    color='less-prominent'
+                    weight='lighter'
+                    line_height={isMobile() ? 'm' : 's'}
+                >
                     Balance: {balance_after.toLocaleString(undefined, { minimumFractionDigits: 2 })} {currency}
                 </Text>
             </span>

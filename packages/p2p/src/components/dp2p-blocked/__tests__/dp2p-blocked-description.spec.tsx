@@ -9,7 +9,7 @@ jest.mock('Stores', () => ({
 }));
 
 describe('<Dp2pBlockedDescription />', () => {
-    it('it should render return `P2P transactions are locked. This feature is not available for payment agents.`', () => {
+    it('it should return `P2P transactions are locked. This feature is not available for payment agents.`', () => {
         (useStores as jest.Mock).mockReturnValue({
             general_store: {
                 is_p2p_blocked_for_pa: true,
@@ -23,7 +23,7 @@ describe('<Dp2pBlockedDescription />', () => {
         ).toBeInTheDocument();
     });
 
-    it('it should render return `To enable this feature you must complete the following:`', () => {
+    it('it should return `To enable this feature you must complete the following:`', () => {
         (useStores as jest.Mock).mockReturnValue({
             general_store: {
                 is_p2p_blocked_for_pa: false,

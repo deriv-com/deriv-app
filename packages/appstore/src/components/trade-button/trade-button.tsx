@@ -35,13 +35,13 @@ const TradeButton = ({
         }
         return (
             <Link to={link_to}>
-                <Button primary>{localize('Trade')}</Button>
+                <Button primary>{localize('Open')}</Button>
             </Link>
         );
     } else if (onAction) {
         return (
             <Button primary className='trade-button' onClick={() => onAction()} is_disabled={is_buttons_disabled}>
-                {localize('Trade')}
+                {localize('Open')}
             </Button>
         );
     }

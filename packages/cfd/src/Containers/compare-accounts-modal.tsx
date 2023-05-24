@@ -100,7 +100,7 @@ const CompareAccountsModal = observer(
         } = client;
         const { content_flag, show_eu_related_content, CFDs_restricted_countries } = traders_hub;
 
-        const { is_compare_accounts_visible, toggleCompareAccounts } = useCfdStore();
+        const { is_compare_accounts_visible, toggleCompareAccountsModal } = useCfdStore();
         const location = window.location.pathname;
         const is_pre_appstore_setting = location.startsWith('/appstore/traders-hub');
 
@@ -219,7 +219,7 @@ const CompareAccountsModal = observer(
                     setShouldShowCooldownModal={setShouldShowCooldownModal}
                     should_show_derivx={should_show_derivx}
                     show_eu_related_content={show_eu_related_content}
-                    toggleCompareAccounts={toggleCompareAccounts}
+                    toggleCompareAccounts={toggleCompareAccountsModal}
                 />
             );
         };
@@ -235,7 +235,7 @@ const CompareAccountsModal = observer(
                             className='cfd-dashboard__welcome-message--button'
                             has_effect
                             text={cfd_account_button_label}
-                            onClick={toggleCompareAccounts}
+                            onClick={toggleCompareAccountsModal}
                             secondary
                             disabled={is_loading}
                         />
@@ -250,7 +250,7 @@ const CompareAccountsModal = observer(
                                 enableApp={enableApp}
                                 is_open={is_compare_accounts_visible}
                                 title={getCFDModalTitle()}
-                                toggleModal={toggleCompareAccounts}
+                                toggleModal={toggleCompareAccountsModal}
                                 type='button'
                                 height={getModalStyle().height}
                                 width={getModalStyle().width}
@@ -265,7 +265,7 @@ const CompareAccountsModal = observer(
                                 title={getCFDModalTitle()}
                                 wrapper_classname='cfd-dashboard__compare-accounts'
                                 visible={is_compare_accounts_visible}
-                                onClose={toggleCompareAccounts}
+                                onClose={toggleCompareAccountsModal}
                                 header_classname={is_dxtrade ? '' : 'cfd-accounts-compare-modal-mobile-header'}
                                 has_full_height
                             >

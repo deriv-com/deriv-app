@@ -33,7 +33,7 @@ export type TCFDStore = {
     clearCFDError: () => void;
     current_list: Record<string, DetailsOfEachMT5Loginid & { enabled: number } & DetailsOfEachMT5Loginid[]>;
     is_compare_accounts_visible: boolean;
-    toggleCompareAccounts: () => void;
+    toggleCompareAccountsModal: () => void;
     dxtrade_companies: TDxCompanies;
     mt5_companies: TMtCompanies;
     platform: string;

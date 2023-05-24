@@ -76,7 +76,7 @@ const RiskComponent = ({ non_eu_accounts = [], eu_accounts = [], is_country_low_
                                 <img className={classNames('header__expand open', {
                                     'header__expand--close open': acc_open,
                                 })}
-                                    src="image/deriv/ic-chevron-down.svg"
+                                    src="../public/images/ic-chevron-down.svg"
                                 />
                             </div>
                             <div className={classNames('account__switcher-container__content', {

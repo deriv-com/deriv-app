@@ -34,7 +34,7 @@ const SidebarToggle = () => {
             onClick={() => setOpen(!is_open)}
         >
             <span>
-                <img src='image/deriv/ic-chevron-down-bold.svg' />
+                <img src='../public/images/ic-chevron-down-bold.svg' />
             </span>
         </div>
     );

@@ -9,7 +9,7 @@ const FooterIconSeparator = () => <div className='footer-icon-separator' />;
 
 const HelpCenter = () => (
     <a id='help-center' className='footer__link' href={config.help_center.url} target='_blank'>
-        <img src='image/deriv/ic-help-centre.svg' />
+        <img src='../public/images/ic-help-centre.svg' />
     </a>
 );
 

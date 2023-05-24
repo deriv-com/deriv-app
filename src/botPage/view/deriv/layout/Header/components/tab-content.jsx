@@ -36,7 +36,7 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                             <span>{is_country_low_risk && isReal ? title : translate('Deriv Accounts')}</span>
                             <img
                                 className={`header__expand ${isAccordionOpen ? 'open' : ''}`}
-                                src='image/deriv/ic-chevron-down.svg'
+                                src='../public/images/ic-chevron-down.svg'
                             />
                         </div>
                     </h3>
@@ -85,7 +85,7 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                                             ref={el => (item_ref.current[index] = el)}
                                         >
                                             <input type='hidden' name='account_name' value={account.account} />
-                                            <img src={`image/deriv/currency/ic-currency-${currency_icon}.svg`} />
+                                            <img src={`../public/images/currency/ic-currency-${currency_icon}.svg`} />
                                             <span>
                                                 {!currency && !active_account_name?.includes('MF') && (
                                                     <span className='symbols'>{translate('No currency assigned')}</span>

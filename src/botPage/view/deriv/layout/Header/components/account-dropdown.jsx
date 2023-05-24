@@ -208,7 +208,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                             <span className='account__switcher-logout-text'>{translate('Log out')}</span>
                             <img
                                 className='account__switcher-logout-icon logout-icon'
-                                src='image/deriv/ic-logout.svg'
+                                src='../public/images/ic-logout.svg'
                             />
                         </div>
                     </div>

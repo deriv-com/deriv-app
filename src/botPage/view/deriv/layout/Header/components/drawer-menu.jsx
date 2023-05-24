@@ -29,7 +29,7 @@ const DrawerMenu = ({
             <div className='header__drawer' ref={drawer_ref}>
                 <div className='header__drawer-top'>
                     <img
-                        src='image/deriv/ic-close.svg'
+                        src='../public/images/ic-close.svg'
                         className='header__drawer-close'
                         onClick={() => {
                             updateShowDrawerMenu(false);
@@ -48,7 +48,7 @@ const DrawerMenu = ({
                         <img
                             id='platform__switcher-expand'
                             className={classNames('header__icon header__expand', { open: isPlatformSwitcherOpen })}
-                            src='image/deriv/ic-chevron-down-bold.svg'
+                            src='../public/images/ic-chevron-down-bold.svg'
                         />
                     </div>
                     {isPlatformSwitcherOpen && (

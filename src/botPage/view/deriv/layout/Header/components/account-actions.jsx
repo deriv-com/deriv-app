@@ -69,14 +69,14 @@ const AccountActions = () => {
     };
 
     const renderAccountMenu = () => {
-        const account_icon = is_bot_running ? 'image/deriv/ic-lock.svg' : 'image/deriv/ic-chevron-down-bold.svg';
+        const account_icon = is_bot_running ? '../public/images/ic-lock.svg' : '../public/images/ic-chevron-down-bold.svg';
         const currency_icon = is_virtual ? 'virtual' : currency.toLowerCase() || 'unknown';
         return (
             <div className={classNames('header__acc-info', { disabled: is_bot_running })}>
                 <img
                     id='header__acc-icon'
                     className='header__acc-icon'
-                    src={`image/deriv/currency/ic-currency-${currency_icon}.svg`}
+                    src={`../public/images/currency/ic-currency-${currency_icon}.svg`}
                 />
                 <div id='header__acc-balance' className='header__acc-balance'>
                     {currency
@@ -108,7 +108,7 @@ const AccountActions = () => {
                 <img
                     className='header__icon-button'
                     id='header__account-settings'
-                    src='image/deriv/ic-user-outline.svg'
+                    src='../public/images/ic-user-outline.svg'
                 />
             </a>
             <div className='header__divider mobile-hide'></div>

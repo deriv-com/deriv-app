@@ -1,118 +1,136 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, Button, useOnClickOutside } from '@deriv/components';
-import './components/wallet-steps.scss';
-import WalletSteps from './components/wallet-steps';
+import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, Button } from '@deriv/components';
 import { ContentFlag } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
-import { steps } from 'Constants/wallet-static-steps-config';
+import { observer, useStore } from '@deriv/stores';
+import { WalletsIntro } from './components/wallets-intro/wallets-intro';
+import ReadyToUpgradeWallets from './components/ready-to-upgrade-wallets';
+import './real-wallets-upgrade.scss';
 
-const RealWalletsUpgrade = () => {
+const RealWalletsUpgrade = observer(() => {
     const { traders_hub } = useStore();
     const { is_real_wallets_upgrade_on, toggleWalletsUpgrade, content_flag } = traders_hub;
-    const eu_user = content_flag === ContentFlag.EU_REAL || content_flag === ContentFlag.EU_DEMO;
+    const is_eu = content_flag === ContentFlag.EU_REAL || content_flag === ContentFlag.EU_DEMO;
 
-    const wallets_upgrade_ref = React.useRef<HTMLDivElement>(null);
-
-    const [currentStep, setCurrentStep] = React.useState(1);
-
-    const emdash = '\u2014';
-
-    const handleNext = () => {
-        setCurrentStep(currentStep + 1);
-    };
-    const handleBack = () => {
-        setCurrentStep(currentStep - 1);
-    };
-
-    const handleClose = () => {
-        toggleWalletsUpgrade(false);
-    };
+    const [current_step, setCurrentStep] = React.useState(0);
+    const [is_disabled, setIsDisabled] = React.useState(false);
 
     React.useEffect(() => {
         if (!is_real_wallets_upgrade_on) {
-            setCurrentStep(1);
+            setCurrentStep(0);
+            setIsDisabled(false);
         }
     }, [is_real_wallets_upgrade_on]);
 
-    const step_config = steps(eu_user, emdash);
+    const handleNext = () => setCurrentStep(prev_step => prev_step + 1);
 
-    const StepComponent = () => {
-        return (
-            <React.Fragment>
-                {step_config.map((step, index) => {
-                    if (index === currentStep - 1) {
-                        return (
-                            <WalletSteps
-                                key={index}
-                                icon={step?.icon}
-                                title={step?.title}
-                                description={step?.description}
-                                bullets={step?.bullets || []}
-                            />
-                        );
-                    }
-                    return null;
-                })}
-            </React.Fragment>
-        );
-    };
+    const handleBack = () => setCurrentStep(prev_step => prev_step - 1);
 
-    const validateClickOutside = (e: MouseEvent) => {
-        // anywhere outside the modal should close the modal
-        if (wallets_upgrade_ref.current && !wallets_upgrade_ref.current.contains(e.target as Node)) {
-            return false;
-        }
-        return true;
-    };
+    const handleClose = () => toggleWalletsUpgrade(false);
 
-    useOnClickOutside(wallets_upgrade_ref, handleClose, validateClickOutside);
+    const toggleCheckbox = React.useCallback(() => {
+        setIsDisabled(prevDisabled => !prevDisabled);
+    }, []);
+
+    const DefaultFooter = React.useMemo(
+        () => (
+            <Modal.Footer className='wallet-steps__footer' has_separator>
+                <Button secondary large className='wallet-steps__footer-button' onClick={handleBack}>
+                    {localize('Back')}
+                </Button>
+                <Button primary large className='wallet-steps__footer-button' onClick={handleNext}>
+                    {localize('Next')}
+                </Button>
+            </Modal.Footer>
+        ),
+        []
+    );
+
+    const InitialFooter = React.useMemo(
+        () => (
+            <Modal.Footer className='wallet-steps__footer' has_separator>
+                <Button secondary large className='wallet-steps__footer-button' onClick={handleClose}>
+                    {localize('Maybe later')}
+                </Button>
+                <Button primary large className='wallet-steps__footer-button' onClick={handleNext}>
+                    {localize('Next')}
+                </Button>
+            </Modal.Footer>
+        ),
+        []
+    );
+
+    const EndFooter = React.useMemo(
+        () => (
+            <Modal.Footer className='wallet-steps__footer' has_separator>
+                <Button secondary large className='wallet-steps__footer-button' onClick={handleBack}>
+                    {localize('Back')}
+                </Button>
+                <Button
+                    primary
+                    large
+                    className='wallet-steps__footer-button'
+                    disabled={!is_disabled}
+                    onClick={handleClose}
+                >
+                    {localize('Upgrade to Wallets')}
+                </Button>
+            </Modal.Footer>
+        ),
+        [is_disabled]
+    );
+
+    //  TODO: Add the remaining wallet steps right here
+    const WalletSteps = React.useMemo(
+        () => [
+            {
+                name: 'intro_wallets',
+                component: <WalletsIntro is_eu={is_eu} current_step={0} />,
+                footer: InitialFooter,
+            },
+            {
+                name: 'intro_wallets',
+                component: <WalletsIntro is_eu={is_eu} current_step={1} />,
+            },
+            {
+                name: 'intro_wallets',
+                component: <WalletsIntro is_eu={is_eu} current_step={2} />,
+            },
+            {
+                name: 'ready_to_upgrade',
+                component: <ReadyToUpgradeWallets is_eu={is_eu} value={is_disabled} toggleCheckbox={toggleCheckbox} />,
+                footer: EndFooter,
+            },
+        ],
+        [is_eu, InitialFooter, EndFooter, toggleCheckbox]
+    );
+
+    const ModalContent = React.useMemo(
+        () => WalletSteps[current_step]?.component || WalletSteps[0].component,
+        [WalletSteps, current_step]
+    );
+    const ModalFooter = React.useMemo(
+        () => WalletSteps[current_step]?.footer || DefaultFooter,
+        [WalletSteps, current_step, DefaultFooter]
+    );
 
     return (
         <React.Fragment>
             {is_real_wallets_upgrade_on && (
                 <React.Fragment>
                     <DesktopWrapper>
-                        <div ref={wallets_upgrade_ref}>
-                            <Modal
-                                is_open={is_real_wallets_upgrade_on}
-                                toggleModal={handleClose}
-                                height='734px'
-                                width='1200px'
-                                should_header_stick_body={false}
-                                has_close_icon
-                                title=' '
-                            >
-                                <Modal.Body>
-                                    <StepComponent />
-                                </Modal.Body>
-                                <Modal.Footer has_separator>
-                                    <Button
-                                        secondary
-                                        large
-                                        onClick={() => {
-                                            if (currentStep === 1) {
-                                                handleClose();
-                                                return;
-                                            }
-                                            handleBack();
-                                        }}
-                                    >
-                                        {currentStep === 1 ? localize('Maybe later') : localize('Back')}
-                                    </Button>
-                                    <Button
-                                        primary
-                                        large
-                                        onClick={() => {
-                                            handleNext();
-                                        }}
-                                    >
-                                        {localize('Next')}
-                                    </Button>
-                                </Modal.Footer>
-                            </Modal>
-                        </div>
+                        <Modal
+                            is_open={is_real_wallets_upgrade_on}
+                            toggleModal={handleClose}
+                            height='734px'
+                            width='1200px'
+                            should_header_stick_body={false}
+                            has_close_icon
+                            title=' '
+                        >
+                            <Modal.Body className='wallet-steps'>{ModalContent}</Modal.Body>
+                            {ModalFooter}
+                        </Modal>
                     </DesktopWrapper>
                     <MobileWrapper>
                         <MobileDialog
@@ -120,42 +138,15 @@ const RealWalletsUpgrade = () => {
                             visible={is_real_wallets_upgrade_on}
                             onClose={handleClose}
                             wrapper_classname='wallet-steps'
+                            footer={ModalFooter}
                         >
-                            <Modal.Body>
-                                <StepComponent />
-                            </Modal.Body>
-                            <Modal.Footer className='wallet-steps__footer' has_separator>
-                                <Button
-                                    secondary
-                                    className='wallet-steps__footer-button'
-                                    large
-                                    onClick={() => {
-                                        if (currentStep === 1) {
-                                            handleClose();
-                                            return;
-                                        }
-                                        handleBack();
-                                    }}
-                                >
-                                    {currentStep === 1 ? localize('Maybe later') : localize('Back')}
-                                </Button>
-                                <Button
-                                    primary
-                                    className='wallet-steps__footer-button'
-                                    large
-                                    onClick={() => {
-                                        handleNext();
-                                    }}
-                                >
-                                    {localize('Next')}
-                                </Button>
-                            </Modal.Footer>
+                            <Modal.Body>{ModalContent}</Modal.Body>
                         </MobileDialog>
                     </MobileWrapper>
                 </React.Fragment>
             )}
         </React.Fragment>
     );
-};
+});
 
-export default observer(RealWalletsUpgrade);
+export default RealWalletsUpgrade;

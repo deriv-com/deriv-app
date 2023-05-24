@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSubscription } from '@deriv/api';
 import useStore from '../useStore';
-import merge from 'lodash.merge';
 import { observer } from 'mobx-react-lite';
 import { useWS } from '@deriv/shared';
+import merge from 'lodash.merge';
 
 const WebsiteStatusProvider = ({ children }: React.PropsWithChildren<unknown>) => {
     const { data, is_subscribed, subscribe, unsubscribe } = useSubscription('website_status');
@@ -13,24 +13,26 @@ const WebsiteStatusProvider = ({ children }: React.PropsWithChildren<unknown>) =
     } = useStore();
     const WS = useWS();
 
-    // React.useEffect(subscribe, [subscribe])
-
     React.useEffect(() => {
-        if (data) update(data);
+        if (data) {
+            if (data) update(prev => merge(prev, data));
+        }
     }, [update, data]);
 
-    // handles case where the response from website_status is different when client is logged in/out
-    // refer to socket-general.js
     React.useEffect(() => {
+        // handles case where the response from website_status is different when client is logged in/out, we need to re-subscribe in that case
+        // refer to socket-general.js
         if (is_logged_in || is_logging_in) {
             if (is_subscribed) unsubscribe();
             WS.get()
-                .expectResponse('website_status')
-                .then(() => subscribe());
+                .expectResponse('authorize')
+                .then(() => {
+                    subscribe();
+                });
         } else {
             subscribe();
         }
-    }, [loginid]);
+    }, [loginid, subscribe]);
 
     return <React.Fragment>{children}</React.Fragment>;
 };

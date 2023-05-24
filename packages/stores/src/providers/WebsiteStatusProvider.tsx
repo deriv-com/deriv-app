@@ -13,9 +13,7 @@ const WebsiteStatusProvider = ({ children }: React.PropsWithChildren<unknown>) =
     const WS = useWS();
 
     React.useEffect(() => {
-        if (data) {
-            if (data) update(prev => merge(prev, data));
-        }
+        if (data) update(prev => merge(prev, data));
     }, [update, data]);
 
     React.useEffect(() => {

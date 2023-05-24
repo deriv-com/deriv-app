@@ -48,7 +48,7 @@ describe('<Verification />', () => {
 
         render(<Verification should_wrap={false} />);
 
-        const el_dp2p_Dp2pBlocked_container = screen.getByTestId('dp2p-Dp2pBlocked_container');
+        const el_dp2p_Dp2pBlocked_container = screen.getByTestId('dt_dp2p-blocked-container');
         expect(el_dp2p_Dp2pBlocked_container).toBeInTheDocument();
     });
 });

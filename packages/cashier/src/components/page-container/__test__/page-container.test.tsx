@@ -1,6 +1,7 @@
 import React from 'react';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
+import CashierProviders from '../../../cashier-providers';
 import PageContainer from '../page-container';
 
 describe('PageContainer', () => {
@@ -8,8 +9,9 @@ describe('PageContainer', () => {
         const mock = mockStore({ client: { is_authorize: false } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <CashierProviders store={mock}>{children}</CashierProviders>
         );
+
         render(
             <PageContainer>
                 <div>children</div>
@@ -21,11 +23,15 @@ describe('PageContainer', () => {
     });
 
     test('should show children if is_authorize is true', () => {
-        const mock = mockStore({ client: { is_authorize: true } });
+        const mock = mockStore({
+            client: { is_authorize: true },
+            modules: { cashier: { general_store: { setIsDeposit: jest.fn() } } },
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <CashierProviders store={mock}>{children}</CashierProviders>
         );
+
         render(
             <PageContainer>
                 <div>children</div>

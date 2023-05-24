@@ -118,7 +118,7 @@ const TradersHub = () => {
                                     account_name='Demo account'
                                     currency='USD'
                                     wallet={{
-                                        currency: 'demo',
+                                        currency: 'usd',
                                         icon: 'IcWalletDerivDemoLight',
                                         icon_type: 'fiat',
                                     }}
@@ -142,7 +142,7 @@ const TradersHub = () => {
                                     account_name='Bitcoin account'
                                     currency='USD'
                                     wallet={{
-                                        currency: 'bitcoin',
+                                        currency: 'BTC',
                                         icon: 'IcWalletBitcoinLight',
                                         icon_type: 'crypto',
                                     }}

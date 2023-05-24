@@ -1,8 +1,6 @@
 const mock_wallet_migration_response = [
     {
         title: 'Non-EU USD accounts',
-        currency: 'USD',
-        landing_company_name: 'SVG',
         wallets: [
             {
                 wallet_details: {
@@ -74,8 +72,6 @@ const mock_wallet_migration_response = [
     },
     {
         title: 'EU-regulated USD accounts',
-        currency: 'USD',
-        landing_company_name: 'MALTA',
         wallets: [
             {
                 wallet_details: {

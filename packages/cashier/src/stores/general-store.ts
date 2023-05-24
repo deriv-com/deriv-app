@@ -189,7 +189,7 @@ export default class GeneralStore extends BaseStore {
             // if yes, we can show the PA tab in cashier
             this.setLoading(true);
             await payment_agent.setPaymentAgentList();
-            await payment_agent.filterPaymentAgentList();
+            payment_agent.filterPaymentAgentList();
             this.setLoading(false);
 
             if (!account_transfer.accounts_list.length) {

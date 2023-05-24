@@ -8,18 +8,9 @@ import EmptyOnboarding from '../empty-onboarding';
 describe('Onboarding', () => {
     it('should render <Onboarding /> component', () => {
         const mock = mockStore({
-            traders_hub: {
-                toggleIsTourOpen: jest.fn(),
-                selectAccountType: jest.fn(),
-                is_demo_low_risk: false,
-                content_flag: '',
-            },
             client: {
-                is_eu_country: false,
                 is_logged_in: true,
                 is_language_loaded: true,
-                prev_account_type: '',
-                setAccountType: jest.fn(),
                 is_landing_company_loaded: true,
             },
         });
@@ -36,18 +27,9 @@ describe('Onboarding', () => {
 
     it('should render text <Onboarding /> component accordingly', () => {
         const mock = mockStore({
-            traders_hub: {
-                toggleIsTourOpen: jest.fn(),
-                selectAccountType: jest.fn(),
-                is_demo_low_risk: false,
-                content_flag: '',
-            },
             client: {
-                is_eu_country: false,
                 is_logged_in: true,
                 is_language_loaded: true,
-                prev_account_type: '',
-                setAccountType: jest.fn(),
                 is_landing_company_loaded: true,
             },
         });
@@ -69,17 +51,11 @@ describe('Onboarding', () => {
     it('should render Trading Platform cards on <Onboarding /> component accordingly (Non-EU)', () => {
         const mock = mockStore({
             traders_hub: {
-                toggleIsTourOpen: jest.fn(),
-                selectAccountType: jest.fn(),
-                is_demo_low_risk: false,
                 content_flag: 'cr_demo',
             },
             client: {
-                is_eu_country: false,
                 is_logged_in: true,
                 is_language_loaded: true,
-                prev_account_type: '',
-                setAccountType: jest.fn(),
                 is_landing_company_loaded: true,
             },
         });
@@ -118,17 +94,12 @@ describe('Onboarding', () => {
     it('should render Trading Platform cards on <Onboarding /> component accordingly (EU)', () => {
         const mock = mockStore({
             traders_hub: {
-                toggleIsTourOpen: jest.fn(),
-                selectAccountType: jest.fn(),
-                is_demo_low_risk: false,
                 content_flag: 'eu_demo',
             },
             client: {
                 is_eu_country: true,
                 is_logged_in: true,
                 is_language_loaded: true,
-                prev_account_type: '',
-                setAccountType: jest.fn(),
                 is_landing_company_loaded: true,
             },
         });
@@ -147,9 +118,6 @@ describe('Onboarding', () => {
         const dtrader_title = 'Deriv Trader';
         const dtrader_description = 'Options and multipliers trading platform.';
 
-        const dbot_title = 'Deriv Bot';
-        const dbot_description = 'Automate your trading, no coding needed.';
-
         const cfd_description =
             'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.';
 
@@ -159,24 +127,13 @@ describe('Onboarding', () => {
         expect(screen.getByText(dtrader_title)).toBeInTheDocument();
         expect(screen.getByText(dtrader_description)).toBeInTheDocument();
         expect(screen.getByText(cfd_description)).toBeInTheDocument();
-        expect(screen.getByText(dbot_title)).not.toBeInTheDocument();
-        expect(screen.getByText(dbot_description)).not.toBeInTheDocument();
     });
 
     it('should render Footer on <Onboarding /> component accordingly', () => {
         const mock = mockStore({
-            traders_hub: {
-                toggleIsTourOpen: jest.fn(),
-                selectAccountType: jest.fn(),
-                is_demo_low_risk: false,
-                content_flag: 'cr_demo',
-            },
             client: {
-                is_eu_country: false,
                 is_logged_in: true,
                 is_language_loaded: true,
-                prev_account_type: '',
-                setAccountType: jest.fn(),
                 is_landing_company_loaded: true,
             },
         });
@@ -202,22 +159,7 @@ describe('Onboarding', () => {
     });
 
     it('should not render <EmptyOnboarding/> component instead', () => {
-        const mock = mockStore({
-            traders_hub: {
-                toggleIsTourOpen: jest.fn(),
-                selectAccountType: jest.fn(),
-                is_demo_low_risk: false,
-                content_flag: '',
-            },
-            client: {
-                is_eu_country: false,
-                is_logged_in: false,
-                is_language_loaded: true,
-                prev_account_type: '',
-                setAccountType: jest.fn(),
-                is_landing_company_loaded: false,
-            },
-        });
+        const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>

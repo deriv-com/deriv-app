@@ -43,8 +43,11 @@
 
             &--trader {
                 grid-template-columns: 1.2fr 1fr;
-                &--accumulator-sold {
-                    padding-top: 1rem;
+                &--accumulator {
+                    display: flex;
+                    &-sold {
+                        padding-top: 1rem;
+                    }
                 }
             }
             &--mobile {
@@ -204,6 +207,10 @@
         font-size: 1.2em;
         max-width: 18rem;
         min-width: 10rem;
+
+        &--accumulator {
+            max-width: 10rem;
+        }
     }
     &__type {
         font-size: 1.2em;

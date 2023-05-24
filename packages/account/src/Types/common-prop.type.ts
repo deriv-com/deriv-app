@@ -94,3 +94,10 @@ export type TBinaryRoutes = {
     is_logged_in: boolean;
     is_logging_in: boolean;
 };
+
+export type TPOIStatus = {
+    needs_poa?: boolean;
+    redirect_button?: React.ReactElement;
+    is_from_external?: boolean;
+    is_manual_upload?: boolean;
+};

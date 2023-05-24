@@ -164,7 +164,11 @@ export default class CommonStore extends BaseStore {
     setInitialRouteHistoryItem(location) {
         if (window.location.href.indexOf('?ext_platform_url=') !== -1) {
             const ext_url = decodeURI(new URL(window.location.href).searchParams.get('ext_platform_url'));
-
+            const { setExternalParams } = this.root_store.client;
+            setExternalParams({
+                url: ext_url,
+                should_redirect: true,
+            });
             if (ext_url?.indexOf(getUrlSmartTrader()) === 0) {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
             } else if (ext_url?.indexOf(routes.cashier_p2p) === 0) {

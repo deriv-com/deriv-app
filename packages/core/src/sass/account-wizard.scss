@@ -820,9 +820,17 @@
     }
 }
 
-.personal-details-form {
+.personal-details-form,
+.address-details-form {
     width: 100%;
     @include desktop {
         padding: 0 16rem;
+    }
+}
+
+.personal-details-form {
+    .dc-radio-group__input {
+        display: unset;
+        appearance: unset;
     }
 }

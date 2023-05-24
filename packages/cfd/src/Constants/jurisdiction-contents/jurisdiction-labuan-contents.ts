@@ -34,7 +34,7 @@ export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
             description: localize('Forex and Cryptocurrencies'),
             title_indicators: {
                 type: 'displayText',
-                display_text: localize('90+'),
+                display_text: localize('80+'),
                 display_text_skin_color: 'red-dark',
             },
         },

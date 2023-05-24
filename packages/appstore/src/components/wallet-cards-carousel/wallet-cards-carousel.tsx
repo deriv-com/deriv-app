@@ -24,8 +24,9 @@ export const WalletCardsCarousel = <T,>({ items }: WalletCardsCarouselProps<T>) 
                             'wallet-cards-carousel__item--first': i === 0,
                             'wallet-cards-carousel__item--last': i === pages.length - 1,
                         })}
+                        style={{ backgroundColor: item.color.length === 7 ? item.color : '#14F2B5' }}
                     >
-                        <img src={item.src} width='160px' height='96px' style={{ borderRadius: '4px' }} />
+                        {item.id}
                     </WalletCardsCarouselItem>
                 ))}
             </ul>
@@ -46,10 +47,13 @@ export const WalletCardsCarousel = <T,>({ items }: WalletCardsCarouselProps<T>) 
 interface WalletCardsCarouselItemProps {
     readonly className?: string;
     readonly children?: React.ReactNode;
+    readonly style?: React.CSSProperties;
 }
 
-export const WalletCardsCarouselItem = ({ className, children }: WalletCardsCarouselItemProps) => (
-    <li className={className || ''}>{children}</li>
+export const WalletCardsCarouselItem = ({ className, children, style }: WalletCardsCarouselItemProps) => (
+    <li className={className || ''} style={style}>
+        {children}
+    </li>
 );
 
 export default WalletCardsCarousel;

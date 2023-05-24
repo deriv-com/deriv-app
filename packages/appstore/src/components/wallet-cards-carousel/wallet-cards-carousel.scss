@@ -23,6 +23,14 @@ $shift-for-edge-cards: calc((100vw - #{$card-width}) / 2);
         margin-right: 2.4rem;
         scroll-snap-align: center;
 
+        font-size: 3.6rem;
+        color: #fff;
+        display: flex;
+        justify-content: end;
+        align-items: end;
+        padding: 1rem;
+        border-radius: 4px;
+
         &--first {
             margin-left: $shift-for-edge-cards;
         }

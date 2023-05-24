@@ -13,10 +13,6 @@ import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 import WalletCardsCarousel from 'Components/wallet-cards-carousel';
 import './traders-hub.scss';
-import {
-    NewCarousel,
-    WalletCardsCarouselMyOwnImplementation,
-} from 'Components/wallet-cards-carousel/wallet-cards-carousel';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();
@@ -50,7 +46,7 @@ const TradersHub = () => {
         () =>
             Array.from({ length: 20 }).map((_, i) => ({
                 id: i,
-                src: `https://picsum.photos/500?idx=${i}`,
+                color: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
             })),
         []
     );

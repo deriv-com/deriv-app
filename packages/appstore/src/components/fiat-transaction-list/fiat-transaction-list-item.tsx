@@ -37,10 +37,11 @@ const FiatTransactionListItem = ({
             </div>
             <span>
                 <Text size='s' color={amount > 0 ? 'profit-success' : 'loss-danger'} weight='bold' line_height='xs'>
-                    {(amount > 0 ? '+' : '') + amount.toLocaleString()} {currency}
+                    {(amount > 0 ? '+' : '') + amount.toLocaleString(undefined, { minimumFractionDigits: 2 })}{' '}
+                    {currency}
                 </Text>
                 <Text size='xs' color='less-prominent' weight='lighter' line_height='xxs'>
-                    Balance: {balance_after.toLocaleString()} {currency}
+                    Balance: {balance_after.toLocaleString(undefined, { minimumFractionDigits: 2 })} {currency}
                 </Text>
             </span>
         </div>

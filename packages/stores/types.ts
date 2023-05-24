@@ -210,7 +210,6 @@ type TClientStore = {
     has_any_real_account: boolean;
     real_account_creation_unlock_date: number;
     prev_account_type: string;
-    is_demo_low_risk: boolean;
     setAccountType: (account_type: string) => void;
     setPrevAccountType: (account_type: string) => void;
 };

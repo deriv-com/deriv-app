@@ -197,8 +197,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_eu_country: false,
             is_language_loaded: false,
             prev_account_type: '',
-            is_demo_low_risk: false,
             setAccountType: jest.fn(),
+            setPrevAccountType: jest.fn(),
         },
         common: {
             error: {
@@ -292,6 +292,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleAccountTransferModal: jest.fn(),
             toggleIsTourOpen: jest.fn(),
             selectAccountType: jest.fn(),
+            is_demo_low_risk: false,
+            CFDs_restricted_countries: false,
         },
         menu: {
             attach: jest.fn(),
@@ -340,8 +342,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             update: jest.fn(),
             unmount: jest.fn(),
         },
-        is_demo_low_risk: false,
-        CFDs_restricted_countries: false,
     };
 };
 

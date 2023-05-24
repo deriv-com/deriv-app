@@ -93,11 +93,11 @@ const FileDropzone = ({ className, noClick = false, ...props }: TFileDropzone) =
 
     const RenderErrorMessage = React.useCallback(
         ({ open }: DropzoneRef) => {
-            if (typeof message === 'function') return <>{message(open)}</>;
+            if (noClick && typeof message === 'function') return <>{message(open)}</>;
 
             return <>{message}</>;
         },
-        [message]
+        [message, noClick]
     );
 
     const RenderValidationErrorMessage = React.useCallback(

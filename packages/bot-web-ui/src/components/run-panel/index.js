@@ -1,4 +1,4 @@
-import RunPanel from './run-panel.jsx';
+import RoutePromptDialog from './run-panel';
 import './run-panel.scss';
 
-export default RunPanel;
+export default RoutePromptDialog;

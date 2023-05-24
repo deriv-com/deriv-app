@@ -9,7 +9,7 @@ import DeleteDialog from './delete-dialog';
 import './index.scss';
 import RecentWorkspace from './recent-workspace';
 import { isMobile } from '@deriv/shared';
-import SaveModal from '../../../save-modal';
+import SaveModal from './save-modal';
 import classNames from 'classnames';
 
 type TRecentComponent = {

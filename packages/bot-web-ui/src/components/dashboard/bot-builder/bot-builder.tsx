@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import LoadModal from 'Components/load-modal';
-import SaveModal from 'Components/save-modal';
+import SaveModal from '../dashboard-component/load-bot-preview/save-modal';
 import ReactJoyrideWrapper from '../react-joyride-wrapper';
 import AppStore from 'Stores/app-store';
 import { connect } from 'Stores/connect';

@@ -113,27 +113,39 @@ const TradersHub = () => {
                             >
                                 <FiatTransactionListItem
                                     amount={123.45}
-                                    balance_after={499.99}
-                                    action_type='deposit'
-                                    account_name='Bitcoin account'
-                                    account_type='real'
+                                    balance_after={523.45}
+                                    action_type='initial_fund'
+                                    account_name='Demo account'
                                     currency='USD'
+                                    wallet={{
+                                        currency: 'demo',
+                                        icon: 'IcWalletDerivDemoLight',
+                                        icon_type: 'fiat',
+                                    }}
                                 />
                                 <FiatTransactionListItem
-                                    amount={123.45}
-                                    balance_after={499.99}
-                                    action_type='deposit'
-                                    account_name='Bitcoin account'
-                                    account_type='real'
+                                    amount={-100}
+                                    balance_after={400}
+                                    action_type='withdrawal'
+                                    account_name='USD account'
                                     currency='USD'
+                                    wallet={{
+                                        currency: 'usd',
+                                        icon: 'IcWalletCurrencyUsd',
+                                        icon_type: 'fiat',
+                                    }}
                                 />
                                 <FiatTransactionListItem
-                                    amount={123.45}
-                                    balance_after={499.99}
-                                    action_type='deposit'
+                                    amount={500}
+                                    balance_after={500}
+                                    action_type='transfer'
                                     account_name='Bitcoin account'
-                                    account_type='real'
                                     currency='USD'
+                                    wallet={{
+                                        currency: 'bitcoin',
+                                        icon: 'IcWalletBitcoinLight',
+                                        icon_type: 'crypto',
+                                    }}
                                 />
                             </div>
                         </div>

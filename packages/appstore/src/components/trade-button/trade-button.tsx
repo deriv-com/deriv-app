@@ -23,13 +23,13 @@ const TradeButton = ({
             if (new_tab) {
                 return (
                     <a href={link_to} target='_blank' rel='noopener noreferrer'>
-                        <Button primary>{localize('Trade')}</Button>
+                        <Button primary>{localize('Open')}</Button>
                     </a>
                 );
             }
             return (
                 <a href={link_to}>
-                    <Button primary>{localize('Trade')}</Button>
+                    <Button primary>{localize('Open')}</Button>
                 </a>
             );
         }
@@ -57,7 +57,7 @@ const TradeButton = ({
             rel='noopener noreferrer'
         >
             <Button primary className='trade-button'>
-                {localize('Trade')}
+                {localize('Open')}
             </Button>
         </a>
     );

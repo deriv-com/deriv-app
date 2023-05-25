@@ -26,9 +26,7 @@ const wallets = [
         balance: '879',
         icon_type: 'app',
         app: 'mt5',
-        linked_wallet: 'deriv demo',
         state: 'default',
-        jurisdiction_title: 'svg',
         is_demo: true,
     },
     {

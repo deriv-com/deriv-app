@@ -59,7 +59,7 @@ const WalletIcon = ({ currency, icon, size = 'medium', type, has_bg }: TWalletIc
         >
             {(type === 'fiat' || type === 'app') && <Icon icon={icon} size={sizes.fiat[size]} />}
             {type === 'crypto' && (
-                <Icon icon={icon} width={sizes[type][size].width} height={sizes.crypto[size].height} />
+                <Icon icon={icon} width={sizes.crypto[size].width} height={sizes.crypto[size].height} />
             )}
         </div>
     );

@@ -2,8 +2,6 @@ import React from 'react';
 import { WalletIcon } from '../wallet-icon';
 import './app-icon.scss';
 
-// export type TSizes = keyof typeof sizes['fiat' | 'crypto'];
-
 type TAppIconProps = {
     currency: string;
     has_bg?: boolean;

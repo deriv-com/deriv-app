@@ -62,6 +62,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
             setApiError(error);
         } else {
             isModalVisible(false);
+            sessionStorage.removeItem('signup_query_param');
             enableApp();
         }
     };

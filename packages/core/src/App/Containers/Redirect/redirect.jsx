@@ -32,6 +32,7 @@ const Redirect = ({
 
     switch (action_param) {
         case 'signup': {
+            sessionStorage.setItem('signup_query_param', url_query_string);
             if (is_appstore) {
                 // TODO: redirect
                 // history.push({

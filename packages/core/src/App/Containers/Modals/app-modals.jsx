@@ -69,6 +69,7 @@ const AppModals = ({
     is_logged_in,
     should_show_cooldown_modal,
     should_show_assessment_complete_modal,
+    toggleAccountSignupModal,
     is_trading_assessment_for_new_user_enabled,
     fetchFinancialAssessment,
     setCFDScore,
@@ -81,7 +82,8 @@ const AppModals = ({
     should_show_risk_accept_modal,
     is_need_real_account_for_cashier_modal_visible,
 }) => {
-    const url_params = new URLSearchParams(useLocation().search);
+    const temp_session_signup_params = sessionStorage.getItem('signup_query_param');
+    const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
     const url_action_param = url_params.get('action');
 
     const is_eu_user = [ContentFlag.LOW_RISK_CR_EU, ContentFlag.EU_REAL, ContentFlag.EU_DEMO].includes(content_flag);
@@ -93,6 +95,13 @@ const AppModals = ({
             });
         }
     }, [is_logged_in]);
+
+    if (temp_session_signup_params && window.location.href.includes('appstore/onboarding')) {
+        toggleAccountSignupModal(true);
+    } else {
+        sessionStorage.removeItem('signup_query_param');
+        toggleAccountSignupModal(false);
+    }
 
     let ComponentToLoad = null;
     switch (url_action_param) {
@@ -188,6 +197,7 @@ export default connect(({ client, ui, traders_hub }) => ({
     setShouldShowVerifiedAccount: ui.setShouldShowVerifiedAccount,
     should_show_cooldown_modal: ui.should_show_cooldown_modal,
     should_show_assessment_complete_modal: ui.should_show_assessment_complete_modal,
+    toggleAccountSignupModal: ui.toggleAccountSignupModal,
     is_trading_assessment_for_new_user_enabled: ui.is_trading_assessment_for_new_user_enabled,
     active_account_landing_company: client.landing_company_shortcode,
     is_deriv_account_needed_modal_visible: ui.is_deriv_account_needed_modal_visible,

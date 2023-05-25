@@ -1539,7 +1539,7 @@ export default class ClientStore extends BaseStore {
      * We initially fetch things from local storage, and then do everything inside the store.
      */
     async init(login_new_user) {
-        const search = window.location.search;
+        const search = sessionStorage.getItem('signup_query_param') || window.location.search;
         const search_params = new URLSearchParams(search);
         const redirect_url = search_params?.get('redirect_url');
         const code_param = search_params?.get('code');

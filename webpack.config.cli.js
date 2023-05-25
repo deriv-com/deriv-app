@@ -63,6 +63,10 @@ module.exports = {
                 from: 'public',
                 to: path.resolve(__dirname, 'www/public'),
             },
+            {
+                from: 'public/localstorage-sync.html',
+                to: path.resolve(__dirname, 'www'),
+            },
         ]),
     ],
 };

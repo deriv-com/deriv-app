@@ -361,7 +361,7 @@ export default class _Blockly {
 
                         defaultStrat = 'main';
                     }
-                    
+
                     console.log(defaultStrat, 'defaultStrat defaultStrat defaultStrategy');
 
                     const xmlFile = `xml/${defaultStrat}.xml`;

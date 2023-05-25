@@ -26,6 +26,10 @@ const plugins = [
             from: 'public',
             to: '../public',
         },
+        {
+            from: 'public/localstorage-sync.html',
+            to: '../',
+        },
     ]),
 ];
 

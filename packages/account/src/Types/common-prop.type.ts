@@ -21,10 +21,6 @@ export type TAuthAccountInfo = NonNullable<Authorize['account_list']>[0] & {
     landing_company_shortcode?: string;
 };
 
-export type TPlatformContext = {
-    is_appstore: boolean;
-};
-
 export type TCurrencyConfig = {
     fractional_digits: number;
     is_deposit_suspended: 0 | 1;
@@ -57,6 +53,7 @@ export type TRealAccount = {
     previous_currency: string;
     success_message: string;
     error_code: number;
+    error_details?: Record<string, string>;
 };
 
 export type TApiContext = {
@@ -96,4 +93,11 @@ export type TRouteConfig = TRoute & {
 export type TBinaryRoutes = {
     is_logged_in: boolean;
     is_logging_in: boolean;
+};
+
+export type TPOIStatus = {
+    needs_poa?: boolean;
+    redirect_button?: React.ReactElement;
+    is_from_external?: boolean;
+    is_manual_upload?: boolean;
 };

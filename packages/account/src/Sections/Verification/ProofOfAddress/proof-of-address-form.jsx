@@ -96,20 +96,13 @@ const ProofOfAddressForm = ({
         const required_fields = ['address_line_1', 'address_city'];
         validateValues(val => val, required_fields, localize('This field is required'));
 
-        const permitted_characters = ". , ' : ; ( ) @ # / -";
-        const address_validation_message = localize(
-            'Use only the following special characters: {{ permitted_characters }}',
-            {
-                permitted_characters,
-                interpolation: { escapeValue: false },
-            }
-        );
-
-        if (values.address_line_1 && !validAddress(values.address_line_1)) {
-            errors.address_line_1 = address_validation_message;
+        const address_line_1_validation_result = validAddress(values.address_line_1, { is_required: true });
+        if (!address_line_1_validation_result.is_ok) {
+            errors.address_line_1 = address_line_1_validation_result.message;
         }
-        if (values.address_line_2 && !validAddress(values.address_line_2)) {
-            errors.address_line_2 = address_validation_message;
+        const address_line_2_validation_result = validAddress(values.address_line_2);
+        if (!address_line_2_validation_result.is_ok) {
+            errors.address_line_2 = address_line_2_validation_result.message;
         }
 
         const validation_letter_symbol_message = localize(
@@ -168,6 +161,7 @@ const ProofOfAddressForm = ({
             if (data.error) {
                 setStatus({ msg: data.error.message });
                 setFormState({ ...form_state, ...{ is_btn_loading: false } });
+                setSubmitting(false);
             } else {
                 // force request to update settings cache since settings have been updated
                 WS.authorized.storage
@@ -175,6 +169,7 @@ const ProofOfAddressForm = ({
                     .then(({ error, get_settings }) => {
                         if (error) {
                             setAPIInitialLoadError(error.message);
+                            setSubmitting(false);
                             return;
                         }
                         const { address_line_1, address_line_2, address_city, address_state, address_postcode } =
@@ -203,6 +198,7 @@ const ProofOfAddressForm = ({
                                     WS.authorized.storage.getAccountStatus().then(({ error, get_account_status }) => {
                                         if (error) {
                                             setAPIInitialLoadError(error.message);
+                                            setSubmitting(false);
                                             return;
                                         }
                                         setFormState(

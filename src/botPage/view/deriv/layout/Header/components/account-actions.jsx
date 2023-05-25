@@ -23,9 +23,7 @@ import Popover from '../../../components/popover';
 import config from '../../../../../../app.config';
 
 const AccountActions = () => {
-    const { currency, is_virtual, balance, active_token, active_account_name } = useSelector(
-        state => state.client
-    );
+    const { currency, is_virtual, balance, active_token, active_account_name } = useSelector(state => state.client);
     const { currency_name_map, deposit } = config;
     const { visible, label, url } = deposit;
     const { account_switcher_token, is_bot_running } = useSelector(state => state.ui);
@@ -34,15 +32,15 @@ const AccountActions = () => {
     const dropdownRef = React.useRef();
     const dispatch = useDispatch();
     const is_logged_in = isLoggedIn();
-    
+
     useEffect(() => {
         dispatch(setIsHeaderLoaded(true));
     }, []);
 
     useEffect(() => {
         if (account_type) renderAccountMenu();
-    }, [account_type, is_logged_in])
-    
+    }, [account_type, is_logged_in]);
+
     const onAccept = () => {
         dispatch(setAccountSwitcherToken(''));
         globalObserver.emit('ui.switch_account', account_switcher_token);
@@ -69,7 +67,9 @@ const AccountActions = () => {
     };
 
     const renderAccountMenu = () => {
-        const account_icon = is_bot_running ? '../public/images/ic-lock.svg' : '../public/images/ic-chevron-down-bold.svg';
+        const account_icon = is_bot_running
+            ? '../public/images/ic-lock.svg'
+            : '../public/images/ic-chevron-down-bold.svg';
         const currency_icon = is_virtual ? 'virtual' : currency.toLowerCase() || 'unknown';
         return (
             <div className={classNames('header__acc-info', { disabled: is_bot_running })}>
@@ -85,7 +85,9 @@ const AccountActions = () => {
                           })
                         : ''}
                     <span className='symbols'>&nbsp;{currency ? currency : translate('No currency assigned')}</span>
-                    {(active_account_name.includes('MF')) && !is_virtual && <div className='is_symbol_multiplier'>{translate('Multipliers')}</div>}
+                    {active_account_name.includes('MF') && !is_virtual && (
+                        <div className='is_symbol_multiplier'>{translate('Multipliers')}</div>
+                    )}
                 </div>
                 <img
                     className={`header__icon header__expand ${is_acc_dropdown_open ? 'open' : ''}`}

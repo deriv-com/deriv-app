@@ -32,7 +32,7 @@ const Currencies = [
 ] as const;
 
 // TODO: This probably can be moved somewhere else.
-export type Currency = typeof Currencies[number];
+export type Currency = (typeof Currencies)[number];
 
 const CurrencyIcon = ({ icon, ...props }: IconProps<Currency>) => {
     return <Icon icon={`IcCurrency${capitalizeFirstLetter(icon.toLowerCase())}`} {...props} />;

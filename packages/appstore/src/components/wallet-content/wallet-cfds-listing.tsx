@@ -105,7 +105,7 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
                                 icon={existing_account.icon}
                                 sub_title={existing_account?.sub_title}
                                 name={!has_mt5_account_status ? existing_account?.name : ''}
-                                short_code_and_region={existing_account?.short_code_and_region}
+                                short_code_and_region={wallet_account.landing_company_shortcode}
                                 platform={existing_account.platform}
                                 description={existing_account.description}
                                 key={existing_account.key}
@@ -153,6 +153,8 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
                                 description={existing_account.login}
                                 platform={account.platform}
                                 key={`trading_app_card_${existing_account.login}`}
+                                is_wallet={true}
+                                is_wallet_demo={!!wallet_account.is_virtual}
                             />
                         ))
                     ) : (
@@ -165,6 +167,8 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
                             platform={account.platform}
                             description={account.description}
                             key={`trading_app_card_${account.name}`}
+                            is_wallet={true}
+                            is_wallet_demo={!!wallet_account.is_virtual}
                         />
                     );
                 })

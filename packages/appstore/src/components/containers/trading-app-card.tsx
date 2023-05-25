@@ -97,15 +97,27 @@ const TradingAppCard = ({
                             </Text>
                         )}
                     </div>
-                    <Text
-                        className='title'
-                        size='xs'
-                        line_height='s'
-                        weight='bold'
-                        color={action_type === 'trade' ? 'prominent' : 'general'}
-                    >
-                        {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
-                    </Text>
+                    {is_wallet ? (
+                        <Text
+                            className='title'
+                            size='xs'
+                            line_height='s'
+                            weight='bold'
+                            color={action_type === 'trade' ? 'prominent' : 'general'}
+                        >
+                            {is_wallet_demo && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
+                        </Text>
+                    ) : (
+                        <Text
+                            className='title'
+                            size='xs'
+                            line_height='s'
+                            weight='bold'
+                            color={action_type === 'trade' ? 'prominent' : 'general'}
+                        >
+                            {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
+                        </Text>
+                    )}
                     <Text className='description' color={'general'} size='xxs' line_height='m'>
                         {app_desc}
                     </Text>

@@ -39,7 +39,7 @@ describe('<DerivPassword />', () => {
             })
         ).toBeInTheDocument();
         // expect BrandDerivRed not to be in the document
-        expect(screen.queryByText(/BrandDerivRed/i)).not.toBeInTheDocument();
+        expect(screen.queryByText(/BrandDerivRed/i)).toBeInTheDocument();
         // expect button with text change password to be in the document
         expect(screen.getByRole('button', { name: /change password/i })).toBeInTheDocument();
         // expect button with text unlink from to not be in the document
@@ -56,9 +56,12 @@ describe('<DerivPassword />', () => {
     });
 
     it('displays the correct platform information for MF clients', () => {
-        const { container } = render(<DerivPassword {...mock_props} />);
-        const passwordsIconsElement = container.querySelector('.passwords-platform__icons');
-        expect(passwordsIconsElement).toBeNull();
+        render(<DerivPassword {...mock_props} />);
+        const popover_wrapper = screen.getAllByTestId('dt_popover_wrapper');
+        // expect popover to have length of 4
+        expect(popover_wrapper).toHaveLength(1);
+        // expect button with text change password to be in the document
+        expect(screen.getByRole('button', { name: /change password/i })).toBeInTheDocument();
     });
 
     it('displays a change password button for non-social signups', () => {

@@ -26,7 +26,7 @@ import {
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
-import { getAccountTitle, getClientAccountType } from './Helpers/client';
+import { getAccountTitle, getClientAccountType, getAvailableAccount } from './Helpers/client';
 import { getLanguage, localize } from '@deriv/translations';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 
@@ -989,39 +989,50 @@ export default class ClientStore extends BaseStore {
         }
     };
 
-    getIsMarketTypeMatching = (account, market_type) =>
-        market_type === 'synthetic'
-            ? account.market_type === market_type || account.market_type === 'gaming'
-            : account.market_type === 'financial';
+     getIsMarketTypeMatching = (account, market_type) => {
+        if (market_type === 'synthetic') {
+            return account.market_type === market_type || account.market_type === 'gaming';
+        } else if (market_type === 'all') {
+            return account.market_type === 'all';
+        }
+        return account.market_type === 'financial';
+    };
 
     isEligibleForMoreDemoMt5Svg(market_type) {
+        const is_synthetic = market_type === 'synthetic';
+        const available_account = getAvailableAccount(market_type);
         const existing_demo_accounts = this.mt5_login_list.filter(
             account => account.account_type === 'demo' && this.getIsMarketTypeMatching(account, market_type)
         );
-        return (
-            this.trading_platform_available_accounts.some(
-                account =>
-                    (market_type === 'synthetic' ? 'gaming' : 'financial') === account.market_type &&
-                    account.shortcode === 'svg'
-            ) && existing_demo_accounts.every(account => !(account.landing_company_short === 'svg'))
-        );
+        const has_matching_account = this.trading_platform_available_accounts.some(account => {
+            return (is_synthetic ? 'gaming' : available_account) === account.market_type && account.shortcode === 'svg';
+        });
+        const has_no_svg_account = existing_demo_accounts.every(account => {
+            return !(account.landing_company_short === 'svg');
+        });
+
+        return has_matching_account && has_no_svg_account;
     }
 
     isEligibleForMoreRealMt5(market_type) {
+        const is_synthetic = market_type === 'synthetic';
+        const available_account = getAvailableAccount(market_type);
         const existing_real_accounts = this.mt5_login_list.filter(
             account => account.account_type === 'real' && this.getIsMarketTypeMatching(account, market_type)
         );
         const available_real_accounts_shortcodes = this.trading_platform_available_accounts
             .filter(
                 account =>
-                    (market_type === 'synthetic' ? 'gaming' : 'financial') === account.market_type &&
+                    (is_synthetic ? 'gaming' : available_account) === account.market_type &&
                     account.shortcode !== 'maltainvest'
             )
             .map(account => account.shortcode);
 
-        return !!available_real_accounts_shortcodes.filter(shortcode =>
-            existing_real_accounts.every(account => account.landing_company_short !== shortcode)
-        ).length;
+        const has_no_matching_accounts = available_real_accounts_shortcodes.every(shortcode =>
+            existing_real_accounts.some(account => account.landing_company_short !== shortcode)
+        );
+
+        return !has_no_matching_accounts;
     }
 
     isMT5Allowed = landing_companies => {

@@ -51,6 +51,23 @@ type TActiveAccount = TAccount & {
     is_virtual: number;
 };
 
+type TTradingPlatformAvailableAccount = {
+    market_type: 'financial' | 'gaming' | 'all';
+    name: string;
+    requirements: {
+        after_first_deposit: {
+            financial_assessment: string[];
+        };
+        compliance: {
+            mt5: string[];
+            tax_information: string[];
+        };
+        signup: string[];
+    };
+    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
+    sub_account_type: string;
+};
+
 type TAuthenticationStatus = { document_status: string; identity_status: string };
 
 type TMenuItem = {
@@ -108,6 +125,7 @@ type TClientStore = {
     accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
+    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     account_limits: Partial<AccountLimitsResponse['get_limits']> & {
         is_loading?: boolean;
         api_initial_load_error?: string;

@@ -12,6 +12,7 @@ export { default as useHasActiveRealAccount } from './useHasActiveRealAccount';
 export { default as useHasFiatCurrency } from './useHasFiatCurrency';
 export { default as useHasMaltaInvestAccount } from './useHasMaltaInvestAccount';
 export { default as useHasSetCurrency } from './useHasSetCurrency';
+export { default as useHasSwapFreeAccount } from './useHasSwapFreeAccount';
 export { default as useHasSvgAccount } from './useHasSvgAccount';
 export { default as useHasUSDCurrency } from './useHasUSDCurrency';
 export { default as useIsP2PEnabled } from './useIsP2PEnabled';

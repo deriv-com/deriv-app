@@ -1,5 +1,5 @@
 import merge from 'lodash.merge';
-import { TStores } from '../types';
+import type { TStores } from '../types';
 
 const mock = (): TStores & { is_mock: boolean } => {
     return {
@@ -430,4 +430,4 @@ const mock = (): TStores & { is_mock: boolean } => {
 
 const mockStore = (override: DeepPartial<TStores>): TStores => merge(mock(), override);
 
-export { mockStore };
+export default mockStore;

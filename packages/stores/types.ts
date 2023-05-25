@@ -1,18 +1,18 @@
-import type { Moment } from 'moment';
 import type {
     AccountLimitsResponse,
     Authorize,
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
-    ProposalOpenContract,
     GetSettings,
     LogOutResponse,
     ResidenceList,
     StatesList,
+    ProposalOpenContract,
 } from '@deriv/api-types';
+import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
-import { ExchangeRatesStore } from './src/stores';
+import type { ExchangeRatesStore } from './src/stores';
 
 type TAccountLimitsCollection = {
     level?: string;

@@ -37,6 +37,7 @@ export default class CFDStore extends BaseStore {
 
     real_synthetic_accounts_existing_data = [];
     real_financial_accounts_existing_data = [];
+    real_swapfree_accounts_existing_data = [];
 
     constructor({ root_store }) {
         super({ root_store });
@@ -94,6 +95,7 @@ export default class CFDStore extends BaseStore {
             toggleCompareAccountsModal: action.bound,
             getRealSyntheticAccountsExistingData: action.bound,
             getRealFinancialAccountsExistingData: action.bound,
+            getRealSwapfreeAccountsExistingData: action.bound,
             toggleJurisdictionModal: action.bound,
             toggleMT5TradeModal: action.bound,
             disableMt5FinancialStpModal: action.bound,
@@ -165,13 +167,20 @@ export default class CFDStore extends BaseStore {
         return getDxCompanies();
     }
     get has_created_account_for_selected_jurisdiction() {
-        return this.account_type.type === 'synthetic'
-            ? this.real_synthetic_accounts_existing_data?.some(
-                  account => account.landing_company_short === this.jurisdiction_selected_shortcode
-              )
-            : this.real_financial_accounts_existing_data?.some(
-                  account => account.landing_company_short === this.jurisdiction_selected_shortcode
-              );
+        switch (this.account_type.type) {
+            case 'synthetic':
+                return this.real_synthetic_accounts_existing_data?.some(
+                    account => account.landing_company_short === this.jurisdiction_selected_shortcode
+                );
+            case 'all':
+                return this.real_swapfree_accounts_existing_data?.some(
+                    account => account.landing_company_short === this.jurisdiction_selected_shortcode
+                );
+            default:
+                return this.real_financial_accounts_existing_data?.some(
+                    account => account.landing_company_short === this.jurisdiction_selected_shortcode
+                );
+        }
     }
 
     onMount() {
@@ -278,6 +287,7 @@ export default class CFDStore extends BaseStore {
             phone,
             state: address_state,
             zipCode: address_postcode,
+            ...(this.account_type.type === 'all' ? { sub_account_category: 'swap_free' } : {}),
             ...(values.server ? { server: values.server } : {}),
             ...(this.jurisdiction_selected_shortcode ? { company: this.jurisdiction_selected_shortcode } : {}),
             ...(this.jurisdiction_selected_shortcode !== 'labuan'
@@ -502,6 +512,10 @@ export default class CFDStore extends BaseStore {
 
     getRealFinancialAccountsExistingData(real_financial_accounts_existing_data) {
         this.real_financial_accounts_existing_data = real_financial_accounts_existing_data;
+    }
+
+    getRealSwapfreeAccountsExistingData(real_swapfree_accounts_existing_data) {
+        this.real_swapfree_accounts_existing_data = real_swapfree_accounts_existing_data;
     }
 
     toggleJurisdictionModal() {

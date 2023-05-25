@@ -24,24 +24,74 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
         traders_hub,
         ui,
     } = useStore();
-    const {
-        available_dxtrade_accounts,
-        combined_cfd_mt5_accounts,
-        selected_region,
-        getExistingAccounts,
-        selected_account_type,
-        is_demo_low_risk,
-        CFDs_restricted_countries,
-        is_eu_user,
-    } = traders_hub;
+    const { selected_region, getExistingAccounts, selected_account_type } = traders_hub;
 
-    const { is_virtual, currency } = wallet_account;
+    const { currency } = wallet_account;
+
+    // TODO: delete when wallets API will work and get related accounts
+    const getFakeAccounts = () => {
+        const available_dxtrade_accounts =
+            wallet_account.landing_company_shortcode === 'svg'
+                ? [
+                      {
+                          availability: 'Non-EU',
+                          description: 'Trade CFDs on Deriv X with financial markets and our Derived indices.',
+                          icon: 'DerivX',
+                          market_type: 'all',
+                          name: 'Deriv X',
+                          platform: 'dxtrade',
+                      },
+                  ]
+                : [];
+
+        const combined_cfd_mt5_accounts =
+            wallet_account.landing_company_shortcode === 'svg'
+                ? [
+                      {
+                          action_type: 'get',
+                          availability: 'Non-EU',
+                          description: 'Trade CFDs on MT5 with synthetics, baskets, and derived FX.',
+                          icon: 'Derived',
+                          key: 'trading_app_card_Derived',
+                          market_type: 'synthetic',
+                          name: 'Derived',
+                          platform: 'mt5',
+                      },
+                      {
+                          action_type: 'get',
+                          availability: 'Non-EU',
+                          description:
+                              'Trade CFDs on MT5 with forex, stock indices, commodities, and cryptocurrencies.',
+                          icon: 'Financial',
+                          key: 'trading_app_card_Financial',
+                          market_type: 'financial',
+                          name: 'Financial',
+                          platform: 'mt5',
+                      },
+                  ]
+                : [
+                      {
+                          action_type: 'get',
+                          availability: 'EU',
+                          description:
+                              'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.',
+                          icon: 'CFDs',
+                          key: 'trading_app_card_CFDs',
+                          market_type: 'financial',
+                          name: 'CFDs',
+                          platform: 'mt5',
+                      },
+                  ];
+
+        return { available_dxtrade_accounts, combined_cfd_mt5_accounts };
+    };
+
+    const { available_dxtrade_accounts, combined_cfd_mt5_accounts } = getFakeAccounts();
 
     const { toggleCompareAccountsModal } = cfd;
     const { is_landing_company_loaded } = client;
     const { is_mobile } = ui;
-    const accounts_sub_text =
-        !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
+    const accounts_sub_text = localize('Compare accounts');
 
     const getMT5AccountAuthStatus = (current_acc_status: string) => {
         if (current_acc_status === 'proof_failed') {

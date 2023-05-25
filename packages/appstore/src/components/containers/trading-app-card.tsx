@@ -86,7 +86,7 @@ const TradingAppCard = ({
                                 {!is_real && sub_title ? `${sub_title} ${localize('Demo')}` : sub_title}
                             </Text>
                         )}
-                        {short_code_and_region && (
+                        {!is_wallet && short_code_and_region && (
                             <Text
                                 weight='bolder'
                                 size='xxxs'

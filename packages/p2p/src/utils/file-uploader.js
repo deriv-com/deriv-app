@@ -11,7 +11,7 @@ export const isImageType = type => ['image/jpeg', 'image/png', 'image/gif'].incl
 export const isPDFType = type => type === 'application/pdf';
 
 const isFileTooLarge = files => files?.length > 0 && files[0].file.size > max_pot_file_size;
-const isFileSupported = files => files.filter(each_file => getPotSupportedFiles(each_file.file.name)) > 0;
+const isFileSupported = files => files.filter(each_file => getPotSupportedFiles(each_file.file.name))?.length > 0;
 
 export const getErrorMessage = files =>
     isFileTooLarge(files) && isFileSupported(files)

@@ -1,20 +1,20 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FileDropzone, Icon, Text } from '@deriv/components';
-import { localize } from 'Components/i18next';
 import { isMobile } from '@deriv/shared';
+import { localize } from 'Components/i18next';
 
 const FileUploaderComponent = ({
     accept,
     hover_message,
     max_size,
-    upload_message,
     multiple = false,
+    onClickClose,
     onDropAccepted,
     onDropRejected,
+    upload_message,
     validation_error_message,
     value,
-    onClickClose,
 }) => {
     const getUploadMessage = () => {
         return (

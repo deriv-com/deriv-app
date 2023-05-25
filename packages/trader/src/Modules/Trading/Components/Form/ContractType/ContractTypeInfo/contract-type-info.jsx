@@ -19,14 +19,15 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
             <div
                 key={idx}
                 className={classNames('contract-type-info__card', {
-                    'contract-type-info__card--add-spacing': carouselIndex !== 8,
+                    'contract-type-info__card--has-toggle-buttons': carouselIndex !== 8 && carouselIndex !== 1,
                 })}
             >
                 {selected_tab === 'description' ? (
                     <React.Fragment>
                         <div
                             className={classNames('contract-type-info__gif', {
-                                'contract-type-info__gif--add-spacing': carouselIndex !== 8,
+                                'contract-type-info__gif--has-toggle-buttons':
+                                    carouselIndex !== 8 && carouselIndex !== 1,
                             })}
                         >
                             <TradeCategoriesGIF category={type.value} />
@@ -43,7 +44,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                     </React.Fragment>
                 ) : (
                     <ThemedScrollbars
-                        className='contract-type-info__scrollbars, contract-type-info__scrollbars--glossary'
+                        className='contract-type-info__scrollbars contract-type-info__scrollbars--glossary'
                         height={isMobile() ? '' : '500px'}
                         autohide={false}
                     >
@@ -68,7 +69,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
 
     return (
         <React.Fragment>
-            {carouselIndex === 8 && (
+            {(carouselIndex === 8 || carouselIndex === 1) && (
                 <div className='contract-type-info__button-wrapper'>
                     <ButtonToggle
                         buttons_arr={[
@@ -93,6 +94,9 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                 onItemSelect={active_index => {
                     setCarouselIndex(active_index);
                     handleNavigationClick(contract_types[active_index]);
+                    if (active_index !== 8 && active_index !== 1 && selected_tab === 'glossary') {
+                        setSelectedTab('description');
+                    }
                 }}
                 list={cards}
                 width={isMobile() ? 328 : 528}

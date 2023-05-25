@@ -10,7 +10,7 @@ import type {
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
-import { ExchangeRatesStore, WebsiteStatusStore } from './src/stores';
+import type { ExchangeRatesStore, WebsiteStatusStore } from './src/stores';
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: number;

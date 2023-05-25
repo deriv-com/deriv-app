@@ -1,6 +1,6 @@
 import React from 'react';
 import { WalletIcon } from '../wallet-icon';
-import './app-icon.scss';
+import './app-linked-with-wallet-icon.scss';
 
 type TAppIconProps = {
     currency: string;

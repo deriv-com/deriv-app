@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { ContentFlag, moduleLoader } from '@deriv/shared';
+import { ContentFlag, routes, moduleLoader } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
@@ -95,8 +95,7 @@ const AppModals = ({
             });
         }
     }, [is_logged_in]);
-
-    if (temp_session_signup_params && window.location.href.includes('appstore/onboarding')) {
+    if (temp_session_signup_params && window.location.href.includes(routes.onboarding)) {
         toggleAccountSignupModal(true);
     } else {
         sessionStorage.removeItem('signup_query_param');

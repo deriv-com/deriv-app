@@ -91,14 +91,11 @@ describe('MT5AccountTypeModal', () => {
         expect(screen.getByText('Next')).toBeInTheDocument();
     });
 
-    it('should call the proper props when clicking on the Next button', () => {
+    it('should call setAccountType with the correct parameters when clicking on the next button for desktop', () => {
         const mock = mockStore({
             modules: {
                 cfd: {
-                    setAccountType: {
-                        category: 'real',
-                        type: 'synthetic',
-                    },
+                    setAccountType: jest.fn(),
                 },
             },
             traders_hub: {
@@ -122,6 +119,39 @@ describe('MT5AccountTypeModal', () => {
 
         render(<MT5AccountTypeModal />, { wrapper });
         userEvent.click(screen.getByText('Next'));
-        expect(mock.common.setAppstorePlatform).toBeCalledWith('MT5');
+        expect(mock.modules.cfd.setAccountType).toHaveBeenCalledWith({ category: 'real', type: 'synthetic' });
+        expect(mock.traders_hub.toggleAccountTypeModalVisibility).toHaveBeenCalled();
+    });
+
+    it('should call setAccountType with real and financial when clicking on the financial card for desktop', () => {
+        const mock = mockStore({
+            modules: {
+                cfd: {
+                    setAccountType: jest.fn(),
+                },
+            },
+            traders_hub: {
+                is_account_type_modal_visible: true,
+                account_type_card: 'Financial',
+            },
+            client: {
+                trading_platform_available_accounts: [
+                    {
+                        market_type: 'financial',
+                    },
+                    {
+                        market_type: 'gaming',
+                    },
+                ],
+            },
+        });
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+
+        render(<MT5AccountTypeModal />, { wrapper });
+        userEvent.click(screen.getByText('Next'));
+        expect(mock.modules.cfd.setAccountType).toHaveBeenCalledWith({ category: 'real', type: 'financial' });
+        expect(mock.traders_hub.toggleAccountTypeModalVisibility).toHaveBeenCalled();
     });
 });

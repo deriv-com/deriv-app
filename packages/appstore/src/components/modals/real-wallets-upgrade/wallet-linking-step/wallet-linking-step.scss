@@ -1,6 +1,6 @@
 .wallet-linking-step {
     width: 100%;
-    height: calc(73.4rem - 16rem);
+    height: calc(57.4rem); // 73.4rem (modal-height) - 16rem (~15.2rem height of header + footer + margin from top)
     display: flex;
     flex-direction: column;
     align-items: center;

@@ -75,19 +75,10 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
                         <div className='wallet-card__bottom-wrapper'>
                             {state !== 'add' && state !== 'added' ? (
                                 <React.Fragment>
-                                    <Text
-                                        className='wallet-card__bottom-wrapper-wallet-name'
-                                        color='prominent'
-                                        size={isMobile() ? 'xxxxs' : 'xxxs'}
-                                    >
+                                    <Text color='prominent' size={isMobile() ? 'xxxxs' : 'xxxs'}>
                                         {wallet.name} {localize('Wallet')}
                                     </Text>
-                                    <Text
-                                        className='wallet-card__bottom-wrapper-balance'
-                                        color='prominent'
-                                        weight='bold'
-                                        size={isMobile() ? 'xxs' : 'xs'}
-                                    >
+                                    <Text color='prominent' weight='bold' size={isMobile() ? 'xxs' : 'xs'}>
                                         {wallet.balance} {wallet.currency}
                                     </Text>
                                 </React.Fragment>

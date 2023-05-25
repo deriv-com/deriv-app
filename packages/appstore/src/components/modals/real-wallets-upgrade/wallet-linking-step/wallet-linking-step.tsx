@@ -14,13 +14,7 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
     const { is_mobile } = ui;
     return (
         <div className='wallet-linking-step'>
-            <Text
-                as='div'
-                className='wallet-linking-step__page-title'
-                color='prominent'
-                size={is_mobile ? 's' : 'm'}
-                weight='bold'
-            >
+            <Text as='div' color='prominent' size={is_mobile ? 's' : 'm'} weight='bold'>
                 {localize(data.title)}
             </Text>
             <Text as='div' className='wallet-linking-step__description' color='prominent' size={is_mobile ? 'xs' : 's'}>

@@ -1,5 +1,1 @@
-const baseConfigForPackages = require('../../jest.config.base');
-
-module.exports = {
-    ...baseConfigForPackages,
-};
+module.exports = require('../../jest.config.base');

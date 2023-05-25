@@ -14,6 +14,7 @@ import DerivBrandLogo from 'Assets/SvgComponents/header/deriv-rebranding-logo.sv
 import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import CurrencySelectionModal from '../../CurrencySelectionModal';
 import AccountInfo from 'App/Components/Layout/Header/account-info';
+import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
 import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
 
 const Divider = () => {
@@ -38,7 +39,7 @@ export const TradersHubHomeButton = ({ is_dark_mode }) => {
                 />
             </div>
             <Text className='trading-hub-header__tradershub--text'>
-                <Localize i18n_default_text="Trader's hub" />
+                <Localize i18n_default_text="Trader's Hub" />
             </Text>
         </div>
     );
@@ -160,7 +161,18 @@ const TradingHubHeader = ({
                 toggleDialog={toggleAccountsDialog}
             />
         ),
-        [is_acc_switcher_on]
+        [
+            is_acc_switcher_on,
+            is_acc_switcher_disabled,
+            is_eu,
+            is_virtual,
+            currency,
+            country_standpoint,
+            toggleAccountsDialog,
+            account_type,
+            balance,
+            acc_switcher_disabled_message,
+        ]
     );
 
     const DefaultMobileLinks = () => (
@@ -211,18 +223,25 @@ const TradingHubHeader = ({
             <div className='trading-hub-header__menu-left'>
                 <MobileWrapper>
                     <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
+
                     {/* Remove after QA testing */}
                     <button onClick={() => setIsWalletModalVisible(true)}>Modal</button>
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
-                <DerivBrandLogo className='trading-hub-header__logo' />
+                <div
+                    className={classNames('`trading-hub-header__logo-wrapper', {
+                        'trading-hub-header__logo-wrapper--cashier': cashier_routes,
+                    })}
+                >
+                    <DerivBrandLogo className='trading-hub-header__logo' />
+                </div>
                 <DesktopWrapper>
                     <Divider />
                     {/* Remove after QA testing */}
                     <button onClick={() => setIsWalletModalVisible(true)}>Open modal</button>
                     <TradersHubHomeButton is_dark_mode={is_dark_mode} />
                 </DesktopWrapper>
-                <MenuLinks />
+                <MenuLinks is_traders_hub_routes />
             </div>
             <DesktopWrapper>
                 <div className='trading-hub-header__menu-right'>
@@ -284,6 +303,7 @@ const TradingHubHeader = ({
                 </div>
                 <RealAccountSignup />
             </MobileWrapper>
+            <SetAccountCurrencyModal />
             <CurrencySelectionModal is_visible={modal_data.active_modal === 'currency_selection'} />
         </header>
     );
@@ -320,6 +340,8 @@ TradingHubHeader.propTypes = {
     has_any_real_account: PropTypes.bool,
     toggleReadyToDepositModal: PropTypes.func,
     toggleNeedRealAccountForCashierModal: PropTypes.func,
+    //Remove after QA testing
+    setIsWalletModalVisible: PropTypes.func,
 };
 
 export default connect(({ client, common, notifications, ui, traders_hub }) => ({

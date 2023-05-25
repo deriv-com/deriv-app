@@ -28,15 +28,20 @@ const Fieldset = ({
                 <div className={fieldset_header_class}>
                     <span className={fieldset_info_class}>{header}</span>
                     {header_tooltip && (
-                        <Popover
-                            alignment='left'
-                            icon='info'
-                            is_bubble_hover_enabled
-                            message={header_tooltip}
-                            margin={216}
-                            relative_render
-                            disable_target_icon={is_tooltip_disabled}
-                        />
+                        <span
+                            className={classNames('', {
+                                'trade-container__fieldset-header--tooltip-disabled': is_tooltip_disabled,
+                            })}
+                        >
+                            <Popover
+                                alignment='left'
+                                icon='info'
+                                is_bubble_hover_enabled
+                                message={header_tooltip}
+                                margin={216}
+                                relative_render
+                            />
+                        </span>
                     )}
                 </div>
             )}

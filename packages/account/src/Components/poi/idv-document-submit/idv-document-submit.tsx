@@ -53,7 +53,8 @@ const IdvDocumentSubmit = ({
     const [document_list, setDocumentList] = React.useState<object[]>([]);
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [is_input_disable, setInputDisable] = React.useState(true);
-    const [selected_doc, setSelectedDoc] = React.useState(null);
+    const [selected_doc, setSelectedDoc] = React.useState<string | null>(null);
+    const [input_value, setInputValue] = React.useState('');
 
     const document_data = selected_country.identity.services.idv.documents_supported;
 
@@ -273,19 +274,12 @@ const IdvDocumentSubmit = ({
                                                             example_format: string;
                                                         }) => {
                                                             if (item.text === 'No results found' || !item.text) {
-<<<<<<< HEAD:packages/account/src/Components/poi/idv-document-submit/idv-document-submit.tsx
                                                                 setSelectedDoc('');
                                                                 resetDocumentItemSelected(setFieldValue);
                                                             } else {
                                                                 if (typeof setFieldValue === 'function') {
                                                                     setFieldValue('document_type', item, true);
                                                                 }
-=======
-                                                                setSelectedDoc(null);
-                                                                resetDocumentItemSelected(setFieldValue);
-                                                            } else {
-                                                                setFieldValue('document_type', item, true);
->>>>>>> b1d739a041 (chore: update feature branch with master (#8525)):packages/account/src/Components/poi/idv-document-submit/idv-document-submit.jsx
                                                                 setSelectedDoc(item.id);
                                                                 if (has_visual_sample) {
                                                                     setDocumentImage(item.sample_image || '');
@@ -314,13 +308,9 @@ const IdvDocumentSubmit = ({
                                                         );
                                                         if (selected_document) {
                                                             setSelectedDoc(selected_document.id);
-<<<<<<< HEAD:packages/account/src/Components/poi/idv-document-submit/idv-document-submit.tsx
                                                             if (typeof setFieldValue === 'function') {
                                                                 setFieldValue('document_type', selected_document, true);
                                                             }
-=======
-                                                            setFieldValue('document_type', selected_document, true);
->>>>>>> b1d739a041 (chore: update feature branch with master (#8525)):packages/account/src/Components/poi/idv-document-submit/idv-document-submit.jsx
                                                             if (has_visual_sample) {
                                                                 setDocumentImage(selected_document.sample_image);
                                                             }
@@ -351,11 +341,7 @@ const IdvDocumentSubmit = ({
                                                     errors?.error_message
                                                 }
                                                 autoComplete='off'
-<<<<<<< HEAD:packages/account/src/Components/poi/idv-document-submit/idv-document-submit.tsx
                                                 placeholder={generatePlaceholderText(selected_doc || '')}
-=======
-                                                placeholder={generatePlaceholderText(selected_doc)}
->>>>>>> b1d739a041 (chore: update feature branch with master (#8525)):packages/account/src/Components/poi/idv-document-submit/idv-document-submit.jsx
                                                 value={values.document_number}
                                                 onPaste={preventEmptyClipboardPaste}
                                                 onBlur={handleBlur}

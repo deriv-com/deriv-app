@@ -5,17 +5,8 @@ const mock = (): TStores & { is_mock: boolean } => {
     return {
         is_mock: true,
         client: {
-            accounts: {
-                loginid: {
-                    account_type: 'trading',
-                    created_at: 1674633682,
-                    currency: 'USD',
-                    is_disabled: 0,
-                    is_virtual: 0,
-                    excluded_until: 0,
-                    landing_company_name: 'svg',
-                },
-            },
+            account_settings: {},
+            accounts: {},
             active_account_landing_company: '',
             account_limits: {
                 daily_transfers: {
@@ -285,6 +276,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_real: false,
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
+            is_real_wallets_upgrade_on: false,
+            toggleWalletsUpgrade: jest.fn(),
             is_demo: false,
             financial_restricted_countries: false,
             selected_account_type: 'real',
@@ -295,10 +288,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTogglePlatformType: jest.fn(),
             setSelectedAccount: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
-            show_wallet_consent_popup: false,
-            setShouldShowWalletConsentPopup: jest.fn(),
-            is_real_wallets_upgrade_on: false,
-            toggleWalletsUpgrade: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

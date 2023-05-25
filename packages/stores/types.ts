@@ -1,16 +1,16 @@
-import type { Moment } from 'moment';
 import type {
     AccountLimitsResponse,
     Authorize,
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
-    ProposalOpenContract,
     GetSettings,
     LogOutResponse,
+    ProposalOpenContract,
 } from '@deriv/api-types';
+import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
-import { ExchangeRatesStore } from './src/stores';
+import type { ExchangeRatesStore } from './src/stores';
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: number;

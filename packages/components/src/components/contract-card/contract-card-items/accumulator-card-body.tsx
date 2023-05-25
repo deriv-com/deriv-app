@@ -1,43 +1,31 @@
 import classNames from 'classnames';
 import React from 'react';
-import { isCryptocurrency, getLimitOrderAmount, isValidToSell } from '@deriv/shared';
-import ContractCardItem from './contract-card-item.jsx';
-import ToggleCardDialog from './toggle-card-dialog.jsx';
-import Icon from '../../icon/index';
-import MobileWrapper from '../../mobile-wrapper/index';
-import Money from '../../money/index';
-import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
+import { isCryptocurrency, getLimitOrderAmount, isValidToSell, TContractInfo } from '@deriv/shared';
+import ContractCardItem from './contract-card-item';
+import ToggleCardDialog from './toggle-card-dialog';
+import Icon from '../../icon';
+import MobileWrapper from '../../mobile-wrapper';
+import Money from '../../money';
+import { ResultStatusIcon } from '../result-overlay/result-overlay';
 import { ProposalOpenContract, Proposal, ContractUpdate } from '@deriv/api-types';
-import { TIsValidToSell } from '@deriv/shared/src/utils/contract/contract-types';
-
-type TToastConfig = {
-    key?: number;
-    content: string;
-    timeout?: number;
-    is_bottom?: boolean;
-    type?: string;
-};
-
-export type TContractInfo = Pick<ProposalOpenContract, 'buy_price' | 'sell_price' | 'contract_id'> &
-    Required<Pick<ProposalOpenContract, 'profit'>> & {
-        limit_order?: Proposal['limit_order'];
-    } & TIsValidToSell;
+import { TToastConfig } from '../../types/contract.types';
+import { TGetCardLables } from '../../types/common.types';
 
 type TAccumulatorCardBody = {
-    addToast?: (toast_config: TToastConfig) => void;
-    connectWithContractUpdate?: (Component: JSX.Element) => JSX.Element;
+    addToast: (toast_config: TToastConfig) => void;
+    connectWithContractUpdate: React.ComponentProps<typeof ToggleCardDialog>['connectWithContractUpdate'];
     contract_info: TContractInfo;
     contract_update: ContractUpdate;
     currency: Required<ProposalOpenContract>['currency'];
-    current_focus?: string | null;
-    error_message_alignment?: string;
-    getCardLabels: () => { [key: string]: string };
-    getContractById?: (value: number) => { contract_info: TContractInfo };
+    current_focus?: string;
+    error_message_alignment: string;
+    getCardLabels: TGetCardLables;
+    getContractById: React.ComponentProps<typeof ToggleCardDialog>['getContractById'];
     indicative?: number;
     is_sold: ProposalOpenContract['is_sold'];
-    onMouseLeave?: () => void;
-    removeToast?: (key: number) => void;
-    setCurrentFocus?: (value: string) => void;
+    onMouseLeave: () => void;
+    removeToast: (toast_id: string) => void;
+    setCurrentFocus: (value: string) => void;
     status: string;
     is_positions?: boolean;
 };
@@ -64,6 +52,11 @@ const AccumulatorCardBody = ({
     const { take_profit } = getLimitOrderAmount(contract_update || limit_order);
     const is_valid_to_sell = isValidToSell(contract_info);
     const { CURRENT_STAKE, STAKE, TAKE_PROFIT, TOTAL_PROFIT_LOSS } = getCardLabels();
+    let is_won, is_loss;
+    if (profit) {
+        is_won = +profit > 0;
+        is_loss = +profit < 0;
+    }
 
     return (
         <React.Fragment>
@@ -74,8 +67,8 @@ const AccumulatorCardBody = ({
                 <ContractCardItem header={CURRENT_STAKE} className='dc-contract-card__current-stake'>
                     <div
                         className={classNames({
-                            'dc-contract-card--profit': +profit > 0,
-                            'dc-contract-card--loss': +profit < 0,
+                            'dc-contract-card--profit': is_won,
+                            'dc-contract-card--loss': is_loss,
                         })}
                     >
                         <Money amount={sell_price || indicative} currency={currency} />
@@ -92,8 +85,8 @@ const AccumulatorCardBody = ({
                 <ContractCardItem
                     header={TOTAL_PROFIT_LOSS}
                     is_crypto={isCryptocurrency(currency)}
-                    is_loss={+profit < 0}
-                    is_won={+profit > 0}
+                    is_loss={is_loss}
+                    is_won={is_won}
                 >
                     <Money amount={profit} currency={currency} />
                     <div
@@ -132,7 +125,7 @@ const AccumulatorCardBody = ({
                             'dc-contract-card__status--accumulator-mobile-positions': is_positions,
                         })}
                     >
-                        <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={+profit > 0} />
+                        <ResultStatusIcon getCardLabels={getCardLabels} is_contract_won={is_won} />
                     </div>
                 </MobileWrapper>
             )}

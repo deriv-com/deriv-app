@@ -2,9 +2,9 @@ import React from 'react';
 import Text from '../../text';
 
 type TTickCounterBar = {
-    current_tick: number;
+    current_tick?: number;
     label: string;
-    max_ticks_duration: number;
+    max_ticks_duration?: number;
 };
 const TickCounterBar = ({ current_tick, label, max_ticks_duration }: TTickCounterBar) => (
     <div className='dc-tick-counter-bar__container'>

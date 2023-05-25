@@ -4,9 +4,6 @@ const { IS_RELEASE } = require('./constants');
 
 const js_loaders = [
     {
-        loader: '@deriv/shared/src/loaders/react-import-loader.js',
-    },
-    {
         loader: '@deriv/shared/src/loaders/deriv-account-loader.js',
     },
     {

@@ -4,7 +4,7 @@ import { CFDAccountCard } from './cfd-account-card';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import specifications, { TSpecifications } from '../Constants/cfd-specifications';
 import Loading from '../templates/_common/components/loading';
-import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
+import { LandingCompany, DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
 import { TObjectCFDAccount } from '../Containers/cfd-dashboard';
 
@@ -33,6 +33,7 @@ type TCFDDemoAccountDisplayProps = {
     is_logged_in: boolean;
     isSyntheticCardVisible: (account_category: string) => boolean;
     isFinancialCardVisible: () => boolean;
+    isSwapFreeCardVisible: () => boolean;
     onSelectAccount: (objCFDAccount: TObjectCFDAccount) => void;
     openAccountTransfer: (
         data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
@@ -58,6 +59,7 @@ const CFDMT5DemoAccountDisplay = ({
     is_logged_in,
     isSyntheticCardVisible,
     isFinancialCardVisible,
+    isSwapFreeCardVisible,
     onSelectAccount,
     openAccountTransfer,
     platform,
@@ -69,7 +71,7 @@ const CFDMT5DemoAccountDisplay = ({
 }: TCFDDemoAccountDisplayProps) => {
     const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
 
-    const openAccountTransferList = (type: 'synthetic' | 'financial') => {
+    const openAccountTransferList = (type: DetailsOfEachMT5Loginid['market_type']) => {
         return Object.keys(current_list).find((key: string) => key.startsWith(`${platform}.demo.${type}`)) || '';
     };
 
@@ -175,6 +177,42 @@ const CFDMT5DemoAccountDisplay = ({
                                 show_eu_related_content
                             )}
                             specs={financial_specs}
+                            has_banner
+                            toggleMT5TradeModal={toggleMT5TradeModal}
+                        />
+                    )}
+
+                    {isSwapFreeCardVisible() && (
+                        <CFDAccountCard
+                            title={localize('Swap-Free')}
+                            type={{
+                                category: 'demo',
+                                type: 'all',
+                                platform,
+                            }}
+                            is_disabled={has_cfd_account_error || standpoint.malta}
+                            is_logged_in={is_logged_in}
+                            existing_accounts_data={current_list[openAccountTransferList('all')]}
+                            commission_message={localize('No commission')}
+                            onSelectAccount={() =>
+                                onSelectAccount({
+                                    category: 'demo',
+                                    type: 'all',
+                                    platform,
+                                })
+                            }
+                            onPasswordManager={openPasswordManager}
+                            onClickFund={() =>
+                                openAccountTransfer(current_list[openAccountTransferList('all')], {
+                                    category: 'demo',
+                                    type: 'all',
+                                })
+                            }
+                            platform={platform}
+                            descriptor={localize(
+                                'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs.'
+                            )}
+                            specs={specifications[platform as keyof TSpecifications].real_all_specs}
                             has_banner
                             toggleMT5TradeModal={toggleMT5TradeModal}
                         />

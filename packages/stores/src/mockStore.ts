@@ -282,6 +282,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_changed_two_fa: false,
             setTwoFAChangedStatus: jest.fn(),
             real_account_creation_unlock_date: 0,
+            setPrevAccountType: jest.fn(),
         },
         common: {
             error: {
@@ -376,6 +377,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTogglePlatformType: jest.fn(),
             setSelectedAccount: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
+            selectAccountType: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

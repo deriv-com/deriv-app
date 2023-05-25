@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import StarRating from '../star-rating';
 
-describe('<P2PEmpty/>', () => {
+describe('<StarRating/>', () => {
     it('renders star rating component without initial value', () => {
         render(
             <div data-testid='dt_star_rating'>

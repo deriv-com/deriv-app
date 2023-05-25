@@ -196,7 +196,7 @@ describe('JurisdictionCard', () => {
         expect(screen.getByText('Straight-through processing')).toBeInTheDocument();
         expect(screen.getByText('Labuan')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
-        expect(screen.getByText('90+')).toBeInTheDocument();
+        expect(screen.getByText('80+')).toBeInTheDocument();
         expect(screen.getByText('Forex and Cryptocurrencies')).toBeInTheDocument();
         expect(screen.getByText('Leverage')).toBeInTheDocument();
         expect(screen.getByText('1:100')).toBeInTheDocument();

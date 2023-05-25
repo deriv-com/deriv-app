@@ -11,7 +11,7 @@ const WebsiteStatusProvider = observer(({ children }: React.PropsWithChildren<un
     } = useStore();
 
     useEffect(() => {
-        if (data) update(data);
+        if (data?.website_status) update(data.website_status);
     }, [update, data]);
 
     // handles case where the response from website_status is different when client is logged in/out, we need to re-subscribe if client is logging in

@@ -1,4 +1,4 @@
-import FiatTransactionListItem from './fiat-transaction-list-item';
-import './fiat-transaction-list-item.scss';
+import FiatTransactionList from './fiat-transaction-list';
+import './fiat-transaction-list.scss';
 
-export default FiatTransactionListItem;
+export default FiatTransactionList;

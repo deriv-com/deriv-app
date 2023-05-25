@@ -32,9 +32,18 @@ const DerivPassword = ({ email, is_social_signup, social_identity_provider, land
         <React.Fragment>
             <FormSubHeader title={localize('Deriv password')} />
             <div className='account__passwords-wrapper'>
-                {!is_mf && (
-                    <React.Fragment>
-                        <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
+                <React.Fragment>
+                    <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
+                        {is_mf ? (
+                            <Localize
+                                i18n_default_text='Use the <0>Deriv password</0> to log in to {{brand_website_name}} and {{platform_name_trader}}.'
+                                components={[<strong key={0} />]}
+                                values={{
+                                    brand_website_name,
+                                    platform_name_trader,
+                                }}
+                            />
+                        ) : (
                             <Localize
                                 i18n_default_text='Use the <0>Deriv password</0> to log in to {{brand_website_name}}, {{platform_name_go}}, {{platform_name_trader}}, {{platform_name_smarttrader}}, and {{platform_name_dbot}}.'
                                 components={[<strong key={0} />]}
@@ -46,51 +55,55 @@ const DerivPassword = ({ email, is_social_signup, social_identity_provider, land
                                     platform_name_go,
                                 }}
                             />
+                        )}
+                    </Text>
+                    <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
+                        <Localize
+                            i18n_default_text='Apps you have linked to your <0>Deriv password:</0>'
+                            components={[<strong key={0} />]}
+                        />
+                    </Text>
+                    <div className='passwords-platform__logo-container'>
+                        <DerivComLogo />
+                        <Text line_height='l' size='xs' weight='bold'>
+                            {brand_website_name}
                         </Text>
-                        <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
-                            <Localize
-                                i18n_default_text='Apps you have linked to your <0>Deriv password:</0>'
-                                components={[<strong key={0} />]}
+                    </div>
+                    <div className='passwords-platform__icons'>
+                        <Popover alignment='bottom' message={platform_name_trader}>
+                            <Icon
+                                icon={`${getPlatformSettings('trader').icon}-dashboard`}
+                                size={32}
+                                description='trader'
                             />
-                        </Text>
-                        <div className='passwords-platform__logo-container'>
-                            <DerivComLogo />
-                            <Text line_height='l' size='xs' weight='bold'>
-                                {brand_website_name}
-                            </Text>
-                        </div>
-                        <div className='passwords-platform__icons'>
-                            <Popover alignment='bottom' message={platform_name_trader}>
-                                <Icon
-                                    icon={`${getPlatformSettings('trader').icon}-dashboard`}
-                                    size={32}
-                                    description='trader'
-                                />
-                            </Popover>
-                            <Popover alignment='bottom' message={platform_name_dbot}>
-                                <Icon
-                                    icon={`${getPlatformSettings('dbot').icon}-dashboard`}
-                                    size={32}
-                                    description='dbot'
-                                />
-                            </Popover>
-                            <Popover alignment='bottom' message={platform_name_smarttrader}>
-                                <Icon
-                                    icon={`${getPlatformSettings('smarttrader').icon}-dashboard`}
-                                    size={32}
-                                    description='smarttrader'
-                                />
-                            </Popover>
-                            <Popover alignment='bottom' message={platform_name_go}>
-                                <Icon
-                                    icon={`${getPlatformSettings('go').icon}-dashboard`}
-                                    size={32}
-                                    description='derivgo'
-                                />
-                            </Popover>
-                        </div>
-                    </React.Fragment>
-                )}
+                        </Popover>
+                        {!is_mf && (
+                            <React.Fragment>
+                                <Popover alignment='bottom' message={platform_name_dbot}>
+                                    <Icon
+                                        icon={`${getPlatformSettings('dbot').icon}-dashboard`}
+                                        size={32}
+                                        description='dbot'
+                                    />
+                                </Popover>
+                                <Popover alignment='bottom' message={platform_name_smarttrader}>
+                                    <Icon
+                                        icon={`${getPlatformSettings('smarttrader').icon}-dashboard`}
+                                        size={32}
+                                        description='smarttrader'
+                                    />
+                                </Popover>
+                                <Popover alignment='bottom' message={platform_name_go}>
+                                    <Icon
+                                        icon={`${getPlatformSettings('go').icon}-dashboard`}
+                                        size={32}
+                                        description='derivgo'
+                                    />
+                                </Popover>
+                            </React.Fragment>
+                        )}
+                    </div>
+                </React.Fragment>
                 {is_social_signup ? (
                     <React.Fragment>
                         <div className='account__passwords-item passwords-social-buttons'>

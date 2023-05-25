@@ -5,6 +5,7 @@ type TJurisdictionCardItems = {
     over_header?: string;
     synthetic_contents: Array<string>;
     financial_contents: Array<string>;
+    swapfree_contents?: Array<string>;
     is_over_header_available: boolean;
 };
 type TJurisdictionContent = {
@@ -29,6 +30,13 @@ export const getJurisdictionContents = (): TJurisdictionContent => ({
             `${localize('Registered with the Financial Commission')}`,
             `${localize(
                 '165+ assets: forex (standard/micro), stocks, stock indices, commodities, and cryptocurrencies'
+            )}`,
+            `${localize('Leverage up to 1:1000')}`,
+        ],
+        swapfree_contents: [
+            `${localize('Selecting this will onboard you through Deriv (SVG) LLC (company no. 273 LLC 2020)')}`,
+            `${localize(
+                '40+ assets: forex, synthetics, stocks, stock indices, cryptocurrencies, and ETFs swap-free.'
             )}`,
             `${localize('Leverage up to 1:1000')}`,
         ],

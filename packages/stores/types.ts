@@ -1,4 +1,3 @@
-import type { Moment } from 'moment';
 import type {
     AccountLimitsResponse,
     Authorize,
@@ -6,13 +5,15 @@ import type {
     GetAccountStatus,
     GetLimits,
     StatesListResponse,
-    ProposalOpenContract,
     GetSettings,
     LogOutResponse,
+    ProposalOpenContract,
 } from '@deriv/api-types';
+import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
-import { ExchangeRatesStore } from './src/stores';
 import { TLocationList } from '../shared/src/utils/location';
+import type { ExchangeRatesStore } from './src/stores';
+
 
 type TCurrencyConfig = {
     fractional_digits: number;
@@ -77,6 +78,23 @@ type TRealAccount = {
 type TActiveAccount = TAccount & {
     landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     is_virtual: number;
+};
+
+type TTradingPlatformAvailableAccount = {
+    market_type: 'financial' | 'gaming' | 'all';
+    name: string;
+    requirements: {
+        after_first_deposit: {
+            financial_assessment: string[];
+        };
+        compliance: {
+            mt5: string[];
+            tax_information: string[];
+        };
+        signup: string[];
+    };
+    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
+    sub_account_type: string;
 };
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
@@ -146,13 +164,14 @@ type TClientStore = {
     accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
+    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     account_limits: Partial<AccountLimitsResponse['get_limits']> & {
         is_loading?: boolean;
         api_initial_load_error?: string;
     };
     account_list: TAccountsList;
     account_settings: GetSettings;
-    account_status?: Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
+    account_status: Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;
@@ -251,6 +270,7 @@ type TClientStore = {
     setTwoFAChangedStatus: (status: boolean) => void;
     has_any_real_account: boolean;
     real_account_creation_unlock_date: number;
+    setPrevAccountType: (account_type: string) => void;
 };
 
 type TCommonStoreError = {
@@ -408,6 +428,7 @@ type TRudderStackStore = {
     track: (event_name: string, options: string) => void;
     setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
     is_demo: boolean;
+    selectAccountType: (account_type: string) => void;
 };
 
 /**

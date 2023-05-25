@@ -17,8 +17,7 @@ const WebsiteStatusProvider = observer(({ children }: React.PropsWithChildren<un
     // handles case where the response from website_status is different when client is logged in/out, we need to re-subscribe if client is logging in
     // refer to socket-general.j
     useEffect(() => {
-        // need to wait for 'authorize' to be responded by the websocket 'is_authorize=true' and when user has logged in 'is_logged_in=true'
-        // only then we re-subscribe to website_status
+        // need to wait for 'authorize' to be responded by the websocket 'is_authorize=true', only then we re-subscribe to website_status
         if (!is_authorize) {
             unsubscribe();
         } else {

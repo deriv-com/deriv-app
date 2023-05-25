@@ -1,8 +1,26 @@
 // TODO: Move to components package once we can install libraries there
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Rating } from 'react-simple-star-rating';
 import { Icon } from '@deriv/components';
+
+type TStarRatingProps = {
+    className?: string;
+    empty_star_className: string;
+    empty_star_color?: string;
+    empty_star_icon: string;
+    full_star_className: string;
+    full_star_color?: string;
+    full_star_icon: string;
+    initial_value?: number;
+    is_readonly?: boolean;
+    number_of_stars: number;
+    onClick?: () => void;
+    rating_value: number;
+    rtl?: boolean;
+    should_allow_half_icon?: boolean;
+    should_allow_hover_effect?: boolean;
+    star_size: number;
+};
 
 const StarRating = ({
     className,
@@ -21,7 +39,7 @@ const StarRating = ({
     should_allow_half_icon = true,
     should_allow_hover_effect = true,
     star_size,
-}) => {
+}: TStarRatingProps) => {
     // Converts initial value to be in the form of x.0 or x.5
     // to show full and half stars only
     const fractionalized_value = Math.round(initial_value * 2) / 2;
@@ -62,25 +80,6 @@ const StarRating = ({
             size={star_size}
         />
     );
-};
-
-StarRating.propTypes = {
-    className: PropTypes.string,
-    empty_star_color: PropTypes.string,
-    empty_star_className: PropTypes.string,
-    empty_star_icon: PropTypes.string,
-    full_star_color: PropTypes.string,
-    full_star_className: PropTypes.string,
-    full_star_icon: PropTypes.string,
-    initial_value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    is_readonly: PropTypes.bool,
-    number_of_stars: PropTypes.number,
-    onClick: PropTypes.func,
-    rating_value: PropTypes.number,
-    rtl: PropTypes.bool,
-    should_allow_half_icon: PropTypes.bool,
-    should_allow_hover_effect: PropTypes.bool,
-    star_size: PropTypes.number,
 };
 
 export default React.memo(StarRating);

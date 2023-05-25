@@ -6,7 +6,7 @@ import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
-import Empty from 'Components/p2p-empty/p2p-empty.jsx';
+import P2pEmpty from 'Components/p2p-empty';
 import OrderRow from 'Pages/orders/order-table/order-table-row.jsx';
 import OrderTableHeader from 'Pages/orders/order-table/order-table-header.jsx';
 import { useStores } from 'Stores';
@@ -70,13 +70,13 @@ const OrderTableContent = () => {
     }
 
     return (
-        <Empty has_tabs icon='IcNoOrder' title={localize('You have no orders.')}>
+        <P2pEmpty has_tabs icon='IcNoOrder' title={localize('You have no orders.')}>
             {general_store.is_active_tab && (
                 <Button primary large className='p2p-empty__button' onClick={() => general_store.handleTabClick(0)}>
                     <Localize i18n_default_text='Buy/Sell' />
                 </Button>
             )}
-        </Empty>
+        </P2pEmpty>
     );
 };
 

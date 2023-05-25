@@ -42,7 +42,7 @@ const AssetSummary = observer(() => {
                 <React.Fragment>
                     {!isMobile() ? (
                         <Text align='right' size='xs' line_height='s'>
-                            {localize('Total asset')}
+                            {localize('Total assets')}
                         </Text>
                     ) : null}
                     <Popover

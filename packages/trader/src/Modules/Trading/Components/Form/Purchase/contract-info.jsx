@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Icon, DesktopWrapper, Money, MobileWrapper, Popover, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
-import { getCurrencyDisplayCode, getGrowthRatePercentage, getLocalizedBasis, isMobile } from '@deriv/shared';
+import { DesktopWrapper, Icon, MobileWrapper, Money, Popover, Text } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
+import { getCurrencyDisplayCode, getLocalizedBasis, isMobile, getGrowthRatePercentage } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
 const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased, is_vanilla }) => (
@@ -33,6 +33,7 @@ const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_i
 const ContractInfo = ({
     basis,
     currency,
+    growth_rate,
     has_increased,
     is_loading,
     is_accumulator,
@@ -62,14 +63,14 @@ const ContractInfo = ({
 
     const setBasisText = () => {
         if (is_vanilla) {
-            return 'Payout per point';
+            return localize('Payout per point');
         }
         return proposal_info.obj_contract_basis.text;
     };
 
     const has_error_or_not_loaded = proposal_info.has_error || !proposal_info.id;
 
-    const basis_text = has_error_or_not_loaded ? stakeOrPayout() : localize('{{value}}', { value: setBasisText() });
+    const basis_text = has_error_or_not_loaded ? stakeOrPayout() : setBasisText();
 
     const { message, obj_contract_basis, stake } = proposal_info;
 
@@ -113,7 +114,7 @@ const ContractInfo = ({
                                         {!is_accumulator ? (
                                             <Money amount={stake} currency={currency} show_currency />
                                         ) : (
-                                            !is_loading && `${getGrowthRatePercentage(proposal_info?.growth_rate)}%`
+                                            !is_loading && `${getGrowthRatePercentage(growth_rate)}%`
                                         )}
                                     </Text>
                                 </div>
@@ -227,6 +228,7 @@ const ContractInfo = ({
 ContractInfo.propTypes = {
     basis: PropTypes.string,
     currency: PropTypes.string,
+    growth_rate: PropTypes.number,
     has_increased: PropTypes.bool,
     is_accumulator: PropTypes.bool,
     is_multiplier: PropTypes.bool,

@@ -6,17 +6,18 @@ import { Checklist } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import AccountTransferLocked from '../account-transfer-locked';
 import CashierProviders from '../../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
 
 describe('AccountTransferLocked', () => {
-    let mockRootStore;
+    let mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 is_financial_account: false,
                 is_financial_information_incomplete: false,
                 is_trading_experience_incomplete: false,
             },
-        };
+        });
     });
 
     it('Should show the default lock content if the account is not financial', () => {

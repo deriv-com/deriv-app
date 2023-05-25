@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { HintBox, Text } from '@deriv/components';
 import { useStores } from 'Stores';
@@ -9,7 +9,7 @@ const TemporarilyBarredHint = () => {
 
     if (general_store.is_barred) {
         return (
-            <div className='temporarily-barred-hint'>
+            <div className='temporarily-barred-hint' data-testid='dt_temporarily_barred_hint'>
                 <HintBox
                     icon='IcAlertWarning'
                     message={

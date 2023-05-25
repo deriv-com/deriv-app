@@ -5,7 +5,7 @@ import { isDesktop, isMobile } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import Empty from 'Components/p2p-empty/p2p-empty.jsx';
+import P2pEmpty from 'Components/p2p-empty';
 import AdvertiserPageRow from './advertiser-page-row.jsx';
 import './advertiser-page-adverts.scss';
 
@@ -69,7 +69,7 @@ const AdvertiserPageAdverts = () => {
                             </Table.Body>
                         </Table>
                     ) : (
-                        <Empty
+                        <P2pEmpty
                             className={classNames('', { 'advertiser-page-empty': isMobile() })}
                             icon='IcNoData'
                             title={localize('There are no ads yet')}

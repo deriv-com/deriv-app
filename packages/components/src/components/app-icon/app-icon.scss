@@ -1,4 +1,4 @@
-.wallet-icon {
+.app-icon {
     position: relative;
     display: flex;
     align-items: center;
@@ -6,9 +6,16 @@
     border-radius: $BORDER_RADIUS;
     overflow: hidden;
 
-    &--xsmall {
-        width: 2.4rem;
-        height: 1.4rem;
+    &__top-icon {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+    &__bottom-icon {
+        position: absolute;
+        bottom: 0;
+        right: 0;
     }
 
     &--small {
@@ -22,11 +29,6 @@
     }
 
     &--large {
-        width: 8.4rem;
-        height: 5.2rem;
-    }
-
-    &--xlarge {
         width: 12.8rem;
         height: 8rem;
     }

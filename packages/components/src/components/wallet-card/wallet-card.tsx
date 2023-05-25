@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import Badge from '../badge';
 import Button from '../button';
@@ -7,7 +8,6 @@ import Text from '../text';
 import { isMobile } from '@deriv/shared';
 import { WalletIcon } from '../wallet-icon';
 import './wallet-card.scss';
-import classNames from 'classnames';
 
 type TWalletCardProps = {
     // TODO: This type should be updated when the response is ready
@@ -22,24 +22,11 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
     state = 'default',
 }) => {
     const IconComponent = () => {
-        let icon_size = wallet.icon_type === 'app' ? 'medium' : 'large';
+        let icon_size: React.ComponentProps<typeof WalletIcon>['size'] = 'large';
         if (size === 'small') icon_size = 'medium';
         if (size === 'medium') icon_size = isMobile() && wallet.icon_type === 'crypto' ? 'medium' : 'large';
 
-        return (
-            <React.Fragment>
-                {wallet.icon_type !== 'app' && (
-                    <WalletIcon
-                        type={wallet.icon_type}
-                        icon={wallet.icon}
-                        size={icon_size}
-                        currency={wallet.currency}
-                    />
-                )}
-                {/* TODO: Update this after app-icon created */}
-                {wallet.icon_type === 'app' && <div />}
-            </React.Fragment>
-        );
+        return <WalletIcon type={wallet.icon_type} icon={wallet.icon} size={icon_size} />;
     };
 
     return (

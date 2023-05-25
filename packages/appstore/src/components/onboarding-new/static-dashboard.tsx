@@ -515,6 +515,43 @@ const StaticDashboard = ({
                                                 : 'prominent'
                                         }
                                     >
+                                        {localize('Deriv cTrader')}
+                                    </Text>
+                                </div>
+                                <div className='static-dashboard-wrapper__body'>
+                                    <StaticCFDAccountManager
+                                        type='synthetic'
+                                        platform='ctrader'
+                                        appname={localize('Deriv cTrader')}
+                                        description={localize(
+                                            'Trade CFDs on forex, commodities, cryptocurrencies, stocks, stock indices, and derived indices.'
+                                        )}
+                                        loginid={loginid}
+                                        currency={currency}
+                                        has_account={has_account}
+                                        derived_amount={derived_amount}
+                                        financial_amount={financial_amount}
+                                        is_blurry={is_blurry}
+                                        is_onboarding_animated={is_onboarding_animated}
+                                        is_eu_user={is_eu_user}
+                                    />
+                                </div>
+                            </React.Fragment>
+                        )}
+                        {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
+                            <React.Fragment>
+                                <Divider />
+                                <div className='static-dashboard-wrapper__body--header'>
+                                    <Text
+                                        as='h2'
+                                        weight='bold'
+                                        size='xs'
+                                        color={
+                                            is_blurry.cfd_text || is_blurry.cfd_description
+                                                ? 'less-prominent'
+                                                : 'prominent'
+                                        }
+                                    >
                                         {localize('Other CFDs')}
                                     </Text>
                                 </div>

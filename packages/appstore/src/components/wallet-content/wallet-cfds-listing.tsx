@@ -117,6 +117,8 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
                                     type: existing_account.market_type,
                                     jurisdiction: existing_account.landing_company_short,
                                 }}
+                                is_wallet={true}
+                                is_wallet_demo={!!wallet_account.is_virtual}
                             />
                         );
                     })}
@@ -193,7 +195,7 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
                 <Text size='xs' line_height='s'>
                     <Localize
                         i18n_default_text={
-                            'Trade with leverage and tight spreads for better returns on successful trades. <0>Learn more</0>'
+                            'Trade with leverage and tight spreads for better returns on trades. <0>Learn more</0>'
                         }
                         components={[<StaticUrl key={0} className='options' href='/trade-types/cfds' />]}
                     />

@@ -12,6 +12,11 @@ import { observer } from 'mobx-react-lite';
 import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS, ContentFlag, getStaticUrl } from '@deriv/shared';
 
+type TWalletsProps = {
+    is_wallet?: boolean;
+    is_wallet_demo?: boolean;
+};
+
 const TradingAppCard = ({
     availability,
     name,
@@ -28,7 +33,9 @@ const TradingAppCard = ({
     mt5_acc_auth_status,
     selected_mt5_jurisdiction,
     openFailedVerificationModal,
-}: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
+    is_wallet,
+    is_wallet_demo,
+}: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid & TWalletsProps) => {
     const { common, traders_hub } = useStores();
     const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
     const { current_language } = common;
@@ -70,9 +77,15 @@ const TradingAppCard = ({
             <div className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}>
                 <div className='trading-app-card__details'>
                     <div>
-                        <Text className='title' size='xs' line_height='s' color='prominent'>
-                            {!is_real && sub_title ? `${sub_title} ${localize('Demo')}` : sub_title}
-                        </Text>
+                        {is_wallet ? (
+                            <Text className='title' size='xs' line_height='s' color='prominent'>
+                                {is_wallet_demo && sub_title ? `${sub_title} ${localize('Demo')}` : sub_title}
+                            </Text>
+                        ) : (
+                            <Text className='title' size='xs' line_height='s' color='prominent'>
+                                {!is_real && sub_title ? `${sub_title} ${localize('Demo')}` : sub_title}
+                            </Text>
+                        )}
                         {short_code_and_region && (
                             <Text
                                 weight='bolder'

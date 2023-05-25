@@ -68,59 +68,76 @@ const TradeModal = ({
             </div>
         );
     };
-    const downloadCenterAppOption = (platform_type: TCFDsPlatformType) => {
-        if (platform_type === 'dxtrade') {
-            return (
-                <React.Fragment>
-                    <div className='cfd-trade-modal__download-center-app--option'>
-                        <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
-                            {localize('Run Deriv X on your browser')}
-                        </Text>
-                        <PlatformsDesktopDownload
-                            platform={platform}
-                            is_demo={is_demo}
-                            dxtrade_tokens={dxtrade_tokens}
-                            derivez_tokens={derivez_tokens}
-                        />
-                    </div>
+    const downloadCenterDescription = () => {
+        switch (platform) {
+            case 'dxtrade':
+                return (
                     <Text
                         align='center'
-                        as='div'
+                        as='p'
                         className='cfd-trade-modal__download-center-text'
                         size={isMobile() ? 'xxxs' : 'xxs'}
                         weight='bold'
                     >
-                        {localize(`Download Deriv X on your phone to trade with the Deriv X account`)}
+                        {localize('Download Deriv X on your phone to trade with the Deriv X account')}
                     </Text>
-                </React.Fragment>
-            );
-        } else if (platform_type === 'derivez') {
-            return (
-                <React.Fragment>
-                    <div className='cfd-trade-modal__download-center-app--option'>
-                        <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
-                            {localize('Run Deriv EZ on your browser')}
-                        </Text>
-                        <PlatformsDesktopDownload
-                            platform={platform}
-                            is_demo={is_demo}
-                            dxtrade_tokens={dxtrade_tokens}
-                            derivez_tokens={derivez_tokens}
-                        />
-                    </div>
+                );
+            case 'derivez':
+                return (
                     <Text
                         align='center'
-                        as='div'
+                        as='p'
                         className='cfd-trade-modal__download-center-text'
                         size={isMobile() ? 'xxxs' : 'xxs'}
                         weight='bold'
                     >
-                        {localize(`Download Deriv Go on your phone to trade with the Deriv Ez account`)}
+                        {localize('Download Deriv Go on your phone to trade with the Deriv EZ account')}
                     </Text>
-                </React.Fragment>
-            );
+                );
+            case 'ctrader':
+                return (
+                    <Text
+                        align='center'
+                        as='p'
+                        className='cfd-trade-modal__download-center-text'
+                        size={isMobile() ? 'xxxs' : 'xxs'}
+                        weight='bold'
+                    >
+                        {localize('Download Deriv cTrader on your phone to trade with the Deriv cTrader account')}
+                    </Text>
+                );
+            default:
+                return '';
         }
-        return undefined;
+    };
+
+    const downloadCenterAppOption = (platform_type: TCFDsPlatformType) => {
+        let appTitle = '';
+        if (platform_type === 'dxtrade') {
+            appTitle = 'Run Deriv X on your browser';
+        } else if (platform_type === 'derivez') {
+            appTitle = 'Run Deriv EZ on your browser';
+        } else if (platform_type === 'ctrader') {
+            appTitle = 'Run Deriv cTrader on your browser';
+        } else {
+            return null;
+        }
+
+        return (
+            <React.Fragment>
+                <div className='cfd-trade-modal__download-center-app--option'>
+                    <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
+                        {localize(appTitle)}
+                    </Text>
+                    <PlatformsDesktopDownload
+                        platform={platform}
+                        is_demo={is_demo}
+                        dxtrade_tokens={dxtrade_tokens}
+                        derivez_tokens={derivez_tokens}
+                    />
+                </div>
+            </React.Fragment>
+        );
     };
 
     return (
@@ -187,6 +204,7 @@ const TradeModal = ({
                 </div>
             </div>
             <div className='cfd-trade-modal__download-center-app'>{downloadCenterAppOption(platform)}</div>
+            <div className='cfd-trade-modal__download-center-description'>{downloadCenterDescription()}</div>
             <div className='cfd-trade-modal__download-center-options'>
                 <div className='cfd-trade-modal__download-center-options--mobile-links'>
                     <div className='cfd-trade-modal__download-center-options--mobile-links--apple'>

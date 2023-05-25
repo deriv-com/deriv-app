@@ -226,7 +226,6 @@
         background: var(--brand-dark-grey);
         align-items: center;
         text-decoration: none;
-        padding: 0.4rem;
         border-radius: $BORDER_RADIUS;
 
         &-text {
@@ -238,7 +237,7 @@
             }
         }
         &-icon {
-            padding-left: 0.6rem;
+            margin-left: 0.6rem;
         }
     }
     &__specs {

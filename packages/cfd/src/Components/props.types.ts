@@ -2,7 +2,7 @@ import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 
 export type TCFDPlatform = 'dxtrade' | 'mt5';
 
-export type TCFDsPlatformType = 'dxtrade' | 'derivez';
+export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'ctrader';
 
 export type TCFDAccountCopy = {
     text: string | undefined;

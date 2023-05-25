@@ -21,7 +21,7 @@ export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
     return (
         <React.Fragment>
             <QRCode
-                value={mobileDownloadLink(acc_type, checkForDesktop)}
+                value={platformsText(acc_type) === 'EZ' ? 'https://onelink.to/bkdwkd' : 'https://onelink.to/grmtyx'}
                 size={5}
                 style={{ height: 'auto', maxWidth: '100%', width: qr_code_width }}
             />

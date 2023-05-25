@@ -31,7 +31,7 @@ const mobileDownloadLink = (platform: TCFDsPlatformType, type: 'ios' | 'android'
         case 'derivez':
             return getPlatformDerivEZDownloadLink(type);
         default:
-            return getPlatformDXTradeDownloadLink(type);
+            return '';
     }
 };
 
@@ -67,8 +67,10 @@ const getPlatformDXTradeDownloadLink = (platform?: 'ios' | 'android' | 'huawei')
             return DXTRADE_IOS_APP_URL;
         case 'huawei':
             return DXTRADE_HUAWEI_APP_URL;
-        default:
+        case 'android':
             return DXTRADE_ANDROID_APP_URL;
+        default:
+            return '';
     }
 };
 
@@ -81,7 +83,7 @@ const getPlatformDerivEZDownloadLink = (platform: 'ios' | 'android' | 'huawei') 
         case 'huawei':
             return DERIVEZ_HUAWEI_APP_URL;
         default:
-            return DERIVEZ_URL;
+            return '';
     }
 };
 
@@ -156,4 +158,7 @@ export {
     getDerivEzWebTerminalLink,
     getMT5WebTerminalLink,
     getTopUpConfig,
+    // QrDownloadLink,
+    // getDerivEzQr,
+    // getDerivxQr,
 };

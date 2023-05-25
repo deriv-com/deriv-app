@@ -479,6 +479,7 @@ import './common/ic-poi-nimc-slip-horizontal.svg';
 import './common/ic-poi-nimc-slip.svg';
 import './common/ic-poi-passport.svg';
 import './common/ic-poi-suspected.svg';
+import './common/ic-poi-updated.svg';
 import './common/ic-poi-upload-dashboard.svg';
 import './common/ic-poi-upload.svg';
 import './common/ic-poi-verified-dashboard.svg';

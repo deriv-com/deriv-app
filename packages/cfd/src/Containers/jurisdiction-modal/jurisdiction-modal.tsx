@@ -1,5 +1,5 @@
 import { Button, DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
-import { getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
+import { getAuthenticationStatusInfo, isMobile, getMT5Title } from '@deriv/shared';
 import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
 import JurisdictionModalContent from './jurisdiction-modal-content';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
@@ -21,6 +21,7 @@ const JurisdictionModal = ({
     openPasswordModal,
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
+    real_swapfree_accounts_existing_data,
     trading_platform_available_accounts,
     toggleJurisdictionModal,
     setJurisdictionSelectedShortcode,
@@ -77,10 +78,18 @@ const JurisdictionModal = ({
                 : available_account.shortcode !== 'maltainvest')
     );
 
+    const swapfree_available_accounts = trading_platform_available_accounts.filter(
+        available_account =>
+            available_account.market_type === 'all' &&
+            (show_eu_related_content
+                ? available_account.shortcode === 'maltainvest'
+                : available_account.shortcode !== 'maltainvest')
+    );
+
     const modal_title = show_eu_related_content
         ? localize('Jurisdiction for your Deriv MT5 CFDs account')
-        : localize('Choose a jurisdiction for your MT5 {{account_type}} account', {
-              account_type: account_type.type === 'synthetic' ? 'Derived' : 'Financial',
+        : localize('Choose a jurisdiction for your Deriv MT5 {{account_type}} account', {
+              account_type: getMT5Title(account_type.type),
           });
 
     const is_svg_selected = jurisdiction_selected_shortcode === 'svg';
@@ -91,14 +100,21 @@ const JurisdictionModal = ({
 
     const isNextButtonDisabled = () => {
         if (jurisdiction_selected_shortcode) {
-            const is_account_created =
-                account_type.type === 'synthetic'
-                    ? real_synthetic_accounts_existing_data?.some(
-                          account => account.landing_company_short === jurisdiction_selected_shortcode
-                      )
-                    : real_financial_accounts_existing_data?.some(
-                          account => account.landing_company_short === jurisdiction_selected_shortcode
-                      );
+            let is_account_created;
+
+            if (account_type.type === 'synthetic') {
+                is_account_created = real_synthetic_accounts_existing_data?.some(
+                    account => account.landing_company_short === jurisdiction_selected_shortcode
+                );
+            } else if (account_type.type === 'all') {
+                is_account_created = real_swapfree_accounts_existing_data?.some(
+                    account => account.landing_company_short === jurisdiction_selected_shortcode
+                );
+            } else {
+                is_account_created = real_financial_accounts_existing_data?.some(
+                    account => account.landing_company_short === jurisdiction_selected_shortcode
+                );
+            }
 
             if (!is_account_created) {
                 if (
@@ -169,10 +185,12 @@ const JurisdictionModal = ({
                 is_virtual={is_virtual}
                 real_financial_accounts_existing_data={real_financial_accounts_existing_data}
                 real_synthetic_accounts_existing_data={real_synthetic_accounts_existing_data}
+                real_swapfree_accounts_existing_data={real_swapfree_accounts_existing_data}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                 context={context}
                 setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
                 synthetic_available_accounts={synthetic_available_accounts}
+                swapfree_available_accounts={swapfree_available_accounts}
             />
             <div className={`cfd-jurisdiction-card--${account_type.type}__footer-wrapper`}>
                 <JurisdictionModalFootNote
@@ -257,6 +275,7 @@ export default connect(({ modules: { cfd }, ui, client, traders_hub }: RootStore
     jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
     real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
     real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
+    real_swapfree_accounts_existing_data: cfd.real_swapfree_accounts_existing_data,
     setAccountSettings: client.setAccountSettings,
     setJurisdictionSelectedShortcode: cfd.setJurisdictionSelectedShortcode,
     should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,

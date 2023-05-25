@@ -12,7 +12,7 @@ jest.mock('@deriv/shared', () => ({
     makeCancellablePromise: jest.fn(() => ({ cancel: jest.fn(), promise: Promise.resolve('resolved') })),
 }));
 
-jest.mock('../../real-account-signup/helpers/utils.js', () => ({
+jest.mock('../../real-account-signup/helpers/utils.ts', () => ({
     splitValidationResultTypes: jest.fn(() => ({
         errors: {},
         warnings: {},

@@ -6,6 +6,11 @@
     border-radius: $BORDER_RADIUS;
     overflow: hidden;
 
+    &--xsmall {
+        width: 2.4rem;
+        height: 1.4rem;
+    }
+
     &--small {
         width: 4rem;
         height: 2.4rem;
@@ -17,6 +22,11 @@
     }
 
     &--large {
+        width: 8.4rem;
+        height: 5.2rem;
+    }
+
+    &--xlarge {
         width: 12.8rem;
         height: 8rem;
     }

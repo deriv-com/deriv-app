@@ -3,15 +3,17 @@ import classNames from 'classnames';
 import Icon from '../icon';
 import './wallet-icon.scss';
 
+type TWalletIconSizes = keyof (typeof sizes)['fiat' | 'crypto'];
+
 type TWalletIconProps = {
-    currency: string;
-    has_bg?: boolean;
+    currency?: string;
     icon: string;
-    size: string;
-    type: 'fiat' | 'crypto';
+    size?: TWalletIconSizes;
+    type?: 'fiat' | 'crypto' | 'app';
+    has_bg?: boolean;
 };
 
-const sizes: any = {
+const sizes = {
     fiat: {
         xsmall: 12,
         small: 16,
@@ -20,17 +22,13 @@ const sizes: any = {
         xlarge: 48,
     },
     crypto: {
-        xxsmall: {
-            width: 26,
-            height: 16,
-        },
         xsmall: {
-            width: 32,
-            height: 20,
+            width: 20,
+            height: 12,
         },
         small: {
-            width: 40,
-            height: 24,
+            width: 32,
+            height: 20,
         },
         medium: {
             width: 48,
@@ -41,36 +39,27 @@ const sizes: any = {
             height: 40,
         },
         xlarge: {
-            width: 80,
-            height: 48,
-        },
-        xxlarge: {
             width: 96,
             height: 60,
         },
     },
-};
+} as const;
 
-const WalletIcon = ({ currency, has_bg = false, icon, size = 'medium', type }: TWalletIconProps) => {
-    /**
-     * The sizes of icons vary when utilizing the wallet-icon with a background, such as a card.
-     */
-    let icon_size = size;
-    if (has_bg) {
-        if (size === 'small' && type === 'crypto') icon_size = 'xxsmall';
-        if (size === 'medium' && type === 'crypto') icon_size = 'small';
-        if (size === 'large') icon_size = 'xlarge';
-    }
-
-    if (!icon || !currency) {
+const WalletIcon = ({ currency, icon, size = 'medium', type, has_bg }: TWalletIconProps) => {
+    if (!icon) {
         return null;
     }
 
     return (
-        <div className={classNames('wallet-icon', { [`wallet-icon--${size} wallet-card__${currency}-bg`]: !!has_bg })}>
-            {type === 'fiat' && <Icon icon={icon} size={sizes[type][icon_size]} />}
+        <div
+            className={classNames('wallet-icon', {
+                [`wallet-icon--${size} wallet-card__${currency?.toLowerCase()}-bg`]:
+                    (!!currency && type !== 'app') || has_bg,
+            })}
+        >
+            {(type === 'fiat' || type === 'app') && <Icon icon={icon} size={sizes.fiat[size]} />}
             {type === 'crypto' && (
-                <Icon icon={icon} width={sizes[type][icon_size].width} height={sizes[type][icon_size].height} />
+                <Icon icon={icon} width={sizes.crypto[size].width} height={sizes.crypto[size].height} />
             )}
         </div>
     );

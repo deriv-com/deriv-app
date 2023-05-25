@@ -54,7 +54,7 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
             <div
                 className={`wallet-card__container wallet-card__container--${state} wallet-card__container--${size} wallet-card__${wallet.currency}-bg`}
             >
-                <div className={`wallet-card__shine wallet-card__shine--${size}`} />
+                {size !== 'small' && <div className='wallet-card__shine' />}
                 <div
                     className={classNames('wallet-card__container-fade', {
                         [`wallet-card__container-fade--${state}`]: state,
@@ -75,13 +75,18 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
                         <div className='wallet-card__bottom-wrapper'>
                             {state !== 'add' && state !== 'added' ? (
                                 <React.Fragment>
-                                    <Text className='wallet-card__bottom-wrapper-wallet-name' color='prominent'>
+                                    <Text
+                                        className='wallet-card__bottom-wrapper-wallet-name'
+                                        color='prominent'
+                                        size={isMobile() ? 'xxxxs' : 'xxxs'}
+                                    >
                                         {wallet.name} {localize('Wallet')}
                                     </Text>
                                     <Text
                                         className='wallet-card__bottom-wrapper-balance'
                                         color='prominent'
                                         weight='bold'
+                                        size={isMobile() ? 'xxs' : 'xs'}
                                     >
                                         {wallet.balance} {wallet.currency}
                                     </Text>

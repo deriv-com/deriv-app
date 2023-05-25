@@ -3,10 +3,10 @@ import { Icon, Text } from '@deriv/components';
 import './wallet-account.scss';
 
 type TWalletAccount = {
-    balance?: string;
-    currency?: string;
-    name?: string;
-    icon?: string;
+    balance: string;
+    currency: string;
+    name: string;
+    icon: string;
 };
 
 const WalletAccount = ({ balance, name, currency, icon }: TWalletAccount) => {
@@ -14,10 +14,10 @@ const WalletAccount = ({ balance, name, currency, icon }: TWalletAccount) => {
         <div className='wallet-account'>
             <Icon className='wallet-account__icon' icon={icon} size={24} />
             <div className='wallet-account__details'>
-                <Text as='div' className='wallet-account__details-name' color='prominent'>
+                <Text as='div' color='prominent' size='xxs'>
                     {name}
                 </Text>
-                <Text as='div' className='wallet-account__details-balance' color='prominent' weight='bold'>
+                <Text as='div' color='prominent' size='xxxs' weight='bold'>
                     {balance} {currency}
                 </Text>
             </div>

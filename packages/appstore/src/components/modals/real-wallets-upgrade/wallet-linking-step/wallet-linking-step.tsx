@@ -1,6 +1,7 @@
 import React from 'react';
 import { Text, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { observer, useStore } from '@deriv/stores';
 import WalletLinkWrapper, { TWalletLinkWrapper } from '../components/wallet-link/wallet-link-wrapper';
 import './wallet-linking-step.scss';
 
@@ -8,13 +9,21 @@ type TWalletLinkingStep = {
     data: { title: string; wallets: TWalletLinkWrapper[] };
 };
 
-const WalletLinkingStep = ({ data }: TWalletLinkingStep) => {
+const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     return (
         <div className='wallet-linking-step'>
-            <Text as='div' className='wallet-linking-step__page-title' color='prominent' weight='bold'>
+            <Text
+                as='div'
+                className='wallet-linking-step__page-title'
+                color='prominent'
+                size={is_mobile ? 's' : 'm'}
+                weight='bold'
+            >
                 {localize(data.title)}
             </Text>
-            <Text as='div' className='wallet-linking-step__description' color='prominent' size='s'>
+            <Text as='div' className='wallet-linking-step__description' color='prominent' size={is_mobile ? 'xs' : 's'}>
                 {localize('This is how we link your accounts with your new Wallet.')}
             </Text>
             <Text
@@ -56,6 +65,6 @@ const WalletLinkingStep = ({ data }: TWalletLinkingStep) => {
             </ThemedScrollbars>
         </div>
     );
-};
+});
 
 export default WalletLinkingStep;

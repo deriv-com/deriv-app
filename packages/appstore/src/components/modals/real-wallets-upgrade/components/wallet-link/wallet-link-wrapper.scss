@@ -16,7 +16,6 @@
             padding: 0.4rem 0.8rem;
             border-radius: 2.4rem;
             text-align: center;
-            font-size: var(--text-size-xxxs);
             background-color: var(--general-section-2);
 
             @include mobile {
@@ -60,7 +59,6 @@
         flex-direction: row;
         align-items: center;
         justify-content: center;
-        // background: green;
 
         @include mobile {
             width: 100%;

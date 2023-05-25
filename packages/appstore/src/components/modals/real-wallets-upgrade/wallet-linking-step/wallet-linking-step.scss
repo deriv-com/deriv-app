@@ -10,21 +10,8 @@
         height: calc(100vh - 15rem);
     }
 
-    &__page-title {
-        font-size: var(--text-size-m);
-
-        @include mobile {
-            font-size: var(--text-size-s);
-        }
-    }
-
     &__description {
         margin-top: 0.8rem;
-        font-size: var(--text-size-s);
-
-        @include mobile {
-            font-size: var(--text-size-xs);
-        }
     }
 
     &__content {

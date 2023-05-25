@@ -6,7 +6,7 @@ import './wallet-link-wrapper.scss';
 import classNames from 'classnames';
 
 export type TWalletLinkWrapper = {
-    wallet_details: React.ComponentProps<typeof WalletCard>;
+    wallet_details: React.ComponentProps<typeof WalletCard>['wallet'];
     account_list: {
         balance: string;
         currency: string;
@@ -23,6 +23,7 @@ const WalletLinkWrapper = ({ wallet_details, account_list }: TWalletLinkWrapper)
                     as='div'
                     className='wallet-link-wrapper__title-text wallet-link-wrapper__accounts-title'
                     color='prominent'
+                    size='xxxs'
                 >
                     {localize('Your current trading account(s)')}
                 </Text>
@@ -53,6 +54,7 @@ const WalletLinkWrapper = ({ wallet_details, account_list }: TWalletLinkWrapper)
                 <Text
                     className='wallet-link-wrapper__title-text wallet-link-wrapper__card-wrapper-title'
                     color='prominent'
+                    size='xxxs'
                 >
                     {localize('Your new Wallet')}
                 </Text>

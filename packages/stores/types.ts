@@ -132,7 +132,7 @@ type TClientStore = {
     };
     account_list: TAccountsList;
     account_settings: GetSettings;
-    account_status?: Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
+    account_status: Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;

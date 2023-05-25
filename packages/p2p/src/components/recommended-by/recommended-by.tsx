@@ -9,7 +9,7 @@ type TRecommendedByProps = {
     recommended_count?: number;
 };
 
-const RecommendedBy: React.FC<TRecommendedByProps> = ({ recommended_average, recommended_count }) => {
+const RecommendedBy = ({ recommended_average, recommended_count }: TRecommendedByProps) => {
     const { showModal } = useModalManagerContext();
 
     const getRecommendedMessage = (): string => {

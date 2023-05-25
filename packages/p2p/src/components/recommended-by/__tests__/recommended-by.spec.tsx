@@ -1,13 +1,20 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { isMobile } from '@deriv/shared';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import RecommendedBy from '../recommended-by';
 
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
     ...jest.requireActual('Components/modal-manager/modal-manager-context'),
-    useModalManagerContext: () => ({
+    useModalManagerContext: jest.fn().mockReturnValue({
         showModal: jest.fn(),
     }),
+}));
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    isMobile: jest.fn(() => false),
 }));
 
 describe('<RecommendedBy />', () => {
@@ -30,5 +37,14 @@ describe('<RecommendedBy />', () => {
         userEvent.click(screen.getByTestId('dt_popover_wrapper'));
         expect(screen.getByText('Recommended by 2 traders')).toBeInTheDocument();
         expect(screen.getByText('50%')).toBeInTheDocument();
+    });
+
+    it('should call showModal function in mobile view', () => {
+        (isMobile as jest.Mock).mockReturnValue(true);
+        const { showModal } = useModalManagerContext();
+
+        render(<RecommendedBy recommended_count={2} recommended_average={50} />);
+        userEvent.click(screen.getByTestId('dt_popover_wrapper'));
+        expect(showModal).toHaveBeenCalled();
     });
 });

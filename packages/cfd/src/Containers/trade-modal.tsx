@@ -219,7 +219,11 @@ const TradeModal = ({
                         <Icon icon='IcInstallationHuawei' width={135} height={40} />
                     </a>
                 </div>
-                <div className='cfd-trade-modal__download-center-options--qrcode'>{getPlatformQRCode(platform)}</div>
+                {!isMobile() && (
+                    <div className='cfd-trade-modal__download-center-options--qrcode'>
+                        {getPlatformQRCode(platform)}
+                    </div>
+                )}
             </div>
         </div>
     );

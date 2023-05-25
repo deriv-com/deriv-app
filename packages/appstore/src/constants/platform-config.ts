@@ -51,7 +51,7 @@ export const getAppstorePlatforms = (): PlatformConfig[] => [
     {
         name: getPlatformSettingsAppstore('bbot').name,
         app_desc: localize('Our legacy automated trading platform.'),
-        link_to: getUrlBinaryBot(true),
+        link_to: getUrlBinaryBot(),
         is_external: true,
     },
     {

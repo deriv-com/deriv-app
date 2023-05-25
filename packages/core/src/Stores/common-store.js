@@ -173,7 +173,7 @@ export default class CommonStore extends BaseStore {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
             } else if (ext_url?.indexOf(routes.cashier_p2p) === 0) {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH' });
-            } else if (ext_url?.indexOf(getUrlBinaryBot(true)) === 0) {
+            } else if (ext_url?.indexOf(getUrlBinaryBot()) === 0) {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
             } else {
                 this.addRouteHistoryItem({ ...location, action: 'PUSH' });

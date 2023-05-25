@@ -30,7 +30,7 @@ const PlatformSwitcher = ({
         update_platform_array.map(data => {
             const { name } = data;
             if (name === 'Binary Bot') {
-                data.href = getUrlBinaryBot(true);
+                data.href = getUrlBinaryBot();
             }
             return data;
         });

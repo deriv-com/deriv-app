@@ -56,7 +56,7 @@ export const routes = {
     cashier_p2p_verification: '/cashier/p2p/verification',
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
     smarttrader: getUrlSmartTrader(),
-    binarybot: getUrlBinaryBot(true),
+    binarybot: getUrlBinaryBot(),
     endpoint: '/endpoint',
     complaints_policy: '/complaints-policy',
 

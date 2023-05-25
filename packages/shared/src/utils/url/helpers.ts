@@ -30,7 +30,7 @@ export const getUrlSmartTrader = () => {
     return `${base_link}/${i18n_language.toLowerCase()}/trading.html`;
 };
 
-export const getUrlBinaryBot = (is_language_required: boolean) => {
+export const getUrlBinaryBot = (is_language_required = true) => {
     const { is_deriv_app } = getPlatformFromUrl();
 
     const url_lang = getlangFromUrl();

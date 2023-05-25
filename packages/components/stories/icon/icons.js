@@ -666,6 +666,7 @@ export const icons =
         'IcMt5PasswordUpdated',
         'IcMt5Responsive',
         'IcMt5Support',
+        'IcMt5SwapFreePlatform',
         'IcMt5SyntheticDashboard',
         'IcMt5SyntheticIndices',
         'IcMt5SyntheticPlatform',

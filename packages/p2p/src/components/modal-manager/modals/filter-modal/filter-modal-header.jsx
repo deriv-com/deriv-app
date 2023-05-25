@@ -13,7 +13,11 @@ const FilterModalHeader = ({ pageHeaderReturnFn }) => {
         return (
             <React.Fragment>
                 <DesktopWrapper>
-                    <PageReturn onClick={pageHeaderReturnFn} page_title={localize('Payment methods')} />
+                    <PageReturn
+                        className='filter-modal__header'
+                        onClick={pageHeaderReturnFn}
+                        page_title={localize('Payment methods')}
+                    />
                 </DesktopWrapper>
                 <MobileWrapper>
                     <Text align='center' weight='bold'>

@@ -7,6 +7,12 @@
         }
     }
 
+    &__header {
+        .page-return__button {
+            margin-right: 2rem;
+        }
+    }
+
     &__select {
         cursor: pointer;
     }

@@ -11,7 +11,7 @@ type TAccountTransferModal = {
     toggleModal: (e?: boolean) => void;
 };
 
-const AccountTransferModal = ({ is_modal_open, toggleModal }: TAccountTransferModal) => {
+const AccountTransferModal = observer(({ is_modal_open, toggleModal }: TAccountTransferModal) => {
     const {
         modules: {
             cashier: {
@@ -59,6 +59,6 @@ const AccountTransferModal = ({ is_modal_open, toggleModal }: TAccountTransferMo
             </Modal.Body>
         </Modal>
     );
-};
+});
 
-export default observer(AccountTransferModal);
+export default AccountTransferModal;

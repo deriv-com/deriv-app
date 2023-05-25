@@ -226,10 +226,18 @@ export default connect(({ common, contract_replay, ui }) => {
     };
 })(ContractReplay);
 
+const DelayedAccuBarriersMarker = React.memo(
+    ({ marker_component: MarkerComponent, previous_spot, ...props }) => {
+        return <MarkerComponent {...props} />;
+    }, // barrier range will get updated only when previous_spot changes:
+    (prevProps, nextProps) => prevProps.previous_spot === nextProps.previous_spot
+);
+DelayedAccuBarriersMarker.displayName = 'DelayedAccuBarriersMarker';
+
 // CHART -----------------------------------------
 
 const Chart = props => {
-    const AccumulatorsShadedBarriers = allMarkers[props.accumulators_barriers_marker?.type];
+    const accu_barriers_marker_component = allMarkers[props.marker?.type];
 
     const isBottomWidgetVisible = () => {
         return isDesktop() && props.is_digit_contract;
@@ -297,13 +305,15 @@ const Chart = props => {
                     is_bottom_widget_visible={isBottomWidgetVisible()}
                 />
             ))}
-            {props.is_accumulator_contract && props.markers_array && (
-                <AccumulatorsShadedBarriers
-                    key={props.accumulators_barriers_marker.key}
+            {props.is_accumulator_contract && !!props.markers_array && (
+                <DelayedAccuBarriersMarker
+                    marker_component={accu_barriers_marker_component}
+                    key={props.marker.key}
                     is_dark_theme={props.is_dark_theme}
                     granularity={props.granularity}
                     is_in_contract_details
-                    {...props.accumulators_barriers_marker}
+                    previous_spot={props.accumulator_previous_spot}
+                    {...props.marker}
                 />
             )}
         </SmartChart>
@@ -311,7 +321,7 @@ const Chart = props => {
 };
 
 Chart.propTypes = {
-    accumulators_barriers_marker: PropTypes.object,
+    accumulator_previous_spot: PropTypes.number,
     barriers_array: PropTypes.array,
     BottomWidgets: PropTypes.node,
     chartStateChange: PropTypes.func,
@@ -326,6 +336,7 @@ Chart.propTypes = {
     is_socket_opened: PropTypes.bool,
     is_static_chart: PropTypes.bool,
     margin: PropTypes.number,
+    marker: PropTypes.object,
     markers_array: PropTypes.array,
     replay_controls: PropTypes.object,
     scroll_to_epoch: PropTypes.number,
@@ -366,7 +377,7 @@ const ReplayChart = connect(({ modules, ui, common, contract_replay }) => {
     };
 
     return {
-        accumulators_barriers_marker: contract_store.marker,
+        accumulator_previous_spot: contract_store.accumulator_previous_spot,
         end_epoch: contract_config.end_epoch,
         chart_type: contract_config.chart_type,
         start_epoch: contract_config.start_epoch,
@@ -380,6 +391,7 @@ const ReplayChart = connect(({ modules, ui, common, contract_replay }) => {
         margin: contract_replay.margin,
         is_static_chart: contract_replay.is_static_chart,
         barriers_array: contract_store.barriers_array,
+        marker: contract_store.marker,
         markers_array: contract_store.markers_array,
         symbol: contract_store.contract_info.underlying,
         contract_info: contract_store.contract_info,

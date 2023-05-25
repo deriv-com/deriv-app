@@ -27,7 +27,7 @@ const dark_theme = {
     sold: '#ffad3a',
     fg: '#ffffff',
     bg: '#0e0e0e',
-    dashed_border: '#6E6E6E',
+    grey_border: '#6e6e6e',
 };
 
 const light_theme = {
@@ -37,7 +37,7 @@ const light_theme = {
     sold: '#ffad3a',
     fg: '#333333',
     bg: '#ffffff',
-    dashed_border: '#999999',
+    grey_border: '#999999',
 };
 
 function getColor({ status, profit, is_dark_theme, is_vanilla }) {
@@ -147,6 +147,7 @@ const draw_shaded_barriers = ({
     stroke_color,
     fill_color,
     has_persistent_borders,
+    previous_tick,
     scale,
 }) => {
     const end_left = ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
@@ -158,6 +159,7 @@ const draw_shaded_barriers = ({
     const displayed_top = is_top_visible ? top : persistent_top;
     const displayed_bottom = is_bottom_visible ? bottom : end_top;
     const is_start_left_visible = start_left < end_left;
+    const middle_top = bottom - Math.abs(bottom - top) / 2;
     if (!is_start_left_visible) return;
     ctx.lineWidth = 1;
     ctx.strokeStyle = stroke_color;
@@ -189,6 +191,33 @@ const draw_shaded_barriers = ({
 
     ctx.fillStyle = fill_color;
     ctx.fillRect(start_left, displayed_top, end_left - start_left, Math.abs(displayed_bottom - displayed_top));
+    const {
+        fill_color: prev_tick_fill_color,
+        is_circle,
+        radius,
+        small_preceeding_tick,
+        stroke_color: prev_tick_stroke_color,
+    } = previous_tick || {};
+    if (middle_top < end_top && is_circle) {
+        // draw previous tick as a bold white circle in Contract Details + small preceeding tick before it
+        // should be drawn last here so that it is not overlapped by the barrier fill
+        ctx.strokeStyle = prev_tick_stroke_color;
+        ctx.setLineDash([]);
+        if (small_preceeding_tick) {
+            ctx.fillStyle = prev_tick_stroke_color;
+            ctx.beginPath();
+            ctx.arc(small_preceeding_tick.left - 1, small_preceeding_tick.top, 2.5, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+        }
+        ctx.lineWidth = 3;
+        ctx.fillStyle = prev_tick_fill_color;
+        ctx.beginPath();
+        ctx.arc(start_left - 1, middle_top, radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        ctx.restore();
+    }
 };
 
 const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
@@ -271,27 +300,36 @@ const TickContract = RawMarkerMaker(
                 ctx,
                 start_left: start.left,
                 fill_color: 'rgba(55, 124, 252, 0.08)',
-                stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
+                stroke_color: getColor({ status: 'grey_border', is_dark_theme }),
                 top: barrier,
                 bottom: barrier_2,
                 scale,
             });
             return;
         }
-
         if (
             barrier &&
             barrier_2 &&
-            ((previous_tick && is_accumulators_contract && is_in_contract_details) || (!contract_type && start))
+            (((previous_tick || exit) && is_accumulators_contract && is_in_contract_details) ||
+                (!contract_type && start))
         ) {
             // draw 2 barriers with a shade between them for an ongoing ACCU contract:
+            const contract_details_start_left = status === 'open' ? exit?.left : previous_tick?.left;
+            const small_preceeding_tick = ticks.length > 2 && status === 'open' && ticks[ticks.length - 2];
             draw_shaded_barriers({
                 ctx,
-                start_left: is_in_contract_details ? previous_tick.left : start.left,
+                start_left: is_in_contract_details ? contract_details_start_left : start.left,
                 fill_color: 'rgba(0, 167, 158, 0.08)',
                 // we should show barrier lines in contract details even when they are outside of the chart:
                 has_persistent_borders: is_in_contract_details,
-                stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
+                previous_tick: is_in_contract_details && {
+                    fill_color: getColor({ status: 'bg', is_dark_theme }),
+                    is_circle: true,
+                    radius: 10.5,
+                    stroke_color: getColor({ status: 'grey_border', is_dark_theme }),
+                    small_preceeding_tick,
+                },
+                stroke_color: getColor({ status: 'grey_border', is_dark_theme }),
                 top: barrier,
                 bottom: barrier_2,
                 scale,

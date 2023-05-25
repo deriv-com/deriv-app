@@ -89,27 +89,26 @@ const createTickMarkers = contract_info => {
             +_tick.epoch === +contract_info.exit_tick_time ||
             getSpotCount(contract_info, _idx) === contract_info.tick_count;
         const is_exit_spot = isExitSpot(tick, idx);
+        const exit_spot_index = tick_stream.findIndex(isExitSpot);
+        const is_accu_current_last_spot = is_accumulator && !is_exit_spot && idx === tick_stream.length - 1;
+        const is_accu_preexit_spot =
+            is_accumulator && (is_contract_closed ? idx === exit_spot_index - 1 : idx === tick_stream.length - 2);
 
         let marker_config;
         if (is_entry_spot) {
             marker_config = createMarkerSpotEntry(contract_info);
-        } else if (is_middle_spot) {
+        } else if (is_middle_spot && !is_accu_preexit_spot) {
             marker_config = createMarkerSpotMiddle(contract_info, tick, idx);
-        } else if (is_exit_spot) {
+        } else if (is_exit_spot && !is_accu_current_last_spot) {
             tick.align_label = 'top'; // force exit spot label to be 'top' to avoid overlapping
             marker_config = createMarkerSpotExit(contract_info, tick, idx);
         }
         if (is_accumulator) {
-            const exit_spot_index = tick_stream.findIndex(isExitSpot);
-            const is_current_last_spot = !is_exit_spot && idx === tick_stream.length - 1;
-            const is_preexit_spot = is_contract_closed ? idx === exit_spot_index - 1 : idx === tick_stream.length - 2;
-            const has_accumulator_bold_marker = is_preexit_spot || is_exit_spot;
-
-            if (is_current_last_spot && !is_contract_closed) return;
-            if (marker_config && (is_middle_spot || has_accumulator_bold_marker)) {
+            if (is_accu_current_last_spot && !is_contract_closed) return;
+            if (marker_config && (is_middle_spot || is_exit_spot)) {
                 const spot_className = marker_config.content_config.spot_className;
                 marker_config.content_config.spot_className = `${spot_className} ${spot_className}--accumulator${
-                    has_accumulator_bold_marker ? '-bold' : '-small'
+                    is_exit_spot ? '-bold' : '-small'
                 }`;
             }
         }

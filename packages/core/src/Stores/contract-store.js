@@ -1,4 +1,4 @@
-import { action, extendObservable, observable, toJS, makeObservable } from 'mobx';
+import { action, extendObservable, observable, toJS, makeObservable, runInAction } from 'mobx';
 import {
     isEnded,
     isEqualObject,
@@ -30,6 +30,8 @@ export default class ContractStore extends BaseStore {
         });
 
         makeObservable(this, {
+            accumulator_previous_spot: observable,
+            cached_barriers_data: observable,
             digits_info: observable,
             sell_info: observable,
             contract_config: observable.ref,
@@ -77,6 +79,10 @@ export default class ContractStore extends BaseStore {
 
     is_static_chart = false;
     end_time = null;
+
+    // Accumulator contract
+    accumulator_previous_spot = null;
+    cached_barriers_data = {};
 
     // Multiplier contract update config
     contract_update_take_profit = '';
@@ -155,18 +161,70 @@ export default class ContractStore extends BaseStore {
     }
 
     updateBarriersArray(contract_info, is_dark_mode) {
+        const {
+            contract_type,
+            current_spot,
+            current_spot_high_barrier,
+            current_spot_low_barrier,
+            barrier,
+            high_barrier,
+            low_barrier,
+            status,
+        } = contract_info || {};
+        const main_barrier = this.barriers_array?.[0];
+        if (isAccumulatorContract(contract_info.contract_type)) {
+            // even though updateBarriersArray is called both in DTrader & C.Details pages,
+            // the below code will delay Accumulator barriers and their labels only in Contract Details.
+            if (
+                (this.cached_barriers_data.current_spot_high_barrier === current_spot_high_barrier ||
+                    this.cached_barriers_data.current_spot_low_barrier === current_spot_low_barrier ||
+                    this.cached_barriers_data.high_barrier === high_barrier ||
+                    this.cached_barriers_data.low_barrier === low_barrier) &&
+                this.cached_barriers_data.status === status
+            ) {
+                return;
+            }
+            setTimeout(
+                () =>
+                    runInAction(() => {
+                        const accu_high_barrier = status === 'open' ? current_spot_high_barrier : high_barrier;
+                        const accu_low_barrier = status === 'open' ? current_spot_low_barrier : low_barrier;
+                        if (!this.barriers_array.length) {
+                            const accu_contract_info = {
+                                ...contract_info,
+                                high_barrier: accu_high_barrier,
+                                low_barrier: accu_low_barrier,
+                            };
+                            this.barriers_array = this.createBarriersArray(accu_contract_info, is_dark_mode);
+                            return;
+                        }
+                        if (contract_info) {
+                            this.accumulator_previous_spot = null;
+                            if (isBarrierSupported(contract_type) && accu_high_barrier && accu_low_barrier) {
+                                main_barrier?.updateBarriers(accu_high_barrier, accu_low_barrier);
+                            }
+                            this.accumulator_previous_spot = current_spot;
+                        }
+                    }),
+                360
+            );
+            this.cached_barriers_data = {
+                current_spot_high_barrier,
+                current_spot_low_barrier,
+                high_barrier,
+                low_barrier,
+                status,
+            };
+            return;
+        }
         if (!this.barriers_array.length) {
             this.barriers_array = this.createBarriersArray(contract_info, is_dark_mode);
             return;
         }
-
-        const main_barrier = this.barriers_array[0];
         if (contract_info) {
-            const { contract_type, barrier, high_barrier, low_barrier } = contract_info;
-
             if (isBarrierSupported(contract_type) && (barrier || high_barrier)) {
-                main_barrier.updateBarriers(barrier || high_barrier, low_barrier);
-                main_barrier.updateBarrierColor(is_dark_mode);
+                main_barrier?.updateBarriers(barrier || high_barrier, low_barrier);
+                main_barrier?.updateBarrierColor(is_dark_mode);
             }
             if (
                 contract_info.contract_id &&
@@ -262,8 +320,11 @@ function calculate_marker(contract_info) {
         tick_count,
         barrier_count,
         barrier,
+        current_spot_high_barrier,
+        current_spot_low_barrier,
         high_barrier,
         low_barrier,
+        status,
     } = contract_info;
     const is_accumulator_contract = isAccumulatorContract(contract_type);
     const is_digit_contract = isDigitContract(contract_type);
@@ -280,8 +341,10 @@ function calculate_marker(contract_info) {
         price_array = [];
     } else if (+barrier_count === 1 && barrier) {
         price_array = [+barrier];
-    } else if (+barrier_count === 2 && high_barrier && low_barrier) {
+    } else if (+barrier_count === 2 && high_barrier && low_barrier && (!is_accumulator_contract || status !== 'open')) {
         price_array = [+high_barrier, +low_barrier];
+    } else if (is_accumulator_contract && current_spot_high_barrier && status === 'open') {
+        price_array = [+current_spot_high_barrier, +current_spot_low_barrier];
     }
 
     if (entry_tick) {

@@ -72,8 +72,6 @@ export default class TradersHubStore extends BaseStore {
             no_MF_account: computed,
             multipliers_account_status: computed,
             CFDs_restricted_countries: computed,
-            openRealWalletsUpgrade: action.bound,
-            closeRealWalletsUpgrade: action.bound,
             financial_restricted_countries: computed,
             openDemoCFDAccount: action.bound,
             openModal: action.bound,

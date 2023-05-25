@@ -1,9 +1,9 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Icon, Text, WalletCard } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import WalletAccount from '../wallet-account/wallet-account';
 import './wallet-link-wrapper.scss';
-import classNames from 'classnames';
 
 export type TWalletLinkWrapper = {
     wallet_details: React.ComponentProps<typeof WalletCard>['wallet'];

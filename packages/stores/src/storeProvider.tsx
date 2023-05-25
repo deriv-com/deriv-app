@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import StoreContext from './storeContext';
 import { ExchangeRatesStore, WebsiteStatusStore } from './stores';
 import { ExchangeRatesProvider, WebsiteStatusProvider } from './providers';
 import type { TCoreStores, TStores } from '../types';
 
 const StoreProvider = ({ children, store }: React.PropsWithChildren<{ store: TCoreStores }>) => {
-    const memoizedValue: TStores = React.useMemo(() => {
+    const memoizedValue: TStores = useMemo(() => {
         // If the store is mocked for testing purposes, then return the mocked value.
         if ('is_mock' in store && store.is_mock) return store as unknown as TStores;
 
@@ -17,7 +17,7 @@ const StoreProvider = ({ children, store }: React.PropsWithChildren<{ store: TCo
         };
     }, [store]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         return () => {
             Object.values(memoizedValue).forEach(value => {
                 if (typeof value === 'object' && 'unmount' in value) value.unmount();

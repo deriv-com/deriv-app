@@ -9,6 +9,13 @@ describe('proof-of-ownership.jsx', () => {
     beforeAll(() => {
         ownership_temp = test_data;
     });
+    const ProofOfOwnershipScreen = () => {
+        return (
+            <StoreProvider store={store}>
+                <ProofOfOwnership />
+            </StoreProvider>
+        );
+    };
     let store = mockStore();
     it('should render no poo required status page', () => {
         store = mockStore({
@@ -20,11 +27,7 @@ describe('proof-of-ownership.jsx', () => {
                 },
             },
         });
-        render(
-            <StoreProvider store={store}>
-                <ProofOfOwnership />
-            </StoreProvider>
-        );
+        render(<ProofOfOwnershipScreen />);
 
         const element = screen.getByText("Your proof of ownership isn't required.", { exact: true });
         expect(element).toBeInTheDocument();
@@ -39,11 +42,7 @@ describe('proof-of-ownership.jsx', () => {
                 },
             },
         });
-        render(
-            <StoreProvider store={store}>
-                <ProofOfOwnership />
-            </StoreProvider>
-        );
+        render(<ProofOfOwnershipScreen />);
 
         const element = screen.getByText('Proof of ownership verification passed.', { exact: true });
         expect(element).toBeInTheDocument();
@@ -58,11 +57,7 @@ describe('proof-of-ownership.jsx', () => {
                 },
             },
         });
-        render(
-            <StoreProvider store={store}>
-                <ProofOfOwnership />
-            </StoreProvider>
-        );
+        render(<ProofOfOwnershipScreen />);
 
         const element = screen.getByText('We’ve received your proof of ownership.', { exact: true });
         expect(element).toBeInTheDocument();
@@ -77,11 +72,7 @@ describe('proof-of-ownership.jsx', () => {
                 },
             },
         });
-        render(
-            <StoreProvider store={store}>
-                <ProofOfOwnership />
-            </StoreProvider>
-        );
+        render(<ProofOfOwnershipScreen />);
 
         const element = screen.getByTestId('dt_try-again-button', { exact: true });
         expect(element).toBeInTheDocument();
@@ -97,11 +88,7 @@ describe('proof-of-ownership.jsx', () => {
                 },
             },
         });
-        render(
-            <StoreProvider store={store}>
-                <ProofOfOwnership />
-            </StoreProvider>
-        );
+        render(<ProofOfOwnershipScreen />);
         expect(screen.getByTestId('dt_poo_form', { exact: true })).toBeInTheDocument();
     });
 });

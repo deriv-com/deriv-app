@@ -10,7 +10,7 @@ import ContractTypeGlossary from './contract-type-glossary.jsx';
 import classNames from 'classnames';
 
 const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }) => {
-    const [carouselIndex, setCarouselIndex] = React.useState(initial_index);
+    const [carousel_index, setCarouselIndex] = React.useState(initial_index);
     const [selected_tab, setSelectedTab] = React.useState('description');
     const contract_types = getContractTypes(list, item).filter(i => i.value !== 'rise_fall_equal');
     const onClickGlossary = () => setSelectedTab('glossary');
@@ -19,7 +19,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
             <div
                 key={idx}
                 className={classNames('contract-type-info__card', {
-                    'contract-type-info__card--has-toggle-buttons': carouselIndex !== 8 && carouselIndex !== 1,
+                    'contract-type-info__card--has-toggle-buttons': carousel_index !== 8 && carousel_index !== 1,
                 })}
             >
                 {selected_tab === 'description' ? (
@@ -27,7 +27,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                         <div
                             className={classNames('contract-type-info__gif', {
                                 'contract-type-info__gif--has-toggle-buttons':
-                                    carouselIndex !== 8 && carouselIndex !== 1,
+                                    carousel_index !== 8 && carousel_index !== 1,
                             })}
                         >
                             <TradeCategoriesGIF category={type.value} />
@@ -69,7 +69,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
 
     return (
         <React.Fragment>
-            {(carouselIndex === 8 || carouselIndex === 1) && (
+            {(carousel_index === 8 || carousel_index === 1) && (
                 <div className='contract-type-info__button-wrapper'>
                     <ButtonToggle
                         buttons_arr={[
@@ -90,7 +90,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                 className='contract-type-info'
                 bullet_color='var(--text-disabled)'
                 active_bullet_color='var(--brand-red-coral)'
-                initial_index={carouselIndex}
+                initial_index={carousel_index}
                 onItemSelect={active_index => {
                     setCarouselIndex(active_index);
                     handleNavigationClick(contract_types[active_index]);

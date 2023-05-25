@@ -3,8 +3,6 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-// Templates are from Binary 1.0, it should be checked if they need change or not and add all of trade types
-// TODO: refactor the rest of descriptions to use them as components like AccumulatorTradeDescription
 const ContractTypeGlossary = ({ category }) => {
     let ContractTypeGlossaryTemplate;
     if (category) {
@@ -39,7 +37,7 @@ const ContractTypeGlossary = ({ category }) => {
                         </Text>
                         <Text as='p'>
                             {localize(
-                                'Occurs when the index spot price cchanges by the time the order is received by our servers.'
+                                'Occurs when the index spot price changes by the time the order is received by our servers.'
                             )}
                         </Text>
                     </React.Fragment>
@@ -114,7 +112,7 @@ const ContractTypeGlossary = ({ category }) => {
                         </Text>
                         <Text as='p'>
                             {localize(
-                                'This is the day chose as "End Time" by the client. However, if the client selects a duration above 24 hours, the starting day is baed on the date in GMT.'
+                                'This is the day chose as "End Time" by the client. However, if the client selects a duration above 24 hours, the starting day is based on the date in GMT.'
                             )}
                         </Text>
                     </React.Fragment>

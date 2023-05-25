@@ -20,6 +20,7 @@ const JurisdictionModalContentWrapper = ({
     jurisdiction_selected_shortcode,
     openPasswordModal,
     real_financial_accounts_existing_data,
+    real_swapfree_accounts_existing_data,
     real_synthetic_accounts_existing_data,
     residence,
     residence_list,
@@ -86,17 +87,30 @@ const JurisdictionModalContentWrapper = ({
     const has_idv_attempts = (account_status?.authentication?.identity?.services?.idv?.submissions_left ?? 0) > 0;
     const is_onfido_design = !is_idv_country || (is_idv_country && !has_idv_attempts);
 
+    const swapfree_available_accounts = trading_platform_available_accounts.filter(
+        available_account =>
+            available_account.market_type === 'all' &&
+            (show_eu_related_content
+                ? available_account.shortcode === 'maltainvest'
+                : available_account.shortcode !== 'maltainvest')
+    );
+
     const isNextButtonDisabled = () => {
         if (jurisdiction_selected_shortcode) {
-            const is_account_created =
-                account_type.type === 'synthetic'
-                    ? real_synthetic_accounts_existing_data?.some(
-                          account => account.landing_company_short === jurisdiction_selected_shortcode
-                      )
-                    : real_financial_accounts_existing_data?.some(
-                          account => account.landing_company_short === jurisdiction_selected_shortcode
-                      );
-
+            let is_account_created;
+            if (account_type.type === 'synthetic') {
+                is_account_created = real_synthetic_accounts_existing_data?.some(
+                    account => account.landing_company_short === jurisdiction_selected_shortcode
+                );
+            } else if (account_type.type === 'all') {
+                is_account_created = real_swapfree_accounts_existing_data?.some(
+                    account => account.landing_company_short === jurisdiction_selected_shortcode
+                );
+            } else {
+                is_account_created = real_financial_accounts_existing_data?.some(
+                    account => account.landing_company_short === jurisdiction_selected_shortcode
+                );
+            }
             if (!is_account_created) {
                 if (
                     is_svg_selected ||
@@ -170,7 +184,9 @@ const JurisdictionModalContentWrapper = ({
                 real_financial_accounts_existing_data={real_financial_accounts_existing_data}
                 real_synthetic_accounts_existing_data={real_synthetic_accounts_existing_data}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                real_swapfree_accounts_existing_data={real_swapfree_accounts_existing_data}
                 setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
+                swapfree_available_accounts={swapfree_available_accounts}
                 synthetic_available_accounts={synthetic_available_accounts}
             />
             <div className={`cfd-jurisdiction-card--${account_type.type}__footer-wrapper`}>
@@ -220,6 +236,7 @@ export default connect(({ modules: { cfd }, client, traders_hub }: RootStore) =>
     is_virtual: client.is_virtual,
     jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
     real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
+    real_swapfree_accounts_existing_data: cfd.real_swapfree_accounts_existing_data,
     real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
     residence: client.residence,
     residence_list: client.residence_list,

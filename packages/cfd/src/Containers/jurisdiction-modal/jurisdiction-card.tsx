@@ -13,12 +13,17 @@ const JurisdictionCard = ({
     is_onfido_design = false,
     jurisdiction_selected_shortcode,
     setJurisdictionSelectedShortcode,
+    swapfree_available_accounts,
     type_of_card,
 }: TJurisdictionCardProps) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
     const is_synthetic = account_type === 'synthetic';
+    const is_swapfree = account_type === 'all';
     const card_values = getJurisdictionContents()[type_of_card];
-    const card_data = is_synthetic ? card_values.synthetic_contents : card_values.financial_contents;
+    const non_synthetic_card_data = is_swapfree
+        ? card_values?.swapfree_contents ?? []
+        : card_values?.financial_contents;
+    const card_data = is_synthetic ? card_values?.synthetic_contents : non_synthetic_card_data;
     const [is_card_flipped, setIsCardFlipped] = React.useState(false);
     const is_card_selected = jurisdiction_selected_shortcode === type_of_card;
     let verification_docs = is_synthetic

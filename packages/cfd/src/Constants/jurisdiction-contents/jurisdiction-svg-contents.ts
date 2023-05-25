@@ -81,6 +81,22 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
             description: localize('Deriv (SVG) LLC (company no. 273 LLC 2020)'),
         },
     ],
+    swapfree_contents: [
+        {
+            key: 'title',
+            title: localize('Selecting this will onboard you through Deriv (SVG) LLC (company no. 273 LLC 2020)'),
+        },
+        {
+            key: 'assets',
+            title: localize(
+                '40+ assets: forex, synthetics, stocks, stock indices, cryptocurrencies, and ETFs swap-free.'
+            ),
+        },
+        {
+            key: 'leverage',
+            title: localize('Leverage up to 1:1000'),
+        },
+    ],
     synthetic_verification_docs: ['not_applicable'],
     financial_verification_docs: ['not_applicable'],
 });

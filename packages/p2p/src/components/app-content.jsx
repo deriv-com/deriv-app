@@ -13,7 +13,7 @@ import MyAds from 'Pages/my-ads/my-ads.jsx';
 import MyProfile from 'Pages/my-profile';
 import NicknameForm from './nickname-form';
 import Orders from 'Pages/orders/orders.jsx';
-import TemporarilyBarredHint from './temporarily-barred-hint';
+import TemporarilyBarredHint from 'Components/temporarily-barred-hint';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useP2PNotificationCount } from '@deriv/hooks';
 

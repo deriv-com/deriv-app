@@ -6,9 +6,8 @@ import { isDesktop } from '@deriv/shared';
 import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
 import { mockStore, TStores } from '@deriv/stores';
-import { useCashierLocked, useWithdrawLocked } from '@deriv/hooks';
+import { useCashierLocked } from '@deriv/hooks';
 
-jest.mock('@deriv/hooks');
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 jest.mock('Components/cashier-container/virtual', () => jest.fn(() => 'Virtual'));
 jest.mock('../withdrawal-locked', () => jest.fn(() => 'WithdrawalLocked'));
@@ -31,10 +30,8 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useCashierLocked: jest.fn(() => false),
-    useWithdrawLocked: jest.fn(() => false),
 }));
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
-const mockUseWithdrawLocked = useWithdrawLocked as jest.MockedFunction<typeof useWithdrawLocked>;
 
 const cashier_mock = {
     general_store: {
@@ -69,7 +66,6 @@ describe('<Withdrawal />', () => {
     beforeEach(() => {
         setSideNotes = jest.fn();
         mockUseCashierLocked.mockReturnValue(false);
-        mockUseWithdrawLocked.mockReturnValue(false);
     });
 
     const renderWithdrawal = (mock_root_store: TStores, is_rerender = false) => {
@@ -84,7 +80,6 @@ describe('<Withdrawal />', () => {
     };
 
     it('should render <CashierLocked /> component', () => {
-        mockUseWithdrawLocked.mockReturnValue(true);
         const mock_root_store = mockStore({
             client: {
                 account_status: { cashier_validation: ['system_maintenance'] },
@@ -157,7 +152,6 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <WithdrawalLocked /> component', () => {
-        mockUseWithdrawLocked.mockReturnValue(true);
         const mock_root_store = mockStore({
             client: {
                 balance: '1000',

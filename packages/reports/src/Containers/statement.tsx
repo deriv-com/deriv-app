@@ -192,7 +192,7 @@ const Statement = ({
     const columns_map = columns.reduce((map, item) => {
         map[item.col_index as TColIndex] = item;
         return map;
-    }, {} as Record<TColIndex, (typeof columns)[number]>);
+    }, {} as Record<TColIndex, typeof columns[number]>);
 
     // TODO: Export type instead of any from 'DataList' component when it migrates to tsx
     const mobileRowRenderer = ({ row, passthrough }: any) => (

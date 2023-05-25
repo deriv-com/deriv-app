@@ -27,7 +27,7 @@ const sizes = {
     },
 } as const;
 
-const AppIcon = ({ currency, app_icon, wallet_icon, size = 'medium', type }: TAppIconProps) => {
+const AppLinkedWithWalletIcon = ({ currency, app_icon, wallet_icon, size = 'medium', type }: TAppIconProps) => {
     if (!app_icon || !wallet_icon || !currency) {
         return null;
     }
@@ -47,4 +47,4 @@ const AppIcon = ({ currency, app_icon, wallet_icon, size = 'medium', type }: TAp
     );
 };
 
-export default AppIcon;
+export default AppLinkedWithWalletIcon;

@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { Text } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores/index'; //remove index when store migration to ts is done
+import { Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
+import { useStores } from 'Stores/index'; //remove index when store migration to ts is done
 
 const Dp2pBlockedDescription = () => {
     const { general_store } = useStores();

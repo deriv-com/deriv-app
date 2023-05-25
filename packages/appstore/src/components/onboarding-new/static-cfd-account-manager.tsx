@@ -193,7 +193,7 @@ const StaticCFDAccountManager = ({
                                 'static-cfd-account-manager__buttons-topup--animated': is_onboarding_animated.trade,
                             })}
                         >
-                            <Localize i18n_default_text='Trade' />
+                            <Localize i18n_default_text='Open' />
                         </Button>
                     </React.Fragment>
                 ) : (

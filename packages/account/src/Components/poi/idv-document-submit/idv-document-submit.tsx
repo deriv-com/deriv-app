@@ -1,8 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Button } from '@deriv/components';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { localize } from '@deriv/translations';
+import { GetSettings, ResidenceList, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
+import { Button } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
 import {
     WS,
     IDV_NOT_APPLICABLE_OPTION,
@@ -11,6 +12,12 @@ import {
     isDesktop,
     removeEmptyPropertiesFromObject,
 } from '@deriv/shared';
+import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
+import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
+import FormFooter from 'Components/form-footer';
+import IDVForm from 'Components/forms/idv-form';
+import PersonalDetailsForm from 'Components/forms/personal-details-form';
+import FormSubHeader from 'Components/form-sub-header';
 import {
     validate,
     makeSettingsRequest,
@@ -20,12 +27,6 @@ import {
     isAdditionalDocumentValid,
     isDocumentNumberValid,
 } from 'Helpers/utils';
-import FormFooter from 'Components/form-footer';
-import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
-import IDVForm from 'Components/forms/idv-form';
-import PersonalDetailsForm from 'Components/forms/personal-details-form';
-import FormSubHeader from 'Components/form-sub-header';
-import { GetSettings, ResidenceList, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
 import { TIDVForm, TPersonalDetailsForm } from 'Types';
 
 type TIdvDocumentSubmit = {
@@ -46,6 +47,7 @@ const IdvDocumentSubmit = ({
     getChangeableFields,
 }: TIdvDocumentSubmit) => {
     const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
+    const side_note_image = <PoiNameDobExample />;
 
     const form_initial_values = filterObjProperties(account_settings, visible_settings) as {
         [Property in keyof TPersonalDetailsForm]: string;
@@ -161,10 +163,17 @@ const IdvDocumentSubmit = ({
                             })}
                         >
                             <PersonalDetailsForm
-                                is_qualified_for_idv={true}
+                                is_qualified_for_idv
                                 is_appstore
+                                side_note={side_note_image}
                                 should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
                                 editable_fields={changeable_fields}
+                                inline_note_text={
+                                    <Localize
+                                        i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                        components={[<strong key={0} />]}
+                                    />
+                                }
                             />
                         </div>
                     </section>

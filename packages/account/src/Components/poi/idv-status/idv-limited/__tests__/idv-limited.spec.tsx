@@ -1,14 +1,14 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import IdvNoSubmissions from '../idv-limited';
+import IdvLimited from '../idv-limited';
 
 jest.mock('Assets/ic-idv-document-rejected.svg', () => jest.fn(() => 'IdvDocumentRejected'));
 
-describe('<IdvNoSubmissions/>', () => {
+describe('<IdvLimited/>', () => {
     const mockHandleRequireSubmission = jest.fn();
 
-    it('should render IdvNoSubmissions component and trigger click', () => {
-        render(<IdvNoSubmissions handleRequireSubmission={mockHandleRequireSubmission} />);
+    it('should render IdvLimited component and trigger click', () => {
+        render(<IdvLimited handleRequireSubmission={mockHandleRequireSubmission} />);
 
         expect(screen.getByText('IdvDocumentRejected')).toBeInTheDocument();
         expect(screen.getByText(/ID verification failed/i)).toBeInTheDocument();

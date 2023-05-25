@@ -5,6 +5,7 @@ export const identity_status_codes = {
     verified: 'verified',
     expired: 'expired',
     suspected: 'suspected',
+    updated: 'updated',
 } as const;
 
 export const submission_status_code = {

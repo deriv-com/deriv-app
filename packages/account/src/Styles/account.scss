@@ -2459,6 +2459,38 @@ $MIN_HEIGHT_FLOATING: calc(
     .btm-spacer {
         margin-bottom: 1.6rem;
     }
+
+    &__mismatch-container {
+        max-width: 67rem;
+
+        .account-form__section-side-note {
+            padding: 1.6rem 0;
+        }
+
+        .account__scrollbars_container {
+            padding-inline: 0;
+        }
+
+        &__failed-warning {
+        }
+
+        .dc-hint-box {
+            border-radius: 0.8rem;
+            margin: 1.6rem auto 0;
+            width: fit-content;
+        }
+        .account-form__poi-confirm-example {
+            border: 1px solid var(--general-active);
+            border-radius: 0.8rem;
+            margin: 3.2rem 0;
+            padding: 1.6rem 1.6rem 0;
+            min-height: 26rem;
+        }
+
+        .proof-of-identity__submit-button {
+            margin-left: auto;
+        }
+    }
 }
 
 /** @define closing-account; weak */

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Field, useFormikContext } from 'formik';
 import classNames from 'classnames';
 import {
@@ -15,15 +16,11 @@ import {
 import { getLegalEntityName, isDesktop, isMobile, routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
-import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
-import PoiNameExample from 'Assets/ic-poi-name-example.svg';
-import PoiDobExample from 'Assets/ic-poi-dob-example.svg';
 import InlineNoteWithIcon from 'Components/inline-note-with-icon';
 import FormBodySection from 'Components/form-body-section';
 import { DateOfBirthField, FormInputField } from 'Components/forms/form-fields';
-import { Link } from 'react-router-dom';
-import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 import { isFieldImmutable } from 'Helpers/utils';
+import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 
 const PersonalDetailsForm = props => {
     const {
@@ -32,6 +29,7 @@ const PersonalDetailsForm = props => {
         is_svg,
         is_qualified_for_idv,
         should_hide_helper_image,
+        inline_note_text,
         is_appstore,
         editable_fields = [],
         has_real_account,
@@ -40,11 +38,11 @@ const PersonalDetailsForm = props => {
         account_opening_reason_list,
         closeRealAccountSignup,
         salutation_list,
-        is_rendered_for_onfido,
+        is_qualified_for_onfido,
         should_close_tooltip,
         setShouldCloseTooltip,
         warning_items,
-        status,
+        side_note,
     } = props;
     const autocomplete_value = 'none';
 
@@ -60,19 +58,8 @@ const PersonalDetailsForm = props => {
         }
     }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
 
-    const imageLoader = () => {
-        switch (status) {
-            case 'POI_NAME_MISMATCH':
-                return <PoiNameExample />;
-            case 'POI_DOB_MISMATCH':
-                return <PoiDobExample />;
-            default:
-                return <PoiNameDobExample />;
-        }
-    };
-
     const getNameAndDobLabels = () => {
-        const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_qualified_for_idv;
+        const is_asterisk_needed = is_svg || is_mf || is_qualified_for_onfido || is_qualified_for_idv;
         const first_name_label = is_appstore || is_asterisk_needed ? localize('First name*') : localize('First name');
         const last_name_label = is_appstore
             ? localize('Family name*')
@@ -92,7 +79,7 @@ const PersonalDetailsForm = props => {
         return (
             <Localize
                 i18n_default_text={
-                    is_qualified_for_idv || is_rendered_for_onfido
+                    is_qualified_for_idv || is_qualified_for_onfido
                         ? 'Your {{ field_name }} as in your identity document'
                         : 'Please enter your {{ field_name }} as in your official identity documents.'
                 }
@@ -110,21 +97,14 @@ const PersonalDetailsForm = props => {
         }
     }, [is_tax_residence_popover_open, is_tin_popover_open]);
 
-    const name_dob_clarification_message = (
-        <Localize
-            i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
-            components={[<strong key={0} />]}
-        />
-    );
-
     return (
         <div className={classNames({ 'account-form__poi-confirm-example': is_qualified_for_idv })}>
-            {(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image && (
-                <InlineNoteWithIcon message={name_dob_clarification_message} font_size={isMobile() ? 'xxxs' : 'xs'} />
+            {(is_qualified_for_idv || is_qualified_for_onfido) && !should_hide_helper_image && (
+                <InlineNoteWithIcon message={inline_note_text} font_size={isMobile() ? 'xxxs' : 'xs'} />
             )}
             <FormBodySection
-                has_side_note={(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image}
-                side_note={imageLoader()}
+                has_side_note={(is_qualified_for_idv || is_qualified_for_onfido) && !should_hide_helper_image}
+                side_note={side_note}
             >
                 <fieldset className='account-form__fieldset'>
                     {'salutation' in values && (
@@ -150,7 +130,7 @@ const PersonalDetailsForm = props => {
                             </Text>
                         </div>
                     )}
-                    {!is_qualified_for_idv && !is_appstore && !is_rendered_for_onfido && (
+                    {!is_qualified_for_idv && !is_appstore && !is_qualified_for_onfido && (
                         <FormSubHeader title={'salutation' in values ? localize('Title and name') : localize('Name')} />
                     )}
                     {'salutation' in values && (
@@ -202,7 +182,7 @@ const PersonalDetailsForm = props => {
                             data-testid='last_name'
                         />
                     )}
-                    {!is_appstore && !is_qualified_for_idv && !is_rendered_for_onfido && (
+                    {!is_appstore && !is_qualified_for_idv && !is_qualified_for_onfido && (
                         <FormSubHeader title={localize('Other details')} />
                     )}
                     {'date_of_birth' in values && (

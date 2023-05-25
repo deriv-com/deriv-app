@@ -213,6 +213,12 @@ const PersonalDetails = ({
                                                     should_hide_helper_image={shouldHideHelperImage(
                                                         values?.document_type?.id
                                                     )}
+                                                    inline_note_text={
+                                                        <Localize
+                                                            i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                                            components={[<strong key={0} />]}
+                                                        />
+                                                    }
                                                 />
                                             </div>
                                         </React.Fragment>

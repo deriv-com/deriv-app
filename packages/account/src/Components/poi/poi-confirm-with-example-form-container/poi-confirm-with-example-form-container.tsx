@@ -12,6 +12,7 @@ import {
     toMoment,
     WS,
 } from '@deriv/shared';
+import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
 import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
@@ -45,6 +46,8 @@ const PoiConfirmWithExampleFormContainer = ({
         changeable_fields: [],
         api_error: '',
     });
+
+    const side_note_image = <PoiNameDobExample />;
 
     React.useEffect(() => {
         const initializeFormValues = () => {
@@ -134,21 +137,20 @@ const PoiConfirmWithExampleFormContainer = ({
 
     return (
         <Formik initialValues={form_initial_values} enableReinitialize onSubmit={onSubmit} validate={validateFields}>
-            {({
-                values,
-                errors,
-                touched,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                isSubmitting,
-                setFieldValue,
-                setFieldTouched,
-                status,
-            }) => (
+            {({ errors, handleSubmit, isSubmitting, status }) => (
                 <Form className='account-form__poi-confirm-example' onSubmit={handleSubmit}>
                     <FormBody>
-                        <PersonalDetailsForm editable_fields={rest_state.changeable_fields} is_rendered_for_onfido />
+                        <PersonalDetailsForm
+                            editable_fields={rest_state.changeable_fields}
+                            is_qualified_for_onfido
+                            side_note={side_note_image}
+                            inline_note_text={
+                                <Localize
+                                    i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                    components={[<strong key={0} />]}
+                                />
+                            }
+                        />
                         <button
                             type='submit'
                             className={classNames('account-form__poi-confirm-example--button', {

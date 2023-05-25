@@ -15,6 +15,7 @@ import {
     TCFDAccountCardActionProps,
     TCFDAccountCard,
     TTradingPlatformAccounts,
+    TTradingPlatformAvailableAccount,
 } from './props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { FormikValues } from 'formik';
@@ -25,6 +26,7 @@ const account_icons: { [key: string]: TAccountIconValues } = {
         financial: 'IcMt5FinancialPlatform',
         financial_stp: 'IcMt5FinancialStpPlatform',
         cfd: 'IcMt5CfdPlatform',
+        all: 'IcMt5SwapFreePlatform',
     },
     // TODO: Line 30, 31 and 32 should be removed after real released.
     dxtrade: {
@@ -212,8 +214,10 @@ const CFDAccountCardComponent = ({
         !show_eu_related_content &&
         platform === CFD_PLATFORMS.MT5 &&
         (type.category === 'demo'
-            ? isEligibleForMoreDemoMt5Svg(type.type as 'synthetic' | 'financial') && !!existing_data
-            : isEligibleForMoreRealMt5(type.type as 'synthetic' | 'financial') && !!existing_data);
+            ? isEligibleForMoreDemoMt5Svg(type.type as TTradingPlatformAvailableAccount['market_type'] | 'synthetic') &&
+              !!existing_data
+            : isEligibleForMoreRealMt5(type.type as TTradingPlatformAvailableAccount['market_type'] | 'synthetic') &&
+              !!existing_data);
 
     const platform_icon = show_eu_related_content && platform === CFD_PLATFORMS.MT5 ? 'cfd' : type.type;
 

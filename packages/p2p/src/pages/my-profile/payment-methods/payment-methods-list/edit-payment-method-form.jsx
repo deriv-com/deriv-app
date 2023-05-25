@@ -6,7 +6,7 @@ import { Button, DesktopWrapper, Input, Loading, Text } from '@deriv/components'
 import { isDesktop, isMobile } from '@deriv/shared';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import PageReturn from 'Components/page-return/page-return.jsx';
+import PageReturn from 'Components/page-return';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import ModalForm from 'Components/modal-manager/modal-form';
 import './edit-payment-method-form.scss';

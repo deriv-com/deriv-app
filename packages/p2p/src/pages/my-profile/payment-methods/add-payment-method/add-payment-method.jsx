@@ -4,7 +4,7 @@ import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import AddPaymentMethodForm from './add-payment-method-form.jsx';
-import PageReturn from 'Components/page-return/page-return.jsx';
+import PageReturn from 'Components/page-return';
 import PropTypes from 'prop-types';
 import SelectPaymentMethod from './select-payment-method.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';

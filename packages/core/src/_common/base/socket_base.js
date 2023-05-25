@@ -30,7 +30,7 @@ const BinarySocketBase = (() => {
     };
 
     const getSocketUrl = language =>
-        `ws://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${language}&brand=${website_name.toLowerCase()}`;
+        `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${language}&brand=${website_name.toLowerCase()}`;
 
     const isReady = () => hasReadyState(1);
 

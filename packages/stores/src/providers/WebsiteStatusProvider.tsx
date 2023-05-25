@@ -1,37 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSubscription } from '@deriv/api';
+import { observer } from 'mobx-react-lite';
 import useStore from '../useStore';
-import { useWS } from '@deriv/shared';
-import merge from 'lodash.merge';
 
-const WebsiteStatusProvider = ({ children }: React.PropsWithChildren<unknown>) => {
-    const { data, is_subscribed, subscribe, unsubscribe } = useSubscription('website_status');
+const WebsiteStatusProvider = observer(({ children }: React.PropsWithChildren<unknown>) => {
+    const { data, subscribe, unsubscribe } = useSubscription('website_status');
     const {
-        client: { is_logged_in, is_logging_in, loginid },
+        client: { is_authorize, is_logged_in, is_logging_in },
         website_status: { update },
     } = useStore();
-    const WS = useWS();
 
-    React.useEffect(() => {
-        if (data) update(prev => merge(prev, data));
+    useEffect(() => {
+        if (data) update(data);
     }, [update, data]);
 
-    React.useEffect(() => {
-        // handles case where the response from website_status is different when client is logged in/out, we need to re-subscribe in that case
-        // refer to socket-general.js
-        if (is_subscribed) unsubscribe();
-        if (is_logged_in || is_logging_in) {
-            WS.get()
-                .expectResponse('authorize')
-                .then(() => {
-                    subscribe();
-                });
+    // handles case where the response from website_status is different when client is logged in/out, we need to re-subscribe if client is logging in
+    // refer to socket-general.j
+    useEffect(() => {
+        // need to wait for 'authorize' to be responded by the websocket 'is_authorize=true' and when user has logged in 'is_logged_in=true'
+        // only then we re-subscribe to website_status
+        if (!is_authorize) {
+            unsubscribe();
         } else {
             subscribe();
         }
-    }, [is_logged_in, is_logging_in, loginid, subscribe]);
+    }, [is_authorize, subscribe, unsubscribe]);
 
-    return <React.Fragment>{children}</React.Fragment>;
-};
+    // this handles the case when user is logged out
+    useEffect(() => {
+        if (!is_logged_in && !is_logging_in) {
+            subscribe();
+        }
+    }, [is_logging_in, is_logged_in, subscribe, unsubscribe]);
+
+    return <>{children}</>;
+});
 
 export default WebsiteStatusProvider;

@@ -66,7 +66,7 @@ export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
 };
 
 export type TTradingPlatformAvailableAccount = {
-    market_type: 'financial' | 'gaming';
+    market_type: 'financial' | 'gaming' | 'all';
     name: string;
     requirements: {
         after_first_deposit: {

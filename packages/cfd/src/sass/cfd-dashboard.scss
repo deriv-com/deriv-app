@@ -499,7 +499,7 @@
     cursor: pointer;
     transition: all 0.1s ease-in;
 
-    &:not(.selected-card):hover {
+    &:not(.selected-card):not(.cfd-card-disabled):not(.cfd-card-disabled-flat):hover {
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
     }
 
@@ -779,7 +779,6 @@
         align-items: center;
     }
     &-disabled {
-        pointer-events: none;
         &-flat {
             border: solid 1px var(--border-normal);
         }

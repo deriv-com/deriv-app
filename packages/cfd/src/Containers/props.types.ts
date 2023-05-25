@@ -182,6 +182,7 @@ export type TJurisdictionCardProps = {
 
 export type TJurisdictionCardBackProps = {
     card_classname: string;
+    disabled: boolean;
     is_card_selected: boolean;
     toggleCardFlip: React.MouseEventHandler<HTMLSpanElement>;
     verification_docs: TJurisdictionCardItemVerification | undefined;

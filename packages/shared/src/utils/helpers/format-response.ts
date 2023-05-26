@@ -80,5 +80,7 @@ export const formatIDVError = (errors: string[], status_code: string) => {
             status.push(error_keys[error_regex[0].toLowerCase()]);
         }
     });
-    return status.includes(error_keys.name) && status.includes(error_keys.birth) ? 'POI_NAME_DOB_MISMATCH' : status[0];
+    return status.includes(error_keys.name) && status.includes(error_keys.birth)
+        ? 'POI_NAME_DOB_MISMATCH'
+        : status[0] ?? 'POI_FAILED';
 };

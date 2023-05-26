@@ -1,11 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import { WS, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
+import { WS, IDV_NOT_APPLICABLE_OPTION, formatIDVError } from '@deriv/shared';
 import Unsupported from 'Components/poi/status/unsupported';
 import OnfidoUpload from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
 import { IdvDocSubmitOnSignup } from 'Components/poi/poi-form-on-signup/idv-doc-submit-on-signup/idv-doc-submit-on-signup';
 import { AutoHeightWrapper } from '@deriv/components';
+import IdvFailed from 'Components/poi/idv-status/idv-failed';
 import { makeSettingsRequest } from 'Helpers/utils';
 
 const POISubmissionForMT5 = ({
@@ -18,13 +19,16 @@ const POISubmissionForMT5 = ({
     refreshNotifications,
     citizen_data,
     has_idv_error,
+    residence_list,
     jurisdiction_selected_shortcode,
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // submitting
     const [submission_service, setSubmissionService] = React.useState();
+    const [idv_mismatch_status, setIdvMismatchStatus] = React.useState(null);
+
     React.useEffect(() => {
         if (citizen_data) {
-            const { submissions_left: idv_submissions_left } = idv;
+            const { submissions_left: idv_submissions_left, last_rejected, status } = idv;
             const { submissions_left: onfido_submissions_left } = onfido;
             const is_idv_supported = citizen_data.identity.services.idv.is_country_supported;
             const is_onfido_supported = citizen_data.identity.services.onfido.is_country_supported;
@@ -35,6 +39,7 @@ const POISubmissionForMT5 = ({
                 jurisdiction_selected_shortcode !== 'vanuatu'
             ) {
                 setSubmissionService(service_code.idv);
+                setIdvMismatchStatus(formatIDVError(last_rejected, status));
             } else if (onfido_submissions_left && is_onfido_supported) {
                 setSubmissionService(service_code.onfido);
             } else {
@@ -99,7 +104,14 @@ const POISubmissionForMT5 = ({
     if (submission_status === submission_status_code.submitting) {
         switch (submission_service) {
             case service_code.idv:
-                return (
+                return idv_mismatch_status ? (
+                    <IdvFailed
+                        mismatch_status={idv_mismatch_status}
+                        getChangeableFields={getChangeableFields}
+                        account_settings={account_settings}
+                        residence_list={residence_list}
+                    />
+                ) : (
                     <IdvDocSubmitOnSignup
                         citizen_data={citizen_data}
                         onNext={handleIdvSubmit}

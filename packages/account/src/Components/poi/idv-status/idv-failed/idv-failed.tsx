@@ -27,8 +27,6 @@ import {
     validate,
     validateName,
 } from 'Helpers/utils';
-import { connect } from 'Stores/connect';
-import { TCoreStore } from 'Stores/index';
 import { TIDVForm, TPersonalDetailsForm } from 'Types';
 import FormSubHeader from 'Components/form-sub-header';
 import IDVForm from 'Components/forms/idv-form';
@@ -185,7 +183,7 @@ const IdvFailed = ({
             }
             setRestState({
                 form_initial_values: { ...initial_form_values },
-                changeable_fields: [],
+                changeable_fields: [...getChangeableFields()],
                 api_error: '',
             });
             setIsLoading(false);
@@ -200,7 +198,7 @@ const IdvFailed = ({
                 api_error: e.error.message,
             });
         });
-    }, [mismatch_status, account_settings, is_document_upload_required]);
+    }, [mismatch_status, account_settings, is_document_upload_required, getChangeableFields]);
 
     const onSubmit = async (values: TIdvFailedForm, { setStatus, setSubmitting }: FormikHelpers<TIdvFailedForm>) => {
         setStatus({ error_msg: '' });

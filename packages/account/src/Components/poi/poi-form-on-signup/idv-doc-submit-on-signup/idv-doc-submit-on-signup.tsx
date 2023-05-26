@@ -37,6 +37,7 @@ export const IdvDocSubmitOnSignup = ({
     onNext,
     account_settings,
     getChangeableFields,
+    has_idv_error,
 }: TIdvDocSubmitOnSignup) => {
     const side_note_image = <PoiNameDobExample />;
     const validateFields = (values: FormikValues) => {

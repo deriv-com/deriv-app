@@ -11,7 +11,7 @@ const usePaymentAgentList = (currency?: string) => {
     });
 
     return {
-        data: data?.list,
+        data: data?.paymentagent_list?.list,
         ...rest,
     };
 };

@@ -135,7 +135,8 @@
         }
 
         &__body {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
 
             &--header {
                 margin-top: 2rem;
@@ -160,6 +161,7 @@
             }
 
             @include mobile {
+                display: flex;
                 flex-direction: column;
             }
 

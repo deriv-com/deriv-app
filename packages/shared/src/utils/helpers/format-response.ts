@@ -62,8 +62,11 @@ export type TIDVErrorStatus =
     | 'POI_EXPIRED'
     | 'POI_FAILED';
 
-export const formatIDVError = (errors: string[]) => {
-    const error_keys = { name: 'POI_NAME_MISMATCH', birth: 'POI_DOB_MISMATCH' };
+export const formatIDVError = (errors: string[], status_code: string) => {
+    const error_keys: Record<string, TIDVErrorStatus> = { name: 'POI_NAME_MISMATCH', birth: 'POI_DOB_MISMATCH' };
+    if (status_code === 'expired') {
+        return 'POI_EXPIRED';
+    }
     const status: TIDVErrorStatus[] = [];
     errors.forEach(error => {
         const error_regex = error.match(/(name|birth)/i);
@@ -71,5 +74,5 @@ export const formatIDVError = (errors: string[]) => {
             status.push(error_keys[error_regex[0].toLowerCase()]);
         }
     });
-    return status.length === 2 ? 'POI_NAME_DOB_MISMATCH' : status[0];
+    return status.includes(error_keys.name) && status.includes(error_keys.birth) ? 'POI_NAME_DOB_MISMATCH' : status[0];
 };

@@ -62,7 +62,7 @@ const IdvFailed = ({
     residence_list,
     account_settings,
     // handleSubmit,
-    mismatch_status = 'POI_NAME_DOB_MISMATCH',
+    mismatch_status = 'POI_FAILED',
 }: TIdvFailed) => {
     const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig>({
         required_fields: [],

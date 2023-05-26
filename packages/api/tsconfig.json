@@ -1,10 +1,4 @@
 {
     "extends": "../../tsconfig.json",
-    "compilerOptions": {
-        "paths": {
-            "@deriv/*": ["../*/src"]
-        },
-        "baseUrl": "./"
-    },
-    "include": ["src", "types.ts", "../../utils.d.ts"]
+    "include": ["src", "types.ts"]
 }

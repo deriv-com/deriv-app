@@ -23,25 +23,25 @@ const TradeButton = ({
             if (new_tab) {
                 return (
                     <a href={link_to} target='_blank' rel='noopener noreferrer'>
-                        <Button primary>{localize('Trade')}</Button>
+                        <Button primary>{localize('Open')}</Button>
                     </a>
                 );
             }
             return (
                 <a href={link_to}>
-                    <Button primary>{localize('Trade')}</Button>
+                    <Button primary>{localize('Open')}</Button>
                 </a>
             );
         }
         return (
             <Link to={link_to}>
-                <Button primary>{localize('Trade')}</Button>
+                <Button primary>{localize('Open')}</Button>
             </Link>
         );
     } else if (onAction) {
         return (
             <Button primary className='trade-button' onClick={() => onAction()} is_disabled={is_buttons_disabled}>
-                {localize('Trade')}
+                {localize('Open')}
             </Button>
         );
     }
@@ -57,7 +57,7 @@ const TradeButton = ({
             rel='noopener noreferrer'
         >
             <Button primary className='trade-button'>
-                {localize('Trade')}
+                {localize('Open')}
             </Button>
         </a>
     );

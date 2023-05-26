@@ -177,6 +177,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_logged_in,
         is_logging_in,
         is_virtual,
+        loginid,
         logout: logoutClient,
         should_allow_authentication,
         should_allow_poinc_authentication,
@@ -194,7 +195,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const { data: is_p2p_enabled } = useIsP2PEnabled();
 
-    const liveChat = useLiveChat();
+    const liveChat = useLiveChat(false, loginid);
     const [is_open, setIsOpen] = React.useState(false);
     const [transitionExit, setTransitionExit] = React.useState(false);
     const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);

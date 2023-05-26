@@ -176,7 +176,6 @@ export type TJurisdictionCardProps = {
     disabled: boolean;
     is_onfido_design: boolean;
     jurisdiction_selected_shortcode: string;
-    swapfree_available_accounts: TTradingPlatformAvailableAccount[];
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     type_of_card: TJurisdictionCardType;
 };

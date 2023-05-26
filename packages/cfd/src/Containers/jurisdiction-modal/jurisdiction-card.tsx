@@ -13,7 +13,6 @@ const JurisdictionCard = ({
     is_onfido_design = false,
     jurisdiction_selected_shortcode,
     setJurisdictionSelectedShortcode,
-    swapfree_available_accounts,
     type_of_card,
 }: TJurisdictionCardProps) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
@@ -29,6 +28,9 @@ const JurisdictionCard = ({
     let verification_docs = is_synthetic
         ? card_values?.synthetic_verification_docs
         : card_values?.financial_verification_docs;
+    if ([Jurisdiction.BVI, Jurisdiction.VANUATU, Jurisdiction.LABUAN].includes(type_of_card) && is_onfido_design) {
+        verification_docs = ['selfie', 'identity_document', 'name_and_address'];
+    }
 
     const cardSelection = (cardType: string) => {
         setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);
@@ -38,10 +40,6 @@ const JurisdictionCard = ({
         event.stopPropagation();
         setIsCardFlipped(!is_card_flipped);
     };
-
-    if ([Jurisdiction.BVI, Jurisdiction.VANUATU, Jurisdiction.LABUAN].includes(type_of_card) && is_onfido_design) {
-        verification_docs = ['selfie', 'identity_document', 'name_and_address'];
-    }
 
     return (
         <div className='cfd-card-perspective'>

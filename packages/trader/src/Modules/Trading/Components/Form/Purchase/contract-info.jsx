@@ -6,17 +6,25 @@ import { Localize, localize } from '@deriv/translations';
 import { getCurrencyDisplayCode, getLocalizedBasis, isMobile, getGrowthRatePercentage } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
-const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased, is_vanilla }) => (
+export const ValueMovement = ({
+    has_error_or_not_loaded,
+    proposal_info,
+    currency,
+    has_increased,
+    is_vanilla,
+    value,
+    show_currency = true,
+}) => (
     <div className='strike--value-container'>
         <div className={classNames('trade-container__price-info-value', { 'strike--info': is_vanilla })}>
             {!has_error_or_not_loaded && (
                 <Money
-                    amount={proposal_info.obj_contract_basis.value}
+                    amount={proposal_info?.obj_contract_basis?.value || value}
                     className={classNames('trade-container__price-info-currency', {
                         'strike--info__value': is_vanilla,
                     })}
                     currency={currency}
-                    show_currency
+                    show_currency={show_currency}
                 />
             )}
         </div>
@@ -33,6 +41,7 @@ const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_i
 const ContractInfo = ({
     basis,
     currency,
+    growth_rate,
     has_increased,
     is_loading,
     is_accumulator,
@@ -113,7 +122,7 @@ const ContractInfo = ({
                                         {!is_accumulator ? (
                                             <Money amount={stake} currency={currency} show_currency />
                                         ) : (
-                                            !is_loading && `${getGrowthRatePercentage(proposal_info?.growth_rate)}%`
+                                            !is_loading && `${getGrowthRatePercentage(growth_rate)}%`
                                         )}
                                     </Text>
                                 </div>
@@ -227,6 +236,7 @@ const ContractInfo = ({
 ContractInfo.propTypes = {
     basis: PropTypes.string,
     currency: PropTypes.string,
+    growth_rate: PropTypes.number,
     has_increased: PropTypes.bool,
     is_accumulator: PropTypes.bool,
     is_multiplier: PropTypes.bool,

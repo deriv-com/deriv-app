@@ -91,7 +91,10 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
     const { toggleCompareAccountsModal } = cfd;
     const { is_landing_company_loaded } = client;
     const { is_mobile } = ui;
-    const accounts_sub_text = localize('Compare accounts');
+    const accounts_sub_text =
+        wallet_account.landing_company_shortcode === 'svg'
+            ? localize('Compare accounts')
+            : localize('Account information');
 
     const getMT5AccountAuthStatus = (current_acc_status: string) => {
         if (current_acc_status === 'proof_failed') {

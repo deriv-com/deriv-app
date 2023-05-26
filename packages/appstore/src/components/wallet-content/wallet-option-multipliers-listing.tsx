@@ -18,6 +18,11 @@ const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps)
     const { is_landing_company_loaded, has_maltainvest_account, real_account_creation_unlock_date } = client;
     const { available_platforms, is_eu_user, is_real, no_MF_account, no_CR_account, is_demo } = traders_hub;
 
+    const filtered_available_platforms =
+        wallet_account.landing_company_shortcode === 'svg'
+            ? available_platforms.filter(pl => pl.availability === 'All' || pl.availability === 'Non-EU')
+            : available_platforms.filter(pl => pl.availability === 'All' || pl.availability === 'EU');
+
     const OptionsTitle = () => {
         if (wallet_account.landing_company_shortcode === 'svg' && !is_mobile) {
             return (
@@ -88,7 +93,7 @@ const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps)
             )}
 
             {is_landing_company_loaded ? (
-                available_platforms.map((available_platform, index) => (
+                filtered_available_platforms.map((available_platform, index) => (
                     <TradingAppCard
                         key={`trading_app_card_${available_platform.name}`}
                         {...available_platform}

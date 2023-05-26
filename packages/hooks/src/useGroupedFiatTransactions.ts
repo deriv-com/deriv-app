@@ -2,13 +2,13 @@ import _ from 'lodash';
 import moment from 'moment';
 
 const useGroupedFiatTransactions = () => {
-    // TODO: don't hardcode
+    // TODO: don't hardcode, replace with ... = useFetch('statement');
     const transactions = [
         {
-            action_type: 'buy',
-            amount: -0.51,
+            action_type: 'initial_fund',
+            amount: 42,
             app_id: 1,
-            balance_after: 45.27,
+            balance_after: 42,
             contract_id: 6842558021,
             longcode: 'Win payout if AUD/JPY is strictly higher than entry spot at 1 minute after contract start time.',
             payout: 1,
@@ -18,10 +18,10 @@ const useGroupedFiatTransactions = () => {
             transaction_time: 1470637406,
         },
         {
-            action_type: 'sell',
-            amount: 0,
+            action_type: 'reset_balance',
+            amount: -42,
             app_id: 2,
-            balance_after: 45.78,
+            balance_after: 0,
             contract_id: 6842548881,
             longcode: 'Win payout if AUD/JPY is strictly lower than entry spot at 1 minute after contract start time.',
             payout: 1,
@@ -81,7 +81,7 @@ const useGroupedFiatTransactions = () => {
     ];
 
     const grouped_transactions = _.groupBy(transactions, transaction =>
-        moment(transaction.transaction_time, 'DD MMM YYYY').startOf('day')
+        moment(transaction.transaction_time).startOf('day').format('DD MMM YYYY')
     );
 
     return grouped_transactions;

@@ -103,7 +103,7 @@ const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps)
                                 : 'none'
                         }
                         is_deriv_platform
-                        has_divider={getHasDivider(index, available_platforms.length, 3)}
+                        has_divider={getHasDivider(index, filtered_available_platforms.length, 3)}
                     />
                 ))
             ) : (

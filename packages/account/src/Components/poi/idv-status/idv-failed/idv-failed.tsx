@@ -184,7 +184,13 @@ const IdvFailed = ({
 
         const error_config = generateIDVError();
         setIdvFailure(error_config);
-        initializeFormValues(error_config?.required_fields ?? []);
+        initializeFormValues(error_config?.required_fields ?? []).catch(e => {
+            setRestState({
+                form_initial_values: {},
+                changeable_fields: [],
+                api_error: e.error.message,
+            });
+        });
     }, [mismatch_status, account_settings, is_document_upload_required]);
 
     const onSubmit = async (values: TIdvFailedForm, { setStatus, setSubmitting }: FormikHelpers<TIdvFailedForm>) => {

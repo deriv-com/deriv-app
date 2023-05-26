@@ -62,12 +62,7 @@ export const getCashierValidations = cashier_arr => {
 };
 
 // Notifications keys will not be added to localStorage and will appear again after user logout/login
-export const excluded_notifications = [
-    'contract_sold',
-    'switched_to_real',
-    'has_changed_two_fa',
-    'failed_wallets_upgrade',
-];
+export const excluded_notifications = ['contract_sold', 'has_changed_two_fa', 'failed_wallets_upgrade'];
 
 export const priority_toast_messages = [
     'svg',

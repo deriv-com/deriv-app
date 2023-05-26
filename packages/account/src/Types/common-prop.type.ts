@@ -109,3 +109,10 @@ export type TPersonalDetailsForm = {
     last_name: string;
     date_of_birth: string;
 };
+
+export type TIDVErrorStatus =
+    | 'POI_NAME_DOB_MISMATCH'
+    | 'POI_DOB_MISMATCH'
+    | 'POI_NAME_MISMATCH'
+    | 'POI_EXPIRED'
+    | 'POI_FAILED';

@@ -8,8 +8,6 @@ import { identity_status_codes } from './proof-of-identity-utils';
 
 const Idv = ({ handleRequireSubmission, idv, is_from_external, needs_poa, redirect_button }) => {
     const { status, submissions_left } = idv;
-    // const { submissions_left } = idv;
-    // console.log('idv', idv);
 
     //TODO: implement statuses from props!!!
 
@@ -17,6 +15,8 @@ const Idv = ({ handleRequireSubmission, idv, is_from_external, needs_poa, redire
         name_dob: 'POI_NAME_DOB_MISMATCH',
         name: 'POI_NAME_MISMATCH',
         dob: 'POI_DOB_MISMATCH',
+        expired: 'POI_EXPIRED',
+        failed: 'POI_FAILED',
     };
     // const status = 'rejected';
 
@@ -32,7 +32,7 @@ const Idv = ({ handleRequireSubmission, idv, is_from_external, needs_poa, redire
         case identity_status_codes.rejected:
         case identity_status_codes.suspected:
             if (Number(submissions_left) < 1) return <IdvLimited handleRequireSubmission={handleRequireSubmission} />;
-            return <IdvFailed mismatch_status={idv_mismatch_statuses.name} />;
+            return <IdvFailed mismatch_status={idv_mismatch_statuses.failed} />;
         case identity_status_codes.verified:
             return (
                 <IdvVerified

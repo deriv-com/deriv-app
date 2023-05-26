@@ -261,3 +261,13 @@
         }
     }
 }
+
+.idv-resubmit {
+    .poi-form-on-signup__fields {
+        .proof-of-identity__fieldset-container {
+            display: flex;
+            flex-direction: column;
+            gap: 3.2rem;
+        }
+    }
+}

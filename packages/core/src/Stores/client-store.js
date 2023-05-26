@@ -988,7 +988,7 @@ export default class ClientStore extends BaseStore {
         }
     };
 
-     getIsMarketTypeMatching = (account, market_type) => {
+    getIsMarketTypeMatching = (account, market_type) => {
         if (market_type === 'synthetic') {
             return account.market_type === market_type || account.market_type === 'gaming';
         } else if (market_type === 'all') {
@@ -2088,8 +2088,8 @@ export default class ClientStore extends BaseStore {
 
         if (response?.logout === 1) {
             this.cleanUp();
-
             this.root_store.rudderstack.reset();
+            this.setIsAuthorize(false);
             this.setLogout(true);
         }
 

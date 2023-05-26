@@ -18,7 +18,6 @@ const ProofOfIdentityContainerForMt5 = ({
     onStateChange,
     refreshNotifications,
     citizen_data,
-    jurisdiction_selected_shortcode,
 }) => {
     const [api_error, setAPIError] = React.useState();
     const [residence_list, setResidenceList] = React.useState();
@@ -84,7 +83,6 @@ const ProofOfIdentityContainerForMt5 = ({
             residence_list={residence_list}
             citizen_data={citizen_data}
             has_idv_error={has_idv_error}
-            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
         />
     );
 };

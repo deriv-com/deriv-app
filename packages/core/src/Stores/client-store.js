@@ -1194,7 +1194,8 @@ export default class ClientStore extends BaseStore {
 
             this.has_cookie_account = true;
         } else {
-            removeCookies('region', 'client_information', 'is_p2p_disabled');
+            Cookies.remove('region', { domain });
+            Cookies.remove('client_information', { domain });
             this.has_cookie_account = false;
         }
     }

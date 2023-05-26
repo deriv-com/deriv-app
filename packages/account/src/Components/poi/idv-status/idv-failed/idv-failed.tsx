@@ -2,7 +2,14 @@ import React from 'react';
 import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Button, HintBox, Loading, Text } from '@deriv/components';
-import { filterObjProperties, isEmptyObject, removeEmptyPropertiesFromObject, toMoment, WS } from '@deriv/shared';
+import {
+    filterObjProperties,
+    isEmptyObject,
+    removeEmptyPropertiesFromObject,
+    toMoment,
+    WS,
+    TIDVErrorStatus,
+} from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import PoiNameExample from 'Assets/ic-poi-name-example.svg';
 import PoiDobExample from 'Assets/ic-poi-dob-example.svg';
@@ -21,9 +28,10 @@ import {
 } from 'Helpers/utils';
 import { connect } from 'Stores/connect';
 import { TCoreStore } from 'Stores/index';
-import { TIDVErrorStatus, TIDVForm, TPersonalDetailsForm } from 'Types';
+import { TIDVForm, TPersonalDetailsForm } from 'Types';
 import FormSubHeader from 'Components/form-sub-header';
 import IDVForm from 'Components/forms/idv-form';
+import classNames from 'classnames';
 
 type TRestState = {
     api_error: string;
@@ -266,7 +274,12 @@ const IdvFailed = ({
             className='proof-of-identity__container'
         >
             {({ handleSubmit, isSubmitting, isValid, dirty }) => (
-                <Form className='proof-of-identity__mismatch-container' onSubmit={handleSubmit}>
+                <Form
+                    className={classNames('proof-of-identity__mismatch-container', {
+                        'upload-layout': is_document_upload_required,
+                    })}
+                    onSubmit={handleSubmit}
+                >
                     <FormBody className='form-body'>
                         <Text size='s' weight='bold' className='proof-of-identity__failed-warning' align='center'>
                             <Localize i18n_default_text='Your identity verification failed because:' />

@@ -54,3 +54,22 @@ export const formatPortfolioPosition = (
         contract_update: portfolio_pos.limit_order,
     };
 };
+
+export type TIDVErrorStatus =
+    | 'POI_NAME_DOB_MISMATCH'
+    | 'POI_DOB_MISMATCH'
+    | 'POI_NAME_MISMATCH'
+    | 'POI_EXPIRED'
+    | 'POI_FAILED';
+
+export const formatIDVError = (errors: string[]) => {
+    const error_keys = { name: 'POI_NAME_MISMATCH', birth: 'POI_DOB_MISMATCH' };
+    const status: TIDVErrorStatus[] = [];
+    errors.forEach(error => {
+        const error_regex = error.match(/(name|birth)/i);
+        if (error_regex) {
+            status.push(error_keys[error_regex[0].toLowerCase()]);
+        }
+    });
+    return status.length === 2 ? 'POI_NAME_DOB_MISMATCH' : status[0];
+};

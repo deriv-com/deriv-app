@@ -6,6 +6,12 @@
     border-radius: $BORDER_RADIUS;
     overflow: hidden;
 
+    &__default-bg {
+        // Default Background
+        background: radial-gradient(100% 4130.74% at 0% 100%, rgba(244, 67, 54, 0.24) 0%, rgba(40, 57, 145, 0.48) 100%)
+            #ffffff;
+    }
+
     &--xsmall {
         width: 2.4rem;
         height: 1.4rem;

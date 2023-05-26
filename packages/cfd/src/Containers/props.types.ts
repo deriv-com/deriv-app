@@ -170,6 +170,7 @@ export type TJurisdictionCardProps = {
     context: RootStore;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];
     financial_available_accounts: TTradingPlatformAvailableAccount[];
+    swapfree_available_accounts: TTradingPlatformAvailableAccount[];
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     account_type: string;
     type_of_card: string;
@@ -188,6 +189,7 @@ export type TVerificationStatusBannerProps = {
     type_of_card: string;
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
+    real_swapfree_accounts_existing_data: TExistingData;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
 };
@@ -229,6 +231,7 @@ export type TJurisdictionModalProps = {
     toggleCFDVerificationModal: () => void;
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
+    real_swapfree_accounts_existing_data: TExistingData;
     updateMT5Status: () => void;
     has_submitted_cfd_personal_details: boolean;
 };
@@ -240,8 +243,10 @@ export type TJurisdictionModalContentProps = {
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];
     financial_available_accounts: TTradingPlatformAvailableAccount[];
+    swapfree_available_accounts: TTradingPlatformAvailableAccount[];
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
+    real_swapfree_accounts_existing_data: TExistingData;
     is_virtual: boolean;
 };
 

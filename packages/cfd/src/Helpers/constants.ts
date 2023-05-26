@@ -158,7 +158,4 @@ export {
     getDerivEzWebTerminalLink,
     getMT5WebTerminalLink,
     getTopUpConfig,
-    // QrDownloadLink,
-    // getDerivEzQr,
-    // getDerivxQr,
 };

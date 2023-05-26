@@ -1,5 +1,4 @@
 import * as React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';

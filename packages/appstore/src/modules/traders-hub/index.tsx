@@ -16,48 +16,14 @@ import './traders-hub.scss';
 import WalletHeader from 'Components/wallet-header';
 import FiatTransactionList from '../../components/fiat-transaction-list';
 
-// TODO remove this before merging the branch, this is for demo-ing only
 const FiatTransactionListDemo = () => {
     return (
         <FiatTransactionList
-            list={[
-                {
-                    amount: 123.45,
-                    balance_after: 523.45,
-                    action_type: 'initial_fund',
-                    account_name: 'Demo account',
-                    currency: 'USD',
-                    wallet: {
-                        currency: 'usd',
-                        icon: 'IcWalletDerivDemoLight',
-                        icon_type: 'fiat',
-                    },
-                },
-                {
-                    amount: -100,
-                    balance_after: 400,
-                    action_type: 'withdrawal',
-                    account_name: 'USD account',
-                    currency: 'USD',
-                    wallet: {
-                        currency: 'usd',
-                        icon: 'IcWalletCurrencyUsd',
-                        icon_type: 'fiat',
-                    },
-                },
-                {
-                    amount: 500,
-                    balance_after: 500,
-                    action_type: 'transfer',
-                    account_name: 'Bitcoin account',
-                    currency: 'USD',
-                    wallet: {
-                        currency: 'BTC',
-                        icon: 'IcWalletBitcoinLight',
-                        icon_type: 'crypto',
-                    },
-                },
-            ]}
+            wallet={{
+                currency: 'usd',
+                icon: 'IcWalletCurrencyUsd',
+                icon_type: 'fiat',
+            }}
         />
     );
 };

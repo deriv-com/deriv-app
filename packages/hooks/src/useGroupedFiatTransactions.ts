@@ -15,7 +15,7 @@ const useGroupedFiatTransactions = () => {
             reference_id: {},
             shortcode: 'CALL_FRXAUDJPY_1_1470637406_1470637466_S0P_0',
             transaction_id: 13693011401,
-            transaction_time: 1470637406,
+            transaction_time: 1685109944,
         },
         {
             action_type: 'reset_balance',
@@ -29,7 +29,7 @@ const useGroupedFiatTransactions = () => {
             reference_id: 13692993001,
             shortcode: 'PUT_FRXAUDJPY_1_1470637295_1470637355_S0P_0',
             transaction_id: 13693003421,
-            transaction_time: 1470637357,
+            transaction_time: 1685109944,
         },
         {
             action_type: 'deposit',
@@ -42,11 +42,11 @@ const useGroupedFiatTransactions = () => {
             reference_id: {},
             shortcode: {},
             transaction_id: 17494117541,
-            transaction_time: 1494295963,
+            transaction_time: 1685009944,
         },
         {
             action_type: 'withdrawal',
-            amount: -2.24,
+            amount: -5.55,
             app_id: {},
             balance_after: 0,
             contract_id: {},
@@ -55,11 +55,11 @@ const useGroupedFiatTransactions = () => {
             reference_id: {},
             shortcode: {},
             transaction_id: 17494415481,
-            transaction_time: 1494297523,
+            transaction_time: 1684009944,
         },
         {
             action_type: 'transfer',
-            amount: 2.24,
+            amount: 5.55,
             from: {
                 loginid: '',
                 type: 'trading',
@@ -69,19 +69,21 @@ const useGroupedFiatTransactions = () => {
                 type: 'wallet',
             },
             app_id: {},
-            balance_after: 0,
+            balance_after: 5.55,
             contract_id: {},
             longcode: 'Transfer from <> to <>. Includes fees',
             payout: {},
             reference_id: {},
             shortcode: {},
             transaction_id: 17494415481,
-            transaction_time: 1494297523,
+            transaction_time: 1684009944,
         },
     ];
 
     const grouped_transactions = _.groupBy(transactions, transaction =>
-        moment(transaction.transaction_time).startOf('day').format('DD MMM YYYY')
+        moment(transaction.transaction_time * 1000)
+            .startOf('day')
+            .format('DD MMM YYYY')
     );
 
     return grouped_transactions;

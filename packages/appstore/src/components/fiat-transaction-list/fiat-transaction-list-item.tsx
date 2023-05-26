@@ -3,7 +3,7 @@ import { Statement } from '@deriv/api-types';
 import { isMobile } from '@deriv/shared';
 import { Text, WalletCard } from '@deriv/components';
 
-type StatementTransaction = DeepRequired<Statement>['transactions'][0];
+type StatementTransaction = DeepRequired<Statement>['transactions'][number];
 
 type TFiatTransactionListItem = Pick<StatementTransaction, 'amount' | 'balance_after'> & {
     action_type:
@@ -12,7 +12,7 @@ type TFiatTransactionListItem = Pick<StatementTransaction, 'amount' | 'balance_a
         | 'reset_balance';
     account_name: string;
     currency: string;
-    wallet: any; // TODO update type when WalletCard's props have it
+    wallet: any;
 };
 
 const FiatTransactionListItem = ({
@@ -34,7 +34,7 @@ const FiatTransactionListItem = ({
     );
 
     return (
-        <div className='fiat-transaction-list-item'>
+        <div className='fiat-transaction-list__item'>
             <div>
                 <WalletCard wallet={wallet} size='small' />
                 <span>

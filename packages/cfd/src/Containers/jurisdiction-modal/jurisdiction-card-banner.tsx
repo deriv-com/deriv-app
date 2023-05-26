@@ -1,11 +1,10 @@
 import React from 'react';
 import RootStore from '../../Stores/index';
 import { connect } from '../../Stores/connect';
-import { getAuthenticationStatusInfo } from '@deriv/shared';
+import { getAuthenticationStatusInfo, isResidentIDVSupported } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { TVerificationStatusBannerProps } from '../props.types';
-import { ResidenceList } from '@deriv/api-types';
 
 const VerificationStatusBanner = ({
     account_status,
@@ -23,13 +22,7 @@ const VerificationStatusBanner = ({
     real_swapfree_accounts_existing_data,
     residence_list,
 }: TVerificationStatusBannerProps) => {
-    const citizen = account_settings?.citizen || account_settings?.country_code;
-    const citizen_data: ResidenceList[0] = residence_list?.find(item => item.value === citizen) as ResidenceList[0];
-    let is_idv_supported: number | undefined = 0;
-
-    if (citizen_data) {
-        is_idv_supported = citizen_data?.identity?.services?.idv?.is_country_supported;
-    }
+    const is_idv_supported = isResidentIDVSupported(residence_list, account_settings);
 
     const {
         poi_not_submitted_for_vanuatu_maltainvest,

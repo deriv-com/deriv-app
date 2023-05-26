@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, ThemedScrollbars, Carousel, ButtonToggle } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -10,8 +10,8 @@ import ContractTypeGlossary from './contract-type-glossary.jsx';
 import classNames from 'classnames';
 
 const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }) => {
-    const [carousel_index, setCarouselIndex] = useState(initial_index);
-    const [selected_tab, setSelectedTab] = useState('description');
+    const [carousel_index, setCarouselIndex] = React.useState(initial_index);
+    const [selected_tab, setSelectedTab] = React.useState('description');
     const contract_types = getContractTypes(list, item).filter(i => i.value !== 'rise_fall_equal');
     const onClickGlossary = () => setSelectedTab('glossary');
 

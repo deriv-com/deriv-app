@@ -28,6 +28,7 @@ const ALIASES = {
     Modules: path.resolve(__dirname, '../src/Modules'),
     Sass: path.resolve(__dirname, '../src/sass'),
     Stores: path.resolve(__dirname, '../src/Stores'),
+    Types: path.resolve(__dirname, '../src/Types'),
 };
 
 const rules = (is_test_env = false) => [

@@ -1,23 +1,22 @@
 import { action, intercept, observable, reaction, toJS, when, makeObservable } from 'mobx';
-import { isProduction, isEmptyObject } from '@deriv/shared';
-import Validator from 'Utils/validator/validator';
-import type { TRootStore } from 'Types';
+import { isProduction, isEmptyObject, Validator } from '@deriv/shared';
+import { TRootStore } from '../types';
 
 type TListenerResponse = {
     then: (func: VoidFunction) => void;
 };
 
-type TValidationRules = { [key: string]: Array<string> | string } & {
+type TValidationRules = { [key: string]: string[] | string } & {
     [key: string]: {
         trigger?: PropertyKey;
-        rules?: Array<string> | string;
+        rules?: string[] | string;
     };
 };
 
 type TBaseStoreOptions = {
     root_store?: TRootStore;
-    local_storage_properties?: Array<string>;
-    session_storage_properties?: Array<string>;
+    local_storage_properties?: string[];
+    session_storage_properties?: string[];
     validation_rules?: TValidationRules;
     store_name?: string;
 };
@@ -38,7 +37,7 @@ export default class BaseStore {
 
     client_init_listener: null | (() => TListenerResponse) = null;
     clientInitDisposer: null | (() => void) = null;
-    local_storage_properties?: Array<string>;
+    local_storage_properties?: string[];
     logout_listener: null | (() => TListenerResponse) = null;
     logoutDisposer: null | (() => void) = null;
     network_status_change_listener: null | ((is_online?: boolean) => TListenerResponse) = null;
@@ -49,7 +48,7 @@ export default class BaseStore {
     real_account_signup_ended_listener: null | (() => TListenerResponse) = null;
     realAccountSignupEndedDisposer: null | (() => void) = null;
     root_store?: TRootStore;
-    session_storage_properties?: Array<string>;
+    session_storage_properties?: string[];
     store_name = '';
     switch_account_listener: null | (() => TListenerResponse) = null;
     switchAccountDisposer: null | (() => void) = null;
@@ -548,7 +547,7 @@ export default class BaseStore {
         this.disposeRealAccountSignupEnd();
     }
 
-    assertHasValidCache(loginid: string, ...reactions: Array<() => void>): void {
+    assertHasValidCache(loginid: string, ...reactions: VoidFunction[]): void {
         // account was changed when this was unmounted.
         if (this.root_store?.client.loginid !== loginid) {
             reactions.forEach(act => act());

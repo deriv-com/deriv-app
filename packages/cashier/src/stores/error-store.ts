@@ -26,7 +26,7 @@ export default class ErrorStore {
 
     message = '';
     code = '';
-    fields = '';
+    fields: string | string[] = '';
     is_show_full_page = false;
     onClickButton: VoidFunction | null = null;
     is_ask_uk_funds_protection = false;

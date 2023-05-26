@@ -10,7 +10,7 @@ const useIsP2PEnabled = () => {
     const { data, ...rest } = useFetch('website_status', { options: { enabled: is_authorize } });
 
     const is_p2p_supported_currency = Boolean(
-        data?.p2p_config?.supported_currencies.includes(currency.toLocaleLowerCase())
+        data?.website_status?.p2p_config?.supported_currencies.includes(currency.toLocaleLowerCase())
     );
     const is_p2p_enabled = is_p2p_supported_currency && !is_virtual && !is_low_risk_cr_eu_real;
 

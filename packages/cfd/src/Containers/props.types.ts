@@ -177,6 +177,7 @@ export type TJurisdictionCardType = 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'malt
 
 export type TVerificationStatusBannerProps = {
     account_status: GetAccountStatus;
+    account_settings: GetSettings;
     account_type: string;
     context: RootStore;
     card_classname: string;
@@ -188,6 +189,7 @@ export type TVerificationStatusBannerProps = {
     real_swapfree_accounts_existing_data: TExistingData;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
+    residence_list: ResidenceList;
 };
 
 export type TJurisdictionCheckBoxProps = {

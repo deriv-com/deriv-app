@@ -250,7 +250,7 @@ export const isLandingCompanyEnabled = ({ landing_companies, platform, type }: T
     return false;
 };
 
-export const getAuthenticationStatusInfo = (account_status: GetAccountStatus) => {
+export const getAuthenticationStatusInfo = (account_status: GetAccountStatus, is_idv_supported?: number) => {
     const poa_status = account_status?.authentication?.document?.status || '';
     const poi_status = account_status?.authentication?.identity?.status || '';
 
@@ -274,20 +274,34 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus) =>
 
     //vanuatu-maltainvest
 
-    const poi_verified_for_vanuatu_maltainvest = [onfido_status, manual_status].includes('verified');
+    const poi_verified_for_vanuatu_maltainvest = [
+        onfido_status,
+        manual_status,
+        ...(is_idv_supported ? [idv_status] : []),
+    ].includes('verified');
     const poi_acknowledged_for_vanuatu_maltainvest =
         (onfido_status && acknowledged_status.includes(onfido_status)) ||
-        (manual_status && acknowledged_status.includes(manual_status));
+        (manual_status && acknowledged_status.includes(manual_status)) ||
+        (is_idv_supported && idv_status && acknowledged_status.includes(idv_status));
 
-    const poi_pending_for_vanuatu_maltainvest =
-        onfido_status &&
-        manual_status &&
-        [onfido_status, manual_status].includes('pending') &&
-        !poi_verified_for_vanuatu_maltainvest;
+    const poi_pending_for_vanuatu_maltainvest = !is_idv_supported
+        ? onfido_status &&
+          manual_status &&
+          [onfido_status, manual_status].includes('pending') &&
+          !poi_verified_for_vanuatu_maltainvest
+        : onfido_status &&
+          manual_status &&
+          idv_status &&
+          [onfido_status, manual_status, idv_status].includes('pending') &&
+          !poi_verified_for_vanuatu_maltainvest;
 
     const need_poi_for_vanuatu_maltainvest = !poi_acknowledged_for_vanuatu_maltainvest;
-    const poi_not_submitted_for_vanuatu_maltainvest =
-        onfido_status && manual_status && [onfido_status, manual_status].every(status => status === 'none');
+    const poi_not_submitted_for_vanuatu_maltainvest = !is_idv_supported
+        ? onfido_status && manual_status && [onfido_status, manual_status].every(status => status === 'none')
+        : onfido_status &&
+          manual_status &&
+          idv_status &&
+          [onfido_status, manual_status, idv_status].every(status => status === 'none');
     const poi_resubmit_for_vanuatu_maltainvest =
         !poi_pending_for_vanuatu_maltainvest &&
         !poi_not_submitted_for_vanuatu_maltainvest &&

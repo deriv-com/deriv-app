@@ -5,9 +5,11 @@ import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { TVerificationStatusBannerProps } from '../props.types';
+import { ResidenceList } from '@deriv/api-types';
 
 const VerificationStatusBanner = ({
     account_status,
+    account_settings,
     account_type,
     card_classname,
     disabled,
@@ -19,7 +21,16 @@ const VerificationStatusBanner = ({
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
     real_swapfree_accounts_existing_data,
+    residence_list,
 }: TVerificationStatusBannerProps) => {
+    const citizen = account_settings?.citizen || account_settings?.country_code;
+    const citizen_data: ResidenceList[0] = residence_list?.find(item => item.value === citizen) as ResidenceList[0];
+    let is_idv_supported: number | undefined = 0;
+
+    if (citizen_data) {
+        is_idv_supported = citizen_data?.identity?.services?.idv?.is_country_supported;
+    }
+
     const {
         poi_not_submitted_for_vanuatu_maltainvest,
         poi_and_poa_not_submitted,
@@ -31,7 +42,7 @@ const VerificationStatusBanner = ({
         poi_acknowledged_for_vanuatu_maltainvest,
         poi_acknowledged_for_bvi_labuan,
         poa_not_submitted,
-    } = getAuthenticationStatusInfo(account_status);
+    } = getAuthenticationStatusInfo(account_status, is_idv_supported);
 
     const getAccountTitle = () => {
         switch (account_type) {
@@ -203,10 +214,12 @@ const JurisdictionCardBanner = (props: TVerificationStatusBannerProps) => {
 
 export default connect(({ modules: { cfd }, client }: RootStore) => ({
     account_status: client.account_status,
+    account_settings: client.account_settings,
     is_virtual: client.is_virtual,
     should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
     should_restrict_vanuatu_account_creation: client.should_restrict_vanuatu_account_creation,
     real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
     real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
     real_swapfree_accounts_existing_data: cfd.real_swapfree_accounts_existing_data,
+    residence_list: client.residence_list,
 }))(JurisdictionCardBanner);

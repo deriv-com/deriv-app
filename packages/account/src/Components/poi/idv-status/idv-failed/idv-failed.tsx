@@ -8,6 +8,7 @@ import {
     removeEmptyPropertiesFromObject,
     toMoment,
     WS,
+    idv_error_statuses,
     TIDVErrorStatus,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -86,7 +87,7 @@ const IdvFailed = ({
     React.useEffect(() => {
         const generateIDVError = () => {
             switch (mismatch_status) {
-                case 'POI_NAME_DOB_MISMATCH':
+                case idv_error_statuses.poi_name_dob_mismatch:
                     return {
                         required_fields: ['first_name', 'last_name', 'date_of_birth'],
                         side_note_image: <PoiNameDobExample />,
@@ -331,8 +332,4 @@ const IdvFailed = ({
     );
 };
 
-export default connect(({ client }: TCoreStore) => ({
-    account_settings: client.account_settings,
-    getChangeableFields: client.getChangeableFields,
-    residence_list: client.residence_list,
-}))(IdvFailed);
+export default IdvFailed;

@@ -190,11 +190,14 @@ const ProofOfIdentityContainer = ({
         case service_code.idv:
             return (
                 <IdvContainer
-                    handleRequireSubmission={handleRequireSubmission}
+                    account_settings={account_settings}
+                    // handleRequireSubmission={handleRequireSubmission}
+                    getChangeableFields={getChangeableFields}
                     idv={idv}
                     is_from_external={!!is_from_external}
                     needs_poa={needs_poa}
                     redirect_button={redirect_button}
+                    residence_list={residence_list}
                 />
             );
         case service_code.onfido:

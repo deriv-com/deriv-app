@@ -55,15 +55,21 @@ export const formatPortfolioPosition = (
     };
 };
 
-export type TIDVErrorStatus =
-    | 'POI_NAME_DOB_MISMATCH'
-    | 'POI_DOB_MISMATCH'
-    | 'POI_NAME_MISMATCH'
-    | 'POI_EXPIRED'
-    | 'POI_FAILED';
+export const idv_error_statuses = {
+    poi_name_dob_mismatch: 'POI_NAME_DOB_MISMATCH',
+    poi_dob_mismatch: 'POI_DOB_MISMATCH',
+    poi_name_mismatch: 'POI_NAME_MISMATCH',
+    poi_expired: 'POI_EXPIRED',
+    poi_failed: 'POI_FAILED',
+} as const;
+
+export type TIDVErrorStatus = typeof idv_error_statuses[keyof typeof idv_error_statuses];
 
 export const formatIDVError = (errors: string[], status_code: string) => {
-    const error_keys: Record<string, TIDVErrorStatus> = { name: 'POI_NAME_MISMATCH', birth: 'POI_DOB_MISMATCH' };
+    const error_keys: Record<string, TIDVErrorStatus> = {
+        name: 'POI_NAME_MISMATCH',
+        birth: 'POI_DOB_MISMATCH',
+    };
     if (status_code === 'expired') {
         return 'POI_EXPIRED';
     }

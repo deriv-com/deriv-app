@@ -7,7 +7,16 @@ import IdvSubmitComplete from 'Components/poi/idv-status/idv-submit-complete';
 import IdvVerified from 'Components/poi/idv-status/idv-verified';
 import { identity_status_codes } from './proof-of-identity-utils';
 
-const Idv = ({ handleRequireSubmission, idv, is_from_external, needs_poa, redirect_button }) => {
+const Idv = ({
+    account_settings,
+    getChangeableFields,
+    handleRequireSubmission,
+    idv,
+    is_from_external,
+    needs_poa,
+    redirect_button,
+    residence_list,
+}) => {
     const { status, submissions_left, last_rejected } = idv;
 
     switch (status) {
@@ -15,6 +24,7 @@ const Idv = ({ handleRequireSubmission, idv, is_from_external, needs_poa, redire
             return (
                 <IdvSubmitComplete
                     is_from_external={is_from_external}
+                    mismatch_status={formatIDVError(last_rejected)}
                     needs_poa={needs_poa}
                     redirect_button={redirect_button}
                 />
@@ -23,7 +33,14 @@ const Idv = ({ handleRequireSubmission, idv, is_from_external, needs_poa, redire
         case identity_status_codes.suspected:
         case identity_status_codes.expired:
             if (Number(submissions_left) < 1) return <IdvLimited handleRequireSubmission={handleRequireSubmission} />;
-            return <IdvFailed mismatch_status={formatIDVError(last_rejected, status)} />;
+            return (
+                <IdvFailed
+                    account_settings={account_settings}
+                    getChangeableFields={getChangeableFields}
+                    mismatch_status={formatIDVError(last_rejected, status)}
+                    residence_list={residence_list}
+                />
+            );
         case identity_status_codes.verified:
             return (
                 <IdvVerified
@@ -32,8 +49,6 @@ const Idv = ({ handleRequireSubmission, idv, is_from_external, needs_poa, redire
                     redirect_button={redirect_button}
                 />
             );
-        // case identity_status_codes.expired:
-        //     return <IdvExpired redirect_button={redirect_button} handleRequireSubmission={handleRequireSubmission} />;
         default:
             return null;
     }

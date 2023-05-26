@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';

@@ -291,6 +291,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             setSelectedAccount: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
             selectAccountType: jest.fn(),
+            is_wallet_migration_failed: false,
+            setWalletsMigrationFailedPopup: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

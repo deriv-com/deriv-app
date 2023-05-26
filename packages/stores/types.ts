@@ -366,6 +366,8 @@ type TTradersHubStore = {
     is_real_wallets_upgrade_on: boolean;
     toggleWalletsUpgrade: (value: boolean) => void;
     selectAccountType: (account_type: string) => void;
+    is_wallet_migration_failed: boolean;
+    setWalletsMigrationFailedPopup: (value: boolean) => void;
 };
 
 /**

@@ -86,6 +86,7 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
                     custom_color='var(--text-general)'
                     className='onboarding-header__cross-icon'
                     onClick={handleCloseButton}
+                    data_testid='close-icon'
                 />
             </div>
             <div className='onboarding-body'>

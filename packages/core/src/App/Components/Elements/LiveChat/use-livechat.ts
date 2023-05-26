@@ -5,21 +5,11 @@ import Cookies from 'js-cookie';
 import { deriv_urls } from '@deriv/shared';
 
 // Todo: Should break this into smaller hooks or utility functions.
-const useLiveChat = (has_cookie_account = false) => {
+const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
     const [isReady, setIsReady] = useState(false);
     const [reload, setReload] = useState(false);
     const history = useHistory();
     const widget = window.LiveChatWidget;
-
-    const domain = /^(.)*deriv\.(com|me|be)$/gi.test(window.location.hostname)
-        ? deriv_urls.DERIV_HOST_NAME
-        : 'binary.sx';
-    const client_information = Cookies.getJSON('client_information', {
-        domain,
-    });
-
-    const { loginid, email, landing_company_shortcode, currency, residence, first_name, last_name } =
-        client_information || {};
 
     const liveChatDeletion = () =>
         new Promise<void>(resolve => {
@@ -52,9 +42,18 @@ const useLiveChat = (has_cookie_account = false) => {
         window.LiveChatWidget?.on('ready', () => {
             let client_first_name = '';
             let client_last_name = '';
+            const domain = /^(.)*deriv\.(com|me|be)$/gi.test(window.location.hostname)
+                ? deriv_urls.DERIV_HOST_NAME
+                : 'binary.sx';
+            const client_information = Cookies.getJSON('client_information', {
+                domain,
+            });
             const utm_data = Cookies.getJSON('utm_data', { domain });
 
             const { utm_source, utm_medium, utm_campaign } = utm_data || {};
+
+            const { loginid, email, landing_company_shortcode, currency, residence, first_name, last_name } =
+                client_information || {};
 
             client_first_name = first_name ?? ' ';
             client_last_name = last_name ?? ' ';
@@ -122,7 +121,7 @@ const useLiveChat = (has_cookie_account = false) => {
         }
     }, [reload, has_cookie_account]);
 
-    useEffect(() => liveChatSetup(has_cookie_account), [has_cookie_account, loginid]);
+    useEffect(() => liveChatSetup(has_cookie_account), [has_cookie_account, active_loginid]);
 
     return {
         isReady,

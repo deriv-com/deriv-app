@@ -11,7 +11,9 @@ const useLiveChat = (has_cookie_account = false) => {
     const history = useHistory();
     const widget = window.LiveChatWidget;
 
-    const domain = /^(.)*deriv\.(com|me)$/gi.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : 'binary.sx';
+    const domain = /^(.)*deriv\.(com|me|be)$/gi.test(window.location.hostname)
+        ? deriv_urls.DERIV_HOST_NAME
+        : 'binary.sx';
     const client_information = Cookies.getJSON('client_information', {
         domain,
     });

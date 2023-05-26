@@ -1,16 +1,16 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import P2pEmpty from '../p2p-empty.jsx';
+import P2pEmpty from '../p2p-empty';
 
 describe('<P2PEmpty/>', () => {
     it('renders component with passed title and children', () => {
         render(
-            <P2pEmpty title='P2P Test'>
-                <div data-testid='test_child'>Testing P2P Empty</div>
+            <P2pEmpty title='P2P Test' has_tabs={false} icon={''}>
+                <div>Testing P2P Empty</div>
             </P2pEmpty>
         );
 
         expect(screen.getByText('P2P Test')).toBeInTheDocument();
-        expect(screen.getByTestId('test_child')).toBeInTheDocument();
+        expect(screen.getByText('Testing P2P Empty')).toBeInTheDocument();
     });
 });

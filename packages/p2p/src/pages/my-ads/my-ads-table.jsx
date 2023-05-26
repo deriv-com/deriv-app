@@ -4,7 +4,7 @@ import { Button, HintBox, InfiniteDataList, Loading, Table, Text } from '@deriv/
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
-import Empty from 'Components/p2p-empty/p2p-empty.jsx';
+import P2pEmpty from 'Components/p2p-empty';
 import ToggleAds from 'Pages/my-ads/toggle-ads.jsx';
 import TableError from 'Components/section-error';
 import { ad_type } from 'Constants/floating-rate';
@@ -147,7 +147,7 @@ const MyAdsTable = () => {
     }
 
     return (
-        <Empty icon='IcCashierNoAds' title={localize('You have no ads.')}>
+        <P2pEmpty icon='IcCashierNoAds' title={localize('You have no ads.')}>
             <Button
                 className='p2p-empty__button'
                 is_disabled={general_store.is_barred}
@@ -157,7 +157,7 @@ const MyAdsTable = () => {
             >
                 {localize('Create new ad')}
             </Button>
-        </Empty>
+        </P2pEmpty>
     );
 };
 

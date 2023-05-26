@@ -387,7 +387,7 @@ const TradeCategories = ({ category, onClick }) => {
                         </Text>
                         <Text as='p'>
                             {localize(
-                                'The Stop-out level on the chart indicates the price at which your potential loss equals your entire stake. When the market price reaches this level, your position will be closed automatically. This ensures that your loss does not exceed the amount you paid to purchase the contract.'
+                                'The stop-out level on the chart indicates the price at which your potential loss equals your entire stake. When the market price reaches this level, your position will be closed automatically. This ensures that your loss does not exceed the amount you paid to purchase the contract.'
                             )}
                         </Text>
                         <Text as='p'>{localize('These are optional parameters for each position that you open:')}</Text>
@@ -444,7 +444,7 @@ const TradeCategories = ({ category, onClick }) => {
                                 components={[
                                     <strong key={0} />,
                                     <span
-                                        className='contract-type-info__content--definition'
+                                        className='contract-type-info__content-definition'
                                         onClick={onClick}
                                         key={1}
                                     />,
@@ -462,7 +462,7 @@ const TradeCategories = ({ category, onClick }) => {
                                 i18n_default_text='The payout is equal to the <0>payout per point</0> multiplied by the difference between the final price and the strike price. You will make profit if your <0>payout</0> is higher than your initial stake.'
                                 components={[
                                     <span
-                                        className='contract-type-info__content--definition'
+                                        className='contract-type-info__content-definition'
                                         onClick={onClick}
                                         key={0}
                                     />,
@@ -474,7 +474,7 @@ const TradeCategories = ({ category, onClick }) => {
                                 i18n_default_text='You may choose to sell the contract up until 60 seconds before expiry, in which case you will receive a <0>contract value</0>.'
                                 components={[
                                     <span
-                                        className='contract-type-info__content--definition'
+                                        className='contract-type-info__content-definition'
                                         onClick={onClick}
                                         key={0}
                                     />,

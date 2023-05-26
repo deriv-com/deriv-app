@@ -4,7 +4,6 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
 
     & .dc-carousel {
         width: 100%;
@@ -29,29 +28,32 @@
         }
     }
     &__card {
-        min-height: calc(100vh - 400px);
-        max-height: calc(100vh - 268px);
+        height: calc(680px - 117px);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+
+        &--has-toggle-buttons {
+            max-height: calc(680px - 190px);
+        }
         @include mobile {
-            min-height: calc(100vh - 180px);
+            height: calc(100vh - 107px);
             padding: 0;
 
             &--has-toggle-buttons {
-                min-height: calc(100vh - 105px);
+                max-height: calc(100vh - 182px);
             }
         }
     }
     &__content {
         overflow: hidden;
         /* postcss-bem-linter: ignore */
-        &--glossary {
-            &-heading {
+        &-glossary {
+            &--heading {
                 margin: 0 !important;
             }
         }
-        &--definition {
+        &-definition {
             color: var(--brand-red-coral);
 
             &:hover {
@@ -106,6 +108,7 @@
         border-radius: 4px;
         text-align: center;
         margin-top: 0;
+        margin-bottom: 1.6rem;
 
         @include mobile {
             width: 32.8rem;
@@ -172,18 +175,22 @@
         padding-right: 2.4rem;
     }
     &__scrollbars {
-        margin-top: 2.4rem;
-        margin-bottom: auto;
-        &--glossary {
-            margin-top: 0;
+        // margin-bottom: auto;
+        position: relative;
+        &-description--active {
+            transition: transform 0.3s linear;
         }
-
-        @include mobile {
-            margin-top: 1.6rem;
+        &-glossary {
+            margin-top: 0;
+            &--active {
+                position: relative;
+                transition: transform 0.3s linear;
+            }
         }
     }
     &__button {
         margin-top: 2.4rem;
+        flex-shrink: 0;
         @include mobile {
             width: 100%;
             padding: 1.5rem 0;

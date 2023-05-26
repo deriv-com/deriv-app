@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import Icon from '../icon';
 import './wallet-icon.scss';
 
-type TWalletIconSizes = keyof (typeof sizes)['fiat' | 'crypto'];
+type TWalletIconSizes = keyof typeof sizes['fiat' | 'crypto'];
 
 type TWalletIconProps = {
     currency?: string;
@@ -53,7 +53,7 @@ const WalletIcon = ({ currency, icon, size = 'medium', type, has_bg }: TWalletIc
     return (
         <div
             className={classNames('wallet-icon', {
-                [`wallet-icon--${size} wallet-card__${currency?.toLowerCase()}-bg`]:
+                [`wallet-icon--${size} wallet-icon__default-bg wallet-card__${currency?.toLowerCase()}-bg`]:
                     (!!currency && type !== 'app') || has_bg,
             })}
         >

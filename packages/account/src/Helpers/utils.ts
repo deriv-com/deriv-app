@@ -8,7 +8,7 @@ import {
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
-import { FormikErrors, FormikValues } from 'formik';
+import { FormikValues } from 'formik';
 
 const getImageLocation = (image_name: string) => getUrlBase(`/public/images/common/${image_name}`);
 

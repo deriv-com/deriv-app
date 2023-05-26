@@ -1,7 +1,5 @@
 /** Add types that are shared between components */
-
-import { FormikProps, FormikValues } from 'formik';
-import { Authorize, ResidenceList } from '@deriv/api-types';
+import { Authorize } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
 
 export type TToken = {

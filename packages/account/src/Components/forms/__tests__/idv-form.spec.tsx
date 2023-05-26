@@ -2,7 +2,6 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import IDVForm from '../idv-form';
 import { Formik } from 'formik';
-import { isDesktop, isMobile } from '@deriv/shared';
 
 jest.mock('Helpers/utils', () => ({
     ...jest.requireActual('Helpers/utils'),

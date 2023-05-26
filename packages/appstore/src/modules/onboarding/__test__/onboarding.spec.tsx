@@ -1,11 +1,14 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
+import { createBrowserHistory } from 'history';
+import userEvent from '@testing-library/user-event';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import Onboarding from '../onboarding';
 import { getTradingHubContents } from 'Constants/trading-hub-content';
-import EmptyOnboarding from '../empty-onboarding';
+import { Router } from 'react-router';
+import { routes } from '@deriv/shared';
 
-describe('Onboarding', () => {
+describe('Onboarding Component Test Coverage', () => {
     it('should render <Onboarding /> component', () => {
         const mock = mockStore({
             client: {
@@ -14,11 +17,9 @@ describe('Onboarding', () => {
                 is_landing_company_loaded: true,
             },
         });
-
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-
         const { container } = render(<Onboarding contents={getTradingHubContents()} />, {
             wrapper,
         });
@@ -33,11 +34,9 @@ describe('Onboarding', () => {
                 is_landing_company_loaded: true,
             },
         });
-
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-
         const { container } = render(<Onboarding contents={getTradingHubContents()} />, {
             wrapper,
         });
@@ -59,11 +58,9 @@ describe('Onboarding', () => {
                 is_landing_company_loaded: true,
             },
         });
-
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-
         const { container } = render(<Onboarding contents={getTradingHubContents()} />, {
             wrapper,
         });
@@ -103,11 +100,9 @@ describe('Onboarding', () => {
                 is_landing_company_loaded: true,
             },
         });
-
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-
         const { container } = render(<Onboarding contents={getTradingHubContents()} />, {
             wrapper,
         });
@@ -129,7 +124,7 @@ describe('Onboarding', () => {
         expect(screen.getByText(cfd_description)).toBeInTheDocument();
     });
 
-    it('should render Footer on <Onboarding /> component accordingly', () => {
+    it('should render Footer on <Onboarding /> component accordingly', async () => {
         const mock = mockStore({
             client: {
                 is_logged_in: true,
@@ -148,26 +143,64 @@ describe('Onboarding', () => {
 
         const footer_title = "Welcome to Trader's Hub";
         const footer_description = 'This is your personal start page for Deriv';
-        const btn = screen.getByRole('button', {
-            name: /Next/i,
-        });
+
+        const updated_title = 'Trading accounts';
+        const updated_description =
+            'These are the trading accounts available to you. You can click on an account’s icon or description to find out more';
+
+        const next_btn = screen.getByRole('button', { name: /Next/i });
 
         expect(container).toBeInTheDocument();
         expect(screen.getByText(footer_title)).toBeInTheDocument();
         expect(screen.getByText(footer_description)).toBeInTheDocument();
-        expect(btn).toBeInTheDocument();
+        expect(next_btn).toBeInTheDocument();
+        userEvent.click(next_btn);
+        expect(await screen.findByText(updated_title)).toBeInTheDocument();
+        expect(await screen.findByText(updated_description)).toBeInTheDocument();
+        await waitFor(() => {
+            const prev_btn = screen.queryByRole('button', { name: /Back/i });
+            expect(prev_btn).toBeInTheDocument();
+        });
     });
 
-    it('should not render <EmptyOnboarding/> component instead', () => {
-        const mock = mockStore({});
+    it('should render and exit onboarding when clicking on the close icon', () => {
+        const mock = mockStore({
+            client: {
+                is_logged_in: true,
+                is_language_loaded: true,
+                is_landing_company_loaded: true,
+            },
+        });
+        const history = createBrowserHistory();
+        const { container } = render(
+            <Router history={history}>
+                <StoreProvider store={mock}>
+                    <Onboarding contents={getTradingHubContents()} />
+                </StoreProvider>
+            </Router>
+        );
 
+        const close_btn = screen.getByTestId('close-icon');
+
+        expect(container).toBeInTheDocument();
+        expect(close_btn).toBeInTheDocument();
+        userEvent.click(close_btn);
+        expect(history.location.pathname).toBe(routes.traders_hub);
+    });
+
+    it('should render <EmptyOnboarding/> component instead', () => {
+        const mock = mockStore({
+            client: {
+                is_logged_in: false,
+                is_landing_company_loaded: false,
+            },
+        });
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-
-        const { container } = render(<EmptyOnboarding />, {
+        render(<Onboarding contents={getTradingHubContents()} />, {
             wrapper,
         });
-        expect(container).toBeInTheDocument();
+        expect(screen.getByTestId('dt_empty_onboarding')).toBeInTheDocument();
     });
 });

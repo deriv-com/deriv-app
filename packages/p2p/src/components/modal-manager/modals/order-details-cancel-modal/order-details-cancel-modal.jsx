@@ -4,7 +4,7 @@ import { useIsMounted } from '@deriv/shared';
 import { Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
-import FormError from 'Components/form/form-submit-error-message';
+import FormError from 'Components/section-error';
 import { useModalManagerContext } from '../../modal-manager-context';
 
 const OrderDetailsCancelModal = () => {

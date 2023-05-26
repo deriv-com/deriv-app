@@ -5,7 +5,7 @@ import { reaction } from 'mobx';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
-import { TableError } from 'Components/table/table-error.jsx';
+import TableError from 'Components/section-error';
 import Empty from 'Components/p2p-empty/p2p-empty.jsx';
 import OrderRow from 'Pages/orders/order-table/order-table-row.jsx';
 import OrderTableHeader from 'Pages/orders/order-table/order-table-header.jsx';
@@ -44,7 +44,7 @@ const OrderTableContent = () => {
     }
 
     if (order_store.api_error_message) {
-        return <TableError message={order_store.api_error_message} />;
+        return <TableError message={order_store.api_error_message} size='xs' className='section-error__table' />;
     }
 
     if (order_store.orders.length) {

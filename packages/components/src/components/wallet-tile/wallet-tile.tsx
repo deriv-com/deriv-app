@@ -6,6 +6,7 @@ import './wallet-tile.scss';
 import { AppLinkedWithWalletIcon } from '../app-linked-with-wallet-icon';
 import { WalletIcon } from '../wallet-icon';
 import Text from '../text';
+import Badge from '../badge';
 
 type TAccount = {
     balance?: string;
@@ -103,11 +104,7 @@ const WalletTile = ({
 
     const JurisdictionBadge = () => {
         if (account.jurisdiction) {
-            return (
-                <Text size={is_mobile ? 'xxxxs' : 'xxxs'} weight='bold' className='wallet-tile__jurisdiction'>
-                    {account.jurisdiction}
-                </Text>
-            );
+            return <Badge label={account.jurisdiction} type='bordered' />;
         }
 
         return null;

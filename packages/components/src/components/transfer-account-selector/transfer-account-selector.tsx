@@ -61,6 +61,7 @@ const TransferAccountSelector = ({
                         account={selected_account}
                         className='transfer-account-selector__value'
                         is_mobile={isMobile()}
+                        is_value
                     />
                 )}
 

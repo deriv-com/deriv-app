@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { getCurrencyDisplayCode, isMobile } from '@deriv/shared';
+import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import './wallet-tile.scss';
 import { AppLinkedWithWalletIcon } from '../app-linked-with-wallet-icon';
@@ -30,6 +30,7 @@ type TWalletTileProps = {
     icon_size?: TIconSize;
     is_active?: boolean;
     is_mobile?: boolean;
+    is_value?: boolean;
     onClick?: () => void;
 };
 
@@ -40,6 +41,7 @@ const WalletTile = ({
     icon_size = 'small',
     is_active,
     is_mobile,
+    is_value,
     onClick,
 }: TWalletTileProps) => {
     const IconComponent = () => {
@@ -69,8 +71,12 @@ const WalletTile = ({
 
     const Label = () => {
         if (account.label) {
+            let size;
+            if (is_value) size = is_mobile ? 'xxxxs' : 'xxxs';
+            else size = is_mobile ? 'xxs' : 'xs';
+
             return (
-                <Text as='div' size={isMobile() ? 'xxxxs' : 'xs'} weight='bold'>
+                <Text as='div' size={size} weight='bold'>
                     {account.label}
                 </Text>
             );
@@ -81,8 +87,12 @@ const WalletTile = ({
 
     const Balance = () => {
         if (account.balance) {
+            let size;
+            if (is_value) size = is_mobile ? 'xxxxs' : 'xxxs';
+            else size = is_mobile ? 'xxxs' : 'xxs';
+
             return (
-                <Text size={isMobile() ? 'xxxxs' : 'xxs'}>
+                <Text size={size}>
                     {localize('Balance')}: {account.balance} {getCurrencyDisplayCode(account.currency)}
                 </Text>
             );
@@ -94,7 +104,7 @@ const WalletTile = ({
     const JurisdictionBadge = () => {
         if (account.jurisdiction) {
             return (
-                <Text size={isMobile() ? 'xxxxs' : 'xxxs'} weight='bold' className='wallet-tile__jurisdiction'>
+                <Text size={is_mobile ? 'xxxxs' : 'xxxs'} weight='bold' className='wallet-tile__jurisdiction'>
                     {account.jurisdiction}
                 </Text>
             );

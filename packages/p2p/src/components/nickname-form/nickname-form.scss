@@ -1,32 +1,4 @@
 .nickname-form {
-    &__header {
-        border-bottom: 1px solid var(--general-section-2);
-
-        &_wrapper {
-            padding: 1.6rem 2.4rem;
-            display: flex;
-            align-items: center;
-            width: 100%;
-            justify-content: space-between;
-            box-sizing: border-box;
-        }
-        &_right {
-            justify-content: flex-end;
-            padding: 2.8rem 2.4rem 0;
-        }
-        &--title {
-            font-weight: bold;
-            color: var(--text-prominent);
-
-            &:first-letter {
-                text-transform: uppercase;
-            }
-        }
-        &--no-border {
-            border: none;
-        }
-    }
-
     &__content {
         &__centre {
             align-items: center;
@@ -78,22 +50,6 @@
                 margin-left: 3.9rem;
             }
         }
-        &--textarea {
-            margin-top: 4.3rem;
-
-            .dc-input__hint {
-                top: 9.7rem;
-            }
-            .dc-input__counter {
-                right: 0rem;
-                top: 9.7rem;
-            }
-        }
-        &--icon {
-            margin: 0 1.6rem;
-            transform: rotate(180deg);
-            width: 3.66rem;
-        }
 
         @include mobile {
             width: 88%;
@@ -111,17 +67,6 @@
         @include mobile {
             border-top: 2px solid var(--general-section-1);
             padding: 1.6rem;
-        }
-    }
-
-    &__close_icon {
-        cursor: pointer;
-        fill: var(--text-general);
-    }
-
-    &__wrapper {
-        @include mobile {
-            height: 100%;
         }
     }
 }

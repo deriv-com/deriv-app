@@ -56,7 +56,10 @@ const AppContent = ({ order_id }) => {
     }
 
     if (general_store.should_show_popup) {
-        return <NicknameForm />;
+        if (isMobile()) return <NicknameForm />;
+        
+            return <></>;
+        
     }
 
     if (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) {

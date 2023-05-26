@@ -1,4 +1,4 @@
-import NicknameForm from './nickname-form.jsx';
+import NicknameForm from './nickname-form';
 import './nickname-form.scss';
 
 export default NicknameForm;

@@ -137,6 +137,8 @@ describe('JurisdictionModalContent', () => {
         context: mock_context,
         real_synthetic_accounts_existing_data: [],
         real_financial_accounts_existing_data: [],
+        real_swapfree_accounts_existing_data: [],
+        swapfree_available_accounts: [],
         card_flip_status: {
             svg: false,
             bvi: false,

@@ -1,7 +1,8 @@
 import React from 'react';
+import { Jurisdiction } from '@deriv/shared';
 import { render, screen } from '@testing-library/react';
 import JurisdictionCard from '../jurisdiction-card';
-import { Jurisdiction } from '@deriv/shared';
+import { TTradingPlatformAvailableAccount } from 'Components/props.types';
 
 describe('JurisdictionCard', () => {
     type TMockProps = {
@@ -33,6 +34,7 @@ describe('JurisdictionCard', () => {
             risk_classification: string;
             status: string[];
         };
+        swapfree_available_accounts: TTradingPlatformAvailableAccount[];
         account_type: 'financial' | 'synthetic';
         disabled: boolean;
         is_onfido_design: boolean;
@@ -73,6 +75,7 @@ describe('JurisdictionCard', () => {
         is_onfido_design: false,
         jurisdiction_selected_shortcode: '',
         setJurisdictionSelectedShortcode: jest.fn(),
+        swapfree_available_accounts: [],
         type_of_card: Jurisdiction.SVG,
     };
     beforeEach(() => {
@@ -108,6 +111,7 @@ describe('JurisdictionCard', () => {
             is_onfido_design: false,
             jurisdiction_selected_shortcode: '',
             setJurisdictionSelectedShortcode: jest.fn(),
+            swapfree_available_accounts: [],
             type_of_card: Jurisdiction.SVG,
         };
     });

@@ -33,7 +33,7 @@ const BuyToastNotification = observer(() => {
 
     const trade_type_name = findContractCategory(list, active_trade_type)?.contract_types?.find(
         (item: TContractType) => item.value === contract_type
-    ).text;
+    )?.text;
 
     return ReactDOM.createPortal(
         <MobileWrapper>

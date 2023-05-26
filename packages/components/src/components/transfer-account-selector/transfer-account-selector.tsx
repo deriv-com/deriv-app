@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { capitalizeFirstLetter, isMobile } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import Text from '../text';
 import { WalletTile } from '../wallet-tile';
 import Modal from '../modal';
@@ -95,7 +95,7 @@ const TransferAccountSelector = ({
                                                     }}
                                                 />
                                             ) : (
-                                                <React.Fragment>{capitalizeFirstLetter(key)}</React.Fragment>
+                                                <React.Fragment>{localize('Wallets')}</React.Fragment>
                                             )}
                                         </Text>
                                     </span>

@@ -36,7 +36,7 @@ const AppLinkedWithWalletIcon = ({ currency, app_icon, wallet_icon, size = 'medi
         <div className={`app-icon app-icon--${size}`}>
             {/* Top */}
             <div className='app-icon__top-icon'>
-                <WalletIcon icon={app_icon} size={sizes.top[size]} type={type} />
+                <WalletIcon icon={app_icon} size={sizes.top[size]} type='app' />
             </div>
 
             {/* Bottom */}

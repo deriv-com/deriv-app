@@ -22,12 +22,8 @@ const WebsiteStatusProvider = observer(({ children }: React.PropsWithChildren<un
     // refer to socket-general.js
     useEffect(() => {
         // need to wait for 'authorize' to be responded by the websocket 'is_authorize=true', only then we re-subscribe to website_status
-        if (is_authorize) {
-            unsubscribe();
-            subscribe();
-        } else {
-            subscribe();
-        }
+        if (is_authorize) unsubscribe()
+        subscribe()
     }, [is_authorize, subscribe, unsubscribe]);
 
     return <>{children}</>;

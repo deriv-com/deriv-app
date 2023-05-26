@@ -41,7 +41,9 @@ const RecommendedBy = ({ recommended_average, recommended_count }: TRecommendedB
                                       message: getRecommendedMessage(),
                                   },
                               })
-                        : () => false
+                        : () => {
+                              // do nothing
+                          }
                 }
             >
                 <Icon

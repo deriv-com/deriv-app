@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text, WalletCard } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import WalletAccount from '../wallet-account/wallet-account';
 import './wallet-link-wrapper.scss';
@@ -19,14 +20,16 @@ const WalletLinkWrapper = ({ wallet_details, account_list }: TWalletLinkWrapper)
     return (
         <div className='wallet-link-wrapper'>
             <div className='wallet-link-wrapper__accounts'>
-                <Text
-                    as='div'
-                    className='wallet-link-wrapper__title-text wallet-link-wrapper__accounts-title'
-                    color='prominent'
-                    size='xxxs'
-                >
-                    {localize('Your current trading account(s)')}
-                </Text>
+                {isMobile() && (
+                    <Text
+                        as='div'
+                        className='wallet-link-wrapper__title-text wallet-link-wrapper__accounts-title'
+                        color='prominent'
+                        size='xxxs'
+                    >
+                        {localize('Your current trading account(s)')}
+                    </Text>
+                )}
                 {account_list.map((account, index) => {
                     return (
                         <WalletAccount
@@ -51,13 +54,15 @@ const WalletLinkWrapper = ({ wallet_details, account_list }: TWalletLinkWrapper)
             </div>
             <div className='wallet-link-wrapper__card-wrapper'>
                 <WalletCard wallet={wallet_details} size='large' state='default' />
-                <Text
-                    className='wallet-link-wrapper__title-text wallet-link-wrapper__card-wrapper-title'
-                    color='prominent'
-                    size='xxxs'
-                >
-                    {localize('Your new Wallet')}
-                </Text>
+                {isMobile() && (
+                    <Text
+                        className='wallet-link-wrapper__title-text wallet-link-wrapper__card-wrapper-title'
+                        color='prominent'
+                        size='xxxs'
+                    >
+                        {localize('Your new Wallet')}
+                    </Text>
+                )}
             </div>
         </div>
     );

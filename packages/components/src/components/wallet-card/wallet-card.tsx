@@ -9,7 +9,7 @@ import { WalletIcon } from '../wallet-icon';
 import './wallet-card.scss';
 import classNames from 'classnames';
 
-export type TWalletCardProps = {
+type TWalletCardProps = {
     // TODO: This type should be updated when the response is ready
     wallet: {
         balance: string;

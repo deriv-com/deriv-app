@@ -36,13 +36,9 @@
         gap: 36.1rem;
         margin-top: 5.6rem;
 
-        @include mobile {
-            display: none;
-        }
-
         &-text {
             padding: 0.4rem 0.8rem;
-            border-radius: 2.4rem;
+            border-radius: 24px;
         }
     }
 

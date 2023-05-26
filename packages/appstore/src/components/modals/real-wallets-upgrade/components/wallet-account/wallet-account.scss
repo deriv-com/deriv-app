@@ -4,7 +4,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    border: 0.1rem solid $color-grey-2;
+    border: 1px solid $color-grey-2;
     border-radius: 0.8rem;
 
     @include mobile {

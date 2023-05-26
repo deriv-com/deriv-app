@@ -30,22 +30,24 @@ const WalletLinkingStep = observer(({ data }: TWalletLinkingStep) => {
                     'Your existing funds will remain in your trading account(s) and can be transferred to your Wallet after the upgrade.'
                 )}
             </Text>
-            <div className='wallet-linking-step__title-small'>
-                <Text
-                    className='wallet-linking-step__title-text wallet-linking-step__title-small-text'
-                    color='prominent'
-                    size='xxxs'
-                >
-                    {localize('Your current trading account(s)')}
-                </Text>
-                <Text
-                    className='wallet-linking-step__title-text wallet-linking-step__title-small-text'
-                    color='prominent'
-                    size='xxxs'
-                >
-                    {localize('Your new Wallet(s)')}
-                </Text>
-            </div>
+            {!is_mobile && (
+                <div className='wallet-linking-step__title-small'>
+                    <Text
+                        className='wallet-linking-step__title-text wallet-linking-step__title-small-text'
+                        color='prominent'
+                        size='xxxs'
+                    >
+                        {localize('Your current trading account(s)')}
+                    </Text>
+                    <Text
+                        className='wallet-linking-step__title-text wallet-linking-step__title-small-text'
+                        color='prominent'
+                        size='xxxs'
+                    >
+                        {localize('Your new Wallet(s)')}
+                    </Text>
+                </div>
+            )}
             <ThemedScrollbars className='wallet-linking-step__content'>
                 {data.wallets.map((wallet, index) => {
                     return (

@@ -80,4 +80,4 @@ export const DERIV_PLATFORM_NAMES = {
     SMARTTRADER: 'SmartTrader',
     BBOT: 'Binary Bot',
     GO: 'Deriv GO',
-};
+} as const;

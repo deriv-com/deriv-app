@@ -46,16 +46,4 @@
         align-items: center;
         flex-grow: 1;
     }
-
-    &__jurisdiction {
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-        align-items: flex-start;
-        gap: 0.4rem;
-        border: 1px solid $color-black-1;
-        border-radius: $BORDER_RADIUS / 2;
-        padding: 0.2rem 0.4rem;
-        text-transform: uppercase;
-    }
 }

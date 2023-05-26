@@ -74,8 +74,6 @@ const TransferAccountSelector = ({
                 is_open={is_list_modal_open}
                 title={label}
                 toggleModal={() => setIsListModalOpen(old => !old)}
-                width='100vh'
-                height='100vh'
             >
                 <div>
                     {Object.keys(transfer_accounts).map((key, idx) => {

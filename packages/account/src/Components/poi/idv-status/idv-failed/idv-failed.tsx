@@ -31,6 +31,7 @@ import { TIDVForm, TPersonalDetailsForm } from 'Types';
 import FormSubHeader from 'Components/form-sub-header';
 import IDVForm from 'Components/forms/idv-form';
 import classNames from 'classnames';
+import FormFooter from 'Components/form-footer';
 
 type TRestState = {
     api_error: string;
@@ -314,6 +315,8 @@ const IdvFailed = ({
                             side_note={idv_failure?.side_note_image}
                             inline_note_text={idv_failure?.inline_note_text}
                         />
+                    </FormBody>
+                    <FormFooter>
                         <Button
                             className='proof-of-identity__submit-button'
                             type='submit'
@@ -323,7 +326,7 @@ const IdvFailed = ({
                             large
                             primary
                         />
-                    </FormBody>
+                    </FormFooter>
                 </Form>
             )}
         </Formik>

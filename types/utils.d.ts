@@ -20,6 +20,11 @@ declare global {
         : { [K in keyof T]?: DeepPartial<T[K]> };
 
     type NoStringIndex<T> = { [K in keyof T as string extends K ? never : K]: T[K] };
+
+    type Prettify<T> = {
+        [K in keyof T]: T[K];
+        // eslint-disable-next-line @typescript-eslint/ban-types
+    } & {};
 }
 
 export {};

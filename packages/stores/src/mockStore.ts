@@ -1,25 +1,27 @@
 import merge from 'lodash.merge';
-import { TStores } from '../types';
+import type { TStores } from '../types';
 
 const mock = (): TStores & { is_mock: boolean } => {
     return {
         is_mock: true,
         client: {
+            account_settings: {},
             accounts: {},
             active_account_landing_company: '',
+            trading_platform_available_accounts: [],
             account_limits: {
                 daily_transfers: {
                     dxtrade: {
-                        allowed: false,
-                        available: false,
+                        allowed: 0,
+                        available: 0,
                     },
                     internal: {
-                        allowed: false,
-                        available: false,
+                        allowed: 0,
+                        available: 0,
                     },
                     mt5: {
-                        allowed: false,
-                        available: false,
+                        allowed: 0,
+                        available: 0,
                     },
                 },
             },
@@ -146,6 +148,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             responseTradingPlatformAccountsList: jest.fn(),
             standpoint: {
                 iom: '',
+                malta: '',
             },
             switchAccount: jest.fn(),
             verification_code: {
@@ -176,6 +179,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setBalanceOtherAccounts: jest.fn(),
             setInitialized: jest.fn(),
             setLogout: jest.fn(),
+            setVisibilityRealityCheck: jest.fn(),
             setP2pAdvertiserInfo: jest.fn(),
             setPreSwitchAccount: jest.fn(),
             switched: false,
@@ -189,7 +193,9 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTwoFAStatus: jest.fn(),
             has_changed_two_fa: false,
             setTwoFAChangedStatus: jest.fn(),
+            has_any_real_account: false,
             real_account_creation_unlock_date: 0,
+            setPrevAccountType: jest.fn(),
         },
         common: {
             error: {
@@ -213,6 +219,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             changeSelectedLanguage: jest.fn(),
             current_language: 'EN',
             is_network_online: false,
+            server_time: undefined,
             is_language_changing: false,
         },
         ui: {
@@ -225,12 +232,14 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_dark_mode_on: false,
             is_language_settings_modal_on: false,
             is_mobile: false,
+            is_reports_visible: false,
             disableApp: jest.fn(),
             enableApp: jest.fn(),
             setCurrentFocus: jest.fn(),
             toggleAccountsDialog: jest.fn(),
             toggleCashier: jest.fn(),
             setDarkMode: jest.fn(),
+            setReportsTabIndex: jest.fn(),
             has_real_account_signup_ended: false,
             notification_messages_ui: null,
             openRealAccountSignup: jest.fn(),
@@ -239,10 +248,18 @@ const mock = (): TStores & { is_mock: boolean } => {
             shouldNavigateAfterChooseCrypto: jest.fn(),
             toggleLanguageSettingsModal: jest.fn(),
             toggleSetCurrencyModal: jest.fn(),
+            addToast: jest.fn(),
+            removeToast: jest.fn(),
+            reports_route_tab_index: 1,
+            should_show_cancellation_warning: false,
+            toggleCancellationWarning: jest.fn(),
+            toggleUnsupportedContractModal: jest.fn(),
+            toggleReports: jest.fn(),
             setSubSectionIndex: jest.fn(),
             sub_section_index: 0,
             toggleReadyToDepositModal: jest.fn(),
             is_ready_to_deposit_modal_visible: false,
+            is_real_acc_signup_on: false,
             is_need_real_account_for_cashier_modal_visible: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
             setShouldShowCooldownModal: jest.fn(),
@@ -260,12 +277,17 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_real: false,
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
+            is_demo: false,
             financial_restricted_countries: false,
             selected_account_type: 'real',
             no_CR_account: false,
             no_MF_account: false,
+            multipliers_account_status: '',
+            openFailedVerificationModal: jest.fn(),
             setTogglePlatformType: jest.fn(),
-            is_demo: false,
+            setSelectedAccount: jest.fn(),
+            toggleAccountTransferModal: jest.fn(),
+            selectAccountType: jest.fn(),
         },
         menu: {
             attach: jest.fn(),
@@ -282,6 +304,32 @@ const mock = (): TStores & { is_mock: boolean } => {
             showAccountSwitchToRealNotification: jest.fn(),
             setP2PRedirectTo: jest.fn(),
         },
+        portfolio: {
+            active_positions: [],
+            error: {
+                header: '',
+                message: '',
+                type: '',
+                redirect_label: '',
+                redirect_to: '',
+                should_clear_error_on_click: false,
+                should_show_refresh: false,
+                redirectOnClick: jest.fn(),
+                setError: jest.fn(),
+                app_routing_history: [],
+            },
+            getPositionById: jest.fn(),
+            is_loading: false,
+            is_accumulator: false,
+            is_multiplier: false,
+            onClickCancel: jest.fn(),
+            onClickSell: jest.fn(),
+            onMount: jest.fn(),
+            removePositionById: jest.fn(),
+        },
+        contract_trade: {
+            getContractById: jest.fn(),
+        },
         modules: {},
         exchange_rates: {
             data: undefined,
@@ -293,4 +341,4 @@ const mock = (): TStores & { is_mock: boolean } => {
 
 const mockStore = (override: DeepPartial<TStores>): TStores => merge(mock(), override);
 
-export { mockStore };
+export default mockStore;

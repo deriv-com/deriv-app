@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import { getKebabCase, isCryptocurrency, routes, websiteUrl } from '@deriv/shared';
 import createBanxaProvider from '../pages/on-ramp/on-ramp-providers';
 import BaseStore from './base-store';
-import type { TWebSocket, TRootStore, TOnRampProvider, TServerError } from 'Types';
+import type { TWebSocket, TRootStore, TOnRampProvider, TServerError } from '../types';
 
 export default class OnRampStore extends BaseStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
@@ -66,11 +66,7 @@ export default class OnRampStore extends BaseStore {
     get is_onramp_tab_visible() {
         const { client } = this.root_store;
 
-        return (
-            client.is_virtual === false &&
-            isCryptocurrency(client.currency) &&
-            this.filtered_onramp_providers.length > 0
-        );
+        return !client.is_virtual && isCryptocurrency(client.currency) && this.filtered_onramp_providers.length > 0;
     }
 
     get filtered_onramp_providers() {
@@ -124,10 +120,10 @@ export default class OnRampStore extends BaseStore {
                 const script_name = `${getKebabCase(provider.name)}-onramp`;
                 if (!loadjs.isDefined(script_name)) {
                     loadjs(dependencies, script_name, {
-                        error: () => {
+                        error: async () => {
                             // eslint-disable-next-line no-console
                             console.warn(`Dependencies for onramp provider ${provider.name} could not be loaded.`);
-                            this.setSelectedProvider(null);
+                            await this.setSelectedProvider(null);
                         },
                     });
                 }
@@ -177,12 +173,12 @@ export default class OnRampStore extends BaseStore {
         this.setShouldShowWidget(true);
     }
 
-    onClickGoToDepositPage() {
-        this.pollApiForDepositAddress(false);
+    async onClickGoToDepositPage() {
+        await this.pollApiForDepositAddress(false);
         window.open(websiteUrl() + routes.cashier_deposit.substring(1));
     }
 
-    pollApiForDepositAddress(should_allow_empty_address: boolean) {
+    async pollApiForDepositAddress(should_allow_empty_address: boolean) {
         // should_allow_empty_address: API returns empty deposit address for legacy accounts
         // that have never generated a deposit address. Setting this to "true" will allow
         // the user to be redirected to the Deposit page (where an address will be generated).
@@ -192,8 +188,8 @@ export default class OnRampStore extends BaseStore {
         this.setApiError(null);
 
         const deposit_address_interval = setInterval(() => getDepositAddressFromApi, 3000);
-        const getDepositAddressFromApi = () => {
-            this.WS.authorized.cashier('deposit', { provider: 'crypto', type: 'api' }).then(response => {
+        const getDepositAddressFromApi = async () => {
+            await this.WS.authorized.cashier('deposit', { provider: 'crypto', type: 'api' }).then(response => {
                 let should_clear_interval = false;
 
                 if (response.error) {
@@ -215,18 +211,18 @@ export default class OnRampStore extends BaseStore {
             });
         };
 
-        getDepositAddressFromApi();
+        await getDepositAddressFromApi();
         setTimeout(() => {
             clearInterval(deposit_address_interval);
             this.setIsDepositAddressLoading(false);
         }, 30000);
     }
 
-    resetPopup() {
+    async resetPopup() {
         this.setApiError(null);
         this.setDepositAddress(null);
         this.setIsDepositAddressLoading(true);
-        this.setSelectedProvider(null);
+        await this.setSelectedProvider(null);
         this.setShouldShowWidget(false);
         this.setWidgetError(null);
         this.setWidgetHtml(null);
@@ -252,11 +248,11 @@ export default class OnRampStore extends BaseStore {
         this.is_requesting_widget_html = is_requesting_widget_html;
     }
 
-    setSelectedProvider(provider?: TOnRampProvider | null) {
+    async setSelectedProvider(provider?: TOnRampProvider | null) {
         if (provider) {
             this.selected_provider = provider;
             this.setIsOnRampModalOpen(true);
-            this.pollApiForDepositAddress(true);
+            await this.pollApiForDepositAddress(true);
         } else {
             this.setIsOnRampModalOpen(false);
             this.selected_provider = null;

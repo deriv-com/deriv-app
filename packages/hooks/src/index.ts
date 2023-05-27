@@ -14,6 +14,7 @@ export { default as useHasSetCurrency } from './useHasSetCurrency';
 export { default as useHasSvgAccount } from './useHasSvgAccount';
 export { default as useHasSwapFreeAccount } from './useHasSwapFreeAccount';
 export { default as useHasUSDCurrency } from './useHasUSDCurrency';
+export { default as useInputATMFormatter } from './useInputATMFormatter';
 export { default as useInputDecimalFormatter } from './useInputDecimalFormatter';
 export { default as useIsP2PEnabled } from './useIsP2PEnabled';
 export { default as useIsRealAccountNeededForCashier } from './useIsRealAccountNeededForCashier';

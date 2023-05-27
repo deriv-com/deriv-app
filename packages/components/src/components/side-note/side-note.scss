@@ -1,4 +1,4 @@
-.side-note-card {
+.side-note {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -6,6 +6,7 @@
     background-color: var(--general-section-1);
     border-radius: $BORDER_RADIUS * 2;
     padding: 1.6rem 2.4rem;
+    align-self: stretch;
 
     &__content {
         display: flex;
@@ -24,21 +25,6 @@
 
         :hover {
             text-decoration: underline;
-        }
-    }
-
-    &__bullets {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.8rem;
-
-        &--item {
-            display: flex;
-            flex-direction: row;
-            align-items: flex-start;
-            gap: 0.4rem;
-            align-self: stretch;
         }
     }
 }

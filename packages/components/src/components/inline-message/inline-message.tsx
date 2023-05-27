@@ -39,13 +39,11 @@ const InlineMessage: React.FC<React.PropsWithChildren<TProps>> = ({
     return (
         <div className={`inline-message inline-message__${type} inline-message__${size} `}>
             <Icon size={icon_size} icon={icon} className={`inline-message__icon__${size}`} />
-            {(title || message || children) && (
-                <Text size={font_size} className={`inline-message__messages inline-message__messages__${size}`}>
-                    {title && <strong>{title}</strong>}
-                    {message && <span>{message}</span>}
-                    {children}
-                </Text>
-            )}
+            <Text size={font_size} className={`inline-message__messages inline-message__messages__${size}`}>
+                {title && <strong>{title}</strong>}
+                {message && <span>{message}</span>}
+                {children}
+            </Text>
         </div>
     );
 };

@@ -21,10 +21,9 @@ const size_to_font_size_mapper = {
 type TProps = {
     type?: 'warning' | 'information' | 'announcement' | 'error';
     size?: 'xs' | 'sm' | 'md' | 'lg';
-    title?: string;
-    message?: string;
-    children?: React.ReactNode;
-} & ({ title: string } | { message: string } | { children: React.ReactNode });
+    title?: React.ReactNode;
+    message?: React.ReactNode;
+} & ({ title: React.ReactNode } | { message: React.ReactNode } | { children: React.ReactNode });
 
 const InlineMessage: React.FC<React.PropsWithChildren<TProps>> = ({
     type = 'warning',
@@ -32,25 +31,23 @@ const InlineMessage: React.FC<React.PropsWithChildren<TProps>> = ({
     title,
     message,
     children,
-}) => (
-    <div className={`inline-message inline-message__${type} inline-message__${size} `}>
-        <Icon
-            size={size === 'lg' && !isMobile() ? 24 : 16}
-            icon={type_to_icon_mapper[type]}
-            className={`inline-message__icon__${size}`}
-        />
-        {(title || message || children) && (
-            <div className={`inline-message__messages-container inline-message__messages-container__${size}`}>
-                {title && (
-                    <Text size={'xxxs'} weight='bold'>
-                        {title}
-                    </Text>
-                )}
-                {message && <Text size={size_to_font_size_mapper[size]}>{message}</Text>}
-                {children}
-            </div>
-        )}
-    </div>
-);
+}) => {
+    const icon = type_to_icon_mapper[type];
+    const icon_size = size === 'lg' && !isMobile() ? 24 : 16;
+    const font_size = size_to_font_size_mapper[size];
+
+    return (
+        <div className={`inline-message inline-message__${type} inline-message__${size} `}>
+            <Icon size={icon_size} icon={icon} className={`inline-message__icon__${size}`} />
+            {(title || message || children) && (
+                <Text size={font_size} className={`inline-message__messages inline-message__messages__${size}`}>
+                    {title && <strong>{title}</strong>}
+                    {message && <span>{message}</span>}
+                    {children}
+                </Text>
+            )}
+        </div>
+    );
+};
 
 export default InlineMessage;

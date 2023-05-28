@@ -12,7 +12,12 @@ type TIdvSubmitComplete = {
     redirect_button: React.ReactNode;
 };
 
-const IdvSubmitComplete = ({ is_from_external, mismatch_status, needs_poa, redirect_button }: TIdvSubmitComplete) => {
+const IdvSubmitComplete = ({
+    is_from_external,
+    mismatch_status,
+    needs_poa,
+    redirect_button,
+}: Partial<TIdvSubmitComplete>) => {
     const is_mismatch_error =
         mismatch_status === idv_error_statuses.poi_name_dob_mismatch ||
         mismatch_status === idv_error_statuses.poi_dob_mismatch ||

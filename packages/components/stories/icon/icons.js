@@ -488,7 +488,6 @@ export const icons =
         'IcPoiNimcSlip',
         'IcPoiPassport',
         'IcPoiSuspected',
-        'IcPoiUpdated',
         'IcPoiUploadDashboard',
         'IcPoiUpload',
         'IcPoiVerifiedDashboard',

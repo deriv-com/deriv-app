@@ -44,6 +44,7 @@ type TIdvFailed = {
     account_settings: GetSettings;
     getChangeableFields: () => string[];
     // handleSubmit: () => void;
+    is_from_external: boolean;
     mismatch_status: TIDVErrorStatus;
     residence_list: ResidenceList;
 };
@@ -59,6 +60,7 @@ type TIdvFailedForm = Partial<TIDVForm> & Partial<TPersonalDetailsForm>;
 
 const IdvFailed = ({
     getChangeableFields,
+    is_from_external,
     residence_list,
     account_settings,
     // handleSubmit,
@@ -265,6 +267,11 @@ const IdvFailed = ({
     const citizen = account_settings?.citizen;
     const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
 
+    const SubmitButtonFooter = ({ is_bypassed, children }: { is_bypassed: boolean; children: React.ReactNode }) => {
+        if (is_bypassed) return children;
+        return <FormFooter>{children}</FormFooter>;
+    };
+
     return (
         <Formik
             initialValues={rest_state?.form_initial_values ?? {}}
@@ -316,7 +323,7 @@ const IdvFailed = ({
                             inline_note_text={idv_failure?.inline_note_text}
                         />
                     </FormBody>
-                    <FormFooter>
+                    <SubmitButtonFooter is_bypassed={!is_from_external}>
                         <Button
                             className='proof-of-identity__submit-button'
                             type='submit'
@@ -326,7 +333,7 @@ const IdvFailed = ({
                             large
                             primary
                         />
-                    </FormFooter>
+                    </SubmitButtonFooter>
                 </Form>
             )}
         </Formik>

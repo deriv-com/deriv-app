@@ -14,6 +14,7 @@ const POISubmissionForMT5 = ({
     getChangeableFields,
     idv,
     is_idv_disallowed,
+    is_from_external,
     onfido,
     onStateChange,
     refreshNotifications,
@@ -110,6 +111,7 @@ const POISubmissionForMT5 = ({
                         getChangeableFields={getChangeableFields}
                         account_settings={account_settings}
                         residence_list={residence_list}
+                        is_from_external={is_from_external}
                     />
                 ) : (
                     <IdvDocSubmitOnSignup

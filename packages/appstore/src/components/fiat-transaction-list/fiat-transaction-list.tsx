@@ -1,16 +1,25 @@
 import React from 'react';
 import { Statement } from '@deriv/api-types';
-import { isMobile } from '@deriv/shared';
+import { getCurrencyDisplayCode, isMobile } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { useGroupedFiatTransactions } from '@deriv/hooks';
+import { useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+import { getWalletCurrencyIcon } from 'Constants/utils';
 import FiatTransactionListItem from './fiat-transaction-list-item';
 
-type TFiatTransactionListProps = {
-    wallet: any;
-};
-
-const FiatTransactionList = ({ wallet }: TFiatTransactionListProps) => {
+const FiatTransactionList = () => {
+    const store = useStore();
+    const {
+        client: { currency },
+        traders_hub: { is_demo },
+        ui: { is_dark_mode_on },
+    } = store;
     const grouped_transactions = useGroupedFiatTransactions();
+
+    const wallet_title = React.useMemo(() => {
+        return `${is_demo ? localize('Demo') : ''} ${getCurrencyDisplayCode(currency)} ${localize('Wallet')}`;
+    }, [currency, is_demo]);
 
     const TransactionsForADay = ({
         day,
@@ -37,6 +46,12 @@ const FiatTransactionList = ({ wallet }: TFiatTransactionListProps) => {
                             transaction.action_type === undefined
                         )
                             return null;
+                        const account_name = wallet_title;
+                        const icon = getWalletCurrencyIcon(is_demo ? 'demo' : currency, is_dark_mode_on, false);
+                        const icon_type = 'fiat';
+                        if (transaction.action_type === 'transfer') {
+                            // TODO use to/from loginid to get and reassign transaction_account_name, icon & icon_type
+                        }
                         return (
                             <FiatTransactionListItem
                                 key={transaction.transaction_id}
@@ -45,11 +60,12 @@ const FiatTransactionList = ({ wallet }: TFiatTransactionListProps) => {
                                         typeof FiatTransactionListItem
                                     >['action_type']
                                 }
-                                account_name={'TODO get from store'}
+                                account_name={account_name}
                                 amount={transaction.amount}
                                 balance_after={transaction.balance_after}
-                                currency={'TODO'}
-                                wallet={wallet}
+                                currency={currency}
+                                icon={icon}
+                                icon_type={icon_type}
                             />
                         );
                     })

@@ -80,15 +80,7 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcStatement',
                     label: localize('Transactions'),
-                    content: (
-                        <FiatTransactionList
-                            wallet={{
-                                currency: 'usd',
-                                icon: 'IcWalletCurrencyUsd',
-                                icon_type: 'fiat',
-                            }}
-                        />
-                    ),
+                    content: <FiatTransactionList />,
                 },
             ];
         case 'demo':
@@ -101,15 +93,7 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcStatement',
                     label: localize('Transactions'),
-                    content: (
-                        <FiatTransactionList
-                            wallet={{
-                                currency: 'usd',
-                                icon: 'IcWalletCurrencyUsd',
-                                icon_type: 'fiat',
-                            }}
-                        />
-                    ),
+                    content: <FiatTransactionList />,
                 },
                 {
                     icon: 'IcAdd',

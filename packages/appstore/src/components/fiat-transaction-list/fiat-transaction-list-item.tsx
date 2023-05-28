@@ -12,7 +12,8 @@ type TFiatTransactionListItem = Pick<StatementTransaction, 'amount' | 'balance_a
         | 'reset_balance';
     account_name: string;
     currency: string;
-    wallet: any;
+    icon: string;
+    icon_type: string;
 };
 
 const FiatTransactionListItem = ({
@@ -21,7 +22,8 @@ const FiatTransactionListItem = ({
     amount,
     balance_after,
     currency,
-    wallet,
+    icon,
+    icon_type,
 }: TFiatTransactionListItem) => {
     const formatAmount = useCallback(
         (value: number) => value.toLocaleString(undefined, { minimumFractionDigits: 2 }),
@@ -36,7 +38,14 @@ const FiatTransactionListItem = ({
     return (
         <div className='fiat-transaction-list__item'>
             <div>
-                <WalletCard wallet={wallet} size='small' />
+                <WalletCard
+                    wallet={{
+                        currency,
+                        icon,
+                        icon_type,
+                    }}
+                    size='small'
+                />
                 <span>
                     <Text
                         size={isMobile() ? 'xxxs' : 'xxs'}

@@ -56,6 +56,7 @@ export default class CryptoFiatConverterStore {
     }
 
     async getExchangeRate(from_currency?: string, to_currency?: string) {
+        // use UseExchangeRates hook instead
         const { exchange_rates } = await this.WS.send({
             exchange_rates: 1,
             base_currency: from_currency,

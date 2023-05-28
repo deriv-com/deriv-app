@@ -303,6 +303,7 @@ export default class CommonStore extends BaseStore {
     isCurrentLanguage = lang => lang === this.current_language;
 
     getExchangeRate = async (from_currency, to_currency) => {
+        // read from exchangeRatesStore
         const { exchange_rates } = await BinarySocket.exchange_rates(from_currency);
 
         return exchange_rates?.rates?.[to_currency];

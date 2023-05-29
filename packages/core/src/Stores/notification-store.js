@@ -1605,7 +1605,6 @@ export default class NotificationStore extends BaseStore {
                 text: localize('Go to live chat'),
             },
             platform: [platform_name.DTrader, platform_name.DBot],
-            is_disposable: true,
             type: 'danger',
         });
     };

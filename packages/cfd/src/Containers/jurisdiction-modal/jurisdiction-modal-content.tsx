@@ -14,22 +14,42 @@ const JurisdictionModalContent = ({
     financial_available_accounts,
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
+    real_swapfree_accounts_existing_data,
+    swapfree_available_accounts,
 }: TJurisdictionModalContentProps) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
 
-    const cardsToBeShown = (type_of_card: string) =>
-        account_type === 'synthetic'
-            ? synthetic_available_accounts?.some(account => account.shortcode === type_of_card)
-            : financial_available_accounts?.some(account => account.shortcode === type_of_card);
+    const cardsToBeShown = (type_of_card: string) => {
+        switch (account_type) {
+            case 'synthetic':
+                return synthetic_available_accounts?.some(account => account.shortcode === type_of_card);
+            case 'all':
+                return swapfree_available_accounts?.some(account => account.shortcode === type_of_card);
+            default:
+                return financial_available_accounts?.some(account => account.shortcode === type_of_card);
+        }
+    };
 
     const disableCard = (type_of_card: string) => {
         if (is_virtual && type_of_card !== 'svg') {
             return true;
         }
-        return account_type === 'synthetic'
-            ? real_synthetic_accounts_existing_data?.some(account => account.landing_company_short === type_of_card)
-            : real_financial_accounts_existing_data?.some(account => account.landing_company_short === type_of_card);
+        switch (account_type) {
+            case 'synthetic':
+                return real_synthetic_accounts_existing_data?.some(
+                    account => account.landing_company_short === type_of_card
+                );
+            case 'all':
+                return real_swapfree_accounts_existing_data?.some(
+                    account => account.landing_company_short === type_of_card
+                );
+            default:
+                return real_financial_accounts_existing_data?.some(
+                    account => account.landing_company_short === type_of_card
+                );
+        }
     };
+
     const jurisdiction_cards_array = [
         Jurisdiction.SVG,
         Jurisdiction.BVI,
@@ -37,6 +57,7 @@ const JurisdictionModalContent = ({
         Jurisdiction.LABUAN,
         Jurisdiction.MALTA_INVEST,
     ];
+
     return (
         <div data-testid='dt-jurisdiction-modal-content' className={`${card_classname}__wrapper`}>
             {jurisdiction_cards_array.map(

@@ -3,6 +3,7 @@ import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@d
 import { localize } from '@deriv/translations';
 import { connect } from '../../Stores/connect';
 import RootStore from '../../Stores/index';
+import { getMT5Title } from '@deriv/shared';
 import { TJurisdictionModalProps } from '../props.types';
 import JurisdictionModalContentWrapper from './jurisdiction-modal-content-wrapper';
 
@@ -19,7 +20,7 @@ const JurisdictionModal = ({
     const modal_title = show_eu_related_content
         ? localize('Choose a jurisdiction for your Deriv MT5 CFDs account')
         : localize('Choose a jurisdiction for your Deriv MT5 {{account_type}} account', {
-              account_type: account_type.type === 'synthetic' ? 'Derived' : 'Financial',
+              account_type: getMT5Title(account_type.type),
           });
 
     return (
@@ -36,7 +37,7 @@ const JurisdictionModal = ({
                         toggleModal={toggleJurisdictionModal}
                         type='button'
                         context={context}
-                        width={account_type.type === 'synthetic' ? '1160px' : '1300px'}
+                        width={account_type.type === 'financial' ? '1300px' : '1160px'}
                     >
                         <JurisdictionModalContentWrapper openPasswordModal={openPasswordModal} context={context} />
                     </Modal>

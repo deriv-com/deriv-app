@@ -17,13 +17,20 @@ const JurisdictionCard = ({
 }: TJurisdictionCardProps) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
     const is_synthetic = account_type === 'synthetic';
+    const is_swapfree = account_type === 'all';
     const card_values = getJurisdictionContents()[type_of_card];
-    const card_data = is_synthetic ? card_values.synthetic_contents : card_values.financial_contents;
+    const non_synthetic_card_data = is_swapfree
+        ? card_values?.swapfree_contents ?? []
+        : card_values?.financial_contents;
+    const card_data = is_synthetic ? card_values?.synthetic_contents : non_synthetic_card_data;
     const [is_card_flipped, setIsCardFlipped] = React.useState(false);
     const is_card_selected = jurisdiction_selected_shortcode === type_of_card;
     let verification_docs = is_synthetic
         ? card_values?.synthetic_verification_docs
         : card_values?.financial_verification_docs;
+    if ([Jurisdiction.BVI, Jurisdiction.VANUATU, Jurisdiction.LABUAN].includes(type_of_card) && is_onfido_design) {
+        verification_docs = ['selfie', 'identity_document', 'name_and_address'];
+    }
 
     const cardSelection = (cardType: string) => {
         setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);
@@ -33,10 +40,6 @@ const JurisdictionCard = ({
         event.stopPropagation();
         setIsCardFlipped(!is_card_flipped);
     };
-
-    if ([Jurisdiction.BVI, Jurisdiction.VANUATU, Jurisdiction.LABUAN].includes(type_of_card) && is_onfido_design) {
-        verification_docs = ['selfie', 'identity_document', 'name_and_address'];
-    }
 
     return (
         <div className='cfd-card-perspective'>

@@ -1,5 +1,6 @@
 .cfd-jurisdiction-card--synthetic,
-.cfd-jurisdiction-card--financial {
+.cfd-jurisdiction-card--financial,
+.cfd-jurisdiction-card--all {
     border: solid 2px var(--border-normal);
     border-radius: $BORDER_RADIUS * 4;
     display: flex;
@@ -173,7 +174,8 @@
         -webkit-transition: all 0.25s ease-in;
         transition: all 0.25s ease-in;
         width: 29rem;
-        &.synthetic {
+        &.synthetic,
+        &.all {
             min-height: 48rem;
         }
         &.financial {

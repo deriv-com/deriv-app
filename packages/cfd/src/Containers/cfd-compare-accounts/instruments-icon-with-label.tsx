@@ -1,5 +1,5 @@
 import React from 'react';
-import TradingInstrumentsIcon from 'Assets/svgs/trading-instruments';
+import TradingInstrumentsIcon from '../../Assets/svgs/trading-instruments';
 
 interface IconProps {
     icon:
@@ -14,9 +14,10 @@ interface IconProps {
         | 'ETF';
     text: string;
     highlighted: boolean;
+    className?: string;
 }
 
-const InstumentsIconWithLabel: React.FC<IconProps> = ({ icon, text, highlighted }) => {
+const InstumentsIconWithLabel: React.FC<IconProps> = ({ icon, text, highlighted, className }) => {
     let size = 24;
     const dummyFunc = () => {
         size = 24;
@@ -29,6 +30,7 @@ const InstumentsIconWithLabel: React.FC<IconProps> = ({ icon, text, highlighted 
                 margin: '3px',
                 opacity: highlighted ? '' : '0.2',
             }}
+            className={className}
         >
             <TradingInstrumentsIcon icon={icon} size={size} className='trading-instruments__icon' onClick={dummyFunc} />
             <span

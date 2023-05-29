@@ -32,7 +32,7 @@ export const getCFDAvailableAccount = () => [
     },
     {
         name: 'Deriv EZ',
-        description: localize('Easy-to-start platform.'),
+        description: localize('This account offers CFDs on an easy-to-get-started CFD trading platform.'),
         platform: CFD_PLATFORMS.DERIVEZ,
         market_type: 'all',
         icon: 'DerivEz',

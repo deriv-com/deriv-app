@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Statement } from '@deriv/api-types';
 import { getCurrencyDisplayCode, isMobile } from '@deriv/shared';
 import { Text } from '@deriv/components';
@@ -11,7 +11,7 @@ import FiatTransactionListItem from './fiat-transaction-list-item';
 const FiatTransactionList = () => {
     const store = useStore();
     const {
-        client: { loginid, account_list, currency },
+        client: { account_list, currency, loginid },
         traders_hub: { is_demo },
         ui: { is_dark_mode_on },
     } = store;

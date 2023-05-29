@@ -64,10 +64,10 @@ Blockly.Css.CONTENT = [
     '}',
 
     '.injectionDiv {',
-    'height: 100%;',
+    'height: calc(100vh - 11rem);',
     'position: relative;',
     'overflow: hidden;' /* So blocks in drag surface disappear at edges */,
-    'touch-action: none',
+    'touch-action: none;',
     '}',
 
     '.blocklyNonSelectable {',
@@ -635,7 +635,6 @@ Blockly.Css.CONTENT = [
 
     '.blocklyMainBackground {',
     'stroke-width: 0;',
-    'fill: var(--general-main-1) !important',
     // 'stroke: #c6c6c6;',  /* Equates to #ddd due to border being off-pixel. */
     '}',
 

@@ -1,12 +1,16 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
-import PropTypes from 'prop-types';
-import './page-return.scss';
 
-const PageReturn = ({ className, onClick, page_title }) => {
+type TPageReturnProps = {
+    className?: string;
+    onClick: () => void;
+    page_title: string;
+};
+
+const PageReturn = ({ className = '', onClick, page_title }: TPageReturnProps) => {
     return (
-        <div className={classNames('page-return', className)} data-testid='order-details-wrapper-desktop'>
+        <div className={classNames('page-return', className)} data-testid='dt_page_return'>
             <div onClick={onClick} className='page-return__button'>
                 <Icon icon='IcArrowLeftBold' size={16} />
             </div>
@@ -15,12 +19,6 @@ const PageReturn = ({ className, onClick, page_title }) => {
             </Text>
         </div>
     );
-};
-
-PageReturn.propTypes = {
-    className: PropTypes.string,
-    onClick: PropTypes.func,
-    page_title: PropTypes.string,
 };
 
 export default PageReturn;

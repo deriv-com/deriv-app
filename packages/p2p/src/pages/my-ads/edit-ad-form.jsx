@@ -5,7 +5,7 @@ import { Button, Div100vhContainer, Input, Loading, Modal, Text, ThemedScrollbar
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { Localize, localize } from 'Components/i18next';
-import PageReturn from 'Components/page-return/page-return.jsx';
+import PageReturn from 'Components/page-return';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';

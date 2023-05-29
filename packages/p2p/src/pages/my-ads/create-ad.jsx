@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Loading } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
-import PageReturn from 'Components/page-return/page-return.jsx';
+import PageReturn from 'Components/page-return';
 import { useStores } from 'Stores';
 import CreateAdForm from './create-ad-form.jsx';
 

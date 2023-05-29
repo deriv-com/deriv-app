@@ -20,6 +20,7 @@ export { default as useIsRealAccountNeededForCashier } from './useIsRealAccountN
 export { default as useIsSystemMaintenance } from './useIsSystemMaintenance';
 export { default as useNeedAuthentication } from './useNeedAuthentication';
 export { default as useNeedFinancialAssessment } from './useNeedFinancialAssessment';
+export { default as useNeedPOI } from './useNeedPOI';
 export { default as useNeedTNC } from './useNeedTNC';
 export { default as useOnrampVisible } from './useOnrampVisible';
 export { default as useP2PNotificationCount } from './useP2PNotificationCount';

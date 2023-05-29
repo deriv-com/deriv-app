@@ -14,20 +14,27 @@ const JurisdictionCard = ({
     financial_available_accounts,
     setJurisdictionSelectedShortcode,
     synthetic_available_accounts,
+    swapfree_available_accounts,
     type_of_card,
 }: TJurisdictionCardProps) => {
     const card_classname = `cfd-jurisdiction-card--${account_type}`;
     const number_of_synthetic_accounts_to_be_shown = synthetic_available_accounts?.length;
     const number_of_financial_accounts_to_be_shown = financial_available_accounts?.length;
+    const number_of_swapfree_accounts_to_be_shown = swapfree_available_accounts?.length;
 
     const is_synthetic = account_type === 'synthetic';
+    const is_swapfree = account_type === 'all';
+    const non_synthetic_accounts = is_swapfree
+        ? number_of_swapfree_accounts_to_be_shown
+        : number_of_financial_accounts_to_be_shown;
     const [number_of_cards] = React.useState(
-        is_synthetic ? number_of_synthetic_accounts_to_be_shown : number_of_financial_accounts_to_be_shown
+        is_synthetic ? number_of_synthetic_accounts_to_be_shown : non_synthetic_accounts
     );
 
     const card_values = getJurisdictionContents()[type_of_card as TJurisdictionCardType];
 
-    const card_data = is_synthetic ? card_values.synthetic_contents : card_values.financial_contents;
+    const non_synthetic_card_data = is_swapfree ? card_values.swapfree_contents : card_values.financial_contents;
+    const card_data = is_synthetic ? card_values.synthetic_contents : non_synthetic_card_data;
 
     const cardSelection = (cardType: string) => {
         setJurisdictionSelectedShortcode(jurisdiction_selected_shortcode === cardType ? '' : cardType);
@@ -57,7 +64,7 @@ const JurisdictionCard = ({
                     <Text as='p' color={'prominent'} weight='bold' size='sm' className={`${card_classname}__h2-header`}>
                         <Localize i18n_default_text={card_values.header} />
                     </Text>
-                    {card_data.map((item, index) => (
+                    {card_data?.map((item, index) => (
                         <div className={`${card_classname}__bullet-wrapper`} key={index}>
                             <div>
                                 <Checkmark />

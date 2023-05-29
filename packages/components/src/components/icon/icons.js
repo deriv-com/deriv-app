@@ -645,6 +645,7 @@ import './mt5/ic-mt5-open-markets.svg';
 import './mt5/ic-mt5-password-updated.svg';
 import './mt5/ic-mt5-responsive.svg';
 import './mt5/ic-mt5-support.svg';
+import './mt5/ic-mt5-swap-free-platform.svg';
 import './mt5/ic-mt5-synthetic-dashboard.svg';
 import './mt5/ic-mt5-synthetic-indices.svg';
 import './mt5/ic-mt5-synthetic-platform.svg';

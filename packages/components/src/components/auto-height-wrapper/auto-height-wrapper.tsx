@@ -1,7 +1,7 @@
 import React from 'react';
 import { usePrevious } from '../../hooks';
 
-export type TAutoHeightWrapperChildProps = {
+type TAutoHeightWrapperChildProps = {
     height: number;
     setRef: (ref: HTMLFormElement | null) => void;
 };

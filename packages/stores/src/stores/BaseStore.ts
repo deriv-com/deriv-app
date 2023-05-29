@@ -1,4 +1,4 @@
-import { action, observable, makeObservable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 import { makePersistable, stopPersisting } from 'mobx-persist-store';
 
 export default class BaseStore<T> {

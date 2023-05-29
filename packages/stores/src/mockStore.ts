@@ -1,5 +1,5 @@
 import merge from 'lodash.merge';
-import { TStores } from '../types';
+import type { TStores } from '../types';
 
 const mock = (): TStores & { is_mock: boolean } => {
     return {
@@ -8,6 +8,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             account_settings: {},
             accounts: {},
             active_account_landing_company: '',
+            trading_platform_available_accounts: [],
             account_limits: {
                 daily_transfers: {
                     dxtrade: {
@@ -194,6 +195,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTwoFAChangedStatus: jest.fn(),
             has_any_real_account: false,
             real_account_creation_unlock_date: 0,
+            setPrevAccountType: jest.fn(),
         },
         common: {
             error: {
@@ -285,6 +287,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTogglePlatformType: jest.fn(),
             setSelectedAccount: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
+            selectAccountType: jest.fn(),
         },
         menu: {
             attach: jest.fn(),
@@ -317,6 +320,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             },
             getPositionById: jest.fn(),
             is_loading: false,
+            is_accumulator: false,
             is_multiplier: false,
             onClickCancel: jest.fn(),
             onClickSell: jest.fn(),
@@ -337,4 +341,4 @@ const mock = (): TStores & { is_mock: boolean } => {
 
 const mockStore = (override: DeepPartial<TStores>): TStores => merge(mock(), override);
 
-export { mockStore };
+export default mockStore;

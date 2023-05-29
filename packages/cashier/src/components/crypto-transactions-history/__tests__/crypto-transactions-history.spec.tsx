@@ -2,12 +2,13 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsHistory from '../crypto-transactions-history';
 import CashierProviders from '../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
 
 describe('<CryptoTransactionsHistory />', () => {
-    let mockRootStore;
+    let mockRootStore: ReturnType<typeof mockStore>;
 
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             modules: {
                 cashier: {
                     transaction_history: {
@@ -23,7 +24,7 @@ describe('<CryptoTransactionsHistory />', () => {
             client: {
                 currency: 'BTC',
             },
-        };
+        });
     });
 
     const renderCryptoTransactionsHistory = () =>

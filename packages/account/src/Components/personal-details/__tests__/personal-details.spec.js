@@ -17,7 +17,7 @@ jest.mock('@deriv/shared', () => ({
     isDesktop: jest.fn(() => true),
 }));
 
-jest.mock('../../real-account-signup/helpers/utils.js', () => ({
+jest.mock('../../real-account-signup/helpers/utils.ts', () => ({
     splitValidationResultTypes: jest.fn(() => ({
         warnings: mock_warnings,
         errors: mock_errors,

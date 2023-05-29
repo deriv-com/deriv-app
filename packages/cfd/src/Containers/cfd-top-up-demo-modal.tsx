@@ -47,16 +47,30 @@ const CFDTopUpDemoModal = ({
     const getAccountTitle = React.useCallback(() => {
         let title = '';
         if ((!mt5_companies && !dxtrade_companies && !derivez_companies) || !current_account) return '';
-        else if (platform === CFD_PLATFORMS.MT5) {
-            title =
-                mt5_companies[current_account.category as keyof TMtCompanies][
-                    current_account.type as keyof TMtCompanies['demo' | 'real']
-                ].title;
-        } else if (platform === CFD_PLATFORMS.DERIVEZ)
-            title =
-                derivez_companies[current_account.category as keyof TDerivezCompanies][
-                    current_account.type as keyof TDerivezCompanies['demo' | 'real']
-                ].title;
+
+        switch (platform) {
+            case CFD_PLATFORMS.MT5:
+                title =
+                    mt5_companies[current_account.category as keyof TMtCompanies][
+                        current_account.type as keyof TMtCompanies['demo' | 'real']
+                    ].title;
+                break;
+            case CFD_PLATFORMS.DERIVEZ:
+                title =
+                    derivez_companies[current_account.category as keyof TDerivezCompanies][
+                        current_account.type as keyof TDerivezCompanies['demo' | 'real']
+                    ].title;
+                break;
+            case CFD_PLATFORMS.DXTRADE:
+                title =
+                    dxtrade_companies[current_account.category as keyof TDxCompanies][
+                        current_account.type as keyof TDxCompanies['demo' | 'real']
+                    ].title;
+                break;
+            default:
+                break;
+        }
+
         return title;
     }, [mt5_companies, dxtrade_companies, current_account, derivez_companies]);
 

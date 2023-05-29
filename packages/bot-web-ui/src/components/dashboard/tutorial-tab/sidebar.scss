@@ -1,0 +1,103 @@
+.tutorials-wrapper {
+    width: 100%;
+    background: var(--general-main-1);
+    .dc-tabs {
+        &__wrapper {
+            padding: 1.6rem 0.8rem;
+
+            &__group {
+                display: flex;
+                width: 22.5rem;
+                position: relative;
+                justify-content: center;
+                align-items: center;
+                padding: 1.6rem 0;
+                z-index: 99;
+
+                svg {
+                    position: absolute;
+                    left: 1.5rem;
+                    z-index: 1;
+                }
+
+                &__search-input {
+                    width: 21rem;
+                    height: 3.2rem;
+                    border-radius: 0.4rem;
+                    outline: none;
+                    background-color: transparent;
+                    font-size: 1.4rem;
+                    padding-left: 3rem;
+                    border: solid 0.1rem var(--checkbox-disabled-grey);
+                    color: var(--text-general);
+
+                    ::placeholder {
+                        margin-left: 3.2rem;
+                    }
+                }
+            }
+
+            .dc-tabs {
+                &__content {
+                    margin: -6.5rem 2.4rem;
+                    width: 100%;
+                }
+                &--top {
+                    display: flex;
+                    @include mobile {
+                        height: calc(100vh - 22rem);
+                    }
+                }
+                &__list {
+                    width: 22.5rem;
+                    display: flex;
+                    flex-direction: column;
+                    padding: 0 0.8rem;
+
+                    &--border-bottom {
+                        padding: 0 0.8rem;
+                        height: 100vh;
+
+                        &:first-child {
+                            margin-top: -7.2rem;
+                        }
+                    }
+                }
+
+                &__item {
+                    width: 100% !important;
+                    &--top {
+                        &:first-child {
+                            margin-top: 7.5rem;
+                        }
+                    }
+                    &--tutorials {
+                        display: flex;
+                        justify-content: flex-start;
+                        padding: 0 1.6rem;
+                    }
+                }
+
+                &__active {
+                    background-color: var(--sidebar-tab);
+                    border-radius: 0.4rem 0.4rem 0 0;
+                    transition: all 0.6s;
+                }
+            }
+        }
+    }
+}
+
+.tutorials-mobile {
+    padding: 1.6rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+    &__select {
+        height: 4rem;
+        margin-bottom: 1.5rem;
+    }
+    &__guide {
+        height: calc(100vh - 21.1rem);
+        overflow: auto;
+    }
+}

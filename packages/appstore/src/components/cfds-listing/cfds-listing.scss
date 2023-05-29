@@ -1841,29 +1841,22 @@
 .acuity {
     &-container {
         background: var(--general-section-3);
-        display: flex;
         position: relative;
         top: 2.3rem;
         margin-bottom: 2.7rem;
-        align-items: center;
+        width: 55rem;
     }
     &-banner {
-        display: flex;
-        flex-grow: 1;
+        width: auto;
         &--wrapper {
             display: flex;
-            &--icon {
-                display: flex;
-                position: absolute;
-                left: 0.8rem;
-            }
+            align-items: center;
+            width: 53rem;
+            justify-content: space-between;
+            margin: 0 auto;
             &--text {
-                position: relative;
-                right: 17rem;
-            }
-            &--arrow-icon {
-                position: relative;
-                left: 19rem;
+                flex: 1;
+                margin: 0 1.6rem;
             }
         }
     }

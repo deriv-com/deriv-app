@@ -298,6 +298,7 @@ const Chart = props => {
         wsSendRequest,
         wsSubscribe,
         markers_array,
+        is_positions_drawer_on,
     } = props;
 
     const { current_spot, current_spot_time } = accumulator_barriers_data[symbol] || {};
@@ -383,6 +384,7 @@ const Chart = props => {
                 top: isMobile() ? 76 : 106,
             }}
             isLive={true}
+            leftMargin={isDesktop() && is_positions_drawer_on ? 248 : undefined}
         >
             {is_accumulator && (
                 <AccumulatorsChartElements
@@ -467,4 +469,5 @@ const ChartTrade = connect(({ client, modules, ui, common, contract_trade, portf
     active_symbols: modules.trade.active_symbols,
     has_alternative_source: modules.trade.has_alternative_source,
     refToAddTick: modules.trade.refToAddTick,
+    is_positions_drawer_on: ui.is_positions_drawer_on,
 }))(Chart);

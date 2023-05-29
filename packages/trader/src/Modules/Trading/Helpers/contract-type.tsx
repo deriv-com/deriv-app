@@ -114,20 +114,21 @@ export const getAvailableContractTypes = (contract_types_list: Tcontract_types_l
         .filter(Boolean);
 };*/
 
-const flatten = (arr: any) => [].concat(...arr);
+// const flatten = (arr: any) => [].concat(...arr);
+
 /**
  * Flatten list object into an array of contract category label and contract types names
  * @param {object} list
  */
-export const getContractsList = (list: any) =>
-    flatten(
-        Object.keys(list).map(
-            k => [
-                list[k].label.toLowerCase(), // contract category names
-                ...list[k].contract_types.map((c: any) => c.text.toLowerCase()),
-            ] // contract types names
-        )
-    );
+// export const getContractsList = (list: any) =>
+//     flatten(
+//         Object.keys(list).map(
+//             k => [
+//                 list[k].label.toLowerCase(), // contract category names
+//                 ...list[k].contract_types.map((c: any) => c.text.toLowerCase()),
+//             ] // contract types names
+//         )
+//     );
 
 export const findContractCategory = (list: TList[], item: TItem) => {
     return list?.find(list_item => list_item.contract_types.some(i => i.value === item.value)) || ({} as TList);

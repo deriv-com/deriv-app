@@ -1,5 +1,9 @@
-import React from 'react';
-import { getContractTypeCategoryIcons, getAvailableContractTypes } from '../contract-type';
+import {
+    getContractTypeCategoryIcons,
+    getAvailableContractTypes,
+    getContractCategoryKey,
+    getContractTypes,
+} from '../contract-type';
 
 const contract_types_test_list = {
     Accumulators: { name: 'Accumulators', categories: [{ value: 'accumulator', text: 'Accumulator' }] },
@@ -8,6 +12,40 @@ const contract_types_test_list = {
 };
 const unsupported_test_list = ['end', 'stay'];
 const unsupported_short_test_list = ['stay'];
+const contract_type_array = [
+    { value: 'accumulator', text: 'Accumulator' },
+    { value: 'rise_fall', text: 'Rise/Fall' },
+];
+const contract_categoty_list = [
+    {
+        contract_types: contract_type_array,
+        contract_categories: [
+            {
+                contract_types: contract_type_array,
+                icon: 'IcCatAll',
+                key: 'All',
+                label: 'All',
+            },
+        ],
+        icon: 'IcCatAll',
+        key: 'All',
+        label: 'All',
+    },
+    {
+        contract_types: [{ value: 'Multipliers', text: 'Multiplierss' }],
+        contract_categories: [
+            {
+                contract_types: [{ value: 'multipliers', text: 'Multipliers' }],
+                icon: 'IcCatMultiplier',
+                key: 'Multipliers',
+                label: 'Multipliers',
+            },
+        ],
+        icon: 'IcCatMultiplier',
+        key: 'Multipliers',
+        label: 'Multipliers',
+    },
+];
 
 describe('getContractTypeCategoryIcons', () => {
     it('should return an object with specific fields (like All, Options , Multipliers and etc.)', () => {
@@ -29,5 +67,23 @@ describe('getAvailableContractTypes', () => {
         expect(getAvailableContractTypes(contract_types_test_list, unsupported_test_list)[0]?.component).not.toEqual(
             null
         );
+    });
+});
+
+describe('getContractCategoryKey', () => {
+    it('should return key (contract category) if passed item has the same value as some of the passed list', () => {
+        expect(getContractCategoryKey(contract_categoty_list, { value: 'rise_fall' })).toEqual('All');
+    });
+    it('should return undefined (contract category) if passed item has not the same value as some of the passed list', () => {
+        expect(getContractCategoryKey(contract_categoty_list, { value: 'match_diff' })).toEqual(undefined);
+    });
+});
+
+describe('getContractTypes', () => {
+    it('should return an array with contract types if passed item has the same value as some of the passed list', () => {
+        expect(getContractTypes(contract_categoty_list, { value: 'rise_fall' })).toEqual(contract_type_array);
+    });
+    it('should return undefined if passed item has not the same value as some of the passed list', () => {
+        expect(getContractTypes(contract_categoty_list, { value: 'match_diff' })).toEqual(undefined);
     });
 });

@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Statement } from '@deriv/api-types';
 import { isMobile } from '@deriv/shared';
-import { Text, WalletCard } from '@deriv/components';
+import { Text, WalletIcon } from '@deriv/components';
 
 type StatementTransaction = DeepRequired<Statement>['transactions'][number];
 
@@ -38,14 +38,7 @@ const FiatTransactionListItem = ({
     return (
         <div className='fiat-transaction-list__item'>
             <div>
-                <WalletCard
-                    wallet={{
-                        currency,
-                        icon,
-                        icon_type,
-                    }}
-                    size='small'
-                />
+                <WalletIcon currency={currency} icon={icon} type={icon_type} has_bg={true} size='medium' />
                 <span>
                     <Text
                         size={isMobile() ? 'xxxs' : 'xxs'}

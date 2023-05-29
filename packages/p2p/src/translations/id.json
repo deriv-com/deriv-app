@@ -302,7 +302,7 @@
     "-854930519": "Anda TIDAK akan dapat mengembalikannya.",
     "-1600783504": "Tetapkan harga floating untuk iklan Anda.",
     "-2008992756": "Apakah Anda ingin membatalkan order ini?",
-    "-1666369246": "Jika Anda membatalkan order {{cancellation_limit}} kali dalam {{cancellation_period}} jam, Anda akan diblokir dari penggunaan Deriv P2P selama {{block_duration}} jam. <br /> ({{number_of_cancels_remaining}} pembatalan tersisa.)",
+    "-1666369246": "Jika Anda membatalkan order {{cancellation_limit}} kali dalam {{cancellation_period}} jam, Anda akan diblokir dari penggunaan Deriv P2P selama {{block_duration}} jam. <br /> ({{number_of_cancels_remaining}} pembatalan tersisa)",
     "-1618084450": "Jika Anda membatalkan order ini, Anda akan diblokir menggunakan Deriv P2P selama {{block_duration}} jam.",
     "-2026176944": "Jangan batalkan jika Anda sudah melakukan pembayaran.",
     "-1989544601": "Batalkan order ini",

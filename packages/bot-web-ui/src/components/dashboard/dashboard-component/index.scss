@@ -416,10 +416,10 @@
                 justify-content: center;
                 align-items: center;
                 flex-direction: column;
-                margin: 1rem 0;
                 padding-right: 2.4rem;
+
                 @include mobile {
-                    padding: 0;
+                    padding: 1rem;
                 }
 
                 &:hover {

@@ -18,8 +18,8 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
     const has_toggle_buttons = carousel_index !== 8 && carousel_index !== 1;
     const is_description_tab_selected = selected_tab === 'description';
     const is_glossary_tab_selected = selected_tab === 'glossary';
-
-    const width = isMobile() ? '328' : '528';
+    // // TODO uncomment this to enable switching tab transition/animation when all the glossary contents are ready
+    // const width = isMobile() ? '328' : '528';
     const scroll_bar_height = is_description_tab_selected ? '510px' : '440px';
 
     const handleItemSelect = active_index => {
@@ -44,10 +44,11 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                         'contract-type-info__scrollbars-glossary contract-type-info__scrollbars-glossary--active ':
                             is_glossary_tab_selected,
                     })}
-                    style={{
-                        left: `${is_description_tab_selected ? `-${width}` : width}px`,
-                        transform: `translate3d(${is_description_tab_selected ? width : `-${width}`}px, 0, 0)`,
-                    }}
+                    // TODO uncomment this to enable switching tab transition/animation when all the glossary contents are ready
+                    // style={{
+                    //     left: `${is_description_tab_selected ? `-${width}` : width}px`,
+                    //     transform: `translate3d(${is_description_tab_selected ? width : `-${width}`}px, 0, 0)`,
+                    // }}
                     height={isMobile() ? '' : scroll_bar_height}
                     autohide={false}
                 >

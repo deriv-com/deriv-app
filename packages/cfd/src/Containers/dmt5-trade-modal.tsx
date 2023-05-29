@@ -210,7 +210,7 @@ const DMT5TradeModal = ({
                                 transparent
                             >
                                 <div className='acuity-banner--wrapper'>
-                                    <Icon icon='icMt5Acuity' className='acuity-banner--wrapper--icon' />
+                                    <Icon icon='icMt5Acuity' />
                                     <Text
                                         as='p'
                                         size='xxs'
@@ -220,11 +220,7 @@ const DMT5TradeModal = ({
                                     >
                                         <Localize i18n_default_text='Get Acuity trading tools' />
                                     </Text>
-                                    <Icon
-                                        icon='IcChevronRightBold'
-                                        color='primary'
-                                        className='acuity-banner--wrapper--arrow-icon'
-                                    />
+                                    <Icon icon='IcChevronRightBold' color='primary' />
                                 </div>
                             </Button>
                         </div>

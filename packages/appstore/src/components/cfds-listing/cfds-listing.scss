@@ -1154,7 +1154,7 @@
 
     @for $column_count from 1 through 7 {
         .cfd-accounts-compare-modal__row-with-columns-count-#{$column_count} {
-            grid-template-columns: repeat($column_count, 1fr);
+            grid-template-columns: repeat($column_count - 1, 1fr);
         }
     }
     &__table-header {

@@ -3,7 +3,7 @@ import TradersHub from 'Modules/traders-hub';
 import ConfigStore from 'Stores/config-store';
 import { TRoute } from 'Types';
 import Onboarding from 'Modules/onboarding';
-import CFDCompareAccounts from '../../../cfd/src/Containers/cfd-compare-accounts';
+import CFDCompareAccounts from '@deriv/cfd/src/Containers/cfd-compare-accounts';
 
 type TRoutesConfig = {
     consumer_routes: ConfigStore['routes'];

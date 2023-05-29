@@ -5,7 +5,7 @@ import { Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Redirect from 'App/Containers/Redirect';
 import Endpoint from 'Modules/Endpoint';
-import CFDCompareAccounts from '../../../../cfd/src/Containers/cfd-compare-accounts';
+import CFDCompareAccounts from '@deriv/cfd/src/Containers/cfd-compare-accounts';
 
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ 'Modules/Page404'));

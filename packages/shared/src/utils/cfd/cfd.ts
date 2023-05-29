@@ -250,9 +250,11 @@ export const isLandingCompanyEnabled = ({ landing_companies, platform, type }: T
     return false;
 };
 
-export const getAuthenticationStatusInfo = (account_status: GetAccountStatus, is_idv_supported?: number) => {
+export const getAuthenticationStatusInfo = (account_status: GetAccountStatus, is_country_support_idv?: boolean) => {
     const poa_status = account_status?.authentication?.document?.status || '';
     const poi_status = account_status?.authentication?.identity?.status || '';
+
+    const is_idv_disallowed = account_status.status.some(status => status === 'idv_disallowed');
 
     const idv_status = account_status?.authentication?.identity?.services?.idv?.status;
     const onfido_status = account_status?.authentication?.identity?.services?.onfido?.status;
@@ -273,6 +275,8 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus, is
     const poi_and_poa_not_submitted = poa_not_submitted && poi_not_submitted;
 
     //vanuatu-maltainvest
+
+    const is_idv_supported = !is_idv_disallowed && is_country_support_idv;
 
     const poi_verified_for_vanuatu_maltainvest = [
         onfido_status,

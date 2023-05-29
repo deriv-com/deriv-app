@@ -418,8 +418,11 @@
                 justify-content: center;
                 align-items: center;
                 flex-direction: column;
-                width: 10.2rem;
                 margin: 1rem 0;
+                padding-right: 2.4rem;
+                @include mobile {
+                    padding: 0;
+                }
 
                 &:hover {
                     cursor: pointer;

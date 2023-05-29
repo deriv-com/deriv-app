@@ -111,6 +111,19 @@ const walletTransferReducer = (state: TWalletTransferState, action: TActionsType
                         transfer_accounts: {
                             wallets: state.from_transfer_account_selector_props.transfer_accounts.wallets,
                         },
+                        transfer_hint:
+                            state.from_transfer_account_selector_props.transfer_accounts.wallets.length === 1 ? (
+                                <Localize
+                                    i18n_default_text='You can only transfers funds from the {{account}} to the linked {{wallet}}.'
+                                    values={{
+                                        account: action.value.label,
+                                        wallet: state.from_transfer_account_selector_props.transfer_accounts.wallets[0]
+                                            .label,
+                                    }}
+                                />
+                            ) : (
+                                ''
+                            ),
                         value: state.from_transfer_account_selector_props.transfer_accounts.wallets[0],
                     },
                 };
@@ -152,22 +165,6 @@ const walletTransferReducer = (state: TWalletTransferState, action: TActionsType
             }
             return {
                 ...state,
-                to_transfer_account_selector_props: {
-                    ...state.to_transfer_account_selector_props,
-                    transfer_hint:
-                        state.from_transfer_account_selector_props.transfer_accounts.wallets.length === 1 ? (
-                            <Localize
-                                i18n_default_text='You can only transfers funds from the {{account}} to the linked {{wallet}}.'
-                                values={{
-                                    account: state.from_transfer_account_selector_props.value?.label,
-                                    wallet: state.from_transfer_account_selector_props.transfer_accounts.wallets[0]
-                                        .label,
-                                }}
-                            />
-                        ) : (
-                            ''
-                        ),
-                },
             };
         }
         default:

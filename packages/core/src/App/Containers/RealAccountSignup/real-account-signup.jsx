@@ -89,6 +89,7 @@ const RealAccountSignup = ({
     currency,
     deposit_real_account_signup_target,
     deposit_target,
+    redirectToLegacyPlatform,
     fetchAccountSettings,
     has_fiat,
     has_real_account,
@@ -231,6 +232,7 @@ const RealAccountSignup = ({
         {
             body: local_props => (
                 <FinishedAddCurrency
+                    redirectToLegacyPlatform={redirectToLegacyPlatform}
                     prev={local_props.state_value.previous_currency}
                     current={local_props.state_value.current_currency}
                     onSubmit={closeModalThenOpenCashier}
@@ -302,7 +304,6 @@ const RealAccountSignup = ({
             currency: curr,
         });
     };
-
     const closeModalthenOpenWelcomeModal = curr => {
         closeRealAccountSignup();
         setParams({
@@ -417,6 +418,7 @@ const RealAccountSignup = ({
             return;
         }
         closeRealAccountSignup();
+        redirectToLegacyPlatform();
     };
 
     const onErrorConfirm = () => {
@@ -673,6 +675,7 @@ export default connect(({ ui, client, traders_hub, modules }) => ({
     currency: client.currency,
     deposit_real_account_signup_target: ui.deposit_real_account_signup_target,
     deposit_target: modules.cashier.general_store.deposit_target,
+    redirectToLegacyPlatform: client.redirectToLegacyPlatform,
     fetchAccountSettings: client.fetchAccountSettings,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     has_fiat: client.has_fiat,

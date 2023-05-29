@@ -24,6 +24,7 @@ const WalletModalBody = ({
 }: TWalletModalBodyProps) => {
     const content_heigth = 'calc(100vh - 24.4rem)';
     const max_content_width = '128rem';
+
     return (
         <Tabs
             active_icon_color={is_dark ? 'var(--badge-white)' : ''}
@@ -47,7 +48,7 @@ const WalletModalBody = ({
                             is_bypassed={is_mobile}
                             is_scrollbar_hidden
                             height={content_heigth}
-                            width={max_content_width}
+                            style={{ maxWidth: max_content_width, width: '100%' }}
                         >
                             {option.content}
                         </ThemedScrollbars>

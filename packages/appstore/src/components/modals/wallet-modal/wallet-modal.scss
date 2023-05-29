@@ -90,7 +90,7 @@
                 position: fixed;
                 width: 100%;
                 top: 8.2rem;
-                z-index: 2;
+                z-index: 3;
                 overflow-x: scroll;
                 transition: top 0.2s ease;
 
@@ -165,7 +165,7 @@
 
     @include mobile {
         position: fixed;
-        z-index: 1;
+        z-index: 3;
     }
 }
 
@@ -216,7 +216,7 @@
     }
 
     &__currency-icon {
-        z-index: 100;
+        z-index: 3;
         margin-left: auto;
         margin-right: 1.6rem;
 

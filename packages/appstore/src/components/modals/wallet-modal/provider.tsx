@@ -2,6 +2,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
+import WalletTransfer from 'Components/wallet-transfer';
 
 export type TWalletType = 'real' | 'demo' | 'p2p' | 'payment_agent';
 
@@ -87,7 +88,7 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcAccountTransfer',
                     label: localize('Transfer'),
-                    content: <p>Transfer Demo</p>,
+                    content: <WalletTransfer />,
                 },
                 {
                     icon: 'IcStatement',

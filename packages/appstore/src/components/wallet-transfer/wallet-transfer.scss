@@ -1,0 +1,40 @@
+.wallet-transfer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 3.2rem;
+    max-width: 65rem;
+    width: 100%;
+    margin: 9.6rem auto 4.8rem;
+
+    @include mobile {
+        margin: 4.8rem auto;
+    }
+
+    &__divider {
+        border: 0.5px solid $color-grey-5;
+        margin: 0.8rem 0;
+    }
+
+    &__tile {
+        display: flex;
+        border: 1px solid $color-grey-5;
+        border-radius: $BORDER_RADIUS;
+
+        .amount-input-wrapper {
+            flex-basis: 50%;
+            justify-content: space-between;
+
+            @include mobile {
+                flex-basis: 60%;
+            }
+        }
+
+        .transfer-account-selector {
+            flex-basis: 50%;
+
+            @include mobile {
+                flex-basis: 40%;
+            }
+        }
+    }
+}

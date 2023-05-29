@@ -1,32 +1,43 @@
 .transfer-account-selector {
-    cursor: pointer;
+    display: flex;
+    align-items: center;
     width: 100%;
     background-color: $color-white;
     padding: 0.8rem;
-
-    &__label {
-        display: block;
-    }
+    cursor: pointer;
 
     &__value {
         padding: 0;
     }
 
+    &__chevron-icon {
+        display: flex;
+        margin-left: 1rem;
+
+        @include mobile {
+            margin-left: auto;
+        }
+    }
+
     &__heading {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
         margin-bottom: 0.4rem;
     }
 
-    &__chevron-icon {
-        margin-left: 1rem;
+    &__heading-with-chevron {
+        display: flex;
     }
 
     &__content {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-right: auto;
+        width: 100%;
+
+        @include mobile {
+            align-items: unset;
+        }
     }
 
     &__list {
@@ -40,24 +51,108 @@
 
         &-items {
             padding: 0 0.8rem;
+
+            @include mobile {
+                padding: 0 1.6rem;
+            }
         }
 
         &-header {
-            display: block;
-            padding: 1.6rem 2.8rem;
+            display: flex;
+            padding: 1.6rem 2.4rem 0.8rem;
+
+            @include mobile {
+                padding: 0.8rem 2.4rem 0.4rem;
+
+                &__title-line {
+                    flex-grow: 1;
+                    border-bottom: 1px solid $color-grey-2;
+                    margin-left: 1rem;
+                    margin-bottom: 0.65rem;
+                }
+            }
         }
 
         &-tile {
+            padding: 1rem 2rem;
+            flex-direction: row;
+            align-items: center;
             cursor: pointer;
+
+            @include mobile {
+                border-radius: unset;
+                padding: 0.8rem;
+            }
 
             &--is-last {
                 margin-bottom: 1.6rem;
+            }
+
+            .wallet-tile__icon {
+                margin-right: 1.6rem;
+
+                @include mobile {
+                    margin-right: 0.8rem;
+                }
+            }
+        }
+
+        .transfer-hint {
+            margin-bottom: 1.6rem;
+            padding: 0 0.8rem;
+
+            @include mobile {
+                padding: 0 1.6rem;
             }
         }
     }
 }
 
 // Overwrite modal style
+.dc-modal__container_transfer-account-selector__modal-header {
+    max-width: 40rem;
+}
 .dc-modal-header--transfer-account-selector__modal-header {
     border-bottom: 2px solid $color-grey-2;
+}
+
+#mobile_list_modal_root {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: none;
+    opacity: 0;
+
+    &:not(:empty) {
+        display: flex;
+        opacity: 1;
+    }
+
+    .dc-modal {
+        width: 100vw;
+
+        &__container {
+            max-width: unset !important;
+            border-radius: unset;
+            box-shadow: unset;
+        }
+
+        &-header {
+            border: none;
+            padding: 1.6rem 2.4rem 0rem;
+
+            &__title {
+                font-size: var(--text-size-xxs);
+                padding: 0;
+                margin-bottom: 0;
+            }
+
+            &__close {
+                padding: 0;
+                margin: 0;
+                height: auto;
+                width: auto;
+            }
+        }
+    }
 }

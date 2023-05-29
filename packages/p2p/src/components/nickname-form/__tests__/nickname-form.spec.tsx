@@ -1,9 +1,71 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useStores } from 'Stores/index';
 import NicknameForm from '../nickname-form';
 
+let mock_store: DeepPartial<ReturnType<typeof useStores>>;
+
+jest.mock('Stores', () => ({
+    ...jest.requireActual('Stores'),
+    useStores: jest.fn(() => mock_store),
+}));
+
 describe('<NicknameForm/>', () => {
+    beforeEach(() => {
+        mock_store = {
+            general_store: {
+                createAdvertiser: jest.fn(),
+                nickname: '',
+                onNicknamePopupClose: jest.fn(),
+                setNicknameError: jest.fn(),
+                validatePopup: (values: { [key: string]: string }) => {
+                    const validations = {
+                        nickname: [
+                            (v: string) => !!v,
+                            (v: string) => v.length >= 2,
+                            (v: string) => v.length <= 24,
+                            (v: string) => /^[a-zA-Z0-9\\.@_-]{2,24}$/.test(v),
+                            (v: string) =>
+                                /^(?!(.*(.)\\2{4,})|.*[\\.@_-]{2,}|^([\\.@_-])|.*([\\.@_-])$)[a-zA-Z0-9\\.@_-]{2,24}$/.test(
+                                    v
+                                ),
+                            (v: string) => !/([a-zA-Z0-9\\.@_-])\1{4}/.test(v),
+                        ],
+                    };
+
+                    const nickname_messages = [
+                        'Nickname is required',
+                        'Nickname is too short',
+                        'Nickname is too long',
+                        'Can only contain letters, numbers, and special characters .- _ @.',
+                        'Cannot start, end with, or repeat special characters.',
+                        'Cannot repeat a character more than 4 times.',
+                    ];
+
+                    const errors: { key?: string } = {};
+
+                    Object.entries(validations).forEach(([key, rules]) => {
+                        const error_index = rules.findIndex(v => {
+                            return !v(values[key]);
+                        });
+
+                        if (error_index !== -1) {
+                            switch (key) {
+                                case 'nickname':
+                                default: {
+                                    errors[key] = nickname_messages[error_index];
+                                    break;
+                                }
+                            }
+                        }
+                    });
+
+                    return errors;
+                },
+            },
+        };
+    });
     it('should render the component', () => {
         render(<NicknameForm />);
 
@@ -95,10 +157,23 @@ describe('<NicknameForm/>', () => {
         const onCancel = jest.fn();
 
         render(<NicknameForm onCancel={onCancel} />);
+
         userEvent.click(screen.getByRole('button', { name: 'Cancel' }));
 
         await waitFor(() => {
             expect(onCancel).toHaveBeenCalled();
+            expect(mock_store.general_store.onNicknamePopupClose).toHaveBeenCalled();
+        });
+    });
+
+    it('should create the advertiser on click of Confirm button', async () => {
+        render(<NicknameForm />);
+
+        userEvent.type(screen.getByLabelText(/nickname/i), 'Advertiser');
+        userEvent.click(screen.getByRole('button', { name: 'Confirm' }));
+
+        await waitFor(() => {
+            expect(mock_store.general_store.createAdvertiser).toHaveBeenCalled();
         });
     });
 });

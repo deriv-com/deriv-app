@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { isMobile } from '@deriv/shared';
-import { Loading, Tabs } from '@deriv/components';
+import { Loading, MobileWrapper, Tabs } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { isAction, reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
@@ -56,10 +56,11 @@ const AppContent = ({ order_id }) => {
     }
 
     if (general_store.should_show_popup) {
-        if (isMobile()) return <NicknameForm />;
-        
-            return <></>;
-        
+        return (
+            <MobileWrapper>
+                <NicknameForm />
+            </MobileWrapper>
+        );
     }
 
     if (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) {

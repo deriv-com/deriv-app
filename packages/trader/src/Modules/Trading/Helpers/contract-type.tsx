@@ -130,9 +130,8 @@ export const getAvailableContractTypes = (contract_types_list: Tcontract_types_l
 //         )
 //     );
 
-export const findContractCategory = (list: TList[], item: TItem) => {
-    return list?.find(list_item => list_item.contract_types.some(i => i.value === item.value)) || ({} as TList);
-};
+export const findContractCategory = (list: TList[], item: TItem) =>
+    list?.find(list_item => list_item.contract_types.some(i => i.value === item.value)) || ({} as TList);
 
 export const getContractCategoryKey = (list: TList[], item: TItem) => findContractCategory(list, item)?.key;
 

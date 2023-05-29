@@ -451,7 +451,7 @@ export default class NotificationStore extends BaseStore {
                         this.addNotificationMessage(this.client_notifications.is_virtual);
                     } else if (no_residence) {
                         this.addNotificationMessage(this.client_notifications.no_residence);
-                    } else if (documents_expired) {
+                    } else if (documents_expired && !svg_poi_expired) {
                         this.addNotificationMessage(this.client_notifications.documents_expired);
                     } else if (cashier_locked_status) {
                         this.addNotificationMessage(this.client_notifications.cashier_locked);

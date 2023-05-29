@@ -1,22 +1,21 @@
 import React from 'react';
-import { Button, Modal, Text } from '@deriv/components';
 import { useStores } from 'Stores';
-import { Localize } from 'Components/i18next';
-import FormError from 'Components/form/error.jsx';
-import 'Components/order-details/order-details-confirm-modal.scss';
-import { setDecimalPlaces, roundOffDecimal } from 'Utils/format-value';
-import { max_pot_file_size, getErrorMessage } from 'Utils/file-uploader';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { Button, Modal, Text } from '@deriv/components';
+import { isMobile, formatMoney } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
 import FileUploaderComponent from 'Components/file-uploader-component';
+import FormError from 'Components/form/error.jsx';
+import { Localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { getErrorMessage, max_pot_file_size } from 'Utils/file-uploader';
+import { removeTrailingZeros, roundOffDecimal, setDecimalPlaces } from 'Utils/format-value';
+import 'Components/order-details/order-details-confirm-modal.scss';
 
 const OrderDetailsConfirmModal = () => {
     const { hideModal, is_modal_open } = useModalManagerContext();
     const { order_details_store, order_store, sendbird_store } = useStores();
-    const { amount, local_currency, other_user_details, rate, id } = order_store.order_information;
+    const { amount_display, local_currency, other_user_details, rate, id } = order_store.order_information;
     const [document_file, setDocumentFile] = React.useState({ files: [], error_message: null });
-    const rounded_rate = roundOffDecimal(rate, setDecimalPlaces(rate, 6));
 
     const handleAcceptedFiles = files => {
         if (files.length > 0) {
@@ -31,6 +30,10 @@ const OrderDetailsConfirmModal = () => {
     const handleRejectedFiles = files => {
         setDocumentFile({ files, error_message: getErrorMessage(files) });
     };
+
+    const display_payment_amount = removeTrailingZeros(
+        formatMoney(local_currency, amount_display * roundOffDecimal(rate, setDecimalPlaces(rate, 6)), true)
+    );
 
     return (
         <React.Fragment>
@@ -56,7 +59,7 @@ const OrderDetailsConfirmModal = () => {
                         <Localize
                             i18n_default_text="Please make sure that you've paid {{amount}} {{currency}} to {{other_user_name}}, and upload the receipt as proof of your payment"
                             values={{
-                                amount: Number(roundOffDecimal(amount * rounded_rate)).toFixed(2),
+                                amount: display_payment_amount,
                                 currency: local_currency,
                                 other_user_name: other_user_details.name,
                             }}

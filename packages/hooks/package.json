@@ -8,6 +8,7 @@
         "@deriv/stores": "^1.0.0",
         "react": "^17.0.2",
         "lodash.groupby": "^4.6.0",
+        "lodash.pickby": "^4.6.0",
         "moment": "^2.29.2"
     },
     "devDependencies": {

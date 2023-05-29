@@ -1,9 +1,11 @@
 import _ from 'lodash';
 import moment from 'moment';
+import { useFetch } from '@deriv/api';
 
 const useGroupedFiatTransactions = () => {
-    // TODO: don't hardcode, replace with ... = useFetch('statement');
-    const transactions = [
+    const { data } = useFetch('statement');
+    const transactions = data?.statement?.transactions;
+    const transactions_ = [
         {
             action_type: 'initial_fund',
             amount: 42,
@@ -80,10 +82,16 @@ const useGroupedFiatTransactions = () => {
         },
     ];
 
-    const grouped_transactions = _.groupBy(transactions, transaction =>
-        moment(transaction.transaction_time * 1000)
-            .startOf('day')
-            .format('DD MMM YYYY')
+    const grouped_transactions = _.pickBy(
+        // TODO replace transactions_ with transactions in the line below
+        _.groupBy(transactions_, transaction => {
+            return transaction.transaction_time
+                ? moment(transaction.transaction_time * 1000)
+                      .startOf('day')
+                      .format('DD MMM YYYY')
+                : null;
+        }),
+        (value, key) => key !== null
     );
 
     return grouped_transactions;

@@ -4,7 +4,7 @@ import { Button, DesktopWrapper, Input, Loading, MobileFullPageModal, MobileWrap
 import { observer, Observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { Localize, localize } from 'Components/i18next';
-import FormError from 'Components/form/form-submit-error-message';
+import FormError from 'Components/section-error';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
 

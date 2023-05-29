@@ -5,7 +5,7 @@ import { isDesktop } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
-import { TableError } from 'Components/table/table-error.jsx';
+import TableError from 'Components/section-error';
 import { useStores } from 'Stores';
 import BuySellRow from './buy-sell-row.jsx';
 import NoAds from 'Pages/buy-sell//no-ads';
@@ -50,7 +50,9 @@ const BuySellTable = ({ onScroll }) => {
     }
 
     if (buy_sell_store.api_error_message) {
-        return <TableError message={buy_sell_store.api_error_message} />;
+        return (
+            <TableError message={buy_sell_store.api_error_message} className='section-error__table--center' size='xs' />
+        );
     }
 
     if (buy_sell_store.items.length) {

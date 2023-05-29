@@ -6,7 +6,7 @@ import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import P2pEmpty from 'Components/p2p-empty';
 import ToggleAds from 'Pages/my-ads/toggle-ads.jsx';
-import { TableError } from 'Components/table/table-error.jsx';
+import TableError from 'Components/section-error';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import MyAdsRowRenderer from './my-ads-row-renderer.jsx';
@@ -72,7 +72,7 @@ const MyAdsTable = () => {
     }
 
     if (my_ads_store.api_error_message) {
-        return <TableError message={my_ads_store.api_error_message} />;
+        return <TableError message={my_ads_store.api_error_message} className='section-error__table' size='xs' />;
     }
 
     if (my_ads_store.adverts.length) {

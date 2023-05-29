@@ -166,13 +166,13 @@ const ProofOfIncomeForm = ({
                                     <div className='account-poinc-form__notes-container'>
                                         <FormSubHeader title={localize('Please note:')} />
                                         <div className='account__file-uploader-box account__file-uploader-box-dashboard'>
-                                            <Text size='xs' line_height='s'>
+                                            <Text size='xs' line_height='s' color='less-prominent'>
                                                 <Localize i18n_default_text='The document must be up-to-date and signed by the issuance authority' />
                                             </Text>
-                                            <Text size='xs' line_height='s'>
+                                            <Text size='xs' line_height='s' color='less-prominent'>
                                                 <Localize i18n_default_text='The document must contain a letterhead' />
                                             </Text>
-                                            <Text size='xs' line_height='s'>
+                                            <Text size='xs' line_height='s' color='less-prominent'>
                                                 <Localize i18n_default_text='Invalid or incomplete documents shall be rejected' />
                                             </Text>
                                         </div>

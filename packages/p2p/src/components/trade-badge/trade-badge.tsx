@@ -1,13 +1,19 @@
-import * as React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { localize, Localize } from 'Components/i18next';
 
-const TradeBadge = ({ is_poa_verified = false, is_poi_verified = false, large = false, trade_count }) => {
+type TTradeBadge = {
+    is_poa_verified?: boolean;
+    is_poi_verified?: boolean;
+    large?: boolean;
+    trade_count: number;
+};
+
+const TradeBadge = ({ is_poa_verified = false, is_poi_verified = false, large = false, trade_count }: TTradeBadge) => {
     return (
         <React.Fragment>
-            {trade_count > 100 ? (
+            {trade_count > 100 && (
                 <div
                     className={classNames('trade-badge', {
                         'trade-badge--large': large,
@@ -19,13 +25,9 @@ const TradeBadge = ({ is_poa_verified = false, is_poi_verified = false, large = 
                         {`${trade_count >= 250 ? '250+' : '100+'} ${large ? localize('trades') : ''}`}
                     </Text>
                 </div>
-            ) : null}
-            {is_poi_verified ? (
-                <div
-                    className={classNames('trade-badge', {
-                        'trade-badge--blue': is_poa_verified || is_poi_verified,
-                    })}
-                >
+            )}
+            {is_poi_verified && (
+                <div className='trade-badge trade-badge--blue'>
                     <Text color='colored-background' size='xxxs'>
                         <Localize
                             i18n_default_text='<0>ID</0> verified'
@@ -33,13 +35,9 @@ const TradeBadge = ({ is_poa_verified = false, is_poi_verified = false, large = 
                         />
                     </Text>
                 </div>
-            ) : null}
-            {is_poa_verified ? (
-                <div
-                    className={classNames('trade-badge', {
-                        'trade-badge--blue': is_poa_verified || is_poi_verified,
-                    })}
-                >
+            )}
+            {is_poa_verified && (
+                <div className='trade-badge trade-badge--blue'>
                     <Text color='colored-background' size='xxxs'>
                         <Localize
                             i18n_default_text='<0>Address</0> verified'
@@ -47,16 +45,9 @@ const TradeBadge = ({ is_poa_verified = false, is_poi_verified = false, large = 
                         />
                     </Text>
                 </div>
-            ) : null}
+            )}
         </React.Fragment>
     );
 };
 
 export default TradeBadge;
-
-TradeBadge.propTypes = {
-    is_poa_verified: PropTypes.bool,
-    is_poi_verified: PropTypes.bool,
-    large: PropTypes.bool,
-    trade_count: PropTypes.number,
-};

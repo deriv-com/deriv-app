@@ -1,6 +1,5 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
-// import { toJS } from 'mobx';
 
 type Category = { value: string; text: string };
 type TContract_type = {
@@ -86,34 +85,34 @@ export const getAvailableContractTypes = (contract_types_list: Tcontract_types_l
  * @param {object} contract_types_list  - list of all contracts
  * @param {array}  filtered_items_array - list of filtered contract category names and/or contract types names
  */
-// export const getFilteredList = (contract_types_list, filtered_items_array: Array<string>) => {
-//     return Object.keys(contract_types_list)
-//         .map(key => {
-//             const { label, contract_types, icon } = contract_types_list[key];
+/*export const getFilteredList = (contract_types_list, filtered_items_array: Array<string>) => {
+    return Object.keys(contract_types_list)
+        .map(key => {
+            const { label, contract_types, icon } = contract_types_list[key];
 
-//             const filtered_by_contract_types = contract_types.filter(c =>
-//                 filtered_items_array.includes(c.text.toLowerCase())
-//             );
+            const filtered_by_contract_types = contract_types.filter(c =>
+                filtered_items_array.includes(c.text.toLowerCase())
+            );
 
-//             const filtered_by_contract_category = filtered_items_array.includes(label.toLowerCase());
+            const filtered_by_contract_category = filtered_items_array.includes(label.toLowerCase());
 
-//             if (filtered_by_contract_types.length) {
-//                 return {
-//                     label,
-//                     contract_types: filtered_by_contract_types,
-//                     icon,
-//                 };
-//             } else if (filtered_by_contract_category) {
-//                 return {
-//                     label,
-//                     contract_types,
-//                     icon,
-//                 };
-//             }
-//             return undefined;
-//         })
-//         .filter(Boolean);
-// };
+            if (filtered_by_contract_types.length) {
+                return {
+                    label,
+                    contract_types: filtered_by_contract_types,
+                    icon,
+                };
+            } else if (filtered_by_contract_category) {
+                return {
+                    label,
+                    contract_types,
+                    icon,
+                };
+            }
+            return undefined;
+        })
+        .filter(Boolean);
+};*/
 
 const flatten = (arr: any) => [].concat(...arr);
 /**

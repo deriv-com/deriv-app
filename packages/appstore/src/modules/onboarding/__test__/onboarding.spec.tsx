@@ -189,12 +189,7 @@ describe('Onboarding Component Test Coverage', () => {
     });
 
     it('should render <EmptyOnboarding/> component instead', () => {
-        const mock = mockStore({
-            client: {
-                is_logged_in: false,
-                is_landing_company_loaded: false,
-            },
-        });
+        const mock = mockStore({});
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );

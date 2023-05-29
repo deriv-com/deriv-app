@@ -100,22 +100,22 @@
             }
 
             &:before {
-                width: 4.8rem;
-                height: 0.01rem;
+                width: 48px;
+                height: 1px;
 
                 @include mobile {
-                    width: 0.01rem;
-                    height: 1.6rem;
+                    width: 1px;
+                    height: 16px;
                 }
             }
 
             &:after {
-                width: 6.3rem;
-                height: 0.01rem;
+                width: 63px;
+                height: 1px;
 
                 @include mobile {
-                    width: 0.01rem;
-                    height: 2.4rem;
+                    width: 1px;
+                    height: 24px;
                 }
             }
         }

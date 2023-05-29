@@ -5,7 +5,7 @@ import { createBrowserHistory } from 'history';
 import { isDesktop } from '@deriv/shared';
 import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import { useCashierLocked } from '@deriv/hooks';
 
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
@@ -68,15 +68,14 @@ describe('<Withdrawal />', () => {
         mockUseCashierLocked.mockReturnValue(false);
     });
 
-    const renderWithdrawal = (mock_root_store: TStores, is_rerender = false) => {
-        const ui = (
+    const mockWithdrawal = (mock_root_store: ReturnType<typeof mockStore>, is_rerender = false) => {
+        return (
             <CashierProviders store={mock_root_store}>
                 <Router history={createBrowserHistory()}>
                     <Withdrawal setSideNotes={setSideNotes} />
                 </Router>
             </CashierProviders>
         );
-        return is_rerender ? ui : render(ui);
     };
 
     it('should render <CashierLocked /> component', () => {
@@ -97,7 +96,7 @@ describe('<Withdrawal />', () => {
                 },
             },
         });
-        renderWithdrawal(mock_root_store);
+        render(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });
@@ -118,7 +117,7 @@ describe('<Withdrawal />', () => {
                 },
             },
         });
-        renderWithdrawal(mock_root_store);
+        render(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
@@ -132,7 +131,7 @@ describe('<Withdrawal />', () => {
             },
             modules: { cashier: cashier_mock },
         });
-        renderWithdrawal(mock_root_store);
+        render(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('Virtual')).toBeInTheDocument();
     });
@@ -146,7 +145,7 @@ describe('<Withdrawal />', () => {
             modules: { cashier: cashier_mock },
         });
         mockUseCashierLocked.mockReturnValue(true);
-        renderWithdrawal(mock_root_store);
+        render(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });
@@ -167,12 +166,12 @@ describe('<Withdrawal />', () => {
                 },
             },
         });
-        renderWithdrawal(mock_root_store);
+        const { rerender } = render(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
 
         mock_root_store.modules.cashier.withdraw.is_10k_withdrawal_limit_reached = true;
-        renderWithdrawal(mock_root_store, true);
+        rerender(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
     });
@@ -185,7 +184,7 @@ describe('<Withdrawal />', () => {
             },
             modules: { cashier: cashier_mock },
         });
-        renderWithdrawal(mock_root_store);
+        render(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('NoBalance')).toBeInTheDocument();
     });
@@ -210,12 +209,12 @@ describe('<Withdrawal />', () => {
                 },
             },
         });
-        const { rerender } = renderWithdrawal(mock_root_store) as ReturnType<typeof render>;
+        const { rerender } = render(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('Error')).toBeInTheDocument();
 
         mock_root_store.modules.cashier.withdraw.verification.error = { message: 'Error message' };
-        rerender(renderWithdrawal(mock_root_store, true) as JSX.Element);
+        rerender(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('Error')).toBeInTheDocument();
     });
@@ -229,11 +228,12 @@ describe('<Withdrawal />', () => {
             },
             modules: { cashier: cashier_mock },
         });
-        const { rerender } = renderWithdrawal(mock_root_store) as ReturnType<typeof render>;
+
+        const { rerender } = render(mockWithdrawal(mock_root_store));
         expect(screen.getByText('Withdraw')).toBeInTheDocument();
 
         mock_root_store.modules.cashier.iframe.iframe_url = 'coiframe_urlde';
-        rerender(renderWithdrawal(mock_root_store, true) as JSX.Element);
+        rerender(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('Withdraw')).toBeInTheDocument();
     });
@@ -255,7 +255,7 @@ describe('<Withdrawal />', () => {
                 },
             },
         });
-        renderWithdrawal(mock_root_store);
+        render(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('CryptoWithdrawForm')).toBeInTheDocument();
     });
@@ -276,7 +276,7 @@ describe('<Withdrawal />', () => {
                 },
             },
         });
-        renderWithdrawal(mock_root_store);
+        render(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('CryptoWithdrawReceipt')).toBeInTheDocument();
     });
@@ -297,7 +297,7 @@ describe('<Withdrawal />', () => {
                 },
             },
         });
-        renderWithdrawal(mock_root_store);
+        render(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('CryptoTransactionsHistory')).toBeInTheDocument();
     });
@@ -310,7 +310,7 @@ describe('<Withdrawal />', () => {
             },
             modules: { cashier: cashier_mock },
         });
-        renderWithdrawal(mock_root_store);
+        render(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('WithdrawalVerificationEmail')).toBeInTheDocument();
     });
@@ -335,7 +335,7 @@ describe('<Withdrawal />', () => {
         });
         (isDesktop as jest.Mock).mockReturnValueOnce(false);
 
-        renderWithdrawal(mock_root_store);
+        render(mockWithdrawal(mock_root_store));
 
         expect(setSideNotes).not.toHaveBeenCalled();
     });
@@ -356,7 +356,7 @@ describe('<Withdrawal />', () => {
                 },
             },
         });
-        renderWithdrawal(mock_root_store);
+        render(mockWithdrawal(mock_root_store));
 
         expect(setSideNotes).toHaveBeenCalledTimes(1);
     });

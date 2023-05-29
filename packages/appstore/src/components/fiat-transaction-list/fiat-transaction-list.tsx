@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Statement } from '@deriv/api-types';
 import { getCurrencyDisplayCode, isMobile } from '@deriv/shared';
 import { Text } from '@deriv/components';
@@ -11,7 +11,7 @@ import FiatTransactionListItem from './fiat-transaction-list-item';
 const FiatTransactionList = () => {
     const store = useStore();
     const {
-        client: { currency },
+        client: { loginid, account_list, currency },
         traders_hub: { is_demo },
         ui: { is_dark_mode_on },
     } = store;
@@ -46,11 +46,20 @@ const FiatTransactionList = () => {
                             transaction.action_type === undefined
                         )
                             return null;
-                        const account_name = wallet_title;
-                        const icon = getWalletCurrencyIcon(is_demo ? 'demo' : currency, is_dark_mode_on, false);
-                        const icon_type = 'fiat';
+                        let account_name = wallet_title;
+                        let icon = getWalletCurrencyIcon(is_demo ? 'demo' : currency, is_dark_mode_on, false);
+                        let icon_type = 'fiat';
                         if (transaction.action_type === 'transfer') {
-                            // TODO use to/from loginid to get and reassign transaction_account_name, icon & icon_type
+                            const other_loginid =
+                                transaction.to?.loginid === loginid
+                                    ? transaction.from?.loginid
+                                    : transaction.to?.loginid;
+                            const other_account = account_list.find(account => account.loginid === other_loginid);
+                            if (other_account) {
+                                account_name = other_account.title || '';
+                                icon = other_account.icon || '';
+                                icon_type = 'app'; // test
+                            }
                         }
                         return (
                             <FiatTransactionListItem

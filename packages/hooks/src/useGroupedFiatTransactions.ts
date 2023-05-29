@@ -63,11 +63,11 @@ const useGroupedFiatTransactions = () => {
             action_type: 'transfer',
             amount: 5.55,
             from: {
-                loginid: '',
+                loginid: 'CR90000000',
                 type: 'trading',
             },
             to: {
-                loginid: '',
+                loginid: 'VRTC90000000',
                 type: 'wallet',
             },
             app_id: {},

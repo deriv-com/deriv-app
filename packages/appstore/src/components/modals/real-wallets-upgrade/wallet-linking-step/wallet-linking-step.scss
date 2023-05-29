@@ -7,6 +7,8 @@
     justify-content: flex-start;
 
     @include mobile {
+        margin-top: 4rem;
+        margin-bottom: 7.4rem;
         height: calc(100vh - 15rem);
     }
 

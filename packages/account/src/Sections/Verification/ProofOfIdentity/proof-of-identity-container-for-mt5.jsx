@@ -10,6 +10,7 @@ import { populateVerificationStatus } from '../Helpers/verification';
 
 const ProofOfIdentityContainerForMt5 = ({
     account_status,
+    account_settings,
     fetchResidenceList,
     height,
     is_from_external,
@@ -83,6 +84,7 @@ const ProofOfIdentityContainerForMt5 = ({
             residence_list={residence_list}
             citizen_data={citizen_data}
             has_idv_error={has_idv_error}
+            account_settings={account_settings}
         />
     );
 };

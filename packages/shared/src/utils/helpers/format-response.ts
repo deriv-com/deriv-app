@@ -56,9 +56,14 @@ export const formatPortfolioPosition = (
     };
 };
 
-export const isResidentIDVSupported = (residence_list: ResidenceList, account_settings: GetSettings): boolean => {
+export const isVerificationServiceSupported = (
+    residence_list: ResidenceList,
+    account_settings: GetSettings,
+    service: 'idv' | 'onfido'
+): boolean => {
     const citizen = account_settings?.citizen || account_settings?.country_code;
     if (!citizen) return false;
     const citizen_data = residence_list.find(item => item.value === citizen);
-    return !!citizen_data?.identity?.services?.idv?.is_country_supported;
+
+    return !!citizen_data?.identity?.services?.[service]?.is_country_supported;
 };

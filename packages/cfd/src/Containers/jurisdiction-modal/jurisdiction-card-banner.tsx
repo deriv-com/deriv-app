@@ -1,7 +1,7 @@
 import React from 'react';
 import RootStore from '../../Stores/index';
 import { connect } from '../../Stores/connect';
-import { getAuthenticationStatusInfo, isResidentIDVSupported } from '@deriv/shared';
+import { getAuthenticationStatusInfo, isVerificationServiceSupported } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { TVerificationStatusBannerProps } from '../props.types';
@@ -22,7 +22,7 @@ const VerificationStatusBanner = ({
     real_swapfree_accounts_existing_data,
     residence_list,
 }: TVerificationStatusBannerProps) => {
-    const is_idv_supported = isResidentIDVSupported(residence_list, account_settings);
+    const is_idv_supported = isVerificationServiceSupported(residence_list, account_settings, 'idv');
 
     const {
         poi_not_submitted_for_vanuatu_maltainvest,

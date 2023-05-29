@@ -427,7 +427,7 @@ export default class BlocksStore {
             const market = this.markets_dropdown.find(item => item.value === value);
 
             if (market) {
-                this.updateSubmarketsDropdown(value, setFieldValue);
+                await this.updateSubmarketsDropdown(value, setFieldValue);
                 this.setSelectedMarket(market);
                 setFieldValue(field_map?.field_name, market.text);
             }
@@ -435,7 +435,7 @@ export default class BlocksStore {
             const submarket = this.submarkets_dropdown.find(item => item.value === value);
 
             if (submarket) {
-                this.updateSymbolDropdown(submarket, setFieldValue);
+                await this.updateSymbolDropdown(submarket, setFieldValue);
                 this.setSelectedSubmarket(submarket);
                 setFieldValue(field_map?.field_name, submarket.text);
             }
@@ -448,7 +448,7 @@ export default class BlocksStore {
             }
         } else if (type === 'trade_type_category') {
             const trade_type_category = this.trade_type_category_dropdown.find(item => item.value === value);
-            this.updateTradeTypeDropdown(value, setFieldValue);
+            await this.updateTradeTypeDropdown(value, setFieldValue);
 
             if (trade_type_category) {
                 this.setSelectedTradeTypeCategory(trade_type_category);

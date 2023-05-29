@@ -10,6 +10,7 @@ type TFiatTransactionListItem = Pick<StatementTransaction, 'amount' | 'balance_a
         | (StatementTransaction['action_type'] & ('deposit' | 'withdrawal' | 'transfer'))
         | 'initial_fund'
         | 'reset_balance';
+    account_currency: string;
     account_name: string;
     currency: string;
     icon: string;
@@ -17,6 +18,7 @@ type TFiatTransactionListItem = Pick<StatementTransaction, 'amount' | 'balance_a
 };
 
 const FiatTransactionListItem = ({
+    account_currency,
     account_name,
     action_type,
     amount,
@@ -38,7 +40,7 @@ const FiatTransactionListItem = ({
     return (
         <div className='fiat-transaction-list__item'>
             <div>
-                <WalletIcon currency={currency} icon={icon} type={icon_type} has_bg={true} size='medium' />
+                <WalletIcon currency={account_currency} icon={icon} type={icon_type} has_bg={true} size='medium' />
                 <span>
                     <Text
                         size={isMobile() ? 'xxxs' : 'xxs'}

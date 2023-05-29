@@ -47,6 +47,27 @@ const useGroupedFiatTransactions = () => {
             transaction_time: 1685009944,
         },
         {
+            action_type: 'transfer',
+            amount: 5.55,
+            from: {
+                loginid: 'CR90000000',
+                type: 'trading',
+            },
+            to: {
+                loginid: 'CR90000003',
+                type: 'wallet',
+            },
+            app_id: {},
+            balance_after: 5.55,
+            contract_id: {},
+            longcode: 'Transfer from <> to <>. Includes fees',
+            payout: {},
+            reference_id: {},
+            shortcode: {},
+            transaction_id: 17494415489,
+            transaction_time: 1685009944,
+        },
+        {
             action_type: 'withdrawal',
             amount: -5.55,
             app_id: {},
@@ -67,7 +88,7 @@ const useGroupedFiatTransactions = () => {
                 type: 'trading',
             },
             to: {
-                loginid: 'VRTC90000000',
+                loginid: 'CRW1000',
                 type: 'wallet',
             },
             app_id: {},
@@ -77,7 +98,7 @@ const useGroupedFiatTransactions = () => {
             payout: {},
             reference_id: {},
             shortcode: {},
-            transaction_id: 17494415481,
+            transaction_id: 17494415482,
             transaction_time: 1684009944,
         },
     ];

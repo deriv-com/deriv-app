@@ -1,6 +1,6 @@
 import React from 'react';
 import { Statement } from '@deriv/api-types';
-import { getCurrencyDisplayCode, isMobile } from '@deriv/shared';
+import { getCurrencyDisplayCode, isCryptocurrency, isMobile } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { useGroupedFiatTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
@@ -47,6 +47,7 @@ const FiatTransactionList = () => {
                         )
                             return null;
                         let account_name = wallet_title;
+                        let account_currency = currency;
                         let icon = getWalletCurrencyIcon(is_demo ? 'demo' : currency, is_dark_mode_on, false);
                         let icon_type = 'fiat';
                         if (transaction.action_type === 'transfer') {
@@ -56,9 +57,15 @@ const FiatTransactionList = () => {
                                     : transaction.to?.loginid;
                             const other_account = account_list.find(account => account.loginid === other_loginid);
                             if (other_account) {
-                                account_name = other_account.title || '';
-                                icon = other_account.icon || '';
-                                icon_type = 'app'; // test
+                                account_currency = other_account.title || '';
+                                // TODO don't hardcode 'account' on the line below, also add app check
+                                account_name = `${other_account.title} ${localize('account')}` || '';
+                                icon = getWalletCurrencyIcon(
+                                    is_demo ? 'demo' : other_account.title || '',
+                                    is_dark_mode_on,
+                                    false
+                                );
+                                icon_type = isCryptocurrency(account_currency) ? 'crypto' : 'fiat';
                             }
                         }
                         return (
@@ -69,6 +76,7 @@ const FiatTransactionList = () => {
                                         typeof FiatTransactionListItem
                                     >['action_type']
                                 }
+                                account_currency={account_currency}
                                 account_name={account_name}
                                 amount={transaction.amount}
                                 balance_after={transaction.balance_after}

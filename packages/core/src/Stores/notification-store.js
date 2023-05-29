@@ -338,7 +338,7 @@ export default class NotificationStore extends BaseStore {
             this.handlePOAAddressMismatchNotifications();
 
             // TODO: Update logic when BE API is integrated [Wallets]
-            if (window.location.pathname !== routes.traders_hub) {
+            if (window.location.pathname === routes.trade || window.location.pathname === routes.bot) {
                 this.showFailedWalletsUpgradeNotification();
             }
 

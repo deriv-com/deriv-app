@@ -332,8 +332,8 @@ type TNotificationStore = {
     removeNotificationByKey: (obj: { key: string }) => void;
     removeNotificationMessage: (obj: { key: string; should_show_again?: boolean }) => void;
     setP2POrderProps: () => void;
-    showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;
+    showFailedWalletsUpgradeNotification: () => void;
 };
 
 type TTradersHubStore = {

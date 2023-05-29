@@ -76,7 +76,7 @@
                 height: 2rem;
                 margin-left: -1rem;
                 border-width: 0.2rem;
-                background-color: transparent;
+                background-color: rgba(255, 255, 255, 0.7);
                 &:after {
                     content: '';
                     width: 0.6rem;
@@ -107,6 +107,9 @@
         background-color: var(--text-prominent);
         border: 2px solid var(--text-prominent);
     }
+}
+.smartcharts-dark .chart-spot__spot--accumulator-bold {
+    background-color: transparent;
 }
 
 /** @define chart-spot-label */

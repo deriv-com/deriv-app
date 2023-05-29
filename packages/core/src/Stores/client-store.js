@@ -988,7 +988,7 @@ export default class ClientStore extends BaseStore {
         }
     };
 
-     getIsMarketTypeMatching = (account, market_type) => {
+    getIsMarketTypeMatching = (account, market_type) => {
         if (market_type === 'synthetic') {
             return account.market_type === market_type || account.market_type === 'gaming';
         } else if (market_type === 'all') {
@@ -1645,7 +1645,7 @@ export default class ClientStore extends BaseStore {
                 this.is_populating_account_list = false;
             });
             const language = authorize_response.authorize.preferred_language;
-            if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
+            if (language !== 'EN' && language !== LocalStore.getItem(LANGUAGE_KEY)) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));
                 await this.root_store.common.changeSelectedLanguage(language);
             }

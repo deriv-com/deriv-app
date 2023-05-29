@@ -59,6 +59,30 @@
     --wallet-visa: #{$gradient-visa};
     --wallet-webmoney: #{$gradient-webmoney};
 
+    // Wallet modal background
+    --wallets-modal-usd-background-primary: #{$color-red-9};
+    --wallets-modal-usd-background-secondary: #{$color-blue-5};
+    --wallets-modal-eur-background-primary: #{$color-blue-5};
+    --wallets-modal-eur-background-secondary: #{$color-yellow-1};
+    --wallets-modal-aud-background-primary: #{$color-green-6};
+    --wallets-modal-aud-background-secondary: #{$color-yellow-2};
+    --wallets-modal-gbp-background-primary: #{$color-blue-5};
+    --wallets-modal-gbp-background-secondary: #{$color-red-9};
+    --wallets-modal-p2p-background-primary: #{$color-red};
+    --wallets-modal-p2p-background-secondary: #{$color-orange};
+    --wallets-modal-payment_agent-background-primary: #{$color-grey-13};
+    --wallets-modal-payment_agent-background-secondary: #{$color-grey-14};
+    --wallets-modal-btc-background-primary: #{$color-yellow-3};
+    --wallets-modal-btc-background-secondary: #{$color-yellow-4};
+    --wallets-modal-eth-background-primary: #{$color-blue-6};
+    --wallets-modal-eth-background-secondary: #{$color-blue-7};
+    --wallets-modal-ltc-background-primary: #{$color-grey-15};
+    --wallets-modal-ltc-background-secondary: #{$color-grey-16};
+    --wallets-modal-usdt-background-primary: #{$color-green-7};
+    --wallets-modal-usdt-background-secondary: #{$color-green-8};
+    --wallets-modal-usdc-background-primary: #{$color-blue-8};
+    --wallets-modal-usdc-background-secondary: #{$color-blue-9};
+
     // App Cards gradient background
     --app-card-virtual: #{$gradient-virtual};
     --app-card-virtual-swap-free: #{$gradient-virtual-swap-free};
@@ -199,9 +223,16 @@
         --wallets-banner-active-dot-color: #{$color-red};
         --wallets-card-active-gradient-background: #{$gradient-color-black-5};
         --wallet-demo-bg-color: #{$wallet-demo-bg-color};
+        --wallet-demo-divider-color: #{$wallet-demo-divider-color};
+        --wallet-eu-disclaimer: #{$color-grey-4};
+        --wallets-modal-base-background: #{$color-white};
+        --wallets-modal-demo-base-background: #{$color-black-10};
+        --wallets-modal-demo-background-primary: #{$color-red};
+        --wallets-modal-demo-background-secondary: #{$color-red};
         // Demo view
         --demo-text-color-1: #{$color-grey};
         --demo-text-color-2: #{$color-white};
+        --demo-icon-background: #{$color-white};
     }
     .theme--dark {
         // General
@@ -319,8 +350,15 @@
         --wallets-banner-active-dot-color: #{$color-red};
         --wallets-card-active-gradient-background: #{$gradient-color-white-2};
         --wallet-demo-bg-color: #{$wallet-demo-bg-color};
+        --wallet-demo-divider-color: #{$wallet-demo-divider-color};
+        --wallet-eu-disclaimer: #{$color-grey-4};
+        --wallets-modal-base-background: #{$color-black};
+        --wallets-modal-demo-base-background: #{$color-red-8};
+        --wallets-modal-demo-background-primary: #{$color-orange};
+        --wallets-modal-demo-background-secondary: #{$color-red};
         // Demo view
         --demo-text-color-1: #{$color-black-1};
         --demo-text-color-2: #{$color-black-1};
+        --demo-icon-background: #{$color-red-8};
     }
 }

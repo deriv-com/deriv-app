@@ -942,6 +942,7 @@ import './wallet/ic-wallet-etherium-dark.svg';
 import './wallet/ic-wallet-etherium-light.svg';
 import './wallet/ic-wallet-lite-coin-dark.svg';
 import './wallet/ic-wallet-lite-coin-light.svg';
+import './wallet/ic-wallet-modal-tether-dark.svg';
 import './wallet/ic-wallet-modal-tether-light.svg';
 import './wallet/ic-wallet-my-apps.svg';
 import './wallet/ic-wallet-payment-agent-dark.svg';

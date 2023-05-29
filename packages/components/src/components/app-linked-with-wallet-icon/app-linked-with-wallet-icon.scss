@@ -1,4 +1,4 @@
-.wallet-icon {
+.app-icon {
     position: relative;
     display: flex;
     align-items: center;
@@ -6,34 +6,34 @@
     border-radius: $BORDER_RADIUS;
     overflow: hidden;
 
-    &__default-bg {
-        // Default Background
-        background: radial-gradient(100% 4130.74% at 0% 100%, rgba(244, 67, 54, 0.24) 0%, rgba(40, 57, 145, 0.48) 100%)
-            #ffffff;
+    &__top-icon {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
     }
 
-    &--xsmall {
-        width: 2.4rem;
-        height: 1.4rem;
+    &__bottom-icon {
+        position: absolute;
+        bottom: 0;
+        right: 0;
     }
 
     &--small {
         width: 4rem;
         height: 2.4rem;
+        padding: 0.1rem;
     }
 
     &--medium {
         width: 6.4rem;
         height: 4rem;
+        padding: 0.2rem;
     }
 
     &--large {
-        width: 8.4rem;
-        height: 5.2rem;
-    }
-
-    &--xlarge {
         width: 12.8rem;
         height: 8rem;
+        padding: 0.4rem;
     }
 }

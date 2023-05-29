@@ -116,4 +116,7 @@ export * from './components/watermark';
 export { default as Wizard } from './components/wizard';
 export * from './components/wallet-card';
 export * from './components/wallet-icon';
+export * from './components/wallet-tile';
+export * from './components/app-linked-with-wallet-icon';
+export * from './components/transfer-account-selector';
 export * from './hooks';

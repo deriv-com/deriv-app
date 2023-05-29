@@ -151,7 +151,9 @@ const AppNotificationMessages = ({
     //TODO (yauheni-kryzhyk): showing pop-up only for specific messages. the rest of notifications are hidden. this logic should be changed in the upcoming new pop-up notifications implementation
 
     const filtered_excluded_notifications = notifications.filter(message =>
-        priority_toast_messages.includes(message.key) ? message : excluded_notifications.includes(message.key)
+        priority_toast_messages.includes(message.key) || message.type.includes('p2p')
+            ? message
+            : excluded_notifications.includes(message.key)
     );
 
     const notifications_sublist =

@@ -101,7 +101,7 @@ Blockly.DataCategory.addCreateVariable = function (xmlList, workspace) {
     el_input_xml.setAttribute('placeholder', input_placeholder);
 
     const callback = function (button) {
-        const el_input_container = document.querySelector('.flyout__input');
+        const el_input_container = document.querySelector('.flyout__input > .dc-input__container');
         const el_input = el_input_container.firstChild;
 
         const buttonWorkspace = button.getTargetWorkspace();

@@ -338,9 +338,7 @@ export default class NotificationStore extends BaseStore {
             this.handlePOAAddressMismatchNotifications();
 
             // TODO: Update logic when BE API is integrated [Wallets]
-            if (window.location.pathname === routes.trade || window.location.pathname === routes.bot) {
-                this.showFailedWalletsUpgradeNotification();
-            }
+            this.showFailedWalletsUpgradeNotification();
 
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
@@ -1598,6 +1596,7 @@ export default class NotificationStore extends BaseStore {
             action: {
                 onClick: () => {
                     window.LC_API.open_chat_window();
+                    this.removeNotificationByKey({ key: this.client_notifications.failed_wallets_upgrade.key });
                     this.removeNotificationMessage({
                         key: this.client_notifications.failed_wallets_upgrade.key,
                         should_show_again: false,
@@ -1605,6 +1604,8 @@ export default class NotificationStore extends BaseStore {
                 },
                 text: localize('Go to live chat'),
             },
+            platform: [platform_name.DTrader, platform_name.DBot],
+            is_disposable: true,
             type: 'danger',
         });
     };

@@ -2,7 +2,7 @@ import React from 'react';
 import CFD from '../Containers';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import compareCFDs from '../Containers/compare-cfds';
+import CFDCompareAccounts from '../Containers/cfd-compare-accounts';
 // Error Routes
 const Page404 = React.lazy(() => import(/* webpackChunkName: "404" */ '../Modules/Page404'));
 
@@ -25,7 +25,7 @@ const initRoutesConfig = () => {
         },
         {
             path: routes.compare_cfds,
-            component: compareCFDs,
+            component: CFDCompareAccounts,
         },
     ];
 };

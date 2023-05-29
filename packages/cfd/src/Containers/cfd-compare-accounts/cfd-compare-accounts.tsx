@@ -39,7 +39,7 @@ const CompareCFDs = () => {
             <MobileWrapper>
                 <PageOverlay
                     header={localize('Compare CFDs accounts')}
-                    header_classname='compare-cfd-header-title__mobile'
+                    header_classname='compare-cfd-header-title'
                     is_from_app={!routes.traders_hub}
                     onClickClose={() => history.push(routes.traders_hub)}
                 >

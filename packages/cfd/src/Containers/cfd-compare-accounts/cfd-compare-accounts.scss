@@ -10,7 +10,7 @@
     }
     &-title {
         flex: 1;
-        &__mobile {
+        @include mobile {
             text-align: left;
             padding: 1rem;
         }

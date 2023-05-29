@@ -22,6 +22,7 @@ const BinarySocketBase = (() => {
     let is_disconnect_called = false;
     let is_connected_before = false;
     let is_switching_socket = false;
+    let mock_server_id = '';
 
     const availability = {
         is_up: true,
@@ -29,8 +30,15 @@ const BinarySocketBase = (() => {
         is_down: false,
     };
 
-    const getSocketUrl = language =>
-        `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${language}&brand=${website_name.toLowerCase()}`;
+    const isMockServerEnabled = () => localStorage.getItem('config.is_mock_server_enabled') === 'true';
+
+    const getSocketUrl = language => {
+        const socket_url = `${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${language}&brand=${website_name.toLowerCase()}`;
+        if (isMockServerEnabled()) {
+            return `ws://${socket_url}`;
+        }
+        return `wss://${socket_url}`;
+    };
 
     const isReady = () => hasReadyState(1);
 
@@ -66,7 +74,7 @@ const BinarySocketBase = (() => {
             deriv_api = new DerivAPIBasic({
                 connection: binary_socket,
                 storage: SocketCache,
-                middleware: new APIMiddleware(config),
+                middleware: new APIMiddleware(config, isMockServerEnabled() ? { mock_server_id } : null),
             });
         }
 
@@ -94,6 +102,13 @@ const BinarySocketBase = (() => {
         });
 
         deriv_api.onMessage().subscribe(({ data: response }) => {
+            if (isMockServerEnabled()) {
+                const response_id = getPropertyValue(response, ['mock_server_id']);
+                if (response_id) {
+                    mock_server_id = response_id;
+                }
+            }
+
             const msg_type = response.msg_type;
             State.set(['response', msg_type], cloneObject(response));
 
@@ -109,6 +124,10 @@ const BinarySocketBase = (() => {
         });
 
         deriv_api.onClose().subscribe(() => {
+            if (isMockServerEnabled()) {
+                mock_server_id = '';
+            }
+
             if (!is_switching_socket) {
                 config.wsEvent('close');
             } else {

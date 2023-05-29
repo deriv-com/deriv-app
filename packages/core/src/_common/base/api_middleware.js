@@ -1,13 +1,18 @@
 class APIMiddleware {
-    constructor(config) {
+    data;
+
+    constructor(config, data) {
         this.config = config;
         this.debounced_calls = {};
+        this.data = data;
     }
 
     sendWillBeCalled({ args: [request] }) {
         this.config.wsEvent('send');
 
-        const key = requestToKey(request);
+        const request_data = this.data ? { ...request, ...this.data } : request;
+
+        const key = requestToKey(request_data);
 
         if (key in this.debounced_calls) {
             return this.debounced_calls[key];

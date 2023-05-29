@@ -26,11 +26,13 @@ const InputField = props => {
 const Endpoint = () => {
     const platform_store = React.useContext(PlatformContext);
     const dbot_dashboard_storage = LocalStore.get('show_dbot_dashboard');
+
     return (
         <Formik
             initialValues={{
                 app_id: getAppId(),
                 server: getSocketURL(),
+                is_mock_server_enabled: false,
                 is_appstore_enabled: platform_store.is_appstore,
                 show_dbot_dashboard: dbot_dashboard_storage !== undefined && dbot_dashboard_storage !== 'false',
                 is_debug_service_worker_enabled: !!getDebugServiceWorker(),
@@ -46,12 +48,13 @@ const Endpoint = () => {
 
                 if (!values.server) {
                     errors.server = 'Server is required.';
-                } else if (!/^[\w|\-|.]+$/.test(values.server)) {
+                } else if (!/^[\w|\-|\\:|.]+$/.test(values.server)) {
                     errors.server = 'Please enter a valid server.';
                 }
                 return errors;
             }}
             onSubmit={values => {
+                localStorage.setItem('config.is_mock_server_enabled', values.is_mock_server_enabled.toString());
                 localStorage.setItem('config.app_id', values.app_id);
                 localStorage.setItem('config.server_url', values.server);
                 localStorage.setItem(platform_store.DERIV_APPSTORE_KEY, values.is_appstore_enabled);
@@ -62,7 +65,7 @@ const Endpoint = () => {
                 location.reload();
             }}
         >
-            {({ errors, isSubmitting, touched, values, handleChange, setFieldTouched }) => (
+            {({ errors, isSubmitting, touched, values, handleChange, setFieldTouched, setFieldValue }) => (
                 <Form style={{ width: '30vw', minWidth: '300px', margin: isMobile() ? 'auto' : '20vh auto' }}>
                     <div
                         style={{
@@ -92,6 +95,24 @@ const Endpoint = () => {
                             </React.Fragment>
                         }
                     />
+                    <Field name='is_mock_server_enabled'>
+                        {({ field }) => (
+                            <div style={{ marginTop: '4.5rem', marginBottom: '1.6rem' }}>
+                                <Checkbox
+                                    {...field}
+                                    label='Enable Mock WS Server'
+                                    value={values.is_mock_server_enabled}
+                                    onChange={e => {
+                                        handleChange(e);
+                                        setFieldTouched('is_mock_server_enabled', true);
+                                        if (e.target.checked) {
+                                            setFieldValue('server', '127.0.0.1:42069');
+                                        }
+                                    }}
+                                />
+                            </div>
+                        )}
+                    </Field>
                     <Field name='is_appstore_enabled'>
                         {({ field }) => (
                             <div style={{ marginTop: '4.5rem', marginBottom: '1.6rem' }}>
@@ -160,6 +181,7 @@ const Endpoint = () => {
                     <Button
                         type='button'
                         onClick={() => {
+                            localStorage.removeItem('config.is_mock_server_enabled');
                             localStorage.removeItem('config.app_id');
                             localStorage.removeItem('config.server_url');
                             location.reload();

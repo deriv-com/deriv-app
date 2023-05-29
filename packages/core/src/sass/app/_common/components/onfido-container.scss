@@ -701,15 +701,12 @@
     }
 
     &__mismatch-container {
-        display: flex;
-        flex-direction: column;
-
         .account-form__section-side-note {
             padding: 1.6rem 0;
         }
 
         .account__scrollbars_container {
-            padding: 0;
+            padding-inline: 0;
         }
 
         .dc-hint-box {

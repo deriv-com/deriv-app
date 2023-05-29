@@ -267,8 +267,8 @@ const IdvFailed = ({
     const citizen = account_settings?.citizen;
     const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
 
-    const SubmitButtonFooter = ({ is_bypassed, children }: { is_bypassed: boolean; children: React.ReactNode }) => {
-        if (is_bypassed) return children;
+    const SubmitButtonFooter = ({ is_bypassed, children }: React.PropsWithChildren<{ is_bypassed: boolean }>) => {
+        if (is_bypassed) return children as JSX.Element;
         return <FormFooter>{children}</FormFooter>;
     };
 

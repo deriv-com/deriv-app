@@ -399,12 +399,12 @@ Blockly.WorkspaceSvg.prototype.dispose = function (should_show_loading = false) 
     };
 
     if (should_show_loading) {
-        const { startLoading, endLoading } = DBotStore.instance;
-        startLoading();
+        const { setLoading } = DBotStore.instance;
+        setLoading(true);
 
         setTimeout(() => {
             disposeFn();
-            endLoading();
+            setLoading(false);
         }, 50);
     } else {
         disposeFn();
@@ -415,12 +415,12 @@ Blockly.WorkspaceSvg.prototype.dispose = function (should_show_loading = false) 
  * Dispose of all blocks in workspace, with an optimization to prevent resizes.
  */
 Blockly.WorkspaceSvg.prototype.asyncClear = function () {
-    const { startLoading, endLoading } = DBotStore.instance;
-    startLoading();
+    const { setLoading } = DBotStore.instance;
+    setLoading(true);
 
     return new Promise(resolve => {
         this.clear();
-        endLoading();
+        setLoading(false);
         resolve();
     });
 };

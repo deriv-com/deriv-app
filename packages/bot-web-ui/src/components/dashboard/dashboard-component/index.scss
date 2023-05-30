@@ -15,6 +15,7 @@
 
     .toolbar__section {
         justify-content: end;
+
         @include mobile {
             column-gap: 1rem;
         }
@@ -195,6 +196,7 @@
 
         &--tour-active {
             width: 78%;
+
             @include mobile {
                 width: 100%;
             }
@@ -389,14 +391,20 @@
             }
 
             &__tiles {
+                word-wrap: break-word;
+                font-size: 1.3rem;
+                text-align: center;
                 display: flex;
                 justify-content: center;
-                align-items: center;
+                align-items: flex-start;
+
                 @include mobile {
                     flex-wrap: wrap;
                 }
+
                 &--minimized {
                     align-items: flex-start;
+
                     @include mobile-tablet-mix {
                         display: flex;
                         justify-content: space-around;
@@ -424,6 +432,12 @@
 
                 &:hover {
                     cursor: pointer;
+                }
+
+                span {
+                    width: 9.1rem;
+                    word-wrap: break-word;
+                    text-align: center;
                 }
 
                 &--minimized {

@@ -308,6 +308,8 @@ export default class LoadModalStore implements ILoadModalStore {
         load({ block_string: xml_doc, file_name, workspace: Blockly.derivWorkspace, from: save_types.GOOGLE_DRIVE });
         const { active_tab } = this.root_store.dashboard;
         if (active_tab === 1) this.toggleLoadModal();
+
+        this.root_store.dashboard.is_dialog_open = false;
     }
 
     onEntered = (): void => {

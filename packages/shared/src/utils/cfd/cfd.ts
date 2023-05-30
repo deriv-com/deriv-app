@@ -318,7 +318,7 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
 
     const poi_verified_for_maltainvest: boolean = allStatuses.includes('verified');
     const poi_acknowledged_for_maltainvest: boolean = allStatuses.some((status: string | undefined) =>
-        acknowledged_status.includes(status || '')
+        acknowledged_status.includes(status ?? '')
     );
     const poi_pending_for_maltainvest: boolean =
         allStatuses.every((status: string | undefined) => status === 'pending') && !poi_verified_for_maltainvest;
@@ -335,9 +335,9 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
 
     //bvi-labuan
     const poi_acknowledged_for_bvi_labuan_vanuatu: boolean =
-        acknowledged_status.includes(idv_status || '') ||
-        acknowledged_status.includes(onfido_status || '') ||
-        acknowledged_status.includes(manual_status || '');
+        acknowledged_status.includes(idv_status ?? '') ||
+        acknowledged_status.includes(onfido_status ?? '') ||
+        acknowledged_status.includes(manual_status ?? '');
 
     const need_poi_for_bvi_labuan_vanuatu = !poi_acknowledged_for_bvi_labuan_vanuatu;
     const poi_not_submitted_for_bvi_labuan_vanuatu: boolean = [idv_status, onfido_status, manual_status].every(

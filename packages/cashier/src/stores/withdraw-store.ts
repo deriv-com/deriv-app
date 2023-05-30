@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import ReadMoreWrapper from 'Components/read-more-wrapper';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
-import { TRootStore, TWebSocket } from 'Types';
+import { TWebSocket, TRootStore } from '../types';
 
 export default class WithdrawStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
@@ -92,7 +92,7 @@ export default class WithdrawStore {
             dry_run: 1,
         }).then(response => {
             if (response.error) {
-                this.error.setErrorMessage({ code: 'CryptoWithdrawalError', message: response.error.message });
+                this.error.setErrorMessage({ code: response.error.code, message: response.error.message });
                 this.setCryptoConfig().then(() => this.validateWithdrawFromAmount());
             } else {
                 this.saveWithdraw(verification_code);

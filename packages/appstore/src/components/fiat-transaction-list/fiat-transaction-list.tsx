@@ -113,6 +113,7 @@ const FiatTransactionList = () => {
                         );
                     })
                     .filter(Boolean)
+                    // TODO remove the hardcoded concat below later
                     .concat([
                         <FiatTransactionListItem
                             key={-1}

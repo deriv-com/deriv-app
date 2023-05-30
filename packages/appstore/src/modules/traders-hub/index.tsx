@@ -3,19 +3,13 @@ import ModalManager from 'Components/modals/modal-manager';
 import TourGuide from 'Modules/tour-guide/tour-guide';
 import { isDesktop, ContentFlag } from '@deriv/shared';
 import { Div100vhContainer } from '@deriv/components';
-import { useContentFlag } from '@deriv/hooks';
 import classNames from 'classnames';
 import AccountWithWallets from './account-with-wallets';
 import AccountWithoutWallets from './account-without-wallets';
 import { useStore, observer } from '@deriv/stores';
 import EUDisclaimer from 'Components/eu-disclaimer';
 import './traders-hub.scss';
-import WalletHeader from 'Components/wallet-header';
-import FiatTransactionList from '../../components/fiat-transaction-list';
-
-const FiatTransactionListDemo = () => {
-    return <FiatTransactionList />;
-};
+import { useContentFlag } from '@deriv/hooks';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStore();

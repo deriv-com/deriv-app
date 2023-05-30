@@ -1154,11 +1154,15 @@
 
     @for $column_count from 1 through 7 {
         .cfd-accounts-compare-modal__row-with-columns-count-#{$column_count} {
-            grid-template-columns: repeat($column_count, 1fr);
+            @if $column_count != 5 {
+                grid-template-columns: repeat($column_count, 1fr);
+            } @else if $column_count == 5 {
+                grid-template-columns: repeat($column_count - 1, 1fr);
+            }
         }
     }
     &__table-header {
-        grid-template-columns: 0.9fr 1.39fr 2.74fr;
+        grid-template-columns: 1fr 2fr;
         &__pre-appstore {
             grid-template-columns: 11rem 36rem 46rem 13.5rem;
         }

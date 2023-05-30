@@ -683,10 +683,8 @@ const CFDPasswordModal = ({
     const getVerificationStatus = () => {
         if (jurisdiction_selected_shortcode === 'svg') {
             setIsSelectedMT5Verified(true);
-        } else if (jurisdiction_selected_shortcode === 'bvi') {
+        } else if (jurisdiction_selected_shortcode === 'bvi' || jurisdiction_selected_shortcode === 'vanuatu') {
             setIsSelectedMT5Verified(poi_verified_for_bvi_labuan_vanuatu);
-        } else if (jurisdiction_selected_shortcode === 'vanuatu') {
-            setIsSelectedMT5Verified(poi_verified_for_maltainvest);
         } else if (jurisdiction_selected_shortcode === 'labuan') {
             setIsSelectedMT5Verified(poi_verified_for_bvi_labuan_vanuatu && poa_verified);
         } else if (jurisdiction_selected_shortcode === 'maltainvest') {

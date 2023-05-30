@@ -88,11 +88,7 @@ const FailedVerificationModal = () => {
     };
 
     const should_resubmit_poi = () => {
-        if (
-            is_from_multipliers ||
-            open_failed_verification_for === 'vanuatu' ||
-            open_failed_verification_for === 'maltainvest'
-        ) {
+        if (is_from_multipliers || open_failed_verification_for === 'maltainvest') {
             return poi_resubmit_for_maltainvest;
         }
         return poi_resubmit_for_bvi_labuan_vanuatu;

@@ -112,7 +112,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     };
 
     const should_show_poi = () => {
-        if (jurisdiction_selected_shortcode === 'vanuatu' || jurisdiction_selected_shortcode === 'maltainvest') {
+        if (jurisdiction_selected_shortcode === 'maltainvest') {
             return need_poi_for_maltainvest;
         }
         return need_poi_for_bvi_labuan_vanuatu;

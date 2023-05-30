@@ -17,12 +17,12 @@ describe('ContractError', () => {
 
         expect(container).toBeEmptyDOMElement();
     });
-    it('should render component with specific text insede if it was passed as a message in the props', () => {
+    it('should render component with specific text inside if it was passed as a message in the props', () => {
         render(<ContractError {...mocked_props} message={test_text} />);
 
         expect(screen.getByText(test_text)).toBeInTheDocument();
     });
-    it('should call a function if icon was clicked', () => {
+    it('should call the function if the icon was clicked', () => {
         render(<ContractError {...mocked_props} message={test_text} />);
         const icon = screen.getByText('MockedIcon');
         userEvent.click(icon);

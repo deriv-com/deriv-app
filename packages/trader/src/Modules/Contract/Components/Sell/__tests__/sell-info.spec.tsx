@@ -11,7 +11,7 @@ const mocked_props = {
 };
 
 describe('SellInfo', () => {
-    it('should render component with proper transaction id and  sell price', () => {
+    it('should render component with proper transaction id and a sell price', () => {
         render(<SellInfo {...mocked_props} />);
 
         expect(screen.getByText(/49.99/i)).toBeInTheDocument();

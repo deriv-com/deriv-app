@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 import classNames from 'classnames';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize } from 'Components/i18next';
-import ToggleContainer from 'Components/toggle-container/toggle-container';
+import ToggleContainer from 'Components/toggle-container';
 import SortDropdown from 'Pages/buy-sell/sort-dropdown';
 import { useStores } from 'Stores';
 import CurrencyDropdown from 'Pages/buy-sell/currency-dropdown.jsx';

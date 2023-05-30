@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ButtonToggle } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
-import ToggleContainer from 'Components/toggle-container/toggle-container';
+import ToggleContainer from 'Components/toggle-container';
 import { order_list } from 'Constants/order-list';
 import { useStores } from 'Stores';
 import OrderTableContent from './order-table-content.jsx';

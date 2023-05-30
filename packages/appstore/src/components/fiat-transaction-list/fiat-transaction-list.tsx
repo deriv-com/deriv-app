@@ -11,11 +11,21 @@ import FiatTransactionListItem from './fiat-transaction-list-item';
 const FiatTransactionList = () => {
     const store = useStore();
     const {
-        client: { accounts, currency: fiat_currency, loginid },
+        client: { accounts, currency: wallet_currency, loginid },
         traders_hub: { is_demo },
         ui: { is_dark_mode_on },
     } = store;
     const grouped_transactions = useGroupedFiatTransactions();
+    const linked_accounts = Object.values(accounts)
+        .flatMap(account => account.linked_to)
+        .filter(Boolean);
+
+    const wallet_title = React.useMemo(() => {
+        return `${is_demo ? localize('Demo') : ''} ${getCurrencyDisplayCode(wallet_currency)} ${localize('Wallet')}`;
+    }, [wallet_currency, is_demo]);
+    const wallet_icon = React.useMemo(() => {
+        return getWalletCurrencyIcon(is_demo ? 'demo' : wallet_currency, is_dark_mode_on, false);
+    }, [wallet_currency, is_demo, is_dark_mode_on]);
 
     const accountName = React.useCallback(
         (is_virtual: boolean, currency: string, is_wallet: boolean) =>
@@ -50,10 +60,11 @@ const FiatTransactionList = () => {
                             transaction.action_type === undefined
                         )
                             return null;
-                        let account_name = accountName(is_demo, fiat_currency, true);
-                        let account_currency = fiat_currency;
-                        let icon = getWalletCurrencyIcon(is_demo ? 'demo' : fiat_currency, is_dark_mode_on, false);
+                        let account_title = wallet_title;
+                        let account_currency = wallet_currency;
+                        let icon = wallet_icon;
                         let icon_type = 'fiat';
+                        let platform = null;
                         if (transaction.action_type === 'transfer') {
                             const other_loginid =
                                 transaction.to?.loginid === loginid
@@ -61,36 +72,43 @@ const FiatTransactionList = () => {
                                     : transaction.to?.loginid;
                             if (!other_loginid) return null;
                             const other_account = accounts[other_loginid];
-                            if (!other_account) return null;
-                            if (!other_account.currency) return null;
-                            account_currency = other_account.currency;
-                            account_name = accountName(
-                                !!other_account.is_virtual,
-                                other_account.currency,
-                                other_account.account_category === 'wallet'
-                            );
-                            icon = getWalletCurrencyIcon(
-                                other_account.is_virtual ? 'demo' : other_account.currency || '',
-                                is_dark_mode_on,
-                                false
-                            );
-                            icon_type = isCryptocurrency(account_currency) ? 'crypto' : 'fiat';
+                            if (other_account) {
+                                if (!other_account.currency) return null;
+                                account_currency = other_account.currency;
+                                account_title = accountName(
+                                    !!other_account.is_virtual,
+                                    other_account.currency,
+                                    other_account.account_category === 'wallet'
+                                );
+                                icon = getWalletCurrencyIcon(
+                                    other_account.is_virtual ? 'demo' : other_account.currency || '',
+                                    is_dark_mode_on,
+                                    false
+                                );
+                                icon_type = isCryptocurrency(account_currency) ? 'crypto' : 'fiat';
+                            } else {
+                                const app_account = linked_accounts.find(account => account?.loginid === other_loginid);
+                                if (!app_account) return null;
+                                platform = app_account.platform;
+                            }
                         }
                         return (
                             <FiatTransactionListItem
                                 key={transaction.transaction_id}
                                 action_type={
+                                    // TODO fix this mismatch somehow
                                     transaction.action_type as React.ComponentProps<
                                         typeof FiatTransactionListItem
                                     >['action_type']
                                 }
                                 account_currency={account_currency}
-                                account_name={account_name}
+                                account_name={account_title}
                                 amount={transaction.amount}
                                 balance_after={transaction.balance_after}
-                                currency={fiat_currency}
+                                currency={wallet_currency}
                                 icon={icon}
                                 icon_type={icon_type}
+                                platform={platform}
                             />
                         );
                     })

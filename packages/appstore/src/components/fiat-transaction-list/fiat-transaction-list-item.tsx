@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { Statement } from '@deriv/api-types';
 import { isMobile } from '@deriv/shared';
-import { Text, WalletIcon } from '@deriv/components';
+import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
 
 type StatementTransaction = DeepRequired<Statement>['transactions'][number];
 
@@ -15,6 +15,7 @@ type TFiatTransactionListItem = Pick<StatementTransaction, 'amount' | 'balance_a
     currency: string;
     icon: string;
     icon_type: string;
+    platform?: string | null;
 };
 
 const FiatTransactionListItem = ({
@@ -26,6 +27,7 @@ const FiatTransactionListItem = ({
     currency,
     icon,
     icon_type,
+    platform,
 }: TFiatTransactionListItem) => {
     const formatAmount = useCallback(
         (value: number) => value.toLocaleString(undefined, { minimumFractionDigits: 2 }),
@@ -40,7 +42,16 @@ const FiatTransactionListItem = ({
     return (
         <div className='fiat-transaction-list__item'>
             <div>
-                <WalletIcon currency={account_currency} icon={icon} type={icon_type} has_bg={true} size='medium' />
+                {icon_type === 'app' && platform ? (
+                    <AppLinkedWithWalletIcon
+                        app_icon={platform}
+                        currency={account_currency}
+                        type={icon_type}
+                        wallet_icon={icon}
+                    />
+                ) : (
+                    <WalletIcon currency={account_currency} icon={icon} type={icon_type} has_bg={true} size='medium' />
+                )}
                 <span>
                     <Text
                         size={isMobile() ? 'xxxs' : 'xxs'}

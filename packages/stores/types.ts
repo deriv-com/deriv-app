@@ -48,8 +48,9 @@ type TAccountsList = {
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
     account_category: 'trading' | 'wallet';
-    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     is_virtual: number;
+    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
+    linked_to?: { loginid: string; platform: string }[];
 };
 
 type TTradingPlatformAvailableAccount = {

@@ -1,10 +1,16 @@
-import { observer } from 'mobx-react';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Popover } from '@deriv/components';
+import { TContractInfo } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-const SellButton = ({ contract_info, is_sell_requested, is_valid_to_sell, onClickSell }) => {
+type TSellButton = {
+    contract_info: TContractInfo;
+    is_sell_requested: boolean;
+    is_valid_to_sell: boolean;
+    onClickSell: () => void;
+};
+
+const SellButton = ({ contract_info, is_sell_requested, is_valid_to_sell, onClickSell }: TSellButton) => {
     const sell_message = is_valid_to_sell
         ? localize(
               'Contract will be sold at the prevailing market price when the request is received by our servers. This price may differ from the indicated price.'
@@ -24,11 +30,4 @@ const SellButton = ({ contract_info, is_sell_requested, is_valid_to_sell, onClic
     );
 };
 
-SellButton.propTypes = {
-    contract_info: PropTypes.object,
-    is_sell_requested: PropTypes.bool,
-    is_valid_to_sell: PropTypes.bool,
-    onClickSell: PropTypes.func,
-};
-
-export default observer(SellButton);
+export default SellButton;

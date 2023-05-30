@@ -1,10 +1,14 @@
-import { observer } from 'mobx-react';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Money } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
+import { TContractInfo } from '@deriv/shared';
 
-const SellInfo = ({ contract_info, sell_info }) => (
+type TSellInfo = {
+    contract_info: TContractInfo;
+    sell_info: { transaction_id: number | string; sell_price: number | string };
+};
+
+const SellInfo = ({ contract_info, sell_info }: TSellInfo) => (
     <div className='sell-info'>
         <div>
             <Localize
@@ -26,9 +30,4 @@ const SellInfo = ({ contract_info, sell_info }) => (
     </div>
 );
 
-SellInfo.propTypes = {
-    contract_info: PropTypes.object,
-    sell_info: PropTypes.object,
-};
-
-export default observer(SellInfo);
+export default SellInfo;

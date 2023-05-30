@@ -302,7 +302,7 @@
     "-854930519": "Geri yükleyemeyeceksiniz.",
     "-1600783504": "İlanınız için dalgalı bir kur belirleyin.",
     "-2008992756": "Bu emri iptal etmek istiyor musunuz?",
-    "-1666369246": "{{cancellation_period}} saat içinde {{cancellation_limit}} kez emrinizi iptal ederseniz, {{block_duration}} saat boyunca Deriv P2P'yi kullanmanız engellenecektir. <br/>({{number_of_cancels_remaining}} iptal kaldı.)",
+    "-1666369246": "{{cancellation_period}} saat içinde {{cancellation_limit}} kez emrinizi iptal ederseniz, {{block_duration}} saat boyunca Deriv P2P'yi kullanmanız engellenecektir. <br/>({{number_of_cancels_remaining}} iptal kaldı)",
     "-1618084450": "Bu siparişi iptal ederseniz Deriv P2P'yi {{block_duration}} saat boyunca kullanmanız engellenecektir.",
     "-2026176944": "Ödemeyi zaten yapmışsanız lütfen iptal etmeyin.",
     "-1989544601": "Bu emri iptal et",

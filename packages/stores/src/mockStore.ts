@@ -295,6 +295,14 @@ const mock = (): TStores & { is_mock: boolean } => {
             selectAccountType: jest.fn(),
             is_wallet_migration_failed: false,
             setWalletsMigrationFailedPopup: jest.fn(),
+            is_tour_open: false,
+            selected_platform_type: '',
+            available_platforms: [],
+            CFDs_restricted_countries: false,
+            is_demo_low_risk: false,
+            selected_region: 'All',
+            getExistingAccounts: jest.fn(),
+            available_dxtrade_accounts: [],
         },
         menu: {
             attach: jest.fn(),
@@ -310,6 +318,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setP2POrderProps: jest.fn(),
             showAccountSwitchToRealNotification: jest.fn(),
             setP2PRedirectTo: jest.fn(),
+            showSuccessWalletsUpgradeNotification: jest.fn(),
         },
         portfolio: {
             active_positions: [],

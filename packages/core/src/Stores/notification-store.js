@@ -337,6 +337,9 @@ export default class NotificationStore extends BaseStore {
 
             this.handlePOAAddressMismatchNotifications();
 
+            // TODO: Update logic when BE API is integrated [Wallets]
+            this.showSuccessWalletsUpgradeNotification();
+
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
             } else {
@@ -1574,23 +1577,6 @@ export default class NotificationStore extends BaseStore {
         });
     };
 
-    showAccountSwitchToRealNotification = (loginid, currency) => {
-        const regulation = loginid?.startsWith('CR') ? localize('non-EU') : localize('EU');
-
-        this.addNotificationMessage({
-            key: 'switched_to_real',
-            header: localize('Switched to real account'),
-            message: (
-                <Localize
-                    i18n_default_text='To access the cashier, you are now in your {{regulation}} {{currency}} ({{loginid}}) account.'
-                    values={{ loginid, currency, regulation }}
-                />
-            ),
-            type: 'info',
-            should_show_again: true,
-        });
-    };
-
     async getP2pCompletedOrders() {
         await WS.wait('authorize');
         const response = await WS.send?.({ p2p_order_list: 1, active: 0 });
@@ -1599,4 +1585,27 @@ export default class NotificationStore extends BaseStore {
             this.p2p_completed_orders = response?.p2p_order_list?.list || [];
         }
     }
+
+    showSuccessWalletsUpgradeNotification = () => {
+        const { client } = this.root_store;
+        const { logout } = client;
+        this.addNotificationMessage({
+            key: 'success_wallets_upgrade',
+            header: localize('Your Wallets are ready'),
+            message: localize(
+                'To complete the upgrade, please log out and log in again to add more accounts and make transactions with your Wallets.'
+            ),
+            action: {
+                onClick: async () => {
+                    await logout();
+                    this.removeNotificationMessage({
+                        key: this.client_notifications.failed_wallets_upgrade.key,
+                        should_show_again: false,
+                    });
+                },
+                text: localize('Log out'),
+            },
+            type: 'announce',
+        });
+    };
 }

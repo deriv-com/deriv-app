@@ -1,10 +1,14 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon } from '@deriv/components';
 
+type TContractError = {
+    message?: string;
+    onClickClose: () => void;
+};
+
 // TODO: move to App/Components, Refactor svg, consider other types, more features;
 // when a general design and more icons for all messages is ready
-const ContractError = ({ message = '', onClickClose }) =>
+const ContractError = ({ message = '', onClickClose }: TContractError) =>
     !message ? null : (
         <div className='message'>
             <div className='message-icon'>
@@ -25,10 +29,5 @@ const ContractError = ({ message = '', onClickClose }) =>
             </div>
         </div>
     );
-
-ContractError.propTypes = {
-    message: PropTypes.string,
-    onClickClose: PropTypes.func,
-};
 
 export default ContractError;

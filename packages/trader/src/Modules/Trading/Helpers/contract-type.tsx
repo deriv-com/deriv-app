@@ -2,12 +2,12 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 
 type Category = { value: string; text: string };
-type TContract_type = {
+type TContractType = {
     name: string;
     categories: Category[];
 };
-type Tcontract_types_list = {
-    [key: string]: TContract_type;
+type TcontractTypesList = {
+    [key: string]: TContractType;
 };
 type TItem = {
     value: string;
@@ -50,7 +50,7 @@ export const getContractTypeCategoryIcons = () =>
  * @param {array}  unsupported_list - list of unsupported contract types
  */
 
-export const getAvailableContractTypes = (contract_types_list: Tcontract_types_list, unsupported_list: string[]) => {
+export const getAvailableContractTypes = (contract_types_list: TcontractTypesList, unsupported_list: string[]) => {
     return Object.keys(contract_types_list)
         .map(key => {
             const contract_types = contract_types_list[key].categories;

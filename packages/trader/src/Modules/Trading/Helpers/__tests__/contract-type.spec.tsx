@@ -16,7 +16,7 @@ const contract_type_array = [
     { value: 'accumulator', text: 'Accumulator' },
     { value: 'rise_fall', text: 'Rise/Fall' },
 ];
-const contract_categoty_list = [
+const contract_category_list = [
     {
         contract_types: contract_type_array,
         contract_categories: [
@@ -72,18 +72,18 @@ describe('getAvailableContractTypes', () => {
 
 describe('getContractCategoryKey', () => {
     it('should return key (contract category) if passed item has the same value as some of the passed list', () => {
-        expect(getContractCategoryKey(contract_categoty_list, { value: 'rise_fall' })).toEqual('All');
+        expect(getContractCategoryKey(contract_category_list, { value: 'rise_fall' })).toEqual('All');
     });
     it('should return undefined (contract category) if passed item has not the same value as some of the passed list', () => {
-        expect(getContractCategoryKey(contract_categoty_list, { value: 'match_diff' })).toEqual(undefined);
+        expect(getContractCategoryKey(contract_category_list, { value: 'match_diff' })).toEqual(undefined);
     });
 });
 
 describe('getContractTypes', () => {
     it('should return an array with contract types if passed item has the same value as some of the passed list', () => {
-        expect(getContractTypes(contract_categoty_list, { value: 'rise_fall' })).toEqual(contract_type_array);
+        expect(getContractTypes(contract_category_list, { value: 'rise_fall' })).toEqual(contract_type_array);
     });
     it('should return undefined if passed item has not the same value as some of the passed list', () => {
-        expect(getContractTypes(contract_categoty_list, { value: 'match_diff' })).toEqual(undefined);
+        expect(getContractTypes(contract_category_list, { value: 'match_diff' })).toEqual(undefined);
     });
 });

@@ -1,19 +1,11 @@
 import React from 'react';
-import RootStore from 'Stores/index';
-import { connect } from 'Stores/connect';
+import { useStore, observer } from '@deriv/stores';
 import SecurityAndPrivacy from './security-and-privacy';
 
-type TPopulateFooterExtensionsProps = {
-    position: string;
-    Component: React.FC;
-    has_right_separator: boolean;
-};
-
-type TBotFooterExtentionsProps = {
-    populateFooterExtensions: (footer_extensions: TPopulateFooterExtensionsProps[]) => void;
-};
-
-const BotFooterExtensions = ({ populateFooterExtensions }: TBotFooterExtentionsProps) => {
+const BotFooterExtensions = observer(() => {
+    const {
+        ui: { populateFooterExtensions },
+    } = useStore();
     React.useEffect(() => populateFooter(), []);
     React.useEffect(() => () => populateFooterExtensions([]), [populateFooterExtensions]);
 
@@ -29,8 +21,6 @@ const BotFooterExtensions = ({ populateFooterExtensions }: TBotFooterExtentionsP
     };
 
     return null;
-};
+});
 
-export default connect(({ ui }: RootStore) => ({
-    populateFooterExtensions: ui.populateFooterExtensions,
-}))(BotFooterExtensions);
+export default BotFooterExtensions;

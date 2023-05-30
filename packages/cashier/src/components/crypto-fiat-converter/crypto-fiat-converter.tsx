@@ -6,6 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { TReactChangeEvent } from '../../types';
 import { useCashierStore } from '../../stores/useCashierStores';
+import { useExchangeRate } from '@deriv/hooks';
 import './crypto-fiat-converter.scss';
 
 type TTimerProps = {
@@ -22,9 +23,15 @@ type TCryptoFiatConverterProps = {
     onChangeConverterFromAmount: (
         event: { target: { value: string } },
         from_currency: string,
-        to_currency: string
+        to_currency: string,
+        exchanged_rate?: number
     ) => void;
-    onChangeConverterToAmount: (event: TReactChangeEvent, from_currency: string, to_currency: string) => void;
+    onChangeConverterToAmount: (
+        event: TReactChangeEvent,
+        from_currency: string,
+        to_currency: string,
+        exchanged_rate?: number
+    ) => void;
     resetConverter: VoidFunction;
     to_currency: string;
     validateFromAmount: VoidFunction;
@@ -75,6 +82,7 @@ const CryptoFiatConverter = observer(
         validateToAmount,
     }: TCryptoFiatConverterProps) => {
         const { crypto_fiat_converter } = useCashierStore();
+        const { getRate } = useExchangeRate();
 
         const {
             converter_from_amount,
@@ -107,7 +115,10 @@ const CryptoFiatConverter = observer(
                                 setArrowIconDirection('right');
                             }}
                             onChange={(e: TReactChangeEvent) => {
-                                onChangeConverterFromAmount(e, from_currency, to_currency);
+                                const from_rate = getRate(from_currency || '');
+                                const to_rate = getRate(to_currency || '');
+                                const exchanged_rate = (Number(e.target.value) * to_rate) / from_rate;
+                                onChangeConverterFromAmount(e, from_currency, to_currency, exchanged_rate);
                                 handleChange(e);
                             }}
                             type='text'
@@ -143,7 +154,10 @@ const CryptoFiatConverter = observer(
                                     setArrowIconDirection('left');
                                 }}
                                 onChange={(e: TReactChangeEvent) => {
-                                    onChangeConverterToAmount(e, to_currency, from_currency);
+                                    const from_rate = getRate(from_currency || '');
+                                    const to_rate = getRate(to_currency || '');
+                                    const exchanged_rate = (Number(e.target.value) * from_rate) / to_rate;
+                                    onChangeConverterToAmount(e, to_currency, from_currency, exchanged_rate);
                                     handleChange(e);
                                 }}
                                 type='text'

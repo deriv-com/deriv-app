@@ -16,7 +16,7 @@ export default class CryptoFiatConverterStore {
             setConverterToError: action.bound,
             setIsTimerVisible: action.bound,
             resetTimer: action.bound,
-            getExchangeRate: action.bound,
+            // getExchangeRate: action.bound,
             validateFromAmount: action.bound,
             validateToAmount: action.bound,
             onChangeConverterFromAmount: action.bound,
@@ -55,14 +55,14 @@ export default class CryptoFiatConverterStore {
         this.setIsTimerVisible(false);
     }
 
-    async getExchangeRate(from_currency?: string, to_currency?: string) {
-        // use UseExchangeRates hook instead
-        const { exchange_rates } = await this.WS.send({
-            exchange_rates: 1,
-            base_currency: from_currency,
-        });
-        return to_currency ? exchange_rates?.rates?.[to_currency] : '';
-    }
+    // async getExchangeRate(from_currency?: string, to_currency?: string) {
+    //     // use UseExchangeRates hook instead
+    //     const { exchange_rates } = await this.WS.send({
+    //         exchange_rates: 1,
+    //         base_currency: from_currency,
+    //     });
+    //     return to_currency ? exchange_rates?.rates?.[to_currency] : '';
+    // }
 
     validateFromAmount() {
         const { account_transfer, general_store, withdraw } = this.root_store.modules.cashier;
@@ -87,7 +87,8 @@ export default class CryptoFiatConverterStore {
     async onChangeConverterFromAmount(
         { target }: { target: { value: string } },
         from_currency?: string,
-        to_currency?: string
+        to_currency?: string,
+        exchanged_rate?: number
     ): Promise<void> {
         const { account_transfer, general_store } = this.root_store.modules.cashier;
 
@@ -103,9 +104,8 @@ export default class CryptoFiatConverterStore {
                 this.setIsTimerVisible(false);
                 account_transfer.setAccountTransferAmount('');
             } else {
-                const rate = await this.getExchangeRate(from_currency, to_currency);
                 const decimals = getDecimalPlaces(to_currency || '');
-                const amount = (Number(rate) * Number(target.value)).toFixed(decimals);
+                const amount = exchanged_rate?.toFixed(decimals) || '1';
                 if (+amount || this.converter_from_amount) {
                     this.setConverterToAmount(amount);
                 } else {
@@ -124,7 +124,8 @@ export default class CryptoFiatConverterStore {
     async onChangeConverterToAmount(
         { target }: { target: { value: string } },
         from_currency: string,
-        to_currency: string
+        to_currency: string,
+        exchanged_rate?: number
     ): Promise<void> {
         const { account_transfer, general_store } = this.root_store.modules.cashier;
 
@@ -138,9 +139,8 @@ export default class CryptoFiatConverterStore {
                 this.setIsTimerVisible(false);
                 account_transfer.setAccountTransferAmount('');
             } else {
-                const rate = await this.getExchangeRate(from_currency, to_currency);
                 const decimals = getDecimalPlaces(to_currency);
-                const amount = (Number(rate) * Number(target.value)).toFixed(decimals);
+                const amount = exchanged_rate?.toFixed(decimals) || '1';
                 if (+amount || this.converter_to_amount) {
                     this.setConverterFromAmount(amount);
                 } else {

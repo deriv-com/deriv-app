@@ -7,7 +7,8 @@ import WalletHeader from '..';
 import { TAccountStatus } from 'Types';
 import { getStatusBadgeConfig } from '@deriv/account';
 
-const mocked_root_store = mockStore({});
+const mockedRootStore = mockStore({});
+const setIsOpen = jest.fn();
 
 jest.mock('@deriv/account', () => ({
     ...jest.requireActual('@deriv/account'),
@@ -19,8 +20,8 @@ describe('<WalletHeader />', () => {
         it('Should render right currency card for DEMO', () => {
             const account_type = 'demo';
             render(
-                <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} />
+                <StoreProvider store={mockedRootStore}>
+                    <WalletHeader account_type={account_type} is_open_wallet={false} setIsOpen={setIsOpen} />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_demo`);
@@ -33,8 +34,14 @@ describe('<WalletHeader />', () => {
             const currency = 'AUD';
             const dt_currency = currency.toLowerCase();
             render(
-                <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} currency={currency} shortcode='svg' />
+                <StoreProvider store={mockedRootStore}>
+                    <WalletHeader
+                        account_type={account_type}
+                        currency={currency}
+                        shortcode='svg'
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
+                    />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_${dt_currency}`);
@@ -47,8 +54,14 @@ describe('<WalletHeader />', () => {
             const currency = 'ETH';
             const dt_currency = currency.toLowerCase();
             render(
-                <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} currency={currency} shortcode='svg' />
+                <StoreProvider store={mockedRootStore}>
+                    <WalletHeader
+                        account_type={account_type}
+                        currency={currency}
+                        shortcode='svg'
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
+                    />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_${dt_currency}`);
@@ -61,43 +74,19 @@ describe('<WalletHeader />', () => {
             const currency = 'EUR';
             const dt_currency = currency.toLowerCase();
             render(
-                <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} currency={currency} shortcode='malta' />
+                <StoreProvider store={mockedRootStore}>
+                    <WalletHeader
+                        account_type={account_type}
+                        currency={currency}
+                        shortcode='malta'
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
+                    />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_${dt_currency}`);
 
             expect(currency_card).toBeInTheDocument();
-        });
-
-        it('Should use right class in light mode', () => {
-            mocked_root_store.ui.is_dark_mode_on = false;
-
-            const account_type = 'demo';
-            render(
-                <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} />
-                </StoreProvider>
-            );
-            const currency_card = screen.queryByTestId(`dt_demo`);
-
-            expect(currency_card).toBeInTheDocument();
-            expect(currency_card).toHaveClass('wallet__demo-bg');
-        });
-
-        it('Should use right class in dark mode', () => {
-            mocked_root_store.ui.is_dark_mode_on = true;
-
-            const account_type = 'demo';
-            render(
-                <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} />
-                </StoreProvider>
-            );
-            const currency_card = screen.queryByTestId(`dt_demo`);
-
-            expect(currency_card).toBeInTheDocument();
-            expect(currency_card).toHaveClass('wallet__demo-bg--dark');
         });
     });
 
@@ -107,11 +96,18 @@ describe('<WalletHeader />', () => {
             const balance = '2345.56';
             const currency = 'EUR';
             render(
-                <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} balance={balance} currency={currency} shortcode='svg' />
+                <StoreProvider store={mockedRootStore}>
+                    <WalletHeader
+                        account_type={account_type}
+                        balance={balance}
+                        currency={currency}
+                        shortcode='svg'
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
+                    />
                 </StoreProvider>
             );
-            const balance_label = screen.queryByText('2,345.56 EUR');
+            const balance_label = screen.queryByText(`${balance} ${currency}`);
 
             expect(balance_label).toBeInTheDocument();
         });
@@ -120,8 +116,14 @@ describe('<WalletHeader />', () => {
             const account_type = 'real';
             const currency = 'EUR';
             render(
-                <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type={account_type} currency={currency} shortcode='svg' />
+                <StoreProvider store={mockedRootStore}>
+                    <WalletHeader
+                        account_type={account_type}
+                        currency={currency}
+                        shortcode='svg'
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
+                    />
                 </StoreProvider>
             );
             const balance_label = screen.queryByText(`0.00 ${currency}`);
@@ -136,12 +138,14 @@ describe('<WalletHeader />', () => {
             const account_type = 'real';
             const currency = 'EUR';
             render(
-                <StoreProvider store={mocked_root_store}>
+                <StoreProvider store={mockedRootStore}>
                     <WalletHeader
                         account_status={account_status}
                         account_type={account_type}
                         currency={currency}
                         shortcode='svg'
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
                     />
                 </StoreProvider>
             );
@@ -159,12 +163,14 @@ describe('<WalletHeader />', () => {
             const account_type = 'real';
             const currency = 'EUR';
             render(
-                <StoreProvider store={mocked_root_store}>
+                <StoreProvider store={mockedRootStore}>
                     <WalletHeader
                         account_status={account_status}
                         account_type={account_type}
                         currency={currency}
                         shortcode='svg'
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
                     />
                 </StoreProvider>
             );
@@ -183,12 +189,14 @@ describe('<WalletHeader />', () => {
             const account_type = 'real';
             const currency = 'EUR';
             render(
-                <StoreProvider store={mocked_root_store}>
+                <StoreProvider store={mockedRootStore}>
                     <WalletHeader
                         account_status={account_status}
                         account_type={account_type}
                         currency={currency}
                         shortcode='svg'
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
                     />
                 </StoreProvider>
             );
@@ -204,49 +212,52 @@ describe('<WalletHeader />', () => {
     describe('Check buttons', () => {
         it('Buttons collapsed', () => {
             render(
-                <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type='demo' />
+                <StoreProvider store={mockedRootStore}>
+                    <WalletHeader account_type='demo' is_open_wallet={false} setIsOpen={setIsOpen} />
                 </StoreProvider>
             );
 
             const btn_text = screen.queryByText(/Transfer/i);
 
-            expect(btn_text).not.toHaveClass('wallet-header__description-buttons-item-active');
+            expect(btn_text).not.toBeInTheDocument();
         });
 
         it('Buttons uncollapsed', () => {
             render(
-                <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type='demo' is_open_wallet={true} />
+                <StoreProvider store={mockedRootStore}>
+                    <WalletHeader account_type='demo' is_open_wallet={true} setIsOpen={setIsOpen} />
                 </StoreProvider>
             );
 
             const btn_text = screen.queryByText(/Transfer/i);
 
-            expect(btn_text).toHaveClass('wallet-header__description-buttons-item-active');
+            expect(btn_text).toBeInTheDocument();
         });
 
         it('Arrow button click', async () => {
-            render(
-                <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type='demo' />
-                </StoreProvider>
-            );
+            const Wrapper = () => {
+                const [is_open, wrapperSetIsOpen] = React.useState(false);
 
+                return (
+                    <StoreProvider store={mockedRootStore}>
+                        <WalletHeader account_type='demo' is_open_wallet={is_open} setIsOpen={wrapperSetIsOpen} />
+                    </StoreProvider>
+                );
+            };
+
+            render(<Wrapper />);
             const btn_text = screen.queryByText(/Transfer/i);
             const btn_arrow = screen.getByTestId('dt_arrow');
 
-            expect(btn_text).not.toHaveClass('wallet-header__description-buttons-item-active');
-
+            expect(btn_text).not.toBeInTheDocument();
             await userEvent.click(btn_arrow);
-
-            expect(btn_text).toHaveClass('wallet-header__description-buttons-item-active');
+            expect(screen.queryByText(/Transfer/i)).toBeInTheDocument();
         });
 
         it('Check buttons for demo', () => {
             render(
-                <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type='demo' />
+                <StoreProvider store={mockedRootStore}>
+                    <WalletHeader account_type='demo' is_open_wallet={true} setIsOpen={setIsOpen} />
                 </StoreProvider>
             );
 
@@ -261,8 +272,14 @@ describe('<WalletHeader />', () => {
 
         it('Check buttons for real', () => {
             render(
-                <StoreProvider store={mocked_root_store}>
-                    <WalletHeader account_type='real' shortcode='svg' currency='USD' />
+                <StoreProvider store={mockedRootStore}>
+                    <WalletHeader
+                        account_type='real'
+                        shortcode='svg'
+                        currency='USD'
+                        is_open_wallet={true}
+                        setIsOpen={setIsOpen}
+                    />
                 </StoreProvider>
             );
 

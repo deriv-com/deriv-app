@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, StatusBadge } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { getStatusBadgeConfig } from '@deriv/account';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import { TWalletCurrency, TAccountStatus } from 'Types';
 
 type TWalletHeaderBalance = {
@@ -11,7 +11,7 @@ type TWalletHeaderBalance = {
     currency: TWalletCurrency;
 };
 
-const WalletHeaderBalance = React.memo(({ account_status, balance, currency }: TWalletHeaderBalance) => {
+const WalletHeaderBalance = observer(({ account_status, balance, currency }: TWalletHeaderBalance) => {
     const {
         traders_hub: { openFailedVerificationModal },
     } = useStore();
@@ -56,5 +56,4 @@ const WalletHeaderBalance = React.memo(({ account_status, balance, currency }: T
         </div>
     );
 });
-WalletHeaderBalance.displayName = 'WalletHeaderBalance';
 export default WalletHeaderBalance;

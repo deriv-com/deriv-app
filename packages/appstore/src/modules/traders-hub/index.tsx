@@ -17,15 +17,7 @@ import WalletHeader from 'Components/wallet-header';
 import FiatTransactionList from '../../components/fiat-transaction-list';
 
 const FiatTransactionListDemo = () => {
-    return (
-        <FiatTransactionList
-            wallet={{
-                currency: 'usd',
-                icon: 'IcWalletCurrencyUsd',
-                icon_type: 'fiat',
-            }}
-        />
-    );
+    return <FiatTransactionList />;
 };
 
 const TradersHub = () => {

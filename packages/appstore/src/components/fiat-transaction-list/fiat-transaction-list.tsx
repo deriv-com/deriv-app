@@ -11,7 +11,7 @@ import FiatTransactionListItem from './fiat-transaction-list-item';
 const FiatTransactionList = () => {
     const store = useStore();
     const {
-        client: { account_list, currency, loginid },
+        client: { accounts, currency, loginid },
         traders_hub: { is_demo },
         ui: { is_dark_mode_on },
     } = store;
@@ -55,18 +55,21 @@ const FiatTransactionList = () => {
                                 transaction.to?.loginid === loginid
                                     ? transaction.from?.loginid
                                     : transaction.to?.loginid;
-                            const other_account = account_list.find(account => account.loginid === other_loginid);
-                            if (other_account) {
-                                account_currency = other_account.title || '';
-                                // TODO don't hardcode 'account' on the line below, also add app check
-                                account_name = `${other_account.title} ${localize('account')}` || '';
-                                icon = getWalletCurrencyIcon(
-                                    is_demo ? 'demo' : other_account.title || '',
-                                    is_dark_mode_on,
-                                    false
-                                );
-                                icon_type = isCryptocurrency(account_currency) ? 'crypto' : 'fiat';
-                            }
+                            if (!other_loginid) return null;
+                            const other_account = accounts[other_loginid];
+                            if (!other_account) return null;
+                            if (!other_account.currency) return null;
+                            account_currency = other_account.currency;
+                            const account_category = other_account.account_category === 'wallet' ? 'Wallet' : 'account';
+                            account_name = `${other_account.is_virtual && 'Demo'} ${other_account.currency} ${localize(
+                                account_category
+                            )}`;
+                            icon = getWalletCurrencyIcon(
+                                other_account.is_virtual ? 'demo' : other_account.currency || '',
+                                is_dark_mode_on,
+                                false
+                            );
+                            icon_type = isCryptocurrency(account_currency) ? 'crypto' : 'fiat';
                         }
                         return (
                             <FiatTransactionListItem

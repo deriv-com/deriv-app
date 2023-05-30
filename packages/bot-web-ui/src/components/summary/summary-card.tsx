@@ -1,13 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
 import { localize } from '@deriv/translations';
-import { ContractCard } from '@deriv/components';
+import { ContractCard, Text } from '@deriv/components';
 import ContractCardLoader from 'Components/contract-card-loading';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { connect } from 'Stores/connect';
 import { connectWithContractUpdate } from 'Utils/multiplier';
 import RootStore from 'Stores/index';
 import { TSummaryCardProps } from './summary-card.types';
+import { isMobile } from '@deriv/shared';
 
 const SummaryCard = ({
     addToast,
@@ -17,7 +18,6 @@ const SummaryCard = ({
     is_contract_completed,
     is_contract_loading,
     is_contract_inactive,
-    is_mobile,
     is_multiplier,
     onClickSell,
     is_sell_requested,
@@ -25,6 +25,7 @@ const SummaryCard = ({
     server_time,
     setCurrentFocus,
 }: TSummaryCardProps) => {
+    const is_mobile = isMobile();
     const card_header = (
         <ContractCard.Header
             contract_info={contract_info}
@@ -78,7 +79,7 @@ const SummaryCard = ({
         <div
             className={classNames('db-summary-card', {
                 'db-summary-card--mobile': is_mobile,
-                'db-summary-card--inactive': is_contract_inactive,
+                'db-summary-card--inactive': is_contract_inactive && !is_contract_loading && !contract_info,
                 'db-summary-card--is-loading': is_contract_loading,
                 'db-summary-card--completed': is_contract_completed,
                 'db-summary-card--completed-mobile': is_contract_completed && is_mobile,
@@ -104,9 +105,11 @@ const SummaryCard = ({
                 </ContractCard>
             )}
             {!is_contract_loading && !contract_info && (
-                <React.Fragment>
-                    {localize('Build a bot from the start menu then hit the run button to run the bot.')}
-                </React.Fragment>
+                <Text as='p' line_height='s' size='xs'>
+                    {localize('When you’re ready to trade, hit ')}
+                    <strong>{localize('Run')}</strong>
+                    {localize('. You’ll be able to track your bot’s performance here.')}
+                </Text>
             )}
         </div>
     );
@@ -114,13 +117,10 @@ const SummaryCard = ({
 
 export default connect(({ summary_card, common, run_panel, ui }: RootStore) => ({
     addToast: ui.addToast,
-    contract_info: summary_card.contract_info,
     contract_store: summary_card,
     current_focus: ui.current_focus,
     is_contract_completed: summary_card.is_contract_completed,
     is_contract_inactive: summary_card.is_contract_inactive,
-    is_contract_loading: summary_card.is_contract_loading,
-    is_mobile: ui.is_mobile,
     is_multiplier: summary_card.is_multiplier,
     onClickSell: run_panel.onClickSell,
     is_sell_requested: run_panel.is_sell_requested,

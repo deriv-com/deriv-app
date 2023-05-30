@@ -1,12 +1,6 @@
 import React, { PropsWithChildren } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-let ReactQueryDevtools = () => null;
-
-if (process.env.NODE_ENV === 'development') {
-    //eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
-    ReactQueryDevtools = require('@tanstack/react-query-devtools').ReactQueryDevtools;
-}
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient();
 

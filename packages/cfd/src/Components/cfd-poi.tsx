@@ -40,6 +40,7 @@ export type TCFDPOIProps = {
     account_settings: GetSettings;
     residence_list: ResidenceList;
     jurisdiction_selected_shortcode: string;
+    landing_company_shortcode: string;
 };
 
 const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => {
@@ -76,4 +77,5 @@ export default connect(({ client, common, notifications }: RootStore) => ({
     should_allow_authentication: client.should_allow_authentication,
     account_settings: client.account_settings,
     residence_list: client.residence_list,
+    landing_company_shortcode: client.landing_company_shortcode,
 }))(CFDPOI);

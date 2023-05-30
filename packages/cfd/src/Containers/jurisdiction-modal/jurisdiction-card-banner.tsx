@@ -1,18 +1,16 @@
 import React from 'react';
 import RootStore from '../../Stores/index';
 import { connect } from '../../Stores/connect';
-import { getAuthenticationStatusInfo, isVerificationServiceSupported } from '@deriv/shared';
+import { getAuthenticationStatusInfo } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { TVerificationStatusBannerProps } from '../props.types';
 
 const VerificationStatusBanner = ({
     account_status,
-    account_settings,
     account_type,
     card_classname,
     disabled,
-    context,
     is_virtual,
     type_of_card,
     should_restrict_bvi_account_creation,
@@ -20,22 +18,18 @@ const VerificationStatusBanner = ({
     real_synthetic_accounts_existing_data,
     real_financial_accounts_existing_data,
     real_swapfree_accounts_existing_data,
-    residence_list,
 }: TVerificationStatusBannerProps) => {
-    const is_idv_supported = isVerificationServiceSupported(residence_list, account_settings, 'idv');
-
     const {
-        poi_not_submitted_for_vanuatu_maltainvest,
         poi_and_poa_not_submitted,
-        poi_resubmit_for_vanuatu_maltainvest,
-        poi_resubmit_for_bvi_labuan,
+        poi_resubmit_for_maltainvest,
+        poi_resubmit_for_bvi_labuan_vanuatu,
         need_poa_resubmission,
-        need_poi_for_bvi_labuan,
+        need_poi_for_bvi_labuan_vanuatu,
         poa_pending,
-        poi_acknowledged_for_vanuatu_maltainvest,
-        poi_acknowledged_for_bvi_labuan,
+        poi_acknowledged_for_maltainvest,
+        poi_acknowledged_for_bvi_labuan_vanuatu,
         poa_not_submitted,
-    } = getAuthenticationStatusInfo(account_status, is_idv_supported);
+    } = getAuthenticationStatusInfo(account_status);
 
     const getAccountTitle = () => {
         switch (account_type) {
@@ -124,7 +118,7 @@ const VerificationStatusBanner = ({
                 </Text>
             </div>
         );
-    } else if (is_vanuatu && poi_not_submitted_for_vanuatu_maltainvest) {
+    } else if (is_vanuatu && poa_not_submitted) {
         return (
             <div className={`${card_classname}__verification-status--not_submitted`}>
                 <Text as='p' size='xxs' align='center' color='prominent'>
@@ -153,8 +147,8 @@ const VerificationStatusBanner = ({
             </div>
         );
     } else if (
-        ((is_bvi || is_labuan) && poi_acknowledged_for_vanuatu_maltainvest && poa_not_submitted) ||
-        ((is_vanuatu || is_maltainvest) && poi_acknowledged_for_bvi_labuan && poa_not_submitted)
+        ((is_bvi || is_labuan || is_vanuatu) && poi_acknowledged_for_maltainvest && poa_not_submitted) ||
+        (is_maltainvest && poi_acknowledged_for_bvi_labuan_vanuatu && poa_not_submitted)
     ) {
         return (
             <div className={`${card_classname}__verification-status--failed`}>
@@ -164,8 +158,8 @@ const VerificationStatusBanner = ({
             </div>
         );
     } else if (
-        ((is_bvi || is_labuan) && need_poi_for_bvi_labuan && need_poa_resubmission) ||
-        ((is_vanuatu || is_maltainvest) && poi_resubmit_for_vanuatu_maltainvest && need_poa_resubmission)
+        ((is_bvi || is_labuan || is_vanuatu) && need_poi_for_bvi_labuan_vanuatu && need_poa_resubmission) ||
+        (is_maltainvest && poi_resubmit_for_maltainvest && need_poa_resubmission)
     ) {
         return (
             <div className={`${card_classname}__verification-status--failed`}>
@@ -175,8 +169,8 @@ const VerificationStatusBanner = ({
             </div>
         );
     } else if (
-        ((is_bvi || is_labuan) && poi_resubmit_for_bvi_labuan) ||
-        ((is_vanuatu || is_maltainvest) && poi_resubmit_for_vanuatu_maltainvest)
+        ((is_bvi || is_labuan || is_vanuatu) && poi_resubmit_for_bvi_labuan_vanuatu) ||
+        (is_maltainvest && poi_resubmit_for_maltainvest)
     ) {
         return (
             <div className={`${card_classname}__verification-status--failed`}>
@@ -207,12 +201,10 @@ const JurisdictionCardBanner = (props: TVerificationStatusBannerProps) => {
 
 export default connect(({ modules: { cfd }, client }: RootStore) => ({
     account_status: client.account_status,
-    account_settings: client.account_settings,
     is_virtual: client.is_virtual,
     should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
     should_restrict_vanuatu_account_creation: client.should_restrict_vanuatu_account_creation,
     real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
     real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
     real_swapfree_accounts_existing_data: cfd.real_swapfree_accounts_existing_data,
-    residence_list: client.residence_list,
 }))(JurisdictionCardBanner);

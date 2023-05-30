@@ -302,7 +302,7 @@
     "-854930519": "لن تتمكن من استعادتها.",
     "-1600783504": "حدد سعرًا عائمًا لإعلانك.",
     "-2008992756": "هل تريد إلغاء هذا الطلب؟",
-    "-1666369246": "If you cancel your order {{cancellation_limit}} times in {{cancellation_period}} hours, you will be blocked from using Deriv P2P for {{block_duration}} hours. <br /> ({{number_of_cancels_remaining}} cancellations remaining.)",
+    "-1666369246": "إذا قمت بإلغاء طلبك {{cancellation_limit}} مرة خلال {{cancellation_period}} ساعة، فسيتم حظرك من استخدام Deriv P2P لمدة {{block_duration}} ساعة.<br />(بقي {{number_of_cancels_remaining}} من الإلغاءات.)",
     "-1618084450": "إذا قمت بإلغاء هذا الطلب، فسيتم منعك من استخدام Deriv P2P لمدة {{block_duration}} ساعة.",
     "-2026176944": "يرجى عدم الإلغاء إذا كنت قد قمت بالدفع بالفعل.",
     "-1989544601": "قم بإلغاء هذا الطلب",

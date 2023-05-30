@@ -1,11 +1,13 @@
 .wallet-steps {
     width: 100%;
     height: 100%;
-    display: grid;
-    place-content: center;
+    display: flex;
+
+    @include mobile {
+        align-items: center;
+    }
 
     &__content {
-        height: 100%;
         max-width: 77.6rem;
         margin: 0 auto;
         text-align: center;
@@ -18,6 +20,11 @@
     }
 
     &__footer {
+        width: 100%;
+        position: sticky;
+        bottom: 0;
+        background-color: inherit;
+
         @include mobile {
             justify-content: center;
             background: var(--fill-normal);

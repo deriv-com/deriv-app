@@ -133,6 +133,8 @@ export interface AvailableAccount {
     market_type?: 'all' | 'financial' | 'synthetic';
     icon: keyof typeof PlatformIcons;
     availability: RegionAvailability;
+    short_code_and_region?: string;
+    login?: string;
 }
 
 export type Currency =
@@ -174,3 +176,10 @@ export type TWalletCurrency =
     | 'USDT'
     | 'eUSDT'
     | 'tUSDT';
+export type TWalletShortcode = Extract<TJurisdictionData['jurisdiction'], 'svg' | 'malta'>;
+export type TLinkedTo = {
+    loginid?: string;
+    platform?: string;
+    balance?: string;
+    currency?: string;
+};

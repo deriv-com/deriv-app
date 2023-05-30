@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon } from '@deriv/components';
+import { WalletIcon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import type { TAccountCategory, TWalletCurrency } from 'Types';
 import { getWalletCurrencyIcon } from 'Constants/utils';
@@ -16,21 +16,22 @@ const WalletCurrencyCard = observer(({ account_type, currency }: TWalletCurrency
     } = useStore();
 
     const is_demo = account_type === 'demo';
-    const theme = is_dark_mode_on ? '--dark' : '';
-    const class_currency = is_demo ? 'demo' : currency.toLowerCase();
+    const converted_currency = is_demo ? 'demo' : currency.toLowerCase();
 
     // add check (currency !== 'USDT') because response from BE doesn't have USDT currency, just UST
     const is_fiat = !isCryptocurrency(currency) && currency !== 'USDT';
     const currency_icon_name = getWalletCurrencyIcon(is_demo ? 'demo' : currency, is_dark_mode_on);
-    const currency_icon_size = is_fiat && !is_demo ? 48 : 100;
+
     return (
-        <div
-            className={`wallet-header__currency wallet__${class_currency}-bg${theme}`}
-            data-testid={`dt_${class_currency}`}
-        >
-            <Icon icon={currency_icon_name} size={currency_icon_size} />
+        <div className='wallet-header__currency' data-testid={`dt_${converted_currency}`}>
+            <WalletIcon
+                currency={converted_currency}
+                icon={currency_icon_name}
+                size={'xlarge'}
+                type={is_fiat && !is_demo ? 'fiat' : 'crypto'}
+                has_bg={true}
+            />
         </div>
     );
 });
-WalletCurrencyCard.displayName = 'WalletCurrencyCard';
 export default WalletCurrencyCard;

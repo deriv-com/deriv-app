@@ -75,7 +75,7 @@ const OrderDetailsConfirmModal = () => {
                         <Localize i18n_default_text='We accept JPG, PDF, or PNG (up to 2MB).' />
                     </Text>
                     <FileUploaderComponent
-                        accept={'image/png, image/jpeg, image/jpg, application/pdf'}
+                        accept='image/png, image/jpeg, image/jpg, application/pdf'
                         filename_limit={26}
                         hover_message={localize('Upload receipt here')}
                         max_size={max_pot_file_size}

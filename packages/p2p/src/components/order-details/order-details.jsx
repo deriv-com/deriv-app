@@ -143,10 +143,7 @@ const OrderDetails = observer(() => {
             showModal({ key: 'EmailLinkExpiredModal' }, { should_stack_modal: isMobile() });
         }
 
-        if (
-            status_string === 'Expired' &&
-            (isCurrentModal('EmailLinkExpiredModal') || isCurrentModal('OrderDetailsConfirmModal'))
-        )
+        if (status_string === 'Expired' && isCurrentModal('EmailLinkExpiredModal', 'OrderDetailsConfirmModal'))
             hideModal({ should_hide_all_modals: true });
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

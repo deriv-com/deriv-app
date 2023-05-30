@@ -35,39 +35,30 @@ const ChatMessages = observer(() => {
         let current_date = null;
 
         const getMessageFormat = (chat_message, message_color) => {
-            if (isImageType(chat_message.file_type))
+            const { file_type, url, size, name } = chat_message ?? {};
+            if (isImageType(file_type))
                 return (
-                    <a
-                        className='order-chat__messages-item-image'
-                        href={chat_message.url}
-                        rel='noopener noreferrer'
-                        target='_blank'
-                    >
-                        <img src={chat_message.url} onLoad={onImageLoad} />
+                    <a className='order-chat__messages-item-image' href={url} rel='noopener noreferrer' target='_blank'>
+                        <img src={url} onLoad={onImageLoad} />
                     </a>
                 );
-            else if (isPDFType(chat_message.file_type)) {
+            else if (isPDFType(file_type)) {
                 return (
                     <ChatMessageText color={message_color}>
                         <div className='order-chat__messages-item-pdf'>
                             <Icon icon='IcPdf' data_testid='dt_pdf_icon' size={20} />
-                            <a href={chat_message.url} rel='noopener noreferrer' target='_blank'>
-                                {chat_message.name}
+                            <a href={url} rel='noopener noreferrer' target='_blank'>
+                                {name}
                             </a>
                         </div>
-                        {`${convertToMB(chat_message.size).toFixed(2)}MB`}
+                        {`${convertToMB(size).toFixed(2)}MB`}
                     </ChatMessageText>
                 );
             }
             return (
                 <ChatMessageText color={message_color}>
-                    <a
-                        className='order-chat__messages-item-file'
-                        href={chat_message.url}
-                        rel='noopener noreferrer'
-                        target='_blank'
-                    >
-                        {chat_message.name}
+                    <a className='order-chat__messages-item-file' href={url} rel='noopener noreferrer' target='_blank'>
+                        {name}
                     </a>
                 </ChatMessageText>
             );

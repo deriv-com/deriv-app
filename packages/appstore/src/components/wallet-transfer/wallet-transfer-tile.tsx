@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import { AmountInput, TransferAccountSelector } from '@deriv/components';
 import type { TAmountInput, TTransferAccountSelector } from './types';
 
@@ -10,7 +10,7 @@ type TWalletTransferTile = {
 
 const Divider = () => <div className='wallet-transfer__divider' />;
 
-const WalletTransferTile = ({ amount_input_props, transfer_account_selector_props }: TWalletTransferTile) => {
+const WalletTransferTile = observer(({ amount_input_props, transfer_account_selector_props }: TWalletTransferTile) => {
     const { ui } = useStore();
 
     const { is_mobile } = ui;
@@ -29,6 +29,6 @@ const WalletTransferTile = ({ amount_input_props, transfer_account_selector_prop
             />
         </div>
     );
-};
+});
 
 export default WalletTransferTile;

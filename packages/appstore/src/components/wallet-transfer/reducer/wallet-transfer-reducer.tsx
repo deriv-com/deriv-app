@@ -14,21 +14,19 @@ const trading_account_names = [
     'Deriv cTrader Demo',
 ];
 
-const accounts = [
-    ...trading_account_names.map(
-        (name, idx) =>
-            ({
-                loginid: idx.toString(),
-                label: name,
-                currency: 'usd',
-                balance: '0.00',
-                wallet_icon: 'IcCurrencyUsd',
-                icon: 'IcDxtradeDerived',
-                jurisdiction: <Badge label='Demo' type='contained' background_color='blue' />,
-                type: 'fiat',
-            } as const)
-    ),
-];
+const accounts = trading_account_names.map(
+    (name, idx) =>
+        ({
+            loginid: idx.toString(),
+            label: name,
+            currency: 'usd',
+            balance: '0.00',
+            wallet_icon: 'IcCurrencyUsd',
+            icon: 'IcDxtradeDerived',
+            jurisdiction: <Badge label='Demo' type='contained' background_color='blue' />,
+            type: 'fiat',
+        } as const)
+);
 
 const wallets = [
     {
@@ -111,19 +109,17 @@ const walletTransferReducer = (state: TWalletTransferState, action: TActionsType
                         transfer_accounts: {
                             wallets: state.from_transfer_account_selector_props.transfer_accounts.wallets,
                         },
-                        transfer_hint:
-                            state.from_transfer_account_selector_props.transfer_accounts.wallets.length === 1 ? (
-                                <Localize
-                                    i18n_default_text='You can only transfers funds from the {{account}} to the linked {{wallet}}.'
-                                    values={{
-                                        account: action.value.label,
-                                        wallet: state.from_transfer_account_selector_props.transfer_accounts.wallets[0]
-                                            .label,
-                                    }}
-                                />
-                            ) : (
-                                ''
-                            ),
+                        transfer_hint: state.from_transfer_account_selector_props.transfer_accounts.wallets.length ===
+                            1 && (
+                            <Localize
+                                i18n_default_text='You can only transfer funds from the {{account}} to the linked {{wallet}}.'
+                                values={{
+                                    account: action.value.label,
+                                    wallet: state.from_transfer_account_selector_props.transfer_accounts.wallets[0]
+                                        .label,
+                                }}
+                            />
+                        ),
                         value: state.from_transfer_account_selector_props.transfer_accounts.wallets[0],
                     },
                 };

@@ -228,6 +228,9 @@ export default class NotificationStore extends BaseStore {
             this.notification_messages = this.notification_messages.filter(
                 notification => notification.platform === 'Account'
             );
+        } else if (window.location.pathname === routes.trade || window.location.pathname === routes.bot) {
+            // TODO: Add logic to trigger the notification in Wallets
+            this.showFailedWalletsUpgradeNotification();
         } else if (window.location.pathname !== routes.cashier_p2p) {
             this.notification_messages = this.notification_messages.filter(notification => {
                 if (notification.platform === undefined || notification.platform.includes(getPathname())) {
@@ -336,9 +339,6 @@ export default class NotificationStore extends BaseStore {
             } = getStatusValidations(status || []);
 
             this.handlePOAAddressMismatchNotifications();
-
-            // TODO: Update logic when BE API is integrated [Wallets]
-            this.showFailedWalletsUpgradeNotification();
 
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
@@ -1604,7 +1604,6 @@ export default class NotificationStore extends BaseStore {
                 },
                 text: localize('Go to live chat'),
             },
-            platform: [platform_name.DTrader, platform_name.DBot],
             type: 'danger',
         });
     };

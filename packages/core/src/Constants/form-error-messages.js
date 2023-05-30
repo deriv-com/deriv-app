@@ -1,9 +1,12 @@
 import { localize } from '@deriv/translations';
+import { address_permitted_special_characters_message } from '@deriv/shared';
 
 export const FORM_ERROR_MESSAGES = {
+    empty_address: () => localize('This field is required.'),
     address: () =>
         localize('Use only the following special characters: {{permitted_characters}}', {
-            permitted_characters: ". , ' : ; ( ) @ # / -",
+            permitted_characters: address_permitted_special_characters_message,
+            interpolation: { escapeValue: false },
         }),
     barrier: () =>
         localize('Only numbers and these special characters are allowed: {{permitted_characters}}', {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { useDepositLocked } from '@deriv/hooks';
+import { useCashierLocked, useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 import { Real, Virtual } from '../../components/cashier-container';
 import { CashierOnboarding, CashierOnboardingSideNote } from '../../components/cashier-onboarding';
@@ -40,15 +40,15 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
     } = transaction_history;
     const {
         cashier_route_tab_index: tab_index,
-        is_cashier_locked,
         is_cashier_onboarding,
         is_crypto,
         is_deposit,
         is_loading,
-        is_system_maintenance,
         setActiveTab,
         setIsDeposit,
     } = general_store;
+    const is_cashier_locked = useCashierLocked();
+    const is_system_maintenance = useIsSystemMaintenance();
     const is_deposit_locked = useDepositLocked();
 
     const is_fiat_currency_banner_visible_for_MF_clients =

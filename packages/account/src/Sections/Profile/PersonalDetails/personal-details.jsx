@@ -375,20 +375,13 @@ export const PersonalDetailsForm = ({
             }
         }
 
-        const permitted_characters = ". , ' : ; ( ) @ # / -";
-        const address_validation_message = localize(
-            'Use only the following special characters: {{ permitted_characters }}',
-            {
-                permitted_characters,
-                interpolation: { escapeValue: false },
-            }
-        );
-
-        if (values.address_line_1 && !validAddress(values.address_line_1)) {
-            errors.address_line_1 = address_validation_message;
+        const address_line_1_validation_result = validAddress(values.address_line_1, { is_required: true });
+        if (!address_line_1_validation_result.is_ok) {
+            errors.address_line_1 = address_line_1_validation_result.message;
         }
-        if (values.address_line_2 && !validAddress(values.address_line_2)) {
-            errors.address_line_2 = address_validation_message;
+        const address_line_2_validation_result = validAddress(values.address_line_2);
+        if (!address_line_2_validation_result.is_ok) {
+            errors.address_line_2 = address_line_2_validation_result.message;
         }
 
         if (values.address_city && !validLetterSymbol(values.address_city)) {

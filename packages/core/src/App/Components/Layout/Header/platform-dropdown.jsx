@@ -7,18 +7,12 @@ import 'Sass/app/_common/components/platform-dropdown.scss';
 import { Localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
 
-const PlatformBox = ({ platform: { icon, title, description } }) => (
+const PlatformBox = ({ platform: { icon, description } }) => (
     <React.Fragment>
         <div className='platform-dropdown__list-platform-background' />
-        <Icon
-            data_testid='dt_platform_box_icon'
-            className='platform-dropdown__list-platform-icon'
-            icon={icon}
-            size={32}
-        />
 
-        <div className='platform-dropdown__list-platform-details'>
-            <p className='platform-dropdown__list-platform-title'>{title()}</p>
+        <div className='platform-switcher__dropdown' data-testid='dt_platform_box_icon'>
+            <Icon icon={icon} height={42} width={150} description={icon} />
             <p className='platform-dropdown__list-platform-description'>{description()}</p>
         </div>
     </React.Fragment>
@@ -74,7 +68,6 @@ const PlatformDropdown = ({ app_routing_history, closeDrawer, platform_config, s
 
     React.useEffect(() => {
         window.addEventListener('popstate', closeDrawer);
-
         return () => {
             window.removeEventListener('popstate', closeDrawer);
         };

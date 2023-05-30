@@ -29,6 +29,7 @@
         "@deriv/cashier": "^1.0.0",
         "@deriv/components": "^1.0.0",
         "@deriv/cfd": "^1.0.0",
+        "@deriv/hooks": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
         "@deriv/trader": "^3.8.0",

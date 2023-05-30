@@ -988,7 +988,7 @@ export default class ClientStore extends BaseStore {
         }
     };
 
-     getIsMarketTypeMatching = (account, market_type) => {
+    getIsMarketTypeMatching = (account, market_type) => {
         if (market_type === 'synthetic') {
             return account.market_type === market_type || account.market_type === 'gaming';
         } else if (market_type === 'all') {

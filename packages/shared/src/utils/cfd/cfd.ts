@@ -252,11 +252,11 @@ export const isLandingCompanyEnabled = ({ landing_companies, platform, type }: T
 
 // Define the AuthenticationStatusInfo type
 type TAuthenticationStatusInfo = {
-    poa_status: string | undefined;
-    poi_status: string | undefined;
-    idv_status: string | undefined;
-    onfido_status: string | undefined;
-    manual_status: string | undefined;
+    poa_status?: string;
+    poi_status?: string;
+    idv_status?: string;
+    onfido_status?: string;
+    manual_status?: string;
     acknowledged_status: string[];
     poi_acknowledged_for_maltainvest: boolean;
     poi_poa_verified_for_bvi_labuan_vanuatu: boolean;

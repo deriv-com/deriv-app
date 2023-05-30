@@ -1,10 +1,16 @@
-import classNames from 'classnames';
-import { Text } from '@deriv/components';
-import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
+import { Text } from '@deriv/components';
 
-const UserAvatar = React.memo(({ className, nickname, size, text_size }) => {
+type TUserAvatarProps = {
+    className?: string;
+    nickname: string;
+    size: number;
+    text_size: string;
+};
+
+const UserAvatar = React.memo(({ className, nickname, size, text_size }: TUserAvatarProps) => {
     return (
         <div
             className={classNames('user-avatar', className)}
@@ -22,11 +28,5 @@ const UserAvatar = React.memo(({ className, nickname, size, text_size }) => {
 });
 
 UserAvatar.displayName = 'UserAvatar';
-UserAvatar.propTypes = {
-    className: PropTypes.string,
-    nickname: PropTypes.string.isRequired,
-    size: PropTypes.number.isRequired,
-    text_size: PropTypes.string.isRequired,
-};
 
 export default UserAvatar;

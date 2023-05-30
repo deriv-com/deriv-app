@@ -11,7 +11,14 @@ import './wallet-card.scss';
 
 type TWalletCardProps = {
     // TODO: This type should be updated when the response is ready
-    wallet: any;
+    wallet: {
+        balance: string;
+        currency: string;
+        icon: string;
+        icon_type: 'fiat' | 'crypto' | 'app';
+        jurisdiction_title: string;
+        name: string;
+    };
     size?: 'small' | 'medium' | 'large';
     state?: 'active' | 'add' | 'added' | 'default' | 'disabled' | 'faded';
 };
@@ -34,6 +41,7 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
             <div
                 className={`wallet-card__container wallet-card__container--${state} wallet-card__container--${size} wallet-card__${wallet.currency}-bg`}
             >
+                {size !== 'small' && <div className='wallet-card__shine' />}
                 <div
                     className={classNames('wallet-card__container-fade', {
                         [`wallet-card__container-fade--${state}`]: state,
@@ -42,8 +50,6 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
                 {size === 'small' && <IconComponent />}
                 {size !== 'small' && (
                     <div className={`wallet-card__content wallet-card__content--${size}`}>
-                        <div className='wallet-card__shine' />
-
                         <div className='wallet-card__top-wrapper'>
                             <IconComponent />
                             <Badge
@@ -56,14 +62,10 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
                         <div className='wallet-card__bottom-wrapper'>
                             {state !== 'add' && state !== 'added' ? (
                                 <React.Fragment>
-                                    <Text className='wallet-card__bottom-wrapper-wallet-name' color='prominent'>
+                                    <Text color='prominent' size={isMobile() ? 'xxxxs' : 'xxxs'}>
                                         {wallet.name} {localize('Wallet')}
                                     </Text>
-                                    <Text
-                                        className='wallet-card__bottom-wrapper-balance'
-                                        color='prominent'
-                                        weight='bold'
-                                    >
+                                    <Text color='prominent' weight='bold' size={isMobile() ? 'xxs' : 'xs'}>
                                         {wallet.balance} {wallet.currency}
                                     </Text>
                                 </React.Fragment>

@@ -37,7 +37,7 @@ describe('JurisdictionCard', () => {
         swapfree_available_accounts: TTradingPlatformAvailableAccount[];
         account_type: 'financial' | 'synthetic';
         disabled: boolean;
-        is_onfido_design: boolean;
+        is_non_idv_design: boolean;
         jurisdiction_selected_shortcode: string;
         setJurisdictionSelectedShortcode: jest.Mock;
         type_of_card: 'svg' | 'bvi' | 'labuan' | 'maltainvest' | 'vanuatu';
@@ -72,7 +72,7 @@ describe('JurisdictionCard', () => {
         },
         account_type: 'financial',
         disabled: false,
-        is_onfido_design: false,
+        is_non_idv_design: false,
         jurisdiction_selected_shortcode: '',
         setJurisdictionSelectedShortcode: jest.fn(),
         swapfree_available_accounts: [],
@@ -108,7 +108,7 @@ describe('JurisdictionCard', () => {
             },
             account_type: 'financial',
             disabled: false,
-            is_onfido_design: false,
+            is_non_idv_design: false,
             jurisdiction_selected_shortcode: '',
             setJurisdictionSelectedShortcode: jest.fn(),
             swapfree_available_accounts: [],

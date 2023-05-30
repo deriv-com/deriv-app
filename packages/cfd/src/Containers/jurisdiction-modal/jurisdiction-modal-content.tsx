@@ -6,7 +6,7 @@ import JurisdictionCard from './jurisdiction-card';
 const JurisdictionModalContent = ({
     account_status,
     account_type,
-    is_onfido_design = false,
+    is_non_idv_design = false,
     is_virtual,
     jurisdiction_selected_shortcode,
     setJurisdictionSelectedShortcode,
@@ -67,7 +67,7 @@ const JurisdictionModalContent = ({
                             account_status={account_status}
                             account_type={account_type}
                             disabled={disableCard(card)}
-                            is_onfido_design={is_onfido_design}
+                            is_non_idv_design={is_non_idv_design}
                             jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                             key={card}
                             setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}

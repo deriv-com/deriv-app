@@ -254,7 +254,7 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus, is
     const poa_status = account_status?.authentication?.document?.status || '';
     const poi_status = account_status?.authentication?.identity?.status || '';
 
-    const is_idv_disallowed = account_status.status.some(status => status === 'idv_disallowed');
+    const is_idv_disallowed = account_status?.status?.some(status => status === 'idv_disallowed');
 
     const idv_status = account_status?.authentication?.identity?.services?.idv?.status;
     const onfido_status = account_status?.authentication?.identity?.services?.onfido?.status;

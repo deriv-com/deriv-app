@@ -302,7 +302,7 @@
     "-854930519": "Vous ne pourrez PAS le restaurer.",
     "-1600783504": "Définissez un taux flottant pour votre annonce.",
     "-2008992756": "Voulez-vous annuler cette commande?",
-    "-1666369246": "Si vous annulez votre demande {{cancellation_limit}} fois en {{cancellation_period}} heures, vous serez bloqué pour utiliser Deriv P2P pendant {{block_duration}} heures. . <br /> ({{number_of_cancels_remaining}} annulations restantes.)",
+    "-1666369246": "Si vous annulez votre demande {{cancellation_limit}} fois en {{cancellation_period}} heures, vous serez bloqué pour utiliser Deriv P2P pendant {{block_duration}} heures. <br /> ({{number_of_cancels_remaining}} annulations restantes)",
     "-1618084450": "Si vous annulez cette demande, vous ne pourrez plus utiliser Deriv P2P pendant {{block_duration}} heures.",
     "-2026176944": "Merci de ne pas annuler si vous avez déjà fait un paiement.",
     "-1989544601": "Annuler cet ordre",

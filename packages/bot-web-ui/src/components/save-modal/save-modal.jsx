@@ -1,21 +1,12 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-    Button,
-    Checkbox,
-    Icon,
-    Modal,
-    RadioGroup,
-    Input,
-    MobileFullPageModal,
-    ThemedScrollbars,
-    Text,
-} from '@deriv/components';
+import { Button, Icon, Modal, RadioGroup, Input, MobileFullPageModal, ThemedScrollbars, Text } from '@deriv/components';
 import { Formik, Form, Field } from 'formik';
-import { Localize, localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { config, save_types } from '@deriv/bot-skeleton';
 import { connect } from 'Stores/connect';
+import { isMobile } from '@deriv/shared';
 
 const SaveModalForm = ({
     bot_name,
@@ -38,12 +29,18 @@ const SaveModalForm = ({
         validate={validateBotName}
         onSubmit={onConfirmSave}
     >
-        {({ values: { is_local, save_as_collection }, setFieldValue, touched, errors }) => {
+        {({ values: { is_local }, setFieldValue, touched, errors }) => {
             const content_height = !is_mobile ? '500px' : `calc(100%)`;
             return (
                 <ThemedScrollbars height={content_height} autohide>
                     <Form className={classNames({ 'form--active-keyboard': is_onscreen_keyboard_active })}>
                         <div className='modal__content'>
+                            <Text size='xs' line_height='l'>
+                                {localize(
+                                    'Enter your bot name, choose to save on your computer or Google Drive, and hit '
+                                )}
+                                <strong>{localize('Save.')}</strong>
+                            </Text>
                             <div className='modal__content-row'>
                                 <Field name='bot_name'>
                                     {({ field }) => (
@@ -51,9 +48,9 @@ const SaveModalForm = ({
                                             {...field}
                                             className='save-type__input'
                                             type='text'
-                                            placeholder={localize('Untitled Strategy')}
+                                            placeholder={localize('Untitled Bot')}
                                             error={touched[field.name] && errors[field.name]}
-                                            label={localize('Strategy name')}
+                                            label={localize('Bot name')}
                                             onFocus={e => setCurrentFocus(e.currentTarget.name)}
                                             onBlur={() => setCurrentFocus(null)}
                                         />
@@ -77,8 +74,8 @@ const SaveModalForm = ({
                                         id='local'
                                         label={
                                             <IconRadio
-                                                text={localize('Local')}
-                                                icon={<Icon icon={is_mobile ? 'IcMobile' : 'IcDesktop'} size={48} />}
+                                                text={localize(is_mobile ? 'Local' : 'My computer')}
+                                                icon={<Icon icon={is_mobile ? 'IcLocal' : 'IcMyComputer'} size={48} />}
                                             />
                                         }
                                         value={save_types.LOCAL}
@@ -101,28 +98,6 @@ const SaveModalForm = ({
                                     />
                                 </RadioGroup>
                             </div>
-                            <>
-                                <Field name='save_as_collection'>
-                                    {({ field }) => (
-                                        <Checkbox
-                                            {...field}
-                                            onChange={() => setFieldValue('save_as_collection', !save_as_collection)}
-                                            defaultChecked={save_as_collection}
-                                            label={
-                                                <Text color='general' size='xs' line_height='s' weight='bold'>
-                                                    <Localize i18n_default_text='Save as collection' />
-                                                </Text>
-                                            }
-                                            classNameLabel='save-type__checkbox-text'
-                                        />
-                                    )}
-                                </Field>
-                                <div className='save-type__checkbox-description'>
-                                    {localize(
-                                        'Enabling this allows you to save your blocks as one collection which can be easily integrated into other bots.'
-                                    )}
-                                </div>
-                            </>
                         </div>
                         <div
                             className={classNames('modal__footer', {
@@ -141,7 +116,7 @@ const SaveModalForm = ({
                                 type='submit'
                                 is_loading={button_status === 1}
                                 is_submit_success={button_status === 2}
-                                text={localize('Continue')}
+                                text={localize('Save')}
                                 primary
                             />
                         </div>
@@ -160,15 +135,15 @@ const SaveModal = ({
     onDriveConnect,
     toggleSaveModal,
     validateBotName,
-    is_mobile,
     setCurrentFocus,
     is_onscreen_keyboard_active,
-}) =>
-    is_mobile ? (
+}) => {
+    const is_mobile = isMobile();
+    return is_mobile ? (
         <MobileFullPageModal
             is_modal_open={is_save_modal_open}
             className='save-modal__wrapper'
-            header={localize('Save strategy')}
+            header={localize('Save bot')}
             onClickClose={toggleSaveModal}
             height_offset='80px'
             page_overlay
@@ -188,7 +163,7 @@ const SaveModal = ({
         </MobileFullPageModal>
     ) : (
         <Modal
-            title={localize('Save Strategy')}
+            title={localize('Save bot')}
             className='modal--save'
             width='328px'
             height='500px'
@@ -207,6 +182,7 @@ const SaveModal = ({
             />
         </Modal>
     );
+};
 
 const IconRadio = ({ icon, text, google_drive_connected, onDriveConnect }) => {
     const is_drive_radio = text === 'Google Drive';
@@ -256,7 +232,6 @@ const IconRadio = ({ icon, text, google_drive_connected, onDriveConnect }) => {
 SaveModal.propTypes = {
     button_status: PropTypes.number,
     is_authorised: PropTypes.bool,
-    is_mobile: PropTypes.bool,
     is_save_modal_open: PropTypes.bool,
     onConfirmSave: PropTypes.func,
     onDriveConnect: PropTypes.func,
@@ -268,7 +243,6 @@ SaveModal.propTypes = {
 export default connect(({ save_modal, google_drive, ui }) => ({
     button_status: save_modal.button_status,
     is_authorised: google_drive.is_authorised,
-    is_mobile: ui.is_mobile,
     is_save_modal_open: save_modal.is_save_modal_open,
     is_onscreen_keyboard_active: ui.is_onscreen_keyboard_active,
     onConfirmSave: save_modal.onConfirmSave,

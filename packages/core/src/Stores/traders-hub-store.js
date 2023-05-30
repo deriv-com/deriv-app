@@ -365,7 +365,7 @@ export default class TradersHubStore extends BaseStore {
                 availability: 'All',
             },
             {
-                name: !this.is_eu_user ? localize('Swap-Free') : '',
+                name: localize('Swap-Free'),
                 description: getSwapFreeAccountDesc(),
                 platform: CFD_PLATFORMS.MT5,
                 market_type: 'all',

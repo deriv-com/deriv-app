@@ -302,7 +302,7 @@
     "-854930519": "ඔබට එය යථා තත්වයට පත් කිරීමට නොහැකි වනු ඇත.",
     "-1600783504": "ඔබේ දැන්වීම සඳහා පාවෙන අනුපාතයක් සකසන්න.",
     "-2008992756": "ඔබට මෙම ඇණවුම අවලංගු කිරීමට අවශ්යද?",
-    "-1666369246": "If you cancel your order {{cancellation_limit}} times in {{cancellation_period}} hours, you will be blocked from using Deriv P2P for {{block_duration}} hours. <br /> ({{number_of_cancels_remaining}} cancellations remaining.)",
+    "-1666369246": "ඔබ ඔබේ ඇණවුම {{cancellation_limit}} වතාවක් පැය {{cancellation_period}} කින් අවලංගු කළහොත්, පැය {{block_duration}} ක් සඳහා ඔබට Deriv P2P භාවිත කිරීම අවහිර කරනු ලැබේ. <br /> (අවලංගු කිරීම් {{number_of_cancels_remaining}} ක් ඉතිරිව ඇත)",
     "-1618084450": "ඔබ මෙම ඇණවුම අවලංගු කළහොත්, ඔබට ඩෙරිව් පී 2 පී පැය {{block_duration}} ක් භාවිතා කිරීමෙන් අවහිර වනු ඇත.",
     "-2026176944": "ඔබ දැනටමත් ගෙවීම් කර ඇත්නම් කරුණාකර අවලංගු නොකරන්න.",
     "-1989544601": "මෙම ඇණවුම අවලංගු කරන්න",

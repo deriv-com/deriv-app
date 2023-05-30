@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Text } from '@deriv/components';
 import { formatMoney, CFD_PLATFORMS } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { TPlatform } from 'Types';
@@ -67,6 +68,8 @@ const StaticCFDAccountManager = ({
 }: TStaticCFDAccountManager) => {
     const icon_size = 48;
     const platform_color = platform === 'options' ? 'prominent' : 'general';
+    const { traders_hub } = useStore();
+    const { is_demo } = traders_hub;
     return (
         <div
             className={classNames('static-cfd-account-manager', {
@@ -152,7 +155,8 @@ const StaticCFDAccountManager = ({
                     weight={has_account ? 'normal' : 'bold'}
                     color={is_blurry.item || is_last_step ? 'less-prominent' : platform_color}
                 >
-                    {appname}
+                    {/* TODO: is demo + demo_text */}
+                    {appname} {is_demo && localize('Demo')}
                 </Text>
                 {has_account ? (
                     <React.Fragment>

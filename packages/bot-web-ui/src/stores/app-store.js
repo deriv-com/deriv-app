@@ -4,13 +4,23 @@ import { localize } from '@deriv/translations';
 import { runIrreversibleEvents, ApiHelpers, DBot } from '@deriv/bot-skeleton';
 
 export default class AppStore {
-    constructor(root_store) {
+    constructor(root_store, core) {
         makeObservable(this, {
             onMount: action.bound,
             onUnmount: action.bound,
+            onBeforeUnload: action.bound,
+            registerReloadOnLanguageChange: action.bound,
+            registerCurrencyReaction: action.bound,
+            registerOnAccountSwitch: action.bound,
+            registerLandingCompanyChangeReaction: action.bound,
+            registerResidenceChangeReaction: action.bound,
+            setDBotEngineStores: action.bound,
+            onClickOutsideBlockly: action.bound,
+            showDigitalOptionsMaltainvestError: action.bound,
         });
 
         this.root_store = root_store;
+        this.core = core;
         this.dbot_store = null;
         this.api_helpers_store = null;
     }
@@ -63,10 +73,10 @@ export default class AppStore {
         const { client, common, ui } = core;
         this.showDigitalOptionsMaltainvestError(client, common, ui);
 
-        blockly_store.startLoading();
-        DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store, ui.is_mobile).then(() => {
-            main_content.setContainerSize();
-            blockly_store.endLoading();
+        blockly_store.setLoading(true);
+        DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store).then(() => {
+            blockly_store.setContainerSize();
+            blockly_store.setLoading(false);
         });
         this.registerReloadOnLanguageChange(this);
         this.registerCurrencyReaction.call(this);
@@ -114,7 +124,7 @@ export default class AppStore {
         window.removeEventListener('beforeunload', this.onBeforeUnload);
 
         // Ensure account switch is re-enabled.
-        const { ui } = this.root_store.core;
+        const { ui } = this.core;
 
         ui.setAccountSwitcherDisabledMessage(false);
         ui.setPromptHandler(false);
@@ -129,7 +139,7 @@ export default class AppStore {
     };
     registerReloadOnLanguageChange() {
         this.disposeReloadOnLanguageChangeReaction = reaction(
-            () => this.root_store.common.current_language,
+            () => this.core.common.current_language,
             () => {
                 // temporarily added this to refresh just dbot in case of changing language,
                 // otherwise it should change language without refresh.
@@ -143,7 +153,7 @@ export default class AppStore {
     registerCurrencyReaction() {
         // Syncs all trade options blocks' currency with the client's active currency.
         this.disposeCurrencyReaction = reaction(
-            () => this.root_store.core.client.currency,
+            () => this.core.client.currency,
             currency => {
                 if (!Blockly.derivWorkspace) return;
 
@@ -162,7 +172,7 @@ export default class AppStore {
     }
 
     registerOnAccountSwitch() {
-        const { client, common } = this.root_store.core;
+        const { client, common } = this.core;
 
         this.disposeSwitchAccountListener = reaction(
             () => client.switch_broadcast,
@@ -210,36 +220,29 @@ export default class AppStore {
 
     setDBotEngineStores() {
         // DO NOT pass the rootstore in, if you need a prop define it in dbot-skeleton-store ans pass it through.
-        const {
-            core: { client },
-            flyout,
-            toolbar,
-            save_modal,
-            quick_strategy,
-            load_modal,
-            blockly_store,
-            summary_card,
-        } = this.root_store;
+        const { flyout, toolbar, save_modal, dashboard, quick_strategy, load_modal, blockly_store, summary_card } =
+            this.root_store;
+        const { client } = this.core;
         const { handleFileChange } = load_modal;
-        const { toggleStrategyModal } = quick_strategy;
-        const { startLoading, endLoading } = blockly_store;
+        const { loadDataStrategy } = quick_strategy;
+        const { setLoading } = blockly_store;
         const { setContractUpdateConfig } = summary_card;
 
         this.dbot_store = {
-            is_mobile: false,
             client,
             flyout,
             toolbar,
             save_modal,
-            startLoading,
+            dashboard,
+            load_modal,
+            setLoading,
             setContractUpdateConfig,
-            endLoading,
-            toggleStrategyModal,
+            loadDataStrategy,
             handleFileChange,
         };
 
         this.api_helpers_store = {
-            server_time: this.root_store.server_time,
+            server_time: this.core.common.server_time,
             ws: this.root_store.ws,
         };
     }

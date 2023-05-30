@@ -736,7 +736,6 @@ export default class ClientStore extends BaseStore {
         return this.account_status?.status?.some(status_name => status_name === 'deposit_locked');
     }
 
-    // @deprecated use `useWithdrawLock` hook from `@deriv/hooks` instead
     get is_withdrawal_lock() {
         return this.account_status?.status?.some(status_name => status_name === 'withdrawal_locked');
     }
@@ -994,7 +993,7 @@ export default class ClientStore extends BaseStore {
         }
     };
 
-     getIsMarketTypeMatching = (account, market_type) => {
+    getIsMarketTypeMatching = (account, market_type) => {
         if (market_type === 'synthetic') {
             return account.market_type === market_type || account.market_type === 'gaming';
         } else if (market_type === 'all') {

@@ -103,8 +103,6 @@
     },
     "dependencies": {
         "@babel/preset-typescript": "^7.16.5",
-        "@tanstack/react-query": "^4.29.12",
-        "@tanstack/react-query-devtools": "^4.29.12",
         "@types/react-transition-group": "^4.4.4",
         "babel-jest": "^27.5.1",
         "dotenv": "^8.2.0",

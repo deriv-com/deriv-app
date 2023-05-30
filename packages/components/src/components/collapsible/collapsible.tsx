@@ -5,8 +5,8 @@ import ArrowButton from './arrow-button';
 
 type TCollapsible = {
     as: React.ElementType;
-    is_collapsed: boolean;
-    position: 'top' | 'bottom';
+    is_collapsed?: boolean;
+    position?: 'top' | 'bottom';
     onClick: (state: boolean) => void;
     title: string;
 };
@@ -24,7 +24,7 @@ const Collapsible = ({
     children,
     onClick,
     title,
-}: React.PropsWithChildren<Partial<TCollapsible>>) => {
+}: React.PropsWithChildren<TCollapsible>) => {
     const [is_open, expand] = React.useState(!is_collapsed);
     const [should_show_collapsible, setShouldShowCollapsible] = React.useState(false);
 

@@ -174,7 +174,7 @@ export type TJurisdictionCardProps = {
     account_status: GetAccountStatus;
     account_type: string;
     disabled: boolean;
-    is_onfido_design: boolean;
+    is_non_idv_design: boolean;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     type_of_card: TJurisdictionCardType;
@@ -286,7 +286,7 @@ export type TJurisdictionModalProps = TJurisdictionModalCommonProps & {
 export type TJurisdictionModalContentProps = {
     account_status: GetAccountStatus;
     account_type: string;
-    is_onfido_design: boolean;
+    is_non_idv_design: boolean;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];

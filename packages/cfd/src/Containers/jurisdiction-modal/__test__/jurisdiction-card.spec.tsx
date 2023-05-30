@@ -37,47 +37,13 @@ describe('JurisdictionCard', () => {
         swapfree_available_accounts: TTradingPlatformAvailableAccount[];
         account_type: 'financial' | 'synthetic';
         disabled: boolean;
-        is_onfido_design: boolean;
+        is_non_idv_design: boolean;
         jurisdiction_selected_shortcode: string;
         setJurisdictionSelectedShortcode: jest.Mock;
         type_of_card: 'svg' | 'bvi' | 'labuan' | 'maltainvest' | 'vanuatu';
     };
 
-    let mock_props: TMockProps = {
-        account_status: {
-            authentication: {
-                document: {
-                    status: 'none',
-                },
-                identity: {
-                    services: {
-                        idv: {
-                            status: 'none',
-                        },
-                        onfido: {
-                            status: 'none',
-                        },
-                        manual: {
-                            status: 'none',
-                        },
-                    },
-                },
-                needs_verification: [],
-            },
-            currency_config: {},
-            p2p_status: 'none',
-            prompt_client_to_authenticate: 0,
-            risk_classification: '',
-            status: [''],
-        },
-        account_type: 'financial',
-        disabled: false,
-        is_onfido_design: false,
-        jurisdiction_selected_shortcode: '',
-        setJurisdictionSelectedShortcode: jest.fn(),
-        swapfree_available_accounts: [],
-        type_of_card: Jurisdiction.SVG,
-    };
+    let mock_props: TMockProps;
     beforeEach(() => {
         mock_props = {
             account_status: {
@@ -108,7 +74,7 @@ describe('JurisdictionCard', () => {
             },
             account_type: 'financial',
             disabled: false,
-            is_onfido_design: false,
+            is_non_idv_design: false,
             jurisdiction_selected_shortcode: '',
             setJurisdictionSelectedShortcode: jest.fn(),
             swapfree_available_accounts: [],

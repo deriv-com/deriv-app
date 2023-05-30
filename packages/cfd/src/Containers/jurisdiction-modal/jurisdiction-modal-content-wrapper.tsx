@@ -85,7 +85,7 @@ const JurisdictionModalContentWrapper = ({
     const is_idv_country =
         residence_list.find(elem => elem?.value === residence)?.identity?.services?.idv?.is_country_supported === 1;
     const has_idv_attempts = (account_status?.authentication?.identity?.services?.idv?.submissions_left ?? 0) > 0;
-    const is_onfido_design = !is_idv_country || (is_idv_country && !has_idv_attempts);
+    const is_non_idv_design = !is_idv_country || (is_idv_country && !has_idv_attempts);
 
     const swapfree_available_accounts = trading_platform_available_accounts.filter(
         available_account =>
@@ -179,7 +179,7 @@ const JurisdictionModalContentWrapper = ({
                 account_status={account_status}
                 account_type={account_type.type}
                 financial_available_accounts={financial_available_accounts}
-                is_onfido_design={is_onfido_design}
+                is_non_idv_design={is_non_idv_design}
                 is_virtual={is_virtual}
                 real_financial_accounts_existing_data={real_financial_accounts_existing_data}
                 real_synthetic_accounts_existing_data={real_synthetic_accounts_existing_data}

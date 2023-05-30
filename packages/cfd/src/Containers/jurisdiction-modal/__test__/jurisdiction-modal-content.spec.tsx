@@ -14,7 +14,7 @@ describe('JurisdictionModalContent', () => {
     const mock_props = {
         account_status: mock_context.client,
         account_type: '',
-        is_onfido_design: false,
+        is_non_idv_design: false,
         is_virtual: false,
         jurisdiction_selected_shortcode: '',
         setJurisdictionSelectedShortcode: jest.fn(),

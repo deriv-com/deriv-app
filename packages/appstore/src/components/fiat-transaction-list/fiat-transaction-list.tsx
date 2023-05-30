@@ -11,15 +11,19 @@ import FiatTransactionListItem from './fiat-transaction-list-item';
 const FiatTransactionList = () => {
     const store = useStore();
     const {
-        client: { accounts, currency, loginid },
+        client: { accounts, currency: fiat_currency, loginid },
         traders_hub: { is_demo },
         ui: { is_dark_mode_on },
     } = store;
     const grouped_transactions = useGroupedFiatTransactions();
 
-    const wallet_title = React.useMemo(() => {
-        return `${is_demo ? localize('Demo') : ''} ${getCurrencyDisplayCode(currency)} ${localize('Wallet')}`;
-    }, [currency, is_demo]);
+    const accountName = React.useCallback(
+        (is_virtual: boolean, currency: string, is_wallet: boolean) =>
+            `${is_virtual ? localize('Demo') : ''} ${getCurrencyDisplayCode(currency)} ${localize(
+                is_wallet ? 'Wallet' : 'account'
+            )}`,
+        []
+    );
 
     const TransactionsForADay = ({
         day,
@@ -46,9 +50,9 @@ const FiatTransactionList = () => {
                             transaction.action_type === undefined
                         )
                             return null;
-                        let account_name = wallet_title;
-                        let account_currency = currency;
-                        let icon = getWalletCurrencyIcon(is_demo ? 'demo' : currency, is_dark_mode_on, false);
+                        let account_name = accountName(is_demo, fiat_currency, true);
+                        let account_currency = fiat_currency;
+                        let icon = getWalletCurrencyIcon(is_demo ? 'demo' : fiat_currency, is_dark_mode_on, false);
                         let icon_type = 'fiat';
                         if (transaction.action_type === 'transfer') {
                             const other_loginid =
@@ -60,10 +64,11 @@ const FiatTransactionList = () => {
                             if (!other_account) return null;
                             if (!other_account.currency) return null;
                             account_currency = other_account.currency;
-                            const account_category = other_account.account_category === 'wallet' ? 'Wallet' : 'account';
-                            account_name = `${other_account.is_virtual && 'Demo'} ${other_account.currency} ${localize(
-                                account_category
-                            )}`;
+                            account_name = accountName(
+                                !!other_account.is_virtual,
+                                other_account.currency,
+                                other_account.account_category === 'wallet'
+                            );
                             icon = getWalletCurrencyIcon(
                                 other_account.is_virtual ? 'demo' : other_account.currency || '',
                                 is_dark_mode_on,
@@ -83,7 +88,7 @@ const FiatTransactionList = () => {
                                 account_name={account_name}
                                 amount={transaction.amount}
                                 balance_after={transaction.balance_after}
-                                currency={currency}
+                                currency={fiat_currency}
                                 icon={icon}
                                 icon_type={icon_type}
                             />

@@ -1,7 +1,7 @@
 import { observable, action, makeObservable } from 'mobx';
 
 export default class RoutePromptDialogStore {
-    constructor(root_store) {
+    constructor(root_store, core) {
         makeObservable(this, {
             should_show: observable,
             is_confirmed: observable,
@@ -13,6 +13,7 @@ export default class RoutePromptDialogStore {
         });
 
         this.root_store = root_store;
+        this.core = core;
     }
 
     should_show = false;
@@ -39,6 +40,7 @@ export default class RoutePromptDialogStore {
     }
 
     continueRoute() {
-        if (this.is_confirmed && this.last_location) this.root_store.common.routeTo(this.last_location.pathname);
+        const { common } = this.core;
+        if (this.is_confirmed && this.last_location) common.routeTo(this.last_location.pathname);
     }
 }

@@ -1,9 +1,9 @@
 export { default as useAccountTransferVisible } from './useAccountTransferVisible';
+export { default as useCFDAccounts } from './useCFDAccounts';
 export { default as useCFDAllAccounts } from './useCFDAllAccounts';
 export { default as useCFDDemoAccounts } from './useCFDDemoAccounts';
 export { default as useCFDRealAccounts } from './useCFDRealAccounts';
 export { default as useCashierLocked } from './useCashierLocked';
-export { default as useCfdAccounts } from './useCfdAccounts';
 export { default as useCountdown } from './useCountdown';
 export { default as useDepositLocked } from './useDepositLocked';
 export { default as useExchangeRate } from './useExchangeRate';
@@ -11,6 +11,7 @@ export { default as useHasActiveRealAccount } from './useHasActiveRealAccount';
 export { default as useHasFiatCurrency } from './useHasFiatCurrency';
 export { default as useHasMaltaInvestAccount } from './useHasMaltaInvestAccount';
 export { default as useHasSetCurrency } from './useHasSetCurrency';
+export { default as useHasSwapFreeAccount } from './useHasSwapFreeAccount';
 export { default as useHasSvgAccount } from './useHasSvgAccount';
 export { default as useHasUSDCurrency } from './useHasUSDCurrency';
 export { default as useIsP2PEnabled } from './useIsP2PEnabled';

@@ -34,6 +34,7 @@
             text-align: center;
             flex-direction: column;
             margin-right: 2.4rem;
+            width: 21.5rem;
             @include mobile {
                 flex-direction: row;
                 span {
@@ -68,7 +69,6 @@
         }
         &__tours {
             height: 13.5rem;
-            width: 21.5rem;
             background-position: center center;
             margin-bottom: 0.8rem;
             cursor: pointer;

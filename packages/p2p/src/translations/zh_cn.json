@@ -302,7 +302,7 @@
     "-854930519": "您将无法还原它。",
     "-1600783504": "为广告设置浮动汇率。",
     "-2008992756": "要取消此订单?",
-    "-1666369246": "如您在{{cancellation_period}} 小时内取消订单{{cancellation_limit}} 次，{{block_duration}} 小时内您将被禁使用 Deriv P2P 。<br />(剩余取消次数为{{number_of_cancels_remaining}} 次。)",
+    "-1666369246": "如您在{{cancellation_period}} 小时内取消订单{{cancellation_limit}} 次，{{block_duration}} 小时内您将被禁使用 Deriv P2P 。<br />(剩余取消次数为{{number_of_cancels_remaining}} 次)",
     "-1618084450": "如您取消此订单，{{block_duration}} 小时内您将被禁使用 Deriv P2P 。",
     "-2026176944": "如您已付款，请别取消。",
     "-1989544601": "取消订单",

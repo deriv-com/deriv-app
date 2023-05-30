@@ -1,3 +1,4 @@
+import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { MobileWrapper, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';

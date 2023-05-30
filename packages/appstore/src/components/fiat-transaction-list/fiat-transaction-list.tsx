@@ -27,13 +27,10 @@ const FiatTransactionList = () => {
         return getWalletCurrencyIcon(is_demo ? 'demo' : wallet_currency, is_dark_mode_on, false);
     }, [wallet_currency, is_demo, is_dark_mode_on]);
 
-    const accountName = React.useCallback(
-        (is_virtual: boolean, currency: string, is_wallet: boolean) =>
-            `${is_virtual ? localize('Demo') : ''} ${getCurrencyDisplayCode(currency)} ${localize(
-                is_wallet ? 'Wallet' : 'account'
-            )}`,
-        []
-    );
+    const accountName = (is_virtual: boolean, currency: string, is_wallet: boolean) =>
+        `${is_virtual ? localize('Demo') : ''} ${getCurrencyDisplayCode(currency)} ${localize(
+            is_wallet ? 'Wallet' : 'account'
+        )}`;
 
     const TransactionsForADay = ({
         day,

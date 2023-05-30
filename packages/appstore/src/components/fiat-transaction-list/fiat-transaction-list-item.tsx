@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Statement } from '@deriv/api-types';
 import { isMobile } from '@deriv/shared';
 import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
@@ -29,15 +29,9 @@ const FiatTransactionListItem = ({
     icon_type,
     platform,
 }: TFiatTransactionListItem) => {
-    const formatAmount = useCallback(
-        (value: number) => value.toLocaleString(undefined, { minimumFractionDigits: 2 }),
-        []
-    );
+    const formatAmount = (value: number) => value.toLocaleString(undefined, { minimumFractionDigits: 2 });
 
-    const formatActionType = useCallback(
-        (value: string) => value[0].toUpperCase() + value.substring(1).replace(/_/, ' '),
-        []
-    );
+    const formatActionType = (value: string) => value[0].toUpperCase() + value.substring(1).replace(/_/, ' ');
 
     return (
         <div className='fiat-transaction-list__item'>

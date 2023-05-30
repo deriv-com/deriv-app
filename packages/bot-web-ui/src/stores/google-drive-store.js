@@ -10,6 +10,15 @@ export default class GoogleDriveStore {
             updateSigninStatus: action.bound,
             saveFile: action.bound,
             loadFile: action.bound,
+            setKey: action.bound,
+            initialise: action.bound,
+            signIn: action.bound,
+            signOut: action.bound,
+            getPickerLanguage: action.bound,
+            checkFolderExists: action.bound,
+            createSaveFilePicker: action.bound,
+            createLoadFilePicker: action.bound,
+            showGoogleDriveFilePicker: action.bound,
         });
 
         this.root_store = root_store;

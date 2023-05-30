@@ -90,6 +90,9 @@ const FiatTransactionList = () => {
                                 const app_account = linked_accounts.find(account => account?.loginid === other_loginid);
                                 if (!app_account) return null;
                                 platform = app_account.platform;
+                                account_title = `${localize('Deriv Apps')} ${platform.toUpperCase()} ${localize(
+                                    'account'
+                                )}`;
                             }
                         }
                         return (
@@ -112,7 +115,21 @@ const FiatTransactionList = () => {
                             />
                         );
                     })
-                    .filter(Boolean)}
+                    .filter(Boolean)
+                    .concat([
+                        <FiatTransactionListItem
+                            key={-1}
+                            action_type='transfer'
+                            account_currency={wallet_currency}
+                            account_name='Deriv Apps MT5 account'
+                            amount={42}
+                            balance_after={42}
+                            currency={wallet_currency}
+                            icon={getWalletCurrencyIcon('USD', is_dark_mode_on, false)}
+                            icon_type='fiat'
+                            platform='IcDxtradeDerived'
+                        />,
+                    ])}
             </div>
         );
     };

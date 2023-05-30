@@ -42,7 +42,7 @@ const FiatTransactionListItem = ({
     return (
         <div className='fiat-transaction-list__item'>
             <div>
-                {icon_type === 'app' && platform ? (
+                {platform ? (
                     <AppLinkedWithWalletIcon
                         app_icon={platform}
                         currency={account_currency}

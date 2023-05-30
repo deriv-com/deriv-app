@@ -302,7 +302,7 @@
     "-854930519": "NON potrai ripristinarlo.",
     "-1600783504": "Imposta un tasso variabile per l'annuncio.",
     "-2008992756": "Vuoi annullare l'ordine?",
-    "-1666369246": "Se annulli l'ordine {{cancellation_limit}} volte in {{cancellation_period}} ore, non potrai usare Deriv P2P per {{block_duration}} ore. <br /> ({{number_of_cancels_remaining}} cancellazioni rimanenti.)",
+    "-1666369246": "Se annulli l'ordine {{cancellation_limit}} volte in {{cancellation_period}} ore, non potrai usare Deriv P2P per {{block_duration}} ore. <br /> ({{number_of_cancels_remaining}} cancellazioni rimanenti)",
     "-1618084450": "Se annulli l'ordine, non potrai usare Deriv P2P per {{block_duration}} ore.",
     "-2026176944": "Non annullare l'ordine se hai già effettuato il pagamento.",
     "-1989544601": "Annulla l'ordine",

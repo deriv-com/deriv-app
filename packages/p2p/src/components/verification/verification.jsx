@@ -47,7 +47,15 @@ const Verification = ({ should_wrap }) => {
                 general_store.poi_status === 'verified'
                     ? () => {}
                     : () => {
-                          window.location.href = `${routes.proof_of_identity}?ext_platform_url=${routes.cashier_p2p}`;
+                          const search = window.location.search;
+                          let updated_url = `${routes.proof_of_identity}?ext_platform_url=${routes.cashier_p2p}`;
+                          if (search) {
+                              const url_params = new URLSearchParams(search);
+                              const updated_url_params = new URLSearchParams(updated_url);
+                              url_params.forEach((value, key) => updated_url_params.append(key, value));
+                              updated_url = `${updated_url}&${url_params.toString()}`;
+                          }
+                          window.location.href = updated_url;
                       },
         },
     ];

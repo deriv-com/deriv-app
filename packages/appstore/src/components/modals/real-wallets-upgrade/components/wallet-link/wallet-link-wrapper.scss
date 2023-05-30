@@ -70,7 +70,7 @@
             &--single {
                 height: 0;
                 border: none;
-                border-top: 0.01rem solid var(--brand-red-coral);
+                border-top: 1px solid var(--brand-red-coral);
             }
 
             @include mobile {

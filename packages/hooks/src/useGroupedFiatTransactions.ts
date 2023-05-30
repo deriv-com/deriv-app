@@ -5,7 +5,7 @@ import { useFetch } from '@deriv/api';
 const useGroupedFiatTransactions = () => {
     const { data } = useFetch('statement');
     const transactions = data?.statement?.transactions;
-    const transactions_ = [
+    const mock_transactions = [
         {
             action_type: 'initial_fund',
             amount: 42,
@@ -104,8 +104,8 @@ const useGroupedFiatTransactions = () => {
     ];
 
     const grouped_transactions = _.pickBy(
-        // TODO replace transactions_ with transactions in the line below
-        _.groupBy(transactions_, transaction => {
+        // TODO replace mock_transactions with transactions in the line below
+        _.groupBy(mock_transactions, transaction => {
             return transaction.transaction_time
                 ? moment(transaction.transaction_time * 1000)
                       .startOf('day')

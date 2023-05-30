@@ -15,6 +15,7 @@
 
     .toolbar__section {
         justify-content: end;
+
         @include mobile {
             column-gap: 1rem;
         }
@@ -119,8 +120,6 @@
                 border-top-left-radius: 1rem;
                 border-top-right-radius: 1rem;
                 height: 4.8rem;
-                width: 14.4rem;
-                min-width: 14.4rem;
                 @include align-center;
 
                 &__loaded {
@@ -197,6 +196,7 @@
 
         &--tour-active {
             width: 78%;
+
             @include mobile {
                 width: 100%;
             }
@@ -391,14 +391,20 @@
             }
 
             &__tiles {
+                word-wrap: break-word;
+                font-size: 1.3rem;
+                text-align: center;
                 display: flex;
                 justify-content: center;
-                align-items: center;
+                align-items: flex-start;
+
                 @include mobile {
                     flex-wrap: wrap;
                 }
+
                 &--minimized {
                     align-items: flex-start;
+
                     @include mobile-tablet-mix {
                         display: flex;
                         justify-content: space-around;
@@ -418,11 +424,20 @@
                 justify-content: center;
                 align-items: center;
                 flex-direction: column;
-                width: 10.2rem;
-                margin: 1rem 0;
+                padding-right: 2.4rem;
+
+                @include mobile {
+                    padding: 1rem;
+                }
 
                 &:hover {
                     cursor: pointer;
+                }
+
+                span {
+                    width: 9.1rem;
+                    word-wrap: break-word;
+                    text-align: center;
                 }
 
                 &--minimized {

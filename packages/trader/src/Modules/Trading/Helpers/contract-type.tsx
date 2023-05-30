@@ -1,10 +1,10 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 
-type Category = { value: string; text: string };
+type TCategory = { value: string; text: string };
 type TContractType = {
     name: string;
-    categories: Category[];
+    categories: TCategory[];
 };
 type TcontractTypesList = {
     [key: string]: TContractType;
@@ -14,7 +14,7 @@ type TItem = {
 };
 type TList = {
     component?: null | React.ReactNode;
-    contract_types: Category[];
+    contract_types: TCategory[];
     contract_categories?: TList[];
     icon?: string;
     key: string;

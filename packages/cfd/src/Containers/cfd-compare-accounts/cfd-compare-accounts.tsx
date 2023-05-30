@@ -1,10 +1,12 @@
 import React from 'react';
-import { observer } from 'mobx-react';
+import { connect } from '../../Stores/connect';
+import RootStore from '../../Stores/index';
 import { Text, Icon, PageOverlay, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useHistory } from 'react-router-dom';
 import InstumentsIconWithLabel from './instruments-icon-with-label';
+// import { TTradingPlatformAvailableAccount } from '../../Components/props.types';
 
 interface CardData {
     id: number;
@@ -130,10 +132,8 @@ const CompareCFDs = () => {
     return (
         <React.Fragment>
             <DesktopWrapper>
-                <PageOverlay header={DesktopHeader} is_from_app={routes.traders_hub}>
-                    Desktop wrapper
-                </PageOverlay>
-                <div className='compare-cfd-account-outline'>
+                <PageOverlay header={DesktopHeader} is_from_app={routes.traders_hub} />
+                <div className='compare-cfd-account-container'>
                     <CardList />
                 </div>
             </DesktopWrapper>
@@ -151,4 +151,6 @@ const CompareCFDs = () => {
     );
 };
 
-export default observer(CompareCFDs);
+export default connect(({ client }: RootStore) => ({
+    trading_platform_available_accounts: client.trading_platform_available_accounts,
+}))(CompareCFDs);

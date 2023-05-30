@@ -14,7 +14,8 @@ import {
 import { Formik, Form, Field } from 'formik';
 import { Localize, localize } from '@deriv/translations';
 import { config, save_types } from '@deriv/bot-skeleton';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
+import { useDBotStore } from 'Stores/useDBotStore';
 import IconRadio from './icon-radio';
 import { isMobile } from '@deriv/shared';
 
@@ -166,18 +167,22 @@ const SaveModalForm = ({
         }}
     </Formik>
 );
-const SaveModal = ({
-    bot_name,
-    button_status,
-    is_authorised,
-    is_save_modal_open,
-    onConfirmSave,
-    onDriveConnect,
-    toggleSaveModal,
-    validateBotName,
-    setCurrentFocus,
-    is_onscreen_keyboard_active,
-}: TSaveModalForm) => {
+const SaveModal = observer(() => {
+    const { save_modal, google_drive } = useDBotStore();
+    const { ui } = useStore();
+
+    const {
+        button_status,
+        is_save_modal_open,
+        onConfirmSave,
+        onDriveConnect,
+        toggleSaveModal,
+        validateBotName,
+        bot_name,
+    } = save_modal;
+    const { is_authorised } = google_drive;
+    const { is_onscreen_keyboard_active, setCurrentFocus } = ui;
+
     const is_mobile = isMobile();
     return is_mobile ? (
         <MobileFullPageModal
@@ -222,17 +227,6 @@ const SaveModal = ({
             />
         </Modal>
     );
-};
+});
 
-export default connect(({ save_modal, google_drive, ui }) => ({
-    button_status: save_modal.button_status,
-    is_authorised: google_drive.is_authorised,
-    is_save_modal_open: save_modal.is_save_modal_open,
-    is_onscreen_keyboard_active: ui.is_onscreen_keyboard_active,
-    onConfirmSave: save_modal.onConfirmSave,
-    onDriveConnect: save_modal.onDriveConnect,
-    toggleSaveModal: save_modal.toggleSaveModal,
-    validateBotName: save_modal.validateBotName,
-    bot_name: save_modal.bot_name,
-    setCurrentFocus: ui.setCurrentFocus,
-}))(SaveModal);
+export default SaveModal;

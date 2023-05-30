@@ -302,7 +302,7 @@
     "-854930519": "Przywrócenie NIE będzie możliwe.",
     "-1600783504": "Ustaw zmienną stawkę dla swojego ogłoszenia.",
     "-2008992756": "Chcesz anulować to zlecenie?",
-    "-1666369246": "Jeśli anulujesz swoje zlecenie {{cancellation_limit}} razy w ciągu {{cancellation_period}} godzin, korzystanie z Deriv P2P zostanie zablokowane na {{block_duration}} godzin(y). (Pozostało anulowań: {{number_of_cancels_remaining}}).",
+    "-1666369246": "Jeśli anulujesz swoje zlecenie {{cancellation_limit}} razy w ciągu {{cancellation_period}} godzin, korzystanie z Deriv P2P zostanie zablokowane na {{block_duration}} godzin(y). (Pozostało anulowań: {{number_of_cancels_remaining}})",
     "-1618084450": "Jeśli anulujesz to zlecenie, korzystanie z Deriv P2P zostanie zablokowane na {{block_duration}} godzin(y).",
     "-2026176944": "Jeśli dokonano już płatności, nie należy korzystać z opcji anulowania.",
     "-1989544601": "Anuluj to zlecenie",

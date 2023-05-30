@@ -36,20 +36,6 @@ const FlyoutContent = props => {
         first_get_variable_block_index,
     } = props;
 
-    React.useEffect(() => {
-        flyout_ref.current.scrollTop = 0;
-    }, [selected_category]);
-
-    React.useEffect(() => {
-        const view = flyout_ref.current.querySelector('.flyout__item--active');
-        if (view) {
-            view.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start',
-            });
-        }
-    }, [active_helper]);
-
     return (
         <div
             ref={flyout_ref}

@@ -90,11 +90,6 @@ module.exports = function (env) {
                 {
                     test: /\.(js|jsx|ts|tsx)$/,
                     exclude: /node_modules/,
-                    loader: '@deriv/shared/src/loaders/react-import-loader.js',
-                },
-                {
-                    test: /\.(js|jsx|ts|tsx)$/,
-                    exclude: /node_modules/,
                     loader: 'babel-loader',
                     options: {
                         rootMode: 'upward',
@@ -114,6 +109,7 @@ module.exports = function (env) {
                 Constants: path.resolve(__dirname, './src/constants'),
                 Stores: path.resolve(__dirname, './src/stores'),
                 Utils: path.resolve(__dirname, './src/utils'),
+                Types: path.resolve(__dirname, 'src/types'),
             },
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },

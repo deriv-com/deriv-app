@@ -1,5 +1,6 @@
 import React from 'react';
 import { ToolbarWidget, ChartMode, DrawTools, Share, StudyLegend, Views } from '@deriv/deriv-charts';
+import { isDesktop, isMobile } from '@deriv/shared';
 
 type TToolbarWidgetsProps = {
     updateChartType: (chart_type: string) => void;
@@ -7,12 +8,16 @@ type TToolbarWidgetsProps = {
 };
 
 const ToolbarWidgets = ({ updateChartType, updateGranularity }: TToolbarWidgetsProps) => (
-    <ToolbarWidget>
+    <ToolbarWidget position={isMobile() ? 'bottom' : null}>
         <ChartMode portalNodeId='modal_root' onChartType={updateChartType} onGranularity={updateGranularity} />
-        <StudyLegend portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
-        <DrawTools portalNodeId='modal_root' />
-        <Views portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
-        <Share portalNodeId='modal_root' />
+        {isDesktop() && (
+            <>
+                <StudyLegend portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
+                <Views portalNodeId='modal_root' searchInputClassName='data-hj-whitelist' />
+                <DrawTools portalNodeId='modal_root' />
+                <Share portalNodeId='modal_root' />
+            </>
+        )}
     </ToolbarWidget>
 );
 

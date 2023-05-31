@@ -1,102 +1,17 @@
 import React from 'react';
-import { connect } from '../../Stores/connect';
-import RootStore from '../../Stores/index';
 import { Text, Icon, PageOverlay, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { useHistory } from 'react-router-dom';
-import InstumentsIconWithLabel from './instruments-icon-with-label';
-// import { TTradingPlatformAvailableAccount } from '../../Components/props.types';
+import CFDInstrumentsLabelHighlighted from './cfd-instruments-label-highlighted';
+import { observer } from 'mobx-react';
+import { useStore } from '@deriv/stores';
 
-interface CardData {
-    id: number;
-    title: string;
-    description: string;
-}
+const CompareCFDs = observer(() => {
+    const { client } = useStore();
+    const { trading_platform_available_accounts } = client;
 
-type TIconData = {
-    icon:
-        | 'DerivedFX'
-        | 'Synthetics'
-        | 'BasketIndices'
-        | 'Stocks'
-        | 'StockIndices'
-        | 'Commodities'
-        | 'Forex'
-        | 'Cryptocurrencies'
-        | 'ETF';
-    text: string;
-};
-
-const cardData: CardData[] = [
-    {
-        id: 1,
-        title: 'Card 1',
-        description: 'This is the description for Card 1.',
-    },
-    {
-        id: 2,
-        title: 'Card 2',
-        description: 'This is the description for Card 2.',
-    },
-    {
-        id: 3,
-        title: 'Card 3',
-        description: 'This is the description for Card 3.',
-    },
-    {
-        id: 4,
-        title: 'Card 4',
-        description: 'This is the description for Card 4.',
-    },
-    {
-        id: 5,
-        title: 'Card 5',
-        description: 'This is the description for Card 5.',
-    },
-    {
-        id: 6,
-        title: 'Card 6',
-        description: 'This is the description for Card 6.',
-    },
-    {
-        id: 7,
-        title: 'Card 7',
-        description: 'This is the description for Card 7.',
-    },
-    // Add more card data as needed
-    // ...
-];
-
-const CompareCFDs = () => {
     const history = useHistory();
-    const iconData: TIconData[] = [
-        { icon: 'Synthetics', text: 'Synthetics' },
-        { icon: 'BasketIndices', text: 'Basket Indices' },
-        { icon: 'DerivedFX', text: 'Derived FX' },
-        { icon: 'Stocks', text: 'Stock' },
-        { icon: 'StockIndices', text: 'Stock Indices' },
-        { icon: 'Commodities', text: 'Commodities' },
-        { icon: 'Forex', text: 'Forex' },
-        { icon: 'Cryptocurrencies', text: 'Cryptocurrencies' },
-        { icon: 'ETF', text: 'ETF' },
-    ];
-
-    const CompareAccounts: React.FC = () => {
-        return (
-            <div className={'compare-cfd-account-outline'}>
-                {iconData.map(item => (
-                    <InstumentsIconWithLabel
-                        key={item.text}
-                        icon={item.icon}
-                        text={item.text}
-                        highlighted={true}
-                        // className={'compare-cfd-account-outline'}
-                    />
-                ))}
-            </div>
-        );
-    };
 
     const DesktopHeader = (
         <div className='compare-cfd-header'>
@@ -122,8 +37,8 @@ const CompareCFDs = () => {
     const CardList: React.FC = () => {
         return (
             <div className='card-list'>
-                {cardData.map(item => (
-                    <CompareAccounts key={item.id} />
+                {trading_platform_available_accounts.map((item, idx) => (
+                    <CFDInstrumentsLabelHighlighted key={idx} />
                 ))}
             </div>
         );
@@ -149,8 +64,6 @@ const CompareCFDs = () => {
             </MobileWrapper>
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ client }: RootStore) => ({
-    trading_platform_available_accounts: client.trading_platform_available_accounts,
-}))(CompareCFDs);
+export default CompareCFDs;

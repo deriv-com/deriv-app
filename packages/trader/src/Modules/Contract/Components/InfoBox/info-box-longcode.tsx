@@ -1,11 +1,12 @@
-import { observer } from 'mobx-react';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isVanillaContract } from '@deriv/shared';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 
-const generateMessageForVanillaTrade = contract_info => (
+type TInfoBoxLongcode = { contract_info: TContractInfo };
+
+const generateMessageForVanillaTrade = (contract_info: TContractInfo) => (
     <Localize
         i18n_default_text='<0>For {{contract_type}}:</0> Get a payout if {{index_name}} is {{strike_status}} than the strike price at the expiry time. Your payout is zero if the market is {{market_status}} or equal to the strike price at the expiry time. You will start making a profit when the payout is higher than your stake.'
         components={[<strong key={0} />]}
@@ -18,7 +19,7 @@ const generateMessageForVanillaTrade = contract_info => (
     />
 );
 
-const InfoBoxLongcode = ({ contract_info }) => {
+const InfoBoxLongcode = ({ contract_info }: TInfoBoxLongcode) => {
     const is_vanilla = isVanillaContract(contract_info.contract_type);
     return (
         <div className='info-box-longcode'>
@@ -30,10 +31,4 @@ const InfoBoxLongcode = ({ contract_info }) => {
     );
 };
 
-InfoBoxLongcode.propTypes = {
-    contract_info: PropTypes.object,
-    longcode: PropTypes.string,
-    is_vanilla: PropTypes.bool,
-};
-
-export default observer(InfoBoxLongcode);
+export default InfoBoxLongcode;

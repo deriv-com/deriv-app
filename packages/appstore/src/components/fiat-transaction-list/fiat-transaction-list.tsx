@@ -14,7 +14,7 @@ const FiatTransactionList = () => {
         client: { accounts, currency: wallet_currency, loginid },
         traders_hub: { is_demo },
         ui: { is_dark_mode_on },
-    } = store;
+    } = useStore();
     const grouped_transactions = useGroupedFiatTransactions();
     const linked_accounts = Object.values(accounts)
         .flatMap(account => account.linked_to)

@@ -44,7 +44,7 @@ gulp.task(
 gulp.task(
     'build-min',
     gulp.series('static', 'webpack-prod', 'pull-blockly-translations', done => {
-        genHtml(true);
+        genHtml(false);
         done();
     })
 );

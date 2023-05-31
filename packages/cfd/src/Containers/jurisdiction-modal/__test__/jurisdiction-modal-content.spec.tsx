@@ -312,4 +312,35 @@ describe('JurisdictionModalContent', () => {
         expect(screen.getByText('40+')).toBeInTheDocument();
         expect(screen.getByText('Synthetics, Basket indices and Derived FX')).toBeInTheDocument();
     });
+
+    it('should display cfd-jurisdiction-card--all__wrapper in class name', () => {
+        render(<JurisdictionModalContent {...mock_props} account_type='all' />);
+        const container = screen.getByTestId('dt-jurisdiction-modal-content');
+        expect(container).toHaveClass('cfd-jurisdiction-card--all__wrapper');
+    });
+
+    it('should display only svg jurisdiction card for swap-free account', () => {
+        render(<JurisdictionModalContent {...mock_props} account_type='all' />);
+        expect(screen.getByText('St. Vincent & Grenadines')).toBeInTheDocument();
+        expect(screen.getByText('British Virgin Islands')).not.toBeInTheDocument();
+        expect(screen.getByText('Labuan')).not.toBeInTheDocument();
+        expect(screen.getByText('Vanuatu')).not.toBeInTheDocument();
+    });
+
+    it('should display content of swap-free jurisdiction correctly in card', () => {
+        render(<JurisdictionModalContent {...mock_props} account_type='all' />);
+        expect(screen.getByText('Assets')).toBeInTheDocument();
+        expect(
+            screen.getByText('Synthetics, Forex, Stocks, Stock Indices, Cryptocurrencies, and ETFs')
+        ).toBeInTheDocument();
+        expect(screen.getByText('40+')).toBeInTheDocument();
+        expect(screen.getByText('Leverage')).toBeInTheDocument();
+        expect(screen.getByText('1:1000')).toBeInTheDocument();
+        expect(screen.getByText('Verifications')).toBeInTheDocument();
+        expect(
+            screen.getByText('You will need to submit proof of identity and address once you reach certain thresholds.')
+        ).toBeInTheDocument();
+        expect(screen.getByText('Regulator/EDR')).toBeInTheDocument();
+        expect(screen.getByText('Deriv (SVG) LLC (company no. 273 LLC 2020)')).toBeInTheDocument();
+    });
 });

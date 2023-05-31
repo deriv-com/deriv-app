@@ -77,7 +77,7 @@
     "876086855": "Wypełnij formularz oceny finansowej",
     "881351325": "Czy poleciłbyś tego sprzedawcę?",
     "887667868": "Zlecenie",
-    "892431976": "If you cancel your order {{cancellation_limit}} times in {{cancellation_period}} hours, you will be blocked from using Deriv P2P for {{block_duration}} hours. <br /> ({{number_of_cancels_remaining}} cancellations remaining)",
+    "892431976": "Jeśli anulujesz swoje zlecenie {{cancellation_limit}} razy w ciągu {{cancellation_period}} godzin, korzystanie z Deriv P2P zostanie zablokowane na {{block_duration}} godzin(y). <br /> (Pozostało anulowań: {{number_of_cancels_remaining}})",
     "949859957": "Prześlij",
     "954233511": "Sprzedane",
     "957529514": "Aby złożyć zlecenie, dodaj jedną z preferowanych metod płatności ogłoszeniodawcy:",

@@ -17,6 +17,7 @@ const Blocks: React.FC = () => {
             symbols_dropdown,
             trade_type_category_dropdown,
             trade_type_dropdown,
+            contract_type_dropdown,
             onHideDropdownList,
             onChangeDropdownItem,
             onScrollStopDropdownList,
@@ -38,7 +39,9 @@ const Blocks: React.FC = () => {
     return (
         <div className='bot-builder__wrapper'>
             <div className='bot-builder__container'>
-                <Text color='less-prominent'>{localize('1. Trade parameters:')}</Text>
+                <div className='bot-builder__header'>
+                    <Text color='colored-background'>{localize('1. Trade parameters:')}</Text>
+                </div>
                 <Formik
                     initialValues={initial_values}
                     onSubmit={values => sendStrategy(values, essential_settings)}
@@ -54,6 +57,7 @@ const Blocks: React.FC = () => {
                                     symbols_dropdown={symbols_dropdown}
                                     trade_type_category_dropdown={trade_type_category_dropdown}
                                     trade_type_dropdown={trade_type_dropdown}
+                                    contract_type_dropdown={contract_type_dropdown}
                                     onChangeDropdownItem={onChangeDropdownItem}
                                     onHideDropdownList={onHideDropdownList}
                                     setFieldValue={setFieldValue}

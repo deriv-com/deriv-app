@@ -498,8 +498,10 @@
 
     &__bot-builder-tour {
         height: unset;
-        background: $color-black-3;
-        border-top: 0.1rem solid $color-black-5;
+        // background: $color-black-3;
+        // border-top: 0.1rem solid $color-black-5;
+        background-color: var(--general-section-1);
+        border-top: solid 1px var(--border-normal);
 
         .dbot-slider {
             width: 100%;
@@ -523,9 +525,9 @@
                             }
                         }
 
-                        &-content {
-                            color: $color-white;
-                        }
+                        // &-content {
+                        //     color: $color-white;
+                        // }
                     }
                 }
             }

@@ -1,3 +1,5 @@
+import { Text } from '@deriv/components';
+
 export type TMarketOption = {
     group: string;
     text: string;
@@ -29,6 +31,11 @@ export type TMarket = {
     value: string;
 };
 
+export type TContractType = {
+    text: string;
+    value: string;
+};
+
 export type TMarketDropdown = Array<TMarket>;
 
 export type TQSCache = {
@@ -41,7 +48,9 @@ export type TQSCache = {
     input_profit?: string;
     input_oscar_unit?: string;
     input_alembert_unit?: string;
+    selected_trade_type_category?: string;
     selected_trade_type?: TTradeType;
+    selected_contract_type?: TContractType;
     selected_duration_unit?: TDurationOptions;
     input_duration_value?: number | string;
 };

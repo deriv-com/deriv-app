@@ -8,37 +8,34 @@ const SelectBlockField = ({
     onHideDropdownList,
     onChangeDropdownItem,
     name_field,
-    label, 
+    label,
     dropdown,
     select_value,
     onScrollStopDropdownList,
 }: any) => {
-    
-return(<>
-    <Field name={name_field} key={0} id={0}>
-        {({ field }: any) => (
-            <Autocomplete
-                {...field}
-                autoComplete='off'
-                type='text'
-                label={label}
-                list_items={dropdown}
-                disabled={dropdown?.length === 1}
-                onHideDropdownList={() => {
-                    onHideDropdownList(
-                        select_value,
-                        values[field.name],
-                        setFieldValue
-                    );
-                }}
-                onItemSelection={({ value }: { value: string }) => {
-                    onChangeDropdownItem(select_value, value, setFieldValue);
-                }}
-                onScrollStop={() => onScrollStopDropdownList(select_value)}
-                />
-        )}
-    </Field>
-</>);
+    return (
+        <>
+            <Field name={name_field} key={0} id={0}>
+                {({ field }: any) => (
+                    <Autocomplete
+                        {...field}
+                        autoComplete='off'
+                        type='text'
+                        label={label}
+                        list_items={dropdown}
+                        disabled={dropdown?.length === 1}
+                        onHideDropdownList={() => {
+                            onHideDropdownList(select_value, values[field.name], setFieldValue);
+                        }}
+                        onItemSelection={({ value }: { value: string }) => {
+                            onChangeDropdownItem(select_value, value, setFieldValue);
+                        }}
+                        onScrollStop={() => onScrollStopDropdownList(select_value)}
+                    />
+                )}
+            </Field>
+        </>
+    );
 };
 
 SelectBlockField.displayName = 'SelectBlockField';

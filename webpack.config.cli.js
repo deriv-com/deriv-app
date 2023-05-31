@@ -68,6 +68,10 @@ module.exports = {
                 from: 'public/localstorage-sync.html',
                 to: path.resolve(__dirname, 'www'),
             },
+            {
+                from: 'templates/index.html',
+                to: path.resolve(__dirname, 'www'),
+            },
         ]),
         new BlocklyConcatPlugin({
             outputPath: path.resolve(__dirname, 'www/js'),

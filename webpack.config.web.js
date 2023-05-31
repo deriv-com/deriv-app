@@ -31,6 +31,10 @@ const plugins = [
             from: 'public/localstorage-sync.html',
             to: '../',
         },
+        {
+            from: 'templates/index.html',
+            to: '../',
+        },
     ]),
     new BlocklyConcatPlugin({
         outputPath: '../js',

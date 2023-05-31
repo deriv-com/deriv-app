@@ -11,7 +11,7 @@ type TTransferAccountSelectorProps = {
     is_mobile?: boolean;
     label?: string;
     mobile_list_min_height?: string;
-    onSelectAccount?: (value: { label: string; account: TTransferAccount }) => void;
+    onSelectAccount?: (account: TTransferAccount) => void;
     placeholder?: string;
     portal_id?: string;
     transfer_accounts: { [k: string]: TTransferAccount[] };
@@ -36,8 +36,8 @@ const TransferAccountSelector = ({
     const [selected_account, setSelectedAccount] = React.useState<TTransferAccount | undefined>(value);
 
     React.useEffect(() => {
-        if (label && selected_account) onSelectAccount?.({ label, account: selected_account });
-    }, [label, onSelectAccount, selected_account]);
+        if (selected_account) onSelectAccount?.(selected_account);
+    }, [onSelectAccount, selected_account]);
 
     React.useEffect(() => {
         setSelectedAccount(value);

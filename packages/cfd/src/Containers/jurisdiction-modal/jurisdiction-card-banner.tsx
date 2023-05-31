@@ -29,6 +29,7 @@ const VerificationStatusBanner = ({
         poi_acknowledged_for_maltainvest,
         poi_acknowledged_for_bvi_labuan_vanuatu,
         poa_not_submitted,
+        poi_not_submitted,
     } = getAuthenticationStatusInfo(account_status);
 
     const getAccountTitle = () => {
@@ -118,7 +119,7 @@ const VerificationStatusBanner = ({
                 </Text>
             </div>
         );
-    } else if (is_vanuatu && poa_not_submitted) {
+    } else if (is_vanuatu && poi_not_submitted) {
         return (
             <div className={`${card_classname}__verification-status--not_submitted`}>
                 <Text as='p' size='xxs' align='center' color='prominent'>

@@ -11,6 +11,7 @@
     }
     &--deposit-button {
         cursor: not-allowed;
+        pointer-events: none;
         &-blurry {
             opacity: 0.2;
         }

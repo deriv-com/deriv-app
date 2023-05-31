@@ -1,15 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Input, Button, Modal, MobileWrapper, Div100vhContainer, FadeWrapper, PageOverlay } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { Formik, Form, Field } from 'formik';
 import classNames from 'classnames';
+import { Field,Form, Formik } from 'formik';
+import PropTypes from 'prop-types';
+import { Button, Div100vhContainer, FadeWrapper, Input, MobileWrapper, Modal, PageOverlay } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 
 const SelfExclusionForm = props => {
     const [max_losses_error, setMaxLossesError] = React.useState('');
     const {
-        is_mobile,
         is_onscreen_keyboard_active,
         is_logged_in,
         initial_values,
@@ -152,7 +152,8 @@ const SelfExclusionForm = props => {
                                 </div>
                                 <div
                                     className={classNames('db-self-exclusion__footer', {
-                                        'db-self-exclusion__footer--relative': is_mobile && is_onscreen_keyboard_active,
+                                        'db-self-exclusion__footer--relative':
+                                            isMobile() && is_onscreen_keyboard_active,
                                     })}
                                 >
                                     <div className='db-self-exclusion__footer-btn-group'>
@@ -187,10 +188,10 @@ const SelfExclusionForm = props => {
 };
 
 const SelfExclusion = props => {
-    const { is_restricted, resetSelfExclusion, is_mobile } = props;
+    const { is_restricted, resetSelfExclusion } = props;
     return (
         <>
-            {is_mobile ? (
+            {isMobile() ? (
                 <FadeWrapper is_visible={is_restricted} className='limits__wrapper' keyname='limitis__wrapper'>
                     <PageOverlay header={localize('Limits')} onClickClose={resetSelfExclusion}>
                         <MobileWrapper>
@@ -219,7 +220,6 @@ const SelfExclusion = props => {
 
 SelfExclusion.propTypes = {
     is_onscreen_keyboard_active: PropTypes.bool,
-    is_mobile: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_restricted: PropTypes.bool,
     initial_values: PropTypes.object,
@@ -235,7 +235,6 @@ SelfExclusion.propTypes = {
 export default connect(({ client, self_exclusion, ui }) => ({
     initial_values: self_exclusion.initial_values,
     is_onscreen_keyboard_active: ui.is_onscreen_keyboard_active,
-    is_mobile: ui.is_mobile,
     is_logged_in: client.is_logged_in,
     is_restricted: self_exclusion.is_restricted,
     api_max_losses: self_exclusion.api_max_losses,

@@ -1,13 +1,16 @@
 import React from 'react';
 import { Money, Table, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
+import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import './advertiser-page.scss';
 
 const AdvertiserPageStats = () => {
     const { advertiser_page_store, general_store } = useStores();
+    const {
+        client: { currency },
+    } = useStore();
 
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
@@ -140,7 +143,7 @@ const AdvertiserPageStats = () => {
                                 {buy_orders_amount && sell_orders_amount ? (
                                     <Money
                                         amount={Number(buy_orders_amount) + Number(sell_orders_amount)}
-                                        currency={general_store.client.currency}
+                                        currency={currency}
                                         show_currency
                                     />
                                 ) : (
@@ -223,7 +226,7 @@ const AdvertiserPageStats = () => {
                             {buy_orders_amount && sell_orders_amount ? (
                                 <Money
                                     amount={Number(buy_orders_amount) + Number(sell_orders_amount)}
-                                    currency={general_store.client.currency}
+                                    currency={currency}
                                     show_currency
                                 />
                             ) : (

@@ -115,6 +115,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
                                             className={classNames('account-signup__btn', {
                                                 'account-signup__btn--disabled': disableBtn(values, errors),
                                             })}
+                                            is_disabled={disableBtn(values, errors)}
                                             type='button'
                                             onClick={() => {
                                                 history_value.current = values;

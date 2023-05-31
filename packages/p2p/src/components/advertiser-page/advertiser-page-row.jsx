@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Table, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
+import { observer, useStore } from '@deriv/stores';
 import { useStores } from 'Stores';
 import { buy_sell } from 'Constants/buy-sell';
 import { localize, Localize } from 'Components/i18next';
@@ -12,7 +12,9 @@ import './advertiser-page.scss';
 
 const AdvertiserPageRow = ({ row: advert }) => {
     const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store } = useStores();
-    const { currency } = general_store.client;
+    const {
+        client: { currency },
+    } = useStore();
     const {
         effective_rate,
         local_currency,

@@ -38,12 +38,16 @@ const Collapsible = ({
 
     React.useEffect(() => {
         expand(!is_collapsed);
-        setShouldShowCollapsible(React.Children.toArray(children).some(({ props }: any) => 'collapsible' in props));
+        setShouldShowCollapsible(
+            React.Children.toArray(children).some(({ props }: any) => 'data-collapsible' in props)
+        );
     }, [children, is_collapsed]);
 
     React.useEffect(
         () =>
-            setShouldShowCollapsible(React.Children.toArray(children).some(({ props }: any) => 'collapsible' in props)),
+            setShouldShowCollapsible(
+                React.Children.toArray(children).some(({ props }: any) => 'data-collapsible' in props)
+            ),
         [children]
     );
 
@@ -72,11 +76,11 @@ const Collapsible = ({
                 {React.Children.map(children, element => {
                     if (React.isValidElement(element)) {
                         const collapsed_class = classNames('dc-collapsible__item', element.props.className, {
-                            'dc-collapsible__item--collapsed': 'collapsible' in element.props && !is_open,
+                            'dc-collapsible__item--collapsed': 'data-collapsible' in element.props && !is_open,
                         });
 
                         const no_collapsible_props = { ...element.props };
-                        if ('collapsible' in no_collapsible_props) delete no_collapsible_props.collapsible;
+                        if ('data-collapsible' in no_collapsible_props) delete no_collapsible_props['data-collapsible'];
 
                         const props = {
                             ...no_collapsible_props,

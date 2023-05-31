@@ -30,11 +30,12 @@ import { general_messages } from '../Constants/cfd-shared-strings';
 import SwitchToRealAccountModal from './switch-to-real-account';
 import 'Sass/cfd-dashboard.scss';
 import RootStore from '../Stores/index';
-import { DetailsOfEachMT5Loginid, LandingCompany, ResidenceList } from '@deriv/api-types';
+import { LandingCompany, ResidenceList, DetailsOfEachMT5Loginid } from '@deriv/api-types';
 // TODO: Change these imports after real released
 import CFDDxtradeDemoAccountDisplay from '../Components/cfd-dxtrade-demo-account-display';
 import CFDMT5DemoAccountDisplay from '../Components/cfd-mt5-demo-account-display';
 import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
+import { TTradingPlatformAccounts } from 'Components/props.types';
 
 declare module 'react' {
     interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
@@ -250,11 +251,20 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
             setIsRealEnabled(true);
             setIsDemoEnabled(true);
         }
-        if (window.location.hash === '#demo') {
+        if (props.location.hash === '#demo') {
             setIsDemoEnabled(true);
             setActiveIndex(1);
         }
     });
+
+    React.useEffect(() => {
+        if (props.location.hash === '#real') {
+            setActiveIndex(0);
+        }
+        if (props.location.hash === '#demo-all' || props.location.hash === '#demo') {
+            setActiveIndex(1);
+        }
+    }, [props.location.hash]);
 
     const openResetPassword = () => {
         if (!/reset-password/.test(props.location.hash)) {
@@ -301,18 +311,20 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
     };
 
     const openAccountTransfer = (
-        data: DetailsOfEachMT5Loginid & { account_id?: string; platform?: string },
-        meta: { category: string; type?: string }
+        data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
+        meta: TOpenAccountTransferMeta
     ) => {
         if (meta.category === 'real') {
-            if (data.platform === CFD_PLATFORMS.DXTRADE)
-                sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id as string);
-            else sessionStorage.setItem('cfd_transfer_to_login_id', data.login as string);
+            if (data) {
+                if ('platform' in data && data.platform === CFD_PLATFORMS.DXTRADE)
+                    sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id || '');
+                else sessionStorage.setItem('cfd_transfer_to_login_id', data.login || '');
 
-            props.disableCFDPasswordModal();
-            props.history.push(routes.cashier_acc_transfer);
+                props.disableCFDPasswordModal();
+                props.history.push(routes.cashier_acc_transfer);
+            }
         } else {
-            props.setCurrentAccount(data, meta);
+            if ('sub_account_type' in data) props.setCurrentAccount(data, meta);
             props.openTopUpModal();
         }
     };
@@ -389,6 +401,19 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                 landing_companies,
                 platform,
                 type: 'financial',
+            })
+        );
+    };
+
+    const isSwapFreeCardVisible = () => {
+        const { platform, landing_companies, is_logged_in } = props;
+
+        return (
+            !is_logged_in ||
+            isLandingCompanyEnabled({
+                landing_companies,
+                platform,
+                type: 'all',
             })
         );
     };
@@ -550,8 +575,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                 should_update_hash
                             >
                                 {is_real_enabled && (
-                                    // eslint-disable-next-line react/no-unknown-property
-                                    <div label={localize('Real account')} hash='real'>
+                                    <div label={localize('Real account')} data-hash='real'>
                                         <React.Fragment>
                                             {should_show_missing_real_account && (
                                                 <MissingRealAccount
@@ -607,8 +631,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                     </div>
                                 )}
                                 {is_demo_enabled && (
-                                    // eslint-disable-next-line react/no-unknown-property
-                                    <div label={localize('Demo account')} hash='demo'>
+                                    <div label={localize('Demo account')} data-hash='demo'>
                                         {platform === CFD_PLATFORMS.DXTRADE && (
                                             <CFDDxtradeDemoAccountDisplay
                                                 is_logged_in={is_logged_in}
@@ -639,6 +662,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                                 is_loading={is_loading}
                                                 isSyntheticCardVisible={isSyntheticCardVisible}
                                                 isFinancialCardVisible={isFinancialCardVisible}
+                                                isSwapFreeCardVisible={isSwapFreeCardVisible}
                                                 current_list={current_list}
                                                 onSelectAccount={createCFDAccount}
                                                 landing_companies={landing_companies}

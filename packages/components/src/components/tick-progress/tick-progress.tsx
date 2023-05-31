@@ -4,7 +4,7 @@ import React from 'react';
 type TTickProgress = {
     className?: string;
     columns?: number;
-    value?: number;
+    value?: number | null;
     rows?: number;
     size?: number;
 };
@@ -29,7 +29,7 @@ const TickProgress = ({ className, rows = 2, columns = 5, size = 10, value = 0 }
             }}
         >
             {new Array(size).fill(null).map((_, index) => {
-                return <Tick is_on={index < value} key={index} />;
+                return <Tick is_on={index < Number(value)} key={index} />;
             })}
         </div>
     );

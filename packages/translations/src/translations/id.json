@@ -2896,7 +2896,7 @@
     "-986689483": "1. Buat variabel berikut:",
     "-79649010": "- <strong>CurrentStake</strong>: Gunakan variabel ini untuk menyimpan jumlah saham yang digunakan dalam kontrak terakhir. Anda dapat menetapkan jumlah yang Anda inginkan, tetapi itu harus menjadi angka positif.",
     "-1931732247": "- <strong>TradeAgain</strong>: Gunakan variabel ini untuk menghentikan perdagangan saat batas kerugian Anda tercapai. Mengatur nilai awal untuk <strong>benar</strong>.",
-    "-1574002530": "2. Use a logic block to check if <strong>currentPL</strong> exceeds <strong>maximumLoss</strong>. If it does, set <strong>tradeAgain</strong> to false to prevent the bot from running another cycle.",
+    "-1574002530": "2. Gunakan blok logika untuk memeriksa apakah <strong>currentPL</strong> melebihi <strong>maximumLoss</strong>. Jika ya, pilih salah pada <strong>tradeAgain</strong> untuk mencegah bot menjalankan siklus lain.",
     "-1672069217": "3. Perbarui <strong>CurrentPL</strong> dengan keuntungan dari kontrak terakhir. Jika kontrak terakhir hilang, nilai <strong>CurrentPL</strong> akan negatif.",
     "-241469384": "Dapatkah saya menjalankan DBot pada beberapa tab di browser web?",
     "-90192474": "Ya, Anda bisa. Namun, ada batasan pada akun Anda, seperti jumlah maksimum posisi terbuka dan pembayaran agregat maksimum pada posisi terbuka. Jadi, ingatlah batas-batas ini saat membuka beberapa posisi. Anda dapat menemukan info lebih lanjut tentang batasan ini di <a href=\"https://app.deriv.com/account/account-limits\" target=\"_blank\">Pengaturan > Batas akun</a>.",

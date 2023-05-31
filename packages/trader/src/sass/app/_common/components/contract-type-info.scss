@@ -37,11 +37,11 @@
             max-height: calc(680px - 190px);
         }
         @include mobile {
-            height: calc(90vh - 107px);
+            height: calc(89vh - 107px);
             padding: 0;
 
             &--has-toggle-buttons {
-                max-height: calc(90vh - 182px);
+                max-height: calc(89vh - 182px);
             }
         }
     }

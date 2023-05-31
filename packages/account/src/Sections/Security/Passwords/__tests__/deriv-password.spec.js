@@ -17,7 +17,7 @@ describe('<DerivPassword />', () => {
         email: 'mf@deriv.com',
         is_social_signup: false,
         social_identity_provider: undefined,
-        landing_company_shortcode: 'maltainvest',
+        is_eu_user: true,
     };
 
     let modal_root_el;
@@ -47,7 +47,7 @@ describe('<DerivPassword />', () => {
     });
 
     it('displays the correct platform information for non-MF clients', () => {
-        render(<DerivPassword {...mock_props} landing_company_shortcode='svg' />);
+        render(<DerivPassword {...mock_props} is_eu_user={false} />);
         const popover_wrapper = screen.getAllByTestId('dt_popover_wrapper');
         // expect popover to have length of 4
         expect(popover_wrapper).toHaveLength(4);

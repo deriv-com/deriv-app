@@ -3,11 +3,11 @@ import { Statement } from '@deriv/api-types';
 import { isMobile } from '@deriv/shared';
 import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
 
-type StatementTransaction = DeepRequired<Statement>['transactions'][number];
+type TStatementTransaction = DeepRequired<Statement>['transactions'][number];
 
-type TFiatTransactionListItem = Pick<StatementTransaction, 'amount' | 'balance_after'> & {
+type TFiatTransactionListItem = Pick<TStatementTransaction, 'amount' | 'balance_after'> & {
     action_type:
-        | (StatementTransaction['action_type'] & ('deposit' | 'withdrawal' | 'transfer'))
+        | (TStatementTransaction['action_type'] & ('deposit' | 'withdrawal' | 'transfer'))
         | 'initial_fund'
         | 'reset_balance';
     account_currency: string;
@@ -44,7 +44,7 @@ const FiatTransactionListItem = ({
                         wallet_icon={icon}
                     />
                 ) : (
-                    <WalletIcon currency={account_currency} icon={icon} type={icon_type} has_bg={true} size='medium' />
+                    <WalletIcon currency={account_currency} icon={icon} type={icon_type} has_bg size='medium' />
                 )}
                 <span>
                     <Text

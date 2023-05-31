@@ -308,25 +308,19 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
 
     //vanuatu-maltainvest
 
-    const requiredStatuses: (string | undefined)[] = [onfido_status, manual_status];
-    const submittedStatuses: string[] = requiredStatuses.filter((status: string | undefined) => status) as string[];
-    const allStatuses: (string | undefined)[] = submittedStatuses.concat([
-        idv_status,
-        onfido_status,
-        manual_status,
-    ] as string[]);
+    const required_statuses: (string | undefined)[] = [onfido_status, manual_status];
+    const submitted_statuses: string[] = required_statuses.filter((status: string | undefined) => status) as string[];
+    const all_statuses: string[] = [idv_status, onfido_status, manual_status].map(status => status) as string[];
 
-    const poi_verified_for_maltainvest: boolean = allStatuses.includes('verified');
-    const poi_acknowledged_for_maltainvest: boolean = allStatuses.some((status: string | undefined) =>
-        acknowledged_status.includes(status ?? '')
+    const poi_verified_for_maltainvest: boolean = submitted_statuses.includes('verified');
+    const poi_acknowledged_for_maltainvest: boolean = submitted_statuses.some(status =>
+        acknowledged_status.includes(status)
     );
     const poi_pending_for_maltainvest: boolean =
-        allStatuses.every((status: string | undefined) => status === 'pending') && !poi_verified_for_maltainvest;
+        submitted_statuses.some(status => status === 'pending') && !poi_verified_for_maltainvest;
 
     const need_poi_for_maltainvest = !poi_acknowledged_for_maltainvest;
-    const poi_not_submitted_for_maltainvest: boolean = allStatuses.every(
-        (status: string | undefined) => status === 'none'
-    );
+    const poi_not_submitted_for_maltainvest: boolean = submitted_statuses.every(status => status === 'none');
 
     const poi_resubmit_for_maltainvest: boolean =
         !poi_pending_for_maltainvest && !poi_not_submitted_for_maltainvest && !poi_verified_for_maltainvest;
@@ -334,22 +328,16 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
     const poi_poa_verified_for_maltainvest = poi_verified_for_maltainvest && poa_verified;
 
     //bvi-labuan
-    const poi_acknowledged_for_bvi_labuan_vanuatu: boolean =
-        acknowledged_status.includes(idv_status ?? '') ||
-        acknowledged_status.includes(onfido_status ?? '') ||
-        acknowledged_status.includes(manual_status ?? '');
-
+    const poi_acknowledged_for_bvi_labuan_vanuatu: boolean = all_statuses.some(status =>
+        acknowledged_status.includes(status)
+    );
     const need_poi_for_bvi_labuan_vanuatu = !poi_acknowledged_for_bvi_labuan_vanuatu;
-    const poi_not_submitted_for_bvi_labuan_vanuatu: boolean = [idv_status, onfido_status, manual_status].every(
-        (status: string | undefined) => status === 'none'
-    );
+    const poi_not_submitted_for_bvi_labuan_vanuatu: boolean = all_statuses.every(status => status === 'none');
 
-    const poi_verified_for_bvi_labuan_vanuatu: boolean = [idv_status, onfido_status, manual_status].includes(
-        'verified'
-    );
+    const poi_verified_for_bvi_labuan_vanuatu: boolean = all_statuses.includes('verified');
 
     const poi_pending_for_bvi_labuan_vanuatu: boolean =
-        [idv_status, onfido_status, manual_status].includes('pending') && !poi_verified_for_bvi_labuan_vanuatu;
+        all_statuses.includes('pending') && !poi_verified_for_bvi_labuan_vanuatu;
 
     const poi_resubmit_for_bvi_labuan_vanuatu: boolean =
         !poi_pending_for_bvi_labuan_vanuatu &&

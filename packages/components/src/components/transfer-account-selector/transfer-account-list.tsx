@@ -26,8 +26,13 @@ const TransferAccountList = ({
     transfer_hint,
     wallet_name,
 }: TTransferAccountList) => {
+    const is_single_list = React.useMemo(
+        () => Object.keys(transfer_accounts).filter(key => transfer_accounts[key].length > 0).length === 1,
+        [transfer_accounts]
+    );
+
     return (
-        <div>
+        <div className='transfer-account-selector__list__container'>
             {Object.keys(transfer_accounts).map((key, idx) => {
                 return (
                     transfer_accounts[key].length > 0 && (
@@ -35,7 +40,9 @@ const TransferAccountList = ({
                             <div
                                 className={classNames('transfer-account-selector__list', {
                                     'transfer-account-selector__list--is-last':
-                                        Object.keys(transfer_accounts).length === idx + 1,
+                                        is_single_list || Object.keys(transfer_accounts).length === idx + 1,
+                                    'transfer-account-selector__list--is-mobile': is_mobile,
+                                    'transfer-account-selector__list--is-single': is_single_list,
                                 })}
                             >
                                 <div className='transfer-account-selector__list-header'>
@@ -58,10 +65,7 @@ const TransferAccountList = ({
                                         <WalletTile
                                             key={index}
                                             account={account}
-                                            className={classNames('transfer-account-selector__list-tile', {
-                                                'transfer-account-selector__list-tile--is-last':
-                                                    transfer_accounts[key].length === index + 1,
-                                            })}
+                                            className={classNames('transfer-account-selector__list-tile')}
                                             is_active={selected_account?.loginid === account.loginid}
                                             is_mobile={is_mobile}
                                             has_hover
@@ -72,10 +76,12 @@ const TransferAccountList = ({
                                         />
                                     ))}
                                 </div>
+                            </div>
+                            {transfer_hint && (
                                 <Text as='p' size='xxs' align='center' color='primary' className='transfer-hint'>
                                     {transfer_hint}
                                 </Text>
-                            </div>
+                            )}
                         </React.Fragment>
                     )
                 );

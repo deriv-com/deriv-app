@@ -54,6 +54,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const { error } = withdraw;
     const {
         is_cashier_onboarding,
+        is_deposit,
         is_loading,
         onMountCommon: onMount,
         setAccountSwitchListener,
@@ -125,6 +126,9 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                 (route.path !== routes.cashier_onramp || is_onramp_visible) &&
                 (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
             ) {
+                const manages_its_own_side_note = is_crypto_transactions_visible || is_cashier_onboarding || is_deposit;
+                const has_side_note = manages_its_own_side_note ? false : route.path !== routes.cashier_p2p;
+
                 options.push({
                     ...(route.path === routes.cashier_p2p && { count: p2p_notification_count }),
                     default: route.default,
@@ -132,7 +136,8 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                     label: route.getTitle(),
                     value: route.component,
                     path: route.path,
-                    has_side_note: is_crypto_transactions_visible ? false : route.path !== routes.cashier_p2p, // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
+                    // Set to true to create the 3-column effect without passing any content. If there is content, the content should be passed in.
+                    has_side_note,
                 });
             }
         });

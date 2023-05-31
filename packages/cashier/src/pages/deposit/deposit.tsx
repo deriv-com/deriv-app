@@ -76,7 +76,6 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
             if (is_switching || is_deposit) setSideNotes(null);
             if (is_crypto && is_deposit && !is_switching) {
                 const side_notes = [
-                    ...(crypto_transactions.length ? [<RecentTransaction key={2} />] : []),
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];
@@ -90,7 +89,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, tab_index, crypto_transactions, crypto_transactions?.length, is_cashier_onboarding, iframe_height]);
+    }, [currency, tab_index, is_cashier_onboarding, iframe_height]);
 
     if (!is_cashier_onboarding && (is_switching || (is_loading && !iframe_url)) && !is_crypto_transactions_visible) {
         return <Loading is_fullscreen />;
@@ -126,14 +125,12 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
 
         return (
             <>
-                {is_fiat_currency_banner_visible_for_MF_clients && (
-                    <CashierOnboardingSideNotes setSideNotes={setSideNotes} />
-                )}
+                {is_fiat_currency_banner_visible_for_MF_clients && <CashierOnboardingSideNotes />}
                 <Real is_deposit />
             </>
         );
     }
-    return <CashierOnboardingModule setSideNotes={setSideNotes} />;
+    return <CashierOnboardingModule />;
 });
 
 export default Deposit;

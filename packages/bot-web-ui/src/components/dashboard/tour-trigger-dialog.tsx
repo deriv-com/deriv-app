@@ -121,7 +121,7 @@ const TourTriggrerDialog = ({
                             <div className='dc-dialog__content__description__text'>
                                 <Localize
                                     key={0}
-                                    i18n_default_text={'Now, <0>run the bot</0> to test out the stategy.'}
+                                    i18n_default_text={'Now, <0>run the bot</0> to test out the strategy.'}
                                     components={[<strong key={0} />]}
                                 />
                             </div>

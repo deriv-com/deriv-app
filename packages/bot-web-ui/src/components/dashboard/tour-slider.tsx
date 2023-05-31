@@ -58,7 +58,7 @@ const Accordion = ({ content_data, expanded = false, ...props }: TAccordion) => 
                         'dbot-accordion__content--open': is_open,
                     })}
                 >
-                    <Text as='span' size='xxs' line_height='s' color='prominent'>
+                    <Text as='span' size='xxs' line_height='s' color='colored-background'>
                         {localize(content)}
                     </Text>
                 </div>
@@ -192,13 +192,15 @@ const TourSlider = ({
                 {!has_started_onboarding_tour && content_data && <Accordion content_data={content_data} expanded />}
                 <div className='dbot-slider__status'>
                     <div className='dbot-slider__progress-bar'>
-                        <ProgressBarOnboarding
-                            step={step}
-                            amount_of_steps={Object.keys(
-                                !has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE
-                            )}
-                            setStep={setStep}
-                        />
+                        {(!has_started_onboarding_tour || (has_started_onboarding_tour && step !== 1)) && (
+                            <ProgressBarOnboarding
+                                step={step}
+                                amount_of_steps={Object.keys(
+                                    !has_started_onboarding_tour ? BOT_BUILDER_MOBILE : DBOT_ONBOARDING_MOBILE
+                                )}
+                                setStep={setStep}
+                            />
+                        )}
                     </div>
                     <div className='dbot-slider__button-group'>
                         {has_started_onboarding_tour && step === 1 && (

@@ -1,6 +1,3 @@
-import moment from 'moment';
-import SummaryCardStore from 'Stores/summary-card-store';
-
 type TTransactionIds = {
     buy: number;
 };

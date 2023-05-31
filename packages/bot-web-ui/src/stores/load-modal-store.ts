@@ -126,19 +126,6 @@ export default class LoadModalStore implements ILoadModalStore {
                 }
             }
         );
-
-        const loadStrategies = async () => {
-            try {
-                const timeout = (ms: number) => {
-                    return new Promise(resolve => setTimeout(resolve, ms));
-                };
-                await timeout(1000);
-                this.setDashboardStrategies((await getSavedWorkspaces()) || []);
-            } catch (error) {
-                globalObserver.emit('Error', error);
-            }
-        };
-        loadStrategies();
     }
 
     recent_workspace;
@@ -193,11 +180,8 @@ export default class LoadModalStore implements ILoadModalStore {
     }
 
     async getDashboardStrategies() {
-        setTimeout(() => {
-            getSavedWorkspaces().then(recent_strategies => {
-                this.dashboard_strategies = recent_strategies;
-            });
-        }, 1000);
+        const recent_strategies = await getSavedWorkspaces();
+        this.dashboard_strategies = recent_strategies;
     }
 
     handleFileChange = (
@@ -229,7 +213,7 @@ export default class LoadModalStore implements ILoadModalStore {
         return true;
     };
     refreshStrategiesTheme = (strategy = this.selected_strategy?.xml): void => {
-        load({ block_string: strategy, drop_event: {}, workspace: this.recent_workspace });
+        if (strategy) load({ block_string: strategy, drop_event: {}, workspace: this.recent_workspace });
     };
     loadFileFromRecent = async (): void => {
         this.is_open_button_loading = true;
@@ -298,7 +282,7 @@ export default class LoadModalStore implements ILoadModalStore {
                     this.local_workspace.dispose();
                     this.local_workspace = null;
                     this.setLoadedLocalFile(null);
-                });
+                }, 0);
             }
         }
 
@@ -324,6 +308,8 @@ export default class LoadModalStore implements ILoadModalStore {
         load({ block_string: xml_doc, file_name, workspace: Blockly.derivWorkspace, from: save_types.GOOGLE_DRIVE });
         const { active_tab } = this.root_store.dashboard;
         if (active_tab === 1) this.toggleLoadModal();
+
+        this.root_store.dashboard.is_dialog_open = false;
     }
 
     onEntered = (): void => {

@@ -158,9 +158,6 @@ const AppNotificationMessages = ({
     );
 
     const notifications_sublist = filtered_excluded_notifications.slice(0, notifications_limit);
-    // const notifications_sublist = window.location.pathname.includes([routes.trade, routes.bot])
-    //     ? filtered_excluded_notifications.filter(message => message.key.includes(['wallet_migrated', 'wallet_failed']))
-    //     : filtered_excluded_notifications.slice(0, notifications_limit);
 
     if (!should_show_popups) return null;
 

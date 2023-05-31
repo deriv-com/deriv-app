@@ -14,6 +14,7 @@ import {
     Text,
     useOnClickOutside,
 } from '@deriv/components';
+import { useCFDAccounts, useHasSetCurrency, usePlatformAccounts, useTotalAccountBalance } from '@deriv/hooks';
 import { routes, formatMoney, ContentFlag } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
@@ -22,7 +23,6 @@ import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
 import { getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
 import { BinaryLink } from 'App/Components/Routes';
-import { useHasSetCurrency } from '@deriv/hooks';
 
 const AccountSwitcher = ({
     available_crypto_currencies,
@@ -74,7 +74,13 @@ const AccountSwitcher = ({
 
     const wrapper_ref = React.useRef();
     const scroll_ref = React.useRef(null);
+    const { real: platform_real_accounts, demo: platform_demo_account } = usePlatformAccounts();
+    const { real: cfd_real_accounts, demo: cfd_demo_accounts } = useCFDAccounts();
 
+    const platform_demo_balance = platform_demo_account?.balance || 0;
+    const cfd_demo_balance = useTotalAccountBalance(cfd_demo_accounts);
+    const platform_real_balance = useTotalAccountBalance(platform_real_accounts);
+    const cfd_real_balance = useTotalAccountBalance(cfd_real_accounts);
     const account_total_balance_currency = obj_total_balance.currency;
 
     const vrtc_loginid = account_list.find(account => account.is_virtual)?.loginid;
@@ -172,14 +178,11 @@ const AccountSwitcher = ({
     const hasSetCurrency = useHasSetCurrency();
 
     const getTotalDemoAssets = () => {
-        const vrtc_balance = accounts[vrtc_loginid] ? accounts[vrtc_loginid].balance : 0;
-
-        return vrtc_balance;
+        return platform_demo_balance + cfd_demo_balance?.balance;
     };
 
     const getTotalRealAssets = () => {
-        const traders_hub_total = obj_total_balance.amount_real;
-        return traders_hub_total;
+        return platform_real_balance?.balance + cfd_real_balance?.balance;
     };
 
     if (!is_logged_in) return false;

@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Localize } from '@deriv/translations';
 import { Icon, Text } from '@deriv/components';
 import { getCurrencyDisplayCode, getPlatformSettings, routes, isMobile } from '@deriv/shared';
@@ -19,6 +20,9 @@ const CashierOnboardingSideNote = observer(({ is_crypto }: TCashierOnboardingSid
 
     const currency_code = getCurrencyDisplayCode(currency);
 
+    const { common } = useStore();
+    const { is_from_derivgo } = common;
+
     const getSideNoteDescription = () => {
         if (is_crypto) {
             return (
@@ -35,8 +39,10 @@ const CashierOnboardingSideNote = observer(({ is_crypto }: TCashierOnboardingSid
                 components={[
                     <span
                         key={0}
-                        className='link link--orange cashier-onboarding-side-note__text-nowrap'
-                        onClick={() => window.LC_API.open_chat_window()}
+                        className={classNames('cashier-onboarding-side-note__text-nowrap', {
+                            'link link--orange': !is_from_derivgo,
+                        })}
+                        onClick={() => (!is_from_derivgo ? window.LC_API.open_chat_window() : null)}
                     />,
                 ]}
                 values={{ platform_name_dxtrade: getPlatformSettings('dxtrade').name }}

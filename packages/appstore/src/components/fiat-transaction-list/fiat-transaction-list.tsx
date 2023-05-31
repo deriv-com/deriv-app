@@ -9,7 +9,6 @@ import { getWalletCurrencyIcon } from 'Constants/utils';
 import FiatTransactionListItem from './fiat-transaction-list-item';
 
 const FiatTransactionList = () => {
-    const store = useStore();
     const {
         client: { accounts, currency: wallet_currency, loginid },
         traders_hub: { is_demo },

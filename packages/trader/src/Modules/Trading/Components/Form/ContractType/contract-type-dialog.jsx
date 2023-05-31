@@ -4,6 +4,7 @@ import { DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
 import { Header } from './ContractTypeInfo';
 import { localize } from '@deriv/translations';
 import ContractTypeMenu from './ContractTypeMenu';
+import { AutoSizer } from 'react-virtualized';
 
 const ContractTypeDialog = ({
     children,
@@ -27,18 +28,24 @@ const ContractTypeDialog = ({
     return (
         <React.Fragment>
             <MobileWrapper>
-                <span className='contract-type-widget__select-arrow' />
-                <MobileDialog
-                    portal_element_id='modal_root'
-                    title={current_mobile_title}
-                    header_classname='contract-type-widget__header'
-                    wrapper_classname='contracts-modal-list'
-                    visible={is_open}
-                    onClose={onClose}
-                    has_content_scroll
-                >
-                    {children}
-                </MobileDialog>
+                <AutoSizer>
+                    {({ height, width }) => (
+                        <div className='my-profile' style={{ height, width }}>
+                            <span className='contract-type-widget__select-arrow' />
+                            <MobileDialog
+                                portal_element_id='modal_root'
+                                title={current_mobile_title}
+                                header_classname='contract-type-widget__header'
+                                wrapper_classname='contracts-modal-list'
+                                visible={is_open}
+                                onClose={onClose}
+                                has_content_scroll
+                            >
+                                {children}
+                            </MobileDialog>
+                        </div>
+                    )}
+                </AutoSizer>
             </MobileWrapper>
             <DesktopWrapper>
                 <ContractTypeMenu

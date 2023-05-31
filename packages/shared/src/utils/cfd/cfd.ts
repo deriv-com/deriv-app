@@ -230,7 +230,7 @@ export const getCFDPlatformLabel = (platform: TPlatform) => {
         case CFD_PLATFORMS.DXTRADE:
             return 'Deriv X';
         case CFD_PLATFORMS.DERIVEZ:
-            return 'Deriv Ez';
+            return 'Deriv EZ';
         default:
             return '';
     }

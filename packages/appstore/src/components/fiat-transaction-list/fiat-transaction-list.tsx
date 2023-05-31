@@ -42,6 +42,7 @@ const FiatTransactionList = () => {
         return (
             <div className='fiat-transaction-list__day'>
                 <Text
+                    className='fiat-transaction-list__day_header'
                     size={isMobile() ? 'xxxxs' : 'xxxs'}
                     line_height={isMobile() ? 'm' : 's'}
                     color='less-prominent'

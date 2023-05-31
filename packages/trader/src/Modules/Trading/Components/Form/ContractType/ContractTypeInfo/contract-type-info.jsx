@@ -10,12 +10,12 @@ import ContractTypeGlossary from './contract-type-glossary.jsx';
 import classNames from 'classnames';
 
 const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }) => {
-    const [carousel_index, setCarouselIndex] = React.useState(initial_index);
+    const [carousel_index, setCarouselIndex] = React.useState('');
     const [selected_tab, setSelectedTab] = React.useState('description');
     const contract_types = getContractTypes(list, item).filter(i => i.value !== 'rise_fall_equal');
     const onClickGlossary = () => setSelectedTab('glossary');
 
-    const has_toggle_buttons = carousel_index !== 8 && carousel_index !== 1;
+    const has_toggle_buttons = carousel_index !== 'accumulator' && carousel_index !== 'vanilla';
     const is_description_tab_selected = selected_tab === 'description';
     const is_glossary_tab_selected = selected_tab === 'glossary';
     // // TODO uncomment this to enable switching tab transition/animation when all the glossary contents are ready
@@ -23,7 +23,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
     const scroll_bar_height = is_description_tab_selected ? '510px' : '440px';
 
     const handleItemSelect = active_index => {
-        setCarouselIndex(active_index);
+        setCarouselIndex(contract_types[active_index].value);
         handleNavigationClick(contract_types[active_index]);
         if (has_toggle_buttons && is_glossary_tab_selected) {
             setSelectedTab('description');
@@ -109,8 +109,8 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                 className='contract-type-info'
                 bullet_color='var(--text-disabled)'
                 active_bullet_color='var(--brand-red-coral)'
-                initial_index={carousel_index}
                 onItemSelect={handleItemSelect}
+                initial_index={initial_index}
                 list={cards}
                 width={isMobile() ? 328 : 528}
             />

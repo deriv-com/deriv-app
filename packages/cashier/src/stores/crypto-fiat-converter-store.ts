@@ -1,9 +1,9 @@
 import { action, observable, makeObservable } from 'mobx';
 import { getDecimalPlaces } from '@deriv/shared';
-import { TStores } from '@deriv/stores/types';
+import { TRootStore } from '../types';
 
 export default class CryptoFiatConverterStore {
-    constructor(public root_store: TStores) {
+    constructor(public root_store: TRootStore) {
         makeObservable(this, {
             converter_from_amount: observable,
             converter_to_amount: observable,

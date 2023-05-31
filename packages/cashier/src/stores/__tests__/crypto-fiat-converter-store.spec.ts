@@ -1,4 +1,4 @@
-import { TStores } from '@deriv/stores/types';
+import { TRootStore } from '../../types';
 import { mockStore } from '@deriv/stores';
 import CryptoFiatConverterStore from '../crypto-fiat-converter-store';
 
@@ -34,7 +34,7 @@ beforeEach(() => {
             },
         },
     });
-    crypto_fiat_converter_store = new CryptoFiatConverterStore(root_store as TStores);
+    crypto_fiat_converter_store = new CryptoFiatConverterStore(root_store as TRootStore);
 });
 
 describe('CryptoFiatConverterStore', () => {

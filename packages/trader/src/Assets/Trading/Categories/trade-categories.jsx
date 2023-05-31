@@ -440,7 +440,7 @@ const TradeCategories = ({ category, onClick }) => {
                         </Text>
                         <Text as='p'>
                             <Localize
-                                i18n_default_text='If you buy a <0>"Call"</0> option, you receive a payout at <1>expiry</1> if the <1>final price</1> is above the <1>strike price</1>. Otherwise, your "Call" option will expire worthless.'
+                                i18n_default_text='If you buy a <0>"Call"</0> option, you receive a payout at <1>expiry</1> if the <1>final price</1> is above the <1>strike price</1>. Otherwise, your <0>"Call"</0> option will expire worthless.'
                                 components={[
                                     <strong key={0} />,
                                     <span
@@ -453,7 +453,7 @@ const TradeCategories = ({ category, onClick }) => {
                         </Text>
                         <Text as='p'>
                             <Localize
-                                i18n_default_text='If you buy a <0>"Put"</0> option, you receive a payout at expiry if the final price is below the strike price. Otherwise, your "Put" option will expire worthless.'
+                                i18n_default_text='If you buy a <0>"Put"</0> option, you receive a payout at expiry if the final price is below the strike price. Otherwise, your <0>"Put"<0/> option will expire worthless.'
                                 components={[<strong key={0} />]}
                             />
                         </Text>

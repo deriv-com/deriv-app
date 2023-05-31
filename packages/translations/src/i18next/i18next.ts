@@ -28,6 +28,7 @@ export const getAllowedLanguages = () => {
         ES: 'Español',
         RU: 'Русский',
         FR: 'Français',
+        VI: 'Tiếng Việt',
     };
     const exclude_languages = ['ACH'];
     // TODO Change language_list to const when languages are available in prod.

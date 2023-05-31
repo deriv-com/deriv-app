@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import UserAvatar from '../user-avatar.jsx';
+import UserAvatar from '../user-avatar';
 
 describe('<UserAvatar/>', () => {
     const props = {
@@ -8,7 +8,8 @@ describe('<UserAvatar/>', () => {
         size: 16,
         text_size: 'xs',
     };
-    it('should render the component with short nick name', () => {
+
+    it('should render the UserAvatar component with a short nickname', () => {
         render(<UserAvatar {...props} />);
 
         expect(screen.getByText('P2')).toBeInTheDocument();

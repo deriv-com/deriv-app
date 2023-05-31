@@ -9,7 +9,7 @@ import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { api_error_codes } from 'Constants/api-error-codes';
 import PageReturn from 'Components/page-return';
 import RecommendedBy from 'Components/recommended-by';
-import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
+import UserAvatar from 'Components/user/user-avatar';
 import AdvertiserPageStats from './advertiser-page-stats.jsx';
 import AdvertiserPageAdverts from './advertiser-page-adverts.jsx';
 import StarRating from 'Components/star-rating';

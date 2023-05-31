@@ -77,7 +77,7 @@
     "876086855": "أكمل نموذج التقييم المالي",
     "881351325": "هل توصي بهذا البائع؟",
     "887667868": "طلب",
-    "892431976": "If you cancel your order {{cancellation_limit}} times in {{cancellation_period}} hours, you will be blocked from using Deriv P2P for {{block_duration}} hours. <br /> ({{number_of_cancels_remaining}} cancellations remaining)",
+    "892431976": "إذا قمت بإلغاء طلبك {{cancellation_limit}} مرة خلال {{cancellation_period}} ساعة، فسيتم حظرك من استخدام Deriv P2P لمدة {{block_duration}} ساعة.<br /> (بقي {{number_of_cancels_remaining}} من الإلغاءات)",
     "949859957": "إرسال",
     "954233511": "تم البيع",
     "957529514": "لتقديم طلب، أضف إحدى طرق الدفع المفضلة للمعلن:",

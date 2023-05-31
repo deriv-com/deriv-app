@@ -58,136 +58,298 @@ describe('JurisdictionTitleIndicator', () => {
     });
 
     it('should render JurisdictionTitleIndicator with displayIcons and Pending icon variant', () => {
-        if (mock_props.account_status.authentication?.identity?.services?.idv?.status) {
-            mock_props.account_status.authentication.identity.services.idv.status = 'pending';
-        }
-        if (mock_props.account_status.authentication?.identity?.services?.onfido?.status) {
-            mock_props.account_status.authentication.identity.services.onfido.status = 'pending';
-        }
-        if (mock_props.account_status.authentication?.identity?.services?.manual?.status) {
-            mock_props.account_status.authentication.identity.services.manual.status = 'pending';
-        }
-        mock_props.title_indicators.type = 'displayIcons';
-        mock_props.verification_docs = ['document_number'];
-        render(<JurisdictionTitleIndicator {...mock_props} />);
+        const new_mock_props: TJurisdictionTitleIndicatorProps = {
+            ...mock_props,
+            title_indicators: {
+                type: 'displayIcons',
+                display_text: 'Test Display Text',
+            },
+            account_status: {
+                authentication: {
+                    ...mock_props.account_status.authentication,
+                    document: {
+                        status: 'none',
+                    },
+                    identity: {
+                        services: {
+                            idv: {
+                                status: 'pending',
+                            },
+                            onfido: {
+                                status: 'pending',
+                            },
+                            manual: {
+                                status: 'pending',
+                            },
+                        },
+                    },
+                },
+            },
+            verification_docs: ['document_number'],
+        };
+        render(<JurisdictionTitleIndicator {...new_mock_props} />);
         expect(screen.getByTestId('dt_jurisdiction_title_indicator_Pending_icon')).toBeInTheDocument();
     });
 
     it('should render JurisdictionTitleIndicator with displayIcons and Failed icon variant', () => {
-        if (mock_props.account_status.authentication?.identity?.services?.idv?.status) {
-            mock_props.account_status.authentication.identity.services.idv.status = 'rejected';
-        }
-        if (mock_props.account_status.authentication?.identity?.services?.onfido?.status) {
-            mock_props.account_status.authentication.identity.services.onfido.status = 'rejected';
-        }
-        if (mock_props.account_status.authentication?.identity?.services?.manual?.status) {
-            mock_props.account_status.authentication.identity.services.manual.status = 'rejected';
-        }
-        mock_props.title_indicators.type = 'displayIcons';
-        mock_props.verification_docs = ['document_number'];
-        render(<JurisdictionTitleIndicator {...mock_props} />);
+        const new_mock_props: TJurisdictionTitleIndicatorProps = {
+            ...mock_props,
+            title_indicators: {
+                type: 'displayIcons',
+                display_text: 'Test Display Text',
+            },
+            account_status: {
+                authentication: {
+                    ...mock_props.account_status.authentication,
+                    document: {
+                        status: 'none',
+                    },
+                    identity: {
+                        services: {
+                            idv: {
+                                status: 'rejected',
+                            },
+                            onfido: {
+                                status: 'rejected',
+                            },
+                            manual: {
+                                status: 'rejected',
+                            },
+                        },
+                    },
+                },
+            },
+            verification_docs: ['document_number'],
+        };
+        render(<JurisdictionTitleIndicator {...new_mock_props} />);
         expect(screen.getByTestId('dt_jurisdiction_title_indicator_Failed_icon')).toBeInTheDocument();
     });
 
     it('should render JurisdictionTitleIndicator with displayIcons and Verified icon variant', () => {
-        if (mock_props.account_status.authentication?.identity?.services?.idv?.status) {
-            mock_props.account_status.authentication.identity.services.idv.status = 'verified';
-        }
-        if (mock_props.account_status.authentication?.identity?.services?.onfido?.status) {
-            mock_props.account_status.authentication.identity.services.onfido.status = 'verified';
-        }
-        if (mock_props.account_status.authentication?.identity?.services?.manual?.status) {
-            mock_props.account_status.authentication.identity.services.manual.status = 'verified';
-        }
-        mock_props.title_indicators.type = 'displayIcons';
-        mock_props.verification_docs = ['document_number'];
-        render(<JurisdictionTitleIndicator {...mock_props} />);
+        const new_mock_props: TJurisdictionTitleIndicatorProps = {
+            ...mock_props,
+            title_indicators: {
+                type: 'displayIcons',
+                display_text: 'Test Display Text',
+            },
+            account_status: {
+                authentication: {
+                    ...mock_props.account_status.authentication,
+                    document: {
+                        status: 'none',
+                    },
+                    identity: {
+                        services: {
+                            idv: {
+                                status: 'verified',
+                            },
+                            onfido: {
+                                status: 'verified',
+                            },
+                            manual: {
+                                status: 'verified',
+                            },
+                        },
+                    },
+                },
+            },
+            verification_docs: ['document_number'],
+        };
+        render(<JurisdictionTitleIndicator {...new_mock_props} />);
         expect(screen.getByTestId('dt_jurisdiction_title_indicator_Verified_icon')).toBeInTheDocument();
     });
 
     it('should render JurisdictionTitleIndicator with displayIcons and Pending icon variant with type_of_card to be Vanuatu', () => {
-        if (mock_props.account_status.authentication?.identity?.services?.onfido?.status) {
-            mock_props.account_status.authentication.identity.services.onfido.status = 'pending';
-        }
-        if (mock_props.account_status.authentication?.identity?.services?.manual?.status) {
-            mock_props.account_status.authentication.identity.services.manual.status = 'pending';
-        }
-        mock_props.title_indicators.type = 'displayIcons';
-        mock_props.verification_docs = ['selfie'];
-        mock_props.type_of_card = Jurisdiction.VANUATU;
-        render(<JurisdictionTitleIndicator {...mock_props} />);
+        const new_mock_props: TJurisdictionTitleIndicatorProps = {
+            ...mock_props,
+            title_indicators: {
+                type: 'displayIcons',
+                display_text: 'Test Display Text',
+            },
+            type_of_card: Jurisdiction.VANUATU,
+            account_status: {
+                authentication: {
+                    ...mock_props.account_status.authentication,
+                    document: {
+                        status: 'none',
+                    },
+                    identity: {
+                        services: {
+                            onfido: {
+                                status: 'pending',
+                            },
+                            manual: {
+                                status: 'pending',
+                            },
+                        },
+                    },
+                },
+            },
+            verification_docs: ['selfie'],
+        };
+        render(<JurisdictionTitleIndicator {...new_mock_props} />);
         expect(screen.getByTestId('dt_jurisdiction_title_indicator_Pending_icon')).toBeInTheDocument();
     });
 
     it('should render JurisdictionTitleIndicator with displayIcons and Pending icon variant with type_of_card to be MaltaInvest', () => {
-        if (mock_props.account_status.authentication?.identity?.services?.onfido?.status) {
-            mock_props.account_status.authentication.identity.services.onfido.status = 'pending';
-        }
-        if (mock_props.account_status.authentication?.identity?.services?.manual?.status) {
-            mock_props.account_status.authentication.identity.services.manual.status = 'pending';
-        }
-        mock_props.title_indicators.type = 'displayIcons';
-        mock_props.verification_docs = ['identity_document'];
-        mock_props.type_of_card = Jurisdiction.MALTA_INVEST;
-        render(<JurisdictionTitleIndicator {...mock_props} />);
+        const new_mock_props: TJurisdictionTitleIndicatorProps = {
+            ...mock_props,
+            title_indicators: {
+                type: 'displayIcons',
+                display_text: 'Test Display Text',
+            },
+            type_of_card: Jurisdiction.MALTA_INVEST,
+            account_status: {
+                authentication: {
+                    ...mock_props.account_status.authentication,
+                    document: {
+                        status: 'none',
+                    },
+                    identity: {
+                        services: {
+                            onfido: {
+                                status: 'pending',
+                            },
+                            manual: {
+                                status: 'pending',
+                            },
+                        },
+                    },
+                },
+            },
+            verification_docs: ['identity_document'],
+        };
+        render(<JurisdictionTitleIndicator {...new_mock_props} />);
         expect(screen.getByTestId('dt_jurisdiction_title_indicator_Pending_icon')).toBeInTheDocument();
     });
 
     it('should render JurisdictionTitleIndicator with displayIcons and Failed icon variant with type_of_card to be Vanuatu', () => {
-        if (mock_props.account_status.authentication?.identity?.services?.onfido?.status) {
-            mock_props.account_status.authentication.identity.services.onfido.status = 'rejected';
-        }
-        if (mock_props.account_status.authentication?.identity?.services?.manual?.status) {
-            mock_props.account_status.authentication.identity.services.manual.status = 'rejected';
-        }
-        mock_props.title_indicators.type = 'displayIcons';
-        mock_props.verification_docs = ['selfie'];
-        mock_props.type_of_card = Jurisdiction.VANUATU;
-        render(<JurisdictionTitleIndicator {...mock_props} />);
+        const new_mock_props: TJurisdictionTitleIndicatorProps = {
+            ...mock_props,
+            title_indicators: {
+                type: 'displayIcons',
+                display_text: 'Test Display Text',
+            },
+            type_of_card: Jurisdiction.VANUATU,
+            account_status: {
+                authentication: {
+                    ...mock_props.account_status.authentication,
+                    document: {
+                        status: 'none',
+                    },
+                    identity: {
+                        services: {
+                            onfido: {
+                                status: 'rejected',
+                            },
+                            manual: {
+                                status: 'rejected',
+                            },
+                        },
+                    },
+                },
+            },
+            verification_docs: ['selfie'],
+        };
+        render(<JurisdictionTitleIndicator {...new_mock_props} />);
         expect(screen.getByTestId('dt_jurisdiction_title_indicator_Failed_icon')).toBeInTheDocument();
     });
 
     it('should render JurisdictionTitleIndicator with displayIcons and Verified icon variant with type_of_card to be Vanuatu', () => {
-        if (mock_props.account_status.authentication?.identity?.services?.onfido?.status) {
-            mock_props.account_status.authentication.identity.services.onfido.status = 'verified';
-        }
-        if (mock_props.account_status.authentication?.identity?.services?.manual?.status) {
-            mock_props.account_status.authentication.identity.services.manual.status = 'verified';
-        }
-        mock_props.title_indicators.type = 'displayIcons';
-        mock_props.verification_docs = ['selfie'];
-        mock_props.type_of_card = Jurisdiction.VANUATU;
-        render(<JurisdictionTitleIndicator {...mock_props} />);
+        const new_mock_props: TJurisdictionTitleIndicatorProps = {
+            ...mock_props,
+            title_indicators: {
+                type: 'displayIcons',
+                display_text: 'Test Display Text',
+            },
+            type_of_card: Jurisdiction.VANUATU,
+            account_status: {
+                authentication: {
+                    ...mock_props.account_status.authentication,
+                    document: {
+                        status: 'none',
+                    },
+                    identity: {
+                        services: {
+                            onfido: {
+                                status: 'verified',
+                            },
+                            manual: {
+                                status: 'verified',
+                            },
+                        },
+                    },
+                },
+            },
+            verification_docs: ['selfie'],
+        };
+        render(<JurisdictionTitleIndicator {...new_mock_props} />);
         expect(screen.getByTestId('dt_jurisdiction_title_indicator_Verified_icon')).toBeInTheDocument();
     });
 
     it('should render JurisdictionTitleIndicator with displayIcons and Pending icon variant when verification_document is name_and_address and type_of_card to be svg', () => {
-        if (mock_props.account_status.authentication?.document?.status)
-            mock_props.account_status.authentication.document.status = 'pending';
-        mock_props.title_indicators.type = 'displayIcons';
-        mock_props.verification_docs = ['name_and_address'];
-        mock_props.type_of_card = Jurisdiction.SVG;
-        render(<JurisdictionTitleIndicator {...mock_props} />);
+        const new_mock_props: TJurisdictionTitleIndicatorProps = {
+            ...mock_props,
+            title_indicators: {
+                type: 'displayIcons',
+                display_text: 'Test Display Text',
+            },
+            type_of_card: Jurisdiction.SVG,
+            account_status: {
+                authentication: {
+                    ...mock_props.account_status.authentication,
+                    document: {
+                        status: 'pending',
+                    },
+                },
+            },
+            verification_docs: ['name_and_address'],
+        };
+        render(<JurisdictionTitleIndicator {...new_mock_props} />);
         expect(screen.getByTestId('dt_jurisdiction_title_indicator_Pending_icon')).toBeInTheDocument();
     });
 
     it('should render JurisdictionTitleIndicator with displayIcons and Failed icon variant when verification_document is name_and_address and type_of_card to be svg', () => {
-        if (mock_props.account_status.authentication?.document?.status)
-            mock_props.account_status.authentication.document.status = 'rejected';
-        mock_props.title_indicators.type = 'displayIcons';
-        mock_props.verification_docs = ['name_and_address'];
-        mock_props.type_of_card = Jurisdiction.SVG;
-        render(<JurisdictionTitleIndicator {...mock_props} />);
+        const new_mock_props: TJurisdictionTitleIndicatorProps = {
+            ...mock_props,
+            title_indicators: {
+                type: 'displayIcons',
+                display_text: 'Test Display Text',
+            },
+            type_of_card: Jurisdiction.SVG,
+            account_status: {
+                authentication: {
+                    ...mock_props.account_status.authentication,
+                    document: {
+                        status: 'rejected',
+                    },
+                },
+            },
+            verification_docs: ['name_and_address'],
+        };
+        render(<JurisdictionTitleIndicator {...new_mock_props} />);
         expect(screen.getByTestId('dt_jurisdiction_title_indicator_Failed_icon')).toBeInTheDocument();
     });
 
     it('should render JurisdictionTitleIndicator with displayIcons and Verified icon variant when verification_document is name_and_address and type_of_card to be svg', () => {
-        if (mock_props.account_status.authentication?.document?.status)
-            mock_props.account_status.authentication.document.status = 'verified';
-        mock_props.title_indicators.type = 'displayIcons';
-        mock_props.verification_docs = ['name_and_address'];
-        mock_props.type_of_card = Jurisdiction.SVG;
-        render(<JurisdictionTitleIndicator {...mock_props} />);
+        const new_mock_props: TJurisdictionTitleIndicatorProps = {
+            ...mock_props,
+            title_indicators: {
+                type: 'displayIcons',
+                display_text: 'Test Display Text',
+            },
+            type_of_card: Jurisdiction.SVG,
+            account_status: {
+                authentication: {
+                    ...mock_props.account_status.authentication,
+                    document: {
+                        status: 'verified',
+                    },
+                },
+            },
+            verification_docs: ['name_and_address'],
+        };
+        render(<JurisdictionTitleIndicator {...new_mock_props} />);
         expect(screen.getByTestId('dt_jurisdiction_title_indicator_Verified_icon')).toBeInTheDocument();
     });
 });

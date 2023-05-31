@@ -8,6 +8,7 @@
             .modal__content {
                 padding: 16px 24px;
             }
+
             .modal__footer {
                 text-align: right;
                 border-top: 2px solid var(--general-section-2);
@@ -17,11 +18,13 @@
                     display: inline-block;
                 }
             }
+
             .modal__content-row {
                 display: flex;
                 align-items: center;
                 justify-content: center;
             }
+
             & form {
                 height: 445px;
                 display: flex;
@@ -55,18 +58,22 @@ div.radio-group {
                             font-weight: 700;
                         }
                     }
+
                     &-disabled {
                         .save-type__text {
                             color: var(--general-disabled) !important;
                         }
+
                         .dc-radio-group__circle {
                             border-color: var(--general-disabled) !important;
                         }
                     }
                 }
+
                 &__circle {
                     display: none;
                 }
+
                 &__label {
                     align-self: center;
                 }
@@ -79,22 +86,27 @@ div.radio-group {
     &__container {
         text-align: center;
     }
+
     &__input {
         // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
         margin: 2rem 0 0 !important;
     }
+
     &__radio {
         text-align: center;
     }
+
     &__radio-text {
         letter-spacing: normal;
     }
+
     &__drive-status {
         cursor: pointer;
         position: absolute;
         margin-top: 5px;
         width: 71px;
     }
+
     &__icon {
         &--disabled {
             opacity: 0.32;
@@ -106,6 +118,7 @@ div.radio-group {
     position: fixed;
     top: 40px;
     z-index: 10;
+
     @include mobile {
         form {
             display: flex;
@@ -113,21 +126,26 @@ div.radio-group {
             justify-content: space-between;
             height: 100%;
         }
+
         & .dc-input {
             width: 100% !important;
             margin: 3rem 0 0 !important;
         }
+
         & .dc-radio-group__item {
             width: calc(50vw - 24px) !important;
             height: 35vw;
         }
+
         & .save-type__drive-status {
             position: relative;
         }
+
         & .modal__content {
             padding: 3rem 1.6rem;
             height: calc(100% - #{$MOBILE_WRAPPER_FOOTER_HEIGHT});
         }
+
         & .modal__footer {
             position: fixed;
             bottom: 0px;
@@ -147,6 +165,7 @@ div.radio-group {
                 left: unset;
                 bottom: unset;
             }
+
             &--button {
                 float: right;
                 margin-left: 0.8rem;

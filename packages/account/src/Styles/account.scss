@@ -2325,6 +2325,19 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 
+    &__redirection {
+        .dc-btn {
+            margin-top: 3.2rem;
+            height: 4rem;
+
+            @include mobile {
+                margin: 1.6rem 0;
+                padding: 1.6rem;
+                width: 100%;
+            }
+        }
+    }
+
     &__country-text {
         margin-bottom: 1.6rem;
     }
@@ -2333,7 +2346,6 @@ $MIN_HEIGHT_FLOATING: calc(
         @include mobile {
             width: 94%;
             text-align: center;
-            margin-bottom: 9rem;
         }
     }
 

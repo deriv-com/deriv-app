@@ -15,7 +15,6 @@
 
     .toolbar__section {
         justify-content: end;
-
         @include mobile {
             column-gap: 1rem;
         }
@@ -196,7 +195,6 @@
 
         &--tour-active {
             width: 78%;
-
             @include mobile {
                 width: 100%;
             }

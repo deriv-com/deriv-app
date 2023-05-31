@@ -256,6 +256,14 @@ type TCommonStore = {
     is_language_changing: boolean;
 };
 
+type TToastConfig = {
+    key?: number;
+    content: string;
+    timeout?: number;
+    is_bottom?: boolean;
+    type?: string;
+};
+
 type TUiStore = {
     addToast: (toast_config: TAddToastProps) => void;
     app_contents_scroll_ref: React.MutableRefObject<null | HTMLDivElement>;

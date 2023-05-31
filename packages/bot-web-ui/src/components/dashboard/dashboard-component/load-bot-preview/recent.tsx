@@ -2,31 +2,22 @@ import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { MobileWrapper, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import React from 'react';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
-import { TWorkspace } from 'Stores/load-modal-store';
 import DeleteDialog from './delete-dialog';
 import './index.scss';
 import RecentWorkspace from './recent-workspace';
 import { isMobile } from '@deriv/shared';
 import SaveModal from '../../../save-modal';
 import classNames from 'classnames';
-
-type TRecentComponent = {
-    dashboard_strategies: Array<TWorkspace>;
-    setDashboardStrategies: (strategies: Array<TWorkspace>) => void;
-    setStrategySaveType: (param: string) => void;
-    strategy_save_type: string;
-};
+import { observer } from 'mobx-react';
+import { useDBotStore } from 'Stores/useDBotStore';
 
 const HEADERS = ['Bot name', 'Last modified', 'Status'];
 
-const RecentComponent = ({
-    dashboard_strategies,
-    setDashboardStrategies,
-    setStrategySaveType,
-    strategy_save_type,
-}: TRecentComponent) => {
+const RecentComponent = observer(() => {
+    const { load_modal, dashboard } = useDBotStore();
+    const { setDashboardStrategies, dashboard_strategies } = load_modal;
+    const { setStrategySaveType, strategy_save_type } = dashboard;
+
     React.useEffect(() => {
         setStrategySaveType('');
         const getStrategies = async () => {
@@ -75,13 +66,6 @@ const RecentComponent = ({
             </div>
         </div>
     );
-};
+});
 
-const Recent = connect(({ load_modal, dashboard }: RootStore) => ({
-    dashboard_strategies: load_modal.dashboard_strategies,
-    setDashboardStrategies: load_modal.setDashboardStrategies,
-    setStrategySaveType: dashboard.setStrategySaveType,
-    strategy_save_type: dashboard.strategy_save_type,
-}))(RecentComponent);
-
-export default Recent;
+export default RecentComponent;

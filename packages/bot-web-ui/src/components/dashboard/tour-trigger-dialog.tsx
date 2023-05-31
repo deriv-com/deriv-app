@@ -1,27 +1,15 @@
 import React from 'react';
 import { Dialog, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/index';
+import { observer } from '@deriv/stores';
 import classNames from 'classnames';
 import { isMobile } from '@deriv/shared';
 import { tour_type, setTourSettings, tour_status_ended } from './joyride-config';
+import { useDBotStore } from 'Stores/useDBotStore';
 
-type TTourTriggrerDialog = {
-    active_tab: number;
-    has_tour_ended: boolean;
-    is_tour_dialog_visible: boolean;
-    setTourDialogVisibility: (param: boolean) => void;
-    toggleOnConfirm: (active_tab: number, value: boolean) => void;
-};
-
-const TourTriggrerDialog = ({
-    active_tab,
-    has_tour_ended,
-    is_tour_dialog_visible,
-    setTourDialogVisibility,
-    toggleOnConfirm,
-}: TTourTriggrerDialog) => {
+const TourTriggrerDialog = observer(() => {
+    const { dashboard } = useDBotStore();
+    const { active_tab, has_tour_ended, is_tour_dialog_visible, setTourDialogVisibility, toggleOnConfirm } = dashboard;
     const is_mobile = isMobile();
 
     const toggleTour = (value: boolean, type: string) => {
@@ -177,12 +165,6 @@ const TourTriggrerDialog = ({
             </Dialog>
         </div>
     );
-};
+});
 
-export default connect(({ dashboard }: RootStore) => ({
-    active_tab: dashboard.active_tab,
-    has_tour_ended: dashboard.has_tour_ended,
-    is_tour_dialog_visible: dashboard.is_tour_dialog_visible,
-    setTourDialogVisibility: dashboard.setTourDialogVisibility,
-    toggleOnConfirm: dashboard.toggleOnConfirm,
-}))(TourTriggrerDialog);
+export default TourTriggrerDialog;

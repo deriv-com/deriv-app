@@ -1,9 +1,9 @@
 import { action, observable, makeObservable } from 'mobx';
 import { getDecimalPlaces } from '@deriv/shared';
-import { TRootStore, TWebSocket } from '../types';
+import { TStores } from '@deriv/stores/types';
 
 export default class CryptoFiatConverterStore {
-    constructor(public WS: TWebSocket, public root_store: TRootStore) {
+    constructor(public root_store: TStores) {
         makeObservable(this, {
             converter_from_amount: observable,
             converter_to_amount: observable,
@@ -16,7 +16,6 @@ export default class CryptoFiatConverterStore {
             setConverterToError: action.bound,
             setIsTimerVisible: action.bound,
             resetTimer: action.bound,
-            // getExchangeRate: action.bound,
             validateFromAmount: action.bound,
             validateToAmount: action.bound,
             onChangeConverterFromAmount: action.bound,
@@ -54,15 +53,6 @@ export default class CryptoFiatConverterStore {
     resetTimer(): void {
         this.setIsTimerVisible(false);
     }
-
-    // async getExchangeRate(from_currency?: string, to_currency?: string) {
-    //     // use UseExchangeRates hook instead
-    //     const { exchange_rates } = await this.WS.send({
-    //         exchange_rates: 1,
-    //         base_currency: from_currency,
-    //     });
-    //     return to_currency ? exchange_rates?.rates?.[to_currency] : '';
-    // }
 
     validateFromAmount() {
         const { account_transfer, general_store, withdraw } = this.root_store.modules.cashier;

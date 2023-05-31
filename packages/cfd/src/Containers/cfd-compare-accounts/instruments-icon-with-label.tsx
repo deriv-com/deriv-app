@@ -1,7 +1,7 @@
 import React from 'react';
 import TradingInstrumentsIcon from '../../Assets/svgs/trading-instruments';
 
-interface IconProps {
+interface TIconProps {
     icon:
         | 'DerivedFX'
         | 'Synthetics'
@@ -17,7 +17,7 @@ interface IconProps {
     className?: string;
 }
 
-const InstumentsIconWithLabel: React.FC<IconProps> = ({ icon, text, highlighted, className }) => {
+const InstumentsIconWithLabel: React.FC<TIconProps> = ({ icon, text, highlighted, className }) => {
     let size = 24;
     const dummyFunc = () => {
         size = 24;

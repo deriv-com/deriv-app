@@ -1,37 +1,24 @@
 import React from 'react';
 import InstumentsIconWithLabel from './instruments-icon-with-label';
+import { TTradingPlatformAvailableAccount, TIconData } from '../../Components/props.types';
+import { getHighlightedIconLabel } from '../../Helpers/config';
 
-type TIconData = {
-    icon:
-        | 'DerivedFX'
-        | 'Synthetics'
-        | 'BasketIndices'
-        | 'Stocks'
-        | 'StockIndices'
-        | 'Commodities'
-        | 'Forex'
-        | 'Cryptocurrencies'
-        | 'ETF';
-    text: string;
+type TCFDInstrumentsLabelHighlightedProps = {
+    trading_platforms: TTradingPlatformAvailableAccount;
 };
 
-const CFDInstrumentsLabelHighlighted: React.FC = () => {
-    const iconData: TIconData[] = [
-        { icon: 'Synthetics', text: 'Synthetics' },
-        { icon: 'BasketIndices', text: 'Basket Indices' },
-        { icon: 'DerivedFX', text: 'Derived FX' },
-        { icon: 'Stocks', text: 'Stock' },
-        { icon: 'StockIndices', text: 'Stock Indices' },
-        { icon: 'Commodities', text: 'Commodities' },
-        { icon: 'Forex', text: 'Forex' },
-        { icon: 'Cryptocurrencies', text: 'Cryptocurrencies' },
-        { icon: 'ETF', text: 'ETF' },
-    ];
+const CFDInstrumentsLabelHighlighted: React.FC<TCFDInstrumentsLabelHighlightedProps> = ({ trading_platforms }) => {
+    const iconData: TIconData[] = [...getHighlightedIconLabel(trading_platforms)];
 
     return (
         <div className={'compare-cfd-account-outline'}>
             {iconData.map(item => (
-                <InstumentsIconWithLabel key={item.text} icon={item.icon} text={item.text} highlighted={true} />
+                <InstumentsIconWithLabel
+                    key={item.text}
+                    icon={item.icon}
+                    text={item.text}
+                    highlighted={item.highlighted}
+                />
             ))}
         </div>
     );

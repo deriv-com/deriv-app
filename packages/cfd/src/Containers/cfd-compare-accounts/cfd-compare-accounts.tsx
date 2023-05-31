@@ -34,22 +34,16 @@ const CompareCFDs = observer(() => {
         </div>
     );
 
-    const CardList: React.FC = () => {
-        return (
-            <div className='card-list'>
-                {trading_platform_available_accounts.map((item, idx) => (
-                    <CFDInstrumentsLabelHighlighted key={idx} />
-                ))}
-            </div>
-        );
-    };
-
     return (
         <React.Fragment>
             <DesktopWrapper>
                 <PageOverlay header={DesktopHeader} is_from_app={routes.traders_hub} />
                 <div className='compare-cfd-account-container'>
-                    <CardList />
+                    <div className='card-list'>
+                        {trading_platform_available_accounts.map((item, idx) => (
+                            <CFDInstrumentsLabelHighlighted key={idx} trading_platforms={item} />
+                        ))}
+                    </div>
                 </div>
             </DesktopWrapper>
             <MobileWrapper>

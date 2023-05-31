@@ -32,7 +32,34 @@ const DerivPassword = ({
     const platform_name_smarttrader = getPlatformSettings('smarttrader').name;
     const platform_name_trader = getPlatformSettings('trader').name;
 
-    const show_platform_icons = financial_restricted_countries || is_eu_user;
+    const PlatformDescription = () => {
+        let text =
+            'Use the <0>Deriv password</0> to log in to {{brand_website_name}}, {{platform_name_go}}, {{platform_name_trader}}, {{platform_name_smarttrader}}, and {{platform_name_dbot}}.';
+        let values = {
+            brand_website_name,
+            platform_name_trader,
+            platform_name_dbot,
+            platform_name_smarttrader,
+            platform_name_go,
+        };
+        if (is_eu_user) {
+            text = 'Use the <0>Deriv password</0> to log in to {{brand_website_name}} and {{platform_name_trader}}.';
+            values = {
+                brand_website_name,
+                platform_name_trader,
+            };
+        } else if (financial_restricted_countries) {
+            text =
+                'Use the <0>Deriv password</0> to log in to {{brand_website_name}}, {{platform_name_trader}} and {{platform_name_go}}.';
+            values = {
+                brand_website_name,
+                platform_name_trader,
+                platform_name_go,
+            };
+        }
+
+        return <Localize i18n_default_text={text} components={[<strong key={0} />]} values={values} />;
+    };
 
     return (
         <React.Fragment>
@@ -40,28 +67,7 @@ const DerivPassword = ({
             <div className='account__passwords-wrapper'>
                 <React.Fragment>
                     <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
-                        {show_platform_icons ? (
-                            <Localize
-                                i18n_default_text='Use the <0>Deriv password</0> to log in to {{brand_website_name}} and {{platform_name_trader}}.'
-                                components={[<strong key={0} />]}
-                                values={{
-                                    brand_website_name,
-                                    platform_name_trader,
-                                }}
-                            />
-                        ) : (
-                            <Localize
-                                i18n_default_text='Use the <0>Deriv password</0> to log in to {{brand_website_name}}, {{platform_name_go}}, {{platform_name_trader}}, {{platform_name_smarttrader}}, and {{platform_name_dbot}}.'
-                                components={[<strong key={0} />]}
-                                values={{
-                                    brand_website_name,
-                                    platform_name_trader,
-                                    platform_name_dbot,
-                                    platform_name_smarttrader,
-                                    platform_name_go,
-                                }}
-                            />
-                        )}
+                        <PlatformDescription />
                     </Text>
                     <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
                         <Localize
@@ -83,7 +89,7 @@ const DerivPassword = ({
                                 description='trader'
                             />
                         </Popover>
-                        {!show_platform_icons && (
+                        {!is_eu_user && !financial_restricted_countries && (
                             <React.Fragment>
                                 <Popover alignment='bottom' message={platform_name_dbot}>
                                     <Icon
@@ -99,14 +105,16 @@ const DerivPassword = ({
                                         description='smarttrader'
                                     />
                                 </Popover>
-                                <Popover alignment='bottom' message={platform_name_go}>
-                                    <Icon
-                                        icon={`${getPlatformSettings('go').icon}-dashboard`}
-                                        size={32}
-                                        description='derivgo'
-                                    />
-                                </Popover>
                             </React.Fragment>
+                        )}
+                        {(!is_eu_user || financial_restricted_countries) && (
+                            <Popover alignment='bottom' message={platform_name_go}>
+                                <Icon
+                                    icon={`${getPlatformSettings('go').icon}-dashboard`}
+                                    size={32}
+                                    description='derivgo'
+                                />
+                            </Popover>
                         )}
                     </div>
                 </React.Fragment>

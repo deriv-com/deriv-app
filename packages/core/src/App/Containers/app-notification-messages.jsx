@@ -138,7 +138,8 @@ const AppNotificationMessages = ({
                   'has_changed_two_fa',
                   'svg_needs_poi',
                   'svg_poi_expired',
-                  'success_wallets_upgrade',
+                  'wallets_migrated',
+                  'wallets_failed',
               ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
 
@@ -157,6 +158,9 @@ const AppNotificationMessages = ({
     );
 
     const notifications_sublist = filtered_excluded_notifications.slice(0, notifications_limit);
+    // const notifications_sublist = window.location.pathname.includes([routes.trade, routes.bot])
+    //     ? filtered_excluded_notifications.filter(message => message.key.includes(['wallet_migrated', 'wallet_failed']))
+    //     : filtered_excluded_notifications.slice(0, notifications_limit);
 
     if (!should_show_popups) return null;
 

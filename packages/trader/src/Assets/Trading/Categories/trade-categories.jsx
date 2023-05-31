@@ -453,7 +453,7 @@ const TradeCategories = ({ category, onClick }) => {
                         </Text>
                         <Text as='p'>
                             <Localize
-                                i18n_default_text='If you buy a <0>"Put"</0> option, you receive a payout at expiry if the final price is below the strike price. Otherwise, your <0>"Put"<0/> option will expire worthless.'
+                                i18n_default_text='If you buy a <0>"Put"</0> option, you receive a payout at expiry if the final price is below the strike price. Otherwise, your <0>"Put"</0> option will expire worthless.'
                                 components={[<strong key={0} />]}
                             />
                         </Text>

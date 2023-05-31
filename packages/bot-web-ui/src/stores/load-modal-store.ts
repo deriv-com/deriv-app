@@ -55,6 +55,7 @@ interface ILoadModalStore {
     setActiveTabIndex: (index: number) => void;
     setLoadedLocalFile: (loaded_local_file: boolean | null) => void;
     setRecentStrategies: (recent_strategies: string[]) => void;
+    setDashboardStrategies: (strategies: Array<TWorkspace>) => void;
     setSelectedStrategyId: (selected_strategy_id: string[] | undefined) => void;
     toggleExplanationExpand: () => void;
     toggleLoadModal: () => void;

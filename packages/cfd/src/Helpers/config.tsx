@@ -28,7 +28,7 @@ export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
             <Text align='center' size='xxs'>
                 <Localize
                     i18n_default_text='Scan the QR code to download Deriv {{ platform }}.'
-                    values={{ platform: platformsText(acc_type) }}
+                    values={{ platform: platformsText(acc_type) === 'EZ' ? 'GO' : platformsText(acc_type) }}
                 />
             </Text>
         </React.Fragment>

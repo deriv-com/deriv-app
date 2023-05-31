@@ -91,7 +91,7 @@ const TradeModal = ({
                         size={isMobile() ? 'xxxs' : 'xxs'}
                         weight='bold'
                     >
-                        {localize('Download Deriv Go on your phone to trade with the Deriv EZ account')}
+                        {localize('Download Deriv GO on your phone to trade with the Deriv EZ account')}
                     </Text>
                 );
             case 'ctrader':

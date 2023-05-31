@@ -18,24 +18,24 @@ jest.mock('@deriv/shared', () => ({
 }));
 
 describe('<OnlineStatusLabel/>', () => {
-    it('renders component with default state', () => {
+    it('should render the component with default state', () => {
         render(<OnlineStatusLabel {...props} />);
 
         expect(screen.getByText('Seen more than 6 months ago')).toBeInTheDocument();
     });
-    it('renders component with default state in responsive view', () => {
+    it('should render component with default state in responsive view', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         render(<OnlineStatusLabel {...props} />);
 
         expect(screen.getByText('Seen more than 6 months ago')).toBeInTheDocument();
     });
-    it('renders component with when no last online is given', () => {
+    it('should render component when last seen is not given', () => {
         const newprops = { ...props, is_online: 1 };
         render(<OnlineStatusLabel {...newprops} />);
 
         expect(screen.getByText('Online')).toBeInTheDocument();
     });
-    it('renders component with when no last online is in hours', () => {
+    it('should render component when last seen is in hours', () => {
         mock_value = moment('2023-05-30T18:48:38+04:00');
         (toMoment as jest.Mock).mockReturnValue(mock_value);
         const newprops = { ...props, last_online_time: 1685446791 };
@@ -43,7 +43,7 @@ describe('<OnlineStatusLabel/>', () => {
 
         expect(screen.getByText('Seen 3 hours ago')).toBeInTheDocument();
     });
-    it('renders component with when no last online is 1 hour', () => {
+    it('should render component when user was last online 1 hour ago', () => {
         mock_value = moment('2023-05-30T16:49:38+04:00');
         (toMoment as jest.Mock).mockReturnValue(mock_value);
         const newprops = { ...props, last_online_time: 1685446791 };
@@ -51,7 +51,7 @@ describe('<OnlineStatusLabel/>', () => {
 
         expect(screen.getByText('Seen 1 hour ago')).toBeInTheDocument();
     });
-    it('renders component with when no last online is 1 day', () => {
+    it('should render component when user was last online 1 day ago', () => {
         mock_value = moment('2023-05-31T16:49:38+04:00');
         (toMoment as jest.Mock).mockReturnValue(mock_value);
         const newprops = { ...props, last_online_time: 1685446791 };
@@ -59,7 +59,7 @@ describe('<OnlineStatusLabel/>', () => {
 
         expect(screen.getByText('Seen 1 day ago')).toBeInTheDocument();
     });
-    it('renders component with when no last online is in days', () => {
+    it('should render component when last seen is in days', () => {
         mock_value = moment('2023-06-02T16:49:38+04:00');
         (toMoment as jest.Mock).mockReturnValue(mock_value);
         const newprops = { ...props, last_online_time: 1685446791 };
@@ -67,7 +67,7 @@ describe('<OnlineStatusLabel/>', () => {
 
         expect(screen.getByText('Seen 3 days ago')).toBeInTheDocument();
     });
-    it('renders component with when no last online is in years', () => {
+    it('should render component when last seen is in years', () => {
         mock_value = moment('2025-06-02T16:49:38+04:00');
         (toMoment as jest.Mock).mockReturnValue(mock_value);
         const newprops = { ...props, last_online_time: 1685446791 };
@@ -75,7 +75,7 @@ describe('<OnlineStatusLabel/>', () => {
 
         expect(screen.getByText('Seen more than 6 months ago')).toBeInTheDocument();
     });
-    it('renders component with when no last online is in months', () => {
+    it('should render component when last seen is in months', () => {
         mock_value = moment('2023-11-02T16:49:38+04:00');
         (toMoment as jest.Mock).mockReturnValue(mock_value);
         const newprops = { ...props, last_online_time: 1685446791 };
@@ -83,7 +83,7 @@ describe('<OnlineStatusLabel/>', () => {
 
         expect(screen.getByText('Seen 5 months ago')).toBeInTheDocument();
     });
-    it('renders component with when no last online is more than 6 months', () => {
+    it('should render component with user was last online more than 6 months ago', () => {
         mock_value = moment('2024-01-02T16:49:38+04:00');
         (toMoment as jest.Mock).mockReturnValue(mock_value);
         const newprops = { ...props, last_online_time: 1685446791 };
@@ -91,7 +91,7 @@ describe('<OnlineStatusLabel/>', () => {
 
         expect(screen.getByText('Seen more than 6 months ago')).toBeInTheDocument();
     });
-    it('renders component with when no last online is 1 month', () => {
+    it('should render component when user was last online 1 month ago', () => {
         mock_value = moment('2023-07-02T16:49:38+04:00');
         (toMoment as jest.Mock).mockReturnValue(mock_value);
         const newprops = { ...props, last_online_time: 1685446791 };
@@ -99,7 +99,7 @@ describe('<OnlineStatusLabel/>', () => {
 
         expect(screen.getByText('Seen 1 month ago')).toBeInTheDocument();
     });
-    it('renders component with when no last online is 1 minute', () => {
+    it('should render component when user was last online 1 minute ago', () => {
         mock_value = moment('2023-05-30T15:41:38+04:00');
         (toMoment as jest.Mock).mockReturnValue(mock_value);
         const newprops = { ...props, last_online_time: 1685446791 };
@@ -107,7 +107,7 @@ describe('<OnlineStatusLabel/>', () => {
 
         expect(screen.getByText('Seen 1 minute ago')).toBeInTheDocument();
     });
-    it('renders component with when no last online is in minutes', () => {
+    it('should render component when last seen is in minutes', () => {
         mock_value = moment('2023-05-30T15:42:38+04:00');
         (toMoment as jest.Mock).mockReturnValue(mock_value);
         const newprops = { ...props, last_online_time: 1685446791 };

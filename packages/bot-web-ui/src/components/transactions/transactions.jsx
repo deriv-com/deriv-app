@@ -8,8 +8,9 @@ import { CSSTransition } from 'react-transition-group';
 import Download from 'Components/download';
 import { contract_stages } from 'Constants/contract-stage';
 import { transaction_elements } from 'Constants/transactions';
-import { connect } from 'Stores/connect';
 import Transaction from './transaction.jsx';
+import { observer } from '@deriv/stores';
+import { useDBotStore } from 'Stores/useDBotStore';
 
 const TransactionItem = ({ row, is_new_row }) => {
     const { in_prop } = useNewRowTransition(is_new_row);
@@ -36,7 +37,11 @@ const TransactionItem = ({ row, is_new_row }) => {
     }
 };
 
-const Transactions = ({ contract_stage, elements, is_drawer_open, onMount, onUnmount }) => {
+const Transactions = observer(({ is_drawer_open }) => {
+    const { run_panel, transactions } = useDBotStore();
+    const { contract_stage } = run_panel;
+    const { elements, onMount, onUnmount } = transactions;
+
     React.useEffect(() => {
         onMount();
         return () => onUnmount();
@@ -151,19 +156,10 @@ const Transactions = ({ contract_stage, elements, is_drawer_open, onMount, onUnm
             </div>
         </div>
     );
-};
+});
 
 Transactions.propTypes = {
-    contract_stage: PropTypes.number,
-    elements: PropTypes.array,
     is_drawer_open: PropTypes.bool,
-    onMount: PropTypes.func,
-    onUnmount: PropTypes.func,
 };
 
-export default connect(({ transactions, run_panel }) => ({
-    contract_stage: run_panel.contract_stage,
-    elements: transactions.elements,
-    onMount: transactions.onMount,
-    onUnmount: transactions.onUnmount,
-}))(Transactions);
+export default Transactions;

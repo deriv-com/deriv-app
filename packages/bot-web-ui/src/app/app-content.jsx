@@ -1,14 +1,7 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { ServerTime, ApiHelpers, setColors } from '@deriv/bot-skeleton';
-import {
-    Audio,
-    BotFooterExtensions,
-    BotNotificationMessages,
-    Dashboard,
-    NetworkToastPopup,
-    RoutePromptDialog,
-} from 'Components';
+import { Audio, BotNotificationMessages, Dashboard, NetworkToastPopup, RoutePromptDialog } from 'Components';
 import BlocklyLoading from '../components/blockly-loading';
 import { MobxContentProvider } from 'Stores/connect';
 import { observer, useStore } from '@deriv/stores';
@@ -95,7 +88,6 @@ const AppContent = observer(() => {
             <BlocklyLoading />
             <div className='bot-dashboard bot'>
                 <Audio />
-                <BotFooterExtensions />
                 <BotNotificationMessages />
                 <Dashboard />
                 <NetworkToastPopup />

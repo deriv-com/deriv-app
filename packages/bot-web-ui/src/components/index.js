@@ -18,4 +18,3 @@ export { default as Summary } from './summary';
 export { default as TradeAnimation } from './trade-animation';
 export { default as Transactions } from './transactions';
 export { default as NetworkToastPopup } from './network-toast-popup';
-export { default as BotFooterExtensions } from './bot-footer-extensions';

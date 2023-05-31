@@ -5,22 +5,20 @@
     background-color: var(--general-hover);
     height: inherit;
 
+    @include mobile {
+        gap: unset;
+    }
+
     .onboarding-header {
-        margin-left: 2.5rem;
-        margin-right: 2.5rem;
+        padding: 1.5rem 2.5rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
 
         @include mobile {
-            margin-left: 1rem;
-            margin-right: 1rem;
+            padding-inline: 1.5rem 1rem;
+            align-items: center;
         }
-
-        &--deriv-logo {
-            margin-top: 1rem;
-        }
-
         &__cross-icon {
             cursor: pointer;
         }

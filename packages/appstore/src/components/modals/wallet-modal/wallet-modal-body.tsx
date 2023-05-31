@@ -47,7 +47,7 @@ const WalletModalBody = ({
                             is_bypassed={is_mobile}
                             is_scrollbar_hidden
                             height={content_heigth}
-                            width={max_content_width}
+                            style={{ maxWidth: max_content_width, width: '100%' }}
                         >
                             {option.content}
                         </ThemedScrollbars>

@@ -1,9 +1,9 @@
 .fiat-transaction-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 0.8rem;
     margin: 0 auto;
-    width: 100vw;
+    width: 100%;
     max-width: 800px;
 
     &__day {
@@ -11,7 +11,7 @@
         flex-direction: column;
 
         & > span {
-            padding: 8px 16px;
+            padding: 0.8rem 1.6rem;
         }
 
         & > div {
@@ -21,23 +21,20 @@
 
     &__item {
         display: flex;
-        flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        height: 72px;
         padding: 16px;
 
         & span {
             display: flex;
             flex-direction: column;
             align-items: end;
-            gap: 4px;
+            gap: 0.4rem;
         }
 
         & div {
             display: flex;
-            flex-direction: row;
-            gap: 8px;
+            gap: 0.8rem;
 
             & span {
                 align-items: start;

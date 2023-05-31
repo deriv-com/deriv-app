@@ -1,7 +1,7 @@
 import { observable, action, computed, makeObservable } from 'mobx';
 
 export default class SelfExclusionStore {
-    constructor(root_store) {
+    constructor(root_store, core) {
         makeObservable(this, {
             api_max_losses: observable,
             run_limit: observable,
@@ -16,6 +16,7 @@ export default class SelfExclusionStore {
         });
 
         this.root_store = root_store;
+        this.core = core;
     }
 
     api_max_losses = 0;
@@ -29,7 +30,7 @@ export default class SelfExclusionStore {
     }
 
     get should_bot_run() {
-        const { client } = this.root_store.core;
+        const { client } = this.core;
         if (client.is_eu && !client.is_virtual && (this.api_max_losses === 0 || this.run_limit === -1)) {
             return false;
         }
@@ -56,7 +57,7 @@ export default class SelfExclusionStore {
     }
 
     async checkRestriction() {
-        const { client } = this.root_store.core;
+        const { client } = this.core;
         await client.getSelfExclusion();
         if (client.self_exclusion.max_losses) {
             this.setApiMaxLosses(client.self_exclusion.max_losses);

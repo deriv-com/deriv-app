@@ -20,6 +20,11 @@ export default class ChartStore {
             updateGranularity: action.bound,
             updateChartType: action.bound,
             setChartStatus: action.bound,
+            wsSubscribe: action.bound,
+            wsForget: action.bound,
+            wsForgetStream: action.bound,
+            wsSendRequest: action.bound,
+            getMarketsOrder: action.bound,
         });
 
         this.root_store = root_store;

@@ -19,13 +19,13 @@ describe('InfoBoxLongcode', () => {
         expect(screen.getByText('MockedIcon')).toBeInTheDocument();
         expect(screen.getByText('test longcode')).toBeInTheDocument();
     });
-    it('should render the specific text if contract_type is vanillas call component', () => {
+    it('should render the specific text if contract_type is vanillas call', () => {
         mocked_props.contract_info.contract_type = test_contract_type_call;
         render(<InfoBoxLongcode {...mocked_props} />);
 
         expect(screen.getByText(/for call/i)).toBeInTheDocument();
     });
-    it('should render the specific text if contract_type is vanillas put component', () => {
+    it('should render the specific text if contract_type is vanillas put', () => {
         mocked_props.contract_info.contract_type = test_contract_type_put;
         render(<InfoBoxLongcode {...mocked_props} />);
 

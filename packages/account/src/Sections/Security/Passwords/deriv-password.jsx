@@ -7,7 +7,13 @@ import FormSubHeader from 'Components/form-sub-header';
 import SentEmailModal from 'Components/sent-email-modal';
 import DerivComLogo from 'Assets/ic-brand-deriv-red.svg';
 
-const DerivPassword = ({ email, is_eu_user, is_social_signup, social_identity_provider }) => {
+const DerivPassword = ({
+    email,
+    is_eu_user,
+    is_social_signup,
+    social_identity_provider,
+    financial_restricted_countries,
+}) => {
     const [is_sent_email_modal_open, setIsSentEmailModalOpen] = React.useState(false);
 
     const onClickSendEmail = () => {
@@ -26,13 +32,15 @@ const DerivPassword = ({ email, is_eu_user, is_social_signup, social_identity_pr
     const platform_name_smarttrader = getPlatformSettings('smarttrader').name;
     const platform_name_trader = getPlatformSettings('trader').name;
 
+    const show_platform_icons = financial_restricted_countries || is_eu_user;
+
     return (
         <React.Fragment>
             <FormSubHeader title={localize('Deriv password')} />
             <div className='account__passwords-wrapper'>
                 <React.Fragment>
                     <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
-                        {is_eu_user ? (
+                        {show_platform_icons ? (
                             <Localize
                                 i18n_default_text='Use the <0>Deriv password</0> to log in to {{brand_website_name}} and {{platform_name_trader}}.'
                                 components={[<strong key={0} />]}
@@ -75,7 +83,7 @@ const DerivPassword = ({ email, is_eu_user, is_social_signup, social_identity_pr
                                 description='trader'
                             />
                         </Popover>
-                        {!is_eu_user && (
+                        {!show_platform_icons && (
                             <React.Fragment>
                                 <Popover alignment='bottom' message={platform_name_dbot}>
                                     <Icon
@@ -158,6 +166,7 @@ DerivPassword.propTypes = {
     email: PropTypes.string,
     is_dark_mode_on: PropTypes.bool,
     is_eu_user: PropTypes.bool,
+    financial_restricted_countries: PropTypes.bool,
     is_social_signup: PropTypes.bool,
     social_identity_provider: PropTypes.string,
 };

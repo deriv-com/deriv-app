@@ -5,7 +5,7 @@ const EmptyOnboarding = () => {
     return (
         <div className='empty-onboarding__wrapper' data-testid='dt_empty_onboarding'>
             <div className='empty-onboarding__header'>
-                <TradingPlatformIconProps icon='DerivTradingLogo' />
+                <TradigPlatformIconProps icon='DerivLogo' />
             </div>
         </div>
     );

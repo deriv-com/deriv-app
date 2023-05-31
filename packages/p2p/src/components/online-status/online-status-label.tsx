@@ -1,11 +1,20 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Text } from '@deriv/components';
 import { getDiffDuration, isMobile, toMoment, epochToMoment } from '@deriv/shared';
 import { localize } from 'Components/i18next';
-import { observer } from 'mobx-react-lite';
-import PropTypes from 'prop-types';
 
-const OnlineStatusLabel = ({ is_online, last_online_time, size = isMobile() ? 'xxxs' : 'xs' }) => {
+type TOnlineStatusLabelProps = {
+    is_online: number;
+    last_online_time: number;
+    size?: string;
+};
+
+const OnlineStatusLabel = ({
+    is_online,
+    last_online_time,
+    size = isMobile() ? 'xxxs' : 'xs',
+}: TOnlineStatusLabelProps) => {
     const last_online_label = () => {
         if (!is_online) {
             if (last_online_time) {
@@ -18,7 +27,7 @@ const OnlineStatusLabel = ({ is_online, last_online_time, size = isMobile() ? 'x
                     if (diff.months() > 6) {
                         return localize('Seen more than 6 months ago');
                     }
-                    if (diff.months === 1) {
+                    if (diff.months() === 1) {
                         return localize('Seen {{ duration }} month ago', {
                             duration: diff.months(),
                         });
@@ -69,12 +78,6 @@ const OnlineStatusLabel = ({ is_online, last_online_time, size = isMobile() ? 'x
             {last_online_label()}
         </Text>
     );
-};
-
-OnlineStatusLabel.propTypes = {
-    is_online: PropTypes.number.isRequired,
-    last_online_time: PropTypes.number,
-    size: PropTypes.string,
 };
 
 export default observer(OnlineStatusLabel);

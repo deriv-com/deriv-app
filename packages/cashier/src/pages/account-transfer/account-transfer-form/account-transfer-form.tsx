@@ -58,7 +58,7 @@ const AccountOption = ({ account, idx }: TAccountsList) => {
                 <Money
                     amount={account.balance}
                     currency={account.currency}
-                    has_sign={Boolean(account.balance && account.balance < 0)}
+                    has_sign={Boolean(account.balance && Number(account.balance) < 0)}
                     show_currency
                 />
             </span>

@@ -21,7 +21,8 @@
         <meta http-equiv="pragma" content="no-cache">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="referrer" content="origin">
-        <meta name="description" content="Automate your trades with Deriv’s bot trading platform, no coding needed. Trade now on forex, synthetic indices, commodities, stock indices, and more.">
+        <meta name="description"
+            content="Automate your trades with Deriv’s bot trading platform, no coding needed. Trade now on forex, synthetic indices, commodities, stock indices, and more.">
         <style id="antiClickjack">
             body {
                 display: none !important;
@@ -52,7 +53,7 @@
             <div class="rect4"></div>
             <div class="rect5"></div>
         </div>
-        
+
         <div id="main"></div>
 
         <form id="fileUploadForm" style="display: none;">
@@ -82,7 +83,7 @@
             <source src="public/sound/i-am-being-serious.mp3" type="audio/mp3" />
         </audio>
         <script src="js/blockly.js" async></script>
-        <script src="js/bot.js" async></script>
+        <script src="js/bot.min.js"></script>
         <noscript>
             <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-P97C2DZ" height="0" width="0"
                 style="display:none;visibility:hidden"></iframe>
@@ -92,31 +93,31 @@
         <div class="notifyjs-corner" style="bottom: 0px; right: 0px;"></div>
         <div class="notifyjs-corner" style="bottom: 0px; left: 0px;"></div>
         <script>
-           document.getElementById("localstorage-sync").src = window.location.hostname.includes("staging") ? "https://staging-app.deriv.com/localstorage-sync.html" : "https://app.deriv.com/localstorage-sync.html";
+            document.getElementById("localstorage-sync").src = window.location.hostname.includes("staging") ? "https://staging-app.deriv.com/localstorage-sync.html" : "https://app.deriv.com/localstorage-sync.html";
 
             // Auto login from deriv app
             const login_url = localStorage.getItem('login_url')
-            const token_list =  JSON.parse(localStorage.getItem('tokenList'));
-            const is_logged_in = token_list && token_list.length > 0 
+            const token_list = JSON.parse(localStorage.getItem('tokenList'));
+            const is_logged_in = token_list && token_list.length > 0
 
-            if(login_url && !is_logged_in){
-               const { origin } = window.location;
-               localStorage.setItem('is_logging_in',true)
-               window.location.href = `${origin}?${login_url}`
+            if (login_url && !is_logged_in) {
+                const { origin } = window.location;
+                localStorage.setItem('is_logging_in', true)
+                window.location.href = `${origin}?${login_url}`
             }
 
             localStorage.removeItem('login_url')
         </script>
-        
+
         <!-- Start of Survicate (www.survicate.com) code -->
         <script type='text/javascript'>
-            (function (w) {
-                var s = document.createElement('script');
-                s.src = 'https://survey.survicate.com/workspaces/83b651f6b3eca1ab4551d95760fe5deb/web_surveys.js';
-                s.async = true;
-                var e = document.getElementsByTagName('script')[0];
-                e.parentNode.insertBefore(s, e);
-            })(window);
+                (function (w) {
+                    var s = document.createElement('script');
+                    s.src = 'https://survey.survicate.com/workspaces/83b651f6b3eca1ab4551d95760fe5deb/web_surveys.js';
+                    s.async = true;
+                    var e = document.getElementsByTagName('script')[0];
+                    e.parentNode.insertBefore(s, e);
+                })(window);
         </script>
         <!-- End of Survicate code -->
     </body>

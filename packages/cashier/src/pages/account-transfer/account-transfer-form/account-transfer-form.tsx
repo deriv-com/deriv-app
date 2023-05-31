@@ -529,12 +529,13 @@ const AccountTransferForm = observer(
                                             <div className='account-transfer-form__crypto--percentage-selector'>
                                                 <PercentageSelector
                                                     amount={selected_from.balance ? Number(selected_from.balance) : 0}
-                                                    currency={selected_from.currency || ''}
                                                     from_account={selected_from.value}
                                                     getCalculatedAmount={setTransferPercentageSelectorResult}
                                                     percentage={percentage}
                                                     should_percentage_reset={should_percentage_reset}
                                                     to_account={selected_to.value}
+                                                    from_currency={selected_from.currency || ''}
+                                                    to_currency={selected_to.currency || ''}
                                                 />
                                             </div>
                                             <CryptoFiatConverter

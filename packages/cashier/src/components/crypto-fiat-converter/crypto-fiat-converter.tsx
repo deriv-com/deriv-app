@@ -1,21 +1,15 @@
 import React from 'react';
 import { Field, FieldProps, useFormikContext } from 'formik';
-import { DesktopWrapper, Input, Icon, MobileWrapper, Text, useInterval } from '@deriv/components';
+import { DesktopWrapper, Input, Icon, MobileWrapper } from '@deriv/components';
 import { getCurrencyDisplayCode } from '@deriv/shared';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { TReactChangeEvent } from '../../types';
 import { useCashierStore } from '../../stores/useCashierStores';
 import { useExchangeRate } from '@deriv/hooks';
 import './crypto-fiat-converter.scss';
-
-type TTimerProps = {
-    onComplete: VoidFunction;
-};
-
-type TInputGroupProps = React.PropsWithChildren<{
-    className: string;
-}>;
+import Timer from './timer';
+import InputGroup from './input-group';
 
 type TCryptoFiatConverterProps = {
     from_currency: string;
@@ -36,38 +30,6 @@ type TCryptoFiatConverterProps = {
     to_currency: string;
     validateFromAmount: VoidFunction;
     validateToAmount: VoidFunction;
-};
-
-const Timer = ({ onComplete }: TTimerProps) => {
-    const initial_time = 60;
-    const [remaining_time, setRemainingTime] = React.useState<number>(initial_time);
-
-    useInterval(() => {
-        if (remaining_time > 0) {
-            setRemainingTime(remaining_time - 1);
-        }
-    }, 1000);
-
-    React.useEffect(() => {
-        if (remaining_time === 0) {
-            onComplete();
-            setRemainingTime(initial_time);
-        }
-    }, [onComplete, remaining_time]);
-
-    return (
-        <Text as='p' size='xs' color='less-prominent' className='timer'>
-            <Localize i18n_default_text='{{remaining_time}}s' values={{ remaining_time }} />
-        </Text>
-    );
-};
-
-const InputGroup = ({ children, className }: TInputGroupProps) => {
-    return (
-        <fieldset>
-            <div className={className}>{children}</div>
-        </fieldset>
-    );
 };
 
 const CryptoFiatConverter = observer(
@@ -174,10 +136,14 @@ const CryptoFiatConverter = observer(
                             {is_timer_visible && (
                                 <Timer
                                     onComplete={() => {
+                                        const from_rate = getRate(from_currency || '');
+                                        const to_rate = getRate(to_currency || '');
+                                        const exchanged_rate = (Number(converter_from_amount) * to_rate) / from_rate;
                                         onChangeConverterFromAmount(
                                             { target: { value: converter_from_amount } },
                                             from_currency,
-                                            to_currency
+                                            to_currency,
+                                            exchanged_rate
                                         );
                                     }}
                                 />

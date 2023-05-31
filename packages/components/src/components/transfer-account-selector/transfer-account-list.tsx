@@ -30,54 +30,54 @@ const TransferAccountList = ({
         <div>
             {Object.keys(transfer_accounts).map((key, idx) => {
                 return (
-                    <React.Fragment key={idx}>
-                        <div
-                            className={classNames('transfer-account-selector__list', {
-                                'transfer-account-selector__list--is-last':
-                                    Object.keys(transfer_accounts).length === idx + 1,
-                            })}
-                        >
-                            <div className='transfer-account-selector__list-header'>
-                                <Text as='div' size={is_mobile ? 'xxxs' : 'xs'} weight='bold'>
-                                    {key === 'accounts' ? (
-                                        <Localize
-                                            i18n_default_text='Trading accounts linked with {{wallet}}'
-                                            values={{
-                                                wallet: wallet_name,
+                    transfer_accounts[key].length > 0 && (
+                        <React.Fragment key={idx}>
+                            <div
+                                className={classNames('transfer-account-selector__list', {
+                                    'transfer-account-selector__list--is-last':
+                                        Object.keys(transfer_accounts).length === idx + 1,
+                                })}
+                            >
+                                <div className='transfer-account-selector__list-header'>
+                                    <Text as='div' size={is_mobile ? 'xxxs' : 'xs'} weight='bold'>
+                                        {key === 'accounts' ? (
+                                            <Localize
+                                                i18n_default_text='Trading accounts linked with {{wallet}}'
+                                                values={{
+                                                    wallet: wallet_name,
+                                                }}
+                                            />
+                                        ) : (
+                                            <React.Fragment>{localize('Wallets')}</React.Fragment>
+                                        )}
+                                    </Text>
+                                    <TitleLine />
+                                </div>
+                                <div className='transfer-account-selector__list-items'>
+                                    {transfer_accounts[key].map((account, index) => (
+                                        <WalletTile
+                                            key={index}
+                                            account={account}
+                                            className={classNames('transfer-account-selector__list-tile', {
+                                                'transfer-account-selector__list-tile--is-last':
+                                                    transfer_accounts[key].length === index + 1,
+                                            })}
+                                            is_active={selected_account?.loginid === account.loginid}
+                                            is_mobile={is_mobile}
+                                            has_hover
+                                            onClick={() => {
+                                                setSelectedAccount(account);
+                                                setIsListModalOpen(false);
                                             }}
                                         />
-                                    ) : (
-                                        <React.Fragment>{localize('Wallets')}</React.Fragment>
-                                    )}
-                                </Text>
-                                <TitleLine />
-                            </div>
-                            <div className='transfer-account-selector__list-items'>
-                                {transfer_accounts[key].map((account, index) => (
-                                    <WalletTile
-                                        key={index}
-                                        account={account}
-                                        className={classNames('transfer-account-selector__list-tile', {
-                                            'transfer-account-selector__list-tile--is-last':
-                                                transfer_accounts[key].length === index + 1,
-                                        })}
-                                        is_active={selected_account?.loginid === account.loginid}
-                                        is_mobile={is_mobile}
-                                        has_hover
-                                        onClick={() => {
-                                            setSelectedAccount(account);
-                                            setIsListModalOpen(false);
-                                        }}
-                                    />
-                                ))}
-                            </div>
-                            {transfer_hint && (
+                                    ))}
+                                </div>
                                 <Text as='p' size='xxs' align='center' color='primary' className='transfer-hint'>
                                     {transfer_hint}
                                 </Text>
-                            )}
-                        </div>
-                    </React.Fragment>
+                            </div>
+                        </React.Fragment>
+                    )
                 );
             })}
         </div>

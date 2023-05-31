@@ -2,11 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Icon, Checklist, Text } from '@deriv/components';
-import { isMobile, routes } from '@deriv/shared';
+import { isDesktop, isMobile, routes } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import Dp2pBlocked from 'Components/dp2p-blocked';
 import { Localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import './verification.scss';
 
 const VerificationWrapper = ({ should_wrap, children }) => {
@@ -28,6 +29,7 @@ const VerificationWrapper = ({ should_wrap, children }) => {
 
 const Verification = ({ should_wrap }) => {
     const { general_store } = useStores();
+    const { showModal } = useModalManagerContext();
 
     if (!general_store.is_advertiser && general_store.poi_status === 'verified' && general_store.nickname) {
         return <Dp2pBlocked />;
@@ -37,7 +39,12 @@ const Verification = ({ should_wrap }) => {
         {
             content: general_store.nickname || <Localize i18n_default_text='Choose your nickname' />,
             status: general_store.nickname ? 'done' : 'action',
-            onClick: general_store.nickname ? () => {} : general_store.toggleNicknamePopup,
+            onClick: general_store.nickname
+                ? () => {}
+                : () => {
+                      if (isDesktop()) showModal({ key: 'NicknameModal' });
+                      general_store.toggleNicknamePopup();
+                  },
         },
         {
             content: general_store.poiStatusText(general_store.poi_status),

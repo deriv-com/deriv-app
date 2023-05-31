@@ -336,7 +336,7 @@ const DMT5CompareModalContent = ({
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
                 setJurisdictionSelectedShortcode('vanuatu');
                 if (
-                    poi_acknowledged_for_maltainvest &&
+                    poi_acknowledged_for_bvi_labuan_vanuatu &&
                     !poi_or_poa_not_submitted &&
                     !should_restrict_vanuatu_account_creation &&
                     has_submitted_personal_details &&

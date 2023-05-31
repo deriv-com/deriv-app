@@ -49,6 +49,8 @@ const VerificationStatusBanner = ({
     const is_labuan = type_of_card === 'labuan';
     const is_maltainvest = type_of_card === 'maltainvest';
 
+    const is_bvi_vanuatu_labuan_selected = is_bvi || is_vanuatu || is_labuan;
+
     const getTypeTitle = () => {
         switch (type_of_card) {
             case 'bvi':
@@ -148,7 +150,7 @@ const VerificationStatusBanner = ({
             </div>
         );
     } else if (
-        ((is_bvi || is_labuan || is_vanuatu) && poi_acknowledged_for_bvi_labuan_vanuatu && poa_not_submitted) ||
+        (is_bvi_vanuatu_labuan_selected && poi_acknowledged_for_bvi_labuan_vanuatu && poa_not_submitted) ||
         (is_maltainvest && poi_acknowledged_for_maltainvest && poa_not_submitted)
     ) {
         return (
@@ -159,7 +161,7 @@ const VerificationStatusBanner = ({
             </div>
         );
     } else if (
-        ((is_bvi || is_labuan || is_vanuatu) && need_poi_for_bvi_labuan_vanuatu && need_poa_resubmission) ||
+        (is_bvi_vanuatu_labuan_selected && need_poi_for_bvi_labuan_vanuatu && need_poa_resubmission) ||
         (is_maltainvest && poi_resubmit_for_maltainvest && need_poa_resubmission)
     ) {
         return (
@@ -170,7 +172,7 @@ const VerificationStatusBanner = ({
             </div>
         );
     } else if (
-        ((is_bvi || is_labuan || is_vanuatu) && poi_resubmit_for_bvi_labuan_vanuatu) ||
+        (is_bvi_vanuatu_labuan_selected && poi_resubmit_for_bvi_labuan_vanuatu) ||
         (is_maltainvest && poi_resubmit_for_maltainvest)
     ) {
         return (

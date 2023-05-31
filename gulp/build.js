@@ -3,7 +3,6 @@ const connect = require('gulp-connect');
 const mustache = require('gulp-mustache');
 const { getManifest } = require('./revision');
 require('./static');
-require('./bundle');
 require('./webpack');
 
 const getConfig = prefix => ({
@@ -44,10 +43,10 @@ gulp.task(
 
 gulp.task(
     'build-min',
-    gulp.series('static', 'webpack-prod', 'bundle-js', 'pull-blockly-translations', done => {
+    gulp.series('static', 'webpack-prod', 'pull-blockly-translations', done => {
         genHtml(true);
         done();
     })
 );
 
-gulp.task('build', gulp.parallel('bundle-js', 'build-dev-js', 'build-dev-static', 'pull-blockly-translations'));
+gulp.task('build', gulp.parallel('build-dev-js', 'build-dev-static', 'pull-blockly-translations'));

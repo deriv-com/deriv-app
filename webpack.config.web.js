@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const BlocklyConcatPlugin = require('./customPlugins/blockly-concat-plugin');
 
 const production = process.env.NODE_ENV === 'production';
 
@@ -31,6 +32,16 @@ const plugins = [
             to: '../',
         },
     ]),
+    new BlocklyConcatPlugin({
+        outputPath: '../js',
+        fileName: 'blockly.js',
+        filesToConcat: [
+            './node_modules/blockly/blockly_compressed.js',
+            './node_modules/blockly/blocks_compressed.js',
+            './node_modules/blockly/javascript_compressed.js',
+            './node_modules/blockly/msg/messages.js',
+        ],
+    }),
 ];
 
 const productionPlugins = () => {
@@ -73,6 +84,7 @@ module.exports = {
     target: 'web',
     externals: {
         CIQ: 'CIQ',
+        blockly: 'Blockly',
     },
     module: {
         rules: [

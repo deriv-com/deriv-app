@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { isEmptyObject } from '../object';
 import { isAccumulatorContract, isUserSold } from '../contract';
-import { TContractInfo } from '../contract/contract-types';
+import { TContractInfo, TContractStore } from '../contract/contract-types';
 
 type TTick = {
     ask?: number;
@@ -26,12 +26,6 @@ type TIsStarted = Required<Pick<TContractInfo, 'is_forward_starting' | 'current_
 
 type TGetEndTime = Pick<TContractInfo, 'is_expired' | 'sell_time' | 'status' | 'tick_count'> &
     Required<Pick<TContractInfo, 'contract_type' | 'date_expiry' | 'exit_tick_time' | 'is_path_dependent'>>;
-
-type TGetBuyPrice = {
-    contract_info: {
-        buy_price: number;
-    };
-};
 
 export const isContractElapsed = (contract_info: TGetEndTime, tick: TTick) => {
     if (isEmptyObject(tick) || isEmptyObject(contract_info)) return false;
@@ -81,7 +75,7 @@ export const getEndTime = (contract_info: TGetEndTime) => {
     return date_expiry > exit_tick_time && !+is_path_dependent ? date_expiry : exit_tick_time;
 };
 
-export const getBuyPrice = (contract_store: TGetBuyPrice) => {
+export const getBuyPrice = (contract_store: TContractStore) => {
     return contract_store.contract_info.buy_price;
 };
 

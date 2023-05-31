@@ -23,6 +23,7 @@ export default class GeneralStore extends BaseStore {
     balance;
     cancels_remaining = null;
     contact_info = '';
+    error_code = '';
     external_stores = {};
     feature_level = null;
     formik_ref = null;
@@ -32,7 +33,7 @@ export default class GeneralStore extends BaseStore {
     is_blocked = false;
     is_block_unblock_user_loading = false;
     is_block_user_modal_open = false;
-    is_high_risk_fully_authed_without_fa = false;
+    is_high_risk = false;
     is_listed = false;
     is_loading = false;
     is_modal_open = false;
@@ -51,6 +52,7 @@ export default class GeneralStore extends BaseStore {
     should_show_popup = false;
     user_blocked_count = 0;
     user_blocked_until = null;
+    is_modal_open = false;
 
     list_item_limit = isMobile() ? 10 : 50;
     path = {
@@ -85,12 +87,14 @@ export default class GeneralStore extends BaseStore {
             external_stores: observable,
             feature_level: observable,
             formik_ref: observable,
+            error_code: observable,
             inactive_notification_count: observable,
             is_advertiser: observable,
             is_advertiser_blocked: observable,
             is_blocked: observable,
             is_block_unblock_user_loading: observable,
             is_block_user_modal_open: observable,
+            is_high_risk: observable,
             is_listed: observable,
             is_loading: observable,
             is_p2p_blocked_for_pa: observable,
@@ -107,7 +111,6 @@ export default class GeneralStore extends BaseStore {
             should_show_popup: observable,
             user_blocked_count: observable,
             user_blocked_until: observable,
-            is_high_risk_fully_authed_without_fa: observable,
             is_modal_open: observable,
             blocked_until_date_time: computed,
             is_active_tab: computed,
@@ -133,6 +136,8 @@ export default class GeneralStore extends BaseStore {
             setAdvertiserId: action.bound,
             setAdvertiserBuyLimit: action.bound,
             setAdvertiserSellLimit: action.bound,
+            setAdvertiserRelationsResponse: action.bound, //TODO: Remove this when backend has fixed is_blocked flag issue
+            setErrorCode: action.bound,
             setExternalStores: action.bound,
             setFeatureLevel: action.bound,
             setFormikRef: action.bound,
@@ -141,7 +146,7 @@ export default class GeneralStore extends BaseStore {
             setInactiveNotificationCount: action.bound,
             setIsAdvertiser: action.bound,
             setIsBlocked: action.bound,
-            setIsHighRiskFullyAuthedWithoutFa: action.bound,
+            setIsHighRisk: action.bound,
             setIsListed: action.bound,
             setIsLoading: action.bound,
             setIsP2pBlockedForPa: action.bound,
@@ -191,11 +196,11 @@ export default class GeneralStore extends BaseStore {
     }
 
     get should_show_dp2p_blocked() {
-        return this.is_blocked || this.is_high_risk_fully_authed_without_fa;
+        return this.is_blocked || this.is_high_risk || this.is_p2p_blocked_for_pa;
     }
 
     blockUnblockUser(should_block, advertiser_id, should_set_is_counterparty_blocked = true) {
-        const { advertiser_page_store, general_store } = this.root_store;
+        const { advertiser_page_store } = this.root_store;
         this.setIsBlockUnblockUserLoading(true);
         requestWS({
             p2p_advertiser_relations: 1,
@@ -203,7 +208,7 @@ export default class GeneralStore extends BaseStore {
         }).then(response => {
             if (response) {
                 if (!response.error) {
-                    general_store.hideModal();
+                    this.hideModal();
                     if (should_set_is_counterparty_blocked) {
                         const { p2p_advertiser_relations } = response;
 
@@ -215,18 +220,9 @@ export default class GeneralStore extends BaseStore {
                         );
                     }
                 } else {
-                    this.setBlockUnblockUserError(response.error.message);
-                    if (!general_store.is_barred && !general_store.isCurrentModal('ErrorModal')) {
-                        general_store.showModal({
-                            key: 'ErrorModal',
-                            props: {
-                                error_message: response.error.message,
-                                error_modal_title: 'Unable to block advertiser',
-                                has_close_icon: false,
-                                width: isMobile() ? '90rem' : '40rem',
-                            },
-                        });
-                    }
+                    const { code, message } = response.error;
+                    this.setErrorCode(code);
+                    this.setBlockUnblockUserError(message);
                 }
             }
             this.setIsBlockUnblockUserLoading(false);
@@ -373,7 +369,7 @@ export default class GeneralStore extends BaseStore {
 
     showCompletedOrderNotification(advertiser_name, order_id) {
         const { order_store } = this.root_store;
-        const notification_key = `order-${order_id}`;
+        const notification_key = `p2p_order_${order_id}`;
 
         // we need to refresh notifications in notifications-store in the case of a bug when user closes the notification, the notification count is not synced up with the closed notification
         this.external_stores?.notifications.refreshNotifications();
@@ -419,7 +415,7 @@ export default class GeneralStore extends BaseStore {
     onMount() {
         this.setIsLoading(true);
         this.setIsBlocked(false);
-        this.setIsHighRiskFullyAuthedWithoutFa(false);
+        this.setIsHighRisk(false);
         this.setIsP2pBlockedForPa(false);
 
         this.disposeUserBarredReaction = reaction(
@@ -438,37 +434,36 @@ export default class GeneralStore extends BaseStore {
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
             const hasStatuses = statuses => statuses.every(status => get_account_status.status.includes(status));
 
+            const is_authenticated = hasStatuses(['authenticated']);
             const is_blocked_for_pa = hasStatuses(['p2p_blocked_for_pa']);
+            const is_fa_not_complete = hasStatuses(['financial_assessment_not_complete']);
 
             if (error) {
-                this.setIsHighRiskFullyAuthedWithoutFa(false);
+                this.setIsHighRisk(false);
                 this.setIsBlocked(false);
                 this.setIsP2pBlockedForPa(false);
+            } else if (get_account_status.p2p_status === 'perm_ban') {
+                this.setIsBlocked(true);
             } else if (get_account_status.risk_classification === 'high') {
                 const is_cashier_locked = hasStatuses(['cashier_locked']);
-
-                const is_fully_authenticated = hasStatuses(['age_verification', 'authenticated']);
                 const is_not_fully_authenticated = !hasStatuses(['age_verification', 'authenticated']);
-
                 const is_fully_authed_but_poi_expired = hasStatuses(['authenticated', 'document_expired']);
-                const is_fully_authed_but_needs_fa =
-                    is_fully_authenticated && hasStatuses(['financial_assessment_not_complete']);
-
                 const is_not_fully_authenticated_and_fa_not_completed =
-                    is_not_fully_authenticated && hasStatuses(['financial_assessment_not_complete']);
+                    is_not_fully_authenticated && is_fa_not_complete;
 
-                if (is_fully_authed_but_needs_fa) {
-                    // First priority: Send user to Financial Assessment if they have to submit it.
-                    this.setIsHighRiskFullyAuthedWithoutFa(true);
-                } else if (
-                    is_cashier_locked ||
-                    is_not_fully_authenticated ||
-                    is_fully_authed_but_poi_expired ||
-                    is_not_fully_authenticated_and_fa_not_completed
+                if (
+                    is_authenticated &&
+                    (is_cashier_locked ||
+                        is_not_fully_authenticated ||
+                        is_fully_authed_but_poi_expired ||
+                        is_not_fully_authenticated_and_fa_not_completed)
                 ) {
-                    // Second priority: If user is blocked, don't bother asking them to submit FA.
                     this.setIsBlocked(true);
                 }
+
+                if (!is_authenticated && !is_fa_not_complete) this.setIsBlocked(true);
+
+                if (is_fa_not_complete) this.setIsHighRisk(true);
             }
 
             if (is_blocked_for_pa) {
@@ -632,6 +627,10 @@ export default class GeneralStore extends BaseStore {
         this.default_advert_description = default_advert_description;
     }
 
+    setErrorCode(error_code) {
+        this.error_code = error_code;
+    }
+
     setExternalStores(external_stores) {
         this.external_stores = external_stores;
     }
@@ -672,8 +671,8 @@ export default class GeneralStore extends BaseStore {
         this.is_block_unblock_user_loading = is_block_unblock_user_loading;
     }
 
-    setIsHighRiskFullyAuthedWithoutFa(is_high_risk_fully_authed_without_fa) {
-        this.is_high_risk_fully_authed_without_fa = is_high_risk_fully_authed_without_fa;
+    setIsHighRisk(is_high_risk) {
+        this.is_high_risk = is_high_risk;
     }
 
     setIsListed(is_listed) {
@@ -739,7 +738,7 @@ export default class GeneralStore extends BaseStore {
             return;
         }
 
-        const { p2p_order_list, p2p_order_info } = order_response;
+        const { p2p_order_list = [], p2p_order_info = {} } = order_response;
         const { order_store } = this.root_store;
 
         if (p2p_order_list) {
@@ -865,10 +864,13 @@ export default class GeneralStore extends BaseStore {
             requestWS({ get_account_status: 1 }).then(account_response => {
                 if (!account_response.error) {
                     const { get_account_status } = account_response;
-                    const { authentication } = get_account_status;
+                    const { authentication, status } = get_account_status;
                     const { identity } = authentication;
 
-                    this.setPoiStatus(identity.status);
+                    if (status.includes('cashier_locked')) {
+                        this.setIsBlocked(true);
+                        this.hideModal();
+                    } else this.setPoiStatus(identity.status);
                 }
             });
         }

@@ -3,6 +3,7 @@ export type TModalContent = {
     selectAccountTypeCard: React.Dispatch<React.SetStateAction<string>>;
     is_financial_available: boolean;
     is_synthetic_available: boolean;
+    is_swapfree_available: boolean;
 };
 
 export type TAccountType = {

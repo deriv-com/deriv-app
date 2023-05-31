@@ -1,16 +1,16 @@
-import type { Moment } from 'moment';
 import type {
     AccountLimitsResponse,
     Authorize,
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
-    ProposalOpenContract,
     GetSettings,
     LogOutResponse,
+    ProposalOpenContract,
 } from '@deriv/api-types';
+import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
-import { ExchangeRatesStore } from './src/stores';
+import type { ExchangeRatesStore } from './src/stores';
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: number;
@@ -125,13 +125,14 @@ type TClientStore = {
     accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
+    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     account_limits: Partial<AccountLimitsResponse['get_limits']> & {
         is_loading?: boolean;
         api_initial_load_error?: string;
     };
     account_list: TAccountsList;
     account_settings: GetSettings;
-    account_status?: Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
+    account_status: Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;
@@ -224,7 +225,7 @@ type TClientStore = {
     setTwoFAChangedStatus: (status: boolean) => void;
     has_any_real_account: boolean;
     real_account_creation_unlock_date: number;
-    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
+    setPrevAccountType: (account_type: string) => void;
 };
 
 type TCommonStoreError = {
@@ -365,6 +366,7 @@ type TTradersHubStore = {
     account_type_card: string;
     selectAccountTypeCard: React.Dispatch<React.SetStateAction<string>>;
     getAccount: () => void;
+    selectAccountType: (account_type: string) => void;
 };
 
 /**

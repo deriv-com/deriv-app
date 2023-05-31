@@ -34,6 +34,13 @@ export const getAccountTitle = loginid => {
     return types_map[getClientAccountType(loginid)] || types_map.default;
 };
 
+export const getAvailableAccount = market_type => {
+    if (market_type === 'all') {
+        return 'all';
+    }
+    return 'financial';
+};
+
 export const getLandingCompanyValue = ({ loginid, landing_company, isAccountOfType }) => {
     const key = 'changeable_fields';
     let landing_company_object;

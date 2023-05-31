@@ -1,4 +1,18 @@
+@mixin container-space($pos, $space) {
+    @if $pos == 'top' {
+        top: $space * 1rem;
+        left: $space * 1rem;
+    }
+
+    @if $pos == 'bottom' {
+        bottom: $space * 1rem;
+        right: $space * 1rem;
+    }
+}
+
 .app-icon {
+    $p-app-icon: &;
+
     position: relative;
     display: flex;
     align-items: center;
@@ -11,29 +25,50 @@
         top: 0;
         left: 0;
         z-index: 1;
+
+        #{$p-app-icon}__small {
+            @include container-space('top', 0.1);
+        }
+
+        #{$p-app-icon}__medium {
+            @include container-space('top', 0.2);
+        }
+
+        #{$p-app-icon}__large {
+            @include container-space('top', 0.4);
+        }
     }
 
     &__bottom-icon {
         position: absolute;
         bottom: 0;
         right: 0;
+
+        #{$p-app-icon}__small {
+            @include container-space('bottom', 0.1);
+        }
+
+        #{$p-app-icon}__medium {
+            @include container-space('bottom', 0.2);
+        }
+
+        #{$p-app-icon}__large {
+            @include container-space('bottom', 0.4);
+        }
     }
 
     &--small {
         width: 4rem;
         height: 2.4rem;
-        padding: 0.1rem;
     }
 
     &--medium {
         width: 6.4rem;
         height: 4rem;
-        padding: 0.2rem;
     }
 
     &--large {
         width: 12.8rem;
         height: 8rem;
-        padding: 0.4rem;
     }
 }

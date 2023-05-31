@@ -77,7 +77,7 @@
     "876086855": "完成財務評估表",
     "881351325": "是否推薦此賣家?",
     "887667868": "訂單",
-    "892431976": "If you cancel your order {{cancellation_limit}} times in {{cancellation_period}} hours, you will be blocked from using Deriv P2P for {{block_duration}} hours. <br /> ({{number_of_cancels_remaining}} cancellations remaining)",
+    "892431976": "如在{{cancellation_period}} 小時内取消訂單{{cancellation_limit}} 次，{{block_duration}} 小時内將被禁使用 Deriv P2P 。 <br />(剩餘取消次數為{{number_of_cancels_remaining}} 次)",
     "949859957": "提交",
     "954233511": "已賣出",
     "957529514": "想下訂單，請新增廣告商偏好的付款方式：",

@@ -26,13 +26,11 @@ const PlatformSwitcher = ({
     const is_close_drawer_fired_ref = React.useRef(false);
 
     React.useEffect(() => {
-        const update_platform_array = [...platform_config];
-        update_platform_array.map(data => {
+        platform_config.forEach(data => {
             const { name } = data;
             if (name === 'Binary Bot') {
                 data.href = getUrlBinaryBot();
             }
-            return data;
         });
     }, [current_language, platform_config]);
 

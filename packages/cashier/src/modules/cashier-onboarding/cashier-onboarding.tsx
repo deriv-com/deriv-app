@@ -6,29 +6,21 @@ import { useHistory } from 'react-router';
 import { PageContainer } from '../../components/page-container';
 import { useCashierStore } from '../../stores/useCashierStores';
 import {
+    CashierOnboardingAccountIdentifierMessage,
     CashierOnboardingCryptoCard,
     CashierOnboardingFiatCard,
     CashierOnboardingOnrampCard,
     CashierOnboardingP2PCard,
     CashierOnboardingPaymentAgentCard,
     CashierOnboardingSideNotes,
-    CashierOnboardingTitle,
 } from './components';
 
-type TProps = {
-    setSideNotes: React.Dispatch<React.SetStateAction<JSX.Element[]>>;
-};
-
-const CashierOnboarding: React.FC<TProps> = observer(({ setSideNotes }) => {
+const CashierOnboarding: React.FC = observer(() => {
     const history = useHistory();
-    const { client, ui } = useStore();
+    const { ui } = useStore();
     const { general_store } = useCashierStore();
     const { setIsCashierOnboarding } = general_store;
     const { toggleSetCurrencyModal } = ui;
-    const { can_change_fiat_currency, available_crypto_currencies, is_crypto } = client;
-    const is_fiat_user = !is_crypto() && !can_change_fiat_currency;
-    const is_crypto_user = is_crypto() && available_crypto_currencies.length > 0;
-    const should_show_side_notes = is_fiat_user || is_crypto_user; // ?[QUESTION] Why do we need this to render the side notes conditionally?
     const has_set_currency = useHasSetCurrency();
 
     useEffect(() => {
@@ -37,7 +29,6 @@ const CashierOnboarding: React.FC<TProps> = observer(({ setSideNotes }) => {
         return () => {
             setIsCashierOnboarding(false);
             if (!has_set_currency && window.location.pathname.includes(routes.cashier)) {
-                // ?[QUESTION] What does this if condition exactly do?
                 history.push(routes.trade);
                 toggleSetCurrencyModal();
             }
@@ -45,14 +36,13 @@ const CashierOnboarding: React.FC<TProps> = observer(({ setSideNotes }) => {
     }, [has_set_currency, history, setIsCashierOnboarding, toggleSetCurrencyModal]);
 
     return (
-        <PageContainer hide_breadcrumb>
-            <CashierOnboardingTitle />
+        <PageContainer hide_breadcrumb right={<CashierOnboardingSideNotes />}>
+            <CashierOnboardingAccountIdentifierMessage />
             <CashierOnboardingFiatCard />
             <CashierOnboardingCryptoCard />
             <CashierOnboardingOnrampCard />
             <CashierOnboardingPaymentAgentCard />
             <CashierOnboardingP2PCard />
-            {should_show_side_notes && <CashierOnboardingSideNotes setSideNotes={setSideNotes} />}
         </PageContainer>
     );
 });

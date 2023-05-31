@@ -8,7 +8,7 @@ import { useCashierStore } from '../../../../stores/useCashierStores';
 const CashierOnboardingSideNoteCrypto: React.FC = observer(() => {
     const { client, ui } = useStore();
     const { general_store } = useCashierStore();
-    const { currency, loginid } = client;
+    const { currency } = client;
     const { openRealAccountSignup } = ui;
     const { setDepositTarget } = general_store;
     const currency_code = getCurrencyDisplayCode(currency);
@@ -20,7 +20,6 @@ const CashierOnboardingSideNoteCrypto: React.FC = observer(() => {
 
     return (
         <SideNote
-            title={localize('This is your {{currency_code}} account {{loginid}}', { currency_code, loginid })}
             description={localize(
                 "Don't want to trade in {{currency_code}}? You can open another cryptocurrency account.",
                 { currency_code }

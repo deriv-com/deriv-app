@@ -7,5 +7,4 @@ export * from './cashier-onboarding-onramp-card';
 export * from './cashier-onboarding-p2p-card';
 export * from './cashier-onboarding-payment-agent-card';
 export * from './cashier-onboarding-side-notes';
-export * from './cashier-onboarding-title';
 export * from './switch-to-fiat-account-dialog';

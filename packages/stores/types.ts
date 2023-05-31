@@ -257,7 +257,7 @@ type TCommonStore = {
 };
 
 type TToastConfig = {
-    key?: string;
+    key?: number;
     content: string;
     timeout?: number;
     is_bottom?: boolean;

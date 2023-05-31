@@ -6,7 +6,7 @@ import { localize } from 'Components/i18next';
 import { isMobile } from '@deriv/shared';
 import { useStores } from 'Stores';
 import BlockUserRow from './block-user-row';
-import BlockUserEmpty from 'Components/block-user/block-user-empty';
+import BlockUserEmpty from 'Pages/my-profile/block-user/block-user-empty';
 import './block-user-table.scss';
 
 const BlockUserTable = () => {

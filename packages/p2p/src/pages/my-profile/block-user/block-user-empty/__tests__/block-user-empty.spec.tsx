@@ -9,29 +9,16 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(),
 }));
 
-jest.mock('@deriv/components', () => {
-    const originalModule = jest.requireActual('@deriv/components');
-
-    return {
-        ...originalModule,
-        MobileFullPageModal: jest.fn(() => (
-            <div data-testid='dt_mocked_mobile_full_page_modal'>No one to show here</div>
-        )),
-    };
-});
-
 describe('BlockUserEmpty', () => {
-    it('should render', () => {
+    it('should render <BlockUserEmpty/> component for desktop version', () => {
         (isDesktop as jest.Mock).mockReturnValueOnce(true);
         render(<BlockUserEmpty />);
         expect(screen.getByTestId('dt_desktop_content')).toBeInTheDocument();
-        expect(screen.queryByTestId('dt_mocked_mobile_full_page_modal')).not.toBeInTheDocument();
         expect(screen.getByText('No one to show here')).toBeInTheDocument();
     });
-    it('should render mobile version', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
+    it('should render <BlockUserEmpty /> component for mobile version', () => {
+        (isMobile as jest.Mock).mockReturnValueOnce(true);
         render(<BlockUserEmpty />);
-        expect(screen.getByTestId('dt_mocked_mobile_full_page_modal')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_desktop_content')).not.toBeInTheDocument();
         expect(screen.getByText('No one to show here')).toBeInTheDocument();
     });

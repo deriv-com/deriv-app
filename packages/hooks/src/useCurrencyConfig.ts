@@ -2,7 +2,7 @@ import { useFetch } from '@deriv/api';
 
 const useCurrencyConfig = (currency: string) => {
     const { data, ...rest } = useFetch('website_status');
-    const currency_config = data?.currencies_config?.[currency];
+    const currency_config = data?.website_status?.currencies_config?.[currency];
     const modified_currency_config = currency_config
         ? {
               ...currency_config,

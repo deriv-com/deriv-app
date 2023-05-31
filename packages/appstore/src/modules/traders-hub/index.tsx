@@ -1,19 +1,21 @@
 import React from 'react';
 import ModalManager from 'Components/modals/modal-manager';
 import TourGuide from 'Modules/tour-guide/tour-guide';
-import { isDesktop, ContentFlag } from '@deriv/shared';
-import { Div100vhContainer } from '@deriv/components';
+import { isDesktop } from '@deriv/shared';
+import { Div100vhContainer, WalletCard } from '@deriv/components';
 import classNames from 'classnames';
 import AccountWithWallets from './account-with-wallets';
 import AccountWithoutWallets from './account-without-wallets';
 import { useStore, observer } from '@deriv/stores';
 import EUDisclaimer from 'Components/eu-disclaimer';
-import './traders-hub.scss';
 import { useContentFlag } from '@deriv/hooks';
+import WalletCardsCarousel from 'Components/wallet-cards-carousel';
+import wallets from '../../constants/wallet-mocked-response';
+import './traders-hub.scss';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStore();
-    const { notification_messages_ui: Notifications } = ui;
+    const { notification_messages_ui: Notifications, is_mobile } = ui;
     const {
         is_landing_company_loaded,
         is_logged_in,
@@ -52,6 +54,14 @@ const TradersHub = () => {
         }, 100);
     }, [is_tour_open]);
 
+    const items = wallets.map(wallet => (
+        <WalletCard
+            key={`${wallet.name} ${wallet.currency} ${wallet.jurisdiction_title}`}
+            wallet={wallet}
+            size='medium'
+        />
+    ));
+
     const { is_low_risk_cr_eu } = useContentFlag();
 
     if (!is_logged_in) return null;
@@ -86,6 +96,7 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
+                    {is_mobile && <WalletCardsCarousel items={items} />}
                     {SelectJSX}
                     {!!is_display_test_wallets && <AccountWithWallets show_test_wallets={!!is_display_test_wallets} />}
                     {is_wallet_account ? <AccountWithWallets /> : <AccountWithoutWallets />}

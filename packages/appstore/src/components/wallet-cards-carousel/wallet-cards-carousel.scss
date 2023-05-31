@@ -1,0 +1,44 @@
+$card-width: 16rem;
+$card-height: 9.6rem;
+$shift-for-edge-cards: calc((100vw - #{$card-width}) / 2);
+
+.wallet-cards-carousel {
+    margin-bottom: 2.4rem;
+
+    &__scroll {
+        position: relative;
+        display: flex;
+        overflow: auto;
+        scroll-snap-type: x mandatory;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    &__item {
+        // width: $card-width;
+        // height: $card-height;
+        margin-right: 2.4rem;
+        scroll-snap-align: center;
+
+        &--first {
+            margin-left: $shift-for-edge-cards;
+        }
+
+        &--last {
+            margin-right: $shift-for-edge-cards;
+        }
+    }
+
+    &__pagination {
+        margin-block: 1.5rem;
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: space-evenly;
+        width: 50%;
+        margin: auto;
+    }
+}

@@ -6,7 +6,6 @@ require('./static');
 require('./webpack');
 
 const getConfig = prefix => ({
-    index: `<script src="js/${prefix ? getManifest(`index${prefix}.js`) : 'index.js'}"></script>`,
     bot: `<script src="js/${prefix ? getManifest(`bot${prefix}.js`) : 'bot.js'}"></script>`,
 });
 

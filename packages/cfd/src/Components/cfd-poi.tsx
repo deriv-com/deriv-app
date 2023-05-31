@@ -40,7 +40,7 @@ export type TCFDPOIProps = {
     account_settings: GetSettings;
     residence_list: ResidenceList;
     jurisdiction_selected_shortcode: string;
-    landing_company_shortcode: string;
+    is_eu_user: boolean;
 };
 
 const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => {
@@ -64,7 +64,7 @@ const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => 
     );
 };
 
-export default connect(({ client, common, notifications }: RootStore) => ({
+export default connect(({ client, common, notifications, traders_hub }: RootStore) => ({
     account_status: client.account_status,
     app_routing_history: common.app_routing_history,
     fetchResidenceList: client.fetchResidenceList,
@@ -77,5 +77,5 @@ export default connect(({ client, common, notifications }: RootStore) => ({
     should_allow_authentication: client.should_allow_authentication,
     account_settings: client.account_settings,
     residence_list: client.residence_list,
-    landing_company_shortcode: client.landing_company_shortcode,
+    is_eu_user: traders_hub.is_eu_user,
 }))(CFDPOI);

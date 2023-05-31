@@ -18,7 +18,7 @@ const POISubmissionForMT5 = ({
     has_idv_error,
     residence_list,
     account_settings,
-    landing_company_shortcode,
+    is_eu_user,
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // submitting
     const [submission_service, setSubmissionService] = React.useState();
@@ -28,12 +28,7 @@ const POISubmissionForMT5 = ({
             const { submissions_left: onfido_submissions_left } = onfido;
             const is_idv_supported = isVerificationServiceSupported(residence_list, account_settings, 'idv');
             const is_onfido_supported = isVerificationServiceSupported(residence_list, account_settings, 'onfido');
-            if (
-                is_idv_supported &&
-                Number(idv_submissions_left) > 0 &&
-                !is_idv_disallowed &&
-                landing_company_shortcode !== 'maltainvest'
-            ) {
+            if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed && !is_eu_user) {
                 setSubmissionService(service_code.idv);
             } else if (onfido_submissions_left && is_onfido_supported) {
                 setSubmissionService(service_code.onfido);

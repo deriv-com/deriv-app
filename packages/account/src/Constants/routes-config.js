@@ -95,14 +95,14 @@ const initRoutesConfig = ({ is_appstore }) => [
                         getTitle: () => localize('Proof of address'),
                     },
                     {
-                        path: routes.proof_of_income,
-                        component: ProofOfIncome,
-                        getTitle: () => localize('Proof of income'),
-                    },
-                    {
                         path: routes.proof_of_ownership,
                         component: ProofOfOwnership,
                         getTitle: () => localize('Proof of ownership'),
+                    },
+                    {
+                        path: routes.proof_of_income,
+                        component: ProofOfIncome,
+                        getTitle: () => localize('Proof of income'),
                     },
                 ],
             },

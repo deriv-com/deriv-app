@@ -1,7 +1,6 @@
 import { Button, Loading } from '@deriv/components';
 import { WS, getPlatformRedirect, platforms } from '@deriv/shared';
 import { identity_status_codes, service_code } from './proof-of-identity-utils';
-
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
 import Expired from 'Components/poi/status/expired';
@@ -98,22 +97,22 @@ const ProofOfIdentityContainer = ({
         return <NotRequired />;
     }
 
-    const redirect_button = should_show_redirect_btn ? (
-        <Button
-            primary
-            className='proof-of-identity__redirect'
-            onClick={() => {
-                if (platforms[from_platform.ref].is_hard_redirect) {
-                    const url = platforms[from_platform.ref]?.url;
-                    window.location.href = url;
-                } else {
-                    routeBackTo(from_platform.route);
-                }
-            }}
-        >
+    const onClickRedirectButton = () => {
+        const platform = platforms[from_platform.ref];
+        const { is_hard_redirect = false, url = '' } = platform ?? {};
+        if (is_hard_redirect) {
+            window.location.href = url;
+            window.localStorage.removeItem('config.platform');
+        } else {
+            routeBackTo(from_platform.route);
+        }
+    };
+
+    const redirect_button = should_show_redirect_btn && (
+        <Button primary className='proof-of-identity__redirect' onClick={onClickRedirectButton}>
             <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name: from_platform.name }} />
         </Button>
-    ) : null;
+    );
 
     if (
         identity_status === identity_status_codes.none ||

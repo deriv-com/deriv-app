@@ -207,16 +207,17 @@ const CFDsListing = () => {
                 <PlatformLoader />
             )}
             {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
-                <div className='cfd-full-row'>
-                    <hr className='divider' />
-                </div>
-            )}
-            {available_dxtrade_accounts?.length > 0 && (
-                <div className='cfd-full-row'>
-                    <Text line_height='m' weight='bold' color='prominent'>
-                        {localize('Other CFDs')}
-                    </Text>
-                </div>
+                <React.Fragment>
+                    <div className='cfd-full-row'>
+                        <hr className='divider' />
+                    </div>
+
+                    <div className='cfd-full-row'>
+                        <Text line_height='m' weight='bold' color='prominent'>
+                            {localize('Other CFDs')}
+                        </Text>
+                    </div>
+                </React.Fragment>
             )}
             {is_landing_company_loaded ? (
                 available_dxtrade_accounts?.map((account: AvailableAccount) => {

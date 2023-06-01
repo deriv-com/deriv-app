@@ -231,8 +231,8 @@ export const getMtCompanies = (is_eu: boolean) => {
 export const getDerivezCompanies = () => {
     const all_config = {
         account_type: '',
-        leverage: 500,
-        short_title: localize('All'),
+        leverage: 1000,
+        short_title: localize('CFDs'),
     };
     return {
         demo: {
@@ -247,7 +247,7 @@ export const getDerivezCompanies = () => {
             all: {
                 derivez_account_type: all_config.account_type,
                 leverage: all_config.leverage,
-                title: localize(' Real'),
+                title: localize('Real'),
                 short_title: all_config.short_title,
             },
         },

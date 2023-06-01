@@ -90,7 +90,7 @@ export const fake_wallet_accounts: TWalletAccount[] = [
         loginid: 'CRW10002',
     },
     {
-        name: 'AUD Wallet',
+        name: 'AUD',
         currency: 'AUD',
         icon: getWalletCurrencyIcon('AUD', false),
         balance: '5,374',

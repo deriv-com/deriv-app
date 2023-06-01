@@ -80,8 +80,8 @@ module.exports = {
         bot: path.join(__dirname, 'src', 'botPage', 'view'),
     },
     output: {
-        filename: production ? '[name].min.js' : '[name].js',
-        sourceMapFilename: production ? '[name].min.js.map' : '[name].js.map',
+        filename: production ? 'bot.min.js' : 'bot.js',
+        sourceMapFilename: production ? 'bot.min.js.map' : 'bot.js.map',
     },
     devtool: 'source-map',
     watch: !production,

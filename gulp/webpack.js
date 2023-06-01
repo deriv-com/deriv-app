@@ -15,13 +15,14 @@ const gen = env => {
             process.env.BRANCH = process.argv[branch_index + 1];
         }
     }
-    process.env.ARGS = process.argv
+    process.env.ARGS = process.argv;
+    // eslint-disable-next-line global-require
     return webpackStream(require('../webpack.config.web'), webpack).pipe(gulp.dest('www/js'));
 };
 
 const addRev = () =>
     gulp
-        .src(['./www/js/{bot,index}*.js'])
+        .src(['./www/js/bot*.js'])
         .pipe(rev())
         .pipe(through.obj(addToManifest))
         .pipe(gulp.dest('www/js'));

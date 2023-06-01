@@ -1,25 +1,22 @@
 const gulp = require('gulp');
 const connect = require('gulp-connect');
 const mustache = require('gulp-mustache');
-const { getManifest } = require('./revision');
 require('./static');
 require('./webpack');
 
-const getConfig = prefix => ({
-    bot: `<script src="js/${prefix ? getManifest(`bot${prefix}.js`) : 'bot.js'}"></script>`,
-});
-
-const genHtml = min =>
-    gulp
+const genHtml = () => {
+    const { NODE_ENV = 'development' } = process.env || {};
+    return gulp
         .src('templates/*.mustache')
-        .pipe(mustache({}, { extension: '.html' }, getConfig(min === true ? '.min' : '')))
+        .pipe(mustache({}, { extension: '.html' }, NODE_ENV === 'production' ? '.min' : ''))
         .pipe(gulp.dest('./www'))
         .pipe(connect.reload());
+};
 
 gulp.task(
     'build-dev-html',
     gulp.series(done => {
-        genHtml(false);
+        genHtml();
         done();
     })
 );
@@ -27,7 +24,7 @@ gulp.task(
 gulp.task(
     'build-dev-js',
     gulp.series('webpack-dev', done => {
-        genHtml(false);
+        genHtml();
         done();
     })
 );
@@ -35,7 +32,7 @@ gulp.task(
 gulp.task(
     'build-dev-static',
     gulp.series('static', done => {
-        genHtml(false);
+        genHtml();
         done();
     })
 );
@@ -43,7 +40,7 @@ gulp.task(
 gulp.task(
     'build-min',
     gulp.series('static', 'webpack-prod', 'pull-blockly-translations', done => {
-        genHtml(false);
+        genHtml();
         done();
     })
 );

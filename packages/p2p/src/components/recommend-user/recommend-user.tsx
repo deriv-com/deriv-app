@@ -1,7 +1,14 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Button, Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
+
+type TRecommendUserProps = {
+    is_buy_order_for_user: boolean;
+    is_user_recommended_previously: number | null;
+    onClickClearRecommendation: () => void;
+    onClickNotRecommended: () => void;
+    onClickRecommended: () => void;
+};
 
 const RecommendUser = ({
     is_buy_order_for_user,
@@ -9,7 +16,7 @@ const RecommendUser = ({
     onClickClearRecommendation,
     onClickNotRecommended,
     onClickRecommended,
-}) => {
+}: TRecommendUserProps) => {
     const [is_no_selected, setIsNoSelected] = React.useState(false);
     const [is_yes_selected, setIsYesSelected] = React.useState(false);
 
@@ -66,7 +73,7 @@ const RecommendUser = ({
                 <Button className='recommend-user__block' onClick={handleSelectYes} secondary>
                     <Icon
                         className='recommend-user__block__icon'
-                        color={!is_yes_selected && 'disabled'}
+                        color={!is_yes_selected ? 'disabled' : undefined}
                         icon='IcThumbsUp'
                         size={16}
                     />
@@ -77,7 +84,7 @@ const RecommendUser = ({
                 <Button className='recommend-user__block' onClick={handleSelectNo} secondary>
                     <Icon
                         className='recommend-user__block__icon'
-                        color={!is_no_selected && 'disabled'}
+                        color={!is_no_selected ? 'disabled' : undefined}
                         icon='IcThumbsDown'
                         size={16}
                     />
@@ -88,14 +95,6 @@ const RecommendUser = ({
             </div>
         </div>
     );
-};
-
-RecommendUser.propTypes = {
-    is_buy_order_for_user: PropTypes.bool,
-    is_user_recommended_previously: PropTypes.number,
-    onClickClearRecommendation: PropTypes.func,
-    onClickNotRecommended: PropTypes.func,
-    onClickRecommended: PropTypes.func,
 };
 
 export default RecommendUser;

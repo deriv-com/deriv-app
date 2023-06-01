@@ -5,8 +5,9 @@ import { useStore, observer } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 // TODO: 'transfer_accounts' should be replaced after connecting to API call
 import { transfer_accounts } from './mock_accounts/mock_accounts';
-import type { TAccount } from './types';
 import './wallet-transfer.scss';
+
+type TAccount = React.ComponentProps<typeof TransferAccountSelector>['value'];
 
 const Divider = () => <div className='wallet-transfer__divider' />;
 

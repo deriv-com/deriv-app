@@ -1,6 +1,8 @@
 import React from 'react';
 import { Badge } from '@deriv/components';
 
+// TODO: This mock_accounts file should be removed after connecting to API call
+
 const trading_account_names = [
     'Deriv Apps Demo',
     'MT5 Derived Demo',

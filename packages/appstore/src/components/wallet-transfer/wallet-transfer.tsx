@@ -3,6 +3,7 @@ import { AmountInput, TransferAccountSelector } from '@deriv/components';
 import { getDecimalPlaces } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
+// TODO: 'transfer_accounts' should be replaced after connecting to API call
 import { transfer_accounts } from './mock_accounts/mock_accounts';
 import type { TAccount } from './types';
 import './wallet-transfer.scss';
@@ -20,9 +21,10 @@ const WalletTransfer = observer(() => {
 
     const account_list_height_with_offset = 'calc(100vh - 12.2rem)';
 
-    const portal_id = is_mobile ? 'mobile_list_modal_root' : 'modal_root';
+    const portal_id = is_mobile ? 'mobile_list_modal_root' : 'desktop_list_modal_root';
 
     const to_account_list = React.useMemo(() => {
+        // TODO: 'Demo USD Wallet' should be replaced to the current open wallet after connecting to API call
         if (from_account?.label === 'Demo USD Wallet') {
             setToAccount(undefined);
             return { accounts: transfer_accounts.accounts, wallets: [] };
@@ -32,6 +34,7 @@ const WalletTransfer = observer(() => {
     }, [from_account?.label]);
 
     const transfer_to_hint = React.useMemo(() => {
+        // TODO: 'Demo USD Wallet' should be replaced to the current open wallet after connecting to API call
         return to_account?.label === 'Demo USD Wallet' ? (
             <Localize
                 i18n_default_text='You can only transfer funds from the {{account}} to the linked {{wallet}}.'
@@ -64,6 +67,7 @@ const WalletTransfer = observer(() => {
                     placeholder={localize('Select a trading account or a Wallet')}
                     portal_id={portal_id}
                     transfer_accounts={transfer_accounts}
+                    // TODO: 'Demo USD Wallet' should be replaced to the current open wallet after connecting to API call
                     wallet_name='Demo USD Wallet'
                     value={from_account}
                 />
@@ -86,6 +90,7 @@ const WalletTransfer = observer(() => {
                     portal_id={portal_id}
                     transfer_accounts={to_account_list}
                     transfer_hint={transfer_to_hint}
+                    // TODO: 'Demo USD Wallet' should be replaced to the current open wallet after connecting to API call
                     wallet_name='Demo USD Wallet'
                     value={to_account}
                 />

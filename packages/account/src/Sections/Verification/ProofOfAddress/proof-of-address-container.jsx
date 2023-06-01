@@ -104,6 +104,7 @@ const ProofOfAddressContainer = ({
             onClick={() => {
                 const url = platforms[from_platform.ref]?.url;
                 window.location.href = url;
+                window.localStorage.removeItem('config.platform');
             }}
         >
             <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name: from_platform.name }} />

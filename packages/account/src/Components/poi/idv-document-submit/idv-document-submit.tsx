@@ -1,9 +1,9 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { Form, Formik, FormikHelpers } from 'formik';
+import { GetSettings, ResidenceList, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
 import { Button } from '@deriv/components';
-import { Formik } from 'formik';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import {
     WS,
     IDV_NOT_APPLICABLE_OPTION,
@@ -12,23 +12,46 @@ import {
     isDesktop,
     removeEmptyPropertiesFromObject,
 } from '@deriv/shared';
-import { documentAdditionalError, getRegex, validate, makeSettingsRequest, validateName } from 'Helpers/utils';
-import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
+import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
+import FormFooter from 'Components/form-footer';
 import IDVForm from 'Components/forms/idv-form';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
 import FormSubHeader from 'Components/form-sub-header';
+import {
+    validate,
+    makeSettingsRequest,
+    validateName,
+    shouldHideHelperImage,
+    isDocumentTypeValid,
+    isAdditionalDocumentValid,
+    isDocumentNumberValid,
+} from 'Helpers/utils';
+import { TIDVForm, TPersonalDetailsForm } from 'Types';
+
+type TIdvDocumentSubmit = {
+    handleBack: () => void;
+    handleViewComplete: () => void;
+    selected_country: ResidenceList[0];
+    account_settings: GetSettings;
+    getChangeableFields: () => Array<string>;
+};
+
+type TIdvDocumentSubmitForm = TIDVForm & TPersonalDetailsForm;
 
 const IdvDocumentSubmit = ({
     handleBack,
     handleViewComplete,
     selected_country,
-    is_from_external,
     account_settings,
     getChangeableFields,
-}) => {
+}: TIdvDocumentSubmit) => {
     const visible_settings = ['first_name', 'last_name', 'date_of_birth'];
-    const form_initial_values = filterObjProperties(account_settings, visible_settings) || {};
+    const side_note_image = <PoiNameDobExample />;
+
+    const form_initial_values = filterObjProperties(account_settings, visible_settings) as {
+        [Property in keyof TPersonalDetailsForm]: string;
+    };
 
     if (form_initial_values.date_of_birth) {
         form_initial_values.date_of_birth = toMoment(form_initial_values.date_of_birth).format('YYYY-MM-DD');
@@ -36,7 +59,7 @@ const IdvDocumentSubmit = ({
 
     const changeable_fields = [...getChangeableFields()];
 
-    const initial_values = {
+    const initial_values: TIdvDocumentSubmitForm = {
         document_type: {
             id: '',
             text: '',
@@ -48,43 +71,8 @@ const IdvDocumentSubmit = ({
         ...form_initial_values,
     };
 
-    const getExampleFormat = example_format => {
-        return example_format ? localize('Example: ') + example_format : '';
-    };
-
-    const shouldHideHelperImage = document_id => document_id === IDV_NOT_APPLICABLE_OPTION.id;
-
-    const isDocumentTypeValid = document_type => {
-        if (!document_type?.text) {
-            return localize('Please select a document type.');
-        }
-        return undefined;
-    };
-
-    const isAdditionalDocumentValid = (document_type, document_additional) => {
-        const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
-        if (error_message) {
-            return localize(error_message) + getExampleFormat(document_type.additional?.example_format);
-        }
-        return undefined;
-    };
-
-    const isDocumentNumberValid = (document_number, document_type) => {
-        const is_document_number_invalid = document_number === document_type.example_format;
-        if (!document_number) {
-            return localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
-        } else if (is_document_number_invalid) {
-            return localize('Please enter a valid ID number.');
-        }
-        const format_regex = getRegex(document_type.value);
-        if (!format_regex.test(document_number)) {
-            return localize('Please enter the correct format. ') + getExampleFormat(document_type.example_format);
-        }
-        return undefined;
-    };
-
-    const validateFields = values => {
-        const errors = {};
+    const validateFields = (values: TIdvDocumentSubmitForm) => {
+        const errors: Record<string, unknown> = {};
         const { document_type, document_number, document_additional } = values;
         const needs_additional_document = !!document_type.additional;
 
@@ -109,7 +97,15 @@ const IdvDocumentSubmit = ({
         return removeEmptyPropertiesFromObject(errors);
     };
 
-    const submitHandler = async (values, { setSubmitting, setErrors }) => {
+    const submitHandler = async (
+        values: TIdvDocumentSubmitForm,
+        {
+            setSubmitting,
+            setErrors,
+        }: Pick<FormikHelpers<TIdvDocumentSubmitForm>, 'setSubmitting'> & {
+            setErrors: (props: Record<string, string>) => void;
+        }
+    ) => {
         setSubmitting(true);
 
         const request = makeSettingsRequest(values, changeable_fields);
@@ -138,46 +134,25 @@ const IdvDocumentSubmit = ({
         if (submit_data.document_type === IDV_NOT_APPLICABLE_OPTION.id) {
             return;
         }
-        WS.send(submit_data).then(response => {
-            setSubmitting(false);
-            if (response.error) {
-                setErrors({ error_message: response.error.message });
-                return;
+        WS.send(submit_data).then(
+            (response: IdentityVerificationAddDocumentResponse & { error: { message: string } }) => {
+                setSubmitting(false);
+                if (response.error) {
+                    setErrors({ error_message: response.error.message });
+                    return;
+                }
+                handleViewComplete();
             }
-            handleViewComplete();
-        });
+        );
     };
 
     return (
         <Formik initialValues={{ ...initial_values }} validate={validateFields} onSubmit={submitHandler}>
-            {({
-                dirty,
-                errors,
-                handleBlur,
-                handleChange,
-                handleSubmit,
-                isSubmitting,
-                isValid,
-                setFieldValue,
-                setFieldTouched,
-                touched,
-                values,
-            }) => (
-                <div className='proof-of-identity__container proof-of-identity__container--reset'>
+            {({ dirty, isSubmitting, isValid, values }) => (
+                <Form className='proof-of-identity__container proof-of-identity__container--reset'>
                     <section className='form-body'>
                         <FormSubHeader title={localize('Identity verification')} />
-                        <IDVForm
-                            errors={errors}
-                            touched={touched}
-                            values={values}
-                            handleChange={handleChange}
-                            handleBlur={handleBlur}
-                            setFieldValue={setFieldValue}
-                            hide_hint={false}
-                            selected_country={selected_country}
-                            is_from_external={is_from_external}
-                            class_name='idv-layout'
-                        />
+                        <IDVForm hide_hint={false} selected_country={selected_country} class_name='idv-layout' />
 
                         <FormSubHeader title={localize('Details')} />
                         <div
@@ -188,17 +163,17 @@ const IdvDocumentSubmit = ({
                             })}
                         >
                             <PersonalDetailsForm
-                                errors={errors}
-                                touched={touched}
-                                values={values}
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
-                                setFieldValue={setFieldValue}
-                                setFieldTouched={setFieldTouched}
-                                is_qualified_for_idv={true}
+                                is_qualified_for_idv
                                 is_appstore
+                                side_note={side_note_image}
                                 should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
                                 editable_fields={changeable_fields}
+                                inline_note_text={
+                                    <Localize
+                                        i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                        components={[<strong key={0} />]}
+                                    />
+                                }
                             />
                         </div>
                     </section>
@@ -211,7 +186,6 @@ const IdvDocumentSubmit = ({
                         <Button
                             className='proof-of-identity__submit-button'
                             type='submit'
-                            onClick={handleSubmit}
                             has_effect
                             is_disabled={!dirty || isSubmitting || !isValid}
                             text={localize('Verify')}
@@ -219,19 +193,10 @@ const IdvDocumentSubmit = ({
                             primary
                         />
                     </FormFooter>
-                </div>
+                </Form>
             )}
         </Formik>
     );
-};
-
-IdvDocumentSubmit.propTypes = {
-    account_settings: PropTypes.object,
-    getChangeableFields: PropTypes.func,
-    handleBack: PropTypes.func,
-    handleViewComplete: PropTypes.func,
-    is_from_external: PropTypes.bool,
-    selected_country: PropTypes.object,
 };
 
 export default IdvDocumentSubmit;

@@ -1,9 +1,15 @@
 import React from 'react';
 import { Formik, FormikValues, FormikHelpers, FormikErrors, Form } from 'formik';
-import { localize } from '@deriv/translations';
 import classNames from 'classnames';
+import { GetSettings } from '@deriv/api-types';
+import { Localize, localize } from '@deriv/translations';
 import { Button } from '@deriv/components';
+import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
 import { filterObjProperties, toMoment, removeEmptyPropertiesFromObject } from '@deriv/shared';
+import FormSubHeader from 'Components/form-sub-header';
+import IDVForm from 'Components/forms/idv-form';
+import PersonalDetailsForm from 'Components/forms/personal-details-form';
+import FormFooter from 'Components/form-footer';
 import {
     validate,
     validateName,
@@ -12,11 +18,6 @@ import {
     isDocumentNumberValid,
     shouldHideHelperImage,
 } from 'Helpers/utils';
-import FormSubHeader from 'Components/form-sub-header';
-import IDVForm from 'Components/forms/idv-form';
-import PersonalDetailsForm from 'Components/forms/personal-details-form';
-import FormFooter from 'Components/form-footer';
-import { GetSettings } from '@deriv/api-types';
 
 type TIdvDocSubmitOnSignup = {
     citizen_data: FormikValues;
@@ -26,7 +27,6 @@ type TIdvDocSubmitOnSignup = {
         action: FormikHelpers<{ document_type: FormikValues; document_number: FormikValues }>
     ) => void;
     value: FormikValues;
-    has_idv_error?: boolean;
     account_settings: GetSettings;
     getChangeableFields: () => string[];
 };
@@ -37,6 +37,7 @@ export const IdvDocSubmitOnSignup = ({
     account_settings,
     getChangeableFields,
 }: TIdvDocSubmitOnSignup) => {
+    const side_note_image = <PoiNameDobExample />;
     const validateFields = (values: FormikValues) => {
         const errors: FormikErrors<FormikValues> = {};
         const { document_type, document_number, document_additional } = values;
@@ -95,32 +96,11 @@ export const IdvDocSubmitOnSignup = ({
             validateOnChange
             validateOnBlur
         >
-            {({
-                errors,
-                handleBlur,
-                handleChange,
-                isSubmitting,
-                isValid,
-                setFieldValue,
-                setFieldTouched,
-                touched,
-                dirty,
-                values,
-            }) => (
+            {({ isSubmitting, isValid, dirty, values }) => (
                 <Form className='proof-of-identity__container proof-of-identity__container--reset mt5-layout'>
                     <section className='mt5-layout__container'>
                         <FormSubHeader title={localize('Identity verification')} />
-                        <IDVForm
-                            errors={errors}
-                            touched={touched}
-                            values={values}
-                            handleChange={handleChange}
-                            handleBlur={handleBlur}
-                            setFieldValue={setFieldValue}
-                            hide_hint={false}
-                            selected_country={citizen_data}
-                            class_name='idv-layout'
-                        />
+                        <IDVForm hide_hint={false} selected_country={citizen_data} class_name='idv-layout' />
                         <FormSubHeader title={localize('Identity verification')} />
                         <div
                             className={classNames({
@@ -130,17 +110,17 @@ export const IdvDocSubmitOnSignup = ({
                             })}
                         >
                             <PersonalDetailsForm
-                                errors={errors}
-                                touched={touched}
-                                values={values}
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
-                                setFieldValue={setFieldValue}
-                                setFieldTouched={setFieldTouched}
-                                is_qualified_for_idv={true}
+                                is_qualified_for_idv
                                 is_appstore
                                 should_hide_helper_image={shouldHideHelperImage(values?.document_type?.id)}
                                 editable_fields={changeable_fields}
+                                side_note={side_note_image}
+                                inline_note_text={
+                                    <Localize
+                                        i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                        components={[<strong key={0} />]}
+                                    />
+                                }
                             />
                         </div>
                     </section>

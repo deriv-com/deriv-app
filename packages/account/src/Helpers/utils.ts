@@ -8,11 +8,14 @@ import {
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
-import { FormikErrors, FormikValues } from 'formik';
+import { FormikValues } from 'formik';
 
 const getImageLocation = (image_name: string) => getUrlBase(`/public/images/common/${image_name}`);
 
-export const documentAdditionalError = (document_additional: string, document_additional_format: string) => {
+export const documentAdditionalError = (
+    document_additional: string | undefined,
+    document_additional_format: string
+) => {
     let error_message = null;
     if (!document_additional) {
         error_message = localize('Please enter your document number. ');
@@ -223,14 +226,14 @@ export const generatePlaceholderText = (selected_doc: string) => {
     }
 };
 
-export const validate =
-    (errors: Record<string, string>, values: Record<string, string>) =>
-    (fn: (value: string) => string, arr: string[], err_msg: string) => {
+export const validate = <T>(errors: Record<string, unknown>, values: T) => {
+    return (fn: (value: string) => string, arr: string[], err_msg: string) => {
         arr.forEach(field => {
-            const value = values[field];
-            if (!fn(value) && !errors[field]) errors[field] = err_msg;
+            const value = values[field as keyof typeof values] as string;
+            if (!fn(value) && !errors[field] && !err_msg) errors[field] = err_msg;
         });
     };
+};
 
 export const isFieldImmutable = (field: string, mutable_fields: string[] = []) => !mutable_fields.includes(field);
 
@@ -271,7 +274,7 @@ export const isDocumentTypeValid = (document_type: FormikValues) => {
     return undefined;
 };
 
-export const isAdditionalDocumentValid = (document_type: FormikValues, document_additional: string) => {
+export const isAdditionalDocumentValid = (document_type: FormikValues, document_additional?: string) => {
     const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
     if (error_message) {
         return localize(error_message) + getExampleFormat(document_type.additional?.example_format);

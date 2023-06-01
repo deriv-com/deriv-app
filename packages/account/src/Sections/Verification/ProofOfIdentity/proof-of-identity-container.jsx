@@ -117,12 +117,19 @@ const ProofOfIdentityContainer = ({
         </Button>
     );
 
+    const should_show_mismatch_form =
+        idv.submissions_left > 0 &&
+        [identity_status_codes.rejected, identity_status_codes.suspected, identity_status_codes.expired].includes(
+            idv.status
+        );
+
     if (
         identity_status === identity_status_codes.none ||
         has_require_submission ||
         allow_poi_resubmission ||
         (should_ignore_idv && is_last_attempt_idv && manual?.status !== 'verified' && manual?.status !== 'pending') ||
-        (should_ignore_idv && is_last_attempt_onfido && last_attempt_status === 'rejected')
+        (should_ignore_idv && is_last_attempt_onfido && last_attempt_status === 'rejected') ||
+        should_show_mismatch_form
     ) {
         return (
             <POISubmission
@@ -144,6 +151,7 @@ const ProofOfIdentityContainer = ({
                 residence_list={residence_list}
                 setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                 updateAccountStatus={updateAccountStatus}
+                should_show_mismatch_form={should_show_mismatch_form}
             />
         );
     } else if (
@@ -189,11 +197,14 @@ const ProofOfIdentityContainer = ({
         case service_code.idv:
             return (
                 <IdvContainer
+                    account_settings={account_settings}
                     handleRequireSubmission={handleRequireSubmission}
+                    getChangeableFields={getChangeableFields}
                     idv={idv}
                     is_from_external={!!is_from_external}
                     needs_poa={needs_poa}
                     redirect_button={redirect_button}
+                    residence_list={residence_list}
                 />
             );
         case service_code.onfido:

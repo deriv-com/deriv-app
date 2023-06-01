@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
-import { WS } from '@deriv/shared';
+import { formatIDVError, WS, idv_error_statuses } from '@deriv/shared';
 import CountrySelector from 'Components/poi/poi-country-selector';
 import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
-import IdvUploadComplete from 'Components/poi/idv-status/idv-submit-complete';
+import IdvFailed from 'Components/poi/idv-status/idv-failed';
+import IdvSubmitComplete from 'Components/poi/idv-status/idv-submit-complete';
 import Unsupported from 'Components/poi/status/unsupported';
 import UploadComplete from 'Components/poi/status/upload-complete';
 import OnfidoUpload from './onfido-sdk-view-container';
@@ -26,6 +27,7 @@ const POISubmission = ({
     refreshNotifications,
     residence_list,
     setIsCfdPoiCompleted,
+    should_show_mismatch_form,
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // selecting, submitting, complete
     const [submission_service, setSubmissionService] = React.useState();
@@ -99,6 +101,14 @@ const POISubmission = ({
                     default:
                         break;
                 }
+            } else if (
+                ![(idv_error_statuses.poi_expired, idv_error_statuses.poi_failed)].includes(
+                    formatIDVError(idv.last_rejected, idv.status)
+                ) &&
+                idv.submissions_left > 0
+            ) {
+                setSubmissionService(service_code.idv);
+                setSubmissionStatus(submission_status_code.submitting);
             } else {
                 setSubmissionStatus(submission_status_code.selecting);
             }
@@ -127,7 +137,15 @@ const POISubmission = ({
         case submission_status_code.submitting: {
             switch (submission_service) {
                 case service_code.idv:
-                    return (
+                    return should_show_mismatch_form ? (
+                        <IdvFailed
+                            account_settings={account_settings}
+                            getChangeableFields={getChangeableFields}
+                            mismatch_status={formatIDVError(idv.last_rejected, idv.status)}
+                            residence_list={residence_list}
+                            handleSubmit={handleViewComplete}
+                        />
+                    ) : (
                         <IdvDocumentSubmit
                             handleViewComplete={handleViewComplete}
                             handleBack={handleBack}
@@ -169,8 +187,9 @@ const POISubmission = ({
             switch (submission_service) {
                 case service_code.idv:
                     return (
-                        <IdvUploadComplete
+                        <IdvSubmitComplete
                             is_from_external={is_from_external}
+                            mismatch_status={formatIDVError(idv.last_rejected, idv.status)}
                             needs_poa={needs_poa}
                             redirect_button={redirect_button}
                         />

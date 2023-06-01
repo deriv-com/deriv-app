@@ -1,5 +1,6 @@
 import React from 'react';
-import { Field } from 'formik';
+import { Link } from 'react-router-dom';
+import { Field, useFormikContext } from 'formik';
 import classNames from 'classnames';
 import {
     Autocomplete,
@@ -15,31 +16,20 @@ import {
 import { getLegalEntityName, isDesktop, isMobile, routes, validPhone } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
-import PoiNameDobExample from 'Assets/ic-poi-name-dob-example.svg';
 import InlineNoteWithIcon from 'Components/inline-note-with-icon';
 import FormBodySection from 'Components/form-body-section';
 import { DateOfBirthField, FormInputField } from 'Components/forms/form-fields';
-import { Link } from 'react-router-dom';
-import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 import { isFieldImmutable } from 'Helpers/utils';
+import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 
-const PersonalDetailsForm = ({
-    errors,
-    touched,
-    values,
-    setFieldValue,
-    handleChange,
-    handleBlur,
-    warning_items,
-    setFieldTouched,
-    ...props
-}) => {
+const PersonalDetailsForm = props => {
     const {
         is_virtual,
         is_mf,
         is_svg,
         is_qualified_for_idv,
         should_hide_helper_image,
+        inline_note_text,
         is_appstore,
         editable_fields = [],
         has_real_account,
@@ -48,15 +38,18 @@ const PersonalDetailsForm = ({
         account_opening_reason_list,
         closeRealAccountSignup,
         salutation_list,
-        is_rendered_for_onfido,
+        is_qualified_for_onfido,
         should_close_tooltip,
         setShouldCloseTooltip,
+        warning_items,
+        side_note,
     } = props;
     const autocomplete_value = 'none';
-    const PoiNameDobExampleIcon = PoiNameDobExample;
 
     const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
     const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
+
+    const { errors, touched, values, setFieldValue, handleChange, handleBlur, setFieldTouched } = useFormikContext();
 
     React.useEffect(() => {
         if (should_close_tooltip) {
@@ -66,7 +59,7 @@ const PersonalDetailsForm = ({
     }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
 
     const getNameAndDobLabels = () => {
-        const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_qualified_for_idv;
+        const is_asterisk_needed = is_svg || is_mf || is_qualified_for_onfido || is_qualified_for_idv;
         const first_name_label = is_appstore || is_asterisk_needed ? localize('First name*') : localize('First name');
         const last_name_label = is_appstore
             ? localize('Family name*')
@@ -86,7 +79,7 @@ const PersonalDetailsForm = ({
         return (
             <Localize
                 i18n_default_text={
-                    is_qualified_for_idv || is_rendered_for_onfido
+                    is_qualified_for_idv || is_qualified_for_onfido
                         ? 'Your {{ field_name }} as in your identity document'
                         : 'Please enter your {{ field_name }} as in your official identity documents.'
                 }
@@ -104,21 +97,14 @@ const PersonalDetailsForm = ({
         }
     }, [is_tax_residence_popover_open, is_tin_popover_open]);
 
-    const name_dob_clarification_message = (
-        <Localize
-            i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
-            components={[<strong key={0} />]}
-        />
-    );
-
     return (
         <div className={classNames({ 'account-form__poi-confirm-example': is_qualified_for_idv })}>
-            {(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image && (
-                <InlineNoteWithIcon message={name_dob_clarification_message} font_size={isMobile() ? 'xxxs' : 'xs'} />
+            {(is_qualified_for_idv || is_qualified_for_onfido) && !should_hide_helper_image && (
+                <InlineNoteWithIcon message={inline_note_text} font_size={isMobile() ? 'xxxs' : 'xs'} />
             )}
             <FormBodySection
-                has_side_note={(is_qualified_for_idv || is_rendered_for_onfido) && !should_hide_helper_image}
-                side_note={<PoiNameDobExampleIcon />}
+                has_side_note={(is_qualified_for_idv || is_qualified_for_onfido) && !should_hide_helper_image}
+                side_note={side_note}
             >
                 <fieldset className='account-form__fieldset'>
                     {'salutation' in values && (
@@ -144,7 +130,7 @@ const PersonalDetailsForm = ({
                             </Text>
                         </div>
                     )}
-                    {!is_qualified_for_idv && !is_appstore && !is_rendered_for_onfido && (
+                    {!is_qualified_for_idv && !is_appstore && !is_qualified_for_onfido && (
                         <FormSubHeader title={'salutation' in values ? localize('Title and name') : localize('Name')} />
                     )}
                     {'salutation' in values && (
@@ -196,7 +182,7 @@ const PersonalDetailsForm = ({
                             data-testid='last_name'
                         />
                     )}
-                    {!is_appstore && !is_qualified_for_idv && !is_rendered_for_onfido && (
+                    {!is_appstore && !is_qualified_for_idv && !is_qualified_for_onfido && (
                         <FormSubHeader title={localize('Other details')} />
                     )}
                     {'date_of_birth' in values && (
@@ -221,9 +207,7 @@ const PersonalDetailsForm = ({
                                     <DesktopWrapper>
                                         <Autocomplete
                                             {...field}
-                                            disabled={
-                                                isFieldImmutable('place_of_birth', editable_fields)
-                                            }
+                                            disabled={isFieldImmutable('place_of_birth', editable_fields)}
                                             data-lpignore='true'
                                             autoComplete={autocomplete_value} // prevent chrome autocomplete
                                             type='text'
@@ -241,9 +225,7 @@ const PersonalDetailsForm = ({
                                         <SelectNative
                                             placeholder={localize('Place of birth')}
                                             name={field.name}
-                                            disabled={
-                                                isFieldImmutable('place_of_birth', editable_fields)
-                                            }
+                                            disabled={isFieldImmutable('place_of_birth', editable_fields)}
                                             label={is_mf ? localize('Place of birth*') : localize('Place of birth')}
                                             list_items={residence_list}
                                             value={values.place_of_birth}

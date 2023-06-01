@@ -54,3 +54,33 @@ export const formatPortfolioPosition = (
         contract_update: portfolio_pos.limit_order,
     };
 };
+
+export const idv_error_statuses = Object.freeze({
+    poi_name_dob_mismatch: 'POI_NAME_DOB_MISMATCH',
+    poi_dob_mismatch: 'POI_DOB_MISMATCH',
+    poi_name_mismatch: 'POI_NAME_MISMATCH',
+    poi_expired: 'POI_EXPIRED',
+    poi_failed: 'POI_FAILED',
+});
+
+export type TIDVErrorStatus = typeof idv_error_statuses[keyof typeof idv_error_statuses];
+
+export const formatIDVError = (errors: string[], status_code: string) => {
+    const error_keys: Record<string, TIDVErrorStatus> = {
+        name: 'POI_NAME_MISMATCH',
+        birth: 'POI_DOB_MISMATCH',
+    };
+    if (status_code === 'expired') {
+        return 'POI_EXPIRED';
+    }
+    const status: TIDVErrorStatus[] = [];
+    errors.forEach(error => {
+        const error_regex = error.match(/(name|birth)/i);
+        if (error_regex) {
+            status.push(error_keys[error_regex[0].toLowerCase()]);
+        }
+    });
+    return status.includes(error_keys.name) && status.includes(error_keys.birth)
+        ? 'POI_NAME_DOB_MISMATCH'
+        : status[0] ?? 'POI_FAILED';
+};

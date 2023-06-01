@@ -52,6 +52,7 @@ const Autocomplete = React.memo(props => {
         should_filter_by_char,
         show_list = false,
         value,
+        name,
         ...other_props
     } = props;
 
@@ -295,6 +296,7 @@ const Autocomplete = React.memo(props => {
                     {...other_props}
                     className='dc-autocomplete__field'
                     error={error}
+                    name={name}
                     autoComplete={autoComplete}
                     onKeyDown={onKeyPressed}
                     onInput={filterList}
@@ -391,6 +393,7 @@ Autocomplete.propTypes = {
     onBlur: PropTypes.func,
     show_list: PropTypes.bool,
     hide_list: PropTypes.bool,
+    name: PropTypes.string,
 };
 
 export default Autocomplete;

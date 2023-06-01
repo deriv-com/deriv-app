@@ -1,20 +1,20 @@
-export const identity_status_codes = {
+export const identity_status_codes = Object.freeze({
     none: 'none',
     pending: 'pending',
     rejected: 'rejected',
     verified: 'verified',
     expired: 'expired',
     suspected: 'suspected',
-} as const;
+});
 
-export const submission_status_code = {
+export const submission_status_code = Object.freeze({
     selecting: 'selecting',
     submitting: 'submitting',
     complete: 'complete',
-} as const;
+});
 
-export const service_code = {
+export const service_code = Object.freeze({
     idv: 'idv',
     onfido: 'onfido',
     manual: 'manual',
-} as const;
+});

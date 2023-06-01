@@ -1,3 +1,3 @@
-import IdvNoSubmissions from './idv-limited';
+import IdvLimited from './idv-limited';
 
-export default IdvNoSubmissions;
+export default IdvLimited;

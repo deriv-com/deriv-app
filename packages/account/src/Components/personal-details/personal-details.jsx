@@ -136,7 +136,7 @@ const PersonalDetails = ({
                 onSubmit(getCurrentStep() - 1, values, actions.setSubmitting, goToNextStep);
             }}
         >
-            {({ handleSubmit, errors, setFieldValue, setFieldTouched, touched, values, handleChange, handleBlur }) => (
+            {({ handleSubmit, errors, values }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
                         <Form
@@ -180,12 +180,6 @@ const PersonalDetails = ({
                                                 <FormSubHeader title={localize('Identity verification')} />
                                                 <IDVForm
                                                     selected_country={selected_country}
-                                                    errors={errors}
-                                                    touched={touched}
-                                                    values={values}
-                                                    handleChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                    setFieldValue={setFieldValue}
                                                     hide_hint={true}
                                                     can_skip_document_verification={true}
                                                 />
@@ -201,13 +195,6 @@ const PersonalDetails = ({
                                                 })}
                                             >
                                                 <PersonalDetailsForm
-                                                    errors={errors}
-                                                    touched={touched}
-                                                    values={values}
-                                                    handleChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                    setFieldValue={setFieldValue}
-                                                    setFieldTouched={setFieldTouched}
                                                     is_virtual={is_virtual}
                                                     is_svg={is_svg}
                                                     is_mf={is_mf}
@@ -226,6 +213,12 @@ const PersonalDetails = ({
                                                     should_hide_helper_image={shouldHideHelperImage(
                                                         values?.document_type?.id
                                                     )}
+                                                    inline_note_text={
+                                                        <Localize
+                                                            i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                                            components={[<strong key={0} />]}
+                                                        />
+                                                    }
                                                 />
                                             </div>
                                         </React.Fragment>

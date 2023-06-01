@@ -65,6 +65,8 @@ export const getCrRealContent = (): TCompareAccountContentProps[] => [
         attribute: localize('Platform'),
         values: {
             synthetic_svg: { text: localize('MT5') },
+            financial_svg: { text: localize('MT5') },
+            financial_labuan: { text: localize('MT5') },
             derivx: { text: localize('Deriv X') },
         },
     },
@@ -129,6 +131,7 @@ export const getCrRealContent = (): TCompareAccountContentProps[] => [
         attribute: localize('Maximum leverage'),
         values: {
             synthetic_svg: { text: localize('Up to 1:1000') },
+            synthetic_bvi: { text: localize('Up to 1:1000') },
             financial_vanuatu: { text: localize('Up to 1:1000') },
             financial_labuan: { text: localize('Up to 1:100') },
             derivx: { text: localize('Up to 1:1000') },

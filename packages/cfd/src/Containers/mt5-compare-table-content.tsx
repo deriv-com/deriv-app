@@ -57,6 +57,10 @@ const Row = ({
     if (CFDs_restricted_countries) {
         delete values.derivx;
     }
+    // As we only show one account for Demo
+    if (content_flag === ContentFlag.CR_DEMO) {
+        delete values.financial_labuan;
+    }
 
     if (is_pre_appstore_setting && is_preappstore_restricted_cr_demo_account) {
         delete values.synthetic_bvi;

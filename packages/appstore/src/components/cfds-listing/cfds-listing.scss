@@ -1158,6 +1158,9 @@
                 grid-template-columns: repeat($column_count, 1fr);
             } @else if $column_count == 5 {
                 grid-template-columns: repeat($column_count - 1, 1fr);
+                @include mobile {
+                    grid-template-columns: repeat($column_count, 1fr);
+                }
             }
         }
     }
@@ -1360,6 +1363,9 @@
             &-row-eu {
                 width: unset;
                 height: unset;
+            }
+            &__table-header {
+                width: calc(250vw / 7 * 3);
             }
         }
         @for $column_count from 1 through 7 {

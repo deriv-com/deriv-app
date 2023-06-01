@@ -301,19 +301,20 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
     const need_poa_resubmission: boolean = failed_cases.includes(poa_status);
     const poa_verified: boolean = poa_status === 'verified';
     const poa_pending: boolean = poa_status === 'pending';
+    const poa_acknowledged: boolean = acknowledged_status.includes(poa_status);
 
     const poi_not_submitted: boolean = poi_status === 'none';
     const poi_or_poa_not_submitted: boolean = poa_not_submitted || poi_not_submitted;
     const poi_and_poa_not_submitted: boolean = poa_not_submitted && poi_not_submitted;
 
-    //vanuatu-maltainvest
+    //maltainvest
 
     // mf = maltainvest: only require onfido and manual
     const mf_jurisdiction_statuses: string[] = [onfido_status, manual_status].filter(
         (status: string | undefined) => status
     ) as string[];
-    // other jurisdictions: require idv, onfido and manual
-    const other_jurisdiction_statuses: string[] = [idv_status, onfido_status, manual_status].filter(
+    // bvi_labuan_vanuatu jurisdictions: require idv, onfido and manual
+    const bvi_labuan_vanuatu_jurisdiction_statuses: string[] = [idv_status, onfido_status, manual_status].filter(
         status => status
     ) as string[];
 
@@ -332,19 +333,19 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
 
     const poi_poa_verified_for_maltainvest = poi_verified_for_maltainvest && poa_verified;
 
-    //bvi-labuan
-    const poi_acknowledged_for_bvi_labuan_vanuatu: boolean = other_jurisdiction_statuses.some(status =>
+    //bvi-labuan-vanuatu
+    const poi_acknowledged_for_bvi_labuan_vanuatu: boolean = bvi_labuan_vanuatu_jurisdiction_statuses.some(status =>
         acknowledged_status.includes(status)
     );
     const need_poi_for_bvi_labuan_vanuatu = !poi_acknowledged_for_bvi_labuan_vanuatu;
-    const poi_not_submitted_for_bvi_labuan_vanuatu: boolean = other_jurisdiction_statuses.every(
+    const poi_not_submitted_for_bvi_labuan_vanuatu: boolean = bvi_labuan_vanuatu_jurisdiction_statuses.every(
         status => status === 'none'
     );
 
-    const poi_verified_for_bvi_labuan_vanuatu: boolean = other_jurisdiction_statuses.includes('verified');
+    const poi_verified_for_bvi_labuan_vanuatu: boolean = bvi_labuan_vanuatu_jurisdiction_statuses.includes('verified');
 
     const poi_pending_for_bvi_labuan_vanuatu: boolean =
-        other_jurisdiction_statuses.includes('pending') && !poi_verified_for_bvi_labuan_vanuatu;
+        bvi_labuan_vanuatu_jurisdiction_statuses.includes('pending') && !poi_verified_for_bvi_labuan_vanuatu;
 
     const poi_resubmit_for_bvi_labuan_vanuatu: boolean =
         !poi_pending_for_bvi_labuan_vanuatu &&
@@ -362,7 +363,7 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus): T
         acknowledged_status,
         poi_acknowledged_for_maltainvest,
         poi_poa_verified_for_bvi_labuan_vanuatu,
-        poa_acknowledged: acknowledged_status.includes(poa_status),
+        poa_acknowledged,
         poi_poa_verified_for_maltainvest,
         need_poa_submission,
         poi_verified_for_maltainvest,

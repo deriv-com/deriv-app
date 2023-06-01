@@ -2,7 +2,6 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { isDesktop } from '@deriv/shared';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores/index';
 import Verification from '../verification';
 
@@ -19,12 +18,9 @@ const mock_modal_manager = {
 
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
     ...jest.requireActual('Components/modal-manager/modal-manager-context'),
-    useModalManagerContext: jest.fn(() => mock_modal_manager as unknown as ReturnType<typeof useModalManagerContext>),
-}));
-
-jest.mock('Stores', () => ({
-    ...jest.requireActual('Stores'),
-    useStores: jest.fn().mockImplementation(() => () => true),
+    useModalManagerContext: jest.fn(() => ({
+        ...mock_modal_manager,
+    })),
 }));
 
 const mocked_store_values = {
@@ -38,12 +34,15 @@ const mocked_store_values = {
     },
 };
 
+jest.mock('Stores', () => ({
+    ...jest.requireActual('Stores'),
+    useStores: jest.fn(() => ({
+        general_store: { ...mocked_store_values },
+    })),
+}));
+
 describe('<Verification />', () => {
     it('should render default state', () => {
-        (useStores as jest.Mock).mockReturnValue({
-            general_store: { ...mocked_store_values },
-        });
-
         render(<Verification should_wrap={false} />);
 
         const el_dp2p_verification_container = screen.getByTestId('dt_verification_container');
@@ -51,17 +50,13 @@ describe('<Verification />', () => {
     });
 
     it('Should take default value false for should_wrap when not passed', () => {
-        (useStores as jest.Mock).mockReturnValue({
-            general_store: { ...mocked_store_values },
-        });
-
         render(<Verification />);
 
         const el_dp2p_verification_container = screen.getByTestId('dt_verification_container');
         expect(el_dp2p_verification_container).toBeInTheDocument();
     });
 
-    it('Should show nickname checklist item as done if user has naickname', () => {
+    it('Should show nickname checklist item as done if user has nickname', () => {
         (useStores as jest.Mock).mockReturnValue({
             general_store: { ...mocked_store_values, nickname: 'test', poi_status: 'verified', is_advertiser: true },
         });
@@ -139,10 +134,6 @@ describe('<Verification />', () => {
     });
 
     it('Should wrap the component if should_wrap prop is set to true', () => {
-        (useStores as jest.Mock).mockReturnValue({
-            general_store: { ...mocked_store_values },
-        });
-
         render(<Verification should_wrap />);
 
         const el_dp2p_verification_wrapper = screen.getByTestId('dt_verification_wrapper');

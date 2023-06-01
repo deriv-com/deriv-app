@@ -1,6 +1,6 @@
 import React from 'react';
 import { Statement } from '@deriv/api-types';
-import { isMobile } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
 
 type TStatementTransaction = DeepRequired<Statement>['transactions'][number];
@@ -29,6 +29,9 @@ const FiatTransactionListItem = ({
     icon_type,
     platform,
 }: TFiatTransactionListItem) => {
+    const {
+        ui: { is_mobile },
+    } = useStore();
     const formatAmount = (value: number) => value.toLocaleString(undefined, { minimumFractionDigits: 2 });
 
     const formatActionType = (value: string) => value[0].toUpperCase() + value.substring(1).replace(/_/, ' ');
@@ -48,18 +51,18 @@ const FiatTransactionListItem = ({
                 )}
                 <span>
                     <Text
-                        size={isMobile() ? 'xxxs' : 'xxs'}
+                        size={is_mobile ? 'xxxs' : 'xxs'}
                         color='less-prominent'
                         weight='lighter'
-                        line_height={isMobile() ? 's' : 'm'}
+                        line_height={is_mobile ? 's' : 'm'}
                     >
                         {formatActionType(action_type)}
                     </Text>
                     <Text
-                        size={isMobile() ? 'xxxs' : 'xxs'}
+                        size={is_mobile ? 'xxxs' : 'xxs'}
                         color='prominent'
                         weight='bold'
-                        line_height={isMobile() ? 's' : 'm'}
+                        line_height={is_mobile ? 's' : 'm'}
                     >
                         {account_name}
                     </Text>
@@ -67,18 +70,18 @@ const FiatTransactionListItem = ({
             </div>
             <span>
                 <Text
-                    size={isMobile() ? 'xxxs' : 'xxs'}
+                    size={is_mobile ? 'xxxs' : 'xxs'}
                     color={amount > 0 ? 'profit-success' : 'loss-danger'}
                     weight='bold'
-                    line_height={isMobile() ? 's' : 'm'}
+                    line_height={is_mobile ? 's' : 'm'}
                 >
                     {(amount > 0 ? '+' : '') + formatAmount(amount)} {currency}
                 </Text>
                 <Text
-                    size={isMobile() ? 'xxxxs' : 'xxxs'}
+                    size={is_mobile ? 'xxxxs' : 'xxxs'}
                     color='less-prominent'
                     weight='lighter'
-                    line_height={isMobile() ? 'm' : 's'}
+                    line_height={is_mobile ? 'm' : 's'}
                 >
                     Balance: {formatAmount(balance_after)} {currency}
                 </Text>

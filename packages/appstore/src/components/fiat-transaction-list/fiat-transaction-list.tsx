@@ -1,6 +1,6 @@
 import React from 'react';
 import { Statement } from '@deriv/api-types';
-import { getCurrencyDisplayCode, isCryptocurrency, isMobile } from '@deriv/shared';
+import { getCurrencyDisplayCode, isCryptocurrency } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import { useGroupedFiatTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
@@ -13,7 +13,7 @@ const FiatTransactionList = () => {
     const {
         client: { accounts, currency: wallet_currency, loginid },
         traders_hub: { is_demo },
-        ui: { is_dark_mode_on },
+        ui: { is_dark_mode_on, is_mobile },
     } = useStore();
     const grouped_transactions = useGroupedFiatTransactions();
     const linked_accounts = Object.values(accounts)
@@ -43,8 +43,8 @@ const FiatTransactionList = () => {
             <div className='fiat-transaction-list__day'>
                 <Text
                     className='fiat-transaction-list__day_header'
-                    size={isMobile() ? 'xxxxs' : 'xxxs'}
-                    line_height={isMobile() ? 'm' : 's'}
+                    size={is_mobile ? 'xxxxs' : 'xxxs'}
+                    line_height={is_mobile ? 'm' : 's'}
                     color='less-prominent'
                     weight='lighter'
                 >

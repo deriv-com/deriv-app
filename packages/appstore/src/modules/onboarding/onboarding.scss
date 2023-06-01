@@ -82,6 +82,7 @@
         &-buttons {
             display: flex;
             justify-content: space-around;
+            align-items: center;
             margin: 2.4rem 0;
 
             @include mobile {

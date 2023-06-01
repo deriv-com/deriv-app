@@ -94,12 +94,20 @@ const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboarding
             </div>
             <div className='onboarding-footer'>
                 <div className='onboarding-footer-wrapper'>
-                    <Text as='h2' weight='bold' size='sm' align='center' className='onboarding-footer-header'>
-                        {footer_header_text}
-                    </Text>
-                    <Text as='p' size='xs' align='center' className='onboarding-footer-text'>
-                        {footer_description}
-                    </Text>
+                    <div className='onboarding-footer-description'>
+                        <Text
+                            as='h2'
+                            weight='bold'
+                            size='sm'
+                            align='center'
+                            className='onboarding-footer-description__header'
+                        >
+                            {footer_header_text}
+                        </Text>
+                        <Text as='p' size='xs' align='center' className='onboarding-footer-description__text'>
+                            {footer_description}
+                        </Text>
+                    </div>
                     {isDesktop() && (
                         <div className='onboarding-footer-buttons'>
                             <Button secondary onClick={prevStep} style={step === 1 ? { visibility: 'hidden' } : {}}>

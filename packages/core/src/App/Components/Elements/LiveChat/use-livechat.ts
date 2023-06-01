@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { liveChatInitialization } from './live-chat';
 import Cookies from 'js-cookie';
-import { deriv_urls } from '@deriv/shared';
+import { deriv_urls, routes } from '@deriv/shared';
 
 // Todo: Should break this into smaller hooks or utility functions.
 const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
@@ -97,6 +97,14 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
                         window.LiveChatWidget?.call('set_customer_email', ' ');
                         window.LiveChatWidget?.call('set_customer_name', ' ');
                     };
+                }
+            }
+        });
+
+        window.LiveChatWidget?.on('new_event', event => {
+            if (event.greeting) {
+                if (event.greeting.id === 235 && window.location.pathname !== routes.cashier_p2p) {
+                    window.LiveChatWidget.call('hide_greeting');
                 }
             }
         });

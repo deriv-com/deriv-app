@@ -269,6 +269,7 @@ type TClientStore = {
     is_withdrawal_lock: boolean;
     landing_company_shortcode: string;
     is_populating_account_list: boolean;
+    is_language_loaded: boolean;
     local_currency_config: {
         currency: string;
         decimal_places?: number;
@@ -369,6 +370,7 @@ type TClientStore = {
     setFinancialAndTradingAssessment: (
         payload: SetFinancialAssessmentRequest
     ) => Promise<SetFinancialAssessmentResponse>;
+    prev_account_type: string;
 };
 
 type TCommonStoreError = {
@@ -545,6 +547,8 @@ type TTradersHubStore = {
     platform_demo_balance: TBalance;
     cfd_real_balance: TBalance;
     selectAccountType: (account_type: string) => void;
+    toggleIsTourOpen: (is_tour_open: boolean) => void;
+    is_demo_low_risk: boolean;
 };
 
 /**

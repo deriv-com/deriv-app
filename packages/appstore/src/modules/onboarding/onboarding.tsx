@@ -5,9 +5,8 @@ import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
 import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getTradingHubContents } from 'Constants/trading-hub-content';
 import { useHistory } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
 import EmptyOnboarding from './empty-onboarding';
+import { useStore, observer } from '@deriv/stores';
 
 type TOnboardingProps = {
     contents: Record<
@@ -24,10 +23,10 @@ type TOnboardingProps = {
     >;
 };
 
-const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) => {
+const Onboarding = observer(({ contents = getTradingHubContents() }: TOnboardingProps) => {
     const history = useHistory();
     const number_of_steps = Object.keys(contents);
-    const { traders_hub, client } = useStores();
+    const { traders_hub, client } = useStore();
     const { toggleIsTourOpen, selectAccountType, is_demo_low_risk, content_flag } = traders_hub;
     const { is_eu_country, is_logged_in, is_landing_company_loaded, prev_account_type, setPrevAccountType } = client;
     const [step, setStep] = React.useState<number>(1);
@@ -162,6 +161,6 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
             </div>
         </div>
     );
-};
+});
 
-export default observer(Onboarding);
+export default Onboarding;

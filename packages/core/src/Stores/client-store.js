@@ -1363,7 +1363,7 @@ export default class ClientStore extends BaseStore {
         }
         this.root_store.ui.setRealAccountSignupParams(form_values);
         const { document_number, document_type, document_additional, ...required_form_values } = form_values;
-        required_form_values.citizen = form_values?.citizen || this.account_settings.citizen || this.residence;
+        required_form_values.citizen = form_values?.citizen || this.account_settings?.citizen || this.residence;
 
         const response = is_maltainvest_account
             ? await WS.newAccountRealMaltaInvest(required_form_values)
@@ -1452,7 +1452,7 @@ export default class ClientStore extends BaseStore {
 
     get residence() {
         if (this.is_logged_in) {
-            return this.account_settings.country_code ?? '';
+            return this.account_settings?.country_code ?? '';
         }
         return '';
     }

@@ -1,5 +1,6 @@
 import { Formik, Field } from 'formik';
 import React from 'react';
+import InlineNoteWithIcon from 'Components/inline-note-with-icon';
 import {
     Modal,
     Autocomplete,
@@ -183,13 +184,26 @@ const PersonalDetails = ({
                             data-testid='personal_details_form'
                         >
                             <Div100vhContainer className='details-form' height_offset='90px' is_disabled={isDesktop()}>
-                                <Text as='p' size='xxxs' align='center' className='details-form__description'>
-                                    <Localize
-                                        i18n_default_text={
-                                            'Any information you provide is confidential and will be used for verification purposes only.'
-                                        }
-                                    />
-                                </Text>
+                                {is_mf && (
+                                    <div className='details-form__banner-container'>
+                                        <InlineNoteWithIcon
+                                            icon='IcAlertWarning'
+                                            message={localize(
+                                                ' For verification purposes as required by regulation. It’s your responsibility to provide accurate and complete answers. You can update personal details at any time in your account settings.'
+                                            )}
+                                            title={localize('Why do we collect this?')}
+                                        />
+                                    </div>
+                                )}
+                                {!is_mf && (
+                                    <Text as='p' size='xxxs' align='center' className='details-form__description'>
+                                        <Localize
+                                            i18n_default_text={
+                                                'Any information you provide is confidential and will be used for verification purposes only.'
+                                            }
+                                        />
+                                    </Text>
+                                )}
                                 <ThemedScrollbars
                                     height={height}
                                     onScroll={closeTooltipOnScroll}
@@ -209,7 +223,7 @@ const PersonalDetails = ({
                                         className='details-form__elements'
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}
                                     >
-                                        {'salutation' in props.value && (
+                                        {!is_mf && 'salutation' in props.value && (
                                             <div>
                                                 <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
                                                     {is_virtual ? (

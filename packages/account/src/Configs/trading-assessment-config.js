@@ -316,6 +316,7 @@ const tradingAssessmentConfig = (
         props: {
             validate: generateValidationFunction(real_account_signup_target, trading_assessment_form_config),
             assessment_questions: trading_assessment_questions(),
+            is_eu: real_account_signup_target === 'maltainvest',
             disabled_items: account_settings?.immutable_fields,
             setSubSectionIndex,
         },

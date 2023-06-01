@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
+import './inline-note-with-icon.scss';
 
 type TInlineNoteWithIconExtend = {
     icon: string;

@@ -70,6 +70,7 @@ const financialDetailsConfig = ({ real_account_signup_target, financial_assessme
             forex_trading_frequency_enum: forex_trading_frequency_enum(),
             estimated_worth_enum: estimated_worth_enum(),
             income_source_enum: income_source_enum(),
+            is_eu: real_account_signup_target === 'maltainvest',
             net_income_enum: net_income_enum(),
             occupation_enum: occupation_enum(),
             other_instruments_trading_experience_enum: other_instruments_trading_experience_enum(),

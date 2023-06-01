@@ -6,6 +6,7 @@ const TradingAssessmentNewUser = ({
     disabled_items,
     goToNextStep,
     goToPreviousStep,
+    is_eu,
     onSave,
     onCancel,
     onSubmit,
@@ -37,6 +38,7 @@ const TradingAssessmentNewUser = ({
         <TradingAssessmentForm
             assessment_questions={assessment_questions}
             form_value={value}
+            is_eu={is_eu}
             onSubmit={handleSubmit}
             onCancel={handleCancel}
             setSubSectionIndex={setSubSectionIndex}

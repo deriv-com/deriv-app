@@ -25,7 +25,8 @@ const TradersHub = () => {
         is_account_setting_loaded,
         has_active_real_account,
     } = client;
-    const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
+    const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user, is_real } =
+        traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
 
     const eu_user_closed_real_account_first_time = localStorage.getItem('eu_user_closed_real_account_first_time');
@@ -91,6 +92,23 @@ const TradersHub = () => {
         );
     };
 
+    const contentForOptionandCfdListing = () => {
+        if (is_eu_user && is_real) {
+            return (
+                <div className='traders-hub__main-container'>
+                    <CFDsListing />
+                    <OptionsAndMultipliersListing />
+                </div>
+            );
+        }
+        return (
+            <div className='traders-hub__main-container'>
+                <OptionsAndMultipliersListing />
+                <CFDsListing />
+            </div>
+        );
+    };
+
     return (
         <>
             <Div100vhContainer
@@ -103,12 +121,7 @@ const TradersHub = () => {
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     <MainTitleBar />
-                    <DesktopWrapper>
-                        <div className='traders-hub__main-container'>
-                            <OptionsAndMultipliersListing />
-                            <CFDsListing />
-                        </div>
-                    </DesktopWrapper>
+                    <DesktopWrapper>{contentForOptionandCfdListing()}</DesktopWrapper>
                     <MobileWrapper>
                         {is_landing_company_loaded ? (
                             <ButtonToggle

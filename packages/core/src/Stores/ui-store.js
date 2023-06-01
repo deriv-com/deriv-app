@@ -425,7 +425,10 @@ export default class UIStore extends BaseStore {
     }
 
     setIsClosingCreateRealAccountModal(is_closing_create_real_account_modal) {
-        localStorage.setItem('eu_user_closed_real_account_first_time', true);
+        if (!LocalStore.get('eu_user_closed_real_account_first_time')) {
+            this.root_store.traders_hub.toggleIsTourOpen(true);
+            LocalStore.set('eu_user_closed_real_account_first_time', true);
+        }
         this.is_closing_create_real_account_modal = is_closing_create_real_account_modal;
     }
 

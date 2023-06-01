@@ -72,7 +72,7 @@ const WizardHeading = ({ country_standpoint, currency, is_isle_of_man_residence,
                 country_standpoint.is_other_eu ||
                 country_standpoint.is_rest_of_eu
             ) {
-                return <Localize i18n_default_text='Add a real Deriv Multipliers account' />;
+                return <Localize i18n_default_text='Setup your account' />;
             }
             return <Localize i18n_default_text='Add a Deriv Financial account' />;
         case 'samoa':

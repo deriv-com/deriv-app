@@ -79,7 +79,7 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
         return <EmptyOnboarding />;
     }
 
-    if (is_logged_in && is_eu_user && !eu_user_closed_real_account_first_time) {
+    if (is_logged_in && !eu_user_closed_real_account_first_time) {
         setIsFromSignupAccount(true);
         history.push(routes.traders_hub);
     }

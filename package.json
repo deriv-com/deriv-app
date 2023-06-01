@@ -51,7 +51,7 @@
         "stylelint-selector-bem-pattern": "^2.1.0",
         "stylelint-webpack-plugin": "^2.1.1",
         "ts-jest": "^26.4.2",
-        "eslint-config-deriv-beta": "^1.0.2"
+        "eslint-config-deriv": "^1.0.0-beta.5"
     },
     "scripts": {
         "build:all": "nx build @deriv/components --skip-nx-cache && nx run-many --target=build",

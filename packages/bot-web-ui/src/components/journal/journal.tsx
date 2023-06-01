@@ -7,11 +7,11 @@ import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { JournalItem, JournalLoader, JournalTools } from './journal-components';
 import { TCheckedFilters, TFilterMessageValues, TJournalDataListArgs, TJournalProps } from './journal.types';
+import { isMobile } from '@deriv/shared';
 
 const Journal = ({
     contract_stage,
     filtered_messages,
-    is_mobile,
     is_stop_button_visible,
     unfiltered_messages,
     ...props
@@ -19,6 +19,7 @@ const Journal = ({
     const filtered_messages_length = Array.isArray(filtered_messages) && filtered_messages.length;
     const unfiltered_messages_length = Array.isArray(unfiltered_messages) && unfiltered_messages.length;
     const { checked_filters } = props;
+    const is_mobile = isMobile();
 
     return (
         <div
@@ -87,7 +88,7 @@ const Journal = ({
     );
 };
 
-export default connect(({ journal, run_panel, ui }: RootStore) => ({
+export default connect(({ journal, run_panel }: RootStore) => ({
     checked_filters: journal.checked_filters,
     filterMessage: journal.filterMessage,
     filters: journal.filters,
@@ -97,5 +98,4 @@ export default connect(({ journal, run_panel, ui }: RootStore) => ({
     unfiltered_messages: journal.unfiltered_messages,
     is_stop_button_visible: run_panel.is_stop_button_visible,
     contract_stage: run_panel.contract_stage,
-    is_mobile: ui.is_mobile,
 }))(Journal);

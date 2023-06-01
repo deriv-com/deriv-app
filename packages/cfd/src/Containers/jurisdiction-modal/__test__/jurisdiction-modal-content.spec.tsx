@@ -138,7 +138,24 @@ describe('JurisdictionModalContent', () => {
         real_synthetic_accounts_existing_data: [],
         real_financial_accounts_existing_data: [],
         real_swapfree_accounts_existing_data: [],
-        swapfree_available_accounts: [],
+        swapfree_available_accounts: [
+            {
+                market_type: 'gaming' as const,
+                name: '',
+                requirements: {
+                    after_first_deposit: {
+                        financial_assessment: [''],
+                    },
+                    compliance: {
+                        mt5: [''],
+                        tax_information: [''],
+                    },
+                    signup: [''],
+                },
+                shortcode: Jurisdiction.SVG,
+                sub_account_type: '',
+            },
+        ],
         card_flip_status: {
             svg: false,
             bvi: false,
@@ -322,9 +339,9 @@ describe('JurisdictionModalContent', () => {
     it('should display only svg jurisdiction card for swap-free account', () => {
         render(<JurisdictionModalContent {...mock_props} account_type='all' />);
         expect(screen.getByText('St. Vincent & Grenadines')).toBeInTheDocument();
-        expect(screen.getByText('British Virgin Islands')).not.toBeInTheDocument();
-        expect(screen.getByText('Labuan')).not.toBeInTheDocument();
-        expect(screen.getByText('Vanuatu')).not.toBeInTheDocument();
+        expect(screen.queryByText('British Virgin Islands')).not.toBeInTheDocument();
+        expect(screen.queryByText('Labuan')).not.toBeInTheDocument();
+        expect(screen.queryByText('Vanuatu')).not.toBeInTheDocument();
     });
 
     it('should display content of swap-free jurisdiction correctly in card', () => {

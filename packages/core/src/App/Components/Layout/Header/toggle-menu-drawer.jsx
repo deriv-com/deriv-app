@@ -505,6 +505,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         is_logging_in={is_logging_in}
                                         platform_config={platform_config}
                                         toggleDrawer={toggleDrawer}
+                                        current_language={current_language}
                                         setTogglePlatformType={setTogglePlatformType}
                                     />
                                 </MobileDrawer.SubHeader>

@@ -26,7 +26,7 @@ import {
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
-import { getAccountTitle, getClientAccountType } from './Helpers/client';
+import { getAccountTitle, getClientAccountType, getAvailableAccount } from './Helpers/client';
 import { getLanguage, localize } from '@deriv/translations';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 
@@ -151,6 +151,7 @@ export default class ClientStore extends BaseStore {
     prev_real_account_loginid = '';
     p2p_advertiser_info = {};
     prev_account_type = 'demo';
+    external_url_params = {};
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -158,6 +159,9 @@ export default class ClientStore extends BaseStore {
 
         makeObservable(this, {
             loginid: observable,
+            external_url_params: observable,
+            setExternalParams: action.bound,
+            redirectToLegacyPlatform: action.bound,
             preferred_language: observable,
             upgrade_info: observable,
             email: observable,
@@ -973,39 +977,61 @@ export default class ClientStore extends BaseStore {
         return this.isBotAllowed();
     }
 
-    getIsMarketTypeMatching = (account, market_type) =>
-        market_type === 'synthetic'
-            ? account.market_type === market_type || account.market_type === 'gaming'
-            : account.market_type === 'financial';
+    setExternalParams = params => {
+        this.external_url_params = params;
+    };
+
+    redirectToLegacyPlatform = () => {
+        const { url, should_redirect } = this.external_url_params;
+        if (should_redirect) {
+            window.location.replace(url);
+        }
+    };
+
+    getIsMarketTypeMatching = (account, market_type) => {
+        if (market_type === 'synthetic') {
+            return account.market_type === market_type || account.market_type === 'gaming';
+        } else if (market_type === 'all') {
+            return account.market_type === 'all';
+        }
+        return account.market_type === 'financial';
+    };
 
     isEligibleForMoreDemoMt5Svg(market_type) {
+        const is_synthetic = market_type === 'synthetic';
+        const available_account = getAvailableAccount(market_type);
         const existing_demo_accounts = this.mt5_login_list.filter(
             account => account.account_type === 'demo' && this.getIsMarketTypeMatching(account, market_type)
         );
-        return (
-            this.trading_platform_available_accounts.some(
-                account =>
-                    (market_type === 'synthetic' ? 'gaming' : 'financial') === account.market_type &&
-                    account.shortcode === 'svg'
-            ) && existing_demo_accounts.every(account => !(account.landing_company_short === 'svg'))
-        );
+        const has_matching_account = this.trading_platform_available_accounts.some(account => {
+            return (is_synthetic ? 'gaming' : available_account) === account.market_type && account.shortcode === 'svg';
+        });
+        const has_no_svg_account = existing_demo_accounts.every(account => {
+            return !(account.landing_company_short === 'svg');
+        });
+
+        return has_matching_account && has_no_svg_account;
     }
 
     isEligibleForMoreRealMt5(market_type) {
+        const is_synthetic = market_type === 'synthetic';
+        const available_account = getAvailableAccount(market_type);
         const existing_real_accounts = this.mt5_login_list.filter(
             account => account.account_type === 'real' && this.getIsMarketTypeMatching(account, market_type)
         );
         const available_real_accounts_shortcodes = this.trading_platform_available_accounts
             .filter(
                 account =>
-                    (market_type === 'synthetic' ? 'gaming' : 'financial') === account.market_type &&
+                    (is_synthetic ? 'gaming' : available_account) === account.market_type &&
                     account.shortcode !== 'maltainvest'
             )
             .map(account => account.shortcode);
 
-        return !!available_real_accounts_shortcodes.filter(shortcode =>
-            existing_real_accounts.every(account => account.landing_company_short !== shortcode)
-        ).length;
+        const has_no_matching_accounts = available_real_accounts_shortcodes.every(shortcode =>
+            existing_real_accounts.some(account => account.landing_company_short !== shortcode)
+        );
+
+        return !has_no_matching_accounts;
     }
 
     isMT5Allowed = landing_companies => {
@@ -1619,7 +1645,8 @@ export default class ClientStore extends BaseStore {
                 this.is_populating_account_list = false;
             });
             const language = authorize_response.authorize.preferred_language;
-            if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
+            const stored_language = LocalStore.get(LANGUAGE_KEY);
+            if (language !== 'EN' && stored_language && language !== stored_language) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));
                 await this.root_store.common.changeSelectedLanguage(language);
             }

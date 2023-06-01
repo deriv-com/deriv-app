@@ -1,7 +1,26 @@
 import React from 'react';
-import { screen, render, fireEvent } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { isDesktop } from '@deriv/shared';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores/index';
 import Verification from '../verification';
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    isDesktop: jest.fn(() => false),
+}));
+
+const mock_modal_manager = {
+    isCurrentModal: false,
+    showModal: jest.fn(),
+    hideModal: jest.fn(),
+};
+
+jest.mock('Components/modal-manager/modal-manager-context', () => ({
+    ...jest.requireActual('Components/modal-manager/modal-manager-context'),
+    useModalManagerContext: jest.fn(() => mock_modal_manager as unknown as ReturnType<typeof useModalManagerContext>),
+}));
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
@@ -13,13 +32,14 @@ const mocked_store_values = {
     nickname: '',
     poi_status: '',
     poiStatusText: jest.fn(),
+    toggleNicknamePopup: jest.fn(),
     props: {
         history: '',
     },
 };
 
 describe('<Verification />', () => {
-    it('Component should be rendered', () => {
+    it('should render default state', () => {
         (useStores as jest.Mock).mockReturnValue({
             general_store: { ...mocked_store_values },
         });
@@ -30,7 +50,7 @@ describe('<Verification />', () => {
         expect(el_dp2p_verification_container).toBeInTheDocument();
     });
 
-    it('Component should take default value false for should_wrap when not passed', () => {
+    it('Should take default value false for should_wrap when not passed', () => {
         (useStores as jest.Mock).mockReturnValue({
             general_store: { ...mocked_store_values },
         });
@@ -41,7 +61,7 @@ describe('<Verification />', () => {
         expect(el_dp2p_verification_container).toBeInTheDocument();
     });
 
-    it('Component should take checklist items status as done', () => {
+    it('Should show nickname checklist item as done if user has naickname', () => {
         (useStores as jest.Mock).mockReturnValue({
             general_store: { ...mocked_store_values, nickname: 'test', poi_status: 'verified', is_advertiser: true },
         });
@@ -52,7 +72,34 @@ describe('<Verification />', () => {
         expect(el_dp2p_verification_container).toBeInTheDocument();
     });
 
-    it('Component should handle onclick for going to account poi verification', () => {
+    it('Should toggle nickname popup if user has not set nickname', () => {
+        (useStores as jest.Mock).mockReturnValue({
+            general_store: { ...mocked_store_values, is_advertiser: true },
+        });
+
+        render(<Verification />);
+
+        const action_button = screen.getAllByTestId('dt_checklist_item_status_action')[0];
+        expect(action_button).toBeInTheDocument();
+        userEvent.click(action_button);
+        expect(mocked_store_values.toggleNicknamePopup).toBeCalledTimes(1);
+    });
+
+    it('Should open nickname form in desktop if user has not set nickname', () => {
+        (isDesktop as jest.Mock).mockReturnValue(true);
+        (useStores as jest.Mock).mockReturnValue({
+            general_store: { ...mocked_store_values, is_advertiser: true },
+        });
+
+        render(<Verification />);
+
+        const action_button = screen.getAllByTestId('dt_checklist_item_status_action')[0];
+        expect(action_button).toBeInTheDocument();
+        userEvent.click(action_button);
+        expect(mock_modal_manager.showModal).toBeCalledTimes(1);
+    });
+
+    it('Should redirect to account poi verification if poi has not been verified', () => {
         (useStores as jest.Mock).mockReturnValue({
             general_store: { ...mocked_store_values, nickname: 'test', is_advertiser: true },
         });
@@ -67,11 +114,31 @@ describe('<Verification />', () => {
         render(<Verification should_wrap />);
 
         const el_action_button = screen.getByTestId('dt_checklist_item_status_action');
-        fireEvent.click(el_action_button);
+        userEvent.click(el_action_button);
         expect(window.location.href).toBe('/account/proof-of-identity?ext_platform_url=/cashier/p2p');
     });
 
-    it('Should show verification wrapper if should_wrap prop is true', () => {
+    it('Should redirect to account poi verification with updated url when search param is present and poi not verified', () => {
+        (useStores as jest.Mock).mockReturnValue({
+            general_store: { ...mocked_store_values, nickname: 'test', is_advertiser: true },
+        });
+
+        Object.defineProperty(window, 'location', {
+            value: {
+                href: 'https://test.com',
+                search: '?test=1',
+            },
+            writable: true,
+        });
+
+        render(<Verification should_wrap />);
+
+        const el_action_button = screen.getByTestId('dt_checklist_item_status_action');
+        userEvent.click(el_action_button);
+        expect(window.location.href).toBe('/account/proof-of-identity?ext_platform_url=/cashier/p2p&test=1');
+    });
+
+    it('Should wrap the component if should_wrap prop is set to true', () => {
         (useStores as jest.Mock).mockReturnValue({
             general_store: { ...mocked_store_values },
         });
@@ -82,7 +149,7 @@ describe('<Verification />', () => {
         expect(el_dp2p_verification_wrapper).toBeInTheDocument();
     });
 
-    it('Should render Dp2pBlocked component', () => {
+    it('Should render Dp2pBlocked component if user is not advertiser, but is poi verified and has nickname', () => {
         (useStores as jest.Mock).mockReturnValue({
             general_store: { ...mocked_store_values, poi_status: 'verified', nickname: 'test' },
         });

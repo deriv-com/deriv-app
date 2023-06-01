@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Table, Button, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop, WS, getAuthenticationStatusInfo, CFD_PLATFORMS, ContentFlag } from '@deriv/shared';
+import { isDesktop, WS, getAuthenticationStatusInfo, CFD_PLATFORMS, ContentFlag, Jurisdiction } from '@deriv/shared';
 import { connect } from '../Stores/connect';
 import RootStore from '../Stores/index';
 import {
@@ -312,13 +312,13 @@ const DMT5CompareModalContent = ({
             case 'synthetic_svg':
             case 'financial_svg':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
-                setJurisdictionSelectedShortcode('svg');
+                setJurisdictionSelectedShortcode(Jurisdiction.SVG);
                 openPasswordModal(type_of_account);
                 break;
             case 'synthetic_bvi':
             case 'financial_bvi':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
-                setJurisdictionSelectedShortcode('bvi');
+                setJurisdictionSelectedShortcode(Jurisdiction.BVI);
                 if (
                     poi_acknowledged_for_bvi_labuan &&
                     !poi_or_poa_not_submitted &&
@@ -334,7 +334,7 @@ const DMT5CompareModalContent = ({
             case 'synthetic_vanuatu':
             case 'financial_vanuatu':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
-                setJurisdictionSelectedShortcode('vanuatu');
+                setJurisdictionSelectedShortcode(Jurisdiction.VANUATU);
                 if (
                     poi_acknowledged_for_vanuatu_maltainvest &&
                     !poi_or_poa_not_submitted &&
@@ -349,7 +349,7 @@ const DMT5CompareModalContent = ({
                 break;
             case 'financial_labuan':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
-                setJurisdictionSelectedShortcode('labuan');
+                setJurisdictionSelectedShortcode(Jurisdiction.LABUAN);
                 if (poi_acknowledged_for_bvi_labuan && poa_acknowledged && has_submitted_personal_details) {
                     openPasswordModal(type_of_account);
                 } else {
@@ -358,7 +358,7 @@ const DMT5CompareModalContent = ({
                 break;
             case 'financial_maltainvest':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
-                setJurisdictionSelectedShortcode('maltainvest');
+                setJurisdictionSelectedShortcode(Jurisdiction.MALTA_INVEST);
                 if ((poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) || is_demo_tab) {
                     openPasswordModal(type_of_account);
                 } else {

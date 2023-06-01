@@ -155,7 +155,6 @@ const StaticCFDAccountManager = ({
                     weight={has_account ? 'normal' : 'bold'}
                     color={is_blurry.item || is_last_step ? 'less-prominent' : platform_color}
                 >
-                    {/* TODO: is demo + demo_text */}
                     {appname} {is_demo && localize('Demo')}
                 </Text>
                 {has_account ? (

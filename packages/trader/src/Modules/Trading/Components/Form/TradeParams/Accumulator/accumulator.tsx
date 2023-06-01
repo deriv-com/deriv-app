@@ -1,5 +1,3 @@
-import { PropTypes as MobxPropTypes } from 'mobx-react';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
 import NumberSelector from 'App/Components/Form/number-selector.jsx';
@@ -7,6 +5,21 @@ import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { connect } from 'Stores/connect';
 import { getGrowthRatePercentage, getTickSizeBarrierPercentage, isEmptyObject } from '@deriv/shared';
 import classNames from 'classnames';
+import { TCoreStores } from '@deriv/stores/types.js';
+
+type TAccumulator = {
+    accumulator_range_list: number[];
+    growth_rate: number;
+    is_accumulator: boolean;
+    onChange: React.ChangeEventHandler<HTMLElement>;
+    tick_size_barrier: number;
+    proposal_info: {
+        ACCU?: {
+            has_error?: boolean;
+            id?: string;
+        };
+    };
+};
 
 const Accumulator = ({
     accumulator_range_list,
@@ -15,9 +28,9 @@ const Accumulator = ({
     onChange,
     tick_size_barrier,
     proposal_info,
-}) => {
+}: TAccumulator) => {
     // splitting accumulator_range_list into rows containing 5 values each:
-    const arr_arr_numbers = accumulator_range_list.reduce((acc, _el, index) => {
+    const arr_arr_numbers: number[][] = accumulator_range_list.reduce((acc: number[][], _el, index) => {
         if (index % 5 === 0) {
             acc.push(accumulator_range_list.slice(index, index + 5));
         }
@@ -51,16 +64,7 @@ const Accumulator = ({
     );
 };
 
-Accumulator.propTypes = {
-    accumulator_range_list: MobxPropTypes.arrayOrObservableArray,
-    growth_rate: PropTypes.number,
-    is_accumulator: PropTypes.boolean,
-    onChange: PropTypes.func,
-    proposal_info: PropTypes.object,
-    tick_size_barrier: PropTypes.number,
-};
-
-export default connect(({ modules }) => ({
+export default connect(({ modules }: TCoreStores) => ({
     is_accumulator: modules.trade.is_accumulator,
     accumulator_range_list: modules.trade.accumulator_range_list,
     growth_rate: modules.trade.growth_rate,

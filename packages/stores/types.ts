@@ -159,6 +159,7 @@ type TClientStore = {
     is_logging_in: boolean;
     is_low_risk: boolean;
     is_pending_proof_of_ownership: boolean;
+    is_single_currency: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
@@ -362,7 +363,6 @@ type TTradersHubStore = {
     is_demo: boolean;
     selectAccountType: (account_type: string) => void;
 };
-
 /**
  * This is the type that contains all the `core` package stores
  */

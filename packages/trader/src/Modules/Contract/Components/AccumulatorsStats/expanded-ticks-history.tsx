@@ -18,6 +18,7 @@ const ExpandedTicksHistory = ({ history_text_size, rows }: TExpandedTicksHistory
             >
                 {row.map((counter, idx) => (
                     <TicksHistoryCounter
+                        data_testid_ticks_history_counter='dt_accu_stats_history_counter'
                         key={idx.toString() + counter}
                         value={counter}
                         has_progress_dots={i === 0 && idx === 0}
@@ -27,10 +28,5 @@ const ExpandedTicksHistory = ({ history_text_size, rows }: TExpandedTicksHistory
         ))}
     </Text>
 );
-
-ExpandedTicksHistory.propTypes = {
-    history_text_size: PropTypes.string,
-    rows: PropTypes.array,
-};
 
 export default React.memo(ExpandedTicksHistory);

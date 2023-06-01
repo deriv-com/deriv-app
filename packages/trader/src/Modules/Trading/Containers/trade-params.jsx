@@ -7,7 +7,7 @@ import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
 import Duration from 'Modules/Trading/Components/Form/TradeParams/Duration';
 import LastDigit from 'Modules/Trading/Components/Form/TradeParams/last-digit.jsx';
 import CancelDeal from 'Modules/Trading/Components/Form/TradeParams/Multiplier/cancel-deal.jsx';
-import Accumulator from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulator.jsx';
+import Accumulator from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulator';
 import StopLoss from 'Modules/Trading/Components/Form/TradeParams/Multiplier/stop-loss.jsx';
 import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit.jsx';
 import Expiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration.jsx';

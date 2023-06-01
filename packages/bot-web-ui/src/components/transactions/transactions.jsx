@@ -1,10 +1,10 @@
-import classnames from 'classnames';
-import { Icon, DesktopWrapper, DataList, ThemedScrollbars, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { useNewRowTransition } from '@deriv/shared';
-import { PropTypes } from 'prop-types';
 import React from 'react';
+import classnames from 'classnames';
+import { PropTypes } from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
+import { DataList, DesktopWrapper, Icon, Text,ThemedScrollbars } from '@deriv/components';
+import { isMobile,useNewRowTransition } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import Download from 'Components/download';
 import { contract_stages } from 'Constants/contract-stage';
 import { transaction_elements } from 'Constants/transactions';
@@ -36,11 +36,13 @@ const TransactionItem = ({ row, is_new_row }) => {
     }
 };
 
-const Transactions = ({ contract_stage, elements, is_drawer_open, is_mobile, onMount, onUnmount }) => {
+const Transactions = ({ contract_stage, elements, is_drawer_open, onMount, onUnmount }) => {
     React.useEffect(() => {
         onMount();
         return () => onUnmount();
     }, [onMount, onUnmount]);
+
+    const is_mobile = isMobile();
 
     return (
         <div
@@ -155,15 +157,13 @@ Transactions.propTypes = {
     contract_stage: PropTypes.number,
     elements: PropTypes.array,
     is_drawer_open: PropTypes.bool,
-    is_mobile: PropTypes.bool,
     onMount: PropTypes.func,
     onUnmount: PropTypes.func,
 };
 
-export default connect(({ transactions, run_panel, ui }) => ({
+export default connect(({ transactions, run_panel }) => ({
     contract_stage: run_panel.contract_stage,
     elements: transactions.elements,
-    is_mobile: ui.is_mobile,
     onMount: transactions.onMount,
     onUnmount: transactions.onUnmount,
 }))(Transactions);

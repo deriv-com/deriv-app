@@ -4,7 +4,7 @@ import { observer, useStore } from '@deriv/stores';
 import WalletCardsCarousel from 'Components/wallet-cards-carousel';
 // import fake_wallets from '../../constants/wallet-mocked-response';
 // import { WalletCard } from '@deriv/components';
-import { fake_wallet_accounts } from '@deriv/shared';
+import { fake_wallet_accounts, sortWalletAccounts } from '@deriv/shared';
 import { TWalletAccount } from 'Types';
 
 // TODO: delete it after testing
@@ -19,7 +19,9 @@ const AccountWithWallets = observer(({ show_test_wallets = false }: TProps) => {
     } = useStore();
 
     // TODO: We have to create ONE type for desktop and responsive wallet!!!
-    const wallets_to_show: TWalletAccount[] = show_test_wallets ? fake_wallet_accounts : wallet_accounts;
+    const wallets_to_show: TWalletAccount[] = show_test_wallets
+        ? sortWalletAccounts(fake_wallet_accounts)
+        : wallet_accounts;
 
     return (
         <React.Fragment>

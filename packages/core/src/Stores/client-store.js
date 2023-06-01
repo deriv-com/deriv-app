@@ -24,7 +24,7 @@ import {
     toMoment,
     urlForLanguage,
     getWalletCurrencyIcon,
-    // fake_wallet_accounts,
+    sortWalletAccounts,
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
@@ -2714,10 +2714,7 @@ export default class ClientStore extends BaseStore {
     }
 
     get wallet_accounts() {
-        // just return fake wallet accounts
-        // return fake_wallet_accounts;
-
-        return Object.keys(this.accounts)
+        const wallets = Object.keys(this.accounts)
             .filter(key => this.accounts[key]?.account_category === 'wallet')
             .reduce((acc, cur) => {
                 const is_fiat =
@@ -2745,6 +2742,8 @@ export default class ClientStore extends BaseStore {
 
                 return acc;
             }, []);
+
+        return sortWalletAccounts(wallets);
     }
 }
 /* eslint-enable */

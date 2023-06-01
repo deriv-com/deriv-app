@@ -22,7 +22,7 @@ export const getHasDivider = (current_item_index: number, list_size: number, ava
     );
 };
 
-// TODO: Moved to shared package! Delete it later, right now uses for cashier wallet modals
+// TODO: Moved to shared package! Delete it later, right now it uses for cashier wallet modals
 // TODO: Refactor using data transformation layer pattern when we will have API for wallets (e.g. wallet.icon)
 export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_modal = false) => {
     switch (currency) {

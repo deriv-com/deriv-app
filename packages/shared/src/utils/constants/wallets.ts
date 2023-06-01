@@ -47,7 +47,24 @@ type TWalletAccount = {
     name: string;
 };
 
-// export const sortWalletAccounts = (accounts: TWalletAccount[]) => {};
+export const sortWalletAccounts = (accounts: TWalletAccount[]) => {
+    const fiat = accounts
+        .filter(account => account.icon_type === 'fiat' && !account.is_virtual)
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+    const crypro = accounts
+        .filter(account => account.icon_type === 'crypto' && !account.is_virtual)
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+    // there are not accounts this type in wallets API right now
+    const dp2p = accounts
+        .filter(account => account.currency === 'DP2P' && !account.is_virtual)
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+    const demo = accounts.filter(account => account.is_virtual).sort((a, b) => a.name.localeCompare(b.name));
+
+    return [...fiat, ...crypro, ...dp2p, ...demo];
+};
 
 export const fake_wallet_accounts: TWalletAccount[] = [
     {

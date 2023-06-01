@@ -2,6 +2,7 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { isDesktop } from '@deriv/shared';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores/index';
 import Verification from '../verification';
 
@@ -14,14 +15,15 @@ const mock_modal_manager = {
     isCurrentModal: false,
     showModal: jest.fn(),
     hideModal: jest.fn(),
+    random: jest.fn(),
 };
 
-jest.mock('Components/modal-manager/modal-manager-context', () => ({
-    ...jest.requireActual('Components/modal-manager/modal-manager-context'),
-    useModalManagerContext: jest.fn(() => ({
-        ...mock_modal_manager,
-    })),
-}));
+jest.mock('Components/modal-manager/modal-manager-context');
+const mocked_useModalManagerContext = useModalManagerContext as jest.MockedFunction<
+    () => Partial<ReturnType<typeof useModalManagerContext>>
+>;
+
+mocked_useModalManagerContext.mockImplementation(() => mock_modal_manager);
 
 const mocked_store_values = {
     is_advertiser: false,

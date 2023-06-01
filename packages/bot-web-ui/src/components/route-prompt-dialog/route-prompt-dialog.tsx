@@ -2,7 +2,7 @@ import React from 'react';
 import { localize, Localize } from '@deriv/translations';
 import { Dialog } from '@deriv/components';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { observer } from 'mobx-react';
+import { observer } from '@deriv/stores';
 
 const RoutePromptDialog = observer(() => {
     const { route_prompt_dialog } = useDBotStore();

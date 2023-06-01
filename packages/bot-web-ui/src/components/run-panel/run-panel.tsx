@@ -10,8 +10,7 @@ import SelfExclusion from 'Components/self-exclusion';
 import { popover_zindex } from 'Constants/z-indexes';
 import { isMobile } from '@deriv/shared';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { useStore } from '@deriv/stores';
-import { observer } from 'mobx-react';
+import { useStore, observer } from '@deriv/stores';
 
 type TStatisticsTile = {
     content: React.ElementType | string;

@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { MobileWrapper, Toast } from '@deriv/components';
-import { useStore } from '@deriv/stores';
-import { observer } from 'mobx-react';
+import { useStore, observer } from '@deriv/stores';
 
 // TODO: Need to sanitize,
 // Same sort of component is being used inside DTrader,

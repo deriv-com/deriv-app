@@ -5,11 +5,29 @@ import { connect } from 'Stores/connect';
 import { getGrowthRatePercentage, getTickSizeBarrierPercentage, isEmptyObject } from '@deriv/shared';
 import MultiplierOptions from 'Modules/Trading/Containers/Multiplier/multiplier-options.jsx';
 import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroupWithInfoMobile';
+import { TCoreStores } from '@deriv/stores/types';
+import { BuyContractRequest, Proposal, PriceProposalRequest, ProposalOpenContract } from '@deriv/api-types';
+
+type TRadioGroupOptionsModal = {
+    accumulator_range_list?: number[];
+    growth_rate: ProposalOpenContract['growth_rate'] &
+        Pick<NonNullable<BuyContractRequest['parameters']>, 'growth_rate'> &
+        PriceProposalRequest['growth_rate'];
+    is_open: boolean;
+    modal_title: string;
+    onChange: React.ComponentProps<typeof RadioGroupWithInfoMobile>['onChange'];
+    proposal_info: {
+        ACCU?: {
+            has_error?: boolean;
+            id?: string;
+        };
+    };
+    tick_size_barrier: NonNullable<Required<Proposal['contract_details']>>['tick_size_barrier'];
+    toggleModal: () => void;
+};
 
 const RadioGroupOptionsModal = ({
     accumulator_range_list,
-    enableApp,
-    disableApp,
     growth_rate,
     is_open,
     modal_title,
@@ -17,7 +35,7 @@ const RadioGroupOptionsModal = ({
     proposal_info,
     tick_size_barrier,
     toggleModal,
-}) => {
+}: TRadioGroupOptionsModal) => {
     // Fix to prevent iOS from zooming in erratically on quick taps
     usePreventIOSZoom();
     const has_error_or_not_loaded =
@@ -28,11 +46,9 @@ const RadioGroupOptionsModal = ({
             <Modal
                 id='dt_trade_parameters_mobile'
                 className='trade-params'
-                enableApp={enableApp}
                 is_open={is_open}
                 is_title_centered
                 should_header_stick_body={false}
-                disableApp={disableApp}
                 toggleModal={toggleModal}
                 height='auto'
                 width='calc(100vw - 32px)'
@@ -53,7 +69,7 @@ const RadioGroupOptionsModal = ({
                                 }
                             )}
                             is_tooltip_disabled={has_error_or_not_loaded}
-                            items_list={accumulator_range_list.map(value => ({
+                            items_list={accumulator_range_list?.map(value => ({
                                 text: `${getGrowthRatePercentage(value)}%`,
                                 value,
                             }))}
@@ -68,10 +84,8 @@ const RadioGroupOptionsModal = ({
     );
 };
 
-export default connect(({ modules, ui }) => ({
+export default connect(({ modules }: TCoreStores) => ({
     accumulator_range_list: modules.trade.accumulator_range_list,
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
     growth_rate: modules.trade.growth_rate,
     onChange: modules.trade.onChange,
     proposal_info: modules.trade.proposal_info,

@@ -19,7 +19,7 @@ const ChevronIcon = () => {
     );
 };
 
-const TransferTile = ({ is_mobile, label, placeholder, selected_account }: TTransferTile) => {
+const TransferTile = React.memo(({ is_mobile, label, placeholder, selected_account }: TTransferTile) => {
     return (
         <React.Fragment>
             <div className='transfer-account-selector__content'>
@@ -53,6 +53,8 @@ const TransferTile = ({ is_mobile, label, placeholder, selected_account }: TTran
             )}
         </React.Fragment>
     );
-};
+});
+
+TransferTile.displayName = 'TransferTile';
 
 export default TransferTile;

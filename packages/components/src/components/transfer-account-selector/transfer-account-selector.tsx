@@ -20,65 +20,69 @@ type TTransferAccountSelectorProps = {
     wallet_name?: string;
 };
 
-const TransferAccountSelector = ({
-    is_mobile,
-    label,
-    mobile_list_min_height,
-    onSelectAccount,
-    placeholder,
-    portal_id,
-    transfer_accounts = {},
-    transfer_hint,
-    value,
-    wallet_name,
-}: TTransferAccountSelectorProps) => {
-    const [is_list_modal_open, setIsListModalOpen] = React.useState(false);
-    const [selected_account, setSelectedAccount] = React.useState<TTransferAccount | undefined>(value);
+const TransferAccountSelector = React.memo(
+    ({
+        is_mobile,
+        label,
+        mobile_list_min_height,
+        onSelectAccount,
+        placeholder,
+        portal_id,
+        transfer_accounts = {},
+        transfer_hint,
+        value,
+        wallet_name,
+    }: TTransferAccountSelectorProps) => {
+        const [is_list_modal_open, setIsListModalOpen] = React.useState(false);
+        const [selected_account, setSelectedAccount] = React.useState<TTransferAccount | undefined>(value);
 
-    React.useEffect(() => {
-        if (selected_account) onSelectAccount?.(selected_account);
-    }, [onSelectAccount, selected_account]);
+        React.useEffect(() => {
+            if (selected_account) onSelectAccount?.(selected_account);
+        }, [onSelectAccount, selected_account]);
 
-    React.useEffect(() => {
-        setSelectedAccount(value);
-    }, [value]);
+        React.useEffect(() => {
+            setSelectedAccount(value);
+        }, [value]);
 
-    const openAccountsList = () => {
-        setIsListModalOpen(true);
-    };
+        const openAccountsList = () => {
+            setIsListModalOpen(true);
+        };
 
-    return (
-        <div className='transfer-account-selector' onClick={is_list_modal_open ? undefined : openAccountsList}>
-            <TransferTile
-                is_mobile={is_mobile}
-                label={label}
-                placeholder={placeholder}
-                selected_account={selected_account}
-            />
-
-            {is_mobile ? <div id='mobile_list_modal_root' /> : <div id='desktop_list_modal_root' />}
-
-            <Modal
-                className='transfer-account-selector__modal-header'
-                has_close_icon
-                is_open={is_list_modal_open}
-                portalId={portal_id}
-                title={label}
-                toggleModal={() => setIsListModalOpen(old => !old)}
-                min_height={is_mobile ? mobile_list_min_height : ''}
-            >
-                <TransferAccountList
+        return (
+            <div className='transfer-account-selector' onClick={is_list_modal_open ? undefined : openAccountsList}>
+                <TransferTile
                     is_mobile={is_mobile}
+                    label={label}
+                    placeholder={placeholder}
                     selected_account={selected_account}
-                    setIsListModalOpen={setIsListModalOpen}
-                    setSelectedAccount={setSelectedAccount}
-                    transfer_accounts={transfer_accounts}
-                    transfer_hint={transfer_hint}
-                    wallet_name={wallet_name}
                 />
-            </Modal>
-        </div>
-    );
-};
+
+                {is_mobile && <div id='mobile_list_modal_root' />}
+
+                <Modal
+                    className='transfer-account-selector__modal-header'
+                    has_close_icon
+                    is_open={is_list_modal_open}
+                    portalId={portal_id}
+                    title={label}
+                    toggleModal={() => setIsListModalOpen(old => !old)}
+                    min_height={is_mobile ? mobile_list_min_height : ''}
+                >
+                    <TransferAccountList
+                        is_mobile={is_mobile}
+                        selected_account={selected_account}
+                        setIsListModalOpen={setIsListModalOpen}
+                        setSelectedAccount={setSelectedAccount}
+                        transfer_accounts={transfer_accounts}
+                        transfer_hint={transfer_hint}
+                        wallet_name={wallet_name}
+                    />
+                </Modal>
+            </div>
+        );
+    }
+);
+
+TransferAccountSelector.displayName = 'TransferAccountSelector';
 
 export default TransferAccountSelector;

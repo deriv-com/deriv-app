@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { ContentFlag, routes, moduleLoader } from '@deriv/shared';
+import { ContentFlag, routes, moduleLoader, SessionStore } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import MT5AccountNeededModal from 'App/Components/Elements/Modals/mt5-account-needed-modal.jsx';
 import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
@@ -82,7 +82,7 @@ const AppModals = ({
     should_show_risk_accept_modal,
     is_need_real_account_for_cashier_modal_visible,
 }) => {
-    const temp_session_signup_params = sessionStorage.getItem('signup_query_param');
+    const temp_session_signup_params = SessionStore.get('signup_query_param');
     const url_params = new URLSearchParams(useLocation().search || temp_session_signup_params);
     const url_action_param = url_params.get('action');
 
@@ -98,7 +98,7 @@ const AppModals = ({
     if (temp_session_signup_params && window.location.href.includes(routes.onboarding)) {
         toggleAccountSignupModal(true);
     } else {
-        sessionStorage.removeItem('signup_query_param');
+        SessionStore.remove('signup_query_param');
         toggleAccountSignupModal(false);
     }
 

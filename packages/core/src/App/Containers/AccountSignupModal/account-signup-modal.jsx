@@ -3,7 +3,7 @@ import { Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Dialog, Loading, Text } from '@deriv/components';
-import { getLocation, PlatformContext } from '@deriv/shared';
+import { getLocation, PlatformContext, SessionStore } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { WS } from 'Services';
 import { connect } from 'Stores/connect';
@@ -62,7 +62,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
             setApiError(error);
         } else {
             isModalVisible(false);
-            sessionStorage.removeItem('signup_query_param');
+            SessionStore.remove('signup_query_param');
             enableApp();
         }
     };

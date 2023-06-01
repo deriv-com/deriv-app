@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { loginUrl, routes, PlatformContext } from '@deriv/shared';
+import { loginUrl, routes, PlatformContext, SessionStore } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -32,7 +32,7 @@ const Redirect = ({
 
     switch (action_param) {
         case 'signup': {
-            sessionStorage.setItem('signup_query_param', url_query_string);
+            SessionStore.set('signup_query_param', url_query_string);
             if (is_appstore) {
                 // TODO: redirect
                 // history.push({
@@ -46,7 +46,7 @@ const Redirect = ({
                     search: url_query_string,
                 });
             }
-            sessionStorage.removeItem('redirect_url');
+            SessionStore.remove('redirect_url');
             redirected_to_route = true;
             toggleAccountSignupModal(true);
             break;
@@ -154,7 +154,7 @@ const Redirect = ({
         }
         case 'verification': {
             // Removing this will break mobile DP2P app. Do not remove.
-            sessionStorage.setItem('redirect_url', routes.cashier_p2p_verification);
+            SessionStore.set('redirect_url', routes.cashier_p2p_verification);
             const new_href = loginUrl({
                 language: getLanguage(),
             });

@@ -1,16 +1,16 @@
-import type { Moment } from 'moment';
 import type {
     AccountLimitsResponse,
     Authorize,
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
-    ProposalOpenContract,
     GetSettings,
     LogOutResponse,
+    ProposalOpenContract,
 } from '@deriv/api-types';
+import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
-import { ExchangeRatesStore } from './src/stores';
+import type { ExchangeRatesStore } from './src/stores';
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: number;
@@ -132,7 +132,7 @@ type TClientStore = {
     };
     account_list: TAccountsList;
     account_settings: GetSettings;
-    account_status?: Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
+    account_status: Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;
@@ -225,6 +225,7 @@ type TClientStore = {
     setTwoFAChangedStatus: (status: boolean) => void;
     has_any_real_account: boolean;
     real_account_creation_unlock_date: number;
+    setPrevAccountType: (account_type: string) => void;
 };
 
 type TCommonStoreError = {
@@ -268,7 +269,7 @@ type TUiStore = {
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
-    notification_messages_ui: JSX.Element | null;
+    notification_messages_ui: React.FC | null;
     openRealAccountSignup: (value?: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
@@ -361,6 +362,7 @@ type TTradersHubStore = {
     setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
     toggleAccountTransferModal: () => void;
     is_demo: boolean;
+    selectAccountType: (account_type: string) => void;
 };
 
 /**

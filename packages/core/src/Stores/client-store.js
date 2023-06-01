@@ -735,7 +735,6 @@ export default class ClientStore extends BaseStore {
         return this.account_status?.status?.some(status_name => status_name === 'deposit_locked');
     }
 
-    // @deprecated use `useWithdrawLock` hook from `@deriv/hooks` instead
     get is_withdrawal_lock() {
         return this.account_status?.status?.some(status_name => status_name === 'withdrawal_locked');
     }
@@ -1646,7 +1645,8 @@ export default class ClientStore extends BaseStore {
                 this.is_populating_account_list = false;
             });
             const language = authorize_response.authorize.preferred_language;
-            if (language !== 'EN' && language !== LocalStore.get(LANGUAGE_KEY)) {
+            const stored_language = LocalStore.get(LANGUAGE_KEY);
+            if (language !== 'EN' && stored_language && language !== stored_language) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));
                 await this.root_store.common.changeSelectedLanguage(language);
             }

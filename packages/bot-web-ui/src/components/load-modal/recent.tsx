@@ -2,22 +2,14 @@ import classnames from 'classnames';
 import React from 'react';
 import { Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/root-store';
+import { observer } from '@deriv/stores';
 import RecentWorkspace from './recent-workspace';
 import WorkspaceControl from './workspace-control';
+import { useDBotStore } from 'Stores/useDBotStore';
 
-type TRecentComponentProps = {
-    is_explanation_expand: boolean;
-    recent_strategies: any[];
-    toggleExplanationExpand: boolean;
-};
-
-const RecentComponent = ({
-    is_explanation_expand,
-    recent_strategies,
-    toggleExplanationExpand,
-}: TRecentComponentProps) => {
+const RecentComponent = observer(() => {
+    const { load_modal } = useDBotStore();
+    const { is_explanation_expand, recent_strategies, toggleExplanationExpand } = load_modal;
     if (recent_strategies.length) {
         return (
             <div className='load-strategy__container load-strategy__container--has-footer'>
@@ -83,12 +75,6 @@ const RecentComponent = ({
             </div>
         </div>
     );
-};
+});
 
-const Recent = connect(({ load_modal }: RootStore) => ({
-    is_explanation_expand: load_modal.is_explanation_expand,
-    recent_strategies: load_modal.recent_strategies,
-    toggleExplanationExpand: load_modal.toggleExplanationExpand,
-}))(RecentComponent);
-
-export default Recent;
+export default RecentComponent;

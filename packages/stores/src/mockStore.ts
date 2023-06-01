@@ -221,6 +221,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_network_online: false,
             server_time: undefined,
             is_language_changing: false,
+            is_socket_opened: false,
         },
         ui: {
             app_contents_scroll_ref: {
@@ -261,8 +262,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_ready_to_deposit_modal_visible: false,
             is_real_acc_signup_on: false,
             is_need_real_account_for_cashier_modal_visible: false,
+            is_chart_layout_default: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
             setShouldShowCooldownModal: jest.fn(),
+            populateFooterExtensions: jest.fn(),
         },
         traders_hub: {
             closeModal: jest.fn(),

@@ -1,5 +1,6 @@
 import React from 'react';
-import { render, screen, fireEvent, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import RecommendUser from '../recommend-user';
 
 describe('<RecommendUser />', () => {
@@ -44,7 +45,7 @@ describe('<RecommendUser />', () => {
         const yesButton = screen.getByRole('button', { name: 'Yes' });
         const yesText = within(yesButton).getByText('Yes');
 
-        fireEvent.click(yesButton);
+        userEvent.click(yesButton);
 
         expect(yesText).toHaveStyle('color: var(--text-less-prominent)');
         expect(recommend_user_props.onClickClearRecommendation).toHaveBeenCalledTimes(1);
@@ -59,7 +60,7 @@ describe('<RecommendUser />', () => {
 
         expect(noText).toHaveStyle('color: var(--text-prominent)');
 
-        fireEvent.click(noButton);
+        userEvent.click(noButton);
 
         expect(noText).toHaveStyle('color: var(--text-less-prominent)');
         expect(recommend_user_props.onClickClearRecommendation).toHaveBeenCalledTimes(1);
@@ -72,7 +73,7 @@ describe('<RecommendUser />', () => {
         const yesButton = screen.getByRole('button', { name: 'Yes' });
         const noButton = screen.getByRole('button', { name: 'No' });
 
-        fireEvent.click(yesButton);
+        userEvent.click(yesButton);
 
         const yesText = within(yesButton).getByText('Yes');
         const noText = within(noButton).getByText('No');
@@ -81,7 +82,7 @@ describe('<RecommendUser />', () => {
         expect(noText).toHaveStyle('color: var(--text-less-prominent)');
         expect(recommend_user_props.onClickRecommended).toHaveBeenCalledTimes(1);
 
-        fireEvent.click(noButton);
+        userEvent.click(noButton);
 
         expect(noText).toHaveStyle('color: var(--text-prominent)');
         expect(yesText).toHaveStyle('color: var(--text-less-prominent)');

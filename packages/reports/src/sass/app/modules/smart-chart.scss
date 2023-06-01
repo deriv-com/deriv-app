@@ -57,7 +57,9 @@
             height: 16px;
         }
         &--accumulator {
-            &-small {
+            &-small,
+            &-blue,
+            &-red {
                 width: 6px;
                 height: 6px;
                 top: -3px;
@@ -70,6 +72,14 @@
                     top: -2px;
                     margin-left: -3px;
                 }
+            }
+            &-blue {
+                background-color: var(--text-info-blue);
+                border: 2px solid var(--text-info-blue);
+            }
+            &-red {
+                background-color: var(--text-red);
+                border: 2px solid var(--text-red);
             }
             &-bold {
                 width: 2rem;
@@ -109,7 +119,7 @@
     }
 }
 .smartcharts-dark .chart-spot__spot--accumulator-bold {
-    background-color: transparent;
+    background-color: rgba(14, 14, 14, 0.4);
 }
 
 /** @define chart-spot-label */

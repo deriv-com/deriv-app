@@ -88,7 +88,21 @@ const createTickMarkers = contract_info => {
             +_tick.epoch === +contract_info.exit_tick_time ||
             getSpotCount(contract_info, _idx) === contract_info.tick_count;
         const is_exit_spot = isExitSpot(tick, idx);
+        const exit_spot_index = tick_stream.findIndex(isExitSpot);
+        const is_current_last_spot = idx === tick_stream.length - 1;
+        const is_preexit_spot = idx === exit_spot_index - 1 || idx === tick_stream.length - 2;
         const has_accumulator_bold_marker = is_accumulator && is_exit_spot;
+        const has_accumulator_special_marker =
+            is_accumulator && (is_exit_spot || is_preexit_spot || is_current_last_spot);
+        // const spot_accumulator_className = () => (is_exit_spot ? '-bold' : is_preexit_spot ? '-blue' : '-red');
+        const spot_accumulator_className = () => {
+            if (is_exit_spot) {
+                return '-bold';
+            } else if (is_preexit_spot) {
+                return '-blue';
+            }
+            return '-red';
+        };
 
         let marker_config;
         if (is_entry_spot) {
@@ -102,7 +116,8 @@ const createTickMarkers = contract_info => {
         if (has_accumulator_bold_marker || (is_accumulator && is_middle_spot)) {
             const spot_className = marker_config.content_config.spot_className;
             marker_config.content_config.spot_className = `${spot_className} ${spot_className}--accumulator${
-                has_accumulator_bold_marker ? '-bold' : '-small'
+                // has_accumulator_bold_marker ? '-bold' : '-small'
+                has_accumulator_special_marker ? spot_accumulator_className() : '-small'
             }`;
         }
 

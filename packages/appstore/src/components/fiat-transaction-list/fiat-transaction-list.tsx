@@ -7,6 +7,7 @@ import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { getWalletCurrencyIcon } from 'Constants/utils';
 import FiatTransactionListItem from './fiat-transaction-list-item';
+import './fiat-transaction-list.scss';
 
 const FiatTransactionList = () => {
     const {

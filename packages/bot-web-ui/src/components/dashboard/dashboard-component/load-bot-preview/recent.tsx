@@ -3,19 +3,19 @@ import { MobileWrapper, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import React from 'react';
-import { useDBotStore } from 'Stores/useDBotStore';
 import DeleteDialog from './delete-dialog';
 import './index.scss';
 import RecentWorkspace from './recent-workspace';
 import { isMobile } from '@deriv/shared';
 import SaveModal from '../../../save-modal';
 import classNames from 'classnames';
+import { useDBotStore } from 'Stores/useDBotStore';
 
 const HEADERS = ['Bot name', 'Last modified', 'Status'];
 
 const RecentComponent = observer(() => {
     const { load_modal, dashboard } = useDBotStore();
-    const { dashboard_strategies, setDashboardStrategies } = load_modal;
+    const { setDashboardStrategies, dashboard_strategies } = load_modal;
     const { setStrategySaveType, strategy_save_type } = dashboard;
 
     React.useEffect(() => {

@@ -6,14 +6,20 @@ import { observer } from '@deriv/stores';
 import classnames from 'classnames';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import React from 'react';
-import { useDBotStore } from 'Stores/useDBotStore';
 import { useComponentVisibility } from '../../hooks/useComponentVisibility';
 import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from './constants';
 import './index.scss';
+import { useDBotStore } from 'Stores/useDBotStore';
 
-const RecentWorkspace = observer(({ index, workspace }: { index: number; workspace: { [key: string]: string } }) => {
+type TRecentWorkspace = {
+    index: number;
+    workspace: { [key: string]: string };
+};
+
+const RecentWorkspace = observer(({ workspace, index }: TRecentWorkspace) => {
     const { dashboard, load_modal, save_modal } = useDBotStore();
     const { active_tab, setActiveTab, setPreviewOnDialog } = dashboard;
+    const { toggleSaveModal } = save_modal;
     const {
         dashboard_strategies,
         getRecentFileIcon,
@@ -24,7 +30,6 @@ const RecentWorkspace = observer(({ index, workspace }: { index: number; workspa
         previewRecentStrategy,
         selected_strategy_id,
     } = load_modal;
-    const { toggleSaveModal } = save_modal;
 
     const trigger_div_ref = React.useRef<HTMLInputElement | null>(null);
     const toggle_ref = React.useRef<HTMLDivElement>(null);

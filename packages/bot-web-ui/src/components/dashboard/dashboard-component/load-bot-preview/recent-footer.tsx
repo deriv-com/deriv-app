@@ -1,14 +1,13 @@
 import React from 'react';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { observer } from '@deriv/stores';
-import { useDBotStore } from 'Stores/useDBotStore';
 import './index.scss';
+import { observer } from 'mobx-react';
+import { useDBotStore } from 'Stores/useDBotStore';
 
 const RecentFooter = observer(() => {
-    const {
-        load_modal: { is_open_button_loading, loadFileFromRecent },
-    } = useDBotStore();
+    const { load_modal } = useDBotStore();
+    const { is_open_button_loading, loadFileFromRecent } = load_modal;
     return (
         <Button
             text={localize('Open')}

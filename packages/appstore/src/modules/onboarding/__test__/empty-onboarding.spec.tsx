@@ -41,5 +41,6 @@ describe('EmptyOnboarding test cases:', () => {
         });
 
         expect(container).toBeInTheDocument();
+        expect(screen.queryByTestId('deriv_logo')).not.toBeInTheDocument();
     });
 });

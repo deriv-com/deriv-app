@@ -120,7 +120,7 @@ const FiatTransactionList = () => {
                             key={-1}
                             action_type='transfer'
                             account_currency={wallet_currency}
-                            account_name='Deriv Apps MT5 account'
+                            account_name='Deriv Apps DXtrade account'
                             amount={42}
                             balance_after={42}
                             currency={wallet_currency}

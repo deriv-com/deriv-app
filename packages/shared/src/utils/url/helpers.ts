@@ -31,12 +31,12 @@ export const getUrlSmartTrader = () => {
 };
 
 export const getUrlBinaryBot = () => {
-    const { is_deriv_app } = getPlatformFromUrl();
+    const { is_staging_deriv_app } = getPlatformFromUrl();
 
     const url_lang = getlangFromUrl();
     const i18n_language = window.localStorage.getItem('i18n_language') || url_lang || 'en';
 
-    const base_link = is_deriv_app ? deriv_urls.BINARYBOT_PRODUCTION : deriv_urls.BINARYBOT_STAGING;
+    const base_link = is_staging_deriv_app ? deriv_urls.BINARYBOT_STAGING : deriv_urls.BINARYBOT_PRODUCTION;
     return `${base_link}/?l=${i18n_language.toLowerCase()}`;
 };
 

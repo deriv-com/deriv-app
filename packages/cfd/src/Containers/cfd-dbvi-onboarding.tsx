@@ -9,15 +9,15 @@ import {
     Text,
     UILoader,
 } from '@deriv/components';
-import { WS, getAuthenticationStatusInfo, isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import RootStore from '../Stores/index';
+import { PoiPoaDocsSubmitted } from '@deriv/account';
+import { connect } from '../Stores/connect';
+import { getAuthenticationStatusInfo, isMobile, WS, Jurisdiction } from '@deriv/shared';
 import { AccountStatusResponse } from '@deriv/api-types';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
-import { PoiPoaDocsSubmitted } from '@deriv/account';
 import React from 'react';
-import RootStore from '../Stores/index';
 import { TCFDDbviOnboardingProps } from './props.types';
-import { connect } from '../Stores/connect';
-import { localize } from '@deriv/translations';
 
 const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) => (
     <div className='da-icon-with-message'>
@@ -62,18 +62,18 @@ const CFDDbviOnboarding = ({
 
             if (get_account_status?.authentication) {
                 const {
-                    poa_resubmit_for_labuan,
                     poi_acknowledged_for_vanuatu_maltainvest,
                     poi_acknowledged_for_bvi_labuan,
                     poa_acknowledged,
+                    poa_resubmit_for_labuan,
                 } = getAuthenticationStatusInfo(get_account_status);
-                if (jurisdiction_selected_shortcode === 'vanuatu') {
+                if (jurisdiction_selected_shortcode === Jurisdiction.VANUATU) {
                     setShowSubmittedModal(
                         poi_acknowledged_for_vanuatu_maltainvest &&
                             poa_acknowledged &&
                             has_submitted_cfd_personal_details
                     );
-                } else if (jurisdiction_selected_shortcode === 'maltainvest') {
+                } else if (jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) {
                     setShowSubmittedModal(poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged);
                 } else if (jurisdiction_selected_shortcode === 'labuan') {
                     setShowSubmittedModal(

@@ -1,12 +1,12 @@
-import { GetAccountStatus, GetSettings, LandingCompany, ResidenceList, StatesList } from '@deriv/api-types';
-import { getAuthenticationStatusInfo, isDesktop } from '@deriv/shared';
+import React from 'react';
+import { Div100vhContainer } from '@deriv/components';
+import { isDesktop, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
+import { connect } from '../Stores/connect';
+import { LandingCompany, ResidenceList, GetSettings, StatesList, GetAccountStatus } from '@deriv/api-types';
 import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';
-import { Div100vhContainer } from '@deriv/components';
-import React from 'react';
 import RootStore from '../Stores/index';
-import { connect } from '../Stores/connect';
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
 
@@ -119,7 +119,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     };
 
     const should_show_poi = () => {
-        if (jurisdiction_selected_shortcode === 'vanuatu' || jurisdiction_selected_shortcode === 'maltainvest') {
+        if ([Jurisdiction.VANUATU, Jurisdiction.MALTA_INVEST].includes(jurisdiction_selected_shortcode)) {
             return need_poi_for_vanuatu_maltainvest;
         }
         return need_poi_for_bvi_labuan;
@@ -133,13 +133,11 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     ) {
         should_show_poa = true;
     } else {
-        should_show_poa = !(
-            authentication_status.document_status === 'pending' || authentication_status.document_status === 'verified'
-        );
+        should_show_poa = !['pending', 'verified'].includes(authentication_status.document_status);
     }
 
     const should_show_personal_details =
-        !has_submitted_cfd_personal_details && jurisdiction_selected_shortcode !== 'maltainvest';
+        !has_submitted_cfd_personal_details && jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST;
 
     const verification_configs = [
         ...(should_show_poi() ? [poi_config] : []),

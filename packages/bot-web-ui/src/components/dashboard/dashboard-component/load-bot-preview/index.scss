@@ -99,7 +99,6 @@
 
         &--open {
             height: 3.4rem;
-            width: 6.7rem;
             background-color: $color-red;
             border-radius: 0.4rem;
             color: $color-white;
@@ -300,7 +299,7 @@
 
             &__mobile {
                 background: var(--general-main-1);
-                width: 15rem;
+                min-width: 15rem;
                 box-shadow: 0 0 2rem rgba(0, 0, 0, 0.05), 0 1.6rem 2rem rgba(0, 0, 0, 0.05);
                 position: absolute;
                 right: 3rem;

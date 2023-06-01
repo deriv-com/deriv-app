@@ -77,7 +77,7 @@
     "876086855": "මූල්ය තක්සේරු ආකෘතිය සම්පූර්ණ කරන්න",
     "881351325": "ඔබ මෙම විකුණන්නා නිර්දේශ කරනවාද?",
     "887667868": "ඇණවුම",
-    "892431976": "If you cancel your order {{cancellation_limit}} times in {{cancellation_period}} hours, you will be blocked from using Deriv P2P for {{block_duration}} hours. <br /> ({{number_of_cancels_remaining}} cancellations remaining)",
+    "892431976": "ඔබ ඔබේ ඇණවුම {{cancellation_limit}} වතාවක් පැය {{cancellation_period}} කින් අවලංගු කළහොත්, පැය {{block_duration}} ක් සඳහා ඔබට Deriv P2P භාවිත කිරීම අවහිර කරනු ලැබේ. <br /> (අවලංගු කිරීම් {{number_of_cancels_remaining}} ක් ඉතිරිව ඇත)",
     "949859957": "ඉදිරිපත් කරන්න",
     "954233511": "විකුණනු ලැබේ",
     "957529514": "ඇණවුමක් කිරීමට, දැන්වීම්කරුගේ කැමති ගෙවීම් ක්රම වලින් එකක් එකතු කරන්න:",

@@ -30,7 +30,7 @@ export const useWalletCardCarousel = (): WalletCardsCarouselResult => {
     });
 
     const refreshActivePage = useCallback(
-        (calculatedPages: number[], ready = false) => {
+        (calculatedPages: number[], recalculate = false) => {
             if (!scrollEl) {
                 return;
             }
@@ -59,14 +59,14 @@ export const useWalletCardCarousel = (): WalletCardsCarouselResult => {
                 return offset;
             });
 
-            // set offset for 1st element
-            if (ready) setShiftForFirstTime(offsets[0]);
-
             const step = offsets[1] - offsets[0];
             const nextActivePageIndex = offsets.indexOf(
                 offsets.find(offset => offset >= shift_for_first_item - step / 2) || shift_for_first_item
             );
             setCarouselState({ pages: calculatedPages, activePageIndex: nextActivePageIndex });
+
+            // set offset for 1st element
+            if (recalculate) setShiftForFirstTime(offsets[nextActivePageIndex]);
         },
         [pages.length, scrollEl, shift_for_first_item]
     );
@@ -96,6 +96,19 @@ export const useWalletCardCarousel = (): WalletCardsCarouselResult => {
             scrollEl?.removeEventListener('scroll', handle);
         };
     }, [refreshActivePage, pages, scrollEl]);
+
+    // On resize we need to refresh the state
+    useEffect(() => {
+        const handle = () => {
+            getPages();
+        };
+        window.addEventListener('resize', handle);
+        window.addEventListener('orientationchange', handle);
+        return () => {
+            window.removeEventListener('resize', handle);
+            window.removeEventListener('orientationchange', handle);
+        };
+    }, [getPages]);
 
     const handleGoTo = (index: number) => {
         if (!scrollEl) {

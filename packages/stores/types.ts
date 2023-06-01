@@ -226,6 +226,9 @@ type TClientStore = {
     has_any_real_account: boolean;
     real_account_creation_unlock_date: number;
     setPrevAccountType: (account_type: string) => void;
+    is_eu_country: boolean;
+    prev_account_type: string;
+    is_language_loaded: boolean;
 };
 
 type TCommonStoreError = {
@@ -346,6 +349,7 @@ type TTradersHubStore = {
         login: string;
         account_id: string;
     };
+    is_demo_low_risk: boolean;
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
     setTogglePlatformType: (platform_type: string) => void;
@@ -361,6 +365,8 @@ type TTradersHubStore = {
     toggleAccountTransferModal: () => void;
     is_demo: boolean;
     selectAccountType: (account_type: string) => void;
+    toggleIsTourOpen: (is_tour_open: boolean) => void;
+    CFDs_restricted_countries: boolean;
 };
 
 /**

@@ -4,15 +4,16 @@ import { useWalletCardCarousel } from './useCarousel';
 import { ProgressBarOnboarding, Icon, Text, WalletCard } from '@deriv/components';
 import { getWalletHeaderButtons } from 'Constants/utils';
 import './wallet-cards-carousel.scss';
+import { TWalletAccount } from 'Types';
 
-interface WalletCardsCarouselProps<T> {
-    readonly items: T[];
+interface WalletCardsCarouselProps {
+    readonly items: TWalletAccount[];
 }
 
-export const WalletCardsCarousel = <T,>({ items }: WalletCardsCarouselProps<T>) => {
+export const WalletCardsCarousel = ({ items }: WalletCardsCarouselProps) => {
     const { scrollRef, activePageIndex, goTo, pages } = useWalletCardCarousel();
 
-    const wallet_btns = getWalletHeaderButtons(items[activePageIndex]?.is_demo);
+    const wallet_btns = getWalletHeaderButtons(items[activePageIndex]?.is_virtual);
 
     const walletsJSX = React.useMemo(
         () =>
@@ -25,8 +26,8 @@ export const WalletCardsCarousel = <T,>({ items }: WalletCardsCarouselProps<T>) 
                     })}
                 >
                     <WalletCard
-                        key={`${item.name} ${item.currency} ${item.jurisdiction_title}`}
-                        wallet={item}
+                        key={`${item.name} ${item.currency} ${item.landing_company_shortcode}`}
+                        wallet={{ ...item, jurisdiction_title: item.landing_company_shortcode }}
                         size='medium'
                     />
                 </li>
@@ -53,12 +54,7 @@ export const WalletCardsCarousel = <T,>({ items }: WalletCardsCarouselProps<T>) 
                         <div className='wallet-cards-carousel__buttons-item-icon'>
                             <Icon icon={btn.icon} />
                         </div>
-                        <Text
-                            // weight='bold'
-                            // color={is_disabled ? 'disabled' : 'general'}
-                            size='xxxxs'
-                            className='wallet-cards-carousel__buttons-item-text'
-                        >
+                        <Text size='xxxxs' className='wallet-cards-carousel__buttons-item-text'>
                             {btn.text}
                         </Text>
                     </div>
@@ -67,17 +63,5 @@ export const WalletCardsCarousel = <T,>({ items }: WalletCardsCarouselProps<T>) 
         </div>
     );
 };
-
-// interface WalletCardsCarouselItemProps {
-//     readonly className?: string;
-//     readonly children?: React.ReactNode;
-//     readonly style?: React.CSSProperties;
-// }
-
-// export const WalletCardsCarouselItem = ({ className, children, style }: WalletCardsCarouselItemProps) => (
-//     <li className={className || ''} style={style}>
-//         {children}
-//     </li>
-// );
 
 export default WalletCardsCarousel;

@@ -4,15 +4,16 @@ import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import { formatMoney, isCryptocurrency, routes } from '@deriv/shared';
 import TradingAppCard from 'Components/containers/trading-app-card';
-import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
+import { AvailableAccount, TDetailsOfEachMT5Loginid, TWalletAccount } from 'Types';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
-import { TCoreStores } from '@deriv/stores/types';
+// import { TCoreStores } from '@deriv/stores/types';
 import { useStore, observer } from '@deriv/stores';
 import { useHistory } from 'react-router';
 
 type TProps = {
-    wallet_account: TCoreStores['client']['accounts'][0];
+    // wallet_account: TCoreStores['client']['accounts'][0];
+    wallet_account: TWalletAccount;
     fiat_wallet_currency?: string;
 };
 

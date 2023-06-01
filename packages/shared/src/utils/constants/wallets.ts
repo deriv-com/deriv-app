@@ -1,0 +1,185 @@
+// TODO: Refactor using data transformation layer pattern when we will have API for wallets (e.g. wallet.icon)
+export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_modal = false) => {
+    switch (currency) {
+        case 'demo':
+            if (is_modal) return 'IcWalletDerivDemoLight';
+            return is_dark_mode_on ? 'IcWalletDerivDemoDark' : 'IcWalletDerivDemoLight';
+        case 'USD':
+            return 'IcWalletCurrencyUsd';
+        case 'EUR':
+            return 'IcWalletCurrencyEur';
+        case 'AUD':
+            return 'IcWalletCurrencyAud';
+        case 'GBP':
+            return 'IcWalletCurrencyGbp';
+        case 'BTC':
+            return is_dark_mode_on ? 'IcWalletBitcoinDark' : 'IcWalletBitcoinLight';
+        case 'ETH':
+            return is_dark_mode_on ? 'IcWalletEtheriumDark' : 'IcWalletEtheriumLight';
+        case 'USDT':
+        case 'eUSDT':
+        case 'tUSDT':
+        case 'UST':
+            if (is_modal) {
+                return is_dark_mode_on ? 'IcWalletModalTetherDark' : 'IcWalletModalTetherLight';
+            }
+            return is_dark_mode_on ? 'IcWalletTetherDark' : 'IcWalletTetherLight';
+        case 'LTC':
+            return is_dark_mode_on ? 'IcWalletLiteCoinDark' : 'IcWalletLiteCoinLight';
+        case 'USDC':
+            return is_dark_mode_on ? 'IcWalletUsdCoinDark' : 'IcWalletUsdCoinLight';
+        default:
+            return 'Unknown';
+    }
+};
+
+type TWalletAccount = {
+    account_category?: 'trading' | 'wallets';
+    account_type?: string;
+    balance: string | number;
+    currency: string;
+    is_disabled: boolean;
+    is_virtual: boolean;
+    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
+    loginid: string;
+    icon: string;
+    icon_type: 'fiat' | 'crypto' | 'all';
+    name: string;
+};
+
+// export const sortWalletAccounts = (accounts: TWalletAccount[]) => {};
+
+export const fake_wallet_accounts: TWalletAccount[] = [
+    {
+        name: 'USD',
+        currency: 'USD',
+        icon: getWalletCurrencyIcon('USD', false),
+        balance: '10,784',
+        icon_type: 'fiat',
+        landing_company_shortcode: 'svg',
+        is_disabled: false,
+        is_virtual: false,
+        loginid: 'CRW10001',
+    },
+    {
+        name: 'Demo USD',
+        currency: 'USD',
+        icon: getWalletCurrencyIcon('demo', false),
+        balance: '10,0000',
+        icon_type: 'fiat',
+        landing_company_shortcode: 'svg',
+        is_disabled: false,
+        is_virtual: true,
+        loginid: 'CRW10002',
+    },
+    {
+        name: 'AUD Wallet',
+        currency: 'AUD',
+        icon: getWalletCurrencyIcon('AUD', false),
+        balance: '5,374',
+        icon_type: 'fiat',
+        landing_company_shortcode: 'svg',
+        is_disabled: false,
+        is_virtual: false,
+        loginid: 'CRW10001',
+    },
+    {
+        name: 'Bitcoin',
+        currency: 'BTC',
+        icon: getWalletCurrencyIcon('BTC', false),
+        balance: '2.34',
+        icon_type: 'crypto',
+        landing_company_shortcode: 'svg',
+        is_disabled: false,
+        is_virtual: false,
+        loginid: 'CRW10001',
+    },
+    {
+        name: 'EUR',
+        currency: 'EUR',
+        balance: '10,784.73',
+        icon_type: 'fiat',
+        landing_company_shortcode: 'malta',
+        icon: getWalletCurrencyIcon('EUR', false),
+        is_disabled: false,
+        is_virtual: false,
+        loginid: 'CRW10001',
+    },
+    {
+        name: 'USD',
+        currency: 'USD',
+        balance: '3,231.05',
+        icon_type: 'fiat',
+        landing_company_shortcode: 'malta',
+        icon: getWalletCurrencyIcon('USD', false),
+        is_disabled: false,
+        is_virtual: false,
+        loginid: 'MFW10005',
+    },
+    {
+        name: 'ETH',
+        currency: 'ETH',
+        balance: '0.012342',
+        icon_type: 'crypto',
+        landing_company_shortcode: 'svg',
+        icon: getWalletCurrencyIcon('ETH', false),
+        is_disabled: false,
+        is_virtual: false,
+        loginid: 'CRW10007',
+    },
+    {
+        name: 'LTC',
+        currency: 'LTC',
+        balance: '1.2342',
+        icon_type: 'crypto',
+        landing_company_shortcode: 'svg',
+        icon: getWalletCurrencyIcon('LTC', false),
+        is_disabled: false,
+        is_virtual: false,
+        loginid: 'CRW10007',
+    },
+    {
+        name: 'USDC',
+        currency: 'USDC',
+        balance: '3.064',
+        icon_type: 'crypto',
+        landing_company_shortcode: 'svg',
+        icon: getWalletCurrencyIcon('USDC', false),
+        is_disabled: false,
+        is_virtual: false,
+        loginid: 'CRW10008',
+    },
+    {
+        name: 'USDT',
+        currency: 'USDT',
+        balance: '1.064',
+        icon_type: 'crypto',
+        landing_company_shortcode: 'svg',
+        icon: getWalletCurrencyIcon('USDT', false),
+        is_disabled: false,
+        is_virtual: false,
+        loginid: 'CRW10009',
+    },
+    {
+        name: 'eUSDT',
+        currency: 'eUSDT',
+        balance: '5.034',
+        icon_type: 'crypto',
+        landing_company_shortcode: 'svg',
+        icon: getWalletCurrencyIcon('eUSDT', false),
+        is_disabled: false,
+        is_virtual: false,
+        loginid: 'CRW10010',
+    },
+    {
+        name: 'tUSDT',
+        currency: 'tUSDT',
+        balance: '0.111',
+        icon_type: 'crypto',
+        landing_company_shortcode: 'svg',
+        icon: getWalletCurrencyIcon('tUSDT', false),
+        is_disabled: false,
+        is_virtual: false,
+        loginid: 'CRW10011',
+    },
+];

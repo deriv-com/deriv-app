@@ -52,15 +52,6 @@ $shift-for-edge-cards: calc((100vw - #{$card-width}) / 2);
             cursor: pointer;
             min-width: 5.6rem;
 
-            &:hover:not(&-disabled) {
-                background-color: var(--button-secondary-hover);
-            }
-
-            &-disabled {
-                cursor: auto;
-                border: 1px solid var(--general-disabled);
-            }
-
             &-icon {
                 padding: 0.8rem;
                 border: 1px solid var(--border-normal);

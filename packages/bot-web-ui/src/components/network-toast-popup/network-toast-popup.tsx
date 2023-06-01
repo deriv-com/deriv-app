@@ -13,15 +13,12 @@ import { observer } from 'mobx-react';
 /**
  * Network status Toast components
  */
-type TNetworkStatusToastError = {
-    status: string;
-    portal_id: string;
-    message: string;
-};
 
-const NetworkStatusToastError = observer(({ status, portal_id, message }: TNetworkStatusToastError) => {
+const NetworkStatusToastError = observer(() => {
     const { common } = useStore();
     const { network_status } = common;
+    const { message, status } = network_status;
+    const portal_id = 'popup_root';
     const [is_open, setIsOpen] = React.useState(false);
 
     if (!document.getElementById(portal_id) || !message) return null;
@@ -32,16 +29,6 @@ const NetworkStatusToastError = observer(({ status, portal_id, message }: TNetwo
         setTimeout(() => {
             setIsOpen(false);
         }, 1500);
-    }
-
-    if (network_status) {
-        return (
-            <NetworkStatusToastError
-                portal_id='popup_root'
-                message={network_status.tooltip}
-                status={network_status.class}
-            />
-        );
     }
 
     return ReactDOM.createPortal(

@@ -34,6 +34,7 @@
     --text-align-center: center;
 
     // Brand primary colors
+    --brand-white: #{$color-white};
     --brand-dark-grey: #{$color-black};
     --brand-red-coral: #{$color-red};
     --brand-orange: #{$color-orange};
@@ -89,6 +90,7 @@
         --text-red: #{$color-red};
         --text-blue: #{$color-blue-3};
         --text-info-blue: #{$color-blue};
+        --text-info-blue-background: #{$color-blue-5};
         --text-colored-background: #{$color-white};
         --icon-light-background: #{$color-black-9};
         --icon-dark-background: #{$color-white};
@@ -138,6 +140,7 @@
         --border-hover-1: #{$color-black-9};
         --border-active: var(--brand-secondary);
         --border-disabled: #{$color-grey-3};
+        --border-divider: #{$color-grey-2};
         // Fill
         --fill-normal: #{$color-white};
         --fill-normal-1: #{$color-grey};
@@ -218,6 +221,8 @@
         --text-loss-danger: #{$color-red-2};
         --text-red: #{$color-red};
         --text-colored-background: #{$color-white};
+        --text-info-blue: #{$color-blue-6};
+        --text-info-blue-background: #{$color-blue-7};
         --text-status-info-blue: #{$color-blue};
         --text-hint: #{$color-grey};
         --icon-light-background: #{$color-black-9};
@@ -265,6 +270,7 @@
         --border-hover-1: #{$color-black-9};
         --border-active: var(--brand-secondary);
         --border-disabled: #{$color-black-4};
+        --border-divider: #{$color-grey-13};
         // Fill
         --fill-normal: #{$color-black};
         --fill-normal-1: #{$color-black-1};

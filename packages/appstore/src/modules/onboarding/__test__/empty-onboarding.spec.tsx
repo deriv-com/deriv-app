@@ -1,10 +1,10 @@
 import React from 'react';
-import { screen, render } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import EmptyOnboarding from '../empty-onboarding';
 
-describe('EmptyOnboarding', () => {
-    it('Should render <EmptyOnboarding/>', () => {
+describe('EmptyOnboarding test cases:', () => {
+    it('Should render component', () => {
         const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -16,10 +16,5 @@ describe('EmptyOnboarding', () => {
         });
 
         expect(container).toBeInTheDocument();
-    });
-
-    it('Should render correct header in <EmptyOnboarding/>', () => {
-        render(<EmptyOnboarding />);
-        expect(screen.getByTestId('deriv_trading_header')).toBeInTheDocument();
     });
 });

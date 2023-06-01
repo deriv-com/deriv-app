@@ -2,7 +2,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import { isMobile, isDesktop, routes, ContentFlag } from '@deriv/shared';
 import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
-import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
+import TradingPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getTradingHubContents } from 'Constants/trading-hub-content';
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
@@ -80,7 +80,7 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
         <div className='onboarding-wrapper'>
             <div className='onboarding-header'>
                 <div className='onboarding-header--deriv-logo'>
-                    <TradigPlatformIconProps icon={'DerivLogo'} />
+                    <TradingPlatformIconProps icon={'DerivLogo'} />
                 </div>
                 <Icon
                     icon='IcCross'

@@ -3,7 +3,14 @@ $card-height: 9.6rem;
 $shift-for-edge-cards: calc((100vw - #{$card-width}) / 2);
 
 .wallet-cards-carousel {
-    margin-bottom: 2.4rem;
+    margin-top: 2.4rem;
+    margin-bottom: 1.6rem;
+    // margin-inline: -2.4rem;
+    // background-color: var(--general-section-1);
+
+    // @include mobile {
+    //     margin-inline: -2rem;
+    // }
 
     &__scroll {
         position: relative;
@@ -17,8 +24,6 @@ $shift-for-edge-cards: calc((100vw - #{$card-width}) / 2);
     }
 
     &__item {
-        // width: $card-width;
-        // height: $card-height;
         margin-right: 2.4rem;
         scroll-snap-align: center;
 
@@ -32,13 +37,39 @@ $shift-for-edge-cards: calc((100vw - #{$card-width}) / 2);
     }
 
     &__pagination {
-        margin-block: 1.5rem;
+        margin-block: 1.6rem;
     }
 
     &__buttons {
         display: flex;
-        justify-content: space-evenly;
-        width: 50%;
-        margin: auto;
+        justify-content: center;
+        gap: 0.8rem;
+
+        &-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            min-width: 5.6rem;
+
+            &:hover:not(&-disabled) {
+                background-color: var(--button-secondary-hover);
+            }
+
+            &-disabled {
+                cursor: auto;
+                border: 1px solid var(--general-disabled);
+            }
+
+            &-icon {
+                padding: 0.8rem;
+                border: 1px solid var(--border-normal);
+                border-radius: 50%;
+            }
+
+            &-text {
+                margin-top: 0.4rem;
+            }
+        }
     }
 }

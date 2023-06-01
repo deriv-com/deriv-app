@@ -1,8 +1,9 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { DesktopWrapper, Icon, InputField, MobileWrapper } from '@deriv/components';
+import { DesktopWrapper, Icon, InputField, MobileWrapper, Modal, Text, usePrevious } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
+import { ValueMovement } from '../Purchase/contract-info';
 import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 import LabeledQuantityInputMobile from '../LabeledQuantityInputMobile';
@@ -13,14 +14,24 @@ const Barrier = ({
     barrier_count,
     barrier_pipsize,
     current_focus,
+    proposal_info,
     duration_unit,
     is_minimized,
     is_absolute_only,
     onChange,
     setCurrentFocus,
     validation_errors,
+    trade_types,
 }) => {
+    const [show_modal, setShowModal] = React.useState(false);
+    const type_with_current_spot = Object.keys(trade_types).find(type => proposal_info?.[type]?.spot);
+    const contract_info = proposal_info?.[type_with_current_spot];
+    const current_spot = contract_info?.spot || '';
+    const current_barrier_price = contract_info?.barrier || '';
+    const previous_spot = usePrevious(current_spot);
+    const has_spot_increased = current_spot > previous_spot;
     const barrier_title = barrier_count === 1 ? localize('Barrier') : localize('Barriers');
+    const has_error_or_not_loaded = contract_info?.has_error || !contract_info?.id;
 
     if (is_minimized) {
         return barrier_count !== 2 ? (
@@ -47,6 +58,10 @@ const Barrier = ({
             final_value = `+${float_value.toFixed(barrier_pipsize)}`;
         }
         return final_value;
+    };
+
+    const onClick = () => {
+        setShowModal(!show_modal);
     };
 
     return (
@@ -101,6 +116,56 @@ const Barrier = ({
                 </Fieldset>
             </DesktopWrapper>
             <MobileWrapper>
+                <Modal
+                    id='dt_input_barrier_mobile'
+                    className='barrier'
+                    is_open={show_modal}
+                    should_header_stick_body
+                    toggleModal={onClick}
+                    height='auto'
+                    width='calc(100vw - 32px)'
+                    title={localize('Barrier')}
+                >
+                    <div className='barrier__modal-container'>
+                        <Text className='barrier__modal-text' as='span' color='less-prominent' size='xs'>
+                            {localize('Current Price')}
+                        </Text>
+                        {current_spot && (
+                            <ValueMovement
+                                has_error_or_not_loaded={has_error_or_not_loaded}
+                                value={current_spot}
+                                has_increased={has_spot_increased}
+                                show_currency={false}
+                            />
+                        )}
+                    </div>
+                    <LabeledQuantityInputMobile
+                        id='dt_barrier_input'
+                        input_label={localize('Barrier')}
+                        type='number'
+                        name={barrier_count === 1 ? 'barrier_1' : 'barrier_2'}
+                        wrapper_classname='barrier__modal-input'
+                        value={barrier_count === 1 ? barrier_1 : barrier_2}
+                        className={`barrier__fields-${input_class}`}
+                        classNameInput={classNames(
+                            'barrier__fields-input',
+                            'barrier__fields-barriers-input',
+                            `barrier__fields-barriers-${input_class}-input`
+                        )}
+                        current_focus={current_focus}
+                        onChange={onChange}
+                        error_messages={
+                            (barrier_count === 1 ? validation_errors.barrier_1 : validation_errors.barrier_2) || []
+                        }
+                        error_message_alignment='top'
+                        is_float
+                        is_signed
+                        setCurrentFocus={setCurrentFocus}
+                    />
+                    <Text className='barrier__modal-price' as='div' color='less-prominent' size='xs'>
+                        {localize('Barrier Price:')} {current_barrier_price}
+                    </Text>
+                </Modal>
                 <LabeledQuantityInputMobile
                     input_label={barrier_count === 2 ? localize('Barrier 1') : localize('Barrier')}
                     id='dt_barrier_1_input'
@@ -114,17 +179,15 @@ const Barrier = ({
                     classNameInput={classNames(
                         'barrier__fields-input',
                         'barrier__fields-barriers-input',
-                        `barrier__fields-barriers-${input_class}-input`,
-                        {
-                            'barrier__fields-input--is-offset': !is_absolute_barrier,
-                        }
+                        `barrier__fields-barriers-${input_class}-input`
                     )}
-                    current_focus={current_focus}
                     format={format}
                     onChange={onChange}
+                    onClick={onClick}
                     is_float
                     is_signed
                     setCurrentFocus={setCurrentFocus}
+                    is_read_only
                 />
                 {barrier_count === 2 && (
                     <LabeledQuantityInputMobile
@@ -140,17 +203,15 @@ const Barrier = ({
                         classNameInput={classNames(
                             'barrier__fields-input',
                             'barrier__fields-barriers-input',
-                            `barrier__fields-barriers-${input_class}-input`,
-                            {
-                                'barrier__fields-input--is-offset': !is_absolute_barrier,
-                            }
+                            `barrier__fields-barriers-${input_class}-input`
                         )}
-                        current_focus={current_focus}
                         format={format}
                         onChange={onChange}
+                        onClick={onClick}
                         is_float
                         is_signed
                         setCurrentFocus={setCurrentFocus}
+                        is_read_only
                     />
                 )}
             </MobileWrapper>
@@ -168,8 +229,10 @@ Barrier.propTypes = {
     is_absolute_only: PropTypes.bool,
     is_minimized: PropTypes.bool,
     onChange: PropTypes.func,
+    proposal_info: PropTypes.object,
     setCurrentFocus: PropTypes.func,
     validation_errors: PropTypes.object,
+    trade_types: PropTypes.object,
 };
 
 export default connect(({ modules, ui }) => ({
@@ -180,6 +243,8 @@ export default connect(({ modules, ui }) => ({
     current_focus: ui.current_focus,
     duration_unit: modules.trade.duration_unit,
     onChange: modules.trade.onChange,
+    proposal_info: modules.trade.proposal_info,
     setCurrentFocus: ui.setCurrentFocus,
     validation_errors: modules.trade.validation_errors,
+    trade_types: modules.trade.trade_types,
 }))(Barrier);

@@ -77,7 +77,7 @@
     "876086855": "โปรดกรอกแบบฟอร์มการประเมินทางการเงินให้สมบรูณ์",
     "881351325": "คุณจะแนะนำผู้ซื้อรายนี้ให้คนอื่นๆหรือไม่",
     "887667868": "คำสั่งซื้อ",
-    "892431976": "If you cancel your order {{cancellation_limit}} times in {{cancellation_period}} hours, you will be blocked from using Deriv P2P for {{block_duration}} hours. <br /> ({{number_of_cancels_remaining}} cancellations remaining)",
+    "892431976": "ถ้าคุณยกเลิกคำสั่งซื้อของคุณ {{cancellation_limit}} ครั้งภายใน {{cancellation_period}} ชั่วโมง คุณจะถูกบล็อกการเข้าใช้ Deriv P2P เป็นเวลา {{block_duration}} ชั่วโมง <br /> (มีจำนวนการยกเลิกเหลืออยู่ {{number_of_cancels_remaining}} ครั้ง)",
     "949859957": "ส่ง",
     "954233511": "ถูกขายแล้ว",
     "957529514": "หากต้องการสั่งซื้อ ให้คุณใช้หนึ่งในบรรดาวิธีการชำระเงินที่ผู้โฆษณาต้องการดังต่อไปนี้:",

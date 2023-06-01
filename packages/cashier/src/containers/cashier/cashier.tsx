@@ -19,13 +19,12 @@ import {
     useP2PNotificationCount,
 } from '@deriv/hooks';
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
-import AccountPromptDialog from '../../components/account-prompt-dialog';
 import ErrorDialog from '../../components/error-dialog';
 import { TRoute } from '../../types';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
-import { TStores } from '@deriv/stores/types';
+import type { TCoreStores } from '@deriv/stores/types';
 import './cashier.scss';
 
 type TCashierProps = RouteComponentProps & {
@@ -34,8 +33,8 @@ type TCashierProps = RouteComponentProps & {
     onMount: (should_remount?: boolean) => void;
     setAccountSwitchListener: () => void;
     setTabIndex: (index: number) => void;
-    routeBackInApp: TStores['common']['routeBackInApp'];
-    toggleCashier: TStores['ui']['toggleCashier'];
+    routeBackInApp: TCoreStores['common']['routeBackInApp'];
+    toggleCashier: TCoreStores['ui']['toggleCashier'];
     resetLastLocation: () => void;
 };
 
@@ -51,7 +50,7 @@ type TCashierOptions = {
 
 const Cashier = observer(({ history, location, routes: routes_config }: TCashierProps) => {
     const { common, ui, client } = useStore();
-    const { withdraw, general_store, transaction_history, payment_agent, account_prompt_dialog } = useCashierStore();
+    const { withdraw, general_store, transaction_history, payment_agent } = useCashierStore();
     const { error } = withdraw;
     const {
         is_cashier_onboarding,
@@ -68,7 +67,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         isSuccess: is_payment_agent_transfer_visible_is_success,
     } = usePaymentAgentTransferVisible();
     const { is_payment_agent_visible } = payment_agent;
-    const { resetLastLocation } = account_prompt_dialog;
     const { is_from_derivgo } = common;
     const { is_cashier_visible: is_visible, toggleCashier } = ui;
     const { is_account_setting_loaded, is_logged_in, is_logging_in } = client;
@@ -86,9 +84,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         // we still need to populate the tabs shown on cashier
         return () => {
             toggleCashier();
-            resetLastLocation();
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [toggleCashier]);
 
     React.useEffect(() => {
@@ -170,7 +166,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
 
     return (
         <FadeWrapper is_visible={is_visible} className='cashier__page-wrapper' keyname='cashier__page-wrapper'>
-            <AccountPromptDialog />
             <ErrorDialog error={error} />
             <div className='cashier'>
                 <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>

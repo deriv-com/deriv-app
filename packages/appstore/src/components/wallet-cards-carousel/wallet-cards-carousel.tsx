@@ -30,7 +30,12 @@ export const WalletCardsCarousel = <T extends React.ReactNode>({ items }: Wallet
                 ))}
             </ul>
             <div className='wallet-cards-carousel__pagination'>
-                <ProgressBarOnboarding step={activePageIndex + 1} amount_of_steps={pages} setStep={goTo} />
+                <ProgressBarOnboarding
+                    step={activePageIndex + 1}
+                    amount_of_steps={pages}
+                    setStep={goTo}
+                    is_transition={true}
+                />
             </div>
             <div className='wallet-cards-carousel__buttons'>
                 {wallet_btns.map(btn => (

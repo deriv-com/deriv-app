@@ -1,5 +1,6 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
+const { IS_RELEASE } = require('./constants');
 
 const js_loaders = [
     '@deriv/shared/src/loaders/deriv-account-loader.js',
@@ -80,13 +81,13 @@ const css_loaders = [
     {
         loader: 'css-loader',
         options: {
-            sourceMap: true,
+            sourceMap: !IS_RELEASE,
         },
     },
     {
         loader: 'postcss-loader',
         options: {
-            sourceMap: true,
+            sourceMap: !IS_RELEASE,
             postcssOptions: {
                 config: path.resolve(__dirname),
             },
@@ -102,7 +103,7 @@ const css_loaders = [
     {
         loader: 'sass-loader',
         options: {
-            sourceMap: true,
+            sourceMap: !IS_RELEASE,
         },
     },
     {

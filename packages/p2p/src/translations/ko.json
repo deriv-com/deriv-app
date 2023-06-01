@@ -77,7 +77,7 @@
     "876086855": "재무 평가 양식 작성",
     "881351325": "이 판매자를 추천하시겠습니까?",
     "887667868": "주문",
-    "892431976": "If you cancel your order {{cancellation_limit}} times in {{cancellation_period}} hours, you will be blocked from using Deriv P2P for {{block_duration}} hours. <br /> ({{number_of_cancels_remaining}} cancellations remaining)",
+    "892431976": "{{cancellation_period}} 시간 동안 주문을 {{cancellation_limit}} 번 취소하면 {{block_duration}} 시간 동안 Deriv P2P 사용이 차단됩니다. <br /> (취소 횟수가 {{number_of_cancels_remaining}} 회 남았습니다)",
     "949859957": "제출",
     "954233511": "판매 완료",
     "957529514": "주문하려면 광고주가 선호하는 결제 방법 중 하나를 추가하세요.",

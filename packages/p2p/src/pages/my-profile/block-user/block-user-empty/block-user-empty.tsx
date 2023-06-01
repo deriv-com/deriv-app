@@ -1,17 +1,13 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
-import { my_profile_tabs } from 'Constants/my-profile-tabs';
-import { Localize, localize } from 'Components/i18next';
-import { useStores } from 'Stores';
+import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
+import { Localize } from 'Components/i18next';
 
 const BlockUserEmpty = () => {
-    const { my_profile_store } = useStores();
-
     return (
         <React.Fragment>
             <DesktopWrapper>
-                <div className='block-user-empty'>
+                <div className='block-user-empty' data-testid='dt_desktop_content'>
                     <Icon
                         className='block-user-empty__icon'
                         icon='IcEmptyBlockedAdvertisers'
@@ -24,13 +20,7 @@ const BlockUserEmpty = () => {
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
-                <MobileFullPageModal
-                    body_className='block-user-empty'
-                    height_offset='80px'
-                    is_modal_open={my_profile_store.active_tab === my_profile_tabs.MY_COUNTERPARTIES}
-                    page_header_text={localize('My counterparties')}
-                    pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}
-                >
+                <div className='block-user-empty__mobile-content'>
                     <Icon
                         icon='IcEmptyBlockedAdvertisers'
                         className='block-user-empty__icon'
@@ -40,7 +30,7 @@ const BlockUserEmpty = () => {
                     <Text className='block-user-empty__text' weight='bold'>
                         <Localize i18n_default_text='No one to show here' />
                     </Text>
-                </MobileFullPageModal>
+                </div>
             </MobileWrapper>
         </React.Fragment>
     );

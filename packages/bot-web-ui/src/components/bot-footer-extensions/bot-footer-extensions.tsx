@@ -2,7 +2,6 @@ import React from 'react';
 import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
 import SecurityAndPrivacy from './security-and-privacy';
-import FooterTabs from './footer-tabs';
 
 type TPopulateFooterExtensionsProps = {
     position: string;
@@ -11,22 +10,16 @@ type TPopulateFooterExtensionsProps = {
 };
 
 type TBotFooterExtentionsProps = {
-    active_tab: string;
     populateFooterExtensions: (footer_extensions: TPopulateFooterExtensionsProps[]) => void;
-    setActiveTab: (tab_title: string) => void;
 };
 
-const BotFooterExtensions = ({ active_tab, populateFooterExtensions, setActiveTab }: TBotFooterExtentionsProps) => {
-    React.useEffect(() => populateFooter());
+const BotFooterExtensions = ({ populateFooterExtensions }: TBotFooterExtentionsProps) => {
+    React.useEffect(() => populateFooter(), []);
     React.useEffect(() => () => populateFooterExtensions([]), [populateFooterExtensions]);
 
     const populateFooter = () => {
         populateFooterExtensions([
-            {
-                position: 'left',
-                Component: () => <FooterTabs active_tab={active_tab} setActiveTab={setActiveTab} />,
-                has_right_separator: false,
-            },
+            // TODO: need to import an icon on the left side of this footer extension
             {
                 position: 'right',
                 Component: SecurityAndPrivacy,
@@ -38,8 +31,6 @@ const BotFooterExtensions = ({ active_tab, populateFooterExtensions, setActiveTa
     return null;
 };
 
-export default connect(({ ui, main_content }: RootStore) => ({
-    active_tab: main_content.active_tab,
+export default connect(({ ui }: RootStore) => ({
     populateFooterExtensions: ui.populateFooterExtensions,
-    setActiveTab: main_content.setActiveTab,
 }))(BotFooterExtensions);

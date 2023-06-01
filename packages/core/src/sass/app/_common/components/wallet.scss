@@ -719,14 +719,12 @@ $wallet-bg-color: (
         @each $type, $themes in $types {
             @each $theme, $colors in $themes {
                 $t: if($theme == 'dark', '--dark', '');
-                $desktop-color: map-get($colors, 'desktop');
-                $mobile-color: map-get($colors, 'mobile');
 
                 .wallet-#{$type}__#{$currency}-bg#{$t} {
-                    background: $desktop-color;
+                    background: map-get($colors, 'desktop');
 
                     @include mobile {
-                        background: $mobile-color;
+                        background: map-get($colors, 'mobile');
                     }
                 }
             }

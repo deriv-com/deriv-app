@@ -11,7 +11,7 @@ import Accumulator from 'Modules/Trading/Components/Form/TradeParams/Accumulator
 import StopLoss from 'Modules/Trading/Components/Form/TradeParams/Multiplier/stop-loss.jsx';
 import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit.jsx';
 import Expiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration.jsx';
-import AccumulatorsInfoDisplay from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-info-display.jsx';
+import AccumulatorsInfoDisplay from 'Modules/Trading/Components/Form/TradeParams/Accumulator/accumulators-info-display';
 import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
 import VanillaTradeTypes from 'Modules/Trading/Components/Form/TradeParams/vanilla-trade-types.jsx';
 import { connect } from 'Stores/connect';

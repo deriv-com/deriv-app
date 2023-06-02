@@ -42,7 +42,7 @@ const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcher
                 })}
             </div>
             <a href={config.tradershub.url}>
-                <span>Looking for CFDs? Go to Trader's Hub</span>
+                <span>{translate('Looking for CFDs? Go to Trader\'s Hub')}</span>
             </a>
         </div>
     );

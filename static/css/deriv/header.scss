@@ -311,7 +311,7 @@
             width: 100%;
             height: 100%;
             overflow-y: scroll;
-            padding: 0 16px 120px;
+            padding: 0 8px 120px;
         }
 
         &-close {
@@ -568,6 +568,9 @@
                 width: 100%;
                 background: var(--general-main-1);
                 display: flex;
+                @include mobile {
+                    flex-direction: column;
+                }
             }
         }
 
@@ -581,6 +584,7 @@
                 width: 320px;
                 margin: 24px 16px;
                 padding: 24px 16px;
+               
 
                 img {
                    height: 32px;
@@ -590,6 +594,9 @@
                     width: auto;
                     margin: 14px 0;
                     padding: 14px 0;
+                }
+                @include mobile {
+                    padding: 14px 10px;
                 }
 
                 &:not(.platform__list-item--active):hover {

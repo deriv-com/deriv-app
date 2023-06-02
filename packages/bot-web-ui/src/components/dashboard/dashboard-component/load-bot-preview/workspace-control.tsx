@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
-import { observer } from 'mobx-react';
+import { observer } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const WorkspaceControl = observer(() => {

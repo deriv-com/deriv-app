@@ -1,1 +1,1 @@
-export { default as DepositCryptoResentTransactionSideNote } from './deposit-crypto-resent-transaction-side-note';
+export { default as DepositCryptoRecentTransactionSideNote } from './deposit-crypto-recent-transaction-side-note';

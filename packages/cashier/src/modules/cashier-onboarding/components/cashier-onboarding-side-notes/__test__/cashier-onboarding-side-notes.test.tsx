@@ -5,7 +5,7 @@ import CashierProviders from '../../../../../cashier-providers';
 import CashierOnboardingSideNotes from '../cashier-onboarding-side-notes';
 
 describe('CashierOnboardingSideNotes', () => {
-    test('should render CashierOnboardingSideNoteFiat on mobile if is_crypto is false', async () => {
+    test('should render CashierOnboardingSideNoteFiat on mobile if is_crypto is false', () => {
         const mock = mockStore({ ui: { is_mobile: true } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (

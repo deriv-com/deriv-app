@@ -52,6 +52,7 @@ export default class AppStore {
         if (!client?.is_logged_in && client?.is_eu_country){
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
         }
+
         if (!client.is_landing_company_loaded){
             return false;
         }
@@ -59,26 +60,18 @@ export default class AppStore {
         if (window.location.pathname === routes.bot && client.should_show_eu_error && traders_hub.content_flag === ContentFlag.EU_REAL && recovery_low_risk_cr_eu === 'EU'){
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
         }
-        // if(window.location.pathname === routes.bot && traders_hub.content_flag === ContentFlag.EU_REAL && recovery_low_risk_cr_eu === 'EU' && !client.is_eu_country){
-        //     return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
-        // }
-        // if(window.location.pathname === routes.bot && traders_hub.content_flag === ContentFlag.EU_REAL && recovery_low_risk_cr_eu === 'EU' && !client.should_show_eu_error){
-        //     return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
-        // }
 
         if (traders_hub.content_flag===ContentFlag.LOW_RISK_CR_NON_EU && recovery_low_risk_cr_eu === 'Non-EU' || traders_hub.content_flag===ContentFlag.HIGH_RISK_CR){
             return;
         }
+
         if (window.location.pathname === routes.bot && traders_hub.content_flag===ContentFlag.LOW_RISK_CR_EU && recovery_low_risk_cr_eu === 'EU'){
             if (toggleAccountsDialog) {
                 return showDigitalOptionsUnavailableError( common.showError, this.getErrorForNonEuClients(), toggleAccountsDialog, false, false);
             }
         }
-        // if (window.location.pathname === routes.bot && client.should_show_eu_error && traders_hub.content_flag !== ContentFlag.LOW_RISK_CR_EU) {
-        //     console.log('5');
-        //     return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
-        // } 
-        else if ( (client.is_eu && !client.is_bot_allowed && window.location.pathname === routes.bot && client.should_show_eu_error) ||
+
+        if ( ( window.location.pathname === routes.bot && !client.is_bot_allowed && client.is_eu && client.should_show_eu_error ) ||
             isEuResidenceWithOnlyVRTC(client.active_accounts) || client.is_options_blocked ) {
             if (toggleAccountsDialog) {
                 showDigitalOptionsUnavailableError(
@@ -89,6 +82,7 @@ export default class AppStore {
                     false
                 );
             }
+
         } else if (show_default_error && common.has_error) {
             return common.setError(false, null);
         }

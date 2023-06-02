@@ -35,13 +35,15 @@ const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcher
                         >
                             <img src={platform.logo} className='platform__list-item-icon' />
                             <div className='platform__list-item-text'>
-                                <div className='platform__list-item-name'>{platform.title}</div>
                                 <div className='platform__list-item-desc'>{translate(platform.description)}</div>
                             </div>
                         </a>
                     );
                 })}
             </div>
+            <a href={config.tradershub.url}>
+                <span>Looking for CFDs? Go to Trader's Hub</span>
+            </a>
         </div>
     );
 });

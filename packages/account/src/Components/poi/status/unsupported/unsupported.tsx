@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { localize } from '@deriv/translations';
 import { Timeline } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { identity_status_codes } from 'Sections/Verification/ProofOfIdentity/proof-of-identity-utils.js';
+import { identity_status_codes } from 'Sections/Verification/ProofOfIdentity/proof-of-identity-utils';
 import DetailComponent from './detail-component';
 import { Documents } from './documents';
 import { getDocumentIndex, DOCUMENT_TYPES } from './constants';

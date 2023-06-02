@@ -23,7 +23,7 @@
 
     .run-panel__container {
         height: var(--tab-content-height) !important;
-        position: unset !important;
+        position: sticky;
         // TODO: need to set global variables for translation
         transform: translateX(calc(367px));
         transition: all 0.4s;
@@ -195,7 +195,7 @@
         width: 100%;
 
         &--tour-active {
-            width: 78%;
+            width: calc(100% - 36rem);
 
             @include mobile {
                 width: 100%;

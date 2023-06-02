@@ -6,7 +6,7 @@ module.exports = function (env) {
 
     return {
         context: path.resolve(__dirname, '../src'),
-        devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
+        devtool: IS_RELEASE ? 'source-map' : 'eval-cheap-module-source-map',
         entry: {
             account: path.resolve(__dirname, '../src', 'index.tsx'),
             'accept-risk-config': 'Configs/accept-risk-config',

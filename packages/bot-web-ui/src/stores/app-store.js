@@ -1,7 +1,7 @@
-import { action, reaction, makeObservable, when } from 'mobx';
-import { isEuResidenceWithOnlyVRTC, showDigitalOptionsUnavailableError, routes, ContentFlag } from '@deriv/shared';
+import { action, makeObservable, reaction, when } from 'mobx';
+import { ApiHelpers, DBot,runIrreversibleEvents } from '@deriv/bot-skeleton';
+import { ContentFlag,isEuResidenceWithOnlyVRTC, routes, showDigitalOptionsUnavailableError } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { runIrreversibleEvents, ApiHelpers, DBot } from '@deriv/bot-skeleton';
 
 export default class AppStore {
     constructor(root_store, core) {
@@ -49,36 +49,54 @@ export default class AppStore {
         const toggleAccountsDialog = ui?.toggleAccountsDialog;
         const recovery_low_risk_cr_eu = traders_hub?.selected_region;
 
-        if (!client?.is_logged_in && client?.is_eu_country){
+        if (!client?.is_logged_in && client?.is_eu_country) {
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
         }
 
-        if (!client.is_landing_company_loaded){
+        if (!client.is_landing_company_loaded) {
             return false;
         }
-            
-        if (window.location.pathname === routes.bot && client.should_show_eu_error && traders_hub.content_flag === ContentFlag.EU_REAL && recovery_low_risk_cr_eu === 'EU'){
+
+        if (
+            window.location.pathname === routes.bot &&
+            client.should_show_eu_error &&
+            traders_hub.content_flag === ContentFlag.EU_REAL &&
+            recovery_low_risk_cr_eu === 'EU'
+        ) {
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
         }
 
-        if (traders_hub.content_flag === ContentFlag.LOW_RISK_CR_NON_EU && recovery_low_risk_cr_eu === 'Non-EU' || traders_hub.content_flag === ContentFlag.HIGH_RISK_CR){
-            return;
+        if (
+            (traders_hub.content_flag === ContentFlag.LOW_RISK_CR_NON_EU && recovery_low_risk_cr_eu === 'Non-EU') ||
+            traders_hub.content_flag === ContentFlag.HIGH_RISK_CR
+        ) {
+            return false;
         }
 
-        if (window.location.pathname === routes.bot && traders_hub.content_flag === ContentFlag.LOW_RISK_CR_EU && recovery_low_risk_cr_eu === 'EU'){
+        if (
+            window.location.pathname === routes.bot &&
+            traders_hub.content_flag === ContentFlag.LOW_RISK_CR_EU &&
+            recovery_low_risk_cr_eu === 'EU'
+        ) {
             if (toggleAccountsDialog) {
-                return showDigitalOptionsUnavailableError( 
-                    common.showError, 
-                    this.getErrorForNonEuClients(), 
-                    toggleAccountsDialog, 
-                    false, 
+                return showDigitalOptionsUnavailableError(
+                    common.showError,
+                    this.getErrorForNonEuClients(),
+                    toggleAccountsDialog,
+                    false,
                     false
                 );
             }
         }
 
-        if ( ( window.location.pathname === routes.bot && !client.is_bot_allowed && client.is_eu && client.should_show_eu_error ) ||
-            isEuResidenceWithOnlyVRTC(client.active_accounts) || client.is_options_blocked ) {
+        if (
+            (window.location.pathname === routes.bot &&
+                !client.is_bot_allowed &&
+                client.is_eu &&
+                client.should_show_eu_error) ||
+            isEuResidenceWithOnlyVRTC(client.active_accounts) ||
+            client.is_options_blocked
+        ) {
             if (toggleAccountsDialog) {
                 showDigitalOptionsUnavailableError(
                     common.showError,
@@ -88,17 +106,17 @@ export default class AppStore {
                     false
                 );
             }
-
         } else if (show_default_error && common.has_error) {
             common.setError(false, null);
         }
+        return false;
     };
 
     onMount() {
         const { blockly_store } = this.root_store;
         const { client, common, ui, traders_hub } = this.core;
         this.showDigitalOptionsMaltainvestError(client, common, ui);
-        
+
         blockly_store.setLoading(true);
         DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store, ui.is_mobile).then(() => {
             blockly_store.setContainerSize();
@@ -123,7 +141,7 @@ export default class AppStore {
         reaction(
             () => traders_hub?.content_flag,
             () => this.showDigitalOptionsMaltainvestError(client, common, ui)
-        );   
+        );
     }
 
     onUnmount() {
@@ -273,7 +291,7 @@ export default class AppStore {
         this.api_helpers_store = {
             server_time: this.core.common.server_time,
             ws: this.root_store.ws,
-        }; 
+        };
     }
 
     onClickOutsideBlockly = event => {

@@ -1,11 +1,17 @@
 import React from 'react';
 import { observer } from 'mobx-react';
+import { useHistory } from 'react-router-dom';
 import { Text, Icon, PageOverlay, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { useHistory } from 'react-router-dom';
+import CFDInstrumentsLabelHighlighted from './cfd-instruments-label-highlighted';
 
-const CompareCFDs = () => {
+import { useStore } from '@deriv/stores';
+
+const CompareCFDs = observer(() => {
+    const { client } = useStore();
+    const { trading_platform_available_accounts } = client;
+
     const history = useHistory();
 
     const DesktopHeader = (
@@ -32,9 +38,17 @@ const CompareCFDs = () => {
     return (
         <React.Fragment>
             <DesktopWrapper>
-                <PageOverlay header={DesktopHeader} is_from_app={routes.traders_hub}>
-                    Desktop wrapper
-                </PageOverlay>
+                <PageOverlay header={DesktopHeader} is_from_app={routes.traders_hub} />
+                <div className='compare-cfd-account-container'>
+                    <div className='card-list'>
+                        {trading_platform_available_accounts.map(item => (
+                            <CFDInstrumentsLabelHighlighted
+                                key={item.market_type + item.shortcode}
+                                trading_platforms={item}
+                            />
+                        ))}
+                    </div>
+                </div>
             </DesktopWrapper>
             <MobileWrapper>
                 <PageOverlay
@@ -48,6 +62,6 @@ const CompareCFDs = () => {
             </MobileWrapper>
         </React.Fragment>
     );
-};
+});
 
-export default observer(CompareCFDs);
+export default CompareCFDs;

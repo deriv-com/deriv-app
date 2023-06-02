@@ -16,3 +16,20 @@
         }
     }
 }
+
+.compare-cfd-account {
+    &-outline {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--general-hover);
+        padding: 2.4rem;
+        border-radius: 2.4rem;
+    }
+    &-container {
+        margin: 5rem;
+    }
+}
+.card-list {
+    display: flex;
+    gap: 2rem;
+}

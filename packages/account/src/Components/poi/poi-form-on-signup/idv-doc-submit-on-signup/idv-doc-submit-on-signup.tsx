@@ -134,13 +134,11 @@ export const IdvDocSubmitOnSignup = ({
                 case 'Drivers License':
                     document_name = 'Driver License';
                     break;
-                case 'Passport':
-                    document_name = 'document number';
-                    break;
                 case 'Social Security and National Insurance Trust':
                     document_name = 'SSNIT';
                     break;
                 default:
+                    document_name = 'document number';
                     break;
             }
 

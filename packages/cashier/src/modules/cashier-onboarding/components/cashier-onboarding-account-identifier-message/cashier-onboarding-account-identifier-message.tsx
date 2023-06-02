@@ -3,7 +3,6 @@ import { InlineMessage } from '@deriv/components';
 import { useCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import './cashier-onboarding-account-identifier-message.scss';
 
 const CashierOnboardingAccountIdentifierMessage: React.FC = observer(() => {
     const { client } = useStore();
@@ -14,19 +13,17 @@ const CashierOnboardingAccountIdentifierMessage: React.FC = observer(() => {
     const regulation = is_crypto || is_low_risk ? '' : regulation_text;
 
     return (
-        <div className='cashier-onboarding-account-identifier-message'>
-            <InlineMessage
-                type='information'
-                size='sm'
-                message={
-                    <Localize
-                        i18n_default_text='This is your <0>{{regulation}}{{currency}}</0> account {{loginid}}.'
-                        values={{ regulation, currency, loginid }}
-                        components={[<strong key={0} />]}
-                    />
-                }
-            />
-        </div>
+        <InlineMessage
+            type='information'
+            size='sm'
+            message={
+                <Localize
+                    i18n_default_text='This is your <0>{{regulation}}{{currency}}</0> account {{loginid}}.'
+                    values={{ regulation, currency, loginid }}
+                    components={[<strong key={0} />]}
+                />
+            }
+        />
     );
 });
 

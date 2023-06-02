@@ -2,10 +2,12 @@
     &__qrcode-container {
         padding: 1px;
         background-color: #fff;
+        align-self: center;
     }
 
     &__address-container {
         display: flex;
+        align-self: center;
     }
 
     &__hash-container {

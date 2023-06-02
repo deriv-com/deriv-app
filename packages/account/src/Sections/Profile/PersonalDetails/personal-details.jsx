@@ -34,9 +34,9 @@ import {
     validAddress,
     validLength,
     validLetterSymbol,
-    validName,
     validPhone,
     validPostCode,
+    removeEmptyPropertiesFromObject,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import FormBody from 'Components/form-body';
@@ -48,6 +48,7 @@ import LoadErrorMessage from 'Components/load-error-message';
 import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
 import { connect } from 'Stores/connect';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
+import { validateName } from 'Helpers/utils';
 
 const validate = (errors, values) => (fn, arr, err_msg) => {
     arr.forEach(field => {
@@ -340,22 +341,8 @@ export const PersonalDetailsForm = ({
                 );
             }
         }
-
-        const min_name = 2;
-        const max_name = 50;
-        const validateName = (name, field) => {
-            if (name) {
-                if (!validLength(name.trim(), { min: min_name, max: max_name })) {
-                    errors[field] = localize('You should enter 2-50 characters.');
-                } else if (!validName(name)) {
-                    // validName() has the exact regex used at the backend for allowing non digit characters including accented unicode characters.
-                    // two or more space between name not allowed.
-                    errors[field] = localize('Letters, spaces, periods, hyphens, apostrophes only.');
-                }
-            }
-        };
-        validateName(values.first_name, 'first_name');
-        validateName(values.last_name, 'last_name');
+        errors.first_name = validateName(values.first_name);
+        errors.last_name = validateName(values.last_name);
 
         if (values.phone) {
             // minimum characters required is 9 numbers (excluding +- signs or space)
@@ -419,7 +406,7 @@ export const PersonalDetailsForm = ({
 
         setRestState({ ...rest_state, errors: Object.keys(errors).length > 0 });
 
-        return errors;
+        return removeEmptyPropertiesFromObject(errors);
     };
 
     const getWarningMessages = values => {

@@ -32,15 +32,15 @@ export const isValidToSell = (contract_info: TContractInfo) =>
 
 export const hasContractEntered = (contract_info: TContractInfo) => !!contract_info.entry_spot;
 
-export const isAccumulatorContract = (contract_type: string) => /ACCU/i.test(contract_type);
+export const isAccumulatorContract = (contract_type = '') => /ACCU/i.test(contract_type);
 
-export const isMultiplierContract = (contract_type: string) => /MULT/i.test(contract_type);
+export const isMultiplierContract = (contract_type = '') => /MULT/i.test(contract_type);
 
-export const isVanillaContract = (contract_type: string) => /VANILLA/i.test(contract_type);
+export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contract_type);
 
-export const isOnlyUpsDownsContract = (contract_type: string) => /RUN/i.test(contract_type);
+export const isOnlyUpsDownsContract = (contract_type = '') => /RUN/i.test(contract_type);
 
-export const isCryptoContract = (underlying: string) => /^cry/.test(underlying);
+export const isCryptoContract = (underlying = '') => /^cry/.test(underlying);
 
 export const getCurrentTick = (contract_info: TContractInfo) => {
     const tick_stream = unique(contract_info.tick_stream || [], 'epoch');
@@ -140,6 +140,6 @@ export const getContractUpdateConfig = ({ contract_update, limit_order }: TContr
     };
 };
 
-export const shouldShowExpiration = (symbol: string) => /^cry/.test(symbol);
+export const shouldShowExpiration = (symbol = '') => /^cry/.test(symbol);
 
 export const shouldShowCancellation = (symbol = '') => !/^(cry|CRASH|BOOM|stpRNG|WLD|JD)/.test(symbol);

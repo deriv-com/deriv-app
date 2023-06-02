@@ -228,6 +228,12 @@
     }
     &__symbol {
         margin-left: 0.4rem;
+        &--ups-downs {
+            width: 7rem;
+            @include mobile {
+                width: initial;
+            }
+        }
     }
     &__header {
         display: flex;

@@ -715,6 +715,7 @@ import './rebranding/ic-rebranding-deriv-bot.svg';
 import './rebranding/ic-rebranding-deriv-go-dashboard.svg';
 import './rebranding/ic-rebranding-deriv-trader-dashboard.svg';
 import './rebranding/ic-rebranding-deriv-trader.svg';
+import './rebranding/ic-rebranding-deriv-x.svg';
 import './rebranding/ic-rebranding-derivx-wordmark.svg';
 import './rebranding/ic-rebranding-derivx.svg';
 import './rebranding/ic-rebranding-dmt5-dashboard.svg';

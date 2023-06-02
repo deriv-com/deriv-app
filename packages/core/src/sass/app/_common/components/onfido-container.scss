@@ -739,7 +739,7 @@
             &__poi-confirm-example {
                 border: 1px solid var(--general-active);
                 border-radius: 0.8rem;
-                margin: 3.2rem 0;
+                margin-bottom: 3.2rem;
                 padding: 1.6rem 1.6rem 0;
             }
             @include mobile {
@@ -751,10 +751,16 @@
 
         .proof-of-identity__submit-button {
             margin-left: auto;
+
             @include mobile {
                 width: 100%;
                 padding: 0 2.4rem;
             }
         }
+    }
+
+    &__verification-failed-warning {
+        margin: 1.6rem auto 3.2rem;
+        border-radius: 0.8rem;
     }
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Autocomplete, Button, DesktopWrapper, MobileWrapper, Text, SelectNative } from '@deriv/components';
+import { Autocomplete, Button, DesktopWrapper, HintBox, MobileWrapper, Text, SelectNative } from '@deriv/components';
 import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
 import { localize } from '@deriv/translations';
 import classNames from 'classnames';
@@ -10,6 +10,7 @@ type TCountry = Record<string, string>;
 type TCountrySelector = {
     handleSelectionNext: () => void;
     is_from_external: boolean;
+    is_verification_failed: boolean;
     residence_list: TCountry[];
     selected_country: string;
     setSelectedCountry: (value: TCountry) => void;
@@ -18,6 +19,7 @@ type TCountrySelector = {
 const CountrySelector = ({
     handleSelectionNext,
     is_from_external,
+    is_verification_failed,
     residence_list,
     selected_country,
     setSelectedCountry,
@@ -78,9 +80,30 @@ const CountrySelector = ({
                             'min-height': !is_from_external,
                         })}
                     >
-                        <Text className='proof-of-identity__header' align='center' weight='bold'>
-                            {localize('Proof of identity')}
-                        </Text>
+                        {is_verification_failed ? (
+                            <React.Fragment>
+                                <Text className='' align='center' weight='bold'>
+                                    {localize('Your identity verification failed because:')}
+                                </Text>
+                                <HintBox
+                                    icon='IcCloseCircleRed'
+                                    icon_height={16}
+                                    icon_width={16}
+                                    message={
+                                        <Text as='p' size='xs'>
+                                            {localize('Your identity document has expired.')}
+                                        </Text>
+                                    }
+                                    is_danger
+                                    className='proof-of-identity__verification-failed-warning'
+                                />
+                            </React.Fragment>
+                        ) : (
+                            <Text className='proof-of-identity__header' align='center' weight='bold'>
+                                {localize('Proof of identity')}
+                            </Text>
+                        )}
+
                         <Text className='proof-of-identity__country-text ' size='xs'>
                             {localize('In which country was your document issued?')}
                         </Text>

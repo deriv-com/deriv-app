@@ -70,6 +70,8 @@ const POISubmission = ({
         [residence_list]
     );
 
+    const mismatch_status = formatIDVError(idv.last_rejected, idv.status);
+
     React.useEffect(() => {
         if (submission_status !== submission_status_code.complete) {
             if ((has_require_submission || allow_poi_resubmission) && identity_last_attempt) {
@@ -102,9 +104,7 @@ const POISubmission = ({
                         break;
                 }
             } else if (
-                ![(idv_error_statuses.poi_expired, idv_error_statuses.poi_failed)].includes(
-                    formatIDVError(idv.last_rejected, idv.status)
-                ) &&
+                ![(idv_error_statuses.poi_expired, idv_error_statuses.poi_failed)].includes(mismatch_status) &&
                 idv.submissions_left > 0
             ) {
                 setSubmissionService(service_code.idv);
@@ -124,10 +124,13 @@ const POISubmission = ({
 
     switch (submission_status) {
         case submission_status_code.selecting: {
+            const is_verification_failed =
+                mismatch_status === idv_error_statuses.poi_failed || mismatch_status === idv_error_statuses.poi_expired;
             return (
                 <CountrySelector
                     handleSelectionNext={handleSelectionNext}
                     is_from_external={is_from_external}
+                    is_verification_failed={is_verification_failed}
                     residence_list={residence_list}
                     selected_country={selected_country}
                     setSelectedCountry={setSelectedCountry}
@@ -141,7 +144,7 @@ const POISubmission = ({
                         <IdvFailed
                             account_settings={account_settings}
                             getChangeableFields={getChangeableFields}
-                            mismatch_status={formatIDVError(idv.last_rejected, idv.status)}
+                            mismatch_status={mismatch_status}
                             residence_list={residence_list}
                             handleSubmit={handleViewComplete}
                             latest_status={idv?.latest}
@@ -190,7 +193,7 @@ const POISubmission = ({
                     return (
                         <IdvSubmitComplete
                             is_from_external={is_from_external}
-                            mismatch_status={formatIDVError(idv.last_rejected, idv.status)}
+                            mismatch_status={mismatch_status}
                             needs_poa={needs_poa}
                             redirect_button={redirect_button}
                         />

@@ -19,9 +19,11 @@
         "release": "d() { test -z $1 && echo 'Please specify branch.' && exit 1; (git show-branch $1) || exit 1;  git stash; git checkout $1; npm i; rm -rf branch/$1; mkdir -p branch/$1 ; gulp build-min --test --branch $1; cp -r www/ branch/$1; cp www/index.html www/404.html; gulp release-branch --branch $1;}; d",
         "release-production": "d() { git stash; git checkout master; npm i;gulp build-min;gulp release-master;}; d",
         "build": "webpack --config webpack.config.cli.js",
-        "build-min": "gulp build-min",
+        "build-min": "webpack --config webpack.config.cli.js",
         "prepare": "husky install",
-        "prettify": "npx prettier --write **/{src}/**/*.{js,jsx,ts,tsx,md,html,mustache,css,scss,}"
+        "prettify": "npx prettier --write **/{src}/**/*.{js,jsx,ts,tsx,md,html,mustache,css,scss,}",
+        "start:1": "webpack-dev-server --config webpack.config.web --open",
+        "build:1": "webpack --config webpack.config.cli"
     },
     "husky": {
         "hooks": {
@@ -47,6 +49,7 @@
         "babel-loader": "^8.2.3",
         "binary-live-api": "^29.0.1",
         "chai": "^4.3.4",
+        "clean-webpack-plugin": "^1.0.0",
         "copy-webpack-plugin": "4.5.3",
         "coveralls": "^3.1.1",
         "css-loader": "0.28.11",
@@ -105,6 +108,7 @@
         "trackjs": "^3.10.1",
         "vinyl-paths": "^2.1.0",
         "webpack": "^3.12.0",
+        "webpack-dev-server": "^2.11.2",
         "webpack-stream": "^4.0.0"
     },
     "dependencies": {

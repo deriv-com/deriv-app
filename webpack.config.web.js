@@ -3,88 +3,17 @@ const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const BlocklyConcatPlugin = require('./customPlugins/blockly-concat-plugin');
-
-const production = process.env.NODE_ENV === 'production';
-
-const plugins = [
-    new Dotenv(),
-    new webpack.ProvidePlugin({
-        $: 'jquery',
-        jQuery: 'jquery',
-        'window.jQuery': 'jquery',
-    }),
-    new CopyWebpackPlugin([
-        {
-            from: 'node_modules/@deriv/deriv-charts/dist/*.smartcharts.*',
-            to: path.resolve(__dirname),
-            flatten: true,
-        },
-        {
-            from: 'node_modules/binary-style/src/images/favicons',
-            to: '../image/favicons',
-        },
-        {
-            from: 'public',
-            to: '../public',
-        },
-        {
-            from: 'public/localstorage-sync.html',
-            to: '../',
-        },
-        {
-            from: 'templates/index.html',
-            to: '../',
-        },
-    ]),
-    new BlocklyConcatPlugin({
-        outputPath: '../js',
-        fileName: 'blockly.js',
-        filesToConcat: [
-            './node_modules/blockly/blockly_compressed.js',
-            './node_modules/blockly/blocks_compressed.js',
-            './node_modules/blockly/javascript_compressed.js',
-            './node_modules/blockly/msg/messages.js',
-        ],
-    }),
-];
-
-const productionPlugins = () => {
-    const args = {};
-    if (process.env.ARGS.indexOf('--test')) {
-        args.BRANCH = JSON.stringify(process.env.BRANCH);
-        args.ARGS = JSON.stringify(process.env.ARGS);
-    }
-    if (process.env.NODE_ENV === 'production') {
-        return [
-            new webpack.DefinePlugin({
-                'process.env': {
-                    NODE_ENV: JSON.stringify('production'),
-                    ...args,
-                },
-            }),
-            new webpack.optimize.UglifyJsPlugin({
-                include: /\.js$/,
-                minimize: true,
-                sourceMap: true,
-                compress: {
-                    warnings: false,
-                },
-            }),
-        ];
-    }
-    return [];
-};
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
-    entry: {
-        bot: path.join(__dirname, 'src', 'botPage', 'view'),
-    },
+    entry: path.join(__dirname, 'src', 'botPage', 'view', 'index.js'),
     output: {
-        filename: production ? 'bot.min.js' : 'bot.js',
-        sourceMapFilename: production ? 'bot.min.js.map' : 'bot.js.map',
+        path: path.resolve(__dirname, 'www'),
+        filename: 'index.js',
+        sourceMapFilename: 'index.js.map',
     },
     devtool: 'source-map',
-    watch: !production,
+    watch: true,
     target: 'web',
     externals: {
         CIQ: 'CIQ',
@@ -107,7 +36,7 @@ module.exports = {
                     loader: 'file-loader',
                     options: {
                         name: '[name].[ext]',
-                        outputPath: '../image/',
+                        outputPath: path.resolve(__dirname, 'www', 'public', 'image'),
                     },
                 },
             },
@@ -117,11 +46,57 @@ module.exports = {
                     loader: 'file-loader',
                     options: {
                         name: '[name].[ext]',
-                        outputPath: '../font/',
+                        outputPath: path.resolve(__dirname, 'www', 'public', 'font'),
                     },
                 },
             },
         ],
     },
-    plugins: plugins.concat(productionPlugins()),
+    plugins: [
+        new CleanWebpackPlugin(['www']),
+        new Dotenv(),
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+            'window.jQuery': 'jquery',
+        }),
+        new CopyWebpackPlugin([
+            {
+                from: 'node_modules/@deriv/deriv-charts/dist/*.smartcharts.*',
+                to: path.resolve(__dirname, 'www/js'),
+                flatten: true,
+            },
+            {
+                from: 'node_modules/binary-style/src/images/favicons',
+                to: path.resolve(__dirname, 'www/image/favicons'),
+            },
+            {
+                from: 'public',
+                to: path.resolve(__dirname, 'www/public'),
+            },
+            {
+                from: 'public/localstorage-sync.html',
+                to: path.resolve(__dirname, 'www'),
+            },
+            {
+                from: 'templates/index.html',
+                to: path.resolve(__dirname, 'www'),
+            },
+        ]),
+        new BlocklyConcatPlugin({
+            outputPath: path.resolve(__dirname, 'www'),
+            fileName: 'blockly.js',
+            filesToConcat: [
+                './node_modules/blockly/blockly_compressed.js',
+                './node_modules/blockly/blocks_compressed.js',
+                './node_modules/blockly/javascript_compressed.js',
+                './node_modules/blockly/msg/messages.js',
+            ],
+        }),
+    ],
+    devServer: {
+        contentBase: path.resolve(__dirname, 'www'),
+        port: 8081,
+        open: true,
+    },
 };

@@ -3,14 +3,20 @@ const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const BlocklyConcatPlugin = require('./customPlugins/blockly-concat-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
-    entry: path.join(__dirname, 'src', 'botPage', 'bot', 'cli.js'),
+    entry: path.join(__dirname, 'src', 'botPage', 'view', 'index.js'),
     output: {
-        path: path.resolve(__dirname, 'lib'),
-        filename: 'index.js',
+        path: path.resolve(__dirname, 'www'),
+        filename: 'index.min.js',
+        sourceMapFilename: 'index.min.js.map',
     },
     target: 'node',
+    externals: {
+        CIQ: 'CIQ',
+        blockly: 'Blockly',
+    },
     module: {
         rules: [
             {
@@ -28,7 +34,7 @@ module.exports = {
                     loader: 'file-loader',
                     options: {
                         name: '[name].[ext]',
-                        outputPath: '../image/',
+                        outputPath: path.resolve(__dirname, 'www', 'public', 'image'),
                     },
                 },
             },
@@ -38,14 +44,20 @@ module.exports = {
                     loader: 'file-loader',
                     options: {
                         name: '[name].[ext]',
-                        outputPath: '../font/',
+                        outputPath: path.resolve(__dirname, 'www', 'public', 'font'),
                     },
                 },
             },
         ],
     },
     plugins: [
+        new CleanWebpackPlugin(['www']),
         new Dotenv(),
+        new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+            'window.jQuery': 'jquery',
+        }),
         new webpack.BannerPlugin({
             banner: '#!/usr/bin/env node',
             raw: true,
@@ -74,7 +86,7 @@ module.exports = {
             },
         ]),
         new BlocklyConcatPlugin({
-            outputPath: path.resolve(__dirname, 'www/js'),
+            outputPath: path.resolve(__dirname, 'www'),
             fileName: 'blockly.js',
             filesToConcat: [
                 './node_modules/blockly/blockly_compressed.js',
@@ -83,9 +95,13 @@ module.exports = {
                 './node_modules/blockly/msg/messages.js',
             ],
         }),
+        new webpack.optimize.UglifyJsPlugin({
+            include: /\.js$/,
+            minimize: true,
+            sourceMap: true,
+            compress: {
+                warnings: false,
+            },
+        }),
     ],
-    externals: {
-        CIQ: 'CIQ',
-        blockly: 'Blockly',
-    },
 };

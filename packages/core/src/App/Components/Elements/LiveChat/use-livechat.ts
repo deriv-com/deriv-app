@@ -19,6 +19,8 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
                         if (window.LiveChatWidget?.get('customer_data').status !== 'chatting') {
                             window.LiveChatWidget?.call('destroy');
                             resolve();
+                        } else if (window.location.pathname !== routes.cashier_p2p) {
+                            window.LiveChatWidget.call('hide_greeting', 235);
                         }
                     } catch (e) {
                         resolve();
@@ -100,16 +102,16 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
                     };
                 }
             }
-        });
 
-        window.LiveChatWidget?.on('new_event', event => {
-            if (event.greeting) {
-                if (event.greeting.id === 235) {
-                    if (window.location.pathname === routes.cashier_p2p)
-                        window.LiveChatWidget?.call('set_session_variables', { p2p_greeting: 1 });
-                    else window.LiveChatWidget.call('hide_greeting');
+            window.LiveChatWidget?.on('new_event', event => {
+                if (event.greeting) {
+                    if (event.greeting.id === 235) {
+                        if (window.location.pathname === routes.cashier_p2p)
+                            window.LiveChatWidget.call('update_session_variables', { p2p_greeting: 1 });
+                        else window.LiveChatWidget.call('hide_greeting');
+                    }
                 }
-            }
+            });
         });
     };
 

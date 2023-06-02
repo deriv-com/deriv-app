@@ -269,8 +269,10 @@ type TUiStore = {
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
+    openRealAccountSignup: (
+        value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
+    ) => void;
     notification_messages_ui: React.FC | null;
-    openRealAccountSignup: (value?: string) => void;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setReportsTabIndex: (value: number) => void;

@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Field, Formik } from 'formik';
+import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router';
@@ -48,14 +48,7 @@ import LoadErrorMessage from 'Components/load-error-message';
 import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
 import { connect } from 'Stores/connect';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
-import { validateName } from 'Helpers/utils';
-
-const validate = (errors, values) => (fn, arr, err_msg) => {
-    arr.forEach(field => {
-        const value = values[field];
-        if (/^\s+$/.test(value) || (!fn(value) && !errors[field] && err_msg !== true)) errors[field] = err_msg;
-    });
-};
+import { validateName, validate } from 'Helpers/utils';
 
 const InputGroup = ({ children, className }) => {
     const { is_appstore } = React.useContext(PlatformContext);
@@ -300,9 +293,7 @@ export const PersonalDetailsForm = ({
         if (is_virtual) return errors;
 
         const required_fields = ['first_name', 'last_name', 'phone', 'address_line_1', 'address_city'];
-        if (is_eu) {
-            required_fields.push('citizen');
-        }
+
         if (is_mf) {
             const required_tax_fields = ['tax_residence', 'tax_identification_number', 'employment_status'];
             required_fields.push(...required_tax_fields);
@@ -310,9 +301,11 @@ export const PersonalDetailsForm = ({
 
         validateValues(val => val, required_fields, localize('This field is required'));
 
-        const residence_fields = ['citizen'];
-        const validateResidence = val => getLocation(residence_list, val, 'value');
-        validateValues(validateResidence, residence_fields, true);
+        if (is_eu) {
+            const residence_fields = ['citizen'];
+            const validateResidence = val => getLocation(residence_list, val, 'value');
+            validateValues(validateResidence, residence_fields, true);
+        }
 
         const min_tax_identification_number = 0;
         const max_tax_identification_number = 25;
@@ -341,8 +334,8 @@ export const PersonalDetailsForm = ({
                 );
             }
         }
-        errors.first_name = validateName(values.first_name);
-        errors.last_name = validateName(values.last_name);
+        if (values.first_name) errors.first_name = validateName(values.first_name);
+        if (values.last_name) errors.last_name = validateName(values.last_name);
 
         if (values.phone) {
             // minimum characters required is 9 numbers (excluding +- signs or space)
@@ -561,11 +554,11 @@ export const PersonalDetailsForm = ({
                 setTouched,
                 dirty,
             }) => (
-                <>
+                <React.Fragment>
                     {Notifications && <Notifications />}
                     <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                     {show_form && (
-                        <form
+                        <Form
                             noValidate
                             className={classNames('account-form account-form__personal-details', {
                                 'account-form account-form__personal-details--dashboard': is_appstore,
@@ -638,10 +631,10 @@ export const PersonalDetailsForm = ({
                                                         required
                                                         disabled={!isChangeableField('first_name')}
                                                         error={errors.first_name}
-                                                        id={'first_name'}
+                                                        id='first_name'
                                                     />
                                                     <Input
-                                                        id={'last_name'}
+                                                        id='last_name'
                                                         data-lpignore='true'
                                                         type='text'
                                                         name='last_name'
@@ -1127,7 +1120,9 @@ export const PersonalDetailsForm = ({
                                                         <Text as='p' size='xs'>
                                                             <Localize
                                                                 i18n_default_text='By default, all {{brand_website_name}} clients are retail clients but anyone can request to be treated as a professional client.'
-                                                                values={{ brand_website_name: getBrandWebsiteName() }}
+                                                                values={{
+                                                                    brand_website_name: getBrandWebsiteName(),
+                                                                }}
                                                             />
                                                         </Text>
                                                         <Text as='p' size='xs'>
@@ -1271,9 +1266,9 @@ export const PersonalDetailsForm = ({
                                     primary
                                 />
                             </FormFooter>
-                        </form>
+                        </Form>
                     )}
-                </>
+                </React.Fragment>
             )}
         </Formik>
     );

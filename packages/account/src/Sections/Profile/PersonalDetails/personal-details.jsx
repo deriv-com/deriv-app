@@ -293,9 +293,7 @@ export const PersonalDetailsForm = ({
         if (is_virtual) return errors;
 
         const required_fields = ['first_name', 'last_name', 'phone', 'address_line_1', 'address_city'];
-        if (is_eu) {
-            required_fields.push('citizen');
-        }
+
         if (is_mf) {
             const required_tax_fields = ['tax_residence', 'tax_identification_number', 'employment_status'];
             required_fields.push(...required_tax_fields);
@@ -303,9 +301,11 @@ export const PersonalDetailsForm = ({
 
         validateValues(val => val, required_fields, localize('This field is required'));
 
-        const residence_fields = ['citizen'];
-        const validateResidence = val => getLocation(residence_list, val, 'value');
-        validateValues(validateResidence, residence_fields, true);
+        if (is_eu) {
+            const residence_fields = ['citizen'];
+            const validateResidence = val => getLocation(residence_list, val, 'value');
+            validateValues(validateResidence, residence_fields, true);
+        }
 
         const min_tax_identification_number = 0;
         const max_tax_identification_number = 25;

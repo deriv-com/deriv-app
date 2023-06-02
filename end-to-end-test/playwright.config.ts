@@ -42,7 +42,7 @@ const config: PlaywrightTestConfig = {
         /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
         actionTimeout: 0,
         /* Base URL to use in actions like `await page.goto('/')`. */
-        baseURL: process.env.CI ? process.env.test_link : 'https://localhost.binary.sx',
+        baseURL: process.env.CI ? process.env.APP_URL : 'https://localhost.binary.sx',
 
         /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
         trace: 'on-first-retry',
@@ -107,12 +107,14 @@ const config: PlaywrightTestConfig = {
     // outputDir: 'test-results/',
 
     /* Run your local dev server before starting the tests */
-    webServer: {
-        command: 'cd .. && npm run serve core',
-        url: 'https://localhost.binary.sx/',
-        ignoreHTTPSErrors: true,
-        reuseExistingServer: true,
-    },
+    webServer: process.env.CI
+        ? undefined
+        : {
+              command: 'cd .. && npm run serve core',
+              url: 'https://localhost.binary.sx/',
+              ignoreHTTPSErrors: true,
+              reuseExistingServer: true,
+          },
 };
 
 export default config;

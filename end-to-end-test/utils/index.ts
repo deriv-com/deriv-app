@@ -1,5 +1,21 @@
+import {
+    enablePerformance,
+    getComparisonPerformanceData,
+    getPerformanceData,
+    savePerformanceData,
+    switchAccountType,
+    checkPerformanceResults,
+} from './helpers';
 import { TRADERS_HUB_URL } from './constants';
-import { switchAccountType } from './helpers';
 import suspend from './suspend/suspend';
 
-export { TRADERS_HUB_URL, switchAccountType, suspend };
+export {
+    enablePerformance,
+    getComparisonPerformanceData,
+    getPerformanceData,
+    savePerformanceData,
+    suspend,
+    switchAccountType,
+    TRADERS_HUB_URL,
+    checkPerformanceResults,
+};

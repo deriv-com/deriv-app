@@ -16,7 +16,7 @@ export default class ChangeEndpoint {
         await this.page.goto(process.env.APP_URL!);
         await expect(this.page).toHaveTitle('Trader | Deriv');
         await this.cookieDialogHandler();
-        await this.page.goto(`${process.env.APP_URL!}/endpoint`);
+        await this.page.goto(`${process.env.APP_URL!}endpoint`);
         await this.page.waitForSelector(
             '#app_contents > .dc-themed-scrollbars > form > .dc-input:nth-child(2) > .dc-input__container > .dc-input__field'
         );
@@ -53,17 +53,14 @@ export default class ChangeEndpoint {
         ) {
             await this.page.click('.dc-themed-scrollbars > form > div:nth-child(4) > .dc-checkbox > .dc-checkbox__box');
         }
-        if (
-            !(await this.page.locator("input[name='show_dbot_dashboard']").isChecked()) &&
-            process.env.ENDPOINT_PAGE_DBOT_DASHBOARD === 'true'
-        ) {
-            await this.page.click('.dc-themed-scrollbars > form > div:nth-child(5) > .dc-checkbox > .dc-checkbox__box');
-        }
-        if (
-            !(await this.page.locator("input[name='is_debug_service_worker_enabled']").isChecked()) &&
-            process.env.ENDPOINT_PAGE_DEBUG_SERVICE_WORKER === 'true'
-        ) {
-            await this.page.click('.dc-themed-scrollbars > form > div:nth-child(6) > .dc-checkbox > .dc-checkbox__box');
+        // if (
+        //     !(await this.page.locator("input[name='show_dbot_dashboard']").isChecked()) &&
+        //     process.env.ENDPOINT_PAGE_DBOT_DASHBOARD === 'true'
+        // ) {
+        //     await this.page.click('.dc-themed-scrollbars > form > div:nth-child(5) > .dc-checkbox > .dc-checkbox__box');
+        // }
+        if (process.env.ENDPOINT_PAGE_DEBUG_SERVICE_WORKER === 'true') {
+            await this.page.getByText('Enable Service Worker registration for this URL').click();
         }
 
         await this.page.waitForSelector('#deriv_app > #app_contents > .dc-themed-scrollbars > form > .dc-btn--primary');

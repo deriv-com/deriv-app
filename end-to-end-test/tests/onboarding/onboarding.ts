@@ -32,6 +32,7 @@ export default class OnboardingFlow {
     async demoWizardHandler() {
         await this.page.locator('.static-dashboard-wrapper__header > h2', { hasText: 'CFDs' });
         await this.page.locator('.static-dashboard-wrapper__header > h2', { hasText: 'Multipliers' });
+        await this.page.screenshot({ path: `screenshots/demo-wizard.png` });
         await this.page.locator('button[type="submit"]', { hasText: 'Next' }).click();
         await this.page.locator('button[type="submit"]', { hasText: 'Next' }).click();
         await this.page.locator('button[type="submit"]', { hasText: 'Next' }).click();
@@ -49,13 +50,11 @@ export default class OnboardingFlow {
         await suspend(10000);
         await this.updateServerURLAndAppIDInLocalStorage();
         await this.signupPage.waitForLoadState();
-        await this.signupPage.locator('input[name=email]#dm-email-input').isVisible();
-        await this.signupPage.locator('input[name=email]#dm-email-input').type(this.email);
+        await this.signupPage.locator('input[name=email]').isVisible();
+        await this.signupPage.locator('input[name=email]').type(this.email);
         process.env.email = this.email;
-        await this.signupPage.locator('//*[@id="gatsby-focus-wrapper"]/main/section/form/div/label/div');
-        await this.signupPage.locator('//*[@id="gatsby-focus-wrapper"]/main/section/form/div/label/div').click();
-        await this.signupPage.waitForSelector('#dm-new-signup');
-        await this.signupPage.click('#dm-new-signup');
+        await this.signupPage.getByLabel('I agree to the terms and conditions').check();
+        await this.signupPage.getByRole('button', { name: 'Create demo account' }).click();
         const browser = await chromium.launch();
         const mailPage = await browser.newPage({
             ignoreHTTPSErrors: true,
@@ -100,7 +99,6 @@ export default class OnboardingFlow {
             (RISK_LEVEL === 'low_risk'
                 ? process.env.ACCOUNT_RESIDENCE_LOW_RISK
                 : process.env.ACCOUNT_RESIDENCE_HIGH_RISK) || '';
-
         await expect(this.page.getByText(ACCOUNT_RESIDENCE)).toBeVisible();
         await this.page.getByText(ACCOUNT_RESIDENCE).click();
         await this.page.click('#dt_core_set-citizenship-form_signup-citizenship-select');

@@ -1,14 +1,26 @@
 import { test, expect } from '@playwright/test';
-import { TRADERS_HUB_URL, switchAccountType } from '../../utils';
+import {
+    TRADERS_HUB_URL,
+    switchAccountType,
+    enablePerformance,
+    getPerformanceData,
+    checkPerformanceResults,
+} from '../../utils';
 
 test.describe("Trader's Hub Dashboard", () => {
     const HIGH_RISK_MULTIPLIER_TEXT = 'text=Multipliers trading platform.';
     const LOW_RISK_MULTIPLIER_TEXT = 'text=Options and multipliers trading platform.';
-    test.beforeEach(async ({ page }) => {
+    let client;
+    test.beforeEach(async ({ page, browserName }) => {
+        client = await enablePerformance(page, browserName);
         await page.goto(TRADERS_HUB_URL);
         await switchAccountType(page, 'Demo', 'Real');
     });
-
+    test.afterEach(async ({ browserName }, test_info) => {
+        const performance_data = await getPerformanceData(browserName, client);
+        const should_fail = await checkPerformanceResults(browserName, test_info.title, performance_data);
+        expect(should_fail).toBeFalsy();
+    });
     test('It should switch from Real to Demo', async ({ page }) => {
         await switchAccountType(page, 'Real', 'Demo');
         const demo_count = await page.getByText(/Demo/).count();

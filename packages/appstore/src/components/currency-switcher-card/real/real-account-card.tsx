@@ -47,7 +47,7 @@ const RealAccountCard = observer(() => {
                 <Button
                     onClick={(e: MouseEvent) => {
                         e.stopPropagation();
-                        history.push(routes.cashier_deposit);
+                        history.push(`${routes.cashier_deposit}#deposit`);
                     }}
                     secondary
                     className='currency-switcher__button'

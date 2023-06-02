@@ -38,6 +38,8 @@ export const isMultiplierContract = (contract_type: string) => /MULT/i.test(cont
 
 export const isVanillaContract = (contract_type: string) => /VANILLA/i.test(contract_type);
 
+export const isOnlyUpsDownsContract = (contract_type: string) => /RUN/i.test(contract_type);
+
 export const isCryptoContract = (underlying: string) => /^cry/.test(underlying);
 
 export const getCurrentTick = (contract_info: TContractInfo) => {

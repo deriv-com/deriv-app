@@ -5,15 +5,16 @@ import { localize } from '@deriv/translations';
 import {
     epochToMoment,
     formatMoney,
-    toGMTFormat,
     getCancellationPrice,
-    isAccumulatorContract,
     getCurrencyDisplayCode,
+    isAccumulatorContract,
     isMobile,
     isMultiplierContract,
+    isOnlyUpsDownsContract,
     isUserSold,
     isEndedBeforeCancellationExpired,
     isUserCancelled,
+    toGMTFormat,
 } from '@deriv/shared';
 import {
     addCommaToNumber,
@@ -111,20 +112,22 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                                 />
                             </React.Fragment>
                         )}
-                        {!isAccumulatorContract(contract_type) && !is_vanilla && (
-                            <ContractAuditItem
-                                id='dt_bt_label'
-                                icon={
-                                    isDigitType(contract_type) ? (
-                                        <Icon icon='IcContractTarget' size={24} />
-                                    ) : (
-                                        <Icon icon='IcContractBarrier' size={24} />
-                                    )
-                                }
-                                label={getBarrierLabel(contract_info)}
-                                value={getBarrierValue(contract_info) || ' - '}
-                            />
-                        )}
+                        {!isAccumulatorContract(contract_type) &&
+                            !is_vanilla &&
+                            !isOnlyUpsDownsContract(contract_type) && (
+                                <ContractAuditItem
+                                    id='dt_bt_label'
+                                    icon={
+                                        isDigitType(contract_type) ? (
+                                            <Icon icon='IcContractTarget' size={24} />
+                                        ) : (
+                                            <Icon icon='IcContractBarrier' size={24} />
+                                        )
+                                    }
+                                    label={getBarrierLabel(contract_info)}
+                                    value={getBarrierValue(contract_info) || ' - '}
+                                />
+                            )}
                     </React.Fragment>
                 )}
                 <ContractAuditItem

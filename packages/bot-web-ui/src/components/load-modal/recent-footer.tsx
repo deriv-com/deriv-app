@@ -1,22 +1,14 @@
 import React from 'react';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import RootStore from 'Stores/root-store';
+import { observer } from '@deriv/stores';
+import { useDBotStore } from 'Stores/useDBotStore';
 
-type TRecentFooterProps = {
-    is_open_button_loading: boolean;
-    loadFileFromRecent: () => void;
-    setOpenSettings: (toast_message: string, show_toast?: boolean) => void;
-    toggleLoadModal: () => void;
-};
+const RecentFooter = observer(() => {
+    const { load_modal, dashboard } = useDBotStore();
+    const { is_open_button_loading, loadFileFromRecent, toggleLoadModal } = load_modal;
+    const { setOpenSettings } = dashboard;
 
-const RecentFooter = ({
-    is_open_button_loading,
-    loadFileFromRecent,
-    setOpenSettings,
-    toggleLoadModal,
-}: TRecentFooterProps) => {
     return (
         <Button
             text={localize('Open')}
@@ -31,11 +23,6 @@ const RecentFooter = ({
             large
         />
     );
-};
+});
 
-export default connect(({ load_modal, dashboard }: RootStore) => ({
-    is_open_button_loading: load_modal.is_open_button_loading,
-    loadFileFromRecent: load_modal.loadFileFromRecent,
-    setOpenSettings: dashboard.setOpenSettings,
-    toggleLoadModal: load_modal.toggleLoadModal,
-}))(RecentFooter);
+export default RecentFooter;

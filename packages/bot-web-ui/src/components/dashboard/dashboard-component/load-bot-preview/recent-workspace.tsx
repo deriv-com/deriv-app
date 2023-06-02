@@ -2,6 +2,7 @@ import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import classnames from 'classnames';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import React from 'react';
@@ -9,7 +10,6 @@ import { useComponentVisibility } from '../../hooks/useComponentVisibility';
 import { CONTEXT_MENU_MOBILE, MENU_DESKTOP, STRATEGY } from './constants';
 import './index.scss';
 import { useDBotStore } from 'Stores/useDBotStore';
-import { observer } from 'mobx-react';
 
 type TRecentWorkspace = {
     index: number;

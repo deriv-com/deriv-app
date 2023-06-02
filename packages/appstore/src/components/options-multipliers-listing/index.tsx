@@ -85,7 +85,7 @@ const OptionsAndMultipliersListing = () => {
                                     openRealAccountSignup('maltainvest');
                                 }
                             } else {
-                                openRealAccountSignup();
+                                openRealAccountSignup('svg');
                             }
                         }}
                     />

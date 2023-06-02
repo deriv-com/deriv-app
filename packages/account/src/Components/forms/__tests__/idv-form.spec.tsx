@@ -28,12 +28,7 @@ jest.mock('formik', () => ({
     ...jest.requireActual('formik'),
     useFormikContext: jest.fn(() => ({
         values: {
-            document_type: {
-                // display_name: 'Test document 1 name',
-                // format: '5436454364243',
-                // id: '1',
-                // value: 'Test document 1 name',
-            },
+            document_type: {},
             document_number: '',
         },
         errors: {},

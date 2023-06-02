@@ -799,7 +799,7 @@ describe('<PersonalDetails/>', () => {
         });
     });
 
-    it('should validate idv values along with additional docuement number when a document type is selected', async () => {
+    it('should validate idv values along with additional document number when a document type is selected', async () => {
         shouldShowIdentityInformation.mockReturnValue(true);
         const new_props = {
             ...props,

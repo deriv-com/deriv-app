@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import IdvFailed from '../idv-failed';
 import { idv_error_statuses } from '@deriv/shared';
 

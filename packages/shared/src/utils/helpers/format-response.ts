@@ -75,7 +75,7 @@ export const formatIDVError = (errors: string[], status_code: string) => {
     }
     const status: TIDVErrorStatus[] = [];
     errors.forEach(error => {
-        const error_regex = error.match(/(name|birth)/i);
+        const error_regex = RegExp(/(name|birth)/i).exec(error);
         if (error_regex) {
             status.push(error_keys[error_regex[0].toLowerCase()]);
         }

@@ -124,7 +124,7 @@
 }
 
 .account {
-    margin: 0 16px;
+    margin: 0 1.6rem;
     &__scrollbars_container {
         height: 100%;
         padding-top: 2.4rem;
@@ -137,7 +137,7 @@
 
         &--grid-layout {
             display: grid;
-            grid-gap: 4px;
+            grid-gap: 0.4rem;
 
             .dc-input {
                 margin-bottom: 0;
@@ -174,8 +174,8 @@
         }
 
         @include desktop {
-            padding-left: 16px;
-            padding-right: 16px;
+            padding-left: 1.6rem;
+            padding-right: 1.6rem;
         }
 
         @include mobile {
@@ -187,13 +187,13 @@
 
     &-form {
         &__footer {
-            height: 80px;
+            height: 8rem;
             position: absolute;
             bottom: 0;
             left: 0;
             display: flex;
             width: 100%;
-            padding: 16px 24px;
+            padding: 1.6rem 2.4rem;
             align-items: center;
             justify-content: flex-end;
             z-index: 4;
@@ -202,7 +202,7 @@
             background-color: var(--general-main-1);
 
             .back-btn {
-                margin-right: 8px;
+                margin-right: 0.8rem;
 
                 .back-btn-icon {
                     margin-right: 0.8rem;
@@ -310,7 +310,7 @@
             }
 
             @include mobile {
-                padding: 16px 0;
+                padding: 1.6rem 0;
                 flex-direction: column;
                 height: auto;
                 align-items: initial;
@@ -672,7 +672,7 @@
     &__image-container {
         width: fit-content;
         height: fit-content;
-        padding: 8px;
+        padding: 0.8rem;
         border-radius: 4px;
         background-color: $color-grey-2;
     }

@@ -322,8 +322,10 @@ type TUiStore = {
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
-    notification_messages_ui: React.ElementType | null;
-    openRealAccountSignup: (value?: string) => void;
+    openRealAccountSignup: (
+        value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
+    ) => void;
+    notification_messages_ui: React.FC | null;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setIsWalletModalVisible: (value: boolean) => void;
@@ -415,6 +417,7 @@ type TTradersHubStore = {
     is_demo: boolean;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    toggleRegulatorsCompareModal: () => void;
     openFailedVerificationModal: (selected_account_type: Record<string, unknown> | string) => void;
     multipliers_account_status: string;
     financial_restricted_countries: boolean;

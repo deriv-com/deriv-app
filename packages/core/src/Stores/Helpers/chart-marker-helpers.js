@@ -3,6 +3,7 @@ import {
     formatMoney,
     getEndTime,
     isAccumulatorContract,
+    isOnlyUpsDownsContract,
     isDesktop,
     isDigitContract,
     isMobile,
@@ -24,7 +25,8 @@ const createMarkerConfig = (marker_type, x, y, content_config) =>
 
 export const getSpotCount = (contract_info, spot_count) => {
     if (isDigitContract(contract_info.contract_type)) return spot_count + 1;
-    if (isAccumulatorContract(contract_info.contract_type)) return null;
+    if (isAccumulatorContract(contract_info.contract_type) || isOnlyUpsDownsContract(contract_info.contract_type))
+        return null;
     return spot_count;
 };
 
@@ -127,7 +129,7 @@ export const createMarkerSpotMiddle = (contract_info, tick, idx) => {
         spot_value: `${spot}`,
         spot_epoch,
         align_label: tick.align_label,
-        is_value_hidden: is_accumulator,
+        is_value_hidden: is_accumulator || (isOnlyUpsDownsContract(contract_info.contract_type) && idx !== 1),
         spot_count,
     });
     marker_config.type = `${marker_config.type}_${idx}`;

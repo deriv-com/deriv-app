@@ -68,13 +68,25 @@ const AppContent = observer(() => {
         ServerTime.init(common);
         app.setDBotEngineStores(combinedStore);
         ApiHelpers.setInstance(app.api_helpers_store);
-        const { active_symbols } = ApiHelpers.instance;
         setIsLoading(true);
-        active_symbols.retrieveActiveSymbols(true).then(() => {
-            setIsLoading(false);
-        });
+        const { active_symbols } = ApiHelpers.instance;
+        if (!client.is_logged_in) {
+            active_symbols.retrieveActiveSymbols(true).then(() => {
+                setIsLoading(false);
+            });
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    // use is_landing_company_loaded to know got details of accounts to identify should show an error or not
+    if (client.is_landing_company_loaded) {
+        const { active_symbols } = ApiHelpers.instance;
+        active_symbols?.retrieveActiveSymbols(true).then(() => {
+            if (client.is_landing_company_loaded) {
+                setIsLoading(false);
+            }
+        });
+    }
 
     React.useEffect(() => {
         const onDisconnectFromNetwork = () => {

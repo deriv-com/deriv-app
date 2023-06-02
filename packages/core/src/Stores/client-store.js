@@ -827,7 +827,10 @@ export default class ClientStore extends BaseStore {
     }
 
     get should_show_eu_error() {
-        return this.is_eu_country || (this.is_eu && !this.is_low_risk);
+        if (!this.is_landing_company_loaded) {
+            return false;
+        }
+        return this.is_eu && !this.is_low_risk;
     }
 
     get is_virtual() {
@@ -2593,14 +2596,10 @@ export default class ClientStore extends BaseStore {
         return high_risk_landing_company || this.account_status.risk_classification === 'high' || restricted_countries;
     }
 
-    async handleLowRiskLandingCompany() {
-        await this.init();
-        const { gaming_company, financial_company } = this.landing_companies;
-        return financial_company.shortcode === 'maltainvest' && gaming_company.shortcode === 'svg';
-    }
-
     get is_low_risk() {
-        const low_risk_landing_company = this.handleLowRiskLandingCompany();
+        const { gaming_company, financial_company } = this.landing_companies;
+        const low_risk_landing_company =
+            financial_company?.shortcode === 'maltainvest' && gaming_company?.shortcode === 'svg';
         return (
             low_risk_landing_company ||
             (this.upgradeable_landing_companies?.includes('svg') &&

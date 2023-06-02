@@ -297,3 +297,20 @@ export const isDocumentNumberValid = (document_number: string, document_type: Fo
 };
 
 export const shouldHideHelperImage = (document_id: string) => document_id === IDV_NOT_APPLICABLE_OPTION.id;
+
+export const getIDVDocumentType = (
+    idv_latest_attempt: DeepRequired<GetAccountStatus>['authentication']['attempts']['latest'],
+    residence: DeepRequired<ResidenceList[0]>
+) => {
+    if (!idv_latest_attempt) return localize('identity document');
+    const { document_type } = idv_latest_attempt;
+    if (!document_type) return localize('identity document');
+    const {
+        identity: {
+            services: {
+                idv: { documents_supported },
+            },
+        },
+    } = residence;
+    return documents_supported[document_type as string].display_name;
+};

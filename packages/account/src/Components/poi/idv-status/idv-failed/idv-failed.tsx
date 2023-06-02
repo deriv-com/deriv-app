@@ -1,6 +1,11 @@
 import React from 'react';
 import { Form, Formik, FormikHelpers, FormikValues } from 'formik';
-import { GetSettings, IdentityVerificationAddDocumentResponse, ResidenceList } from '@deriv/api-types';
+import {
+    GetAccountStatus,
+    GetSettings,
+    IdentityVerificationAddDocumentResponse,
+    ResidenceList,
+} from '@deriv/api-types';
 import { Button, DesktopWrapper, HintBox, Loading, Text } from '@deriv/components';
 import {
     filterObjProperties,
@@ -21,6 +26,7 @@ import FormBody from 'Components/form-body';
 import PersonalDetailsForm from 'Components/forms/personal-details-form';
 import LoadErrorMessage from 'Components/load-error-message';
 import {
+    getIDVDocumentType,
     isAdditionalDocumentValid,
     isDocumentNumberValid,
     isDocumentTypeValid,
@@ -49,6 +55,7 @@ type TIdvFailed = {
     is_from_external: boolean;
     mismatch_status: TIDVErrorStatus;
     residence_list: ResidenceList;
+    latest_status: DeepRequired<GetAccountStatus>['authentication']['attempts']['latest'];
 };
 
 type TIDVFailureConfig = {
@@ -67,6 +74,7 @@ const IdvFailed = ({
     account_settings,
     handleSubmit,
     mismatch_status = idv_error_statuses.poi_failed,
+    latest_status,
 }: TIdvFailed) => {
     const [idv_failure, setIdvFailure] = React.useState<TIDVFailureConfig>({
         required_fields: [],
@@ -87,7 +95,11 @@ const IdvFailed = ({
         [mismatch_status]
     );
 
+    const citizen = account_settings?.citizen;
+    const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
+
     React.useEffect(() => {
+        const document_name = getIDVDocumentType(latest_status, selected_country);
         const generateIDVError = () => {
             switch (mismatch_status) {
                 case idv_error_statuses.poi_name_dob_mismatch:
@@ -96,8 +108,9 @@ const IdvFailed = ({
                         side_note_image: <PoiNameDobExample />,
                         inline_note_text: (
                             <Localize
-                                i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your {{document_name}}.'
                                 components={[<strong key={0} />]}
+                                values={{ document_name }}
                             />
                         ),
                         failure_message: (
@@ -113,8 +126,9 @@ const IdvFailed = ({
                         side_note_image: <PoiNameExample />,
                         inline_note_text: (
                             <Localize
-                                i18n_default_text='To avoid delays, enter your <0>name</0> exactly as it appears on your identity document.'
+                                i18n_default_text='To avoid delays, enter your <0>name</0> exactly as it appears on your {{document_name}}.'
                                 components={[<strong key={0} />]}
+                                values={{ document_name }}
                             />
                         ),
                         failure_message: (
@@ -130,8 +144,9 @@ const IdvFailed = ({
                         side_note_image: <PoiDobExample />,
                         inline_note_text: (
                             <Localize
-                                i18n_default_text='To avoid delays, enter your <0>date of birth</0> exactly as it appears on your identity document.'
+                                i18n_default_text='To avoid delays, enter your <0>date of birth</0> exactly as it appears on your {{document_name}}.'
                                 components={[<strong key={0} />]}
+                                values={{ document_name }}
                             />
                         ),
                         failure_message: (
@@ -147,8 +162,9 @@ const IdvFailed = ({
                         side_note_image: <PoiNameDobExample />,
                         inline_note_text: (
                             <Localize
-                                i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your identity document.'
+                                i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your {{document_name}}.'
                                 components={[<strong key={0} />]}
+                                values={{ document_name }}
                             />
                         ),
                         failure_message: (
@@ -278,9 +294,6 @@ const IdvFailed = ({
         }));
         return removeEmptyPropertiesFromObject(errors);
     };
-
-    const citizen = account_settings?.citizen;
-    const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
 
     if (rest_state?.api_error) return <LoadErrorMessage error_message={rest_state.api_error} />;
 

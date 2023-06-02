@@ -186,7 +186,11 @@ export default class TradersHubStore extends BaseStore {
             await switchAccount(account_list.find(acc => acc.is_virtual && !acc.is_disabled)?.loginid);
         } else if (account_type === 'real') {
             if (!has_active_real_account) {
-                this.root_store.ui.openRealAccountSignup();
+                if (this.is_eu_user) {
+                    this.root_store.ui.openRealAccountSignup('maltainvest');
+                } else {
+                    this.root_store.ui.openRealAccountSignup('svg');
+                }
                 return;
             }
             if (prev_real_account_loginid) {

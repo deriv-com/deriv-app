@@ -1,6 +1,7 @@
 import React from 'react';
+import { ApiHelpers, ServerTime, setColors } from '@deriv/bot-skeleton';
 import { Loading } from '@deriv/components';
-import { ServerTime, ApiHelpers, setColors } from '@deriv/bot-skeleton';
+import { observer, useStore } from '@deriv/stores';
 import {
     Audio,
     BotFooterExtensions,
@@ -9,12 +10,11 @@ import {
     NetworkToastPopup,
     RoutePromptDialog,
 } from 'Components';
-import BlocklyLoading from '../components/blockly-loading';
-import { MobxContentProvider } from 'Stores/connect';
-import { observer, useStore } from '@deriv/stores';
-import { useDBotStore } from 'Stores/useDBotStore';
-import GTM from 'Utils/gtm';
 import BotBuilder from 'Components/dashboard/bot-builder';
+import GTM from 'Utils/gtm';
+import { MobxContentProvider } from 'Stores/connect';
+import { useDBotStore } from 'Stores/useDBotStore';
+import BlocklyLoading from '../components/blockly-loading';
 import './app.scss';
 
 const AppContent = observer(() => {
@@ -79,14 +79,17 @@ const AppContent = observer(() => {
     }, []);
 
     // use is_landing_company_loaded to know got details of accounts to identify should show an error or not
-    if (client.is_landing_company_loaded) {
-        const { active_symbols } = ApiHelpers.instance;
-        active_symbols?.retrieveActiveSymbols(true).then(() => {
-            if (client.is_landing_company_loaded) {
-                setIsLoading(false);
-            }
-        });
-    }
+    React.useEffect(() => {
+        if (client.is_landing_company_loaded) {
+            const { active_symbols } = ApiHelpers.instance;
+            active_symbols?.retrieveActiveSymbols(true).then(() => {
+                if (client.is_landing_company_loaded) {
+                    setIsLoading(false);
+                }
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     React.useEffect(() => {
         const onDisconnectFromNetwork = () => {

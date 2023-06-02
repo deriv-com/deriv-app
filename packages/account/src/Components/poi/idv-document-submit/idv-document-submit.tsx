@@ -126,7 +126,7 @@ const IdvDocumentSubmit = ({
         const submit_data = {
             identity_verification_document_add: 1,
             document_number: values.document_number,
-            document_additional: values.document_additional || '',
+            document_additional: values.document_additional ?? '',
             document_type: values.document_type.id,
             issuing_country: selected_country.value,
         };

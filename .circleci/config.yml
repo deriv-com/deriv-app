@@ -178,7 +178,7 @@ commands:
 jobs:
   build:
     docker:
-      - image: cimg/node:16.16.0
+      - image: cimg/node:18.16.0
     resource_class: xlarge
     steps:
       - git_checkout_from_cache
@@ -187,7 +187,7 @@ jobs:
 
   release_staging:
     docker:
-      - image: cimg/node:16.16.0
+      - image: cimg/node:18.16.0
     resource_class: xlarge
     steps:
       - git_checkout_from_cache
@@ -207,7 +207,7 @@ jobs:
 
   release_production:
     docker:
-      - image: cimg/node:16.16.0
+      - image: cimg/node:18.16.0
     resource_class: xlarge
     steps:
       - git_checkout_from_cache
@@ -229,7 +229,7 @@ jobs:
 
   publish_cloudflare_staging:
     docker:
-      - image: circleci/node:16.13.1-stretch
+      - image: cimg/node:18.16.0
     steps:
       - attach_workspace:
           at: packages
@@ -239,7 +239,7 @@ jobs:
 
   publish_cloudflare_production:
     docker:
-      - image: circleci/node:16.13.1-stretch
+      - image: cimg/node:18.16.0
     steps:
       - attach_workspace:
           at: packages
@@ -249,7 +249,7 @@ jobs:
 
   build_and_test:
     docker:
-      - image: cimg/node:16.16.0
+      - image: cimg/node:18.16.0
     resource_class: xlarge
     steps:
       - git_checkout_from_cache

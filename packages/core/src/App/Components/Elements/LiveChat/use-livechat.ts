@@ -20,7 +20,7 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
                             window.LiveChatWidget?.call('destroy');
                             resolve();
                         } else if (window.location.pathname !== routes.cashier_p2p) {
-                            window.LiveChatWidget.call('hide_greeting', 235);
+                            window.LiveChatWidget.call('hide_greeting');
                         }
                     } catch (e) {
                         resolve();

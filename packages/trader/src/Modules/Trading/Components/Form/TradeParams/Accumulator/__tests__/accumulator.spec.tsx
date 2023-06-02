@@ -34,7 +34,7 @@ describe('Accumulator', () => {
         mock_connect_props.growth_rate = 0.03;
         render(<Accumulator />);
         expect(screen.getByText('3%')).toHaveClass('number-selector__selection--selected');
-        expect(screen.getByText('1%').getAttribute('class')).not.toContain('number-selector__selection--selected');
+        expect(screen.getByText('1%')).not.toHaveClass('number-selector__selection--selected');
     });
 
     it('component should return null if accumulator_range_list is empty', () => {

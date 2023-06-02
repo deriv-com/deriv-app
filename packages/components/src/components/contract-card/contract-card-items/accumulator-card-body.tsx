@@ -8,7 +8,7 @@ import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
-import { ProposalOpenContract, ContractUpdate } from '@deriv/api-types';
+import { ContractUpdate } from '@deriv/api-types';
 import { TToastConfig } from '../../types/contract.types';
 import { TGetCardLables } from '../../types/common.types';
 
@@ -17,13 +17,13 @@ type TAccumulatorCardBody = {
     connectWithContractUpdate: React.ComponentProps<typeof ToggleCardDialog>['connectWithContractUpdate'];
     contract_info: TContractInfo;
     contract_update: ContractUpdate;
-    currency: Required<ProposalOpenContract>['currency'];
+    currency: Required<TContractInfo>['currency'];
     current_focus?: string;
     error_message_alignment: string;
     getCardLabels: TGetCardLables;
     getContractById: React.ComponentProps<typeof ToggleCardDialog>['getContractById'];
     indicative?: number;
-    is_sold: ProposalOpenContract['is_sold'];
+    is_sold: TContractInfo['is_sold'];
     onMouseLeave: () => void;
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (value: string) => void;

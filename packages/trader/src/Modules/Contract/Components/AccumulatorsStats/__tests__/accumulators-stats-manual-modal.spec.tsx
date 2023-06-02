@@ -1,6 +1,7 @@
 import React from 'react';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { AccumulatorsStatsManualModal } from '../accumulators-stats-manual-modal';
+import userEvent from '@testing-library/user-event';
 
 type TModal = React.FC<{
     children: React.ReactNode;
@@ -57,7 +58,7 @@ describe('AccumulatorsStatsManualModal', () => {
     it('should open when info icon (IcInfoOutline) is clicked', () => {
         const { rerender } = render(<AccumulatorsStatsManualModal {...props} />);
         const info_icon = screen.getByText('IcInfoOutline');
-        fireEvent.click(info_icon);
+        userEvent.click(info_icon);
         expect(props.toggleManual).toBeCalled();
         expect(props.is_manual_open).toBeTruthy();
 
@@ -70,7 +71,7 @@ describe('AccumulatorsStatsManualModal', () => {
         props.is_manual_open = true;
         const { rerender } = render(<AccumulatorsStatsManualModal {...props} />);
         const close_icon = within(screen.getByTestId('modal')).getByText('IcCross');
-        fireEvent.click(close_icon);
+        userEvent.click(close_icon);
         expect(props.toggleManual).toBeCalled();
         expect(props.is_manual_open).toBeFalsy();
 

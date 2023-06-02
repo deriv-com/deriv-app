@@ -351,6 +351,8 @@ type TTradersHubStore = {
     setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    toggleRegulatorsCompareModal: () => void;
+    selected_region: string;
     openFailedVerificationModal: (selected_account_type: string) => void;
     multipliers_account_status: string;
     financial_restricted_countries: boolean;

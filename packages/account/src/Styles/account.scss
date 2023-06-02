@@ -24,6 +24,7 @@ $MIN_HEIGHT_FLOATING: calc(
             padding-left: 4.4rem;
             background-color: var(--general-main-1);
         }
+
         &__header {
             &-account__logout {
                 margin-top: 1rem;
@@ -165,6 +166,7 @@ $MIN_HEIGHT_FLOATING: calc(
             & .da-self-exclusion__wrapper {
                 width: calc(100vw - 33rem);
             }
+
             & .da-icon-with-message {
                 margin-top: 0;
             }
@@ -250,6 +252,7 @@ $MIN_HEIGHT_FLOATING: calc(
             padding-left: 16px;
             padding-right: 16px;
         }
+
         @include mobile {
             height: unset;
             padding-top: unset;
@@ -282,6 +285,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 height: 100%;
                 width: 100%;
                 margin-top: 0.3rem;
+
                 @include mobile {
                     border-top-color: var(--general-disabled);
                 }
@@ -306,58 +310,21 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-top: 0.2rem;
         }
 
-        &__section {
-            display: grid;
-            grid-template-areas: 'section-side-note section-content';
-            @include mobile {
-                grid-template-areas: 'section-side-note' 'section-content';
-            }
-
-            &-side-note {
-                grid-area: section-side-note;
-                width: 26rem;
-
-                .dc-text {
-                    color: var(--text-less-prominent);
-                    font-size: 1.4rem;
-                    @include mobile {
-                        font-size: 1.2rem;
-                    }
-                }
-
-                .account-poa__upload-box-dashboard {
-                    @include mobile {
-                        align-items: flex-start;
-                    }
-                }
-
-                @include mobile {
-                    margin-top: unset;
-                    width: 100%;
-                    margin-bottom: 0.8rem;
-                }
-            }
-
-            &-content {
-                grid-area: section-content;
-                width: 40rem;
-                @include mobile {
-                    width: 100%;
-                }
-            }
-        }
         &__question {
             position: relative;
             max-width: 67.2rem;
             margin-top: 1.6rem;
             margin-bottom: 2rem;
+
             &--text {
                 margin-bottom: 1.6rem;
                 max-width: 67.2rem;
+
                 @include mobile {
                     margin-bottom: 2.4rem;
                 }
             }
+
             .dc-dropdown__display {
                 max-width: 67.2rem;
             }
@@ -493,10 +460,12 @@ $MIN_HEIGHT_FLOATING: calc(
                 min-width: 27.6rem;
                 max-width: 36.6rem;
                 height: 3.6rem;
+
                 @include mobile {
                     width: auto;
                     text-align: center;
                     align-self: center;
+
                     &--dashboard {
                         margin: 0 1.6rem;
                         text-align: left;
@@ -512,6 +481,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     align-items: normal;
                     display: flex;
                     flex-direction: row;
+
                     @include mobile {
                         flex-direction: column;
                     }
@@ -529,11 +499,13 @@ $MIN_HEIGHT_FLOATING: calc(
 
                 @include desktop {
                     margin-left: 1.6rem;
+
                     &-wrapper--dashboard {
                         display: flex;
                         justify-content: space-between;
                     }
                 }
+
                 @include mobile {
                     margin: 0 1rem;
 
@@ -546,9 +518,11 @@ $MIN_HEIGHT_FLOATING: calc(
             &--dashboard {
                 width: 68.5rem;
                 margin-left: 6rem;
+
                 @include mobile {
                     width: 100vw;
                     margin-left: unset;
+
                     & .account-form__footer-btn {
                         min-width: 35%;
 
@@ -556,6 +530,7 @@ $MIN_HEIGHT_FLOATING: calc(
                             flex-direction: row;
                         }
                     }
+
                     & > div {
                         display: flex;
                         justify-content: space-around;
@@ -588,9 +563,9 @@ $MIN_HEIGHT_FLOATING: calc(
 
         &__personal-details {
             &--dashboard {
-                // buto
                 & .account-form__fieldset {
                     margin-bottom: 3.2rem;
+
                     @include mobile {
                         margin-bottom: 3.2rem;
                     }
@@ -614,6 +589,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     padding-bottom: 2.4rem;
                 }
             }
+
             @include mobile {
                 .account__scrollbars_container {
                     &--grid-layout {
@@ -621,18 +597,22 @@ $MIN_HEIGHT_FLOATING: calc(
                         flex-direction: column;
                     }
                 }
+
                 .account-form__footer-note {
                     height: auto;
                     margin-bottom: 1.6rem;
                 }
+
                 .dc-checkbox__label {
                     font-size: 1.2rem;
                 }
+
                 .dc-select-native {
                     &__placeholder {
                         background-color: var(--general-main-1);
                     }
                 }
+
                 .date-of-birth-datepicker {
                     .datepicker-native__input {
                         height: 3.8rem;
@@ -640,6 +620,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
+
         &__trading-assessment,
         &__financial-assessment {
             .dc-select-native__placeholder {
@@ -774,6 +755,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin-top: 3.6rem;
                     display: flex;
                     grid-column-gap: 0.8rem;
+
                     @include mobile {
                         margin-bottom: 2.4rem;
                         flex-direction: column;
@@ -783,10 +765,12 @@ $MIN_HEIGHT_FLOATING: calc(
                         @include mobile {
                             width: inherit;
                             max-width: 40rem;
+
                             .email-input {
                                 margin-bottom: 0.8rem;
                             }
                         }
+
                         width: 40rem;
 
                         .dc-input__label {
@@ -826,6 +810,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
             &-dashboard {
                 width: calc(100vw - 33rem);
+
                 @include mobile {
                     width: 100%;
                 }
@@ -923,6 +908,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
                 &-full-width {
                     width: calc(100vw - 33rem);
+
                     @include mobile {
                         width: 100%;
                     }
@@ -971,6 +957,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin-left: 0.8rem;
                 }
             }
+
             @include mobile {
                 flex-direction: column;
                 width: 100%;
@@ -996,6 +983,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 th {
                     @include typeface(--paragraph-left-bold-black, none);
                     color: var(--text-prominent);
+
                     @include mobile {
                         font-size: 1.2rem;
                         color: var(--text-general);
@@ -1013,6 +1001,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 & .dc-btn__small {
                     width: 5rem;
                     margin: 0 0.6rem;
+
                     @include mobile {
                         margin: 1.1rem 0;
                     }
@@ -1039,6 +1028,7 @@ $MIN_HEIGHT_FLOATING: calc(
 
     .dashboard__message-content {
         margin-top: 8rem;
+
         @include mobile {
             margin-top: 4rem;
         }
@@ -1267,9 +1257,11 @@ $MIN_HEIGHT_FLOATING: calc(
             &__message-icon {
                 width: 93px;
             }
+
             &__message {
                 color: var(--text-prominent);
             }
+
             &__text {
                 padding: 0 1.9rem;
             }
@@ -1278,16 +1270,19 @@ $MIN_HEIGHT_FLOATING: calc(
 
     .submit-success {
         margin-top: 100px;
+
         @include mobile {
             &__message-icon {
                 width: 96px;
                 height: 90px;
             }
+
             &__message {
                 font-size: 1.4rem;
                 text-align: center;
                 margin-top: 1.6rem;
             }
+
             &__text {
                 padding: 0 1.9rem;
                 font-size: 1rem;
@@ -1383,8 +1378,10 @@ $MIN_HEIGHT_FLOATING: calc(
 
             &-dashboard {
                 width: calc(100vw - 33rem);
+
                 @include mobile {
                     width: 100%;
+
                     button {
                         width: 100%;
                     }
@@ -1395,6 +1392,7 @@ $MIN_HEIGHT_FLOATING: calc(
         &-button {
             margin-top: 2.4rem;
             align-self: center;
+
             @include mobile {
                 width: 100%;
             }
@@ -1407,6 +1405,7 @@ $MIN_HEIGHT_FLOATING: calc(
     &__upload {
         &-icon {
             margin-bottom: 1rem;
+
             @include mobile {
                 margin-bottom: 0;
             }
@@ -1428,6 +1427,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 border-radius: $BORDER_RADIUS * 2;
                 margin: 0 0.8rem 1.6rem;
                 padding: 0.8rem;
+
                 @include mobile {
                     border: none;
                     margin: 0;
@@ -1658,19 +1658,23 @@ $MIN_HEIGHT_FLOATING: calc(
             display: grid;
             grid-gap: 8px;
         }
+
         &-close {
             display: flex;
             justify-content: flex-end;
             padding-bottom: 1.2rem;
             cursor: pointer;
         }
+
         &-title {
             margin: 0.8rem 2.4rem;
             text-align: center;
         }
+
         &-description {
             text-align: center;
         }
+
         &-icon {
             text-align: center;
             margin-top: 0;
@@ -1678,6 +1682,7 @@ $MIN_HEIGHT_FLOATING: calc(
             padding-bottom: 1.6rem;
         }
     }
+
     &__footer {
         justify-content: center !important;
     }
@@ -1690,20 +1695,25 @@ $MIN_HEIGHT_FLOATING: calc(
         justify-content: center;
         align-items: flex-start;
         flex-flow: nowrap column;
+
         .reset-email__heading {
             margin-bottom: 1.6rem;
         }
+
         .reset-email__descripton {
             margin-bottom: 2rem;
         }
     }
+
     &__heading {
         margin-bottom: 0.8rem;
     }
+
     &__text {
         text-align: center;
         margin-bottom: 3.3rem;
     }
+
     &__btn {
         margin: 0;
         background-color: var(--button-primary-default);
@@ -1715,16 +1725,19 @@ $MIN_HEIGHT_FLOATING: calc(
         &:hover {
             background-color: var(--button-primary-hover);
         }
+
         &--disabled {
             opacity: 0.32;
             cursor: not-allowed !important;
         }
     }
+
     &__fieldset {
         position: relative;
         width: 100%;
         margin-bottom: 1rem;
     }
+
     &__email-field {
         /* postcss-bem-linter: ignore */
         & > label {
@@ -1864,19 +1877,24 @@ $MIN_HEIGHT_FLOATING: calc(
         &__row {
             padding: 0;
         }
+
         .table__cell {
             padding: 0;
         }
+
         .table__row {
             padding: 0;
         }
+
         .table__head {
             font-weight: bold;
         }
     }
+
     @include mobile {
         overflow-x: hidden;
         padding: 0 1.6rem;
+
         /* iPhone SE screen height fixes due to UI space restrictions */
         @media only screen and (max-height: 480px) {
             padding-bottom: 8.5rem;
@@ -1890,6 +1908,7 @@ $MIN_HEIGHT_FLOATING: calc(
         &__data-list {
             padding: 0;
         }
+
         &__data-list-body {
             min-height: calc(100vh - 50px);
 
@@ -1955,6 +1974,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 }
             }
         }
+
         &__wrapper--dashboard {
             & .ReactVirtualized__Grid__innerScrollContainer {
                 box-shadow: 0 0 20px rgba(0, 0, 0, 0.05), 0 16px 20px rgba(0, 0, 0, 0.05);
@@ -1969,6 +1989,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 background: unset;
             }
         }
+
         .name {
             &__content {
                 text-overflow: ellipsis;
@@ -1977,6 +1998,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 overflow: hidden;
             }
         }
+
         .last_used {
             .last_used_content {
                 margin-bottom: 4px;
@@ -2026,10 +2048,12 @@ $MIN_HEIGHT_FLOATING: calc(
             &:not(:first-child):not(:last-child) {
                 margin: 0;
             }
+
             & .dc-icon {
                 width: 8.8rem;
                 height: auto;
             }
+
             p {
                 line-height: 20px;
             }
@@ -2045,22 +2069,11 @@ $MIN_HEIGHT_FLOATING: calc(
 
 /** @define onfido-container; weak */
 .onfido-container {
-    margin-top: 24px;
-
     &__hidden {
         display: none;
     }
 
-    &__message {
-        padding: 1rem;
-        margin: 0 auto 1.4rem;
-        width: 94vw; // same as onfido
-        max-width: 53rem;
-    }
-
     @include mobile {
-        margin-top: 0;
-
         .onfido-sdk-ui-PageTitle {
             &-titleWrapper {
                 margin: 0 1.5em 0.4em;
@@ -2233,7 +2246,7 @@ $MIN_HEIGHT_FLOATING: calc(
     height: 100%;
 
     &__main-container {
-        max-width: 67.2rem;
+        max-width: 68.2rem;
     }
 
     .min-height {
@@ -2254,6 +2267,30 @@ $MIN_HEIGHT_FLOATING: calc(
             min-height: unset;
             overflow-y: scroll;
             justify-content: center;
+        }
+
+        &--reset {
+            align-items: normal;
+            @include mobile {
+                overflow-y: unset;
+                padding: 1.6rem;
+            }
+            .proof-of-identity__submit-button {
+                @include mobile {
+                    margin: unset;
+                    width: 100%;
+                }
+            }
+            .account-form__footer {
+                @include mobile {
+                    padding: 1.6rem 2.4rem;
+                }
+            }
+            .form-body {
+                @include desktop {
+                    z-index: 5;
+                }
+            }
         }
 
         .icon {
@@ -2467,6 +2504,7 @@ $MIN_HEIGHT_FLOATING: calc(
         & > ul {
             padding-left: 3%;
             list-style-type: disc;
+
             @include mobile {
                 padding-left: 5%;
             }
@@ -2505,6 +2543,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-top: -8px;
                 margin-right: 10px;
                 float: right;
+
                 &--dashboard {
                     width: 100%;
                 }
@@ -2518,6 +2557,7 @@ $MIN_HEIGHT_FLOATING: calc(
             @include mobile {
                 float: none;
                 margin: 2.4rem auto 3.2rem;
+
                 &--dashboard {
                     width: 100%;
                 }
@@ -2613,6 +2653,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 .dc-form-submit-button {
                     margin: 0.8rem 0;
                     background-color: var(--general-main-1);
+
                     @include mobile {
                         position: fixed;
                         bottom: 0;
@@ -2654,6 +2695,7 @@ $MIN_HEIGHT_FLOATING: calc(
         align-items: center;
         padding: 3.2rem;
         width: 440px;
+
         @include mobile {
             width: unset;
         }
@@ -2764,48 +2806,58 @@ $MIN_HEIGHT_FLOATING: calc(
 .file-uploader {
     display: flex;
     position: relative;
+
     & .hidden-input {
         height: 4rem;
         opacity: 0;
         z-index: 10;
         position: absolute;
         width: 87%;
+
         @include mobile {
             width: 70%;
         }
     }
 }
+
 /** @define proof-of-ownership */
 .proof-of-ownership {
     width: 100%;
     overflow: hidden;
+
     @include mobile {
         margin-top: 2.4rem;
     }
+
     &__card {
         border: 2px solid var(--general-section-5);
         border-radius: 8px;
         margin-bottom: 1.6rem;
         display: flex;
         flex-direction: column;
+
         @include mobile {
             width: 100%;
             flex-direction: column;
             padding: 1.6rem;
             margin-bottom: 0.8rem;
         }
+
         @include desktop {
             width: 80%;
             padding: 2.4rem;
         }
+
         &-open-desc-link {
             cursor: pointer;
         }
+
         &-item {
             display: flex;
             flex-direction: row;
             align-items: center;
             cursor: pointer;
+
             &-text {
                 line-height: 2.4rem;
                 padding-left: 1.6rem;
@@ -2815,6 +2867,7 @@ $MIN_HEIGHT_FLOATING: calc(
                 margin-left: auto;
                 transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
                 padding: 0;
+
                 &--invert {
                     transform: rotate(180deg);
                 }
@@ -2827,6 +2880,7 @@ $MIN_HEIGHT_FLOATING: calc(
             &-desc {
                 line-height: 2rem;
                 margin: 8px 0;
+
                 &-link {
                     color: var(--text-red);
                 }
@@ -2837,41 +2891,50 @@ $MIN_HEIGHT_FLOATING: calc(
                 grid-template-columns: 1fr 3fr;
                 align-items: center;
                 margin-top: 3rem;
+
                 @include mobile {
                     display: flex;
                 }
+
                 &-upload {
                     display: flex;
                     flex-direction: column;
                     width: 100%;
                     flex-grow: 4;
+
                     @include mobile {
                         width: 100%;
                     }
                 }
+
                 &-field {
                     display: flex;
                     flex-direction: column;
                     align-self: flex-start;
                     flex-grow: 1;
+
                     @include mobile {
                         width: 100%;
                     }
                 }
+
                 .dc-field.dc-field--error {
                     color: var(--text-loss-danger);
                     -webkit-text-fill-color: var(--text-loss-danger);
                 }
+
                 @include desktop {
                     .dc-input {
                         width: unset;
                     }
                 }
+
                 @include mobile {
                     .dc-input {
                         margin-bottom: 1rem;
                     }
                 }
+
                 @include mobile {
                     flex-direction: column;
                     padding-bottom: 1rem;
@@ -2885,6 +2948,7 @@ $MIN_HEIGHT_FLOATING: calc(
                     margin-right: 10px;
                     color: var(--text-less-prominent);
                     -webkit-text-fill-color: var(--text-less-prominent);
+
                     @include mobile {
                         width: 100%;
                     }
@@ -2892,16 +2956,19 @@ $MIN_HEIGHT_FLOATING: calc(
 
                 &-photo {
                     margin-bottom: 35px;
+
                     @include mobile {
                         width: 100%;
                         margin-left: 0;
                         margin-top: 1.6rem;
                     }
+
                     @include desktop {
                         .dc-input {
                             flex-grow: 8;
                         }
                     }
+
                     &-btn {
                         margin-left: 1rem;
                         padding: 10px 16px;
@@ -2912,6 +2979,7 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
     }
+
     &__form {
         &-container {
             padding-top: 16px;
@@ -2922,15 +2990,18 @@ $MIN_HEIGHT_FLOATING: calc(
             overflow: visible;
         }
     }
+
     &__progress {
         display: flex;
         flex-direction: column;
         align-items: center;
         margin-right: 25px;
         overflow: visible;
+
         @include mobile {
             margin-right: 8px;
         }
+
         &-number {
             min-width: 24px;
             max-width: 24px;
@@ -2945,6 +3016,7 @@ $MIN_HEIGHT_FLOATING: calc(
             font-size: 16px;
             font-weight: bold;
         }
+
         &-bar {
             width: 2px;
             height: 120%;
@@ -2952,16 +3024,20 @@ $MIN_HEIGHT_FLOATING: calc(
             position: relative;
         }
     }
+
     &__container {
         text-align: center;
         padding: 2rem auto !important;
         width: 72%;
+
         @include mobile {
             width: 100%;
         }
+
         &--content {
             width: 100%;
             padding-top: 8rem;
+
             > * {
                 text-align: center;
                 display: block;
@@ -2970,14 +3046,17 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
     }
+
     &-link {
         font-weight: 400;
         font-size: 1.4rem;
     }
+
     &-valid-identifier {
         -webkit-text-fill-color: $color-green-1 !important;
         border-color: $color-green-1 !important;
     }
+
     & .account__scrollbars_container--grid-layout {
         @include mobile {
             display: flex;
@@ -2985,33 +3064,41 @@ $MIN_HEIGHT_FLOATING: calc(
         }
     }
 }
+
 .sample-credit-card-modal {
     &-text {
         padding: 0 2.4rem;
     }
+
     &-img {
         padding: 2.4rem 0;
+
         @include mobile {
             width: 100%;
             height: auto;
         }
     }
 }
+
 .expand {
     grid-column-start: 1;
     grid-column-end: 3;
 }
+
 .organise {
     grid-column: 2;
 }
+
 .stack-top {
     z-index: 12;
     background-color: var(--overlay-inside-dialog);
     padding-left: 0.5rem;
 }
+
 .remove-element {
     display: none;
 }
+
 /* stylelint-enable */
 
 .financial-banner {
@@ -3030,6 +3117,7 @@ $MIN_HEIGHT_FLOATING: calc(
         position: relative;
         padding: 0.8rem;
     }
+
     &__container {
         display: flex;
         flex-direction: row;

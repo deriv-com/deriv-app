@@ -316,7 +316,7 @@ const AccountSwitcher = ({
                                                     if (real_account_creation_unlock_date) {
                                                         closeAccountsDialog();
                                                         setShouldShowCooldownModal(true);
-                                                    } else openRealAccountSignup(account);
+                                                    } else openRealAccountSignup('svg');
                                                 }}
                                                 className='acc-switcher__new-account-btn'
                                                 secondary
@@ -390,7 +390,7 @@ const AccountSwitcher = ({
                                                     closeAccountsDialog();
                                                     setShouldShowCooldownModal(true);
                                                 } else {
-                                                    openRealAccountSignup(account);
+                                                    openRealAccountSignup('maltainvest');
                                                 }
                                             }}
                                             className='acc-switcher__new-account-btn'

@@ -198,7 +198,9 @@ const DMT5TradeModal = ({
                     </div>
                 </div>
                 {isDesktop() &&
-                    (mt5_trade_account.market_type === 'financial' || mt5_trade_account.market_type === 'all') && (
+                    ((mt5_trade_account.market_type === 'financial' &&
+                        mt5_trade_account.landing_company_short !== 'labuan') ||
+                        mt5_trade_account.market_type === 'all') && (
                         <div className='acuity-container'>
                             <Button
                                 onClick={() => {

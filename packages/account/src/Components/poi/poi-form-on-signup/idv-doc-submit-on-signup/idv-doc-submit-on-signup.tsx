@@ -129,7 +129,20 @@ export const IdvDocSubmitOnSignup = ({
         }
 
         if (!document_number && document_type.text) {
-            const document_name = document_type.text.toLowerCase();
+            let document_name = '';
+            switch (document_type.text) {
+                case 'Drivers License':
+                    document_name = 'Driver License';
+                    break;
+                case 'Passport':
+                    document_name = 'document number';
+                    break;
+                case 'Social Security and National Insurance Trust':
+                    document_name = 'SSNIT';
+                    break;
+                default:
+                    break;
+            }
 
             errors.document_number =
                 localize('Please enter your {{document_name}}. ', { document_name }) +

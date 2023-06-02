@@ -1,14 +1,17 @@
 import React from 'react';
 import { InlineMessage } from '@deriv/components';
+import { useCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
 import './cashier-onboarding-account-identifier-message.scss';
 
 const CashierOnboardingAccountIdentifierMessage: React.FC = observer(() => {
     const { client } = useStore();
-    const { currency, loginid, is_eu, is_crypto, is_low_risk } = client;
+    const { currency, loginid, is_eu, is_low_risk } = client;
+    const { data } = useCurrencyConfig(currency);
+    const is_crypto = data?.is_crypto || false;
     const regulation_text = is_eu ? 'EU ' : 'non-EU ';
-    const regulation = is_crypto() || is_low_risk ? '' : regulation_text;
+    const regulation = is_crypto || is_low_risk ? '' : regulation_text;
 
     return (
         <div className='cashier-onboarding-account-identifier-message'>

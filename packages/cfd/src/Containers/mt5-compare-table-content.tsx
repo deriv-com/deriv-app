@@ -60,6 +60,7 @@ const Row = ({
     }
     if (is_platform_row && financial_restricted_countries) {
         values.financial_svg = { text: localize('MT5') };
+        values.financial_labuan = { text: localize('MT5') };
     }
     // As we only show one account for Demo
     if (content_flag === ContentFlag.CR_DEMO) {

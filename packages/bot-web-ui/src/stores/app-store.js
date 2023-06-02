@@ -61,13 +61,19 @@ export default class AppStore {
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
         }
 
-        if (traders_hub.content_flag===ContentFlag.LOW_RISK_CR_NON_EU && recovery_low_risk_cr_eu === 'Non-EU' || traders_hub.content_flag===ContentFlag.HIGH_RISK_CR){
+        if (traders_hub.content_flag === ContentFlag.LOW_RISK_CR_NON_EU && recovery_low_risk_cr_eu === 'Non-EU' || traders_hub.content_flag === ContentFlag.HIGH_RISK_CR){
             return;
         }
 
-        if (window.location.pathname === routes.bot && traders_hub.content_flag===ContentFlag.LOW_RISK_CR_EU && recovery_low_risk_cr_eu === 'EU'){
+        if (window.location.pathname === routes.bot && traders_hub.content_flag === ContentFlag.LOW_RISK_CR_EU && recovery_low_risk_cr_eu === 'EU'){
             if (toggleAccountsDialog) {
-                return showDigitalOptionsUnavailableError( common.showError, this.getErrorForNonEuClients(), toggleAccountsDialog, false, false);
+                return showDigitalOptionsUnavailableError( 
+                    common.showError, 
+                    this.getErrorForNonEuClients(), 
+                    toggleAccountsDialog, 
+                    false, 
+                    false
+                );
             }
         }
 
@@ -84,7 +90,7 @@ export default class AppStore {
             }
 
         } else if (show_default_error && common.has_error) {
-            return common.setError(false, null);
+            common.setError(false, null);
         }
     };
 

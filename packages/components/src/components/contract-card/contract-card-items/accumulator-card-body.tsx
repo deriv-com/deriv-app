@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
-import { isCryptocurrency, getLimitOrderAmount, isValidToSell, TContractInfo } from '@deriv/shared';
+import { isCryptocurrency, getLimitOrderAmount, isValidToSell } from '@deriv/shared';
+import { TContractInfo } from '@deriv/shared/src/utils/contract/contract-types';
 import ContractCardItem from './contract-card-item';
 import ToggleCardDialog from './toggle-card-dialog';
 import Icon from '../../icon';

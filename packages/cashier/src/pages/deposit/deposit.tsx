@@ -12,7 +12,7 @@ import RecentTransaction from '../../components/recent-transaction';
 import DepositLocked from './deposit-locked';
 import SideNote from '../../components/side-note';
 import { useCashierStore } from '../../stores/useCashierStores';
-import { CashierOnboardingModule, DepositCryptoModule } from '../../modules';
+import { CashierOnboardingModule, DepositCryptoModule, FiatDeposit } from '../../modules';
 import { CashierOnboardingSideNotes } from '../../modules/cashier-onboarding/components';
 
 type TDeposit = {
@@ -126,7 +126,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         return (
             <>
                 {is_fiat_currency_banner_visible_for_MF_clients && <CashierOnboardingSideNotes />}
-                <Real is_deposit />
+                <FiatDeposit />;
             </>
         );
     }

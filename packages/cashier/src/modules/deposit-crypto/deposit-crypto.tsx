@@ -16,6 +16,10 @@ const DepositCrypto: React.FC = observer(() => {
 
     useEffect(() => {
         setIsDeposit(true);
+
+        return () => {
+            setIsDeposit(false);
+        };
     }, [setIsDeposit]);
 
     return (

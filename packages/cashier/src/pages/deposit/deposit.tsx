@@ -33,11 +33,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
     const { iframe_height, iframe_url } = iframe;
     const { container, error, onMountDeposit: onMount } = deposit;
     const { is_low_risk_cr_eu_real } = traders_hub;
-    const {
-        crypto_transactions,
-        is_crypto_transactions_visible,
-        onMount: recentTransactionOnMount,
-    } = transaction_history;
+    const { is_crypto_transactions_visible, onMount: recentTransactionOnMount } = transaction_history;
     const {
         cashier_route_tab_index: tab_index,
         is_cashier_onboarding,

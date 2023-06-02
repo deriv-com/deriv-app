@@ -2,12 +2,11 @@ import React from 'react';
 import { DesktopWrapper, MobileWrapper, Button, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import './add-options-account.scss';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStore, observer } from '@deriv/stores';
 import { isMobile, ContentFlag } from '@deriv/shared';
 
-const AddOptions = () => {
-    const { client, traders_hub, ui } = useStores();
+const AddOptions = observer(() => {
+    const { client, traders_hub, ui } = useStore();
     const { is_real, content_flag } = traders_hub;
     const { setShouldShowCooldownModal, openRealAccountSignup } = ui;
     const { real_account_creation_unlock_date } = client;
@@ -49,9 +48,9 @@ const AddOptions = () => {
             </div>
         </React.Fragment>
     );
-};
+});
 
-const AddOptionsAccount = () => {
+const AddOptionsAccount = observer(() => {
     return (
         <React.Fragment>
             <div className='add-options-account'>
@@ -64,6 +63,6 @@ const AddOptionsAccount = () => {
             </div>
         </React.Fragment>
     );
-};
+});
 
-export default observer(AddOptionsAccount);
+export default AddOptionsAccount;

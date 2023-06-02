@@ -74,7 +74,6 @@ const OptionsAndMultipliersListing = () => {
                     <TradingAppCard
                         action_type='get'
                         availability='All'
-                        clickable_icon
                         name={localize('Deriv account')}
                         description={localize('Get a real Deriv account, start trading and manage your funds.')}
                         icon='Options'

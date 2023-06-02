@@ -65,6 +65,7 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
                 loginid: loginid ?? ' ',
                 landing_company_shortcode: landing_company_shortcode ?? ' ',
                 currency: currency ?? ' ',
+                p2p_greeting: 0,
                 residence: residence ?? ' ',
                 email: email ?? ' ',
                 utm_source: utm_source ?? ' ',
@@ -103,8 +104,10 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
 
         window.LiveChatWidget?.on('new_event', event => {
             if (event.greeting) {
-                if (event.greeting.id === 235 && window.location.pathname !== routes.cashier_p2p) {
-                    window.LiveChatWidget.call('hide_greeting');
+                if (event.greeting.id === 235) {
+                    if (window.location.pathname === routes.cashier_p2p)
+                        window.LiveChatWidget?.call('set_session_variables', { p2p_greeting: 1 });
+                    else window.LiveChatWidget.call('hide_greeting');
                 }
             }
         });

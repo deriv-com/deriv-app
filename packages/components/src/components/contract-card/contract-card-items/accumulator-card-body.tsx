@@ -7,7 +7,7 @@ import Icon from '../../icon';
 import MobileWrapper from '../../mobile-wrapper';
 import Money from '../../money';
 import { ResultStatusIcon } from '../result-overlay/result-overlay';
-import { ProposalOpenContract, Proposal, ContractUpdate } from '@deriv/api-types';
+import { ProposalOpenContract, ContractUpdate } from '@deriv/api-types';
 import { TToastConfig } from '../../types/contract.types';
 import { TGetCardLables } from '../../types/common.types';
 

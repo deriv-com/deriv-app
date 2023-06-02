@@ -109,6 +109,7 @@ const ContractCardBody = ({
                 has_progress_slider={has_progress_slider}
                 progress_slider={progress_slider_mobile_el}
                 is_mobile={is_mobile}
+                // @ts-expect-error Because component is jsx error is gone after ts-migration
                 is_sold={is_sold}
                 onMouseLeave={onMouseLeave}
                 status={status}
@@ -118,7 +119,7 @@ const ContractCardBody = ({
                 toggleCancellationWarning={toggleCancellationWarning}
             />
         );
-    } else if (is_accumulator) {
+    } else if (is_accumulator && indicative !== null) {
         card_body = (
             <AccumulatorCardBody
                 addToast={addToast}
@@ -145,6 +146,7 @@ const ContractCardBody = ({
                 contract_info={contract_info}
                 currency={currency}
                 getCardLabels={getCardLabels}
+                // @ts-expect-error Because component is jsx error is gone after ts-migration
                 is_sold={is_sold}
                 progress_slider={progress_slider_mobile_el}
                 status={status}

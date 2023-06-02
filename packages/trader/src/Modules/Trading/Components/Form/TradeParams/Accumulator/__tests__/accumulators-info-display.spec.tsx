@@ -27,4 +27,9 @@ describe('AccumulatorsInfoDisplay', () => {
         expect(screen.getByText(/maximum ticks/i)).toBeInTheDocument();
         expect(screen.getByText('250 ticks')).toBeInTheDocument();
     });
+    it('should render 1 tick if maximum_ticks = 1', () => {
+        mock_connect_props.maximum_ticks = 1;
+        render(<AccumulatorsInfoDisplay />);
+        expect(screen.getByText('1 tick')).toBeInTheDocument();
+    });
 });

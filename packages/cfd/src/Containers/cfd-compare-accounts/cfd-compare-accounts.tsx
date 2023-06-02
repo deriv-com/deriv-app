@@ -1,10 +1,11 @@
 import React from 'react';
+import { observer } from 'mobx-react';
+import { useHistory } from 'react-router-dom';
 import { Text, Icon, PageOverlay, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { useHistory } from 'react-router-dom';
 import CFDInstrumentsLabelHighlighted from './cfd-instruments-label-highlighted';
-import { observer } from 'mobx-react';
+
 import { useStore } from '@deriv/stores';
 
 const CompareCFDs = observer(() => {
@@ -40,8 +41,11 @@ const CompareCFDs = observer(() => {
                 <PageOverlay header={DesktopHeader} is_from_app={routes.traders_hub} />
                 <div className='compare-cfd-account-container'>
                     <div className='card-list'>
-                        {trading_platform_available_accounts.map((item, idx) => (
-                            <CFDInstrumentsLabelHighlighted key={idx} trading_platforms={item} />
+                        {trading_platform_available_accounts.map(item => (
+                            <CFDInstrumentsLabelHighlighted
+                                key={item.market_type + item.shortcode}
+                                trading_platforms={item}
+                            />
                         ))}
                     </div>
                 </div>

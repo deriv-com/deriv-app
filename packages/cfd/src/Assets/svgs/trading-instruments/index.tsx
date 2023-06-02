@@ -9,12 +9,12 @@ import Forex from './ic-appstore-forex.svg';
 import Cryptocurrencies from './ic-appstore-cryptocurrencies.svg';
 import ETF from './ic-appstore-etf.svg';
 
-export interface IconProps<T> {
+export type IconProps<T> = {
     icon: T;
     className?: string;
     size?: number;
     onClick?: () => void;
-}
+};
 
 export const InstrumentsIcons = {
     DerivedFX,

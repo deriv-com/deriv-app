@@ -1,7 +1,7 @@
 import React from 'react';
 import InstumentsIconWithLabel from './instruments-icon-with-label';
-import { TTradingPlatformAvailableAccount, TIconData } from '../../Components/props.types';
-import { getHighlightedIconLabel } from '../../Helpers/config';
+import { TTradingPlatformAvailableAccount, TIconData } from 'Components/props.types';
+import { getHighlightedIconLabel } from '../../Helpers/compare-accounts-config';
 
 type TCFDInstrumentsLabelHighlightedProps = {
     trading_platforms: TTradingPlatformAvailableAccount;
@@ -13,12 +13,7 @@ const CFDInstrumentsLabelHighlighted: React.FC<TCFDInstrumentsLabelHighlightedPr
     return (
         <div className={'compare-cfd-account-outline'}>
             {iconData.map(item => (
-                <InstumentsIconWithLabel
-                    key={item.text}
-                    icon={item.icon}
-                    text={item.text}
-                    highlighted={item.highlighted}
-                />
+                <InstumentsIconWithLabel key={item.text} {...item} />
             ))}
         </div>
     );

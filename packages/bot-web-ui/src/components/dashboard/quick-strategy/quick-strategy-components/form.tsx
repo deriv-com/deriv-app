@@ -1,13 +1,13 @@
-import { ThemedScrollbars, Text } from '@deriv/components';
-import { isSafari, isMobile } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import React from 'react';
 import classNames from 'classnames';
 import { Form, Formik, FormikProps } from 'formik';
-import React from 'react';
 import * as Yup from 'yup';
-import { QuickStrategyFields, QuickStrategyFooter } from '.';
+import { Text, ThemedScrollbars } from '@deriv/components';
+import { isMobile, isSafari } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { TQuickStrategyFormValues } from '../quick-strategy.types';
 import { TQuickStrategyForm } from './components.types';
+import { QuickStrategyFields, QuickStrategyFooter } from '.';
 
 const QuickStrategyForm = ({
     duration_unit_dropdown,

@@ -171,6 +171,14 @@ const CurrencySelector = ({
                 />
             );
         } else if (!is_dxtrade_allowed && is_mt5_allowed) {
+            if (is_eu) {
+                return (
+                    <Localize
+                        i18n_default_text="Enjoy a seamless trading experience with the selected fiat account. Please note that once you've made your first deposit or created a real {{dmt5_label}} account, your account currency cannot be changed."
+                        values={{ dmt5_label }}
+                    />
+                );
+            }
             return (
                 <Localize
                     i18n_default_text='You are limited to one fiat account. You won’t be able to change your account currency if you have already made your first deposit or created a real {{dmt5_label}} account.'

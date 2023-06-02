@@ -23,6 +23,7 @@ import {
     PlatformContext,
     TLocationList,
 } from '@deriv/shared';
+import InlineNoteWithIcon from 'Components/inline-note-with-icon';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import classNames from 'classnames';
 
@@ -176,7 +177,18 @@ const AddressDetails = ({
                                 height_offset={is_appstore ? '222px' : '90px'}
                                 is_disabled={isDesktop()}
                             >
-                                {!is_appstore && (
+                                {is_mf && (
+                                    <div className='details-form__banner-container'>
+                                        <InlineNoteWithIcon
+                                            icon='IcAlertWarning'
+                                            message={localize(
+                                                ' For verification purposes as required by regulation. It’s your responsibility to provide accurate and complete answers. You can update personal details at any time in your account settings.'
+                                            )}
+                                            title={localize('Why do we collect this?')}
+                                        />
+                                    </div>
+                                )}
+                                {!is_appstore && !is_mf && (
                                     <Text
                                         as='p'
                                         align='left'

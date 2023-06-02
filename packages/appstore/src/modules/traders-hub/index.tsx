@@ -16,11 +16,20 @@ import './traders-hub.scss';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();
-    const { notification_messages_ui: Notifications } = ui;
-    const { is_landing_company_loaded, is_logged_in, is_switching, is_logging_in, is_account_setting_loaded } = client;
-    const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
+    const { notification_messages_ui: Notifications, openRealAccountSignup, is_from_signup_account } = ui;
+    const {
+        is_landing_company_loaded,
+        is_logged_in,
+        is_switching,
+        is_logging_in,
+        is_account_setting_loaded,
+        has_active_real_account,
+    } = client;
+    const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user, is_real } =
+        traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
 
+    const eu_user_closed_real_account_first_time = localStorage.getItem('eu_user_closed_real_account_first_time');
     const can_show_notify = !is_switching && !is_logging_in && is_account_setting_loaded && is_landing_company_loaded;
 
     const [scrolled, setScrolled] = React.useState(false);
@@ -31,6 +40,16 @@ const TradersHub = () => {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     };
+    React.useEffect(() => {
+        if (
+            !has_active_real_account &&
+            is_logged_in &&
+            is_from_signup_account &&
+            !eu_user_closed_real_account_first_time
+        ) {
+            openRealAccountSignup();
+        }
+    }, []);
 
     React.useEffect(() => {
         setTimeout(() => {
@@ -73,6 +92,23 @@ const TradersHub = () => {
         );
     };
 
+    const contentForOptionandCfdListing = () => {
+        if (is_eu_user && is_real) {
+            return (
+                <div className='traders-hub__main-container'>
+                    <CFDsListing />
+                    <OptionsAndMultipliersListing />
+                </div>
+            );
+        }
+        return (
+            <div className='traders-hub__main-container'>
+                <OptionsAndMultipliersListing />
+                <CFDsListing />
+            </div>
+        );
+    };
+
     return (
         <>
             <Div100vhContainer
@@ -85,12 +121,7 @@ const TradersHub = () => {
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     <MainTitleBar />
-                    <DesktopWrapper>
-                        <div className='traders-hub__main-container'>
-                            <OptionsAndMultipliersListing />
-                            <CFDsListing />
-                        </div>
-                    </DesktopWrapper>
+                    <DesktopWrapper>{contentForOptionandCfdListing()}</DesktopWrapper>
                     <MobileWrapper>
                         {is_landing_company_loaded ? (
                             <ButtonToggle

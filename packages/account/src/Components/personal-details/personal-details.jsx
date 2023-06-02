@@ -1,4 +1,5 @@
 import React from 'react';
+import InlineNoteWithIcon from 'Components/inline-note-with-icon';
 import classNames from 'classnames';
 import { Formik, Form } from 'formik';
 import {
@@ -146,8 +147,19 @@ const PersonalDetails = ({
                             onClick={closeToolTip}
                             data-testid='personal_details_form'
                         >
-                            <Div100vhContainer className='details-form' height_offset='100px' is_disabled={isDesktop()}>
-                                {!is_qualified_for_idv && (
+                            <Div100vhContainer className='details-form' height_offset='90px' is_disabled={isDesktop()}>
+                                {is_mf && (
+                                    <div className='details-form__banner-container'>
+                                        <InlineNoteWithIcon
+                                            icon='IcAlertWarning'
+                                            message={localize(
+                                                ' For verification purposes as required by regulation. It’s your responsibility to provide accurate and complete answers. You can update personal details at any time in your account settings.'
+                                            )}
+                                            title={localize('Why do we collect this?')}
+                                        />
+                                    </div>
+                                )}
+                                {!is_mf && !is_qualified_for_idv && (
                                     <Text as='p' size='xxxs' align='center' className='details-form__description'>
                                         <Localize
                                             i18n_default_text={

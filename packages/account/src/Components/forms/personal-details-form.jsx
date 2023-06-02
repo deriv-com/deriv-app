@@ -221,9 +221,7 @@ const PersonalDetailsForm = ({
                                     <DesktopWrapper>
                                         <Autocomplete
                                             {...field}
-                                            disabled={
-                                                isFieldImmutable('place_of_birth', editable_fields)
-                                            }
+                                            disabled={isFieldImmutable('place_of_birth', editable_fields)}
                                             data-lpignore='true'
                                             autoComplete={autocomplete_value} // prevent chrome autocomplete
                                             type='text'
@@ -241,9 +239,7 @@ const PersonalDetailsForm = ({
                                         <SelectNative
                                             placeholder={localize('Place of birth')}
                                             name={field.name}
-                                            disabled={
-                                                isFieldImmutable('place_of_birth', editable_fields)
-                                            }
+                                            disabled={isFieldImmutable('place_of_birth', editable_fields)}
                                             label={is_mf ? localize('Place of birth*') : localize('Place of birth')}
                                             list_items={residence_list}
                                             value={values.place_of_birth}

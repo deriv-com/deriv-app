@@ -157,6 +157,7 @@
         --status-transfer: #{$color-orange};
         --status-info: #{$color-blue};
         --status-colored-background: #{$color-white};
+        --status-alert-background: #{$color-yellow-3};
         // Dashboard
         --dashboard-swap-free: #{$gradient-color-black-3};
         --dashboard-app: #{$gradient-color-black-4};
@@ -287,6 +288,7 @@
         --status-transfer: #{$color-orange};
         --status-info: #{$color-blue};
         --status-colored-background: #{$color-white};
+        --status-alert-background: #{$color-yellow-3};
         // Transparentize
         --transparent-success: #{$alpha-color-green-2};
         --transparent-info: #{$alpha-color-blue-1};

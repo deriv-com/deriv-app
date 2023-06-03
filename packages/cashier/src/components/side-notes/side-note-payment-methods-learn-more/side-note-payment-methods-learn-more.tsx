@@ -3,7 +3,7 @@ import { SideNote } from '@deriv/components';
 import { getStaticUrl } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 
-const CashierOnboardingSideNotePaymentMethods: React.FC = () => (
+const SideNotePaymentMethodsLearnMore: React.FC = () => (
     <SideNote
         description={
             <Localize
@@ -22,4 +22,4 @@ const CashierOnboardingSideNotePaymentMethods: React.FC = () => (
     />
 );
 
-export default CashierOnboardingSideNotePaymentMethods;
+export default SideNotePaymentMethodsLearnMore;

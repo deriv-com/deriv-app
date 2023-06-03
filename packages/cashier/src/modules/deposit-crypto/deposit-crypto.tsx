@@ -4,7 +4,7 @@ import { PageContainer } from '../../components/page-container';
 import { useCashierStore } from '../../stores/useCashierStores';
 import {
     DepositCryptoCurrencyDetails,
-    DepositCryptoRecentTransactionSideNote,
+    DepositCryptoSideNotes,
     DepositCryptoTryFiatOnRamp,
     DepositCryptoWalletAddress,
 } from './components';
@@ -23,7 +23,7 @@ const DepositCrypto: React.FC = observer(() => {
     }, [setIsDeposit]);
 
     return (
-        <PageContainer right={<DepositCryptoRecentTransactionSideNote />}>
+        <PageContainer right={<DepositCryptoSideNotes />}>
             <DepositCryptoCurrencyDetails />
             <DepositCryptoWalletAddress />
             <div className='deposit-crypto__divider' />

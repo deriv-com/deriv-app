@@ -7,48 +7,22 @@ import CashierLocked from '../../components/cashier-locked';
 import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
 import Error from '../../components/error';
 import FundsProtection from '../../components/funds-protection';
-import USDTSideNote from '../../components/usdt-side-note';
-import RecentTransaction from '../../components/recent-transaction';
 import DepositLocked from './deposit-locked';
-import SideNote from '../../components/side-note';
 import { useCashierStore } from '../../stores/useCashierStores';
 import { CashierOnboardingModule, DepositCryptoModule } from '../../modules';
-import { CashierOnboardingSideNotes } from '../../modules/cashier-onboarding/components';
 
-type TDeposit = {
-    setSideNotes: (notes: object | null) => void;
-};
-
-const Deposit = observer(({ setSideNotes }: TDeposit) => {
+const Deposit = observer(() => {
     const { client, traders_hub } = useStore();
-    const {
-        can_change_fiat_currency,
-        currency,
-        current_currency_type,
-        is_switching,
-        is_virtual,
-        landing_company_shortcode,
-    } = client;
+    const { current_currency_type, is_switching, is_virtual } = client;
     const { iframe, deposit, transaction_history, general_store } = useCashierStore();
-    const { iframe_height, iframe_url } = iframe;
+    const { iframe_url } = iframe;
     const { container, error, onMountDeposit: onMount } = deposit;
     const { is_low_risk_cr_eu_real } = traders_hub;
     const { is_crypto_transactions_visible, onMount: recentTransactionOnMount } = transaction_history;
-    const {
-        cashier_route_tab_index: tab_index,
-        is_cashier_onboarding,
-        is_crypto,
-        is_deposit,
-        is_loading,
-        setActiveTab,
-        setIsDeposit,
-    } = general_store;
+    const { is_cashier_onboarding, is_crypto, is_deposit, is_loading, setActiveTab } = general_store;
     const is_cashier_locked = useCashierLocked();
     const is_system_maintenance = useIsSystemMaintenance();
     const is_deposit_locked = useDepositLocked();
-
-    const is_fiat_currency_banner_visible_for_MF_clients =
-        landing_company_shortcode === 'maltainvest' && !is_crypto && !can_change_fiat_currency && !!iframe_height;
 
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {
@@ -60,32 +34,12 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
     React.useEffect(() => {
         setActiveTab(container);
         onMount();
+
         return () => {
-            setIsDeposit(false);
             error.setErrorMessage({ code: '', message: '' });
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [setActiveTab, onMount, container, error.setErrorMessage]);
-
-    React.useEffect(() => {
-        if (typeof setSideNotes === 'function') {
-            if (is_switching || is_deposit) setSideNotes(null);
-            if (is_crypto && is_deposit && !is_switching) {
-                const side_notes = [
-                    ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
-                    ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
-                ];
-                if (side_notes.length > 0) {
-                    setSideNotes([
-                        <SideNote has_title={false} key={0}>
-                            {side_notes}
-                        </SideNote>,
-                    ]);
-                }
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, tab_index, is_cashier_onboarding, iframe_height]);
 
     if (!is_cashier_onboarding && (is_switching || (is_loading && !iframe_url)) && !is_crypto_transactions_visible) {
         return <Loading is_fullscreen />;
@@ -98,34 +52,21 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
             return <CashierLocked />;
         }
     }
-    if (error.is_ask_uk_funds_protection) {
-        return <FundsProtection />;
-    }
-    if (is_cashier_locked) {
-        return <CashierLocked />;
-    }
-    if (is_deposit_locked) {
-        return <DepositLocked />;
-    }
-    if (is_crypto_transactions_visible) {
-        return <CryptoTransactionsHistory />;
-    }
+    if (error.is_ask_uk_funds_protection) return <FundsProtection />;
+
+    if (is_cashier_locked) return <CashierLocked />;
+
+    if (is_deposit_locked) return <DepositLocked />;
+
+    if (is_crypto_transactions_visible) return <CryptoTransactionsHistory />;
 
     if (is_deposit || is_low_risk_cr_eu_real) {
-        if (error.message) {
-            return <Error error={error} />;
-        }
-        if (is_crypto) {
-            return <DepositCryptoModule />;
-        }
+        if (error.message) return <Error error={error} />;
+        if (is_crypto) return <DepositCryptoModule />;
 
-        return (
-            <>
-                {is_fiat_currency_banner_visible_for_MF_clients && <CashierOnboardingSideNotes />}
-                <Real is_deposit />
-            </>
-        );
+        return <Real is_deposit />;
     }
+
     return <CashierOnboardingModule />;
 });
 

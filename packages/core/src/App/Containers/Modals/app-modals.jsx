@@ -25,6 +25,10 @@ const ResetOrUnlinkPasswordModal = React.lazy(() =>
     moduleLoader(() => import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../ResetOrUnlinkPasswordModal'))
 );
 
+const TermsAndConditionsModal = React.lazy(() =>
+    moduleLoader(() => import(/* webpackChunkName: "terms-and-conditions-modal" */ './terms-and-conditions-modal'))
+);
+
 const UnlinkPasswordModal = React.lazy(() =>
     import(/* webpackChunkName: "reset-or-unlink-password-modal" */ '../UnlinkPasswordModal')
 );
@@ -80,6 +84,7 @@ const AppModals = ({
     is_trading_experience_incomplete,
     should_show_risk_accept_modal,
     is_need_real_account_for_cashier_modal_visible,
+    is_tnc_modal_open,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -130,6 +135,8 @@ const AppModals = ({
         content_flag !== ContentFlag.LOW_RISK_CR_NON_EU
     ) {
         ComponentToLoad = <TradingAssessmentExistingUser />;
+    } else if (is_tnc_modal_open) {
+        ComponentToLoad = <TermsAndConditionsModal />;
     } else if (is_acuity_modal_open) {
         ComponentToLoad = <AcuityDownloadModal />;
     } else if (is_close_mx_mlt_account_modal_visible) {
@@ -197,4 +204,5 @@ export default connect(({ client, ui, traders_hub }) => ({
     content_flag: traders_hub.content_flag,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     should_show_risk_accept_modal: ui.should_show_risk_accept_modal,
+    is_tnc_modal_open: ui.is_tnc_modal_open,
 }))(AppModals);

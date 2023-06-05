@@ -68,7 +68,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     } = usePaymentAgentTransferVisible();
     const { is_payment_agent_visible } = payment_agent;
     const { is_from_derivgo } = common;
-    const { is_cashier_visible: is_visible, toggleCashier } = ui;
+    const { is_cashier_visible: is_visible, toggleCashier, setIsTnCModalOpen } = ui;
     const { is_account_setting_loaded, is_logged_in, is_logging_in } = client;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
@@ -163,6 +163,10 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
 
         return selected_route.getTitle?.();
     };
+
+    if (selected_route.path === routes.cashier_deposit) {
+        setIsTnCModalOpen(true);
+    }
 
     return (
         <FadeWrapper is_visible={is_visible} className='cashier__page-wrapper' keyname='cashier__page-wrapper'>

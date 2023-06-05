@@ -111,6 +111,9 @@ export default class UIStore extends BaseStore {
     // MT5 acuity download
     is_acuity_modal_open = false;
 
+    // TnC modal
+    is_tnc_modal_open = false;
+
     // Real account signup
     real_account_signup = {
         active_modal_index: -1,
@@ -246,6 +249,7 @@ export default class UIStore extends BaseStore {
 
             is_accounts_switcher_on: observable,
             is_acuity_modal_open: observable,
+            is_tnc_modal_open: observable,
 
             is_app_disabled: observable,
             is_cashier_visible: observable,
@@ -342,6 +346,7 @@ export default class UIStore extends BaseStore {
             setDarkMode: action.bound,
             setHasOnlyForwardingContracts: action.bound,
             setIsAcuityModalOpen: action.bound,
+            setIsTnCModalOpen: action.bound,
             setIsClosingCreateRealAccountModal: action.bound,
             setIsNativepickerVisible: action.bound,
             setReportsTabIndex: action.bound,
@@ -836,6 +841,10 @@ export default class UIStore extends BaseStore {
 
     setIsAcuityModalOpen(value) {
         this.is_acuity_modal_open = value;
+    }
+
+    setIsTnCModalOpen(value) {
+        this.is_tnc_modal_open = value;
     }
 
     toggleShouldShowMultipliersOnboarding(value) {

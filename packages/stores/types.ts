@@ -297,6 +297,8 @@ type TUiStore = {
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
     setShouldShowCooldownModal: (value: boolean) => void;
+    is_tnc_modal_open: boolean;
+    setIsTnCModalOpen: (value: boolean) => void;
 };
 
 type TPortfolioStore = {

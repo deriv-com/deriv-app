@@ -4,7 +4,7 @@ import { DesktopWrapper, Input, Icon, MobileWrapper, Text, useInterval } from '@
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
-import { TReactChangeEvent, TReactChildren } from '../../types';
+import { TReactChangeEvent } from '../../types';
 import { useCashierStore } from '../../stores/useCashierStores';
 import './crypto-fiat-converter.scss';
 
@@ -12,14 +12,13 @@ type TTimerProps = {
     onComplete: VoidFunction;
 };
 
-type TInputGroupProps = {
-    children: TReactChildren;
+type TInputGroupProps = React.PropsWithChildren<{
     className: string;
-};
+}>;
 
 type TCryptoFiatConverterProps = {
     from_currency: string;
-    hint?: string | TReactChildren;
+    hint?: React.ReactNode;
     onChangeConverterFromAmount: (
         event: { target: { value: string } },
         from_currency: string,
@@ -112,7 +111,7 @@ const CryptoFiatConverter = observer(
                                 handleChange(e);
                             }}
                             type='text'
-                            error={converter_from_error}
+                            error={converter_from_error as string}
                             label={localize('Amount ({{currency}})', {
                                 currency: getCurrencyDisplayCode(from_currency),
                             })}

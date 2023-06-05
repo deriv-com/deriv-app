@@ -17,7 +17,7 @@ export const buildCurrenciesList = payout_currencies => {
 };
 
 export const getDefaultCurrency = (currencies_list, currency = '') => {
-    const supported_currencies = Object.values(currencies_list).reduce((a, b) => [...a, ...b]);
+    const supported_currencies = Object.values(currencies_list).reduce((a, b) => [...a, ...b], []);
     const default_currency = supported_currencies.find(c => c.value === currency)
         ? currency
         : supported_currencies[0].value;

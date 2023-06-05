@@ -1,7 +1,7 @@
 import React from 'react';
 import { Localize, localize } from '@deriv/translations';
 
-const paymentMethodConfig = {
+const getPaymentMethodsConfig = () => ({
     advcash: {
         icon_light: 'IcAdvcashLight',
         icon_dark: 'IcAdvcashDark',
@@ -181,6 +181,6 @@ const paymentMethodConfig = {
         input_label: null,
         identifier_type: 'none',
     },
-};
+});
 
-export default paymentMethodConfig;
+export default getPaymentMethodsConfig;

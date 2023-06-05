@@ -1,15 +1,14 @@
 import { useState } from 'react';
-import { useWS } from '@deriv/api';
+import { useRequest } from '@deriv/api';
 import { useStore } from '@deriv/stores';
-import type { TSocketEndpoints } from '@deriv/api/types';
 import useCountdown from './useCountdown';
 
 const RESEND_COUNTDOWN = 60;
 
-export type TEmailVerificationType = TSocketEndpoints['verify_email']['request']['type'];
-
-const useVerifyEmail = (type: TEmailVerificationType) => {
-    const WS = useWS('verify_email');
+const useVerifyEmail = (
+    type: Parameters<ReturnType<typeof useRequest<'verify_email'>>['mutate']>[0][0]['payload']['type']
+) => {
+    const WS = useRequest('verify_email');
     const counter = useCountdown({ from: RESEND_COUNTDOWN });
     const { client } = useStore();
     const [sent_count, setSentCount] = useState(0);
@@ -23,11 +22,11 @@ const useVerifyEmail = (type: TEmailVerificationType) => {
 
         setSentCount(old => old + 1);
 
-        WS.send({ verify_email: client.email, type });
+        WS.mutate([{ payload: { verify_email: client.email, type } }]);
     };
 
     return {
-        is_loading: WS.is_loading,
+        is_loading: WS.isLoading,
         error: WS.error,
         data: WS.data,
         counter: counter.count,

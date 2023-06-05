@@ -21,6 +21,9 @@ export default class FlyoutHelpStore {
             initFlyoutHelp: action.bound,
             updateSequenceButtons: action.bound,
             setExamples: action.bound,
+            getHelpContent: action.bound,
+            getFilledBlocksIndex: action.bound,
+            getNextHelpContentIndex: action.bound,
         });
 
         this.root_store = root_store;

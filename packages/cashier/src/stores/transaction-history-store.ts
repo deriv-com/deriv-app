@@ -1,6 +1,6 @@
 import { action, observable, makeObservable } from 'mobx';
 import { isCryptocurrency } from '@deriv/shared';
-import { TWebSocket, TRootStore, TTransactionItem } from 'Types';
+import { TWebSocket, TRootStore, TTransactionItem } from '../types';
 
 export default class TransactionHistoryStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
@@ -40,7 +40,7 @@ export default class TransactionHistoryStore {
     is_loading = false;
     selected_crypto_transaction_id = '';
     selected_crypto_status = '';
-    selected_crypto_status_description = '';
+    selected_crypto_status_description: JSX.Element | string = '';
 
     async onMount() {
         const { currency, switched } = this.root_store.client;
@@ -49,7 +49,7 @@ export default class TransactionHistoryStore {
         if (is_crypto && !switched) {
             this.setLoading(true);
             await this.unsubscribeCryptoTransactions();
-            this.getCryptoTransactions();
+            await this.getCryptoTransactions();
             this.setLoading(false);
         }
     }
@@ -63,8 +63,8 @@ export default class TransactionHistoryStore {
         });
     }
 
-    getCryptoTransactions(): void {
-        this.WS.subscribeCashierPayments?.(response => {
+    async getCryptoTransactions() {
+        await this.WS.subscribeCashierPayments?.(response => {
             if (!response.error) {
                 const { crypto } = response.cashier_payments;
                 this.updateCryptoTransactions(crypto);
@@ -90,10 +90,7 @@ export default class TransactionHistoryStore {
     }
 
     sortCryptoTransactions() {
-        // TODO: Check this, using replace on array.
-        this.crypto_transactions.replace(
-            this.crypto_transactions.slice().sort((a, b) => b.submit_date - a.submit_date)
-        );
+        this.crypto_transactions.sort((a, b) => Number(b.submit_date) - Number(a.submit_date));
     }
 
     async cancelCryptoTransaction(transaction_id: string) {
@@ -129,7 +126,7 @@ export default class TransactionHistoryStore {
         this.selected_crypto_status = status;
     }
 
-    setSelectedCryptoStatusDescription(description: string): void {
+    setSelectedCryptoStatusDescription(description: JSX.Element | string): void {
         this.selected_crypto_status_description = description;
     }
 
@@ -137,7 +134,7 @@ export default class TransactionHistoryStore {
         this.is_crypto_transactions_status_modal_visible = is_visible;
     }
 
-    showCryptoTransactionsStatusModal(description: string, name: string): void {
+    showCryptoTransactionsStatusModal(description: JSX.Element | string, name: string): void {
         this.setSelectedCryptoStatusDescription(description);
         this.setSelectedCryptoStatus(name);
         this.setIsCryptoTransactionsStatusModalVisible(true);

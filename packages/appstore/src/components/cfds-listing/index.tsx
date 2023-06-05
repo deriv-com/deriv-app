@@ -50,6 +50,7 @@ const CFDsListing = () => {
         no_CR_account,
         setSelectedAccount,
         CFDs_restricted_countries,
+        financial_restricted_countries,
     } = traders_hub;
 
     const { toggleCompareAccountsModal, setAccountType } = cfd;
@@ -97,7 +98,7 @@ const CFDsListing = () => {
             title={
                 !isMobile() && (
                     <div className='cfd-accounts__title'>
-                        <Text size='sm' line_height='m' weight='bold'>
+                        <Text size='sm' line_height='m' weight='bold' color='prominent'>
                             {localize('CFDs')}
                         </Text>
                         <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
@@ -130,7 +131,7 @@ const CFDsListing = () => {
             <AddDerivAccount />
 
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
-                <Text line_height='m' weight='bold'>
+                <Text line_height='m' weight='bold' color='prominent'>
                     {localize('Deriv MT5')}
                 </Text>
             </div>
@@ -145,7 +146,6 @@ const CFDsListing = () => {
                             <TradingAppCard
                                 action_type={existing_account.action_type}
                                 availability={selected_region}
-                                clickable_icon
                                 icon={existing_account.icon}
                                 sub_title={existing_account?.sub_title}
                                 name={!has_mt5_account_status ? existing_account?.name : ''}
@@ -204,14 +204,14 @@ const CFDsListing = () => {
             ) : (
                 <PlatformLoader />
             )}
-            {!is_eu_user && !CFDs_restricted_countries && (
+            {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                 <div className='cfd-full-row'>
                     <hr className='divider' />
                 </div>
             )}
             {available_dxtrade_accounts?.length > 0 && (
                 <div className='cfd-full-row'>
-                    <Text line_height='m' weight='bold'>
+                    <Text line_height='m' weight='bold' color='prominent'>
                         {localize('Other CFDs')}
                     </Text>
                 </div>
@@ -225,7 +225,6 @@ const CFDsListing = () => {
                             <TradingAppCard
                                 action_type='multi-action'
                                 availability={selected_region}
-                                clickable_icon
                                 icon={account.icon}
                                 sub_title={account.name}
                                 name={`${formatMoney(
@@ -254,7 +253,6 @@ const CFDsListing = () => {
                         <TradingAppCard
                             action_type='get'
                             availability={selected_region}
-                            clickable_icon
                             icon={account.icon}
                             name={account.name}
                             platform={account.platform}

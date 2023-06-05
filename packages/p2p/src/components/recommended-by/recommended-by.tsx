@@ -1,14 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Icon, Popover, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const RecommendedBy = ({ recommended_average, recommended_count }) => {
+type TRecommendedByProps = {
+    recommended_average?: number;
+    recommended_count?: number;
+};
+
+const RecommendedBy = ({ recommended_average, recommended_count }: TRecommendedByProps) => {
     const { showModal } = useModalManagerContext();
 
-    const getRecommendedMessage = () => {
+    const getRecommendedMessage = (): string => {
         if (recommended_count) {
             if (recommended_count === 1) {
                 return localize('Recommended by {{recommended_count}} trader', {
@@ -37,7 +41,9 @@ const RecommendedBy = ({ recommended_average, recommended_count }) => {
                                       message: getRecommendedMessage(),
                                   },
                               })
-                        : () => {}
+                        : () => {
+                              // do nothing
+                          }
                 }
             >
                 <Icon
@@ -47,16 +53,11 @@ const RecommendedBy = ({ recommended_average, recommended_count }) => {
                     size={14}
                 />
                 <Text color='less-prominent' line_height='s' size={isMobile() ? 'xxxs' : 'xs'}>
-                    {`${recommended_average !== null ? recommended_average : 0}%`}
+                    {`${recommended_average || 0}%`}
                 </Text>
             </Popover>
         </React.Fragment>
     );
-};
-
-RecommendedBy.propTypes = {
-    recommended_average: PropTypes.number,
-    recommended_count: PropTypes.number,
 };
 
 export default RecommendedBy;

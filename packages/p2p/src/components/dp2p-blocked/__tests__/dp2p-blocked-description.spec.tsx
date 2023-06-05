@@ -1,7 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Dp2pBlockedDescription from '../dp2p-blocked-description';
+import userEvent from '@testing-library/user-event';
 import { useStores } from 'Stores/index';
+import Dp2pBlockedDescription from '../dp2p-blocked-description';
 
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
@@ -35,7 +36,7 @@ describe('<Dp2pBlockedDescription />', () => {
         expect(screen.getByText('To enable this feature you must complete the following:')).toBeInTheDocument();
     });
 
-    it('it should return `Please use live chat to contact our Customer Support team for help.`', () => {
+    it('it should return `Please use live chat to contact our Customer Support team for help.` and open live chat when clicking on the `live chat`', () => {
         (useStores as jest.Mock).mockReturnValue({
             general_store: {
                 is_p2p_blocked_for_pa: false,
@@ -43,7 +44,19 @@ describe('<Dp2pBlockedDescription />', () => {
                 is_blocked: false,
             },
         });
+
+        window.LC_API = {
+            open_chat_window: jest.fn(),
+            on_chat_ended: jest.fn(),
+        };
+
         render(<Dp2pBlockedDescription />);
         expect(screen.getByText(/to contact our Customer Support team for help./)).toBeInTheDocument();
+
+        const live_chat_text = screen.getByText(/live chat/i);
+        expect(live_chat_text).toBeInTheDocument();
+
+        userEvent.click(live_chat_text);
+        expect(window.LC_API.open_chat_window).toHaveBeenCalledTimes(1);
     });
 });

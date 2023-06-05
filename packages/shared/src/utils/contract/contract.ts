@@ -34,6 +34,18 @@ export const hasContractEntered = (contract_info: TContractInfo) => !!contract_i
 
 export const isAccumulatorContract = (contract_type: string) => /ACCU/i.test(contract_type);
 
+export const isAccumulatorContractOpen = (
+    { contract_type, current_spot, high_barrier, low_barrier, status }: TContractInfo,
+    in_pixels?: boolean
+) => {
+    const has_crossed_barriers =
+        !!(current_spot && high_barrier && low_barrier) &&
+        (in_pixels
+            ? current_spot <= +high_barrier || current_spot >= +low_barrier
+            : current_spot >= +high_barrier || current_spot <= +low_barrier);
+    return isAccumulatorContract(contract_type || '') && status === 'open' && !has_crossed_barriers;
+};
+
 export const isMultiplierContract = (contract_type: string) => /MULT/i.test(contract_type);
 
 export const isVanillaContract = (contract_type: string) => /VANILLA/i.test(contract_type);

@@ -3,7 +3,7 @@
 // 2- Please read RawMarker.jsx in https://github.com/binary-com/SmartCharts
 // 3- Please read contract-store.js & trade.jsx carefully
 import React from 'react';
-import { getDecimalPlaces, isAccumulatorContract, isVanillaContract } from '@deriv/shared';
+import { getDecimalPlaces, isAccumulatorContract, isAccumulatorContractOpen, isVanillaContract } from '@deriv/shared';
 import { RawMarker } from 'Modules/SmartChart';
 import * as ICONS from './icons';
 
@@ -308,9 +308,12 @@ const TickContract = RawMarkerMaker(
                 (!contract_type && start))
         ) {
             // draw 2 barriers with a shade between them for an ongoing ACCU contract:
-            const crossed = exit?.top <= barrier || exit?.top >= barrier_2;
-            const contract_details_start_left = status === 'open' && !crossed ? exit?.left : previous_tick?.left;
-            const preceeding_tick = ticks.length > 2 && status === 'open' && !crossed && ticks[ticks.length - 2];
+            const is_accu_contract_open = isAccumulatorContractOpen(
+                { contract_type, current_spot: exit?.top, high_barrier: barrier, low_barrier: barrier_2, status },
+                true
+            );
+            const contract_details_start_left = is_accu_contract_open ? exit?.left : previous_tick?.left;
+            const preceeding_tick = ticks.length > 2 && is_accu_contract_open && ticks[ticks.length - 2];
             draw_shaded_barriers({
                 ctx,
                 start_left: is_in_contract_details ? contract_details_start_left : start.left,

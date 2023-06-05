@@ -290,3 +290,95 @@ describe('getDisplayStatus', () => {
         expect(ContractUtils.getDisplayStatus(contract_info)).toEqual('purchased');
     });
 });
+
+describe('isAccumulatorContract', () => {
+    it('should return true if contract_type includes ACCU', () => {
+        expect(ContractUtils.isAccumulatorContract('ACCU')).toEqual(true);
+    });
+    it('should return false if contract_type is not ACCU', () => {
+        expect(ContractUtils.isAccumulatorContract('MULTDOWN')).toEqual(false);
+    });
+});
+
+describe('isAccumulatorContractOpen', () => {
+    it('should return true if contract_type includes ACCU, status is open, and current spot has NOT crossed barriers', () => {
+        const contract_info: TGetDisplayStatus = {
+            contract_type: 'ACCU',
+            current_spot: 1232.45,
+            high_barrier: 1232.565,
+            low_barrier: 1232.231,
+            status: 'open',
+        };
+        expect(ContractUtils.isAccumulatorContractOpen(contract_info)).toEqual(true);
+    });
+    it('should return false if contract_type is not ACCU', () => {
+        const contract_info: TGetDisplayStatus = {
+            contract_type: 'MULTDOWN',
+            current_spot: 1232.45,
+            high_barrier: 1232.565,
+            low_barrier: 1232.231,
+            status: 'open',
+        };
+        expect(ContractUtils.isAccumulatorContractOpen(contract_info)).toEqual(false);
+    });
+    it('should return false if status is not open', () => {
+        const contract_info: TGetDisplayStatus = {
+            contract_type: 'ACCU',
+            current_spot: 1232.45,
+            high_barrier: 1232.565,
+            low_barrier: 1232.231,
+            status: 'lost',
+        };
+        expect(ContractUtils.isAccumulatorContractOpen(contract_info)).toEqual(false);
+    });
+    it('should return false if current spot has crossed high barrier', () => {
+        const contract_info: TGetDisplayStatus = {
+            contract_type: 'ACCU',
+            current_spot: 1232.45,
+            high_barrier: 1232.33,
+            low_barrier: 1232.231,
+            status: 'open',
+        };
+        expect(ContractUtils.isAccumulatorContractOpen(contract_info)).toEqual(false);
+    });
+    it('should return false if current spot has crossed low barrier', () => {
+        const contract_info: TGetDisplayStatus = {
+            contract_type: 'ACCU',
+            current_spot: 1232.45,
+            high_barrier: 1232.565,
+            low_barrier: 1232.48,
+            status: 'open',
+        };
+        expect(ContractUtils.isAccumulatorContractOpen(contract_info)).toEqual(false);
+    });
+    it('should return true if current spot top position is more than high barrier top position and less than low barrier top position in pixels', () => {
+        const contract_info: TGetDisplayStatus = {
+            contract_type: 'ACCU',
+            current_spot: 590,
+            high_barrier: 580,
+            low_barrier: 600,
+            status: 'open',
+        };
+        expect(ContractUtils.isAccumulatorContractOpen(contract_info, true)).toEqual(true);
+    });
+    it('should return false if current spot top position is less than high barrier top position in pixels', () => {
+        const contract_info: TGetDisplayStatus = {
+            contract_type: 'ACCU',
+            current_spot: 565,
+            high_barrier: 580,
+            low_barrier: 600,
+            status: 'open',
+        };
+        expect(ContractUtils.isAccumulatorContractOpen(contract_info, true)).toEqual(false);
+    });
+    it('should return false if current spot top position is more than low barrier top position in pixels', () => {
+        const contract_info: TGetDisplayStatus = {
+            contract_type: 'ACCU',
+            current_spot: 620,
+            high_barrier: 580,
+            low_barrier: 600,
+            status: 'open',
+        };
+        expect(ContractUtils.isAccumulatorContractOpen(contract_info, true)).toEqual(false);
+    });
+});

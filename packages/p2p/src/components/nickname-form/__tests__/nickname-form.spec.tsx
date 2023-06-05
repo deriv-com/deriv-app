@@ -50,15 +50,7 @@ describe('<NicknameForm/>', () => {
                             return !v(values[key]);
                         });
 
-                        if (error_index !== -1) {
-                            switch (key) {
-                                case 'nickname':
-                                default: {
-                                    errors[key] = nickname_messages[error_index];
-                                    break;
-                                }
-                            }
-                        }
+                        if (error_index !== -1) errors[key] = nickname_messages[error_index];
                     });
 
                     return errors;

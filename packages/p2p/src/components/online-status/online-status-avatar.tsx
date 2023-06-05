@@ -1,15 +1,20 @@
 import React from 'react';
-import { Text } from '@deriv/components';
-import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
+import { Text } from '@deriv/components';
 import { generateHexColourFromNickname, getShortNickname } from 'Utils/string';
 import OnlineStatusIcon from './online-status-icon';
-import './online-status-avatar.scss';
 
-const OnlineStatusAvatar = ({ is_online, nickname, size, text_size }) => {
+type TOnlineStatusAvatarProps = {
+    is_online: number | boolean;
+    nickname: string;
+    size: number;
+    text_size: string;
+};
+
+const OnlineStatusAvatar = ({ is_online, nickname, size, text_size }: TOnlineStatusAvatarProps) => {
     return (
-        <div className='online-status-avatar'>
-            <Text className='online-status-avatar__text' color='colored-background' size={text_size}>
+        <div className='online-status__avatar'>
+            <Text className='online-status__avatar__text' color='colored-background' size={text_size}>
                 {getShortNickname(nickname)}
             </Text>
 
@@ -30,13 +35,6 @@ const OnlineStatusAvatar = ({ is_online, nickname, size, text_size }) => {
             </svg>
         </div>
     );
-};
-
-OnlineStatusAvatar.propTypes = {
-    is_online: PropTypes.oneOfType([PropTypes.number, PropTypes.bool]).isRequired,
-    nickname: PropTypes.string.isRequired,
-    size: PropTypes.number,
-    text_size: PropTypes.string.isRequired,
 };
 
 export default observer(OnlineStatusAvatar);

@@ -316,7 +316,12 @@ const IdvFailed = ({
                     })}
                 >
                     <FormBody className='form-body'>
-                        <Text size='s' weight='bold' className='proof-of-identity__failed-warning' align='center'>
+                        <Text
+                            size={isMobile() ? 'xs' : 's'}
+                            weight='bold'
+                            className='proof-of-identity__failed-warning'
+                            align='center'
+                        >
                             <Localize i18n_default_text='Your identity verification failed because:' />
                         </Text>
                         <HintBox
@@ -324,7 +329,7 @@ const IdvFailed = ({
                             icon_height={16}
                             icon_width={16}
                             message={
-                                <Text as='p' size='xs' data-testid={mismatch_status}>
+                                <Text as='p' size={isMobile() ? 'xxs' : 'xs'} data-testid={mismatch_status}>
                                     {idv_failure?.failure_message}
                                 </Text>
                             }

@@ -1,8 +1,9 @@
 import React from 'react';
-import { Autocomplete, Button, DesktopWrapper, HintBox, MobileWrapper, Text, SelectNative } from '@deriv/components';
-import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
-import { localize } from '@deriv/translations';
 import classNames from 'classnames';
+import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
+import { Autocomplete, Button, DesktopWrapper, HintBox, MobileWrapper, Text, SelectNative } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import FormFooter from 'Components/form-footer';
 
 type TCountry = Record<string, string>;
@@ -10,7 +11,7 @@ type TCountry = Record<string, string>;
 type TCountrySelector = {
     handleSelectionNext: () => void;
     is_from_external: boolean;
-    is_verification_failed: boolean;
+    failed_message?: string;
     residence_list: TCountry[];
     selected_country: string;
     setSelectedCountry: (value: TCountry) => void;
@@ -19,7 +20,7 @@ type TCountrySelector = {
 const CountrySelector = ({
     handleSelectionNext,
     is_from_external,
-    is_verification_failed,
+    failed_message,
     residence_list,
     selected_country,
     setSelectedCountry,
@@ -80,9 +81,9 @@ const CountrySelector = ({
                             'min-height': !is_from_external,
                         })}
                     >
-                        {is_verification_failed ? (
+                        {failed_message ? (
                             <React.Fragment>
-                                <Text className='' align='center' weight='bold'>
+                                <Text className='' align='center' weight='bold' size={isMobile() ? 'xs' : 's'}>
                                     {localize('Your identity verification failed because:')}
                                 </Text>
                                 <HintBox
@@ -90,12 +91,11 @@ const CountrySelector = ({
                                     icon_height={16}
                                     icon_width={16}
                                     message={
-                                        <Text as='p' size='xs'>
-                                            {localize('Your identity document has expired.')}
+                                        <Text as='p' size={isMobile() ? 'xxs' : 'xs'}>
+                                            {failed_message}
                                         </Text>
                                     }
                                     is_danger
-                                    className='proof-of-identity__verification-failed-warning'
                                 />
                             </React.Fragment>
                         ) : (

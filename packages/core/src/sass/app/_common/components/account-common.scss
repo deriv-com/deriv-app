@@ -482,6 +482,28 @@
 
     &__main-container {
         max-width: 68.2rem;
+
+        .dc-hint-box {
+            border-radius: 0.8rem;
+            margin: 1.6rem auto 3.2rem;
+
+            @include desktop {
+                width: fit-content;
+            }
+            @include mobile {
+                width: 100%;
+                display: grid;
+                grid-template-columns: auto 1fr;
+                margin-bottom: 1.6rem;
+            }
+
+            &__icon {
+                @include mobile {
+                    margin-top: 0.2rem;
+                    align-self: baseline;
+                }
+            }
+        }
     }
 
     .min-height {
@@ -502,6 +524,7 @@
             min-height: unset;
             overflow-y: scroll;
             justify-content: center;
+            padding-inline: 1.6rem;
         }
 
         &--reset {
@@ -713,28 +736,6 @@
             padding-top: 0;
         }
 
-        .dc-hint-box {
-            border-radius: 0.8rem;
-            margin: 1.6rem auto 3.2rem;
-
-            @include desktop {
-                width: fit-content;
-            }
-            @include mobile {
-                width: 100%;
-                display: grid;
-                grid-template-columns: auto 1fr;
-                margin-bottom: 1.6rem;
-            }
-
-            &__icon {
-                @include mobile {
-                    margin-top: 0.2rem;
-                    align-self: baseline;
-                }
-            }
-        }
-
         .account-form {
             &__poi-confirm-example {
                 border: 1px solid var(--general-active);
@@ -757,10 +758,5 @@
                 padding: 0 2.4rem;
             }
         }
-    }
-
-    &__verification-failed-warning {
-        margin: 1.6rem auto 3.2rem;
-        border-radius: 0.8rem;
     }
 }

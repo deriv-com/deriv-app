@@ -1,4 +1,3 @@
-// TODO: Move to components package once we can install libraries there
 import React from 'react';
 import { Rating } from 'react-simple-star-rating';
 import { Icon } from '@deriv/components';
@@ -44,22 +43,6 @@ const StarRating = ({
     // to show full and half stars only
     const fractionalized_value = Math.round(initial_value * 2) / 2;
 
-    const EmptyIcon = () => {
-        if (!!empty_star_icon && typeof empty_star_icon === 'string') {
-            return <Icon icon={empty_star_icon} size={star_size} />;
-        }
-
-        return <></>;
-    };
-
-    const FullIcon = () => {
-        if (!!full_star_icon && typeof full_star_icon === 'string') {
-            return <Icon icon={full_star_icon} size={star_size} />;
-        }
-
-        return <></>;
-    };
-
     return (
         <Rating
             allowHalfIcon={should_allow_half_icon}
@@ -67,10 +50,10 @@ const StarRating = ({
             className={className}
             emptyColor={empty_star_color}
             emptyClassName={empty_star_className}
-            emptyIcon={<EmptyIcon />}
+            emptyIcon={empty_star_icon ? <Icon icon={empty_star_icon} size={star_size} /> : <></>}
             fillColor={full_star_color}
             fullClassName={full_star_className}
-            fullIcon={<FullIcon />}
+            fullIcon={full_star_icon ? <Icon icon={full_star_icon} size={star_size} /> : <></>}
             iconsCount={number_of_stars}
             initialValue={fractionalized_value}
             onClick={onClick}

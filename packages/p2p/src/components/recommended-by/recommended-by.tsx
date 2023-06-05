@@ -53,7 +53,7 @@ const RecommendedBy = ({ recommended_average, recommended_count }: TRecommendedB
                     size={14}
                 />
                 <Text color='less-prominent' line_height='s' size={isMobile() ? 'xxxs' : 'xs'}>
-                    {`${recommended_average || 0}%`}
+                    {`${recommended_average ?? 0}%`}
                 </Text>
             </Popover>
         </React.Fragment>

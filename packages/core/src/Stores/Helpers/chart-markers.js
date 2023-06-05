@@ -74,6 +74,10 @@ const createTickMarkers = contract_info => {
     const result = [];
 
     if (is_contract_closed && is_accumulator) {
+        if (contract_info.exit_tick_time && tick_stream.every(({ epoch }) => epoch !== contract_info.exit_tick_time)) {
+            // TODO: remove this condition when BE solves an issue with exit_tick present in tick_stream but missing from audit_details
+            tick_stream.push(contract_info.tick_stream[contract_info.tick_stream.length - 1]);
+        }
         const length = tick_stream.findIndex(tick => tick.epoch === contract_info.exit_tick_time) + 1;
         tick_stream.length = length > 0 ? length : tick_stream.length;
     }

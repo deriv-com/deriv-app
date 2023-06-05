@@ -314,8 +314,9 @@ const TickContract = RawMarkerMaker(
                 (!contract_type && start))
         ) {
             // draw 2 barriers with a shade between them for an ongoing ACCU contract:
-            const contract_details_start_left = status === 'open' ? exit?.left : previous_tick?.left;
-            const small_preceeding_tick = ticks.length > 2 && status === 'open' && ticks[ticks.length - 2];
+            const crossed = exit?.top <= barrier || exit?.top >= barrier_2;
+            const contract_details_start_left = status === 'open' && !crossed ? exit?.left : previous_tick?.left;
+            const small_preceeding_tick = ticks.length > 2 && status === 'open' && !crossed && ticks[ticks.length - 2];
             draw_shaded_barriers({
                 ctx,
                 start_left: is_in_contract_details ? contract_details_start_left : start.left,

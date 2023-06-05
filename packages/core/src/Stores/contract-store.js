@@ -162,24 +162,25 @@ export default class ContractStore extends BaseStore {
 
     updateBarriersArray(contract_info, is_dark_mode) {
         const {
+            barrier,
             contract_type,
             current_spot,
             current_spot_high_barrier,
             current_spot_low_barrier,
-            barrier,
             high_barrier,
             low_barrier,
             status,
         } = contract_info || {};
+        const crossed = current_spot >= high_barrier || current_spot <= low_barrier;
         const main_barrier = this.barriers_array?.[0];
         if (isAccumulatorContract(contract_info.contract_type)) {
             // even though updateBarriersArray is called both in DTrader & C.Details pages,
             // the below code will delay Accumulator barriers and their labels only in Contract Details.
             if (
-                (this.cached_barriers_data.current_spot_high_barrier === current_spot_high_barrier ||
-                    this.cached_barriers_data.current_spot_low_barrier === current_spot_low_barrier ||
-                    this.cached_barriers_data.high_barrier === high_barrier ||
-                    this.cached_barriers_data.low_barrier === low_barrier) &&
+                this.cached_barriers_data.current_spot_high_barrier === current_spot_high_barrier &&
+                this.cached_barriers_data.current_spot_low_barrier === current_spot_low_barrier &&
+                this.cached_barriers_data.high_barrier === high_barrier &&
+                this.cached_barriers_data.low_barrier === low_barrier &&
                 this.cached_barriers_data.status === status
             ) {
                 return;
@@ -187,8 +188,9 @@ export default class ContractStore extends BaseStore {
             setTimeout(
                 () =>
                     runInAction(() => {
-                        const accu_high_barrier = status === 'open' ? current_spot_high_barrier : high_barrier;
-                        const accu_low_barrier = status === 'open' ? current_spot_low_barrier : low_barrier;
+                        const accu_high_barrier =
+                            status === 'open' && !crossed ? current_spot_high_barrier : high_barrier;
+                        const accu_low_barrier = status === 'open' && !crossed ? current_spot_low_barrier : low_barrier;
                         if (!this.barriers_array.length) {
                             const accu_contract_info = {
                                 ...contract_info,
@@ -320,6 +322,7 @@ function calculate_marker(contract_info) {
         tick_count,
         barrier_count,
         barrier,
+        current_spot,
         current_spot_high_barrier,
         current_spot_low_barrier,
         high_barrier,
@@ -328,6 +331,7 @@ function calculate_marker(contract_info) {
     } = contract_info;
     const is_accumulator_contract = isAccumulatorContract(contract_type);
     const is_digit_contract = isDigitContract(contract_type);
+    const crossed = current_spot >= high_barrier || current_spot <= low_barrier;
     const ticks_epochs =
         (is_accumulator_contract && tick_stream?.length === 10
             ? [entry_tick_time, ...tick_stream.map(t => t.epoch).slice(1)]
@@ -341,9 +345,14 @@ function calculate_marker(contract_info) {
         price_array = [];
     } else if (+barrier_count === 1 && barrier) {
         price_array = [+barrier];
-    } else if (+barrier_count === 2 && high_barrier && low_barrier && (!is_accumulator_contract || status !== 'open')) {
+    } else if (
+        +barrier_count === 2 &&
+        high_barrier &&
+        low_barrier &&
+        (!is_accumulator_contract || status !== 'open' || crossed)
+    ) {
         price_array = [+high_barrier, +low_barrier];
-    } else if (is_accumulator_contract && current_spot_high_barrier && status === 'open') {
+    } else if (is_accumulator_contract && current_spot_high_barrier && status === 'open' && !crossed) {
         price_array = [+current_spot_high_barrier, +current_spot_low_barrier];
     }
 

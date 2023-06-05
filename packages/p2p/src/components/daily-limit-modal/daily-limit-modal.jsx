@@ -1,14 +1,16 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Button, Loading, Modal, Text } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
 import { Localize, localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import { observer, useStore } from '@deriv/stores';
 
 const DailyLimitModal = () => {
     const { my_profile_store, general_store } = useStores();
     const { daily_buy_limit, daily_sell_limit } = general_store.advertiser_info;
-    const { currency } = general_store.client;
+    const {
+        client: { currency },
+    } = useStore();
 
     const getModalHeaderTitle = () => {
         if (my_profile_store.is_loading_modal_open) {

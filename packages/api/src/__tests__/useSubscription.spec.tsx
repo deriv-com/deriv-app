@@ -1,14 +1,14 @@
-import { renderHook, act } from '@testing-library/react-hooks';
-import { useWS as useWSShared } from '@deriv/shared';
+import { useWS } from '@deriv/shared';
+import { act, renderHook } from '@testing-library/react-hooks';
 import useSubscription from '../useSubscription';
 
 jest.mock('@deriv/shared');
 
-const mockUseWSShared = useWSShared as jest.MockedFunction<typeof useWSShared>;
+const mockUseWS = useWS as jest.MockedFunction<typeof useWS>;
 
 describe('useSubscription', () => {
     test('should subscribe to p2p_order_info and get the order updates', async () => {
-        mockUseWSShared.mockReturnValue({
+        mockUseWS.mockReturnValue({
             subscribe: jest.fn(() => {
                 return {
                     subscribe: async (onData: (response: unknown) => void, onError: (response: unknown) => void) => {
@@ -33,21 +33,21 @@ describe('useSubscription', () => {
 
         expect(result.current.is_loading).toBe(false);
         expect(result.current.error).toBe(undefined);
-        expect(result.current.data).toBe(undefined);
+        expect(result.current.data?.p2p_order_info).toBe(undefined);
 
         act(() => {
-            result.current.subscribe({ id: '2' });
+            result.current.subscribe({ payload: { id: '2' } });
         });
 
         await waitForNextUpdate();
-        expect(result.current.data).toStrictEqual({ status: 'pending' });
+        expect(result.current.data?.p2p_order_info).toStrictEqual({ status: 'pending' });
         await waitForNextUpdate();
-        expect(result.current.data).toStrictEqual({ status: 'buyer-confirmed' });
+        expect(result.current.data?.p2p_order_info).toStrictEqual({ status: 'buyer-confirmed' });
         await waitForNextUpdate();
-        expect(result.current.data).toStrictEqual({ status: 'disputed' });
+        expect(result.current.data?.p2p_order_info).toStrictEqual({ status: 'disputed' });
         await waitForNextUpdate();
         expect(result.current.error).toStrictEqual({ code: 'Foo', message: 'Error message' });
         await waitForNextUpdate();
-        expect(result.current.data).toStrictEqual({ status: 'completed' });
+        expect(result.current.data?.p2p_order_info).toStrictEqual({ status: 'completed' });
     });
 });

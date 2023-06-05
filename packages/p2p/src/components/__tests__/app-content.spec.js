@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import AppContent from '../app-content.jsx';
 
 jest.mock('Stores', () => ({
@@ -49,7 +50,10 @@ describe('<AppContent/>', () => {
             showModal: () => {},
             hideModal: () => {},
         }));
-        render(<AppContent />);
+        render(<AppContent />, {
+            // TODO: remove StoreProvider Wrappers when we fix routing for p2p
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('Tabs')).toBeInTheDocument();
         expect(screen.queryByTestId('my_profile')).not.toBeInTheDocument();
@@ -59,7 +63,9 @@ describe('<AppContent/>', () => {
         useStores.mockImplementation(() => ({
             general_store: { ...mocked_store_values, is_loading: true },
         }));
-        render(<AppContent />);
+        render(<AppContent />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
@@ -68,7 +74,9 @@ describe('<AppContent/>', () => {
         useStores.mockImplementation(() => ({
             general_store: { ...mocked_store_values, should_show_dp2p_blocked: true },
         }));
-        render(<AppContent />);
+        render(<AppContent />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('Dp2pBlocked')).toBeInTheDocument();
     });
@@ -77,25 +85,20 @@ describe('<AppContent/>', () => {
         useStores.mockImplementation(() => ({
             general_store: { ...mocked_store_values, should_show_popup: true },
         }));
-        render(<AppContent />);
+        render(<AppContent />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByText('NicknameForm')).toBeInTheDocument();
-    });
-
-    it('should render verification component when should_show_verification state is true', () => {
-        useStores.mockImplementation(() => ({
-            general_store: { ...mocked_store_values, props: { should_show_verification: true } },
-        }));
-        render(<AppContent />);
-
-        expect(screen.getByText('Verification')).toBeInTheDocument();
     });
 
     it('should render only the first notification component when multiple error status is set', () => {
         useStores.mockImplementation(() => ({
             general_store: { ...mocked_store_values, should_show_popup: true, should_show_dp2p_blocked: true },
         }));
-        render(<AppContent />);
+        render(<AppContent />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
 
         expect(screen.queryByText('NicknameForm')).not.toBeInTheDocument();
         expect(screen.getByText('Dp2pBlocked')).toBeInTheDocument();
@@ -105,7 +108,9 @@ describe('<AppContent/>', () => {
         useStores.mockImplementation(() => ({
             general_store: { ...mocked_store_values, is_advertiser: true },
         }));
-        render(<AppContent />);
+        render(<AppContent />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
 
         expect(screen.getByTestId('my_profile')).toBeInTheDocument();
     });

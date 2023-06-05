@@ -11,7 +11,7 @@ export const CashierStoreProvider = ({ children }: PropsWithChildren<unknown>) =
     return (
         <CashierStoreContext.Provider
             // value={memoizedValue}
-            value={modules?.cashier || {}}
+            value={modules?.cashier}
         >
             {children}
         </CashierStoreContext.Provider>

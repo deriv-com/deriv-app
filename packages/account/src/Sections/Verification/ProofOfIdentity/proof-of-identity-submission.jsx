@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import { formatIDVError, WS, idv_error_statuses } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import CountrySelector from 'Components/poi/poi-country-selector';
 import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
 import IdvFailed from 'Components/poi/idv-status/idv-failed';
@@ -125,18 +124,11 @@ const POISubmission = ({
 
     switch (submission_status) {
         case submission_status_code.selecting: {
-            let failed_message = '';
-            if (mismatch_status === idv_error_statuses.poi_expired) {
-                failed_message = localize('Your identity document has expired.');
-            }
-            if (mismatch_status === idv_error_statuses.poi_failed) {
-                failed_message = localize('We were unable to verify the identity document with the details provided.');
-            }
             return (
                 <CountrySelector
                     handleSelectionNext={handleSelectionNext}
                     is_from_external={is_from_external}
-                    failed_message={failed_message}
+                    mismatch_status={mismatch_status}
                     residence_list={residence_list}
                     selected_country={selected_country}
                     setSelectedCountry={setSelectedCountry}

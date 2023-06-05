@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, FormikErrors, FormikValues, FormikHelpers } from 'formik';
 import { Autocomplete, Button, DesktopWrapper, HintBox, MobileWrapper, Text, SelectNative } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { idv_error_statuses, isMobile, TIDVErrorStatus } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import FormFooter from 'Components/form-footer';
 
@@ -11,7 +11,7 @@ type TCountry = Record<string, string>;
 type TCountrySelector = {
     handleSelectionNext: () => void;
     is_from_external: boolean;
-    failed_message?: string;
+    mismatch_status?: TIDVErrorStatus;
     residence_list: TCountry[];
     selected_country: string;
     setSelectedCountry: (value: TCountry) => void;
@@ -20,7 +20,7 @@ type TCountrySelector = {
 const CountrySelector = ({
     handleSelectionNext,
     is_from_external,
-    failed_message,
+    mismatch_status,
     residence_list,
     selected_country,
     setSelectedCountry,
@@ -60,6 +60,14 @@ const CountrySelector = ({
     React.useEffect(() => {
         setCountryList(residence_list);
     }, [residence_list]);
+
+    let failed_message = '';
+    if (mismatch_status === idv_error_statuses.poi_expired) {
+        failed_message = localize('Your identity document has expired.');
+    }
+    if (mismatch_status === idv_error_statuses.poi_failed) {
+        failed_message = localize('We were unable to verify the identity document with the details provided.');
+    }
 
     return (
         <Formik initialValues={initial_form_values} validate={validateFields} onSubmit={submitHandler}>

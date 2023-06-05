@@ -1,7 +1,7 @@
 import React from 'react';
 import Wallet from 'Components/containers/wallet';
 import { observer, useStore } from '@deriv/stores';
-import WalletCardsCarousel from 'Components/wallet-cards-carousel';
+import { WalletCardsCarousel, WalletCardsCarouselOwn } from 'Components/wallet-cards-carousel/wallet-cards-carousel';
 // import fake_wallets from '../../constants/wallet-mocked-response';
 // import { WalletCard } from '@deriv/components';
 import { fake_wallet_accounts, sortWalletAccounts } from '@deriv/shared';
@@ -26,7 +26,10 @@ const AccountWithWallets = observer(({ show_test_wallets = false }: TProps) => {
     return (
         <React.Fragment>
             {is_mobile ? (
-                <WalletCardsCarousel items={wallets_to_show} />
+                <>
+                    <WalletCardsCarouselOwn items={wallets_to_show} />
+                    <WalletCardsCarousel items={wallets_to_show} />
+                </>
             ) : (
                 wallets_to_show.map((account, index) => (
                     <Wallet

@@ -1,12 +1,12 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
-import { Button, Icon, Modal, RadioGroup, Input, MobileFullPageModal, ThemedScrollbars, Text } from '@deriv/components';
-import { Formik, Form, Field } from 'formik';
-import { localize } from '@deriv/translations';
+import classNames from 'classnames';
+import { Field, Form, Formik } from 'formik';
+import PropTypes from 'prop-types';
 import { config, save_types } from '@deriv/bot-skeleton';
-import { connect } from 'Stores/connect';
+import { Button, Icon, Input, MobileFullPageModal, Modal, RadioGroup, Text, ThemedScrollbars } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 
 const SaveModalForm = ({
     bot_name,

@@ -4,24 +4,26 @@ import { PageContainer } from '../../components/page-container';
 import { useCashierStore } from '../../stores/useCashierStores';
 import {
     DepositCryptoCurrencyDetails,
-    DepositCryptoResentTransactionSideNote,
+    DepositCryptoSideNotes,
     DepositCryptoTryFiatOnRamp,
     DepositCryptoWalletAddress,
 } from './components';
 import './deposit-crypto.scss';
 
 const DepositCrypto: React.FC = observer(() => {
-    const { general_store, transaction_history } = useCashierStore();
+    const { general_store } = useCashierStore();
     const { setIsDeposit } = general_store;
-    const { onMount: recentTransactionOnMount } = transaction_history;
 
     useEffect(() => {
         setIsDeposit(true);
-        recentTransactionOnMount();
-    }, [setIsDeposit, recentTransactionOnMount]);
+
+        return () => {
+            setIsDeposit(false);
+        };
+    }, [setIsDeposit]);
 
     return (
-        <PageContainer right={<DepositCryptoResentTransactionSideNote />}>
+        <PageContainer right={<DepositCryptoSideNotes />}>
             <DepositCryptoCurrencyDetails />
             <DepositCryptoWalletAddress />
             <div className='deposit-crypto__divider' />

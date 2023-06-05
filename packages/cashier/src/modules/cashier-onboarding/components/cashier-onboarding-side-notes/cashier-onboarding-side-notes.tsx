@@ -1,18 +1,20 @@
 import React from 'react';
+import { useCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
+import { SideNotePaymentMethodsLearnMore } from '../../../../components/side-notes';
 import CashierOnboardingSideNoteCrypto from './cashier-onboarding-side-note-crypto';
 import CashierOnboardingSideNoteFiat from './cashier-onboarding-side-note-fiat';
-import CashierOnboardingSideNotePaymentMethods from './cashier-onboarding-side-note-payment-methods';
 
 const CashierOnboardingSideNotes: React.FC = observer(() => {
     const { client } = useStore();
-    const { is_crypto } = client;
+    const { currency } = client;
+    const { data } = useCurrencyConfig(currency);
 
     return (
         <>
-            {is_crypto() && <CashierOnboardingSideNoteCrypto />}
-            {!is_crypto() && <CashierOnboardingSideNoteFiat />}
-            <CashierOnboardingSideNotePaymentMethods />
+            {data?.is_crypto && <CashierOnboardingSideNoteCrypto />}
+            {data?.is_fiat && <CashierOnboardingSideNoteFiat />}
+            <SideNotePaymentMethodsLearnMore />
         </>
     );
 });

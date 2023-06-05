@@ -1,7 +1,7 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
-import DepositCryptoRecentTransactionSideNote from '../deposit-crypto-recent-transaction-side-note';
+import DepositCryptoRecentTransactionSideNote from '../deposit-crypto-side-notes';
 
 describe('DepositCryptoRecentTransactionSideNote', () => {
     test('should show correct message for BTC', () => {

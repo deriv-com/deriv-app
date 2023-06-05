@@ -5,7 +5,7 @@ import CashierProviders from '../../../../../cashier-providers';
 import CashierOnboardingOnrampCard from '../cashier-onboarding-onramp-card';
 
 describe('CashierOnboardingOnrampCard', () => {
-    test('should call the onClick callback when clicked', async () => {
+    test('should call the onClick callback when clicked', () => {
         const mock = mockStore({
             client: {
                 is_crypto: () => false,

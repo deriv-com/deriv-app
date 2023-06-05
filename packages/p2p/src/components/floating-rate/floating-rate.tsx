@@ -1,49 +1,63 @@
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
+import { setDecimalPlaces, removeTrailingZeros, percentOf, roundOffDecimal } from 'Utils/format-value';
 import { InputField, Text } from '@deriv/components';
 import { formatMoney, isMobile, mobileOSDetect } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import { setDecimalPlaces, removeTrailingZeros, percentOf, roundOffDecimal } from 'Utils/format-value';
-import './floating-rate.scss';
+import { localize } from 'Components/i18next';
+
+type TFloatingRate = {
+    change_handler?: () => void;
+    className?: string;
+    data_testid: string;
+    error_messages: string;
+    fiat_currency: string;
+    local_currency: string;
+    name?: string;
+    offset: object;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    required?: boolean;
+    value?: string;
+};
 
 const FloatingRate = ({
     change_handler,
     className,
+    data_testid,
     error_messages,
     fiat_currency,
     local_currency,
-    onChange,
+    name,
     offset,
-    data_testid,
-    ...props
-}) => {
+    onChange,
+    required,
+    value,
+}: TFloatingRate) => {
     const {
         ui: { current_focus, setCurrentFocus },
     } = useStore();
 
     const { floating_rate_store } = useStores();
     const os = mobileOSDetect();
-    const { name, value, required } = props;
     const market_feed = value ? percentOf(floating_rate_store.market_rate, value) : floating_rate_store.market_rate;
     const decimal_place = setDecimalPlaces(market_feed, 6);
 
     // Input mask for formatting value on blur of floating rate field
-    const onBlurHandler = e => {
-        let float_rate = e.target.value;
-        if (!isNaN(float_rate) && float_rate.trim().length) {
+    const onBlurHandler = (event: React.FocusEvent<HTMLInputElement>) => {
+        let float_rate = event.target.value;
+        if (!isNaN(parseFloat(float_rate)) && float_rate.trim().length) {
             float_rate = parseFloat(float_rate).toFixed(2);
-            if (/^\d+/.test(float_rate) && float_rate > 0) {
+            if (/^\d+/.test(float_rate) && parseFloat(float_rate) > 0) {
                 // Assign + symbol for positive rate
-                e.target.value = `+${float_rate}`;
+                event.target.value = `+${float_rate}`;
             } else {
-                e.target.value = float_rate;
+                event.target.value = float_rate;
             }
         }
-        onChange(e);
+        onChange(event);
     };
+
     return (
         <div className={classNames(className, 'floating-rate')}>
             <section className={classNames('floating-rate__field', { 'mobile-layout': isMobile() })}>
@@ -59,39 +73,39 @@ const FloatingRate = ({
                     classNameDynamicSuffix='dc-input-suffix'
                     classNameWrapper={classNames({ 'dc-input-wrapper--error': error_messages })}
                     current_focus={current_focus}
+                    data_testid={data_testid}
                     decimal_point_change={2}
                     id='floating_rate_input'
+                    increment_button_type='button'
                     inline_prefix='%'
                     is_autocomplete_disabled
                     is_float
                     is_incrementable
                     is_signed
-                    increment_button_type='button'
                     name={name}
                     onBlur={onBlurHandler}
                     onChange={change_handler}
-                    setCurrentFocus={setCurrentFocus}
                     required={required}
+                    setCurrentFocus={setCurrentFocus}
                     type={isMobile() && os !== 'iOS' ? 'tel' : 'number'}
                     value={value}
-                    data_testid={data_testid}
                 />
                 <div className='floating-rate__mkt-rate'>
                     <Text
                         as='span'
-                        size='xxs'
+                        className='floating-rate__mkt-rate--label'
                         color='hint'
                         line_height='xxs'
-                        className='floating-rate__mkt-rate--label'
+                        size='xxs'
                     >
                         {localize('of the market rate')}
                     </Text>
                     <Text
                         as='span'
-                        size='xxs'
+                        className='floating-rate__mkt-rate--msg'
                         color='prominent'
                         line_height='xs'
-                        className='floating-rate__mkt-rate--msg'
+                        size='xxs'
                     >
                         1 {fiat_currency} ={' '}
                         {removeTrailingZeros(formatMoney(local_currency, floating_rate_store.market_rate, true, 6))}
@@ -99,11 +113,11 @@ const FloatingRate = ({
                 </div>
             </section>
             {error_messages ? (
-                <Text as='div' size='xxs' color='loss-danger' line_height='xs' className='floating-rate__error-message'>
+                <Text as='div' className='floating-rate__error-message' color='loss-danger' line_height='xs' size='xxs'>
                     {error_messages}
                 </Text>
             ) : (
-                <Text as='div' size='xxs' color='status-info-blue' line_height='xs' className='floating-rate__hint'>
+                <Text as='div' className='floating-rate__hint' color='status-info-blue' line_height='xs' size='xxs'>
                     {localize('Your rate is')} ={' '}
                     {removeTrailingZeros(
                         formatMoney(local_currency, roundOffDecimal(market_feed, decimal_place), true, decimal_place)
@@ -113,20 +127,6 @@ const FloatingRate = ({
             )}
         </div>
     );
-};
-
-FloatingRate.propTypes = {
-    change_handler: PropTypes.func,
-    className: PropTypes.string,
-    data_testid: PropTypes.string,
-    error_messages: PropTypes.string,
-    fiat_currency: PropTypes.string,
-    local_currency: PropTypes.string,
-    name: PropTypes.string,
-    onChange: PropTypes.func,
-    offset: PropTypes.object,
-    required: PropTypes.bool,
-    value: PropTypes.string,
 };
 
 export default observer(FloatingRate);

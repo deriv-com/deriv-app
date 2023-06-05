@@ -94,7 +94,6 @@ const createTickMarkers = contract_info => {
         const has_accumulator_bold_marker = is_accumulator && is_exit_spot;
         const has_accumulator_special_marker =
             is_accumulator && (is_exit_spot || is_preexit_spot || is_current_last_spot);
-        // const spot_accumulator_className = () => (is_exit_spot ? '-bold' : is_preexit_spot ? '-blue' : '-red');
         const spot_accumulator_className = () => {
             if (is_exit_spot) {
                 return '-bold';
@@ -116,7 +115,6 @@ const createTickMarkers = contract_info => {
         if (has_accumulator_bold_marker || (is_accumulator && is_middle_spot)) {
             const spot_className = marker_config.content_config.spot_className;
             marker_config.content_config.spot_className = `${spot_className} ${spot_className}--accumulator${
-                // has_accumulator_bold_marker ? '-bold' : '-small'
                 has_accumulator_special_marker ? spot_accumulator_className() : '-small'
             }`;
         }

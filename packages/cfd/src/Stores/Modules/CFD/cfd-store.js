@@ -310,7 +310,7 @@ export default class CFDStore extends BaseStore {
 
     beginRealSignupForMt5() {
         sessionStorage.setItem('post_real_account_signup', JSON.stringify(this.account_type));
-        this.root_store.ui.openRealAccountSignup();
+        this.root_store.ui.openRealAccountSignup('svg');
     }
 
     realCFDSignup(set_password) {

@@ -10,6 +10,7 @@ type TOnlineStatusIconProps = {
 const OnlineStatusIcon = ({ is_online, size = '1em' }: TOnlineStatusIconProps) => {
     return (
         <div
+            data-testid='dt_online_status_icon'
             className={classNames('online-status__icon', {
                 'online-status__icon--offline': !is_online,
                 'online-status__icon--online': !!is_online,

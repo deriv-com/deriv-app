@@ -9,7 +9,7 @@ const props = {
     text_size: 'xs',
 };
 describe('<OnlineStatusAvatar/>', () => {
-    it('should render the component with passed title and children', () => {
+    it('should render shortened nickname as the avatar', () => {
         render(<OnlineStatusAvatar {...props} />);
 
         expect(screen.getByText('TE')).toBeInTheDocument();

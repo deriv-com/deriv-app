@@ -311,6 +311,7 @@ const Chart = props => {
                     key={props.marker.key}
                     is_dark_theme={props.is_dark_theme}
                     granularity={props.granularity}
+                    is_mobile={props.is_mobile}
                     is_in_contract_details
                     previous_spot={props.accumulator_previous_spot}
                     {...props.marker}

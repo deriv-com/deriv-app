@@ -191,32 +191,25 @@ const draw_shaded_barriers = ({
 
     ctx.fillStyle = fill_color;
     ctx.fillRect(start_left, displayed_top, end_left - start_left, Math.abs(displayed_bottom - displayed_top));
-    const {
-        fill_color: prev_tick_fill_color,
-        is_circle,
-        radius,
-        small_preceeding_tick,
-        stroke_color: prev_tick_stroke_color,
-    } = previous_tick || {};
-    if (middle_top < end_top && is_circle) {
+    const { radius, preceeding_tick, stroke_color: prev_tick_stroke_color } = previous_tick || {};
+    if (middle_top < end_top && radius) {
         // draw previous tick as a bold white circle in Contract Details + small preceeding tick before it
         // should be drawn last here so that it is not overlapped by the barrier fill
-        ctx.strokeStyle = prev_tick_stroke_color;
         ctx.setLineDash([]);
-        if (small_preceeding_tick) {
-            ctx.fillStyle = prev_tick_stroke_color;
+        if (preceeding_tick) {
+            ctx.strokeStyle = preceeding_tick.color;
+            ctx.fillStyle = preceeding_tick.color;
             ctx.beginPath();
-            ctx.arc(small_preceeding_tick.left - 1, small_preceeding_tick.top, 2.5, 0, Math.PI * 2);
+            ctx.arc(preceeding_tick.left - 1, preceeding_tick.top, radius, 0, Math.PI * 2);
             ctx.fill();
             ctx.stroke();
         }
-        ctx.lineWidth = 3;
-        ctx.fillStyle = prev_tick_fill_color;
+        ctx.strokeStyle = prev_tick_stroke_color;
+        ctx.fillStyle = prev_tick_stroke_color;
         ctx.beginPath();
         ctx.arc(start_left - 1, middle_top, radius, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
-        ctx.restore();
     }
 };
 
@@ -254,6 +247,7 @@ const TickContract = RawMarkerMaker(
         is_last_contract,
         is_dark_theme,
         is_in_contract_details,
+        is_mobile,
         granularity,
         contract_info: {
             contract_type,
@@ -316,7 +310,7 @@ const TickContract = RawMarkerMaker(
             // draw 2 barriers with a shade between them for an ongoing ACCU contract:
             const crossed = exit?.top <= barrier || exit?.top >= barrier_2;
             const contract_details_start_left = status === 'open' && !crossed ? exit?.left : previous_tick?.left;
-            const small_preceeding_tick = ticks.length > 2 && status === 'open' && !crossed && ticks[ticks.length - 2];
+            const preceeding_tick = ticks.length > 2 && status === 'open' && !crossed && ticks[ticks.length - 2];
             draw_shaded_barriers({
                 ctx,
                 start_left: is_in_contract_details ? contract_details_start_left : start.left,
@@ -324,11 +318,9 @@ const TickContract = RawMarkerMaker(
                 // we should show barrier lines in contract details even when they are outside of the chart:
                 has_persistent_borders: is_in_contract_details,
                 previous_tick: is_in_contract_details && {
-                    fill_color: getColor({ status: 'bg', is_dark_theme }),
-                    is_circle: true,
-                    radius: 10.5,
-                    stroke_color: getColor({ status: 'grey_border', is_dark_theme }),
-                    small_preceeding_tick,
+                    radius: is_mobile ? 1.5 : 2.5,
+                    stroke_color: getColor({ status: 'open', is_dark_theme }),
+                    preceeding_tick: { ...preceeding_tick, color: getColor({ status: 'grey_border', is_dark_theme }) },
                 },
                 stroke_color: getColor({ status: 'grey_border', is_dark_theme }),
                 top: barrier,

@@ -74,15 +74,15 @@
             &-bold {
                 width: 2rem;
                 height: 2rem;
-                margin-left: -1rem;
+                margin-left: -0.95rem;
                 border-width: 0.2rem;
-                background-color: rgba(255, 255, 255, 0.7);
+                background-color: var(--general-main-4);
                 &:after {
                     content: '';
                     width: 0.6rem;
                     height: 0.6rem;
                     border-radius: 50%;
-                    background-color: var(--brand-secondary);
+                    background-color: var(--border-active);
                     @include mobile {
                         width: 0.4rem;
                         height: 0.4rem;
@@ -107,9 +107,6 @@
         background-color: var(--text-prominent);
         border: 2px solid var(--text-prominent);
     }
-}
-.smartcharts-dark .chart-spot__spot--accumulator-bold {
-    background-color: rgba(14, 14, 14, 0.4);
 }
 
 /** @define chart-spot-label */

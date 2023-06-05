@@ -1,5 +1,5 @@
+import Cookies from 'js-cookie';
 import * as SocketCache from '_common/base/socket_cache';
-
 import {
     CFD_PLATFORMS,
     LocalStore,
@@ -32,7 +32,6 @@ import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_co
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
 import BinarySocketGeneral from 'Services/socket-general';
-import Cookies from 'js-cookie';
 import { buildCurrenciesList } from './Modules/Trading/Helpers/currency';
 import moment from 'moment';
 import { setDeviceDataCookie } from './Helpers/device';
@@ -1570,9 +1569,8 @@ export default class ClientStore extends BaseStore {
 
         const authorize_response = await this.setUserLogin(login_new_user);
         const getLanguageFromDerivCom = () => {
-            const lang_from_deriv_com = Cookies.getJSON('language', { current_domain })?.toUpperCase();
-            const is_valid_language = lang_from_deriv_com && isLanguageAvailable(lang_from_deriv_com);
-            return is_valid_language ? lang_from_deriv_com : '';
+            const lang_from_deriv_com = Cookies.get('user_language')?.toUpperCase();
+            return isLanguageAvailable(lang_from_deriv_com) ? lang_from_deriv_com : undefined;
         };
 
         if (action_param === 'signup') {

@@ -263,6 +263,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_need_real_account_for_cashier_modal_visible: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
             setShouldShowCooldownModal: jest.fn(),
+            setIsTnCModalOpen: jest.fn(),
+            is_tnc_modal_open: false,
         },
         traders_hub: {
             closeModal: jest.fn(),

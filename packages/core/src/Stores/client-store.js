@@ -1652,6 +1652,15 @@ export default class ClientStore extends BaseStore {
                 stored_language || // if login from deriv app, language from local storage
                 getLanguageFromDerivCom() || // if login from deriv.com, language from cookie
                 authorize_response.authorize.preferred_language;
+            localStorage.setItem(
+                'lang_cookie',
+                JSON.stringify({
+                    cookie: Cookies.get('user_language'),
+                    language,
+                    stored_language,
+                    auth: authorize_response.authorize.preferred_language,
+                })
+            );
             if (language !== 'EN' && stored_language && language !== stored_language) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));
                 await this.root_store.common.changeSelectedLanguage(language);

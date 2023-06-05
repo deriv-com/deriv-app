@@ -8,7 +8,7 @@ import TableError from 'Components/section-error';
 import CreateAd from './create-ad.jsx';
 import EditAd from './edit-ad.jsx';
 import MyAdsTable from './my-ads-table.jsx';
-import Verification from 'Components/verification/verification.jsx';
+import Verification from 'Components/verification';
 import './my-ads.scss';
 
 const MyAdsState = ({ message }) => (

@@ -19,8 +19,9 @@ const TermsAndConditionsModal = ({ is_tnc_modal_open, setIsTnCModalOpen }: Terms
             small
             title={localize('Acceptance of terms and conditions')}
             has_close_icon={false}
+            className='tnc-acceptance'
         >
-            <Modal.Body className='tnc-acceptance'>
+            <Modal.Body className='tnc-acceptance__body'>
                 <Text as='p' size='xs'>
                     <Localize i18n_default_text='We have updated our terms and conditions. Please note that we reserve the right to modify or change our terms and conditions at any time without prior notice.' />
                 </Text>
@@ -45,7 +46,7 @@ const TermsAndConditionsModal = ({ is_tnc_modal_open, setIsTnCModalOpen }: Terms
                     defaultChecked={is_tnc_accepted}
                 />
             </Modal.Body>
-            <Modal.Footer>
+            <Modal.Footer has_separator>
                 <Button type='button' onClick={() => setIsTnCModalOpen(false)} disabled={!is_tnc_accepted} primary>
                     {localize('Continue')}
                 </Button>

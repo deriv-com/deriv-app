@@ -18,13 +18,13 @@ type TCryptoFiatConverterProps = {
         event: { target: { value: string } },
         from_currency: string,
         to_currency: string,
-        exchanged_rate?: number
+        converted_amount?: number
     ) => void;
     onChangeConverterToAmount: (
         event: TReactChangeEvent,
         from_currency: string,
         to_currency: string,
-        exchanged_rate?: number
+        converted_amount?: number
     ) => void;
     resetConverter: VoidFunction;
     to_currency: string;
@@ -79,8 +79,8 @@ const CryptoFiatConverter = observer(
                             onChange={(e: TReactChangeEvent) => {
                                 const from_rate = getRate(from_currency || '');
                                 const to_rate = getRate(to_currency || '');
-                                const exchanged_rate = (Number(e.target.value) * to_rate) / from_rate;
-                                onChangeConverterFromAmount(e, from_currency, to_currency, exchanged_rate);
+                                const converted_amount = (Number(e.target.value) * to_rate) / from_rate;
+                                onChangeConverterFromAmount(e, from_currency, to_currency, converted_amount);
                                 handleChange(e);
                             }}
                             type='text'
@@ -118,8 +118,8 @@ const CryptoFiatConverter = observer(
                                 onChange={(e: TReactChangeEvent) => {
                                     const from_rate = getRate(from_currency || '');
                                     const to_rate = getRate(to_currency || '');
-                                    const exchanged_rate = (Number(e.target.value) * from_rate) / to_rate;
-                                    onChangeConverterToAmount(e, to_currency, from_currency, exchanged_rate);
+                                    const converted_amount = (Number(e.target.value) * from_rate) / to_rate;
+                                    onChangeConverterToAmount(e, to_currency, from_currency, converted_amount);
                                     handleChange(e);
                                 }}
                                 type='text'
@@ -138,12 +138,12 @@ const CryptoFiatConverter = observer(
                                     onComplete={() => {
                                         const from_rate = getRate(from_currency || '');
                                         const to_rate = getRate(to_currency || '');
-                                        const exchanged_rate = (Number(converter_from_amount) * to_rate) / from_rate;
+                                        const converted_amount = (Number(converter_from_amount) * to_rate) / from_rate;
                                         onChangeConverterFromAmount(
                                             { target: { value: converter_from_amount } },
                                             from_currency,
                                             to_currency,
-                                            exchanged_rate
+                                            converted_amount
                                         );
                                     }}
                                 />

@@ -78,7 +78,7 @@ export default class CryptoFiatConverterStore {
         { target }: { target: { value: string } },
         from_currency?: string,
         to_currency?: string,
-        exchanged_rate?: number
+        converted_amount?: number
     ): Promise<void> {
         const { account_transfer, general_store } = this.root_store.modules.cashier;
 
@@ -95,7 +95,7 @@ export default class CryptoFiatConverterStore {
                 account_transfer.setAccountTransferAmount('');
             } else {
                 const decimals = getDecimalPlaces(to_currency || '');
-                const amount = exchanged_rate?.toFixed(decimals) || '1';
+                const amount = converted_amount?.toFixed(decimals) || '1';
                 if (+amount || this.converter_from_amount) {
                     this.setConverterToAmount(amount);
                 } else {
@@ -115,7 +115,7 @@ export default class CryptoFiatConverterStore {
         { target }: { target: { value: string } },
         from_currency: string,
         to_currency: string,
-        exchanged_rate?: number
+        converted_amount?: number
     ): Promise<void> {
         const { account_transfer, general_store } = this.root_store.modules.cashier;
 
@@ -130,7 +130,7 @@ export default class CryptoFiatConverterStore {
                 account_transfer.setAccountTransferAmount('');
             } else {
                 const decimals = getDecimalPlaces(to_currency);
-                const amount = exchanged_rate?.toFixed(decimals) || '1';
+                const amount = converted_amount?.toFixed(decimals) || '1';
                 if (+amount || this.converter_to_amount) {
                     this.setConverterFromAmount(amount);
                 } else {

@@ -8,7 +8,7 @@ import { useExchangeRate } from '@deriv/hooks';
 type TPercentageSelectorProps = {
     amount: number;
     from_account?: string;
-    getCalculatedAmount: (amount: string, exchanged_rate: number) => void;
+    getCalculatedAmount: (amount: string, converted_amount: number) => void;
     percentage: number;
     should_percentage_reset: boolean;
     to_account?: string;
@@ -57,8 +57,11 @@ const PercentageSelector = ({
         setSelectedPercentage(new_percentage || 0);
         const from_rate = getRate(from_currency || '');
         const to_rate = getRate(to_currency || '');
-        const exchanged_rate = (amount * (new_percentage / 100) * to_rate) / from_rate;
-        getCalculatedAmount((amount * (new_percentage / 100)).toFixed(getDecimalPlaces(from_currency)), exchanged_rate);
+        const converted_amount = (amount * (new_percentage / 100) * to_rate) / from_rate;
+        getCalculatedAmount(
+            (amount * (new_percentage / 100)).toFixed(getDecimalPlaces(from_currency)),
+            converted_amount
+        );
 
         for (let i = 1; i <= 4; i++) {
             const percentage_selector_block = document.getElementById(String(i));

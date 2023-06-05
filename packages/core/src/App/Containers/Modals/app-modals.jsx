@@ -7,6 +7,7 @@ import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import CooldownWarningModal from './cooldown-warning-modal.jsx';
 import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
+import ReadyToVerifyModal from './ready-to-verify-modal';
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
@@ -162,6 +163,7 @@ const AppModals = ({
     if (is_need_real_account_for_cashier_modal_visible) {
         ComponentToLoad = <NeedRealAccountForCashierModal />;
     }
+    ComponentToLoad = <ReadyToVerifyModal />;
 
     return (
         <>

@@ -25,7 +25,7 @@ const TourGuide = () => {
         is_onboarding_visited,
         selectAccountType,
     } = traders_hub;
-    const { is_dark_mode_on } = ui;
+    const { is_dark_mode_on, should_trigger_tour_guide, setShouldTriggerTourGuide } = ui;
     const { prev_account_type } = client;
 
     const history = useHistory();
@@ -34,26 +34,32 @@ const TourGuide = () => {
     const high_risk_tour_step_locale = getHighRiskTourStepLocale();
 
     tour_step_locale.last = (
-        <div
+        <span
             onClick={() => {
                 setIsOnboardingVisited(true);
                 toggleIsTourOpen(false);
                 selectAccountType(prev_account_type);
+                if (should_trigger_tour_guide) {
+                    setShouldTriggerTourGuide(false);
+                }
             }}
         >
             <Localize i18n_default_text='OK' />
-        </div>
+        </span>
     );
 
     high_risk_tour_step_locale.last = (
-        <div
+        <span
             onClick={() => {
                 setIsOnboardingVisited(true);
                 toggleIsTourOpen(false);
+                if (should_trigger_tour_guide) {
+                    setShouldTriggerTourGuide(false);
+                }
             }}
         >
             <Localize i18n_default_text='OK' />
-        </div>
+        </span>
     );
 
     if (joyride_index === 0) {
@@ -102,7 +108,7 @@ const TourGuide = () => {
 
     return (
         <Joyride
-            run={!is_onboarding_visited && is_tour_open}
+            run={(!is_onboarding_visited && is_tour_open) || should_trigger_tour_guide}
             continuous
             disableScrolling
             hideCloseButton

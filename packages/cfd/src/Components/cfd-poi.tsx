@@ -27,6 +27,7 @@ export type TCFDPOIProps = {
     account_status?: GetAccountStatus;
     addNotificationByKey: (key: string) => void;
     fetchResidenceList?: () => void;
+    getChangeableFields: () => string[];
     height: string;
     is_switching: boolean;
     is_virtual: boolean;
@@ -40,6 +41,7 @@ export type TCFDPOIProps = {
     account_settings: GetSettings;
     residence_list: ResidenceList;
     jurisdiction_selected_shortcode: string;
+    updateAccountStatus: () => void;
 };
 
 const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => {
@@ -76,4 +78,6 @@ export default connect(({ client, common, notifications }: RootStore) => ({
     should_allow_authentication: client.should_allow_authentication,
     account_settings: client.account_settings,
     residence_list: client.residence_list,
+    getChangeableFields: client.getChangeableFields,
+    updateAccountStatus: client.updateAccountStatus,
 }))(CFDPOI);

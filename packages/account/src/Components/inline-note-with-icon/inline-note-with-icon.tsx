@@ -2,19 +2,22 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 
 type TInlineNoteWithIconExtend = {
-    icon: string;
+    icon?: string;
+    font_size?: string;
     message: React.ReactNode;
-    title: string;
+    title?: string;
 };
 
-const InlineNoteWithIcon = ({ icon, message, title }: TInlineNoteWithIconExtend) => {
+const InlineNoteWithIcon = ({ icon, message, font_size = 'xxxs', title }: TInlineNoteWithIconExtend) => {
     return (
         <div className='da-inline-note-with-icon'>
-            <div>
-                <Icon icon={icon} size={16} />
-            </div>
-            <Text as='p' size='xxxs' line_height='s'>
-                <strong>{title}: </strong>
+            {icon && (
+                <div>
+                    <Icon icon={icon} size={16} />
+                </div>
+            )}
+            <Text as='p' size={font_size} line_height='s'>
+                {title && <strong>{title}: </strong>}
                 {message}
             </Text>
         </div>

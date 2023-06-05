@@ -117,8 +117,8 @@ const ContractDrawerCard = ({
         >
             <div
                 className={classNames('dc-contract-card', {
-                    'dc-contract-card--green': is_mobile && !is_multiplier && profit > 0 && !result && !is_sold,
-                    'dc-contract-card--red': is_mobile && !is_multiplier && profit < 0 && !result && !is_sold,
+                    'dc-contract-card--green': !is_multiplier && profit > 0 && !result && !is_sold,
+                    'dc-contract-card--red': !is_multiplier && profit < 0 && !result && !is_sold,
                     'contract-card__market-closed--disabled': is_market_closed && should_hide_closed_overlay,
                 })}
                 ref={hover_ref}

@@ -45,13 +45,6 @@ jest.mock('Stores', () => ({
 
 describe('<Verification />', () => {
     it('should render default state', () => {
-        render(<Verification should_wrap={false} />);
-
-        const el_dp2p_verification_container = screen.getByTestId('dt_verification_container');
-        expect(el_dp2p_verification_container).toBeInTheDocument();
-    });
-
-    it('Should take default value false for should_wrap when not passed', () => {
         render(<Verification />);
 
         const el_dp2p_verification_container = screen.getByTestId('dt_verification_container');
@@ -108,7 +101,7 @@ describe('<Verification />', () => {
             writable: true,
         });
 
-        render(<Verification should_wrap />);
+        render(<Verification />);
 
         const el_action_button = screen.getByTestId('dt_checklist_item_status_action');
         userEvent.click(el_action_button);
@@ -128,18 +121,11 @@ describe('<Verification />', () => {
             writable: true,
         });
 
-        render(<Verification should_wrap />);
+        render(<Verification />);
 
         const el_action_button = screen.getByTestId('dt_checklist_item_status_action');
         userEvent.click(el_action_button);
         expect(window.location.href).toBe('/account/proof-of-identity?ext_platform_url=/cashier/p2p&test=1');
-    });
-
-    it('Should wrap the component if should_wrap prop is set to true', () => {
-        render(<Verification should_wrap />);
-
-        const el_dp2p_verification_wrapper = screen.getByTestId('dt_verification_wrapper');
-        expect(el_dp2p_verification_wrapper).toBeInTheDocument();
     });
 
     it('Should render Dp2pBlocked component if user is not advertiser, but is poi verified and has nickname', () => {
@@ -147,7 +133,7 @@ describe('<Verification />', () => {
             general_store: { ...mocked_store_values, poi_status: 'verified', nickname: 'test' },
         });
 
-        render(<Verification should_wrap={false} />);
+        render(<Verification />);
 
         const el_dp2p_Dp2pBlocked_container = screen.getByTestId('dt_dp2p-blocked-container');
         expect(el_dp2p_Dp2pBlocked_container).toBeInTheDocument();

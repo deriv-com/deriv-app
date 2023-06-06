@@ -1,9 +1,9 @@
 import React from 'react';
+import classNames from 'classnames';
 import { DesktopWrapper, MobileDialog, MobileWrapper, Modal } from '@deriv/components';
 import WalletModalHeader from './wallet-modal-header';
 import WalletModalBody from './wallet-modal-body';
 import { observer, useStore } from '@deriv/stores';
-import classNames from 'classnames';
 
 const WalletModal = observer(() => {
     const store = useStore();
@@ -30,14 +30,10 @@ const WalletModal = observer(() => {
 
         const handleScroll = (e: Event) => {
             const target = e.target as HTMLDivElement;
-            const height_offset = 40;
-            setIsWalletNameVisible(!(target.scrollTop > height_offset));
+            setIsWalletNameVisible(!(target.scrollTop > 0));
         };
 
-        if (is_mobile) {
-            el_mobile_dialog?.addEventListener('scroll', handleScroll);
-            setIsWalletNameVisible(true);
-        }
+        if (is_mobile) el_mobile_dialog?.addEventListener('scroll', handleScroll);
 
         return () => {
             el_mobile_dialog?.removeEventListener('scroll', handleScroll);

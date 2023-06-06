@@ -56,7 +56,7 @@ const TransferAccountSelector = ({
                 selected_account={selected_account}
             />
 
-            {is_mobile ? <div id='mobile_list_modal_root' /> : <div id='desktop_list_modal_root' />}
+            <div id='mobile_list_modal_root' />
 
             <Modal
                 className='transfer-account-selector__modal-header'

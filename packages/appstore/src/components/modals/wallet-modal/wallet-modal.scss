@@ -152,6 +152,14 @@
             padding: 0 1.6rem;
             font-size: var(--text-size-xs);
         }
+
+        &--modal-body__tabs {
+            transition: top 0.2s ease;
+
+            &.is_scrolled {
+                top: 0rem;
+            }
+        }
     }
 }
 

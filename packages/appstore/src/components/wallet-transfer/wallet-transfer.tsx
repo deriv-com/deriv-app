@@ -22,7 +22,7 @@ const WalletTransfer = observer(() => {
 
     const account_list_height_with_offset = 'calc(100vh - 12.2rem)';
 
-    const portal_id = is_mobile ? 'mobile_list_modal_root' : 'desktop_list_modal_root';
+    const portal_id = is_mobile ? 'mobile_list_modal_root' : 'modal_root';
 
     const to_account_list = React.useMemo(() => {
         // TODO: 'Demo USD Wallet' should be replaced to the current open wallet after connecting to API call

@@ -76,6 +76,7 @@ commands:
             - "packages/stores/node_modules"
             - "packages/trader/node_modules"
             - "packages/translations/node_modules"
+            - "packages/utils/node_modules"
             # VERIFY_CACHE_FOLDERS_END (DO NOT REMOVE)
 
   build:
@@ -261,6 +262,9 @@ jobs:
           name: "Check TypeScript for @deriv/hooks"
           command: npx tsc --project packages/hooks/tsconfig.json -noEmit
       - run:
+          name: "Check TypeScript for @deriv/utils"
+          command: npx tsc --project packages/utils/tsconfig.json -noEmit
+      - run:
           name: "Check TypeScript for @deriv/stores"
           command: npx tsc --project packages/stores/tsconfig.json -noEmit
       # - run:
@@ -269,6 +273,9 @@ jobs:
       - run:
           name: "Check tests for @deriv/hooks"
           command: bash ./scripts/check-tests.sh packages/hooks/src
+      - run:
+          name: "Check tests for @deriv/utils"
+          command: bash ./scripts/check-tests.sh packages/utils/src
       - build
       - run:
           name: "Run tests"

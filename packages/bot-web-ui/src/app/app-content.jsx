@@ -79,17 +79,16 @@ const AppContent = observer(() => {
     }, []);
 
     // use is_landing_company_loaded to know got details of accounts to identify should show an error or not
-    React.useEffect(() => {
-        if (client.is_landing_company_loaded) {
-            const { active_symbols } = ApiHelpers.instance;
+    if (client.is_landing_company_loaded) {
+        const { active_symbols } = ApiHelpers.instance;
+        if (!active_symbols?.is_initialised) {
             active_symbols?.retrieveActiveSymbols(true).then(() => {
                 if (client.is_landing_company_loaded) {
                     setIsLoading(false);
                 }
             });
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }
 
     React.useEffect(() => {
         const onDisconnectFromNetwork = () => {

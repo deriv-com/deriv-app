@@ -9,7 +9,7 @@ interface WalletCardsCarouselProps {
     readonly items: TWalletAccount[];
 }
 
-export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselProps) => {
+export const WalletCardsCarousel = ({ items }: WalletCardsCarouselProps) => {
     const [activePage, setActivePage] = React.useState(0);
     const ref = useRef<Slider | null>(null);
 
@@ -83,7 +83,7 @@ export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselPro
             </div>
         </div>
     );
-});
+};
 WalletCardsCarousel.displayName = 'WalletCardsCarousel';
 
 export default WalletCardsCarousel;

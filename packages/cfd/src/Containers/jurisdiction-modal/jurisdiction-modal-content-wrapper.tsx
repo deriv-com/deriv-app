@@ -37,8 +37,8 @@ const JurisdictionModalContentWrapper = ({
 
     const {
         poi_or_poa_not_submitted,
-        poi_acknowledged_for_bvi_labuan,
-        poi_acknowledged_for_vanuatu_maltainvest,
+        poi_acknowledged_for_bvi_labuan_vanuatu,
+        poi_acknowledged_for_maltainvest,
         poa_acknowledged,
         need_poa_resubmission,
     } = getAuthenticationStatusInfo(account_status);
@@ -136,7 +136,7 @@ const JurisdictionModalContentWrapper = ({
             openPasswordModal(type_of_account);
         } else if (is_vanuatu_selected) {
             if (
-                poi_acknowledged_for_vanuatu_maltainvest &&
+                poi_acknowledged_for_maltainvest &&
                 !poi_or_poa_not_submitted &&
                 !should_restrict_vanuatu_account_creation &&
                 poa_acknowledged &&
@@ -148,7 +148,7 @@ const JurisdictionModalContentWrapper = ({
             }
         } else if (is_bvi_selected) {
             if (
-                poi_acknowledged_for_bvi_labuan &&
+                poi_acknowledged_for_bvi_labuan_vanuatu &&
                 !poi_or_poa_not_submitted &&
                 !should_restrict_bvi_account_creation &&
                 poa_acknowledged &&
@@ -159,13 +159,13 @@ const JurisdictionModalContentWrapper = ({
                 toggleCFDVerificationModal();
             }
         } else if (is_labuan_selected) {
-            if (poi_acknowledged_for_bvi_labuan && poa_acknowledged && has_submitted_cfd_personal_details) {
+            if (poi_acknowledged_for_bvi_labuan_vanuatu && poa_acknowledged && has_submitted_cfd_personal_details) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();
             }
         } else if (is_maltainvest_selected) {
-            if (poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) {
+            if (poi_acknowledged_for_maltainvest && poa_acknowledged) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();

@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     getUrlBase,
     filterObjProperties,
@@ -9,7 +10,6 @@ import {
 import { Localize, localize } from '@deriv/translations';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
 import { FormikErrors, FormikValues } from 'formik';
-import React from 'react';
 
 const getImageLocation = (image_name: string) => getUrlBase(`/public/images/common/${image_name}`);
 

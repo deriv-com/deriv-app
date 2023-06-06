@@ -14,7 +14,7 @@ const ContractTypeGlossary = ({ category }) => {
                             {localize('Growth rate')}
                         </Text>
                         <Text as='p'>
-                            {localize('You can choose a growth rate with values of 1%, 2%, 3%, 4% and 5%.')}
+                            {localize('You can choose a growth rate with values of 1%, 2%, 3%, 4%, and 5%.')}
                         </Text>
                         <Text as='h2' weight='bold' className='contract-type-info__content-glossary--heading'>
                             {localize('Range')}
@@ -37,7 +37,7 @@ const ContractTypeGlossary = ({ category }) => {
                         </Text>
                         <Text as='p'>
                             {localize(
-                                'Occurs when the index spot price changes by the time the order is received by our servers.'
+                                'The spot price may change by the time your order reaches our servers. When this happens, your payout maybe affected.'
                             )}
                         </Text>
                     </React.Fragment>
@@ -51,13 +51,18 @@ const ContractTypeGlossary = ({ category }) => {
                         </Text>
                         <Text as='p'>
                             {localize(
-                                'Exact time and date at which a contract will expire, based on your input of "Duration" or "End Time". For any contract duration above 24 hours, this will correspond to the cut-off time on the expiry date.'
+                                'This is when your contract will expire based on the Duration or End time you’ve selected.'
+                            )}
+                        </Text>
+                        <Text as='p'>
+                            {localize(
+                                'If the duration is more than 24 hours, the Cut-off time and Expiry date will apply instead.'
                             )}
                         </Text>
                         <Text as='h2' weight='bold' className='contract-type-info__content-glossary--heading'>
                             {localize('Final price')}
                         </Text>
-                        <Text as='p'>{localize('Spot price of the last tick upon reaching expiry.')}</Text>
+                        <Text as='p'>{localize('This is the spot price of the last tick at expiry.')}</Text>
                         <Text as='h2' weight='bold' className='contract-type-info__content-glossary--heading'>
                             {localize('Strike price')}
                         </Text>
@@ -65,12 +70,12 @@ const ContractTypeGlossary = ({ category }) => {
                         <ul>
                             <li>
                                 {localize(
-                                    'If you buy a "Call" option, you receive a payout at expiry if the final price is above the strike price. Otherwise, your "Call" option will expire worthless.'
+                                    'If you select "Call", you’ll earn a payout if the final price is above the strike price at expiry. Otherwise, you won’t receive a payout.'
                                 )}
                             </li>
                             <li>
                                 {localize(
-                                    'If you buy a "Put" option, you receive a payout at expiry if the final price is below the strike price. Otherwise, your "Put" option will expire worthless.'
+                                    'If you select "Put", you’ll earn a payout if the final price is below the strike price at expiry. Otherwise, you won’t receive a payout.'
                                 )}
                             </li>
                         </ul>
@@ -79,39 +84,35 @@ const ContractTypeGlossary = ({ category }) => {
                         </Text>
                         <Text as='p'>
                             {localize(
-                                'This is equal to the payout per point multiplied by the difference between the final price and the strike price.'
+                                'Your payout is equal to the payout per point multiplied by the difference between the final price and the strike price.'
                             )}
                         </Text>
                         <Text as='h2' weight='bold' className='contract-type-info__content-glossary--heading'>
                             {localize('Payout per point')}
                         </Text>
                         <Text as='p'>
-                            {localize(
-                                'This is calculated by Deriv which depends on the strike price and the expiry selected by the client.'
-                            )}
+                            {localize('We calculate this based on the strike price and duration you’ve selected.')}
                         </Text>
                         <Text as='h2' weight='bold' className='contract-type-info__content-glossary--heading'>
                             {localize('Contract value')}
                         </Text>
                         <Text as='p'>
                             {localize(
-                                'Price offered by Deriv to buy back the previously purchased contract, which depends, among others, on the current spot price and the remaining duration.'
+                                'We’ll offer to buy your contract at this price should you choose to sell it before its expiry. This is based on several factors, such as the current spot price, duration, etc. However, we won’t offer a contract value if the remaining duration is below 60 seconds.'
                             )}
                         </Text>
                         <Text as='h2' weight='bold' className='contract-type-info__content-glossary--heading'>
                             {localize('Cut-off time')}
                         </Text>
                         <Text as='p'>
-                            {localize(
-                                'Exact time at which the contract will expire, which falls at 23:59:59 GMT +0 on the expiry date.'
-                            )}
+                            {localize('Contracts will expire at exactly 23:59:59 GMT on your selected expiry date.')}
                         </Text>
                         <Text as='h2' weight='bold' className='contract-type-info__content-glossary--heading'>
                             {localize('Expiry date')}
                         </Text>
                         <Text as='p'>
                             {localize(
-                                'This is the day chose as "End Time" by the client. However, if the client selects a duration above 24 hours, the starting day is based on the date in GMT.'
+                                'Your contract will expire on this date (in GMT), based on the End time you’ve selected.'
                             )}
                         </Text>
                     </React.Fragment>

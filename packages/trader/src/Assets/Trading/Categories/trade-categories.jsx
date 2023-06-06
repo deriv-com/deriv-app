@@ -435,12 +435,12 @@ const TradeCategories = ({ category, onClick }) => {
                     <React.Fragment>
                         <Text as='p'>
                             {localize(
-                                'Vanilla options allow you to express a bullish or bearish view on an underlying by purchasing a "Call" or a "Put".'
+                                'Vanilla options allow you to predict an upward (bullish) or downward (bearish) direction of the underlying asset by purchasing a "Call" or a "Put".'
                             )}
                         </Text>
                         <Text as='p'>
                             <Localize
-                                i18n_default_text='If you buy a <0>"Call"</0> option, you receive a payout at <1>expiry</1> if the <1>final price</1> is above the <1>strike price</1>. Otherwise, your <0>"Call"</0> option will expire worthless.'
+                                i18n_default_text='If you select <0>"Call"</0>, you’ll earn a <1>payout</1> if the <1>final price</1> is above the <1>strike price</1> at <1>expiry</1>. Otherwise, you won’t receive a payout.'
                                 components={[
                                     <strong key={0} />,
                                     <span
@@ -453,25 +453,16 @@ const TradeCategories = ({ category, onClick }) => {
                         </Text>
                         <Text as='p'>
                             <Localize
-                                i18n_default_text='If you buy a <0>"Put"</0> option, you receive a payout at expiry if the final price is below the strike price. Otherwise, your <0>"Put"</0> option will expire worthless.'
+                                i18n_default_text='If you select <0>"Put"</0>, you’ll earn a payout if the final price is below the strike price at expiry. Otherwise, you won’t receive a payout.'
                                 components={[<strong key={0} />]}
                             />
                         </Text>
                         <Text as='p'>
-                            <Localize
-                                i18n_default_text='The payout is equal to the <0>payout per point</0> multiplied by the difference between the final price and the strike price. You will make profit if your <0>payout</0> is higher than your initial stake.'
-                                components={[
-                                    <span
-                                        className='contract-type-info__content-definition'
-                                        onClick={onClick}
-                                        key={0}
-                                    />,
-                                ]}
-                            />
+                            <Localize i18n_default_text='Your payout is equal to the <0>payout per point</0> multiplied by the difference between the final price and the strike price. You will only earn a profit if your payout is higher than your initial stake.' />
                         </Text>
                         <Text as='p'>
                             <Localize
-                                i18n_default_text='You may choose to sell the contract up until 60 seconds before expiry, in which case you will receive a <0>contract value</0>.'
+                                i18n_default_text='You may sell the contract up until 60 seconds before expiry. If you do, we’ll pay you the <0>contract value</0>.'
                                 components={[
                                     <span
                                         className='contract-type-info__content-definition'

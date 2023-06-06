@@ -112,8 +112,6 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                 className={classNames('contract-type-info', {
                     'contract-type-info--has-toggle-buttons': has_toggle_buttons,
                 })}
-                bullet_color='var(--text-disabled)'
-                active_bullet_color='var(--brand-red-coral)'
                 onItemSelect={handleItemSelect}
                 initial_index={initial_index}
                 list={cards}

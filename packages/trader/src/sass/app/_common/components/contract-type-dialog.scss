@@ -12,7 +12,6 @@
 
     &__wrapper {
         position: absolute;
-        width: 290px;
         right: calc(100% + 10px);
         top: -66px;
         display: grid;
@@ -22,6 +21,7 @@
         background: var(--general-main-1);
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
         min-width: 560px;
+        width: 290px;
         height: 680px;
         overflow: hidden;
 
@@ -106,5 +106,8 @@
 .dc-mobile-dialog {
     &__content {
         height: 100%;
+    }
+    &__container--has-scroll {
+        overflow-y: hidden;
     }
 }

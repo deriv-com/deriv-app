@@ -197,10 +197,13 @@ export default class OrderStore {
                     this.setErrorMessage(response.error.message);
                 } else {
                     const { p2p_order_list } = response;
+                    const { list } = p2p_order_list || {};
 
-                    this.root_store.general_store.handleNotifications(this.orders, p2p_order_list.list);
-                    p2p_order_list.list.forEach(order => this.syncOrder(order));
-                    this.setOrders(p2p_order_list.list);
+                    if (list?.length) {
+                        this.root_store.general_store.handleNotifications(this.orders, list);
+                        list.forEach(order => this.syncOrder(order));
+                        this.setOrders(list);
+                    }
                 }
             }
         });
@@ -263,7 +266,7 @@ export default class OrderStore {
                         const old_list = [...this.orders];
                         const new_list = [];
 
-                        list.forEach(order => {
+                        list?.forEach(order => {
                             const old_list_idx = old_list.findIndex(o => o.id === order.id);
 
                             if (old_list_idx > -1) {
@@ -458,7 +461,7 @@ export default class OrderStore {
 
         if (get_order_status.is_completed_order && !get_order_status.is_reviewable) {
             // Remove notification once order review period is finished
-            const notification_key = `order-${p2p_order_info.id}`;
+            const notification_key = `p2p_order_${p2p_order_info.id}`;
             general_store.external_stores?.notifications.removeNotificationMessage({ key: notification_key });
             general_store.external_stores?.notifications.removeNotificationByKey({ key: notification_key });
         }

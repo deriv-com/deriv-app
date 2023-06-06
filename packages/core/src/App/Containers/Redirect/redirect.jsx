@@ -133,7 +133,7 @@ const Redirect = ({
         case 'add_account': {
             WS.wait('get_account_status').then(() => {
                 if (!currency) return openRealAccountSignup('set_currency');
-                return openRealAccountSignup();
+                return openRealAccountSignup('svg');
             });
             if (ext_platform_url) redirectToExternalPlatform(ext_platform_url);
             break;

@@ -27,7 +27,7 @@ let wallet_account: TCoreStores['client']['accounts'][0];
 describe('<Wallets />', () => {
     beforeEach(() => {
         wallet_account = {
-            balance: '10415.24',
+            balance: 10415.24,
             currency: 'USD',
             landing_company_shortcode: 'svg',
             is_virtual: 1,

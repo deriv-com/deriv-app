@@ -3,7 +3,7 @@ import { Icon, Text } from '@deriv/components';
 import './wallet-account.scss';
 
 type TWalletAccount = {
-    balance: string;
+    balance: number;
     currency: string;
     name: string;
     icon: string;

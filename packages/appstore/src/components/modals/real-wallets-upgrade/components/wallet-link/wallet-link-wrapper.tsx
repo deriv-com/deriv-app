@@ -9,7 +9,7 @@ import './wallet-link-wrapper.scss';
 export type TWalletLinkWrapper = {
     wallet_details: React.ComponentProps<typeof WalletCard>['wallet'];
     account_list: {
-        balance: string;
+        balance: number;
         currency: string;
         account_name: string;
         icon: string;

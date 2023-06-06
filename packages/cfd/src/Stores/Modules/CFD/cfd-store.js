@@ -284,9 +284,7 @@ export default class CFDStore extends BaseStore {
                 market_type: this.account_type.type,
                 company: this.jurisdiction_selected_shortcode,
             };
-            // this.setIsAccountBeingCreated(true);
             const response = await this.openCFDAccount(values);
-            // thus.setIsAccountBeingCreated(false);
             if (!response.error) {
                 this.enableCFDPasswordModal();
                 this.setCFDSuccessDialog(true);

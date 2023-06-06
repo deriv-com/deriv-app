@@ -20,7 +20,6 @@ export default class TradersHubStore extends BaseStore {
     is_tour_open = false;
     is_account_type_modal_visible = false;
     account_type_card = '';
-    // account_is_being_created = false;
     selected_platform_type = 'options';
     open_failed_verification_for = '';
     modal_data = {

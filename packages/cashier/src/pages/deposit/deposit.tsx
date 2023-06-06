@@ -9,7 +9,7 @@ import Error from '../../components/error';
 import FundsProtection from '../../components/funds-protection';
 import DepositLocked from './deposit-locked';
 import { useCashierStore } from '../../stores/useCashierStores';
-import { CashierOnboardingModule, DepositCryptoModule } from '../../modules';
+import { CashierOnboardingModule, DepositCryptoModule, DepositFiatModule } from '../../modules';
 
 const Deposit = observer(() => {
     const { client, traders_hub } = useStore();
@@ -64,7 +64,7 @@ const Deposit = observer(() => {
         if (error.message) return <Error error={error} />;
         if (is_crypto) return <DepositCryptoModule />;
 
-        return <Real is_deposit />;
+        return <DepositFiatModule />;
     }
 
     return <CashierOnboardingModule />;

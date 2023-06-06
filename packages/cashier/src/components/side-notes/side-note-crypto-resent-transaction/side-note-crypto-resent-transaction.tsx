@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { useFetch } from '@deriv/api';
 import { Button, Loading, SideNote, Text } from '@deriv/components';
+import { useCurrencyConfig } from '@deriv/hooks';
 import { epochToMoment } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -9,7 +10,8 @@ import { TTransactionItem } from '../../../types';
 import './side-note-crypto-resent-transaction.scss';
 
 const SideNoteCryptoRecentTransaction: React.FC = observer(() => {
-    const { ui } = useStore();
+    const { client, ui } = useStore();
+    const { currency } = client;
     const { is_mobile } = ui;
     const { transaction_history } = useCashierStore();
     const { setIsCryptoTransactionsVisible } = transaction_history;
@@ -18,7 +20,7 @@ const SideNoteCryptoRecentTransaction: React.FC = observer(() => {
     const transactions = data?.cashier_payments?.crypto;
     const has_transactions = transactions?.length > 0;
     const recent_transactions: TTransactionItem | undefined = has_transactions ? transactions?.[0] : undefined;
-    const currency = 'BTC';
+    const { data: currency_config } = useCurrencyConfig(currency);
 
     // useEffect(() => {
     //     subscribe();
@@ -40,15 +42,15 @@ const SideNoteCryptoRecentTransaction: React.FC = observer(() => {
             <div className='deposit-crypto-recent-transaction-side-note__content'>
                 <Text size={'xxs'}>
                     {is_deposit
-                        ? localize('Deposit {{currency}}', { currency })
-                        : localize('Withdrawal {{currency}}', { currency })}
+                        ? localize('Deposit {{currency}}', { currency: 'BTC' })
+                        : localize('Withdrawal {{currency}}', { currency: 'BTC' })}
                 </Text>
                 <Text
                     size={'xxxs'}
                     color={'less-prominent'}
                     className='deposit-crypto-recent-transaction-side-note__date'
                 >
-                    {localize('{{amount}} {{currency}} on {{date}}', { amount, currency, date })}
+                    {localize('{{amount}} {{currency}} on {{date}}', { amount, currency: 'BTC', date })}
                 </Text>
                 <Text size={'xxxs'}>
                     <Localize
@@ -79,7 +81,7 @@ const SideNoteCryptoRecentTransaction: React.FC = observer(() => {
         <SideNote>
             <div className='deposit-crypto-recent-transaction-side-note'>
                 <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
-                    {localize('BTC recent transactions')}
+                    {localize('{{currency}} recent transactions', { currency: currency_config?.code })}
                 </Text>
                 <div className='deposit-crypto-recent-transaction-side-note__divider' />
                 {isLoading && <Loading is_fullscreen={false} />}

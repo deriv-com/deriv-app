@@ -1,9 +1,9 @@
 import React from 'react';
 import { useCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
-import { DepositCryptoRecentTransactionSideNote } from '../deposit-crypto-resent-transaction-side-note';
-import DepositCryptoSideNoteUSDT from './deposit-crypto-side-note-usdt';
+import { SideNoteCryptoRecentTransaction } from '../../../../components/side-notes';
 import DepositCryptoSideNoteeUSDT from './deposit-crypto-side-note-eusdt';
+import DepositCryptoSideNoteUSDT from './deposit-crypto-side-note-usdt';
 
 const DepositCryptoSideNotes: React.FC = observer(() => {
     const { client } = useStore();
@@ -12,7 +12,7 @@ const DepositCryptoSideNotes: React.FC = observer(() => {
 
     return (
         <>
-            <DepositCryptoRecentTransactionSideNote />
+            <SideNoteCryptoRecentTransaction />
             <DepositCryptoSideNoteUSDT />
             {data?.is_usdt && <DepositCryptoSideNoteUSDT />}
             {data?.is_eusdt && <DepositCryptoSideNoteeUSDT />}

@@ -24,7 +24,7 @@ const useCurrencyConfig = (currency: string) => {
               is_idk: currency === 'IDK',
               is_pax: currency === 'PAX',
               is_tusd: currency === 'TUSD',
-              is_ust: currency === 'UST', //? should map to USDT instead?
+              is_ust: currency === 'UST',
               is_usb: currency === 'USB',
               is_dai: currency === 'DAI',
               is_busd: currency === 'BUSD',

@@ -11,6 +11,16 @@ const trading_account_names = [
     'Deriv EZ Demo',
     'Deriv X Demo',
     'Deriv cTrader Demo',
+    'Deriv EZ Demo',
+    'Deriv X Demo',
+    'Deriv cTrader Demo',
+    'Deriv EZ Demo',
+    'Deriv X Demo',
+    'Deriv cTrader Demo',
+    'Deriv cTrader Demo',
+    'Deriv EZ Demo',
+    'Deriv X Demo',
+    'Deriv cTrader Demo',
 ];
 
 const accounts = trading_account_names.map(

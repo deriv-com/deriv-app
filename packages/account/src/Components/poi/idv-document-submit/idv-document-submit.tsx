@@ -85,7 +85,7 @@ const IdvDocumentSubmit = ({
                     break;
             }
             return (
-                localize('Please enter your {{documnet_name}} number. ', { document_name }) +
+                localize('Please enter your {{document_name}} number. ', { document_name }) +
                 getExampleFormat(document_type.example_format)
             );
         } else if (is_document_number_invalid) {

@@ -1,6 +1,5 @@
-// import { TWalletAccount } from 'Types';
-
 // TODO: Refactor using data transformation layer pattern when we will have API for wallets (e.g. wallet.icon)
+// TODO: move it to @deriv/utils package later
 export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_modal = false) => {
     switch (currency) {
         case 'demo':
@@ -35,21 +34,9 @@ export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean
     }
 };
 
-// type TWalletAccount = {
-//     account_category?: 'trading' | 'wallets';
-//     account_type?: string;
-//     balance: string | number;
-//     currency: string;
-//     is_disabled: boolean;
-//     is_virtual: boolean;
-//     landing_company_shortcode: 'svg' | 'malta';
-//     loginid: string;
-//     icon: string;
-//     icon_type: 'fiat' | 'crypto' | 'all';
-//     name: string;
-// };
-
-export const sortWalletAccounts = (accounts: TWalletAccount[]) => {
+// must be TWalletAccount[] type, but it's in hooks package
+// TODO: move it to @deriv/utils package later
+export const sortWalletAccounts = (accounts: any[]) => {
     const fiat = accounts
         .filter(account => account.icon_type === 'fiat' && !account.is_virtual)
         .sort((a, b) => a.name.localeCompare(b.name));
@@ -68,7 +55,9 @@ export const sortWalletAccounts = (accounts: TWalletAccount[]) => {
     return [...fiat, ...crypro, ...dp2p, ...demo];
 };
 
-export const fake_wallet_accounts: TWalletAccount[] = [
+// must be TWalletAccount[] type, but it's in hooks package
+// TODO: delete it when wallets API starts to work
+export const fake_wallet_accounts: any[] = [
     {
         name: 'USD',
         currency: 'USD',

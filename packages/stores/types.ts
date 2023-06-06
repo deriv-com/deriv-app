@@ -1,5 +1,3 @@
-// import { useWalletAccounts } from '@deriv/hooks';
-
 import type {
     AccountLimitsResponse,
     Authorize,
@@ -13,22 +11,6 @@ import type {
 import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
 import type { ExchangeRatesStore } from './src/stores';
-
-// export type TWalletAccount = {
-//     account_category?: 'trading' | 'wallets';
-//     account_type?: string;
-//     balance: string | number;
-//     currency: string;
-//     is_disabled: boolean;
-//     is_virtual: boolean;
-//     landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
-//     loginid: string;
-//     icon: string;
-//     icon_type: 'fiat' | 'crypto' | 'all';
-//     name: string;
-// };
-
-// type TTT = ReturnType<typeof useWalletAccounts>;
 
 type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 
@@ -75,7 +57,7 @@ type BrandConfig = {
 };
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
-    balance?: string | number;
+    balance?: number;
     landing_company_shortcode?: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     is_virtual: number;
     account_category?: 'wallet' | 'trading';
@@ -188,8 +170,6 @@ type TNotification =
     | ((withdrawal_locked: boolean, deposit_locked: boolean) => TNotificationMessage)
     | ((excluded_until: number) => TNotificationMessage);
 
-type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
-
 type TClientStore = {
     accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
@@ -296,7 +276,6 @@ type TClientStore = {
     has_any_real_account: boolean;
     real_account_creation_unlock_date: number;
     setPrevAccountType: (account_type: string) => void;
-    // wallet_accounts: TWalletAccount[];
 };
 
 type TCommonStoreError = {
@@ -455,7 +434,7 @@ type TTradersHubStore = {
     available_platforms: BrandConfig[];
     CFDs_restricted_countries: boolean;
     is_demo_low_risk: boolean;
-    selected_region: 'Non-EU' | 'EU' | 'All';
+    selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
     available_dxtrade_accounts: AvailableAccount[];
 };

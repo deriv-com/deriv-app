@@ -2,9 +2,9 @@ import React, { HTMLAttributes, ReactNode } from 'react';
 import classNames from 'classnames';
 import { Icon } from '@deriv/components';
 import CurrencyIcon, { Currency } from 'Assets/svgs/currency';
-import './currency-switcher-container.scss';
 import { useStore, observer } from '@deriv/stores';
 import TradingPlatformIcon from 'Assets/svgs/trading-platform';
+import './currency-switcher-container.scss';
 
 interface CurrentSwitcherContainerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
     actions?: ReactNode;

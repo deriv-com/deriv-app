@@ -4,13 +4,12 @@ import WalletHeader from 'Components/wallet-header';
 import WalletContent from 'Components/wallet-content';
 import { CSSTransition } from 'react-transition-group';
 import { formatMoney } from '@deriv/shared';
-// import { TCoreStores } from '@deriv/stores/types';
-import { TWalletAccount, TWalletCurrency, TWalletShortcode } from 'Types';
+import { TWalletCurrency, TWalletShortcode } from 'Types';
+import { useWalletAccounts } from '@deriv/hooks';
 import './wallet.scss';
 
 type TWallet = {
-    // wallet_account: TCoreStores['client']['accounts'][0];
-    wallet_account: TWalletAccount;
+    wallet_account: ReturnType<typeof useWalletAccounts>;
     is_open_wallet?: boolean;
 };
 

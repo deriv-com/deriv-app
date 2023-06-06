@@ -73,7 +73,7 @@ export const sortWalletAccounts = (accounts: TWalletAccount[]) => {
     return [...fiat, ...crypro, ...dp2p, ...demo];
 };
 
-const useWalletAccounts = (): TWalletAccount[] => {
+const useWalletAccounts = () => {
     const {
         client: { accounts },
         ui: { is_dark_mode_on },

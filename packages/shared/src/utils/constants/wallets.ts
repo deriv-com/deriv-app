@@ -34,8 +34,8 @@ export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean
     }
 };
 
-// must be TWalletAccount[] type, but it's in hooks package
 // TODO: move it to @deriv/utils package later
+// must be TWalletAccount[] type, but this type is in hooks package
 export const sortWalletAccounts = (accounts: any[]) => {
     const fiat = accounts
         .filter(account => account.icon_type === 'fiat' && !account.is_virtual)
@@ -55,8 +55,8 @@ export const sortWalletAccounts = (accounts: any[]) => {
     return [...fiat, ...crypro, ...dp2p, ...demo];
 };
 
-// must be TWalletAccount[] type, but it's in hooks package
 // TODO: delete it when wallets API starts to work
+// must be TWalletAccount[] type, but it's in hooks package
 export const fake_wallet_accounts: any[] = [
     {
         name: 'USD',

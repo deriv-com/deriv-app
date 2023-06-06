@@ -1,7 +1,6 @@
-import React, { LegacyRef, useRef } from 'react';
+import React, { useRef } from 'react';
 import { ProgressBarOnboarding, Icon, Text, WalletCard } from '@deriv/components';
 import { getWalletHeaderButtons } from 'Constants/utils';
-// import { TWalletAccount } from 'Types';
 import Slider from 'react-slick';
 import './wallet-cards-carousel.scss';
 import './slick.scss';

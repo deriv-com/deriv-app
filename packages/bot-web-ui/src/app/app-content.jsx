@@ -81,11 +81,13 @@ const AppContent = observer(() => {
     // use is_landing_company_loaded to know got details of accounts to identify should show an error or not
     if (client.is_landing_company_loaded) {
         const { active_symbols } = ApiHelpers.instance;
-        active_symbols?.retrieveActiveSymbols(true).then(() => {
-            if (client.is_landing_company_loaded) {
-                setIsLoading(false);
-            }
-        });
+        if (active_symbols) {
+            active_symbols.retrieveActiveSymbols(true).then(() => {
+                if (client.is_landing_company_loaded) {
+                    setIsLoading(false);
+                }
+            });
+        }
     }
 
     React.useEffect(() => {

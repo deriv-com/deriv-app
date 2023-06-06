@@ -3,13 +3,13 @@ import { render, screen, within } from '@testing-library/react';
 import { AccumulatorsStatsManualModal } from '../accumulators-stats-manual-modal';
 import userEvent from '@testing-library/user-event';
 
-type TModal = React.FC<{
+type TModal = React.ComponentType<{
     children: React.ReactNode;
     is_open: boolean;
     title: string;
     toggleModal: () => void;
 }> & {
-    Body?: React.FC<{
+    Body?: React.ComponentType<{
         children: React.ReactNode;
     }>;
 };

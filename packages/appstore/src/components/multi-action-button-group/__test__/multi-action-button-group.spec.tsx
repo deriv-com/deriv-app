@@ -14,30 +14,26 @@ let mock_props = {
     is_real: false,
 };
 
-const renderTestComponent = (props: any) => {
-    const history = createBrowserHistory();
-    const mock = mockStore({
-        modules: {
-            cfd: {
-                dxtrade_tokens: '',
-            },
-        },
-        traders_hub: {
-            is_demo: true,
-        },
-    });
-    return render(
-        <StoreProvider store={mock}>
-            <Router history={history}>
-                <MultiActionButtonGroup {...props} />
-            </Router>
-        </StoreProvider>
-    );
-};
-
 describe('Test Cases for Multi Action Button Group:', () => {
     it('should render the component', () => {
-        renderTestComponent(mock_props);
+        const history = createBrowserHistory();
+        const mock = mockStore({
+            modules: {
+                cfd: {
+                    dxtrade_tokens: '',
+                },
+            },
+            traders_hub: {
+                is_demo: true,
+            },
+        });
+        render(
+            <StoreProvider store={mock}>
+                <Router history={history}>
+                    <MultiActionButtonGroup {...mock_props} />
+                </Router>
+            </StoreProvider>
+        );
 
         expect(screen.getByText('Top up')).toBeInTheDocument();
         expect(screen.getByText('Open')).toBeInTheDocument();
@@ -51,7 +47,24 @@ describe('Test Cases for Multi Action Button Group:', () => {
             is_real: true,
         };
 
-        renderTestComponent(mock_props);
+        const history = createBrowserHistory();
+        const mock = mockStore({
+            modules: {
+                cfd: {
+                    dxtrade_tokens: '',
+                },
+            },
+            traders_hub: {
+                is_demo: true,
+            },
+        });
+        render(
+            <StoreProvider store={mock}>
+                <Router history={history}>
+                    <MultiActionButtonGroup {...mock_props} />
+                </Router>
+            </StoreProvider>
+        );
 
         expect(screen.getByText('Transfer')).toBeInTheDocument();
         expect(screen.getByText('Open')).toBeInTheDocument();
@@ -65,7 +78,24 @@ describe('Test Cases for Multi Action Button Group:', () => {
             is_real: true,
         };
 
-        renderTestComponent(mock_props);
+        const history = createBrowserHistory();
+        const mock = mockStore({
+            modules: {
+                cfd: {
+                    dxtrade_tokens: '',
+                },
+            },
+            traders_hub: {
+                is_demo: true,
+            },
+        });
+        render(
+            <StoreProvider store={mock}>
+                <Router history={history}>
+                    <MultiActionButtonGroup {...mock_props} />
+                </Router>
+            </StoreProvider>
+        );
 
         const transfer_btn = screen.getByRole('button', { name: 'Transfer' });
         const trade_btn = screen.getByRole('button', { name: 'Open' });
@@ -82,7 +112,24 @@ describe('Test Cases for Multi Action Button Group:', () => {
             is_real: true,
         };
 
-        renderTestComponent(mock_props);
+        const history = createBrowserHistory();
+        const mock = mockStore({
+            modules: {
+                cfd: {
+                    dxtrade_tokens: '',
+                },
+            },
+            traders_hub: {
+                is_demo: true,
+            },
+        });
+        render(
+            <StoreProvider store={mock}>
+                <Router history={history}>
+                    <MultiActionButtonGroup {...mock_props} />
+                </Router>
+            </StoreProvider>
+        );
 
         const transfer_btn = screen.getByText('Transfer');
         userEvent.click(transfer_btn);
@@ -92,8 +139,23 @@ describe('Test Cases for Multi Action Button Group:', () => {
 
     it('should redirect after button clicked', () => {
         const history = createBrowserHistory();
-
-        renderTestComponent(mock_props);
+        const mock = mockStore({
+            modules: {
+                cfd: {
+                    dxtrade_tokens: '',
+                },
+            },
+            traders_hub: {
+                is_demo: true,
+            },
+        });
+        render(
+            <StoreProvider store={mock}>
+                <Router history={history}>
+                    <MultiActionButtonGroup {...mock_props} />
+                </Router>
+            </StoreProvider>
+        );
 
         const trade_btn = screen.getByText('Open');
         userEvent.click(trade_btn);

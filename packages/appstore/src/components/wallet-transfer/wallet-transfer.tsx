@@ -71,6 +71,16 @@ const WalletTransfer = observer(() => {
                         [setFieldValue, values.from_amount]
                     );
 
+                    const onSelectFromAccount = React.useCallback(
+                        (account: TAccount) => {
+                            setFromAccount(account);
+                            if (account?.label === 'Demo USD Wallet') {
+                                setFieldValue('to_amount', 0);
+                            }
+                        },
+                        [setFieldValue]
+                    );
+
                     return (
                         <Form noValidate>
                             <div className='wallet-transfer__tiles-container'>
@@ -102,7 +112,7 @@ const WalletTransfer = observer(() => {
                                         is_mobile={is_mobile}
                                         label={localize('Transfer from')}
                                         mobile_list_min_height={account_list_height_with_offset}
-                                        onSelectAccount={setFromAccount}
+                                        onSelectAccount={onSelectFromAccount}
                                         placeholder={localize('Select a trading account or a Wallet')}
                                         portal_id={portal_id}
                                         transfer_accounts={transfer_accounts}

@@ -189,7 +189,7 @@ const StaticCFDAccountManager = ({
                 )}
             </div>
             <div className='static-cfd-account-manager__buttons'>
-                {has_account && platform !== CFD_PLATFORMS.DXTRADE ? (
+                {has_account ? (
                     <React.Fragment>
                         <Button
                             secondary

@@ -19,12 +19,10 @@ export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselPro
 
     const sliderJSX = React.useMemo(() => {
         const handlerGoTo = (slideNumber: number) => {
-            // super();
             // console.log('handlerGoTo: slideNumber = ', slideNumber);
             setActivePage(slideNumber - 1);
             // if (ref !== null && 'current' in ref && 'slickGoTo' in ref.current) ref.current.slickGoTo(slideNumber - 1);
-
-            (ref?.current as unknown)?.slickGoTo(slideNumber - 1);
+            ref?.current?.slickGoTo(slideNumber - 1);
         };
 
         const settings = {
@@ -43,9 +41,6 @@ export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselPro
             afterChange: (currentSlide: number) => {
                 setActivePage(currentSlide);
             },
-            // slickGoTo: n => {
-            //     console.log('slickGoTo: number = ', n);
-            // },
             appendDots: (dots: React.ReactElement[]) => {
                 const active = dots.findIndex(dot => dot.props.className === 'slick-active') || 0;
                 const steps = dots.map((_, idx) => idx.toString());
@@ -76,9 +71,6 @@ export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselPro
         );
     }, [items]);
 
-    // React.useEffect(() => {
-    //     ref.current?.slickGoTo(activePage);
-    // }, [activePage]);
     return (
         <div className='wallet-cards-carousel'>
             {sliderJSX}

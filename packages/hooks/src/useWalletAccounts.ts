@@ -19,7 +19,7 @@ const isCryptocurrency = (currency: string) => {
     return currency !== 'USD' && currency !== 'AUD' && currency !== 'GBP' && currency !== 'EUR';
 };
 
-// TODO: Will be replaced by original function from @deriv/shared
+// TODO: Will be deleted and replaced by original function from @deriv/shared
 const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_modal = false) => {
     switch (currency) {
         case 'demo':
@@ -54,7 +54,8 @@ const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_mo
     }
 };
 
-export const sortWalletAccounts = (accounts: TWalletAccount[]) => {
+// TODO: Will be deleted and replaced by original function from @deriv/shared
+const sortWalletAccounts = (accounts: TWalletAccount[]) => {
     const fiat = accounts
         .filter(account => account.icon_type === 'fiat' && !account.is_virtual)
         .sort((a, b) => a.name.localeCompare(b.name));

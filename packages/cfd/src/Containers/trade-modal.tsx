@@ -198,7 +198,13 @@ const TradeModal = ({
                     />
                     <div className='cfd-trade-modal__maintenance-text'>
                         <Text size='xxxs' className='cfd-trade-modal__maintenance-text'>
-                            <Localize i18n_default_text='Server maintenance starts at 06:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.' />
+                            {platform === CFD_PLATFORMS.DXTRADE && (
+                                <Localize i18n_default_text='Server maintenance starts at 06:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.' />
+                            )}
+                            {platform === CFD_PLATFORMS.MT5 ||
+                                (platform === CFD_PLATFORMS.DERIVEZ && (
+                                    <Localize i18n_default_text='Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.' />
+                                ))}
                         </Text>
                     </div>
                 </div>

@@ -19,6 +19,27 @@ declare global {
         ? ReadonlyMap<DeepPartial<KeyType>, DeepPartial<ValueType>>
         : { [K in keyof T]?: DeepPartial<T[K]> };
 
+    type DeepRequired<T> = T extends Error
+        ? Required<T>
+        : T extends Map<infer Keys, infer Values>
+        ? Map<DeepRequired<Keys>, DeepRequired<Values>>
+        : T extends ReadonlyMap<infer Keys, infer Values>
+        ? ReadonlyMap<DeepRequired<Keys>, DeepRequired<Values>>
+        : T extends WeakMap<infer Keys, infer Values>
+        ? WeakMap<DeepRequired<Keys>, DeepRequired<Values>>
+        : T extends Set<infer Values>
+        ? Set<DeepRequired<Values>>
+        : T extends ReadonlySet<infer Values>
+        ? ReadonlySet<DeepRequired<Values>>
+        : T extends WeakSet<infer Values>
+        ? WeakSet<DeepRequired<Values>>
+        : T extends Promise<infer Value>
+        ? Promise<DeepRequired<Value>>
+        : // eslint-disable-next-line
+        T extends {}
+        ? { [Key in keyof T]-?: DeepRequired<T[Key]> }
+        : Required<T>;
+
     type NoStringIndex<T> = { [K in keyof T as string extends K ? never : K]: T[K] };
 }
 

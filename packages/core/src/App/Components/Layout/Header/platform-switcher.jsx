@@ -1,7 +1,7 @@
 import 'Sass/app/_common/components/platform-switcher.scss';
 
 import { Icon } from '@deriv/components';
-import { getPlatformInformation, isMobile } from '@deriv/shared';
+import { getPlatformInformation, getUrlBinaryBot, isMobile } from '@deriv/shared';
 
 import { CSSTransition } from 'react-transition-group';
 import { PlatformDropdown } from './platform-dropdown.jsx';
@@ -14,7 +14,8 @@ import { withRouter } from 'react-router-dom';
 const PlatformSwitcher = ({
     toggleDrawer,
     app_routing_history,
-    platform_config,
+    platform_config = [],
+    current_language,
     is_landing_company_loaded,
     is_logged_in,
     is_logging_in,
@@ -23,6 +24,15 @@ const PlatformSwitcher = ({
     const [is_open, setIsOpen] = React.useState(false);
 
     const is_close_drawer_fired_ref = React.useRef(false);
+
+    React.useEffect(() => {
+        platform_config.forEach(data => {
+            const { name } = data;
+            if (name === 'Binary Bot') {
+                data.href = getUrlBinaryBot();
+            }
+        });
+    }, [current_language, platform_config]);
 
     React.useEffect(() => {
         if (is_close_drawer_fired_ref.current) {
@@ -81,6 +91,7 @@ const PlatformSwitcher = ({
                 <PlatformDropdown
                     platform_config={platform_config}
                     closeDrawer={closeDrawer}
+                    current_language={current_language}
                     app_routing_history={app_routing_history}
                     setTogglePlatformType={setTogglePlatformType}
                 />
@@ -92,6 +103,7 @@ const PlatformSwitcher = ({
 PlatformSwitcher.propTypes = {
     platform_config: PropTypes.array,
     toggleDrawer: PropTypes.func,
+    current_language: PropTypes.func,
     app_routing_history: PropTypes.array,
     is_landing_company_loaded: PropTypes.bool,
     is_logged_in: PropTypes.bool,

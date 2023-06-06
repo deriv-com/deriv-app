@@ -357,6 +357,7 @@ export const icons =
         'IcDashboardDbotIcon',
         'IcDbotUserGuide',
         'IcDelete',
+        'IcDemoResetBalance',
         'IcDemo',
         'IcDerivOutline',
         'IcDeriv',

@@ -2,6 +2,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
+import DemoResetBalance from 'Components/demo-reset-balance';
 
 export type TWalletType = 'real' | 'demo' | 'p2p' | 'payment_agent';
 
@@ -97,7 +98,7 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcAdd',
                     label: localize('Reset balance'),
-                    content: <p>Reset balance</p>,
+                    content: <DemoResetBalance />,
                 },
             ];
         case 'p2p':

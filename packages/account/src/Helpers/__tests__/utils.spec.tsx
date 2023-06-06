@@ -1,14 +1,14 @@
 import React from 'react';
 import {
-    generatePlaceholderText,
     documentAdditionalError,
-    shouldShowIdentityInformation,
+    generatePlaceholderText,
     getDocumentData,
+    getExampleFormat,
     getRegex,
-    preventEmptyClipboardPaste,
     isDocumentNumberValid,
     isFieldImmutable,
-    getExampleFormat,
+    preventEmptyClipboardPaste,
+    shouldShowIdentityInformation,
 } from '../utils';
 import { render, screen } from '@testing-library/react';
 
@@ -188,6 +188,7 @@ describe('isDocumentNumberValid', () => {
         render(<div>{errorMessage}</div>);
         expect(screen.getByText('Please enter your document number. Example: 081234567F53')).toBeInTheDocument();
     });
+
     it('should return error message for empty Driver License, when document_type text Drivers License', () => {
         const mock_document_type = {
             text: 'Drivers License',
@@ -197,6 +198,7 @@ describe('isDocumentNumberValid', () => {
         render(<div>{errorMessage}</div>);
         expect(screen.getByText('Please enter your Driver License. Example: 081234567F53')).toBeInTheDocument();
     });
+
     it('should return error message for empty SSNIT, when document_type text Social Security and National Insurance Trust', () => {
         const mock_document_type = {
             text: 'Social Security and National Insurance Trust',
@@ -206,6 +208,7 @@ describe('isDocumentNumberValid', () => {
         render(<div>{errorMessage}</div>);
         expect(screen.getByText('Please enter your SSNIT. Example: 081234567F53')).toBeInTheDocument();
     });
+
     it('should return Please enter valid ID, when user inputs same with example', () => {
         const mock_document_type = {
             text: 'Social Security and National Insurance Trust',
@@ -214,6 +217,7 @@ describe('isDocumentNumberValid', () => {
         const errorMessage = isDocumentNumberValid('081234567F53', mock_document_type);
         expect(errorMessage).toEqual('Please enter a valid ID number.');
     });
+
     it('should return undefined, when user inputs value correctly', () => {
         const mock_document_type = {
             text: 'Social Security and National Insurance Trust',

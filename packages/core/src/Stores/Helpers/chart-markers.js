@@ -117,6 +117,9 @@ const createTickMarkers = contract_info => {
         if (marker_config) {
             result.push(marker_config);
         }
+        if (is_only_ups_downs && !is_entry_spot && result.length > 2) {
+            result[idx - 1].content_config.is_value_hidden = true;
+        }
     });
     return result;
 };

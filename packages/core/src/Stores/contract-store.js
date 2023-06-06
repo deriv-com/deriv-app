@@ -15,6 +15,7 @@ import {
     BARRIER_LINE_STYLES,
     DEFAULT_SHADES,
     isBarrierSupported,
+    getAccuBarriersDelayTimeMs,
     getAccuBarriersForContractDetails,
     getAccuTickStreamWithCurrentSpot,
     getEndTime,
@@ -181,6 +182,7 @@ export default class ContractStore extends BaseStore {
             high_barrier,
             low_barrier,
             status,
+            underlying,
         } = contract_info || {};
         const main_barrier = this.barriers_array?.[0];
         if (isAccumulatorContract(contract_info.contract_type)) {
@@ -217,7 +219,7 @@ export default class ContractStore extends BaseStore {
                             this.accumulator_previous_spot = current_spot;
                         }
                     }),
-                320
+                getAccuBarriersDelayTimeMs(underlying)
             );
             this.cached_barriers_data = {
                 current_spot_high_barrier,

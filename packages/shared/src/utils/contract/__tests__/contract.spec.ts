@@ -386,6 +386,17 @@ describe('isAccumulatorContractOpen', () => {
     });
 });
 
+describe('getAccuBarriersDelayTimeMs', () => {
+    it('should return DELAY_TIME_1S_SYMBOL if symbols_1s array includes current symbol', () => {
+        expect(ContractUtils.getAccuBarriersDelayTimeMs(ContractUtils.symbols_1s[0])).toEqual(
+            ContractUtils.DELAY_TIME_1S_SYMBOL
+        );
+    });
+    it('should return DELAY_TIME_1S_SYMBOL * 2 if symbols_1s array does not include current symbol', () => {
+        expect(ContractUtils.getAccuBarriersDelayTimeMs('R_100')).toEqual(ContractUtils.DELAY_TIME_1S_SYMBOL * 2);
+    });
+});
+
 describe('getAccuBarriersForContractDetails', () => {
     const mocked_contract_info: TContractInfo = {
         contract_type: 'ACCU',

@@ -2,10 +2,10 @@ import React from 'react';
 import Wallet from 'Components/containers/wallet';
 import { observer, useStore } from '@deriv/stores';
 import WalletCardsCarousel from 'Components/wallet-cards-carousel';
-// import fake_wallets from '../../constants/wallet-mocked-response';
-// import { WalletCard } from '@deriv/components';
 import { fake_wallet_accounts, sortWalletAccounts } from '@deriv/shared';
 import { useWalletAccounts } from '@deriv/hooks';
+import './slick.scss';
+import './slick-theme.scss';
 
 // TODO: delete it after testing
 type TProps = {
@@ -14,7 +14,6 @@ type TProps = {
 
 const AccountWithWallets = observer(({ show_test_wallets = false }: TProps) => {
     const {
-        // client: { wallet_accounts },
         ui: { is_mobile },
     } = useStore();
 
@@ -25,20 +24,6 @@ const AccountWithWallets = observer(({ show_test_wallets = false }: TProps) => {
     const wallets_to_show: typeof wallet_accounts[] = show_test_wallets
         ? sortWalletAccounts(fake_wallet_accounts)
         : wallet_accounts;
-
-    /*
-account_category?: 'trading' | 'wallets';
-    account_type?: string;
-    balance: string | number;
-    currency: string;
-    is_disabled: boolean;
-    is_virtual: boolean;
-    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
-    loginid: string;
-    icon: string;
-    icon_type: 'fiat' | 'crypto' | 'all';
-    name: string;
-        */
 
     return (
         <React.Fragment>

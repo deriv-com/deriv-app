@@ -1,40 +1,6 @@
-$card-width: 16rem;
-$card-height: 9.6rem;
-$shift-for-edge-cards: calc((100vw - #{$card-width}) / 2);
-
 .wallet-cards-carousel {
     margin-top: 2.4rem;
     margin-bottom: 1.6rem;
-    // margin-inline: -2.4rem;
-    // background-color: var(--general-section-1);
-
-    // @include mobile {
-    //     margin-inline: -2rem;
-    // }
-
-    &__scroll {
-        position: relative;
-        display: flex;
-        overflow: auto;
-        scroll-snap-type: x mandatory;
-
-        &::-webkit-scrollbar {
-            display: none;
-        }
-    }
-
-    &__item {
-        margin-right: 2.4rem;
-        scroll-snap-align: center;
-
-        &--first {
-            margin-left: $shift-for-edge-cards;
-        }
-
-        &--last {
-            margin-right: $shift-for-edge-cards;
-        }
-    }
 
     &__pagination {
         margin-block: 1.6rem;
@@ -63,4 +29,8 @@ $shift-for-edge-cards: calc((100vw - #{$card-width}) / 2);
             }
         }
     }
+}
+
+.slick-slide {
+    padding-inline: 1.2rem;
 }

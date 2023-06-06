@@ -3,8 +3,6 @@ import { ProgressBarOnboarding, Icon, Text, WalletCard } from '@deriv/components
 import { getWalletHeaderButtons } from 'Constants/utils';
 import { useWalletAccounts } from '@deriv/hooks';
 import Slider from 'react-slick';
-import './slick.scss';
-import './slick-theme.scss';
 import './wallet-cards-carousel.scss';
 
 interface WalletCardsCarouselProps {
@@ -22,10 +20,11 @@ export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselPro
     const sliderJSX = React.useMemo(() => {
         const handlerGoTo = (slideNumber: number) => {
             // super();
-            // (ref?.current as unknown)?.slickGoTo(slideNumber - 1);
             // console.log('handlerGoTo: slideNumber = ', slideNumber);
             setActivePage(slideNumber - 1);
             // if (ref !== null && 'current' in ref && 'slickGoTo' in ref.current) ref.current.slickGoTo(slideNumber - 1);
+
+            (ref?.current as unknown)?.slickGoTo(slideNumber - 1);
         };
 
         const settings = {
@@ -77,9 +76,9 @@ export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselPro
         );
     }, [items]);
 
-    React.useEffect(() => {
-        ref.current?.slickGoTo(activePage - 1);
-    }, [activePage]);
+    // React.useEffect(() => {
+    //     ref.current?.slickGoTo(activePage);
+    // }, [activePage]);
     return (
         <div className='wallet-cards-carousel'>
             {sliderJSX}

@@ -51,7 +51,6 @@ const RangeSlider = ({ className, name, value, min_value, max_value, onChange })
     };
 
     const display_value = hover_value || value;
-    const steps = !isNaN(max_value - min_value) ? max_value - min_value : 10;
     return (
         <div
             className={classNames('range-slider', className, {
@@ -63,14 +62,11 @@ const RangeSlider = ({ className, name, value, min_value, max_value, onChange })
                     className='input trade-container__input range-slider__track'
                     id='dt_duration_range_input'
                     max={max_value}
-                    max_value={max_value}
                     min={min_value}
-                    min_value={min_value}
                     name={name}
                     onChange={handleChange}
                     tabIndex='0'
                     type='range'
-                    steps={steps}
                     value={value}
                     aria-label='range-input'
                 />

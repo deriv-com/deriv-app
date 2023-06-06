@@ -1,22 +1,15 @@
+import classNames from 'classnames';
 import React from 'react';
 import { SwipeableProps, useSwipeable } from 'react-swipeable';
 import Icon from '../icon';
-import classNames from 'classnames';
 
 type TSwipeableWrapper = {
     className?: string;
     onChange?: (prop?: number) => void;
     is_disabled?: boolean;
-    is_trade_params_expanded?: boolean;
 } & SwipeableProps;
 
-const SwipeableWrapper = ({
-    children,
-    className,
-    onChange,
-    is_trade_params_expanded = false,
-    ...props
-}: React.PropsWithChildren<TSwipeableWrapper>) => {
+const SwipeableWrapper = ({ children, className, onChange, ...props }: React.PropsWithChildren<TSwipeableWrapper>) => {
     const [active_index, setActiveIndex] = React.useState(0);
 
     React.useEffect(() => {
@@ -51,6 +44,7 @@ const SwipeableWrapper = ({
         onSwipedRight: swipedRight,
         ...props,
     });
+
     return (
         <div className='dc-swipeable'>
             <div
@@ -64,11 +58,7 @@ const SwipeableWrapper = ({
                 {childrenWithWrapperDiv}
             </div>
             {!props.is_disabled && (
-                <nav
-                    className={classNames('dc-swipeable__nav', {
-                        'dc-swipeable__nav--is-expanded': is_trade_params_expanded,
-                    })}
-                >
+                <nav className='dc-swipeable__nav'>
                     <Icon
                         className='dc-swipeable__nav__item'
                         icon='IcChevronDoubleLeft'

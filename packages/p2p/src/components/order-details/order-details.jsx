@@ -1,9 +1,11 @@
 import classNames from 'classnames';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { Button, HintBox, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
+import { useStore, observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
+import { api_error_codes } from '../../constants/api-error-codes.js';
 import Chat from 'Components/orders/chat/chat.jsx';
 import StarRating from 'Components/star-rating';
 import UserRatingButton from 'Components/user-rating-button';
@@ -17,14 +19,16 @@ import PaymentMethodAccordionHeader from './payment-method-accordion-header.jsx'
 import PaymentMethodAccordionContent from './payment-method-accordion-content.jsx';
 import MyProfileSeparatorContainer from '../my-profile/my-profile-separator-container';
 import { setDecimalPlaces, removeTrailingZeros, roundOffDecimal } from 'Utils/format-value';
-import EmailLinkBlockedModal from '../email-link-blocked-modal';
 import { getDateAfterHours } from 'Utils/date-time';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import 'Components/order-details/order-details.scss';
 
 const OrderDetails = observer(() => {
-    const { general_store, my_profile_store, order_store, sendbird_store, buy_sell_store } = useStores();
-    const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
+    const { buy_sell_store, general_store, my_profile_store, order_store, sendbird_store } = useStores();
+    const {
+        notifications: { removeNotificationByKey, removeNotificationMessage, setP2POrderProps },
+    } = useStore();
+    const { hideModal, isCurrentModal, showModal, useRegisterModalProps } = useModalManagerContext();
 
     const {
         account_currency,
@@ -56,12 +60,15 @@ const OrderDetails = observer(() => {
         should_show_lost_funds_banner,
         should_show_order_footer,
         status_string,
+        verification_pending,
     } = order_store?.order_information;
 
     const { chat_channel_url } = sendbird_store;
 
     const [should_expand_all, setShouldExpandAll] = React.useState(false);
     const [remaining_review_time, setRemainingReviewTime] = React.useState(null);
+
+    const history = useHistory();
 
     const page_title = is_buy_order_for_user
         ? localize('Buy {{offered_currency}} order', { offered_currency: account_currency })
@@ -109,15 +116,36 @@ const OrderDetails = observer(() => {
             order_store.setOrderPaymentMethodDetails(undefined);
             order_store.setOrderId(null);
             order_store.setActiveOrder(null);
-            general_store.props.setP2POrderProps({
+            setP2POrderProps({
                 order_id: order_store.order_id,
                 redirectToOrderDetails: general_store.redirectToOrderDetails,
                 setIsRatingModalOpen: is_open => (is_open ? showRatingModal : hideModal),
             });
+            history.replace({
+                search: '',
+                hash: location.hash,
+            });
             buy_sell_store.setIsCreateOrderSubscribed(false);
             buy_sell_store.unsubscribeCreateOrder();
+            sendbird_store.setHasChatError(false);
         };
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+    React.useEffect(() => {
+        if (
+            verification_pending === 0 &&
+            !is_buy_order_for_user &&
+            status_string !== 'Expired' &&
+            order_store.error_code !== api_error_codes.EXCESSIVE_VERIFICATION_REQUESTS
+        ) {
+            showModal({ key: 'EmailLinkExpiredModal' }, { should_stack_modal: isMobile() });
+        }
+
+        if (status_string === 'Expired' && isCurrentModal('EmailLinkExpiredModal'))
+            hideModal({ should_hide_all_modals: true });
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [verification_pending, status_string]);
 
     React.useEffect(() => {
         if (completion_time) {
@@ -134,11 +162,11 @@ const OrderDetails = observer(() => {
             is_user_recommended_previously,
             onClickDone: () => {
                 order_store.setOrderRating(id);
-                general_store.props.removeNotificationMessage({
-                    key: `order-${id}`,
+                removeNotificationMessage({
+                    key: `p2p_order_${id}`,
                 });
-                general_store.props.removeNotificationByKey({
-                    key: `order-${id}`,
+                removeNotificationByKey({
+                    key: `p2p_order_${id}`,
                 });
             },
             onClickSkip: () => {
@@ -172,15 +200,6 @@ const OrderDetails = observer(() => {
                         is_warn
                     />
                 </div>
-            )}
-            {!is_buy_order_for_user && (
-                <React.Fragment>
-                    <EmailLinkBlockedModal
-                        email_link_blocked_modal_error_message={order_store.verification_link_error_message}
-                        is_email_link_blocked_modal_open={order_store.is_email_link_blocked_modal_open}
-                        setIsEmailLinkBlockedModalOpen={order_store.setIsEmailLinkBlockedModalOpen}
-                    />
-                </React.Fragment>
             )}
             <div className='order-details'>
                 <div className='order-details-card'>

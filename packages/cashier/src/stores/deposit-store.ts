@@ -12,7 +12,7 @@ export default class DepositStore {
         });
     }
 
-    container = Constants.containers.deposit;
+    container: string = Constants.containers.deposit;
     error = new ErrorStore();
 
     async onMountDeposit(): Promise<void> {

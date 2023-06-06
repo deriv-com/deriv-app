@@ -8,7 +8,7 @@ import useExchangeRate from './useExchangeRate';
  * first account in the list
  */
 
-const useTotalAccountBalance = (accounts: { balance?: string | number; currency?: string }[]) => {
+const useTotalAccountBalance = (accounts: { balance?: number; currency?: string }[]) => {
     const total_assets_real_currency = useRealTotalAssetCurrency();
     const { getRate } = useExchangeRate();
 
@@ -19,7 +19,7 @@ const useTotalAccountBalance = (accounts: { balance?: string | number; currency?
         const rate = getRate(account.currency || total_assets_real_currency || '');
         const exchange_rate = base_rate / rate;
 
-        return total + (Number(account.balance) || 0) * exchange_rate;
+        return total + (account.balance || 0) * exchange_rate;
     }, 0);
 
     return {

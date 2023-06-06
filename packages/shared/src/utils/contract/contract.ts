@@ -78,7 +78,7 @@ export const getAccuTickStreamWithCurrentSpot = (contract_info: TContractInfo) =
     const { current_spot, current_spot_display_value, current_spot_time, tick_stream } = contract_info || {};
     if (tick_stream?.some(({ epoch }) => epoch === current_spot_time) || !tick_stream?.length) return tick_stream;
     return [
-        ...(tick_stream?.length === 10 ? tick_stream?.slice(1) : tick_stream || []),
+        ...(tick_stream?.length === 10 ? tick_stream.slice(1) : tick_stream || []),
         {
             epoch: current_spot_time,
             tick: current_spot,

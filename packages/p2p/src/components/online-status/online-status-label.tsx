@@ -19,8 +19,7 @@ const OnlineStatusLabel = ({
     const getDifference = (last_seen_online: number) => {
         const start_time = epochToMoment(last_seen_online).unix();
         const end_time = toMoment().unix();
-        const diff = getDiffDuration(start_time, end_time);
-        return diff;
+        return getDiffDuration(start_time, end_time);
     };
 
     const getStatusLabel = (diff: Duration) => {

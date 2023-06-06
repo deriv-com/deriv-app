@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 import { ProgressBarOnboarding, Icon, Text, WalletCard } from '@deriv/components';
 import { getWalletHeaderButtons } from 'Constants/utils';
+import { useWalletAccounts } from '@deriv/hooks';
 import Slider from 'react-slick';
-import './wallet-cards-carousel.scss';
 import './slick.scss';
 import './slick-theme.scss';
-import { useWalletAccounts } from '@deriv/hooks';
+import './wallet-cards-carousel.scss';
 
 interface WalletCardsCarouselProps {
     readonly items: ReturnType<typeof useWalletAccounts>;
@@ -22,11 +22,10 @@ export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselPro
     const sliderJSX = React.useMemo(() => {
         const handlerGoTo = (slideNumber: number) => {
             // super();
+            // (ref?.current as unknown)?.slickGoTo(slideNumber - 1);
             // console.log('handlerGoTo: slideNumber = ', slideNumber);
             setActivePage(slideNumber - 1);
             // if (ref !== null && 'current' in ref && 'slickGoTo' in ref.current) ref.current.slickGoTo(slideNumber - 1);
-
-            (ref?.current as unknown)?.slickGoTo(slideNumber - 1);
         };
 
         const settings = {
@@ -67,7 +66,7 @@ export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselPro
 
         return (
             <Slider {...settings} ref={ref}>
-                {items.map(item => (
+                {items.map((item: ReturnType<typeof useWalletAccounts>[number]) => (
                     <WalletCard
                         key={`${item.name} ${item.currency} ${item.landing_company_shortcode}`}
                         wallet={{ ...item, jurisdiction_title: item.landing_company_shortcode }}
@@ -78,6 +77,9 @@ export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselPro
         );
     }, [items]);
 
+    React.useEffect(() => {
+        ref.current?.slickGoTo(activePage - 1);
+    }, [activePage]);
     return (
         <div className='wallet-cards-carousel'>
             {sliderJSX}

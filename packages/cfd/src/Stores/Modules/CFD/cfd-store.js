@@ -600,7 +600,6 @@ export default class CFDStore extends BaseStore {
                     trading_platform_deposit: 1,
                     platform: CFD_PLATFORMS.DERIVEZ,
                     to_account: this.current_account.login,
-                    amount: 10000,
                 });
                 break;
             }

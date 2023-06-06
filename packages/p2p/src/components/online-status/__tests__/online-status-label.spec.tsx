@@ -115,4 +115,12 @@ describe('<OnlineStatusLabel/>', () => {
 
         expect(screen.getByText('Seen 2 minutes ago')).toBeInTheDocument();
     });
+    it('should show label "Online" when last seen is in seconds', () => {
+        mock_value = moment('2023-05-30T15:40:38+04:00');
+        (toMoment as jest.Mock).mockReturnValue(mock_value);
+        const newprops = { ...props, last_online_time: 1685446791 };
+        render(<OnlineStatusLabel {...newprops} />);
+
+        expect(screen.getByText('Online')).toBeInTheDocument();
+    });
 });

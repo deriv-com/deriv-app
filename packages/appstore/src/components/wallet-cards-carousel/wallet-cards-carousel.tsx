@@ -11,7 +11,7 @@ interface WalletCardsCarouselProps {
 
 export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselProps) => {
     const [activePage, setActivePage] = React.useState(0);
-    const ref = useRef(null);
+    const ref = useRef<Slider | null>(null);
 
     const wallet_btns = getWalletHeaderButtons(items[activePage]?.is_virtual);
 
@@ -30,7 +30,6 @@ export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselPro
             slidesToScroll: 1,
             variableWidth: true,
             arrow: false,
-            focusOnSelect: true,
             speed: 500,
             touchThreshold: 10,
             dotsClass: 'wallet-cards-carousel__pagination',

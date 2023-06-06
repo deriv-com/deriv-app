@@ -281,8 +281,23 @@ export const isAdditionalDocumentValid = (document_type: FormikValues, document_
 
 export const isDocumentNumberValid = (document_number: string, document_type: FormikValues) => {
     const is_document_number_invalid = document_number === document_type.example_format;
-    if (!document_number) {
-        return localize('Please enter your document number. ') + getExampleFormat(document_type.example_format);
+    if (!document_number && document_type.text) {
+        let document_name = '';
+        switch (document_type.text) {
+            case 'Drivers License':
+                document_name = 'Driver License';
+                break;
+            case 'Social Security and National Insurance Trust':
+                document_name = 'SSNIT';
+                break;
+            default:
+                document_name = 'document number';
+                break;
+        }
+        return (
+            localize('Please enter your {{document_name}}. ', { document_name }) +
+            getExampleFormat(document_type.example_format)
+        );
     } else if (is_document_number_invalid) {
         return localize('Please enter a valid ID number.');
     }

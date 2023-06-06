@@ -57,7 +57,6 @@ export const IdvDocSubmitOnSignup = ({
             errors.first_name = validateName(values.first_name);
         }
         if (values.last_name) {
-            console.log('hi');
             errors.last_name = validateName(values.last_name);
         }
 

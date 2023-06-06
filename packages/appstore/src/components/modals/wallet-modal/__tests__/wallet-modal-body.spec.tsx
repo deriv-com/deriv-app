@@ -3,6 +3,12 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import WalletModalBody from '../wallet-modal-body';
+import { StoreProvider, mockStore } from '@deriv/stores';
+
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useFetch: () => ({ data: {} }),
+}));
 
 describe('WalletModalBody', () => {
     let mocked_props: React.ComponentProps<typeof WalletModalBody>;
@@ -12,6 +18,7 @@ describe('WalletModalBody', () => {
             active_tab_index: 0,
             is_dark: false,
             is_demo: true,
+            is_mobile: false,
             setActiveTabIndex: jest.fn(),
             is_wallet_name_visible: true,
             wallet_type: 'demo',
@@ -31,8 +38,14 @@ describe('WalletModalBody', () => {
         expect(screen.getByText('Reset balance')).toBeInTheDocument();
     });
 
-    it('Shoud trigger setActiveTabIndex callback when the user clicked on the tab', () => {
-        renderWithRouter(<WalletModalBody {...mocked_props} />);
+    it('Should trigger setActiveTabIndex callback when the user clicked on the tab', () => {
+        const mock = mockStore({});
+
+        renderWithRouter(
+            <StoreProvider store={mock}>
+                <WalletModalBody {...mocked_props} />
+            </StoreProvider>
+        );
 
         const el_transactions_tab = screen.getByText('Transactions');
         userEvent.click(el_transactions_tab);

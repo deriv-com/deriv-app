@@ -61,19 +61,15 @@ const CFDDbviOnboarding = ({
             const { get_account_status } = response;
 
             if (get_account_status?.authentication) {
-                const { poi_acknowledged_for_vanuatu_maltainvest, poi_acknowledged_for_bvi_labuan, poa_acknowledged } =
+                const { poi_acknowledged_for_maltainvest, poi_acknowledged_for_bvi_labuan_vanuatu, poa_acknowledged } =
                     getAuthenticationStatusInfo(get_account_status);
-                if (jurisdiction_selected_shortcode === Jurisdiction.VANUATU) {
-                    setShowSubmittedModal(
-                        poi_acknowledged_for_vanuatu_maltainvest &&
-                            poa_acknowledged &&
-                            has_submitted_cfd_personal_details
-                    );
-                } else if (jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) {
-                    setShowSubmittedModal(poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged);
+                if (jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) {
+                    setShowSubmittedModal(poi_acknowledged_for_maltainvest && poa_acknowledged);
                 } else
                     setShowSubmittedModal(
-                        poi_acknowledged_for_bvi_labuan && poa_acknowledged && has_submitted_cfd_personal_details
+                        poi_acknowledged_for_bvi_labuan_vanuatu &&
+                            poa_acknowledged &&
+                            has_submitted_cfd_personal_details
                     );
             }
 

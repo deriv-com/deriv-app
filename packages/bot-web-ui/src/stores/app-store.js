@@ -50,10 +50,12 @@ export default class AppStore {
         const recovery_low_risk_cr_eu = traders_hub?.selected_region;
 
         if (!client?.is_logged_in && client?.is_eu_country) {
+            console.log('1');
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
         }
 
         if (!client.is_landing_company_loaded) {
+            console.log('2');
             return false;
         }
 
@@ -63,6 +65,7 @@ export default class AppStore {
             traders_hub.content_flag === ContentFlag.EU_REAL &&
             recovery_low_risk_cr_eu === 'EU'
         ) {
+            console.log('3');
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
         }
 
@@ -70,6 +73,7 @@ export default class AppStore {
             (traders_hub.content_flag === ContentFlag.LOW_RISK_CR_NON_EU && recovery_low_risk_cr_eu === 'Non-EU') ||
             traders_hub.content_flag === ContentFlag.HIGH_RISK_CR
         ) {
+            console.log('4');
             return false;
         }
 
@@ -78,6 +82,7 @@ export default class AppStore {
             traders_hub.content_flag === ContentFlag.LOW_RISK_CR_EU &&
             recovery_low_risk_cr_eu === 'EU'
         ) {
+            console.log('5');
             if (toggleAccountsDialog) {
                 return showDigitalOptionsUnavailableError(
                     common.showError,
@@ -97,6 +102,7 @@ export default class AppStore {
             isEuResidenceWithOnlyVRTC(client.active_accounts) ||
             client.is_options_blocked
         ) {
+            console.log('6');
             if (toggleAccountsDialog) {
                 showDigitalOptionsUnavailableError(
                     common.showError,
@@ -107,8 +113,10 @@ export default class AppStore {
                 );
             }
         } else if (show_default_error && common.has_error) {
+            console.log('7');
             common.setError(false, null);
         }
+        console.log('8');
         return false;
     };
 

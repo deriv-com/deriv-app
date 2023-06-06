@@ -1,3 +1,33 @@
+.jurisdiction-modal {
+    &__content-wrapper {
+        display: flex;
+        flex-direction: column;
+        @include desktop {
+            overflow: scroll;
+        }
+    }
+    &__scrollable-content {
+        @include desktop {
+            overflow: scroll;
+        }
+    }
+    &__footer-content {
+        background-color: var(--general-main-1);
+        @include mobile {
+            position: sticky;
+            bottom: 7rem;
+        }
+    }
+    &__footer-button {
+        background-color: var(--general-main-1);
+        @include mobile {
+            height: 7rem;
+            position: sticky;
+            bottom: 0;
+        }
+    }
+}
+
 .cfd-jurisdiction-card--synthetic,
 .cfd-jurisdiction-card--financial,
 .cfd-jurisdiction-card--all {
@@ -98,12 +128,8 @@
         justify-content: space-between;
         @include mobile {
             min-height: auto;
-            background-color: var(--general-main-1);
             width: 100%;
             height: 100%;
-            position: sticky;
-            bottom: 0;
-            z-index: 12;
         }
     }
 

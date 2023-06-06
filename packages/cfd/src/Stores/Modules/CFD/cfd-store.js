@@ -21,6 +21,7 @@ export default class CFDStore extends BaseStore {
     has_cfd_error = false;
     error_message = '';
 
+    is_account_being_created = false;
     is_cfd_success_dialog_enabled = false;
     is_mt5_financial_stp_modal_open = false;
     is_cfd_password_modal_enabled = false;
@@ -58,6 +59,7 @@ export default class CFDStore extends BaseStore {
             map_type: observable,
             has_cfd_error: observable,
             error_message: observable,
+            is_account_being_created: observable,
             is_cfd_success_dialog_enabled: observable,
             is_mt5_financial_stp_modal_open: observable,
             is_cfd_password_modal_enabled: observable,
@@ -88,6 +90,7 @@ export default class CFDStore extends BaseStore {
             setAccountType: action.bound,
             setCurrentAccount: action.bound,
             setMT5TradeAccount: action.bound,
+            setIsAccountBeingCreated: action.bound,
             setError: action.bound,
             setCFDNewAccount: action.bound,
             setCFDSuccessDialog: action.bound,
@@ -228,6 +231,10 @@ export default class CFDStore extends BaseStore {
         }
     }
 
+    setIsAccountBeingCreated(is_account_being_created) {
+        this.is_account_being_created = is_account_being_created;
+    }
+
     realAccountSignupEndListener() {
         const post_signup = JSON.parse(sessionStorage.getItem('post_real_account_signup'));
         if (post_signup && post_signup.category && post_signup.type) {
@@ -277,7 +284,9 @@ export default class CFDStore extends BaseStore {
                 market_type: this.account_type.type,
                 company: this.jurisdiction_selected_shortcode,
             };
+            // this.setIsAccountBeingCreated(true);
             const response = await this.openCFDAccount(values);
+            // thus.setIsAccountBeingCreated(false);
             if (!response.error) {
                 this.enableCFDPasswordModal();
                 this.setCFDSuccessDialog(true);
@@ -341,6 +350,7 @@ export default class CFDStore extends BaseStore {
     }
 
     openCFDAccount(values) {
+        this.setIsAccountBeingCreated(true);
         return WS.tradingPlatformNewAccount({
             password: CFD_PLATFORMS.DXTRADE ? values.password : '',
             platform: values.platform,

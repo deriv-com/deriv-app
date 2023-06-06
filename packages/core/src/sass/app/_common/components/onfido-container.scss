@@ -1,6 +1,263 @@
 .onfido-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.6rem;
+
+    &-view_wrapper {
+        position: relative;
+        min-width: 32.8rem;
+        min-height: 50rem;
+        margin: auto;
+    }
+
+    .account-form__poi-confirm-example_container {
+        margin-bottom: 0;
+    }
+
+    .onfido-sdk-ui-Modal-inner {
+        border-radius: 0.8rem;
+    }
+
+    @include mobile() {
+        padding: 1.6rem;
+
+        .onfido-sdk-ui-PageTitle-titleSpan {
+            font-size: 2rem;
+        }
+    }
+
     .onfido-sdk-ui-Camera-webcamContainer {
         left: auto;
         width: -webkit-fill-available;
+    }
+
+    &__disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    &__info-message {
+        position: absolute;
+        top: 2.4rem;
+        left: 25%;
+        z-index: 1;
+        @include mobile {
+            top: 1.6rem;
+            left: 3.1rem;
+        }
+    }
+
+    &__status-message {
+        background-color: var(--transparent-correct-message);
+        justify-content: flex-start;
+        transition: transform 0.35s ease, opacity 0.35s linear;
+        transform-origin: top;
+        opacity: 1;
+        width: 98%;
+
+        &--exit {
+            transform: scale(1, 0);
+            opacity: 0;
+        }
+
+        &_container {
+            position: absolute;
+            top: 0.4rem;
+            min-height: 3.4rem;
+            text-align: center;
+            z-index: 1;
+            width: 100%;
+        }
+    }
+}
+
+.account-form {
+    &__poi-confirm-example {
+        display: flex;
+        flex-direction: column;
+        gap: 0.8rem;
+
+        .account-form__fieldset {
+            max-width: unset;
+        }
+
+        &--status-message {
+            margin-top: 1.6rem;
+            text-align: center;
+            width: 100%;
+        }
+        &_container {
+            border: 1px solid var(--general-active);
+            border-radius: 0.8rem;
+
+            @include desktop() {
+                padding: 1.6rem;
+            }
+
+            @include mobile() {
+                margin-bottom: 7rem;
+                padding: 1.6rem 1.6rem 0;
+            }
+
+            .account__scrollbars_container {
+                padding: 0;
+
+                &--grid-layout {
+                    height: auto !important;
+
+                    @include mobile() {
+                        padding: 0 1.6rem;
+                    }
+                }
+
+                .account-form__section {
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-top: 0.8rem;
+
+                    @include mobile() {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+
+        &_wrapper {
+            transition: transform 0.35s ease, opacity 0.35s linear;
+            transform-origin: top;
+            opacity: 1;
+            padding: 1.6rem;
+            max-width: 67rem;
+
+            @include mobile() {
+                padding-inline: 0;
+            }
+
+            &--exit {
+                transform: scale(1, 0);
+                opacity: 0;
+            }
+        }
+
+        .da-inline-note-with-icon {
+            margin-top: 0;
+            padding: 0.8rem;
+            display: flex;
+            background: var(--status-alert-background);
+            border-radius: $BORDER_RADIUS;
+            gap: 0.8rem;
+            line-height: 1.4rem;
+        }
+
+        .account__scrollbars_container--grid-layout {
+            grid-gap: 0;
+        }
+
+        .account-form__section-side-note {
+            @include mobile {
+                margin-top: 1.6rem;
+                justify-content: center;
+                display: flex;
+            }
+        }
+
+        .account-form__section-content {
+            .account-form__fieldset {
+                margin-bottom: 0;
+
+                .dc-input {
+                    margin-bottom: 1rem;
+                }
+
+                .dc-input--error,
+                .dc-input.dc-input--hint {
+                    margin-bottom: 3.8rem;
+                }
+            }
+        }
+
+        &--button {
+            padding: 0;
+            margin: 0;
+            background-color: unset;
+            border: unset;
+
+            &__disabled > * {
+                cursor: not-allowed;
+            }
+        }
+    }
+
+    &__section {
+        display: grid;
+
+        @include desktop() {
+            grid-template-areas: 'section-side-note section-content';
+            grid-template-columns: auto 1fr;
+            grid-gap: 1rem;
+        }
+
+        align-items: center;
+
+        @include mobile {
+            grid-template-areas: 'section-side-note' 'section-content';
+        }
+
+        &-side-note {
+            grid-area: section-side-note;
+
+            .account-poa__upload-box-dashboard {
+                @include mobile {
+                    align-items: flex-start;
+                }
+            }
+
+            @include mobile {
+                margin-top: unset;
+                width: 100%;
+                margin-bottom: 0.8rem;
+            }
+        }
+
+        &-content {
+            grid-area: section-content;
+
+            @include mobile {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.idv-layout {
+    width: 100%;
+    .poi-form-on-signup__fields {
+        .proof-of-identity__container {
+            width: 100%;
+        }
+        .proof-of-identity__fieldset {
+            @include desktop {
+                margin-bottom: unset;
+            }
+            @include mobile {
+                margin-bottom: 2rem;
+            }
+            &-input {
+                @include desktop {
+                    margin-bottom: unset;
+                }
+            }
+        }
+    }
+    .proof-of-identity__inner-container {
+        @include desktop {
+            &--incl-image {
+                display: grid;
+                align-items: center;
+                column-gap: 1.5rem;
+                grid-template-columns: auto 0.5fr;
+            }
+        }
     }
 }

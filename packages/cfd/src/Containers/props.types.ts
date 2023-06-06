@@ -49,6 +49,10 @@ export type TCFDDashboardContainer = {
         demo: string;
         real: string;
     };
+    derivez_tokens: {
+        demo: string;
+        real: string;
+    };
 };
 
 export type TMT5AccountOpeningRealFinancialStpModal = {

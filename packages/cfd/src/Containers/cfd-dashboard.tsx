@@ -137,6 +137,10 @@ export type TCFDDashboardProps = RouteComponentProps & {
         demo: string;
         real: string;
     };
+    derivez_tokens: {
+        demo: string;
+        real: string;
+    };
     has_real_account: boolean;
     NotificationMessages: ({ ...props }) => JSX.Element;
     platform: 'mt5' | 'dxtrade';
@@ -425,6 +429,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
         createCFDAccount,
         current_list,
         dxtrade_tokens,
+        derivez_tokens,
         dxtrade_accounts_list_error,
         isAccountOfTypeDisabled,
         is_accounts_switcher_on,
@@ -705,9 +710,10 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                                     className='cfd-dashboard__maintenance-icon'
                                 />
                                 <div className='cfd-dashboard__maintenance-text'>
-                                    {platform === CFD_PLATFORMS.DXTRADE && (
-                                        <Localize i18n_default_text='Server maintenance starts at 06:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.' />
-                                    )}
+                                    {platform === CFD_PLATFORMS.DXTRADE ||
+                                        (platform === CFD_PLATFORMS.DERIVEZ && (
+                                            <Localize i18n_default_text='Server maintenance starts at 06:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.' />
+                                        ))}
                                     {platform === CFD_PLATFORMS.MT5 && (
                                         <Localize i18n_default_text='Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.' />
                                     )}
@@ -719,6 +725,7 @@ const CFDDashboard = (props: TCFDDashboardProps) => {
                             active_index={active_index}
                             is_dark_mode_on={is_dark_mode_on}
                             dxtrade_tokens={dxtrade_tokens}
+                            derivez_tokens={derivez_tokens}
                         />
                         <CFDTopUpDemoModal platform={platform} />
                         <CFDPasswordModal platform={platform} has_suspended_account={has_cfd_account_error} />
@@ -781,6 +788,7 @@ export default withRouter(
         createCFDAccount: modules.cfd.createCFDAccount,
         current_list: modules.cfd.current_list,
         dxtrade_tokens: modules.cfd.dxtrade_tokens,
+        derivez_tokens: modules.cfd.derivez_tokens,
         landing_companies: client.landing_companies,
         isAccountOfTypeDisabled: client.isAccountOfTypeDisabled,
         is_logged_in: client.is_logged_in,

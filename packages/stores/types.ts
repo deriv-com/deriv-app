@@ -359,9 +359,9 @@ type TTradersHubStore = {
     multipliers_account_status: string;
     financial_restricted_countries: boolean;
     selected_account_type: string;
+    setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
     no_CR_account: boolean;
     no_MF_account: boolean;
-    setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
     toggleAccountTransferModal: () => void;
     is_demo: boolean;
     selectAccountType: (account_type: string) => void;

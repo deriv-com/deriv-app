@@ -1,80 +1,36 @@
-import React from 'react';
-import classNames from 'classnames';
-import { useWalletCardCarousel } from './useCarousel';
+import React, { LegacyRef, useRef } from 'react';
 import { ProgressBarOnboarding, Icon, Text, WalletCard } from '@deriv/components';
 import { getWalletHeaderButtons } from 'Constants/utils';
-import { TWalletAccount } from 'Types';
+// import { TWalletAccount } from 'Types';
 import Slider from 'react-slick';
 import './wallet-cards-carousel.scss';
 import './slick.scss';
 import './slick-theme.scss';
+import { useWalletAccounts } from '@deriv/hooks';
 
 interface WalletCardsCarouselProps {
-    readonly items: TWalletAccount[];
+    readonly items: ReturnType<typeof useWalletAccounts>;
 }
-
-export const WalletCardsCarouselOwn = ({ items }: WalletCardsCarouselProps) => {
-    const { scrollRef, activePageIndex, goTo, pages } = useWalletCardCarousel();
-
-    const wallet_btns = getWalletHeaderButtons(items[activePageIndex]?.is_virtual);
-
-    const walletsJSX = React.useMemo(
-        () =>
-            items.map((item, i) => (
-                <li
-                    key={i}
-                    className={classNames('wallet-cards-carousel__item', {
-                        'wallet-cards-carousel__item--first': i === 0,
-                        'wallet-cards-carousel__item--last': i === pages.length - 1,
-                    })}
-                >
-                    <WalletCard
-                        key={`${item.name} ${item.currency} ${item.landing_company_shortcode}`}
-                        wallet={{ ...item, jurisdiction_title: item.landing_company_shortcode }}
-                        size='medium'
-                    />
-                </li>
-            )),
-        [items, pages.length]
-    );
-
-    return (
-        <div className='wallet-cards-carousel'>
-            <ul className='wallet-cards-carousel__scroll' ref={scrollRef}>
-                {walletsJSX}
-            </ul>
-            <div className='wallet-cards-carousel__pagination'>
-                <ProgressBarOnboarding
-                    step={activePageIndex + 1}
-                    amount_of_steps={pages}
-                    setStep={goTo}
-                    is_transition={true}
-                />
-            </div>
-            <div className='wallet-cards-carousel__buttons'>
-                {wallet_btns.map(btn => (
-                    <div key={btn.name} className='wallet-cards-carousel__buttons-item' onClick={btn.action}>
-                        <div className='wallet-cards-carousel__buttons-item-icon'>
-                            <Icon icon={btn.icon} />
-                        </div>
-                        <Text size='xxxxs' className='wallet-cards-carousel__buttons-item-text'>
-                            {btn.text}
-                        </Text>
-                    </div>
-                ))}
-            </div>
-        </div>
-    );
-};
 
 export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselProps) => {
     const [activePage, setActivePage] = React.useState(0);
+    const ref = useRef(null);
+
+    // console.log('WalletCardsCarousel render, ref = ', ref);
 
     const wallet_btns = getWalletHeaderButtons(items[activePage]?.is_virtual);
 
     const sliderJSX = React.useMemo(() => {
+        const handlerGoTo = (slideNumber: number) => {
+            // super();
+            // console.log('handlerGoTo: slideNumber = ', slideNumber);
+            setActivePage(slideNumber - 1);
+            // if (ref !== null && 'current' in ref && 'slickGoTo' in ref.current) ref.current.slickGoTo(slideNumber - 1);
+
+            (ref?.current as unknown)?.slickGoTo(slideNumber - 1);
+        };
+
         const settings = {
-            className: 'wallet-cards-carousel',
             dots: true,
             infinite: false,
             centerMode: true,
@@ -87,19 +43,23 @@ export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselPro
             speed: 500,
             touchThreshold: 10,
             dotsClass: 'wallet-cards-carousel__pagination',
-            // (dots: ReactNode) => Elemen
+            afterChange: (currentSlide: number) => {
+                setActivePage(currentSlide);
+            },
+            // slickGoTo: n => {
+            //     console.log('slickGoTo: number = ', n);
+            // },
             appendDots: (dots: React.ReactElement[]) => {
                 const active = dots.findIndex(dot => dot.props.className === 'slick-active') || 0;
-
-                setActivePage(active);
+                const steps = dots.map((_, idx) => idx.toString());
 
                 return (
                     <div>
                         <ProgressBarOnboarding
                             step={active + 1}
-                            amount_of_steps={dots}
+                            amount_of_steps={steps}
                             is_transition={true}
-                            // setStep={setActivePage}
+                            setStep={handlerGoTo}
                         />
                     </div>
                 );
@@ -107,8 +67,8 @@ export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselPro
         };
 
         return (
-            <Slider {...settings}>
-                {items.map((item, i) => (
+            <Slider {...settings} ref={ref}>
+                {items.map(item => (
                     <WalletCard
                         key={`${item.name} ${item.currency} ${item.landing_company_shortcode}`}
                         wallet={{ ...item, jurisdiction_title: item.landing_company_shortcode }}
@@ -120,8 +80,8 @@ export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselPro
     }, [items]);
 
     return (
-        <div>
-            <div>{sliderJSX}</div>
+        <div className='wallet-cards-carousel'>
+            {sliderJSX}
             <div className='wallet-cards-carousel__buttons'>
                 {wallet_btns.map(btn => (
                     <div key={btn.name} className='wallet-cards-carousel__buttons-item' onClick={btn.action}>

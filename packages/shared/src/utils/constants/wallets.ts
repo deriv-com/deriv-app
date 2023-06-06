@@ -1,3 +1,5 @@
+// import { TWalletAccount } from 'Types';
+
 // TODO: Refactor using data transformation layer pattern when we will have API for wallets (e.g. wallet.icon)
 export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_modal = false) => {
     switch (currency) {
@@ -33,19 +35,19 @@ export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean
     }
 };
 
-type TWalletAccount = {
-    account_category?: 'trading' | 'wallets';
-    account_type?: string;
-    balance: string | number;
-    currency: string;
-    is_disabled: boolean;
-    is_virtual: boolean;
-    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
-    loginid: string;
-    icon: string;
-    icon_type: 'fiat' | 'crypto' | 'all';
-    name: string;
-};
+// type TWalletAccount = {
+//     account_category?: 'trading' | 'wallets';
+//     account_type?: string;
+//     balance: string | number;
+//     currency: string;
+//     is_disabled: boolean;
+//     is_virtual: boolean;
+//     landing_company_shortcode: 'svg' | 'malta';
+//     loginid: string;
+//     icon: string;
+//     icon_type: 'fiat' | 'crypto' | 'all';
+//     name: string;
+// };
 
 export const sortWalletAccounts = (accounts: TWalletAccount[]) => {
     const fiat = accounts

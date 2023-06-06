@@ -33,3 +33,4 @@ export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useVerifyEmail } from './useVerifyEmail';
 export { default as useContentFlag } from './useContentFlag';
+export { default as useWalletAccounts } from './useWalletAccounts';

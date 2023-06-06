@@ -1,11 +1,12 @@
 import React from 'react';
 import Wallet from 'Components/containers/wallet';
 import { observer, useStore } from '@deriv/stores';
-import { WalletCardsCarousel, WalletCardsCarouselOwn } from 'Components/wallet-cards-carousel/wallet-cards-carousel';
+import WalletCardsCarousel from 'Components/wallet-cards-carousel';
 // import fake_wallets from '../../constants/wallet-mocked-response';
 // import { WalletCard } from '@deriv/components';
 import { fake_wallet_accounts, sortWalletAccounts } from '@deriv/shared';
 import { TWalletAccount } from 'Types';
+import { useWalletAccounts } from '@deriv/hooks';
 
 // TODO: delete it after testing
 type TProps = {
@@ -14,22 +15,35 @@ type TProps = {
 
 const AccountWithWallets = observer(({ show_test_wallets = false }: TProps) => {
     const {
-        client: { wallet_accounts },
+        // client: { wallet_accounts },
         ui: { is_mobile },
     } = useStore();
+
+    const wallet_accounts = useWalletAccounts();
 
     // TODO: We have to create ONE type for desktop and responsive wallet!!!
     const wallets_to_show: TWalletAccount[] = show_test_wallets
         ? sortWalletAccounts(fake_wallet_accounts)
         : wallet_accounts;
 
+    /*
+account_category?: 'trading' | 'wallets';
+    account_type?: string;
+    balance: string | number;
+    currency: string;
+    is_disabled: boolean;
+    is_virtual: boolean;
+    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
+    loginid: string;
+    icon: string;
+    icon_type: 'fiat' | 'crypto' | 'all';
+    name: string;
+        */
+
     return (
         <React.Fragment>
             {is_mobile ? (
-                <>
-                    <WalletCardsCarouselOwn items={wallets_to_show} />
-                    <WalletCardsCarousel items={wallets_to_show} />
-                </>
+                <WalletCardsCarousel items={wallets_to_show} />
             ) : (
                 wallets_to_show.map((account, index) => (
                     <Wallet

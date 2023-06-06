@@ -183,17 +183,3 @@ export type TLinkedTo = {
     balance?: string;
     currency?: string;
 };
-
-export type TWalletAccount = {
-    account_category?: 'trading' | 'wallets';
-    account_type?: string;
-    balance: string | number;
-    currency: string;
-    is_disabled: boolean;
-    is_virtual: boolean;
-    landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
-    loginid: string;
-    icon: string;
-    icon_type: 'fiat' | 'crypto' | 'all';
-    name: string;
-};

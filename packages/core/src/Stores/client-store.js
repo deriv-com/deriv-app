@@ -23,8 +23,6 @@ import {
     setCurrencies,
     toMoment,
     urlForLanguage,
-    getWalletCurrencyIcon,
-    sortWalletAccounts,
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
@@ -308,7 +306,7 @@ export default class ClientStore extends BaseStore {
             is_eu_country: computed,
             is_options_blocked: computed,
             is_multipliers_only: computed,
-            wallet_accounts: computed,
+            // wallet_accounts: computed,
             is_pending_proof_of_ownership: computed,
             resetLocalStorageValues: action.bound,
             getBasicUpgradeInfo: action.bound,
@@ -2714,37 +2712,37 @@ export default class ClientStore extends BaseStore {
         return is_p2p_visible;
     }
 
-    get wallet_accounts() {
-        const wallets = Object.keys(this.accounts)
-            .filter(key => this.accounts[key]?.account_category === 'wallet')
-            .reduce((acc, cur) => {
-                const is_fiat =
-                    !isCryptocurrency(this.accounts[cur]?.currency) && this.accounts[cur]?.currency !== 'USDT';
-                const name = !!this.accounts[cur]?.is_virtual
-                    ? localize('Demo') + ' ' + this.accounts[cur]?.currency
-                    : this.accounts[cur]?.currency;
+    // get wallet_accounts() {
+    //     const wallets = Object.keys(this.accounts)
+    //         .filter(key => this.accounts[key]?.account_category === 'wallet')
+    //         .reduce((acc, cur) => {
+    //             const is_fiat =
+    //                 !isCryptocurrency(this.accounts[cur]?.currency) && this.accounts[cur]?.currency !== 'USDT';
+    //             const name = !!this.accounts[cur]?.is_virtual
+    //                 ? localize('Demo') + ' ' + this.accounts[cur]?.currency
+    //                 : this.accounts[cur]?.currency;
 
-                acc.push({
-                    account_category: this.accounts[cur]?.account_category,
-                    account_type: this.accounts[cur]?.account_type,
-                    balance: this.accounts[cur]?.balance || 0,
-                    currency: this.accounts[cur]?.currency || 'USD',
-                    is_disabled: !!this.accounts[cur]?.is_disabled,
-                    is_virtual: !!this.accounts[cur]?.is_virtual,
-                    landing_company_shortcode: this.accounts[cur]?.landing_company_shortcode,
-                    loginid: cur,
-                    icon: getWalletCurrencyIcon(
-                        !!this.accounts[cur]?.is_virtual ? 'demo' : this.accounts[cur]?.currency,
-                        this.root_store.ui.is_dark_mode_on
-                    ),
-                    icon_type: is_fiat && !this.accounts[cur]?.is_virtual ? 'fiat' : 'crypto',
-                    name,
-                });
+    //             acc.push({
+    //                 account_category: this.accounts[cur]?.account_category,
+    //                 account_type: this.accounts[cur]?.account_type,
+    //                 balance: this.accounts[cur]?.balance || 0,
+    //                 currency: this.accounts[cur]?.currency || 'USD',
+    //                 is_disabled: !!this.accounts[cur]?.is_disabled,
+    //                 is_virtual: !!this.accounts[cur]?.is_virtual,
+    //                 landing_company_shortcode: this.accounts[cur]?.landing_company_shortcode,
+    //                 loginid: cur,
+    //                 icon: getWalletCurrencyIcon(
+    //                     !!this.accounts[cur]?.is_virtual ? 'demo' : this.accounts[cur]?.currency,
+    //                     this.root_store.ui.is_dark_mode_on
+    //                 ),
+    //                 icon_type: is_fiat && !this.accounts[cur]?.is_virtual ? 'fiat' : 'crypto',
+    //                 name,
+    //             });
 
-                return acc;
-            }, []);
+    //             return acc;
+    //         }, []);
 
-        return sortWalletAccounts(wallets);
-    }
+    //     return sortWalletAccounts(wallets);
+    // }
 }
 /* eslint-enable */

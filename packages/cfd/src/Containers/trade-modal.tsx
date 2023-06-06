@@ -199,9 +199,16 @@ const TradeModal = ({
                         size={isMobile() ? 28 : 20}
                         className='cfd-trade-modal__maintenance-icon'
                     />
-                    <div className='cfd-trade-modal__maintenance-text'>
-                        <Localize i18n_default_text='Server maintenance starts at 06:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.' />
-                    </div>
+                    {platform === CFD_PLATFORMS.CTRADER && (
+                        <div className='cfd-trade-modal__maintenance-text'>
+                            <Localize i18n_default_text='Server maintenance occurs every first Saturday of the month from 7 to 10 GMT time. You may experience service disruption during this time.' />
+                        </div>
+                    )}
+                    {platform === CFD_PLATFORMS.DXTRADE && (
+                        <div className='cfd-trade-modal__maintenance-text'>
+                            <Localize i18n_default_text='Server maintenance starts at 06:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.' />
+                        </div>
+                    )}
                 </div>
             </div>
             <div className='cfd-trade-modal__download-center-app'>{downloadCenterAppOption(platform)}</div>

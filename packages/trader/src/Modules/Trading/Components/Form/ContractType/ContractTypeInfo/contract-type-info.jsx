@@ -18,9 +18,8 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
     const has_toggle_buttons = carousel_index !== 'accumulator' && carousel_index !== 'vanilla';
     const is_description_tab_selected = selected_tab === 'description';
     const is_glossary_tab_selected = selected_tab === 'glossary';
-    // // TODO uncomment this to enable switching tab transition/animation when all the glossary contents are ready
-    // const width = isMobile() ? '328' : '528';
-    const scroll_bar_height = is_description_tab_selected ? '510px' : '440px';
+    const width = isMobile() ? '328' : '528';
+    const scroll_bar_height = has_toggle_buttons ? '560px' : '464px';
 
     const handleItemSelect = active_index => {
         setCarouselIndex(contract_types[active_index].value);
@@ -29,6 +28,22 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
             setSelectedTab('description');
         }
     };
+    const selected_contract_type = contract_types.find(type => type.value === carousel_index);
+
+    const button = (
+        <div className='contract-type-info__trade-type-btn-wrapper'>
+            <Button
+                id={`dt_contract_info_${selected_contract_type?.value}_btn`}
+                className='contract-type-info__button'
+                onClick={e => handleSelect(selected_contract_type, e)}
+                text={localize('Choose {{contract_type}}', {
+                    contract_type: selected_contract_type?.text,
+                    interpolation: { escapeValue: false },
+                })}
+                secondary
+            />
+        </div>
+    );
 
     const cards = contract_types.map((type, idx) => {
         return (
@@ -44,11 +59,10 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                         'contract-type-info__scrollbars-glossary contract-type-info__scrollbars-glossary--active ':
                             is_glossary_tab_selected,
                     })}
-                    // TODO uncomment this to enable switching tab transition/animation when all the glossary contents are ready
-                    // style={{
-                    //     left: `${is_description_tab_selected ? `-${width}` : width}px`,
-                    //     transform: `translate3d(${is_description_tab_selected ? width : `-${width}`}px, 0, 0)`,
-                    // }}
+                    style={{
+                        left: `${is_description_tab_selected ? `-${width}` : width}px`,
+                        transform: `translate3d(${is_description_tab_selected ? width : `-${width}`}px, 0, 0)`,
+                    }}
                     height={isMobile() ? '' : scroll_bar_height}
                     autohide={false}
                 >
@@ -71,17 +85,6 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                         ) : null}
                     </div>
                 </ThemedScrollbars>
-
-                <Button
-                    id={`dt_contract_info_${type.value}_btn`}
-                    className='contract-type-info__button'
-                    onClick={e => handleSelect(type, e)}
-                    text={localize('Choose {{contract_type}}', {
-                        contract_type: type.text,
-                        interpolation: { escapeValue: false },
-                    })}
-                    secondary
-                />
             </div>
         );
     });
@@ -106,14 +109,19 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                 </div>
             )}
             <Carousel
-                className='contract-type-info'
+                className={classNames('contract-type-info', {
+                    'contract-type-info--has-toggle-buttons': has_toggle_buttons,
+                })}
                 bullet_color='var(--text-disabled)'
                 active_bullet_color='var(--brand-red-coral)'
                 onItemSelect={handleItemSelect}
                 initial_index={initial_index}
                 list={cards}
                 width={isMobile() ? 328 : 528}
+                show_bullet={false}
+                show_nav={false}
             />
+            {button}
         </React.Fragment>
     );
 };

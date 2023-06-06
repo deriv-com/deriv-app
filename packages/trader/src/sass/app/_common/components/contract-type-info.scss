@@ -5,9 +5,22 @@
     display: flex;
     flex-direction: column;
 
+    @include mobile {
+        height: calc(100% - 148.5px);
+        &--has-toggle-buttons {
+            height: calc(100% - 72px);
+        }
+    }
+
     & .dc-carousel {
         width: 100%;
 
+        &__wrapper {
+            padding: 0;
+        }
+        &__card {
+            padding-bottom: 0;
+        }
         &__icon {
             &--disabled {
                 pointer-events: none;
@@ -25,24 +38,22 @@
                 margin: 1.6rem auto;
                 padding: 0 2rem;
             }
+            &__container {
+                height: 100%;
+            }
+            &__box {
+                height: 100%;
+            }
         }
     }
     &__card {
-        height: calc(680px - 117px);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
 
-        &--has-toggle-buttons {
-            max-height: calc(680px - 190px);
-        }
         @include mobile {
-            height: calc(89vh - 107px);
+            height: 100%;
             padding: 0;
-
-            &--has-toggle-buttons {
-                max-height: calc(89vh - 182px);
-            }
         }
     }
     &__content {
@@ -188,9 +199,20 @@
             }
         }
     }
+    &__trade-type-btn-wrapper {
+        display: flex;
+        justify-content: center;
+        border-top: 2px solid var(--general-section-1);
+        padding: 1.6rem 2.4rem;
+        margin-top: 1.6rem;
+
+        @include mobile {
+            margin-top: 0;
+        }
+    }
     &__button {
-        margin-top: 2.4rem;
         flex-shrink: 0;
+        flex-grow: 1;
         @include mobile {
             width: 100%;
             padding: 1.5rem 0;

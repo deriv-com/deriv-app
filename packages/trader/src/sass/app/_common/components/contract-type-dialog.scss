@@ -102,3 +102,9 @@
         pointer-events: auto;
     }
 }
+
+.dc-mobile-dialog {
+    &__content {
+        height: 100%;
+    }
+}

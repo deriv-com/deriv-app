@@ -34,7 +34,7 @@ const TradingAppCard = ({
     openFailedVerificationModal,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
     const { common, traders_hub } = useStores();
-    const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
+    const { is_eu_user, is_demo_low_risk, content_flag, is_real, account_is_being_created } = traders_hub;
     const { current_language } = common;
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
@@ -133,7 +133,7 @@ const TradingAppCard = ({
                         onAction={onAction}
                         is_external={is_external}
                         new_tab={new_tab}
-                        is_buttons_disabled={!!mt5_acc_auth_status}
+                        is_buttons_disabled={!!mt5_acc_auth_status || !!account_is_being_created}
                         is_real={is_real}
                     />
                 </div>

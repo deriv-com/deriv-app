@@ -114,8 +114,8 @@ export default class AppStore {
 
     onMount() {
         const { blockly_store } = this.root_store;
-        const { client, common, ui, traders_hub } = this.core;
-        this.showDigitalOptionsMaltainvestError(client, common, ui);
+        const { client, ui, traders_hub } = this.core;
+        this.showDigitalOptionsMaltainvestError();
 
         blockly_store.setLoading(true);
         DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store, ui.is_mobile).then(() => {
@@ -135,12 +135,12 @@ export default class AppStore {
 
         when(
             () => [client?.should_show_eu_error, client?.is_landing_company_loaded],
-            () => this.showDigitalOptionsMaltainvestError(client, common, ui)
+            () => this.showDigitalOptionsMaltainvestError()
         );
 
         reaction(
             () => traders_hub?.content_flag,
-            () => this.showDigitalOptionsMaltainvestError(client, common, ui)
+            () => this.showDigitalOptionsMaltainvestError()
         );
     }
 
@@ -219,13 +219,13 @@ export default class AppStore {
     }
 
     registerOnAccountSwitch() {
-        const { client, common } = this.core;
+        const { client } = this.core;
 
         this.disposeSwitchAccountListener = reaction(
             () => client.switch_broadcast,
             switch_broadcast => {
                 if (!switch_broadcast) return;
-                this.showDigitalOptionsMaltainvestError(client, common);
+                this.showDigitalOptionsMaltainvestError();
 
                 const { active_symbols, contracts_for } = ApiHelpers.instance;
 

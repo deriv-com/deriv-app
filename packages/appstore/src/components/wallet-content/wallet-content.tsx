@@ -4,13 +4,13 @@ import ContentDivider from './wallet-content-divider';
 import WalletCfdsListing from './wallet-cfds-listing';
 import WalletOptionsAndMultipliersListing from './wallet-option-multipliers-listing';
 import EUDisclaimer from 'Components/eu-disclaimer';
-import { useWalletAccounts } from '@deriv/hooks';
+import { TWalletAccount } from 'Types';
 import './wallet-content.scss';
 
 type TProps = {
     is_demo: boolean;
     is_eu: boolean;
-    wallet_account: ReturnType<typeof useWalletAccounts>;
+    wallet_account: TWalletAccount;
 };
 
 const WalletContent = React.memo(({ is_demo, is_eu, wallet_account }: TProps) => {

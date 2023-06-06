@@ -6,10 +6,10 @@ import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
 import { useStore, observer } from '@deriv/stores';
-import { useWalletAccounts } from '@deriv/hooks';
+import { TWalletAccount } from 'Types';
 
 type TProps = {
-    wallet_account: ReturnType<typeof useWalletAccounts>;
+    wallet_account: TWalletAccount;
 };
 
 const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps) => {

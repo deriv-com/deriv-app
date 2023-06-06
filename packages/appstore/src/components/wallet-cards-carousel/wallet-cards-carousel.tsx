@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
 import { ProgressBarOnboarding, Icon, Text, WalletCard } from '@deriv/components';
 import { getWalletHeaderButtons } from 'Constants/utils';
-import { useWalletAccounts } from '@deriv/hooks';
+import { TWalletAccount } from 'Types';
 import Slider from 'react-slick';
 import './wallet-cards-carousel.scss';
 
 interface WalletCardsCarouselProps {
-    readonly items: ReturnType<typeof useWalletAccounts>;
+    readonly items: TWalletAccount[];
 }
 
 export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselProps) => {
@@ -55,7 +55,7 @@ export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselPro
 
         return (
             <Slider {...settings} ref={ref}>
-                {items.map((item: ReturnType<typeof useWalletAccounts>[number]) => (
+                {items.map((item: TWalletAccount) => (
                     <WalletCard
                         key={`${item.name} ${item.currency} ${item.landing_company_shortcode}`}
                         wallet={{ ...item, jurisdiction_title: item.landing_company_shortcode }}

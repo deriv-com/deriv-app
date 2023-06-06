@@ -4,10 +4,10 @@ import CurrencySwitcherContainer from 'Components/containers/currency-switcher-c
 import { Button, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { routes, formatMoney } from '@deriv/shared';
-import { useWalletAccounts } from '@deriv/hooks';
+import { TWalletAccount } from 'Types';
 
 type TProps = {
-    wallet_account: ReturnType<typeof useWalletAccounts>;
+    wallet_account: TWalletAccount;
 };
 
 const WalletTransferBlock = ({ wallet_account }: TProps) => {

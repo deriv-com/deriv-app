@@ -4,15 +4,14 @@ import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import { formatMoney, isCryptocurrency, routes } from '@deriv/shared';
 import TradingAppCard from 'Components/containers/trading-app-card';
-import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
+import { AvailableAccount, TDetailsOfEachMT5Loginid, TWalletAccount } from 'Types';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
 import { useStore, observer } from '@deriv/stores';
 import { useHistory } from 'react-router';
-import { useWalletAccounts } from '@deriv/hooks';
 
 type TProps = {
-    wallet_account: ReturnType<typeof useWalletAccounts>;
+    wallet_account: TWalletAccount;
     fiat_wallet_currency?: string;
 };
 

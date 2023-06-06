@@ -5,14 +5,14 @@ import TitleCardLoader from 'Components/pre-loader/title-card-loader';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import WalletTransferBlock from 'Components/wallet-content/wallet-transfer-block';
-import { useWalletAccounts } from '@deriv/hooks';
+import { TWalletAccount } from 'Types';
 import './listing-container.scss';
 
 type ListingContainerProps = {
     title: ReactNode;
     description: ReactNode;
     is_deriv_platform?: boolean;
-    wallet_account: ReturnType<typeof useWalletAccounts>;
+    wallet_account: TWalletAccount;
     className?: string;
     is_outside_grid_container?: boolean;
 };

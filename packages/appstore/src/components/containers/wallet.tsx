@@ -4,12 +4,11 @@ import WalletHeader from 'Components/wallet-header';
 import WalletContent from 'Components/wallet-content';
 import { CSSTransition } from 'react-transition-group';
 import { formatMoney } from '@deriv/shared';
-import { TWalletCurrency, TWalletShortcode } from 'Types';
-import { useWalletAccounts } from '@deriv/hooks';
+import { TWalletAccount, TWalletCurrency, TWalletShortcode } from 'Types';
 import './wallet.scss';
 
 type TWallet = {
-    wallet_account: ReturnType<typeof useWalletAccounts>;
+    wallet_account: TWalletAccount;
     is_open_wallet?: boolean;
 };
 

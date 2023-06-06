@@ -61,9 +61,6 @@ const WalletTransfer = observer(() => {
                     // console.log('submit');
                 }}
                 validateOnBlur={false}
-                // validate={values => {
-                //     console.log('values', values);
-                // }}
             >
                 {({ setFieldValue, values }) => {
                     const onSelectToAccount = React.useCallback(
@@ -78,7 +75,6 @@ const WalletTransfer = observer(() => {
                         <Form noValidate>
                             <div className='wallet-transfer__tiles-container'>
                                 <div className='wallet-transfer__tile'>
-                                    {/* <Field name='to_amount' validate={validateAmount}> */}
                                     <Field name='from_amount'>
                                         {({ field }: FieldProps<number>) => (
                                             <AmountInput
@@ -116,7 +112,6 @@ const WalletTransfer = observer(() => {
                                     />
                                 </div>
                                 <div className='wallet-transfer__tile'>
-                                    {/* <Field name='to_amount' validate={validateAmount}> */}
                                     <Field name='to_amount'>
                                         {({ field }: FieldProps<number>) => (
                                             <AmountInput

@@ -409,7 +409,7 @@ describe('getAccuBarriersForContractDetails', () => {
             accu_low_barrier: contract_info.current_spot_low_barrier,
         });
     });
-    it('should return an object with high_barrier as accu_high_barrier & low_barrier as accu_low_barrier when status is not open', () => {
+    it('should return an object { accu_high_barrier: high_barrier, accu_low_barrier: low_barrier } if status is not open', () => {
         const contract_info: TContractInfo = {
             ...mocked_contract_info,
             current_spot: 1232.555,
@@ -419,7 +419,7 @@ describe('getAccuBarriersForContractDetails', () => {
         };
         expect(ContractUtils.getAccuBarriersForContractDetails(contract_info)).toEqual(previous_spot_barriers);
     });
-    it('should return an object with high_barrier as accu_high_barrier & low_barrier as accu_low_barrier when current spot has crossed high barrier', () => {
+    it('should return an object { accu_high_barrier: high_barrier, accu_low_barrier: low_barrier } if current spot has crossed high barrier', () => {
         const contract_info: TContractInfo = {
             ...mocked_contract_info,
             current_spot: 1232.777,
@@ -428,7 +428,7 @@ describe('getAccuBarriersForContractDetails', () => {
         };
         expect(ContractUtils.getAccuBarriersForContractDetails(contract_info)).toEqual(previous_spot_barriers);
     });
-    it('should return an object with high_barrier as accu_high_barrier & low_barrier as accu_low_barrier when current spot has crossed low barrier', () => {
+    it('should return an object { accu_high_barrier: high_barrier, accu_low_barrier: low_barrier } if current spot has crossed low barrier', () => {
         const contract_info: TContractInfo = {
             ...mocked_contract_info,
             current_spot: 1232.111,
@@ -437,7 +437,7 @@ describe('getAccuBarriersForContractDetails', () => {
         };
         expect(ContractUtils.getAccuBarriersForContractDetails(contract_info)).toEqual(previous_spot_barriers);
     });
-    it('should return an object with high_barrier as accu_high_barrier & low_barrier as accu_low_barrier when exit_tick is present', () => {
+    it('should return an object { accu_high_barrier: high_barrier, accu_low_barrier: low_barrier } if exit_tick is present', () => {
         const contract_info: TContractInfo = {
             ...mocked_contract_info,
             current_spot: 1232.555,
@@ -457,7 +457,7 @@ describe('getAccuBarriersForContractDetails', () => {
 });
 
 describe('getAccuTickStreamWithCurrentSpot', () => {
-    const mocked_tick_stream: TTickItem[] = [
+    const mocked_tick_stream = [
         {
             epoch: 1686067582,
             tick: 1232.666,
@@ -473,39 +473,60 @@ describe('getAccuTickStreamWithCurrentSpot', () => {
             tick: 1232.222,
             tick_display_value: '1232.222',
         },
+        {
+            epoch: 1686067588,
+            tick: 1232.333,
+            tick_display_value: '1232.333',
+        },
+        {
+            epoch: 1686067590,
+            tick: 1232.111,
+            tick_display_value: '1232.111',
+        },
     ];
+    const mocked_current_tick = {
+        epoch: 1686067592,
+        tick: 1232.555,
+        tick_display_value: '1232.555',
+    };
     it('should return tick_stream array of ticks including current spot if current spot is missing from non-empty tick_stream for ACCU contract', () => {
         const contract_info: TContractInfo = {
-            current_spot: 1232.555,
-            current_spot_display_value: '1232.555',
-            current_spot_time: 1686067588,
+            current_spot: mocked_current_tick.tick,
+            current_spot_display_value: mocked_current_tick.tick_display_value,
+            current_spot_time: mocked_current_tick.epoch,
             tick_stream: mocked_tick_stream,
         };
         expect(ContractUtils.getAccuTickStreamWithCurrentSpot(contract_info)).toEqual([
             ...mocked_tick_stream,
-            {
-                epoch: 1686067588,
-                tick: 1232.555,
-                tick_display_value: '1232.555',
-            },
+            mocked_current_tick,
         ]);
     });
-    it('should return unchanged tick_stream array of ticks if current spot is present in the tick_stream', () => {
+    it('should return a 10-tick array with the 1st tick removed & current spot added as its last tick if initial tick_stream is a 10-tick array missing current spot', () => {
         const contract_info: TContractInfo = {
-            current_spot: 1232.222,
-            current_spot_display_value: '1232.222',
-            current_spot_time: 1686067586,
+            current_spot: mocked_current_tick.tick,
+            current_spot_display_value: mocked_current_tick.tick_display_value,
+            current_spot_time: mocked_current_tick.epoch,
+            tick_stream: [...mocked_tick_stream, ...mocked_tick_stream],
+        };
+        expect(ContractUtils.getAccuTickStreamWithCurrentSpot(contract_info)).toEqual([
+            ...mocked_tick_stream.slice(1),
+            ...mocked_tick_stream,
+            mocked_current_tick,
+        ]);
+        expect(ContractUtils.getAccuTickStreamWithCurrentSpot(contract_info)?.length).toEqual(10);
+    });
+    it('should return unchanged tick_stream array of ticks if current spot is present at the end of tick_stream', () => {
+        const last_tick = mocked_tick_stream[mocked_tick_stream.length - 1];
+        const contract_info: TContractInfo = {
+            current_spot: last_tick.tick,
+            current_spot_display_value: last_tick.tick_display_value,
+            current_spot_time: last_tick.epoch,
             tick_stream: mocked_tick_stream,
         };
         expect(ContractUtils.getAccuTickStreamWithCurrentSpot(contract_info)).toEqual(mocked_tick_stream);
     });
     it('should return unchanged tick_stream array of ticks if tick_stream is empty', () => {
-        const contract_info: TContractInfo = {
-            current_spot: 1232.222,
-            current_spot_display_value: '1232.222',
-            current_spot_time: 1686067586,
-            tick_stream: [],
-        };
+        const contract_info: TContractInfo = { tick_stream: [] };
         expect(ContractUtils.getAccuTickStreamWithCurrentSpot(contract_info)).toEqual([]);
     });
 });

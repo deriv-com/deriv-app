@@ -78,6 +78,7 @@ const TradingAppCard = ({
             window.open(getStaticUrl(`/dmt5`, {}, false, true));
         else if (platform === CFD_PLATFORMS.MT5 && availability !== 'EU') window.open(getStaticUrl(`/dmt5`));
         else if (platform === CFD_PLATFORMS.DXTRADE) window.open(getStaticUrl(`/derivx`));
+        else if (platform === CFD_PLATFORMS.DERIVEZ) window.open(getStaticUrl(`/derivez`));
         else if (icon === 'Options' && !is_eu_user) window.open(getStaticUrl(`/trade-types/options/`));
         else;
     };

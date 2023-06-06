@@ -59,7 +59,6 @@ export type TJournalProps = {
     contract_stage: number;
     filtered_messages: TFilterMessageProps | [];
     is_drawer_open: boolean;
-    is_mobile: boolean;
     is_stop_button_visible: boolean;
     unfiltered_messages: TFilterMessageProps;
     checked_filters: TCheckedFilters;

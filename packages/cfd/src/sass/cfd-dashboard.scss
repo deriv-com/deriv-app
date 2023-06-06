@@ -504,13 +504,13 @@
         background-color: var(--general-main-1);
         @include mobile {
             position: sticky;
-            bottom: 7rem;
+            bottom: 7.2rem;
         }
     }
     &__footer-button {
         background-color: var(--general-main-1);
         @include mobile {
-            height: 7rem;
+            height: 7.2rem;
             position: sticky;
             bottom: 0;
         }

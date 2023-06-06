@@ -69,8 +69,8 @@ const AppContent = observer(() => {
         app.setDBotEngineStores(combinedStore);
         ApiHelpers.setInstance(app.api_helpers_store);
         setIsLoading(true);
-        const { active_symbols } = ApiHelpers.instance;
         if (!client.is_logged_in) {
+            const { active_symbols } = ApiHelpers.instance;
             active_symbols.retrieveActiveSymbols(true).then(() => {
                 setIsLoading(false);
             });
@@ -81,13 +81,9 @@ const AppContent = observer(() => {
     // use is_landing_company_loaded to know got details of accounts to identify should show an error or not
     if (client.is_landing_company_loaded) {
         const { active_symbols } = ApiHelpers.instance;
-        if (active_symbols) {
-            active_symbols.retrieveActiveSymbols(true).then(() => {
-                if (client.is_landing_company_loaded) {
-                    setIsLoading(false);
-                }
-            });
-        }
+        active_symbols.retrieveActiveSymbols(true).then(() => {
+            setIsLoading(false);
+        });
     }
 
     React.useEffect(() => {

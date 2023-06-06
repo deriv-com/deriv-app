@@ -16,7 +16,7 @@ describe('usePaymentAgentTransferVisible', () => {
         const mock = mockStore({});
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { is_authenticated_payment_agent: 0 } });
+        mockUseFetch.mockReturnValue({ data: { get_settings: { is_authenticated_payment_agent: 0 } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -33,7 +33,7 @@ describe('usePaymentAgentTransferVisible', () => {
         const mock = mockStore({});
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { is_authenticated_payment_agent: 1 } });
+        mockUseFetch.mockReturnValue({ data: { get_settings: { is_authenticated_payment_agent: 1 } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>

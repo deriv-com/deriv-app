@@ -22,7 +22,7 @@ const SideNote: React.FC<React.PropsWithChildren<TProps>> = ({ title, descriptio
                         {title}
                     </Text>
                 )}
-                {description && (
+                {(description || children) && (
                     <Text size={content_font_size}>
                         {description && <span>{description}</span>}
                         {children}

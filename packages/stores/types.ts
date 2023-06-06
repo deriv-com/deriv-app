@@ -57,7 +57,7 @@ type BrandConfig = {
 };
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
-    balance?: string | number;
+    balance?: number;
     landing_company_shortcode?: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     is_virtual: number;
     account_category?: 'wallet' | 'trading';
@@ -169,8 +169,6 @@ type TNotification =
     | TNotificationMessage
     | ((withdrawal_locked: boolean, deposit_locked: boolean) => TNotificationMessage)
     | ((excluded_until: number) => TNotificationMessage);
-
-type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
 
 type TClientStore = {
     accounts: { [k: string]: TActiveAccount };
@@ -436,7 +434,7 @@ type TTradersHubStore = {
     available_platforms: BrandConfig[];
     CFDs_restricted_countries: boolean;
     is_demo_low_risk: boolean;
-    selected_region: 'Non-EU' | 'EU' | 'All';
+    selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
     available_dxtrade_accounts: AvailableAccount[];
 };

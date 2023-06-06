@@ -1,143 +1,77 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
-import { createBrowserHistory } from 'history';
 import userEvent from '@testing-library/user-event';
-import { Router } from 'react-router';
 import MultiActionButtonGroup from '../multi-action-button-group';
+import { createBrowserHistory } from 'history';
+import { Router } from 'react-router';
 import { routes } from '@deriv/shared';
 
 const mock_props = {
-    link_to: routes.trade,
+    link_to: routes.trader,
     onAction: jest.fn(),
     is_buttons_disabled: false,
-    is_real: false,
+    is_real: true,
 };
+
+type TMockProps = {
+    link_to: string;
+    onAction: jest.Mock;
+    is_buttons_disabled: boolean;
+    is_real: boolean;
+};
+
+jest.mock('Components/trade-button', () => {
+    const TradeButton = ({ link_to, onAction, is_buttons_disabled }: TMockProps) => (
+        <a href={link_to}>
+            <button onClick={onAction} disabled={is_buttons_disabled}>
+                Open
+            </button>
+        </a>
+    );
+    return TradeButton;
+});
 
 describe('Test Cases for Multi Action Button Group:', () => {
     it('should render the component', () => {
-        const history = createBrowserHistory();
-        const mock = mockStore({
-            modules: {
-                cfd: {
-                    dxtrade_tokens: '',
-                },
-            },
-            traders_hub: {
-                is_demo: true,
-            },
-        });
-        render(
-            <StoreProvider store={mock}>
-                <Router history={history}>
-                    <MultiActionButtonGroup {...mock_props} />
-                </Router>
-            </StoreProvider>
-        );
+        render(<MultiActionButtonGroup {...mock_props} />);
 
-        expect(screen.getByText('Top up')).toBeInTheDocument();
         expect(screen.getByText('Open')).toBeInTheDocument();
-    });
-
-    it('should render buttons accordingly', () => {
-        const history = createBrowserHistory();
-        const mock = mockStore({
-            modules: {
-                cfd: {
-                    dxtrade_tokens: '',
-                },
-            },
-            traders_hub: {
-                is_demo: true,
-            },
-        });
-        render(
-            <StoreProvider store={mock}>
-                <Router history={history}>
-                    <MultiActionButtonGroup {...mock_props} is_real />
-                </Router>
-            </StoreProvider>
-        );
-
         expect(screen.getByText('Transfer')).toBeInTheDocument();
+    });
+
+    it('should render "Top up" button instead of "Transfer"', () => {
+        render(<MultiActionButtonGroup {...mock_props} is_real={false} />);
+
         expect(screen.getByText('Open')).toBeInTheDocument();
+        expect(screen.getByText('Top up')).toBeInTheDocument();
+        expect(screen.queryByText('Transfer')).not.toBeInTheDocument();
     });
 
-    it('should disable "Transfer" button', () => {
-        const history = createBrowserHistory();
-        const mock = mockStore({
-            modules: {
-                cfd: {
-                    dxtrade_tokens: '',
-                },
-            },
-            traders_hub: {
-                is_demo: true,
-            },
-        });
-        render(
-            <StoreProvider store={mock}>
-                <Router history={history}>
-                    <MultiActionButtonGroup {...mock_props} is_real is_buttons_disabled />
-                </Router>
-            </StoreProvider>
-        );
+    it('should disable "Open" button', () => {
+        render(<MultiActionButtonGroup {...mock_props} is_buttons_disabled />);
 
-        const transfer_btn = screen.getByRole('button', { name: 'Transfer' });
-        const trade_btn = screen.getByRole('button', { name: 'Open' });
-
-        expect(transfer_btn).toBeDisabled();
-        expect(trade_btn).toBeEnabled();
+        const open_btn = screen.getByText('Open');
+        expect(open_btn).toBeDisabled();
     });
 
-    it('should execute function after "Transfer" button is clicked', () => {
-        const history = createBrowserHistory();
-        const mock = mockStore({
-            modules: {
-                cfd: {
-                    dxtrade_tokens: '',
-                },
-            },
-            traders_hub: {
-                is_demo: true,
-            },
-        });
-        render(
-            <StoreProvider store={mock}>
-                <Router history={history}>
-                    <MultiActionButtonGroup {...mock_props} is_real />
-                </Router>
-            </StoreProvider>
-        );
+    it('should execute function when clicking on "Open"', () => {
+        render(<MultiActionButtonGroup {...mock_props} />);
 
-        const transfer_btn = screen.getByText('Transfer');
-        userEvent.click(transfer_btn);
-
+        const open_btn = screen.getByText('Open');
+        userEvent.click(open_btn);
         expect(mock_props.onAction).toHaveBeenCalled();
     });
 
     it('should redirect to Trade page after "Open" button is clicked', () => {
         const history = createBrowserHistory();
-        const mock = mockStore({
-            modules: {
-                cfd: {
-                    dxtrade_tokens: '',
-                },
-            },
-            traders_hub: {
-                is_demo: true,
-            },
-        });
         render(
-            <StoreProvider store={mock}>
-                <Router history={history}>
-                    <MultiActionButtonGroup {...mock_props} is_real />
-                </Router>
-            </StoreProvider>
+            <Router history={history}>
+                <MultiActionButtonGroup {...mock_props} is_real />
+            </Router>
         );
 
-        const trade_btn = screen.getByText('Open');
-        userEvent.click(trade_btn);
+        const open_btn = screen.getByText('Open');
+        userEvent.click(open_btn);
 
         expect(history.location.pathname).toBe(routes.trade);
     });

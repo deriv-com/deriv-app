@@ -54,15 +54,17 @@ const CFDsListing = () => {
     } = traders_hub;
 
     const { toggleCompareAccountsModal, setAccountType } = cfd;
-    const { is_landing_company_loaded, real_account_creation_unlock_date } = client;
+    const { is_landing_company_loaded, real_account_creation_unlock_date, is_idv_revoked } = client;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
     const has_no_real_account = !has_any_real_account;
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
+    const checkIfIDVRevoked = (current_acc_status: string) => is_idv_revoked && current_acc_status === 'poa_failed';
+
     const getMT5AccountAuthStatus = (current_acc_status: string) => {
-        if (current_acc_status === 'proof_failed') {
+        if (current_acc_status === 'proof_failed' || checkIfIDVRevoked(current_acc_status)) {
             return 'failed';
         } else if (current_acc_status === 'verification_pending') {
             return 'pending';
@@ -142,6 +144,7 @@ const CFDsListing = () => {
                         const has_mt5_account_status = existing_account.status
                             ? getMT5AccountAuthStatus(existing_account.status)
                             : null;
+
                         return (
                             <TradingAppCard
                                 action_type={existing_account.action_type}

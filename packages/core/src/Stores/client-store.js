@@ -278,6 +278,7 @@ export default class ClientStore extends BaseStore {
             is_pending_authentication: computed,
             is_financial_account: computed,
             is_age_verified: computed,
+            is_idv_revoked: computed,
             landing_company_shortcode: computed,
             landing_company: computed,
             is_valid_login: computed,
@@ -777,6 +778,10 @@ export default class ClientStore extends BaseStore {
 
     get is_age_verified() {
         return this.account_status?.status?.some(status => status === 'age_verification');
+    }
+
+    get is_idv_revoked() {
+        return this.account_status?.status?.find(status => status === 'idv_revoked');
     }
 
     get landing_company_shortcode() {

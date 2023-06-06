@@ -55,6 +55,10 @@
         &__form-wrapper {
             padding: 1.4rem 2.4rem;
 
+            .dc-input {
+                margin-bottom: 4rem;
+            }
+
             .dc-input--error {
                 margin-bottom: 6rem;
             }
@@ -71,7 +75,21 @@
         }
 
         &__payment-method-field {
-            margin: 3.8rem 0;
+            &--text-area {
+                height: auto;
+
+                & .dc-input {
+                    &__container {
+                        height: 9.6rem;
+                    }
+
+                    &__field {
+                        height: 100% !important;
+                        padding-left: 0;
+                        padding-right: 0;
+                    }
+                }
+            }
         }
     }
 }

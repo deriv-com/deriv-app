@@ -1,9 +1,7 @@
 import * as SocketCache from '_common/base/socket_cache';
-
 import { action, computed, makeObservable, observable } from 'mobx';
 import { changeLanguage, getAllowedLanguages } from '@deriv/translations';
 import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
-
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
 import ServerTime from '_common/base/server_time';
@@ -110,30 +108,38 @@ export default class CommonStore extends BaseStore {
             this.is_language_changing = true;
             this.changing_language_timer_id = setTimeout(() => {
                 this.is_language_changing = false;
-            }, 10000);
+            }, 2500);
         }
     }
 
-    changeSelectedLanguage = key => {
+    changeSelectedLanguage = async key => {
         SocketCache.clear();
         if (key === 'EN') {
             window.localStorage.setItem('i18n_language', key);
         }
-
-        WS.setSettings({
-            set_settings: 1,
-            preferred_language: key,
-        }).then(() => {
-            const new_url = new URL(window.location.href);
-            if (key === 'EN') {
-                new_url.searchParams.delete('lang');
-            } else {
-                new_url.searchParams.set('lang', key);
-            }
-            window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
-            changeLanguage(key, () => {
-                this.changeCurrentLanguage(key);
-                BinarySocket.closeAndOpenNewConnection(key);
+        await WS.wait('authorize');
+        return new Promise((resolve, reject) => {
+            WS.setSettings({
+                set_settings: 1,
+                preferred_language: key,
+            }).then(async () => {
+                const new_url = new URL(window.location.href);
+                if (key === 'EN') {
+                    new_url.searchParams.delete('lang');
+                } else {
+                    new_url.searchParams.set('lang', key);
+                }
+                window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
+                try {
+                    await changeLanguage(key, () => {
+                        this.changeCurrentLanguage(key);
+                        BinarySocket.closeAndOpenNewConnection(key);
+                        this.root_store.client.setIsAuthorize(false);
+                    });
+                    resolve();
+                } catch (e) {
+                    reject();
+                }
             });
         });
     };
@@ -146,8 +152,11 @@ export default class CommonStore extends BaseStore {
         const search = window.location.search;
         if (search) {
             const url_params = new URLSearchParams(search);
-            this.platform = url_params.get('platform') || '';
-            localStorage.setItem('config.platform', this.platform);
+            const platform = url_params.get('platform');
+            if (platform) {
+                this.platform = platform;
+                localStorage.setItem('config.platform', this.platform);
+            }
         }
     }
 
@@ -158,7 +167,11 @@ export default class CommonStore extends BaseStore {
     setInitialRouteHistoryItem(location) {
         if (window.location.href.indexOf('?ext_platform_url=') !== -1) {
             const ext_url = decodeURI(new URL(window.location.href).searchParams.get('ext_platform_url'));
-
+            const { setExternalParams } = this.root_store.client;
+            setExternalParams({
+                url: ext_url,
+                should_redirect: true,
+            });
             if (ext_url?.indexOf(getUrlSmartTrader()) === 0) {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
             } else if (ext_url?.indexOf(routes.cashier_p2p) === 0) {

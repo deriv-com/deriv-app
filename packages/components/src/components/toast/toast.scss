@@ -33,6 +33,12 @@
             }
         }
     }
+    &__notification {
+        .dc-toast__message {
+            background: var(--general-active);
+            padding: 0.9rem 1.2rem;
+        }
+    }
     &--enter,
     &--exit {
         transform: scale(1, 0);

@@ -4,12 +4,13 @@ import { Button, Checkbox, Icon, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import ErrorDialog from 'Components/error-dialog';
+import { TError } from '../../types';
 import './transfer-confirm.scss';
 
 type TRowProps = {
     item_key?: string | number;
-    label: string | Array<string>;
-    value: string | Array<string> | JSX.Element;
+    label: string | string[];
+    value: string | string[] | JSX.Element;
     key: string | number;
 };
 
@@ -18,13 +19,13 @@ type WarningBulletProps = {
 };
 
 type TTransferConfirmProps = {
-    data: Array<TRowProps>;
-    error?: object;
+    data: TRowProps[];
+    error?: TError | Record<string, never>;
     header?: string;
     is_payment_agent_withdraw?: boolean;
     onClickBack?: VoidFunction;
     onClickConfirm?: VoidFunction;
-    warning_messages?: Array<JSX.Element>;
+    warning_messages?: JSX.Element[];
 };
 
 const Row = ({ item_key, label, value }: TRowProps) => (

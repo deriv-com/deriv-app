@@ -7,7 +7,7 @@ import { Router } from 'react-router';
 import MultiActionButtonGroup from '../multi-action-button-group';
 import { routes } from '@deriv/shared';
 
-let mock_props = {
+const mock_props = {
     link_to: routes.trade,
     onAction: jest.fn(),
     is_buttons_disabled: false,
@@ -40,13 +40,6 @@ describe('Test Cases for Multi Action Button Group:', () => {
     });
 
     it('should render buttons accordingly', () => {
-        mock_props = {
-            link_to: routes.trade,
-            onAction: jest.fn(),
-            is_buttons_disabled: false,
-            is_real: true,
-        };
-
         const history = createBrowserHistory();
         const mock = mockStore({
             modules: {
@@ -61,7 +54,7 @@ describe('Test Cases for Multi Action Button Group:', () => {
         render(
             <StoreProvider store={mock}>
                 <Router history={history}>
-                    <MultiActionButtonGroup {...mock_props} />
+                    <MultiActionButtonGroup {...mock_props} is_real />
                 </Router>
             </StoreProvider>
         );
@@ -70,14 +63,7 @@ describe('Test Cases for Multi Action Button Group:', () => {
         expect(screen.getByText('Open')).toBeInTheDocument();
     });
 
-    it('should disable button', () => {
-        mock_props = {
-            link_to: routes.trade,
-            onAction: jest.fn(),
-            is_buttons_disabled: true,
-            is_real: true,
-        };
-
+    it('should disable "Transfer" button', () => {
         const history = createBrowserHistory();
         const mock = mockStore({
             modules: {
@@ -92,7 +78,7 @@ describe('Test Cases for Multi Action Button Group:', () => {
         render(
             <StoreProvider store={mock}>
                 <Router history={history}>
-                    <MultiActionButtonGroup {...mock_props} />
+                    <MultiActionButtonGroup {...mock_props} is_real is_buttons_disabled />
                 </Router>
             </StoreProvider>
         );
@@ -104,14 +90,7 @@ describe('Test Cases for Multi Action Button Group:', () => {
         expect(trade_btn).toBeEnabled();
     });
 
-    it('should execute function after button clicked', () => {
-        mock_props = {
-            link_to: routes.trade,
-            onAction: jest.fn(),
-            is_buttons_disabled: false,
-            is_real: true,
-        };
-
+    it('should execute function after "Transfer" button is clicked', () => {
         const history = createBrowserHistory();
         const mock = mockStore({
             modules: {
@@ -126,7 +105,7 @@ describe('Test Cases for Multi Action Button Group:', () => {
         render(
             <StoreProvider store={mock}>
                 <Router history={history}>
-                    <MultiActionButtonGroup {...mock_props} />
+                    <MultiActionButtonGroup {...mock_props} is_real />
                 </Router>
             </StoreProvider>
         );
@@ -137,7 +116,7 @@ describe('Test Cases for Multi Action Button Group:', () => {
         expect(mock_props.onAction).toHaveBeenCalled();
     });
 
-    it('should redirect after button clicked', () => {
+    it('should redirect to Trade page after "Open" button is clicked', () => {
         const history = createBrowserHistory();
         const mock = mockStore({
             modules: {
@@ -152,7 +131,7 @@ describe('Test Cases for Multi Action Button Group:', () => {
         render(
             <StoreProvider store={mock}>
                 <Router history={history}>
-                    <MultiActionButtonGroup {...mock_props} />
+                    <MultiActionButtonGroup {...mock_props} is_real />
                 </Router>
             </StoreProvider>
         );

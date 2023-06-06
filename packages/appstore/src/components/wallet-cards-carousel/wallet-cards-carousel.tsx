@@ -13,15 +13,11 @@ export const WalletCardsCarousel = React.memo(({ items }: WalletCardsCarouselPro
     const [activePage, setActivePage] = React.useState(0);
     const ref = useRef(null);
 
-    // console.log('WalletCardsCarousel render, ref = ', ref);
-
     const wallet_btns = getWalletHeaderButtons(items[activePage]?.is_virtual);
 
     const sliderJSX = React.useMemo(() => {
         const handlerGoTo = (slideNumber: number) => {
-            // console.log('handlerGoTo: slideNumber = ', slideNumber);
             setActivePage(slideNumber - 1);
-            // if (ref !== null && 'current' in ref && 'slickGoTo' in ref.current) ref.current.slickGoTo(slideNumber - 1);
             ref?.current?.slickGoTo(slideNumber - 1);
         };
 

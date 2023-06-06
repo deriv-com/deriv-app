@@ -80,6 +80,7 @@ const useWalletAccounts = () => {
         ui: { is_dark_mode_on },
     } = useStore();
 
+    // TODO: when wallets API is realeased use 'useFetch' here
     const wallets = accounts
         ? Object.keys(accounts)
               .filter(key => accounts[key]?.account_category === 'wallet')

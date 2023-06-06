@@ -1,4 +1,5 @@
 import React from 'react';
+import { render, screen } from '@testing-library/react';
 import {
     documentAdditionalError,
     generatePlaceholderText,
@@ -10,7 +11,6 @@ import {
     preventEmptyClipboardPaste,
     shouldShowIdentityInformation,
 } from '../utils';
-import { render, screen } from '@testing-library/react';
 
 describe('generatePlaceholderText', () => {
     it('should return the correct placeholder text for drivers license', () => {

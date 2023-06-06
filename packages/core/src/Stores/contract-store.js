@@ -15,6 +15,8 @@ import {
     BARRIER_LINE_STYLES,
     DEFAULT_SHADES,
     isBarrierSupported,
+    getAccuBarriersForContractDetails,
+    getAccuTickStreamWithCurrentSpot,
     getEndTime,
 } from '@deriv/shared';
 import { getChartConfig } from './Helpers/logic';
@@ -104,7 +106,15 @@ export default class ContractStore extends BaseStore {
 
     populateConfig(contract_info) {
         const prev_contract_info = this.contract_info;
-        this.contract_info = contract_info;
+        if (isAccumulatorContractOpen(contract_info)) {
+            // sometimes current_spot is missing from tick_stream
+            this.contract_info = {
+                ...contract_info,
+                tick_stream: getAccuTickStreamWithCurrentSpot(contract_info),
+            };
+        } else {
+            this.contract_info = contract_info;
+        }
         this.end_time = getEndTime(this.contract_info);
 
         // TODO: don't update the barriers & markers if they are not changed
@@ -172,7 +182,6 @@ export default class ContractStore extends BaseStore {
             low_barrier,
             status,
         } = contract_info || {};
-        const is_accu_contract_open = isAccumulatorContractOpen(contract_info);
         const main_barrier = this.barriers_array?.[0];
         if (isAccumulatorContract(contract_info.contract_type)) {
             // even though updateBarriersArray is called both in DTrader & C.Details pages,
@@ -189,8 +198,8 @@ export default class ContractStore extends BaseStore {
             setTimeout(
                 () =>
                     runInAction(() => {
-                        const accu_high_barrier = is_accu_contract_open ? current_spot_high_barrier : high_barrier;
-                        const accu_low_barrier = is_accu_contract_open ? current_spot_low_barrier : low_barrier;
+                        const { accu_high_barrier, accu_low_barrier } =
+                            getAccuBarriersForContractDetails(contract_info);
                         if (!this.barriers_array.length) {
                             const accu_contract_info = {
                                 ...contract_info,
@@ -208,7 +217,7 @@ export default class ContractStore extends BaseStore {
                             this.accumulator_previous_spot = current_spot;
                         }
                     }),
-                360
+                320
             );
             this.cached_barriers_data = {
                 current_spot_high_barrier,
@@ -323,12 +332,10 @@ function calculate_marker(contract_info) {
         barrier_count,
         barrier,
         current_spot_high_barrier,
-        current_spot_low_barrier,
         high_barrier,
         low_barrier,
     } = contract_info;
     const is_accumulator_contract = isAccumulatorContract(contract_type);
-    const is_accu_contract_open = isAccumulatorContractOpen(contract_info);
     const is_digit_contract = isDigitContract(contract_type);
     const ticks_epochs =
         (is_accumulator_contract && tick_stream?.length === 10
@@ -343,15 +350,11 @@ function calculate_marker(contract_info) {
         price_array = [];
     } else if (+barrier_count === 1 && barrier) {
         price_array = [+barrier];
-    } else if (
-        +barrier_count === 2 &&
-        high_barrier &&
-        low_barrier &&
-        (!is_accumulator_contract || !is_accu_contract_open)
-    ) {
+    } else if (+barrier_count === 2 && high_barrier && low_barrier && !is_accumulator_contract) {
         price_array = [+high_barrier, +low_barrier];
-    } else if (is_accu_contract_open && current_spot_high_barrier) {
-        price_array = [+current_spot_high_barrier, +current_spot_low_barrier];
+    } else if (is_accumulator_contract && current_spot_high_barrier) {
+        const { accu_high_barrier, accu_low_barrier } = getAccuBarriersForContractDetails(contract_info);
+        price_array = [+accu_high_barrier, +accu_low_barrier];
     }
 
     if (entry_tick) {

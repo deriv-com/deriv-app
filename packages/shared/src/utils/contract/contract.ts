@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { unique } from '../object';
-import { TContractInfo, TLimitOrder, TDigitsInfo, TTickItem } from './contract-types';
+import { TContractInfo, TContractInfoWithNumericBarriers, TLimitOrder, TDigitsInfo, TTickItem } from './contract-types';
 
 export const getFinalPrice = (contract_info: TContractInfo) => contract_info.sell_price || contract_info.bid_price;
 
@@ -35,7 +35,14 @@ export const hasContractEntered = (contract_info: TContractInfo) => !!contract_i
 export const isAccumulatorContract = (contract_type: string) => /ACCU/i.test(contract_type);
 
 export const isAccumulatorContractOpen = (
-    { contract_type, current_spot, high_barrier, low_barrier, status }: TContractInfo,
+    {
+        contract_type,
+        current_spot,
+        exit_tick,
+        high_barrier,
+        low_barrier,
+        status,
+    }: TContractInfo | TContractInfoWithNumericBarriers,
     in_pixels?: boolean
 ) => {
     const has_crossed_barriers =
@@ -43,7 +50,7 @@ export const isAccumulatorContractOpen = (
         (in_pixels
             ? current_spot <= +high_barrier || current_spot >= +low_barrier
             : current_spot >= +high_barrier || current_spot <= +low_barrier);
-    return isAccumulatorContract(contract_type || '') && status === 'open' && !has_crossed_barriers;
+    return isAccumulatorContract(contract_type || '') && status === 'open' && !has_crossed_barriers && !exit_tick;
 };
 
 export const isMultiplierContract = (contract_type: string) => /MULT/i.test(contract_type);
@@ -56,6 +63,28 @@ export const getCurrentTick = (contract_info: TContractInfo) => {
     const tick_stream = unique(contract_info.tick_stream || [], 'epoch');
     const current_tick = isDigitContract(contract_info.contract_type) ? tick_stream.length : tick_stream.length - 1;
     return !current_tick || current_tick < 0 ? 0 : current_tick;
+};
+
+export const getAccuBarriersForContractDetails = (contract_info: TContractInfo) => {
+    if (!isAccumulatorContract(contract_info.contract_type || '')) return {};
+    const is_accu_contract_open = isAccumulatorContractOpen(contract_info);
+    const { current_spot_high_barrier, current_spot_low_barrier, high_barrier, low_barrier } = contract_info || {};
+    const accu_high_barrier = is_accu_contract_open ? current_spot_high_barrier : high_barrier;
+    const accu_low_barrier = is_accu_contract_open ? current_spot_low_barrier : low_barrier;
+    return { accu_high_barrier, accu_low_barrier };
+};
+
+export const getAccuTickStreamWithCurrentSpot = (contract_info: TContractInfo) => {
+    const { current_spot, current_spot_display_value, current_spot_time, tick_stream } = contract_info || {};
+    if (tick_stream?.some(({ epoch }) => epoch === current_spot_time) || !tick_stream?.length) return tick_stream;
+    return [
+        ...(tick_stream?.length === 10 ? tick_stream?.slice(1) : tick_stream || []),
+        {
+            epoch: current_spot_time,
+            tick: current_spot,
+            tick_display_value: current_spot_display_value,
+        },
+    ];
 };
 
 export const getLastTickFromTickStream = (tick_stream: TTickItem[] = []) => tick_stream[tick_stream.length - 1] || {};

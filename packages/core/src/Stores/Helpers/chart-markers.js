@@ -74,11 +74,12 @@ const createTickMarkers = contract_info => {
     const result = [];
 
     if (is_contract_closed && is_accumulator) {
-        if (contract_info.exit_tick_time && tick_stream.every(({ epoch }) => epoch !== contract_info.exit_tick_time)) {
-            // TODO: remove this condition when BE solves an issue with exit_tick present in tick_stream but missing from audit_details
-            tick_stream.push(contract_info.tick_stream[contract_info.tick_stream.length - 1]);
+        const { exit_tick_time, tick_stream: ticks } = contract_info || {};
+        if (exit_tick_time && tick_stream.every(({ epoch }) => epoch !== exit_tick_time)) {
+            // sometimes exit_tick is present in tick_stream but missing from audit_details
+            tick_stream.push(ticks[ticks.length - 1]);
         }
-        const length = tick_stream.findIndex(tick => tick.epoch === contract_info.exit_tick_time) + 1;
+        const length = tick_stream.findIndex(({ epoch }) => epoch === exit_tick_time) + 1;
         tick_stream.length = length > 0 ? length : tick_stream.length;
     }
 
@@ -112,7 +113,7 @@ const createTickMarkers = contract_info => {
             if (marker_config && (is_middle_spot || is_exit_spot)) {
                 const spot_className = marker_config.content_config.spot_className;
                 marker_config.content_config.spot_className = `${spot_className} ${spot_className}--accumulator${
-                    is_exit_spot ? '-bold' : '-small'
+                    is_exit_spot ? '-exit' : '-middle'
                 }`;
             }
         }

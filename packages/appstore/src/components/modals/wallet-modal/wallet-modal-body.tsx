@@ -22,7 +22,7 @@ const WalletModalBody = ({
     setActiveTabIndex,
     wallet_type,
 }: TWalletModalBodyProps) => {
-    const content_heigth = 'calc(100vh - 24.4rem)';
+    const content_height = 'calc(100vh - 24.4rem)';
     const max_content_width = '128rem';
 
     return (
@@ -47,7 +47,7 @@ const WalletModalBody = ({
                         <ThemedScrollbars
                             is_bypassed={is_mobile}
                             is_scrollbar_hidden
-                            height={content_heigth}
+                            height={content_height}
                             style={{ maxWidth: max_content_width, width: '100%' }}
                         >
                             {option.content}

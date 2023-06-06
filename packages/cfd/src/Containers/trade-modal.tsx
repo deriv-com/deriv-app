@@ -230,7 +230,11 @@ const TradeModal = ({
                         </div>
                     )}
                 </div>
-                <div className='cfd-trade-modal__download-center-options--qrcode'>{getPlatformQRCode(platform)}</div>
+                {!isMobile() && (
+                    <div className='cfd-trade-modal__download-center-options--qrcode'>
+                        {getPlatformQRCode(platform)}
+                    </div>
+                )}
             </div>
         </div>
     );

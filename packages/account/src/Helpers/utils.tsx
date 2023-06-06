@@ -6,9 +6,10 @@ import {
     validName,
     IDV_NOT_APPLICABLE_OPTION,
 } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
 import { FormikErrors, FormikValues } from 'formik';
+import React from 'react';
 
 const getImageLocation = (image_name: string) => getUrlBase(`/public/images/common/${image_name}`);
 
@@ -283,6 +284,7 @@ export const isDocumentNumberValid = (document_number: string, document_type: Fo
     const is_document_number_invalid = document_number === document_type.example_format;
     if (!document_number && document_type.text) {
         let document_name = '';
+        const example_format = getExampleFormat(document_type.example_format);
         switch (document_type.text) {
             case 'Drivers License':
                 document_name = 'Driver License';
@@ -295,8 +297,10 @@ export const isDocumentNumberValid = (document_number: string, document_type: Fo
                 break;
         }
         return (
-            localize('Please enter your {{document_name}}. ', { document_name }) +
-            getExampleFormat(document_type.example_format)
+            <Localize
+                i18n_default_text='Please enter your {{document_name}}. {{example_format}}'
+                values={{ document_name, example_format }}
+            />
         );
     } else if (is_document_number_invalid) {
         return localize('Please enter a valid ID number.');

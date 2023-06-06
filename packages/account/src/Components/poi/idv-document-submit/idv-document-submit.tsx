@@ -12,7 +12,13 @@ import {
     isDesktop,
     removeEmptyPropertiesFromObject,
 } from '@deriv/shared';
-import { documentAdditionalError, getRegex, validate, makeSettingsRequest, validateName } from 'Helpers/utils';
+import {
+    documentAdditionalError,
+    validate,
+    makeSettingsRequest,
+    validateName,
+    isDocumentNumberValid,
+} from 'Helpers/utils';
 import FormFooter from 'Components/form-footer';
 import BackButtonIcon from 'Assets/ic-poi-back-btn.svg';
 import IDVForm from 'Components/forms/idv-form';
@@ -65,35 +71,6 @@ const IdvDocumentSubmit = ({
         const error_message = documentAdditionalError(document_additional, document_type.additional?.format);
         if (error_message) {
             return localize(error_message) + getExampleFormat(document_type.additional?.example_format);
-        }
-        return undefined;
-    };
-
-    const isDocumentNumberValid = (document_number, document_type) => {
-        const is_document_number_invalid = document_number === document_type.example_format;
-        if (!document_number && document_type.text) {
-            let document_name = '';
-            switch (document_type.text) {
-                case 'Drivers License':
-                    document_name = 'Driver License';
-                    break;
-                case 'Social Security and National Insurance Trust':
-                    document_name = 'SSNIT';
-                    break;
-                default:
-                    document_name = 'document number';
-                    break;
-            }
-            return (
-                localize('Please enter your {{document_name}}. ', { document_name }) +
-                getExampleFormat(document_type.example_format)
-            );
-        } else if (is_document_number_invalid) {
-            return localize('Please enter a valid ID number.');
-        }
-        const format_regex = getRegex(document_type.value);
-        if (!format_regex.test(document_number)) {
-            return localize('Please enter the correct format. ') + getExampleFormat(document_type.example_format);
         }
         return undefined;
     };

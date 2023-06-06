@@ -9,6 +9,8 @@ type TWalletModalBodyProps = {
     is_demo: boolean;
     is_mobile: boolean;
     setActiveTabIndex: (index: number) => void;
+    setIsScrollable: (value: boolean) => void;
+    setIsWalletNameVisible: (value: boolean) => void;
     is_wallet_name_visible: boolean;
     wallet_type: TWalletType;
 };
@@ -18,11 +20,13 @@ const WalletModalBody = ({
     is_dark,
     is_demo,
     is_mobile,
-    is_wallet_name_visible,
     setActiveTabIndex,
+    setIsScrollable,
+    setIsWalletNameVisible,
+    is_wallet_name_visible,
     wallet_type,
 }: TWalletModalBodyProps) => {
-    const content_heigth = 'calc(100vh - 24.4rem)';
+    const content_height = 'calc(100vh - 24.4rem)';
     const max_content_width = '128rem';
 
     return (
@@ -37,6 +41,7 @@ const WalletModalBody = ({
             header_fit_content
             icon_size={16}
             icon_color={is_demo ? 'var(--demo-text-color-1)' : ''}
+            is_scrollable={false}
             onTabItemClick={(index: number) => {
                 setActiveTabIndex(index);
             }}
@@ -45,12 +50,12 @@ const WalletModalBody = ({
                 return (
                     <div key={option.label} icon={option.icon} label={option.label}>
                         <ThemedScrollbars
+                            height={content_height}
                             is_bypassed={is_mobile}
                             is_scrollbar_hidden
-                            height={content_heigth}
                             style={{ maxWidth: max_content_width, width: '100%' }}
                         >
-                            {option.content}
+                            {option.content({ is_wallet_name_visible, setIsScrollable, setIsWalletNameVisible })}
                         </ThemedScrollbars>
                     </div>
                 );
@@ -58,7 +63,5 @@ const WalletModalBody = ({
         </Tabs>
     );
 };
-
-WalletModalBody.displayName = 'WalletModalBody';
 
 export default WalletModalBody;

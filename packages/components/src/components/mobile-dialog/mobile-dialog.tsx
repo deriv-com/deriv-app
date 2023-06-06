@@ -9,32 +9,36 @@ import Div100vhContainer from '../div100vh-container';
 type TMobileDialog = {
     className?: string;
     content_height_offset?: string;
-    onClose: React.MouseEventHandler;
+    footer?: React.ReactNode;
+    has_close_icon?: boolean;
     has_content_scroll?: boolean;
+    has_full_height?: boolean;
+    header_classname?: string;
+    id?: string;
+    onClose?: React.MouseEventHandler;
+    onScrollHandler?: React.UIEventHandler;
     portal_element_id: string;
     renderTitle?: () => string;
     title?: string;
     visible?: boolean;
     wrapper_classname?: string;
-    header_classname?: string;
-    has_full_height?: boolean;
-    footer?: React.ReactNode;
-    has_close_icon?: boolean;
 };
 
-const MobileDialog = React.forwardRef<HTMLDivElement, React.PropsWithChildren<TMobileDialog>>((props, ref) => {
+const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
     const {
-        title,
-        visible,
         children,
         className,
-        has_full_height,
-        portal_element_id,
-        renderTitle,
-        wrapper_classname,
         footer,
         has_close_icon = true,
+        has_full_height,
         header_classname,
+        id,
+        onScrollHandler,
+        portal_element_id,
+        renderTitle,
+        title,
+        visible,
+        wrapper_classname,
     } = props;
 
     const footer_ref = React.useRef<HTMLDivElement>(null);
@@ -96,10 +100,11 @@ const MobileDialog = React.forwardRef<HTMLDivElement, React.PropsWithChildren<TM
             unmountOnExit
         >
             <div
-                data-testid='dt_mobile_dialog'
                 className={classNames('dc-mobile-dialog', className)}
+                data-testid='dt_mobile_dialog'
+                id={id}
                 onClick={handleClick}
-                ref={ref}
+                onScroll={onScrollHandler}
             >
                 <Div100vhContainer
                     className={classNames('dc-mobile-dialog__container', {
@@ -148,8 +153,6 @@ const MobileDialog = React.forwardRef<HTMLDivElement, React.PropsWithChildren<TM
         </CSSTransition>,
         portal_element
     );
-});
-
-MobileDialog.displayName = 'Mobile Dialog';
+};
 
 export default MobileDialog;

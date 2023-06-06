@@ -1,9 +1,9 @@
 import React from 'react';
+import classNames from 'classnames';
 import { DesktopWrapper, MobileDialog, MobileWrapper, Modal } from '@deriv/components';
 import WalletModalHeader from './wallet-modal-header';
 import WalletModalBody from './wallet-modal-body';
 import { observer, useStore } from '@deriv/stores';
-import classNames from 'classnames';
 
 const WalletModal = observer(() => {
     const store = useStore();
@@ -16,33 +16,44 @@ const WalletModal = observer(() => {
     // TODO: Temporary wallet type. Will be refactored later. Add correct type
     const wallet_type = is_demo ? 'demo' : 'real';
 
-    const mobile_dialog_ref = React.useRef<HTMLDivElement>(null);
     const [active_tab_index, setActiveTabIndex] = React.useState<number>(0);
     const [is_wallet_name_visible, setIsWalletNameVisible] = React.useState<boolean>(true);
+    const [is_scrollable, setIsScrollable] = React.useState<boolean>(true);
+
+    React.useEffect(() => {
+        const el_mobile_dialog = document.getElementById('wallet_mobile_dialog');
+        if (el_mobile_dialog) {
+            if (!is_scrollable) {
+                el_mobile_dialog.style.overflow = 'hidden';
+            } else {
+                el_mobile_dialog.style.overflowX = 'hidden';
+                el_mobile_dialog.style.overflowY = 'scroll';
+            }
+        }
+    }, [is_scrollable]);
+
+    React.useEffect(() => {
+        return setIsWalletNameVisible(true);
+    }, [active_tab_index]);
+
+    React.useEffect(() => {
+        setIsWalletNameVisible(true);
+    }, [active_tab_index]);
 
     const closeModal = () => {
         setIsWalletModalVisible(false);
         setActiveTabIndex(0);
     };
 
-    React.useEffect(() => {
-        const el_mobile_dialog = mobile_dialog_ref.current;
-
-        const handleScroll = (e: Event) => {
-            const target = e.target as HTMLDivElement;
-            const height_offset = 40;
-            setIsWalletNameVisible(!(target.scrollTop > height_offset));
-        };
-
-        if (is_mobile) {
-            el_mobile_dialog?.addEventListener('scroll', handleScroll);
-            setIsWalletNameVisible(true);
-        }
-
-        return () => {
-            el_mobile_dialog?.removeEventListener('scroll', handleScroll);
-        };
-    }, [active_tab_index, is_wallet_modal_visible, is_mobile]);
+    const contentScrollHandler = React.useCallback(
+        (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+            if (is_mobile && is_wallet_modal_visible) {
+                const target = e.target as HTMLDivElement;
+                setIsWalletNameVisible(!(target.scrollTop > 0));
+            }
+        },
+        [is_mobile, is_wallet_modal_visible]
+    );
 
     const body = (
         <>
@@ -63,6 +74,8 @@ const WalletModal = observer(() => {
                 is_mobile={is_mobile}
                 is_wallet_name_visible={is_wallet_name_visible}
                 setActiveTabIndex={setActiveTabIndex}
+                setIsScrollable={setIsScrollable}
+                setIsWalletNameVisible={setIsWalletNameVisible}
                 wallet_type={wallet_type}
             />
         </>
@@ -78,13 +91,15 @@ const WalletModal = observer(() => {
             <MobileWrapper>
                 <MobileDialog
                     className='wallet-mobile-dialog'
+                    has_content_scroll={false}
+                    has_full_height
+                    id='wallet_mobile_dialog'
+                    onScrollHandler={contentScrollHandler}
+                    portal_element_id='deriv_app'
+                    visible={is_wallet_modal_visible}
                     wrapper_classname={classNames('wallet-mobile-dialog__wrapper', {
                         'scrolled-content': !is_wallet_name_visible,
                     })}
-                    portal_element_id='deriv_app'
-                    visible={is_wallet_modal_visible}
-                    has_content_scroll={false}
-                    ref={mobile_dialog_ref}
                 >
                     {body}
                 </MobileDialog>

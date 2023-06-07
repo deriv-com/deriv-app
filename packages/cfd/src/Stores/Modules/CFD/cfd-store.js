@@ -295,6 +295,7 @@ export default class CFDStore extends BaseStore {
                 this.setIsAccountBeingCreated(false);
             } else {
                 this.setError(true, response.error);
+                this.setIsAccountBeingCreated(false);
             }
         }
     }

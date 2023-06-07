@@ -1,10 +1,10 @@
-import * as React from 'react';
-import { observer } from 'mobx-react-lite';
+import React from 'react';
+import { observer } from '@deriv/stores';
 import { ButtonToggle } from '@deriv/components';
+import { useStores } from 'Stores';
+import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import ToggleContainer from 'Components/misc/toggle-container.jsx';
 import { localize } from 'Components/i18next';
-import { my_profile_tabs } from 'Constants/my-profile-tabs';
-import { useStores } from 'Stores';
 
 const MyProfileHeader = () => {
     const { my_profile_store } = useStores();
@@ -28,7 +28,8 @@ const MyProfileHeader = () => {
         },
     ];
 
-    const onChangeTab = event => my_profile_store.setActiveTab(event.target.value);
+    const onChangeTab = (event: { target: { value: string; name: string } }) =>
+        my_profile_store.setActiveTab(event.target.value);
 
     return (
         <ToggleContainer>

@@ -98,7 +98,9 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcAdd',
                     label: localize('Reset balance'),
-                    content: <DemoResetBalance />,
+                    content: (props: any) => {
+                        <DemoResetBalance {...props} />;
+                    },
                 },
             ];
         case 'p2p':

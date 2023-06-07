@@ -6,25 +6,28 @@ import { useRequest } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 import './demo-reset-balance.scss';
 
-const DemoResetBalance = () => {
+export type TDemoResetBalanceProps = {
+    setActiveIndex: (index: number) => void;
+};
+
+const DemoResetBalance = ({ setActiveIndex }: TDemoResetBalanceProps) => {
     const [is_transferred_success, setIsTransferredSuccess] = React.useState(false);
-    const { data, mutate } = useRequest('topup_virtual');
+    const { mutate, isSuccess } = useRequest('topup_virtual');
     const { client } = useStore();
     const { active_accounts } = client;
     const balance = active_accounts.find(acc => acc.is_virtual === 0)?.balance;
 
     useEffect(() => {
-        // TODO: check the if condition
-        if (data) setIsTransferredSuccess(true);
-    }, [data]);
+        if (isSuccess) setIsTransferredSuccess(true);
+    }, [isSuccess]);
 
     const resetBalance = () => {
         mutate([]);
     };
 
     const redirectToTransferTab = () => {
-        // eslint-disable-next-line no-console
-        console.log('redirect to transfer tab');
+        // Redirect to transfer tab
+        setActiveIndex(0);
     };
 
     return (
@@ -46,13 +49,14 @@ const DemoResetBalance = () => {
                 className='reset-balance__text'
                 size={isMobile() ? 'xxs' : 'xs'}
                 line_height={isMobile() ? 'l' : 'xl'}
+                align='center'
             >
                 <Localize i18n_default_text='Reset your virtual balance if it falls below 10,000.00 USD or exceeds 10,000.00 USD.' />
             </Text>
 
             {is_transferred_success ? (
                 <Button className='reset-balance__button' secondary large onClick={() => redirectToTransferTab()}>
-                    <Localize i18n_default_text='Reset balance' />
+                    <Localize i18n_default_text='Transfer funds' />
                 </Button>
             ) : (
                 <Button

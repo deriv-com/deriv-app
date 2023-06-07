@@ -22,7 +22,7 @@ const WalletModalBody = ({
     setActiveTabIndex,
     wallet_type,
 }: TWalletModalBodyProps) => {
-    const content_heigth = 'calc(100vh - 24.4rem)';
+    const content_height = 'calc(100vh - 24.4rem)';
     const max_content_width = '128rem';
     return (
         <Tabs
@@ -46,10 +46,12 @@ const WalletModalBody = ({
                         <ThemedScrollbars
                             is_bypassed={is_mobile}
                             is_scrollbar_hidden
-                            height={content_heigth}
+                            height={content_height}
                             width={max_content_width}
                         >
-                            {option.content}
+                            {typeof option.content === 'function'
+                                ? option.content({ setActiveTabIndex })
+                                : option.content}
                         </ThemedScrollbars>
                     </div>
                 );

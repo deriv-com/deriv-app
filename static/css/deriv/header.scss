@@ -568,6 +568,7 @@
                 width: 100%;
                 background: var(--general-main-1);
                 display: flex;
+
                 @include mobile {
                     flex-direction: column;
                 }
@@ -583,11 +584,10 @@
                 border-radius: 8px;
                 width: 320px;
                 margin: 24px 16px;
-                padding: 24px 16px;
-               
-
+                padding: 28px 16px 4px 16px;
+                
                 img {
-                   height: 32px;
+                    height: 32px;
                 }
 
                 @include mobile {
@@ -595,6 +595,7 @@
                     margin: 14px 0;
                     padding: 14px 0;
                 }
+
                 @include mobile {
                     padding: 14px 10px;
                 }
@@ -605,6 +606,10 @@
 
                 &--active {
                     border: solid 2px var(--border-active);
+                    width: 320px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: baseline;
                 }
 
                 &-text {

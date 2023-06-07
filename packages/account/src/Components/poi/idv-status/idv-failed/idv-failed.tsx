@@ -98,90 +98,90 @@ const IdvFailed = ({
     const citizen = account_settings?.citizen;
     const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
 
-    React.useEffect(() => {
+    const generateIDVError = React.useCallback(() => {
         const document_name = getIDVDocumentType(latest_status, selected_country);
-        const generateIDVError = () => {
-            switch (mismatch_status) {
-                case idv_error_statuses.poi_name_dob_mismatch:
-                    return {
-                        required_fields: ['first_name', 'last_name', 'date_of_birth'],
-                        side_note_image: <PoiNameDobExample />,
-                        inline_note_text: (
-                            <Localize
-                                i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your {{document_name}}.'
-                                components={[<strong key={0} />]}
-                                values={{ document_name }}
-                            />
-                        ),
-                        failure_message: (
-                            <Localize
-                                i18n_default_text="The <0>name</0> and <0>date of birth</0> on your identity document don't match your profile."
-                                components={[<strong key={0} />]}
-                            />
-                        ),
-                    };
-                case idv_error_statuses.poi_name_mismatch:
-                    return {
-                        required_fields: ['first_name', 'last_name'],
-                        side_note_image: <PoiNameExample />,
-                        inline_note_text: (
-                            <Localize
-                                i18n_default_text='To avoid delays, enter your <0>name</0> exactly as it appears on your {{document_name}}.'
-                                components={[<strong key={0} />]}
-                                values={{ document_name }}
-                            />
-                        ),
-                        failure_message: (
-                            <Localize
-                                i18n_default_text="The <0>name</0> on your identity document doesn't match your profile."
-                                components={[<strong key={0} />]}
-                            />
-                        ),
-                    };
-                case idv_error_statuses.poi_dob_mismatch:
-                    return {
-                        required_fields: ['date_of_birth'],
-                        side_note_image: <PoiDobExample />,
-                        inline_note_text: (
-                            <Localize
-                                i18n_default_text='To avoid delays, enter your <0>date of birth</0> exactly as it appears on your {{document_name}}.'
-                                components={[<strong key={0} />]}
-                                values={{ document_name }}
-                            />
-                        ),
-                        failure_message: (
-                            <Localize
-                                i18n_default_text="The <0>date of birth</0> on your identity document doesn't match your profile."
-                                components={[<strong key={0} />]}
-                            />
-                        ),
-                    };
-                default:
-                    return {
-                        required_fields: ['first_name', 'last_name', 'date_of_birth'],
-                        side_note_image: <PoiNameDobExample />,
-                        inline_note_text: (
-                            <Localize
-                                i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your {{document_name}}.'
-                                components={[<strong key={0} />]}
-                                values={{ document_name }}
-                            />
-                        ),
-                        failure_message: (
-                            <Localize
-                                i18n_default_text='{{ banner_message }}'
-                                values={{
-                                    banner_message:
-                                        mismatch_status === 'POI_EXPIRED'
-                                            ? 'Your identity document has expired.'
-                                            : 'We were unable to verify the identity document with the details provided.',
-                                }}
-                            />
-                        ),
-                    };
-            }
-        };
+        switch (mismatch_status) {
+            case idv_error_statuses.poi_name_dob_mismatch:
+                return {
+                    required_fields: ['first_name', 'last_name', 'date_of_birth'],
+                    side_note_image: <PoiNameDobExample />,
+                    inline_note_text: (
+                        <Localize
+                            i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your {{document_name}}.'
+                            components={[<strong key={0} />]}
+                            values={{ document_name }}
+                        />
+                    ),
+                    failure_message: (
+                        <Localize
+                            i18n_default_text="The <0>name</0> and <0>date of birth</0> on your identity document don't match your profile."
+                            components={[<strong key={0} />]}
+                        />
+                    ),
+                };
+            case idv_error_statuses.poi_name_mismatch:
+                return {
+                    required_fields: ['first_name', 'last_name'],
+                    side_note_image: <PoiNameExample />,
+                    inline_note_text: (
+                        <Localize
+                            i18n_default_text='To avoid delays, enter your <0>name</0> exactly as it appears on your {{document_name}}.'
+                            components={[<strong key={0} />]}
+                            values={{ document_name }}
+                        />
+                    ),
+                    failure_message: (
+                        <Localize
+                            i18n_default_text="The <0>name</0> on your identity document doesn't match your profile."
+                            components={[<strong key={0} />]}
+                        />
+                    ),
+                };
+            case idv_error_statuses.poi_dob_mismatch:
+                return {
+                    required_fields: ['date_of_birth'],
+                    side_note_image: <PoiDobExample />,
+                    inline_note_text: (
+                        <Localize
+                            i18n_default_text='To avoid delays, enter your <0>date of birth</0> exactly as it appears on your {{document_name}}.'
+                            components={[<strong key={0} />]}
+                            values={{ document_name }}
+                        />
+                    ),
+                    failure_message: (
+                        <Localize
+                            i18n_default_text="The <0>date of birth</0> on your identity document doesn't match your profile."
+                            components={[<strong key={0} />]}
+                        />
+                    ),
+                };
+            default:
+                return {
+                    required_fields: ['first_name', 'last_name', 'date_of_birth'],
+                    side_note_image: <PoiNameDobExample />,
+                    inline_note_text: (
+                        <Localize
+                            i18n_default_text='To avoid delays, enter your <0>name</0> and <0>date of birth</0> exactly as they appear on your {{document_name}}.'
+                            components={[<strong key={0} />]}
+                            values={{ document_name }}
+                        />
+                    ),
+                    failure_message: (
+                        <Localize
+                            i18n_default_text='{{ banner_message }}'
+                            values={{
+                                banner_message:
+                                    mismatch_status === 'POI_EXPIRED'
+                                        ? 'Your identity document has expired.'
+                                        : 'We were unable to verify the identity document with the details provided.',
+                            }}
+                        />
+                    ),
+                };
+        }
+    }, [mismatch_status]);
 
+    React.useEffect(() => {
         const initializeFormValues = async (required_fields: string[]) => {
             await WS.wait('get_settings');
             const form_data = filterObjProperties(account_settings, required_fields);

@@ -127,8 +127,7 @@
     margin: 0 1.6rem;
     &__scrollbars_container {
         height: 100%;
-        padding-top: 2.4rem;
-        padding-bottom: 6.4rem;
+        padding: 2.4rem 0 6.4rem;
 
         &-wrapper {
             overflow-x: hidden;
@@ -174,8 +173,7 @@
         }
 
         @include desktop {
-            padding-left: 1.6rem;
-            padding-right: 1.6rem;
+            padding-inline: 1.6rem;
         }
 
         @include mobile {
@@ -558,8 +556,7 @@
         .icon {
             width: 128px;
             height: 128px;
-            margin-top: 5.2rem;
-            margin-bottom: 2.6rem;
+            margin: 5.2rem 0 2.6rem;
 
             @include mobile {
                 width: 72px;

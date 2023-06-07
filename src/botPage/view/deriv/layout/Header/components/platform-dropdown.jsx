@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { useLocation } from 'react-router-dom';
 import { translate } from '../../../../../../common/utils/tools';
 import config from '../../../../../../app.config';
+import { getRelatedDeriveOrigin } from '../../../utils';
 
 const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcherOpen }, platformDropdownRef) => {
     const location = useLocation();
@@ -23,6 +24,24 @@ const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcher
         <div id='platform__dropdown' className='platform__dropdown show'>
             <div id='platform__list' className='platform__dropdown-list' ref={platformDropdownRef}>
                 {config.platforms.map(platform => {
+                    if (platform.title === 'DTrader') {
+                        const related_deriv_origin = getRelatedDeriveOrigin();
+                        platform.link = `${related_deriv_origin.origin}/?lang=${localStorage
+                            .getItem('lang')
+                            .toLowerCase() || 'en'}`;
+                    }
+                    if (platform.title === 'DBot') {
+                        const related_deriv_origin = getRelatedDeriveOrigin();
+                        platform.link = `${related_deriv_origin.origin}/bot/?lang=${localStorage
+                            .getItem('lang')
+                            .toLowerCase() || 'en'}`;
+                    }
+                    if (platform.title === 'SmartTrader') {
+                        const related_deriv_origin = getRelatedDeriveOrigin();
+                        platform.link = `https://${related_deriv_origin.prefix}smarttrader.deriv.${related_deriv_origin.extension
+                            }/${localStorage.getItem('lang').toLowerCase() || 'en'}/trading`;
+                    }
+
                     const is_binary_bot = platform.title === 'Binary Bot' && location.pathname === '/';
                     return (
                         <a

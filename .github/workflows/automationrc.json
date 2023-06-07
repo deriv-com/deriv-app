@@ -1,13 +1,14 @@
 {
     "skip_pending_checks": false,
     "skip_slack_integration": false,
+    "skip_updating_branch": true,
     "merge_delay": 120000,
     "first_merge_delay": 1200000,
     "pull_request": {
         "checks_timeout": 60000,
         "refetch_timeout": 10000,
         "refetch_limit": 10,
-        "checks_limit": 60
+        "checks_limit": 30
     },
     "circleci": {
         "project_slug": "gh/binary-com/deriv-app",

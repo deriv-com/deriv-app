@@ -123,6 +123,11 @@
     @include mobile {
         top: 8.2rem;
         margin-top: 0;
+        transition: top 0.2s ease;
+
+        &.is_scrolled {
+            top: 4.2rem;
+        }
     }
 
     &__themed-scrollbar {
@@ -135,14 +140,7 @@
         padding: 2.4rem 4rem;
 
         @include mobile {
-            position: relative;
-            top: 4rem;
             padding: 1.6rem;
-            transition: top 0.2s ease;
-
-            &.is_scrolled {
-                top: 0rem;
-            }
         }
     }
 
@@ -159,12 +157,9 @@
             margin: 0 auto;
 
             @include mobile {
-                position: fixed;
                 width: 100%;
-                top: 8.2rem;
                 z-index: 3;
                 overflow-x: scroll;
-                transition: top 0.2s ease;
 
                 /* IE and Edge */
                 -ms-overflow-style: none;

@@ -59,11 +59,7 @@ const WalletModalBody = ({
                             onScroll={contentScrollHandler}
                         >
                             <Div100vhContainer height_offset={getHeightOffset()}>
-                                <div
-                                    className={classNames('dc-tabs--modal-body__tabs__content-wrapper', {
-                                        is_scrolled: !is_wallet_name_visible,
-                                    })}
-                                >
+                                <div className='dc-tabs--modal-body__tabs__content-wrapper'>
                                     {option.content({
                                         is_wallet_name_visible,
                                         setIsWalletNameVisible,

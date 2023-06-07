@@ -117,9 +117,8 @@ const MT5AccountTypeModal = () => {
                 setAccountType({ category: 'real', type: 'all' });
                 break;
             case localize('Financial'):
-                setAccountType({ category: 'real', type: 'financial' });
-                break;
             default:
+                setAccountType({ category: 'real', type: 'financial' });
                 break;
         }
     };

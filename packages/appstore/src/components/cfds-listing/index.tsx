@@ -146,6 +146,7 @@ const CFDsListing = () => {
                             <TradingAppCard
                                 action_type={existing_account.action_type}
                                 availability={selected_region}
+                                clickable_icon
                                 icon={existing_account.icon}
                                 sub_title={existing_account?.sub_title}
                                 name={!has_mt5_account_status ? existing_account?.name : ''}
@@ -225,6 +226,7 @@ const CFDsListing = () => {
                             <TradingAppCard
                                 action_type='multi-action'
                                 availability={selected_region}
+                                clickable_icon
                                 icon={account.icon}
                                 sub_title={account.name}
                                 name={`${formatMoney(
@@ -253,6 +255,7 @@ const CFDsListing = () => {
                         <TradingAppCard
                             action_type='get'
                             availability={selected_region}
+                            clickable_icon
                             icon={account.icon}
                             name={account.name}
                             platform={account.platform}

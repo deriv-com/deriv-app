@@ -1,15 +1,15 @@
+import React from 'react';
+import classNames from 'classnames';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { MobileWrapper, Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize } from '@deriv/translations';
-import React from 'react';
-import DeleteDialog from './delete-dialog';
-import './index.scss';
-import RecentWorkspace from './recent-workspace';
-import { isMobile } from '@deriv/shared';
-import SaveModal from '../../../save-modal';
-import classNames from 'classnames';
 import { useDBotStore } from 'Stores/useDBotStore';
+import DeleteDialog from './delete-dialog';
+import RecentWorkspace from './recent-workspace';
+import SaveModal from './save-modal';
+import './index.scss';
 
 const HEADERS = ['Bot name', 'Last modified', 'Status'];
 

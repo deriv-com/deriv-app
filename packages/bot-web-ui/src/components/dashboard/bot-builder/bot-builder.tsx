@@ -3,11 +3,11 @@ import classNames from 'classnames';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import LoadModal from 'Components/load-modal';
-import SaveModal from 'Components/save-modal';
-import ReactJoyrideWrapper from '../react-joyride-wrapper';
 import { useDBotStore } from 'Stores/useDBotStore';
+import SaveModal from '../dashboard-component/load-bot-preview/save-modal';
 import { BOT_BUILDER_TOUR } from '../joyride-config';
 import QuickStrategy from '../quick-strategy';
+import ReactJoyrideWrapper from '../react-joyride-wrapper';
 import TourSlider from '../tour-slider';
 import WorkspaceWrapper from './workspace-wrapper';
 

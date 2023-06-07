@@ -17,6 +17,27 @@ type TInputGroupProps = React.PropsWithChildren<{
     className: string;
 }>;
 
+type TCryptoFiatConverterProps = {
+    from_currency: string;
+    hint?: React.ReactNode;
+    onChangeConverterFromAmount: (
+        event: { target: { value: string } },
+        from_currency: string,
+        to_currency: string,
+        converted_amount?: number
+    ) => void;
+    onChangeConverterToAmount: (
+        event: TReactChangeEvent,
+        from_currency: string,
+        to_currency: string,
+        converted_amount?: number
+    ) => void;
+    resetConverter: VoidFunction;
+    to_currency: string;
+    validateFromAmount: VoidFunction;
+    validateToAmount: VoidFunction;
+};
+
 const Timer = ({ onComplete }: TTimerProps) => {
     const initial_time = 60;
     const [remaining_time, setRemainingTime] = React.useState<number>(initial_time);
@@ -47,27 +68,6 @@ const InputGroup = ({ children, className }: TInputGroupProps) => {
             <div className={className}>{children}</div>
         </fieldset>
     );
-};
-
-type TCryptoFiatConverterProps = {
-    from_currency: string;
-    hint?: React.ReactNode;
-    onChangeConverterFromAmount: (
-        event: { target: { value: string } },
-        from_currency: string,
-        to_currency: string,
-        converted_amount?: number
-    ) => void;
-    onChangeConverterToAmount: (
-        event: TReactChangeEvent,
-        from_currency: string,
-        to_currency: string,
-        converted_amount?: number
-    ) => void;
-    resetConverter: VoidFunction;
-    to_currency: string;
-    validateFromAmount: VoidFunction;
-    validateToAmount: VoidFunction;
 };
 
 const CryptoFiatConverter = observer(

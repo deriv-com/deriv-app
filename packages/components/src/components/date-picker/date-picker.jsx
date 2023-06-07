@@ -68,6 +68,10 @@ const DatePicker = React.memo(props => {
     }, [is_datepicker_visible, portal_id]);
 
     React.useEffect(() => {
+        setIsPlaceholderVisible(placeholder && !value);
+    }, [value, placeholder]);
+
+    React.useEffect(() => {
         if (value) setDate(toMoment(value).format(display_format));
     }, [value, display_format, setDate]);
 

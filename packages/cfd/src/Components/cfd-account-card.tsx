@@ -15,8 +15,10 @@ import {
     TCFDAccountCardActionProps,
     TCFDAccountCard,
     TTradingPlatformAccounts,
+    TTradingPlatformAvailableAccount,
 } from './props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { FormikValues } from 'formik';
 
 const account_icons: { [key: string]: TAccountIconValues } = {
     mt5: {
@@ -24,6 +26,7 @@ const account_icons: { [key: string]: TAccountIconValues } = {
         financial: 'IcMt5FinancialPlatform',
         financial_stp: 'IcMt5FinancialStpPlatform',
         cfd: 'IcMt5CfdPlatform',
+        all: 'IcMt5SwapFreePlatform',
     },
     // TODO: Line 30, 31 and 32 should be removed after real released.
     dxtrade: {
@@ -211,8 +214,10 @@ const CFDAccountCardComponent = ({
         !show_eu_related_content &&
         platform === CFD_PLATFORMS.MT5 &&
         (type.category === 'demo'
-            ? isEligibleForMoreDemoMt5Svg(type.type as 'synthetic' | 'financial') && !!existing_data
-            : isEligibleForMoreRealMt5(type.type as 'synthetic' | 'financial') && !!existing_data);
+            ? isEligibleForMoreDemoMt5Svg(type.type as TTradingPlatformAvailableAccount['market_type'] | 'synthetic') &&
+              !!existing_data
+            : isEligibleForMoreRealMt5(type.type as TTradingPlatformAvailableAccount['market_type'] | 'synthetic') &&
+              !!existing_data);
 
     const platform_icon = show_eu_related_content && platform === CFD_PLATFORMS.MT5 ? 'cfd' : type.type;
 
@@ -431,7 +436,7 @@ const CFDAccountCardComponent = ({
                             platform === CFD_PLATFORMS.MT5 &&
                             type.category === 'demo' &&
                             existing_accounts_data?.length &&
-                            existing_accounts_data?.map((acc, index) => (
+                            existing_accounts_data?.map((acc: FormikValues, index: number) => (
                                 <div className='cfd-account-card__item' key={index}>
                                     {acc?.display_balance && is_logged_in && acc.landing_company_short === 'labuan' && (
                                         <div className='cfd-account-card__item--banner'>
@@ -538,7 +543,7 @@ const CFDAccountCardComponent = ({
                             is_logged_in &&
                             platform === CFD_PLATFORMS.MT5 &&
                             type.category === 'real' &&
-                            existing_accounts_data?.map((acc, index) => (
+                            existing_accounts_data?.map((acc: FormikValues, index: number) => (
                                 <div className='cfd-account-card__item' key={index}>
                                     {existing_data?.display_balance && is_logged_in && !show_eu_related_content && (
                                         <div className='cfd-account-card__item--banner'>

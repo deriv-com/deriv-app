@@ -116,7 +116,7 @@ const FiatTransactionList = () => {
             transaction_time: 1684009944,
         },
     ];
-    const grouped_transactions = useGroupedFiatTransactions(transactions);
+    const grouped_transactions = useGroupedFiatTransactions(mock_transactions);
     const linked_accounts = Object.values(accounts)
         .flatMap(account => account.linked_to)
         .filter(Boolean);

@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Loading } from '@deriv/components';
 import { useDepositFiatAddress } from '@deriv/hooks';
+import { observer, useStore } from '@deriv/stores';
 import './deposit-fiat-iframe.scss';
 
-const DepositFiatIframe: React.FC = () => {
-    const { data, isSuccess } = useDepositFiatAddress();
+const DepositFiatIframe: React.FC = observer(() => {
+    const { ui } = useStore();
+    const { is_dark_mode_on } = ui;
+    const { data: iframe_url, isSuccess } = useDepositFiatAddress();
     const [show_loader, setShowLoader] = useState(true);
 
     return (
@@ -20,13 +23,13 @@ const DepositFiatIframe: React.FC = () => {
                 <iframe
                     className='deposit-fiat-iframe__iframe'
                     onLoad={() => setShowLoader(false)}
-                    src={data}
+                    src={`${iframe_url}&DarkMode=${is_dark_mode_on ? 'on' : 'off'}`}
                     style={!show_loader ? { display: 'block' } : { display: 'none' }}
                     data-testid='dt_deposit_fiat_iframe_iframe'
                 />
             )}
         </React.Fragment>
     );
-};
+});
 
 export default DepositFiatIframe;

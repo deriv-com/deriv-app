@@ -109,8 +109,8 @@ const MT5AccountTypeModal = () => {
     const is_swapfree_available = useHasSwapFreeAccount();
 
     const set_account_type = () => {
-        switch (account_type_card) {
-            case 'Derived':
+        switch (localize(account_type_card)) {
+            case localize('Derived'):
                 setAccountType({ category: 'real', type: 'synthetic' });
                 break;
             case localize('Swap-Free'):

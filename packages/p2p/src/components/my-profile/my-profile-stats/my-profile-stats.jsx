@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
 import MyProfileStatsTable from './my-profile-stats-table';
-import MyProfileSeparatorContainer from '../my-profile-separator-container';
+import SeparatorContainerLine from 'Components/separator-container-line';
 import { Localize, localize } from 'Components/i18next';
 import MyProfilePrivacy from './my-profile-privacy';
 
@@ -45,9 +45,9 @@ const MyStats = () => {
                 <MyProfileStatsTable />
             </DesktopWrapper>
             <MobileWrapper>
-                <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
+                <SeparatorContainerLine className='my-profile-stats-separator' />
                 <MyProfilePrivacy />
-                <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
+                <SeparatorContainerLine className='my-profile-stats-separator' />
                 {tabs.map((tab, key) => {
                     return (
                         <React.Fragment key={key}>
@@ -58,7 +58,7 @@ const MyStats = () => {
                                 <Icon icon='IcChevronRight' />
                             </div>
                             {key !== tabs.length - 1 && (
-                                <MyProfileSeparatorContainer.Line className='my-profile-stats-separator' />
+                                <SeparatorContainerLine className='my-profile-stats-separator' />
                             )}
                         </React.Fragment>
                     );

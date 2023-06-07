@@ -106,6 +106,9 @@ const createTickMarkers = contract_info => {
         if (is_only_ups_downs && is_middle_spot) {
             const spot_className = marker_config.content_config.spot_className;
             marker_config.content_config.spot_className = `${spot_className} ${spot_className}--only-ups-downs-small`;
+            if (!is_current_last_spot) {
+                marker_config.content_config.is_value_hidden = true;
+            }
         }
         if (has_accumulator_bold_marker || (is_accumulator && is_middle_spot)) {
             const spot_className = marker_config.content_config.spot_className;
@@ -116,9 +119,6 @@ const createTickMarkers = contract_info => {
 
         if (marker_config) {
             result.push(marker_config);
-        }
-        if (is_only_ups_downs && !is_entry_spot && result.length > 2) {
-            result[idx - 1].content_config.is_value_hidden = true;
         }
     });
     return result;

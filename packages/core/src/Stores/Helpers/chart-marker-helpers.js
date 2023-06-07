@@ -124,6 +124,7 @@ export const createMarkerSpotMiddle = (contract_info, tick, idx) => {
     const spot_count = getSpotCount(contract_info, idx);
     const spot = tick.tick_display_value;
     const spot_epoch = is_accumulator ? '' : `${tick.epoch}`;
+
     const marker_config = createMarkerConfig(MARKER_TYPES_CONFIG.SPOT_MIDDLE.type, +tick.epoch, +spot, {
         spot_value: `${spot}`,
         spot_epoch,

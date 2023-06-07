@@ -1520,7 +1520,7 @@ export default class NotificationStore extends BaseStore {
                     onClick: async () => {
                         window.LC_API.open_chat_window();
                     },
-                    text: localize('Go to live chat'),
+                    text: localize('Go to LiveChat'),
                 },
                 type: 'danger',
             },

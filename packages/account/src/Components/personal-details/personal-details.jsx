@@ -153,7 +153,7 @@ const PersonalDetails = ({
                                         <InlineNoteWithIcon
                                             icon='IcAlertWarning'
                                             message={localize(
-                                                ' For verification purposes as required by regulation. It’s your responsibility to provide accurate and complete answers. You can update personal details at any time in your account settings.'
+                                                'For verification purposes as required by regulation. It’s your responsibility to provide accurate and complete answers. You can update personal details at any time in your account settings.'
                                             )}
                                             title={localize('Why do we collect this?')}
                                         />

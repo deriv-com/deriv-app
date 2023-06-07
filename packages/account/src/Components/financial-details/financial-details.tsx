@@ -140,7 +140,7 @@ const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTra
                                             <InlineNoteWithIcon
                                                 icon='IcAlertWarning'
                                                 message={localize(
-                                                    ' We collect information about your employment as part of our due diligence obligations, as required by anti-money laundering legislation.'
+                                                    'We collect information about your employment as part of our due diligence obligations, as required by anti-money laundering legislation.'
                                                 )}
                                                 title={localize('Why do we collect this?')}
                                             />

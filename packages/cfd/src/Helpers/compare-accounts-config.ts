@@ -14,7 +14,6 @@ const getHighlightedIconLabel = (trading_platforms: TTradingPlatformAvailableAcc
                 { icon: 'Cryptocurrencies', text: 'Cryptocurrencies', highlighted: false },
                 { icon: 'ETF', text: 'ETF', highlighted: false },
             ];
-            break;
         case 'financial':
             return [
                 { icon: 'Synthetics', text: 'Synthetics', highlighted: false },
@@ -27,7 +26,6 @@ const getHighlightedIconLabel = (trading_platforms: TTradingPlatformAvailableAcc
                 { icon: 'Cryptocurrencies', text: 'Cryptocurrencies', highlighted: true },
                 { icon: 'ETF', text: 'ETF', highlighted: true },
             ];
-            break;
         case 'all':
         default:
             return [
@@ -41,7 +39,6 @@ const getHighlightedIconLabel = (trading_platforms: TTradingPlatformAvailableAcc
                 { icon: 'Cryptocurrencies', text: 'Cryptocurrencies', highlighted: true },
                 { icon: 'ETF', text: 'ETF', highlighted: true },
             ];
-            break;
     }
 };
 

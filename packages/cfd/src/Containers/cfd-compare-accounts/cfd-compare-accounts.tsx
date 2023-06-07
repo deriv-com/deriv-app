@@ -5,6 +5,7 @@ import { Text, Icon, PageOverlay, DesktopWrapper, MobileWrapper } from '@deriv/c
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import CFDInstrumentsLabelHighlighted from './cfd-instruments-label-highlighted';
+import CFDAccountsDescription from './cfd-accounts-description';
 
 import { useStore } from '@deriv/stores';
 
@@ -42,10 +43,13 @@ const CompareCFDs = observer(() => {
                 <div className='compare-cfd-account-container'>
                     <div className='card-list'>
                         {trading_platform_available_accounts.map(item => (
-                            <CFDInstrumentsLabelHighlighted
-                                key={item.market_type + item.shortcode}
-                                trading_platforms={item}
-                            />
+                            <React.Fragment key={item.market_type + item.shortcode}>
+                                <CFDAccountsDescription />
+                                <CFDInstrumentsLabelHighlighted
+                                    // key={item.market_type + item.shortcode}
+                                    trading_platforms={item}
+                                />
+                            </React.Fragment>
                         ))}
                     </div>
                 </div>

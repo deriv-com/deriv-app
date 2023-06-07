@@ -204,14 +204,6 @@
             grid-area: section-side-note;
             width: 26rem;
 
-            .dc-text {
-                color: var(--text-less-prominent);
-                font-size: 1.4rem;
-
-                @include mobile {
-                    font-size: 1.2rem;
-                }
-            }
             .account-poa__upload-box-dashboard {
                 @include mobile {
                     align-items: flex-start;

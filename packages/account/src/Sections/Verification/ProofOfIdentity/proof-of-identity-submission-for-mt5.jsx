@@ -21,6 +21,7 @@ const POISubmissionForMT5 = ({
     citizen_data,
     residence_list,
     jurisdiction_selected_shortcode,
+    identity_last_attempt,
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // submitting
     const [submission_service, setSubmissionService] = React.useState();
@@ -120,7 +121,7 @@ const POISubmissionForMT5 = ({
                         residence_list={residence_list}
                         is_from_external={is_from_external}
                         handleSubmit={handlePOIComplete}
-                        latest_status={idv?.latest}
+                        latest_status={identity_last_attempt}
                     />
                 ) : (
                     <IdvDocSubmitOnSignup

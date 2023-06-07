@@ -95,8 +95,8 @@ const IdvFailed = ({
         [mismatch_status]
     );
 
-    const citizen = account_settings?.citizen;
-    const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
+    const selected_country =
+        residence_list.find(residence_data => residence_data.value === latest_status?.country_code) || {};
 
     const generateIDVError = React.useCallback(() => {
         const document_name = getIDVDocumentType(latest_status, selected_country);

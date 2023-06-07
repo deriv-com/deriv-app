@@ -302,7 +302,7 @@ export const getIDVDocumentType = (
     idv_latest_attempt: DeepRequired<GetAccountStatus>['authentication']['attempts']['latest'],
     residence: DeepRequired<ResidenceList[0]>
 ) => {
-    if (!idv_latest_attempt) return localize('identity document');
+    if (!idv_latest_attempt || !Object.keys(residence).length) return localize('identity document');
     const { document_type } = idv_latest_attempt;
     if (!document_type) return localize('identity document');
     const {

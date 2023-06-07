@@ -145,7 +145,7 @@ const POISubmission = ({
                             mismatch_status={mismatch_status}
                             residence_list={residence_list}
                             handleSubmit={handleViewComplete}
-                            latest_status={idv?.latest}
+                            latest_status={identity_last_attempt}
                         />
                     ) : (
                         <IdvDocumentSubmit

@@ -44,10 +44,10 @@ let file_uploader_ref = null;
 
 const UploaderSideNote = () => (
     <div className='account-poa__upload-box account-poa__upload-box-dashboard'>
-        <Text size='xs' line_height='s'>
+        <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} line_height='s'>
             <Localize i18n_default_text='A recent utility bill (e.g. electricity, water or gas)' />
         </Text>
-        <Text size='xs' line_height='s'>
+        <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} line_height='s'>
             <Localize i18n_default_text='A recent bank statement or government-issued letter with your name and address.' />
         </Text>
     </div>

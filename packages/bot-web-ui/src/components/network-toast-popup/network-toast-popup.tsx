@@ -1,9 +1,9 @@
+import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
 import ReactDOM from 'react-dom';
 import { MobileWrapper, Toast } from '@deriv/components';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 
 // TODO: Need to sanitize,
 // Same sort of component is being used inside DTrader,
@@ -12,7 +12,15 @@ import { connect } from 'Stores/connect';
 /**
  * Network status Toast components
  */
-const NetworkStatusToastError = ({ status, portal_id, message }) => {
+type TNetworkStatusToastError = {
+    status: string;
+    portal_id: string;
+    message: string;
+};
+
+const NetworkStatusToastError = observer(({ status, portal_id, message }: TNetworkStatusToastError) => {
+    const { common } = useStore();
+    const { network_status } = common;
     const [is_open, setIsOpen] = React.useState(false);
 
     if (!document.getElementById(portal_id) || !message) return null;
@@ -23,6 +31,16 @@ const NetworkStatusToastError = ({ status, portal_id, message }) => {
         setTimeout(() => {
             setIsOpen(false);
         }, 1500);
+    }
+
+    if (network_status) {
+        return (
+            <NetworkStatusToastError
+                portal_id='popup_root'
+                message={network_status.tooltip}
+                status={network_status.class}
+            />
+        );
     }
 
     return ReactDOM.createPortal(
@@ -40,16 +58,6 @@ const NetworkStatusToastError = ({ status, portal_id, message }) => {
         </MobileWrapper>,
         document.getElementById(portal_id)
     );
-};
+});
 
-NetworkStatusToastError.propTypes = {
-    portal_id: PropTypes.string,
-    status: PropTypes.string,
-    message: PropTypes.string,
-};
-
-export default connect(({ common }) => ({
-    network_status: common.network_status,
-}))(({ network_status }) => (
-    <NetworkStatusToastError portal_id='popup_root' message={network_status.tooltip} status={network_status.class} />
-));
+export default NetworkStatusToastError;

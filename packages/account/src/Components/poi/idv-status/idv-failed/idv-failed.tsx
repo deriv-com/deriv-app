@@ -96,7 +96,7 @@ const IdvFailed = ({
     );
 
     const selected_country =
-        residence_list.find(residence_data => residence_data.value === latest_status?.country_code) || {};
+        residence_list.find(residence_data => residence_data.value === latest_status?.country_code) ?? {};
 
     const generateIDVError = React.useCallback(() => {
         const document_name = getIDVDocumentType(latest_status, selected_country);

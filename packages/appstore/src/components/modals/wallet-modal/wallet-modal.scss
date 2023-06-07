@@ -135,7 +135,14 @@
         padding: 2.4rem 4rem;
 
         @include mobile {
+            position: relative;
+            top: 4rem;
             padding: 1.6rem;
+            transition: top 0.2s ease;
+
+            &.is_scrolled {
+                top: 0rem;
+            }
         }
     }
 
@@ -212,17 +219,7 @@
         justify-content: center;
 
         @include mobile {
-            top: 4rem;
-            position: relative;
             font-size: var(--text-size-xs);
-        }
-
-        &--modal-body__tabs {
-            transition: top 0.2s ease;
-
-            &.is_scrolled {
-                top: 0rem;
-            }
         }
     }
 }

@@ -9,13 +9,20 @@ const DepositFiatIframe: React.FC = () => {
 
     return (
         <React.Fragment>
-            {show_loader && <Loading className='deposit-fiat-iframe__loader' is_fullscreen={false} />}
+            {show_loader && (
+                <Loading
+                    className='deposit-fiat-iframe__loader'
+                    data-testid='dt_deposit_fiat_iframe_loader'
+                    is_fullscreen={false}
+                />
+            )}
             {isSuccess && (
                 <iframe
                     className='deposit-fiat-iframe__iframe'
                     onLoad={() => setShowLoader(false)}
                     src={data}
                     style={!show_loader ? { display: 'block' } : { display: 'none' }}
+                    data-testid='dt_deposit_fiat_iframe_iframe'
                 />
             )}
         </React.Fragment>

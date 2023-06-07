@@ -20,7 +20,7 @@ const WalletModal = observer(() => {
 
     React.useEffect(() => {
         return setIsWalletNameVisible(true);
-    }, [active_tab_index]);
+    }, [active_tab_index, is_wallet_modal_visible]);
 
     const closeModal = () => {
         setIsWalletModalVisible(false);

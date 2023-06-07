@@ -609,7 +609,7 @@
 
                 &-text {
                     font-weight: normal;
-                    margin-top: 8px;
+                    margin-top: 16px;
                 }
 
                 &-name {
@@ -619,8 +619,10 @@
                 }
 
                 &-desc {
-                    font-size: $FONT_SIZE_S;
+                    font-size: 14px;
                     line-height: 20px;
+                    color: #333333;
+                    font-weight: 350;
                 }
 
             }

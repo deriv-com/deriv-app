@@ -16,6 +16,10 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                             {localize('You can choose a growth rate with values of 1%, 2%, 3%, 4%, and 5%.')}
                         </Text>
                         <Text as='h2' weight='bold' className='contract-type-info__content-glossary--heading'>
+                            {localize('Payout')}
+                        </Text>
+                        <Text as='p'>{localize('Payout is the sum of your initial stake and profit.')}</Text>
+                        <Text as='h2' weight='bold' className='contract-type-info__content-glossary--heading'>
                             {localize('Range')}
                         </Text>
                         <Text as='p'>
@@ -27,10 +31,6 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                             {localize('Previous spot price')}
                         </Text>
                         <Text as='p'>{localize('Spot price on the previous tick.')}</Text>
-                        <Text as='h2' weight='bold' className='contract-type-info__content-glossary--heading'>
-                            {localize('Payout')}
-                        </Text>
-                        <Text as='p'>{localize('Payout is the sum of your initial stake and profit.')}</Text>
                         <Text as='h2' weight='bold' className='contract-type-info__content-glossary--heading'>
                             {localize('Slippage risk')}
                         </Text>
@@ -46,16 +46,11 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                 ContractTypeGlossaryTemplate = (
                     <React.Fragment>
                         <Text as='h2' weight='bold' className='contract-type-info__content-glossary--heading'>
-                            {localize('Expiry')}
+                            {localize('Payout')}
                         </Text>
                         <Text as='p'>
                             {localize(
-                                'This is when your contract will expire based on the Duration or End time you’ve selected.'
-                            )}
-                        </Text>
-                        <Text as='p'>
-                            {localize(
-                                'If the duration is more than 24 hours, the Cut-off time and Expiry date will apply instead.'
+                                'Your payout is equal to the payout per point multiplied by the difference between the final price and the strike price.'
                             )}
                         </Text>
                         <Text as='h2' weight='bold' className='contract-type-info__content-glossary--heading'>
@@ -79,13 +74,20 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                             </li>
                         </ul>
                         <Text as='h2' weight='bold' className='contract-type-info__content-glossary--heading'>
-                            {localize('Payout')}
+                            {localize('Expiry')}
                         </Text>
                         <Text as='p'>
                             {localize(
-                                'Your payout is equal to the payout per point multiplied by the difference between the final price and the strike price.'
+                                'This is when your contract will expire based on the Duration or End time you’ve selected.'
                             )}
                         </Text>
+                        <ul>
+                            <li>
+                                {localize(
+                                    'If the duration is more than 24 hours, the Cut-off time and Expiry date will apply instead.'
+                                )}
+                            </li>
+                        </ul>
                         <Text as='h2' weight='bold' className='contract-type-info__content-glossary--heading'>
                             {localize('Payout per point')}
                         </Text>

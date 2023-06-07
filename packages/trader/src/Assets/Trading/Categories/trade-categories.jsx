@@ -458,7 +458,16 @@ const TradeCategories = ({ category, onClick }) => {
                             />
                         </Text>
                         <Text as='p'>
-                            <Localize i18n_default_text='Your payout is equal to the <0>payout per point</0> multiplied by the difference between the final price and the strike price. You will only earn a profit if your payout is higher than your initial stake.' />
+                            <Localize
+                                i18n_default_text='Your payout is equal to the <0>payout per point</0> multiplied by the difference between the final price and the strike price. You will only earn a profit if your payout is higher than your initial stake.'
+                                components={[
+                                    <span
+                                        className='contract-type-info__content-definition'
+                                        onClick={onClick}
+                                        key={0}
+                                    />,
+                                ]}
+                            />
                         </Text>
                         <Text as='p'>
                             <Localize

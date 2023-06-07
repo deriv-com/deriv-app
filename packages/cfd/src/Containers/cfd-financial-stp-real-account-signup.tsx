@@ -128,7 +128,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     let should_show_poa = false;
 
     if (
-        jurisdiction_selected_shortcode === 'labuan' &&
+        jurisdiction_selected_shortcode === Jurisdiction.LABUAN &&
         (account_status.risk_classification === 'high' || poa_resubmit_for_labuan)
     ) {
         should_show_poa = true;

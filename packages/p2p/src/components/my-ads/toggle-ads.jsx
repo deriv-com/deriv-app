@@ -35,7 +35,7 @@ const ToggleAds = observer(() => {
         <div className='toggle-ads'>
             <Text
                 className='toggle-ads__message'
-                color={`${general_store.is_listed ? 'profit-success' : 'less-prominent'}`}
+                color={`${general_store.is_listed ? 'less-prominent' : 'profit-success'}`}
                 line_height='xl'
                 size='xs'
             >
@@ -43,7 +43,7 @@ const ToggleAds = observer(() => {
             </Text>
             <ToggleSwitch
                 id='toggle-my-ads'
-                is_enabled={general_store.is_listed && !general_store.is_barred}
+                is_enabled={general_store.is_barred || !general_store.is_listed}
                 handleToggle={handleToggle}
             />
         </div>

@@ -1,15 +1,19 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { TCoreStores } from '@deriv/stores/types';
 import WalletTransferBlock from '../wallet-transfer-block';
+import { TWalletAccount } from 'Types';
 
-const wallet_account: TCoreStores['client']['accounts'][0] = {
-    balance: 10415.24,
+const wallet_account: TWalletAccount = {
+    name: 'USD',
     currency: 'USD',
+    icon: '',
+    balance: 10415.24,
+    icon_type: 'fiat',
     landing_company_shortcode: 'svg',
-    is_virtual: 1,
-    loginid: 'CRW12345',
+    is_disabled: false,
+    is_virtual: false,
+    loginid: 'CRW10001',
 };
 
 jest.mock('./../../containers/currency-switcher-container', () => jest.fn(({ children }) => <div>{children}</div>));

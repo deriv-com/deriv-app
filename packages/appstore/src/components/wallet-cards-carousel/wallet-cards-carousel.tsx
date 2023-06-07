@@ -29,6 +29,7 @@ export const WalletCardsCarousel = ({ items }: WalletCardsCarouselProps) => {
             centerPadding: '0',
             slidesToShow: 1,
             slidesToScroll: 1,
+            swipeToSlide: true,
             variableWidth: true,
             arrow: false,
             speed: 500,

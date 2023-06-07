@@ -63,6 +63,13 @@ const AppContent = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [client.is_options_blocked, client.account_settings.country_code]);
 
+    const changeActiveSymbolLoadingState = () => {
+        const { active_symbols } = ApiHelpers.instance;
+        active_symbols.retrieveActiveSymbols(true).then(() => {
+            setIsLoading(false);
+        });
+    };
+
     React.useEffect(() => {
         GTM.init(combinedStore);
         ServerTime.init(common);
@@ -70,20 +77,14 @@ const AppContent = observer(() => {
         ApiHelpers.setInstance(app.api_helpers_store);
         setIsLoading(true);
         if (!client.is_logged_in) {
-            const { active_symbols } = ApiHelpers.instance;
-            active_symbols.retrieveActiveSymbols(true).then(() => {
-                setIsLoading(false);
-            });
+            changeActiveSymbolLoadingState();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // use is_landing_company_loaded to know got details of accounts to identify should show an error or not
     if (client.is_landing_company_loaded) {
-        const { active_symbols } = ApiHelpers.instance;
-        active_symbols.retrieveActiveSymbols(true).then(() => {
-            setIsLoading(false);
-        });
+        changeActiveSymbolLoadingState();
     }
 
     React.useEffect(() => {

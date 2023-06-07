@@ -1,3 +1,6 @@
+import React from 'react';
+import { PoiPoaDocsSubmitted } from '@deriv/account';
+import { AccountStatusResponse } from '@deriv/api-types';
 import {
     Button,
     DesktopWrapper,
@@ -10,13 +13,10 @@ import {
     UILoader,
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import RootStore from '../Stores/index';
-import { PoiPoaDocsSubmitted } from '@deriv/account';
-import { connect } from '../Stores/connect';
 import { getAuthenticationStatusInfo, isMobile, WS, Jurisdiction } from '@deriv/shared';
-import { AccountStatusResponse } from '@deriv/api-types';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
-import React from 'react';
+import RootStore from '../Stores/index';
+import { connect } from '../Stores/connect';
 import { TCFDDbviOnboardingProps } from './props.types';
 
 const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) => (

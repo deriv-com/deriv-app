@@ -1,3 +1,5 @@
+import React from 'react';
+import { Field, FieldProps, Formik, FormikErrors, FormikHelpers, FormikProps } from 'formik';
 import { AccountStatusResponse, GetSettings, StatesList } from '@deriv/api-types';
 import {
     AutoHeightWrapper,
@@ -13,8 +15,8 @@ import {
     ThemedScrollbars,
     useStateCallback,
 } from '@deriv/components';
-import { Field, FieldProps, Formik, FormikErrors, FormikHelpers, FormikProps } from 'formik';
 import { FileUploaderContainer, FormSubHeader, PoaStatusCodes } from '@deriv/account';
+import { localize } from '@deriv/translations';
 import {
     WS,
     isDesktop,
@@ -26,8 +28,6 @@ import {
     Jurisdiction,
 } from '@deriv/shared';
 import { InputField } from './cfd-personal-details-form';
-import React from 'react';
-import { localize } from '@deriv/translations';
 
 type TErrors = {
     code: string;
@@ -93,7 +93,7 @@ export type TCFDPOAProps = {
     states_list: StatesList;
     storeProofOfAddress: TStoreProofOfAddress;
     value: TFormValue;
-    jurisdiction_selected_shortcode: string;
+    jurisdiction_selected_shortcode: typeof Jurisdiction[keyof typeof Jurisdiction];
 };
 type TUpload = {
     upload: () => void;

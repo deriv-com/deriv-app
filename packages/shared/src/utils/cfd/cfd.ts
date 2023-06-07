@@ -1,6 +1,6 @@
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany } from '@deriv/api-types';
-import { CFD_PLATFORMS } from '../platform';
 import { localize } from '@deriv/translations';
+import { CFD_PLATFORMS } from '../platform';
 
 let CFD_text_translated: { [key: string]: () => void };
 
@@ -260,7 +260,7 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus) =>
     const onfido_status = account_status?.authentication?.identity?.services?.onfido?.status;
     const manual_status = account_status?.authentication?.identity?.services?.manual?.status;
 
-    const is_authenticated_with_idv_photoid = account_status.status?.includes('authenticated_with_idv_photoid');
+    const is_authenticated_with_idv_photoid = account_status?.status?.includes('authenticated_with_idv_photoid');
 
     const acknowledged_status = ['pending', 'verified'];
     const failed_cases = ['rejected', 'expired', 'suspected'];

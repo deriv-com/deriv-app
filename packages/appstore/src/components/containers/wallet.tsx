@@ -26,7 +26,7 @@ const Wallet = React.memo(({ wallet_account, is_open_wallet }: TWallet) => {
         >
             <WalletHeader
                 account_type={is_demo ? 'demo' : 'real'}
-                balance={formatMoney(wallet_account.currency, wallet_account.balance, true)}
+                balance={wallet_account.balance}
                 currency={wallet_account.currency as TWalletCurrency}
                 shortcode={shortcode as TWalletShortcode}
                 is_open_wallet={is_open}

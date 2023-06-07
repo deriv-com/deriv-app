@@ -3,7 +3,7 @@ import { useStore } from '@deriv/stores';
 type TWalletAccount = {
     account_category?: 'trading' | 'wallet';
     account_type?: string;
-    balance: string | number;
+    balance: number;
     currency: string;
     is_disabled: boolean;
     is_virtual: boolean;

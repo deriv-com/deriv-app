@@ -7,7 +7,7 @@ import { TWalletCurrency, TAccountStatus } from 'Types';
 
 type TWalletHeaderBalance = {
     account_status: TAccountStatus;
-    balance: number;
+    balance: string;
     currency: TWalletCurrency;
 };
 

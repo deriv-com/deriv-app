@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { ProgressBarOnboarding, Icon, Text, WalletCard } from '@deriv/components';
 import { getWalletHeaderButtons } from 'Constants/utils';
 import { TWalletAccount } from 'Types';
+import { formatMoney } from '@deriv/shared';
 import Slider from 'react-slick';
 import './wallet-cards-carousel.scss';
 
@@ -58,7 +59,11 @@ export const WalletCardsCarousel = ({ items }: WalletCardsCarouselProps) => {
                 {items.map((item: TWalletAccount) => (
                     <WalletCard
                         key={`${item.name} ${item.currency} ${item.landing_company_shortcode}`}
-                        wallet={{ ...item, jurisdiction_title: item.landing_company_shortcode }}
+                        wallet={{
+                            ...item,
+                            balance: formatMoney(item.currency, item.balance, true),
+                            jurisdiction_title: item.landing_company_shortcode,
+                        }}
                         size='medium'
                     />
                 ))}

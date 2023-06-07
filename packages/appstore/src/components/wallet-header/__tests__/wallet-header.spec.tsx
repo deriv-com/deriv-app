@@ -93,7 +93,7 @@ describe('<WalletHeader />', () => {
     describe('Check balance', () => {
         it('Should render right balance with balance as props', () => {
             const account_type = 'real';
-            const balance = '2345.56';
+            const balance = 2345.56;
             const currency = 'EUR';
             render(
                 <StoreProvider store={mockedRootStore}>
@@ -107,7 +107,7 @@ describe('<WalletHeader />', () => {
                     />
                 </StoreProvider>
             );
-            const balance_label = screen.queryByText(`${balance} ${currency}`);
+            const balance_label = screen.queryByText(`2,345.56 ${currency}`);
 
             expect(balance_label).toBeInTheDocument();
         });

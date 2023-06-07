@@ -7,9 +7,10 @@ import MyProfileContent from './my-profile-content.jsx';
 import MyProfileHeader from './my-profile-header';
 import MyProfileDetailsContainer from './my-profile-stats/my-profile-details-container/my-profile-details-container.jsx';
 import DailyLimitModal from 'Components/daily-limit-modal';
+import Verification from 'Components/verification/verification.jsx';
 
 const MyProfile = () => {
-    const { my_profile_store } = useStores();
+    const { general_store, my_profile_store } = useStores();
 
     React.useEffect(() => {
         my_profile_store.getSettings();
@@ -30,6 +31,10 @@ const MyProfile = () => {
                 </Text>
             </div>
         );
+    }
+
+    if (!general_store.is_advertiser) {
+        return <Verification />;
     }
 
     return (

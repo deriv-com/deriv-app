@@ -56,7 +56,6 @@ describe('<AppContent/>', () => {
         });
 
         expect(screen.getByText('Tabs')).toBeInTheDocument();
-        expect(screen.queryByTestId('my_profile')).not.toBeInTheDocument();
     });
 
     it('should render the loading component when is_loading state is true', () => {
@@ -102,16 +101,5 @@ describe('<AppContent/>', () => {
 
         expect(screen.queryByText('NicknameForm')).not.toBeInTheDocument();
         expect(screen.getByText('Dp2pBlocked')).toBeInTheDocument();
-    });
-
-    it('should render MyProfile component when is_advertiser state is true', () => {
-        useStores.mockImplementation(() => ({
-            general_store: { ...mocked_store_values, is_advertiser: true },
-        }));
-        render(<AppContent />, {
-            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
-        });
-
-        expect(screen.getByTestId('my_profile')).toBeInTheDocument();
     });
 });

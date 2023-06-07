@@ -6,18 +6,23 @@ import { localize } from '@deriv/translations';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories.jsx';
 import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif.jsx';
 import { getContractTypes } from '../../../../Helpers/contract-type';
-import ContractTypeGlossary from './contract-type-glossary.jsx';
+import ContractTypeGlossary from './contract-type-glossary';
 import classNames from 'classnames';
+
+const TABS = {
+    DESCRIPTION: 'description',
+    GLOSSARY: 'glossary',
+};
 
 const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }) => {
     const [carousel_index, setCarouselIndex] = React.useState('');
-    const [selected_tab, setSelectedTab] = React.useState('description');
+    const [selected_tab, setSelectedTab] = React.useState(TABS.DESCRIPTION);
     const contract_types = getContractTypes(list, item).filter(i => i.value !== 'rise_fall_equal');
-    const onClickGlossary = () => setSelectedTab('glossary');
+    const onClickGlossary = () => setSelectedTab(TABS.GLOSSARY);
 
     const has_toggle_buttons = carousel_index !== 'accumulator' && carousel_index !== 'vanilla';
-    const is_description_tab_selected = selected_tab === 'description';
-    const is_glossary_tab_selected = selected_tab === 'glossary';
+    const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
+    const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
     const width = isMobile() ? '328' : '528';
     const scroll_bar_height = has_toggle_buttons ? '560px' : '464px';
 
@@ -25,25 +30,10 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
         setCarouselIndex(contract_types[active_index].value);
         handleNavigationClick(contract_types[active_index]);
         if (has_toggle_buttons && is_glossary_tab_selected) {
-            setSelectedTab('description');
+            setSelectedTab(TABS.DESCRIPTION);
         }
     };
     const selected_contract_type = contract_types.find(type => type.value === carousel_index);
-
-    const button = (
-        <div className='contract-type-info__trade-type-btn-wrapper'>
-            <Button
-                id={`dt_contract_info_${selected_contract_type?.value}_btn`}
-                className='contract-type-info__button'
-                onClick={e => handleSelect(selected_contract_type, e)}
-                text={localize('Choose {{contract_type}}', {
-                    contract_type: selected_contract_type?.text,
-                    interpolation: { escapeValue: false },
-                })}
-                secondary
-            />
-        </div>
-    );
 
     const cards = contract_types.map((type, idx) => {
         return (
@@ -67,7 +57,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                     autohide={false}
                 >
                     <div
-                        className={classNames('', {
+                        className={classNames({
                             'contract-type-info__gif--has-toggle-buttons': has_toggle_buttons,
                             'contract-type-info__content': is_glossary_tab_selected,
                             'contract-type-info__gif': is_description_tab_selected,
@@ -80,9 +70,9 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                         )}
                     </div>
                     <div className='contract-type-info__content'>
-                        {is_description_tab_selected ? (
+                        {is_description_tab_selected && (
                             <TradeCategories category={type.value} onClick={onClickGlossary} />
-                        ) : null}
+                        )}
                     </div>
                 </ThemedScrollbars>
             </div>
@@ -95,8 +85,8 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                 <div className='contract-type-info__button-wrapper'>
                     <ButtonToggle
                         buttons_arr={[
-                            { text: localize('Description'), value: 'description' },
-                            { text: localize('Glossary'), value: 'glossary' },
+                            { text: localize('Description'), value: TABS.DESCRIPTION },
+                            { text: localize('Glossary'), value: TABS.GLOSSARY },
                         ]}
                         name='description_glossary_filter'
                         is_animated
@@ -119,7 +109,18 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                 show_bullet={false}
                 show_nav={false}
             />
-            {button}
+            <div className='contract-type-info__trade-type-btn-wrapper'>
+                <Button
+                    id={`dt_contract_info_${selected_contract_type?.value}_btn`}
+                    className='contract-type-info__button'
+                    onClick={e => handleSelect(selected_contract_type, e)}
+                    text={localize('Choose {{contract_type}}', {
+                        contract_type: selected_contract_type?.text,
+                        interpolation: { escapeValue: false },
+                    })}
+                    secondary
+                />
+            </div>
         </React.Fragment>
     );
 };

@@ -95,7 +95,6 @@
             }
         }
         @include mobile {
-            width: 32rem;
             /* postcss-bem-linter: ignore */
             h2 {
                 @include typeface(--small-left-bold-black, none);
@@ -142,7 +141,7 @@
         padding-left: 2.4rem;
 
         @include mobile {
-            padding-left: 1.8rem;
+            padding-left: 2.4rem;
         }
     }
     &__title {
@@ -186,7 +185,6 @@
         padding-right: 2.4rem;
     }
     &__scrollbars {
-        // margin-bottom: auto;
         position: relative;
         &-description--active {
             transition: transform 0.3s linear;
@@ -225,7 +223,7 @@
         background: var(--general-section-1);
         padding: 0.4rem;
         margin: 1.6rem;
-        border-radius: 0.6rem;
+        border-radius: $BORDER_RADIUS * 1.5;
         width: 52.3rem;
 
         @include mobile {

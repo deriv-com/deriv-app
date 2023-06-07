@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-const ContractTypeGlossary = ({ category }) => {
+const ContractTypeGlossary = ({ category }: { category: string }) => {
     let ContractTypeGlossaryTemplate;
     if (category) {
         switch (category) {
@@ -124,10 +123,6 @@ const ContractTypeGlossary = ({ category }) => {
         }
     }
     return <React.Fragment>{ContractTypeGlossaryTemplate}</React.Fragment>;
-};
-
-ContractTypeGlossary.propTypes = {
-    category: PropTypes.string,
 };
 
 export default ContractTypeGlossary;

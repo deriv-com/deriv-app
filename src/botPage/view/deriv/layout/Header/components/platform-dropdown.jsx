@@ -38,8 +38,9 @@ const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcher
                     }
                     if (platform.title === 'SmartTrader') {
                         const related_deriv_origin = getRelatedDeriveOrigin();
-                        platform.link = `https://${related_deriv_origin.prefix}smarttrader.deriv.${related_deriv_origin.extension
-                            }/${localStorage.getItem('lang').toLowerCase() || 'en'}/trading`;
+                        platform.link = `https://${related_deriv_origin.prefix}smarttrader.deriv.${
+                            related_deriv_origin.extension
+                        }/${localStorage.getItem('lang').toLowerCase() || 'en'}/trading`;
                     }
 
                     const is_binary_bot = platform.title === 'Binary Bot' && location.pathname === '/';
@@ -61,7 +62,7 @@ const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcher
                 })}
             </div>
             <a href={config.tradershub.url}>
-                <span>{translate('Looking for CFDs? Go to Trader\'s Hub')}</span>
+                <span>{translate("Looking for CFDs? Go to Trader's Hub")}</span>
             </a>
         </div>
     );

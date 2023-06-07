@@ -21,9 +21,7 @@ const size_to_font_size_mapper = {
 type TProps = {
     type?: 'warning' | 'information' | 'announcement' | 'error';
     size?: 'xs' | 'sm' | 'md' | 'lg';
-    title?: React.ReactNode;
-    message?: React.ReactNode;
-} & ({ title: React.ReactNode } | { message: React.ReactNode } | { children: React.ReactNode });
+} & RequireAtLeastOne<{ title: React.ReactNode; message: React.ReactNode; children: React.ReactNode }>;
 
 const InlineMessage: React.FC<React.PropsWithChildren<TProps>> = ({
     type = 'warning',

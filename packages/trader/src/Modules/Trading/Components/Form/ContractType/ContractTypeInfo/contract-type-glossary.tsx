@@ -120,7 +120,7 @@ const ContractTypeGlossary = ({ category }: { category: string }) => {
                 );
                 break;
             default:
-                ContractTypeGlossaryTemplate = <Text as='p'>{localize('Glossary not found.')}</Text>;
+                ContractTypeGlossaryTemplate = <React.Fragment />;
                 break;
         }
     }

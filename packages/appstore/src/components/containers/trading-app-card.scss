@@ -9,7 +9,9 @@
             justify-content: center;
             height: 100%;
             padding: 0 0 2rem;
-            cursor: pointer;
+            &__clickable {
+                cursor: pointer;
+            }
         }
     }
 
@@ -31,7 +33,6 @@
         height: 100%;
         padding: 0 2rem 0 0;
         width: 100%;
-        cursor: pointer;
         &__short-code {
             padding: 0.4rem;
             height: fit-content;

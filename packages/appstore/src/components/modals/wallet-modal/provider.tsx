@@ -6,12 +6,6 @@ import WalletTransfer from 'Components/wallet-transfer';
 
 export type TWalletType = 'real' | 'demo' | 'p2p' | 'payment_agent';
 
-export type TTabsContentComponentProps = {
-    is_wallet_name_visible: boolean;
-    setIsScrollable: (value: boolean) => void;
-    setIsWalletNameVisible: (value: boolean) => void;
-};
-
 export const getCashierOptions = (type: TWalletType) => {
     switch (type) {
         case 'real':
@@ -94,7 +88,7 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcAccountTransfer',
                     label: localize('Transfer'),
-                    content: (props: TTabsContentComponentProps) => <WalletTransfer {...props} />,
+                    content: (props: React.ComponentProps<typeof WalletTransfer>) => <WalletTransfer {...props} />,
                 },
                 {
                     icon: 'IcStatement',

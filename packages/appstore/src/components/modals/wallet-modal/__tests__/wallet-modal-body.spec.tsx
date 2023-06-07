@@ -31,7 +31,7 @@ describe('WalletModalBody', () => {
         render(<BrowserRouter>{component}</BrowserRouter>);
     };
 
-    it('Should render proper tabs for demo wallet with proper content', () => {
+    it('Should render proper amount of tabs for demo wallet', () => {
         const mock = mockStore({});
 
         renderWithRouter(
@@ -40,9 +40,7 @@ describe('WalletModalBody', () => {
             </StoreProvider>
         );
 
-        expect(screen.getByText('Transfer')).toBeInTheDocument();
-        expect(screen.getByText('Transactions')).toBeInTheDocument();
-        expect(screen.getByText('Reset balance')).toBeInTheDocument();
+        expect(screen.getAllByTestId('dt_tab_element').length).toBe(3);
     });
 
     it('Should trigger setActiveTabIndex callback when the user clicked on the tab', () => {

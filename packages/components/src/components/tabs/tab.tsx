@@ -60,7 +60,14 @@ const Tab = ({
     });
     const title_color = is_active ? active_icon_color : icon_color;
     return (
-        <li id={id} className={classes} style={{ color: title_color }} onClick={onClick} ref={active_tab_ref}>
+        <li
+            id={id}
+            className={classes}
+            data-testid='dt_tab_element'
+            style={{ color: title_color }}
+            onClick={onClick}
+            ref={active_tab_ref}
+        >
             {icon && <Icon icon={icon} size={icon_size} custom_color={title_color} className='dc-tabs__item__icon' />}
             {header_content || label}
             {!!count && <Counter className='dc-tabs__item__counter' count={count} />}

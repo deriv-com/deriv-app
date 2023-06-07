@@ -25,8 +25,7 @@ const TradersHub = () => {
         is_account_setting_loaded,
         has_active_real_account,
     } = client;
-    const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user, is_real } =
-        traders_hub;
+    const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef<HTMLDivElement>(null);
 
     const eu_user_closed_real_account_first_time = LocalStore.get('eu_user_closed_real_account_first_time');
@@ -104,20 +103,17 @@ const TradersHub = () => {
         );
     };
 
-    const contentForOptionandCfdListing = () => {
-        if (is_eu_user && is_real) {
-            return (
-                <div className='traders-hub__main-container'>
-                    <CFDsListing />
-                    <OptionsAndMultipliersListing />
-                </div>
-            );
-        }
-        return (
-            <div className='traders-hub__main-container'>
-                <OptionsAndMultipliersListing />
-                <CFDsListing />
-            </div>
+    const renderOrderedPlatformSections = (is_cfd_visible = true, is_options_and_multipliers_visible = true) => {
+        return is_eu_user ? (
+            <React.Fragment>
+                {is_cfd_visible && <CFDsListing />}
+                {is_options_and_multipliers_visible && <OptionsAndMultipliersListing />}
+            </React.Fragment>
+        ) : (
+            <React.Fragment>
+                {is_options_and_multipliers_visible && <OptionsAndMultipliersListing />}
+                {is_cfd_visible && <CFDsListing />}
+            </React.Fragment>
         );
     };
 
@@ -133,7 +129,9 @@ const TradersHub = () => {
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     <MainTitleBar />
-                    <DesktopWrapper>{contentForOptionandCfdListing()}</DesktopWrapper>
+                    <DesktopWrapper>
+                        <div className='traders-hub__main-container'>{renderOrderedPlatformSections()}</div>
+                    </DesktopWrapper>
                     <MobileWrapper>
                         {is_landing_company_loaded ? (
                             <ButtonToggle
@@ -148,8 +146,10 @@ const TradersHub = () => {
                         ) : (
                             <ButtonToggleLoader />
                         )}
-                        {selected_platform_type === 'options' && <OptionsAndMultipliersListing />}
-                        {selected_platform_type === 'cfd' && <CFDsListing />}
+                        {renderOrderedPlatformSections(
+                            selected_platform_type === 'cfd',
+                            selected_platform_type === 'options'
+                        )}
                     </MobileWrapper>
                     <ModalManager />
                     {scrolled && <TourGuide />}

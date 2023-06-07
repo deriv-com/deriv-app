@@ -1,6 +1,7 @@
 import React from 'react';
+import { ApiHelpers, ServerTime, setColors } from '@deriv/bot-skeleton';
 import { Loading } from '@deriv/components';
-import { ServerTime, ApiHelpers, setColors } from '@deriv/bot-skeleton';
+import { observer, useStore } from '@deriv/stores';
 import {
     Audio,
     BotFooterExtensions,
@@ -9,12 +10,11 @@ import {
     NetworkToastPopup,
     RoutePromptDialog,
 } from 'Components';
-import BlocklyLoading from '../components/blockly-loading';
-import { MobxContentProvider } from 'Stores/connect';
-import { observer, useStore } from '@deriv/stores';
-import { useDBotStore } from 'Stores/useDBotStore';
-import GTM from 'Utils/gtm';
 import BotBuilder from 'Components/dashboard/bot-builder';
+import GTM from 'Utils/gtm';
+import { MobxContentProvider } from 'Stores/connect';
+import { useDBotStore } from 'Stores/useDBotStore';
+import BlocklyLoading from '../components/blockly-loading';
 import './app.scss';
 
 const AppContent = observer(() => {
@@ -56,6 +56,28 @@ const AppContent = observer(() => {
             r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
             a.appendChild(r);
         })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
+
+        const initSurvicate = () => {
+            if (document.getElementById('dbot-survicate')) {
+                const survicate_box = document.getElementById('survicate-box') || undefined;
+                if (survicate_box) {
+                    survicate_box.style.display = 'block';
+                }
+                return;
+            }
+            const script = document.createElement('script');
+            script.id = 'dbot-survicate';
+            script.async = true;
+            script.src = 'https://survey.survicate.com/workspaces/83b651f6b3eca1ab4551d95760fe5deb/web_surveys.js';
+            document.body.appendChild(script);
+        };
+
+        initSurvicate();
+        return () => {
+            if (document.getElementById('survicate-box')) {
+                document.getElementById('survicate-box').style.display = 'none';
+            }
+        };
     }, []);
 
     React.useEffect(() => {

@@ -287,10 +287,10 @@ export const isDocumentNumberValid = (document_number: string, document_type: Fo
         const example_format = getExampleFormat(document_type.example_format);
         switch (document_type.text) {
             case 'Drivers License':
-                document_name = 'Driver License';
+                document_name = 'Driver License Reference number';
                 break;
             case 'Social Security and National Insurance Trust':
-                document_name = 'SSNIT';
+                document_name = 'SSNIT number';
                 break;
             default:
                 document_name = 'document number';

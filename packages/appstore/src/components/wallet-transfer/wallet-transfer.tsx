@@ -51,6 +51,8 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         );
     }, [from_account?.label, to_account?.label]);
 
+    const is_amount_to_input_disabled = !to_account;
+
     return (
         <div className='wallet-transfer'>
             <Formik

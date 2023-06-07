@@ -121,27 +121,26 @@ const PersonalDetailsForm = ({
                 side_note={<PoiNameDobExampleIcon />}
             >
                 <fieldset className='account-form__fieldset'>
-                    {'salutation' in values && (
+                    {'salutation' in values && !is_mf && (
                         <div>
                             <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
-                                {!is_mf &&
-                                    (is_virtual ? (
-                                        localize(
-                                            'Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your account settings.'
-                                        )
-                                    ) : (
-                                        <Localize
-                                            i18n_default_text='Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your <0>account settings</0>.'
-                                            components={[
-                                                <Link
-                                                    to={routes.personal_details}
-                                                    key={0}
-                                                    className='link'
-                                                    onClick={closeRealAccountSignup}
-                                                />,
-                                            ]}
-                                        />
-                                    ))}
+                                {is_virtual ? (
+                                    localize(
+                                        'Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your account settings.'
+                                    )
+                                ) : (
+                                    <Localize
+                                        i18n_default_text='Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your <0>account settings</0>.'
+                                        components={[
+                                            <Link
+                                                to={routes.personal_details}
+                                                key={0}
+                                                className='link'
+                                                onClick={closeRealAccountSignup}
+                                            />,
+                                        ]}
+                                    />
+                                )}
                             </Text>
                         </div>
                     )}

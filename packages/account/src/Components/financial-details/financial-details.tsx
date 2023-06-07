@@ -43,7 +43,7 @@ export type TFinancialDetails = {
 export type TFinancialInformationAndTradingExperience = {
     shared_props?: object;
     income_source_enum: object[];
-    is_eu?: boolean;
+    is_eu_user?: boolean;
     employment_status_enum: object[];
     employment_industry_enum: object[];
     occupation_enum: object[];
@@ -94,7 +94,7 @@ const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTra
         props.onCancel(current_step, props.goToPreviousStep);
     };
 
-    const { is_eu } = props;
+    const { is_eu_user } = props;
 
     const handleValidate = (values: FormikValues) => {
         const { errors } = splitValidationResultTypes(props.validate(values));
@@ -135,18 +135,18 @@ const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTra
                                     height_offset='110px'
                                     is_disabled={isDesktop()}
                                 >
-                                    {is_eu && (
+                                    {is_eu_user && (
                                         <div className='details-form__banner-container'>
                                             <InlineNoteWithIcon
                                                 icon='IcAlertWarning'
                                                 message={localize(
-                                                    ' We collect information about your employment as part of our due diligence obligations, as required by anti-money laundering legislation.'
+                                                    'We collect information about your employment as part of our due diligence obligations, as required by anti-money laundering legislation.'
                                                 )}
                                                 title={localize('Why do we collect this?')}
                                             />
                                         </div>
                                     )}
-                                    {!is_eu && (
+                                    {!is_eu_user && (
                                         <Text
                                             as='p'
                                             color='prominent'

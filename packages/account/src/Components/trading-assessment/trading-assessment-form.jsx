@@ -127,7 +127,7 @@ const TradingAssessmentForm = ({
                     <InlineNoteWithIcon
                         icon='IcAlertWarning'
                         message={localize(
-                            ' To assess your trading experience and if our products are suitable for you. Please provide accurate and complete answers, as they may affect the outcome of this assessment.'
+                            'To assess your trading experience and if our products are suitable for you. Please provide accurate and complete answers, as they may affect the outcome of this assessment.'
                         )}
                         title={localize('Why do we collect this?')}
                     />

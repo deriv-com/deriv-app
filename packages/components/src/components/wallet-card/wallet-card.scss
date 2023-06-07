@@ -1,11 +1,15 @@
 .wallet-card {
     position: relative;
-    border-radius: $BORDER_RADIUS;
 
     &__container {
         border-radius: inherit;
         width: 100%;
         height: 100%;
+        background: linear-gradient(to right, #f2bfba, #e8b4c0, #d6acc7, #bca7cc, #9ca3cc);
+
+        &--active {
+            border: 2px solid var(--text-red);
+        }
 
         &--small {
             display: flex;
@@ -40,9 +44,20 @@
         }
     }
 
+    &__shine {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        clip-path: polygon(40% 10%, 104% -6.94%, 92.5% 100%, 28% 100%);
+        mix-blend-mode: overlay;
+        opacity: 0.16;
+        background-color: $color-white;
+    }
+
     &__content {
         position: relative;
-        z-index: 1;
         height: 100%;
         width: 100%;
         display: flex;
@@ -56,10 +71,6 @@
                 padding: 0.8rem;
             }
         }
-    }
-
-    &--active {
-        border: 2px solid var(--text-red);
     }
 
     &--small {
@@ -99,7 +110,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 1;
 
         &--small {
             position: absolute;
@@ -108,20 +118,7 @@
             transform: translate(-1.2rem, -0.4rem);
             width: unset;
             height: unset;
-            z-index: 1;
         }
-    }
-
-    &__shine {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        clip-path: polygon(40% 10%, 104% -6.94%, 92.5% 100%, 28% 100%);
-        mix-blend-mode: overlay;
-        opacity: 0.16;
-        background-color: $color-white;
     }
 
     &__top-wrapper {
@@ -136,22 +133,6 @@
         flex-direction: column;
         justify-content: flex-start;
         width: 100%;
-
-        &-wallet-name {
-            font-size: var(--text-size-xxxs);
-
-            @include mobile {
-                font-size: var(--text-size-xxxxs);
-            }
-        }
-
-        &-balance {
-            font-size: var(--text-size-xs);
-
-            @include mobile {
-                font-size: var(--text-size-xxs);
-            }
-        }
     }
 
     &__wallet-button {

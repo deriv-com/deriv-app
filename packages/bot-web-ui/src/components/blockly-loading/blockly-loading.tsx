@@ -7,7 +7,7 @@ type TBlocklyLoadingProps = {
     is_loading: boolean;
 };
 
-const BlocklyLoading: React.FC<TBlocklyLoadingProps> = ({ is_loading }) => (
+const BlocklyLoading = ({ is_loading }: TBlocklyLoadingProps) => (
     <>
         {is_loading && (
             <div className='bot__loading'>

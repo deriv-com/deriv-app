@@ -14,8 +14,9 @@ type TMobileDialog = {
     has_content_scroll?: boolean;
     has_full_height?: boolean;
     header_classname?: string;
-    onClose: React.MouseEventHandler;
-    onScrollHandler: React.UIEventHandler<HTMLDivElement>;
+    id?: string;
+    onClose?: React.MouseEventHandler;
+    onScrollHandler?: React.UIEventHandler;
     portal_element_id: string;
     renderTitle?: () => string;
     title?: string;
@@ -31,6 +32,7 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
         has_close_icon = true,
         has_full_height,
         header_classname,
+        id,
         onScrollHandler,
         portal_element_id,
         renderTitle,
@@ -98,8 +100,9 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
             unmountOnExit
         >
             <div
-                data-testid='dt_mobile_dialog'
                 className={classNames('dc-mobile-dialog', className)}
+                data-testid='dt_mobile_dialog'
+                id={id}
                 onClick={handleClick}
                 onScroll={onScrollHandler}
             >

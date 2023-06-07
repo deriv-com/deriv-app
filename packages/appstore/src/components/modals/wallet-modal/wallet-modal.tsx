@@ -18,6 +18,23 @@ const WalletModal = observer(() => {
 
     const [active_tab_index, setActiveTabIndex] = React.useState<number>(0);
     const [is_wallet_name_visible, setIsWalletNameVisible] = React.useState<boolean>(true);
+    const [is_scrollable, setIsScrollable] = React.useState<boolean>(true);
+
+    React.useEffect(() => {
+        const el_mobile_dialog = document.getElementById('wallet_mobile_dialog');
+        if (el_mobile_dialog) {
+            if (!is_scrollable) {
+                el_mobile_dialog.style.overflow = 'hidden';
+            } else {
+                el_mobile_dialog.style.overflowX = 'hidden';
+                el_mobile_dialog.style.overflowY = 'scroll';
+            }
+        }
+    }, [is_scrollable]);
+
+    React.useEffect(() => {
+        return setIsWalletNameVisible(true);
+    }, [active_tab_index]);
 
     React.useEffect(() => {
         setIsWalletNameVisible(true);
@@ -57,6 +74,8 @@ const WalletModal = observer(() => {
                 is_mobile={is_mobile}
                 is_wallet_name_visible={is_wallet_name_visible}
                 setActiveTabIndex={setActiveTabIndex}
+                setIsScrollable={setIsScrollable}
+                setIsWalletNameVisible={setIsWalletNameVisible}
                 wallet_type={wallet_type}
             />
         </>
@@ -74,6 +93,7 @@ const WalletModal = observer(() => {
                     className='wallet-mobile-dialog'
                     has_content_scroll={false}
                     has_full_height
+                    id='wallet_mobile_dialog'
                     onScrollHandler={contentScrollHandler}
                     portal_element_id='deriv_app'
                     visible={is_wallet_modal_visible}

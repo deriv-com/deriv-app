@@ -1,5 +1,4 @@
 .wallet-header {
-    margin: 2.4rem 0;
     padding: 2.4rem;
     background-color: var(--general-main-1);
     border-radius: $BORDER_RADIUS * 4;
@@ -78,12 +77,42 @@
                 }
 
                 &-text {
-                    display: none;
                     margin-left: 0.8rem;
                 }
 
-                &-active {
-                    display: block;
+                &-transition {
+                    &-enter {
+                        transform: translateX(-1rem);
+                        opacity: 0;
+                    }
+
+                    &-enter-active {
+                        transition: all 240ms ease-in-out;
+                        transform: translateX(0);
+                        position: relative;
+                        opacity: 1;
+                    }
+
+                    &-enter-done {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+
+                    &-exit {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+
+                    &-exit-active {
+                        transition: all 240ms ease-in-out;
+                        transform: translateX(-1rem);
+                        position: relative;
+                        opacity: 0;
+                    }
+
+                    &-exit-done {
+                        opacity: 0;
+                    }
                 }
             }
         }

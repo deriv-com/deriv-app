@@ -12,8 +12,55 @@ import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
 import type { ExchangeRatesStore } from './src/stores';
 
+type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
+
+type TIconTypes =
+    | 'Derived'
+    | 'Financial'
+    | 'BinaryBot'
+    | 'BinaryBotBlue'
+    | 'DBot'
+    | 'Demo'
+    | 'DerivGo'
+    | 'DerivGoBlack'
+    | 'DerivLogo'
+    | 'DerivTradingLogo'
+    | 'DerivX'
+    | 'DropDown'
+    | 'DTrader'
+    | 'Options'
+    | 'SmartTrader'
+    | 'SmartTraderBlue'
+    | 'CFDs';
+
+interface AvailableAccount {
+    name: string;
+    is_item_blurry?: boolean;
+    has_applauncher_account?: boolean;
+    sub_title?: string;
+    description?: string;
+    is_visible?: boolean;
+    is_disabled?: boolean;
+    platform?: string;
+    market_type?: 'all' | 'financial' | 'synthetic';
+    icon: TIconTypes;
+    availability: TRegionAvailability;
+    short_code_and_region?: string;
+    login?: string;
+}
+
+type BrandConfig = {
+    name: string;
+    icon: TIconTypes;
+    availability: TRegionAvailability;
+    is_deriv_platform?: boolean;
+};
+
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: number;
+    landing_company_shortcode?: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
+    is_virtual: number;
+    account_category?: 'wallet' | 'trading';
 };
 
 type TAccountsList = {
@@ -47,8 +94,10 @@ type TAccountsList = {
 
 // balance is missing in @deriv/api-types
 type TActiveAccount = TAccount & {
+    balance?: string | number;
     landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     is_virtual: number;
+    account_category?: 'wallet' | 'trading';
 };
 
 type TTradingPlatformAvailableAccount = {
@@ -120,8 +169,6 @@ type TNotification =
     | TNotificationMessage
     | ((withdrawal_locked: boolean, deposit_locked: boolean) => TNotificationMessage)
     | ((excluded_until: number) => TNotificationMessage);
-
-type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
 
 type TClientStore = {
     accounts: { [k: string]: TActiveAccount };
@@ -273,8 +320,10 @@ type TUiStore = {
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
-    notification_messages_ui: JSX.Element | null;
-    openRealAccountSignup: (value?: string) => void;
+    openRealAccountSignup: (
+        value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
+    ) => void;
+    notification_messages_ui: React.FC | null;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setIsWalletModalVisible: (value: boolean) => void;
@@ -334,6 +383,7 @@ type TNotificationStore = {
     setP2POrderProps: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;
+    showSuccessWalletsUpgradeNotification: () => void;
 };
 
 type TTradersHubStore = {
@@ -345,6 +395,14 @@ type TTradersHubStore = {
             login: string;
             sub_title: string;
             icon: 'Derived' | 'Financial' | 'Options' | 'CFDs';
+            status?: string;
+            action_type: 'get' | 'none' | 'trade' | 'dxtrade' | 'multi-action';
+            key: string;
+            name: string;
+            landing_company_short?: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
+            platform?: string;
+            description?: string;
+            market_type?: 'all' | 'financial' | 'synthetic';
         }[];
     openModal: (modal_id: string, props?: unknown) => void;
     selected_account: {
@@ -357,7 +415,8 @@ type TTradersHubStore = {
     is_demo: boolean;
     is_real: boolean;
     selectRegion: (region: string) => void;
-    openFailedVerificationModal: (selected_account_type: string) => void;
+    toggleRegulatorsCompareModal: () => void;
+    openFailedVerificationModal: (selected_account_type: Record<string, unknown> | string) => void;
     multipliers_account_status: string;
     financial_restricted_countries: boolean;
     selected_account_type: string;
@@ -368,6 +427,16 @@ type TTradersHubStore = {
     is_real_wallets_upgrade_on: boolean;
     toggleWalletsUpgrade: (value: boolean) => void;
     selectAccountType: (account_type: string) => void;
+    is_wallet_migration_failed: boolean;
+    setWalletsMigrationFailedPopup: (value: boolean) => void;
+    is_tour_open: boolean;
+    selected_platform_type: string;
+    available_platforms: BrandConfig[];
+    CFDs_restricted_countries: boolean;
+    is_demo_low_risk: boolean;
+    selected_region: TRegionAvailability;
+    getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
+    available_dxtrade_accounts: AvailableAccount[];
 };
 
 /**

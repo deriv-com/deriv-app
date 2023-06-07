@@ -1,12 +1,12 @@
 import React from 'react';
 import { Text, Badge } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { TJurisdictionData, TWalletCurrency } from 'Types';
+import { TWalletCurrency, TWalletShortcode } from 'Types';
 
 type TWalletHeaderTitle = {
     is_demo: boolean;
     currency: TWalletCurrency;
-    shortcode: Exclude<TJurisdictionData['jurisdiction'], undefined>;
+    shortcode: TWalletShortcode;
 };
 
 const WalletHeaderTitle = React.memo(({ is_demo, currency, shortcode }: TWalletHeaderTitle) => {

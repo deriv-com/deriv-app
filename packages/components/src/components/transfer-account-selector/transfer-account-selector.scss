@@ -44,6 +44,23 @@
         border-bottom: 4px solid $color-grey-2;
 
         &__container {
+            @include mobile {
+                max-height: 100%;
+                overflow-y: scroll;
+                /* IE and Edge */
+                -ms-overflow-style: none;
+                /* Firefox */
+                scrollbar-width: none;
+
+                &::-webkit-scrollbar {
+                    display: none;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    display: none;
+                }
+            }
+
             .transfer-hint {
                 margin: 1.6rem 0;
                 padding: 0 0.8rem;
@@ -115,6 +132,12 @@
 // Overwrite modal style
 .dc-modal__container_transfer-account-selector__modal-header {
     max-width: 40rem;
+    max-height: 52.8rem !important;
+
+    @include mobile {
+        max-width: unset;
+        max-height: unset !important;
+    }
 }
 
 .dc-modal-header--transfer-account-selector__modal-header {

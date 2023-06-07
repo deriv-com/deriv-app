@@ -1,5 +1,7 @@
 import React from 'react';
 import Modal from '../modal';
+import Div100vhContainer from '../div100vh-container';
+import ThemedScrollbars from '../themed-scrollbars';
 import TransferAccountList from './transfer-account-list';
 import TransferTile from './transfer-tile';
 import { WalletTile } from '../wallet-tile';
@@ -9,11 +11,14 @@ export type TTransferAccount = React.ComponentProps<typeof WalletTile>['account'
 
 type TTransferAccountSelectorProps = {
     is_mobile?: boolean;
+    is_wallet_name_visible?: boolean;
     label?: string;
-    mobile_list_min_height?: string;
+    mobile_list_height?: string;
     onSelectAccount?: (account: TTransferAccount) => void;
     placeholder?: string;
     portal_id?: string;
+    setIsScrollable?: (value: boolean) => void;
+    setIsWalletNameVisible?: (value: boolean) => void;
     transfer_accounts: { [k: string]: TTransferAccount[] };
     transfer_hint?: string | JSX.Element;
     value?: TTransferAccount;
@@ -22,11 +27,14 @@ type TTransferAccountSelectorProps = {
 
 const TransferAccountSelector = ({
     is_mobile,
+    is_wallet_name_visible,
     label,
-    mobile_list_min_height,
+    mobile_list_height,
     onSelectAccount,
     placeholder,
     portal_id,
+    setIsScrollable,
+    setIsWalletNameVisible,
     transfer_accounts = {},
     transfer_hint,
     value,
@@ -43,9 +51,36 @@ const TransferAccountSelector = ({
         setSelectedAccount(value);
     }, [value]);
 
+    // Disable parent scroll behaviour in order to use internal scrolling for accounts list in mobile view
+    React.useEffect(() => {
+        if (is_mobile && is_list_modal_open) {
+            setIsScrollable?.(false);
+        }
+        return () => {
+            setIsScrollable?.(true);
+            setIsWalletNameVisible?.(true);
+        };
+    }, [is_mobile, is_list_modal_open, setIsScrollable, setIsWalletNameVisible]);
+
     const openAccountsList = () => {
         setIsListModalOpen(true);
     };
+
+    const contentScrollHandler = React.useCallback(
+        (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+            if (is_mobile && is_list_modal_open) {
+                const target = e.target as HTMLDivElement;
+                setIsWalletNameVisible?.(!(target.scrollTop > 0));
+            }
+        },
+        [is_list_modal_open, is_mobile, setIsWalletNameVisible]
+    );
+
+    const getHeightOffset = React.useCallback(() => {
+        const header_height = '16.2rem';
+        const collapsed_header_height = '12.2rem';
+        return is_wallet_name_visible ? header_height : collapsed_header_height;
+    }, [is_wallet_name_visible]);
 
     return (
         <div className='transfer-account-selector' onClick={is_list_modal_open ? undefined : openAccountsList}>
@@ -65,19 +100,25 @@ const TransferAccountSelector = ({
                 portalId={portal_id}
                 title={label}
                 toggleModal={() => setIsListModalOpen(old => !old)}
-                min_height={is_mobile ? mobile_list_min_height : ''}
+                height={is_mobile ? mobile_list_height : ''}
             >
-                <TransferAccountList
-                    is_mobile={is_mobile}
-                    selected_account={selected_account}
-                    setIsListModalOpen={setIsListModalOpen}
-                    setSelectedAccount={setSelectedAccount}
-                    transfer_accounts={transfer_accounts}
-                    transfer_hint={transfer_hint}
-                    wallet_name={wallet_name}
-                />
+                <ThemedScrollbars is_bypassed={is_mobile}>
+                    <Div100vhContainer height_offset={getHeightOffset()} is_bypassed={!is_mobile}>
+                        <TransferAccountList
+                            contentScrollHandler={contentScrollHandler}
+                            is_mobile={is_mobile}
+                            selected_account={selected_account}
+                            setIsListModalOpen={setIsListModalOpen}
+                            setSelectedAccount={setSelectedAccount}
+                            transfer_accounts={transfer_accounts}
+                            transfer_hint={transfer_hint}
+                            wallet_name={wallet_name}
+                        />
+                    </Div100vhContainer>
+                </ThemedScrollbars>
             </Modal>
         </div>
     );
 };
+
 export default TransferAccountSelector;

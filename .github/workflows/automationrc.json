@@ -1,6 +1,6 @@
 {
     "skip_pending_checks": false,
-    "skip_slack_integration": true,
+    "skip_slack_integration": false,
     "skip_updating_branch": true,
     "merge_delay": 120000,
     "first_merge_delay": 1200000,

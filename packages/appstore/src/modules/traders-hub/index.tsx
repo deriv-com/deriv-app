@@ -1,7 +1,7 @@
 import React from 'react';
 import ModalManager from 'Components/modals/modal-manager';
 import TourGuide from 'Modules/tour-guide/tour-guide';
-import { isDesktop, ContentFlag } from '@deriv/shared';
+import { isDesktop } from '@deriv/shared';
 import { Div100vhContainer } from '@deriv/components';
 import classNames from 'classnames';
 import AccountWithWallets from './account-with-wallets';
@@ -87,8 +87,8 @@ const TradersHub = () => {
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     {SelectJSX}
-                    {!!is_display_test_wallets && <AccountWithWallets show_test_wallets={!!is_display_test_wallets} />}
-                    {is_wallet_account ? <AccountWithWallets /> : <AccountWithoutWallets />}
+                    <AccountWithWallets />
+                    <AccountWithoutWallets />
                     <ModalManager />
                     {scrolled && <TourGuide />}
                 </div>

@@ -5,11 +5,11 @@ import ListingContainer from 'Components/containers/listing-container';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
-import { TCoreStores } from '@deriv/stores/types';
 import { useStore, observer } from '@deriv/stores';
+import type { useWalletList } from '@deriv/hooks';
 
 type TProps = {
-    wallet_account: TCoreStores['client']['accounts'][0];
+    wallet_account: NonNullable<ReturnType<typeof useWalletList>['data']>[number];
 };
 
 const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps) => {

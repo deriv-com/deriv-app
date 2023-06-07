@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import ContentDivider from './wallet-content-divider';
-import { TCoreStores } from '@deriv/stores/types';
 import WalletCfdsListing from './wallet-cfds-listing';
 import WalletOptionsAndMultipliersListing from './wallet-option-multipliers-listing';
 import EUDisclaimer from 'Components/eu-disclaimer';
@@ -10,7 +9,7 @@ import './wallet-content.scss';
 type TProps = {
     is_demo: boolean;
     is_eu: boolean;
-    wallet_account: TCoreStores['client']['accounts'][0];
+    wallet_account: React.ComponentProps<typeof WalletCfdsListing>['wallet_account'];
 };
 
 const WalletContent = React.memo(({ is_demo, is_eu, wallet_account }: TProps) => {

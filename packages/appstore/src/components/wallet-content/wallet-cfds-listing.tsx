@@ -7,12 +7,12 @@ import TradingAppCard from 'Components/containers/trading-app-card';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
-import { TCoreStores } from '@deriv/stores/types';
 import { useStore, observer } from '@deriv/stores';
 import { useHistory } from 'react-router';
+import type { useWalletList } from '@deriv/hooks';
 
 type TProps = {
-    wallet_account: TCoreStores['client']['accounts'][0];
+    wallet_account: NonNullable<ReturnType<typeof useWalletList>['data']>[number];
     fiat_wallet_currency?: string;
 };
 

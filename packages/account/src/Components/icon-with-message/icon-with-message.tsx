@@ -4,7 +4,6 @@ import { Icon, Text, Button } from '@deriv/components';
 import { isMobile, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { TPlatformContext } from 'Types';
 import RootStore from 'Stores/index';
 
 type TIconWithMessage = {
@@ -24,7 +23,7 @@ const IconWithMessage = ({
     toggleAccountsDialog,
     toggleShouldShowRealAccountsList,
 }: TIconWithMessage) => {
-    const { is_appstore }: Partial<TPlatformContext> = React.useContext(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
 
     return (
         <div className={classNames('da-icon-with-message', { 'da-icon-with-message-full-width': is_appstore })}>

@@ -8,6 +8,7 @@ import {
     excludeParamsFromUrlQuery,
     filterUrlQuery,
     getPropertyValue,
+    getStaticUrl,
     getUrlBinaryBot,
     getUrlSmartTrader,
     isCryptocurrency,
@@ -2088,10 +2089,12 @@ export default class ClientStore extends BaseStore {
         const response = await requestLogout();
 
         if (response?.logout === 1) {
+            history.replaceState(null, null, routes.root);
             this.cleanUp();
 
             this.root_store.rudderstack.reset();
             this.setLogout(true);
+            window.location.href = getStaticUrl('/');
         }
 
         return response;

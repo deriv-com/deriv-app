@@ -257,6 +257,7 @@ export default class CFDStore extends BaseStore {
 
     async createCFDAccount({ category, platform, type, set_password }) {
         this.clearCFDError();
+        this.setIsAccountBeingCreated(true);
         this.setAccountType({
             category,
             type,
@@ -291,6 +292,7 @@ export default class CFDStore extends BaseStore {
                 const trading_platform_accounts_list_response = await WS.tradingPlatformAccountsList(values.platform);
                 this.root_store.client.responseTradingPlatformAccountsList(trading_platform_accounts_list_response);
                 this.setCFDNewAccount(response.trading_platform_new_account);
+                this.setIsAccountBeingCreated(false);
             } else {
                 this.setError(true, response.error);
             }
@@ -348,7 +350,6 @@ export default class CFDStore extends BaseStore {
     }
 
     openCFDAccount(values) {
-        this.setIsAccountBeingCreated(true);
         return WS.tradingPlatformNewAccount({
             password: CFD_PLATFORMS.DXTRADE ? values.password : '',
             platform: values.platform,
@@ -358,7 +359,7 @@ export default class CFDStore extends BaseStore {
                     ? 'all'
                     : this.account_type.type,
             company: CFD_PLATFORMS.DERIVEZ ? this.jurisdiction_selected_shortcode : '',
-        }).then(this.setIsAccountBeingCreated(false));
+        });
     }
 
     beginRealSignupForMt5() {

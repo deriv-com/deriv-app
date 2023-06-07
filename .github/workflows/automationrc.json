@@ -1,0 +1,16 @@
+{
+    "skip_pending_checks": false,
+    "skip_slack_integration": false,
+    "merge_delay": 120000,
+    "pull_request": {
+        "checks_timeout": 60000,
+        "refetch_timeout": 10000,
+        "refetch_limit": 10,
+        "checks_limit": 60
+    },
+    "circleci": {
+        "project_slug": "gh/binary-com/deriv-app",
+        "branch": "master",
+        "workflow_name": "release_staging"
+    }
+}

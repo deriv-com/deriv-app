@@ -130,7 +130,6 @@
         }
 
         .dc-input-wrapper__button {
-            top: unset;
             &--increment {
                 right: unset;
                 order: 4;
@@ -196,21 +195,21 @@
             width: -webkit-fill-available;
         }
     }
-}
 
-.dc-input-wrapper__button,
-button.dc-input-wrapper__button {
-    top: 0.6rem;
-    z-index: auto;
-}
-
-.dc-input-field {
-    @include mobile {
-        width: 100%;
+    .dc-input-wrapper__button,
+    button.dc-input-wrapper__button {
+        top: 0.6rem;
+        z-index: auto;
     }
 
-    @include desktop {
-        margin: unset;
+    .dc-input-field {
+        @include mobile {
+            width: 100%;
+        }
+
+        @include desktop {
+            margin: unset;
+        }
     }
 }
 

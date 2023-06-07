@@ -35,7 +35,7 @@ const ToggleAds = observer(() => {
         <div className='toggle-ads'>
             <Text
                 className='toggle-ads__message'
-                color={`${general_store.is_listed ? 'less-prominent' : 'profit-success'}`}
+                color={general_store.is_listed ? 'less-prominent' : 'profit-success'}
                 line_height='xl'
                 size='xs'
             >

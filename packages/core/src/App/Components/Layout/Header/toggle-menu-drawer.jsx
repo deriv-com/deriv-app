@@ -623,7 +623,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         }}
                                         className='dc-mobile-drawer__item'
                                     >
-                                        <MenuLink icon='IcLogout' text={localize('Log out')} />
+                                        <MenuLink link_to={routes.root} icon='IcLogout' text={localize('Log out')} />
                                     </MobileDrawer.Item>
                                 )}
                             </MobileDrawer.Body>

@@ -52,6 +52,9 @@ const TradersHub = () => {
                 openRealAccountSignup('svg');
             }
         }
+        if (is_eu_user) {
+            setTogglePlatformType('cfd');
+        }
     }, []);
 
     React.useEffect(() => {

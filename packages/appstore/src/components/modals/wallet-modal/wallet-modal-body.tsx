@@ -1,15 +1,15 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Tabs, ThemedScrollbars } from '@deriv/components';
+import { Tabs, ThemedScrollbars, Div100vhContainer } from '@deriv/components';
 import { getCashierOptions, TWalletType } from './provider';
 
 type TWalletModalBodyProps = {
     active_tab_index: number;
+    contentScrollHandler: React.UIEventHandler<HTMLDivElement>;
     is_dark: boolean;
     is_demo: boolean;
     is_mobile: boolean;
     setActiveTabIndex: (index: number) => void;
-    setIsScrollable: (value: boolean) => void;
     setIsWalletNameVisible: (value: boolean) => void;
     is_wallet_name_visible: boolean;
     wallet_type: TWalletType;
@@ -17,17 +17,23 @@ type TWalletModalBodyProps = {
 
 const WalletModalBody = ({
     active_tab_index,
+    contentScrollHandler,
     is_dark,
     is_demo,
     is_mobile,
     setActiveTabIndex,
-    setIsScrollable,
     setIsWalletNameVisible,
     is_wallet_name_visible,
     wallet_type,
 }: TWalletModalBodyProps) => {
-    const content_height = 'calc(100vh - 24.4rem)';
-    const max_content_width = '128rem';
+    const getHeightOffset = React.useCallback(() => {
+        const desktop_header_height = '24.4rem';
+        const mobile_header_height = '12.2rem';
+        const collapsed_mobile_header_height = '8.2rem';
+
+        if (!is_mobile) return desktop_header_height;
+        return is_wallet_name_visible ? mobile_header_height : collapsed_mobile_header_height;
+    }, [is_mobile, is_wallet_name_visible]);
 
     return (
         <Tabs
@@ -50,12 +56,18 @@ const WalletModalBody = ({
                 return (
                     <div key={option.label} icon={option.icon} label={option.label}>
                         <ThemedScrollbars
-                            height={content_height}
-                            is_bypassed={is_mobile}
-                            is_scrollbar_hidden
-                            style={{ maxWidth: max_content_width, width: '100%' }}
+                            className='dc-tabs--modal-body__tabs__themed-scrollbar'
+                            is_scrollbar_hidden={is_mobile}
+                            onScroll={contentScrollHandler}
                         >
-                            {option.content({ is_wallet_name_visible, setIsScrollable, setIsWalletNameVisible })}
+                            <Div100vhContainer height_offset={getHeightOffset()}>
+                                <div className='dc-tabs--modal-body__tabs__content-wrapper'>
+                                    {option.content({
+                                        is_wallet_name_visible,
+                                        setIsWalletNameVisible,
+                                    })}
+                                </div>
+                            </Div100vhContainer>
                         </ThemedScrollbars>
                     </div>
                 );

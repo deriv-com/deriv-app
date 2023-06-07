@@ -7,16 +7,13 @@ import Icon from '../icon/icon';
 import Div100vhContainer from '../div100vh-container';
 
 type TMobileDialog = {
-    className?: string;
     content_height_offset?: string;
     footer?: React.ReactNode;
-    has_close_icon?: boolean;
     has_content_scroll?: boolean;
+    has_close_icon?: boolean;
     has_full_height?: boolean;
     header_classname?: string;
-    id?: string;
-    onClose?: React.MouseEventHandler;
-    onScrollHandler?: React.UIEventHandler;
+    onClose: React.MouseEventHandler;
     portal_element_id: string;
     renderTitle?: () => string;
     title?: string;
@@ -27,13 +24,10 @@ type TMobileDialog = {
 const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
     const {
         children,
-        className,
         footer,
         has_close_icon = true,
         has_full_height,
         header_classname,
-        id,
-        onScrollHandler,
         portal_element_id,
         renderTitle,
         title,
@@ -99,13 +93,7 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
             }}
             unmountOnExit
         >
-            <div
-                className={classNames('dc-mobile-dialog', className)}
-                data-testid='dt_mobile_dialog'
-                id={id}
-                onClick={handleClick}
-                onScroll={onScrollHandler}
-            >
+            <div data-testid='dt_mobile_dialog' className='dc-mobile-dialog' onClick={handleClick}>
                 <Div100vhContainer
                     className={classNames('dc-mobile-dialog__container', {
                         'dc-mobile-dialog__container--has-scroll': props.has_content_scroll,

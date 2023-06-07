@@ -45,20 +45,7 @@
 
         &__container {
             @include mobile {
-                max-height: 100%;
-                overflow-y: scroll;
-                /* IE and Edge */
-                -ms-overflow-style: none;
-                /* Firefox */
-                scrollbar-width: none;
-
-                &::-webkit-scrollbar {
-                    display: none;
-                }
-
-                &::-webkit-scrollbar-thumb {
-                    display: none;
-                }
+                padding: 0 1.6rem 1.6rem;
             }
 
             .transfer-hint {
@@ -67,7 +54,7 @@
 
                 @include mobile {
                     margin: 0.8rem 0;
-                    padding: 0 1.6rem;
+                    padding: 0;
                 }
             }
         }
@@ -88,7 +75,7 @@
 
             @include mobile {
                 margin-bottom: 0;
-                padding: 0 1.6rem;
+                padding: 0;
             }
         }
 
@@ -97,7 +84,7 @@
             padding: 1.6rem 2.4rem 0.8rem;
 
             @include mobile {
-                padding: 0.8rem 2.4rem 0.4rem;
+                padding: 0.8rem 0.8rem 0.4rem;
 
                 &__title-line {
                     flex-grow: 1;

@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
 import WalletTransfer from 'Components/wallet-transfer';
 
 export type TWalletType = 'real' | 'demo' | 'p2p' | 'payment_agent';
@@ -15,7 +14,7 @@ export const getCashierOptions = (type: TWalletType) => {
                     label: localize('Deposit'),
                     //Remove Lorem ipsum text after QA testing (testing scroll behaviour)
                     content: () => (
-                        <div style={{ padding: `${isMobile() ? '1.6rem 0' : '2.4rem 0'}`, textAlign: 'justify' }}>
+                        <div style={{ textAlign: 'justify' }}>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas euismod lectus odio, sed
                             pulvinar ex eleifend eu. Quisque elementum pellentesque felis. Maecenas elementum vitae
                             purus sed ullamcorper. In quis tempus diam, non posuere ipsum. Quisque viverra in mauris

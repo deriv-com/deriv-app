@@ -28,12 +28,10 @@ const WalletModalBody = ({
 }: TWalletModalBodyProps) => {
     const getHeightOffset = React.useCallback(() => {
         const desktop_header_height = '24.4rem';
-        const mobile_header_height = '12.2rem';
-        const collapsed_mobile_header_height = '8.2rem';
+        const mobile_header_height = '8.2rem';
 
-        if (!is_mobile) return desktop_header_height;
-        return is_wallet_name_visible ? mobile_header_height : collapsed_mobile_header_height;
-    }, [is_mobile, is_wallet_name_visible]);
+        return is_mobile ? mobile_header_height : desktop_header_height;
+    }, [is_mobile]);
 
     return (
         <Tabs
@@ -61,7 +59,11 @@ const WalletModalBody = ({
                             onScroll={contentScrollHandler}
                         >
                             <Div100vhContainer height_offset={getHeightOffset()}>
-                                <div className='dc-tabs--modal-body__tabs__content-wrapper'>
+                                <div
+                                    className={classNames('dc-tabs--modal-body__tabs__content-wrapper', {
+                                        is_scrolled: !is_wallet_name_visible,
+                                    })}
+                                >
                                     {option.content({
                                         is_wallet_name_visible,
                                         setIsWalletNameVisible,

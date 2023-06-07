@@ -5,7 +5,7 @@ import { TCoreStores } from '@deriv/stores/types';
 import WalletTransferBlock from '../wallet-transfer-block';
 
 const wallet_account: TCoreStores['client']['accounts'][0] = {
-    balance: '10415.24',
+    balance: 10415.24,
     currency: 'USD',
     landing_company_shortcode: 'svg',
     is_virtual: 1,

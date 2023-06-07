@@ -57,7 +57,7 @@ type BrandConfig = {
 };
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
-    balance?: string | number;
+    balance?: number;
     landing_company_shortcode?: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     is_virtual: number;
     account_category?: 'wallet' | 'trading';
@@ -169,8 +169,6 @@ type TNotification =
     | TNotificationMessage
     | ((withdrawal_locked: boolean, deposit_locked: boolean) => TNotificationMessage)
     | ((excluded_until: number) => TNotificationMessage);
-
-type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
 
 type TClientStore = {
     accounts: { [k: string]: TActiveAccount };
@@ -322,8 +320,10 @@ type TUiStore = {
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
-    notification_messages_ui: React.ElementType | null;
-    openRealAccountSignup: (value?: string) => void;
+    openRealAccountSignup: (
+        value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
+    ) => void;
+    notification_messages_ui: React.FC | null;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setIsWalletModalVisible: (value: boolean) => void;
@@ -415,6 +415,7 @@ type TTradersHubStore = {
     is_demo: boolean;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    toggleRegulatorsCompareModal: () => void;
     openFailedVerificationModal: (selected_account_type: Record<string, unknown> | string) => void;
     multipliers_account_status: string;
     financial_restricted_countries: boolean;
@@ -433,7 +434,7 @@ type TTradersHubStore = {
     available_platforms: BrandConfig[];
     CFDs_restricted_countries: boolean;
     is_demo_low_risk: boolean;
-    selected_region: 'Non-EU' | 'EU' | 'All';
+    selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
     available_dxtrade_accounts: AvailableAccount[];
 };

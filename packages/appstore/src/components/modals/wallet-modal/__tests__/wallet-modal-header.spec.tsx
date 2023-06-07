@@ -8,7 +8,7 @@ describe('WalletModalHeader', () => {
 
     beforeEach(() => {
         mocked_props = {
-            balance: '999',
+            balance: 999,
             closeModal: jest.fn(),
             currency: 'USD',
             is_dark: false,

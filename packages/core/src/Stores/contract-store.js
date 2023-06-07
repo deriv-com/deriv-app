@@ -3,7 +3,6 @@ import {
     isEnded,
     isEqualObject,
     isAccumulatorContract,
-    isAccumulatorContractOpen,
     isMultiplierContract,
     isDigitContract,
     getDigitInfo,
@@ -17,7 +16,6 @@ import {
     isBarrierSupported,
     getAccuBarriersDelayTimeMs,
     getAccuBarriersForContractDetails,
-    getAccuTickStreamWithCurrentSpot,
     getEndTime,
 } from '@deriv/shared';
 import { getChartConfig } from './Helpers/logic';
@@ -107,15 +105,7 @@ export default class ContractStore extends BaseStore {
 
     populateConfig(contract_info) {
         const prev_contract_info = this.contract_info;
-        if (isAccumulatorContractOpen(contract_info)) {
-            // sometimes current_spot is missing from tick_stream
-            this.contract_info = {
-                ...contract_info,
-                tick_stream: getAccuTickStreamWithCurrentSpot(contract_info),
-            };
-        } else {
-            this.contract_info = contract_info;
-        }
+        this.contract_info = contract_info;
         this.end_time = getEndTime(this.contract_info);
 
         // TODO: don't update the barriers & markers if they are not changed

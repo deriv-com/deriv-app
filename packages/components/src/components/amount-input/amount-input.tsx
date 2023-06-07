@@ -117,6 +117,8 @@ const AmountInput = ({
                     type='text'
                     inputMode='numeric'
                     value={`${displayNumber(value)} ${currency}`}
+                    // Temporary workaround to avoid jest warnings
+                    onChange={() => undefined}
                 />
                 <Input
                     className='amount-input'

@@ -13,7 +13,6 @@ type TTransferAccountSelectorProps = {
     is_mobile?: boolean;
     is_wallet_name_visible?: boolean;
     label?: string;
-    mobile_list_height?: string;
     onSelectAccount?: (account: TTransferAccount) => void;
     placeholder?: string;
     portal_id?: string;
@@ -29,7 +28,6 @@ const TransferAccountSelector = ({
     is_mobile,
     is_wallet_name_visible,
     label,
-    mobile_list_height,
     onSelectAccount,
     placeholder,
     portal_id,
@@ -100,7 +98,6 @@ const TransferAccountSelector = ({
                 portalId={portal_id}
                 title={label}
                 toggleModal={() => setIsListModalOpen(old => !old)}
-                height={is_mobile ? mobile_list_height : ''}
             >
                 <ThemedScrollbars is_bypassed={is_mobile}>
                     <Div100vhContainer height_offset={getHeightOffset()} is_bypassed={!is_mobile}>

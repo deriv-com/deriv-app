@@ -6,22 +6,25 @@ import { useStore, observer } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 // TODO: 'transfer_accounts' should be replaced after connecting to API call
 import { transfer_accounts } from './mock_accounts/mock_accounts';
-import type { TTabsContentComponentProps } from 'Components/modals/wallet-modal/provider';
 import './wallet-transfer.scss';
 
 type TAccount = React.ComponentProps<typeof TransferAccountSelector>['value'];
 
+type TWalletTransferProps = {
+    is_wallet_name_visible: boolean;
+    setIsScrollable: (value: boolean) => void;
+    setIsWalletNameVisible: (value: boolean) => void;
+};
+
 const Divider = () => <div className='wallet-transfer__divider' />;
 
 const WalletTransfer = observer(
-    ({ is_wallet_name_visible, setIsScrollable, setIsWalletNameVisible }: TTabsContentComponentProps) => {
+    ({ is_wallet_name_visible, setIsScrollable, setIsWalletNameVisible }: TWalletTransferProps) => {
         const { ui } = useStore();
         const { is_mobile } = ui;
 
         const [from_account, setFromAccount] = React.useState<TAccount>(transfer_accounts.wallets[0]);
         const [to_account, setToAccount] = React.useState<TAccount>();
-
-        const account_list_height_with_offset = 'calc(100vh - 12.2rem)';
 
         const portal_id = is_mobile ? 'mobile_list_modal_root' : 'modal_root';
 
@@ -114,7 +117,6 @@ const WalletTransfer = observer(
                                             is_mobile={is_mobile}
                                             is_wallet_name_visible={is_wallet_name_visible}
                                             label={localize('Transfer from')}
-                                            mobile_list_min_height={account_list_height_with_offset}
                                             onSelectAccount={onSelectFromAccount}
                                             placeholder={localize('Select a trading account or a Wallet')}
                                             portal_id={portal_id}
@@ -150,7 +152,6 @@ const WalletTransfer = observer(
                                             is_mobile={is_mobile}
                                             is_wallet_name_visible={is_wallet_name_visible}
                                             label={localize('Transfer to')}
-                                            mobile_list_min_height={account_list_height_with_offset}
                                             onSelectAccount={onSelectToAccount}
                                             placeholder={
                                                 !to_account ? localize('Select a trading account or a Wallet') : ''

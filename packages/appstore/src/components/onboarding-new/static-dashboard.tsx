@@ -576,6 +576,7 @@ const StaticDashboard = ({
                                     has_account={has_account}
                                     derived_amount={derived_amount}
                                     financial_amount={financial_amount}
+                                    is_derivx_last_step={is_derivx_last_step}
                                     is_blurry={is_blurry}
                                     is_onboarding_animated={is_onboarding_animated}
                                     is_eu_user={is_eu_user}

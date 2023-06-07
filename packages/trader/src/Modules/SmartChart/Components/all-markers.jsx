@@ -193,7 +193,7 @@ const draw_shaded_barriers = ({
     ctx.fillRect(start_left, displayed_top, end_left - start_left, Math.abs(displayed_bottom - displayed_top));
     const { radius, preceeding_tick, stroke_color: prev_tick_stroke_color } = previous_tick || {};
     if (middle_top < end_top && radius) {
-        // draw previous tick as a bold white circle in Contract Details + small preceeding tick before it
+        // draw previous tick as a blue dot in C.Details & small grey tick before previous tick
         // should be drawn last here so that it is not overlapped by the barrier fill
         ctx.setLineDash([]);
         if (preceeding_tick) {

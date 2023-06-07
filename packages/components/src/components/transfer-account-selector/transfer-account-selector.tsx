@@ -16,7 +16,6 @@ type TTransferAccountSelectorProps = {
     onSelectAccount?: (account: TTransferAccount) => void;
     placeholder?: string;
     portal_id?: string;
-    setIsScrollable?: (value: boolean) => void;
     setIsWalletNameVisible?: (value: boolean) => void;
     transfer_accounts: { [k: string]: TTransferAccount[] };
     transfer_hint?: string | JSX.Element;
@@ -31,7 +30,6 @@ const TransferAccountSelector = ({
     onSelectAccount,
     placeholder,
     portal_id,
-    setIsScrollable,
     setIsWalletNameVisible,
     transfer_accounts = {},
     transfer_hint,
@@ -48,17 +46,6 @@ const TransferAccountSelector = ({
     React.useEffect(() => {
         setSelectedAccount(value);
     }, [value]);
-
-    // Disable parent scroll behaviour in order to use internal scrolling for accounts list in mobile view
-    React.useEffect(() => {
-        if (is_mobile && is_list_modal_open) {
-            setIsScrollable?.(false);
-        }
-        return () => {
-            setIsScrollable?.(true);
-            setIsWalletNameVisible?.(true);
-        };
-    }, [is_mobile, is_list_modal_open, setIsScrollable, setIsWalletNameVisible]);
 
     const openAccountsList = () => {
         setIsListModalOpen(true);
@@ -99,10 +86,12 @@ const TransferAccountSelector = ({
                 title={label}
                 toggleModal={() => setIsListModalOpen(old => !old)}
             >
-                <ThemedScrollbars is_bypassed={is_mobile}>
+                <ThemedScrollbars
+                    is_scrollbar_hidden={is_mobile}
+                    onScroll={is_mobile ? contentScrollHandler : undefined}
+                >
                     <Div100vhContainer height_offset={getHeightOffset()} is_bypassed={!is_mobile}>
                         <TransferAccountList
-                            contentScrollHandler={contentScrollHandler}
                             is_mobile={is_mobile}
                             selected_account={selected_account}
                             setIsListModalOpen={setIsListModalOpen}

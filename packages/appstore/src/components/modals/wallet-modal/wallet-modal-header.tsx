@@ -139,6 +139,7 @@ const WalletModalHeader = ({
                         {formatMoney(currency, balance, true)} {getCurrencyDisplayCode(currency)}
                     </Text>
                 </div>
+                {/* TODO: replace Icon with WalletIcon component  */}
                 <div className={classNames(`${header_class_name}__currency-icon icon-visibility`)}>
                     <Icon {...getCurrencyIconProps()} data_testid='dt_currency_icon' />
                 </div>

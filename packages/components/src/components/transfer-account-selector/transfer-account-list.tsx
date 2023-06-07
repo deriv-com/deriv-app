@@ -6,7 +6,6 @@ import { WalletTile } from '../wallet-tile';
 import type { TTransferAccount } from './transfer-account-selector';
 
 type TTransferAccountList = {
-    contentScrollHandler: React.UIEventHandler<HTMLDivElement>;
     is_mobile?: boolean;
     selected_account?: TTransferAccount;
     setIsListModalOpen: (value: boolean) => void;
@@ -19,7 +18,6 @@ type TTransferAccountList = {
 const TitleLine = () => <div className='transfer-account-selector__list-header__title-line' />;
 
 const TransferAccountList = ({
-    contentScrollHandler,
     is_mobile,
     selected_account,
     setIsListModalOpen,
@@ -34,7 +32,7 @@ const TransferAccountList = ({
     );
 
     return (
-        <div className='transfer-account-selector__list__container' onScroll={contentScrollHandler}>
+        <div className='transfer-account-selector__list__container'>
             {Object.keys(transfer_accounts).map((key, idx) => {
                 if (transfer_accounts[key].length === 0) return null;
 

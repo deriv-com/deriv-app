@@ -36,7 +36,7 @@ const WalletHeader = React.memo(
     }: TWalletHeader) => {
         const is_demo = account_type === 'demo';
 
-        const wallet_btns = getWalletHeaderButtons(is_demo);
+        const wallet_buttons = getWalletHeaderButtons(is_demo);
 
         const onArrowClickHandler = () => {
             setIsOpen(!is_open_wallet);
@@ -60,7 +60,7 @@ const WalletHeader = React.memo(
                         <WalletHeaderButtons
                             is_disabled={!!account_status}
                             is_open={is_open_wallet}
-                            btns={wallet_btns}
+                            buttons={wallet_buttons}
                         />
                     </div>
                     <div className='wallet-header__balance'>

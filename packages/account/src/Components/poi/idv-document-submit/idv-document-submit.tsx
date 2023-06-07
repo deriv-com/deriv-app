@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { GetSettings, ResidenceList, IdentityVerificationAddDocumentResponse } from '@deriv/api-types';
-import { Button } from '@deriv/components';
+import { Button, HintBox, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import {
     WS,
@@ -99,12 +99,7 @@ const IdvDocumentSubmit = ({
 
     const submitHandler = async (
         values: TIdvDocumentSubmitForm,
-        {
-            setSubmitting,
-            setErrors,
-        }: Pick<FormikHelpers<TIdvDocumentSubmitForm>, 'setSubmitting'> & {
-            setErrors: (props: Record<string, string>) => void;
-        }
+        { setSubmitting, setStatus }: FormikHelpers<TIdvDocumentSubmitForm>
     ) => {
         setSubmitting(true);
 
@@ -112,14 +107,16 @@ const IdvDocumentSubmit = ({
 
         const data = await WS.setSettings(request);
 
+        const generic_error_message = localize('Sorry, an internal error occurred. Click Verify to try again.');
+
         if (data.error) {
-            setErrors({ error_message: data.error.message });
+            setStatus({ error_message: generic_error_message });
             setSubmitting(false);
             return;
         }
         const get_settings = WS.authorized.storage.getSettings();
         if (get_settings.error) {
-            setErrors({ error_message: data.error.message });
+            setStatus({ error_message: get_settings?.error?.message ?? generic_error_message });
             setSubmitting(false);
             return;
         }
@@ -138,7 +135,7 @@ const IdvDocumentSubmit = ({
             (response: IdentityVerificationAddDocumentResponse & { error: { message: string } }) => {
                 setSubmitting(false);
                 if (response.error) {
-                    setErrors({ error_message: response.error.message });
+                    setStatus({ error_message: response?.error?.message ?? generic_error_message });
                     return;
                 }
                 handleViewComplete();
@@ -148,8 +145,23 @@ const IdvDocumentSubmit = ({
 
     return (
         <Formik initialValues={{ ...initial_values }} validate={validateFields} onSubmit={submitHandler}>
-            {({ dirty, isSubmitting, isValid, values }) => (
+            {({ dirty, isSubmitting, isValid, values, status }) => (
                 <Form className='proof-of-identity__container proof-of-identity__container--reset'>
+                    {status?.error_message && (
+                        <div className='account-form__poi-confirm-example--generic-error-msg'>
+                            <HintBox
+                                icon='IcAlertDanger'
+                                icon_height={16}
+                                icon_width={16}
+                                message={
+                                    <Text as='p' size='xxxs'>
+                                        {status.error_message}
+                                    </Text>
+                                }
+                                is_danger
+                            />
+                        </div>
+                    )}
                     <section className='form-body'>
                         <FormSubHeader title={localize('Identity verification')} />
                         <IDVForm hide_hint={false} selected_country={selected_country} class_name='idv-layout' />

@@ -92,7 +92,7 @@ describe('<PercentageSelector />', () => {
     it('should reset the percentage', () => {
         render(
             <CashierProviders store={mockRootStore}>
-                <PercentageSelector {...percentage_selector_props} />
+                <PercentageSelector {...percentage_selector_props} should_percentage_reset />
             </CashierProviders>
         );
 

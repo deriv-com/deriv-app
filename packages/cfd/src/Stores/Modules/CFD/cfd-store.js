@@ -358,7 +358,7 @@ export default class CFDStore extends BaseStore {
                     ? 'all'
                     : this.account_type.type,
             company: CFD_PLATFORMS.DERIVEZ ? this.jurisdiction_selected_shortcode : '',
-        });
+        }).then(this.setIsAccountBeingCreated(false));
     }
 
     beginRealSignupForMt5() {

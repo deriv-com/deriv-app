@@ -179,7 +179,7 @@ const IdvFailed = ({
                     ),
                 };
         }
-    }, [mismatch_status]);
+    }, [latest_status, mismatch_status, selected_country]);
 
     React.useEffect(() => {
         const initializeFormValues = async (required_fields: string[]) => {
@@ -219,7 +219,7 @@ const IdvFailed = ({
                 api_error: e?.error?.message,
             });
         });
-    }, [mismatch_status, account_settings, is_document_upload_required, getChangeableFields]);
+    }, [mismatch_status, account_settings, is_document_upload_required, getChangeableFields, generateIDVError]);
 
     const onSubmit = async (values: TIdvFailedForm, { setStatus, setSubmitting }: FormikHelpers<TIdvFailedForm>) => {
         setSubmitting(true);

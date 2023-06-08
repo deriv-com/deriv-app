@@ -51,8 +51,7 @@
         .title-visibility,
         .icon-visibility {
             visibility: visible;
-            opacity: 1;
-            transition: visibility 0s, opacity 0.2s, height 0.2s ease;
+            transition: visibility 0s, height 0.2s ease;
         }
     }
 
@@ -91,7 +90,6 @@
         .title-visibility,
         .icon-visibility {
             visibility: hidden;
-            opacity: 0;
             height: 0;
         }
     }

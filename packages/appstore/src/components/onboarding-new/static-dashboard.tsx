@@ -79,8 +79,8 @@ const StaticDashboard = ({
     const is_eu_user = (is_logged_in && eu_user) || (!is_logged_in && is_eu_country);
 
     const toggle_options = [
-        { text: `${is_eu_user ? 'Multipliers' : 'Options & Multipliers'}`, value: 0 },
-        { text: 'CFDs', value: 1 },
+        { text: `${is_eu_user ? localize('Multipliers') : localize('Options & Multipliers')}`, value: 0 },
+        { text: localize('CFDs'), value: 1 },
     ];
 
     React.useEffect(() => {

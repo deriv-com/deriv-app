@@ -1126,7 +1126,6 @@ export default class TradeStore extends BaseStore {
     }
 
     onProposalResponse(response) {
-        console.log('OOPS: ', response.proposal?.date_expiry);
         const { contract_type } = response.echo_req;
         const prev_proposal_info = getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};

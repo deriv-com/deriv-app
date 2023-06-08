@@ -15,6 +15,7 @@ const DemoResetBalance = observer(({ setActiveTabIndex }: TDemoResetBalanceProps
     const { active_accounts } = client;
     const { is_mobile } = ui;
     const balance = active_accounts.find(acc => acc.is_virtual === 1)?.balance;
+    const has_initial_balance = balance === 10000;
 
     const resetBalance = () => {
         mutate([]);
@@ -67,7 +68,7 @@ const DemoResetBalance = observer(({ setActiveTabIndex }: TDemoResetBalanceProps
                     <Button
                         className='reset-balance__button'
                         data-testid='dt_reset_balance_button'
-                        disabled={balance === 10000}
+                        disabled={has_initial_balance}
                         large={!is_mobile}
                         medium={is_mobile}
                         primary

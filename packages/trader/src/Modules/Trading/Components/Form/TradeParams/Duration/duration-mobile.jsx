@@ -161,8 +161,8 @@ const Numbers = ({
         toggleModal();
     };
 
-    const setExpiryDate = (expiry_epoch, duration) => {
-        let expiry_date = new Date(expiry_epoch * 1000);
+    const setExpiryDate = (epoch, duration) => {
+        let expiry_date = new Date(epoch * 1000);
       
         if (duration) {
           expiry_date = new Date(expiry_date.getTime() + (duration - 1) * 24 * 60 * 60 * 1000);

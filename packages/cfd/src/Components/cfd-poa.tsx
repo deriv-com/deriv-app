@@ -244,10 +244,7 @@ const CFDPOA = ({
     React.useEffect(() => {
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             WS.wait('states_list').then(() => {
-                const poa_status =
-                    jurisdiction_selected_shortcode === Jurisdiction.LABUAN
-                        ? 'none'
-                        : response.get_account_status?.authentication?.document?.status;
+                const poa_status = response.get_account_status?.authentication?.document?.status;
                 const poi_status = response.get_account_status?.authentication?.identity?.status;
                 const poa_failed_status = ['rejected', 'expired', 'suspected'];
                 if (poa_status && poi_status) {

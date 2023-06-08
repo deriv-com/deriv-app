@@ -27,7 +27,6 @@ const TradersHub = () => {
         has_active_real_account,
     } = client;
     const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
-    const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef<HTMLDivElement>(null);
 
     const eu_user_closed_real_account_first_time = LocalStore.get('eu_user_closed_real_account_first_time');

@@ -3,6 +3,7 @@ import { ProgressBarOnboarding, WalletCard } from '@deriv/components';
 import { TWalletAccount } from 'Types';
 import { formatMoney } from '@deriv/shared';
 import Slider from 'react-slick';
+import './slick.scss';
 
 type TProps = {
     readonly items: TWalletAccount[];
@@ -26,7 +27,7 @@ const CardsSlider = React.memo(({ items, setActivePage }: TProps) => {
         slidesToScroll: 1,
         swipeToSlide: true,
         variableWidth: true,
-        arrow: false,
+        arrows: false,
         speed: 500,
         touchThreshold: 10,
         dotsClass: 'wallet-cards-carousel__pagination',

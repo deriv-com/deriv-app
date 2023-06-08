@@ -4,8 +4,6 @@ import { observer, useStore } from '@deriv/stores';
 import WalletCardsCarousel from 'Components/wallet-cards-carousel';
 import { fake_wallet_accounts, sortWalletAccounts } from '@deriv/shared';
 import { useWalletAccounts } from '@deriv/hooks';
-import './slick.scss';
-import './slick-theme.scss';
 
 // TODO: delete it after testing
 type TProps = {

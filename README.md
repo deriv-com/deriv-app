@@ -2,7 +2,8 @@
 
 This repository contains the various platforms of the Deriv application.
 
-![CircleCI](https://img.shields.io/circleci/build/github/binary-com/deriv-app) ![Prerequisite](https://img.shields.io/badge/node-%3E%3D16.16.0-blue.svg) ![Prerequisite](https://img.shields.io/badge/npm-%3E%3D7.21.0-blue.svg) [![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
+![CircleCI](https://img.shields.io/circleci/build/github/binary-com/deriv-app) ![Prerequisite](https://img.shields.io/badge/node-18.x-blue.svg) ![Prerequisite](https://img.shields.io/badge/npm-9.x-blue.svg)
+[![lerna](https://img.shields.io/badge/maintained%20with-lerna-cc00ff.svg)](https://lerna.js.org/)
 ![Sonar Tech Debt](https://img.shields.io/sonar/tech_debt/binary-com_deriv-app?server=https%3A%2F%2Fsonarcloud.io)
 ![Sonar Violations (short format)](https://img.shields.io/sonar/violations/binary-com_deriv-app?server=https%3A%2F%2Fsonarcloud.io)
 [![codecov](https://codecov.io/gh/binary-com/deriv-app/branch/dev/graph/badge.svg?token=LClg2rlZ4z)](https://codecov.io/gh/binary-com/deriv-app)

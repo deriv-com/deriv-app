@@ -10,7 +10,7 @@ type TWalletAccount = {
     landing_company_shortcode: 'svg' | 'malta';
     loginid: string;
     icon: string;
-    icon_type: 'fiat' | 'crypto' | 'all';
+    icon_type: 'fiat' | 'crypto' | 'app';
     name: string;
 };
 

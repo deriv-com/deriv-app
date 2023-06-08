@@ -74,7 +74,8 @@ export const fake_wallet_accounts: any[] = [
         currency: 'USD',
         icon: getWalletCurrencyIcon('demo', false),
         balance: 100000,
-        icon_type: 'fiat',
+        // icon_type: 'fiat',
+        icon_type: 'crypto',
         landing_company_shortcode: 'svg',
         is_disabled: false,
         is_virtual: true,
@@ -89,7 +90,7 @@ export const fake_wallet_accounts: any[] = [
         landing_company_shortcode: 'svg',
         is_disabled: false,
         is_virtual: false,
-        loginid: 'CRW10001',
+        loginid: 'CRW10003',
     },
     {
         name: 'Bitcoin',
@@ -100,7 +101,7 @@ export const fake_wallet_accounts: any[] = [
         landing_company_shortcode: 'svg',
         is_disabled: false,
         is_virtual: false,
-        loginid: 'CRW10001',
+        loginid: 'CRW10004',
     },
     {
         name: 'EUR',
@@ -111,7 +112,7 @@ export const fake_wallet_accounts: any[] = [
         icon: getWalletCurrencyIcon('EUR', false),
         is_disabled: false,
         is_virtual: false,
-        loginid: 'CRW10001',
+        loginid: 'MFW10005',
     },
     {
         name: 'USD',
@@ -122,7 +123,7 @@ export const fake_wallet_accounts: any[] = [
         icon: getWalletCurrencyIcon('USD', false),
         is_disabled: false,
         is_virtual: false,
-        loginid: 'MFW10005',
+        loginid: 'MFW10006',
     },
     {
         name: 'ETH',
@@ -144,7 +145,7 @@ export const fake_wallet_accounts: any[] = [
         icon: getWalletCurrencyIcon('LTC', false),
         is_disabled: false,
         is_virtual: false,
-        loginid: 'CRW10007',
+        loginid: 'CRW10008',
     },
     {
         name: 'USDC',
@@ -155,7 +156,7 @@ export const fake_wallet_accounts: any[] = [
         icon: getWalletCurrencyIcon('USDC', false),
         is_disabled: false,
         is_virtual: false,
-        loginid: 'CRW10008',
+        loginid: 'CRW10009',
     },
     {
         name: 'USDT',
@@ -166,7 +167,7 @@ export const fake_wallet_accounts: any[] = [
         icon: getWalletCurrencyIcon('USDT', false),
         is_disabled: false,
         is_virtual: false,
-        loginid: 'CRW10009',
+        loginid: 'CRW10010',
     },
     {
         name: 'eUSDT',
@@ -177,7 +178,7 @@ export const fake_wallet_accounts: any[] = [
         icon: getWalletCurrencyIcon('eUSDT', false),
         is_disabled: false,
         is_virtual: false,
-        loginid: 'CRW10010',
+        loginid: 'CRW10011',
     },
     {
         name: 'tUSDT',
@@ -188,7 +189,7 @@ export const fake_wallet_accounts: any[] = [
         icon: getWalletCurrencyIcon('tUSDT', false),
         is_disabled: false,
         is_virtual: false,
-        loginid: 'CRW10011',
+        loginid: 'CRW10012',
     },
     {
         name: 'EUR',
@@ -199,6 +200,6 @@ export const fake_wallet_accounts: any[] = [
         landing_company_shortcode: 'svg',
         is_disabled: false,
         is_virtual: false,
-        loginid: 'CRW10001',
+        loginid: 'CRW10013',
     },
 ];

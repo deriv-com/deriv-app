@@ -23,18 +23,29 @@ const AccountWithWallets = observer(({ show_test_wallets = false }: TProps) => {
         ? sortWalletAccounts(fake_wallet_accounts)
         : wallet_accounts;
 
+    const [selected_wallet, setSelectedWallet] = React.useState<string>(
+        wallets_to_show.length ? wallets_to_show[0].loginid : ''
+    );
+
+    const desktop_wallets_JSX = wallets_to_show.map(wallet => {
+        const handleFn = React.useCallback(
+            () => setSelectedWallet(selected_id => (selected_id === wallet.loginid ? '' : wallet.loginid)),
+            [wallet.loginid]
+        );
+
+        return (
+            <Wallet
+                key={wallet.loginid}
+                wallet_account={wallet}
+                is_open_wallet={selected_wallet === wallet.loginid}
+                setIsOpenWallet={handleFn}
+            />
+        );
+    });
+
     return (
         <React.Fragment>
-            {is_mobile ? (
-                <WalletCardsCarousel items={wallets_to_show} />
-            ) : (
-                wallets_to_show.map((account, index) => (
-                    <Wallet
-                        key={`${account.account_type} ${account.landing_company_shortcode} ${account.currency} ${index}`}
-                        wallet_account={account}
-                    />
-                ))
-            )}
+            {is_mobile ? <WalletCardsCarousel items={wallets_to_show} /> : desktop_wallets_JSX}
         </React.Fragment>
     );
 });

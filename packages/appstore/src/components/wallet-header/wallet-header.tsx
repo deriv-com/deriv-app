@@ -17,7 +17,7 @@ type TWalletHeader = {
     balance?: number;
     account_status?: TAccountStatus;
     is_open_wallet: boolean;
-    setIsOpen: (is_open: boolean) => void;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
     icon?: string;
     icon_type?: string;
 };

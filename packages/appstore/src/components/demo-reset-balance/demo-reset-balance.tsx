@@ -6,11 +6,11 @@ import { useRequest } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 import './demo-reset-balance.scss';
 
-export type TDemoResetBalanceProps = {
-    setActiveIndex: (index: number) => void;
+type TDemoResetBalanceProps = {
+    setActiveTabIndex: (index: number) => void;
 };
 
-const DemoResetBalance = ({ setActiveIndex }: TDemoResetBalanceProps) => {
+const DemoResetBalance = ({ setActiveTabIndex }: TDemoResetBalanceProps) => {
     const [is_transferred_success, setIsTransferredSuccess] = React.useState(false);
     const { mutate, isSuccess } = useRequest('topup_virtual');
     const { client } = useStore();
@@ -19,15 +19,14 @@ const DemoResetBalance = ({ setActiveIndex }: TDemoResetBalanceProps) => {
 
     useEffect(() => {
         if (isSuccess) setIsTransferredSuccess(true);
-    }, [isSuccess]);
+    }, [isSuccess, setActiveTabIndex]);
 
     const resetBalance = () => {
         mutate([]);
     };
 
     const redirectToTransferTab = () => {
-        // Redirect to transfer tab
-        setActiveIndex(0);
+        setActiveTabIndex(0);
     };
 
     return (

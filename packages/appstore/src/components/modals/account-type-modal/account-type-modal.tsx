@@ -109,11 +109,13 @@ const MT5AccountTypeModal = () => {
     const is_swapfree_available = useHasSwapFreeAccount();
 
     const set_account_type = () => {
-        switch (localize(account_type_card)) {
+        const localizedAccountType = localize(account_type_card);
+
+        switch (localizedAccountType) {
             case localize('Derived'):
                 setAccountType({ category: 'real', type: 'synthetic' });
                 break;
-            case localize('Swap-Free'):
+            case localize('Swap-Free') || localize('Swap Free'):
                 setAccountType({ category: 'real', type: 'all' });
                 break;
             case localize('Financial'):
@@ -122,6 +124,7 @@ const MT5AccountTypeModal = () => {
                 break;
         }
     };
+
     return (
         <div>
             <React.Suspense fallback={<UILoader />}>

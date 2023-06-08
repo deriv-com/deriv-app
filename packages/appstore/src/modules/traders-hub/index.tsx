@@ -101,16 +101,15 @@ const TradersHub = () => {
     if (!is_logged_in) return null;
 
     const renderOrderedPlatformSections = (is_cfd_visible = true, is_options_and_multipliers_visible = true) => {
-        return is_eu_user ? (
-            <React.Fragment>
-                {is_cfd_visible && <CFDsListing />}
+        return (
+            <div
+                className={classNames('traders-hub__main-container', {
+                    'traders-hub__main-container-reversed': is_eu_user,
+                })}
+            >
                 {is_options_and_multipliers_visible && <OptionsAndMultipliersListing />}
-            </React.Fragment>
-        ) : (
-            <React.Fragment>
-                {is_options_and_multipliers_visible && <OptionsAndMultipliersListing />}
                 {is_cfd_visible && <CFDsListing />}
-            </React.Fragment>
+            </div>
         );
     };
 
@@ -126,9 +125,7 @@ const TradersHub = () => {
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     <MainTitleBar />
-                    <DesktopWrapper>
-                        <div className='traders-hub__main-container'>{renderOrderedPlatformSections()}</div>
-                    </DesktopWrapper>
+                    <DesktopWrapper>{renderOrderedPlatformSections()}</DesktopWrapper>
                     <MobileWrapper>
                         {is_landing_company_loaded ? (
                             <ButtonToggle

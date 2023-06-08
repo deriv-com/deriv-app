@@ -14,13 +14,14 @@ const DepositFiatIframe: React.FC = observer(() => {
 
     return (
         <React.Fragment>
-            {is_loading && <Loading className='deposit-fiat-iframe__loader' is_fullscreen={false} />}
+            {is_loading && <Loading is_fullscreen={false} />}
             {isSuccess && (
                 <iframe
+                    key={iframe_url}
                     className='deposit-fiat-iframe__iframe'
                     onLoad={() => setIsLoading(false)}
                     src={iframe_url}
-                    style={!is_loading ? { display: 'block' } : { display: 'none' }}
+                    style={{ display: is_loading ? 'none' : 'block' }}
                     data-testid='dt_deposit_fiat_iframe_iframe'
                 />
             )}

@@ -7,4 +7,5 @@ const DepositFiat: React.FC = () => (
         <DepositFiatIframe />
     </PageContainer>
 );
+
 export default DepositFiat;

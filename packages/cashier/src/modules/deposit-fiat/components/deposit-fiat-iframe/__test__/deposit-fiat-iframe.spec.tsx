@@ -10,21 +10,19 @@ jest.mock('@deriv/hooks', () => ({
     useDepositFiatAddress: jest.fn(),
 }));
 
-const mockedUseDepositFiatAddress = useDepositFiatAddress as jest.MockedFunction<
-    () => Partial<ReturnType<typeof useDepositFiatAddress>>
->;
+const mockedUseDepositFiatAddress = useDepositFiatAddress as jest.MockedFunction<typeof useDepositFiatAddress>;
 
 describe('<DepositFiatIframe />', () => {
     it('should render the loader when waiting for the response from the cashier API', () => {
-        mockedUseDepositFiatAddress.mockImplementation(() => {
-            return {
-                data: undefined,
-                isLoading: false,
-                isSuccess: true,
-                error: undefined,
-                resend: jest.fn(),
-            };
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockedUseDepositFiatAddress.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isSuccess: true,
+            error: undefined,
+            resend: jest.fn(),
         });
+
         const mock = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -36,14 +34,13 @@ describe('<DepositFiatIframe />', () => {
     });
 
     it('should render the iframe once the url is received from API', () => {
-        mockedUseDepositFiatAddress.mockImplementation(() => {
-            return {
-                data: 'https://example.com',
-                isLoading: false,
-                isSuccess: true,
-                error: undefined,
-                resend: jest.fn(),
-            };
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockedUseDepositFiatAddress.mockReturnValue({
+            data: 'https://example.com',
+            isLoading: false,
+            isSuccess: true,
+            error: undefined,
+            resend: jest.fn(),
         });
 
         const mock = mockStore({});

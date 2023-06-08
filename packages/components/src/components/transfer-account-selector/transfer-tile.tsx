@@ -14,7 +14,7 @@ type TTransferTile = {
 const ChevronIcon = () => {
     return (
         <div className='transfer-account-selector__chevron-icon'>
-            <Icon icon='IcChevronDown' />
+            <Icon icon='IcChevronDown' data_testid='dt_chevron_icon' />
         </div>
     );
 };

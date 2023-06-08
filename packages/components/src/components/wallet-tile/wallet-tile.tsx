@@ -107,6 +107,7 @@ const WalletTile = ({
                 'wallet-tile--hover': has_hover,
                 'wallet-tile--active': is_active,
             })}
+            data-testid='dt_wallet_tile'
             onClick={() => onClick?.()}
         >
             <div className='wallet-tile__icon-with-badge'>

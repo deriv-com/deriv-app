@@ -12,7 +12,7 @@ import './fiat-transaction-list.scss';
 
 const FiatTransactionList = () => {
     const {
-        client: { accounts, currency: wallet_currency, loginid },
+        client: { accounts, currency: wallet_currency, loginid, landing_company_shortcode: shortcode },
         traders_hub: { is_demo },
         ui: { is_dark_mode_on, is_mobile },
     } = useStore();
@@ -183,7 +183,7 @@ const FiatTransactionList = () => {
                         let account_currency = wallet_currency;
                         let icon = wallet_icon;
                         let icon_type = 'fiat';
-                        let platform = null;
+                        let is_deriv_apps = false;
                         if (transaction.action_type === 'transfer') {
                             const other_loginid =
                                 transaction.to?.loginid === loginid
@@ -205,11 +205,11 @@ const FiatTransactionList = () => {
                                     false
                                 );
                                 icon_type = isCryptocurrency(account_currency) ? 'crypto' : 'fiat';
+                                is_deriv_apps = true;
                             } else {
                                 const app_account = linked_accounts.find(account => account?.loginid === other_loginid);
                                 if (!app_account) return null;
-                                platform = app_account.platform;
-                                account_title = `${localize('Deriv Apps')} ${platform.toUpperCase()} ${localize(
+                                account_title = `${localize('Deriv Apps')} ${shortcode.toUpperCase()} ${localize(
                                     'account'
                                 )}`;
                             }
@@ -230,7 +230,7 @@ const FiatTransactionList = () => {
                                 currency={wallet_currency}
                                 icon={icon}
                                 icon_type={icon_type}
-                                platform={platform}
+                                is_deriv_apps={is_deriv_apps}
                             />
                         );
                     })
@@ -241,13 +241,13 @@ const FiatTransactionList = () => {
                             key={-1}
                             action_type='transfer'
                             account_currency={wallet_currency}
-                            account_name='Deriv Apps DXtrade account'
+                            account_name='Deriv Apps (SVG) account'
                             amount={42}
                             balance_after={42}
                             currency={wallet_currency}
                             icon={getWalletCurrencyIcon('USD', is_dark_mode_on, false)}
                             icon_type='fiat'
-                            platform='IcDxtradeDerived'
+                            is_deriv_apps
                         />,
                     ])}
             </div>

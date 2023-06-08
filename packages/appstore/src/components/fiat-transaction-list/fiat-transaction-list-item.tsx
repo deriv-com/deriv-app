@@ -15,7 +15,7 @@ type TFiatTransactionListItem = Pick<TStatementTransaction, 'amount' | 'balance_
     currency: string;
     icon: string;
     icon_type: string;
-    platform?: string | null;
+    is_deriv_apps?: boolean;
 };
 
 const FiatTransactionListItem = ({
@@ -27,7 +27,7 @@ const FiatTransactionListItem = ({
     currency,
     icon,
     icon_type,
-    platform,
+    is_deriv_apps,
 }: TFiatTransactionListItem) => {
     const {
         ui: { is_mobile },
@@ -39,9 +39,9 @@ const FiatTransactionListItem = ({
     return (
         <div className='fiat-transaction-list__item'>
             <div>
-                {platform ? (
+                {is_deriv_apps ? (
                     <AppLinkedWithWalletIcon
-                        app_icon={platform}
+                        app_icon='IcWalletOptions'
                         currency={account_currency}
                         type={icon_type}
                         wallet_icon={icon}

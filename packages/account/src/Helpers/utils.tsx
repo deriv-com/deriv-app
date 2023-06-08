@@ -284,8 +284,8 @@ export const isDocumentNumberValid = (document_number: string, document_type: Fo
     const is_document_number_invalid = document_number === document_type.example_format;
     if (!document_number && document_type.text) {
         let document_name = '';
-        const example_format = getExampleFormat(document_type.id);
-        switch (document_type.text) {
+        const example_format = getExampleFormat(document_type.example_format);
+        switch (document_type.id) {
             case 'drivers_license':
                 document_name = 'Driver License Reference number';
                 break;

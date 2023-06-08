@@ -181,6 +181,7 @@ describe('getExampleFormat', () => {
 describe('isDocumentNumberValid', () => {
     it('should return error message for empty document number, when document_type text Passport', () => {
         const mock_document_type = {
+            id: 'passport',
             text: 'Passport',
             example_format: '081234567F53',
         };
@@ -191,6 +192,7 @@ describe('isDocumentNumberValid', () => {
 
     it('should return error message for empty Driver License, when document_type text Drivers License', () => {
         const mock_document_type = {
+            id: 'drivers_license',
             text: 'Drivers License',
             example_format: '081234567F53',
         };
@@ -203,6 +205,7 @@ describe('isDocumentNumberValid', () => {
 
     it('should return error message for empty SSNIT, when document_type text Social Security and National Insurance Trust', () => {
         const mock_document_type = {
+            id: 'ssnit',
             text: 'Social Security and National Insurance Trust',
             example_format: '081234567F53',
         };
@@ -213,6 +216,7 @@ describe('isDocumentNumberValid', () => {
 
     it('should return Please enter valid ID, when user inputs same with example', () => {
         const mock_document_type = {
+            id: 'ssnit',
             text: 'Social Security and National Insurance Trust',
             example_format: '081234567F53',
         };
@@ -222,6 +226,7 @@ describe('isDocumentNumberValid', () => {
 
     it('should return undefined, when user inputs value correctly', () => {
         const mock_document_type = {
+            id: 'ssnit',
             text: 'Social Security and National Insurance Trust',
             example_format: '081234567F53',
         };

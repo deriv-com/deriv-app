@@ -1,9 +1,6 @@
 .deposit-fiat-iframe {
     &__iframe {
         width: 100%;
-        height: 75vh;
-    }
-    &__loader {
-        height: 75vh;
+        flex: 1;
     }
 }

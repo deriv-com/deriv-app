@@ -17,13 +17,7 @@ const DepositFiatIframe: React.FC = observer(() => {
 
     return (
         <React.Fragment>
-            {show_loader && (
-                <Loading
-                    className='deposit-fiat-iframe__loader'
-                    data-testid='dt_deposit_fiat_iframe_loader'
-                    is_fullscreen={false}
-                />
-            )}
+            {show_loader && <Loading className='deposit-fiat-iframe__loader' is_fullscreen={false} />}
             {isSuccess && (
                 <iframe
                     className='deposit-fiat-iframe__iframe'

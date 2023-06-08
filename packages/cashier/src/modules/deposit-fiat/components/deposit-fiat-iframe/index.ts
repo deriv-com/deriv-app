@@ -1,3 +1,1 @@
-import DepositFiatIframe from './deposit-fiat-iframe';
-
-export { DepositFiatIframe };
+export { default as DepositFiatIframe } from './deposit-fiat-iframe';

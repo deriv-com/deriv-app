@@ -1,6 +1,7 @@
 import React from 'react';
+import { ApiHelpers, ServerTime, setColors } from '@deriv/bot-skeleton';
 import { Loading } from '@deriv/components';
-import { ServerTime, ApiHelpers, setColors } from '@deriv/bot-skeleton';
+import { observer, useStore } from '@deriv/stores';
 import {
     Audio,
     BotFooterExtensions,
@@ -9,12 +10,10 @@ import {
     NetworkToastPopup,
     RoutePromptDialog,
 } from 'Components';
-import BlocklyLoading from '../components/blockly-loading';
-import { MobxContentProvider } from 'Stores/connect';
-import { observer, useStore } from '@deriv/stores';
-import { useDBotStore } from 'Stores/useDBotStore';
-import GTM from 'Utils/gtm';
 import BotBuilder from 'Components/dashboard/bot-builder';
+import GTM from 'Utils/gtm';
+import { useDBotStore } from 'Stores/useDBotStore';
+import BlocklyLoading from '../components/blockly-loading';
 import './app.scss';
 
 const AppContent = observer(() => {
@@ -90,8 +89,7 @@ const AppContent = observer(() => {
     return is_loading ? (
         <Loading />
     ) : (
-        // TODO: remove MobxContentProvider when all connect method is removed
-        <MobxContentProvider store={combinedStore}>
+        <>
             <BlocklyLoading />
             <div className='bot-dashboard bot'>
                 <Audio />
@@ -102,7 +100,7 @@ const AppContent = observer(() => {
                 <BotBuilder />
                 <RoutePromptDialog />
             </div>
-        </MobxContentProvider>
+        </>
     );
 });
 

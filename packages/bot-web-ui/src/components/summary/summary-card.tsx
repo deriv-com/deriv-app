@@ -1,14 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
-import { localize } from '@deriv/translations';
 import { ContractCard, Text } from '@deriv/components';
-import ContractCardLoader from 'Components/contract-card-loading';
-import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
-import { connectWithContractUpdate } from 'Utils/multiplier';
-import { TSummaryCardProps } from './summary-card.types';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+import ContractCardLoader from 'Components/contract-card-loading';
+import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { TSummaryCardProps } from './summary-card.types';
 
 const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCardProps) => {
     const { summary_card, run_panel } = useDBotStore();
@@ -33,7 +32,6 @@ const SummaryCard = observer(({ contract_info, is_contract_loading }: TSummaryCa
     const card_body = (
         <ContractCard.Body
             addToast={addToast}
-            connectWithContractUpdate={connectWithContractUpdate}
             contract_info={contract_info}
             currency={contract_info && contract_info.currency}
             current_focus={current_focus}

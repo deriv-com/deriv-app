@@ -3,7 +3,6 @@ import { ProgressBarOnboarding, WalletCard } from '@deriv/components';
 import { TWalletAccount } from 'Types';
 import { formatMoney } from '@deriv/shared';
 import Slider from 'react-slick';
-import './slick.scss';
 
 type TProps = {
     readonly items: TWalletAccount[];

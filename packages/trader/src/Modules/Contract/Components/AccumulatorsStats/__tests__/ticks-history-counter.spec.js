@@ -35,6 +35,7 @@ describe('TicksHistoryCounter', () => {
 
     it('should render TicksHistoryCounter with dots and highlighted', () => {
         mock_props.has_progress_dots = true;
+        mock_props.should_emphasize_last_counter = true;
         mock_props.value = 0;
 
         render(<TicksHistoryCounter {...mock_props} />);

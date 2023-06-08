@@ -56,21 +56,6 @@ const TradersHub = () => {
 
     if (!is_logged_in) return null;
 
-    // TODO: delete after testing
-    const SelectJSX = (
-        <div>
-            <select
-                onChange={event => {
-                    if (Number(event.target.value) === 0) setIsDisplayTestWallets(0);
-                    else setIsDisplayTestWallets(1);
-                }}
-            >
-                <option value={0}>Hide test wallets</option>
-                <option value={1}>Show test wallets</option>
-            </select>
-        </div>
-    );
-
     // TODO: change it when 'wallet' property will be in authorize response
     const is_wallet_account = Object.keys(accounts).some(key => accounts[key]?.account_category === 'wallet');
 
@@ -86,7 +71,6 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
-                    {SelectJSX}
                     <AccountWithWallets />
                     <AccountWithoutWallets />
                     <ModalManager />

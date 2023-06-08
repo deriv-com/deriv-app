@@ -20,15 +20,16 @@ class DBotStore extends DBotStoreInterface {
         this.is_mobile = store.is_mobile || false;
         this.is_dark_mode_on = store.is_dark_mode_on || false;
         this.client = store.client;
+        this.dashboard = store.dashboard;
         this.flyout = store.flyout;
         this.toolbar = store.toolbar;
         this.toolbox = store.toolbox;
         this.save_modal = store.save_modal;
+        this.load_modal = store.load_modal;
         this.setContractUpdateConfig = store.setContractUpdateConfig;
         this.toggleStrategyModal = store.toggleStrategyModal;
         this.handleFileChange = store.handleFileChange;
-        this.startLoading = store.startLoading;
-        this.endLoading = store.endLoading;
+        this.setLoading = store.setLoading;
 
         reaction(
             () => this.client.loginid,

@@ -24,7 +24,7 @@ const ReadyToDepositModal = observer(() => {
         } else if (is_eu_user) {
             return openRealAccountSignup('maltainvest');
         }
-        return openRealAccountSignup();
+        return openRealAccountSignup('svg');
     };
 
     return (

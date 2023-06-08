@@ -1,16 +1,21 @@
 .notifications-container {
     position: absolute;
-    top: 65px;
+    top: 6.5rem;
     left: 0;
-    width: calc(100vw - 30px);
-    height: calc(100% - 65px);
+    width: calc(100vw - 1.6rem);
+    height: calc(100% - 6.5rem);
 
     .notification-messages {
         transition: transform 0.3s ease, opacity 0.25s linear;
     }
-    &--is-panel-open {
+    &__dashboard {
         .notification-messages {
-            transform: translate3d(calc(-350px), 0, 0);
+            transform: translate3d(calc(-42.7rem), 0, 0);
+        }
+    }
+    &--panel-open {
+        .notification-messages {
+            transform: translate3d(calc(-36.5rem), 0, 0);
         }
     }
 }

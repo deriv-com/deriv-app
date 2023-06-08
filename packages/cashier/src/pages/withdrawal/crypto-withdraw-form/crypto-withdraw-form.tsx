@@ -59,7 +59,6 @@ const CryptoWithdrawForm = observer(() => {
     const { crypto_fiat_converter, general_store, transaction_history, withdraw } = useCashierStore();
     const crypto_currency = currency;
     const {
-        account_platform_icon,
         blockchain_address,
         onMountCryptoWithdraw: onMountWithdraw,
         requestWithdraw,

@@ -6,6 +6,13 @@ import CryptoWithdrawForm from '../crypto-withdraw-form';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useCurrentAccountDetails: jest.fn(() => {
+        'icon';
+    }),
+}));
+
 describe('<CryptoWithdrawForm />', () => {
     (useCurrentAccountDetails as jest.Mock).mockReturnValue({ icon: 'icon' });
     let mockRootStore: ReturnType<typeof mockStore>;

@@ -157,11 +157,12 @@ const draw_shaded_barriers = ({
     previous_tick,
     scale,
 }) => {
+    ctx.save();
     const end_left = ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
     const end_top = ctx.canvas.offsetHeight - ctx.canvas.parentElement.stx.xaxisHeight;
     const is_top_visible = top < end_top && (top >= 0 || !has_persistent_borders);
     const is_bottom_visible = bottom < end_top;
-    // using 2 instead of 0 to distance the top barrier line from the top of the chart and make it clearly visible:
+    // using 2 instead of 0 to distance the top barrier line from the top of the chart and make it clearly visible in C.Details:
     const persistent_top = top < 0 && has_persistent_borders ? 2 : end_top;
     const displayed_top = is_top_visible ? top : persistent_top;
     const displayed_bottom = is_bottom_visible ? bottom : end_top;
@@ -170,6 +171,7 @@ const draw_shaded_barriers = ({
     if (!is_start_left_visible) return;
     ctx.lineWidth = 1;
     ctx.strokeStyle = stroke_color;
+    ctx.setLineDash([]);
 
     if (is_top_visible || has_persistent_borders) {
         ctx.fillStyle = stroke_color;
@@ -181,7 +183,6 @@ const draw_shaded_barriers = ({
         }
         // draw top barrier with an arrow
         ctx.beginPath();
-        ctx.setLineDash([]);
         ctx.moveTo(end_left, displayed_top);
         ctx.lineTo(start_left - 2.5, displayed_top);
         ctx.lineTo(start_left, displayed_top + 4.5);
@@ -195,7 +196,6 @@ const draw_shaded_barriers = ({
         const { radius, preceeding_tick, stroke_color: prev_tick_stroke_color } = previous_tick || {};
         if (preceeding_tick) {
             // draw markers for previous tick & a tick before previous tick in C.Details
-            ctx.setLineDash([]);
             if (preceeding_tick) {
                 ctx.strokeStyle = preceeding_tick.color;
                 ctx.fillStyle = preceeding_tick.color;
@@ -246,9 +246,10 @@ const draw_shaded_barriers = ({
         ctx.fill();
         ctx.stroke();
     }
-
+    // draw shaded area between barriers
     ctx.fillStyle = fill_color;
     ctx.fillRect(start_left, displayed_top, end_left - start_left, Math.abs(displayed_bottom - displayed_top));
+    ctx.restore();
 };
 
 const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {

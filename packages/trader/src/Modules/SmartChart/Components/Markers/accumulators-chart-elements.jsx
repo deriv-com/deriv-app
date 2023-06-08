@@ -26,7 +26,7 @@ const AccumulatorsChartElements = ({
                 <ChartMarker
                     marker_config={{
                         ContentComponent: 'div',
-                        className: 'sc-current-spot-emphasizer',
+                        custom_className: 'sc-current-spot-emphasizer',
                         x: current_spot_time,
                         y: current_spot,
                     }}

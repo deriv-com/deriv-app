@@ -199,6 +199,7 @@ export default connect(({ modules, ui }) => ({
     duration_min_max: modules.trade.duration_min_max,
     duration_t: ui.duration_t,
     expiry_date: modules.trade.expiry_date,
+    expiry_epoch: modules.trade.expiry_epoch,
     expiry_time: modules.trade.expiry_time,
     expiry_type: modules.trade.expiry_type,
     getDurationFromUnit: ui.getDurationFromUnit,

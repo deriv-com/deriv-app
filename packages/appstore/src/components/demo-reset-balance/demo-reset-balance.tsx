@@ -15,7 +15,7 @@ const DemoResetBalance = ({ setActiveTabIndex }: TDemoResetBalanceProps) => {
     const { mutate, isSuccess } = useRequest('topup_virtual');
     const { client } = useStore();
     const { active_accounts } = client;
-    const balance = active_accounts.find(acc => acc.is_virtual === 0)?.balance;
+    const balance = active_accounts.find(acc => acc.is_virtual === 1)?.balance;
 
     useEffect(() => {
         if (isSuccess) setIsTransferredSuccess(true);

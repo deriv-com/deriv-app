@@ -38,7 +38,7 @@ describe('<DemoResetBalance />', () => {
             client: {
                 active_accounts: [
                     {
-                        is_virtual: 0,
+                        is_virtual: 1,
                         balance: 10000,
                     },
                 ],

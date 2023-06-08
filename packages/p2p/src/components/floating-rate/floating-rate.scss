@@ -130,6 +130,7 @@
         }
 
         .dc-input-wrapper__button {
+            top: unset;
             &--increment {
                 right: unset;
                 order: 4;

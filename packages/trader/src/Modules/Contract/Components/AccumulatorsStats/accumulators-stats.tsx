@@ -28,7 +28,7 @@ const AccumulatorsStats = ({ is_dark_theme, is_expandable = true, ticks_history_
     const [is_collapsed, setIsCollapsed] = React.useState(true);
     const [is_manual_open, setIsManualOpen] = React.useState(false);
     const widget_title = localize('Stats');
-    const ticks_history = ticks_history_stats?.ticks_stayed_in || [];
+    const ticks_history = ticks_history_stats?.ticks_stayed_in ?? [];
     const history_text_size = isDesktop() || !is_collapsed ? 'xxs' : 'xxxs';
 
     const rows = ticks_history.reduce((acc: number[][], _el, index) => {

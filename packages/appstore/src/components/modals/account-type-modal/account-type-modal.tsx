@@ -115,7 +115,8 @@ const MT5AccountTypeModal = () => {
             case localize('Derived'):
                 setAccountType({ category: 'real', type: 'synthetic' });
                 break;
-            case localize('Swap-Free') || localize('Swap Free'):
+            case localize('Swap-Free'):
+            case localize('Swap Free'):
                 setAccountType({ category: 'real', type: 'all' });
                 break;
             case localize('Financial'):

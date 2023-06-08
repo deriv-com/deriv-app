@@ -13,7 +13,7 @@ const TradingAssessmentForm = ({
     class_name,
     disabled_items,
     form_value,
-    is_eu,
+    is_eu_user,
     onSubmit,
     onCancel,
     should_move_to_next,
@@ -122,7 +122,7 @@ const TradingAssessmentForm = ({
 
     return (
         <div className={classNames('trading-assessment', class_name)}>
-            {is_eu && (
+            {is_eu_user && (
                 <div className='details-form__banner-container'>
                     <InlineNoteWithIcon
                         icon='IcAlertWarning'
@@ -133,7 +133,7 @@ const TradingAssessmentForm = ({
                     />
                 </div>
             )}
-            {!is_eu && (
+            {!is_eu_user && (
                 <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
                     <Localize i18n_default_text='In providing our services to you, we are required to obtain information from you in order to assess whether a given product or service is appropriate for you.' />
                 </Text>

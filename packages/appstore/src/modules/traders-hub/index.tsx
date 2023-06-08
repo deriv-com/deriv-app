@@ -13,6 +13,7 @@ import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 
 import './traders-hub.scss';
+import { set } from 'mobx';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();
@@ -25,6 +26,7 @@ const TradersHub = () => {
         is_account_setting_loaded,
         has_active_real_account,
     } = client;
+    const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
     const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef<HTMLDivElement>(null);
 
@@ -40,6 +42,7 @@ const TradersHub = () => {
         }
     };
     React.useEffect(() => {
+        if (is_eu_user) setTogglePlatformType('cfd');
         if (
             !has_active_real_account &&
             is_logged_in &&
@@ -78,10 +81,15 @@ const TradersHub = () => {
 
     const is_eu_low_risk = content_flag === ContentFlag.LOW_RISK_CR_EU;
 
-    const platform_toggle_options = [
-        { text: `${eu_title ? 'Multipliers' : 'Options & Multipliers'}`, value: 'options' },
-        { text: 'CFDs', value: 'cfd' },
-    ];
+    const platform_toggle_options = is_eu_user
+        ? [
+              { text: 'CFDs', value: 'cfd' },
+              { text: `${eu_title ? 'Multipliers' : 'Options & Multipliers'}`, value: 'options' },
+          ]
+        : [
+              { text: `${eu_title ? 'Multipliers' : 'Options & Multipliers'}`, value: 'options' },
+              { text: 'CFDs', value: 'cfd' },
+          ];
 
     const platformTypeChange = (event: {
         target: {

@@ -40,7 +40,7 @@ const PersonalDetails = ({
     validate,
     salutation_list,
     disabled_items,
-    is_mf,
+    is_eu_user,
     is_svg,
     residence_list,
     is_virtual,
@@ -148,7 +148,7 @@ const PersonalDetails = ({
                             data-testid='personal_details_form'
                         >
                             <Div100vhContainer className='details-form' height_offset='90px' is_disabled={isDesktop()}>
-                                {is_mf && (
+                                {is_eu_user && (
                                     <div className='details-form__banner-container'>
                                         <InlineNoteWithIcon
                                             icon='IcAlertWarning'
@@ -159,7 +159,7 @@ const PersonalDetails = ({
                                         />
                                     </div>
                                 )}
-                                {!is_mf && !is_qualified_for_idv && (
+                                {!is_eu_user && !is_qualified_for_idv && (
                                     <Text as='p' size='xxxs' align='center' className='details-form__description'>
                                         <Localize
                                             i18n_default_text={
@@ -222,7 +222,7 @@ const PersonalDetails = ({
                                                     setFieldTouched={setFieldTouched}
                                                     is_virtual={is_virtual}
                                                     is_svg={is_svg}
-                                                    is_mf={is_mf}
+                                                    is_eu_user={is_eu_user}
                                                     is_qualified_for_idv={is_qualified_for_idv}
                                                     is_appstore={is_appstore}
                                                     editable_fields={editable_fields}

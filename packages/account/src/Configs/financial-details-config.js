@@ -46,7 +46,7 @@ const financial_details_config = ({ financial_assessment }) => {
     };
 };
 
-const financialDetailsConfig = ({ real_account_signup_target, financial_assessment }, FinancialDetails) => {
+const financialDetailsConfig = ({ real_account_signup_target, financial_assessment, is_eu_user }, FinancialDetails) => {
     const config = financial_details_config({ financial_assessment });
 
     return {
@@ -70,6 +70,7 @@ const financialDetailsConfig = ({ real_account_signup_target, financial_assessme
             forex_trading_frequency_enum: forex_trading_frequency_enum(),
             estimated_worth_enum: estimated_worth_enum(),
             income_source_enum: income_source_enum(),
+            is_eu_user,
             net_income_enum: net_income_enum(),
             occupation_enum: occupation_enum(),
             other_instruments_trading_experience_enum: other_instruments_trading_experience_enum(),

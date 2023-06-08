@@ -143,14 +143,14 @@ const address_details_config = ({ account_settings, is_svg }) => {
 };
 
 const addressDetailsConfig = (
-    { upgrade_info, real_account_signup_target, residence, account_settings },
+    { upgrade_info, real_account_signup_target, residence, account_settings, is_eu_user },
     AddressDetails,
+    props,
     is_appstore = false
 ) => {
     const is_svg = upgrade_info?.can_upgrade_to === 'svg';
     const config = address_details_config({ account_settings, is_svg });
     const disabled_items = account_settings.immutable_fields;
-    const is_mf = real_account_signup_target === 'maltainvest';
 
     return {
         header: {
@@ -166,7 +166,7 @@ const addressDetailsConfig = (
             ),
             is_svg,
             disabled_items,
-            is_mf,
+            is_eu_user,
         },
         passthrough: ['residence_list', 'is_fully_authenticated', 'has_real_account'],
         icon: 'IcDashboardAddress',

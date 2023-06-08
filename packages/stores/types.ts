@@ -265,6 +265,7 @@ type TUiStore = {
     has_real_account_signup_ended: boolean;
     is_cashier_visible: boolean;
     is_closing_create_real_account_modal: boolean;
+    is_from_signup_account: boolean;
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
@@ -277,6 +278,7 @@ type TUiStore = {
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
+    setIsFromSignupAccount: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     sub_section_index: number;
     setSubSectionIndex: (index: number) => void;

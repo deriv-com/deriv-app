@@ -1,6 +1,27 @@
 import moment from 'moment';
 import { unique } from '../object';
-import { TContractInfo, TLimitOrder, TDigitsInfo, TTickItem } from './contract-types';
+import { TContractInfo, TContractInfoWithNumericBarriers, TLimitOrder, TDigitsInfo, TTickItem } from './contract-types';
+
+export const DELAY_TIME_1S_SYMBOL = 320;
+// generation_interval will be provided via API later to help us distinguish between 1-second and 2-second symbols
+export const symbols_1s = [
+    '1HZ100V',
+    '1HZ150V',
+    '1HZ10V',
+    '1HZ200V',
+    '1HZ250V',
+    '1HZ25V',
+    '1HZ300V',
+    '1HZ50V',
+    '1HZ75V',
+    'JD10',
+    'JD100',
+    'JD25',
+    'JD50',
+    'JD75',
+    'DEX900UP',
+    'DEX900DN',
+];
 
 export const getFinalPrice = (contract_info: TContractInfo) => contract_info.sell_price || contract_info.bid_price;
 
@@ -34,11 +55,34 @@ export const hasContractEntered = (contract_info: TContractInfo) => !!contract_i
 
 export const isAccumulatorContract = (contract_type: string) => /ACCU/i.test(contract_type);
 
+export const isAccumulatorContractOpen = (
+    {
+        contract_type,
+        current_spot,
+        exit_tick,
+        high_barrier,
+        low_barrier,
+        status,
+    }: TContractInfo | TContractInfoWithNumericBarriers = {},
+    in_pixels?: boolean
+) => {
+    const has_crossed_barriers =
+        !!(current_spot && high_barrier && low_barrier) &&
+        (in_pixels
+            ? current_spot <= +high_barrier || current_spot >= +low_barrier
+            : current_spot >= +high_barrier || current_spot <= +low_barrier);
+    return isAccumulatorContract(contract_type || '') && status === 'open' && !has_crossed_barriers && !exit_tick;
+};
+
 export const isMultiplierContract = (contract_type: string) => /MULT/i.test(contract_type);
 
 export const isVanillaContract = (contract_type: string) => /VANILLA/i.test(contract_type);
 
 export const isCryptoContract = (underlying: string) => /^cry/.test(underlying);
+
+export const getAccuBarriersDelayTimeMs = (symbol: string) => {
+    return symbols_1s.includes(symbol) ? DELAY_TIME_1S_SYMBOL : DELAY_TIME_1S_SYMBOL * 2;
+};
 
 export const getCurrentTick = (contract_info: TContractInfo) => {
     const tick_stream = unique(contract_info.tick_stream || [], 'epoch');

@@ -1177,6 +1177,7 @@ export default class TradeStore extends BaseStore {
                     barrier_spot_distance,
                     current_spot: spot,
                     current_spot_time: spot_time,
+                    underlying: this.symbol,
                 });
             }
         }

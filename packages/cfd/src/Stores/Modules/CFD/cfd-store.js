@@ -124,7 +124,8 @@ export default class CFDStore extends BaseStore {
                     this.loadDxtradeTokens();
                 }
                 if (this.root_store.client.derivez_accounts_list.length > 0) {
-                    this.loadDerivezTokens();
+                    // todo: uncomment this once derivez tokens are ready
+                    // this.loadDerivezTokens();
                 }
             }
         );

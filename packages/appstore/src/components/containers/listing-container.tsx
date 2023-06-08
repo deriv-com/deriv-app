@@ -12,7 +12,7 @@ type ListingContainerProps = {
     title: ReactNode;
     description: ReactNode;
     is_deriv_platform?: boolean;
-    wallet_account: TWalletAccount;
+    wallet_account?: TWalletAccount;
     className?: string;
     is_outside_grid_container?: boolean;
 };

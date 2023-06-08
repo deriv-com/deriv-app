@@ -77,7 +77,7 @@ const CFDDbviOnboarding = ({
                     setShowSubmittedModal(poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged);
                 } else if (jurisdiction_selected_shortcode === Jurisdiction.LABUAN) {
                     setShowSubmittedModal(
-                        poi_acknowledged_for_vanuatu_maltainvest &&
+                        poi_acknowledged_for_bvi_labuan &&
                             has_submitted_cfd_personal_details &&
                             !poa_resubmit_for_labuan
                     );

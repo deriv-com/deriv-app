@@ -18,14 +18,14 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
     const [carousel_index, setCarouselIndex] = React.useState('');
     const [selected_tab, setSelectedTab] = React.useState(TABS.DESCRIPTION);
     const contract_types = getContractTypes(list, item).filter(i => i.value !== 'rise_fall_equal');
-    const onClickGlossary = () => setSelectedTab(TABS.GLOSSARY);
-
     const has_toggle_buttons = carousel_index !== 'accumulator' && carousel_index !== 'vanilla';
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
     const width = isMobile() ? '328' : '528';
     const scroll_bar_height = has_toggle_buttons ? '560px' : '464px';
+    const selected_contract_type = contract_types.find(type => type.value === carousel_index);
 
+    const onClickGlossary = () => setSelectedTab(TABS.GLOSSARY);
     const handleItemSelect = active_index => {
         setCarouselIndex(contract_types[active_index].value);
         handleNavigationClick(contract_types[active_index]);
@@ -33,7 +33,6 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
             setSelectedTab(TABS.DESCRIPTION);
         }
     };
-    const selected_contract_type = contract_types.find(type => type.value === carousel_index);
 
     const cards = contract_types.map((type, idx) => {
         return (
@@ -102,6 +101,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                 className={classNames('contract-type-info', {
                     'contract-type-info--has-toggle-buttons': has_toggle_buttons,
                 })}
+                disable_swipe={isMobile()}
                 onItemSelect={handleItemSelect}
                 initial_index={initial_index}
                 list={cards}

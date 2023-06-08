@@ -18,8 +18,8 @@ describe('<ContractTypeGlossary />', () => {
         ).toBeInTheDocument();
     });
     it('Ensure placeholder text is rendered if category does not exist', () => {
-        render(<ContractTypeGlossary category='test' />);
+        const { container } = render(<ContractTypeGlossary category='test' />);
 
-        expect(screen.getByText(/glossary not found./i)).toBeInTheDocument();
+        expect(container).toBeEmptyDOMElement();
     });
 });

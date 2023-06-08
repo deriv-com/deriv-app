@@ -60,9 +60,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                     to_amount: 0,
                     from_amount: 0,
                 }}
-                onSubmit={() => {
-                    // console.log('submit');
-                }}
+                onSubmit={() => undefined}
                 validateOnBlur={false}
             >
                 {({ setFieldValue, values }) => {

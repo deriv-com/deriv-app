@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components';
+import { Tabs, TickPicker, Numpad, RelativeDatepicker, Text } from '@deriv/components';
 import { isEmptyObject, addComma, getDurationMinMaxValues } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
@@ -94,22 +94,24 @@ const TicksWrapper = connect(({ modules }) => ({
 
 const Numbers = ({
     addToast,
-    setDurationError,
     basis_option,
-    toggleModal,
-    onChangeMultiple,
+    contract_expiry = 'intraday',
     duration_min_max,
     duration_unit_option,
+    expiry_epoch,
     has_amount_error,
-    contract_expiry = 'intraday',
+    is_vanilla,
+    onChangeMultiple,
     payout_value,
+    selected_duration,
+    setDurationError,
+    setSelectedDuration,
     stake_value,
+    toggleModal,
     trade_amount,
     trade_basis,
     trade_duration_unit,
     trade_duration,
-    selected_duration,
-    setSelectedDuration,
 }) => {
     const { value: duration_unit } = duration_unit_option;
     const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry, duration_unit);
@@ -165,6 +167,14 @@ const Numbers = ({
 
     return (
         <div className='trade-params__amount-keypad'>
+            {is_vanilla && (
+                <Text as='div' size='xxxs' line_height='s' className='expiry-text-container--mobile'>
+                    <Localize 
+                        i18n_default_text='Expiry: {{date}}'
+                        values={{ date: expiry_epoch && new Date(expiry_epoch * 1000).toUTCString().replace('GMT', 'GMT +0').substring(5) }}
+                    />
+                </Text>
+            )}
             <Numpad
                 value={selected_duration}
                 onSubmit={setDuration}
@@ -196,23 +206,25 @@ const NumpadWrapper = connect(({ modules, ui }) => ({
 
 const Duration = ({
     amount_tab_idx,
-    toggleModal,
-    duration_units_list,
-    duration_unit,
-    duration_tab_idx,
-    duration_min_max,
-    has_amount_error,
-    setDurationTabIdx,
-    setDurationError,
-    t_duration,
-    s_duration,
-    m_duration,
-    h_duration,
     d_duration,
-    setSelectedDuration,
-    trade_basis,
-    stake_value,
+    duration_min_max,
+    duration_tab_idx,
+    duration_unit,
+    duration_units_list,
+    expiry_epoch,
+    h_duration,
+    has_amount_error,
+    is_vanilla,
+    m_duration,
     payout_value,
+    s_duration,
+    setDurationError,
+    setDurationTabIdx,
+    setSelectedDuration,
+    stake_value,
+    t_duration,
+    toggleModal,
+    trade_basis,
 }) => {
     const duration_values = {
         t_duration,
@@ -326,6 +338,8 @@ const Duration = ({
                                         setSelectedDuration={setSelectedDuration}
                                         stake_value={stake_value}
                                         payout_value={payout_value}
+                                        is_vanilla={is_vanilla}
+                                        expiry_epoch={expiry_epoch}
                                     />
                                     <RelativeDatepicker
                                         onChange={handleRelativeChange}
@@ -345,8 +359,10 @@ const Duration = ({
 };
 
 export default connect(({ modules }) => ({
-    duration_units_list: modules.trade.duration_units_list,
     duration_min_max: modules.trade.duration_min_max,
     duration_unit: modules.trade.duration_unit,
+    duration_units_list: modules.trade.duration_units_list,
+    expiry_epoch: modules.trade.expiry_epoch,
+    is_vanilla: modules.trade.is_vanilla,
     trade_basis: modules.trade.basis,
 }))(Duration);

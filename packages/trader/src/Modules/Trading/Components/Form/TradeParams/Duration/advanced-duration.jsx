@@ -2,8 +2,9 @@ import classNames from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Dropdown, ButtonToggle, InputField } from '@deriv/components';
+import { Dropdown, ButtonToggle, InputField, Text } from '@deriv/components';
 import { toMoment, hasIntradayDurationUnit } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import { connect } from 'Stores/connect';
 import TradingDatePicker from '../../DatePicker';
@@ -12,15 +13,17 @@ import TradingTimePicker from '../../TimePicker';
 const AdvancedDuration = ({
     advanced_duration_unit,
     advanced_expiry_type,
-    duration_units_list,
-    duration_t,
-    contract_expiry_type,
     changeDurationUnit,
+    contract_expiry_type,
     current_focus,
-    getDurationFromUnit,
+    duration_t,
+    duration_units_list,
     expiry_date,
+    expiry_epoch,
     expiry_list,
     expiry_type,
+    getDurationFromUnit,
+    is_vanilla,
     number_input_props,
     onChange,
     onChangeUiStore,
@@ -90,6 +93,14 @@ const AdvancedDuration = ({
                                 is_24_hours_contract={is_24_hours_contract}
                             />
                         )}
+                        {advanced_duration_unit === 'd' && is_vanilla && (
+                            <Text as='div' size='xxxs' line_height='s' className='expiry-text-container'>
+                                <Localize 
+                                    i18n_default_text='Expiry: {{date}}'
+                                    values={{ date: expiry_epoch && new Date(expiry_epoch * 1000).toUTCString().replace('GMT', 'GMT +0').substring(5) }}
+                                />
+                            </Text>
+                        )}
                         {advanced_duration_unit !== 't' && advanced_duration_unit !== 'd' && (
                             <InputField
                                 id='dt_advanced_duration_input'
@@ -151,6 +162,7 @@ AdvancedDuration.propTypes = {
 export default connect(({ modules, ui }) => ({
     contract_expiry_type: modules.trade.contract_expiry_type,
     current_focus: ui.current_focus,
+    is_vanilla: modules.trade.is_vanilla,
     setCurrentFocus: ui.setCurrentFocus,
     validation_errors: modules.trade.validation_errors,
 }))(AdvancedDuration);

@@ -82,6 +82,7 @@ export default class TradeStore extends BaseStore {
     duration_units_list = [];
     duration_min_max = {};
     expiry_date = '';
+    expiry_epoch = '';
     expiry_time = '';
     expiry_type = 'duration';
 
@@ -223,6 +224,7 @@ export default class TradeStore extends BaseStore {
             duration: observable,
             expiration: observable,
             expiry_date: observable,
+            expiry_epoch: observable,
             expiry_time: observable,
             expiry_type: observable,
             form_components: observable,
@@ -1124,12 +1126,14 @@ export default class TradeStore extends BaseStore {
     }
 
     onProposalResponse(response) {
+        console.log('OOPS: ', response.proposal?.date_expiry);
         const { contract_type } = response.echo_req;
         const prev_proposal_info = getPropertyValue(this.proposal_info, contract_type) || {};
         const obj_prev_contract_basis = getPropertyValue(prev_proposal_info, 'obj_contract_basis') || {};
 
         // add/update expiration or date_expiry for crypto indices from proposal
         const date_expiry = response.proposal?.date_expiry;
+        this.expiry_epoch = date_expiry || this.expiry_epoch;
 
         if (!response.error && !!date_expiry && this.is_crypto_multiplier) {
             this.expiration = date_expiry;

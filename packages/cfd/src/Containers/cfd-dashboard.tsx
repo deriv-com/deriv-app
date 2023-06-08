@@ -28,7 +28,7 @@ import CFDResetPasswordModal from './cfd-reset-password-modal';
 import { general_messages } from '../Constants/cfd-shared-strings';
 import SwitchToRealAccountModal from './switch-to-real-account';
 import 'Sass/cfd-dashboard.scss';
-import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
+import { LandingCompany, DetailsOfEachMT5Loginid } from '@deriv/api-types';
 // TODO: Change these imports after real released
 import CFDDxtradeDemoAccountDisplay from '../Components/cfd-dxtrade-demo-account-display';
 import CFDMT5DemoAccountDisplay from '../Components/cfd-mt5-demo-account-display';
@@ -36,6 +36,7 @@ import { CFDRealAccountDisplay } from '../Components/cfd-real-account-display';
 import { observer, useStore } from '@deriv/stores';
 import { TCFDPasswordReset } from './props.types';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { TTradingPlatformAccounts } from 'Components/props.types';
 
 declare module 'react' {
     interface HTMLAttributes<T> extends React.AriaAttributes, React.DOMAttributes<T> {
@@ -293,18 +294,20 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
     };
 
     const openAccountTransfer = (
-        data: DetailsOfEachMT5Loginid & { account_id?: string; platform?: string },
-        meta: { category: string; type?: string }
+        data: DetailsOfEachMT5Loginid | TTradingPlatformAccounts,
+        meta: TOpenAccountTransferMeta
     ) => {
         if (meta.category === 'real') {
-            if (data.platform === CFD_PLATFORMS.DXTRADE)
-                sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id as string);
-            else sessionStorage.setItem('cfd_transfer_to_login_id', data.login as string);
+            if (data) {
+                if ('platform' in data && data.platform === CFD_PLATFORMS.DXTRADE)
+                    sessionStorage.setItem('cfd_transfer_to_login_id', data.account_id || '');
+                else sessionStorage.setItem('cfd_transfer_to_login_id', data.login || '');
 
-            disableCFDPasswordModal();
-            history.push(routes.cashier_acc_transfer);
+                disableCFDPasswordModal();
+                history.push(routes.cashier_acc_transfer);
+            }
         } else {
-            setCurrentAccount(data, meta);
+            if ('sub_account_type' in data) setCurrentAccount(data, meta);
             openTopUpModal();
         }
     };
@@ -386,6 +389,17 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
     };
 
     const { account_status, platform } = props;
+
+    const isSwapFreeCardVisible = () => {
+        return (
+            !is_logged_in ||
+            isLandingCompanyEnabled({
+                landing_companies,
+                platform,
+                type: 'all',
+            })
+        );
+    };
 
     const should_show_missing_real_account =
         is_logged_in && !has_real_account && upgradeable_landing_companies?.length > 0;
@@ -574,6 +588,7 @@ const CFDDashboard = observer((props: TCFDDashboardProps) => {
                                                 is_loading={is_loading}
                                                 isSyntheticCardVisible={isSyntheticCardVisible}
                                                 isFinancialCardVisible={isFinancialCardVisible}
+                                                isSwapFreeCardVisible={isSwapFreeCardVisible}
                                                 current_list={current_list}
                                                 onSelectAccount={createCFDAccount}
                                                 landing_companies={landing_companies}

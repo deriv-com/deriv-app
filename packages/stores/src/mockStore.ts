@@ -1,5 +1,5 @@
 import merge from 'lodash.merge';
-import { TStores } from '../types';
+import type { TStores } from '../types';
 
 const mock = (): TStores & { is_mock: boolean } => {
     return {
@@ -8,6 +8,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             account_settings: {},
             accounts: {},
             active_account_landing_company: '',
+            trading_platform_available_accounts: [],
             account_limits: {
                 daily_transfers: {
                     dxtrade: {
@@ -198,7 +199,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             residence_list: [],
             should_restrict_bvi_account_creation: false,
             should_restrict_vanuatu_account_creation: false,
-            trading_platform_available_accounts: [],
             fetchAccountSettings: jest.fn(),
             setAccountSettings: jest.fn(),
             upgradeable_landing_companies: [],
@@ -245,6 +245,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTwoFAChangedStatus: jest.fn(),
             real_account_creation_unlock_date: '',
             has_any_real_account: false,
+            setPrevAccountType: jest.fn(),
         },
         common: {
             error: {
@@ -364,6 +365,8 @@ const mock = (): TStores & { is_mock: boolean } => {
                 currency: '',
                 balance: 0,
             },
+            toggleRegulatorsCompareModal: jest.fn(),
+            selected_region: '',
             is_demo: false,
             financial_restricted_countries: false,
             selected_account_type: 'real',
@@ -374,6 +377,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTogglePlatformType: jest.fn(),
             setSelectedAccount: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
+            selectAccountType: jest.fn(),
         },
         menu: {
             attach: jest.fn(),
@@ -428,4 +432,4 @@ const mock = (): TStores & { is_mock: boolean } => {
 
 const mockStore = (override: DeepPartial<TStores>): TStores => merge(mock(), override);
 
-export { mockStore };
+export default mockStore;

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { WS, getErrorMessages, validPassword } from '@deriv/shared';
+import { WS, getErrorMessages, validPassword, Jurisdiction } from '@deriv/shared';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import CFDPasswordModal from '../cfd-password-modal';
 import CFDProviders from '../../cfd-providers';
@@ -70,7 +70,7 @@ describe('<CFDPasswordModal/>', () => {
                 disableCFDPasswordModal: mockDisableCFDPasswordModalFn,
                 getAccountStatus: mockFn,
                 new_account_response: {},
-                jurisdiction_selected_shortcode: 'svg',
+                jurisdiction_selected_shortcode: Jurisdiction.SVG,
             },
         },
     };

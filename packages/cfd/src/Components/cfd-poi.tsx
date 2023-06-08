@@ -28,6 +28,7 @@ export type TCFDPOIProps = {
     removeNotificationByKey: (key: TCFDNotificationByKey) => void;
     removeNotificationMessage: (key: TCFDNotificationMessage) => void;
     jurisdiction_selected_shortcode: string;
+    updateAccountStatus: () => void;
 };
 
 const CFDPOI = observer(({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => {

@@ -1,4 +1,3 @@
-import type { Moment } from 'moment';
 import type {
     AccountLimitsResponse,
     Authorize,
@@ -7,14 +6,14 @@ import type {
     GetLimits,
     ProposalOpenContract,
     LogOutResponse,
-    GetSettings,
     ResidenceList,
     LandingCompany,
     StatesList,
+    GetSettings,
 } from '@deriv/api-types';
-import type { ElementType } from 'react';
+import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
-import { ExchangeRatesStore } from './src/stores';
+import type { ExchangeRatesStore } from './src/stores';
 
 type TAppRoutingHistory = {
     action: string;
@@ -61,6 +60,23 @@ type TAccountsList = {
 type TActiveAccount = TAccount & {
     landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     is_virtual: number;
+};
+
+type TTradingPlatformAvailableAccount = {
+    market_type: 'financial' | 'gaming' | 'all';
+    name: string;
+    requirements: {
+        after_first_deposit: {
+            financial_assessment: string[];
+        };
+        compliance: {
+            mt5: string[];
+            tax_information: string[];
+        };
+        signup: string[];
+    };
+    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
+    sub_account_type: string;
 };
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
@@ -141,6 +157,7 @@ type TClientStore = {
     accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
+    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     account_limits: Partial<AccountLimitsResponse['get_limits']> & {
         is_loading?: boolean;
         api_initial_load_error?: string;
@@ -229,8 +246,8 @@ type TClientStore = {
     mt5_login_list: DetailsOfEachMT5Loginid[];
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
-    isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial') => boolean;
-    isEligibleForMoreRealMt5: (market_type: 'synthetic' | 'financial') => boolean;
+    isEligibleForMoreDemoMt5Svg: (market_type: 'synthetic' | 'financial' | 'gaming' | 'all') => boolean;
+    isEligibleForMoreRealMt5: (market_type: 'synthetic' | 'financial' | 'gaming' | 'all') => boolean;
     fetchResidenceList?: () => Promise<void>;
     account_settings: GetSettings & {
         upload_file?: string;
@@ -240,22 +257,6 @@ type TClientStore = {
     is_high_risk: boolean;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
-    trading_platform_available_accounts: {
-        market_type: 'financial' | 'gaming';
-        name: string;
-        requirements: {
-            after_first_deposit: {
-                financial_assessment: string[];
-            };
-            compliance: {
-                mt5: string[];
-                tax_information: string[];
-            };
-            signup: string[];
-        };
-        shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
-        sub_account_type: string;
-    }[];
     updateMT5Status: () => Promise<void>;
     fetchAccountSettings: () => Promise<void>;
     setAccountSettings: (get_settings_response: GetSettings) => void;
@@ -292,6 +293,7 @@ type TClientStore = {
     setTwoFAChangedStatus: (status: boolean) => void;
     real_account_creation_unlock_date: string;
     has_any_real_account: boolean;
+    setPrevAccountType: (account_type: string) => void;
 };
 
 type TCommonStoreError = {
@@ -338,8 +340,10 @@ type TUiStore = {
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
-    notification_messages_ui: ElementType;
-    openRealAccountSignup: (value?: string) => void;
+    openRealAccountSignup: (
+        value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
+    ) => void;
+    notification_messages_ui: React.FC | null;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setReportsTabIndex: (value: number) => void;
@@ -445,6 +449,8 @@ type TTradersHubStore = {
     setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    toggleRegulatorsCompareModal: () => void;
+    selected_region: string;
     openFailedVerificationModal: (selected_account_type: string) => void;
     multipliers_account_status: string;
     financial_restricted_countries: boolean;
@@ -458,6 +464,7 @@ type TTradersHubStore = {
     cfd_demo_balance: TBalance;
     platform_demo_balance: TBalance;
     cfd_real_balance: TBalance;
+    selectAccountType: (account_type: string) => void;
 };
 
 /**

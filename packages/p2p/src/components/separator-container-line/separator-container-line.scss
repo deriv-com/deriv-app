@@ -15,8 +15,4 @@
     &:last-child {
         margin-right: 0;
     }
-
-    @include mobile {
-        justify-content: space-between;
-    }
 }

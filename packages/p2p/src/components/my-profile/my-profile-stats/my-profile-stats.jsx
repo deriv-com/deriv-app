@@ -45,9 +45,9 @@ const MyStats = () => {
                 <MyProfileStatsTable />
             </DesktopWrapper>
             <MobileWrapper>
-                <SeparatorContainerLine className='my-profile-stats-separator' />
+                <SeparatorContainerLine className='my-profile-stats__separator' />
                 <MyProfilePrivacy />
-                <SeparatorContainerLine className='my-profile-stats-separator' />
+                <SeparatorContainerLine className='my-profile-stats__separator' />
                 {tabs.map((tab, key) => {
                     return (
                         <React.Fragment key={key}>
@@ -58,7 +58,7 @@ const MyStats = () => {
                                 <Icon icon='IcChevronRight' />
                             </div>
                             {key !== tabs.length - 1 && (
-                                <SeparatorContainerLine className='my-profile-stats-separator' />
+                                <SeparatorContainerLine className='my-profile-stats__separator' />
                             )}
                         </React.Fragment>
                     );

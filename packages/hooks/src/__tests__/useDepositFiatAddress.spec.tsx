@@ -25,4 +25,36 @@ describe('useDepositFiatAddress', () => {
 
         expect(result.current.data).toMatch('https://example.com');
     });
+
+    it('should get the iframe url for dark mode', () => {
+        const mock = mockStore({ ui: { is_dark_mode_on: true } });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
+        );
+
+        const { result } = renderHook(() => useDepositFiatAddress(), { wrapper });
+
+        result.current.resend();
+
+        expect(result.current.data).toBe('https://example.com&DarkMode=on');
+    });
+
+    it('should get the iframe url for light mode', () => {
+        const mock = mockStore({ ui: { is_dark_mode_on: false } });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
+        );
+
+        const { result } = renderHook(() => useDepositFiatAddress(), { wrapper });
+
+        result.current.resend();
+
+        expect(result.current.data).toBe('https://example.com&DarkMode=off');
+    });
 });

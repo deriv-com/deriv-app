@@ -192,12 +192,30 @@ const draw_shaded_barriers = ({
     if (middle_top < end_top) {
         const global_composite_operation = ctx.globalCompositeOperation;
         ctx.globalCompositeOperation = 'destination-over';
-        if (previous_tick?.color) {
-            // draw previous tick marker
-            ctx.strokeStyle = previous_tick?.color;
-            ctx.fillStyle = previous_tick?.color;
+        const { radius, preceeding_tick, stroke_color: prev_tick_stroke_color } = previous_tick || {};
+        if (preceeding_tick) {
+            // draw markers for previous tick & a tick before previous tick in C.Details
+            ctx.setLineDash([]);
+            if (preceeding_tick) {
+                ctx.strokeStyle = preceeding_tick.color;
+                ctx.fillStyle = preceeding_tick.color;
+                ctx.beginPath();
+                ctx.arc(preceeding_tick.left - 1, preceeding_tick.top, radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+            }
+            ctx.strokeStyle = prev_tick_stroke_color;
+            ctx.fillStyle = prev_tick_stroke_color;
             ctx.beginPath();
-            ctx.arc(start_left - 1 * scale, middle_top, previous_tick?.radius, 0, Math.PI * 2);
+            ctx.arc(start_left - 1, middle_top, radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+        } else if (prev_tick_stroke_color) {
+            // draw previous tick marker in DTrader
+            ctx.strokeStyle = prev_tick_stroke_color;
+            ctx.fillStyle = prev_tick_stroke_color;
+            ctx.beginPath();
+            ctx.arc(start_left - 1 * scale, middle_top, radius, 0, Math.PI * 2);
             ctx.fill();
             ctx.stroke();
         }
@@ -205,7 +223,7 @@ const draw_shaded_barriers = ({
         ctx.strokeStyle = stroke_color;
         ctx.beginPath();
         ctx.setLineDash([2, 4]);
-        ctx.moveTo(start_left + (previous_tick?.radius || 0), middle_top);
+        ctx.moveTo(start_left + (radius || 0), middle_top);
         ctx.lineTo(end_left, middle_top);
         ctx.stroke();
         ctx.globalCompositeOperation = global_composite_operation;
@@ -231,26 +249,6 @@ const draw_shaded_barriers = ({
 
     ctx.fillStyle = fill_color;
     ctx.fillRect(start_left, displayed_top, end_left - start_left, Math.abs(displayed_bottom - displayed_top));
-    const { radius, preceeding_tick, stroke_color: prev_tick_stroke_color } = previous_tick || {};
-    if (middle_top < end_top && radius) {
-        // draw previous tick as a blue dot in C.Details & small grey tick before previous tick
-        // should be drawn last here so that it is not overlapped by the barrier fill
-        ctx.setLineDash([]);
-        if (preceeding_tick) {
-            ctx.strokeStyle = preceeding_tick.color;
-            ctx.fillStyle = preceeding_tick.color;
-            ctx.beginPath();
-            ctx.arc(preceeding_tick.left - 1, preceeding_tick.top, radius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.stroke();
-        }
-        ctx.strokeStyle = prev_tick_stroke_color;
-        ctx.fillStyle = prev_tick_stroke_color;
-        ctx.beginPath();
-        ctx.arc(start_left - 1, middle_top, radius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.stroke();
-    }
 };
 
 const render_label = ({ ctx, text, tick: { zoom, left, top } }) => {
@@ -339,8 +337,8 @@ const TickContract = RawMarkerMaker(
                 }),
                 labels: accu_barriers_difference,
                 previous_tick: {
-                    color: getColor({ status: 'fg', is_dark_theme }) + opacity,
-                    radius: 2 * scale,
+                    stroke_color: getColor({ status: 'fg', is_dark_theme }) + opacity,
+                    radius: 1.5 * scale,
                 },
                 start_left: start.left,
                 stroke_color: getColor({ status: has_crossed_accu_barriers ? 'lost' : 'open', is_dark_theme }),
@@ -383,7 +381,7 @@ const TickContract = RawMarkerMaker(
                           },
                       }
                     : {
-                          color: color + opacity,
+                          stroke_color: color + opacity,
                           radius: 1.5 * scale,
                       },
                 scale,

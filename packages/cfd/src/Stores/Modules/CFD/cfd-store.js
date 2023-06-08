@@ -1,5 +1,5 @@
 import { action, computed, observable, reaction, runInAction, makeObservable, override } from 'mobx';
-import { getAccountListKey, getAccountTypeFields, CFD_PLATFORMS, WS } from '@deriv/shared';
+import { getAccountListKey, getAccountTypeFields, CFD_PLATFORMS, WS, Jurisdiction } from '@deriv/shared';
 import BaseStore from 'Stores/base-store';
 import { getDxCompanies, getMtCompanies } from './Helpers/cfd-config';
 
@@ -242,8 +242,8 @@ export default class CFDStore extends BaseStore {
                 this.toggleJurisdictionModal();
             } else {
                 if (this.root_store.traders_hub.show_eu_related_content) {
-                    this.setJurisdictionSelectedShortcode('maltainvest');
-                } else this.setJurisdictionSelectedShortcode('svg');
+                    this.setJurisdictionSelectedShortcode(Jurisdiction.MALTA_INVEST);
+                } else this.setJurisdictionSelectedShortcode(Jurisdiction.SVG);
                 this.demoCFDSignup();
             }
         }
@@ -290,7 +290,7 @@ export default class CFDStore extends BaseStore {
             ...(this.account_type.type === 'all' ? { sub_account_category: 'swap_free' } : {}),
             ...(values.server ? { server: values.server } : {}),
             ...(this.jurisdiction_selected_shortcode ? { company: this.jurisdiction_selected_shortcode } : {}),
-            ...(this.jurisdiction_selected_shortcode !== 'labuan'
+            ...(this.jurisdiction_selected_shortcode !== Jurisdiction.LABUAN
                 ? type_request
                 : {
                       account_type: 'financial',
@@ -310,7 +310,7 @@ export default class CFDStore extends BaseStore {
 
     beginRealSignupForMt5() {
         sessionStorage.setItem('post_real_account_signup', JSON.stringify(this.account_type));
-        this.root_store.ui.openRealAccountSignup();
+        this.root_store.ui.openRealAccountSignup('svg');
     }
 
     realCFDSignup(set_password) {

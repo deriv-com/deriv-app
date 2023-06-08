@@ -2,7 +2,7 @@
     "name": "root",
     "private": true,
     "engines": {
-        "node": "^16.16.0"
+        "node": "18.x"
     },
     "devDependencies": {
         "@babel/core": "^7.12.10",
@@ -57,7 +57,7 @@
         "lerna": "^5.5.1",
         "lint-staged": "^10.4.0",
         "nx": "^14.5.10",
-        "postcss": "^8.4.23",
+        "postcss": "^8.4.24",
         "prettier": "^2.1.2",
         "stylelint": "^13.13.1",
         "stylelint-config-prettier": "^8.0.2",

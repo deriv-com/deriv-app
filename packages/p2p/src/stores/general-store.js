@@ -23,6 +23,7 @@ export default class GeneralStore extends BaseStore {
     balance;
     cancels_remaining = null;
     contact_info = '';
+    default_advert_description = '';
     error_code = '';
     external_stores = {};
     feature_level = null;
@@ -84,6 +85,8 @@ export default class GeneralStore extends BaseStore {
             advertiser_relations_response: observable, //TODO: Remove this when backend has fixed is_blocked flag issue
             block_unblock_user_error: observable,
             balance: observable,
+            contact_info: observable,
+            default_advert_description: observable,
             external_stores: observable,
             feature_level: observable,
             formik_ref: observable,

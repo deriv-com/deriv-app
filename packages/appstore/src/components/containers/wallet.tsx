@@ -9,7 +9,7 @@ import './wallet.scss';
 type TWallet = {
     wallet_account: TWalletAccount;
     is_open_wallet: boolean;
-    setIsOpenWallet: () => void;
+    setIsOpenWallet: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const Wallet = React.memo(({ wallet_account, is_open_wallet, setIsOpenWallet }: TWallet) => {

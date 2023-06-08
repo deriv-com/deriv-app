@@ -1,7 +1,7 @@
-import { computed, observable, action, runInAction, makeObservable } from 'mobx';
-import { localize } from '@deriv/translations';
+import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { ApiHelpers, config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
+import { localize } from '@deriv/translations';
 import GTM from 'Utils/gtm';
 import { getSetting, storeSetting } from 'Utils/settings';
 import {
@@ -87,7 +87,13 @@ export default class QuickStrategyStore {
 
         this.root_store = root_store;
     }
-    selected_symbol: TMarketOption = (this.qs_cache.selected_symbol as TMarketOption) || {};
+    selected_symbol: TMarketOption =
+        (this.qs_cache.selected_symbol as TMarketOption) || {
+            group: 'Continuous Indices',
+            text: 'Volatility 100 Index',
+            value: 'R_100',
+        } ||
+        {};
     selected_trade_type: TTradeType = (this.qs_cache.selected_trade_type as TTradeType) || {};
     selected_type_strategy: TTypeStrategy = (this.qs_cache.selected_type_strategy as TTypeStrategy) || {};
     selected_duration_unit: TDurationOptions = (this.qs_cache.selected_duration_unit as TDurationOptions) || {};

@@ -98,6 +98,7 @@ const Numbers = ({
     contract_expiry = 'intraday',
     duration_min_max,
     duration_unit_option,
+    duration_values,
     expiry_epoch,
     has_amount_error,
     is_vanilla,
@@ -160,6 +161,16 @@ const Numbers = ({
         toggleModal();
     };
 
+    const setExpiryDate = (expiry_epoch, duration) => {
+        let expiry_date = new Date(expiry_epoch * 1000);
+      
+        if (duration) {
+          expiry_date = new Date(expiry_date.getTime() + (duration - 1) * 24 * 60 * 60 * 1000);
+        }
+      
+        return expiry_date.toUTCString().replace('GMT', 'GMT +0').substring(5);
+    }
+
     const onNumberChange = num => {
         setSelectedDuration(duration_unit, num);
         validateDuration(num);
@@ -171,7 +182,7 @@ const Numbers = ({
                 <Text as='div' size='xxxs' line_height='s' className='expiry-text-container--mobile'>
                     <Localize 
                         i18n_default_text='Expiry: {{date}}'
-                        values={{ date: expiry_epoch && new Date(expiry_epoch * 1000).toUTCString().replace('GMT', 'GMT +0').substring(5) }}
+                        values={{ date: setExpiryDate(expiry_epoch, duration_values?.d_duration) }}
                     />
                 </Text>
             )}
@@ -329,17 +340,18 @@ const Duration = ({
                                 <div label={duration_unit_option.text} key={duration_unit_option.value}>
                                     <NumpadWrapper
                                         basis_option={selected_basis_option()}
-                                        has_amount_error={has_amount_error}
-                                        toggleModal={toggleModal}
-                                        duration_unit_option={duration_unit_option}
                                         contract_expiry='daily'
+                                        duration_unit_option={duration_unit_option}
+                                        duration_values={duration_values}
+                                        expiry_epoch={expiry_epoch}
+                                        has_amount_error={has_amount_error}
+                                        is_vanilla={is_vanilla}
+                                        payout_value={payout_value}
                                         selected_duration={d_duration}
                                         setDurationError={setDurationError}
                                         setSelectedDuration={setSelectedDuration}
                                         stake_value={stake_value}
-                                        payout_value={payout_value}
-                                        is_vanilla={is_vanilla}
-                                        expiry_epoch={expiry_epoch}
+                                        toggleModal={toggleModal}
                                     />
                                     <RelativeDatepicker
                                         onChange={handleRelativeChange}

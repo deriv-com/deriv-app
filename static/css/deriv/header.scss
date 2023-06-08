@@ -279,7 +279,7 @@
     &__drawer {
         background: var(--general-main-1);
         height: 100vh;
-        width: 295px;
+        width: 300px;
         top: 0;
         left: 0;
         position: fixed;
@@ -611,7 +611,7 @@
                     @include mobile {
                         width: auto;
                     }
-                    
+
                     display: flex;
                     flex-direction: column;
                     align-items: baseline;

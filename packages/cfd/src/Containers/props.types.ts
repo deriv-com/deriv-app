@@ -214,6 +214,10 @@ type TOpenAccountTransferMeta = {
     type?: string;
 };
 
+export type TJurisdictionModalContentWrapperProps = {
+    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+};
+
 export type TJurisdictionModalProps = {
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
 };

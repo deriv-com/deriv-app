@@ -76,7 +76,7 @@ type TTradingPlatformAvailableAccount = {
         };
         signup: string[];
     };
-    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
+    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
     sub_account_type: string;
 };
 
@@ -164,7 +164,7 @@ type TClientStore = {
         api_initial_load_error?: string;
     };
     account_list: TAccountsList;
-    account_status: Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
+    account_status: GetAccountStatus;
     available_crypto_currencies: string[];
     balance?: string | number;
     can_change_fiat_currency: boolean;

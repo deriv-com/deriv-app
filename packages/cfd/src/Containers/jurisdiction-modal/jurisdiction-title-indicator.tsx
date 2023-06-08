@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
-import { jurisdictionVerificationContents } from 'Constants/jurisdiction-contents/jurisdiction-verification-contents';
+import { jurisdictionVerificationContents } from '../../Constants/jurisdiction-contents/jurisdiction-verification-contents';
 import { TJurisdictionTitleIndicatorProps } from 'Containers/props.types';
 import { TJurisdictionCardItemVerificationItem, TJurisdictionCardVerificationStatus } from 'Components/props.types';
 

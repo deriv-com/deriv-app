@@ -24,6 +24,7 @@ export type TCFDStore = {
         DetailsOfEachMT5Loginid & { market_type?: TTradingPlatformAvailableAccount['market_type'] | 'synthetic' }
     >;
     real_synthetic_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
+    real_swapfree_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
     real_financial_accounts_existing_data: DetailsOfEachMT5Loginid & DetailsOfEachMT5Loginid[];
     account_type: {
         type: string;

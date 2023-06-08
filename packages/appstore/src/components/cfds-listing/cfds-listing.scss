@@ -1,3 +1,33 @@
+.jurisdiction-modal {
+    &__content-wrapper {
+        display: flex;
+        flex-direction: column;
+        @include desktop {
+            overflow: scroll;
+        }
+    }
+    &__scrollable-content {
+        @include desktop {
+            overflow: scroll;
+        }
+    }
+    &__footer-content {
+        background-color: var(--general-main-1);
+        @include mobile {
+            position: sticky;
+            bottom: 7.2rem;
+        }
+    }
+    &__footer-button {
+        background-color: var(--general-main-1);
+        @include mobile {
+            height: 7.2rem;
+            position: sticky;
+            bottom: 0;
+        }
+    }
+}
+
 .cfd-jurisdiction-card--synthetic,
 .cfd-jurisdiction-card--financial,
 .cfd-jurisdiction-card--all {
@@ -23,7 +53,7 @@
         margin: 4rem 6rem 2rem;
         display: flex;
         justify-content: center;
-        gap: 2rem;
+        gap: 1.6rem;
         @include mobile {
             margin: 0;
             padding: 4rem;
@@ -72,14 +102,14 @@
         }
         &-flipped-container {
             gap: 2rem;
-            padding: 4rem 2rem;
+            padding: 4rem 1.6rem;
         }
         &-section-container {
             display: flex;
             flex-direction: column;
             gap: 1.2rem;
             height: 100%;
-            margin: 0 2rem;
+            margin: 0 1.6rem;
         }
     }
 
@@ -98,12 +128,8 @@
         justify-content: space-between;
         @include mobile {
             min-height: auto;
-            background-color: var(--general-main-1);
             width: 100%;
             height: 100%;
-            position: sticky;
-            bottom: 0;
-            z-index: 12;
         }
     }
 
@@ -113,7 +139,7 @@
         gap: 1rem;
         margin: 1rem;
         @include desktop {
-            min-height: 6rem;
+            min-height: 7.6rem;
         }
         @include mobile {
             gap: 0;
@@ -173,7 +199,7 @@
         transform-style: preserve-3d;
         -webkit-transition: all 0.25s ease-in;
         transition: all 0.25s ease-in;
-        width: 29rem;
+        width: 28rem;
         &.synthetic,
         &.all {
             min-height: 48rem;

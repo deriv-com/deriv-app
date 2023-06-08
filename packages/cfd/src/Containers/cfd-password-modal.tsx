@@ -4,7 +4,13 @@ import { RouteComponentProps, withRouter } from 'react-router';
 import { SentEmailModal } from '@deriv/account';
 import { DetailsOfEachMT5Loginid, GetAccountStatus, LandingCompany, Mt5NewAccount } from '@deriv/api-types';
 import RootStore from '../Stores/index';
-import { getMtCompanies, getFormattedJurisdictionCode, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
+import {
+    getDxCompanies,
+    getMtCompanies,
+    getFormattedJurisdictionCode,
+    TMtCompanies,
+    TDxCompanies,
+} from '../Stores/Modules/CFD/Helpers/cfd-config';
 import {
     FormSubmitButton,
     Icon,
@@ -23,6 +29,7 @@ import {
     getLegalEntityName,
     isDesktop,
     isMobile,
+    Jurisdiction,
     routes,
     validLength,
     validPassword,
@@ -38,7 +45,7 @@ import TradingPlatformIcon from '../Assets/svgs/trading-platform';
 export type TCFDPasswordFormValues = { password: string };
 
 type TExtendedDetailsOfEachMT5Loginid = Omit<DetailsOfEachMT5Loginid, 'market_type'> & {
-    market_type?: 'synthetic' | 'financial' | 'gaming';
+    market_type?: 'synthetic' | 'financial' | 'gaming' | 'all';
 };
 
 type TOnSubmitPassword = (values: TCFDPasswordFormValues, actions: FormikHelpers<TCFDPasswordFormValues>) => void;
@@ -147,6 +154,23 @@ type TCFDPasswordModalProps = RouteComponentProps & {
     updateAccountStatus: () => void;
 };
 
+const getAccountTitle = (
+    platform: string,
+    account_type: {
+        category?: string;
+        type?: string;
+    },
+    account_title: string
+) => {
+    if (platform === CFD_PLATFORMS.DXTRADE) {
+        return getDxCompanies()[account_type.category as keyof TDxCompanies][
+            account_type.type as keyof TDxCompanies['demo' | 'real']
+        ].short_title;
+    }
+
+    return account_title;
+};
+
 const PasswordModalHeader = ({
     should_set_trading_password,
     is_password_reset_error,
@@ -184,12 +208,12 @@ const ReviewMessageForMT5 = ({
         return (
             <Localize i18n_default_text='To start trading, top-up funds from your Deriv account into this account.' />
         );
-    } else if (['bvi', 'vanuatu'].includes(jurisdiction_selected_shortcode)) {
+    } else if ([Jurisdiction.BVI, Jurisdiction.VANUATU].includes(jurisdiction_selected_shortcode)) {
         if (manual_status === 'pending') {
             return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
         }
         return <Localize i18n_default_text='We’re reviewing your documents. This should take about 5 minutes.' />;
-    } else if (['labuan', 'maltainvest'].includes(jurisdiction_selected_shortcode)) {
+    } else if ([Jurisdiction.LABUAN, Jurisdiction.MALTA_INVEST].includes(jurisdiction_selected_shortcode)) {
         return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
     }
     return null;
@@ -203,6 +227,8 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
         switch (type) {
             case 'synthetic':
                 return <TradingPlatformIcon icon='Derived' size={128} />;
+            case 'all':
+                return <TradingPlatformIcon icon='SwapFree' size={128} />;
             case 'financial':
                 if (show_eu_related_content) {
                     return <TradingPlatformIcon icon='CFDs' size={128} />;
@@ -215,6 +241,8 @@ const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconT
         switch (type) {
             case 'synthetic':
                 return <Icon icon='IcMt5SyntheticPlatform' size={128} />;
+            case 'all':
+                return <Icon icon='IcMt5SwapFreePlatform' size={128} />;
             case 'financial':
                 if (show_eu_related_content) {
                     return <Icon icon='IcMt5CfdPlatform' size={128} />;
@@ -529,7 +557,9 @@ const CFDPasswordForm = ({
                                         values={{
                                             platform: getCFDPlatformLabel(platform),
                                             platform_name: platform === CFD_PLATFORMS.MT5 ? 'MT5' : 'Deriv X',
-                                            account: !show_eu_related_content ? account_title : '',
+                                            account: !show_eu_related_content
+                                                ? getAccountTitle(platform, account_type, account_title)
+                                                : '',
                                             jurisdiction_shortcode: showJuristiction(),
                                         }}
                                     />
@@ -540,7 +570,7 @@ const CFDPasswordForm = ({
                                         values={{
                                             platform: getCFDPlatformLabel(platform),
                                             platform_name: platform === CFD_PLATFORMS.MT5 ? 'MT5' : 'Deriv X',
-                                            account: account_title,
+                                            account: getAccountTitle(platform, account_type, account_title),
                                         }}
                                     />
                                 )}
@@ -652,16 +682,23 @@ const CFDPasswordModal = ({
     const [is_selected_mt5_verified, setIsSelectedMT5Verified] = React.useState(false);
 
     const getVerificationStatus = () => {
-        if (jurisdiction_selected_shortcode === 'svg') {
-            setIsSelectedMT5Verified(true);
-        } else if (jurisdiction_selected_shortcode === 'bvi') {
-            setIsSelectedMT5Verified(poi_verified_for_bvi_labuan);
-        } else if (jurisdiction_selected_shortcode === 'vanuatu') {
-            setIsSelectedMT5Verified(poi_verified_for_vanuatu_maltainvest);
-        } else if (jurisdiction_selected_shortcode === 'labuan') {
-            setIsSelectedMT5Verified(poi_verified_for_bvi_labuan && poa_verified);
-        } else if (jurisdiction_selected_shortcode === 'maltainvest') {
-            setIsSelectedMT5Verified(poi_verified_for_vanuatu_maltainvest && poa_verified);
+        switch (jurisdiction_selected_shortcode) {
+            case Jurisdiction.SVG:
+                setIsSelectedMT5Verified(true);
+                break;
+            case Jurisdiction.BVI:
+                setIsSelectedMT5Verified(poi_verified_for_bvi_labuan);
+                break;
+            case Jurisdiction.VANUATU:
+                setIsSelectedMT5Verified(poi_verified_for_vanuatu_maltainvest);
+                break;
+            case Jurisdiction.LABUAN:
+                setIsSelectedMT5Verified(poi_verified_for_bvi_labuan && poa_verified);
+                break;
+            case Jurisdiction.MALTA_INVEST:
+                setIsSelectedMT5Verified(poi_verified_for_vanuatu_maltainvest && poa_verified);
+                break;
+            default:
         }
     };
 
@@ -800,9 +837,11 @@ const CFDPasswordModal = ({
             getMtCompanies(show_eu_related_content)[category as keyof TMtCompanies][
                 type as keyof TMtCompanies['demo' | 'real']
             ].short_title;
+        const deriv_x_type_label =
+            getDxCompanies()[category as keyof TDxCompanies][type as keyof TDxCompanies['demo' | 'real']].short_title;
         const jurisdiction_label =
             jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
-        const mt5_platform_label = jurisdiction_selected_shortcode !== 'maltainvest' ? 'MT5' : '';
+        const mt5_platform_label = jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'MT5' : '';
 
         if (category === 'real') {
             return (
@@ -811,7 +850,7 @@ const CFDPasswordModal = ({
                         i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}} {{jurisdiction_selected_shortcode}}</1> account. '
                         values={{
                             // TODO: remove below condition once deriv x changes are completed
-                            type: platform === 'dxtrade' && type_label === 'Derived' ? 'Synthetic' : type_label,
+                            type: platform === CFD_PLATFORMS.DXTRADE ? deriv_x_type_label : type_label,
                             platform: platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : 'Deriv X',
                             category: category_label,
                             jurisdiction_selected_shortcode:
@@ -834,9 +873,10 @@ const CFDPasswordModal = ({
 
         return (
             <Localize
-                i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account.'
+                i18n_default_text='Congratulations, you have successfully created your {{category}} {{deriv_keyword}} <0>{{platform}}</0> <1>{{type}}</1> account.'
                 values={{
-                    type: type_label,
+                    deriv_keyword: platform === CFD_PLATFORMS.MT5 ? 'Deriv' : '',
+                    type: platform === CFD_PLATFORMS.DXTRADE ? deriv_x_type_label : type_label,
                     platform: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
                     category: category_label,
                 }}

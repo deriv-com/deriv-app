@@ -48,7 +48,7 @@ const FiatTransactionList = () => {
                   reference_id: 13692993001,
                   shortcode: 'PUT_FRXAUDJPY_1_1470637295_1470637355_S0P_0',
                   transaction_id: 13693003421,
-                  transaction_time: 1685109944,
+                  transaction_time: 1685009944,
               },
               {
                   action_type: 'reset_balance',
@@ -63,7 +63,7 @@ const FiatTransactionList = () => {
                   reference_id: 13692993001,
                   shortcode: 'PUT_FRXAUDJPY_1_1470637295_1470637355_S0P_0',
                   transaction_id: 13693003421,
-                  transaction_time: 1685109944,
+                  transaction_time: 1685009944,
               },
           ]
         : [
@@ -240,11 +240,13 @@ const FiatTransactionList = () => {
                             key={-1}
                             action_type='transfer'
                             account_currency={wallet_currency}
-                            account_name='Deriv Apps (SVG) account'
+                            account_name={`${localize('Deriv Apps')} ${
+                                is_demo ? localize('Demo') : `(${shortcode.toUpperCase()})`
+                            } ${localize('account')}`}
                             amount={42}
                             balance_after={42}
                             currency={wallet_currency}
-                            icon={getWalletCurrencyIcon('USD', is_dark_mode_on, false)}
+                            icon={wallet_icon}
                             icon_type='fiat'
                             is_deriv_apps
                         />,

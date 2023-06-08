@@ -10,7 +10,7 @@
     "access": "public"
   },
   "engines": {
-    "node": "18.x"
+    "node": "^16.16.0"
   },
   "scripts": {
     "start": "echo \"No start specified\"",

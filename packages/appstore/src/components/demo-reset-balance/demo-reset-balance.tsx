@@ -50,7 +50,11 @@ const DemoResetBalance = ({ setActiveTabIndex }: TDemoResetBalanceProps) => {
                 line_height={isMobile() ? 'l' : 'xl'}
                 align='center'
             >
-                <Localize i18n_default_text='Reset your virtual balance if it falls below 10,000.00 USD or exceeds 10,000.00 USD.' />
+                {is_transferred_success ? (
+                    <Localize i18n_default_text='Your balance has been reset to 10,000.00 USD.' />
+                ) : (
+                    <Localize i18n_default_text='Reset your virtual balance if it falls below 10,000.00 USD or exceeds 10,000.00 USD.' />
+                )}
             </Text>
 
             {is_transferred_success ? (

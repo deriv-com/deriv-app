@@ -14,11 +14,6 @@ type TWalletAccount = {
     name: string;
 };
 
-// TODO: Delete it later! Fake function! Will be replaced by original function from @deriv/shared
-const isCryptocurrency = (currency: string) => {
-    return currency !== 'USD' && currency !== 'AUD' && currency !== 'GBP' && currency !== 'EUR';
-};
-
 // TODO: Will be deleted and replaced by original function from @deriv/shared
 const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_modal = false) => {
     switch (currency) {
@@ -74,9 +69,9 @@ const sortWalletAccounts = (accounts: TWalletAccount[]) => {
     return [...fiat, ...crypro, ...dp2p, ...demo];
 };
 
-const useWalletAccounts = () => {
+const useWalletsList = () => {
     const {
-        client: { accounts },
+        client: { accounts, is_crypto },
         ui: { is_dark_mode_on },
     } = useStore();
 
@@ -97,7 +92,7 @@ const useWalletAccounts = () => {
                       landing_company_shortcode,
                   } = accounts[cur];
 
-                  const is_fiat = !isCryptocurrency(currency) && currency !== 'USDT';
+                  const is_fiat = !is_crypto(currency) && currency !== 'USDT';
                   const name = is_virtual ? `Demo ${currency}` : currency;
 
                   acc.push({
@@ -121,4 +116,4 @@ const useWalletAccounts = () => {
     return sortWalletAccounts(wallets);
 };
 
-export default useWalletAccounts;
+export default useWalletsList;

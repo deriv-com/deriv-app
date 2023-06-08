@@ -1,11 +1,10 @@
 import React from 'react';
-import { useStore, observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import SecurityAndPrivacy from './security-and-privacy';
 
 const BotFooterExtensions = observer(() => {
-    const {
-        ui: { populateFooterExtensions },
-    } = useStore();
+    const { ui } = useStore();
+    const { populateFooterExtensions } = ui;
     React.useEffect(() => populateFooter(), []);
     React.useEffect(() => () => populateFooterExtensions([]), [populateFooterExtensions]);
 

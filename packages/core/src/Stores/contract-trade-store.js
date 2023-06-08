@@ -227,6 +227,7 @@ export default class ContractTradeStore extends BaseStore {
     };
 
     get has_crossed_accu_barriers() {
+        const { current_spot: contract_current_spot, entry_spot } = this.last_contract?.contract_info || {};
         const { accumulators_high_barrier, accumulators_low_barrier, current_spot } = isAccumulatorContractOpen(
             this.last_contract.contract_info
         )
@@ -236,7 +237,9 @@ export default class ContractTradeStore extends BaseStore {
             current_spot &&
             accumulators_high_barrier &&
             accumulators_low_barrier &&
-            (current_spot >= accumulators_high_barrier || current_spot <= accumulators_low_barrier)
+            (current_spot >= accumulators_high_barrier || current_spot <= accumulators_low_barrier) &&
+            (!isAccumulatorContractOpen(this.last_contract.contract_info) ||
+                (entry_spot && entry_spot !== contract_current_spot))
         );
     }
 

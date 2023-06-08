@@ -177,7 +177,15 @@ const personal_details_config = ({ residence_list, account_settings, is_appstore
 };
 
 const personalDetailsConfig = (
-    { upgrade_info, real_account_signup_target, residence_list, account_settings, account_status, residence },
+    {
+        upgrade_info,
+        real_account_signup_target,
+        residence_list,
+        account_settings,
+        account_status,
+        residence,
+        is_eu_user,
+    },
     PersonalDetails,
     is_appstore = false
 ) => {
@@ -207,7 +215,7 @@ const personalDetailsConfig = (
                 })
             ),
             is_svg: upgrade_info?.can_upgrade_to === 'svg',
-            is_mf: real_account_signup_target === 'maltainvest',
+            is_eu_user,
             account_opening_reason_list: [
                 {
                     text: localize('Hedging'),

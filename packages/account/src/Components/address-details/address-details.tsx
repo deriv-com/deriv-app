@@ -29,11 +29,13 @@ import classNames from 'classnames';
 
 type TAddressDetails = {
     states_list: TLocationList[];
+    disabled_items: string[];
     getCurrentStep?: () => number;
     onSave: (current_step: number, values: FormikValues) => void;
     onCancel: (current_step: number, goToPreviousStep: () => void) => void;
     goToNextStep: () => void;
     goToPreviousStep: () => void;
+    has_real_account: boolean;
     validate: (values: FormikValues) => FormikValues;
     onSubmit: (
         current_step: number | null,
@@ -42,7 +44,7 @@ type TAddressDetails = {
         next_step: () => void
     ) => void;
     is_svg: boolean;
-    is_mf?: boolean;
+    is_eu_user?: boolean;
     is_gb_residence: boolean | string;
     onSubmitEnabledChange: (is_submit_disabled: boolean) => void;
     selected_step_ref?: React.RefObject<FormikProps<FormikValues>>;
@@ -99,7 +101,7 @@ const AddressDetails = ({
     validate,
     onSubmit,
     is_svg,
-    is_mf,
+    is_eu_user,
     is_gb_residence,
     onSubmitEnabledChange,
     selected_step_ref,
@@ -177,7 +179,7 @@ const AddressDetails = ({
                                 height_offset={is_appstore ? '222px' : '90px'}
                                 is_disabled={isDesktop()}
                             >
-                                {is_mf && (
+                                {is_eu_user && (
                                     <div className='details-form__banner-container'>
                                         <InlineNoteWithIcon
                                             icon='IcAlertWarning'
@@ -188,7 +190,7 @@ const AddressDetails = ({
                                         />
                                     </div>
                                 )}
-                                {!is_appstore && !is_mf && (
+                                {!is_appstore && !is_eu_user && (
                                     <Text
                                         as='p'
                                         align='left'
@@ -215,9 +217,9 @@ const AddressDetails = ({
                                     <div className={classNames('details-form__elements', 'address-details-form ')}>
                                         <InputField
                                             name='address_line_1'
-                                            required={is_svg || is_appstore || is_mf}
+                                            required={is_svg || is_appstore || is_eu_user}
                                             label={
-                                                is_svg || is_appstore || is_mf
+                                                is_svg || is_appstore || is_eu_user
                                                     ? localize('First line of address*')
                                                     : localize('First line of address')
                                             }
@@ -245,9 +247,9 @@ const AddressDetails = ({
                                         />
                                         <InputField
                                             name='address_city'
-                                            required={is_svg || is_appstore || is_mf}
+                                            required={is_svg || is_appstore || is_eu_user}
                                             label={
-                                                is_svg || is_appstore || is_mf
+                                                is_svg || is_appstore || is_eu_user
                                                     ? localize('Town/City*')
                                                     : localize('Town/City')
                                             }

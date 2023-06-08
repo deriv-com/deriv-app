@@ -209,9 +209,8 @@ const FiatTransactionList = () => {
                             } else {
                                 const app_account = linked_accounts.find(account => account?.loginid === other_loginid);
                                 if (!app_account) return null;
-                                account_title = `${localize('Deriv Apps')} ${shortcode.toUpperCase()} ${localize(
-                                    'account'
-                                )}`;
+                                const account_category = is_demo ? localize('Demo') : `(${shortcode.toUpperCase()})`;
+                                account_title = `${localize('Deriv Apps')} ${account_category} ${localize('account')}`;
                             }
                         }
                         return (

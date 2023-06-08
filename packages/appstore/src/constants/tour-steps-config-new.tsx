@@ -78,20 +78,20 @@ export const getTourStepConfigHighRisk = (): Step[] => [
         disableOverlayClose: true,
     },
     //TODO: Commented out this session to remove click on OnBoarding to repeat tour, will not remove it for future reference
-    // {
-    //     title: (
-    //         <React.Fragment>
-    //             <Text as='p' weight='bold' color='brand-red-coral'>
-    //                 {localize("Trader's Hub tour")}
-    //                 <div className='toggle-account-type__divider' />
-    //             </Text>
-    //         </React.Fragment>
-    //     ),
-    //     content: <Text as='p'>{localize('Click here if you ever need to repeat this tour.')}</Text>,
-    //     target: '.trading-hub-header__tradinghub--onboarding--logo',
-    //     disableBeacon: true,
-    //     disableOverlayClose: true,
-    // },
+    {
+        title: (
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize("Trader's Hub tour")}
+                    <div className='toggle-account-type__divider' />
+                </Text>
+            </React.Fragment>
+        ),
+        content: <Text as='p'>{localize('Click here if you ever need to repeat this tour.')}</Text>,
+        target: '.trading-hub-header__tradinghub--onboarding--logo',
+        disableBeacon: true,
+        disableOverlayClose: true,
+    },
 ];
 
 export const tour_styles: Styles = {

@@ -585,7 +585,7 @@
                 width: 320px;
                 margin: 24px 16px;
                 padding: 28px 16px 4px 16px;
-                
+
                 img {
                     height: 32px;
                 }
@@ -607,6 +607,11 @@
                 &--active {
                     border: solid 2px var(--border-active);
                     width: 320px;
+
+                    @include mobile {
+                        width: auto;
+                    }
+                    
                     display: flex;
                     flex-direction: column;
                     align-items: baseline;

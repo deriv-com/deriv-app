@@ -9,7 +9,7 @@ import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import { useStores } from 'Stores/index';
 import { isDesktop, routes, ContentFlag, isMobile, LocalStore } from '@deriv/shared';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import classNames from 'classnames';
 
 import './traders-hub.scss';
@@ -54,9 +54,6 @@ const TradersHub = () => {
                 openRealAccountSignup('svg');
             }
         }
-        if (is_eu_user) {
-            setTogglePlatformType('cfd');
-        }
     }, []);
 
     React.useEffect(() => {
@@ -80,15 +77,10 @@ const TradersHub = () => {
 
     const is_eu_low_risk = content_flag === ContentFlag.LOW_RISK_CR_EU;
 
-    const platform_toggle_options = is_eu_user
-        ? [
-              { text: 'CFDs', value: 'cfd' },
-              { text: `${eu_title ? 'Multipliers' : 'Options & Multipliers'}`, value: 'options' },
-          ]
-        : [
-              { text: `${eu_title ? 'Multipliers' : 'Options & Multipliers'}`, value: 'options' },
-              { text: 'CFDs', value: 'cfd' },
-          ];
+    const platform_toggle_options = [
+        { text: `${eu_title ? localize('Multipliers') : localize('Options & Multipliers')}`, value: 'options' },
+        { text: localize('CFDs'), value: 'cfd' },
+    ];
 
     const platformTypeChange = (event: {
         target: {
@@ -129,7 +121,7 @@ const TradersHub = () => {
                     <MobileWrapper>
                         {is_landing_company_loaded ? (
                             <ButtonToggle
-                                buttons_arr={platform_toggle_options}
+                                buttons_arr={is_eu_user ? platform_toggle_options.reverse() : platform_toggle_options}
                                 className='traders-hub__button-toggle'
                                 has_rounded_button
                                 is_traders_hub={window.location.pathname === routes.traders_hub}

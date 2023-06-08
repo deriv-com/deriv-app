@@ -63,7 +63,7 @@ export const isAccumulatorContractOpen = (
         high_barrier,
         low_barrier,
         status,
-    }: TContractInfo | TContractInfoWithNumericBarriers,
+    }: TContractInfo | TContractInfoWithNumericBarriers = {},
     in_pixels?: boolean
 ) => {
     const has_crossed_barriers =

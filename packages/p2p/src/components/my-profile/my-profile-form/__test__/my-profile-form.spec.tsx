@@ -20,7 +20,7 @@ jest.mock('@deriv/components', () => ({
         pageHeaderReturnFn = mock_store.setActiveTab,
         page_header_text = 'Ad details',
     }) => (
-        <div role='dialog'>
+        <div>
             {page_header_text}
             <button onClick={pageHeaderReturnFn}>Return</button>
             {children}

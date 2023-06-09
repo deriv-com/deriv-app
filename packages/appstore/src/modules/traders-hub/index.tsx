@@ -13,7 +13,6 @@ import { Localize, localize } from '@deriv/translations';
 import classNames from 'classnames';
 
 import './traders-hub.scss';
-import { set } from 'mobx';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();

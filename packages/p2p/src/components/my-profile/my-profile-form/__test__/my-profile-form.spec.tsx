@@ -42,7 +42,7 @@ describe('<MyProfileForm />', () => {
         };
     });
 
-    it('renders MyProfileForm component', () => {
+    it('should render MyProfileForm component', () => {
         render(<MyProfileForm />);
 
         expect(screen.getAllByText('Contact details').length).toBe(2);

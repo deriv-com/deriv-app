@@ -74,12 +74,13 @@ describe('MainTitleBar Mobile', () => {
             </Router>
         );
 
+        render(<MainTitleBar />, { wrapper });
+
         const regulator_switcher_mobile = screen.queryByTestId('dt-regulators-switcher-mobile');
-        const eu_btn = screen.queryByText('EU');
-        const non_eu_btn = screen.queryByText('Non-EU');
+        const eu_btn = screen.getByText('EU');
+        const non_eu_btn = screen.getByText('Non-EU');
         const ic_icon_info_outline = screen.queryByTestId('dt-ic-info-outline');
 
-        render(<MainTitleBar />, { wrapper });
         expect(regulator_switcher_mobile).toBeInTheDocument();
         expect(eu_btn).toBeInTheDocument();
         expect(non_eu_btn).toBeInTheDocument();
@@ -103,13 +104,14 @@ describe('MainTitleBar Mobile', () => {
             </Router>
         );
 
+        render(<MainTitleBar />, { wrapper });
+
         const regulator_switcher_mobile = screen.queryByTestId('dt-regulators-switcher-mobile');
         const regulator_switcher_mobile_loader = screen.queryByTestId('dt-regulators-switcher-loading-mobile');
         const eu_btn = screen.queryByText('EU');
         const non_eu_btn = screen.queryByText('Non-EU');
         const ic_icon_info_outline = screen.queryByTestId('dt-ic-info-outline');
 
-        render(<MainTitleBar />, { wrapper });
         expect(regulator_switcher_mobile).toBeInTheDocument();
         expect(regulator_switcher_mobile_loader).toBeInTheDocument();
         expect(eu_btn).not.toBeInTheDocument();
@@ -133,12 +135,13 @@ describe('MainTitleBar Mobile', () => {
             </Router>
         );
 
+        render(<MainTitleBar />, { wrapper });
+
         const regulator_switcher_mobile = screen.queryByTestId('dt-regulators-switcher-mobile');
         const eu_btn = screen.getByText('EU');
         const non_eu_btn = screen.getByText('Non-EU');
         const ic_icon_info_outline = screen.queryByTestId('dt-ic-info-outline');
 
-        render(<MainTitleBar />, { wrapper });
         expect(regulator_switcher_mobile).toBeInTheDocument();
         expect(eu_btn).toBeInTheDocument();
         expect(non_eu_btn).toBeInTheDocument();
@@ -163,12 +166,13 @@ describe('MainTitleBar Mobile', () => {
             </Router>
         );
 
+        render(<MainTitleBar />, { wrapper });
+
         const regulator_switcher_mobile = screen.queryByTestId('dt-regulators-switcher-mobile');
         const eu_btn = screen.getByText('EU');
         const non_eu_btn = screen.getByText('Non-EU');
         const ic_icon_info_outline = screen.getByTestId('dt-ic-info-outline');
 
-        render(<MainTitleBar />, { wrapper });
         expect(regulator_switcher_mobile).toBeInTheDocument();
         expect(eu_btn).toBeInTheDocument();
         expect(non_eu_btn).toBeInTheDocument();
@@ -186,12 +190,13 @@ describe('MainTitleBar Mobile', () => {
             </Router>
         );
 
+        render(<MainTitleBar />, { wrapper });
+
         const regulator_switcher_mobile = screen.queryByTestId('dt-regulators-switcher-mobile');
         const regulator_switcher_mobile_loader = screen.queryByTestId('dt-regulators-switcher-loading-mobile');
         const eu_btn = screen.queryByText('EU');
         const non_eu_btn = screen.queryByText('Non-EU');
 
-        render(<MainTitleBar />, { wrapper });
         expect(regulator_switcher_mobile).not.toBeInTheDocument();
         expect(regulator_switcher_mobile_loader).not.toBeInTheDocument();
         expect(eu_btn).not.toBeInTheDocument();

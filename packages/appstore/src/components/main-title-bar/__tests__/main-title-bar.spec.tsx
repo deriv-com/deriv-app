@@ -160,8 +160,6 @@ describe('MainTitleBar Mobile', () => {
             },
             traders_hub: {
                 content_flag: 'low_risk_cr_non_eu',
-                handleTabItemClick: jest.fn(),
-                toggleRegulatorsCompareModal: jest.fn(),
             },
         });
         const wrapper = ({ children }: { children: JSX.Element }) => (

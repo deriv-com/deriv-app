@@ -1,3 +1,1 @@
-import CashierOnboardingFiatCard from './cashier-onboarding-fiat-card';
-
-export { CashierOnboardingFiatCard };
+export { default as CashierOnboardingFiatCard } from './cashier-onboarding-fiat-card';

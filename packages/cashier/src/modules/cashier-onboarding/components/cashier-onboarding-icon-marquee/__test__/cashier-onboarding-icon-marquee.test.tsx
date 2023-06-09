@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react';
 import CashierOnboardingIconMarquee from '../cashier-onboarding-icon-marquee';
 
 describe('CashierOnboardingIconMarquee', () => {
-    test('should render cashier onboarding icon marquee', async () => {
+    test('should render cashier onboarding icon marquee', () => {
         const mock = mockStore({});
         const props: React.ComponentProps<typeof CashierOnboardingIconMarquee> = {
             icons: [{ light: 'light', dark: 'dark' }],

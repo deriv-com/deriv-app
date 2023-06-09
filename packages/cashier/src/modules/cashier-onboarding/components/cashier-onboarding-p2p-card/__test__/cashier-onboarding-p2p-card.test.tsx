@@ -16,7 +16,7 @@ jest.mock('@deriv/hooks', () => ({
 }));
 
 describe('CashierOnboardingP2PCard', () => {
-    test('should call the onClick callback when clicked', async () => {
+    test('should call the onClick callback when clicked', () => {
         const mock = mockStore({
             client: {
                 is_crypto: () => false,

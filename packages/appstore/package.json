@@ -5,7 +5,7 @@
     "main": "dist/appstore/js/index.js",
     "private": true,
     "engines": {
-        "node": "^16.16.0"
+        "node": "18.x"
     },
     "scripts": {
         "build": "rimraf dist && NODE_OPTIONS='-r ts-node/register' webpack --progress",

@@ -36,7 +36,7 @@ const TradeTypeTabs = observer(({ className }: TTradeTypeTabs) => {
                 onChange={onChange}
                 value={
                     tab_list.find(({ value }) => (is_turbos ? value === contract_type : value === vanilla_trade_type))
-                        ?.value || ''
+                        ?.value ?? ''
                 }
             />
         </div>

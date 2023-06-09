@@ -37,7 +37,7 @@ export const isAccumulatorContract = (contract_type: string) => /ACCU/i.test(con
 
 export const isMultiplierContract = (contract_type: string) => /MULT/i.test(contract_type);
 
-export const isTurbosContract = (contract_type: string) => /TURBOS/i.test(contract_type);
+export const isTurbosContract = (contract_type = '') => /TURBOS/i.test(contract_type);
 
 export const isVanillaContract = (contract_type: string) => /VANILLA/i.test(contract_type);
 

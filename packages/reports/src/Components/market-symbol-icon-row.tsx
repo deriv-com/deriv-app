@@ -29,7 +29,7 @@ const MarketSymbolIconRow = ({
     const should_show_category_icon = typeof payload.shortcode === 'string';
     const info_from_shortcode = extractInfoFromShortcode(payload.shortcode);
     const is_high_low = isHighLow({ shortcode_info: info_from_shortcode });
-    const is_turbos = isTurbosContract(info_from_shortcode.category || '');
+    const is_turbos = isTurbosContract(info_from_shortcode.category);
     const turbos_category_name =
         getContractSubtype(info_from_shortcode.category as string) === 'Long' ? localize('Long') : localize('Short');
 

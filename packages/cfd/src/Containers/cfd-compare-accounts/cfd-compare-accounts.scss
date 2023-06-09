@@ -34,6 +34,7 @@
         border-radius: 2.4rem;
     }
     &-text-container {
+        height: 30rem;
         &__separator {
             margin: 1.5rem;
         }
@@ -44,6 +45,14 @@
         gap: 0.5rem;
         align-items: center;
         text-decoration-line: underline;
+    }
+    &-platform-label {
+        background-color: #e6f5ff;
+        position: relative;
+        top: 2rem;
+        padding: 0.9rem;
+        border-top-left-radius: 1.4rem;
+        border-top-right-radius: 1.4rem;
     }
 }
 .card-list {

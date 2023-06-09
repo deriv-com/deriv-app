@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { Text, Icon, PageOverlay, DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import CFDAccountsCard from './cfd-accounts-card';
+import CFDCompareAccountsCard from './cfd-compare-accounts-card';
 
 import { useStore } from '@deriv/stores';
 
@@ -43,7 +43,7 @@ const CompareCFDs = observer(() => {
                     <div className='card-list'>
                         {trading_platform_available_accounts.map(item => (
                             <React.Fragment key={item.market_type + item.shortcode}>
-                                <CFDAccountsCard trading_platforms={item} />
+                                <CFDCompareAccountsCard trading_platforms={item} />
                             </React.Fragment>
                         ))}
                     </div>

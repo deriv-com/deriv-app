@@ -4,11 +4,11 @@ import TradigPlatformIconProps from '../../Assets/svgs/trading-platform';
 import { TTradingPlatformAvailableAccount } from 'Components/props.types';
 import { getAccountCardTitle, getMarketType, getAccountIcon } from '../../Helpers/compare-accounts-config';
 
-type TCFDCompareAccountTitleIconProps = {
+type TCFDCompareAccountsTitleIconProps = {
     trading_platforms: TTradingPlatformAvailableAccount;
 };
 
-const CFDCompareAccountTitleIcon: React.FC<TCFDCompareAccountTitleIconProps> = ({ trading_platforms }) => {
+const CFDCompareAccountsTitleIcon: React.FC<TCFDCompareAccountsTitleIconProps> = ({ trading_platforms }) => {
     const market_type = getMarketType(trading_platforms);
     const jurisdiction_shortcode = market_type.concat('_', trading_platforms.shortcode);
     const jurisdiction_card_icon = getAccountIcon(market_type);
@@ -24,4 +24,4 @@ const CFDCompareAccountTitleIcon: React.FC<TCFDCompareAccountTitleIconProps> = (
     );
 };
 
-export default CFDCompareAccountTitleIcon;
+export default CFDCompareAccountsTitleIcon;

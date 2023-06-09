@@ -4,7 +4,6 @@ import { Money, Icon, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import {
     epochToMoment,
-    extractInfoFromShortcode,
     getCancellationPrice,
     getCurrencyDisplayCode,
     isAccumulatorContract,
@@ -38,12 +37,11 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
         tick_count,
         tick_passed,
         transaction_ids: { buy, sell } = {},
-        shortcode,
+        number_of_contracts,
     } = contract_info;
 
     const is_profit = profit >= 0;
     const cancellation_price = getCancellationPrice(contract_info);
-    const { number_of_contracts } = extractInfoFromShortcode(shortcode);
     const show_barrier = !is_vanilla && !isAccumulatorContract(contract_type);
     const show_duration = !isAccumulatorContract(contract_type) || !isNaN(contract_end_time);
     const show_payout_per_point = isTurbosContract(contract_type) || is_vanilla;

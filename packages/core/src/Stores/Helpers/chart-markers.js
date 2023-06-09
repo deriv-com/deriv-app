@@ -79,8 +79,8 @@ const createTickMarkers = contract_info => {
             // sometimes exit_tick is present in tick_stream but missing from audit_details
             tick_stream.push(ticks[ticks.length - 1]);
         }
-        const length = tick_stream.findIndex(({ epoch }) => epoch === exit_tick_time) + 1;
-        tick_stream.length = length > 0 ? length : tick_stream.length;
+        const exit_tick_count = tick_stream.findIndex(({ epoch }) => epoch === exit_tick_time) + 1;
+        tick_stream.length = exit_tick_count > 0 ? exit_tick_count : tick_stream.length;
     }
 
     tick_stream.forEach((tick, idx) => {

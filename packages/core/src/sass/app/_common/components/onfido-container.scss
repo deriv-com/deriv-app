@@ -194,15 +194,16 @@
 
         @include desktop() {
             grid-template-areas: 'section-side-note section-content';
+            grid-template-columns: auto 1fr;
+            grid-gap: 1rem;
         }
-
+        align-items: center;
         @include mobile {
             grid-template-areas: 'section-side-note' 'section-content';
         }
 
         &-side-note {
             grid-area: section-side-note;
-            width: 26rem;
 
             .account-poa__upload-box-dashboard {
                 @include mobile {
@@ -219,7 +220,6 @@
 
         &-content {
             grid-area: section-content;
-            width: 40rem;
 
             @include mobile {
                 width: 100%;
@@ -255,6 +255,24 @@
                 align-items: center;
                 column-gap: 1.5rem;
                 grid-template-columns: auto 0.5fr;
+            }
+        }
+    }
+}
+
+.account-form_poa {
+    .account-form__section {
+        align-items: unset;
+
+        &-side-note {
+            width: 26rem;
+        }
+
+        &-content {
+            width: 40rem;
+
+            @include mobile {
+                width: 100%;
             }
         }
     }

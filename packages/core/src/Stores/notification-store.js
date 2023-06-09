@@ -564,11 +564,9 @@ export default class NotificationStore extends BaseStore {
                 //add notification message for SVG clients
                 if (svg_needs_poi_poa) {
                     this.addNotificationMessage(this.client_notifications.svg_needs_poi_poa);
-                }
-                if (svg_needs_poa) {
+                } else if (svg_needs_poa) {
                     this.addNotificationMessage(this.client_notifications.svg_needs_poa);
-                }
-                if (svg_needs_poi) {
+                } else if (svg_needs_poi) {
                     this.addNotificationMessage(this.client_notifications.svg_needs_poi);
                 }
                 if (svg_poi_expired) {

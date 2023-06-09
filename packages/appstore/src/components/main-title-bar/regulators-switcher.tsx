@@ -28,7 +28,7 @@ const RegulatorSwitcher = observer(() => {
     const { is_switching } = client;
 
     return (
-        <div className='regulators-switcher__container'>
+        <div className='regulators-switcher__container' data-testid='dt-regulators-switcher'>
             <div className='regulators-switcher--text'>
                 <Text>{localize('Regulation:')}</Text>
                 <div

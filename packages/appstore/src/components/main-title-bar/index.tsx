@@ -5,13 +5,13 @@ import AccountTypeDropdown from './account-type-dropdown';
 import AssetSummary from './asset-summary';
 import RegulatorSwitcher from './regulators-switcher';
 import { localize } from '@deriv/translations';
+import { useStore, observer } from '@deriv/stores';
 import './main-title-bar.scss';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores/index';
+
 import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
 
-const MainTitleBar = () => {
-    const { traders_hub, client } = useStores();
+const MainTitleBar = observer(() => {
+    const { traders_hub, client } = useStore();
     const { selected_region, handleTabItemClick, toggleRegulatorsCompareModal, content_flag } = traders_hub;
     const { is_landing_company_loaded, is_switching } = client;
     const is_low_risk_cr_real_account =
@@ -42,9 +42,9 @@ const MainTitleBar = () => {
                         <AccountTypeDropdown />
                     </div>
                     {is_low_risk_cr_real_account && is_landing_company_loaded ? (
-                        <div className='main-title-bar-mobile--regulator'>
+                        <div className='main-title-bar-mobile--regulator' data-testid='dt-regulators-switcher-mobile'>
                             {!is_switching ? (
-                                <>
+                                <React.Fragment>
                                     <div
                                         className='main-title-bar-mobile--regulator--compare-modal'
                                         onClick={() => toggleRegulatorsCompareModal()}
@@ -64,9 +64,12 @@ const MainTitleBar = () => {
                                         <div label={localize('Non-EU')} />
                                         <div label={localize('EU')} />
                                     </Tabs>
-                                </>
+                                </React.Fragment>
                             ) : (
-                                <div className='main-title-bar-mobile--regulator__container content-loader'>
+                                <div
+                                    className='main-title-bar-mobile--regulator__container content-loader'
+                                    data-testid='dt-regulators-switcher-loading-mobile'
+                                >
                                     <RegulationsSwitcherLoader />
                                 </div>
                             )}
@@ -77,6 +80,6 @@ const MainTitleBar = () => {
             </MobileWrapper>
         </React.Fragment>
     );
-};
+});
 
-export default observer(MainTitleBar);
+export default MainTitleBar;

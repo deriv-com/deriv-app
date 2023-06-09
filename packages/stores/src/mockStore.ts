@@ -290,6 +290,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setSelectedAccount: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
             selectAccountType: jest.fn(),
+            handleTabItemClick: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

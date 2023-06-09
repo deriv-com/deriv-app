@@ -365,6 +365,7 @@ type TTradersHubStore = {
     toggleAccountTransferModal: () => void;
     is_demo: boolean;
     selectAccountType: (account_type: string) => void;
+    handleTabItemClick: (tab_index: number) => void;
 };
 
 /**

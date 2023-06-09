@@ -52,7 +52,7 @@ const TradersHub = () => {
         }, 100);
     }, [is_tour_open]);
 
-    const { is_low_risk_cr_eu } = useContentFlag();
+    const { is_low_risk_cr_eu, is_high_risk_cr } = useContentFlag();
 
     if (!is_logged_in) return null;
 
@@ -71,7 +71,7 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
-                    <AccountWithWallets />
+                    {is_high_risk_cr && <AccountWithWallets />}
                     <AccountWithoutWallets />
                     <ModalManager />
                     {scrolled && <TourGuide />}

@@ -39,7 +39,7 @@ const accounts = trading_account_names.map(
 
 const wallets = [
     {
-        loginid: '7',
+        loginid: '18',
         label: 'Demo USD Wallet',
         currency: 'USD',
         balance: '10,000.00',

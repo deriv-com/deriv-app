@@ -114,11 +114,17 @@ export default class CFDStore extends BaseStore {
         });
 
         reaction(
-            () => [this.root_store.client.dxtrade_accounts_list, this.root_store.client.ctrader_accounts_list],
+            () => [this.root_store.client.dxtrade_accounts_list],
             () => {
                 if (this.root_store.client.dxtrade_accounts_list.length > 0) {
                     this.loadDxtradeTokens();
                 }
+            }
+        );
+
+        reaction(
+            () => [this.root_store.client.ctrader_accounts_list],
+            () => {
                 if (this.root_store.client.ctrader_accounts_list.length > 0) {
                     this.loadCTraderTokens();
                 }

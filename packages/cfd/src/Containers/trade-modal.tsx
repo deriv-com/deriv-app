@@ -77,6 +77,47 @@ const TradeModal = ({
     is_demo,
     platform,
 }: TTradeModalProps) => {
+    const downloadCenterDescription = (account_type: TCFDsPlatformType) => {
+        if (account_type === 'dxtrade') {
+            return (
+                <>
+                    <Text
+                        size='xs'
+                        line_height='l'
+                        weight='bold'
+                        className='cfd-trade-modal__download-center-description-text'
+                    >
+                        {localize('Download Deriv X on your phone to trade with the Deriv X account')}
+                    </Text>
+                </>
+            );
+        } else if (account_type === 'ctrader') {
+            return (
+                <>
+                    <Text
+                        size='xs'
+                        line_height='l'
+                        weight='bold'
+                        className='cfd-trade-modal__download-center-description-text'
+                    >
+                        {localize('Download cTrader on your phone to trade with the Deriv cTrader account')}
+                    </Text>
+                </>
+            );
+        }
+        return (
+            <>
+                <Text
+                    size='xs'
+                    line_height='l'
+                    weight='bold'
+                    className='cfd-trade-modal__download-center-description-text'
+                >
+                    {localize('Download cTrader on your phone to trade with the Deriv cTrader account')}
+                </Text>
+            </>
+        );
+    };
     const downloadCenterAppOption = (account_type: TCFDsPlatformType) => {
         if (account_type === 'dxtrade') {
             return (
@@ -212,6 +253,7 @@ const TradeModal = ({
                 </div>
             </div>
             <div className='cfd-trade-modal__download-center-app'>{downloadCenterAppOption(platform)}</div>
+            <div className='cfd-trade-modal__download-center-description'>{downloadCenterDescription(platform)}</div>
             <div className='cfd-trade-modal__download-center-options'>
                 <div className='cfd-trade-modal__download-center-options--mobile-links'>
                     <div className='cfd-trade-modal__download-center-options--mobile-links--apple'>

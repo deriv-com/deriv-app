@@ -1,7 +1,7 @@
-import { action, reaction, makeObservable } from 'mobx';
-import { isEuResidenceWithOnlyVRTC, showDigitalOptionsUnavailableError, routes } from '@deriv/shared';
+import { action, makeObservable,reaction } from 'mobx';
+import { ApiHelpers, DBot,runIrreversibleEvents } from '@deriv/bot-skeleton';
+import { isEuResidenceWithOnlyVRTC, routes,showDigitalOptionsUnavailableError } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { runIrreversibleEvents, ApiHelpers, DBot } from '@deriv/bot-skeleton';
 
 export default class AppStore {
     constructor(root_store, core) {
@@ -166,7 +166,7 @@ export default class AppStore {
                         text: localize(
                             'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a Deriv MT5 Financial.'
                         ),
-                        title: localize('DBot is not available for this account'),
+                        title: localize('Deriv Bot is not available for this account'),
                         link: localize('Go to Deriv MT5 dashboard'),
                     });
                 }
@@ -190,7 +190,7 @@ export default class AppStore {
                         text: localize(
                             'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a Deriv MT5 Financial.'
                         ),
-                        title: localize('DBot is not available for this account'),
+                        title: localize('Deriv Bot is not available for this account'),
                         link: localize('Go to Deriv MT5 dashboard'),
                     });
                 }
@@ -249,7 +249,7 @@ export default class AppStore {
                 text: localize(
                     'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a Deriv MT5 Financial.'
                 ),
-                title: localize('DBot is not available for this account'),
+                title: localize('Deriv Bot is not available for this account'),
                 link: localize('Go to Deriv MT5 dashboard'),
             });
         } else if (common.has_error) {

@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { liveChatInitialization } from './live-chat';
 import Cookies from 'js-cookie';
-import { deriv_urls } from '@deriv/shared';
+import { deriv_urls, routes } from '@deriv/shared';
 
 // Todo: Should break this into smaller hooks or utility functions.
 const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
@@ -40,6 +40,10 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
 
     const liveChatSetup = (is_logged_in: boolean) => {
         window.LiveChatWidget?.on('ready', () => {
+            // Open and close the chat window to trigger the widget to listen for new events.
+            window.LC_API?.open_chat_window();
+            window.LC_API.hide_chat_window();
+
             let client_first_name = '';
             let client_last_name = '';
             const domain = /^(.)*deriv\.(com|me|be)$/gi.test(window.location.hostname)
@@ -67,6 +71,7 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
                 currency: currency ?? ' ',
                 residence: residence ?? ' ',
                 email: email ?? ' ',
+                is_dp2p: window.location.pathname === routes.cashier_p2p ? 1 : 0,
                 utm_source: utm_source ?? ' ',
                 utm_medium: utm_medium ?? ' ',
                 utm_campaign: utm_campaign ?? ' ',
@@ -99,6 +104,11 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
                     };
                 }
             }
+        });
+
+        window.LiveChatWidget?.on('new_event', event => {
+            // Open the chat window when there is an incoming greeting by passing the the id of the message specific to the page.
+            if (event.greeting?.id === 235) window.LC_API?.open_chat_window();
         });
     };
 

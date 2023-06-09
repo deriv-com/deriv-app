@@ -19,7 +19,11 @@
 
 .compare-cfd-account {
     &-container {
-        margin: 5rem;
+        margin: 1.5rem;
+    }
+    &-main-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
     &-card-container {
         width: 27rem;

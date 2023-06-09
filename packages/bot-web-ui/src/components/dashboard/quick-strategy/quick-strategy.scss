@@ -246,10 +246,6 @@
     // TODO: this is a temporary fix until we have a better solution
     &__form-scrollbar {
         height: 600px;
-
-        @media (min-height: 768px) {
-            height: 700px;
-        }
         @media (min-height: 534px) and (max-height: 767px) {
             height: 500px;
         }

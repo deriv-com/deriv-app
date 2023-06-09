@@ -261,7 +261,7 @@ const CryptoDeposit = observer(() => {
                     </Text>
                 </ButtonLink>
             </div>
-            {isMobile() && isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
+            {isMobile() && isCryptocurrency(currency) ? <RecentTransaction /> : null}
         </div>
     );
 });

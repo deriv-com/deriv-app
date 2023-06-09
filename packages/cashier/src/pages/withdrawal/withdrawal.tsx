@@ -106,9 +106,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         if (isDesktop()) {
             if (isCryptocurrency(currency) && typeof setSideNotes === 'function' && !is_switching) {
                 const side_notes = [];
-                if (crypto_transactions?.length) {
-                    side_notes.push(<RecentTransaction key={2} />);
-                }
+                side_notes.push(<RecentTransaction key={2} />);
                 const side_note = [
                     <WithdrawalSideNote currency={currency} key={0} />,
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),

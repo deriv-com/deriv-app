@@ -77,7 +77,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
             if (is_switching || is_deposit) setSideNotes(null);
             if (is_crypto && is_deposit && !is_switching) {
                 const side_notes = [
-                    ...(crypto_transactions.length ? [<RecentTransaction key={2} />] : []),
+                    <RecentTransaction key={2} />,
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];

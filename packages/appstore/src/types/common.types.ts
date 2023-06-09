@@ -185,4 +185,16 @@ export type TLinkedTo = {
     currency?: string;
 };
 
-export type TWalletAccount = ReturnType<typeof useWalletsList>;
+export type TWalletAccount = {
+    account_category?: 'wallet' | 'trading';
+    account_type?: string;
+    balance?: number;
+    currency: string;
+    landing_company_shortcode: 'svg' | 'malta';
+    loginid: string;
+    is_disabled: boolean;
+    is_virtual: boolean;
+    icon: string;
+    icon_type: 'fiat' | 'crypto' | 'app';
+    name: string;
+};

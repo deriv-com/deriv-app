@@ -5,4 +5,3 @@ export * from './idv-options';
 export * from './jurisdictions-config';
 export * from './signup_fields';
 export * from './error';
-export * from './wallets';

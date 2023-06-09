@@ -57,7 +57,7 @@
         "eslint-plugin-react": "^7.22.0",
         "eslint-plugin-react-hooks": "^4.2.0",
         "lint-staged": "^10.4.0",
-        "node-sass": "^7.0.1",
+        "sass": "^1.62.1",
         "sass-loader": "^12.6.0",
         "sass-resources-loader": "^2.1.1",
         "style-loader": "^1.2.1",

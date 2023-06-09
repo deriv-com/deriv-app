@@ -6,8 +6,8 @@ describe('TicksHistoryCounter', () => {
     let mock_props: React.ComponentProps<typeof TicksHistoryCounter>;
     beforeEach(() => {
         mock_props = {
-            dt_progress_dots: 'dt_accumulators-stats__progress-dots',
-            dt_ticks_history_counter: 'dt_accu_stats_history_counter',
+            progress_dots_testid: 'dt_accumulators-stats__progress-dots',
+            ticks_history_counter_testid: 'dt_accu_stats_history_counter',
             has_progress_dots: false,
             value: 1234,
         };

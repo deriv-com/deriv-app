@@ -5,11 +5,11 @@ import { epochToMoment, formatMoney, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import { getStatus } from '../../constants/transaction-status';
-import { TCryptoTransactionDetails } from '../../types';
+import { TTransactionItem } from '../../types';
 import { useCashierStore } from '../../stores/useCashierStores';
 
 type TCryptoTransactionsRendererProps = {
-    row: TCryptoTransactionDetails;
+    row: TTransactionItem;
     onTooltipClick: VoidFunction;
 };
 
@@ -155,6 +155,16 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                     </Table.Cell>
                     <Table.Cell>
                         <Text as='p' color='prominent' size='xxs' weight='bold'>
+                            {localize('Confirmations')}
+                        </Text>
+                    </Table.Cell>
+                    <Table.Cell className='crypto-transactions-history__table-time'>
+                        <Text as='p' size='xxs' color='red'>
+                            {crypto.confirmations ?? 0}/12
+                        </Text>
+                    </Table.Cell>
+                    <Table.Cell>
+                        <Text as='p' color='prominent' size='xxs' weight='bold'>
                             {localize('Time')}
                         </Text>
                     </Table.Cell>
@@ -269,6 +279,11 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                                 {status.transaction_hash}
                             </Text>
                         ))}
+                </Table.Cell>
+                <Table.Cell>
+                    <Text as='p' size='xs' color='red'>
+                        {crypto.confirmations ?? 0}/12
+                    </Text>
                 </Table.Cell>
                 {!is_transaction_clicked && (
                     <Table.Cell>

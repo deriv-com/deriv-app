@@ -3,10 +3,10 @@ import { useHasFiatCurrency } from '@deriv/hooks';
 import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { SwitchToFiatAccountDialog } from '../../../../components/switch-to-fiat-account-dialog';
 import { useCashierStore } from '../../../../stores/useCashierStores';
 import { CashierOnboardingCard } from '../cashier-onboarding-card';
 import { CashierOnboardingIconMarquee } from '../cashier-onboarding-icon-marquee';
-import { SwitchToFiatAccountDialog } from '../switch-to-fiat-account-dialog';
 
 const icons: React.ComponentProps<typeof CashierOnboardingIconMarquee>['icons'] = [
     { light: 'IcWalletCreditDebitLight', dark: 'IcWalletCreditDebitDark' },

@@ -4,9 +4,9 @@ import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
+import { SwitchToFiatAccountDialog } from '../../../../components/switch-to-fiat-account-dialog';
 import { useCashierStore } from '../../../../stores/useCashierStores';
 import { CashierOnboardingCard } from '../cashier-onboarding-card';
-import { SwitchToFiatAccountDialog } from '../switch-to-fiat-account-dialog';
 
 const CashierOnboardingP2PCard: React.FC = observer(() => {
     const { client, ui } = useStore();

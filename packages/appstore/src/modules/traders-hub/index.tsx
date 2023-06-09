@@ -153,8 +153,8 @@ const TradersHub = () => {
                         ) : (
                             <ButtonToggleLoader />
                         )}
-                        {selected_platform_type === 'cfd' && <CFDsListing />}
                         {selected_platform_type === 'options' && <OptionsAndMultipliersListing />}
+                        {selected_platform_type === 'cfd' && <CFDsListing />}
                     </MobileWrapper>
                     <ModalManager />
                     {scrolled && <TourGuide />}

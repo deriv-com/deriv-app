@@ -77,8 +77,8 @@ describe('MainTitleBar Mobile', () => {
         render(<MainTitleBar />, { wrapper });
 
         const regulator_switcher_mobile = screen.queryByTestId('dt-regulators-switcher-mobile');
-        const eu_btn = screen.getByText('EU');
-        const non_eu_btn = screen.getByText('Non-EU');
+        const eu_btn = screen.queryByText('EU');
+        const non_eu_btn = screen.queryByText('Non-EU');
         const ic_icon_info_outline = screen.queryByTestId('dt-ic-info-outline');
 
         expect(regulator_switcher_mobile).toBeInTheDocument();

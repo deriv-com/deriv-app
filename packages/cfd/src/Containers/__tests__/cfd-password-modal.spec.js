@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { WS, getErrorMessages, validPassword } from '@deriv/shared';
+import { WS, getErrorMessages, validPassword, Jurisdiction } from '@deriv/shared';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import CFDPasswordModal from '../cfd-password-modal';
 
@@ -61,7 +61,7 @@ describe('<CFDPasswordModal/>', () => {
         is_cfd_password_modal_enabled: true,
         is_cfd_success_dialog_enabled: false,
         is_dxtrade_allowed: false,
-        jurisdiction_selected_shortcode: 'svg',
+        jurisdiction_selected_shortcode: Jurisdiction.SVG,
         platform: 'mt5',
         has_cfd_error: false,
         landing_companies: {},
@@ -247,7 +247,7 @@ describe('<CFDPasswordModal/>', () => {
             account_type: { category: 'real', type: 'financial' },
             is_eu: true,
             is_fully_authenticated: false,
-            jurisdiction_selected_shortcode: 'bvi',
+            jurisdiction_selected_shortcode: Jurisdiction.BVI,
         };
 
         render(

@@ -30,13 +30,24 @@ export const mobileDownloadLink = (platform: TCFDsPlatformType, type: 'ios' | 'a
 
 export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
     const qr_code_mobile = isMobile() ? '100%' : '80%';
-    const os = OSDetect();
-    const checkForDesktop = isDesktopOs() ? (os === 'mac' ? 'ios' : 'android') : os;
+
+    const QRCodeLinks = () => {
+        switch (acc_type) {
+            case 'derivez':
+                return 'https://onelink.to/bkdwkd';
+            case 'dxtrade':
+                return 'https://onelink.to/grmtyx';
+            case 'ctrader':
+                return 'https://onelink.to/yvk2a5';
+            default:
+                return 'https://onelink.to/grmtyx';
+        }
+    };
 
     return (
         <React.Fragment>
             <QRCode
-                value={mobileDownloadLink(acc_type, checkForDesktop)}
+                value={QRCodeLinks()}
                 size={5}
                 style={{ height: 'auto', maxWidth: '100%', width: qr_code_mobile }}
             />

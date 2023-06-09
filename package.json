@@ -92,7 +92,7 @@
         "serve": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run serve $npm_config_open;}; f",
         "start": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run start ;}; f",
         "test": "f () { bash ./scripts/circleci-config.test.sh && npm run test:stylelint  && npm run test:eslint-all && npm run test:jest ;}; f",
-        "test:codecov": "jest --all --maxWorkers=7",
+        "test:codecov": "jest --all --maxWorkers=6",
         "test:stylelint": "stylelint \"./packages/*/src/**/*.s(a|c)ss\"",
         "test:jest": "jest --all --maxWorkers=8",
         "test:e2e": "cd end-to-end-test &&  npx playwright test",

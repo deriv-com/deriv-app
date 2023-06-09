@@ -451,7 +451,7 @@ export default class NotificationStore extends BaseStore {
                         this.addNotificationMessage(this.client_notifications.is_virtual);
                     } else if (no_residence) {
                         this.addNotificationMessage(this.client_notifications.no_residence);
-                    } else if (documents_expired && !svg_poi_expired) {
+                    } else if (documents_expired) {
                         this.addNotificationMessage(this.client_notifications.documents_expired);
                     } else if (cashier_locked_status) {
                         this.addNotificationMessage(this.client_notifications.cashier_locked);
@@ -564,11 +564,14 @@ export default class NotificationStore extends BaseStore {
                 //add notification message for SVG clients
                 if (svg_needs_poi_poa) {
                     this.addNotificationMessage(this.client_notifications.svg_needs_poi_poa);
-                } else if (svg_needs_poa) {
+                }
+                if (svg_needs_poa) {
                     this.addNotificationMessage(this.client_notifications.svg_needs_poa);
-                } else if (svg_needs_poi) {
+                }
+                if (svg_needs_poi) {
                     this.addNotificationMessage(this.client_notifications.svg_needs_poi);
-                } else if (svg_poi_expired) {
+                }
+                if (svg_poi_expired) {
                     this.addNotificationMessage(this.client_notifications.svg_poi_expired);
                 }
             }

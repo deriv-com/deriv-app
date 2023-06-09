@@ -164,6 +164,7 @@ const getJuridisctionDescription = (shortcode: TCFDConfig) => {
         case 'financial_labuan':
             return {
                 ...cfdConfig,
+                leverage: '1:100',
                 counterpartyCompany: 'Deriv (FX) Ltd',
                 jurisdiction: 'Labuan',
                 jurisdictionDescription: 'Jurisdiction',

@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { TCoreStores } from '@deriv/stores/types';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletContent from '../wallet-content';
+import { TWalletAccount } from 'Types';
 
 const mockedRootStore = mockStore({
     modules: {
@@ -15,7 +15,7 @@ const mockedRootStore = mockStore({
 
 jest.mock('./../../containers/currency-switcher-container', () => jest.fn(({ children }) => <div>{children}</div>));
 
-const wallet_account: TCoreStores['client']['accounts'][0] = {
+const wallet_account: TWalletAccount = {
     balance: 10415.24,
     currency: 'USD',
     landing_company_shortcode: 'svg',

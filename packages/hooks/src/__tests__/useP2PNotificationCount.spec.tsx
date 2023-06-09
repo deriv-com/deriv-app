@@ -50,4 +50,20 @@ describe('useP2PNotificationCount', () => {
 
         expect(result.current).toBe(2);
     });
+
+    test('should not update the correct number of notifications if the data in localStorage is undefined', () => {
+        const mock = mockStore({ client: { loginid: 'CR12346' } });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+
+        const { result } = renderHook(() => useP2PNotificationCount(), { wrapper });
+
+        Object.defineProperty(window, 'localStorage', { value: { getItem: jest.fn(() => undefined) } });
+
+        window.dispatchEvent(new Event('storage'));
+
+        expect(result.current).toBe(2);
+    });
 });

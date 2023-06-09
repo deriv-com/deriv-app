@@ -65,4 +65,31 @@ describe('useCFDRealAccounts', () => {
 
         expect(result.current?.length).toBe(2);
     });
+
+    test('should return proper data when user is EU user and has maltainvest account', async () => {
+        const mock = mockStore({
+            traders_hub: {
+                is_eu_user: true,
+            },
+            client: {
+                dxtrade_accounts_list: [
+                    {
+                        account_type: 'real',
+                        landing_company_short: 'svg',
+                    },
+                    {
+                        account_type: 'real',
+                        landing_company_short: 'maltainvest',
+                    },
+                ],
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+        const { result } = renderHook(() => useCFDRealAccounts(), { wrapper });
+
+        expect(result.current?.length).toBe(1);
+    });
 });

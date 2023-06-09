@@ -1,12 +1,12 @@
 import React from 'react';
 import { AutoSizer, DesktopWrapper, Text } from '@deriv/components';
-import { observer } from 'mobx-react-lite';
+import { observer } from '@deriv/stores';
 import { useStores } from 'Stores';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import DailyLimitModal from 'Components/daily-limit-modal';
 import MyProfileContent from './my-profile-content.jsx';
 import MyProfileHeader from './my-profile-header';
-import MyProfileDetailsContainer from './my-profile-stats/my-profile-details-container/my-profile-details-container.jsx';
-import DailyLimitModal from 'Components/daily-limit-modal';
+import MyProfileDetailsContainer from './my-profile-stats/my-profile-details-container';
 
 const MyProfile = () => {
     const { my_profile_store } = useStores();

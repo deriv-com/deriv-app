@@ -1,4 +1,4 @@
-import MyProfileDetailsContainer from './my-profile-details-container.jsx';
+import MyProfileDetailsContainer from './my-profile-details-container';
 import './my-profile-details-container.scss';
 
 export default MyProfileDetailsContainer;

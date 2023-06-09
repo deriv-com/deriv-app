@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { Button, Money, Table, Text } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
-import { observer, useStore } from '@deriv/stores';
 
 const MyProfileDetailsTable = () => {
     const { general_store, my_profile_store } = useStores();
@@ -15,7 +15,7 @@ const MyProfileDetailsTable = () => {
     const { advertiser_buy_limit, advertiser_sell_limit } = general_store;
 
     return (
-        <div>
+        <React.Fragment>
             <div className='my-profile-details-table'>
                 <Table>
                     <Table.Head>
@@ -92,7 +92,7 @@ const MyProfileDetailsTable = () => {
                     </Button>
                 </Text>
             )}
-        </div>
+        </React.Fragment>
     );
 };
 

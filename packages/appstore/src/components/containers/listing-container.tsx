@@ -6,13 +6,13 @@ import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import WalletTransferBlock from 'Components/wallet-content/wallet-transfer-block';
 import './listing-container.scss';
-import type { useWalletList } from '@deriv/hooks';
+import { TWalletAccount } from 'Types';
 
 type ListingContainerProps = {
     title: ReactNode;
     description: ReactNode;
     is_deriv_platform?: boolean;
-    wallet_account?: NonNullable<ReturnType<typeof useWalletList>['data']>[number];
+    wallet_account?: TWalletAccount;
     className?: string;
     is_outside_grid_container?: boolean;
 };

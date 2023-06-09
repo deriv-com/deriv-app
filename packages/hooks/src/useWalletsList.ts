@@ -11,7 +11,11 @@ const useWalletList = () => {
 
     // @ts-expect-error Need to update @deriv/api-types to fix the TS error
     const wallets = data?.authorize?.account_list?.filter(account => account.account_category === 'wallet');
-    const modified_wallets = wallets?.map(wallet => ({ ...wallet, balance: 1000 }));
+    const modified_wallets = wallets?.map(wallet => ({
+        ...wallet,
+        balance: 1000,
+        landing_company_shortcode: wallet.landing_company_name,
+    }));
     const sorted_wallets = modified_wallets?.sort((a, b) => {
         if (a.is_virtual !== b.is_virtual) {
             return a.is_virtual ? 1 : -1;

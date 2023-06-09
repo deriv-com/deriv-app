@@ -13,7 +13,6 @@ import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 
 import './traders-hub.scss';
-import { set } from 'mobx';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();
@@ -154,8 +153,8 @@ const TradersHub = () => {
                         ) : (
                             <ButtonToggleLoader />
                         )}
-                        {selected_platform_type === 'cfd' && <CFDsListing />}
                         {selected_platform_type === 'options' && <OptionsAndMultipliersListing />}
+                        {selected_platform_type === 'cfd' && <CFDsListing />}
                     </MobileWrapper>
                     <ModalManager />
                     {scrolled && <TourGuide />}

@@ -16,6 +16,7 @@ import Financial from 'Assets/svgs/trading-platform/branding/ic-branding-mt5-fin
 import Options from 'Assets/svgs/trading-platform/ic-appstore-options.svg';
 import SmartTrader from 'Assets/svgs/trading-platform/branding/ic-branding-smarttrader-dashboard.svg';
 import SmartTraderBlue from 'Assets/svgs/trading-platform/ic-appstore-smarttrader-blue.svg';
+import SwapFree from 'Assets/svgs/trading-platform/ic-appstore-swap-free.svg';
 import { IconProps } from '../icon-types';
 
 export const PlatformIcons = {
@@ -33,6 +34,7 @@ export const PlatformIcons = {
     DropDown,
     DTrader,
     Financial,
+    SwapFree,
     Options,
     SmartTrader,
     SmartTraderBlue,

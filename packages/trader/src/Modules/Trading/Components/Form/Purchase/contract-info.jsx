@@ -6,18 +6,27 @@ import { Localize, localize } from '@deriv/translations';
 import { getContractSubtype, getCurrencyDisplayCode, getLocalizedBasis, getGrowthRatePercentage } from '@deriv/shared';
 import CancelDealInfo from './cancel-deal-info.jsx';
 
-const ValueMovement = ({ has_error_or_not_loaded, proposal_info, currency, has_increased, is_turbos, is_vanilla }) => (
+export const ValueMovement = ({
+    has_error_or_not_loaded,
+    proposal_info,
+    currency,
+    has_increased,
+    is_turbos,
+    is_vanilla,
+    value,
+    show_currency = true,
+}) => (
     <div className='price-info--value-container'>
         <div className='trade-container__price-info-value'>
             {!has_error_or_not_loaded && (
                 <Money
-                    amount={proposal_info.obj_contract_basis.value}
+                    amount={proposal_info?.obj_contract_basis?.value || value}
                     className={classNames('trade-container__price-info-currency', {
                         'trade-container__price-info-currency--payout-per-point': is_vanilla || is_turbos,
                     })}
                     currency={currency}
-                    show_currency
                     should_format={!is_turbos && !is_vanilla}
+                    show_currency={show_currency}
                 />
             )}
         </div>

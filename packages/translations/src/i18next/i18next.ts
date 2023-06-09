@@ -28,6 +28,7 @@ export const getAllowedLanguages = () => {
         ES: 'Español',
         RU: 'Русский',
         FR: 'Français',
+        VI: 'Tiếng Việt',
     };
     const exclude_languages = ['ACH'];
     // TODO Change language_list to const when languages are available in prod.
@@ -49,7 +50,7 @@ const isStaging = () => /staging-app\.deriv\.com/i.test(window.location.hostname
 
 const isLocal = () => /localhost\.binary\.sx/i.test(window.location.hostname);
 
-const isLanguageAvailable = (lang: string) => {
+export const isLanguageAvailable = (lang: string) => {
     if (!lang) return false;
 
     const selected_language = lang.toUpperCase();

@@ -79,10 +79,10 @@
                 padding: 0;
                 font-weight: bold;
                 border: none;
+                display: flex;
+                justify-content: center;
+                align-items: center;
 
-                &--is-offset {
-                    pointer-events: none;
-                }
                 &:focus,
                 &:active,
                 &:hover {
@@ -111,6 +111,41 @@
                     &:active {
                         background: none;
                     }
+                }
+            }
+        }
+    }
+    .barrier__modal {
+        &-container {
+            display: flex;
+            justify-content: space-between;
+            .strike--value-container {
+                margin-top: 0.5rem;
+                margin-right: 2.4rem;
+            }
+            .trade-container__price-info-currency {
+                font-weight: bold;
+                font-size: 1.4rem;
+                color: var(--text-general);
+            }
+        }
+        &-text {
+            margin: 0.5rem 2.4rem 1.6rem;
+        }
+        &-price {
+            margin: 0rem 2.4rem 1.6rem;
+        }
+        &-input {
+            border: 1px solid var(--general-active);
+            border-radius: $BORDER_RADIUS;
+            margin-inline: 1.6rem;
+            &:has(.input:active, .input:focus, .input:hover) {
+                border: 1px solid var(--border-active);
+            }
+            &:has(.input--error) {
+                border: 1px solid var(--status-danger) !important;
+                .input--error {
+                    border: none !important;
                 }
             }
         }
@@ -147,6 +182,11 @@
             @media only screen and (max-height: 480px) {
                 top: 0.4rem;
             }
+        }
+        &__container_barrier {
+            border-radius: $BORDER_RADIUS * 2;
+            box-shadow: 0 16px 16px 0 var(--shadow-menu-2), 0 0 16px 0 var(--shadow-menu-2);
+            overflow-y: scroll;
         }
         &-header {
             /* postcss-bem-linter: ignore */

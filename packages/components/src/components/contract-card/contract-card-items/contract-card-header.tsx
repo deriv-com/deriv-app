@@ -7,8 +7,9 @@ import {
     getCurrentTick,
     getGrowthRatePercentage,
     getContractSubtype,
-    isBot,
     isAccumulatorContract,
+    isBot,
+    isMobile,
     isTurbosContract,
 } from '@deriv/shared';
 import ContractTypeCell from './contract-type-cell';
@@ -44,7 +45,6 @@ const ContractCardHeader = ({
     getContractTypeDisplay,
     has_progress_slider,
     id,
-    is_mobile,
     is_sell_requested,
     is_sold: is_contract_sold,
     is_valid_to_sell,
@@ -66,6 +66,7 @@ const ContractCardHeader = ({
     const { is_pathname_bot } = isBot();
     const is_sold = !!contract_info.is_sold || is_contract_sold;
     const is_accumulator = isAccumulatorContract(contract_type || '');
+    const is_mobile = isMobile();
     const is_turbos = isTurbosContract(contract_type || '');
 
     const contract_type_list_info = React.useMemo(

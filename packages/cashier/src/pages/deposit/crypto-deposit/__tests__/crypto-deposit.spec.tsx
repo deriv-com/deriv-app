@@ -103,6 +103,8 @@ describe('<CryptoDeposit />', () => {
                         onMount: jest.fn(),
                     },
                     general_store: {
+                        is_crypto: true,
+                        is_deposit: true,
                         setIsDeposit: jest.fn(),
                     },
                 },

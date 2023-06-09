@@ -49,7 +49,7 @@ const MainTitleBar = observer(() => {
                                         className='main-title-bar-mobile--regulator--compare-modal'
                                         onClick={() => toggleRegulatorsCompareModal()}
                                     >
-                                        <Icon icon='IcInfoOutline' />
+                                        <Icon icon='IcInfoOutline' data_testid='dt-ic-info-outline' />
                                     </div>
                                     <Tabs
                                         active_index={active_index}

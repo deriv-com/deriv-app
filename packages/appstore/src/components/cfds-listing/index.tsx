@@ -61,10 +61,10 @@ const CFDsListing = () => {
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
-    const checkIfIDVRevoked = (current_acc_status: string) => is_idv_revoked && current_acc_status === 'poa_failed';
+    // const checkIfIDVRevoked = (current_acc_status: string) => is_idv_revoked && current_acc_status === 'poa_failed';
 
     const getMT5AccountAuthStatus = (current_acc_status: string) => {
-        if (current_acc_status === 'proof_failed' || checkIfIDVRevoked(current_acc_status)) {
+        if (['proof_failed', 'poa_failed'].includes(current_acc_status)) {
             return 'failed';
         } else if (current_acc_status === 'verification_pending') {
             return 'pending';

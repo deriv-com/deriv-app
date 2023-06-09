@@ -49,7 +49,7 @@ describe('<MyProfileForm />', () => {
         expect(screen.getAllByText('Instructions').length).toBe(2);
     });
 
-    it('renders the Loading component when my_profile_store.is_loading is set to true', () => {
+    it('should render the Loading component when my_profile_store.is_loading is set to true', () => {
         mock_store.my_profile_store.is_loading = true;
 
         render(<MyProfileForm />);

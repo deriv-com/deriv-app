@@ -27,7 +27,7 @@ const AccountWithWallets = observer(({ show_test_wallets = false }: TProps) => {
         wallets_to_show.length ? wallets_to_show[0].loginid : ''
     );
 
-    const desktop_wallets_JSX = wallets_to_show.map(wallet => {
+    const desktop_wallets_component = wallets_to_show.map(wallet => {
         const handleFn = React.useCallback(
             () => setSelectedWallet(selected_id => (selected_id === wallet.loginid ? '' : wallet.loginid)),
             [wallet.loginid]
@@ -45,7 +45,7 @@ const AccountWithWallets = observer(({ show_test_wallets = false }: TProps) => {
 
     return (
         <React.Fragment>
-            {is_mobile ? <WalletCardsCarousel items={wallets_to_show} /> : desktop_wallets_JSX}
+            {is_mobile ? <WalletCardsCarousel items={wallets_to_show} /> : desktop_wallets_component}
         </React.Fragment>
     );
 });

@@ -15,7 +15,7 @@ const WalletCurrencyCard = ({ account_type, currency, icon_type = 'fiat', icon =
 
     return (
         <div className='wallet-header__currency' data-testid={`dt_${converted_currency}`}>
-            <WalletIcon currency={converted_currency} icon={icon} size={'xlarge'} type={icon_type} has_bg={true} />
+            <WalletIcon currency={converted_currency} icon={icon} size='xlarge' type={icon_type} has_bg={true} />
         </div>
     );
 };

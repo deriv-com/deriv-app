@@ -59,6 +59,24 @@ describe('<Wallets />', () => {
         expect(container.childNodes[0]).toHaveClass('wallet__demo');
     });
 
+    it('Should show content when clicking on arrow icon', async () => {
+        const Wrapper = () => {
+            const [is_open, wrapperSetIsOpen] = React.useState(false);
+            return (
+                <StoreProvider store={mockedRootStore}>
+                    <Wallet wallet_account={wallet_account} active={is_open} setActive={wrapperSetIsOpen} />
+                </StoreProvider>
+            );
+        };
+
+        render(<Wrapper />);
+        const arrow_icon = screen.getByTestId('dt_arrow');
+
+        expect(screen.queryByText('wallet test content')).not.toBeInTheDocument();
+        userEvent.click(arrow_icon);
+        expect(screen.queryByText('wallet test content')).toBeInTheDocument();
+    });
+
     it('Check for demo wallet header', () => {
         render(
             <StoreProvider store={mockedRootStore}>

@@ -153,6 +153,18 @@ const FiatTransactionList = () => {
             is_wallet ? 'Wallet' : 'account'
         )}`;
 
+    const landingCompanyName = (landing_company_shortcode: string) => {
+        switch (landing_company_shortcode) {
+            case 'svg':
+                return landing_company_shortcode.toUpperCase();
+            case 'malta':
+            case 'maltainvest':
+                return 'Malta';
+            default:
+                return '';
+        }
+    };
+
     const TransactionsForADay = ({
         day,
         transaction_list,
@@ -209,7 +221,8 @@ const FiatTransactionList = () => {
                             } else {
                                 const app_account = linked_accounts.find(account => account?.loginid === other_loginid);
                                 if (!app_account) return null;
-                                const account_category = is_demo ? localize('Demo') : `(${shortcode.toUpperCase()})`;
+                                const landing_company_name = landingCompanyName(shortcode);
+                                const account_category = is_demo ? localize('Demo') : `(${landing_company_name})`;
                                 account_title = `${localize('Deriv Apps')} ${account_category} ${localize('account')}`;
                             }
                         }
@@ -241,7 +254,7 @@ const FiatTransactionList = () => {
                             action_type='transfer'
                             account_currency={wallet_currency}
                             account_name={`${localize('Deriv Apps')} ${
-                                is_demo ? localize('Demo') : `(${shortcode.toUpperCase()})`
+                                is_demo ? localize('Demo') : `(${landingCompanyName(shortcode)})`
                             } ${localize('account')}`}
                             amount={42}
                             balance_after={42}

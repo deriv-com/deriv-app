@@ -228,7 +228,7 @@ const FiatTransactionList = () => {
                                 balance_after={transaction.balance_after}
                                 currency={wallet_currency}
                                 icon={icon}
-                                icon_type={icon_type}
+                                icon_type={is_demo ? 'demo' : icon_type}
                                 is_deriv_apps={is_deriv_apps}
                             />
                         );
@@ -247,7 +247,7 @@ const FiatTransactionList = () => {
                             balance_after={42}
                             currency={wallet_currency}
                             icon={wallet_icon}
-                            icon_type='fiat'
+                            icon_type={is_demo ? 'demo' : 'fiat'}
                             is_deriv_apps
                         />,
                     ])}

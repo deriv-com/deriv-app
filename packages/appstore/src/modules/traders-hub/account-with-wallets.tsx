@@ -2,36 +2,61 @@ import React from 'react';
 import Wallet from 'Components/containers/wallet';
 import { observer, useStore } from '@deriv/stores';
 import WalletCardsCarousel from 'Components/wallet-cards-carousel';
-import { fake_wallet_accounts, sortWalletAccounts } from '@deriv/shared';
-import { useWalletAccounts } from '@deriv/hooks';
+import { useWalletsList } from '@deriv/hooks';
+import { isCryptocurrency, getWalletCurrencyIcon } from '@deriv/shared';
+import { Loading } from '@deriv/components';
 import './slick.scss';
 
-// TODO: delete it after testing
-type TProps = {
-    show_test_wallets?: boolean;
-};
-
-const AccountWithWallets = observer(({ show_test_wallets = false }: TProps) => {
+const AccountWithWallets = observer(() => {
     const {
-        ui: { is_mobile },
+        ui: { is_mobile, is_dark_mode_on },
     } = useStore();
 
-    const wallet_accounts = useWalletAccounts();
+    const { data, isLoading } = useWalletsList();
 
     // TODO: We have to create ONE type for desktop and responsive wallet!!!
-    const wallets_to_show: typeof wallet_accounts[] = show_test_wallets
-        ? sortWalletAccounts(fake_wallet_accounts)
-        : wallet_accounts;
+    const wallet_accounts =
+        data?.map(wallet => {
+            const {
+                currency = 'USD',
+                account_category,
+                account_type,
+                balance = 0,
+                is_disabled,
+                is_virtual,
+                landing_company_shortcode,
+                loginid,
+            } = wallet;
+
+            const is_fiat = !isCryptocurrency(currency) && currency !== 'USDT';
+            const name = is_virtual ? `Demo ${currency}` : currency;
+
+            return {
+                account_category,
+                account_type,
+                balance,
+                currency,
+                is_disabled: !!is_disabled,
+                is_virtual: !!is_virtual,
+                landing_company_shortcode,
+                loginid,
+                icon: getWalletCurrencyIcon(is_virtual ? 'demo' : currency, is_dark_mode_on),
+                icon_type: is_fiat && !is_virtual ? 'fiat' : 'crypto',
+                name,
+            };
+        }) || [];
 
     const [selected_wallet, setSelectedWallet] = React.useState<string>(
-        wallets_to_show.length ? wallets_to_show[0].loginid : ''
+        wallet_accounts.length ? wallet_accounts[0]?.loginid : ''
     );
 
-    const desktop_wallets_component = wallets_to_show.map(wallet => {
-        const handleFn = React.useCallback(
-            () => setSelectedWallet(selected_id => (selected_id === wallet.loginid ? '' : wallet.loginid)),
-            [wallet.loginid]
-        );
+    const desktop_wallets_component = wallet_accounts.map(wallet => {
+        // const handleFn = React.useCallback(
+        //     () => setSelectedWallet(selected_id => (selected_id === wallet.loginid ? '' : wallet.loginid)),
+        //     [wallet.loginid]
+        // );
+
+        const handleFn = () => setSelectedWallet(selected_id => (selected_id === wallet.loginid ? '' : wallet.loginid));
 
         return (
             <Wallet
@@ -43,9 +68,11 @@ const AccountWithWallets = observer(({ show_test_wallets = false }: TProps) => {
         );
     });
 
+    if (isLoading) return <Loading is_fullscreen={false} />;
+
     return (
         <React.Fragment>
-            {is_mobile ? <WalletCardsCarousel items={wallets_to_show} /> : desktop_wallets_component}
+            {is_mobile ? <WalletCardsCarousel items={wallet_accounts} /> : desktop_wallets_component}
         </React.Fragment>
     );
 });

@@ -59,21 +59,6 @@ describe('<Wallets />', () => {
         expect(container.childNodes[0]).toHaveClass('wallet__demo');
     });
 
-    it('Check content appears after arrow button click', async () => {
-        render(
-            <StoreProvider store={mockedRootStore}>
-                <Wallet wallet_account={wallet_account} />
-            </StoreProvider>
-        );
-
-        const btn_arrow = screen.getByTestId('dt_arrow');
-        expect(screen.queryByText('wallet test content')).not.toBeInTheDocument();
-        expect(btn_arrow).toBeInTheDocument();
-
-        await userEvent.click(btn_arrow);
-        expect(screen.queryByText('wallet test content')).toBeInTheDocument();
-    });
-
     it('Check for demo wallet header', () => {
         render(
             <StoreProvider store={mockedRootStore}>

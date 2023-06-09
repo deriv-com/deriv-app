@@ -1,6 +1,6 @@
+import { useMemo } from 'react';
 import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
-import { useMemo } from 'react';
 
 const useWalletList = () => {
     const { client } = useStore();

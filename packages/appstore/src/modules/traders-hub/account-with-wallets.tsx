@@ -3,7 +3,7 @@ import Wallet from 'Components/containers/wallet';
 import { observer, useStore } from '@deriv/stores';
 import WalletCardsCarousel from 'Components/wallet-cards-carousel';
 import { fake_wallet_accounts, sortWalletAccounts } from '@deriv/shared';
-import { useWalletsList } from '@deriv/hooks';
+import { useWalletAccounts } from '@deriv/hooks';
 import './slick.scss';
 
 // TODO: delete it after testing
@@ -16,7 +16,7 @@ const AccountWithWallets = observer(({ show_test_wallets = false }: TProps) => {
         ui: { is_mobile },
     } = useStore();
 
-    const wallet_accounts = useWalletsList();
+    const wallet_accounts = useWalletAccounts();
 
     // TODO: We have to create ONE type for desktop and responsive wallet!!!
     const wallets_to_show: typeof wallet_accounts[] = show_test_wallets

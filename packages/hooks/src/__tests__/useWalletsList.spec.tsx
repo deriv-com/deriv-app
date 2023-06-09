@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
-import useWalletsList from '../useWalletsList';
+import useWalletAccounts from '../useWalletAccounts';
 
-describe('useWalletsList', () => {
+describe('useWalletAccounts', () => {
     test('should return array with length = 0', async () => {
         const mock = mockStore({
             client: {
@@ -23,7 +23,7 @@ describe('useWalletsList', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useWalletsList(), { wrapper });
+        const { result } = renderHook(() => useWalletAccounts(), { wrapper });
 
         expect(result.current.length).toBe(0);
     });
@@ -47,7 +47,7 @@ describe('useWalletsList', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        const { result } = renderHook(() => useWalletsList(), { wrapper });
+        const { result } = renderHook(() => useWalletAccounts(), { wrapper });
 
         expect(result.current.length).toBe(1);
     });

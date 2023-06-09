@@ -69,7 +69,7 @@ const sortWalletAccounts = (accounts: TWalletAccount[]) => {
     return [...fiat, ...crypro, ...dp2p, ...demo];
 };
 
-const useWalletsList = () => {
+const useWalletAccounts = () => {
     const {
         client: { accounts, is_crypto },
         ui: { is_dark_mode_on },
@@ -116,4 +116,4 @@ const useWalletsList = () => {
     return sortWalletAccounts(wallets);
 };
 
-export default useWalletsList;
+export default useWalletAccounts;

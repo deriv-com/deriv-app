@@ -64,7 +64,7 @@ const AccumulatorsStats = ({ is_dark_theme, is_expandable = true, ticks_history_
                     ) : (
                         rows[0]?.map((el, i) => (
                             <TicksHistoryCounter
-                                dt_ticks_history_counter='dt_accu_stats_history_counter'
+                                ticks_history_counter_testid='dt_accu_stats_history_counter'
                                 key={i}
                                 value={el}
                                 has_progress_dots={i === 0}

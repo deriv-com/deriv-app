@@ -279,7 +279,9 @@ export default class ContractTradeStore extends BaseStore {
                         bottom: `-${barriers_difference}`,
                     },
                     has_crossed_accu_barriers: this.has_crossed_accu_barriers,
-                    is_accumulator_trade_without_contract: !isAccumulatorContractOpen(this.last_contract.contract_info),
+                    is_accumulator_trade_without_contract:
+                        !isAccumulatorContractOpen(this.last_contract.contract_info) ||
+                        !this.last_contract?.contract_info?.entry_spot,
                 },
                 key: 'dtrader_accumulator_barriers',
                 price_array: [high_barrier, low_barrier],

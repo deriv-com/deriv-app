@@ -29,7 +29,6 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
 
     const {
         accounts_list,
-        container,
         error,
         has_no_account,
         has_no_accounts_balance,
@@ -57,7 +56,7 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
     }, [is_switching]);
 
     React.useEffect(() => {
-        setActiveTab(container);
+        setActiveTab('account_transfer');
         onMount();
 
         WS.wait('authorize', 'website_status', 'get_settings', 'paymentagent_list').then(() => {

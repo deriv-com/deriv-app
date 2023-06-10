@@ -10,10 +10,10 @@ const Withdraw = observer(() => {
     } = client;
     const { general_store, withdraw } = useCashierStore();
     const { setActiveTab } = general_store;
-    const { container, onMountWithdraw: onMount } = withdraw;
+    const { onMountWithdraw: onMount } = withdraw;
 
     React.useEffect(() => {
-        setActiveTab(container);
+        setActiveTab('withdraw');
         onMount(verification_code);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

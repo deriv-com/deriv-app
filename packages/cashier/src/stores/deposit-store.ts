@@ -1,8 +1,8 @@
 import { action, makeObservable } from 'mobx';
-import { TRootStore, TWebSocket } from '../types';
+import { TRootStore } from '../types';
 
 export default class DepositStore {
-    constructor(public WS: TWebSocket, public root_store: TRootStore) {
+    constructor(public root_store: TRootStore) {
         makeObservable(this, {
             onMountDeposit: action.bound,
         });

@@ -1,11 +1,3 @@
-const containers = {
-    account_transfer: 'account_transfer',
-    deposit: 'deposit',
-    payment_agent: 'payment_agent',
-    payment_agent_transfer: 'payment_agent_transfer',
-    withdraw: 'withdraw',
-} as const;
-
 const map_action = {
     withdraw: 'payment_withdraw',
     payment_agent: 'payment_agent_withdraw',
@@ -764,4 +756,4 @@ const payment_methods = {
     Zipit: ['Zipit', 'ZIPIT', 'ZIPIT bank transfers'],
 } as const;
 
-export default { containers, map_action, icon_payment_methods, payment_methods };
+export default { map_action, icon_payment_methods, payment_methods };

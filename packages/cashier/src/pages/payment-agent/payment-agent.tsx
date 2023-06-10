@@ -22,7 +22,6 @@ const PaymentAgent = observer(({ setSideNotes }: TPaymentAgent) => {
     const { setActiveTab } = general_store;
     const is_cashier_locked = useCashierLocked();
     const {
-        container,
         is_withdraw: is_payment_agent_withdraw,
         active_tab_index: payment_agent_active_tab_index,
         setActiveTabIndex: setPaymentAgentActiveTabIndex,
@@ -33,7 +32,7 @@ const PaymentAgent = observer(({ setSideNotes }: TPaymentAgent) => {
     setPaymentAgentActiveTabIndex(initial_active_index);
 
     React.useEffect(() => {
-        setActiveTab(container);
+        setActiveTab('payment_agent');
         return () => {
             setPaymentAgentActiveTabIndex(0);
         };

@@ -71,7 +71,6 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
     } = transaction_history;
     const {
         check10kLimit,
-        container,
         error,
         is_10k_withdrawal_limit_reached,
         is_withdraw_confirmed,
@@ -87,11 +86,11 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
     }, [is_crypto_transactions_visible, is_switching, recentTransactionOnMount]);
 
     React.useEffect(() => {
-        setActiveTab(container);
+        setActiveTab('withdraw');
         return () => {
             setErrorMessage({ code: '', message: '' });
         };
-    }, [container, setActiveTab, setErrorMessage]);
+    }, [setActiveTab, setErrorMessage]);
 
     React.useEffect(() => {
         check10kLimit();

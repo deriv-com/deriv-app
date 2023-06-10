@@ -48,7 +48,8 @@ export default class GeneralStore extends BaseStore {
         );
     }
 
-    active_container: keyof typeof Constants.containers = Constants.containers.deposit;
+    active_container: 'account_transfer' | 'deposit' | 'payment_agent' | 'payment_agent_transfer' | 'withdraw' =
+        'deposit';
     cashier_route_tab_index = 0;
     deposit_target = '';
     is_cashier_onboarding = true;
@@ -74,7 +75,7 @@ export default class GeneralStore extends BaseStore {
         const { client, modules } = this.root_store;
         const { account_transfer } = modules.cashier;
 
-        if (this.active_container === account_transfer.container) {
+        if (this.active_container === 'account_transfer') {
             this.percentage = Number(
                 ((Number(amount) / Number(account_transfer.selected_from.balance)) * 100).toFixed(0)
             );
@@ -194,8 +195,8 @@ export default class GeneralStore extends BaseStore {
         this.is_loading = is_loading;
     }
 
-    setActiveTab(container: string): void {
-        this.active_container = container as keyof typeof Constants.containers;
+    setActiveTab(container: typeof this.active_container): void {
+        this.active_container = container;
     }
 
     accountSwitcherListener() {

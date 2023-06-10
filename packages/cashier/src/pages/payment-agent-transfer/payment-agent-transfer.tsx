@@ -18,7 +18,6 @@ const PaymentAgentTransfer = observer(() => {
     const { is_loading, setActiveTab } = general_store;
     const is_cashier_locked = useCashierLocked();
     const {
-        container,
         error,
         is_transfer_successful,
         is_try_transfer_successful,
@@ -27,11 +26,11 @@ const PaymentAgentTransfer = observer(() => {
     } = payment_agent_transfer;
 
     React.useEffect(() => {
-        setActiveTab(container);
+        setActiveTab('payment_agent_transfer');
         if (!is_virtual) {
             onMount();
         }
-    }, [container, is_virtual, onMount, setActiveTab]);
+    }, [is_virtual, onMount, setActiveTab]);
 
     React.useEffect(() => {
         return () => {

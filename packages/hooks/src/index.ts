@@ -7,6 +7,7 @@ export { default as useCashierLocked } from './useCashierLocked';
 export { default as useCountdown } from './useCountdown';
 export { default as useCurrencyConfig } from './useCurrencyConfig';
 export { default as useDepositCryptoAddress } from './useDepositCryptoAddress';
+export { default as useDepositFiatAddress } from './useDepositFiatAddress';
 export { default as useDepositLocked } from './useDepositLocked';
 export { default as useExchangeRate } from './useExchangeRate';
 export { default as useFiatAccountList } from './useFiatAccountList';

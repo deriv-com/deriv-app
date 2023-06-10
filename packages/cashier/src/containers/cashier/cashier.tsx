@@ -70,7 +70,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const { is_payment_agent_visible } = payment_agent;
     const { is_from_derivgo } = common;
     const { is_cashier_visible: is_visible, toggleCashier } = ui;
-    const { is_account_setting_loaded, is_logged_in, is_logging_in, is_crypto } = client;
+    const { is_account_setting_loaded, is_logged_in, is_logging_in } = client;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const p2p_notification_count = useP2PNotificationCount();
@@ -126,8 +126,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                 (route.path !== routes.cashier_onramp || is_onramp_visible) &&
                 (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
             ) {
-                const manages_its_own_side_note =
-                    is_crypto_transactions_visible || is_cashier_onboarding || (is_deposit && is_crypto());
+                const manages_its_own_side_note = is_crypto_transactions_visible || is_cashier_onboarding || is_deposit;
                 const has_side_note = manages_its_own_side_note ? false : route.path !== routes.cashier_p2p;
 
                 options.push({

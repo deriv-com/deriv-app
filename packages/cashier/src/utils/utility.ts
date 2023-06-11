@@ -1,19 +1,6 @@
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import Constants from 'Constants/constants';
 
-class PromiseClass {
-    promise: Promise<unknown>;
-    reject?: (reason?: unknown) => void;
-    resolve?: (value?: unknown) => void;
-
-    constructor() {
-        this.promise = new Promise((resolve, reject) => {
-            this.reject = reject;
-            this.resolve = resolve;
-        });
-    }
-}
-
 // check if mlt or dxtrade for account text
 const getAccountText = (account: { is_dxtrade: boolean; is_mt: boolean; text: string }) => {
     let account_text: string;
@@ -40,4 +27,4 @@ const getNormalizedPaymentMethod = (
     return is_for_icon ? normalized_payment_method : normalized_payment_method || payment_method;
 };
 
-export { getAccountText, getNormalizedPaymentMethod, PromiseClass };
+export { getAccountText, getNormalizedPaymentMethod };

@@ -1,24 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { setWebsocket } from '@deriv/shared';
-import { init } from 'Utils/server_time';
-import CashierProviders from './cashier-providers';
-import type { TWebSocket } from './types';
-import type { TCoreStores } from '@deriv/stores/types';
 import AppContent from './app-content';
+import CashierProviders from './cashier-providers';
+import type { TCoreStores } from '@deriv/stores/types';
+import type { TWebSocket } from './types';
 
-type TAppProps = {
+type TProps = {
     passthrough: {
         WS: TWebSocket;
         root_store: TCoreStores;
     };
 };
 
-const App = ({ passthrough: { WS, root_store } }: TAppProps) => {
-    React.useEffect(() => {
+const App: React.FC<TProps> = ({ passthrough: { WS, root_store } }) => {
+    useEffect(() => {
         setWebsocket(WS);
-        init();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [WS]);
 
     return (
         <CashierProviders store={root_store}>

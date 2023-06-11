@@ -104,13 +104,13 @@ describe('<Deposit />', () => {
             traders_hub: { content_flag: ContentFlag.CR_DEMO },
         });
 
-        const { rerender } = render(<Deposit setSideNotes={jest.fn()} />, {
+        const { rerender } = render(<Deposit />, {
             wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
 
-        rerender(<Deposit setSideNotes={jest.fn()} />);
+        rerender(<Deposit />);
 
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
@@ -152,7 +152,7 @@ describe('<Deposit />', () => {
             traders_hub: { content_flag: ContentFlag.CR_DEMO },
         });
 
-        render(<Deposit setSideNotes={jest.fn()} />, {
+        render(<Deposit />, {
             wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
@@ -198,17 +198,17 @@ describe('<Deposit />', () => {
         (useCashierLocked as jest.Mock).mockReturnValue(true);
         (useIsSystemMaintenance as jest.Mock).mockReturnValue(true);
 
-        const { rerender } = render(<Deposit setSideNotes={jest.fn()} />, {
+        const { rerender } = render(<Deposit />, {
             wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
 
-        rerender(<Deposit setSideNotes={jest.fn()} />);
+        rerender(<Deposit />);
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
 
-        rerender(<Deposit setSideNotes={jest.fn()} />);
+        rerender(<Deposit />);
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });
@@ -250,7 +250,7 @@ describe('<Deposit />', () => {
             traders_hub: { content_flag: ContentFlag.CR_DEMO },
         });
 
-        render(<Deposit setSideNotes={jest.fn()} />, {
+        render(<Deposit />, {
             wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
@@ -295,7 +295,7 @@ describe('<Deposit />', () => {
         });
         (useDepositLocked as jest.Mock).mockReturnValue(true);
 
-        render(<Deposit setSideNotes={jest.fn()} />, {
+        render(<Deposit />, {
             wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
@@ -339,7 +339,7 @@ describe('<Deposit />', () => {
             traders_hub: { content_flag: ContentFlag.CR_DEMO },
         });
 
-        render(<Deposit setSideNotes={jest.fn()} />, {
+        render(<Deposit />, {
             wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
@@ -383,7 +383,7 @@ describe('<Deposit />', () => {
             traders_hub: { content_flag: ContentFlag.CR_DEMO },
         });
 
-        render(<Deposit setSideNotes={jest.fn()} />, {
+        render(<Deposit />, {
             wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
@@ -428,7 +428,7 @@ describe('<Deposit />', () => {
             traders_hub: { is_low_risk_cr_eu_real: true },
         });
 
-        render(<Deposit setSideNotes={jest.fn()} />, {
+        render(<Deposit />, {
             wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
@@ -472,58 +472,10 @@ describe('<Deposit />', () => {
             traders_hub: { content_flag: ContentFlag.CR_DEMO },
         });
 
-        render(<Deposit setSideNotes={jest.fn()} />, {
+        render(<Deposit />, {
             wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
         expect(screen.getByText('Real')).toBeInTheDocument();
-    });
-
-    it('should trigger "setSideNotes" callback', () => {
-        const mock_root_store = mockStore({
-            client: {
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
-                currency: 'UST',
-                can_change_fiat_currency: false,
-                current_currency_type: 'fiat',
-                is_switching: false,
-                is_virtual: false,
-            },
-            modules: {
-                cashier: {
-                    iframe: {},
-                    transaction_history: {
-                        crypto_transactions: [{}],
-                        is_crypto_transactions_visible: false,
-                        onMount: jest.fn(),
-                    },
-                    deposit: {
-                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        onMountDeposit: jest.fn(),
-                    },
-                    general_store: {
-                        is_crypto: true,
-                        is_deposit: true,
-                        is_loading: false,
-                        setActiveTab: jest.fn(),
-                        setIsDeposit: jest.fn(),
-                    },
-                },
-            },
-            traders_hub: { content_flag: ContentFlag.CR_DEMO },
-        });
-
-        const setSideNotes = jest.fn();
-
-        render(<Deposit setSideNotes={setSideNotes} />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
-        });
-
-        expect(setSideNotes).toHaveBeenCalledTimes(2);
     });
 });

@@ -46,7 +46,7 @@ describe('<Real />', () => {
 
         const { rerender } = render(
             <StoreProvider store={mock_root_store}>
-                <Real is_deposit />
+                <Real />
             </StoreProvider>
         );
 
@@ -59,7 +59,7 @@ describe('<Real />', () => {
 
         rerender(
             <StoreProvider store={mock_root_store}>
-                <Real is_deposit />
+                <Real />
             </StoreProvider>
         );
 
@@ -69,7 +69,7 @@ describe('<Real />', () => {
     it('should render an iframe if iframe_url is not an empty string', () => {
         render(
             <StoreProvider store={mock_root_store}>
-                <Real is_deposit />
+                <Real />
             </StoreProvider>
         );
 
@@ -80,7 +80,7 @@ describe('<Real />', () => {
         it('should show breadcrumbs only on deposit page and only for non EU clients', () => {
             render(
                 <StoreProvider store={mock_root_store}>
-                    <Real is_deposit />
+                    <Real />
                 </StoreProvider>
             );
 
@@ -96,7 +96,7 @@ describe('<Real />', () => {
 
             render(
                 <StoreProvider store={mock_root_store}>
-                    <Real is_deposit />
+                    <Real />
                 </StoreProvider>
             );
 
@@ -107,7 +107,7 @@ describe('<Real />', () => {
         it('should not show breadcrumbs on withdraw page', () => {
             render(
                 <StoreProvider store={mock_root_store}>
-                    <Real is_deposit={false} />
+                    <Real />
                 </StoreProvider>
             );
 
@@ -119,7 +119,7 @@ describe('<Real />', () => {
     it('should trigger setIsDeposit callback when the user clicks on Cashier breadcrumb', () => {
         render(
             <StoreProvider store={mock_root_store}>
-                <Real is_deposit={false} />
+                <Real />
             </StoreProvider>
         );
 
@@ -134,7 +134,7 @@ describe('<Real />', () => {
     it('should trigger clearIframe and onMountDeposit callbacks when <Real /> component is destroyed on deposit page', () => {
         const { unmount } = render(
             <StoreProvider store={mock_root_store}>
-                <Real is_deposit={false} />
+                <Real />
             </StoreProvider>
         );
 

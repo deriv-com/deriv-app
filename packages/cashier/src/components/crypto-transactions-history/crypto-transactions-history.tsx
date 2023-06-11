@@ -22,10 +22,19 @@ const getHeaders = () => [
 const CryptoTransactionsHistory = observer(() => {
     const { client } = useStore();
     const { transaction_history, general_store } = useCashierStore();
-    const { crypto_transactions, is_loading, setIsCryptoTransactionsVisible } = transaction_history;
+    const {
+        crypto_transactions,
+        is_loading,
+        setIsCryptoTransactionsVisible,
+        onMount: recentTransactionOnMount,
+    } = transaction_history;
     const { setIsDeposit } = general_store;
-    const { currency } = client;
+    const { currency, is_switching } = client;
     const [is_modal_visible, setIsModalVisible] = React.useState(false);
+
+    React.useEffect(() => {
+        recentTransactionOnMount();
+    }, [is_switching, recentTransactionOnMount]);
 
     React.useEffect(() => {
         return () => setIsCryptoTransactionsVisible(false);

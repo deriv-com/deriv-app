@@ -11,7 +11,7 @@ jest.mock('Stores/useCashierStores', () => ({
 
 describe('<CashierBreadcrumb />', () => {
     it('should render proper crumbs for crypto deposit page', () => {
-        render(<CashierBreadcrumb is_crypto_deposit />);
+        render(<CashierBreadcrumb />);
 
         expect(screen.getByText(/cashier/i)).toBeInTheDocument();
         expect(screen.getByText(/deposit cryptocurrencies/i)).toBeInTheDocument();

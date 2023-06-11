@@ -1,7 +1,6 @@
 import AccountTransferStore from './account-transfer-store';
 import CryptoFiatConverterStore from './crypto-fiat-converter-store';
 import DepositStore from './deposit-store';
-import ErrorDialogStore from './error-dialog-store';
 import ErrorStore from './error-store';
 import GeneralStore from './general-store';
 import IframeStore from './iframe-store';
@@ -16,7 +15,6 @@ export default class CashierStore {
     account_transfer: AccountTransferStore;
     crypto_fiat_converter: CryptoFiatConverterStore;
     deposit: DepositStore;
-    error_dialog: ErrorDialogStore;
     error: ErrorStore;
     general_store: GeneralStore;
     iframe: IframeStore;
@@ -31,7 +29,6 @@ export default class CashierStore {
         this.crypto_fiat_converter = new CryptoFiatConverterStore(WS, root_store);
         this.deposit = new DepositStore(root_store);
         this.error = new ErrorStore();
-        this.error_dialog = new ErrorDialogStore();
         this.general_store = new GeneralStore(WS, root_store);
         this.iframe = new IframeStore(root_store);
         this.onramp = new OnRampStore(WS, root_store);

@@ -17,9 +17,9 @@ describe('useCurrencyConfig', () => {
 
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
-        const { result } = renderHook(() => useCurrencyConfig('USD'), { wrapper });
+        const { result } = renderHook(() => useCurrencyConfig(), { wrapper });
 
-        expect(result.current.data).toBe(undefined);
+        expect(result.current.getConfig('USD')).toBe(undefined);
     });
 
     test('should return currency config object for the given currency', () => {
@@ -30,11 +30,12 @@ describe('useCurrencyConfig', () => {
 
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
-        const { result } = renderHook(() => useCurrencyConfig('USD'), { wrapper });
+        const { result } = renderHook(() => useCurrencyConfig(), { wrapper });
 
-        expect(result.current.data?.code).toBe('USD');
-        expect(result.current.data?.icon).toBe('IcCurrencyUsd');
-        expect(result.current.data?.is_fiat).toBe(true);
-        expect(result.current.data?.is_crypto).toBe(false);
+        expect(result.current.getConfig('USD')?.code).toBe('USD');
+        expect(result.current.getConfig('USD')?.icon).toBe('IcCurrencyUsd');
+        expect(result.current.getConfig('USD')?.is_fiat).toBe(true);
+        expect(result.current.getConfig('USD')?.is_crypto).toBe(false);
+        expect(result.current.getConfig('USD')?.is_USD).toBe(true);
     });
 });

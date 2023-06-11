@@ -193,14 +193,14 @@ const draw_shaded_barriers = ({
     if (middle_top < end_top) {
         const global_composite_operation = ctx.globalCompositeOperation;
         ctx.globalCompositeOperation = 'destination-over';
-        const { radius, preceeding_tick, stroke_color: prev_tick_stroke_color } = previous_tick || {};
-        if (preceeding_tick) {
-            // draw markers for previous tick & a tick before previous tick in C.Details
-            if (preceeding_tick) {
-                ctx.strokeStyle = preceeding_tick.color;
-                ctx.fillStyle = preceeding_tick.color;
+        const { radius, preceding_tick, stroke_color: prev_tick_stroke_color } = previous_tick || {};
+        if (preceding_tick) {
+            // draw markers for previous tick & a tick preceding previous tick in C.Details
+            if (preceding_tick) {
+                ctx.strokeStyle = preceding_tick.color;
+                ctx.fillStyle = preceding_tick.color;
                 ctx.beginPath();
-                ctx.arc(preceeding_tick.left - 1, preceeding_tick.top, radius, 0, Math.PI * 2);
+                ctx.arc(preceding_tick.left - 1, preceding_tick.top, radius, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.stroke();
             }
@@ -360,7 +360,7 @@ const TickContract = RawMarkerMaker(
                 true
             );
             const contract_details_start_left = is_accu_contract_open ? exit?.left : previous_tick?.left;
-            const preceeding_tick = ticks.length > 2 && is_accu_contract_open && ticks[ticks.length - 2];
+            const preceding_tick = ticks.length > 2 && is_accu_contract_open && ticks[ticks.length - 2];
             draw_shaded_barriers({
                 bottom: barrier_2,
                 ctx,
@@ -376,8 +376,8 @@ const TickContract = RawMarkerMaker(
                     ? {
                           radius: is_mobile ? 1.5 : 2.5,
                           stroke_color: getColor({ status: 'open', is_dark_theme }),
-                          preceeding_tick: {
-                              ...preceeding_tick,
+                          preceding_tick: {
+                              ...preceding_tick,
                               color: getColor({ status: 'grey_border', is_dark_theme }),
                           },
                       }

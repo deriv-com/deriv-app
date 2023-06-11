@@ -41,7 +41,7 @@ const useCurrencyConfig = () => {
                 /** determine if the currency is `Binary Coin` */
                 is_USB: currency === 'USB',
                 /** determine if the currency is `Tether Omni` */
-                is_UST: currency === 'UST',
+                is_USDT: currency === 'UST',
                 /** determine if the currency is `True USD` */
                 is_TUSD: currency === 'TUSD',
                 /** determine if the currency is `Binance USD` */

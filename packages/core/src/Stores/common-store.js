@@ -155,7 +155,7 @@ export default class CommonStore extends BaseStore {
             const platform = url_params.get('platform');
             if (platform) {
                 this.platform = platform;
-                localStorage.setItem('config.platform', this.platform);
+                window.sessionStorage.setItem('config.platform', this.platform);
             }
         }
     }

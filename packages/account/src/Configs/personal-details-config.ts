@@ -1,21 +1,27 @@
-import { GetSettings } from '@deriv/api-types';
 import {
+    TSchema,
     generateValidationFunction,
     getDefaultFields,
     getErrorMessages,
     toMoment,
-    TSchema,
     validLength,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { shouldShowIdentityInformation } from 'Helpers/utils';
 import { TResidenseList, TUpgradeInfo } from 'Types';
+import { GetAccountStatus, GetSettings } from '@deriv/api-types';
 
 type TPersonalDetailsConfig = {
     upgrade_info?: TUpgradeInfo;
     real_account_signup_target: string;
     residence_list: TResidenseList[];
-    account_settings: GetSettings;
-    is_appstore: boolean;
+    account_settings: GetSettings & {
+        document_type: string;
+        document_number: string;
+    };
+    is_appstore?: boolean;
+    residence: string;
+    account_status: GetAccountStatus;
 };
 
 const personal_details_config = ({
@@ -32,7 +38,7 @@ const personal_details_config = ({
     const min_phone_number = 9;
     const max_phone_number = 35;
 
-    const config: TSchema = {
+    const config = {
         account_opening_reason: {
             supported_in: ['iom', 'malta', 'maltainvest'],
             default_value: account_settings.account_opening_reason ?? '',
@@ -163,6 +169,22 @@ const personal_details_config = ({
             supported_in: ['maltainvest'],
             rules: [['confirm', localize('Please confirm your tax information.')]],
         },
+        document_type: {
+            default_value: account_settings.document_type ?? {
+                id: '',
+                text: '',
+                value: '',
+                example_format: '',
+                sample_image: '',
+            },
+            supported_in: ['svg'],
+            rules: [],
+        },
+        document_number: {
+            default_value: account_settings.document_number ?? '',
+            supported_in: ['svg'],
+            rules: [],
+        },
     };
 
     const getConfig = () => {
@@ -181,9 +203,16 @@ const personal_details_config = ({
     return [getConfig()];
 };
 
-const personalDetailsConfig = (
-    { upgrade_info, real_account_signup_target, residence_list, account_settings },
-    PersonalDetails,
+const personalDetailsConfig = <T>(
+    {
+        upgrade_info,
+        real_account_signup_target,
+        residence_list,
+        account_settings,
+        account_status,
+        residence,
+    }: TPersonalDetailsConfig,
+    PersonalDetails: T,
     is_appstore = false
 ) => {
     const [config] = personal_details_config({
@@ -191,6 +220,8 @@ const personalDetailsConfig = (
         account_settings,
         is_appstore,
         real_account_signup_target,
+        residence,
+        account_status,
     });
     const disabled_items = account_settings.immutable_fields;
     return {
@@ -203,7 +234,13 @@ const personalDetailsConfig = (
         props: {
             validate: generateValidationFunction(
                 real_account_signup_target,
-                transformConfig(config, { real_account_signup_target })
+                transformConfig(config, {
+                    real_account_signup_target,
+                    residence_list,
+                    account_settings,
+                    account_status,
+                    residence,
+                })
             ),
             is_svg: upgrade_info?.can_upgrade_to === 'svg',
             is_mf: real_account_signup_target === 'maltainvest',
@@ -233,16 +270,36 @@ const personalDetailsConfig = (
                 },
             ],
             disabled_items,
+            account_status,
+            residence,
+            account_settings,
+            real_account_signup_target,
         },
         passthrough: ['residence_list', 'is_fully_authenticated', 'has_real_account'],
         icon: 'IcDashboardPersonalDetails',
     };
 };
 
-const transformConfig = (config: TSchema, { real_account_signup_target }: { real_account_signup_target: string }) => {
+const transformConfig = (
+    config: TSchema,
+    { real_account_signup_target, residence_list, account_settings, account_status, residence }: TPersonalDetailsConfig
+) => {
     // Remove required rule for malta and iom
     if (['malta', 'iom'].includes(real_account_signup_target) && config.tax_residence) {
-        config.tax_residence.rules.shift();
+        config?.tax_residence?.rules?.shift();
+    }
+    // Remove IDV for non supporting SVG countries
+    if (
+        !shouldShowIdentityInformation({
+            account_status,
+            account_settings,
+            residence,
+            residence_list,
+            real_account_signup_target,
+        })
+    ) {
+        delete config.document_type;
+        delete config.document_number;
     }
     return config;
 };

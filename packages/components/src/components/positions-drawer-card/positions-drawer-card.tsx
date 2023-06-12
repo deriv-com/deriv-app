@@ -11,6 +11,7 @@ import {
     getCardLabels,
     getContractTypeDisplay,
     getEndTime,
+    isMobile,
     isVanillaContract,
 } from '@deriv/shared';
 import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
@@ -63,7 +64,6 @@ const PositionsDrawerCard = ({
     currency,
     current_focus,
     getContractById,
-    is_mobile,
     is_sell_requested,
     is_unsupported,
     is_link_disabled,
@@ -91,6 +91,7 @@ const PositionsDrawerCard = ({
     const is_crypto = isCryptoContract(contract_info.underlying || '');
     const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
     const has_ended = !!getEndTime(contract_info);
+    const is_mobile = isMobile();
     const contract_card_classname = classNames('dc-contract-card', {
         'dc-contract-card--green': !is_accumulator && !is_multiplier && profit_loss > 0 && !result,
         'dc-contract-card--red': !is_accumulator && !is_multiplier && profit_loss < 0 && !result,

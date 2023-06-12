@@ -12,7 +12,13 @@ import type {
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
-import type { ExchangeRatesStore } from './src/stores';
+import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
+
+type TPopulateSettingsExtensionsMenuItem = {
+    icon: string;
+    label: string;
+    value: <T extends object>(props: T) => JSX.Element;
+};
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: number;
@@ -169,6 +175,7 @@ type TClientStore = {
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
     landing_company_shortcode: string;
+    is_populating_account_list: boolean;
     local_currency_config: {
         currency: string;
         decimal_places?: number;
@@ -276,8 +283,10 @@ type TUiStore = {
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
-    notification_messages_ui: JSX.Element | null;
-    openRealAccountSignup: (value?: string) => void;
+    openRealAccountSignup: (
+        value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
+    ) => void;
+    notification_messages_ui: React.FC | null;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setReportsTabIndex: (value: number) => void;
@@ -301,6 +310,8 @@ type TUiStore = {
     is_real_acc_signup_on: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
+    populateHeaderExtensions: (header_items: JSX.Element | null) => void;
+    populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     setShouldShowCooldownModal: (value: boolean) => void;
 };
 
@@ -358,6 +369,8 @@ type TTradersHubStore = {
     setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    toggleRegulatorsCompareModal: () => void;
+    selected_region: string;
     openFailedVerificationModal: (selected_account_type: string) => void;
     multipliers_account_status: string;
     financial_restricted_countries: boolean;
@@ -389,4 +402,5 @@ export type TCoreStores = {
 
 export type TStores = TCoreStores & {
     exchange_rates: ExchangeRatesStore;
+    feature_flags: FeatureFlagsStore;
 };

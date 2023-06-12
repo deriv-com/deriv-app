@@ -54,7 +54,7 @@ const DefaultHeader = observer(({ history }) => {
     } = notifications;
 
     const notifications_count = notifications.notifications.length;
-    const { app_routing_history, platform } = common;
+    const { app_routing_history, platform, current_language } = common;
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
         () => removeNotificationMessage({ key: 'new_version_available' }),
@@ -103,6 +103,7 @@ const DefaultHeader = observer(({ history }) => {
                             is_logging_in={is_logging_in}
                             platform_config={filterPlatformsForClients(platform_config)}
                             setTogglePlatformType={setTogglePlatformType}
+                            current_language={current_language}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>

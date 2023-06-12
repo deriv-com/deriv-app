@@ -211,7 +211,7 @@ const AddressDetails = observer(
                                                 </Text>
                                             </div>
                                         )}
-                                        <div className='details-form__elements'>
+                                        <div className={classNames('details-form__elements', 'address-details-form ')}>
                                             <InputField
                                                 name='address_line_1'
                                                 required={is_svg || is_appstore || is_mf}

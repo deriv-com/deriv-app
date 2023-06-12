@@ -33,7 +33,7 @@ const DTraderHeader = observer(({ history }) => {
         balance,
         account_type,
     } = client;
-    const { app_routing_history, platform } = common;
+    const { app_routing_history, platform, current_language } = common;
     const {
         addNotificationMessage,
         client_notifications,
@@ -107,6 +107,7 @@ const DTraderHeader = observer(({ history }) => {
                             app_routing_history={app_routing_history}
                             platform_config={filterPlatformsForClients(platform_config)}
                             setTogglePlatformType={setTogglePlatformType}
+                            current_language={current_language}
                         />
                     </DesktopWrapper>
                     <MobileWrapper>

@@ -3,7 +3,6 @@ import { Button, Modal } from '@deriv/components';
 import { useHasSetCurrency } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
-
 import 'Sass/set-currency-modal.scss';
 
 const SetAccountCurrencyModal = observer(() => {

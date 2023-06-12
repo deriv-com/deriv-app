@@ -1,26 +1,26 @@
 import React from 'react';
 import { Dialog } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import './deriv-real-account-required-modal.scss';
 import { observer, useStore } from '@deriv/stores';
+import './deriv-real-account-required-modal.scss';
 
 const DerivRealAccountRequiredModal = observer(() => {
     const { ui, traders_hub } = useStore();
+    const { is_eu_user } = traders_hub;
     const {
-        is_deriv_account_needed_modal_visible,
-        openDerivRealAccountNeededModal,
+        is_deriv_account_needed_modal_visible: is_open,
+        openDerivRealAccountNeededModal: onClose,
         disableApp,
         enableApp,
         openRealAccountSignup,
     } = ui;
-    const { is_eu_user } = traders_hub;
     const createAccount = () => {
         if (is_eu_user) {
-            openDerivRealAccountNeededModal();
+            onClose();
             openRealAccountSignup('maltainvest');
         } else {
-            openDerivRealAccountNeededModal();
-            openRealAccountSignup();
+            onClose();
+            openRealAccountSignup('svg');
         }
     };
 
@@ -31,12 +31,12 @@ const DerivRealAccountRequiredModal = observer(() => {
             confirm_button_text={localize('Add Deriv Account')}
             onConfirm={createAccount}
             cancel_button_text={localize('Cancel')}
-            onCancel={openDerivRealAccountNeededModal}
+            onCancel={onClose}
             is_closed_on_cancel
             disableApp={disableApp}
             enableApp={enableApp}
             is_closed_on_confirm
-            is_visible={is_deriv_account_needed_modal_visible}
+            is_visible={is_open}
         >
             {localize('A Deriv account will allow you to fund (and withdraw from) your MT5 account(s).')}
         </Dialog>

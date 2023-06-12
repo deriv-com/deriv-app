@@ -7,7 +7,7 @@ const path = require('path');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
 const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 
-const is_release = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
+const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 const output = {
     path: path.resolve(__dirname, 'dist'),
@@ -31,8 +31,8 @@ module.exports = function (env) {
             publicPath: '/dist/',
             disableHostCheck: true,
         },
-        mode: is_release ? 'production' : 'development',
-        devtool: is_release ? undefined : 'eval-cheap-module-source-map',
+        mode: IS_RELEASE ? 'production' : 'development',
+        devtool: IS_RELEASE ? 'source-map' : 'eval-cheap-module-source-map',
         target: 'web',
         module: {
             rules: [
@@ -52,13 +52,13 @@ module.exports = function (env) {
                         {
                             loader: 'css-loader',
                             options: {
-                                sourceMap: true,
+                                sourceMap: !IS_RELEASE,
                                 url: false,
                             },
                         },
                         {
                             loader: 'sass-loader',
-                            options: { sourceMap: true },
+                            options: { sourceMap: !IS_RELEASE },
                         },
                         {
                             loader: 'sass-resources-loader',
@@ -90,11 +90,6 @@ module.exports = function (env) {
                 {
                     test: /\.(js|jsx|ts|tsx)$/,
                     exclude: /node_modules/,
-                    loader: '@deriv/shared/src/loaders/react-import-loader.js',
-                },
-                {
-                    test: /\.(js|jsx|ts|tsx)$/,
-                    exclude: /node_modules/,
                     loader: 'babel-loader',
                     options: {
                         rootMode: 'upward',
@@ -114,6 +109,7 @@ module.exports = function (env) {
                 Constants: path.resolve(__dirname, './src/constants'),
                 Stores: path.resolve(__dirname, './src/stores'),
                 Utils: path.resolve(__dirname, './src/utils'),
+                Types: path.resolve(__dirname, 'src/types'),
             },
             extensions: ['.js', '.jsx', '.ts', '.tsx'],
         },

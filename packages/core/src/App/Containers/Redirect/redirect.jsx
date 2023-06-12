@@ -127,7 +127,7 @@ const Redirect = observer(({ history }) => {
             WS.wait('get_account_status').then(() => {
                 if (!currency) return openRealAccountSignup('set_currency');
                 if (hasAnyRealAccount()) return openRealAccountSignup('manage');
-                return openRealAccountSignup();
+                return openRealAccountSignup('svg');
             });
             const ext_platform_url = url_params.get('ext_platform_url');
             if (ext_platform_url) {

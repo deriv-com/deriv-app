@@ -6,8 +6,8 @@ import { observer, useStore } from '@deriv/stores';
 
 const LiveChat = observer(({ is_mobile_drawer }) => {
     const { client } = useStore();
-    const { has_cookie_account } = client;
-    const liveChat = useLiveChat(has_cookie_account);
+    const { has_cookie_account, loginid } = client;
+    const liveChat = useLiveChat(has_cookie_account, loginid);
 
     if (!liveChat.isReady) return null;
 

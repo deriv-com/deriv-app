@@ -86,7 +86,9 @@ const TransferAccountSelector = ({
                 className='transfer-account-selector__modal-header'
                 has_close_icon
                 is_open={is_list_modal_open}
+                onUnmount={() => setIsWalletNameVisible?.(true)}
                 portalId={portal_id}
+                transition_timeout={is_mobile ? { enter: 250, exit: 0 } : 250}
                 title={label}
                 toggleModal={() => setIsListModalOpen(old => !old)}
             >

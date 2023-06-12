@@ -128,4 +128,4 @@ const WalletTile = ({
     );
 };
 
-export default WalletTile;
+export default React.memo(WalletTile);

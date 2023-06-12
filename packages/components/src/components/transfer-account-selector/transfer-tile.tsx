@@ -55,4 +55,4 @@ const TransferTile = ({ is_mobile, label, placeholder, selected_account }: TTran
     );
 };
 
-export default TransferTile;
+export default React.memo(TransferTile);

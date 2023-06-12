@@ -1,4 +1,4 @@
-import { action, makeObservable,observable, reaction } from 'mobx';
+import { action, makeObservable, observable, reaction } from 'mobx';
 import { scrollWorkspace } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';

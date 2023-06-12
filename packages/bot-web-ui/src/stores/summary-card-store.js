@@ -1,4 +1,4 @@
-import { action, computed, makeObservable,observable, reaction } from 'mobx';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { getIndicativePrice, isEqualObject, isMultiplierContract } from '@deriv/shared';
 import { getValidationRules } from 'Constants/contract';
 import { contract_stages } from 'Constants/contract-stage';

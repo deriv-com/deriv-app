@@ -1,4 +1,4 @@
-import { action, computed, makeObservable,observable } from 'mobx';
+import { action, computed, makeObservable, observable } from 'mobx';
 
 export default class SelfExclusionStore {
     constructor(root_store, core) {

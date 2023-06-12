@@ -1,6 +1,6 @@
-import { action, makeObservable,reaction } from 'mobx';
-import { ApiHelpers, DBot,runIrreversibleEvents } from '@deriv/bot-skeleton';
-import { isEuResidenceWithOnlyVRTC, routes,showDigitalOptionsUnavailableError } from '@deriv/shared';
+import { action, makeObservable, reaction } from 'mobx';
+import { ApiHelpers, DBot, runIrreversibleEvents } from '@deriv/bot-skeleton';
+import { isEuResidenceWithOnlyVRTC, routes, showDigitalOptionsUnavailableError } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 export default class AppStore {

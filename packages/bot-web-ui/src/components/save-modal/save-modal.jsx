@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Field,Form, Formik } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import { config, save_types } from '@deriv/bot-skeleton';
-import { Button, Icon, Input, MobileFullPageModal, Modal, RadioGroup, Text,ThemedScrollbars } from '@deriv/components';
+import { Button, Icon, Input, MobileFullPageModal, Modal, RadioGroup, Text, ThemedScrollbars } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';

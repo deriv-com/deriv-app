@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Icon, Input, Text,ThemedScrollbars } from '@deriv/components';
+import { Icon, Input, Text, ThemedScrollbars } from '@deriv/components';
 import { getPlatformSettings } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { help_content_config } from 'Utils/help-content/help-content.config';

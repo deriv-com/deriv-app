@@ -1,6 +1,6 @@
-import { action, computed, makeObservable,observable, reaction } from 'mobx';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import { log_types } from '@deriv/bot-skeleton';
-import { formatDate, isBot,isEnded } from '@deriv/shared';
+import { formatDate, isBot, isEnded } from '@deriv/shared';
 import { transaction_elements } from '../constants/transactions';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
 

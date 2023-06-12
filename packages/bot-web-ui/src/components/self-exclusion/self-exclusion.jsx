@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Field,Form, Formik } from 'formik';
+import { Field, Form, Formik } from 'formik';
 import PropTypes from 'prop-types';
 import { Button, Div100vhContainer, FadeWrapper, Input, MobileWrapper, Modal, PageOverlay } from '@deriv/components';
 import { isMobile } from '@deriv/shared';

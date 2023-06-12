@@ -1,16 +1,16 @@
+import React from 'react';
+import classNames from 'classnames';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { MobileWrapper, Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { TWorkspace } from 'Stores/load-modal-store';
-import DeleteDialog from './delete-dialog';
-import './index.scss';
-import RecentWorkspace from './recent-workspace';
-import { isMobile } from '@deriv/shared';
 import SaveModal from '../../../save-modal';
-import classNames from 'classnames';
+import DeleteDialog from './delete-dialog';
+import RecentWorkspace from './recent-workspace';
+import './index.scss';
 
 type TRecentComponent = {
     dashboard_strategies: Array<TWorkspace>;

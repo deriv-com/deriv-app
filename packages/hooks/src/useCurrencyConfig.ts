@@ -5,7 +5,6 @@ import { useFetch } from '@deriv/api';
 const useCurrencyConfig = () => {
     const { data } = useFetch('website_status');
 
-    /** Available currencies and their information */
     const currencies_config = useMemo(() => {
         if (!data?.website_status?.currencies_config) return undefined;
 
@@ -69,11 +68,12 @@ const useCurrencyConfig = () => {
         );
     }, [data?.website_status?.currencies_config]);
 
-    /** Returns the currency config object for the given currency */
     const getConfig = useCallback((currency: string) => currencies_config?.[currency], [currencies_config]);
 
     return {
+        /** Returns the currency config object for the given currency */
         getConfig,
+        /** Available currencies and their information */
         currencies_config,
     };
 };

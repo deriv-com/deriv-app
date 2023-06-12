@@ -4,14 +4,16 @@ import { makePersistable, stopPersisting } from 'mobx-persist-store';
 export default class BaseStore<T> {
     data: T | undefined = undefined;
 
-    constructor(name: string) {
+    constructor(name: string, onHydrationDone?: VoidFunction) {
         makeObservable(this, {
             data: observable,
             update: action.bound,
             unmount: action.bound,
         });
 
-        makePersistable(this, { name, properties: ['data'], storage: window.localStorage });
+        makePersistable(this, { name, properties: ['data'], storage: window.localStorage }).then(() =>
+            onHydrationDone?.()
+        );
     }
 
     update(data: NonNullable<T> | ((previous?: T) => NonNullable<T>)) {

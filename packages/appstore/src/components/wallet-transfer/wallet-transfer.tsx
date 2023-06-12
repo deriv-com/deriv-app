@@ -40,7 +40,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         // TODO: 'Demo USD Wallet' should be replaced to the current open wallet after connecting to API call
         return to_account?.label === 'Demo USD Wallet' ? (
             <Localize
-                i18n_default_text='You can only transfer funds from the {{account}} to the linked {{wallet}}.'
+                i18n_default_text='You can only transfers funds from the {{account}} to the linked {{wallet}}.'
                 values={{
                     account: from_account?.label,
                     wallet: transfer_accounts.wallets[0].label,

@@ -5,10 +5,8 @@ import Text from '../text';
 import './side-note.scss';
 
 type TProps = {
-    title?: React.ReactNode;
-    description?: React.ReactNode;
     action?: { onClick: VoidFunction; label: React.ReactNode };
-} & ({ title: React.ReactNode } | { description: React.ReactNode } | { children: React.ReactNode });
+} & RequireAtLeastOne<{ title: React.ReactNode; description: React.ReactNode; children: React.ReactNode }>;
 
 const SideNote: React.FC<React.PropsWithChildren<TProps>> = ({ title, description, action, children }) => {
     const title_font_size = isMobile() ? 'xxs' : 'xs';

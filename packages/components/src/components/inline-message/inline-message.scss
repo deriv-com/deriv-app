@@ -16,19 +16,19 @@
     }
 
     &__warning {
-        background: rgba(255, 173, 58, 0.16);
+        background: $color-status-warning;
     }
 
     &__information {
-        background: rgba(55, 124, 252, 0.16);
+        background: $color-status-information;
     }
 
     &__announcement {
-        background: rgba(75, 180, 179, 0.16);
+        background: $color-status-announcement;
     }
 
     &__error {
-        background: rgba(236, 63, 63, 0.16);
+        background: $color-status-error;
     }
 
     &__icon {

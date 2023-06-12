@@ -6,7 +6,7 @@ const useDepositCryptoAddress = () => {
     const deposit_address = typeof data?.cashier !== 'string' ? data?.cashier?.deposit?.address : undefined;
 
     const send = useCallback(
-        () => mutate([{ payload: { cashier: 'deposit', provider: 'crypto', type: 'api' } }]),
+        () => mutate({ payload: { cashier: 'deposit', provider: 'crypto', type: 'api' } }),
         [mutate]
     );
 

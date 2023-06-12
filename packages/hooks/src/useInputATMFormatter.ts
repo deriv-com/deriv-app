@@ -1,21 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { unFormatLocaleString } from '@deriv/utils';
 import useInputDecimalFormatter from './useInputDecimalFormatter';
-
-const unFormatLocaleStringifyNumber = (input: string, locale: Intl.LocalesArgument) => {
-    const parts = (12345.6789).toLocaleString(locale).match(/(\D+)/g);
-
-    if (parts && parts.length > 1) {
-        const is_reverse = parts[parts.length - 1] !== '.';
-        const decimal = parts[parts.length - 1];
-        const thousand = parts[0];
-
-        if (is_reverse) return input.replaceAll(decimal, 'x').replaceAll(thousand, '').replaceAll('x', '.');
-
-        return input.replaceAll(thousand, '');
-    }
-
-    return input;
-};
 
 type TOptions = {
     fraction_digits?: number;
@@ -35,7 +20,7 @@ const useInputATMFormatter = (initial?: number, options?: TOptions) => {
     const onChange = useCallback(
         (e: DeepPartial<React.ChangeEvent<HTMLInputElement>> | React.ChangeEvent<HTMLInputElement>) => {
             const new_value = e?.target?.value || '';
-            const unformatted = unFormatLocaleStringifyNumber(new_value, locale);
+            const unformatted = unFormatLocaleString(new_value, locale);
             // @ts-expect-error shouldn't cast to number because we will lose the trailing zeros.
             const shifted = Math.fround(unformatted * 10).toFixed(fraction_digits);
             // @ts-expect-error shouldn't cast to number because we will lose the trailing zeros.

@@ -46,6 +46,10 @@ declare global {
         [K in keyof T]: T[K];
         // eslint-disable-next-line @typescript-eslint/ban-types
     } & {};
+
+    type RequireAtLeastOne<T> = {
+        [K in keyof T]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<keyof T, K>>>;
+    }[keyof T];
 }
 
 export {};

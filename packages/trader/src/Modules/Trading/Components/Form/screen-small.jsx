@@ -3,7 +3,6 @@ import React from 'react';
 import { Collapsible } from '@deriv/components';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
 import AllowEqualsMobile from 'Modules/Trading/Containers/allow-equals.jsx';
-import { connect } from 'Stores/connect';
 import {
     hasCallPutEqual,
     hasDurationForCallPutEqual,
@@ -28,6 +27,8 @@ import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
 import BarrierSelector from 'Modules/Trading/Components/Form/TradeParams/Turbos/barrier-selector';
 import PayoutPerPointMobile from 'Modules/Trading/Components/Elements/payout-per-point-mobile';
 import TradeTypeTabs from 'Modules/Trading/Components/Form/TradeParams/trade-type-tabs';
+import { observer } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 const CollapsibleTradeParams = ({
     form_components,
@@ -92,7 +93,11 @@ const CollapsibleTradeParams = ({
             )}
 
             {!is_accumulator && <MobileWidget is_collapsed={is_collapsed} toggleDigitsWidget={toggleDigitsWidget} />}
-            {has_allow_equals && <AllowEqualsMobile data-collapsible='true' />}
+            {has_allow_equals && (
+                <div data-collapsible='true'>
+                    <AllowEqualsMobile />
+                </div>
+            )}
             {(is_multiplier || is_turbos) && (
                 <div data-collapsible='true'>
                     <RiskManagementInfo />
@@ -129,15 +134,43 @@ const CollapsibleTradeParams = ({
     );
 };
 
-const ScreenSmall = ({
-    is_trade_enabled,
-    duration_unit,
-    contract_types_list,
-    contract_type,
-    expiry_type,
-    contract_start_type,
-    ...props
-}) => {
+const ScreenSmall = observer(({ is_trade_enabled }) => {
+    const trade_store = useTraderStore();
+    const {
+        is_accumulator,
+        is_multiplier,
+        is_turbos,
+        is_vanilla,
+        duration_unit,
+        contract_types_list,
+        contract_type,
+        expiry_type,
+        contract_start_type,
+        form_components,
+        has_take_profit,
+        onChange,
+        previous_symbol,
+        is_trade_params_expanded,
+        setIsTradeParamsExpanded,
+        take_profit,
+    } = trade_store;
+    const is_allow_equal = !!trade_store.is_equal;
+
+    const collapsible_trade_params_props = {
+        is_accumulator,
+        is_multiplier,
+        is_turbos,
+        is_vanilla,
+        form_components,
+        has_take_profit,
+        onChange,
+        previous_symbol,
+        is_trade_params_expanded,
+        setIsTradeParamsExpanded,
+        take_profit,
+        is_allow_equal,
+    };
+
     const has_callputequal_duration = hasDurationForCallPutEqual(
         contract_types_list,
         duration_unit,
@@ -153,35 +186,12 @@ const ScreenSmall = ({
             <TradeParamsLoader speed={2} />
         </div>
     ) : (
-        <CollapsibleTradeParams has_allow_equals={has_allow_equals} {...props} />
+        <CollapsibleTradeParams has_allow_equals={has_allow_equals} {...collapsible_trade_params_props} />
     );
-};
+});
 
 ScreenSmall.propTypes = {
-    contract_start_type: PropTypes.string,
-    contract_type: PropTypes.string,
-    contract_types_list: PropTypes.object,
-    duration_unit: PropTypes.string,
-    expiry_type: PropTypes.string,
     is_trade_enabled: PropTypes.bool,
 };
 
-export default connect(({ modules }) => ({
-    is_accumulator: modules.trade.is_accumulator,
-    is_allow_equal: !!modules.trade.is_equal,
-    is_multiplier: modules.trade.is_multiplier,
-    is_turbos: modules.trade.is_turbos,
-    is_vanilla: modules.trade.is_vanilla,
-    duration_unit: modules.trade.duration_unit,
-    contract_types_list: modules.trade.contract_types_list,
-    contract_type: modules.trade.contract_type,
-    expiry_type: modules.trade.expiry_type,
-    contract_start_type: modules.trade.contract_start_type,
-    form_components: modules.trade.form_components,
-    has_take_profit: modules.trade.has_take_profit,
-    onChange: modules.trade.onChange,
-    previous_symbol: modules.trade.previous_symbol,
-    is_trade_params_expanded: modules.trade.is_trade_params_expanded,
-    setIsTradeParamsExpanded: modules.trade.setIsTradeParamsExpanded,
-    take_profit: modules.trade.take_profit,
-}))(ScreenSmall);
+export default ScreenSmall;

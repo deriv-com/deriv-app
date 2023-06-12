@@ -1,14 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
-import { observer } from 'mobx-react-lite';
 import { Dropdown, useOnClickOutside } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { useStores } from 'Stores';
-import { CurrencySelector } from 'Components/buy-sell/currency-selector';
+import { observer } from '@deriv/stores';
+import BuySellHeaderCurrencySelector from 'Components/buy-sell/buy-sell-header/buy-sell-header-currency-selector';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import './currency-dropdown.scss';
+import { useStores } from 'Stores';
 
-const CurrencyDropdown = () => {
+const BuySellHeaderCurrencyDropdown = () => {
     const [is_list_visible, setIsListVisible] = React.useState(false);
     const currency_selector_ref = React.useRef(null);
     const { buy_sell_store } = useStores();
@@ -24,10 +23,10 @@ const CurrencyDropdown = () => {
     );
 
     return (
-        <div className='currency-dropdown' ref={currency_selector_ref}>
+        <div className='buy-sell-currency-dropdown' ref={currency_selector_ref}>
             <Dropdown
-                className={classNames('currency-dropdown__list', {
-                    'currency-dropdown__list--visible': is_list_visible,
+                className={classNames('buy-sell-currency-dropdown__list', {
+                    'buy-sell-currency-dropdown__list--visible': is_list_visible,
                 })}
                 list={local_currencies}
                 onClick={() => {
@@ -37,7 +36,7 @@ const CurrencyDropdown = () => {
                 value={selected_local_currency}
             />
             {is_list_visible && (
-                <CurrencySelector
+                <BuySellHeaderCurrencySelector
                     default_value={selected_local_currency}
                     list={local_currencies}
                     onSelect={value => {
@@ -50,4 +49,4 @@ const CurrencyDropdown = () => {
     );
 };
 
-export default observer(CurrencyDropdown);
+export default observer(BuySellHeaderCurrencyDropdown);

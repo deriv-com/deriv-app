@@ -3,7 +3,7 @@ import { MobileFullPageModal } from '@deriv/components';
 import { useStores } from 'Stores';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
-import CurrencySelector from 'Components/buy-sell/currency-selector/currency-selector';
+import BuySellHeaderCurrencySelector from 'Components/buy-sell/buy-sell-header/buy-sell-header-currency-selector';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const CurrencySelectorModal = () => {
@@ -18,7 +18,7 @@ const CurrencySelectorModal = () => {
             page_header_text={localize('Preferred currency')}
             pageHeaderReturnFn={hideModal}
         >
-            <CurrencySelector
+            <BuySellHeaderCurrencySelector
                 default_value={selected_local_currency}
                 list={local_currencies}
                 onSelect={value => {

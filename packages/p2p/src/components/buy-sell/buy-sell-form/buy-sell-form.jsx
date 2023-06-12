@@ -1,34 +1,58 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Formik, Field, Form } from 'formik';
+import { reaction } from 'mobx';
 import { HintBox, Icon, Input, Text } from '@deriv/components';
 import { getDecimalPlaces, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
-import { reaction } from 'mobx';
-import { observer, Observer } from 'mobx-react-lite';
+import { observer, Observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
+import BuySellFormReceiveAmount from 'Components/buy-sell/buy-sell-form/buy-sell-form-receive-amount';
+import PaymentMethodCard from 'Components/my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
-import BuySellFormReceiveAmount from './buy-sell-form-receive-amount.jsx';
-import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
-import { floatingPointValidator } from 'Utils/validations';
-import { countDecimalPlaces } from 'Utils/string';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
+import { countDecimalPlaces } from 'Utils/string';
+import { floatingPointValidator } from 'Utils/validations';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const BuySellForm = props => {
     const isMounted = useIsMounted();
     const { advertiser_page_store, buy_sell_store, floating_rate_store, general_store, my_profile_store } = useStores();
-    const [selected_methods, setSelectedMethods] = React.useState([]);
-    buy_sell_store.setFormProps(props);
+    const { setFormErrorMessage } = advertiser_page_store;
+    const {
+        account_currency,
+        advert,
+        form_props,
+        handleSubmit,
+        is_buy_advert,
+        is_sell_advert,
+        local_currency,
+        payment_method_ids,
+        receive_amount,
+        setFormProps,
+        setHasPaymentMethods,
+        setInitialReceiveAmount,
+        setPaymentMethodIds,
+        setReceiveAmount,
+        validatePopup,
+    } = buy_sell_store;
+    const { exchange_rate, is_market_rate_changed } = floating_rate_store;
+    const { advertiser_buy_limit, advertiser_sell_limit, balance, contact_info, payment_info } = general_store;
+    const {
+        advertiser_payment_methods_list,
+        advertiser_has_payment_methods,
+        getPaymentMethodsList,
+        setSelectedPaymentMethod,
+        setSelectedPaymentMethodDisplayName,
+        setShouldShowAddPaymentMethodForm,
+    } = my_profile_store;
     const { showModal } = useModalManagerContext();
-
     const { setPageFooterParent } = props;
     const {
         advertiser_details,
         description,
         effective_rate: market_rate,
-        local_currency,
+        local_currency: advert_local_currency,
         max_order_amount_limit_display,
         min_order_amount_limit,
         min_order_amount_limit_display,
@@ -36,40 +60,37 @@ const BuySellForm = props => {
         price,
         rate,
         rate_type,
-    } = buy_sell_store?.advert || {};
+    } = advert || {};
     const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
-
-    const { advertiser_buy_limit, advertiser_sell_limit, balance } = general_store;
-
     const should_disable_field =
-        !buy_sell_store.is_buy_advert && (parseFloat(balance) === 0 || parseFloat(balance) < min_order_amount_limit);
-
+        !is_buy_advert && (parseFloat(balance) === 0 || parseFloat(balance) < min_order_amount_limit);
     const style = {
         borderColor: 'var(--brand-secondary)',
         borderWidth: '2px',
         cursor: should_disable_field ? 'not-allowed' : 'pointer',
     };
-
     const { effective_rate, display_effective_rate } = generateEffectiveRate({
         price,
         rate_type,
         rate,
-        local_currency,
-        exchange_rate: floating_rate_store.exchange_rate,
+        advert_local_currency,
+        exchange_rate,
         market_rate,
     });
-
     const calculated_rate = removeTrailingZeros(roundOffDecimal(effective_rate, setDecimalPlaces(effective_rate, 6)));
+    const [selected_methods, setSelectedMethods] = React.useState([]);
+
+    setFormProps(props);
 
     React.useEffect(
         () => {
-            my_profile_store.setShouldShowAddPaymentMethodForm(false);
-            my_profile_store.setSelectedPaymentMethod('');
-            my_profile_store.setSelectedPaymentMethodDisplayName('');
-            buy_sell_store.setHasPaymentMethods(!!payment_method_names);
+            setShouldShowAddPaymentMethodForm(false);
+            setSelectedPaymentMethod('');
+            setSelectedPaymentMethodDisplayName('');
+            setHasPaymentMethods(!!payment_method_names);
 
             const disposeReceiveAmountReaction = reaction(
-                () => buy_sell_store.receive_amount,
+                () => receive_amount,
                 () => {
                     if (isMobile() && typeof setPageFooterParent === 'function') {
                         setPageFooterParent(<BuySellFormReceiveAmount />);
@@ -77,28 +98,28 @@ const BuySellForm = props => {
                 }
             );
 
-            if (!my_profile_store.advertiser_has_payment_methods) {
-                my_profile_store.getPaymentMethodsList();
+            if (!advertiser_has_payment_methods) {
+                getPaymentMethodsList();
             }
 
-            advertiser_page_store.setFormErrorMessage('');
+            setFormErrorMessage('');
             const disposeRateChangeModal = reaction(
-                () => floating_rate_store.is_market_rate_changed,
-                is_market_rate_changed => {
+                () => is_market_rate_changed,
+                () => {
                     if (is_market_rate_changed && rate_type === ad_type.FLOAT) {
                         showModal({
                             key: 'RateChangeModal',
                             props: {
-                                currency: buy_sell_store.local_currency,
+                                currency: local_currency,
                             },
                         });
                     }
                 }
             );
-            buy_sell_store.setInitialReceiveAmount(calculated_rate);
+            setInitialReceiveAmount(calculated_rate);
 
             return () => {
-                buy_sell_store.payment_method_ids = [];
+                setPaymentMethodIds([]);
                 disposeReceiveAmountReaction();
                 disposeRateChangeModal();
             };
@@ -107,21 +128,21 @@ const BuySellForm = props => {
     );
 
     React.useEffect(() => {
-        const receive_amount = input_amount * calculated_rate;
-        buy_sell_store.setReceiveAmount(receive_amount);
+        const updated_receive_amount = input_amount * calculated_rate;
+        setReceiveAmount(updated_receive_amount);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [input_amount, effective_rate]);
 
     const onClickPaymentMethodCard = payment_method => {
         if (!should_disable_field) {
-            if (!buy_sell_store.payment_method_ids.includes(payment_method.ID)) {
-                if (buy_sell_store.payment_method_ids.length < 3) {
-                    buy_sell_store.payment_method_ids.push(payment_method.ID);
+            if (!payment_method_ids.includes(payment_method.ID)) {
+                if (payment_method_ids.length < 3) {
+                    payment_method_ids.push(payment_method.ID);
                     setSelectedMethods([...selected_methods, payment_method.ID]);
                 }
             } else {
-                buy_sell_store.payment_method_ids = buy_sell_store.payment_method_ids.filter(
-                    payment_method_id => payment_method_id !== payment_method.ID
+                setPaymentMethodIds(
+                    payment_method_ids.filter(payment_method_id => payment_method_id !== payment_method.ID)
                 );
                 setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
             }
@@ -129,7 +150,7 @@ const BuySellForm = props => {
     };
 
     const getAdvertiserMaxLimit = () => {
-        if (buy_sell_store.is_buy_advert) {
+        if (is_buy_advert) {
             if (advertiser_buy_limit < max_order_amount_limit_display) return roundOffDecimal(advertiser_buy_limit);
         } else if (advertiser_sell_limit < max_order_amount_limit_display)
             return roundOffDecimal(advertiser_sell_limit);
@@ -153,24 +174,24 @@ const BuySellForm = props => {
             )}
             <Formik
                 enableReinitialize
-                validate={buy_sell_store.validatePopup}
+                validate={validatePopup}
                 validateOnMount={!should_disable_field}
                 initialValues={{
                     amount: min_order_amount_limit,
-                    contact_info: general_store.contact_info,
-                    payment_info: general_store.payment_info,
+                    contact_info,
+                    payment_info,
                     rate: rate_type === ad_type.FLOAT ? effective_rate : null,
                 }}
-                initialErrors={buy_sell_store.is_sell_advert ? { contact_info: true } : {}}
-                onSubmit={(...args) => buy_sell_store.handleSubmit(() => isMounted(), ...args)}
+                initialErrors={is_sell_advert ? { contact_info: true } : {}}
+                onSubmit={(...args) => handleSubmit(() => isMounted(), ...args)}
             >
                 {({ errors, isSubmitting, isValid, setFieldValue, submitForm, touched }) => {
-                    buy_sell_store.form_props.setIsSubmitDisabled(
+                    form_props.setIsSubmitDisabled(
                         !isValid ||
                             isSubmitting ||
-                            (buy_sell_store.is_sell_advert && payment_method_names && selected_methods.length < 1)
+                            (is_sell_advert && payment_method_names && selected_methods.length < 1)
                     );
-                    buy_sell_store.form_props.setSubmitForm(submitForm);
+                    form_props.setSubmitForm(submitForm);
 
                     return (
                         <Form noValidate>
@@ -178,7 +199,7 @@ const BuySellForm = props => {
                                 <div className='buy-sell__modal-field-wrapper'>
                                     <div className='buy-sell__modal-field'>
                                         <Text as='p' color='less-prominent' line_height='m' size='xxs'>
-                                            {buy_sell_store.is_buy_advert ? (
+                                            {is_buy_advert ? (
                                                 <Localize i18n_default_text='Seller' />
                                             ) : (
                                                 <Localize i18n_default_text='Buyer' />
@@ -192,11 +213,11 @@ const BuySellForm = props => {
                                         <Text as='p' color='less-prominent' line_height='m' size='xxs'>
                                             <Localize
                                                 i18n_default_text='Rate (1 {{ currency }})'
-                                                values={{ currency: buy_sell_store.account_currency }}
+                                                values={{ currency: account_currency }}
                                             />
                                         </Text>
                                         <Text as='p' color='general' line_height='m' size='xs'>
-                                            {display_effective_rate} {local_currency}
+                                            {display_effective_rate} {advert_local_currency}
                                         </Text>
                                     </div>
                                 </div>
@@ -248,7 +269,7 @@ const BuySellForm = props => {
                                 <div className='buy-sell__modal-field-wrapper'>
                                     <div className='buy-sell__modal-field'>
                                         <Text as='p' color='less-prominent' line_height='m' size='xxs'>
-                                            {buy_sell_store.is_buy_advert ? (
+                                            {is_buy_advert ? (
                                                 <Localize i18n_default_text="Seller's instructions" />
                                             ) : (
                                                 <Localize i18n_default_text="Buyer's instructions" />
@@ -266,7 +287,7 @@ const BuySellForm = props => {
                                     </div>
                                 </div>
                                 <div className='buy-sell__modal-line' />
-                                {buy_sell_store.is_sell_advert && payment_method_names && (
+                                {is_sell_advert && payment_method_names && (
                                     <React.Fragment>
                                         <div className='buy-sell__modal-payment-method'>
                                             <Text
@@ -279,7 +300,7 @@ const BuySellForm = props => {
                                                 <Localize i18n_default_text='Receive payment to' />
                                             </Text>
                                             <Text as='p' color='prominent' line_height='m' size='xxs'>
-                                                {my_profile_store.advertiser_has_payment_methods ? (
+                                                {advertiser_has_payment_methods ? (
                                                     <Localize i18n_default_text='You may choose up to 3.' />
                                                 ) : (
                                                     <Localize i18n_default_text='To place an order, add one of the advertiser’s preferred payment methods:' />
@@ -295,11 +316,6 @@ const BuySellForm = props => {
                                                     >
                                                         {payment_method_names
                                                             ?.map((add_payment_method, key) => {
-                                                                const {
-                                                                    advertiser_payment_methods_list,
-                                                                    setSelectedPaymentMethodDisplayName,
-                                                                    setShouldShowAddPaymentMethodForm,
-                                                                } = my_profile_store;
                                                                 const matching_payment_methods =
                                                                     advertiser_payment_methods_list.filter(
                                                                         advertiser_payment_method =>
@@ -365,7 +381,7 @@ const BuySellForm = props => {
                                 <div className='buy-sell__modal--input'>
                                     <Text color='less-prominent' size='xxs'>
                                         {localize('Enter {{transaction_type}} amount', {
-                                            transaction_type: buy_sell_store.is_buy_advert ? 'buy' : 'sell',
+                                            transaction_type: is_buy_advert ? 'buy' : 'sell',
                                         })}
                                     </Text>
                                     <section className='buy-sell__modal--input-field'>
@@ -377,9 +393,7 @@ const BuySellForm = props => {
                                                     type='number'
                                                     error={errors.amount}
                                                     label={localize('{{ad_type}}', {
-                                                        ad_type: buy_sell_store.is_buy_advert
-                                                            ? 'Buy amount'
-                                                            : 'Sell amount',
+                                                        ad_type: is_buy_advert ? 'Buy amount' : 'Sell amount',
                                                     })}
                                                     hint={
                                                         <Localize
@@ -387,7 +401,7 @@ const BuySellForm = props => {
                                                             values={{
                                                                 min: min_order_amount_limit_display,
                                                                 max: getAdvertiserMaxLimit(),
-                                                                currency: buy_sell_store.account_currency,
+                                                                currency: account_currency,
                                                             }}
                                                         />
                                                     }
@@ -395,7 +409,7 @@ const BuySellForm = props => {
                                                     className='buy-sell__modal-field'
                                                     trailing_icon={
                                                         <Text color='less-prominent' line-height='m' size='xs'>
-                                                            {buy_sell_store.account_currency}
+                                                            {account_currency}
                                                         </Text>
                                                     }
                                                     onKeyDown={event => {
@@ -408,7 +422,7 @@ const BuySellForm = props => {
 
                                                         if (
                                                             countDecimalPlaces(value) >
-                                                            getDecimalPlaces(buy_sell_store.account_currency)
+                                                            getDecimalPlaces(account_currency)
                                                         ) {
                                                             setFieldValue('amount', parseFloat(input_amount));
                                                         } else {
@@ -433,7 +447,7 @@ const BuySellForm = props => {
                                         )}
                                     </section>
                                 </div>
-                                {buy_sell_store.is_sell_advert && (
+                                {is_sell_advert && (
                                     <React.Fragment>
                                         {!payment_method_names && (
                                             <div className='buy-sell__modal-field--textarea'>
@@ -451,7 +465,7 @@ const BuySellForm = props => {
                                                             label={localize('Your bank details')}
                                                             required
                                                             has_character_counter
-                                                            initial_character_count={general_store.payment_info.length}
+                                                            initial_character_count={payment_info.length}
                                                             max_characters={300}
                                                             disabled={should_disable_field}
                                                         />
@@ -470,7 +484,7 @@ const BuySellForm = props => {
                                                         label={localize('Your contact details')}
                                                         required
                                                         has_character_counter
-                                                        initial_character_count={general_store.contact_info.length}
+                                                        initial_character_count={contact_info.length}
                                                         max_characters={300}
                                                         disabled={should_disable_field}
                                                     />
@@ -486,24 +500,6 @@ const BuySellForm = props => {
             </Formik>
         </React.Fragment>
     );
-};
-
-BuySellForm.propTypes = {
-    advert: PropTypes.object,
-    contact_info: PropTypes.string,
-    form_props: PropTypes.object,
-    setIsSubmitDisabled: PropTypes.func,
-    setSubmitForm: PropTypes.func,
-    setPageFooterParent: PropTypes.func,
-    has_payment_info: PropTypes.bool,
-    is_buy_advert: PropTypes.bool,
-    is_sell_advert: PropTypes.bool,
-    payment_info: PropTypes.string,
-    receive_amount: PropTypes.number,
-    setFormProps: PropTypes.func,
-    setInitialReceiveAmount: PropTypes.func,
-    setReceiveAmount: PropTypes.func,
-    validatePopup: PropTypes.func,
 };
 
 export default observer(BuySellForm);

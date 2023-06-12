@@ -1,42 +1,43 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { InfiniteDataList, Loading, Modal, RadioGroup, Table, Text } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
 import { reaction } from 'mobx';
+import { DesktopWrapper, InfiniteDataList, Loading, Modal, RadioGroup, Table, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
+import BuySellTableRow from 'Components/buy-sell/buy-sell-table/buy-sell-table-row';
+import BuySellTableNoAds from 'Components/buy-sell/buy-sell-table/buy-sell-table-no-ads';
 import { useStores } from 'Stores';
-import BuySellRow from './buy-sell-row.jsx';
-import NoAds from './no-ads/no-ads.jsx';
-
-const BuySellRowRendererComponent = row_props => {
-    const { buy_sell_store } = useStores();
-
-    return (
-        <BuySellRow
-            {...row_props}
-            is_buy={buy_sell_store.is_buy}
-            setSelectedAdvert={buy_sell_store.setSelectedAdvert}
-            showAdvertiserPage={buy_sell_store.showAdvertiserPage}
-        />
-    );
-};
-
-const BuySellRowRenderer = observer(BuySellRowRendererComponent);
 
 const BuySellTable = ({ onScroll }) => {
     const { buy_sell_store, my_profile_store } = useStores();
+    const {
+        api_error_message,
+        fetchAdvertiserAdverts,
+        handleChange,
+        has_more_items_to_load,
+        is_buy,
+        is_loading,
+        is_sort_dropdown_open,
+        items,
+        loadMoreItems,
+        rendered_items,
+        selected_value,
+        setIsSortDropdownOpen,
+        setSelectedAdvert,
+        showAdvertiserPage,
+        sort_list,
+    } = buy_sell_store;
+    const { getPaymentMethodsList } = my_profile_store;
     const {
         client: { currency },
     } = useStore();
 
     React.useEffect(
         () => {
-            my_profile_store.getPaymentMethodsList();
+            getPaymentMethodsList();
             reaction(
-                () => buy_sell_store.is_buy,
-                () => buy_sell_store.fetchAdvertiserAdverts(),
+                () => is_buy,
+                () => fetchAdvertiserAdverts(),
                 { fireImmediately: true }
             );
         },
@@ -44,34 +45,34 @@ const BuySellTable = ({ onScroll }) => {
         []
     );
 
-    if (buy_sell_store.is_loading) {
+    if (is_loading) {
         return <Loading is_fullscreen={false} />;
     }
 
-    if (buy_sell_store.api_error_message) {
-        return <TableError message={buy_sell_store.api_error_message} />;
+    if (api_error_message) {
+        return <TableError message={api_error_message} />;
     }
 
-    if (buy_sell_store.items.length) {
+    if (items.length) {
         return (
             <>
                 <Table className='buy-sell__table'>
                     <Modal
                         name='sort'
                         className='sort'
-                        is_open={buy_sell_store.is_sort_dropdown_open}
+                        is_open={is_sort_dropdown_open}
                         height='10rem'
-                        toggleModal={() => buy_sell_store.setIsSortDropdownOpen(false)}
+                        toggleModal={() => setIsSortDropdownOpen(false)}
                         width='80vw'
                     >
                         <RadioGroup
                             name='reason'
                             className='sort-radiogroup'
-                            onToggle={buy_sell_store.handleChange}
-                            selected={buy_sell_store.selected_value}
+                            onToggle={handleChange}
+                            selected={selected_value}
                             required
                         >
-                            {buy_sell_store.sort_list.map((list_item, key) => {
+                            {sort_list.map((list_item, key) => {
                                 return (
                                     <RadioGroup.Item
                                         key={key}
@@ -86,7 +87,7 @@ const BuySellTable = ({ onScroll }) => {
                             })}
                         </RadioGroup>
                     </Modal>
-                    {isDesktop() && (
+                    <DesktopWrapper>
                         <Table.Header>
                             <Table.Row className='buy-sell__table-header'>
                                 <Table.Head>
@@ -104,15 +105,22 @@ const BuySellTable = ({ onScroll }) => {
                                 <Table.Head />
                             </Table.Row>
                         </Table.Header>
-                    )}
+                    </DesktopWrapper>
                     <Table.Body className='buy-sell__table-body'>
                         <InfiniteDataList
                             data_list_className='buy-sell__data-list'
-                            items={buy_sell_store.rendered_items}
-                            rowRenderer={props => <BuySellRowRenderer {...props} />}
-                            loadMoreRowsFn={buy_sell_store.loadMoreItems}
+                            items={rendered_items}
+                            rowRenderer={props => (
+                                <BuySellTableRow
+                                    {...props}
+                                    is_buy={is_buy}
+                                    setSelectedAdvert={setSelectedAdvert}
+                                    showAdvertiserPage={showAdvertiserPage}
+                                />
+                            )}
+                            loadMoreRowsFn={loadMoreItems}
                             has_filler
-                            has_more_items_to_load={buy_sell_store.has_more_items_to_load}
+                            has_more_items_to_load={has_more_items_to_load}
                             keyMapperFn={item => item.id}
                             onScroll={onScroll}
                         />
@@ -122,12 +130,7 @@ const BuySellTable = ({ onScroll }) => {
         );
     }
 
-    return <NoAds />;
-};
-
-BuySellTable.displayName = 'BuySellTable';
-BuySellTable.propTypes = {
-    onScroll: PropTypes.func,
+    return <BuySellTableNoAds />;
 };
 
 export default observer(BuySellTable);

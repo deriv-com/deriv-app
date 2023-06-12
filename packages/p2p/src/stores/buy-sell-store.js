@@ -121,6 +121,7 @@ export default class BuySellStore extends BaseStore {
             setLocalCurrency: action.bound,
             setLocalCurrencies: action.bound,
             setInitialReceiveAmount: action.bound,
+            setPaymentMethodIds: action.bound,
             setReceiveAmount: action.bound,
             setSearchResults: action.bound,
             setSearchTerm: action.bound,
@@ -525,6 +526,10 @@ export default class BuySellStore extends BaseStore {
 
     setInitialReceiveAmount(initial_price) {
         this.receive_amount = removeTrailingZeros(this.advert.min_order_amount_limit * initial_price);
+    }
+
+    setPaymentMethodIds(payment_method_ids) {
+        this.payment_method_ids = payment_method_ids;
     }
 
     setReceiveAmount(receive_amount) {

@@ -328,7 +328,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             multipliers_account_status: null,
             openFailedVerificationModal: jest.fn(),
             setTogglePlatformType: jest.fn(),
-            selected_region: 'EU',
             toggleAccountTransferModal: jest.fn(),
         },
         menu: {

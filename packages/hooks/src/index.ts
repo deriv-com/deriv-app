@@ -10,6 +10,7 @@ export { default as useDepositCryptoAddress } from './useDepositCryptoAddress';
 export { default as useDepositFiatAddress } from './useDepositFiatAddress';
 export { default as useDepositLocked } from './useDepositLocked';
 export { default as useExchangeRate } from './useExchangeRate';
+export { default as useFeatureFlags } from './useFeatureFlags';
 export { default as useFiatAccountList } from './useFiatAccountList';
 export { default as useHasActiveRealAccount } from './useHasActiveRealAccount';
 export { default as useHasCryptoCurrency } from './useHasCryptoCurrency';

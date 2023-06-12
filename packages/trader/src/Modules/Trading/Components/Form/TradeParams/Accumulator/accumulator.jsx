@@ -1,21 +1,16 @@
-import { PropTypes as MobxPropTypes } from 'mobx-react';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
 import NumberSelector from 'App/Components/Form/number-selector.jsx';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { connect } from 'Stores/connect';
 import { getGrowthRatePercentage, getTickSizeBarrierPercentage, isEmptyObject } from '@deriv/shared';
 import classNames from 'classnames';
+import { observer } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const Accumulator = ({
-    accumulator_range_list,
-    growth_rate,
-    is_accumulator,
-    onChange,
-    tick_size_barrier,
-    proposal_info,
-}) => {
+const Accumulator = observer(() => {
+    const { accumulator_range_list, growth_rate, is_accumulator, onChange, tick_size_barrier, proposal_info } =
+        useTraderStore();
+
     // splitting accumulator_range_list into rows containing 5 values each:
     const arr_arr_numbers = accumulator_range_list.reduce((acc, _el, index) => {
         if (index % 5 === 0) {
@@ -49,22 +44,6 @@ const Accumulator = ({
             />
         </Fieldset>
     );
-};
+});
 
-Accumulator.propTypes = {
-    accumulator_range_list: MobxPropTypes.arrayOrObservableArray,
-    growth_rate: PropTypes.number,
-    is_accumulator: PropTypes.boolean,
-    onChange: PropTypes.func,
-    proposal_info: PropTypes.object,
-    tick_size_barrier: PropTypes.number,
-};
-
-export default connect(({ modules }) => ({
-    is_accumulator: modules.trade.is_accumulator,
-    accumulator_range_list: modules.trade.accumulator_range_list,
-    growth_rate: modules.trade.growth_rate,
-    onChange: modules.trade.onChange,
-    proposal_info: modules.trade.proposal_info,
-    tick_size_barrier: modules.trade.tick_size_barrier,
-}))(Accumulator);
+export default Accumulator;

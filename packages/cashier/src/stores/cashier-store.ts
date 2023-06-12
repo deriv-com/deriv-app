@@ -24,7 +24,7 @@ export default class CashierStore {
 
     constructor(public root_store: TRootStore, public WS: TWebSocket) {
         this.account_transfer = new AccountTransferStore(WS, root_store);
-        this.crypto_fiat_converter = new CryptoFiatConverterStore(WS, root_store);
+        this.crypto_fiat_converter = new CryptoFiatConverterStore(root_store);
         this.error = new ErrorStore();
         this.general_store = new GeneralStore(WS, root_store);
         this.iframe = new IframeStore(root_store);

@@ -17,17 +17,7 @@ import {
 } from '@deriv/components';
 import { FileUploaderContainer, FormSubHeader, PoaStatusCodes } from '@deriv/account';
 import { localize } from '@deriv/translations';
-import {
-    WS,
-    isDesktop,
-    isMobile,
-    validAddress,
-    validLength,
-    validLetterSymbol,
-    validPostCode,
-    Jurisdiction,
-    getAuthenticationStatusInfo,
-} from '@deriv/shared';
+import { WS, isDesktop, isMobile, validAddress, validLength, validLetterSymbol, validPostCode } from '@deriv/shared';
 import { InputField } from './cfd-personal-details-form';
 import { TJurisdiction } from '../../types';
 
@@ -242,19 +232,11 @@ const CFDPOA = ({
         onSubmit(index, values);
     };
 
-    const computePOAStatus = (account_status: AccountStatusResponse['get_account_status']) => {
-        const { poa_resubmit_for_labuan, poa_status } = getAuthenticationStatusInfo(account_status);
-        if (jurisdiction_selected_shortcode === Jurisdiction.LABUAN && poa_resubmit_for_labuan) {
-            return 'none';
-        }
-        return poa_status;
-    };
-
     // didMount hook
     React.useEffect(() => {
         WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
             WS.wait('states_list').then(() => {
-                const poa_status = computePOAStatus(response.get_account_status);
+                const poa_status = response.get_account_status?.authentication?.document?.status;
                 const poi_status = response.get_account_status?.authentication?.identity?.status;
                 const poa_failed_status = ['rejected', 'expired', 'suspected'];
                 if (poa_status && poi_status) {

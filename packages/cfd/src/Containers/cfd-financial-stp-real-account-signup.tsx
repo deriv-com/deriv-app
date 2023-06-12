@@ -125,23 +125,19 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         return need_poi_for_bvi_labuan;
     };
 
-    let should_show_poa = false;
-
-    if (
-        jurisdiction_selected_shortcode === Jurisdiction.LABUAN &&
-        (account_status.risk_classification === 'high' || poa_resubmit_for_labuan)
-    ) {
-        should_show_poa = true;
-    } else {
-        should_show_poa = !['pending', 'verified'].includes(authentication_status.document_status);
-    }
+    const shouldShowPOA = () => {
+        if (Jurisdiction.LABUAN === jurisdiction_selected_shortcode && poa_resubmit_for_labuan) {
+            return true;
+        }
+        return !['pending', 'verified'].includes(authentication_status.document_status);
+    };
 
     const should_show_personal_details =
         !has_submitted_cfd_personal_details && jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST;
 
     const verification_configs = [
         ...(should_show_poi() ? [poi_config] : []),
-        ...(should_show_poa ? [poa_config] : []),
+        ...(shouldShowPOA() ? [poa_config] : []),
         ...(should_show_personal_details ? [personal_details_config] : []),
     ];
 

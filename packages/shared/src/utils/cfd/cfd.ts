@@ -261,6 +261,7 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus) =>
     const manual_status = account_status?.authentication?.identity?.services?.manual?.status;
 
     const is_authenticated_with_idv_photoid = account_status?.status?.includes('authenticated_with_idv_photoid');
+    const is_idv_revoked = account_status?.status?.includes('idv_revoked');
 
     const acknowledged_status = ['pending', 'verified'];
     const failed_cases = ['rejected', 'expired', 'suspected'];
@@ -361,5 +362,6 @@ export const getAuthenticationStatusInfo = (account_status: GetAccountStatus) =>
         poi_resubmit_for_bvi_labuan,
         poa_pending,
         poa_resubmit_for_labuan,
+        is_idv_revoked,
     };
 };

@@ -196,6 +196,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_any_real_account: false,
             real_account_creation_unlock_date: 0,
             setPrevAccountType: jest.fn(),
+            user_id: '',
         },
         common: {
             error: {
@@ -328,6 +329,15 @@ const mock = (): TStores & { is_mock: boolean } => {
             onClickSell: jest.fn(),
             onMount: jest.fn(),
             removePositionById: jest.fn(),
+        },
+        rudderstack: {
+            is_applicable: false,
+            has_identified: false,
+            current_page: '',
+            identifyEvent: jest.fn(),
+            track: jest.fn(),
+            pageView: jest.fn(),
+            reset: jest.fn(),
         },
         contract_trade: {
             getContractById: jest.fn(),

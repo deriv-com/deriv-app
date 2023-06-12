@@ -152,6 +152,7 @@ export default class ClientStore extends BaseStore {
     p2p_advertiser_info = {};
     prev_account_type = 'demo';
     external_url_params = {};
+    user_id = '';
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -220,6 +221,7 @@ export default class ClientStore extends BaseStore {
             prev_real_account_loginid: observable,
             p2p_advertiser_info: observable,
             prev_account_type: observable,
+            user_id: observable,
             balance: computed,
             account_open_date: computed,
             is_reality_check_visible: computed,

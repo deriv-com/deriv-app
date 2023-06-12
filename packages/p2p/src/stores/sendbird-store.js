@@ -246,7 +246,7 @@ export default class SendbirdStore extends BaseStore {
         getSendbirdServiceToken();
     }
 
-    markMessagesAsRead(should_check_scroll) {
+    async markMessagesAsRead(should_check_scroll) {
         if (!this.active_chat_channel) return;
 
         if (document.hasFocus()) {
@@ -255,10 +255,10 @@ export default class SendbirdStore extends BaseStore {
                 const is_at_bottom = scrollHeight - scrollTop === clientHeight;
 
                 if (is_at_bottom) {
-                    this.active_chat_channel.markAsRead();
+                    await this.active_chat_channel.markAsRead();
                 }
             } else {
-                this.active_chat_channel.markAsRead();
+                await this.active_chat_channel.markAsRead();
             }
         }
     }

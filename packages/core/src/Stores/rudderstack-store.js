@@ -1,12 +1,12 @@
 import { action, makeObservable } from 'mobx';
-import { getAppId } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import BinarySocket from '_common/base/socket_base';
 import BaseStore from './base-store';
 
 export default class RudderStackStore extends BaseStore {
     // only available on production (bot and deriv)
-    is_applicable = /^(16929|19111|24091)$/.test(getAppId());
+    // is_applicable = /^(16929|19111|24091)$/.test(getAppId());
+    is_applicable = true;
     has_identified = false;
     current_page = '';
 
@@ -21,7 +21,7 @@ export default class RudderStackStore extends BaseStore {
         });
     }
 
-    identifyEvent = async data =>
+    identifyEvent = async () =>
         new Promise(resolve => {
             if (this.is_applicable && !this.has_identified) {
                 BinarySocket.wait('authorize').then(() => {
@@ -29,7 +29,6 @@ export default class RudderStackStore extends BaseStore {
                     if (user_id) {
                         window.rudderanalytics.identify(user_id.toString(), {
                             language: getLanguage().toLowerCase(),
-                            ...data,
                         });
                         this.has_identified = true;
                         this.pageView();

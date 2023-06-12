@@ -132,6 +132,9 @@
                 // Staging keys
                 rudderanalytics.load('1lN3tsFD2nruGFgM5F074DC2hMB', 'https://deriv-dataplane.rudderstack.com');
             }
+            rudderanalytics.ready(() => {
+                console.log('RUDDERSTACK READY');
+            });
         </script>
         <script async src="https://cdn.rudderlabs.com/rudder-analytics.min.js"></script>
         <!-- End RudderStack Script -->

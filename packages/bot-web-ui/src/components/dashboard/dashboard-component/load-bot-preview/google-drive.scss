@@ -1,0 +1,22 @@
+.dc-dialog__wrapper--google-drive {
+    .dc-dialog {
+        &__dialog {
+            width: unset;
+            max-width: unset;
+            height: unset;
+            max-height: unset;
+            padding: 2.4rem;
+            background-color: var(--general-main-2);
+        }
+        &__content {
+            .load-strategy {
+                &__container {
+                    height: unset;
+                }
+            }
+        }
+        &__footer {
+            display: none;
+        }
+    }
+}

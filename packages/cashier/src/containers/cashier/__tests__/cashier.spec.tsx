@@ -43,7 +43,6 @@ jest.mock('@deriv/shared', () => {
     };
 });
 
-jest.mock('Components/account-prompt-dialog', () => jest.fn(() => 'mockedAccountPromptDialog'));
 jest.mock('Components/error-dialog', () => jest.fn(() => 'mockedErrorDialog'));
 jest.mock('Pages/deposit', () => jest.fn(() => 'mockedDeposit'));
 jest.mock('Pages/withdrawal', () => jest.fn(() => 'mockedWithdrawal'));
@@ -98,9 +97,6 @@ describe('<Cashier />', () => {
                     payment_agent: {
                         is_payment_agent_visible: false,
                     },
-                    account_prompt_dialog: {
-                        resetLastLocation: jest.fn(),
-                    },
                 },
             },
         });
@@ -149,9 +145,6 @@ describe('<Cashier />', () => {
                     },
                     payment_agent: {
                         is_payment_agent_visible: true,
-                    },
-                    account_prompt_dialog: {
-                        resetLastLocation: jest.fn(),
                     },
                 },
             },
@@ -210,9 +203,6 @@ describe('<Cashier />', () => {
                     payment_agent: {
                         is_payment_agent_visible: true,
                     },
-                    account_prompt_dialog: {
-                        resetLastLocation: jest.fn(),
-                    },
                 },
             },
         });
@@ -261,9 +251,6 @@ describe('<Cashier />', () => {
     //                 },
     //                 payment_agent: {
     //                     is_payment_agent_visible: true,
-    //                 },
-    //                 account_prompt_dialog: {
-    //                     resetLastLocation: jest.fn(),
     //                 },
     //             },
     //         },
@@ -317,9 +304,6 @@ describe('<Cashier />', () => {
                     payment_agent: {
                         is_payment_agent_visible: true,
                     },
-                    account_prompt_dialog: {
-                        resetLastLocation: jest.fn(),
-                    },
                 },
             },
         });
@@ -371,9 +355,6 @@ describe('<Cashier />', () => {
                     payment_agent: {
                         is_payment_agent_visible: true,
                     },
-                    account_prompt_dialog: {
-                        resetLastLocation: jest.fn(),
-                    },
                 },
             },
         });
@@ -423,9 +404,6 @@ describe('<Cashier />', () => {
                     },
                     payment_agent: {
                         is_payment_agent_visible: true,
-                    },
-                    account_prompt_dialog: {
-                        resetLastLocation: jest.fn(),
                     },
                 },
             },

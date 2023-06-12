@@ -53,11 +53,6 @@ jest.mock('Components/cashier-container/real', () => {
     return CashierContainerReal;
 });
 
-jest.mock('Components/cashier-onboarding/cashier-onboarding', () => {
-    const CashierOnboarding = () => <div>CashierOnboarding</div>;
-    return CashierOnboarding;
-});
-
 jest.mock('../deposit-locked', () => {
     const DepositLocked = () => <div>DepositLocked</div>;
     return DepositLocked;
@@ -482,50 +477,6 @@ describe('<Deposit />', () => {
         });
 
         expect(screen.getByText('Real')).toBeInTheDocument();
-    });
-
-    it('should render <CashierOnboarding /> component', () => {
-        const mock_root_store = mockStore({
-            client: {
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
-                currency: 'USD',
-                can_change_fiat_currency: false,
-                current_currency_type: 'fiat',
-                is_switching: false,
-                is_virtual: false,
-            },
-            modules: {
-                cashier: {
-                    iframe: {},
-                    transaction_history: {
-                        is_crypto_transactions_visible: false,
-                        onMount: jest.fn(),
-                    },
-                    deposit: {
-                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        onMountDeposit: jest.fn(),
-                    },
-                    general_store: {
-                        is_deposit: false,
-                        is_loading: false,
-                        setActiveTab: jest.fn(),
-                        setIsDeposit: jest.fn(),
-                    },
-                },
-            },
-            traders_hub: { content_flag: ContentFlag.CR_DEMO },
-        });
-
-        render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
-        });
-
-        expect(screen.getByText('CashierOnboarding')).toBeInTheDocument();
     });
 
     it('should trigger "setSideNotes" callback', () => {

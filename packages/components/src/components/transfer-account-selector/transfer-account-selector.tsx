@@ -68,7 +68,11 @@ const TransferAccountSelector = ({
     }, [is_wallet_name_visible]);
 
     return (
-        <div className='transfer-account-selector' onClick={is_list_modal_open ? undefined : openAccountsList}>
+        <div
+            className='transfer-account-selector'
+            data-testid='dt_transfer_account_selector'
+            onClick={is_list_modal_open ? undefined : openAccountsList}
+        >
             <TransferTile
                 is_mobile={is_mobile}
                 label={label}
@@ -84,6 +88,7 @@ const TransferAccountSelector = ({
                 is_open={is_list_modal_open}
                 onUnmount={() => setIsWalletNameVisible?.(true)}
                 portalId={portal_id}
+                transition_timeout={is_mobile ? { enter: 250, exit: 0 } : 250}
                 title={label}
                 toggleModal={() => setIsListModalOpen(old => !old)}
             >

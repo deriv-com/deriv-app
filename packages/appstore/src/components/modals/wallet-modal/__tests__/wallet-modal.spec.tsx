@@ -7,7 +7,7 @@ jest.mock('../wallet-modal-header', () => jest.fn(() => <div>WalletModalHeader</
 jest.mock('../wallet-modal-body', () => jest.fn(() => <div>WalletModalBody</div>));
 
 describe('WalletModal', () => {
-    let modal_root_el;
+    let modal_root_el: HTMLDivElement;
     beforeAll(() => {
         modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');

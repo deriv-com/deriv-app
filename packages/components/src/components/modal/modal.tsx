@@ -212,6 +212,7 @@ type TModal = TModalElement & {
     exit_classname?: string;
     onEntered?: () => void;
     onExited?: () => void;
+    transition_timeout?: React.ComponentProps<typeof CSSTransition>['timeout'];
 };
 
 const Modal = ({
@@ -242,13 +243,14 @@ const Modal = ({
     should_header_stick_body = true,
     small,
     title,
+    transition_timeout,
     toggleModal,
     width,
 }: React.PropsWithChildren<TModal>) => (
     <CSSTransition
         appear
         in={is_open}
-        timeout={250}
+        timeout={transition_timeout || 250}
         classNames={{
             appear: 'dc-modal__container--enter',
             enter: 'dc-modal__container--enter',

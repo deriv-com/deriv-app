@@ -18,73 +18,107 @@ const FiatTransactionList = () => {
     } = useStore();
     const { data } = useFetch('statement', { options: { keepPreviousData: true } });
     const transactions = data?.statement?.transactions;
+
+    // TODO remove these mock additions
+    accounts.CR90000042 = {
+        account_category: 'trading',
+        account_type: 'binary',
+        balance: 0,
+        currency: 'BTC',
+        is_virtual: 0,
+        landing_company_name: 'SVG',
+        landing_company_shortcode: 'svg',
+        linked_to: [],
+    };
+    accounts.CR90000043 = {
+        account_category: 'wallet',
+        account_type: 'binary',
+        balance: 0,
+        currency: 'BTC',
+        is_virtual: 0,
+        landing_company_name: 'SVG',
+        landing_company_shortcode: 'svg',
+        linked_to: [],
+    };
+    accounts.CR90000044 = {
+        account_category: 'wallet',
+        account_type: 'binary',
+        balance: 0,
+        currency: 'BTC',
+        is_virtual: 0,
+        landing_company_name: 'SVG',
+        landing_company_shortcode: 'svg',
+        linked_to: [
+            {
+                loginid: 'CR90000100',
+                platform: 'mt5',
+            },
+        ],
+    };
+
     // TODO remove the following mock and replace its uses with transactions
     const mock_transactions = is_demo
         ? [
               {
-                  action_type: 'reset_balance',
-                  amount: 10000,
-                  app_id: 2,
-                  balance_after: 10000,
-                  contract_id: 6842548881,
-                  longcode:
-                      'Win payout if AUD/JPY is strictly lower than entry spot at 1 minute after contract start time.',
-                  payout: 1,
-                  purchase_time: 1470637295,
-                  reference_id: 13692993001,
-                  shortcode: 'PUT_FRXAUDJPY_1_1470637295_1470637355_S0P_0',
-                  transaction_id: 13693003421,
-                  transaction_time: 1685009944,
+                  action_type: 'transfer',
+                  amount: 5,
+                  from: {
+                      loginid,
+                      type: 'wallet',
+                  },
+                  to: {
+                      loginid: 'CR90000100',
+                      type: 'trading',
+                  },
+                  app_id: {},
+                  balance_after: 9995,
+                  transaction_id: 17494415482,
+                  transaction_time: 1685942139,
               },
               {
                   action_type: 'reset_balance',
-                  amount: 10000,
-                  app_id: 2,
+                  amount: 350,
                   balance_after: 10000,
-                  contract_id: 6842548881,
-                  longcode:
-                      'Win payout if AUD/JPY is strictly lower than entry spot at 1 minute after contract start time.',
-                  payout: 1,
-                  purchase_time: 1470637295,
-                  reference_id: 13692993001,
-                  shortcode: 'PUT_FRXAUDJPY_1_1470637295_1470637355_S0P_0',
                   transaction_id: 13693003421,
-                  transaction_time: 1685009944,
+                  transaction_time: 1685942138,
               },
               {
                   action_type: 'transfer',
-                  amount: -42,
+                  amount: 200,
                   from: {
-                      loginid: 'CR90000000',
+                      loginid: 'CR90000100',
                       type: 'trading',
                   },
                   to: {
-                      loginid: 'CRW1000',
+                      loginid,
                       type: 'wallet',
                   },
-                  app_id: {},
-                  balance_after: 9958,
-                  contract_id: {},
-                  longcode: 'Transfer from <> to <>. Includes fees',
-                  payout: {},
-                  reference_id: {},
-                  shortcode: {},
+                  balance_after: 9650,
                   transaction_id: 17494415482,
-                  transaction_time: 1684009944,
+                  transaction_time: 1685855740,
+              },
+              {
+                  action_type: 'transfer',
+                  amount: 550,
+                  from: {
+                      loginid,
+                      type: 'wallet',
+                  },
+                  to: {
+                      loginid: 'CR90000100',
+                      type: 'trading',
+                  },
+                  app_id: {},
+                  balance_after: 9450,
+                  transaction_id: 17494415482,
+                  transaction_time: 1685855739,
               },
               {
                   action_type: 'initial_fund',
                   amount: 10000,
-                  app_id: 1,
                   balance_after: 10000,
-                  contract_id: 6842558021,
-                  longcode:
-                      'Win payout if AUD/JPY is strictly higher than entry spot at 1 minute after contract start time.',
-                  payout: 1,
-                  reference_id: {},
-                  shortcode: 'CALL_FRXAUDJPY_1_1470637406_1470637466_S0P_0',
                   transaction_id: 13693011401,
-                  transaction_time: 1684909944,
+                  transaction_time: 1685855738,
               },
           ]
         : [
@@ -167,7 +201,7 @@ const FiatTransactionList = () => {
                   reference_id: {},
                   shortcode: {},
                   transaction_id: 17494117541,
-                  transaction_time: 1685009944,
+                  transaction_time: 1685942138,
               },
           ];
     const grouped_transactions = useGroupedFiatTransactions(mock_transactions);
@@ -271,7 +305,11 @@ const FiatTransactionList = () => {
                                 }
                                 account_currency={account_currency}
                                 account_name={account_title}
-                                amount={transaction.amount}
+                                amount={
+                                    transaction.action_type === 'transfer' && transaction?.from?.loginid === loginid
+                                        ? -transaction.amount
+                                        : transaction.amount
+                                }
                                 balance_after={transaction.balance_after}
                                 currency={wallet_currency}
                                 icon={icon}
@@ -280,24 +318,7 @@ const FiatTransactionList = () => {
                             />
                         );
                     })
-                    .filter(Boolean)
-                    // TODO remove the hardcoded concat below later
-                    .concat([
-                        <FiatTransactionListItem
-                            key={-1}
-                            action_type='transfer'
-                            account_currency={wallet_currency}
-                            account_name={`${localize('Deriv Apps')} ${
-                                is_demo ? localize('Demo') : `(${landingCompanyName(shortcode)})`
-                            } ${localize('account')}`}
-                            amount={42}
-                            balance_after={4242}
-                            currency={wallet_currency}
-                            icon={wallet_icon}
-                            icon_type={is_demo ? 'demo' : 'fiat'}
-                            is_deriv_apps
-                        />,
-                    ])}
+                    .filter(Boolean)}
             </div>
         );
     };

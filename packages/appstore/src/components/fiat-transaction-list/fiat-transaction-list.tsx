@@ -72,7 +72,7 @@ const FiatTransactionList = () => {
                   },
                   app_id: {},
                   balance_after: 9995,
-                  transaction_id: 17494415482,
+                  transaction_id: 17494415484,
                   transaction_time: 1685942139,
               },
               {
@@ -94,7 +94,7 @@ const FiatTransactionList = () => {
                       type: 'wallet',
                   },
                   balance_after: 9650,
-                  transaction_id: 17494415482,
+                  transaction_id: 17494415483,
                   transaction_time: 1685855740,
               },
               {
@@ -285,13 +285,13 @@ const FiatTransactionList = () => {
                                     false
                                 );
                                 icon_type = isCryptocurrency(account_currency) ? 'crypto' : 'fiat';
-                                is_deriv_apps = true;
                             } else {
                                 const app_account = linked_accounts.find(account => account?.loginid === other_loginid);
                                 if (!app_account) return null;
                                 const landing_company_name = landingCompanyName(shortcode);
                                 const account_category = is_demo ? localize('Demo') : `(${landing_company_name})`;
                                 account_title = `${localize('Deriv Apps')} ${account_category} ${localize('account')}`;
+                                is_deriv_apps = true;
                             }
                         }
                         return (

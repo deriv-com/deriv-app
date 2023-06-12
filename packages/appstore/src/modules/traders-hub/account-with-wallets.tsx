@@ -5,7 +5,6 @@ import WalletCardsCarousel from 'Components/wallet-cards-carousel';
 import { useWalletsList } from '@deriv/hooks';
 import { Loading } from '@deriv/components';
 import { convertWallets } from 'Constants/utils';
-import './slick.scss';
 
 const AccountWithWallets = observer(() => {
     const {

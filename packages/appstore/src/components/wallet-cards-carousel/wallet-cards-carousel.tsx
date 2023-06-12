@@ -1,8 +1,8 @@
 import React from 'react';
 import { getWalletHeaderButtons } from 'Constants/utils';
 import { TWalletAccount } from 'Types';
-import CardsSlider from './cards-slider';
 import WalletButton from 'Components/wallet-button';
+import CardsSliderSwiper from './cards-slider-swiper';
 import './wallet-cards-carousel.scss';
 
 type TProps = {
@@ -16,7 +16,7 @@ const WalletCardsCarousel = ({ items }: TProps) => {
 
     return (
         <div className='wallet-cards-carousel'>
-            <CardsSlider items={items} setActivePage={setActivePage} />
+            <CardsSliderSwiper items={items} setActivePage={setActivePage} />
             <div className='wallet-cards-carousel__buttons'>
                 {wallet_buttons.map(button => (
                     <WalletButton key={button.name} button={button} />

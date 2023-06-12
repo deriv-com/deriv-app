@@ -1,14 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
-import { localize } from '@deriv/translations';
 import { ContractCard, Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import ContractCardLoader from 'Components/contract-card-loading';
 import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
-import { connect } from 'Stores/connect';
 import { connectWithContractUpdate } from 'Utils/multiplier';
+import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { TSummaryCardProps } from './summary-card.types';
-import { isMobile } from '@deriv/shared';
 
 const SummaryCard = ({
     addToast,

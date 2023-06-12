@@ -1,11 +1,11 @@
 import React from 'react';
-import { observable, action, reaction, computed, runInAction, makeObservable } from 'mobx';
-import { localize, Localize } from '@deriv/translations';
-import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
+import { action, computed, makeObservable, observable, reaction, runInAction } from 'mobx';
+import { error_types, message_types, observer, unrecoverable_errors } from '@deriv/bot-skeleton';
+import { isSafari, mobileOSDetect } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import { contract_stages } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
 import { journalError, switch_account_notification } from 'Utils/bot-notifications';
-import { isSafari, mobileOSDetect } from '@deriv/shared';
 
 export default class RunPanelStore {
     constructor(root_store, core) {
@@ -70,6 +70,7 @@ export default class RunPanelStore {
         this.dbot = this.root_store.dbot;
         this.core = core;
         this.disposeReactionsFn = this.registerReactions();
+        this.timer = null;
     }
 
     active_index = 0;
@@ -147,6 +148,13 @@ export default class RunPanelStore {
     }
 
     async onRunButtonClick() {
+        performance.clearMeasures();
+
+        this.timer = setInterval(() => {
+            window.sendRequestsStatistic(true);
+            performance.clearMeasures();
+        }, 10000);
+
         const { summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = this.core;
         const is_ios = mobileOSDetect() === 'iOS';
@@ -230,6 +238,9 @@ export default class RunPanelStore {
         if (this.error_type) {
             this.error_type = undefined;
         }
+
+        window.sendRequestsStatistic(false);
+        clearInterval(this.timer);
     }
 
     onClearStatClick() {
@@ -653,6 +664,9 @@ export default class RunPanelStore {
         observer.unregisterAll('ui.log.notify');
         observer.unregisterAll('ui.log.success');
         observer.unregisterAll('client.invalid_token');
+
+        if (this.timer) clearInterval(this.timer);
+        window.sendRequestsStatistic(false);
     }
 
     async handleInvalidToken() {

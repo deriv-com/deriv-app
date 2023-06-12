@@ -1,7 +1,7 @@
-import { action, reaction, makeObservable } from 'mobx';
-import { isEuResidenceWithOnlyVRTC, showDigitalOptionsUnavailableError, routes } from '@deriv/shared';
+import { action, makeObservable, reaction } from 'mobx';
+import { ApiHelpers, DBot, runIrreversibleEvents } from '@deriv/bot-skeleton';
+import { isEuResidenceWithOnlyVRTC, routes, showDigitalOptionsUnavailableError } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { runIrreversibleEvents, ApiHelpers, DBot } from '@deriv/bot-skeleton';
 
 export default class AppStore {
     constructor(root_store, core) {
@@ -23,11 +23,20 @@ export default class AppStore {
         this.core = core;
         this.dbot_store = null;
         this.api_helpers_store = null;
+        this.timer = null;
     }
 
     onMount() {
-        const { blockly_store } = this.root_store;
+        const { blockly_store, run_panel } = this.root_store;
         const { client, common } = this.core;
+
+        if (!run_panel?.is_running) {
+            this.timer = setInterval(() => {
+                window.sendRequestsStatistic(false);
+                performance.clearMeasures();
+            }, 10000);
+        }
+
         this.showDigitalOptionsMaltainvestError(client, common);
 
         blockly_store.setLoading(true);

@@ -51,6 +51,8 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
     });
 
     const ad_pause_color = general_store.is_listed && !general_store.is_barred ? 'general' : 'less-prominent';
+    const advert_active_color =
+        general_store.is_listed && !general_store.is_barred ? 'profit-success' : 'less-prominent';
     const icon_disabled_color =
         (!general_store.is_listed || general_store.is_barred || !is_advert_active) && 'disabled';
     const is_activate_ad_disabled = floating_rate_store.reached_target_date && enable_action_point;
@@ -144,7 +146,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             )}
                         </div>
                         <div className='p2p-my-ads__table-row-details'>
-                            <Text color='profit-success' line_height='m' size='xxs'>
+                            <Text color={advert_active_color} line_height='m' size='xxs'>
                                 {`${formatMoney(account_currency, amount_dealt, true)}`} {account_currency}&nbsp;
                                 {is_buy_advert ? localize('Bought') : localize('Sold')}
                             </Text>

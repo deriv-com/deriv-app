@@ -136,6 +136,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_trading_experience_incomplete: false,
             is_virtual: false,
             is_withdrawal_lock: false,
+            is_populating_account_list: false,
             landing_company_shortcode: '',
             local_currency_config: {
                 currency: '',
@@ -326,6 +327,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_cfd_reset_password_modal_enabled: false,
             setCFDPasswordResetModal: jest.fn(),
             openDerivRealAccountNeededModal: jest.fn(),
+            populateHeaderExtensions: jest.fn(),
+            populateSettingsExtensions: jest.fn(),
             setShouldShowCooldownModal: jest.fn(),
             openAccountNeededModal: jest.fn(),
             is_accounts_switcher_on: false,
@@ -423,6 +426,11 @@ const mock = (): TStores & { is_mock: boolean } => {
         },
         modules: {},
         exchange_rates: {
+            data: undefined,
+            update: jest.fn(),
+            unmount: jest.fn(),
+        },
+        feature_flags: {
             data: undefined,
             update: jest.fn(),
             unmount: jest.fn(),

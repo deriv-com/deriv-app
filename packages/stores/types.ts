@@ -14,7 +14,13 @@ import type {
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
-import type { ExchangeRatesStore } from './src/stores';
+import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
+
+type TPopulateSettingsExtensionsMenuItem = {
+    icon: string;
+    label: string;
+    value: <T extends object>(props: T) => JSX.Element;
+};
 
 type TAppRoutingHistory = {
     action: string;
@@ -199,6 +205,7 @@ type TClientStore = {
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
     landing_company_shortcode: string;
+    is_populating_account_list: boolean;
     local_currency_config: {
         currency: string;
         decimal_places?: number;
@@ -385,6 +392,8 @@ type TUiStore = {
     toggleShouldShowRealAccountsList: () => void;
     is_reset_trading_password_modal_visible: boolean;
     setResetTradingPasswordModalOpen: () => void;
+    populateHeaderExtensions: (header_items: JSX.Element | null) => void;
+    populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     setShouldShowCooldownModal: (value: boolean) => void;
 };
 
@@ -487,4 +496,5 @@ export type TCoreStores = {
 
 export type TStores = TCoreStores & {
     exchange_rates: ExchangeRatesStore;
+    feature_flags: FeatureFlagsStore;
 };

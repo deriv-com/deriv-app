@@ -157,10 +157,11 @@ const CryptoWithdrawForm = observer(() => {
                             <div className='crypto-withdraw-form__percentage-selector'>
                                 <PercentageSelector
                                     amount={Number(balance)}
-                                    currency={currency}
                                     getCalculatedAmount={setWithdrawPercentageSelectorResult}
                                     percentage={percentage}
                                     should_percentage_reset={should_percentage_reset}
+                                    from_currency={crypto_currency}
+                                    to_currency={current_fiat_currency || DEFAULT_FIAT_CURRENCY}
                                 />
                             </div>
                             <CryptoFiatConverter

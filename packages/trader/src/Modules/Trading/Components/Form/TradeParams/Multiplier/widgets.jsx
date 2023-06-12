@@ -1,6 +1,7 @@
 import React from 'react';
 import { Money, Text } from '@deriv/components';
-import { connect } from 'Stores/connect';
+import { useTraderStore } from 'Stores/useTraderStores';
+import { observer } from '@deriv/stores';
 import MultiplierAmountModal from 'Modules/Trading/Containers/Multiplier/multiplier-amount-modal.jsx';
 import RadioGroupOptionsModal from 'Modules/Trading/Containers/radio-group-options-modal.jsx';
 import MultipliersExpiration from 'Modules/Trading/Components/Form/TradeParams/Multiplier/expiration.jsx';
@@ -54,13 +55,17 @@ const AmountWidget = ({ amount, currency, expiration, is_crypto_multiplier }) =>
     );
 };
 
-export const MultiplierAmountWidget = connect(({ modules }) => ({
-    amount: modules.trade.amount,
-    expiration: modules.trade.expiration,
-    currency: modules.trade.currency,
-    is_crypto_multiplier: modules.trade.is_crypto_multiplier,
-    multiplier: modules.trade.multiplier,
-}))(AmountWidget);
+export const MultiplierAmountWidget = observer(() => {
+    const { amount, expiration, currency, is_crypto_multiplier, multiplier } = useTraderStore();
+    const amount_widget_props = {
+        amount,
+        expiration,
+        currency,
+        is_crypto_multiplier,
+        multiplier,
+    };
+    return <AmountWidget {...amount_widget_props} />;
+});
 
 const RadioGroupOptionsWidget = ({ displayed_trade_param, modal_title }) => {
     const [is_open, setIsOpen] = React.useState(false);
@@ -81,12 +86,16 @@ const RadioGroupOptionsWidget = ({ displayed_trade_param, modal_title }) => {
     );
 };
 
-export const MultiplierOptionsWidget = connect(({ modules }) => ({
-    displayed_trade_param: `x${modules.trade.multiplier}`,
-    modal_title: localize('Multiplier'),
-}))(RadioGroupOptionsWidget);
+export const MultiplierOptionsWidget = observer(() => {
+    const { multiplier } = useTraderStore();
+    const displayed_trade_param = `x${multiplier}`;
+    const modal_title = localize('Multiplier');
+    return <RadioGroupOptionsWidget displayed_trade_param={displayed_trade_param} modal_title={modal_title} />;
+});
 
-export const AccumulatorOptionsWidget = connect(({ modules }) => ({
-    displayed_trade_param: `${getGrowthRatePercentage(modules.trade.growth_rate)}%`,
-    modal_title: localize('Accumulate'),
-}))(RadioGroupOptionsWidget);
+export const AccumulatorOptionsWidget = observer(() => {
+    const { growth_rate } = useTraderStore();
+    const displayed_trade_param = `${getGrowthRatePercentage(growth_rate)}%`;
+    const modal_title = localize('Accumulate');
+    return <RadioGroupOptionsWidget displayed_trade_param={displayed_trade_param} modal_title={modal_title} />;
+});

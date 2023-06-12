@@ -196,6 +196,21 @@ const FiatTransactionList = () => {
                   transaction_id: 17494117541,
                   transaction_time: 1685855737,
               },
+              {
+                  action_type: 'transfer',
+                  amount: 550,
+                  from: {
+                      loginid,
+                      type: 'wallet',
+                  },
+                  to: {
+                      loginid: 'CR90000043',
+                      type: 'wallet',
+                  },
+                  balance_after: 450,
+                  transaction_id: 17494117540,
+                  transaction_time: 1685855736,
+              },
           ];
     const grouped_transactions = useGroupedFiatTransactions(mock_transactions);
     const linked_accounts = Object.values(accounts)

@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { loginUrl, routes, PlatformContext } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -20,12 +21,16 @@ const Redirect = ({
     toggleResetEmailModal,
     toggleUpdateEmailModal,
 }) => {
+    const { client } = useStore();
+    const { loginid, setLoginId } = client;
+
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
     const { is_appstore } = React.useContext(PlatformContext);
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
+    const loginid_param = url_params.get('loginid') || loginid;
 
     setVerificationCode(code_param, action_param);
     setNewEmail(url_params.get('email'), action_param);
@@ -117,6 +122,7 @@ const Redirect = ({
             break;
         }
         case 'payment_withdraw': {
+            setLoginId(loginid_param);
             history.push(routes.cashier_withdrawal);
             redirected_to_route = true;
             break;

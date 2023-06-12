@@ -21,7 +21,7 @@ describe('Accumulator', () => {
                 <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
             ),
         });
-        expect(screen.getByText('Accumulate')).toBeInTheDocument();
+        expect(screen.getByText('Growth rate')).toBeInTheDocument();
         expect(screen.getByText('1%')).toBeInTheDocument();
         expect(screen.getByText('2%')).toBeInTheDocument();
         expect(screen.getByText('3%')).toBeInTheDocument();

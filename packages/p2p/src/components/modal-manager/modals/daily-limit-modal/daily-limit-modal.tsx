@@ -1,9 +1,11 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Button, Loading, Modal, Text } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
-import { Localize, localize } from 'Components/i18next';
-import { useStores } from 'Stores';
 import { observer, useStore } from '@deriv/stores';
+import { useStores } from 'Stores';
+import { Localize, localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const DailyLimitModal = () => {
     const { my_profile_store, general_store } = useStores();
@@ -11,17 +13,18 @@ const DailyLimitModal = () => {
     const {
         client: { currency },
     } = useStore();
+    const { hideModal, is_modal_open } = useModalManagerContext();
 
     const getModalHeaderTitle = () => {
-        if (my_profile_store.is_loading_modal_open) {
+        if (my_profile_store.is_daily_limit_upgrading) {
             return null;
-        } else if (my_profile_store.is_daily_limit_success_modal_open) {
+        } else if (my_profile_store.is_daily_limit_upgrade_success) {
             return (
                 <Text color='prominent' weight='bold'>
                     <Localize i18n_default_text='Success!' />
                 </Text>
             );
-        } else if (my_profile_store.is_error_modal_open) {
+        } else if (my_profile_store.is_there_daily_limit_error) {
             return (
                 <Text color='prominent' weight='bold'>
                     <Localize i18n_default_text='An internal error occurred' />
@@ -37,9 +40,9 @@ const DailyLimitModal = () => {
     };
 
     const getModalContent = () => {
-        if (my_profile_store.is_loading_modal_open) {
+        if (my_profile_store.is_daily_limit_upgrading) {
             return <Loading className='daily-limit-modal__loader' is_fullscreen={false} />;
-        } else if (my_profile_store.is_daily_limit_success_modal_open) {
+        } else if (my_profile_store.is_daily_limit_upgrade_success) {
             return (
                 <Text as='p' size='xs' color='prominent'>
                     <Localize
@@ -52,7 +55,7 @@ const DailyLimitModal = () => {
                     />
                 </Text>
             );
-        } else if (my_profile_store.is_error_modal_open) {
+        } else if (my_profile_store.is_there_daily_limit_error) {
             return (
                 <Text as='p' size='xs' color='prominent'>
                     <Localize i18n_default_text="Sorry, we're unable to increase your limits right now. Please try again in a few minutes." />
@@ -68,36 +71,20 @@ const DailyLimitModal = () => {
     };
 
     const getModalFooter = () => {
-        if (my_profile_store.is_loading_modal_open) {
+        if (my_profile_store.is_daily_limit_upgrading) {
             return null;
-        } else if (my_profile_store.is_daily_limit_success_modal_open || my_profile_store.is_error_modal_open) {
-            return (
-                <Button
-                    has_effect
-                    text={localize('Ok')}
-                    onClick={() => {
-                        my_profile_store.setIsDailyLimitModalOpen(false);
-                    }}
-                    primary
-                    large
-                />
-            );
+        } else if (my_profile_store.is_daily_limit_upgrade_success || my_profile_store.is_there_daily_limit_error) {
+            return <Button has_effect text={localize('Ok')} onClick={hideModal} primary large />;
         }
 
         return (
             <>
-                <Button
-                    has_effect
-                    text={localize('No')}
-                    onClick={() => my_profile_store.setIsDailyLimitModalOpen(false)}
-                    secondary
-                    large
-                />
+                <Button has_effect text={localize('No')} onClick={hideModal} secondary large />
                 <Button
                     has_effect
                     text={localize('Yes, continue')}
                     onClick={() => {
-                        my_profile_store.setIsLoadingModalOpen(true);
+                        my_profile_store.setIsDailyLimitUpgrading(true);
                         my_profile_store.upgradeDailyLimit();
                     }}
                     primary
@@ -108,14 +95,14 @@ const DailyLimitModal = () => {
     };
 
     return (
-        <Modal
-            is_open={my_profile_store.is_daily_limit_modal_open}
-            small
-            has_close_icon={false}
-            title={getModalHeaderTitle()}
-            width='440px'
-        >
-            <Modal.Body>{getModalContent()}</Modal.Body>
+        <Modal is_open={is_modal_open} small has_close_icon={false} title={getModalHeaderTitle()} width='440px'>
+            <Modal.Body
+                className={classNames('daily-limit-modal__body', {
+                    'daily-limit-modal__upgrading': my_profile_store.is_daily_limit_upgrading,
+                })}
+            >
+                {getModalContent()}
+            </Modal.Body>
             <Modal.Footer>{getModalFooter()}</Modal.Footer>
         </Modal>
     );

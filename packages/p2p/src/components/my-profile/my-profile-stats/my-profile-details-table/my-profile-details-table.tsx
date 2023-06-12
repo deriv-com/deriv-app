@@ -1,8 +1,10 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Button, Money, Table, Text } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useStores } from 'Stores';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { Localize } from 'Components/i18next';
 
 const MyProfileDetailsTable = () => {
@@ -10,13 +12,18 @@ const MyProfileDetailsTable = () => {
     const {
         client: { currency },
     } = useStore();
+    const { showModal } = useModalManagerContext() || {};
 
     const { daily_buy_limit, daily_sell_limit, upgradable_daily_limits } = general_store.advertiser_info;
     const { advertiser_buy_limit, advertiser_sell_limit } = general_store;
 
     return (
-        <React.Fragment>
-            <div className='my-profile-details-table'>
+        <div>
+            <div
+                className={classNames('my-profile-details-table', {
+                    'my-profile-details-table__upgradable': upgradable_daily_limits,
+                })}
+            >
                 <Table>
                     <Table.Head>
                         <Text color='prominent' size='xs'>
@@ -83,7 +90,7 @@ const MyProfileDetailsTable = () => {
                     </Text>
                     <Button
                         onClick={() => {
-                            my_profile_store.setIsDailyLimitModalOpen(true);
+                            showModal({ key: 'DailyLimitModal' });
                         }}
                         small
                         tertiary
@@ -92,7 +99,7 @@ const MyProfileDetailsTable = () => {
                     </Button>
                 </Text>
             )}
-        </React.Fragment>
+        </div>
     );
 };
 

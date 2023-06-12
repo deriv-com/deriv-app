@@ -4,7 +4,7 @@ import { useModalManagerContext } from '../../modal-manager-context';
 import { Localize, localize } from 'Components/i18next';
 
 const MyProfileBalanceModal = () => {
-    const { hideModal, is_modal_open } = useModalManagerContext();
+    const { hideModal, is_modal_open } = useModalManagerContext() || {};
 
     return (
         <Modal

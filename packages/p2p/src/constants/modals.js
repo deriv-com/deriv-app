@@ -45,6 +45,9 @@ export const modals = {
             /* webpackChunkName: "create-ad-add-payment-method-modal" */ 'Components/modal-manager/modals/create-ad-add-payment-method-modal'
         )
     ),
+    DailyLimitModal: React.lazy(() =>
+        import(/* webpackChunkName: "daily-limit-modal" */ 'Components/modal-manager/modals/daily-limit-modal')
+    ),
     DeletePaymentMethodErrorModal: React.lazy(() =>
         import(
             /* webpackChunkName: "delete-payment-method-error-modal" */ 'Components/modal-manager/modals/delete-payment-method-error-modal'

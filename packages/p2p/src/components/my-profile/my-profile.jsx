@@ -3,7 +3,6 @@ import { AutoSizer, DesktopWrapper, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { useStores } from 'Stores';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
-import DailyLimitModal from 'Components/daily-limit-modal';
 import MyProfileContent from './my-profile-content.jsx';
 import MyProfileHeader from './my-profile-header';
 import MyProfileDetailsContainer from './my-profile-stats/my-profile-details-container';
@@ -37,7 +36,6 @@ const MyProfile = () => {
             {({ height, width }) => (
                 <div className='my-profile' style={{ height, width }}>
                     <div className='my-profile__content'>
-                        <DailyLimitModal />
                         <MyProfileDetailsContainer />
                         <DesktopWrapper>
                             <MyProfileHeader />

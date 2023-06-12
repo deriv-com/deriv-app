@@ -6,6 +6,7 @@ import { localize, Localize } from '@deriv/translations';
 import ContractResultOverlay from 'Components/contract-result-overlay';
 import { contract_stages } from 'Constants/contract-stage';
 import { connect } from 'Stores/connect';
+import { isMobile } from '@deriv/shared';
 
 const CircularWrapper = ({ className }) => (
     <div className={classNames('circular-wrapper', className)}>
@@ -75,7 +76,6 @@ const TradeAnimation = ({
     contract_stage,
     is_animation_info_modal_open,
     is_contract_completed,
-    is_mobile,
     is_stop_button_visible,
     is_stop_button_disabled,
     profit,
@@ -89,7 +89,6 @@ const TradeAnimation = ({
 }) => {
     const [is_button_disabled, updateIsButtonDisabled] = React.useState(false);
     const is_unavailable_for_payment_agent = cashier_validation?.includes('WithdrawServiceUnavailableForPA');
-
     // perform self-exclusion checks which will be stored under the self-exclusion-store
     React.useEffect(() => {
         performSelfExclusionCheck();
@@ -165,7 +164,7 @@ const TradeAnimation = ({
             </div>
             {info_direction === 'right' && <AnimationInfo toggleAnimationInfoModal={toggleAnimationInfoModal} />}
             <AnimationInfoModal
-                is_mobile={is_mobile}
+                is_mobile={isMobile()}
                 is_animation_info_modal_open={is_animation_info_modal_open}
                 toggleAnimationInfoModal={toggleAnimationInfoModal}
             />
@@ -187,11 +186,10 @@ TradeAnimation.propTypes = {
     should_show_overlay: PropTypes.bool,
 };
 
-export default connect(({ summary_card, run_panel, toolbar, ui, client }) => ({
+export default connect(({ summary_card, run_panel, toolbar, client }) => ({
     contract_stage: run_panel.contract_stage,
     is_animation_info_modal_open: toolbar.is_animation_info_modal_open,
     is_contract_completed: summary_card.is_contract_completed,
-    is_mobile: ui.is_mobile,
     is_stop_button_visible: run_panel.is_stop_button_visible,
     is_stop_button_disabled: run_panel.is_stop_button_disabled,
     onRunButtonClick: run_panel.onRunButtonClick,

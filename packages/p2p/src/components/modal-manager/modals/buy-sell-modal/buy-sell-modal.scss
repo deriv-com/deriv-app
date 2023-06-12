@@ -28,7 +28,7 @@
     &-field {
         margin-bottom: 0 !important;
         flex: 1;
-        height: 4rem;
+        height: fit-content;
 
         .dc-input__container {
             width: 91%;
@@ -47,6 +47,9 @@
             .dc-input {
                 &__container {
                     height: 9.7rem;
+                }
+                &__field {
+                    height: 100% !important;
                 }
             }
         }

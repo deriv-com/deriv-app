@@ -1,11 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Input, Button, Modal, MobileWrapper, Div100vhContainer, FadeWrapper, PageOverlay } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { Formik, Form, Field } from 'formik';
 import classNames from 'classnames';
-import { connect } from 'Stores/connect';
+import { Field, Form, Formik } from 'formik';
+import PropTypes from 'prop-types';
+import { Button, Div100vhContainer, FadeWrapper, Input, MobileWrapper, Modal, PageOverlay } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
 
 const SelfExclusionForm = props => {
     const [max_losses_error, setMaxLossesError] = React.useState('');

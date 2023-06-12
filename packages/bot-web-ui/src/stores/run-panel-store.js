@@ -1,8 +1,8 @@
 import React from 'react';
-import { action, computed, makeObservable,observable, reaction, runInAction } from 'mobx';
-import { error_types, message_types,observer, unrecoverable_errors } from '@deriv/bot-skeleton';
+import { action, computed, makeObservable, observable, reaction, runInAction } from 'mobx';
+import { error_types, message_types, observer, unrecoverable_errors } from '@deriv/bot-skeleton';
 import { isSafari, mobileOSDetect } from '@deriv/shared';
-import { Localize,localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { contract_stages } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
 import { journalError, switch_account_notification } from 'Utils/bot-notifications';

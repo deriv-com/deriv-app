@@ -90,7 +90,9 @@ const PoiConfirmWithExampleFormContainer = ({
                 setRestState({ ...rest_state, api_error: response.error.message });
                 return;
             }
-            setRestState({ ...rest_state, ...response.get_settings });
+
+            const { first_name, last_name, date_of_birth } = response.get_settings;
+            setRestState({ ...rest_state, form_initial_values: { first_name, last_name, date_of_birth } });
             setChecked(true);
             setIsLoading(false);
 

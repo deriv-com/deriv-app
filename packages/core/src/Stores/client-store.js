@@ -1648,10 +1648,9 @@ export default class ClientStore extends BaseStore {
                 this.is_populating_account_list = false;
             });
             const stored_language = LocalStore.get(LANGUAGE_KEY);
-            const language =
-                stored_language || // if login from deriv app, language from local storage
-                getLanguageFromDerivCom() || // if login from deriv.com, language from cookie
-                authorize_response.authorize.preferred_language;
+            const cookie_language = getLanguageFromDerivCom();
+            const preferred_language = authorize_response?.authorize?.preferred_language;
+            const language = stored_language || cookie_language || preferred_language;
             if (language !== 'EN' && stored_language && language !== stored_language) {
                 window.history.replaceState({}, document.title, urlForLanguage(language));
                 await this.root_store.common.changeSelectedLanguage(language);

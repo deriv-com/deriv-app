@@ -3,19 +3,16 @@ import React from 'react';
 import classNames from 'classnames';
 import { AMOUNT_MAX_LENGTH, getDecimalPlaces } from '@deriv/shared';
 import { MobileWrapper } from '@deriv/components';
-import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 import LabeledQuantityInputMobile from '../../LabeledQuantityInputMobile';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const AccumulatorsAmountMobile = ({
-    amount,
-    currency,
-    current_focus,
-    is_nativepicker,
-    is_single_currency,
-    onChange,
-    setCurrentFocus,
-}) => {
+const AccumulatorsAmountMobile = observer(({ is_nativepicker }) => {
+    const { ui, client } = useStore();
+    const { current_focus, setCurrentFocus } = ui;
+    const { is_single_currency } = client;
+    const { amount, currency, onChange } = useTraderStore();
     return (
         <>
             <MobileWrapper>
@@ -46,23 +43,10 @@ const AccumulatorsAmountMobile = ({
             </MobileWrapper>
         </>
     );
-};
+});
 
 AccumulatorsAmountMobile.propTypes = {
-    amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    currency: PropTypes.string,
-    current_focus: PropTypes.string,
     is_nativepicker: PropTypes.bool,
-    is_single_currency: PropTypes.bool,
-    onChange: PropTypes.func,
-    setCurrentFocus: PropTypes.func,
 };
 
-export default connect(({ modules, client, ui }) => ({
-    amount: modules.trade.amount,
-    currency: modules.trade.currency,
-    current_focus: ui.current_focus,
-    is_single_currency: client.is_single_currency,
-    onChange: modules.trade.onChange,
-    setCurrentFocus: ui.setCurrentFocus,
-}))(AccumulatorsAmountMobile);
+export default AccumulatorsAmountMobile;

@@ -298,7 +298,7 @@ export default class WithdrawStore {
         this.is_10k_withdrawal_limit_reached = is_limit_reached;
     }
 
-    setWithdrawPercentageSelectorResult(amount: string) {
+    setWithdrawPercentageSelectorResult(amount: string, exchanged_amount: number) {
         const { client, modules } = this.root_store;
         const { crypto_fiat_converter, general_store } = modules.cashier;
         const { currency, current_fiat_currency } = client;
@@ -309,7 +309,8 @@ export default class WithdrawStore {
             crypto_fiat_converter.onChangeConverterFromAmount(
                 { target: { value: amount } },
                 currency,
-                current_fiat_currency || 'USD'
+                current_fiat_currency || 'USD',
+                exchanged_amount
             );
         } else {
             crypto_fiat_converter.resetConverter();

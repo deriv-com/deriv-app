@@ -155,7 +155,7 @@ const StaticCFDAccountManager = ({
                     weight={has_account ? 'normal' : 'bold'}
                     color={is_blurry.item || is_last_step ? 'less-prominent' : platform_color}
                 >
-                    {appname} {is_demo && localize('Demo')}
+                    {appname}
                 </Text>
                 {has_account ? (
                     <React.Fragment>

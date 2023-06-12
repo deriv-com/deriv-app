@@ -564,7 +564,6 @@ const StaticDashboard = ({
                                     is_financial_last_step={is_financial_last_step}
                                     is_eu_user={is_eu_user}
                                 />
-                                {/* todo: uncomment when derivez REAL is ready
                                 <StaticCFDAccountManager
                                     type='Financial'
                                     platform='derivez'
@@ -581,7 +580,7 @@ const StaticDashboard = ({
                                     is_blurry={is_blurry}
                                     is_onboarding_animated={is_onboarding_animated}
                                     is_eu_user={is_eu_user}
-                                /> */}
+                                />
                             </div>
                         )}
                     </div>

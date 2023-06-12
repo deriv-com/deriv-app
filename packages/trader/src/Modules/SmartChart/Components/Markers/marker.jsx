@@ -4,7 +4,7 @@ import React from 'react';
 import { FastMarker } from 'Modules/SmartChart';
 
 const ChartMarker = ({ marker_config, marker_content_props, is_bottom_widget_visible }) => {
-    const { ContentComponent, ...marker_props } = marker_config;
+    const { ContentComponent, custom_className, ...marker_props } = marker_config;
 
     // TODO:
     //  - rename x to epoch
@@ -30,7 +30,11 @@ const ChartMarker = ({ marker_config, marker_content_props, is_bottom_widget_vis
         return <ContentComponent {...toJS(marker_content_props)} />;
     }, [marker_content_props]);
 
-    return <FastMarker markerRef={onRef}>{getMemoizedComponent()}</FastMarker>;
+    return (
+        <FastMarker markerRef={onRef} className={custom_className}>
+            {getMemoizedComponent()}
+        </FastMarker>
+    );
 };
 
 ChartMarker.propTypes = {

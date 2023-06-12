@@ -183,6 +183,14 @@ ContractReplay.propTypes = {
 
 export default ContractReplay;
 
+const DelayedAccuBarriersMarker = React.memo(
+    ({ marker_component: MarkerComponent, previous_spot, ...props }) => {
+        return <MarkerComponent {...props} />;
+    }, // barrier range will get updated only when previous_spot changes:
+    (prevProps, nextProps) => prevProps.previous_spot === nextProps.previous_spot
+);
+DelayedAccuBarriersMarker.displayName = 'DelayedAccuBarriersMarker';
+
 // CHART -----------------------------------------
 
 const ReplayChart = observer(({ is_accumulator_contract }) => {
@@ -190,8 +198,9 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const { contract_replay, common, ui } = useStore();
     const { contract_store, chart_state, chartStateChange, margin } = contract_replay;
     const {
+        accumulator_previous_spot,
         contract_config,
-        marker: accumulators_barriers_marker,
+        marker,
         is_digit_contract,
         barriers_array,
         markers_array,
@@ -222,7 +231,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const all_ticks = audit_details ? audit_details.all_ticks : [];
     const { wsForget, wsSubscribe, wsSendRequest, wsForgetStream } = trade;
 
-    const AccumulatorsShadedBarriers = allMarkers[accumulators_barriers_marker?.type];
+    const accu_barriers_marker_component = allMarkers[marker?.type];
 
     const isBottomWidgetVisible = () => {
         return isDesktop() && is_digit_contract;
@@ -278,23 +287,27 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
             shouldFetchTickHistory={
                 getDurationUnitText(getDurationPeriod(contract_info)) !== 'seconds' || contract_info.status === 'open'
             }
+            shouldDrawTicksFromContractInfo={is_accumulator_contract}
             contractInfo={contract_info}
         >
-            {markers_array.map(marker => (
+            {markers_array.map(({ content_config, marker_config, react_key }) => (
                 <ChartMarker
-                    key={marker.react_key}
-                    marker_config={marker.marker_config}
-                    marker_content_props={marker.content_config}
+                    key={react_key}
+                    marker_config={marker_config}
+                    marker_content_props={content_config}
                     is_bottom_widget_visible={isBottomWidgetVisible()}
                 />
             ))}
-            {is_accumulator_contract && markers_array && (
-                <AccumulatorsShadedBarriers
-                    key={accumulators_barriers_marker.key}
+            {is_accumulator_contract && !!markers_array && (
+                <DelayedAccuBarriersMarker
+                    marker_component={accu_barriers_marker_component}
+                    key={marker.key}
                     is_dark_theme={is_dark_theme}
                     granularity={granularity}
+                    is_mobile={isMobile()}
                     is_in_contract_details
-                    {...accumulators_barriers_marker}
+                    previous_spot={accumulator_previous_spot}
+                    {...marker}
                 />
             )}
         </SmartChart>

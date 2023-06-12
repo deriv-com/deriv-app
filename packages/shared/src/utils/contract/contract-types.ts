@@ -16,6 +16,9 @@ export type TContractInfo = ProposalOpenContract & {
     contract_update?: ContractUpdate;
 };
 
+export type TContractInfoWithNumericBarriers = Omit<TContractInfo, 'high_barrier' | 'low_barrier'> &
+    Record<'high_barrier' | 'low_barrier', string | number>;
+
 export type TTickItem = {
     epoch?: number;
     tick?: null | number;

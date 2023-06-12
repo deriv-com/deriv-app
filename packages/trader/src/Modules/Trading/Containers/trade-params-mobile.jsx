@@ -99,28 +99,6 @@ const TradeParamsModal = ({
 
     const isVisible = component_key => form_components.includes(component_key);
 
-    const setTooltipContent = () => {
-        if (is_vanilla && state.trade_param_tab_idx === 1)
-            return (
-                <div className='trade-params__vanilla-ic-info-wrapper'>
-                    <Popover
-                        alignment='bottom'
-                        icon='info'
-                        id='dt_vanilla-stake__tooltip'
-                        zIndex={9999}
-                        is_bubble_hover_enabled
-                        arrow_styles={{ top: '-9px' }}
-                        message={
-                            <Localize i18n_default_text='Your stake is a non-refundable one-time premium to purchase this contract. Your total profit/loss equals the contract value minus your stake.' />
-                        }
-                        classNameWrapper='trade-params--modal-wrapper'
-                        classNameBubble='trade-params--modal-wrapper__content--vanilla'
-                    />
-                </div>
-            );
-        return null;
-    };
-
     return (
         <React.Fragment>
             <Modal
@@ -133,7 +111,6 @@ const TradeParamsModal = ({
                 toggleModal={toggleModal}
                 height='auto'
                 width='calc(100vw - 32px)'
-                renderTitle={setTooltipContent}
             >
                 <ThemedScrollbars>
                     <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='120px'>

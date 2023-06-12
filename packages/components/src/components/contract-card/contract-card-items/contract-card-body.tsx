@@ -93,71 +93,61 @@ const ContractCardBody = ({
         />
     );
 
+    const toggle_card_dialog_props = {
+        addToast,
+        connectWithContractUpdate,
+        current_focus,
+        error_message_alignment,
+        getContractById,
+        onMouseLeave,
+        removeToast,
+        setCurrentFocus,
+    };
+
     let card_body;
 
     if (is_multiplier) {
         card_body = (
             <MultiplierCardBody
-                addToast={addToast}
-                connectWithContractUpdate={connectWithContractUpdate}
                 contract_info={contract_info}
                 contract_update={contract_update}
                 currency={currency}
-                current_focus={current_focus}
-                error_message_alignment={error_message_alignment}
                 getCardLabels={getCardLabels}
-                getContractById={getContractById}
                 has_progress_slider={has_progress_slider}
                 progress_slider={progress_slider_mobile_el}
                 is_mobile={is_mobile}
                 is_sold={is_sold}
-                onMouseLeave={onMouseLeave}
                 status={status}
-                removeToast={removeToast}
-                setCurrentFocus={setCurrentFocus}
                 should_show_cancellation_warning={should_show_cancellation_warning}
                 toggleCancellationWarning={toggleCancellationWarning}
+                {...toggle_card_dialog_props}
             />
         );
     } else if (is_accumulator) {
         card_body = (
             <AccumulatorCardBody
-                addToast={addToast}
-                connectWithContractUpdate={connectWithContractUpdate}
                 contract_info={contract_info}
                 contract_update={contract_update}
                 currency={currency}
-                current_focus={current_focus}
-                error_message_alignment={error_message_alignment}
                 getCardLabels={getCardLabels}
-                getContractById={getContractById}
                 indicative={indicative}
                 is_sold={is_sold}
-                onMouseLeave={onMouseLeave}
                 status={status}
-                removeToast={removeToast}
-                setCurrentFocus={setCurrentFocus}
                 is_positions={is_positions}
+                {...toggle_card_dialog_props}
             />
         );
     } else if (is_turbos) {
         card_body = (
             <TurbosCardBody
-                addToast={addToast}
-                connectWithContractUpdate={connectWithContractUpdate}
                 contract_info={contract_info}
                 contract_update={contract_update}
                 currency={currency}
-                current_focus={current_focus}
-                error_message_alignment={error_message_alignment}
                 getCardLabels={getCardLabels}
-                getContractById={getContractById}
                 is_sold={is_sold}
-                onMouseLeave={onMouseLeave}
                 status={status}
-                removeToast={removeToast}
-                setCurrentFocus={setCurrentFocus}
                 progress_slider_mobile_el={progress_slider_mobile_el}
+                {...toggle_card_dialog_props}
             />
         );
     } else if (is_vanilla) {

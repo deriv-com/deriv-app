@@ -30,21 +30,14 @@ type TTurbosCardBody = Pick<
 };
 
 const TurbosCardBody = ({
-    addToast,
-    connectWithContractUpdate,
     contract_info,
     contract_update,
     currency,
-    current_focus,
-    error_message_alignment,
     getCardLabels,
-    getContractById,
     is_sold,
-    onMouseLeave,
-    removeToast,
     progress_slider_mobile_el,
-    setCurrentFocus,
     status,
+    ...toggle_card_dialog_props
 }: TTurbosCardBody) => {
     const {
         bid_price,
@@ -86,18 +79,11 @@ const TurbosCardBody = ({
                         {take_profit ? <Money amount={take_profit} currency={currency} /> : <strong>-</strong>}
                         {is_valid_to_sell && (
                             <ToggleCardDialog
-                                addToast={addToast}
-                                connectWithContractUpdate={connectWithContractUpdate}
                                 contract_id={contract_info.contract_id}
-                                current_focus={current_focus}
-                                error_message_alignment={error_message_alignment}
                                 getCardLabels={getCardLabels}
-                                getContractById={getContractById}
                                 is_turbos
-                                onMouseLeave={onMouseLeave}
-                                removeToast={removeToast}
-                                setCurrentFocus={setCurrentFocus}
                                 status={status}
+                                {...toggle_card_dialog_props}
                             />
                         )}
                     </ContractCardItem>

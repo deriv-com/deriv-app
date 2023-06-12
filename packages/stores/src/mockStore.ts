@@ -188,6 +188,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             switchEndSignal: jest.fn(),
             is_crypto: jest.fn(),
             dxtrade_accounts_list: [],
+            derivez_accounts_list: [],
             default_currency: 'USD',
             resetVirtualBalance: jest.fn(),
             has_enabled_two_fa: false,

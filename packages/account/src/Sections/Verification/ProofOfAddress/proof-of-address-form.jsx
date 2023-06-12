@@ -44,10 +44,10 @@ let file_uploader_ref = null;
 
 const UploaderSideNote = () => (
     <div className='account-poa__upload-box account-poa__upload-box-dashboard'>
-        <Text size='xs' line_height='s'>
+        <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} line_height='s'>
             <Localize i18n_default_text='A recent utility bill (e.g. electricity, water or gas)' />
         </Text>
-        <Text size='xs' line_height='s'>
+        <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} line_height='s'>
             <Localize i18n_default_text='A recent bank statement or government-issued letter with your name and address.' />
         </Text>
     </div>
@@ -279,7 +279,7 @@ const ProofOfAddressForm = ({
                 <>
                     <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                     {form_state.should_show_form && (
-                        <form noValidate className='account-form' onSubmit={handleSubmit}>
+                        <form noValidate className='account-form account-form_poa' onSubmit={handleSubmit}>
                             <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>
                                 {is_resubmit && (
                                     <Text size='xs' align='left' color='loss-danger'>

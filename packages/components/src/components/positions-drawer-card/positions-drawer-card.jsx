@@ -53,11 +53,10 @@ const PositionsDrawerCard = ({
     const is_crypto = isCryptoContract(contract_info.underlying);
     const has_progress_slider = !is_multiplier || (is_crypto && is_multiplier);
     const has_ended = !!getEndTime(contract_info);
-    const has_regular_style = !is_accumulator && !is_multiplier && !is_turbos;
     const is_mobile = isMobile();
     const contract_card_classname = classNames('dc-contract-card', {
-        'dc-contract-card--green': has_regular_style && profit_loss > 0 && !result,
-        'dc-contract-card--red': has_regular_style && profit_loss < 0 && !result,
+        'dc-contract-card--green': !is_accumulator && !is_multiplier && profit_loss > 0 && !result,
+        'dc-contract-card--red': !is_accumulator && !is_multiplier && profit_loss < 0 && !result,
     });
 
     const loader_el = (

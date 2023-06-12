@@ -15,7 +15,7 @@ const Strike = observer(() => {
         barrier_1,
         onChange,
         validation_errors,
-        strike_price_choices,
+        barrier_choices: strike_price_choices,
         expiry_type,
         expiry_date,
         vanilla_trade_type,

@@ -97,6 +97,9 @@ const Dashboard = ({
     React.useEffect(() => {
         if (init_render.current) {
             setActiveTab(Number(active_hash_tab));
+            if (is_mobile) {
+                handleTabChange(Number(active_hash_tab));
+            }
             init_render.current = false;
         } else {
             window.location.hash = active_tab;

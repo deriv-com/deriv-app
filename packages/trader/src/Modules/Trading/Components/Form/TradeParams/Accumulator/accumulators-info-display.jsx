@@ -1,10 +1,11 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { Money, Text } from '@deriv/components';
+import { Money, Text, Popover } from '@deriv/components';
 import classNames from 'classnames';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
+import { isMobile } from '@deriv/shared';
 
 const AccumulatorsInfoDisplay = observer(() => {
     const { currency, maximum_payout, maximum_ticks } = useTraderStore();

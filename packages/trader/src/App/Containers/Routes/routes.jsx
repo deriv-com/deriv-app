@@ -1,4 +1,3 @@
-import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter, matchPath } from 'react-router';
@@ -7,7 +6,8 @@ import { UILoader } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import BinaryRoutes from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 const checkRoutingMatch = (route_list, path) => {
     return route_list.some(route => !!matchPath(path, { path: route, exact: true }));
@@ -36,17 +36,14 @@ const Error = Loadable({
     },
 });
 
-const Routes = ({
-    onUnmountPortfolio,
-    error,
-    has_error,
-    history,
-    is_logged_in,
-    is_logging_in,
-    passthrough,
-    setPromptHandler,
-    setTradeMountingPolicy,
-}) => {
+const Routes = observer(({ history, passthrough }) => {
+    const { client, common, ui, portfolio } = useStore();
+    const { setSkipPrePostLifecycle: setTradeMountingPolicy } = useTraderStore();
+    const { error, has_error } = common;
+    const { onUnmount: onUnmountPortfolio } = portfolio;
+    const { is_logged_in, is_logging_in } = client;
+    const { setPromptHandler } = ui;
+
     React.useEffect(() => {
         if (setPromptHandler) {
             setPromptHandler(true, (route_to, action) => {
@@ -101,30 +98,11 @@ const Routes = ({
     if (has_error) return <Error {...error} />;
 
     return <BinaryRoutes is_logged_in={is_logged_in} is_logging_in={is_logging_in} passthrough={passthrough} />;
-};
+});
 
 Routes.propTypes = {
-    error: MobxPropTypes.objectOrObservableObject,
-    has_error: PropTypes.bool,
     history: PropTypes.object,
-    is_logged_in: PropTypes.bool,
-    is_logging_in: PropTypes.bool,
-    onUnmountPortfolio: PropTypes.func,
     passthrough: PropTypes.object,
-    setPromptHandler: PropTypes.func,
-    setTradeMountingPolicy: PropTypes.func,
 };
 
-// need to wrap withRouter around connect
-// to prevent updates on <BinaryRoutes /> from being blocked
-export default withRouter(
-    connect(({ client, common, modules, ui, portfolio }) => ({
-        onUnmountPortfolio: portfolio.onUnmount,
-        error: common.error,
-        has_error: common.has_error,
-        is_logged_in: client.is_logged_in,
-        is_logging_in: client.is_logging_in,
-        setPromptHandler: ui.setPromptHandler,
-        setTradeMountingPolicy: modules.trade.setSkipPrePostLifecycle,
-    }))(Routes)
-);
+export default withRouter(Routes);

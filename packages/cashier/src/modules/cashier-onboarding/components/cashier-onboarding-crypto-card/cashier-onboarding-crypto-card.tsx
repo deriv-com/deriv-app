@@ -22,12 +22,12 @@ const CashierOnboardingCryptoCard: React.FC = observer(() => {
     const { openRealAccountSignup, shouldNavigateAfterChooseCrypto } = ui;
     const { setDepositTarget } = general_store;
     const has_crypto_account = useHasCryptoCurrency();
-    const { data } = useCurrencyConfig(currency);
-    const is_crypto = data?.is_crypto || false;
+    const { getConfig } = useCurrencyConfig();
+    const currency_config = getConfig(currency);
 
     const onClick = () => {
         setDepositTarget(routes.cashier_deposit);
-        if (is_crypto || has_crypto_account) {
+        if (currency_config?.is_crypto || has_crypto_account) {
             openRealAccountSignup('choose');
             shouldNavigateAfterChooseCrypto(routes.cashier_deposit);
         } else {

@@ -18,10 +18,10 @@ const CashierOnboardingP2PCard: React.FC = observer(() => {
     const { data: is_p2p_enabled } = useIsP2PEnabled();
     const has_usd_currency = useHasUSDCurrency();
     const has_fiat_currency = useHasFiatCurrency();
-    const { data } = useCurrencyConfig(currency);
-    const is_crypto = data?.is_crypto || false;
+    const { getConfig } = useCurrencyConfig();
+    const currency_config = getConfig(currency);
     const should_show_p2p_card = is_p2p_enabled || has_usd_currency;
-    const can_switch_to_fiat_account = is_crypto && has_fiat_currency;
+    const can_switch_to_fiat_account = currency_config?.is_crypto && has_fiat_currency;
     const [is_dialog_visible, setIsDialogVisible] = useState(false);
 
     const onClick = () => {
@@ -29,7 +29,7 @@ const CashierOnboardingP2PCard: React.FC = observer(() => {
 
         if (can_switch_to_fiat_account) {
             setIsDialogVisible(true);
-        } else if (is_crypto) {
+        } else if (currency_config?.is_crypto) {
             openRealAccountSignup('add_fiat');
         } else {
             history.push(routes.cashier_p2p);

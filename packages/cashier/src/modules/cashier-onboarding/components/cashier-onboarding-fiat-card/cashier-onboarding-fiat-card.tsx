@@ -21,8 +21,9 @@ const CashierOnboardingFiatCard: React.FC = observer(() => {
     const { currency } = client;
     const { openRealAccountSignup } = ui;
     const { setDepositTarget, setIsDeposit } = general_store;
-    const { data } = useCurrencyConfig(currency);
-    const is_crypto = data?.is_crypto || false;
+    const { getConfig } = useCurrencyConfig();
+    const currency_config = getConfig(currency);
+    const is_crypto = currency_config?.is_crypto || false;
     const has_fiat_currency = useHasFiatCurrency();
     const can_switch_to_fiat_account = is_crypto && has_fiat_currency;
     const [is_dialog_visible, setIsDialogVisible] = useState(false);

@@ -8,14 +8,15 @@ import DepositCryptoSideNoteUSDT from './deposit-crypto-side-note-usdt';
 const DepositCryptoSideNotes: React.FC = observer(() => {
     const { client } = useStore();
     const { currency } = client;
-    const { data } = useCurrencyConfig(currency);
+    const { getConfig } = useCurrencyConfig();
+    const currency_config = getConfig(currency);
 
     return (
         <>
             <SideNoteCryptoRecentTransaction />
             <DepositCryptoSideNoteUSDT />
-            {data?.is_usdt && <DepositCryptoSideNoteUSDT />}
-            {data?.is_eusdt && <DepositCryptoSideNoteeUSDT />}
+            {currency_config?.is_USDT && <DepositCryptoSideNoteUSDT />}
+            {currency_config?.is_eUSDT && <DepositCryptoSideNoteeUSDT />}
         </>
     );
 });

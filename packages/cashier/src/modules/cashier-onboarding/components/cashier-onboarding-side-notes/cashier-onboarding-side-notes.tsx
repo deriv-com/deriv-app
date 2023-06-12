@@ -8,12 +8,13 @@ import CashierOnboardingSideNoteFiat from './cashier-onboarding-side-note-fiat';
 const CashierOnboardingSideNotes: React.FC = observer(() => {
     const { client } = useStore();
     const { currency } = client;
-    const { data } = useCurrencyConfig(currency);
+    const { getConfig } = useCurrencyConfig();
+    const currency_config = getConfig(currency);
 
     return (
         <>
-            {data?.is_crypto && <CashierOnboardingSideNoteCrypto />}
-            {data?.is_fiat && <CashierOnboardingSideNoteFiat />}
+            {currency_config?.is_crypto && <CashierOnboardingSideNoteCrypto />}
+            {currency_config?.is_fiat && <CashierOnboardingSideNoteFiat />}
             <SideNotePaymentMethodsLearnMore />
         </>
     );

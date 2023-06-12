@@ -20,7 +20,8 @@ const SideNoteCryptoRecentTransaction: React.FC = observer(() => {
     const transactions = data?.cashier_payments?.crypto;
     const has_transactions = transactions?.length > 0;
     const recent_transactions: TTransactionItem | undefined = has_transactions ? transactions?.[0] : undefined;
-    const { data: currency_config } = useCurrencyConfig(currency);
+    const { getConfig } = useCurrencyConfig();
+    const currency_config = getConfig(currency);
 
     // useEffect(() => {
     //     subscribe();

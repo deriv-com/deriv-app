@@ -1,12 +1,14 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { connect } from 'Stores/connect';
 import { Money, Text } from '@deriv/components';
 import classNames from 'classnames';
+import { observer } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const AccumulatorsInfoDisplay = ({ currency, maximum_payout, maximum_ticks }) => {
+const AccumulatorsInfoDisplay = observer(() => {
+    const { currency, maximum_payout, maximum_ticks } = useTraderStore();
+
     const content = [
         {
             label: localize('Maximum payout'),
@@ -32,16 +34,6 @@ const AccumulatorsInfoDisplay = ({ currency, maximum_payout, maximum_ticks }) =>
             ))}
         </Fieldset>
     );
-};
+});
 
-AccumulatorsInfoDisplay.propTypes = {
-    currency: PropTypes.string,
-    maximum_payout: PropTypes.number,
-    maximum_ticks: PropTypes.number,
-};
-
-export default connect(({ modules }) => ({
-    currency: modules.trade.currency,
-    maximum_payout: modules.trade.maximum_payout,
-    maximum_ticks: modules.trade.maximum_ticks,
-}))(AccumulatorsInfoDisplay);
+export default AccumulatorsInfoDisplay;

@@ -1,7 +1,7 @@
-import { reaction, makeObservable, observable, action } from 'mobx';
 import crc32 from 'crc-32/crc32';
-import { isProduction, cloneObject } from '@deriv/shared';
+import { action, makeObservable, observable, reaction } from 'mobx';
 import { DBot } from '@deriv/bot-skeleton';
+import { cloneObject, isProduction } from '@deriv/shared';
 
 export default class DataCollectionStore {
     constructor(root_store, core) {

@@ -852,6 +852,7 @@ export const PersonalDetailsForm = ({
                                                     onBlur={handleBlur}
                                                     required
                                                     error={errors.phone}
+                                                    disabled={!isChangeableField('phone')}
                                                 />
                                             </fieldset>
                                         </FormBodySection>

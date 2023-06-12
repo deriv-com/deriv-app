@@ -10,7 +10,7 @@ import type {
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
-import type { ExchangeRatesStore } from './src/stores';
+import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: number;
@@ -386,4 +386,5 @@ export type TCoreStores = {
 
 export type TStores = TCoreStores & {
     exchange_rates: ExchangeRatesStore;
+    feature_flags: FeatureFlagsStore;
 };

@@ -105,7 +105,7 @@ const POISubmission = ({
                 }
             } else if (
                 mismatch_status &&
-                ![(idv_error_statuses.poi_expired, idv_error_statuses.poi_failed)].includes(mismatch_status) &&
+                ![idv_error_statuses.poi_expired, idv_error_statuses.poi_failed].includes(mismatch_status) &&
                 idv.submissions_left > 0
             ) {
                 setSubmissionService(service_code.idv);

@@ -16,8 +16,9 @@
         align-items: center;
 
         @include mobile {
-            padding-inline: 1.5rem 1rem;
-            align-items: center;
+            margin-inline: 5%;
+            width: 90%;
+            padding: 1.5rem 0;
         }
         &__cross-icon {
             cursor: pointer;

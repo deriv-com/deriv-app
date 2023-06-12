@@ -211,6 +211,13 @@ const FiatTransactionList = () => {
                   transaction_id: 17494117540,
                   transaction_time: 1685855736,
               },
+              {
+                  action_type: 'deposit',
+                  amount: 1000,
+                  balance_after: 1000,
+                  transaction_id: 17494117539,
+                  transaction_time: 1685769338,
+              },
           ];
     const grouped_transactions = useGroupedFiatTransactions(mock_transactions);
     const linked_accounts = Object.values(accounts)

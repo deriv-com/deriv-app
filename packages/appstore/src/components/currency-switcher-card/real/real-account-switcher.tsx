@@ -18,8 +18,7 @@ const AccountNeedsVerification = observer(({ multipliers_account_status }: Accou
     const { openModal, openFailedVerificationModal } = traders_hub;
 
     const account = account_list?.find((acc: { loginid?: string }) => loginid === acc?.loginid);
-    const title = account?.title;
-    const icon = account?.icon;
+    const icon_title = account?.title;
 
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         multipliers_account_status,
@@ -32,10 +31,10 @@ const AccountNeedsVerification = observer(({ multipliers_account_status }: Accou
             className='real-account-switcher__container'
             title={
                 <Text size='xs' line_height='s'>
-                    {title}
+                    {icon_title}
                 </Text>
             }
-            icon={IsIconCurrency(icon) ? icon : 'USD'}
+            icon={IsIconCurrency(icon_title) ? icon_title : 'USD'}
             onClick={() => {
                 return openModal('currency_selection');
             }}

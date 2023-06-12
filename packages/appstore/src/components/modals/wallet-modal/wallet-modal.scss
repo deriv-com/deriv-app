@@ -74,10 +74,12 @@
     max-width: 128rem;
     width: 100%;
     margin-top: -4.8rem;
+    z-index: 9999;
 
     @include mobile {
         top: 8.2rem;
         margin-top: 0;
+        z-index: auto;
     }
 
     .dc-tabs__list {
@@ -90,9 +92,9 @@
                 position: fixed;
                 width: 100%;
                 top: 8.2rem;
-                z-index: 2;
                 overflow-x: scroll;
                 transition: top 0.2s ease;
+                z-index: 9999;
 
                 /* IE and Edge */
                 -ms-overflow-style: none;
@@ -162,10 +164,10 @@
     position: relative;
     overflow: hidden;
     background-color: #fbdddd;
+    z-index: 9999;
 
     @include mobile {
         position: fixed;
-        z-index: 1;
     }
 }
 

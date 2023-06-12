@@ -1,9 +1,14 @@
 import React from 'react';
 import { ButtonToggle } from '@deriv/components';
-import { connect } from 'Stores/connect';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const VanillaTradeTypes = ({ onChange, onChangeUiStore, vanilla_trade_type }) => {
+const VanillaTradeTypes = observer(() => {
+    const { ui } = useStore();
+    const { onChange } = useTraderStore();
+    const { onChangeUiStore, vanilla_trade_type } = ui;
+
     const changeTradeType = ({ target }) => {
         const { name, value } = target;
 
@@ -26,10 +31,6 @@ const VanillaTradeTypes = ({ onChange, onChangeUiStore, vanilla_trade_type }) =>
             />
         </Fieldset>
     );
-};
+});
 
-export default connect(({ modules, ui }) => ({
-    onChange: modules.trade.onChange,
-    onChangeUiStore: ui.onChangeUiStore,
-    vanilla_trade_type: ui.vanilla_trade_type,
-}))(VanillaTradeTypes);
+export default VanillaTradeTypes;

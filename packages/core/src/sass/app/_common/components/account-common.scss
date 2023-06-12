@@ -443,15 +443,16 @@
 
             @include desktop() {
                 grid-template-areas: 'section-side-note section-content';
+                grid-template-columns: auto 1fr;
+                grid-gap: 1rem;
             }
-
+            align-items: center;
             @include mobile {
                 grid-template-areas: 'section-side-note' 'section-content';
             }
 
             &-side-note {
                 grid-area: section-side-note;
-                width: 26rem;
                 .account-poa__upload-box-dashboard {
                     @include mobile {
                         align-items: flex-start;
@@ -755,6 +756,24 @@
             @include mobile {
                 width: 100%;
                 padding: 0 2.4rem;
+            }
+        }
+    }
+}
+
+.account-form_poa {
+    .account-form__section {
+        align-items: unset;
+
+        &-side-note {
+            width: 26rem;
+        }
+
+        &-content {
+            width: 40rem;
+
+            @include mobile {
+                width: 100%;
             }
         }
     }

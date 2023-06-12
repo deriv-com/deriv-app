@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
@@ -88,6 +89,19 @@ const Dashboard = ({
     let storage = '';
     let tour_status: { [key: string]: string };
     const is_mobile = isMobile();
+    const init_render = React.useRef(true);
+    const { ui } = useStore();
+    const { url_hashed_values } = ui;
+    const active_hash_tab = url_hashed_values?.split('#')[1] || active_tab;
+
+    React.useEffect(() => {
+        if (init_render.current) {
+            setActiveTab(Number(active_hash_tab));
+            init_render.current = false;
+        } else {
+            window.location.hash = active_tab;
+        }
+    }, [active_tab]);
 
     const setTourStatus = (status: { [key: string]: string }) => {
         if (status) {

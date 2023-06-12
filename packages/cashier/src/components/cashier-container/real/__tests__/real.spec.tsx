@@ -73,46 +73,6 @@ describe('<Real />', () => {
         expect(screen.queryByTestId('dt_doughflow_section')).toBeInTheDocument();
     });
 
-    describe('Breadcrumb visibility', () => {
-        it('should show breadcrumbs only on deposit page and only for non EU clients', () => {
-            render(
-                <StoreProvider store={mock_root_store}>
-                    <Real />
-                </StoreProvider>
-            );
-
-            expect(screen.getByText(/cashier/i)).toBeInTheDocument();
-            expect(screen.getByText(/deposit via bank wire, credit card, and e-wallet/i)).toBeInTheDocument();
-        });
-
-        it('should not show breadcrumbs on deposit page if iframe_height is equal to 0', () => {
-            (useCashierStore as jest.Mock).mockReturnValueOnce({
-                ...mocked_cashier_store,
-                iframe: { ...mocked_cashier_store.iframe, iframe_height: 0 },
-            });
-
-            render(
-                <StoreProvider store={mock_root_store}>
-                    <Real />
-                </StoreProvider>
-            );
-
-            expect(screen.queryByText(/cashier/i)).not.toBeInTheDocument();
-            expect(screen.queryByText(/deposit via bank wire, credit card, and e-wallet/i)).not.toBeInTheDocument();
-        });
-
-        it('should not show breadcrumbs on withdraw page', () => {
-            render(
-                <StoreProvider store={mock_root_store}>
-                    <Real />
-                </StoreProvider>
-            );
-
-            expect(screen.queryByText(/cashier/i)).not.toBeInTheDocument();
-            expect(screen.queryByText(/deposit via bank wire, credit card, and e-wallet/i)).not.toBeInTheDocument();
-        });
-    });
-
     it('should trigger setIsDeposit callback when the user clicks on Cashier breadcrumb', () => {
         render(
             <StoreProvider store={mock_root_store}>

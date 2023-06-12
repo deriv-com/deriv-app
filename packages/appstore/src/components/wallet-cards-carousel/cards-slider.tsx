@@ -9,6 +9,7 @@ type TProps = {
     setActivePage: React.Dispatch<React.SetStateAction<number>>;
 };
 
+// TODO: Refactor this component later. Maybe move to package/components
 const CardsSlider = React.memo(({ items, setActivePage }: TProps) => {
     const slider_ref = React.useRef<Slider | null>(null);
 

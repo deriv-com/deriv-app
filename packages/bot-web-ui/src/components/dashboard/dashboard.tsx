@@ -1,17 +1,17 @@
+import React from 'react';
+import classNames from 'classnames';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import classNames from 'classnames';
 import Chart from 'Components/chart';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
-import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import RunPanel from '../run-panel';
+import RunStrategy from './dashboard-component/run-strategy';
 import BotNotification from './bot-notification';
 import DashboardComponent from './dashboard-component';
-import RunStrategy from './dashboard-component/run-strategy';
 import {
     DBOT_ONBOARDING,
     getTourSettings,

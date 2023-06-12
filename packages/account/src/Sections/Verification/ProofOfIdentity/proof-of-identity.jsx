@@ -9,12 +9,15 @@ const ProofOfIdentity = observer(({ is_from_external, onStateChange }) => {
     const { client, common, notifications } = useStore();
     const {
         account_status,
+        account_settings,
         fetchResidenceList,
+        getChangeableFields,
         is_switching,
         is_high_risk,
         is_withdrawal_lock,
         should_allow_authentication,
         is_virtual,
+        updateAccountStatus,
     } = client;
     const { refreshNotifications } = notifications;
     const { app_routing_history, routeBackInApp } = common;
@@ -39,9 +42,11 @@ const ProofOfIdentity = observer(({ is_from_external, onStateChange }) => {
                     <div className='proof-of-identity__main-container'>
                         <ProofOfIdentityContainer
                             height={height}
+                            account_settings={account_settings}
                             account_status={account_status}
                             app_routing_history={app_routing_history}
                             fetchResidenceList={fetchResidenceList}
+                            getChangeableFields={getChangeableFields}
                             is_from_external={is_from_external}
                             is_switching={is_switching}
                             is_virtual={is_virtual}
@@ -52,6 +57,7 @@ const ProofOfIdentity = observer(({ is_from_external, onStateChange }) => {
                             routeBackInApp={routeBackInApp}
                             should_allow_authentication={should_allow_authentication}
                             is_description_enabled
+                            updateAccountStatus={updateAccountStatus}
                         />
                     </div>
                 </div>

@@ -220,6 +220,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_trading_experience_incomplete: false,
             is_virtual: false,
             is_withdrawal_lock: false,
+            is_populating_account_list: false,
             landing_company_shortcode: '',
             local_currency_config: {
                 currency: '',
@@ -352,6 +353,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_real_acc_signup_on: false,
             is_need_real_account_for_cashier_modal_visible: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
+            populateHeaderExtensions: jest.fn(),
+            populateSettingsExtensions: jest.fn(),
             setShouldShowCooldownModal: jest.fn(),
         },
         traders_hub: {
@@ -367,6 +370,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_real: false,
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
+            toggleRegulatorsCompareModal: jest.fn(),
+            selected_region: '',
             is_demo: false,
             financial_restricted_countries: false,
             selected_account_type: 'real',
@@ -423,6 +428,11 @@ const mock = (): TStores & { is_mock: boolean } => {
         },
         modules: {},
         exchange_rates: {
+            data: undefined,
+            update: jest.fn(),
+            unmount: jest.fn(),
+        },
+        feature_flags: {
             data: undefined,
             update: jest.fn(),
             unmount: jest.fn(),

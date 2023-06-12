@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Statement } from '@deriv/api-types';
 import { useStore } from '@deriv/stores';
 import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
@@ -38,7 +39,7 @@ const FiatTransactionListItem = ({
 
     return (
         <div className='fiat-transaction-list__item'>
-            <div>
+            <div className='fiat-transaction-list__item__left'>
                 {is_deriv_apps ? (
                     <AppLinkedWithWalletIcon
                         app_icon='IcWalletOptions'
@@ -49,7 +50,7 @@ const FiatTransactionListItem = ({
                 ) : (
                     <WalletIcon currency={account_currency} icon={icon} type={icon_type} has_bg size='medium' />
                 )}
-                <span>
+                <div className='fiat-transaction-list__item__left__title'>
                     <Text
                         size={is_mobile ? 'xxxs' : 'xxs'}
                         color='less-prominent'
@@ -66,9 +67,9 @@ const FiatTransactionListItem = ({
                     >
                         {account_name}
                     </Text>
-                </span>
+                </div>
             </div>
-            <span>
+            <div className='fiat-transaction-list__item__right'>
                 <Text
                     size={is_mobile ? 'xxxs' : 'xxs'}
                     color={amount > 0 ? 'profit-success' : 'loss-danger'}
@@ -85,7 +86,7 @@ const FiatTransactionListItem = ({
                 >
                     Balance: {formatAmount(balance_after)} {currency}
                 </Text>
-            </span>
+            </div>
         </div>
     );
 };

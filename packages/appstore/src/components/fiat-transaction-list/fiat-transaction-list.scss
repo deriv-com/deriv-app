@@ -22,22 +22,28 @@
         padding: 16px;
         box-shadow: inset 0 1px 0 $color-grey-2;
 
-        & span {
+        &__left {
+            display: flex;
+            gap: 0.8rem;
+
+            &__title {
+                display: flex;
+                flex-direction: column;
+                align-items: start;
+                justify-content: center;
+                gap: 0;
+
+                @include mobile {
+                    max-width: 10.4rem;
+                }
+            }
+        }
+
+        &__right {
             display: flex;
             flex-direction: column;
             align-items: end;
             gap: 0.4rem;
-        }
-
-        & div {
-            display: flex;
-            gap: 0.8rem;
-
-            & span {
-                align-items: start;
-                justify-content: center;
-                gap: 0;
-            }
         }
     }
 }

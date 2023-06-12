@@ -27,9 +27,6 @@ describe('<Real />', () => {
                 checkIframeLoaded: jest.fn(),
                 setContainerHeight: jest.fn(),
             },
-            deposit: {
-                onMountDeposit: jest.fn(),
-            },
             general_store: {
                 is_loading: false,
             },
@@ -129,18 +126,5 @@ describe('<Real />', () => {
             userEvent.click(el_breadcrumb_cashier);
             expect(mocked_cashier_store.general_store?.setIsDeposit).toHaveBeenCalledWith(false);
         }
-    });
-
-    it('should trigger clearIframe and onMountDeposit callbacks when <Real /> component is destroyed on deposit page', () => {
-        const { unmount } = render(
-            <StoreProvider store={mock_root_store}>
-                <Real />
-            </StoreProvider>
-        );
-
-        unmount();
-
-        expect(mocked_cashier_store.iframe?.clearIframe).toHaveBeenCalled();
-        expect(mocked_cashier_store.deposit?.onMountDeposit).toHaveBeenCalled();
     });
 });

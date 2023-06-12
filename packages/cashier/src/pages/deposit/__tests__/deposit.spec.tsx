@@ -89,10 +89,6 @@ describe('<Deposit />', () => {
                         is_crypto_transactions_visible: false,
                         onMount: jest.fn(),
                     },
-                    deposit: {
-                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        onMountDeposit: jest.fn(),
-                    },
                     general_store: {
                         is_deposit: false,
                         is_loading: false,
@@ -137,10 +133,6 @@ describe('<Deposit />', () => {
                         is_crypto_transactions_visible: false,
                         onMount: jest.fn(),
                     },
-                    deposit: {
-                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        onMountDeposit: jest.fn(),
-                    },
                     general_store: {
                         is_deposit: false,
                         is_loading: false,
@@ -180,10 +172,6 @@ describe('<Deposit />', () => {
                     transaction_history: {
                         is_crypto_transactions_visible: false,
                         onMount: jest.fn(),
-                    },
-                    deposit: {
-                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        onMountDeposit: jest.fn(),
                     },
                     general_store: {
                         is_deposit: false,
@@ -235,10 +223,6 @@ describe('<Deposit />', () => {
                         is_crypto_transactions_visible: false,
                         onMount: jest.fn(),
                     },
-                    deposit: {
-                        error: { is_ask_uk_funds_protection: true, message: '', setErrorMessage: jest.fn() },
-                        onMountDeposit: jest.fn(),
-                    },
                     general_store: {
                         is_deposit: false,
                         is_loading: false,
@@ -278,10 +262,6 @@ describe('<Deposit />', () => {
                     transaction_history: {
                         is_crypto_transactions_visible: false,
                         onMount: jest.fn(),
-                    },
-                    deposit: {
-                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        onMountDeposit: jest.fn(),
                     },
                     general_store: {
                         is_deposit: false,
@@ -324,10 +304,6 @@ describe('<Deposit />', () => {
                         is_crypto_transactions_visible: true,
                         onMount: jest.fn(),
                     },
-                    deposit: {
-                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        onMountDeposit: jest.fn(),
-                    },
                     general_store: {
                         is_deposit: false,
                         is_loading: false,
@@ -367,10 +343,6 @@ describe('<Deposit />', () => {
                     transaction_history: {
                         is_crypto_transactions_visible: false,
                         onMount: jest.fn(),
-                    },
-                    deposit: {
-                        error: { is_ask_uk_funds_protection: false, message: 'error', setErrorMessage: jest.fn() },
-                        onMountDeposit: jest.fn(),
                     },
                     general_store: {
                         is_deposit: true,
@@ -412,10 +384,6 @@ describe('<Deposit />', () => {
                         is_crypto_transactions_visible: false,
                         onMount: jest.fn(),
                     },
-                    deposit: {
-                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        onMountDeposit: jest.fn(),
-                    },
                     general_store: {
                         is_deposit: false,
                         is_loading: false,
@@ -456,10 +424,6 @@ describe('<Deposit />', () => {
                     transaction_history: {
                         is_crypto_transactions_visible: false,
                         onMount: jest.fn(),
-                    },
-                    deposit: {
-                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        onMountDeposit: jest.fn(),
                     },
                     general_store: {
                         is_deposit: true,

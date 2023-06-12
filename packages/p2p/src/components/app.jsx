@@ -10,6 +10,7 @@ import { useStores } from 'Stores';
 import AppContent from './app-content.jsx';
 import { setLanguage } from './i18next';
 import { ModalManager, ModalManagerContextProvider } from './modal-manager';
+import { init } from '../utils/server_time';
 import './app.scss';
 
 // TODO: Add back props to get root_store to pass to StoreProvider component
@@ -34,6 +35,8 @@ const App = () => {
     const [should_show_profile, setShouldShowProfile] = React.useState(false);
 
     React.useEffect(() => {
+        init();
+
         general_store.setExternalStores({ client, common, modules, notifications, ui });
         general_store.setWebsocketInit(WS);
         general_store.getWebsiteStatus();

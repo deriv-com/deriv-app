@@ -1,10 +1,10 @@
 import React from 'react';
+import localForage from 'localforage';
+import LZString from 'lz-string';
+import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { Dialog, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { getSavedWorkspaces } from '@deriv/bot-skeleton';
-import LZString from 'lz-string';
-import localForage from 'localforage';
 
 type TDeleteDialog = {
     is_delete_modal_open: boolean;

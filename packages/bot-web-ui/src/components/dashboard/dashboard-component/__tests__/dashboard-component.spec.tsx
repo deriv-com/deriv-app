@@ -1,9 +1,9 @@
 import React from 'react';
+import { isMobile } from '@deriv/shared';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import UserGuide from '../user-guide';
-import { isMobile } from '@deriv/shared';
 import Sidebar from '../sidebar';
+import UserGuide from '../user-guide';
 
 const mock_connect_props = {
     dialog_options: {

@@ -156,7 +156,9 @@ export const CookieStorage = function (this: TCookieStorageThis, cookie_name: st
     this.domain =
         cookie_domain ||
         /* eslint-disable no-nested-ternary */
-        (hostname.includes('binary.sx') ? 'binary.sx' : deriv_urls.DERIV_HOST_NAME);
+        (hostname.includes(deriv_urls.DERIV_TEST_LINK_DOMAIN)
+            ? deriv_urls.DERIV_TEST_LINK_DOMAIN
+            : deriv_urls.DERIV_HOST_NAME);
     /* eslint-enable no-nested-ternary */
     this.path = '/';
     this.expires = new Date('Thu, 1 Jan 2037 12:00:00 GMT');

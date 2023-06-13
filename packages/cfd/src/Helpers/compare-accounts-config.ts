@@ -185,6 +185,14 @@ const getJuridisctionDescription = (shortcode: TCFDConfig) => {
     }
 };
 
+const getSortedAvailableAccounts = (available_accounts: TTradingPlatformAvailableAccount[]) => {
+    const swap_free_accounts = available_accounts.filter(item => item.market_type === 'all');
+    const financial_accounts = available_accounts.filter(item => item.market_type === 'financial');
+    const gaming_accounts = available_accounts.filter(item => item.market_type === 'gaming');
+
+    return [...gaming_accounts, ...financial_accounts, ...swap_free_accounts];
+};
+
 export {
     getHighlightedIconLabel,
     cfdConfig,
@@ -193,4 +201,5 @@ export {
     getMarketType,
     getAccountIcon,
     getPlatformLabel,
+    getSortedAvailableAccounts,
 };

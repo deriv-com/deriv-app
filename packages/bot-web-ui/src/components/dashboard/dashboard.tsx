@@ -92,7 +92,17 @@ const Dashboard = ({
     const init_render = React.useRef(true);
     const { ui } = useStore();
     const { url_hashed_values } = ui;
-    const active_hash_tab = url_hashed_values?.split('#')[1] || active_tab;
+
+    let tab_value = active_tab;
+    const GetHashedValue = (tab: number) => {
+        tab_value = Number(url_hashed_values?.split('#')[1]);
+        if (isNaN(tab_value) || isNaN(tab)) return active_tab;
+        if (tab_value > 4 || tab > 4) {
+            return active_tab;
+        }
+        return tab_value;
+    };
+    const active_hash_tab = GetHashedValue(active_tab);
 
     React.useEffect(() => {
         if (init_render.current) {

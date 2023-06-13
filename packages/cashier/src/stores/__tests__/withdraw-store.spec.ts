@@ -1,7 +1,7 @@
 import { isMobile, validNumber } from '@deriv/shared';
 import WithdrawStore from '../withdraw-store';
 import { configure } from 'mobx';
-import { TWebSocket, TRootStore } from 'Types';
+import { TWebSocket, TRootStore } from '../../types';
 import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
@@ -210,16 +210,19 @@ describe('WithdrawStore', () => {
         expect(setIframeUrl).toHaveBeenCalledWith('');
     });
 
-    it('should not call send withdraw request when no verification code', async () => {
-        const { setIframeUrl } = withdraw_store.root_store.modules.cashier.iframe;
-        const { setVerificationCode } = withdraw_store.root_store.client;
-        const verification_code = '';
+    it('should return an error on mount of crypto withdraw if verification code is not valid', async () => {
+        const { setLoading } = withdraw_store.root_store.modules.cashier.general_store;
+        const { setSessionTimeout, clearTimeoutCashierUrl } = withdraw_store.root_store.modules.cashier.iframe;
+        const spyHandleCashierError = jest.spyOn(withdraw_store.error, 'handleCashierError');
 
-        withdraw_store.root_store.modules.cashier.iframe.is_session_timeout = true;
-        await withdraw_store.onMountWithdraw(verification_code);
-
-        expect(setIframeUrl).toHaveBeenCalledTimes(1);
-        expect(setVerificationCode).toHaveBeenCalledTimes(0);
+        await withdraw_store.onMountCryptoWithdraw('abc');
+        expect(spyHandleCashierError).toHaveBeenCalledWith({
+            code: 'InvalidToken',
+            message: 'Your token has expired or is invalid.',
+        });
+        expect(setLoading).toHaveBeenCalledWith(false);
+        expect(setSessionTimeout).toHaveBeenCalledWith(true);
+        expect(clearTimeoutCashierUrl).toHaveBeenCalled();
     });
 
     it('should mount crypto withdraw if verification code is valid', async () => {

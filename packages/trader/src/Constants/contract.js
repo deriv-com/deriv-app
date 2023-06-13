@@ -27,6 +27,7 @@ export const getCardLabels = () => ({
     PROFIT_LOSS: localize('Profit/Loss:'),
     POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss:'),
     INDICATIVE_PRICE: localize('Indicative price:'),
+    INITIAL_STAKE: localize('Initial stake:'),
     LOST: localize('Lost'),
     PAYOUT: localize('Sell price:'),
     PURCHASE_PRICE: localize('Buy price:'),

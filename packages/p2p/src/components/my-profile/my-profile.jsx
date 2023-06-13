@@ -4,8 +4,8 @@ import { observer } from '@deriv/stores';
 import { useStores } from 'Stores';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import MyProfileContent from './my-profile-content.jsx';
-import MyProfileHeader from './my-profile-header';
 import MyProfileDetailsContainer from './my-profile-stats/my-profile-details-container';
+import MyProfileHeader from './my-profile-header';
 
 const MyProfile = () => {
     const { my_profile_store } = useStores();

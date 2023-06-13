@@ -5,6 +5,10 @@ import { observer, useStore } from '@deriv/stores';
 import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 
+const TextItalic = (
+    <Text key={0} className='my-profile-stats-table--italic' color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'} />
+);
+
 const MyProfileStatsTable = () => {
     const {
         client: { currency },
@@ -36,17 +40,7 @@ const MyProfileStatsTable = () => {
         <div className='my-profile-stats-table'>
             <div className='my-profile-stats-table__cell'>
                 <Text as='p' color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                    <Localize
-                        i18n_default_text='Buy completion  <0>30d</0>'
-                        components={[
-                            <Text
-                                key={0}
-                                className='my-profile-stats-table--italic'
-                                color='less-prominent'
-                                size={isMobile() ? 'xxxs' : 'xs'}
-                            />,
-                        ]}
-                    />
+                    <Localize i18n_default_text='Buy completion  <0>30d</0>' components={[TextItalic]} />
                 </Text>
                 <Text as='p' color='prominent' size='xs' weight='bold'>
                     {buy_completion_rate ? `${buy_completion_rate}% (${buy_orders_count})` : '-'}
@@ -54,17 +48,7 @@ const MyProfileStatsTable = () => {
             </div>
             <div className='my-profile-stats-table__cell'>
                 <Text as='p' color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                    <Localize
-                        i18n_default_text='Sell completion  <0>30d</0>'
-                        components={[
-                            <Text
-                                key={0}
-                                className='my-profile-stats-table--italic'
-                                color='less-prominent'
-                                size={isMobile() ? 'xxxs' : 'xs'}
-                            />,
-                        ]}
-                    />
+                    <Localize i18n_default_text='Sell completion  <0>30d</0>' components={[TextItalic]} />
                 </Text>
                 <Text as='p' color='prominent' size='xs' weight='bold'>
                     {sell_completion_rate ? `${sell_completion_rate}% (${sell_orders_count})` : '-'}
@@ -72,17 +56,7 @@ const MyProfileStatsTable = () => {
             </div>
             <div className='my-profile-stats-table__cell'>
                 <Text as='p' color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                    <Localize
-                        i18n_default_text='Avg pay time  <0>30d</0>'
-                        components={[
-                            <Text
-                                key={0}
-                                className='my-profile-stats-table--italic'
-                                color='less-prominent'
-                                size={isMobile() ? 'xxxs' : 'xs'}
-                            />,
-                        ]}
-                    />
+                    <Localize i18n_default_text='Avg pay time  <0>30d</0>' components={[TextItalic]} />
                 </Text>
                 <Text as='p' color='prominent' size='xs' weight='bold'>
                     {buy_time_avg ? (
@@ -97,17 +71,7 @@ const MyProfileStatsTable = () => {
             </div>
             <div className='my-profile-stats-table__cell'>
                 <Text as='p' color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                    <Localize
-                        i18n_default_text='Avg release time  <0>30d</0>'
-                        components={[
-                            <Text
-                                key={0}
-                                className='my-profile-stats-table--italic'
-                                color='less-prominent'
-                                size={isMobile() ? 'xxxs' : 'xs'}
-                            />,
-                        ]}
-                    />
+                    <Localize i18n_default_text='Avg release time  <0>30d</0>' components={[TextItalic]} />
                 </Text>
                 <Text as='p' color='prominent' size='xs' weight='bold'>
                     {release_time_avg ? (

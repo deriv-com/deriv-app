@@ -40,19 +40,21 @@ const CompareCFDs = observer(() => {
     return (
         <React.Fragment>
             <DesktopWrapper>
-                <PageOverlay header={DesktopHeader} is_from_app={routes.traders_hub} />
-                <div className='compare-cfd-account-container'>
-                    <div className='card-list'>
-                        <CFDCompareAccountsCarousel>
-                            {sorted_available_accounts.map(item => (
-                                <React.Fragment key={item.market_type + item.shortcode}>
-                                    <CFDCompareAccountsCard
-                                        trading_platforms={item}
-                                        key={item.market_type + item.shortcode}
-                                    />
-                                </React.Fragment>
-                            ))}
-                        </CFDCompareAccountsCarousel>
+                <div className='compare-cfd-account'>
+                    <PageOverlay header={DesktopHeader} is_from_app={routes.traders_hub} />
+                    <div className='compare-cfd-account-container'>
+                        <div className='card-list'>
+                            <CFDCompareAccountsCarousel>
+                                {sorted_available_accounts.map(item => (
+                                    <React.Fragment key={item.market_type + item.shortcode}>
+                                        <CFDCompareAccountsCard
+                                            trading_platforms={item}
+                                            key={item.market_type + item.shortcode}
+                                        />
+                                    </React.Fragment>
+                                ))}
+                            </CFDCompareAccountsCarousel>
+                        </div>
                     </div>
                 </div>
             </DesktopWrapper>

@@ -1,4 +1,5 @@
 .embla {
+    position: relative;
     --slide-spacing: 1rem;
     --slide-size: 50%;
     --slide-height: 19rem;
@@ -17,6 +18,7 @@
     flex-direction: row;
     height: auto;
     margin-left: calc(var(--slide-spacing) * -1);
+    transition: transform 0s ease-in-out;
 }
 .embla__slide {
     flex: 0 0 var(--slide-size);
@@ -32,6 +34,7 @@
 }
 
 .embla__button {
+    background-color: var(--general-main-1);
     z-index: 1;
     color: var(--background-site);
     position: absolute;
@@ -39,11 +42,12 @@
     align-items: center;
     justify-content: center;
     top: 50%;
-    transform: translateY(-50%);
     cursor: pointer;
     width: 4rem;
     height: 4rem;
+    border: 1px solid var(--general-background-main);
     border-radius: 50%;
+    box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.08), 0px 24px 24px rgba(0, 0, 0, 0.08);
 }
 .embla__button--prev {
     left: 1.6rem;
@@ -56,6 +60,6 @@
     display: none;
 }
 .embla__button__svg {
-    width: 65%;
-    height: 65%;
+    width: 50%;
+    height: 35%;
 }

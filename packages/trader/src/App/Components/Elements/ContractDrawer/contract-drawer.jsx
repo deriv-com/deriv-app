@@ -29,7 +29,7 @@ const ContractDrawer = observer(
         is_market_closed,
         is_multiplier,
         is_vanilla,
-        is_only_ups_downs,
+        is_smarttrader_contract,
         onClickCancel,
         onClickSell,
         status,
@@ -55,12 +55,12 @@ const ContractDrawer = observer(
                     is_accumulator={is_accumulator}
                     is_dark_theme={is_dark_theme}
                     is_multiplier={is_multiplier}
-                    is_only_ups_downs={is_only_ups_downs}
+                    is_smarttrader_contract={is_smarttrader_contract}
                     is_open
                     duration={getDurationTime(contract_info)}
                     duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                     exit_spot={exit_spot}
-                    has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator || is_only_ups_downs}
+                    has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator || is_smarttrader_contract}
                     toggleHistoryTab={toggleHistoryTab}
                     is_vanilla={is_vanilla}
                 />
@@ -108,12 +108,12 @@ const ContractDrawer = observer(
                 is_accumulator={is_accumulator}
                 is_dark_theme={is_dark_theme}
                 is_multiplier={is_multiplier}
-                is_only_ups_downs={is_only_ups_downs}
+                is_smarttrader_contract={is_smarttrader_contract}
                 is_open
                 duration={getDurationTime(contract_info)}
                 duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                 exit_spot={exit_spot}
-                has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator || is_only_ups_downs}
+                has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator || is_smarttrader_contract}
                 toggleHistoryTab={toggleHistoryTab}
                 is_vanilla={is_vanilla}
             />
@@ -186,7 +186,7 @@ ContractDrawer.propTypes = {
     is_accumulator: PropTypes.bool,
     is_multiplier: PropTypes.bool,
     is_vanilla: PropTypes.bool,
-    is_only_ups_downs: PropTypes.bool,
+    is_smarttrader_contract: PropTypes.bool,
     toggleHistoryTab: PropTypes.func,
 };
 

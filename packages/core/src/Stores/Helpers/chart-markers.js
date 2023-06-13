@@ -7,7 +7,7 @@ import {
     createMarkerSpotMiddle,
     getSpotCount,
 } from './chart-marker-helpers';
-import { getEndTime, isAccumulatorContract, isOnlyUpsDownsContract, unique } from '@deriv/shared';
+import { getEndTime, isAccumulatorContract, isSmartTraderContract, unique } from '@deriv/shared';
 import { MARKER_TYPES_CONFIG } from '../Constants/markers';
 import { getChartType } from './logic';
 
@@ -68,7 +68,7 @@ const addLabelAlignment = (tick, idx, arr) => {
 
 const createTickMarkers = contract_info => {
     const is_accumulator = isAccumulatorContract(contract_info.contract_type);
-    const is_only_ups_downs = isOnlyUpsDownsContract(contract_info.contract_type);
+    const is_smarttrader_contract = isSmartTraderContract(contract_info.contract_type);
     const is_contract_closed = contract_info.status && contract_info.exit_tick_time;
     const available_ticks = (is_accumulator && contract_info.audit_details?.all_ticks) || contract_info.tick_stream;
     const tick_stream = unique(available_ticks, 'epoch').map(addLabelAlignment);
@@ -103,9 +103,9 @@ const createTickMarkers = contract_info => {
             tick.align_label = 'top'; // force exit spot label to be 'top' to avoid overlapping
             marker_config = createMarkerSpotExit(contract_info, tick, idx);
         }
-        if (is_only_ups_downs && is_middle_spot) {
+        if (is_smarttrader_contract && is_middle_spot) {
             const spot_className = marker_config.content_config.spot_className;
-            marker_config.content_config.spot_className = `${spot_className} ${spot_className}--only-ups-downs-small`;
+            marker_config.content_config.spot_className = `${spot_className} ${spot_className}--smarttrader-contract-small`;
             if (!is_current_last_spot) {
                 marker_config.content_config.is_value_hidden = true;
             }

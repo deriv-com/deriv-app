@@ -7,7 +7,7 @@ import {
     getGrowthRatePercentage,
     isBot,
     isAccumulatorContract,
-    isOnlyUpsDownsContract,
+    isSmartTraderContract,
     isMobile,
 } from '@deriv/shared';
 import ContractTypeCell from './contract-type-cell';
@@ -64,7 +64,7 @@ const ContractCardHeader = ({
     const { is_pathname_bot } = isBot();
     const is_sold = !!contract_info.is_sold || is_contract_sold;
     const is_accumulator = isAccumulatorContract(contract_type);
-    const is_only_ups_downs = isOnlyUpsDownsContract(contract_type);
+    const is_smarttrader_contract = isSmartTraderContract(contract_type);
     const is_mobile = isMobile();
     const contract_type_list_info = [
         {
@@ -104,7 +104,7 @@ const ContractCardHeader = ({
                     <Text
                         size='xxs'
                         className={classNames('dc-contract-card__symbol', {
-                            'dc-contract-card__symbol--ups-downs': is_only_ups_downs,
+                            'dc-contract-card__symbol--smarttrader-contract': is_smarttrader_contract,
                         })}
                         weight='bold'
                     >

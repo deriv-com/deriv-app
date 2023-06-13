@@ -228,7 +228,7 @@
     }
     &__symbol {
         margin-left: 0.4rem;
-        &--ups-downs {
+        &--smarttrader-contract {
             width: 7rem;
             @include mobile {
                 width: initial;
@@ -576,7 +576,7 @@
         line-height: 1.5;
         text-align: left;
 
-        &--ups-downs {
+        &--smarttrader-contract {
             width: 7rem;
         }
 

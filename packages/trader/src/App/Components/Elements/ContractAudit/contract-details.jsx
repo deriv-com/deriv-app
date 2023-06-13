@@ -10,7 +10,8 @@ import {
     isAccumulatorContract,
     isMobile,
     isMultiplierContract,
-    isOnlyUpsDownsContract,
+    isSmartTraderContract,
+    hasTwoBarriers,
     isUserSold,
     isEndedBeforeCancellationExpired,
     isUserCancelled,
@@ -33,11 +34,13 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
         entry_spot_display_value,
         entry_tick_time,
         exit_tick_time,
+        high_barrier,
         profit,
         date_start,
         tick_count,
         tick_passed,
         transaction_ids: { buy, sell } = {},
+        low_barrier,
         number_of_contracts,
     } = contract_info;
 
@@ -114,7 +117,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                         )}
                         {!isAccumulatorContract(contract_type) &&
                             !is_vanilla &&
-                            !isOnlyUpsDownsContract(contract_type) && (
+                            !isSmartTraderContract(contract_type) && (
                                 <ContractAuditItem
                                     id='dt_bt_label'
                                     icon={
@@ -128,6 +131,22 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                                     value={getBarrierValue(contract_info) || ' - '}
                                 />
                             )}
+                    </React.Fragment>
+                )}
+                {hasTwoBarriers(contract_type) && (
+                    <React.Fragment>
+                        <ContractAuditItem
+                            id='dt_bt_label_1'
+                            icon={<Icon icon='IcContractStrike' size={24} />}
+                            label={localize('High barrier')}
+                            value={parseFloat(high_barrier)}
+                        />
+                        <ContractAuditItem
+                            id='dt_bt_label_2'
+                            icon={<Icon icon='IcContractStrike' size={24} />}
+                            label={localize('Low barrier')}
+                            value={parseFloat(low_barrier)}
+                        />
                     </React.Fragment>
                 )}
                 <ContractAuditItem

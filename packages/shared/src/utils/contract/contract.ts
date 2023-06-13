@@ -32,13 +32,15 @@ export const isValidToSell = (contract_info: TContractInfo) =>
 
 export const hasContractEntered = (contract_info: TContractInfo) => !!contract_info.entry_spot;
 
+export const hasTwoBarriers = (contract_type = '') => /EXPIRY|RANGE|UPORDOWN/i.test(contract_type);
+
 export const isAccumulatorContract = (contract_type = '') => /ACCU/i.test(contract_type);
 
 export const isMultiplierContract = (contract_type = '') => /MULT/i.test(contract_type);
 
 export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contract_type);
 
-export const isOnlyUpsDownsContract = (contract_type = '') => /RUN/i.test(contract_type);
+export const isSmartTraderContract = (contract_type = '') => /RUN|EXPIRY|RANGE|UPORDOWN/i.test(contract_type);
 
 export const isCryptoContract = (underlying = '') => underlying.startsWith('cry');
 

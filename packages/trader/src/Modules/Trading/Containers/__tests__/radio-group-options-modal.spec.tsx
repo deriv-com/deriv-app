@@ -1,6 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import RadioGroupOptionsModal from '../radio-group-options-modal';
+import { mockStore } from '@deriv/stores';
+import TraderProviders from '../../../../trader-providers';
 
 jest.mock('../Multiplier/multiplier-options.jsx', () => jest.fn(() => 'mockedMultiplierOptions'));
 jest.mock('Modules/Trading/Components/Form/RadioGroupWithInfoMobile', () =>
@@ -42,35 +44,37 @@ const mocked_props = {
 };
 
 const mock_connect_props = {
-    accumulator_range_list: [0.01, 0.02, 0.03, 0.04, 0.05],
-    growth_rate: 1,
-    onChange: jest.fn(),
-    proposal_info: {
-        ACCU: {
-            has_error: false,
-            id: false,
+    modules: {
+        trade: {
+            accumulator_range_list: [0.01, 0.02, 0.03, 0.04, 0.05],
+            growth_rate: 1,
+            onChange: jest.fn(),
+            proposal_info: {
+                ACCU: {
+                    has_error: false,
+                    id: false,
+                },
+            },
         },
     },
 };
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect:
-        () =>
-        <T extends React.FC>(Component: T) =>
-        (props: React.ComponentProps<T>) =>
-            Component({ ...props, ...mock_connect_props }),
-}));
-
 describe('<RadioGroupOptionsModal />', () => {
     it('should render mockedMultiplierOptions when modal_title is Multiplier', () => {
-        render(<RadioGroupOptionsModal {...mocked_props} />);
+        render(<RadioGroupOptionsModal {...mocked_props} />, {
+            wrapper: ({ children }) => (
+                <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
+            ),
+        });
         expect(screen.getByText(/mockedmultiplieroptions/i)).toBeInTheDocument();
     });
     it('should render something when modal_title is not Multiplier', () => {
         mocked_props.modal_title = 'accumulator';
-        render(<RadioGroupOptionsModal {...mocked_props} />);
+        render(<RadioGroupOptionsModal {...mocked_props} />, {
+            wrapper: ({ children }) => (
+                <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
+            ),
+        });
         expect(screen.getByText(/mockedradiogroupwithinfomobile/i)).toBeInTheDocument();
     });
 });

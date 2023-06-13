@@ -139,13 +139,13 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                             id='dt_bt_label_1'
                             icon={<Icon icon='IcContractStrike' size={24} />}
                             label={localize('High barrier')}
-                            value={parseFloat(high_barrier)}
+                            value={high_barrier}
                         />
                         <ContractAuditItem
                             id='dt_bt_label_2'
                             icon={<Icon icon='IcContractStrike' size={24} />}
                             label={localize('Low barrier')}
-                            value={parseFloat(low_barrier)}
+                            value={low_barrier}
                         />
                     </React.Fragment>
                 )}

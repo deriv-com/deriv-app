@@ -1,7 +1,7 @@
 import React from 'react';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { render, screen } from '@testing-library/react';
 import Toolbar from '..';
-import { isDesktop, isMobile } from '@deriv/shared';
 
 jest.mock('Stores/connect', () => ({
     __esModule: true,

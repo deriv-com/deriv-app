@@ -1,11 +1,11 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Dialog, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import classNames from 'classnames';
-import { isMobile } from '@deriv/shared';
-import { tour_type, setTourSettings, tour_status_ended } from './joyride-config';
+import { setTourSettings, tour_status_ended, tour_type } from './joyride-config';
 
 type TTourTriggrerDialog = {
     active_tab: number;

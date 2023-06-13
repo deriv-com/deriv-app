@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { Statement } from '@deriv/api-types';
 import { useStore } from '@deriv/stores';
 import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
@@ -31,7 +30,7 @@ const FiatTransactionListItem = ({
     is_deriv_apps,
 }: TFiatTransactionListItem) => {
     const {
-        ui: { is_mobile },
+        ui: { is_dark_mode_on, is_mobile },
     } = useStore();
     const formatAmount = (value: number) => value.toLocaleString(undefined, { minimumFractionDigits: 2 });
 
@@ -42,7 +41,7 @@ const FiatTransactionListItem = ({
             <div className='fiat-transaction-list__item__left'>
                 {is_deriv_apps ? (
                     <AppLinkedWithWalletIcon
-                        app_icon='IcWalletOptions'
+                        app_icon={is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight'}
                         currency={account_currency}
                         type={icon_type}
                         wallet_icon={icon}

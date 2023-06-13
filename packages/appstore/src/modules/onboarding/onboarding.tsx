@@ -1,5 +1,6 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
+import { useHasActiveRealAccount } from '@deriv/hooks';
 import { isMobile, isDesktop, routes, ContentFlag } from '@deriv/shared';
 import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
@@ -32,6 +33,7 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
     const { is_eu_country, is_logged_in, is_landing_company_loaded, prev_account_type, setPrevAccountType } = client;
     const { setIsFromSignupAccount } = ui;
     const [step, setStep] = React.useState<number>(1);
+    const has_active_real_account = useHasActiveRealAccount();
 
     const prevStep = () => {
         if (step > 1) setStep(step - 1);
@@ -51,8 +53,12 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
 
     const handleCloseButton = async () => {
         toggleIsTourOpen(false);
+        if (has_active_real_account) {
+            await selectAccountType(prev_account_type);
+        } else {
+            await selectAccountType('demo');
+        }
         history.push(routes.traders_hub);
-        await selectAccountType(prev_account_type);
     };
 
     const eu_user =

@@ -1,0 +1,32 @@
+.mock-dialog {
+    position: absolute;
+    bottom: 4.6rem;
+    right: 1rem;
+    width: 34rem;
+    border-radius: $BORDER_RADIUS;
+    padding: 1rem 1.6rem;
+    background-color: var(--general-main-1);
+    box-shadow: 0 20px 13px rgba(0, 0, 0, 0.01), 0 4px 3px rgba(0, 0, 0, 0.02);
+    border: 1px solid var(--general-hover);
+    z-index: 69420;
+
+    &__title {
+        margin-bottom: 1.4rem;
+    }
+
+    &__form {
+        display: flex;
+        min-height: 40rem;
+        flex-direction: column;
+        gap: 2rem;
+
+        &--input {
+            margin-bottom: unset;
+        }
+
+        &--submit-container {
+            display: flex;
+            justify-content: end;
+        }
+    }
+}

@@ -29,8 +29,12 @@ const BinarySocketBase = (() => {
         is_down: false,
     };
 
-    const getSocketUrl = language =>
-        `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${language}&brand=${website_name.toLowerCase()}`;
+    const getSocketUrl = (language, is_mock_server = false) => {
+        if (is_mock_server) {
+            return 'ws://127.0.0.1:42069';
+        }
+        return `wss://${getSocketURL()}/websockets/v3?app_id=${getAppId()}&l=${language}&brand=${website_name.toLowerCase()}`;
+    };
 
     const isReady = () => hasReadyState(1);
 
@@ -40,10 +44,10 @@ const BinarySocketBase = (() => {
         binary_socket.close();
     };
 
-    const closeAndOpenNewConnection = (language = getLanguage()) => {
+    const closeAndOpenNewConnection = (language = getLanguage(), mock_id = '') => {
         close();
         is_switching_socket = true;
-        openNewConnection(language);
+        openNewConnection(language, mock_id);
     };
 
     const hasReadyState = (...states) => binary_socket && states.some(s => binary_socket.readyState === s);
@@ -55,14 +59,32 @@ const BinarySocketBase = (() => {
         client_store = client;
     };
 
-    const openNewConnection = (language = getLanguage()) => {
+    const openNewConnection = (language = getLanguage(), mock_id = '') => {
         if (wrong_app_id === getAppId()) return;
 
         if (!is_switching_socket) config.wsEvent('init');
 
         if (isClose()) {
             is_disconnect_called = false;
-            binary_socket = new WebSocket(getSocketUrl(language));
+            binary_socket = new WebSocket(getSocketUrl(language, mock_id));
+
+            if (mock_id) {
+                const originalSend = DerivAPIBasic.prototype.send;
+                const originalSubscribe = DerivAPIBasic.prototype.subscribe;
+
+                DerivAPIBasic.prototype.send = function (...args) {
+                    const modifiedArgs = [...args];
+                    modifiedArgs[0] = { ...modifiedArgs[0], mock_id };
+                    return originalSend.apply(this, modifiedArgs);
+                };
+
+                DerivAPIBasic.prototype.subscribe = function (...args) {
+                    const modifiedArgs = [...args];
+                    modifiedArgs[0] = { ...modifiedArgs[0], mock_id };
+                    return originalSubscribe.apply(this, modifiedArgs);
+                };
+            }
+
             deriv_api = new DerivAPIBasic({
                 connection: binary_socket,
                 storage: SocketCache,

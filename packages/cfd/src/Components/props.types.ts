@@ -236,3 +236,18 @@ export type TTradingPlatformAccounts = {
      */
     platform?: 'dxtrade' | string;
 };
+
+export type TIconData = {
+    icon:
+        | 'DerivedFX'
+        | 'Synthetics'
+        | 'BasketIndices'
+        | 'Stocks'
+        | 'StockIndices'
+        | 'Commodities'
+        | 'Forex'
+        | 'Cryptocurrencies'
+        | 'ETF';
+    text: string;
+    highlighted: boolean;
+};

@@ -1,0 +1,35 @@
+.compare-cfd-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &-navigation {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+    }
+    &-title {
+        flex: 1;
+        @include mobile {
+            text-align: left;
+            padding: 1rem;
+        }
+    }
+}
+
+.compare-cfd-account {
+    &-outline {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--general-hover);
+        padding: 2.4rem;
+        border-radius: 2.4rem;
+    }
+    &-container {
+        margin: 5rem;
+    }
+}
+.card-list {
+    display: flex;
+    gap: 2rem;
+}

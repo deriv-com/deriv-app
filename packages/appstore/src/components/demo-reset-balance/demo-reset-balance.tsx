@@ -10,7 +10,7 @@ type TDemoResetBalanceProps = {
 };
 
 const DemoResetBalance = observer(({ setActiveTabIndex }: TDemoResetBalanceProps) => {
-    const { mutate, isSuccess } = useRequest('topup_virtual');
+    const { mutate, isSuccess: isResetBalanceSuccess } = useRequest('topup_virtual');
     const { client, ui } = useStore();
     const { accounts, loginid } = client;
     const { is_mobile } = ui;
@@ -30,7 +30,11 @@ const DemoResetBalance = observer(({ setActiveTabIndex }: TDemoResetBalanceProps
     return (
         <Div100vhContainer height_offset='244px'>
             <div className='reset-balance'>
-                <Icon icon='IcDemoResetBalance' size='128' />
+                {isResetBalanceSuccess ? (
+                    <Icon icon='IcDemoResetBalanceDone' size='128' />
+                ) : (
+                    <Icon icon='IcDemoResetBalance' size='128' />
+                )}
 
                 <Text
                     as='p'
@@ -39,24 +43,26 @@ const DemoResetBalance = observer(({ setActiveTabIndex }: TDemoResetBalanceProps
                     line_height={is_mobile ? 'xl' : 'xxl'}
                     weight='bold'
                 >
-                    <Localize i18n_default_text='Reset balance to 10,000.00 USD' />
-                </Text>
-
-                <Text
-                    as='p'
-                    className='reset-balance__text'
-                    size={is_mobile ? 'xxs' : 'xs'}
-                    line_height={is_mobile ? 'l' : 'xl'}
-                    align='center'
-                >
-                    {isSuccess ? (
+                    {isResetBalanceSuccess ? (
                         <Localize i18n_default_text='Your balance has been reset to 10,000.00 USD.' />
                     ) : (
-                        <Localize i18n_default_text='Reset your virtual balance if it falls below 10,000.00 USD or exceeds 10,000.00 USD.' />
+                        <Localize i18n_default_text='Reset your balance to 10,000.00 USD.' />
                     )}
                 </Text>
 
-                {isSuccess ? (
+                {!isResetBalanceSuccess && (
+                    <Text
+                        as='p'
+                        className='reset-balance__text'
+                        size={is_mobile ? 'xxs' : 'xs'}
+                        line_height={is_mobile ? 'l' : 'xl'}
+                        align='center'
+                    >
+                        <Localize i18n_default_text='Reset your virtual balance if it falls below 10,000.00 USD or exceeds 10,000.00 USD.' />
+                    </Text>
+                )}
+
+                {isResetBalanceSuccess ? (
                     <Button
                         className='reset-balance__button'
                         data-testid='dt_transfer_fund_button'

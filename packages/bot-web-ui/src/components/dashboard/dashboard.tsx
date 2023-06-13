@@ -97,9 +97,7 @@ const Dashboard = ({
     const GetHashedValue = (tab: number) => {
         tab_value = Number(url_hashed_values?.split('#')[1]);
         if (isNaN(tab_value) || isNaN(tab)) return active_tab;
-        if (tab_value > 4 || tab > 4) {
-            return active_tab;
-        }
+        if (tab_value > 4 || tab > 4) return active_tab;
         return tab_value;
     };
     const active_hash_tab = GetHashedValue(active_tab);
@@ -107,9 +105,7 @@ const Dashboard = ({
     React.useEffect(() => {
         if (init_render.current) {
             setActiveTab(Number(active_hash_tab));
-            if (is_mobile) {
-                handleTabChange(Number(active_hash_tab));
-            }
+            if (is_mobile) handleTabChange(Number(active_hash_tab));
             init_render.current = false;
         } else {
             window.location.hash = active_tab;

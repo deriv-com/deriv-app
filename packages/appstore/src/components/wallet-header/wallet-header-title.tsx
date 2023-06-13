@@ -11,7 +11,7 @@ type TWalletHeaderTitle = {
 
 const WalletHeaderTitle = React.memo(({ is_demo, currency, shortcode }: TWalletHeaderTitle) => {
     const title = is_demo ? (
-        <Text weight='bold' size='sm'>
+        <Text weight='bold' size='sm' color='prominent'>
             <Localize
                 i18n_default_text='Demo {{currency}} Wallet'
                 values={{
@@ -20,7 +20,7 @@ const WalletHeaderTitle = React.memo(({ is_demo, currency, shortcode }: TWalletH
             />
         </Text>
     ) : (
-        <Text weight='bold' size='sm'>
+        <Text weight='bold' size='sm' color='prominent'>
             <Localize
                 i18n_default_text='{{currency}} Wallet'
                 values={{

@@ -90,18 +90,19 @@ const Ticks = observer(
 
 const Numbers = observer(
     ({
-        setDurationError,
         basis_option,
-        toggleModal,
-        duration_unit_option,
-        has_amount_error,
         contract_expiry = 'intraday',
-        payout_value,
-        stake_value,
-        selected_duration,
-        setSelectedDuration,
+        duration_unit_option,
+        duration_values,
         expiry_epoch,
+        has_amount_error,
         is_vanilla,
+        payout_value,
+        selected_duration,
+        setDurationError,
+        setSelectedDuration,
+        stake_value,
+        toggleModal,
     }) => {
         const { ui } = useStore();
         const { addToast } = ui;
@@ -208,21 +209,21 @@ const Numbers = observer(
 const Duration = observer(
     ({
         amount_tab_idx,
-        toggleModal,
-        duration_tab_idx,
-        has_amount_error,
-        setDurationTabIdx,
-        setDurationError,
-        t_duration,
-        s_duration,
-        m_duration,
-        h_duration,
         d_duration,
+        duration_tab_idx,
+        expiry_epoch,
+        h_duration,
+        has_amount_error,
+        is_vanilla,
+        m_duration,
+        payout_value,
+        s_duration,
+        setDurationError,
+        setDurationTabIdx,
         setSelectedDuration,
         stake_value,
-        payout_value,
-        expiry_epoch,
-        is_vanilla,
+        t_duration,
+        toggleModal,
     }) => {
         const { duration_units_list, duration_min_max, duration_unit, basis: trade_basis } = useTraderStore();
         const duration_values = {
@@ -339,6 +340,7 @@ const Duration = observer(
                                             payout_value={payout_value}
                                             expiry_epoch={expiry_epoch}
                                             is_vanilla={is_vanilla}
+                                            duration_values={duration_values}
                                         />
                                         <RelativeDatepicker
                                             onChange={handleRelativeChange}

@@ -15,21 +15,20 @@ const AdvancedDuration = observer(
     ({
         advanced_duration_unit,
         advanced_expiry_type,
-        duration_units_list,
-        duration_t,
         changeDurationUnit,
-        getDurationFromUnit,
+        duration_t,
+        duration_units_list,
         expiry_date,
+        expiry_epoch,
         expiry_list,
         expiry_type,
-        expiry_epoch,
+        getDurationFromUnit,
         number_input_props,
         onChange,
         onChangeUiStore,
         server_time,
         shared_input_props,
         start_date,
-        is_vanilla,
     }) => {
         const { ui } = useStore();
         const { current_focus, setCurrentFocus } = ui;
@@ -95,6 +94,14 @@ const AdvancedDuration = observer(
                                     is_24_hours_contract={is_24_hours_contract}
                                 />
                             )}
+                            {advanced_duration_unit === 'd' && is_vanilla && (
+                                <Text as='div' size='xxxs' line_height='s' className='expiry-text-container'>
+                                    <Localize 
+                                        i18n_default_text='Expiry: {{date}}'
+                                        values={{ date: expiry_epoch && new Date(expiry_epoch * 1000).toUTCString().replace('GMT', 'GMT +0').substring(5) }}
+                                    />
+                                </Text>
+                            )}
                             {advanced_duration_unit !== 't' && advanced_duration_unit !== 'd' && (
                                 <InputField
                                     id='dt_advanced_duration_input'
@@ -120,50 +127,17 @@ const AdvancedDuration = observer(
                                 is_24_hours_contract={is_24_hours_contract}
                                 value={expiry_date}
                             />
-                        )}
-                        {advanced_duration_unit === 'd' && is_vanilla && (
-                            <Text as='div' size='xxxs' line_height='s' className='expiry-text-container'>
-                                <Localize 
-                                    i18n_default_text='Expiry: {{date}}'
-                                    values={{ date: expiry_epoch && new Date(expiry_epoch * 1000).toUTCString().replace('GMT', 'GMT +0').substring(5) }}
-                                />
-                            </Text>
-                        )}
-                        {advanced_duration_unit !== 't' && advanced_duration_unit !== 'd' && (
-                            <InputField
-                                id='dt_advanced_duration_input'
-                                classNameInput='trade-container__input'
-                                current_focus={current_focus}
-                                error_messages={validation_errors.duration}
-                                label={duration_units_list.length === 1 ? duration_units_list[0].text : null}
-                                name='duration'
-                                setCurrentFocus={setCurrentFocus}
-                                value={getDurationFromUnit(advanced_duration_unit)}
-                                {...number_input_props}
-                                {...shared_input_props}
-                            />
-                        )}
-                    </div>
-                </>
-            ) : (
-                <>
-                    <div className={endtime_container_class}>
-                        <TradingDatePicker
-                            id='dt_advanced_duration_datepicker'
-                            name='expiry_date'
-                            is_24_hours_contract={is_24_hours_contract}
-                            value={expiry_date}
-                        />
                         {
-                            is_24_hours_contract && <TradingTimePicker />
-                            // validation_errors={validation_errors.end_time} TODO: add validation_errors for end time
-                        }
-                    </div>
-                </>
-            )}
-        </>
-    );
-};
+                                is_24_hours_contract && <TradingTimePicker />
+                                // validation_errors={validation_errors.end_time} TODO: add validation_errors for end time
+                            }
+                        </div>
+                    </>
+                )}
+            </>
+        );
+    }
+);
 
 AdvancedDuration.propTypes = {
     advanced_duration_unit: PropTypes.string,

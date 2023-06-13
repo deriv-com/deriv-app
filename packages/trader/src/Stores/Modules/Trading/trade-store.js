@@ -78,9 +78,9 @@ export default class TradeStore extends BaseStore {
 
     // Duration
     duration = 5;
+    duration_min_max = {};
     duration_unit = '';
     duration_units_list = [];
-    duration_min_max = {};
     expiry_date = '';
     expiry_epoch = '';
     expiry_time = '';
@@ -267,8 +267,8 @@ export default class TradeStore extends BaseStore {
             strike_price_choices: observable,
             symbol: observable,
             take_profit: observable,
-            ticks_history_stats: observable,
             tick_size_barrier: observable,
+            ticks_history_stats: observable,
             trade_types: observable,
             accountSwitcherListener: action.bound,
             barrier_pipsize: computed,

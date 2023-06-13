@@ -174,7 +174,7 @@ const TradeParamsMobile = observer(
         h_duration,
         d_duration,
     }) => {
-        const { basis_list, basis, is_vanilla } = useTraderStore();
+        const { basis_list, basis, is_vanilla, expiry_epoch } = useTraderStore();
         const getDurationText = () => {
             const duration = duration_units_list.find(d => d.value === duration_unit);
             return `${duration_value} ${
@@ -247,6 +247,8 @@ const TradeParamsMobile = observer(
                             d_duration={d_duration}
                             stake_value={stake_value}
                             payout_value={payout_value}
+                            is_vanilla={is_vanilla}
+                            expiry_epoch={expiry_epoch}
                         />
                     </div>
                 )}

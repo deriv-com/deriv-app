@@ -2,12 +2,16 @@
     display: flex;
     flex-direction: column;
     padding: 0.8rem;
-    height: 6.6rem;
+    height: auto;
 }
 
 .amount-input-container {
     position: relative;
-    flex: 1;
+    height: 2.8rem;
+
+    @include mobile {
+        height: 2.4rem;
+    }
 }
 
 .amount-input {

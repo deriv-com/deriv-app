@@ -10,7 +10,13 @@ import type {
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
-import type { ExchangeRatesStore } from './src/stores';
+import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
+
+type TPopulateSettingsExtensionsMenuItem = {
+    icon: string;
+    label: string;
+    value: <T extends object>(props: T) => JSX.Element;
+};
 
 type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 
@@ -57,7 +63,7 @@ type BrandConfig = {
 };
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
-    balance?: string | number;
+    balance?: number;
     landing_company_shortcode?: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     is_virtual: number;
     account_category?: 'wallet' | 'trading';
@@ -98,6 +104,7 @@ type TActiveAccount = TAccount & {
     landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     is_virtual: number;
     account_category?: 'wallet' | 'trading';
+    token: string;
 };
 
 type TTradingPlatformAvailableAccount = {
@@ -170,8 +177,6 @@ type TNotification =
     | ((withdrawal_locked: boolean, deposit_locked: boolean) => TNotificationMessage)
     | ((excluded_until: number) => TNotificationMessage);
 
-type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
-
 type TClientStore = {
     accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
@@ -217,6 +222,7 @@ type TClientStore = {
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
     landing_company_shortcode: string;
+    is_populating_account_list: boolean;
     local_currency_config: {
         currency: string;
         decimal_places?: number;
@@ -322,8 +328,10 @@ type TUiStore = {
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
-    notification_messages_ui: React.ElementType | null;
-    openRealAccountSignup: (value?: string) => void;
+    openRealAccountSignup: (
+        value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
+    ) => void;
+    notification_messages_ui: React.FC | null;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setIsWalletModalVisible: (value: boolean) => void;
@@ -348,6 +356,8 @@ type TUiStore = {
     is_real_acc_signup_on: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
+    populateHeaderExtensions: (header_items: JSX.Element | null) => void;
+    populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     setShouldShowCooldownModal: (value: boolean) => void;
 };
 
@@ -414,6 +424,7 @@ type TTradersHubStore = {
     is_demo: boolean;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    toggleRegulatorsCompareModal: () => void;
     openFailedVerificationModal: (selected_account_type: Record<string, unknown> | string) => void;
     multipliers_account_status: string;
     financial_restricted_countries: boolean;
@@ -432,7 +443,7 @@ type TTradersHubStore = {
     available_platforms: BrandConfig[];
     CFDs_restricted_countries: boolean;
     is_demo_low_risk: boolean;
-    selected_region: 'Non-EU' | 'EU' | 'All';
+    selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
     available_dxtrade_accounts: AvailableAccount[];
 };
@@ -456,4 +467,5 @@ export type TCoreStores = {
 
 export type TStores = TCoreStores & {
     exchange_rates: ExchangeRatesStore;
+    feature_flags: FeatureFlagsStore;
 };

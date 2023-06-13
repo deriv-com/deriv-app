@@ -4,7 +4,7 @@ const mock_wallet_migration_response = [
         wallets: [
             {
                 wallet_details: {
-                    balance: '0.00',
+                    balance: 0,
                     currency: 'USD',
                     icon: 'IcCurrencyUsd',
                     icon_type: 'fiat',
@@ -13,14 +13,14 @@ const mock_wallet_migration_response = [
                 },
                 account_list: [
                     {
-                        balance: '1000.00',
+                        balance: 1000,
                         currency: 'USD',
                         account_name: 'US Dollar',
                         icon: 'IcCurrencyUsd',
                         platform: 'deriv',
                     },
                     {
-                        balance: '100.00',
+                        balance: 100,
                         currency: 'USD',
                         account_name: 'MT5 Derived SVG',
                         icon: 'IcRebrandingMt5DerivedDashboard',
@@ -29,7 +29,7 @@ const mock_wallet_migration_response = [
                         landing_company_name: 'SVG',
                     },
                     {
-                        balance: '123.00',
+                        balance: 123,
                         currency: 'USD',
                         account_name: 'MT5 Derived BVI',
                         icon: 'IcRebrandingMt5DerivedDashboard',
@@ -38,7 +38,7 @@ const mock_wallet_migration_response = [
                         landing_company_name: 'BVI',
                     },
                     {
-                        balance: '20.00',
+                        balance: 20,
                         currency: 'USD',
                         account_name: 'MT5 Derived Vanuata',
                         icon: 'IcRebrandingMt5DerivedDashboard',
@@ -47,7 +47,7 @@ const mock_wallet_migration_response = [
                         landing_company_name: 'Vanuatu',
                     },
                     {
-                        balance: '100.00',
+                        balance: 100,
                         currency: 'USD',
                         account_name: 'MT5 Financial SVG',
                         icon: 'IcRebrandingMt5FinancialDashboard',
@@ -56,7 +56,7 @@ const mock_wallet_migration_response = [
                         landing_company_name: 'SVG',
                     },
                     {
-                        balance: '100.00',
+                        balance: 100,
                         currency: 'USD',
                         account_name: 'MT5 Financial BVI',
                         icon: 'IcRebrandingMt5FinancialDashboard',
@@ -65,7 +65,7 @@ const mock_wallet_migration_response = [
                         landing_company_name: 'SVG',
                     },
                     {
-                        balance: '100.00',
+                        balance: 100,
                         currency: 'USD',
                         account_name: 'MT5 Financial Vanuatu',
                         icon: 'IcRebrandingMt5FinancialDashboard',
@@ -74,7 +74,7 @@ const mock_wallet_migration_response = [
                         landing_company_name: 'SVG',
                     },
                     {
-                        balance: '100.00',
+                        balance: 100,
                         currency: 'USD',
                         account_name: 'MT5 Financial Labuan',
                         icon: 'IcRebrandingMt5FinancialDashboard',
@@ -83,7 +83,7 @@ const mock_wallet_migration_response = [
                         landing_company_name: 'SVG',
                     },
                     {
-                        balance: '150.00',
+                        balance: 150,
                         currency: 'USD',
                         account_name: 'MT5 Swap-free',
                         icon: 'IcRebrandingMt5SwapFree',
@@ -91,14 +91,14 @@ const mock_wallet_migration_response = [
                         sub_account_type: 'Swap-Free',
                     },
                     {
-                        balance: '100.00',
+                        balance: 100,
                         currency: 'USD',
                         account_name: 'Deriv X',
                         icon: 'IcRebrandingDerivx',
                         platform: 'derivx',
                     },
                     {
-                        balance: '100.00',
+                        balance: 100,
                         currency: 'USD',
                         account_name: 'Deriv EZ',
                         icon: 'IcDerivez',
@@ -113,7 +113,7 @@ const mock_wallet_migration_response = [
         wallets: [
             {
                 wallet_details: {
-                    balance: '0.00',
+                    balance: 0,
                     currency: 'USD',
                     icon: 'IcCurrencyUsd',
                     icon_type: 'fiat',
@@ -122,14 +122,14 @@ const mock_wallet_migration_response = [
                 },
                 account_list: [
                     {
-                        balance: '1000.00',
+                        balance: 1000,
                         currency: 'USD',
                         account_name: 'US Dollar',
                         icon: 'IcCurrencyUsd',
                         platform: 'deriv',
                     },
                     {
-                        balance: '234.00',
+                        balance: 234,
                         currency: 'USD',
                         account_name: 'MT5 CFDs',
                         icon: 'IcRebrandingMt5Cfds',
@@ -144,7 +144,7 @@ const mock_wallet_migration_response = [
         wallets: [
             {
                 wallet_details: {
-                    balance: '0.00',
+                    balance: 0,
                     currency: 'BTC',
                     icon: 'IcCashierBitcoinLight',
                     icon_type: 'crypto',
@@ -153,7 +153,7 @@ const mock_wallet_migration_response = [
                 },
                 account_list: [
                     {
-                        balance: '0.00212012',
+                        balance: 0.00212012,
                         currency: 'BTC',
                         account_name: 'Bitcoin',
                         icon: 'IcCurrencyBtc',
@@ -162,7 +162,7 @@ const mock_wallet_migration_response = [
             },
             {
                 wallet_details: {
-                    balance: '0.00',
+                    balance: 0,
                     currency: 'ETH',
                     icon: 'IcCashierEthereumLight',
                     icon_type: 'crypto',
@@ -171,7 +171,7 @@ const mock_wallet_migration_response = [
                 },
                 account_list: [
                     {
-                        balance: '0.00212012',
+                        balance: 0.00212012,
                         currency: 'ETH',
                         account_name: 'Ethereum',
                         icon: 'IcCurrencyEth',
@@ -180,7 +180,7 @@ const mock_wallet_migration_response = [
             },
             {
                 wallet_details: {
-                    balance: '0.00',
+                    balance: 0,
                     currency: 'USDC',
                     icon: 'IcCashierUsdCoinLight',
                     icon_type: 'crypto',
@@ -189,7 +189,7 @@ const mock_wallet_migration_response = [
                 },
                 account_list: [
                     {
-                        balance: '0.00212012',
+                        balance: 0.00212012,
                         currency: 'USDC',
                         account_name: 'USD Coin',
                         icon: 'IcCurrencyUsdc',

@@ -168,7 +168,7 @@ export default class UIStore extends BaseStore {
     should_show_assessment_complete_modal = false;
     app_contents_scroll_ref = null;
     is_deriv_account_needed_modal_visible = false;
-    is_wallet_modal_visible = true;
+    is_wallet_modal_visible = false;
     is_ready_to_deposit_modal_visible = false;
     is_need_real_account_for_cashier_modal_visible = false;
     is_switch_to_deriv_account_modal_visible = false;
@@ -614,11 +614,13 @@ export default class UIStore extends BaseStore {
         this.is_positions_drawer_on = true;
     }
 
-    openRealAccountSignup(target = this.root_store.client.upgradeable_landing_companies?.[0]) {
-        this.is_real_acc_signup_on = true;
-        this.real_account_signup_target = target;
-        this.is_accounts_switcher_on = false;
-        localStorage.removeItem('current_question_index');
+    openRealAccountSignup(target) {
+        if (target) {
+            this.is_real_acc_signup_on = true;
+            this.real_account_signup_target = target;
+            this.is_accounts_switcher_on = false;
+            localStorage.removeItem('current_question_index');
+        }
     }
 
     setShouldShowCancel(value) {

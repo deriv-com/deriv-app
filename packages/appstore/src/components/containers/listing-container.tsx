@@ -4,15 +4,15 @@ import GridContainer from 'Components/containers/grid-container';
 import TitleCardLoader from 'Components/pre-loader/title-card-loader';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
 import WalletTransferBlock from 'Components/wallet-content/wallet-transfer-block';
 import './listing-container.scss';
+import { TWalletAccount } from 'Types';
 
 type ListingContainerProps = {
     title: ReactNode;
     description: ReactNode;
     is_deriv_platform?: boolean;
-    wallet_account?: TCoreStores['client']['accounts'][0];
+    wallet_account?: TWalletAccount;
     className?: string;
     is_outside_grid_container?: boolean;
 };

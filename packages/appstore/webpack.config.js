@@ -162,7 +162,7 @@ module.exports = function (env) {
                   ]
                 : [],
         },
-        devtool: is_release ? undefined : 'eval-cheap-module-source-map',
+        devtool: is_release ? 'source-map' : 'eval-cheap-module-source-map',
         externals: [
             {
                 react: true,

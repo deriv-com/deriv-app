@@ -3,25 +3,17 @@
     align-items: center;
     justify-content: flex-start;
     background-color: $color-white;
-    padding: 1rem 2rem;
     border-radius: $BORDER_RADIUS;
     flex-grow: 1;
 
-    &--mobile {
+    @include mobile {
         flex-direction: column;
         align-items: flex-start;
 
-        .wallet-tile {
-            &__header {
-                display: flex;
-                justify-content: flex-start;
-                align-items: flex-end;
-                margin-bottom: 0.4rem;
-            }
-
-            &__icon {
-                margin-right: 0.4rem;
-            }
+        &__icon-with-badge {
+            display: flex;
+            align-items: end;
+            margin-bottom: 0.4rem;
         }
     }
 
@@ -36,14 +28,17 @@
     }
 
     &__icon {
-        margin-right: 1.6rem;
+        margin-right: 0.8rem;
         min-width: 4rem;
+
+        @include mobile {
+            margin-right: 0.4rem;
+        }
     }
 
     &__content {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column;
         flex-grow: 1;
     }
 }

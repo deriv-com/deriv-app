@@ -5,11 +5,11 @@ import ListingContainer from 'Components/containers/listing-container';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
-import { TCoreStores } from '@deriv/stores/types';
 import { useStore, observer } from '@deriv/stores';
+import { TWalletAccount } from 'Types';
 
 type TProps = {
-    wallet_account: TCoreStores['client']['accounts'][0];
+    wallet_account: TWalletAccount;
 };
 
 const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps) => {
@@ -85,7 +85,7 @@ const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps)
                                     openRealAccountSignup('maltainvest');
                                 }
                             } else {
-                                openRealAccountSignup();
+                                openRealAccountSignup('svg');
                             }
                         }}
                     />

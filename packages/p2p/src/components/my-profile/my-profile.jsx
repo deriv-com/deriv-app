@@ -17,9 +17,7 @@ const MyProfile = () => {
         return () => {
             // leave this in the return otherwise the default isn't set to my stats
             my_profile_store.setActiveTab(my_profile_tabs.MY_STATS);
-
-            // TODO: Remove this when we refactor all the remainder modals to use modal manager
-            my_profile_store.setIsConfirmDeleteModalOpen(false);
+            my_profile_store.setShouldShowAddPaymentMethodForm(false);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

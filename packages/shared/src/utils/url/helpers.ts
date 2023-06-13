@@ -30,10 +30,15 @@ export const getUrlSmartTrader = () => {
     return `${base_link}/${i18n_language.toLowerCase()}/trading.html`;
 };
 
-export const getUrlBinaryBot = () => {
-    const { is_deriv_app } = getPlatformFromUrl();
+export const getUrlBinaryBot = (is_language_required = true) => {
+    const { is_staging_deriv_app } = getPlatformFromUrl();
 
-    return is_deriv_app ? deriv_urls.BINARYBOT_PRODUCTION : deriv_urls.BINARYBOT_STAGING;
+    const url_lang = getlangFromUrl();
+    const i18n_language = window.localStorage.getItem('i18n_language') || url_lang || 'en';
+
+    const base_link = is_staging_deriv_app ? deriv_urls.BINARYBOT_STAGING : deriv_urls.BINARYBOT_PRODUCTION;
+
+    return is_language_required ? `${base_link}/?l=${i18n_language.toLowerCase()}` : base_link;
 };
 
 export const getPlatformFromUrl = (domain = window.location.hostname) => {
@@ -54,3 +59,6 @@ export const isStaging = (domain = window.location.hostname) => {
 
     return is_staging_deriv_app;
 };
+
+export const getCurrentdomain = () =>
+    /deriv\.(com|me)/.test(window.location.hostname) ? deriv_urls.DERIV_HOST_NAME : deriv_urls.DERIV_TEST_LINK_DOMAIN;

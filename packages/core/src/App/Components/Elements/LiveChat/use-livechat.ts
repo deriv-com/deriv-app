@@ -108,7 +108,7 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
 
         window.LiveChatWidget?.on('new_event', event => {
             // Open the chat window when there is an incoming greeting by passing the the id of the message specific to the page.
-            if (event.greeting?.id === 235) window.LC_API?.open_chat_window();
+            if (event.greeting?.id === 335) window.LC_API?.open_chat_window();
         });
     };
 

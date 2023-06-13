@@ -1,7 +1,7 @@
 declare global {
     interface Window {
         LiveChatWidget: {
-            on: (key: string, callback: (e) => void) => void;
+            on: (key: string, callback: (e: { greeting?: { id: number } }) => void) => void;
             get: (key: string) => any;
             call: (key: string, value?: any) => void;
         };

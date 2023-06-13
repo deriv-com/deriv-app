@@ -53,7 +53,6 @@ export const CardsSliderSwiper = ({ items, setActivePage }: TProps) => {
                 spaceBetween={24}
                 onSlideChange={swiperCore => {
                     const { activeIndex } = swiperCore;
-                    // console.log({ activeIndex, snapIndex, previousIndex, realIndex });
                     setActivePage(activeIndex);
                 }}
             >

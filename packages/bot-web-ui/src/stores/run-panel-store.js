@@ -70,7 +70,6 @@ export default class RunPanelStore {
         this.dbot = this.root_store.dbot;
         this.core = core;
         this.disposeReactionsFn = this.registerReactions();
-        this.timer = null;
     }
 
     active_index = 0;
@@ -148,13 +147,8 @@ export default class RunPanelStore {
     }
 
     async onRunButtonClick() {
+        window.sendRequestsStatistic(false);
         performance.clearMeasures();
-
-        this.timer = setInterval(() => {
-            window.sendRequestsStatistic(true);
-            performance.clearMeasures();
-        }, 10000);
-
         const { summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = this.core;
         const is_ios = mobileOSDetect() === 'iOS';
@@ -238,9 +232,8 @@ export default class RunPanelStore {
         if (this.error_type) {
             this.error_type = undefined;
         }
-
-        window.sendRequestsStatistic(false);
-        clearInterval(this.timer);
+        window.sendRequestsStatistic(true);
+        performance.clearMeasures();
     }
 
     onClearStatClick() {
@@ -664,9 +657,6 @@ export default class RunPanelStore {
         observer.unregisterAll('ui.log.notify');
         observer.unregisterAll('ui.log.success');
         observer.unregisterAll('client.invalid_token');
-
-        if (this.timer) clearInterval(this.timer);
-        window.sendRequestsStatistic(false);
     }
 
     async handleInvalidToken() {

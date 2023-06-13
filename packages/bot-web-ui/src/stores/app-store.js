@@ -30,12 +30,10 @@ export default class AppStore {
         const { blockly_store, run_panel } = this.root_store;
         const { client, common } = this.core;
 
-        if (!run_panel?.is_running) {
-            this.timer = setInterval(() => {
-                window.sendRequestsStatistic(false);
-                performance.clearMeasures();
-            }, 10000);
-        }
+        this.timer = setInterval(() => {
+            window.sendRequestsStatistic(run_panel?.is_running);
+            performance.clearMeasures();
+        }, 10000);
 
         this.showDigitalOptionsMaltainvestError(client, common);
 
@@ -87,6 +85,10 @@ export default class AppStore {
 
         ui.setAccountSwitcherDisabledMessage(false);
         ui.setPromptHandler(false);
+
+        if (this.timer) clearInterval(this.timer);
+        window.sendRequestsStatistic(false);
+        performance.clearMeasures();
     }
 
     onBeforeUnload = event => {

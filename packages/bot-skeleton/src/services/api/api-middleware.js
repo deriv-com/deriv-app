@@ -22,6 +22,7 @@ if (isProduction) {
 datadogLogs.init({
     clientToken: DATADOG_CLIENT_TOKEN,
     site: 'datadoghq.eu',
+    forwardErrorsToLogs: true,
     service: 'Dbot',
     sessionSampleRate: dataDogSessionSampleRate,
     version: dataDogVersion,

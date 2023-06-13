@@ -12,7 +12,7 @@ import AccountLimitsFooter from './account-limits-footer';
 import AccountLimitsOverlay from './account-limits-overlay';
 import AccountLimitsTableCell from './account-limits-table-cell';
 import AccountLimitsTableHeader from './account-limits-table-header';
-import AccountLimitsTurnoverLimitRow, { TAccountLimitsCollection } from './account-limits-turnover-limit-row';
+import AccountLimitsTurnoverLimitRow from './account-limits-turnover-limit-row';
 import { observer, useStore } from '@deriv/stores';
 import { FormikValues } from 'formik';
 

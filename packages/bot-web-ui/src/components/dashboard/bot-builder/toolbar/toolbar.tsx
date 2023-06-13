@@ -1,11 +1,11 @@
 import React from 'react';
 import { Dialog } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import WorkspaceGroup from './workspace-group';
 import ToolbarButton from './toolbar-button';
-import { isMobile } from '@deriv/shared';
+import WorkspaceGroup from './workspace-group';
 
 type TToolbar = {
     active_tab: string;

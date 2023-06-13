@@ -1,8 +1,8 @@
+import React from 'react';
+import classNames from 'classnames';
 import { DesktopWrapper, Icon, MobileWrapper, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import classNames from 'classnames';
 import { DBOT_TABS } from 'Constants/bot-contents';
-import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { SIDEBAR_INTRO } from './constants';

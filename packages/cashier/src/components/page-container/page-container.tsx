@@ -2,10 +2,8 @@ import React, { useCallback } from 'react';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import CashierBreadcrumb from '../cashier-breadcrumb';
+import { CashierLockedChecker } from '../cashier-locked-checker';
 import './page-container.scss';
-import { useCashierLocked, useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
-import { Virtual } from 'Components/cashier-container';
-import CashierLocked from 'Components/cashier-locked';
 
 type TProps = {
     hide_breadcrumb?: boolean;
@@ -53,23 +51,3 @@ const PageContainer: React.FC<React.PropsWithChildren<TProps>> = observer(
 );
 
 export default PageContainer;
-
-const CashierLockedChecker: React.FC<React.PropsWithChildren<unknown>> = observer(({ children }) => {
-    const { client } = useStore();
-    const { is_crypto, is_virtual } = client;
-    const is_cashier_locked = useCashierLocked();
-    const is_system_maintenance = useIsSystemMaintenance();
-    const is_deposit_locked = useDepositLocked();
-
-    if (is_virtual) return <Virtual />;
-
-    if (is_system_maintenance) {
-        if (is_cashier_locked || (is_deposit_locked && is_crypto())) {
-            return <CashierLocked />;
-        }
-    }
-
-    if (is_cashier_locked) return <CashierLocked />;
-
-    return <>{children}</>;
-});

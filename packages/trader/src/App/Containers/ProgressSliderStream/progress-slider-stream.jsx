@@ -2,10 +2,14 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { ProgressSlider } from '@deriv/components';
 import { getCurrentTick } from '@deriv/shared';
-import { connect } from 'Stores/connect';
 import { getCardLabels } from 'Constants/contract';
+import { observer, useStore } from '@deriv/stores';
 
-const ProgressSliderStream = ({ contract_info, is_loading, server_time }) => {
+const ProgressSliderStream = observer(({ contract_info }) => {
+    const { common, portfolio } = useStore();
+    const { server_time } = common;
+    const { is_loading } = portfolio;
+
     if (!contract_info) {
         return <div />;
     }
@@ -22,15 +26,10 @@ const ProgressSliderStream = ({ contract_info, is_loading, server_time }) => {
             ticks_count={contract_info.tick_count}
         />
     );
-};
+});
 
 ProgressSliderStream.propTypes = {
     contract_info: PropTypes.object,
-    is_loading: PropTypes.bool,
-    server_time: PropTypes.object,
 };
 
-export default connect(({ common, portfolio }) => ({
-    is_loading: portfolio.is_loading,
-    server_time: common.server_time,
-}))(ProgressSliderStream);
+export default ProgressSliderStream;

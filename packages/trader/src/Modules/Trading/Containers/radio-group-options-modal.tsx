@@ -1,41 +1,21 @@
 import React from 'react';
 import { Div100vhContainer, Modal, usePreventIOSZoom } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { useTraderStore } from 'Stores/useTraderStores';
 import { getGrowthRatePercentage, getTickSizeBarrierPercentage, isEmptyObject } from '@deriv/shared';
 import MultiplierOptions from 'Modules/Trading/Containers/Multiplier/multiplier-options.jsx';
 import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroupWithInfoMobile';
-import { TCoreStores } from '@deriv/stores/types';
-import { BuyContractRequest, Proposal, PriceProposalRequest, ProposalOpenContract } from '@deriv/api-types';
+import { observer } from '@deriv/stores';
 
 type TRadioGroupOptionsModal = {
-    accumulator_range_list?: number[];
-    growth_rate: ProposalOpenContract['growth_rate'] &
-        Pick<NonNullable<BuyContractRequest['parameters']>, 'growth_rate'> &
-        PriceProposalRequest['growth_rate'];
     is_open: boolean;
     modal_title: string;
-    onChange: React.ComponentProps<typeof RadioGroupWithInfoMobile>['onChange'];
-    proposal_info: {
-        ACCU?: {
-            has_error?: boolean;
-            id?: string;
-        };
-    };
-    tick_size_barrier: NonNullable<Required<Proposal['contract_details']>>['tick_size_barrier'];
     toggleModal: () => void;
 };
 
-const RadioGroupOptionsModal = ({
-    accumulator_range_list,
-    growth_rate,
-    is_open,
-    modal_title,
-    onChange,
-    proposal_info,
-    tick_size_barrier,
-    toggleModal,
-}: TRadioGroupOptionsModal) => {
+const RadioGroupOptionsModal = observer(({ is_open, modal_title, toggleModal }: TRadioGroupOptionsModal) => {
+    const { accumulator_range_list, growth_rate, onChange, tick_size_barrier, proposal_info } = useTraderStore();
+
     // Fix to prevent iOS from zooming in erratically on quick taps
     usePreventIOSZoom();
     const has_error_or_not_loaded =
@@ -56,13 +36,14 @@ const RadioGroupOptionsModal = ({
             >
                 <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='48px'>
                     {modal_title === localize('Multiplier') ? (
+                        // @ts-expect-error should be gone after MultiplierOptions is converted to typescript
                         <MultiplierOptions toggleModal={toggleModal} />
                     ) : (
                         <RadioGroupWithInfoMobile
                             contract_name='accumulator'
                             current_value_object={{ name: 'growth_rate', value: growth_rate }}
                             info={localize(
-                                'Your stake will grow by {{growth_rate}}% at every tick starting from the second tick, as long as the price remains within a range of ±{{tick_size_barrier}} from the previous tick price.',
+                                'Your stake will grow at {{growth_rate}}% per tick as long as the current spot price remains within ±{{tick_size_barrier}} from the previous spot price.',
                                 {
                                     growth_rate: getGrowthRatePercentage(growth_rate),
                                     tick_size_barrier: getTickSizeBarrierPercentage(tick_size_barrier),
@@ -82,12 +63,6 @@ const RadioGroupOptionsModal = ({
             </Modal>
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ modules }: TCoreStores) => ({
-    accumulator_range_list: modules.trade.accumulator_range_list,
-    growth_rate: modules.trade.growth_rate,
-    onChange: modules.trade.onChange,
-    proposal_info: modules.trade.proposal_info,
-    tick_size_barrier: modules.trade.tick_size_barrier,
-}))(RadioGroupOptionsModal);
+export default RadioGroupOptionsModal;

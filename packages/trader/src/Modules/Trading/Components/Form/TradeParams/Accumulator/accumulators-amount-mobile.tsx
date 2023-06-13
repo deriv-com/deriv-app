@@ -2,30 +2,20 @@ import React from 'react';
 import classNames from 'classnames';
 import { AMOUNT_MAX_LENGTH, getDecimalPlaces } from '@deriv/shared';
 import { MobileWrapper } from '@deriv/components';
-import { connect } from 'Stores/connect';
 import { localize } from '@deriv/translations';
 import LabeledQuantityInputMobile from '../../LabeledQuantityInputMobile';
-import { TCoreStores } from '@deriv/stores/types';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 type TAccumulatorsAmountMobile = {
-    amount: number;
-    currency: string;
-    current_focus: string | null;
     is_nativepicker: boolean;
-    is_single_currency: boolean;
-    onChange: React.ChangeEventHandler<HTMLElement>;
-    setCurrentFocus: (value: string) => void;
 };
 
-const AccumulatorsAmountMobile = ({
-    amount,
-    currency,
-    current_focus,
-    is_nativepicker,
-    is_single_currency,
-    onChange,
-    setCurrentFocus,
-}: TAccumulatorsAmountMobile) => {
+const AccumulatorsAmountMobile = observer(({ is_nativepicker }: TAccumulatorsAmountMobile) => {
+    const { ui, client } = useStore();
+    const { current_focus, setCurrentFocus } = ui;
+    const { is_single_currency } = client;
+    const { amount, currency, onChange } = useTraderStore();
     return (
         <>
             <MobileWrapper>
@@ -56,13 +46,6 @@ const AccumulatorsAmountMobile = ({
             </MobileWrapper>
         </>
     );
-};
+});
 
-export default connect(({ modules, client, ui }: TCoreStores) => ({
-    amount: modules.trade.amount,
-    currency: modules.trade.currency,
-    current_focus: ui.current_focus,
-    is_single_currency: client.is_single_currency,
-    onChange: modules.trade.onChange,
-    setCurrentFocus: ui.setCurrentFocus,
-}))(AccumulatorsAmountMobile);
+export default AccumulatorsAmountMobile;

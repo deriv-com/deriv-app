@@ -2,24 +2,21 @@ import React from 'react';
 import { fireEvent, render, screen, within } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import AccumulatorsStats, { ROW_SIZES } from '../accumulators-stats';
+import { TraderProviders } from '../../../../../trader-providers';
+import { mockStore } from '@deriv/stores';
 
 const mock_connect_props = {
-    ticks_history_stats: {
-        ticks_stayed_in: [1, 65, 1234, 675, 234, 10, 658, 134, 5, 2394, 100, 6, 90, 9, 344, 81, 695, 14, 345, 2222],
-        last_tick_epoch: 1005,
+    modules: {
+        trade: {
+            ticks_history_stats: {
+                ticks_stayed_in: [
+                    1, 65, 1234, 675, 234, 10, 658, 134, 5, 2394, 100, 6, 90, 9, 344, 81, 695, 14, 345, 2222,
+                ],
+                last_tick_epoch: 1005,
+            },
+        },
     },
 };
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect:
-        () =>
-        <T extends React.FC>(Component: T) =>
-        (props: React.ComponentProps<T>) =>
-            Component({ ...props, ...mock_connect_props }),
-}));
-
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
     isDesktop: jest.fn(),
@@ -37,32 +34,56 @@ describe('AccumulatorsStats', () => {
     });
 
     it('should render as expandable', () => {
-        render(<AccumulatorsStats />);
+        render(<AccumulatorsStats />, {
+            wrapper: ({ children }) => (
+                <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
+            ),
+        });
         expect(screen.getByTestId('dt_accordion-toggle-arrow')).toBeInTheDocument();
     });
     it('should render as non-expandable', () => {
-        render(<AccumulatorsStats is_expandable={false} />);
+        render(<AccumulatorsStats is_expandable={false} />, {
+            wrapper: ({ children }) => (
+                <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
+            ),
+        });
         expect(screen.queryByTestId('dt_accordion-toggle-arrow')).not.toBeInTheDocument();
     });
     it('should show manual after info icon is clicked', () => {
         render(<AccumulatorsStats />, {
             container: document.body.appendChild(modal_root_el),
+            wrapper: ({ children }) => (
+                <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
+            ),
         });
         fireEvent.click(screen.getByTestId('dt_ic_info_icon'));
         expect(screen.getByTestId('dt_accumulators_stats_manual_video')).toBeInTheDocument();
     });
     it('should render partial history values (tick counters) when initially collapsed in desktop', () => {
-        render(<AccumulatorsStats />);
+        render(<AccumulatorsStats />, {
+            wrapper: ({ children }) => (
+                <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
+            ),
+        });
         expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.DESKTOP_COLLAPSED);
     });
     it('should render partial history values (tick counters) when initially collapsed in mobile', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         (isDesktop as jest.Mock).mockReturnValue(false);
-        render(<AccumulatorsStats />);
+        render(<AccumulatorsStats />, {
+            wrapper: ({ children }) => (
+                <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
+            ),
+        });
         expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.MOBILE_COLLAPSED);
     });
+
     it('should expand in desktop when accordion_toggle_arrow is clicked', () => {
-        render(<AccumulatorsStats />);
+        render(<AccumulatorsStats />, {
+            wrapper: ({ children }) => (
+                <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
+            ),
+        });
         expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.DESKTOP_COLLAPSED);
 
         fireEvent.click(screen.getByTestId('dt_accordion-toggle-arrow'));
@@ -75,6 +96,9 @@ describe('AccumulatorsStats', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         render(<AccumulatorsStats />, {
             container: document.body.appendChild(modal_root_el),
+            wrapper: ({ children }) => (
+                <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
+            ),
         });
         expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.MOBILE_COLLAPSED);
 

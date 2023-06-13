@@ -7,7 +7,7 @@ import { TWalletAccount } from 'Types';
 
 const mockedRootStore = mockStore({});
 
-jest.mock('./../cards-slider', () => jest.fn(() => <div>slider</div>));
+jest.mock('./../cards-slider-swiper', () => jest.fn(() => <div>slider</div>));
 
 describe('<WalletCardsCarousel />', () => {
     const items: TWalletAccount[] = [

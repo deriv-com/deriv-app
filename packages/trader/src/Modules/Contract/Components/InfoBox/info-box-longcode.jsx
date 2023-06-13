@@ -1,31 +1,31 @@
 import { observer } from 'mobx-react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
-import { isVanillaContract } from '@deriv/shared';
-
-const generateMessageForVanillaTrade = contract_info => (
-    <Localize
-        i18n_default_text='<0>For {{contract_type}}:</0> Get a payout if {{index_name}} is {{strike_status}} than the strike price at the expiry time. Your payout is zero if the market is {{market_status}} or equal to the strike price at the expiry time. You will start making a profit when the payout is higher than your stake.'
-        components={[<strong key={0} />]}
-        values={{
-            contract_type: contract_info.contract_type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
-            index_name: contract_info.display_name,
-            strike_status: contract_info.contract_type === 'VANILLALONGCALL' ? localize('higher') : localize('lower'),
-            market_status: contract_info.contract_type === 'VANILLALONGCALL' ? localize('lower') : localize('higher'),
-        }}
-    />
-);
+import { localize } from '@deriv/translations';
 
 const InfoBoxLongcode = ({ contract_info }) => {
-    const is_vanilla = isVanillaContract(contract_info.contract_type);
+    const max_longcode_length = 150;
+    const [is_collapsed, setIsCollapsed] = React.useState(true);
+
+    const handleToggle = () => {
+      setIsCollapsed(!is_collapsed);
+    };
+    
     return (
         <div className='info-box-longcode'>
             <Icon icon='IcContractFlag' className='info-box-longcode-icon' size={24} />
-            <Text size='xs' className='info-box-longcode-text'>
-                {is_vanilla ? generateMessageForVanillaTrade(contract_info) : contract_info.longcode}
-            </Text>
+            <div className='info-box-longcode-wrapper'>
+                <Text size='xs' className={classNames('info-box-longcode-text', {'info-box-longcode-text--collapsed' : is_collapsed})}>
+                    {contract_info.longcode}
+                </Text>
+                {` `}
+                {contract_info.longcode.length > max_longcode_length && 
+                <Text as='a' href='#' size='xs' onClick={handleToggle} c>
+                    {is_collapsed ? localize('View more') : localize('View less')}
+                </Text>}
+            </div>
         </div>
     );
 };

@@ -476,7 +476,7 @@ const OpenPositions = ({
     const [contract_type_value, setContractTypeValue] = React.useState(
         contract_types.find(type => type.is_default)?.text || localize('Options')
     );
-    const accumulator_rates = [localize('All rates'), '1%', '2%', '3%', '4%', '5%'];
+    const accumulator_rates = [localize('All growth rates'), '1%', '2%', '3%', '4%', '5%'];
     const [accumulator_rate, setAccumulatorRate] = React.useState(accumulator_rates[0]);
     const is_accumulator_selected = contract_type_value === contract_types[2].text;
     const is_multiplier_selected = contract_type_value === contract_types[1].text;

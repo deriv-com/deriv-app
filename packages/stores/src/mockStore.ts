@@ -1,5 +1,6 @@
 import merge from 'lodash.merge';
 import type { TStores } from '../types';
+import useStore from './useStore';
 
 const mock = (): TStores & { is_mock: boolean } => {
     return {

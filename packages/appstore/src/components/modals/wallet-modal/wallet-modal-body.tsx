@@ -1,29 +1,38 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Tabs, ThemedScrollbars } from '@deriv/components';
+import { Tabs, ThemedScrollbars, Div100vhContainer } from '@deriv/components';
 import { getCashierOptions, TWalletType } from './provider';
 
 type TWalletModalBodyProps = {
     active_tab_index: number;
+    contentScrollHandler: React.UIEventHandler<HTMLDivElement>;
     is_dark: boolean;
     is_demo: boolean;
     is_mobile: boolean;
     setActiveTabIndex: (index: number) => void;
+    setIsWalletNameVisible: (value: boolean) => void;
     is_wallet_name_visible: boolean;
     wallet_type: TWalletType;
 };
 
 const WalletModalBody = ({
     active_tab_index,
+    contentScrollHandler,
     is_dark,
     is_demo,
     is_mobile,
-    is_wallet_name_visible,
     setActiveTabIndex,
+    setIsWalletNameVisible,
+    is_wallet_name_visible,
     wallet_type,
 }: TWalletModalBodyProps) => {
-    const content_height = 'calc(100vh - 24.4rem)';
-    const max_content_width = '128rem';
+    const getHeightOffset = React.useCallback(() => {
+        const desktop_header_height = '24.4rem';
+        const mobile_header_height = '8.2rem';
+
+        return is_mobile ? mobile_header_height : desktop_header_height;
+    }, [is_mobile]);
+
     return (
         <Tabs
             active_icon_color={is_dark ? 'var(--badge-white)' : ''}
@@ -36,6 +45,7 @@ const WalletModalBody = ({
             header_fit_content
             icon_size={16}
             icon_color={is_demo ? 'var(--demo-text-color-1)' : ''}
+            is_scrollable={false}
             onTabItemClick={(index: number) => {
                 setActiveTabIndex(index);
             }}
@@ -44,14 +54,18 @@ const WalletModalBody = ({
                 return (
                     <div key={option.label} icon={option.icon} label={option.label}>
                         <ThemedScrollbars
-                            is_bypassed={is_mobile}
-                            is_scrollbar_hidden
-                            height={content_height}
-                            width={max_content_width}
+                            className='dc-tabs--modal-body__tabs__themed-scrollbar'
+                            is_scrollbar_hidden={is_mobile}
+                            onScroll={contentScrollHandler}
                         >
-                            {typeof option.content === 'function'
-                                ? option.content({ setActiveTabIndex })
-                                : option.content}
+                            <Div100vhContainer height_offset={getHeightOffset()}>
+                                <div className='dc-tabs--modal-body__tabs__content-wrapper'>
+                                    {option.content({
+                                        is_wallet_name_visible,
+                                        setIsWalletNameVisible,
+                                    })}
+                                </div>
+                            </Div100vhContainer>
                         </ThemedScrollbars>
                     </div>
                 );
@@ -59,7 +73,5 @@ const WalletModalBody = ({
         </Tabs>
     );
 };
-
-WalletModalBody.displayName = 'WalletModalBody';
 
 export default WalletModalBody;

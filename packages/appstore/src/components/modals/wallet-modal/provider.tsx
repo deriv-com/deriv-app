@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
 import DemoResetBalance from 'Components/demo-reset-balance';
+import WalletTransfer from 'Components/wallet-transfer';
 
 export type TWalletType = 'real' | 'demo' | 'p2p' | 'payment_agent';
 
@@ -14,8 +14,8 @@ export const getCashierOptions = (type: TWalletType) => {
                     icon: 'IcAdd',
                     label: localize('Deposit'),
                     //Remove Lorem ipsum text after QA testing (testing scroll behaviour)
-                    content: (
-                        <div style={{ padding: `${isMobile() ? '1.6rem 0' : '2.4rem 0'}`, textAlign: 'justify' }}>
+                    content: () => (
+                        <div style={{ textAlign: 'justify' }}>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas euismod lectus odio, sed
                             pulvinar ex eleifend eu. Quisque elementum pellentesque felis. Maecenas elementum vitae
                             purus sed ullamcorper. In quis tempus diam, non posuere ipsum. Quisque viverra in mauris
@@ -71,16 +71,16 @@ export const getCashierOptions = (type: TWalletType) => {
                         </div>
                     ),
                 },
-                { icon: 'IcMinus', label: localize('Withdraw'), content: <p>Withdraw Real</p> },
+                { icon: 'IcMinus', label: localize('Withdraw'), content: () => <p>Withdraw Real</p> },
                 {
                     icon: 'IcAccountTransfer',
                     label: localize('Transfer'),
-                    content: <p>Transfer Real</p>,
+                    content: () => <p>Transfer Real</p>,
                 },
                 {
                     icon: 'IcStatement',
                     label: localize('Transactions'),
-                    content: <p>Transactions Real</p>,
+                    content: () => <p>Transactions Real</p>,
                 },
             ];
         case 'demo':
@@ -88,12 +88,12 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcAccountTransfer',
                     label: localize('Transfer'),
-                    content: <p>Transfer Demo</p>,
+                    content: (props: React.ComponentProps<typeof WalletTransfer>) => <WalletTransfer {...props} />,
                 },
                 {
                     icon: 'IcStatement',
                     label: localize('Transactions'),
-                    content: <p>Transactions Demo</p>,
+                    content: () => <p>Transactions Demo</p>,
                 },
                 {
                     icon: 'IcAdd',
@@ -106,47 +106,47 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcAdd',
                     label: localize('Buy/Sell'),
-                    content: <p>Buy/Sell</p>,
+                    content: () => <p>Transfer Real</p>,
                 },
                 {
                     icon: 'IcStatement',
                     label: localize('Orders'),
-                    content: <p>Orders P2P</p>,
+                    content: () => <p>Transfer Real</p>,
                 },
                 {
                     icon: 'IcStatement',
                     label: localize('My ads'),
-                    content: <p>My ads P2P</p>,
+                    content: () => <p>Transfer Real</p>,
                 },
                 {
                     icon: 'IcStatement',
                     label: localize('My profile'),
-                    content: <p>My profile P2P</p>,
+                    content: () => <p>Transfer Real</p>,
                 },
                 {
                     icon: 'IcAccountTransfer',
                     label: localize('Transfer'),
-                    content: <p>Transfer P2P</p>,
+                    content: () => <p>Transfer Real</p>,
                 },
                 {
                     icon: 'IcStatement',
                     label: localize('Transactions'),
-                    content: <p>Transactions P2P</p>,
+                    content: () => <p>Transfer Real</p>,
                 },
             ];
         case 'payment_agent':
             return [
-                { icon: 'IcAdd', label: localize('Deposit'), content: <p>Deposit PA</p> },
-                { icon: 'IcMinus', label: localize('Withdraw'), content: <p>Withdraw PA</p> },
+                { icon: 'IcAdd', label: localize('Deposit'), content: () => <p>Transfer Real</p> },
+                { icon: 'IcMinus', label: localize('Withdraw'), content: () => <p>Transfer Real</p> },
                 {
                     icon: 'IcAccountTransfer',
                     label: localize('Transfer'),
-                    content: <p>Transfer PA</p>,
+                    content: () => <p>Transfer Real</p>,
                 },
                 {
                     icon: 'IcStatement',
                     label: localize('Transactions'),
-                    content: <p>Transactions PA</p>,
+                    content: () => <p>Transfer Real</p>,
                 },
             ];
         default:

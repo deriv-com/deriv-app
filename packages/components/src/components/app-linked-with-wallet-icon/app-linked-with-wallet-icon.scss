@@ -1,4 +1,18 @@
+@mixin container-space($parent, $space) {
+    #{$parent}__top-icon {
+        top: $space * 1rem;
+        left: $space * 1rem;
+    }
+
+    #{$parent}__bottom-icon {
+        bottom: $space * 1rem;
+        right: $space * 1rem;
+    }
+}
+
 .app-icon {
+    $p-app-icon: &;
+
     position: relative;
     display: flex;
     align-items: center;
@@ -22,18 +36,21 @@
     &--small {
         width: 4rem;
         height: 2.4rem;
-        padding: 0.1rem;
+
+        @include container-space($p-app-icon, 0.1);
     }
 
     &--medium {
         width: 6.4rem;
         height: 4rem;
-        padding: 0.2rem;
+
+        @include container-space($p-app-icon, 0.2);
     }
 
     &--large {
         width: 12.8rem;
         height: 8rem;
-        padding: 0.4rem;
+
+        @include container-space($p-app-icon, 0.4);
     }
 }

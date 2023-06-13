@@ -81,7 +81,7 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcStatement',
                     label: localize('Transactions'),
-                    content: <FiatTransactionList />,
+                    content: () => <FiatTransactionList />,
                 },
             ];
         case 'demo':
@@ -94,7 +94,7 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcStatement',
                     label: localize('Transactions'),
-                    content: <FiatTransactionList />,
+                    content: () => <FiatTransactionList />,
                 },
                 {
                     icon: 'IcAdd',

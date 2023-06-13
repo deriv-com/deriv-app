@@ -3,7 +3,6 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import WalletModalBody from '../wallet-modal-body';
-import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('Components/wallet-transfer', () => jest.fn(() => <div>WalletTransfer</div>));
 jest.mock('Components/fiat-transaction-list', () => jest.fn(() => <div>Transactions</div>));

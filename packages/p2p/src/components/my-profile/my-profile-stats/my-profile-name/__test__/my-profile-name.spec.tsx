@@ -17,13 +17,16 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
 }));
 
 describe('<MyProfileName />', () => {
+    const currentDate = Math.floor(Date.now() / 1000);
+    const nextYearsDate = Math.floor((Date.now() + 365 * 24 * 60 * 60 * 1000) / 1000);
+
     beforeEach(() => {
         mock_store = {
             general_store: {
                 advertiser_info: {
                     basic_verification: 1,
                     buy_orders_count: 0,
-                    created_time: 1686558122,
+                    created_time: currentDate,
                     full_verification: 1,
                     rating_average: null,
                     rating_count: 0,
@@ -56,7 +59,7 @@ describe('<MyProfileName />', () => {
 
     it('should not render default view for long time P2P user', () => {
         mock_store.general_store.advertiser_info.buy_orders_count = 200;
-        mock_store.general_store.advertiser_info.created_time = 1655022449;
+        mock_store.general_store.advertiser_info.created_time = nextYearsDate;
         mock_store.general_store.advertiser_info.rating_average = 4.5;
         mock_store.general_store.advertiser_info.rating_count = 50;
         mock_store.general_store.advertiser_info.recommended_average = 100;

@@ -63,7 +63,15 @@ const AppContent = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [client.is_options_blocked, client.account_settings.country_code]);
 
+    const init = () => {
+        GTM.init(combinedStore);
+        ServerTime.init(common);
+        app.setDBotEngineStores(combinedStore);
+        ApiHelpers.setInstance(app.api_helpers_store);
+    };
+
     const changeActiveSymbolLoadingState = () => {
+        init();
         const { active_symbols } = ApiHelpers.instance;
         active_symbols.retrieveActiveSymbols(true).then(() => {
             setIsLoading(false);
@@ -71,10 +79,7 @@ const AppContent = observer(() => {
     };
 
     React.useEffect(() => {
-        GTM.init(combinedStore);
-        ServerTime.init(common);
-        app.setDBotEngineStores(combinedStore);
-        ApiHelpers.setInstance(app.api_helpers_store);
+        init();
         setIsLoading(true);
         if (!client.is_logged_in) {
             changeActiveSymbolLoadingState();

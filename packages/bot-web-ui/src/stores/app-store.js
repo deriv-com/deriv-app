@@ -60,7 +60,7 @@ export default class AppStore {
         if (
             window.location.pathname === routes.bot &&
             client.should_show_eu_error &&
-            traders_hub.content_flag === ContentFlag.EU_REAL &&
+            (traders_hub.content_flag === ContentFlag.EU_REAL || traders_hub.content_flag === ContentFlag.EU_DEMO) &&
             recovery_low_risk_cr_eu === 'EU'
         ) {
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));

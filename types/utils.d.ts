@@ -62,6 +62,15 @@ declare global {
         T extends {}
         ? { [Key in keyof T]-?: DeepRequired<T[Key]> }
         : Required<T>;
+
+    type Prettify<T> = {
+        [K in keyof T]: T[K];
+        // eslint-disable-next-line @typescript-eslint/ban-types
+    } & {};
+
+    type RequireAtLeastOne<T> = {
+        [K in keyof T]-?: Required<Pick<T, K>> & Partial<Pick<T, Exclude<keyof T, K>>>;
+    }[keyof T];
 }
 
 export {};

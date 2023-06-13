@@ -1,6 +1,6 @@
 import React from 'react';
-import { localize, Localize } from '@deriv/translations';
 import { Dialog } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 

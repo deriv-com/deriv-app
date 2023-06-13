@@ -1,4 +1,5 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { useWalletList } from '@deriv/hooks';
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { RegionAvailability } from 'Constants/platform-config';
 
@@ -183,3 +184,5 @@ export type TLinkedTo = {
     balance?: string;
     currency?: string;
 };
+
+export type TWalletAccount = NonNullable<ReturnType<typeof useWalletList>['data']>[number];

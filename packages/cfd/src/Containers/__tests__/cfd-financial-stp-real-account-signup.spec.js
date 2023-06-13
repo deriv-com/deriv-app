@@ -1,5 +1,7 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
+import React, { useState as useStateMock } from 'react';
+import { render, screen, act } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { getAuthenticationStatusInfo } from '@deriv/shared';
 import CFDFinancialStpRealAccountSignup from '../cfd-financial-stp-real-account-signup';
 
 jest.mock('Stores/connect.js', () => ({
@@ -13,8 +15,34 @@ jest.mock('@deriv/account', () => ({
     FormSubHeader: () => <div>FormSubHeader</div>,
 }));
 
-jest.mock('../../Components/cfd-poa', () => jest.fn(() => <div>CFDPOA</div>));
-jest.mock('../../Components/cfd-poi', () => jest.fn(() => <div>CFDPOI</div>));
+const MockComponent = ({ prevStep, nextStep }) => (
+    <div>
+        <button onClick={prevStep}>Prev Step</button>
+        <button onClick={() => nextStep(0, {})}>Next Step</button>
+    </div>
+);
+
+jest.mock('../../Components/cfd-poa', () =>
+    jest.fn(({ onCancel, onSubmit }) => (
+        <div>
+            CFDPOA
+            <MockComponent prevStep={onCancel} nextStep={onSubmit} />
+        </div>
+    ))
+);
+jest.mock('../../Components/cfd-poi', () =>
+    jest.fn(({ onCancel, onSubmit }) => (
+        <div>
+            CFDPOI
+            <MockComponent prevStep={onCancel} nextStep={onSubmit} />
+        </div>
+    ))
+);
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    getAuthenticationStatusInfo: jest.fn().mockReturnValue({}),
+}));
 
 const getByTextFn = (text, should_be) => {
     if (should_be) {
@@ -24,13 +52,10 @@ const getByTextFn = (text, should_be) => {
     }
 };
 
-const toHavaClassFn = (item, class_name, should_have) => {
-    if (should_have) {
-        expect(item).toHaveClass(class_name);
-    } else {
-        expect(item).not.toHaveClass(class_name);
-    }
-};
+jest.mock('react', () => ({
+    ...jest.requireActual('react'),
+    useState: jest.fn(),
+}));
 
 const testAllStepsFn = (steps, step_no) => {
     steps.map((step, index) => {
@@ -51,6 +76,10 @@ const steps = [
     },
 ];
 
+let setStep;
+let setFormError;
+let setItems;
+
 describe('<CFDFinancialStpRealAccountSignup />', () => {
     let modal_root_el;
 
@@ -58,6 +87,16 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
         modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
         document.body.appendChild(modal_root_el);
+    });
+
+    beforeEach(() => {
+        setStep = jest.fn();
+        setFormError = jest.fn();
+        setItems = jest.fn();
+        useStateMock
+            .mockImplementationOnce(init => [init, setStep])
+            .mockImplementationOnce(init => [init, setFormError])
+            .mockImplementationOnce(init => [init, setItems]);
     });
 
     afterAll(() => {
@@ -69,6 +108,7 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
     });
 
     const mock_props = {
+        onFinish: jest.fn(),
         addNotificationByKey: jest.fn(),
         fetchStatesList: jest.fn(),
         openPendingDialog: jest.fn(),
@@ -165,6 +205,7 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
         account_status: {
             risk_classification: 'low',
         },
+        jurisdiction_selected_shortcode: 'bvi',
     };
 
     it('should render CFDFinancialStpRealAccountSignup component', () => {
@@ -174,15 +215,64 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
     });
 
     it('should render properly for the first step content', () => {
+        getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_bvi_labuan: true });
         render(<CFDFinancialStpRealAccountSignup {...mock_props} />);
 
         testAllStepsFn(steps, 0);
     });
 
     it('should render properly for the second step content', () => {
-        jest.spyOn(React, 'useState').mockReturnValueOnce([1, () => {}]);
+        getAuthenticationStatusInfo.mockReturnValueOnce({ poa_resubmit_for_labuan: true });
         render(<CFDFinancialStpRealAccountSignup {...mock_props} />);
 
         testAllStepsFn(steps, 1);
+    });
+
+    it('should check for POI status when Jurisdiction is Vanuatu or maltainvest', () => {
+        const new_props = {
+            ...mock_props,
+            jurisdiction_selected_shortcode: 'vanuatu',
+        };
+
+        getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_vanuatu_maltainvest: true });
+
+        render(<CFDFinancialStpRealAccountSignup {...new_props} />);
+        screen.debug();
+        testAllStepsFn(steps, 0);
+    });
+
+    it('should check for POA status when Jurisdiction is Labuan and resubmit status is set to true', () => {
+        const new_props = {
+            ...mock_props,
+            jurisdiction_selected_shortcode: 'labuan',
+        };
+
+        getAuthenticationStatusInfo.mockReturnValueOnce({ poa_resubmit_for_labuan: true });
+
+        render(<CFDFinancialStpRealAccountSignup {...new_props} />);
+        screen.debug();
+        testAllStepsFn(steps, 1);
+    });
+
+    it('should be able to click previous button ', async () => {
+        const new_props = {
+            ...mock_props,
+            jurisdiction_selected_shortcode: 'vanuatu',
+        };
+
+        getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_vanuatu_maltainvest: true });
+
+        render(<CFDFinancialStpRealAccountSignup {...new_props} />);
+        screen.debug();
+        testAllStepsFn(steps, 0);
+        useStateMock
+            .mockImplementationOnce(() => [0, setStep])
+            .mockImplementationOnce(() => [{}, setFormError])
+            .mockImplementationOnce(() => [[], setItems]);
+
+        await userEvent.click(screen.getByRole('button', { name: 'Prev Step' }));
+        act(() => {
+            expect(mock_props.onFinish).toHaveBeenCalled();
+        });
     });
 });

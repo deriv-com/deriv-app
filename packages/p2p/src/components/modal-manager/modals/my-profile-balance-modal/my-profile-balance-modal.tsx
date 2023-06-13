@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
-import { useModalManagerContext } from '../../modal-manager-context';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { Localize, localize } from 'Components/i18next';
 
 const MyProfileBalanceModal = () => {

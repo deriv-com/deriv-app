@@ -1,7 +1,7 @@
 import { isMobile, validNumber } from '@deriv/shared';
 import WithdrawStore from '../withdraw-store';
 import { configure } from 'mobx';
-import { TWebSocket, TRootStore } from '../../types';
+import { TWebSocket, TRootStore } from 'Types';
 import { mockStore } from '@deriv/stores';
 
 configure({ safeDescriptors: false });
@@ -208,6 +208,18 @@ describe('WithdrawStore', () => {
         withdraw_store.root_store.client.is_virtual = true;
         await withdraw_store.onMountWithdraw(verification_code);
         expect(setIframeUrl).toHaveBeenCalledWith('');
+    });
+
+    it('should not call withdraw request when no verification code', async () => {
+        const { setIframeUrl } = withdraw_store.root_store.modules.cashier.iframe;
+        const { setVerificationCode } = withdraw_store.root_store.client;
+        const verification_code = '';
+
+        withdraw_store.root_store.modules.cashier.iframe.is_session_timeout = true;
+        await withdraw_store.onMountWithdraw(verification_code);
+
+        expect(setIframeUrl).toHaveBeenCalledTimes(1);
+        expect(setVerificationCode).toHaveBeenCalledTimes(0);
     });
 
     it('should return an error on mount of crypto withdraw if verification code is not valid', async () => {

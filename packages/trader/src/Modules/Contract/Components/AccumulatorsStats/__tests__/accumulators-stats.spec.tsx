@@ -1,9 +1,10 @@
 import React from 'react';
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import AccumulatorsStats, { ROW_SIZES } from '../accumulators-stats';
 import { TraderProviders } from '../../../../../trader-providers';
 import { mockStore } from '@deriv/stores';
+import userEvent from '@testing-library/user-event';
 
 const mock_connect_props = {
     modules: {
@@ -56,7 +57,7 @@ describe('AccumulatorsStats', () => {
                 <TraderProviders store={mockStore(mock_connect_props)}>{children}</TraderProviders>
             ),
         });
-        fireEvent.click(screen.getByTestId('dt_ic_info_icon'));
+        userEvent.click(screen.getByTestId('dt_ic_info_icon'));
         expect(screen.getByTestId('dt_accumulators_stats_manual_video')).toBeInTheDocument();
     });
     it('should render partial history values (tick counters) when initially collapsed in desktop', () => {
@@ -86,7 +87,7 @@ describe('AccumulatorsStats', () => {
         });
         expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.DESKTOP_COLLAPSED);
 
-        fireEvent.click(screen.getByTestId('dt_accordion-toggle-arrow'));
+        userEvent.click(screen.getByTestId('dt_accordion-toggle-arrow'));
         const row = screen.getAllByTestId('dt_accu_stats_history_row')[0];
         expect(within(row).getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.DESKTOP_EXPANDED);
         expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(20);
@@ -102,7 +103,7 @@ describe('AccumulatorsStats', () => {
         });
         expect(screen.getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.MOBILE_COLLAPSED);
 
-        fireEvent.click(screen.getByTestId('dt_accordion-toggle-arrow'));
+        userEvent.click(screen.getByTestId('dt_accordion-toggle-arrow'));
         const mobile_dialog = screen.getByTestId('dt_mobile_dialog');
         const row = within(mobile_dialog).getAllByTestId('dt_accu_stats_history_row')[0];
         expect(within(row).getAllByTestId('dt_accu_stats_history_counter').length).toEqual(ROW_SIZES.MOBILE_EXPANDED);

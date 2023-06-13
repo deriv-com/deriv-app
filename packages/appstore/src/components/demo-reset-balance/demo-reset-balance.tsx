@@ -6,7 +6,7 @@ import { observer, useStore } from '@deriv/stores';
 import './demo-reset-balance.scss';
 
 type TDemoResetBalanceProps = {
-    setActiveTabIndex: (index: number) => void;
+    setActiveTabIndex?: (index: number) => void;
 };
 
 const DemoResetBalance = observer(({ setActiveTabIndex }: TDemoResetBalanceProps) => {
@@ -15,26 +15,20 @@ const DemoResetBalance = observer(({ setActiveTabIndex }: TDemoResetBalanceProps
     const { accounts, loginid } = client;
     const { is_mobile } = ui;
 
-    const canResetBalance = () => {
-        return loginid && (accounts[loginid]?.balance || 0) !== 10000;
-    };
+    const can_reset_balance = loginid && (accounts[loginid]?.balance || 0) !== 10000;
 
     const resetBalance = () => {
         mutate();
     };
 
     const redirectToTransferTab = () => {
-        setActiveTabIndex(0);
+        setActiveTabIndex?.(0);
     };
 
     return (
         <Div100vhContainer height_offset='244px'>
             <div className='reset-balance'>
-                {isResetBalanceSuccess ? (
-                    <Icon icon='IcDemoResetBalanceDone' size='128' />
-                ) : (
-                    <Icon icon='IcDemoResetBalance' size='128' />
-                )}
+                <Icon icon={isResetBalanceSuccess ? 'IcDemoResetBalanceDone' : 'IcDemoResetBalance'} size='128' />
 
                 <Text
                     as='p'
@@ -46,7 +40,7 @@ const DemoResetBalance = observer(({ setActiveTabIndex }: TDemoResetBalanceProps
                     {isResetBalanceSuccess ? (
                         <Localize i18n_default_text='Your balance has been reset to 10,000.00 USD.' />
                     ) : (
-                        <Localize i18n_default_text='Reset your balance to 10,000.00 USD.' />
+                        <Localize i18n_default_text='Reset balance to 10,000.00 USD' />
                     )}
                 </Text>
 
@@ -76,7 +70,7 @@ const DemoResetBalance = observer(({ setActiveTabIndex }: TDemoResetBalanceProps
                     <Button
                         className='reset-balance__button'
                         data-testid='dt_reset_balance_button'
-                        disabled={!canResetBalance()}
+                        disabled={!can_reset_balance}
                         large={!is_mobile}
                         medium={is_mobile}
                         primary

@@ -36,12 +36,12 @@ describe('<DemoResetBalance />', () => {
     it('should disable reset balance button if the balance is equal to 10000 usd', () => {
         const mock = mockStore({
             client: {
-                active_accounts: [
-                    {
-                        is_virtual: 1,
+                accounts: {
+                    VRW1002: {
                         balance: 10000,
                     },
-                ],
+                },
+                loginid: 'VRW1002',
             },
         });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
@@ -60,7 +60,16 @@ describe('<DemoResetBalance />', () => {
     });
 
     it('should call reset balance API when click on Reset balance', () => {
-        const mock = mockStore({});
+        const mock = mockStore({
+            client: {
+                accounts: {
+                    VRW1002: {
+                        balance: 9880,
+                    },
+                },
+                loginid: 'VRW1002',
+            },
+        });
         // @ts-expect-error need to come up with a way to mock the return type of useRequest
         mockUseRequest.mockReturnValue({
             mutate: jest.fn(),

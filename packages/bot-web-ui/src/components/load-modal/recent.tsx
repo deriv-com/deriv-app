@@ -1,5 +1,5 @@
-import classnames from 'classnames';
 import React from 'react';
+import classnames from 'classnames';
 import { Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';

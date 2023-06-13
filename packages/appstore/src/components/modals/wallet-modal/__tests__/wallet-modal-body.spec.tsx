@@ -6,6 +6,7 @@ import WalletModalBody from '../wallet-modal-body';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('Components/wallet-transfer', () => jest.fn(() => <div>WalletTransfer</div>));
+jest.mock('Components/fiat-transaction-list', () => jest.fn(() => <div>Transactions</div>));
 
 describe('WalletModalBody', () => {
     let mocked_props: React.ComponentProps<typeof WalletModalBody>;
@@ -53,5 +54,14 @@ describe('WalletModalBody', () => {
         userEvent.click(el_transactions_tab);
 
         expect(mocked_props.setActiveTabIndex).toHaveBeenCalledTimes(1);
+    });
+
+    it('Should trigger contentScrollHandler callback when the user scrolls the content', () => {
+        renderWithRouter(<WalletModalBody {...mocked_props} />);
+
+        const el_themed_scrollbars = screen.getByTestId('dt_themed_scrollbars');
+        fireEvent.scroll(el_themed_scrollbars);
+
+        expect(mocked_props.contentScrollHandler).toHaveBeenCalledTimes(1);
     });
 });

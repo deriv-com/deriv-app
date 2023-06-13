@@ -66,7 +66,7 @@ export const idv_error_statuses = Object.freeze({
 export type TIDVErrorStatus = typeof idv_error_statuses[keyof typeof idv_error_statuses];
 
 export const formatIDVError = (errors: string[], status_code: string) => {
-    if (errors.length === 0 || status_code === 'none') return null;
+    if (errors.length === 0 && status_code === 'none') return null;
     const error_keys: Record<string, TIDVErrorStatus> = {
         name: 'POI_NAME_MISMATCH',
         birth: 'POI_DOB_MISMATCH',

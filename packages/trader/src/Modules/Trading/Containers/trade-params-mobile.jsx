@@ -1,6 +1,6 @@
 import 'Sass/app/modules/trading-mobile.scss';
 
-import { Div100vhContainer, Modal, Money, Tabs, ThemedScrollbars, usePreventIOSZoom, Popover } from '@deriv/components';
+import { Div100vhContainer, Modal, Money, Tabs, ThemedScrollbars, usePreventIOSZoom } from '@deriv/components';
 
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
 import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
@@ -10,7 +10,7 @@ import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import React from 'react';
 import classNames from 'classnames';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 
 const DEFAULT_DURATION = Object.freeze({
     t: 5,
@@ -34,7 +34,7 @@ const TradeParamsModal = observer(({ is_open, toggleModal }) => {
     const { client, ui } = useStore();
     const { currency } = client;
     const { enableApp, disableApp } = ui;
-    const { amount, form_components, duration, duration_unit, duration_units_list, is_vanilla } = useTraderStore();
+    const { amount, form_components, duration, duration_unit, duration_units_list } = useTraderStore();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const getDefaultDuration = React.useCallback(makeGetDefaultDuration(duration, duration_unit), []);

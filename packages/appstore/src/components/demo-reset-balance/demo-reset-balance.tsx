@@ -12,13 +12,15 @@ type TDemoResetBalanceProps = {
 const DemoResetBalance = observer(({ setActiveTabIndex }: TDemoResetBalanceProps) => {
     const { mutate, isSuccess } = useRequest('topup_virtual');
     const { client, ui } = useStore();
-    const { active_accounts } = client;
+    const { accounts, loginid } = client;
     const { is_mobile } = ui;
-    const balance = active_accounts.find(acc => acc.is_virtual === 1)?.balance;
-    const has_initial_balance = balance === 10000;
+
+    const canResetBalance = () => {
+        return loginid && (accounts[loginid]?.balance || 0) !== 10000;
+    };
 
     const resetBalance = () => {
-        mutate([]);
+        mutate();
     };
 
     const redirectToTransferTab = () => {
@@ -68,7 +70,7 @@ const DemoResetBalance = observer(({ setActiveTabIndex }: TDemoResetBalanceProps
                     <Button
                         className='reset-balance__button'
                         data-testid='dt_reset_balance_button'
-                        disabled={has_initial_balance}
+                        disabled={!canResetBalance()}
                         large={!is_mobile}
                         medium={is_mobile}
                         primary

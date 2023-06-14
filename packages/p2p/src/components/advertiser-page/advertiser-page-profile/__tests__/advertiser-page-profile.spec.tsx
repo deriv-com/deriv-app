@@ -17,10 +17,6 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
             is_online: 0,
             last_online_time: 1686656506,
             last_name: '',
-            rating_average: null,
-            rating_count: 0,
-            recommended_average: null,
-            recommended_count: null,
             sell_orders_count: 0,
         },
     },
@@ -35,10 +31,6 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
             is_online: 1,
             last_online_time: 1686656509,
             last_name: 'user2',
-            rating_average: null,
-            rating_count: 5,
-            recommended_average: null,
-            recommended_count: null,
             sell_orders_count: 5,
         },
     },
@@ -91,38 +83,6 @@ describe('<AdvertiserPageProfile/>', () => {
 
         expect(screen.getByText('(test user)')).toBeInTheDocument();
     });
-    it('should display 1 rating count when only 1 rating present', () => {
-        (useStores as jest.Mock).mockReturnValue({
-            ...mock_store,
-            advertiser_page_store: {
-                ...mock_store.advertiser_page_store,
-                counterparty_advertiser_info: {
-                    ...mock_store.advertiser_page_store.counterparty_advertiser_info,
-                    rating_average: 4,
-                    rating_count: 1,
-                },
-            },
-        });
-        render(<AdvertiserPageProfile />);
-        expect(screen.getByText('4.0')).toBeInTheDocument();
-        expect(screen.getByText('(1 rating)')).toBeInTheDocument();
-    });
-    it('should display rating average when more than 1 rating count present', () => {
-        (useStores as jest.Mock).mockReturnValue({
-            ...mock_store,
-            advertiser_page_store: {
-                ...mock_store.advertiser_page_store,
-                counterparty_advertiser_info: {
-                    ...mock_store.advertiser_page_store.counterparty_advertiser_info,
-                    rating_average: 4.5,
-                    rating_count: 3,
-                },
-            },
-        });
-        render(<AdvertiserPageProfile />);
-        expect(screen.getByText('4.5')).toBeInTheDocument();
-        expect(screen.getByText('(3 ratings)')).toBeInTheDocument();
-    });
     it('should show joined today for new user', () => {
         (useStores as jest.Mock).mockReturnValue({
             ...mock_store,
@@ -147,17 +107,6 @@ describe('<AdvertiserPageProfile/>', () => {
     });
     it('should display advertiser profile page in responsive view', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
-        (useStores as jest.Mock).mockReturnValue({
-            ...mock_store,
-            advertiser_page_store: {
-                ...mock_store.advertiser_page_store,
-                counterparty_advertiser_info: {
-                    ...mock_store.advertiser_page_store.counterparty_advertiser_info,
-                    rating_average: 4.5,
-                    rating_count: 3,
-                },
-            },
-        });
         render(<AdvertiserPageProfile />);
 
         expect(screen.getByText('test name')).toBeInTheDocument();

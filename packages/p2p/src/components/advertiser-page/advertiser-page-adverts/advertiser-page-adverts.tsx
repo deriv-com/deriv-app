@@ -7,7 +7,9 @@ import Empty from 'Components/empty/empty.jsx';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores/index';
 import AdvertiserPageAdvertsTableHeader from './advertiser-page-adverts-table-header';
-import AdvertiserPageRow from './advertiser-page-row';
+import AdvertiserPageRow, { TAdvertiserPageRow } from './advertiser-page-row';
+
+const AdvertiserPageRowRenderer = (props: TAdvertiserPageRow) => <AdvertiserPageRow {...props} />;
 
 const AdvertiserPageAdverts = () => {
     const { advertiser_page_store } = useStores();
@@ -50,7 +52,7 @@ const AdvertiserPageAdverts = () => {
                                     items={adverts}
                                     keyMapperFn={item => item.id}
                                     loadMoreRowsFn={loadMoreAdvertiserAdverts}
-                                    rowRenderer={props => <AdvertiserPageRow {...props} />}
+                                    rowRenderer={AdvertiserPageRowRenderer}
                                 />
                             </Table.Body>
                         </Table>

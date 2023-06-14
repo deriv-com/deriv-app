@@ -228,7 +228,7 @@
 
         &-cell {
             min-width: 20rem;
-            border-right: 1px solid var(--general-section-2);
+            border-right: 1px solid var(--checkbox-disabled-grey);
             margin-bottom: 2.4rem;
             padding-left: 2.4rem;
 
@@ -265,15 +265,6 @@
                     flex-direction: row;
                     justify-content: center;
                     padding-left: 0.5rem;
-                }
-            }
-
-            &-separator {
-                border-right: 1px solid #ededed;
-                margin-right: 2rem;
-
-                @include mobile {
-                    margin: 0px 3rem 0 -4rem;
                 }
             }
         }

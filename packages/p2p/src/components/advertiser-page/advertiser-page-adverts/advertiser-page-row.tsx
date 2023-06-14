@@ -51,7 +51,7 @@ type TAdvertiserPageDetails = {
     type: string;
 };
 
-type TAdvertiserPageRow = {
+export type TAdvertiserPageRow = {
     row: TAdvertiserPageDetails;
 };
 

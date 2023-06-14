@@ -4,12 +4,11 @@ import { daysSince, isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
-import RecommendedBy from 'Components/recommended-by';
-import StarRating from 'Components/star-rating';
 import TradeBadge from 'Components/trade-badge';
 import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
 import { useStores } from 'Stores/index';
 import AdvertiserPageDropdownMenu from '../advertiser-page-dropdown-menu';
+import AdvertiserPageProfileRating from './advertiser-page-profile-rating';
 import AdvertiserPageStats from './advertiser-page-stats';
 
 const AdvertiserPage = () => {
@@ -28,16 +27,22 @@ const AdvertiserPage = () => {
         is_online,
         last_online_time,
         last_name,
-        rating_average,
-        rating_count,
-        recommended_average,
-        recommended_count,
         sell_orders_count,
     } = info;
 
-    // rating_average_decimal converts rating_average to 1 d.p number
-    const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
     const joined_since = daysSince(created_time);
+
+    const getJoinedSince = () => {
+        if (joined_since) {
+            return (
+                <Localize
+                    i18n_default_text='Joined {{days_since_joined}}d'
+                    values={{ days_since_joined: joined_since }}
+                />
+            );
+        }
+        return <Localize i18n_default_text='Joined today' />;
+    };
 
     return (
         <div className='advertiser-page-details-container'>
@@ -60,7 +65,6 @@ const AdvertiserPage = () => {
                             </div>
                         )}
                     </div>
-
                     <MobileWrapper>
                         <div className='advertiser-page__row'>
                             <div className='advertiser-page__rating--row'>
@@ -69,14 +73,7 @@ const AdvertiserPage = () => {
                             </div>
                             <div className='advertiser-page__rating--row'>
                                 <Text className='advertiser-page__joined-since' color='less-prominent' size='xxxs'>
-                                    {joined_since ? (
-                                        <Localize
-                                            i18n_default_text='Joined {{days_since_joined}}d'
-                                            values={{ days_since_joined: joined_since }}
-                                        />
-                                    ) : (
-                                        <Localize i18n_default_text='Joined today' />
-                                    )}
+                                    {getJoinedSince()}
                                 </Text>
                             </div>
                         </div>
@@ -90,65 +87,12 @@ const AdvertiserPage = () => {
                                 </div>
                                 <div className='advertiser-page__rating--row'>
                                     <Text className='advertiser-page__joined-since' color='less-prominent' size='xs'>
-                                        {joined_since ? (
-                                            <Localize
-                                                i18n_default_text='Joined {{days_since_joined}}d'
-                                                values={{ days_since_joined: joined_since }}
-                                            />
-                                        ) : (
-                                            <Localize i18n_default_text='Joined today' />
-                                        )}
+                                        {getJoinedSince()}
                                     </Text>
                                 </div>
                             </React.Fragment>
                         </DesktopWrapper>
-                        {rating_average ? (
-                            <React.Fragment>
-                                <div className='advertiser-page__rating--row'>
-                                    <StarRating
-                                        empty_star_className='advertiser-page__rating--star'
-                                        empty_star_icon='IcEmptyStar'
-                                        full_star_className='advertiser-page__rating--star'
-                                        full_star_icon='IcFullStar'
-                                        initial_value={rating_average_decimal ?? 0}
-                                        is_readonly
-                                        number_of_stars={5}
-                                        should_allow_hover_effect={false}
-                                        star_size={isMobile() ? 17 : 20}
-                                    />
-                                    <div className='advertiser-page__rating--text'>
-                                        <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                            {rating_average_decimal}
-                                        </Text>
-                                        <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                            {rating_count === 1 ? (
-                                                <Localize
-                                                    i18n_default_text='({{number_of_ratings}} rating)'
-                                                    values={{ number_of_ratings: rating_count }}
-                                                />
-                                            ) : (
-                                                <Localize
-                                                    i18n_default_text='({{number_of_ratings}} ratings)'
-                                                    values={{ number_of_ratings: rating_count }}
-                                                />
-                                            )}
-                                        </Text>
-                                    </div>
-                                </div>
-                                <div className='advertiser-page__rating--row'>
-                                    <RecommendedBy
-                                        recommended_average={recommended_average}
-                                        recommended_count={recommended_count}
-                                    />
-                                </div>
-                            </React.Fragment>
-                        ) : (
-                            <div className='advertiser-page__rating--row'>
-                                <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
-                                    <Localize i18n_default_text='Not rated yet' />
-                                </Text>
-                            </div>
-                        )}
+                        <AdvertiserPageProfileRating />
                     </div>
                     <div className='advertiser-page__row'>
                         <TradeBadge

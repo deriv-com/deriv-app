@@ -5,6 +5,10 @@ import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useStores } from 'Stores/index';
 
+const ItalicText = (
+    <Text key={0} className='advertiser-page__italic' color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'} />
+);
+
 const AdvertiserPageStats = () => {
     const { advertiser_page_store, general_store } = useStores();
     const {
@@ -30,60 +34,33 @@ const AdvertiserPageStats = () => {
     const avg_buy_time_in_minutes = buy_time_avg > 60 ? Math.round(buy_time_avg / 60) : '< 1';
     const avg_release_time_in_minutes = release_time_avg > 60 ? Math.round(release_time_avg / 60) : '< 1';
 
+    const getLabelSize = () => (isMobile() ? 'xxxs' : 'xs');
+    const getValueSize = () => (isMobile() ? 'xs' : 'm');
+
     return (
         <React.Fragment>
             <div className='advertiser-page__stats'>
                 <div className='advertiser-page__stats-cell'>
-                    <Text as='p' color='less-prominent' line_height='m' size={isMobile() ? 'xxxs' : 'xs'}>
-                        <Localize
-                            i18n_default_text='Buy completion  <0>30d</0>'
-                            components={[
-                                <Text
-                                    key={0}
-                                    className='advertiser-page__italic'
-                                    color='less-prominent'
-                                    size={isMobile() ? 'xxxs' : 'xs'}
-                                />,
-                            ]}
-                        />
+                    <Text as='p' color='less-prominent' size={getLabelSize()}>
+                        <Localize i18n_default_text='Buy completion  <0>30d</0>' components={[ItalicText]} />
                     </Text>
-                    <Text as='p' color='prominent' line_height='m' size={isMobile() ? 'xs' : 'm'} weight='bold'>
+                    <Text as='p' color='prominent' size={getValueSize()} weight='bold'>
                         {buy_completion_rate ? `${buy_completion_rate}% (${buy_orders_count})` : '-'}
                     </Text>
                 </div>
                 <div className='advertiser-page__stats-cell'>
-                    <Text as='p' color='less-prominent' line_height='m' size={isMobile() ? 'xxxs' : 'xs'}>
-                        <Localize
-                            i18n_default_text='Sell completion  <0>30d</0>'
-                            components={[
-                                <Text
-                                    key={0}
-                                    className='advertiser-page__italic'
-                                    color='less-prominent'
-                                    size={isMobile() ? 'xxxs' : 'xs'}
-                                />,
-                            ]}
-                        />
+                    <Text as='p' color='less-prominent' size={getLabelSize()}>
+                        <Localize i18n_default_text='Sell completion  <0>30d</0>' components={[ItalicText]} />
                     </Text>
-                    <Text as='p' color='prominent' line_height='m' size={isMobile() ? 'xs' : 'm'} weight='bold'>
+                    <Text as='p' color='prominent' size={getValueSize()} weight='bold'>
                         {sell_completion_rate ? `${sell_completion_rate}% (${sell_orders_count})` : '-'}
                     </Text>
                 </div>
                 <div className='advertiser-page__stats-cell'>
-                    <Text as='p' color='less-prominent' line_height='m' size={isMobile() ? 'xxxs' : 'xs'}>
-                        <Localize
-                            i18n_default_text='Trade volume  <0>30d</0>'
-                            components={[
-                                <Text
-                                    key={0}
-                                    className='advertiser-page__italic'
-                                    color='less-prominent'
-                                    size={isMobile() ? 'xxxs' : 'xs'}
-                                />,
-                            ]}
-                        />
+                    <Text as='p' color='less-prominent' size={getLabelSize()}>
+                        <Localize i18n_default_text='Trade volume  <0>30d</0>' components={[ItalicText]} />
                     </Text>
-                    <Text as='p' color='prominent' line_height='m' size={isMobile() ? 'xs' : 'm'} weight='bold'>
+                    <Text as='p' color='prominent' size={getValueSize()} weight='bold'>
                         {buy_orders_amount && sell_orders_amount ? (
                             <Money
                                 amount={Number(buy_orders_amount) + Number(sell_orders_amount)}
@@ -96,20 +73,10 @@ const AdvertiserPageStats = () => {
                     </Text>
                 </div>
                 <div className='advertiser-page__stats-cell'>
-                    <Text as='p' color='less-prominent' line_height='m' size={isMobile() ? 'xxxs' : 'xs'}>
-                        <Localize
-                            i18n_default_text='Avg. pay time  <0>30d</0>'
-                            components={[
-                                <Text
-                                    key={0}
-                                    className='advertiser-page__italic'
-                                    color='less-prominent'
-                                    size={isMobile() ? 'xxxs' : 'xs'}
-                                />,
-                            ]}
-                        />
+                    <Text as='p' color='less-prominent' size={getLabelSize()}>
+                        <Localize i18n_default_text='Avg. pay time  <0>30d</0>' components={[ItalicText]} />
                     </Text>
-                    <Text color='prominent' size={isMobile() ? 'xs' : 'm'} weight='bold'>
+                    <Text color='prominent' size={getValueSize()} weight='bold'>
                         {buy_time_avg
                             ? localize('{{- avg_buy_time_in_minutes}} min', {
                                   avg_buy_time_in_minutes,
@@ -118,20 +85,10 @@ const AdvertiserPageStats = () => {
                     </Text>
                 </div>
                 <div className='advertiser-page__stats-cell'>
-                    <Text as='p' color='less-prominent' line_height='m' size={isMobile() ? 'xxxs' : 'xs'}>
-                        <Localize
-                            i18n_default_text='Avg. release time  <0>30d</0>'
-                            components={[
-                                <Text
-                                    key={0}
-                                    className='advertiser-page__italic'
-                                    color='less-prominent'
-                                    size={isMobile() ? 'xxxs' : 'xs'}
-                                />,
-                            ]}
-                        />
+                    <Text as='p' color='less-prominent' size={getLabelSize()}>
+                        <Localize i18n_default_text='Avg. release time  <0>30d</0>' components={[ItalicText]} />
                     </Text>
-                    <Text color='prominent' size={isMobile() ? 'xs' : 'm'} weight='bold'>
+                    <Text color='prominent' size={getValueSize()} weight='bold'>
                         {release_time_avg
                             ? localize('{{- avg_release_time_in_minutes}} min', {
                                   avg_release_time_in_minutes,
@@ -140,10 +97,10 @@ const AdvertiserPageStats = () => {
                     </Text>
                 </div>
                 <div className='advertiser-page__stats-cell'>
-                    <Text as='p' color='less-prominent' line_height='m' size={isMobile() ? 'xxxs' : 'xs'}>
+                    <Text as='p' color='less-prominent' size={getLabelSize()}>
                         <Localize i18n_default_text='Trade partners' />
                     </Text>
-                    <Text as='p' color='prominent' line_height='m' size={isMobile() ? 'xs' : 'm'} weight='bold'>
+                    <Text as='p' color='prominent' size={getValueSize()} weight='bold'>
                         {partner_count || '0'}
                     </Text>
                 </div>

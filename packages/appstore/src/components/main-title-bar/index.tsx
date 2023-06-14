@@ -17,7 +17,10 @@ const MainTitleBar = () => {
     const is_low_risk_cr_real_account =
         content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
 
-    const [active_index, setActiveIndex] = React.useState(selected_region === 'Non-EU' ? 0 : 1);
+    const [active_index, setActiveIndex] = React.useState(0);
+    React.useEffect(() => {
+        setActiveIndex(selected_region === 'Non-EU' ? 0 : 1);
+    }, [selected_region]);
 
     return (
         <React.Fragment>

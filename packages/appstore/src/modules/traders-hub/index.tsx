@@ -8,10 +8,10 @@ import AccountWithWallets from './account-with-wallets';
 import AccountWithoutWallets from './account-without-wallets';
 import { useStore, observer } from '@deriv/stores';
 import EUDisclaimer from 'Components/eu-disclaimer';
-import './traders-hub.scss';
 import { useContentFlag } from '@deriv/hooks';
+import './traders-hub.scss';
 
-const TradersHub = () => {
+const TradersHub = observer(() => {
     const { traders_hub, client, ui } = useStore();
     const { notification_messages_ui: Notifications } = ui;
     const {
@@ -33,8 +33,6 @@ const TradersHub = () => {
         Notifications !== null;
 
     const [scrolled, setScrolled] = React.useState(false);
-    // TODO: delete later. Just for testing purpose
-    const [is_display_test_wallets, setIsDisplayTestWallets] = React.useState(0);
 
     const handleScroll = () => {
         const element = traders_hub_ref?.current;
@@ -52,7 +50,7 @@ const TradersHub = () => {
         }, 100);
     }, [is_tour_open]);
 
-    const { is_low_risk_cr_eu, is_high_risk_cr } = useContentFlag();
+    const { is_low_risk_cr_eu } = useContentFlag();
 
     if (!is_logged_in) return null;
 
@@ -64,14 +62,14 @@ const TradersHub = () => {
             <Div100vhContainer
                 className={classNames('traders-hub--mobile', {
                     'traders-hub--mobile--eu-user': is_eu_user,
-                    'traders-hub__wallets-bg': is_wallet_account || is_display_test_wallets,
+                    'traders-hub__wallets-bg': is_wallet_account,
                 })}
                 height_offset='50px'
                 is_disabled={isDesktop()}
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
-                    {is_high_risk_cr && <AccountWithWallets />}
+                    {is_wallet_account && <AccountWithWallets />}
                     <AccountWithoutWallets />
                     <ModalManager />
                     {scrolled && <TourGuide />}
@@ -80,6 +78,6 @@ const TradersHub = () => {
             {is_low_risk_cr_eu && <EUDisclaimer />}
         </React.Fragment>
     );
-};
+});
 
-export default observer(TradersHub);
+export default TradersHub;

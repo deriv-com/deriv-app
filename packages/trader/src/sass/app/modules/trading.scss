@@ -348,7 +348,7 @@
         &-modal {
             @include mobile {
                 &--vanilla {
-                    max-width: 33rem;
+                    max-width: calc(min(33rem, 85vw));
                 }
             }
         }

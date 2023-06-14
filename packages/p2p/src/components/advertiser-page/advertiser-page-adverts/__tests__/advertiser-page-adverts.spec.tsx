@@ -6,7 +6,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { useStores } from 'Stores/index';
 import AdvertiserPageAdverts from '../advertiser-page-adverts';
 import { adverts } from '../../__mocks__/mock-data';
-import { InfiniteDataList } from '@deriv/components';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     advertiser_page_store: {

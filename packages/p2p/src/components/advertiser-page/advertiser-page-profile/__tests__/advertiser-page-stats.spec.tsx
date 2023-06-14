@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { useStores } from 'Stores/index';
 import AdvertisePageStats from '../advertiser-page-stats';

@@ -55,10 +55,6 @@ const props = {
     },
 };
 describe('<AdvertiserPageRow/>', () => {
-    const renderwithRouter = (component: React.ReactElement) => {
-        render(<BrowserRouter>{component}</BrowserRouter>);
-    };
-
     it('should render the row with the passed props as sell order with sell usd button', () => {
         render(
             <StoreProvider store={mock}>

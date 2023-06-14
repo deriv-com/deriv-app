@@ -1,7 +1,7 @@
+import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
-import React from 'react';
 
 type TUserGuide = {
     setActiveTab: (param: number) => void;

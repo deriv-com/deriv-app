@@ -43,7 +43,8 @@
         left: 25%;
         z-index: 1;
         @include mobile {
-            top: 1.6rem;
+            width: auto !important;
+            top: -0.2rem;
             left: 3.1rem;
         }
     }

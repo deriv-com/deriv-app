@@ -1,11 +1,11 @@
+import React from 'react';
+import classNames from 'classnames';
 import { Dialog, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { Localize, localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
-import classNames from 'classnames';
+import { Localize, localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
 import { clearInjectionDiv } from 'Constants/load-modal';
-import React from 'react';
 import { useDBotStore } from 'Stores/useDBotStore';
 import BotPreview from './bot-preview';
 import './index.scss';

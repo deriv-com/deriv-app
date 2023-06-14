@@ -1,13 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { observer } from '@deriv/stores';
-import { ToolboxItems } from './toolbox-items';
-import { useDBotStore } from 'Stores/useDBotStore';
-import SearchBox from './search-box';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+import { useDBotStore } from 'Stores/useDBotStore';
 import ToolbarButton from '../toolbar/toolbar-button';
+import SearchBox from './search-box';
+import { ToolboxItems } from './toolbox-items';
 
 const Toolbox = observer(() => {
     const { toolbox, flyout, quick_strategy } = useDBotStore();

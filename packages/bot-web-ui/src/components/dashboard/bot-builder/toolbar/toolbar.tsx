@@ -1,11 +1,11 @@
 import React from 'react';
 import { Dialog } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
-import { observer } from '@deriv/stores';
-import { useDBotStore } from 'Stores/useDBotStore';
-import WorkspaceGroup from './workspace-group';
-import ToolbarButton from './toolbar-button';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
+import { useDBotStore } from 'Stores/useDBotStore';
+import ToolbarButton from './toolbar-button';
+import WorkspaceGroup from './workspace-group';
 
 const Toolbar = observer(() => {
     const { run_panel, save_modal, load_modal, toolbar, quick_strategy } = useDBotStore();

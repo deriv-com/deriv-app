@@ -1,10 +1,10 @@
+import React from 'react';
+import classNames from 'classnames';
 import { Dialog, Icon, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
-import classNames from 'classnames';
+import { localize } from '@deriv/translations';
 import { DBOT_TABS } from 'Constants/bot-contents';
-import React from 'react';
 import { useDBotStore } from 'Stores/useDBotStore';
 import { removeKeyValue } from '../../../utils/settings';
 import { tour_type } from '../joyride-config';

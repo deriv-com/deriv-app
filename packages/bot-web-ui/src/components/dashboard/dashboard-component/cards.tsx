@@ -1,13 +1,13 @@
 //kept sometihings commented beacuse of mobx to integrate popup functionality here
-import { DesktopWrapper, Dialog, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import classNames from 'classnames';
-import { DBOT_TABS } from 'Constants/bot-contents';
 import React from 'react';
+import classNames from 'classnames';
+import { DesktopWrapper, Dialog, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
+import { observer } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+import { DBOT_TABS } from 'Constants/bot-contents';
+import { useDBotStore } from 'Stores/useDBotStore';
 import GoogleDrive from './load-bot-preview/google-drive';
 import Recent from './load-bot-preview/recent';
-import { observer } from '@deriv/stores';
-import { useDBotStore } from 'Stores/useDBotStore';
 
 type TCardProps = {
     has_dashboard_strategies: boolean;

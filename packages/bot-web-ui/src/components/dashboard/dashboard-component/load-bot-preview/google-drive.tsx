@@ -1,9 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
 import { Button, Icon, StaticUrl } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const GoogleDrive = observer(() => {

@@ -1,13 +1,13 @@
-import { Button, Icon, Text } from '@deriv/components';
 import React from 'react';
-import { localize } from '@deriv/translations';
-import { help_content_types, help_content_config } from 'Utils/help-content/help-content.config';
+import { Button, Icon, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+import { help_content_config, help_content_types } from 'Utils/help-content/help-content.config';
 import { useDBotStore } from 'Stores/useDBotStore';
-import FlyoutVideo from './flyout-video.jsx';
-import FlyoutText from './flyout-text.jsx';
-import FlyoutImage from './flyout-img.jsx';
 import FlyoutBlock from '../flyout-block.jsx';
+import FlyoutImage from './flyout-img.jsx';
+import FlyoutText from './flyout-text.jsx';
+import FlyoutVideo from './flyout-video.jsx';
 
 const HelpBase = observer(() => {
     const { flyout, flyout_help } = useDBotStore();

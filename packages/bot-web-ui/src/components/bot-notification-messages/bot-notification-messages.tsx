@@ -1,7 +1,7 @@
-import classNames from 'classnames';
-import { DBOT_TABS } from 'Constants/bot-contents';
-import { useStore, observer } from '@deriv/stores';
 import React from 'react';
+import classNames from 'classnames';
+import { observer, useStore } from '@deriv/stores';
+import { DBOT_TABS } from 'Constants/bot-contents';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const { BOT_BUILDER, CHART } = DBOT_TABS;

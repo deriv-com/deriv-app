@@ -1,8 +1,8 @@
+import React from 'react';
 import { Button } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import React from 'react';
 import { observer } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const LocalFooter = observer(() => {

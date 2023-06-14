@@ -1,11 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Input, Button, Modal, MobileWrapper, Div100vhContainer, FadeWrapper, PageOverlay } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { Formik, Form, Field } from 'formik';
 import classNames from 'classnames';
+import { Field, Form, Formik } from 'formik';
+import PropTypes from 'prop-types';
+import { Button, Div100vhContainer, FadeWrapper, Input, MobileWrapper, Modal, PageOverlay } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const SelfExclusionForm = props => {

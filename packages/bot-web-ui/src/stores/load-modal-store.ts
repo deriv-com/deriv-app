@@ -1,17 +1,17 @@
+import React from 'react';
+import { action, autorun, computed, makeObservable, observable, reaction } from 'mobx';
 import {
     config,
     getSavedWorkspaces,
     load,
+    observer as globalObserver,
     removeExistingWorkspace,
     save_types,
     setColors,
-    observer as globalObserver,
 } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { tabs_title, clearInjectionDiv } from 'Constants/load-modal';
-import { action, computed, makeObservable, observable, reaction, autorun } from 'mobx';
-import React from 'react';
+import { clearInjectionDiv, tabs_title } from 'Constants/load-modal';
 import RootStore from './root-store';
 
 export type TWorkspace = {

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Dialog, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { getSavedWorkspaces } from '@deriv/bot-skeleton';
-import LZString from 'lz-string';
 import localForage from 'localforage';
+import LZString from 'lz-string';
+import { getSavedWorkspaces } from '@deriv/bot-skeleton';
+import { Dialog, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const DeleteDialog = observer(() => {

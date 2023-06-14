@@ -1,9 +1,9 @@
-import { observable, action, computed, reaction, makeObservable } from 'mobx';
-import { tour_type, setTourSettings, TTourType } from '../components/dashboard/joyride-config';
-import RootStore from './root-store';
-import { clearInjectionDiv } from 'Constants/load-modal';
+import { action, computed, makeObservable, observable, reaction } from 'mobx';
+import { blocksCoordinate, setColors } from '@deriv/bot-skeleton';
 import { isMobile } from '@deriv/shared';
-import { setColors, blocksCoordinate } from '@deriv/bot-skeleton';
+import { clearInjectionDiv } from 'Constants/load-modal';
+import { setTourSettings, tour_type, TTourType } from '../components/dashboard/joyride-config';
+import RootStore from './root-store';
 
 export interface IDashboardStore {
     active_tab: number;

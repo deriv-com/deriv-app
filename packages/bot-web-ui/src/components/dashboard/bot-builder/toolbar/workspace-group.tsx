@@ -1,8 +1,8 @@
 import React from 'react';
-import { localize } from '@deriv/translations';
-import ToolbarIcon from './toolbar-icon';
 import { observer } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
+import ToolbarIcon from './toolbar-icon';
 
 type TWorkspaceGroup = {
     has_redo_stack: boolean;

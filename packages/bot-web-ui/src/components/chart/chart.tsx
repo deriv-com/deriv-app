@@ -1,11 +1,11 @@
 import React from 'react';
+import classNames from 'classnames';
 // TODO Remove this after smartcharts is replaced
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
-import { useStore, observer } from '@deriv/stores';
-import classNames from 'classnames';
 import { isDesktop, isMobile } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { useDBotStore } from 'Stores/useDBotStore';
 import ToolbarWidgets from './toolbar-widgets';
 

@@ -1,10 +1,10 @@
+import React from 'react';
 import { MobileFullPageModal, Modal } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { localize } from '@deriv/translations';
-import React from 'react';
-import { QuickStrategyContainer } from './quick-strategy-components';
 import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { QuickStrategyContainer } from './quick-strategy-components';
 
 const QuickStrategy = observer(() => {
     const is_mobile = isMobile();

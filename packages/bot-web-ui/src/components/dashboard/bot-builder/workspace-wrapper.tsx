@@ -1,11 +1,11 @@
 import React from 'react';
 import { observer } from '@deriv/stores';
-import { useDBotStore } from 'Stores/useDBotStore';
 import Flyout from 'Components/flyout';
-import Toolbox from './toolbox';
-import Toolbar from './toolbar';
-import './workspace.scss';
+import { useDBotStore } from 'Stores/useDBotStore';
 import StopBotModal from '../dashboard-component/load-bot-preview/stop-bot-modal';
+import Toolbar from './toolbar';
+import Toolbox from './toolbox';
+import './workspace.scss';
 
 const WorkspaceWrapper = observer(() => {
     const { blockly_store } = useDBotStore();

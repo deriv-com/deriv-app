@@ -1,7 +1,7 @@
 import React from 'react';
-import { Text, Loading } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import { Loading, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 type TTourGuide = {

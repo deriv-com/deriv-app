@@ -1,13 +1,13 @@
 import React from 'react';
-import { Tabs, Icon, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
-import { localize } from '@deriv/translations';
+import classNames from 'classnames';
 import debounce from 'lodash.debounce';
+import { DesktopWrapper, Icon, MobileWrapper, SelectNative, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
-import classNames from 'classnames';
-import GuideContent from './guide-content';
 import FAQContent from './faq-content';
+import GuideContent from './guide-content';
 import { faq_content, guide_content, user_guide_content } from './tutorial-content';
 
 const Sidebar = observer(() => {

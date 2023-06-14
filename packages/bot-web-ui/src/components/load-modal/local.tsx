@@ -1,12 +1,12 @@
+import React from 'react';
+import classNames from 'classnames';
 import { Button, Icon } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import React from 'react';
+import { useDBotStore } from 'Stores/useDBotStore';
 import LocalFooter from './local-footer';
 import WorkspaceControl from './workspace-control';
-import classNames from 'classnames';
-import { observer } from '@deriv/stores';
-import { useDBotStore } from 'Stores/useDBotStore';
 
 const LocalComponent = observer(() => {
     const { dashboard, load_modal } = useDBotStore();

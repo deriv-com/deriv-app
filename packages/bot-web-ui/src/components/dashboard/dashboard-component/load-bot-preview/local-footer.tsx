@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import './index.scss';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
+import './index.scss';
 
 const LocalFooter = observer(() => {
     const { load_modal, dashboard } = useDBotStore();

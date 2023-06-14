@@ -1,12 +1,12 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Button, Icon, Modal, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
-import ContractResultOverlay from 'Components/contract-result-overlay';
-import { contract_stages } from 'Constants/contract-stage';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
+import ContractResultOverlay from 'Components/contract-result-overlay';
+import { contract_stages } from 'Constants/contract-stage';
 import { useDBotStore } from 'Stores/useDBotStore';
 
 const CircularWrapper = ({ className }) => (

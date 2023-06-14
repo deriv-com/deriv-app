@@ -1,9 +1,9 @@
-import classNames from 'classnames';
 import React from 'react';
-import { localize } from '@deriv/translations';
+import classNames from 'classnames';
+import { Icon, Input, Text, ThemedScrollbars } from '@deriv/components';
 import { getPlatformSettings } from '@deriv/shared';
-import { Icon, ThemedScrollbars, Input, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
+import { localize } from '@deriv/translations';
 import { help_content_config } from 'Utils/help-content/help-content.config';
 import { useDBotStore } from 'Stores/useDBotStore';
 import FlyoutBlockGroup from './flyout-block-group.jsx';

@@ -1,13 +1,13 @@
-import { DataList, Icon, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import classnames from 'classnames';
-import { contract_stages } from 'Constants/contract-stage';
 import React from 'react';
-import { JournalItem, JournalLoader, JournalTools } from './journal-components';
-import { TCheckedFilters, TFilterMessageValues, TJournalDataListArgs } from './journal.types';
+import classnames from 'classnames';
+import { DataList, Icon, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
+import { localize } from '@deriv/translations';
+import { contract_stages } from 'Constants/contract-stage';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { TCheckedFilters, TFilterMessageValues, TJournalDataListArgs } from './journal.types';
+import { JournalItem, JournalLoader, JournalTools } from './journal-components';
 
 const Journal = observer(() => {
     const { journal, run_panel } = useDBotStore();

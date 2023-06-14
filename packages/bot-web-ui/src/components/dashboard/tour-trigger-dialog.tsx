@@ -1,11 +1,11 @@
 import React from 'react';
-import { Dialog, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
 import classNames from 'classnames';
+import { Dialog, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { tour_type, setTourSettings, tour_status_ended } from './joyride-config';
 import { observer } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
+import { setTourSettings, tour_status_ended, tour_type } from './joyride-config';
 
 const TourTriggrerDialog = observer(() => {
     const { dashboard } = useDBotStore();

@@ -18,6 +18,7 @@ import USDTSideNote from '../../components/usdt-side-note';
 import { Virtual } from '../../components/cashier-container';
 import { useCashierStore } from '../../stores/useCashierStores';
 import { useCashierLocked, useIsSystemMaintenance } from '@deriv/hooks';
+import WithdrawalEmailVerification from '../../modules/withdrawal-email-verification/withdrawal-email-verification';
 
 type TWithdrawalSideNoteProps = {
     currency: string;
@@ -180,7 +181,8 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
 
     return (
         <>
-            <WithdrawalVerificationEmail />
+            {/* <WithdrawalVerificationEmail /> */}
+            <WithdrawalEmailVerification />
             {is_crypto && <WithdrawalSideNote currency={currency} is_mobile />}
         </>
     );

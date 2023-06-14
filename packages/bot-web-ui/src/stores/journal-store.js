@@ -1,11 +1,11 @@
-import { observable, action, computed, reaction, when, makeObservable } from 'mobx';
-import { localize } from '@deriv/translations';
-import { formatDate } from '@deriv/shared';
+import { action, computed, makeObservable, observable, reaction, when } from 'mobx';
 import { log_types, message_types } from '@deriv/bot-skeleton';
 import { config } from '@deriv/bot-skeleton/src/constants/config';
-import { storeSetting, getSetting } from '../utils/settings';
+import { formatDate } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { isCustomJournalMessage } from '../utils/journal-notifications';
 import { getStoredItemsByKey, getStoredItemsByUser, setStoredItemsByKey } from '../utils/session-storage';
+import { getSetting, storeSetting } from '../utils/settings';
 
 export default class JournalStore {
     constructor(root_store, core) {

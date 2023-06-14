@@ -1,13 +1,13 @@
 import React from 'react';
-import RootStore from 'Stores/index';
-import { Tabs, Icon, DesktopWrapper, MobileWrapper, SelectNative } from '@deriv/components';
-import { connect } from 'Stores/connect';
-import { localize } from '@deriv/translations';
-import debounce from 'lodash.debounce';
-import { isMobile } from '@deriv/shared';
 import classNames from 'classnames';
-import GuideContent from './guide-content';
+import debounce from 'lodash.debounce';
+import { DesktopWrapper, Icon, MobileWrapper, SelectNative, Tabs } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 import FAQContent from './faq-content';
+import GuideContent from './guide-content';
 import { faq_content, guide_content, user_guide_content } from './tutorial-content';
 
 type TSidebarProps = {

@@ -292,7 +292,7 @@ const TickContract = RawMarkerMaker(
         contract_info: {
             accu_barriers_difference,
             contract_type,
-            // exit_tick_time,
+            exit_tick,
             status,
             profit,
             has_crossed_accu_barriers,
@@ -355,7 +355,14 @@ const TickContract = RawMarkerMaker(
         ) {
             // draw 2 barriers with a shade between them for an ongoing ACCU contract:
             const is_accu_contract_open = isAccumulatorContractOpen(
-                { contract_type, current_spot: exit?.top, high_barrier: barrier, low_barrier: barrier_2, status },
+                {
+                    contract_type,
+                    current_spot: exit?.top,
+                    high_barrier: barrier,
+                    low_barrier: barrier_2,
+                    status,
+                    exit_tick,
+                },
                 true
             );
             const contract_details_start_left = is_accu_contract_open ? exit?.left : previous_tick?.left;

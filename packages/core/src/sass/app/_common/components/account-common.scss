@@ -726,6 +726,13 @@
             padding-top: 2.4rem;
         }
 
+        .form-body {
+            @include mobile {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+
         .account-form__section-side-note {
             padding: 1.6rem 0;
         }

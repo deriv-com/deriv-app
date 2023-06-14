@@ -4,9 +4,13 @@ import { localize } from '@deriv/translations';
 import { formatDuration, getDiffDuration, getDateFromNow } from '@deriv/shared';
 import { Text } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const Expiration = ({ expiration, start_time, is_text_only, text_size }) => {
+const Expiration = observer(({ is_text_only, text_size }) => {
+    const { expiration } = useTraderStore();
+    const { common } = useStore();
+    const { server_time: start_time } = common;
     const { days, timestamp } = formatDuration(getDiffDuration(start_time.unix(), expiration), 'HH:mm');
     const date = getDateFromNow(days, 'day', 'DD MMM YYYY');
 
@@ -49,16 +53,11 @@ const Expiration = ({ expiration, start_time, is_text_only, text_size }) => {
             </div>
         </Fieldset>
     );
-};
+});
 
 Expiration.propTypes = {
-    expiration: PropTypes.number,
     is_text_only: PropTypes.bool,
-    start_time: PropTypes.number,
     text_size: PropTypes.string,
 };
 
-export default connect(({ modules, common }) => ({
-    expiration: modules.trade.expiration,
-    start_time: common.server_time,
-}))(Expiration);
+export default Expiration;

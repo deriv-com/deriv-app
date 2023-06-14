@@ -49,10 +49,13 @@ export default class OnRampStore extends BaseStore {
         });
     }
 
+    /** @deprecated Use `useDepositCryptoAddress` from `@deriv/hooks` package instead. */
     api_error: TServerError | null = null;
+    /** @deprecated Use `useDepositCryptoAddress` from `@deriv/hooks` package instead. */
     deposit_address: string | null = null;
     disposeGetWidgetHtmlReaction: IReactionDisposer | null = null;
     disposeThirdPartyJsReaction: IReactionDisposer | null = null;
+    /** @deprecated Use `useDepositCryptoAddress` from `@deriv/hooks` package instead. */
     is_deposit_address_loading = true;
     is_onramp_modal_open = false;
     is_requesting_widget_html = false;
@@ -178,6 +181,7 @@ export default class OnRampStore extends BaseStore {
         window.open(websiteUrl() + routes.cashier_deposit.substring(1));
     }
 
+    /** @deprecated Use `useDepositCryptoAddress` from `@deriv/hooks` package instead. */
     async pollApiForDepositAddress(should_allow_empty_address: boolean) {
         // should_allow_empty_address: API returns empty deposit address for legacy accounts
         // that have never generated a deposit address. Setting this to "true" will allow
@@ -228,14 +232,17 @@ export default class OnRampStore extends BaseStore {
         this.setWidgetHtml(null);
     }
 
+    /** @deprecated Use `useDepositCryptoAddress` from `@deriv/hooks` package instead. */
     setApiError(api_error: TServerError | null) {
         this.api_error = api_error;
     }
 
+    /** @deprecated Use `useDepositCryptoAddress` from `@deriv/hooks` package instead. */
     setDepositAddress(deposit_address: string | null) {
         this.deposit_address = deposit_address;
     }
 
+    /** @deprecated Use `useDepositCryptoAddress` from `@deriv/hooks` package instead. */
     setIsDepositAddressLoading(is_loading: boolean) {
         this.is_deposit_address_loading = is_loading;
     }

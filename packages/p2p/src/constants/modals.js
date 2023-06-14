@@ -127,4 +127,7 @@ export const modals = {
     RecommendedModal: React.lazy(() =>
         import(/* webpackChunkName: "recommended-modal" */ 'Components/modal-manager/modals/recommended-modal')
     ),
+    SortModal: React.lazy(() =>
+        import(/* webpackChunkName: "sort-modal" */ 'Components/modal-manager/modals/sort-modal')
+    ),
 };

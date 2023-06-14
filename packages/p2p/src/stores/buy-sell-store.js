@@ -106,6 +106,8 @@ export default class BuySellStore extends BaseStore {
             onClickReset: action.bound,
             onConfirmClick: action.bound,
             onLocalCurrencySelect: action.bound,
+            registerAdvertIntervalReaction: action.bound,
+            registerIsListedReaction: action.bound,
             setApiErrorMessage: action.bound,
             setCreateSellAdFromNoAds: action.bound,
             setErrorMessage: action.bound,
@@ -115,7 +117,6 @@ export default class BuySellStore extends BaseStore {
             setHasPaymentMethods: action.bound,
             setIsFilterModalLoading: action.bound,
             setIsLoading: action.bound,
-            setIsSortDropdownOpen: action.bound,
             setIsSubmitDisabled: action.bound,
             setItems: action.bound,
             setLocalCurrency: action.bound,
@@ -244,12 +245,13 @@ export default class BuySellStore extends BaseStore {
     }
 
     handleChange(e) {
+        const { general_store } = this.root_store;
         this.setIsLoading(true);
         this.setSelectedValue(e.target.value);
         this.setItems([]);
         this.setSortBy(e.target.value);
         this.loadMoreItems({ startIndex: 0 });
-        this.setIsSortDropdownOpen(false);
+        general_store.hideModal();
     }
 
     handleResponse = async order => {
@@ -475,10 +477,6 @@ export default class BuySellStore extends BaseStore {
 
     setIsLoading(is_loading) {
         this.is_loading = is_loading;
-    }
-
-    setIsSortDropdownOpen(is_sort_dropdown_open) {
-        this.is_sort_dropdown_open = is_sort_dropdown_open;
     }
 
     setIsSubmitDisabled(is_submit_disabled) {

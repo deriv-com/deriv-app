@@ -10,7 +10,7 @@ const BuySellFormReceiveAmount = () => {
     const { advert, is_sell_advert, receive_amount } = buy_sell_store;
 
     return (
-        <div className='buy-sell__modal-receive-amount'>
+        <div className='buy-sell-form__receive-amount'>
             <Text as='p' color='less-prominent' line_height='m' size='xxs'>
                 {is_sell_advert ? (
                     <Localize i18n_default_text="You'll receive" />
@@ -18,7 +18,7 @@ const BuySellFormReceiveAmount = () => {
                     <Localize i18n_default_text="You'll send" />
                 )}
             </Text>
-            <Text as='p' color='general' line_height='m' size='xs' weight='bold'>
+            <Text as='p' size='xs' weight='bold'>
                 {getFormattedText(roundOffDecimal(receive_amount), advert?.local_currency)}
             </Text>
         </div>

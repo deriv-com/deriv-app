@@ -23,10 +23,10 @@ const BuySellHeaderCurrencyDropdown = () => {
     );
 
     return (
-        <div className='buy-sell-currency-dropdown' ref={currency_selector_ref}>
+        <div className='buy-sell-header-currency-dropdown' ref={currency_selector_ref}>
             <Dropdown
-                className={classNames('buy-sell-currency-dropdown__list', {
-                    'buy-sell-currency-dropdown__list--visible': is_list_visible,
+                className={classNames('buy-sell-header-currency-dropdown__list', {
+                    'buy-sell-header-currency-dropdown__list--visible': is_list_visible,
                 })}
                 list={local_currencies}
                 onClick={() => {
@@ -39,7 +39,7 @@ const BuySellHeaderCurrencyDropdown = () => {
                 <BuySellHeaderCurrencySelector
                     default_value={selected_local_currency}
                     list={local_currencies}
-                    onSelect={value => {
+                    onSelect={(value: string) => {
                         onLocalCurrencySelect(value);
                         setIsListVisible(false);
                     }}

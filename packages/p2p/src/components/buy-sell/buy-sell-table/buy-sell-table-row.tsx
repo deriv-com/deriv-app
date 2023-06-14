@@ -10,7 +10,30 @@ import TradeBadge from 'Components/trade-badge';
 import { useStores } from 'Stores';
 import { generateEffectiveRate } from 'Utils/format-value';
 
-const BuySellTableRow = ({ row: advert }) => {
+type TBuySellTableRowProps = {
+    row: {
+        account_currency: string;
+        advertiser_details: {
+            completed_orders_count: number;
+            id: string;
+            is_online: boolean;
+            name: string;
+            rating_average: number;
+            rating_count: number;
+        };
+        counterparty_type: string;
+        effective_rate?: number;
+        id: string;
+        local_currency: string;
+        max_order_amount_limit_display: string;
+        min_order_amount_limit_display: string;
+        payment_method_names: string;
+        price_display?: string;
+        rate_type?: string;
+        rate?: number;
+    };
+};
+const BuySellTableRow = ({ row: advert }: TBuySellTableRowProps) => {
     const { buy_sell_store, floating_rate_store, general_store } = useStores();
     const { setSelectedAdvert, setShouldShowVerification, showAdvertiserPage } = buy_sell_store;
     const { exchange_rate } = floating_rate_store;
@@ -18,30 +41,12 @@ const BuySellTableRow = ({ row: advert }) => {
     const {
         client: { currency },
     } = useStore();
-
-    if (advert.id === 'WATCH_THIS_SPACE') {
-        // This allows for the sliding animation on the Buy/Sell toggle as it pushes
-        // an empty item with an item that holds the same height of the toggle container.
-        // Also see: buy-sell-table.jsx
-        return <div style={{ height: '140px' }} />;
-    }
-
-    if (advert.id === 'NO_MATCH_ROW') {
-        // Empty row when there is a search_term but no search_results
-        return (
-            <div className='buy-sell-table-row__no-match'>
-                <Text color='prominent' size='xs'>
-                    <Localize i18n_default_text='There are no matching ads.' />
-                </Text>
-            </div>
-        );
-    }
-
     const {
         account_currency,
         advertiser_details,
         counterparty_type,
         effective_rate,
+        id: advert_id,
         local_currency,
         max_order_amount_limit_display,
         min_order_amount_limit_display,
@@ -51,9 +56,16 @@ const BuySellTableRow = ({ row: advert }) => {
         rate,
     } = advert;
 
-    const is_my_advert = advert.advertiser_details.id === advertiser_id;
+    const {
+        completed_orders_count,
+        id,
+        is_online,
+        name: advertiser_name,
+        rating_average,
+        rating_count,
+    } = advertiser_details || {};
+    const is_my_advert = id === advertiser_id;
     const is_buy_advert = counterparty_type === buy_sell.BUY;
-    const { name: advertiser_name, rating_average, rating_count } = advert.advertiser_details;
     const rating_average_decimal = rating_average ? Number(rating_average.toFixed(1)) : null;
     const { display_effective_rate } = generateEffectiveRate({
         price: price_display,
@@ -71,29 +83,36 @@ const BuySellTableRow = ({ row: advert }) => {
         }
     };
 
+    if (advert_id === 'WATCH_THIS_SPACE') {
+        // This allows for the sliding animation on the Buy/Sell toggle as it pushes
+        // an empty item with an item that holds the same height of the toggle container.
+        // Also see: buy-sell-table.jsx
+        return <div style={{ height: '140px' }} />;
+    }
+
+    if (advert_id === 'NO_MATCH_ROW') {
+        // Empty row when there is a search_term but no search_results
+        return (
+            <div className='buy-sell-table-row__no-match'>
+                <Text color='prominent' size='xs'>
+                    <Localize i18n_default_text='There are no matching ads.' />
+                </Text>
+            </div>
+        );
+    }
+
     return (
         <React.Fragment>
             <MobileWrapper>
                 <div className='buy-sell-table-row'>
                     <div className='buy-sell-table-row__advertiser' onClick={() => onClickRow()}>
-                        <OnlineStatusAvatar
-                            is_online={advertiser_details.is_online}
-                            nickname={advertiser_name}
-                            size={32}
-                            text_size='s'
-                        />
+                        <OnlineStatusAvatar is_online={is_online} nickname={advertiser_name} size={32} text_size='s' />
                         <div className='buy-sell-table-row__advertiser-name'>
-                            <div className='buy-sell__cell--container__row'>
-                                <Text
-                                    className='buy-sell-table-row__advertiser-name--text'
-                                    size='xs'
-                                    line_height='m'
-                                    color='general'
-                                    weight='bold'
-                                >
+                            <div className='buy-sell-table-row__cell--container__row'>
+                                <Text className='buy-sell-table-row__advertiser-name--text' size='xs' weight='bold'>
                                     {advertiser_name}
                                 </Text>
-                                <TradeBadge trade_count={advertiser_details.completed_orders_count} />
+                                <TradeBadge trade_count={completed_orders_count} />
                             </div>
                             <div className='buy-sell-table-row__rating'>
                                 {!!rating_count && !!rating_average ? (
@@ -119,10 +138,10 @@ const BuySellTableRow = ({ row: advert }) => {
                     </div>
                     <div className='buy-sell-table-row__information'>
                         <div className='buy-sell-table-row__rate'>
-                            <Text as='div' color='general' line_height='m' size='xxs'>
+                            <Text as='div' size='xxs'>
                                 <Localize i18n_default_text='Rate (1 {{currency}})' values={{ currency }} />
                             </Text>
-                            <Text as='div' color='profit-success' line_height='m' size='s' weight='bold'>
+                            <Text as='div' color='profit-success' weight='bold'>
                                 {display_effective_rate} {local_currency}
                             </Text>
                             <Text as='div' color='less-prominent' line_height='m' size='xxs'>
@@ -174,30 +193,30 @@ const BuySellTableRow = ({ row: advert }) => {
                 </div>
             </MobileWrapper>
             <DesktopWrapper>
-                <Table.Row className='buy-sell__table-row'>
+                <Table.Row className='buy-sell-table-row'>
                     <Table.Cell>
                         <div
-                            className={classNames('buy-sell__cell', {
-                                'buy-sell__cell-hover': !is_barred,
+                            className={classNames('buy-sell-table-row__cell', {
+                                'buy-sell-table-row__cell-hover': !is_barred,
                             })}
                             onClick={() => onClickRow()}
                         >
                             <OnlineStatusAvatar
-                                is_online={advertiser_details.is_online}
+                                is_online={is_online}
                                 nickname={advertiser_name}
                                 size={24}
                                 text_size='xxs'
                             />
-                            <div className='buy-sell__cell--container'>
-                                <div className='buy-sell__cell--container__row'>
+                            <div className='buy-sell-table-row__cell--container'>
+                                <div className='buy-sell-table-row__cell--container__row'>
                                     <div
                                         className={classNames({
-                                            'buy-sell__name': !is_barred,
+                                            'buy-sell-table-row__name': !is_barred,
                                         })}
                                     >
                                         {advertiser_name}
                                     </div>
-                                    <TradeBadge trade_count={advertiser_details.completed_orders_count} />
+                                    <TradeBadge trade_count={completed_orders_count} />
                                 </div>
                                 <div className='buy-sell-table-row__rating'>
                                     {!!rating_count && !!rating_average ? (
@@ -225,7 +244,7 @@ const BuySellTableRow = ({ row: advert }) => {
                         {min_order_amount_limit_display}&ndash;{max_order_amount_limit_display} {account_currency}
                     </Table.Cell>
                     <Table.Cell>
-                        <Text color='profit-success' size='xs' line-height='m' weight='bold'>
+                        <Text color='profit-success' size='xs' weight='bold'>
                             {display_effective_rate} {local_currency}
                         </Text>
                     </Table.Cell>
@@ -235,7 +254,7 @@ const BuySellTableRow = ({ row: advert }) => {
                                 payment_method_names.map((payment_method, key) => {
                                     return (
                                         <div className='buy-sell-table-row__payment-method--label' key={key}>
-                                            <Text color='general' size='xs' line-height='l'>
+                                            <Text size='xs' line-height='l'>
                                                 {payment_method}
                                             </Text>
                                         </div>
@@ -243,7 +262,7 @@ const BuySellTableRow = ({ row: advert }) => {
                                 })
                             ) : (
                                 <div className='buy-sell-table-row__payment-method--label'>
-                                    <Text color='general' size='xs' line-height='l'>
+                                    <Text size='xs' line-height='l'>
                                         -
                                     </Text>
                                 </div>
@@ -253,11 +272,19 @@ const BuySellTableRow = ({ row: advert }) => {
                     {is_my_advert ? (
                         <Table.Cell />
                     ) : (
-                        <Table.Cell className='buy-sell__button'>
+                        <Table.Cell className='buy-sell-table-row__button'>
                             <Button is_disabled={is_barred} onClick={() => setSelectedAdvert(advert)} primary small>
-                                {is_buy_advert
-                                    ? localize('Buy {{account_currency}}', { account_currency })
-                                    : localize('Sell {{account_currency}}', { account_currency })}
+                                {is_buy_advert ? (
+                                    <Localize
+                                        i18n_default_text='Buy {{account_currency}}'
+                                        values={{ account_currency }}
+                                    />
+                                ) : (
+                                    <Localize
+                                        i18n_default_text='Sell {{account_currency}}'
+                                        values={{ account_currency }}
+                                    />
+                                )}
                             </Button>
                         </Table.Cell>
                     )}

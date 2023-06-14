@@ -1,4 +1,4 @@
-.buy-sell__header {
+.buy-sell-header {
     display: flex;
     flex-direction: column;
 
@@ -82,7 +82,7 @@
         }
     }
 
-    &-container {
+    &__container {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -92,7 +92,7 @@
         }
     }
 
-    &-filters {
+    &__filters {
         height: 3.6rem;
         width: 16.8rem;
 
@@ -102,27 +102,7 @@
         }
     }
 
-    &-match-ads {
-        display: flex;
-        flex-direction: row;
-
-        @include desktop {
-            .dc-checkbox__box {
-                margin-left: unset;
-            }
-        }
-
-        @include mobile {
-            margin: 0.9rem 0.8rem;
-        }
-
-        &__popover {
-            align-self: flex-end;
-            margin-left: 0.4rem;
-        }
-    }
-
-    &-row {
+    &__row {
         display: flex;
         flex-direction: row;
 
@@ -151,6 +131,121 @@
         &--selector {
             @include mobile {
                 grid-template-columns: auto 1fr 40px 40px;
+            }
+        }
+    }
+
+    &-currency-selector {
+        @include desktop {
+            position: absolute;
+            margin-top: 0.4rem;
+            width: 24rem;
+        }
+
+        &__search-icon {
+            margin-right: 1rem;
+        }
+
+        .dc-dropdown-list {
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            margin-top: 0;
+            padding: 0.8rem;
+
+            @include mobile {
+                box-shadow: none;
+                height: 100%;
+                max-height: calc(100% - 11.8rem);
+                overflow: auto;
+                padding: 0;
+                transition: unset;
+            }
+
+            &__item {
+                border-radius: 4px;
+                padding: 0.8rem 1.6rem;
+                min-height: 36px;
+
+                @include mobile {
+                    margin: 0.8rem 1.6rem;
+                }
+
+                &--active {
+                    font-weight: bold;
+                }
+
+                &--not-found {
+                    background: none;
+                    word-break: break-word;
+
+                    @include mobile {
+                        display: block;
+                        font-weight: bold;
+                        margin-top: 14rem;
+                        text-align: center;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        .dc-input {
+            border: 0;
+            border-bottom: 1px solid var(--border-normal);
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+            box-shadow: 0 8px 16px 0 var(--shadow-menu);
+            background: var(--general-main-2);
+
+            &__field {
+                padding-left: 3.4rem;
+            }
+        }
+    }
+
+    &-currency-dropdown {
+        margin-top: 2.4rem;
+        position: relative;
+
+        @include mobile {
+            grid-column: 2;
+            grid-row: 1;
+            margin: 0;
+        }
+
+        &__list {
+            min-width: unset;
+            width: 10rem;
+
+            &-item {
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+
+                &-symbol {
+                    @include desktop {
+                        padding-right: 1rem;
+                    }
+                }
+            }
+
+            &--visible {
+                .dc-dropdown__select-arrow {
+                    transform: rotate(-180deg);
+                }
+            }
+        }
+
+        .dc-dropdown__display {
+            height: 4.2rem;
+            justify-content: start;
+
+            @include mobile {
+                height: 4rem;
+
+                &:focus {
+                    border-color: var(--border-normal);
+                }
             }
         }
     }

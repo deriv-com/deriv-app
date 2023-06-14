@@ -11,6 +11,10 @@ import BuySellHeaderCurrencyDropdown from 'Components/buy-sell/buy-sell-header/b
 import BuySellHeaderDropdown from 'Components/buy-sell/buy-sell-header/buy-sell-header-dropdown';
 import { useStores } from 'Stores';
 
+type TBuySellHeaderProps = {
+    table_type: string;
+};
+
 const getBuySellFilters = () => [
     {
         text: localize('Buy'),
@@ -21,8 +25,7 @@ const getBuySellFilters = () => [
         value: buy_sell.SELL,
     },
 ];
-
-const BuySellHeader = ({ table_type }) => {
+const BuySellHeader = ({ table_type }: TBuySellHeaderProps) => {
     const { buy_sell_store, general_store } = useStores();
     const {
         api_error_message,
@@ -46,7 +49,7 @@ const BuySellHeader = ({ table_type }) => {
         setSearchResults([]);
     };
 
-    const onSearch = search => {
+    const onSearch = (search: string) => {
         setSearchTerm(search.trim());
 
         if (!search.trim()) {
@@ -79,15 +82,15 @@ const BuySellHeader = ({ table_type }) => {
 
     return (
         <div
-            className={classNames('buy-sell__header', {
-                'buy-sell__header-position-static': !!api_error_message,
+            className={classNames('buy-sell-header', {
+                'buy-sell-header__position-static': !!api_error_message,
             })}
         >
-            <div className='buy-sell__header-container'>
+            <div className='buy-sell-header__container'>
                 <ToggleContainer>
                     <ButtonToggle
                         buttons_arr={getBuySellFilters()}
-                        className='buy-sell__header-filters'
+                        className='buy-sell-header__filters'
                         is_animated
                         name='filter'
                         onChange={onChangeTableType}
@@ -96,8 +99,8 @@ const BuySellHeader = ({ table_type }) => {
                     />
                 </ToggleContainer>
                 <div
-                    className={classNames('buy-sell__header-row', {
-                        'buy-sell__header-row--selector': is_currency_selector_visible,
+                    className={classNames('buy-sell-header__row', {
+                        'buy-sell-header__row--selector': is_currency_selector_visible,
                     })}
                 >
                     {is_currency_selector_visible && <BuySellHeaderCurrencyDropdown />}
@@ -108,7 +111,7 @@ const BuySellHeader = ({ table_type }) => {
                     />
                     <BuySellHeaderDropdown />
                     <Icon
-                        className='buy-sell__header-row--filter'
+                        className='buy-sell-header__row--filter'
                         icon='IcFilter'
                         onClick={() => showModal({ key: 'FilterModal', props: {} })}
                         size={40}

@@ -6,7 +6,7 @@ import { isAction, reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import AdvertiserPage from 'Components/advertiser-page/advertiser-page.jsx';
-import BuySell from './buy-sell/buy-sell.jsx';
+import BuySell from 'Components/buy-sell';
 import Dp2pBlocked from './dp2p-blocked';
 import { localize } from './i18next';
 import MyAds from './my-ads/my-ads.jsx';

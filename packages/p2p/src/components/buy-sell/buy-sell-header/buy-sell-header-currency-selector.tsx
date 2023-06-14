@@ -1,12 +1,24 @@
 import React from 'react';
-import classNames from 'classnames';
-import { Field, Formik } from 'formik';
+import { Field, FieldProps, Formik } from 'formik';
 import { Autocomplete, Icon } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 
-const BuySellHeaderCurrencySelector = ({ className, default_value, list, onSelect }) => {
-    const getSortedList = list_items => {
+type TBuySellHeaderCurrencySelectorListProps = Array<{
+    display_name: string;
+    has_adverts: boolean;
+    is_default: boolean;
+    text: string;
+}>;
+
+type TBuySellHeaderCurrencySelectorProps = {
+    default_value: string;
+    list: TBuySellHeaderCurrencySelectorListProps;
+    onSelect: (v: string) => void;
+};
+
+const BuySellHeaderCurrencySelector = ({ default_value, list, onSelect }: TBuySellHeaderCurrencySelectorProps) => {
+    const getSortedList = (list_items: TBuySellHeaderCurrencySelectorListProps) => {
         const sorted_list = list_items.filter(list_item => list_item.is_default || list_item.has_adverts);
         const index = sorted_list.findIndex(item => item.text === default_value);
 
@@ -23,11 +35,11 @@ const BuySellHeaderCurrencySelector = ({ className, default_value, list, onSelec
         <Formik enableReinitialize initialValues={{ currency: '' }}>
             {({ setFieldValue }) => (
                 <Field name='currency'>
-                    {({ field }) => (
+                    {({ field }: FieldProps) => (
                         <Autocomplete
                             {...field}
                             autoComplete='off'
-                            className={classNames('buy-sell-header-currency-selector', className)}
+                            className='buy-sell-header-currency-selector'
                             data-lpignore='true'
                             historyValue={default_value}
                             is_list_visible
@@ -49,7 +61,7 @@ const BuySellHeaderCurrencySelector = ({ className, default_value, list, onSelec
                             onItemSelection={({ value }) => {
                                 if (value) onSelect?.(value);
                             }}
-                            onSearch={(value, list_items) => {
+                            onSearch={(value: string, list_items: TBuySellHeaderCurrencySelectorListProps) => {
                                 return list_items.filter(
                                     item =>
                                         item.display_name.toLowerCase().includes(value) ||

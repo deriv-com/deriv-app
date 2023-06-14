@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button, HintBox, Icon, Text, ThemedScrollbars } from '@deriv/components';
-import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
+import { formatMoney, isDesktop, isMobile, rudderstack } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
 import { api_error_codes } from '../../constants/api-error-codes.js';
@@ -85,6 +85,12 @@ const OrderDetails = observer(() => {
     React.useEffect(() => {
         const disposeListeners = sendbird_store.registerEventListeners();
         const disposeReactions = sendbird_store.registerMobXReactions();
+
+        rudderstack.track('ce_trade_types_form', {
+            action: 'info_open',
+            tab_name: 'multipliers',
+            trade_type_name: '123',
+        });
 
         order_store.getSettings();
         order_store.getWebsiteStatus();

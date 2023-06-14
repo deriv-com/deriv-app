@@ -30,6 +30,5 @@ export { default as usePlatformAccounts } from './usePlatformAccounts';
 export { default as usePlatformDemoAccount } from './usePlatformDemoAccount';
 export { default as usePlatformRealAccounts } from './usePlatformRealAccounts';
 export { default as useRealSTPAccount } from './useRealSTPAccount';
-export { default as useRudderstack } from './useRudderstack';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useVerifyEmail } from './useVerifyEmail';

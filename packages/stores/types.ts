@@ -368,16 +368,6 @@ type TTradersHubStore = {
     selectAccountType: (account_type: string) => void;
 };
 
-type TRudderstackStore = {
-    is_applicable: boolean;
-    has_identified: boolean;
-    current_page: string;
-    identifyEvent: () => Promise<void>;
-    pageView: () => void;
-    reset: () => void;
-    track: (event_name: string, options: any) => void;
-};
-
 /**
  * This is the type that contains all the `core` package stores
  */
@@ -393,7 +383,6 @@ export type TCoreStores = {
     modules: Record<string, any>;
     notifications: TNotificationStore;
     traders_hub: TTradersHubStore;
-    rudderstack: TRudderstackStore;
 };
 
 export type TStores = TCoreStores & {

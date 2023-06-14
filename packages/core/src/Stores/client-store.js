@@ -23,6 +23,7 @@ import {
     setCurrencies,
     toMoment,
     urlForLanguage,
+    rudderstack,
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
@@ -1616,7 +1617,9 @@ export default class ClientStore extends BaseStore {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
 
                 // Client comes back from oauth and logs in
-                await this.root_store.rudderstack.identifyEvent();
+                rudderstack.identifyEvent(this.user_id, {
+                    language: getLanguage().toLowerCase(),
+                });
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',
@@ -2092,7 +2095,7 @@ export default class ClientStore extends BaseStore {
         if (response?.logout === 1) {
             this.cleanUp();
 
-            this.root_store.rudderstack.reset();
+            rudderstack.reset();
             this.setLogout(true);
         }
 

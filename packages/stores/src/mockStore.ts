@@ -331,15 +331,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             onMount: jest.fn(),
             removePositionById: jest.fn(),
         },
-        rudderstack: {
-            is_applicable: false,
-            has_identified: false,
-            current_page: '',
-            identifyEvent: jest.fn(),
-            track: jest.fn(),
-            pageView: jest.fn(),
-            reset: jest.fn(),
-        },
         contract_trade: {
             getContractById: jest.fn(),
         },

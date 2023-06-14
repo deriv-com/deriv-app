@@ -1,4 +1,5 @@
 export * from './services';
+export * from './utils/analytics';
 export * from './utils/array';
 export * from './utils/brand';
 export * from './utils/browser';

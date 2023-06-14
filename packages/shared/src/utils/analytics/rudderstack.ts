@@ -1,4 +1,5 @@
-import { useStore } from '@deriv/stores';
+import * as rudderanalytics from 'rudder-sdk-js';
+import { isProduction } from '../config';
 
 type SignupProvider = 'email' | 'phone' | 'google' | 'facebook' | 'apple';
 
@@ -90,22 +91,74 @@ type RSEvents = {
     ce_trade_types_form: TradeTypesFormAction;
 };
 
-const useRudderstack = () => {
-    const { rudderstack } = useStore();
-
-    const track = <EventType extends keyof RSEvents, EventPayload extends RSEvents[EventType]>(
-        event_type: EventType,
-        payload: EventPayload
-    ) => {
-        rudderstack.track(event_type, payload);
-    };
-
-    return {
-        track,
-        identifyEvent: rudderstack.identifyEvent,
-        pageView: rudderstack.pageView,
-        reset: rudderstack.reset,
-    };
+type IdentifyEvent = {
+    language: string;
 };
 
-export default useRudderstack;
+class RudderStack {
+    // only available on production (bot and deriv)
+    // is_applicable = /^(16929|19111|24091)$/.test(getAppId());
+    has_identified = false;
+    has_initialized = false;
+    current_page = '';
+
+    constructor() {
+        if (isProduction()) {
+            // Production key
+            rudderanalytics.load(
+                process.env.RUDDERSTACK_PRODUCTION_KEY || '',
+                'https://deriv-dataplane.rudderstack.com'
+            );
+        } else {
+            // Staging keys
+            rudderanalytics.load(process.env.RUDDERSTACK_STAGING_KEY || '', 'https://deriv-dataplane.rudderstack.com');
+        }
+        rudderanalytics.ready(() => {
+            this.has_initialized = true;
+        });
+    }
+
+    identifyEvent = (user_id: string, payload: IdentifyEvent) => {
+        if (this.has_initialized) {
+            rudderanalytics.identify(user_id, payload);
+            this.has_identified = true;
+            this.pageView();
+        }
+    };
+
+    /**
+     * Pushes page view track event to rudderstack
+     */
+    pageView() {
+        const current_page = window.location.hostname + window.location.pathname;
+
+        if (this.has_initialized && this.has_identified && current_page !== this.current_page) {
+            rudderanalytics.page('Deriv App', current_page);
+            this.current_page = current_page;
+        }
+    }
+
+    /**
+     * Pushes reset event to rudderstack
+     */
+    reset() {
+        if (this.has_initialized) {
+            rudderanalytics.reset();
+            this.has_identified = false;
+        }
+    }
+
+    /**
+     * Pushes track event to rudderstack
+     */
+    track<EventType extends keyof RSEvents, EventPayload extends RSEvents[EventType]>(
+        event_type: EventType,
+        payload: EventPayload
+    ) {
+        if (this.has_initialized && this.has_identified) {
+            rudderanalytics.track(event_type, payload);
+        }
+    }
+}
+
+export default new RudderStack();

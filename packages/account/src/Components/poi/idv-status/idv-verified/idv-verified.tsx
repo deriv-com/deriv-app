@@ -4,6 +4,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
 
 type TIdvVerified = {
     needs_poa: boolean;
@@ -32,7 +33,7 @@ const IdvVerified = ({ needs_poa, is_from_external, redirect_button }: Partial<T
                     {!is_from_external && <PoaButton custom_text={localize('Submit proof of address')} />}
                 </React.Fragment>
             ) : (
-                redirect_button
+                redirect_button || <ContinueTradingButton className='continue-trade--button' />
             )}
         </div>
     );

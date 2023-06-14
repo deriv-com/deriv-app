@@ -2,11 +2,10 @@ import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BrowserRouter } from 'react-router-dom';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores/index';
 import AdvertiserPageRow from '../advertiser-page-row';
 import { adverts } from '../../__mocks__/mock-data';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     advertiser_page_store: {

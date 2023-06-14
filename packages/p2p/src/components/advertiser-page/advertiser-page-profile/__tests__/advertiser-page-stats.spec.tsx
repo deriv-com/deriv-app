@@ -1,9 +1,9 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { isMobile } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { render, screen } from '@testing-library/react';
 import { useStores } from 'Stores/index';
 import AdvertisePageStats from '../advertiser-page-stats';
-import { isMobile } from '@deriv/shared';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     advertiser_page_store: {

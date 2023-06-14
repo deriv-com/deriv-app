@@ -1,11 +1,10 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { useStores } from 'Stores/index';
 import AdvertisePage from '../advertiser-page';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
-const onClose = jest.fn();
 const mock_modal_manager = {
     showModal: jest.fn(),
     hideModal: jest.fn(),

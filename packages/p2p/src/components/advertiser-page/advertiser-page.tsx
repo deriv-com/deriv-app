@@ -34,6 +34,36 @@ const AdvertiserPage = () => {
               });
     };
 
+    const handleOpenModal = () => {
+        showModal({
+            key: 'ErrorModal',
+            props: {
+                error_message:
+                    general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID
+                        ? error_message()
+                        : general_store.block_unblock_user_error,
+                error_modal_button_text: localize('Got it'),
+                error_modal_title:
+                    general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID
+                        ? localize('{{name}} is no longer on Deriv P2P', {
+                              name: advertiser_page_store.advertiser_details_name,
+                          })
+                        : localize('Unable to block advertiser'),
+                has_close_icon: false,
+                onClose: () => {
+                    buy_sell_store.hideAdvertiserPage();
+                    if (general_store.active_index !== 0)
+                        my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
+                    advertiser_page_store.onCancel();
+                    general_store.setBlockUnblockUserError('');
+                    hideModal();
+                },
+                width: isMobile() ? '90rem' : '40rem',
+            },
+        });
+        general_store.setBlockUnblockUserError(null);
+    };
+
     React.useEffect(() => {
         advertiser_page_store.onMount();
         advertiser_page_store.setIsDropdownMenuVisible(false);
@@ -43,33 +73,7 @@ const AdvertiserPage = () => {
             () => {
                 advertiser_page_store.onTabChange();
                 if (general_store.block_unblock_user_error && buy_sell_store.show_advertiser_page) {
-                    showModal({
-                        key: 'ErrorModal',
-                        props: {
-                            error_message:
-                                general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID
-                                    ? error_message()
-                                    : general_store.block_unblock_user_error,
-                            error_modal_button_text: localize('Got it'),
-                            error_modal_title:
-                                general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID
-                                    ? localize('{{name}} is no longer on Deriv P2P', {
-                                          name: advertiser_page_store.advertiser_details_name,
-                                      })
-                                    : localize('Unable to block advertiser'),
-                            has_close_icon: false,
-                            onClose: () => {
-                                buy_sell_store.hideAdvertiserPage();
-                                if (general_store.active_index !== 0)
-                                    my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
-                                advertiser_page_store.onCancel();
-                                general_store.setBlockUnblockUserError('');
-                                hideModal();
-                            },
-                            width: isMobile() ? '90rem' : '40rem',
-                        },
-                    });
-                    general_store.setBlockUnblockUserError(null);
+                    handleOpenModal();
                 }
             },
             { fireImmediately: true }

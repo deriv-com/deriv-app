@@ -123,12 +123,9 @@ const AdvertiserPageRow = ({ row: advert }: TAdvertiserPageRow) => {
                     <Table.Cell>
                         <div className='buy-sell-row__payment-method'>
                             {payment_method_names
-                                ? payment_method_names.map((payment_method, key) => {
+                                ? payment_method_names.map(payment_method => {
                                       return (
-                                          <div
-                                              className='buy-sell-row__payment-method--label'
-                                              key={`${key}-${payment_method}`}
-                                          >
+                                          <div className='buy-sell-row__payment-method--label' key={payment_method}>
                                               <Text color='general' size='xs' line-height='l'>
                                                   {payment_method}
                                               </Text>
@@ -172,12 +169,9 @@ const AdvertiserPageRow = ({ row: advert }: TAdvertiserPageRow) => {
                         </div>
                         <div className='advertiser-page__payment-methods-list'>
                             {payment_method_names
-                                ? payment_method_names.map((payment_method, index) => {
+                                ? payment_method_names.map(payment_method => {
                                       return (
-                                          <div
-                                              className='advertiser-page__payment-method'
-                                              key={`${index}-${payment_method}`}
-                                          >
+                                          <div className='advertiser-page__payment-method' key={payment_method}>
                                               <Text color='general' line-height='l' size='xxxs'>
                                                   {payment_method}
                                               </Text>

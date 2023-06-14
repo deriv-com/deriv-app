@@ -22,7 +22,7 @@ const Redirect = ({
     toggleUpdateEmailModal,
 }) => {
     const { client } = useStore();
-    const { loginid, setloginid } = client;
+    const { loginid, setLoginId } = client;
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
@@ -121,7 +121,7 @@ const Redirect = ({
             break;
         }
         case 'payment_withdraw': {
-            setloginid(loginid_param);
+            setLoginId(loginid_param);
             history.push(routes.cashier_withdrawal);
             redirected_to_route = true;
             break;

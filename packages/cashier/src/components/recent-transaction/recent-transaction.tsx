@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { ButtonLink, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { epochToMoment } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { getStatus } from '../../constants/transaction-status';
@@ -123,15 +123,17 @@ const RecentTransaction = observer(() => {
                         </Text>
                     )}
                 </div>
-                <div className='cashier-recent-transaction__hash'>
-                    <Text as='p' size='xxxs' line_height='xs'>
-                        <Localize i18n_default_text='Confirmations:' />
-                        &nbsp;
-                    </Text>
-                    <Text as='p' size='xxxs' color='red' line_height='s'>
-                        {confirmations ?? 0}/12
-                    </Text>
-                </div>
+                {transaction_type === 'deposit' && (
+                    <div className='cashier-recent-transaction__hash'>
+                        <Text as='p' size='xxxs' line_height='xs'>
+                            <Localize i18n_default_text='Confirmations:' />
+                            &nbsp;
+                        </Text>
+                        <Text as='p' size='xxxs' color='red' line_height='s'>
+                            {confirmations ?? localize('Pending')}
+                        </Text>
+                    </div>
+                )}
             </div>
         </SideNoteContainer>
     );

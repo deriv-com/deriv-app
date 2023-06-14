@@ -49,13 +49,17 @@
         }
         &-row {
             padding: 1.6rem;
-            grid-template-columns: repeat(7, 1fr) 0.5fr;
+            grid-template-columns: repeat(6, 1fr) 0.5fr;
             border: 0;
             @include mobile {
                 display: flex;
                 flex-direction: column;
                 border-radius: 0.8rem;
                 background-color: var(--general-section-1);
+            }
+
+            &--with-confirm {
+                grid-template-columns: repeat(7, 1fr) 0.5fr;
             }
 
             .dc-table__cell:not(.crypto-transactions-history__table-confirm) {

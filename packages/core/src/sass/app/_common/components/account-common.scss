@@ -9,6 +9,10 @@
         min-width: 32.8rem;
         min-height: 50rem;
         margin: auto;
+
+        @include mobile {
+            width: 100%;
+        }
     }
 
     .account-form__poi-confirm-example_container {

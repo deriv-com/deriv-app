@@ -11,7 +11,7 @@ import EUDisclaimer from 'Components/eu-disclaimer';
 import { useContentFlag } from '@deriv/hooks';
 import './traders-hub.scss';
 
-const TradersHub = () => {
+const TradersHub = observer(() => {
     const { traders_hub, client, ui } = useStore();
     const { notification_messages_ui: Notifications } = ui;
     const {
@@ -78,6 +78,6 @@ const TradersHub = () => {
             {is_low_risk_cr_eu && <EUDisclaimer />}
         </React.Fragment>
     );
-};
+});
 
-export default observer(TradersHub);
+export default TradersHub;

@@ -1,7 +1,7 @@
-import { computed, observable, action, runInAction, makeObservable } from 'mobx';
-import { localize } from '@deriv/translations';
+import { action, computed, makeObservable, observable, runInAction } from 'mobx';
 import { ApiHelpers, config, load } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
+import { localize } from '@deriv/translations';
 import GTM from 'Utils/gtm';
 import { getSetting, storeSetting } from 'Utils/settings';
 import {

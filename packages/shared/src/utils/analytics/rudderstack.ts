@@ -103,19 +103,13 @@ class RudderStack {
     current_page = '';
 
     constructor() {
-        if (isProduction()) {
-            // Production key
-            rudderanalytics.load(
-                process.env.RUDDERSTACK_PRODUCTION_KEY || '',
-                'https://deriv-dataplane.rudderstack.com'
-            );
-        } else {
-            // Staging keys
-            rudderanalytics.load(process.env.RUDDERSTACK_STAGING_KEY || '', 'https://deriv-dataplane.rudderstack.com');
+        const write_key = isProduction() ? process.env.RUDDERSTACK_PRODUCTION_KEY : process.env.RUDDERSTACK_STAGING_KEY;
+        if (write_key) {
+            rudderanalytics.load(write_key, 'https://deriv-dataplane.rudderstack.com');
+            rudderanalytics.ready(() => {
+                this.has_initialized = true;
+            });
         }
-        rudderanalytics.ready(() => {
-            this.has_initialized = true;
-        });
     }
 
     identifyEvent = (user_id: string, payload: IdentifyEvent) => {

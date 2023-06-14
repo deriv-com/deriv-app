@@ -21,7 +21,7 @@ const WalletButton = ({ button, is_desktop_wallet, is_disabled, is_open }: TProp
             })}
             onClick={button.action}
         >
-            <Icon icon={button.icon} custom_color={is_disabled ? 'var(--general-disabled)' : 'var(--text-general)'} />
+            <Icon icon={button.icon} custom_color={is_disabled ? 'var(--general-disabled)' : 'var(--text-prominent)'} />
             <CSSTransition
                 appear
                 in={is_open}
@@ -31,7 +31,7 @@ const WalletButton = ({ button, is_desktop_wallet, is_disabled, is_open }: TProp
             >
                 <Text
                     weight='bold'
-                    color={is_disabled ? 'disabled' : 'general'}
+                    color={is_disabled ? 'disabled' : 'prominent'}
                     size='xs'
                     className='wallet-button__desktop-item-text'
                 >

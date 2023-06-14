@@ -578,6 +578,9 @@
 
         &--smarttrader-contract {
             width: 7rem;
+            @include mobile {
+                width: 9rem;
+            }
         }
 
         &-trade-param {

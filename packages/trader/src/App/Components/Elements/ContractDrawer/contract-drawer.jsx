@@ -77,6 +77,7 @@ const ContractDrawer = observer(
                         is_market_closed={is_market_closed}
                         is_multiplier={is_multiplier}
                         is_vanilla={is_vanilla}
+                        is_smarttrader_contract={is_smarttrader_contract}
                         is_sell_requested={is_sell_requested}
                         is_collapsed={should_show_contract_audit}
                         onClickCancel={onClickCancel}
@@ -134,7 +135,7 @@ const ContractDrawer = observer(
                     className={classNames('contract-drawer', {
                         'contract-drawer--with-collapsible-btn':
                             !!getEndTime(contract_info) ||
-                            ((is_multiplier || is_vanilla || is_accumulator) && isMobile()),
+                            ((is_multiplier || is_vanilla || is_accumulator || is_smarttrader_contract) && isMobile()),
                         'contract-drawer--is-multiplier': is_multiplier && isMobile(),
                         'contract-drawer--is-multiplier-sold': is_multiplier && isMobile() && getEndTime(contract_info),
                     })}

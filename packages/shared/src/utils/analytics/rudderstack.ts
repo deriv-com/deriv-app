@@ -84,20 +84,19 @@ type TradeTypesFormAction =
           trade_type_name: string;
       };
 
+type IdentifyAction = {
+    language: string;
+};
+
 type RSEvents = {
     ce_virtual_signup_form: VirtualSignupFormAction;
     ce_real_account_signup_form: RealAccountSignupFormAction;
     ce_virtual_signup_email_confirmation: VirtualSignupEmailConfirmationAction;
     ce_trade_types_form: TradeTypesFormAction;
-};
-
-type IdentifyEvent = {
-    language: string;
+    identify: IdentifyAction;
 };
 
 class RudderStack {
-    // only available on production (bot and deriv)
-    // is_applicable = /^(16929|19111|24091)$/.test(getAppId());
     has_identified = false;
     has_initialized = false;
     current_page = '';
@@ -112,7 +111,7 @@ class RudderStack {
         }
     }
 
-    identifyEvent = (user_id: string, payload: IdentifyEvent) => {
+    identifyEvent = (user_id: string, payload: RSEvents['identify']) => {
         if (this.has_initialized) {
             rudderanalytics.identify(user_id, payload);
             this.has_identified = true;

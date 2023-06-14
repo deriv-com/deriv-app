@@ -2,7 +2,7 @@ import React from 'react';
 import Wallet from 'Components/containers/wallet';
 import { observer, useStore } from '@deriv/stores';
 import WalletCardsCarousel from 'Components/wallet-cards-carousel';
-import { useWalletsList } from '@deriv/hooks';
+import { useWalletList } from '@deriv/hooks';
 import { Loading } from '@deriv/components';
 import { convertWallets } from 'Constants/utils';
 
@@ -11,7 +11,7 @@ const AccountWithWallets = observer(() => {
         ui: { is_mobile, is_dark_mode_on },
     } = useStore();
 
-    const { data, isLoading } = useWalletsList();
+    const { data, isLoading } = useWalletList();
 
     // TODO: We have to create ONE type for desktop and responsive wallet!!!
     const wallet_accounts = React.useMemo(() => convertWallets(data, is_dark_mode_on), [data, is_dark_mode_on]);
@@ -28,8 +28,8 @@ const AccountWithWallets = observer(() => {
             <Wallet
                 key={wallet.loginid}
                 wallet_account={wallet}
-                is_open_wallet={selected_wallet === wallet.loginid}
-                setIsOpenWallet={setIsOpenWallet}
+                active={selected_wallet === wallet.loginid}
+                setActive={setIsOpenWallet}
             />
         );
     });

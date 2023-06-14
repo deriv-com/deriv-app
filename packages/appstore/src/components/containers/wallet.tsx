@@ -8,11 +8,11 @@ import './wallet.scss';
 
 type TWallet = {
     wallet_account: TWalletAccount;
-    is_open_wallet: boolean;
-    setIsOpenWallet: React.Dispatch<React.SetStateAction<boolean>>;
+    active: boolean;
+    setActive: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Wallet = React.memo(({ wallet_account, is_open_wallet, setIsOpenWallet }: TWallet) => {
+const Wallet = React.memo(({ wallet_account, active, setActive }: TWallet) => {
     const is_demo = wallet_account.is_virtual;
     const shortcode =
         wallet_account.landing_company_shortcode === 'maltainvest' ? 'malta' : wallet_account.landing_company_shortcode;
@@ -28,18 +28,12 @@ const Wallet = React.memo(({ wallet_account, is_open_wallet, setIsOpenWallet }: 
                 balance={wallet_account.balance}
                 currency={wallet_account.currency as TWalletCurrency}
                 shortcode={shortcode as TWalletShortcode}
-                is_open_wallet={is_open_wallet}
-                setIsOpen={setIsOpenWallet}
+                is_open_wallet={active}
+                setIsOpen={setActive}
                 icon_type={wallet_account.icon_type}
                 icon={wallet_account.icon}
             />
-            <CSSTransition
-                appear
-                in={is_open_wallet}
-                timeout={240}
-                classNames='wallet__content-transition'
-                unmountOnExit
-            >
+            <CSSTransition appear in={active} timeout={240} classNames='wallet__content-transition' unmountOnExit>
                 <WalletContent is_demo={!!is_demo} is_eu={shortcode === 'malta'} wallet_account={wallet_account} />
             </CSSTransition>
         </div>

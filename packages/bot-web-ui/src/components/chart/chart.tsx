@@ -1,14 +1,14 @@
 import React from 'react';
+import classNames from 'classnames';
+import { ActiveSymbols, ForgetRequest } from '@deriv/api-types';
 // TODO Remove this after smartcharts is replaced
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { ChartTitle, SmartChart } from '@deriv/deriv-charts';
-import RootStore from 'Stores/index';
-import { connect } from 'Stores/connect';
-import ToolbarWidgets from './toolbar-widgets';
-import classNames from 'classnames';
-import { ActiveSymbols, ForgetRequest } from '@deriv/api-types';
 import { isDesktop, isMobile } from '@deriv/shared';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
+import ToolbarWidgets from './toolbar-widgets';
 
 interface TChartProps {
     chart_type: string;

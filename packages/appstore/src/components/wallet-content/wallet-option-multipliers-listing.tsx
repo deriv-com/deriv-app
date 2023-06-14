@@ -85,7 +85,7 @@ const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps)
                                     openRealAccountSignup('maltainvest');
                                 }
                             } else {
-                                openRealAccountSignup();
+                                openRealAccountSignup('svg');
                             }
                         }}
                     />

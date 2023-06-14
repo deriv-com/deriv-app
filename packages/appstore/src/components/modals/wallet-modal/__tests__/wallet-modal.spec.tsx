@@ -4,16 +4,10 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletModal from '../wallet-modal';
 
 jest.mock('../wallet-modal-header', () => jest.fn(() => <div>WalletModalHeader</div>));
-jest.mock('../wallet-modal-body', () => {
-    const { forwardRef } = jest.requireActual('react');
-    return {
-        __esModule: true,
-        default: forwardRef(() => <div>WalletModalBody</div>),
-    };
-});
+jest.mock('../wallet-modal-body', () => jest.fn(() => <div>WalletModalBody</div>));
 
 describe('WalletModal', () => {
-    let modal_root_el;
+    let modal_root_el: HTMLDivElement;
     beforeAll(() => {
         modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');

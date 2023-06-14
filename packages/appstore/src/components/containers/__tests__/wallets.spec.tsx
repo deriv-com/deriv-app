@@ -42,11 +42,7 @@ describe('<Wallets />', () => {
 
             return (
                 <StoreProvider store={mockedRootStore}>
-                    <Wallet
-                        wallet_account={wallet_account}
-                        is_open_wallet={is_open}
-                        setIsOpenWallet={wrapperSetIsOpen}
-                    />
+                    <Wallet wallet_account={wallet_account} active={is_open} setActive={wrapperSetIsOpen} />
                 </StoreProvider>
             );
         };
@@ -63,11 +59,7 @@ describe('<Wallets />', () => {
 
             return (
                 <StoreProvider store={mockedRootStore}>
-                    <Wallet
-                        wallet_account={wallet_account}
-                        is_open_wallet={is_open}
-                        setIsOpenWallet={wrapperSetIsOpen}
-                    />
+                    <Wallet wallet_account={wallet_account} active={is_open} setActive={wrapperSetIsOpen} />
                 </StoreProvider>
             );
         };
@@ -84,22 +76,16 @@ describe('<Wallets />', () => {
 
             return (
                 <StoreProvider store={mockedRootStore}>
-                    <Wallet
-                        wallet_account={wallet_account}
-                        is_open_wallet={is_open}
-                        setIsOpenWallet={wrapperSetIsOpen}
-                    />
+                    <Wallet wallet_account={wallet_account} active={is_open} setActive={wrapperSetIsOpen} />
                 </StoreProvider>
             );
         };
 
         render(<Wrapper />);
 
-        const btn_arrow = screen.getByTestId('dt_arrow');
+        const arrow_icon = screen.getByTestId('dt_arrow');
         expect(screen.queryByText('wallet test content')).not.toBeInTheDocument();
-        expect(btn_arrow).toBeInTheDocument();
-
-        await userEvent.click(btn_arrow);
+        userEvent.click(arrow_icon);
         expect(screen.queryByText('wallet test content')).toBeInTheDocument();
     });
 
@@ -109,11 +95,7 @@ describe('<Wallets />', () => {
 
             return (
                 <StoreProvider store={mockedRootStore}>
-                    <Wallet
-                        wallet_account={wallet_account}
-                        is_open_wallet={is_open}
-                        setIsOpenWallet={wrapperSetIsOpen}
-                    />
+                    <Wallet wallet_account={wallet_account} active={is_open} setActive={wrapperSetIsOpen} />
                 </StoreProvider>
             );
         };

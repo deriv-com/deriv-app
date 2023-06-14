@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import ReadMoreWrapper from 'Components/read-more-wrapper';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
-import { TRootStore, TWebSocket } from 'Types';
+import { TWebSocket, TRootStore } from '../types';
 
 export default class WithdrawStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
@@ -92,7 +92,7 @@ export default class WithdrawStore {
             dry_run: 1,
         }).then(response => {
             if (response.error) {
-                this.error.setErrorMessage({ code: 'CryptoWithdrawalError', message: response.error.message });
+                this.error.setErrorMessage({ code: response.error.code, message: response.error.message });
                 this.setCryptoConfig().then(() => this.validateWithdrawFromAmount());
             } else {
                 this.saveWithdraw(verification_code);
@@ -298,7 +298,7 @@ export default class WithdrawStore {
         this.is_10k_withdrawal_limit_reached = is_limit_reached;
     }
 
-    setWithdrawPercentageSelectorResult(amount: string) {
+    setWithdrawPercentageSelectorResult(amount: string, exchanged_amount: number) {
         const { client, modules } = this.root_store;
         const { crypto_fiat_converter, general_store } = modules.cashier;
         const { currency, current_fiat_currency } = client;
@@ -309,7 +309,8 @@ export default class WithdrawStore {
             crypto_fiat_converter.onChangeConverterFromAmount(
                 { target: { value: amount } },
                 currency,
-                current_fiat_currency || 'USD'
+                current_fiat_currency || 'USD',
+                exchanged_amount
             );
         } else {
             crypto_fiat_converter.resetConverter();

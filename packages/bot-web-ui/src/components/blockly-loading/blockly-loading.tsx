@@ -1,13 +1,13 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import RootStore from 'Stores/index';
 import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 
 type TBlocklyLoadingProps = {
     is_loading: boolean;
 };
 
-const BlocklyLoading: React.FC<TBlocklyLoadingProps> = ({ is_loading }) => (
+const BlocklyLoading = ({ is_loading }: TBlocklyLoadingProps) => (
     <>
         {is_loading && (
             <div className='bot__loading'>

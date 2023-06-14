@@ -12,7 +12,7 @@ type TArrowButton = {
     is_collapsed?: boolean;
     is_open?: boolean;
     onClick: () => void;
-    title: string;
+    title?: string;
     position: 'top' | 'bottom';
 };
 

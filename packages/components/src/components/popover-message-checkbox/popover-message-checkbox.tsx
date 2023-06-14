@@ -7,7 +7,7 @@ type TPopoverMessageCheckbox = {
     name?: string;
     onChange: React.FormEventHandler<HTMLInputElement> &
         ((e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => void);
-    checkboxLabel: React.ReactElement;
+    checkboxLabel: React.ReactElement | string;
 };
 
 const PopoverMessageCheckbox = ({

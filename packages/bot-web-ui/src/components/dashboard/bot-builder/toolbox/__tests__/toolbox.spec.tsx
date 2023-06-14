@@ -1,11 +1,11 @@
 import React from 'react';
+import { isMobile } from '@deriv/shared';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import Toolbox from '../toolbox';
-import { isMobile } from '@deriv/shared';
 import { useDBotStore } from 'Stores/useDBotStore';
+import Toolbox from '../toolbox';
 
-const mockDbotStore: any = {
+const mockDbotStore = {
     toolbox: {
         hasSubCategory: jest.fn(),
         is_search_loading: false,

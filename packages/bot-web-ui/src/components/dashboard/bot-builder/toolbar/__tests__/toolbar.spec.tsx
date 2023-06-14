@@ -1,10 +1,10 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import Toolbar from '..';
 import { isDesktop, isMobile } from '@deriv/shared';
+import { render, screen } from '@testing-library/react';
 import { useDBotStore } from 'Stores/useDBotStore';
+import Toolbar from '..';
 
-const mockDbotStore: any = {
+const mockDbotStore = {
     run_panel: {
         is_running: false,
     },

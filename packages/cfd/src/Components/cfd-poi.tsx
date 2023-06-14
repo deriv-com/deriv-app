@@ -28,7 +28,6 @@ export type TCFDPOIProps = {
     removeNotificationByKey: (key: TCFDNotificationByKey) => void;
     removeNotificationMessage: (key: TCFDNotificationMessage) => void;
     jurisdiction_selected_shortcode: string;
-    updateAccountStatus: () => void;
 };
 
 const CFDPOI = observer(({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => {
@@ -44,6 +43,8 @@ const CFDPOI = observer(({ index, onSave, onSubmit, height, ...props }: TCFDPOIP
         should_allow_authentication,
         account_settings,
         residence_list,
+        getChangeableFields,
+        updateAccountStatus,
     } = client;
     const { routeBackInApp, app_routing_history } = common;
     const { refreshNotifications } = notifications;
@@ -61,6 +62,8 @@ const CFDPOI = observer(({ index, onSave, onSubmit, height, ...props }: TCFDPOIP
         routeBackInApp,
         app_routing_history,
         refreshNotifications,
+        getChangeableFields,
+        updateAccountStatus,
         ...props,
     };
 

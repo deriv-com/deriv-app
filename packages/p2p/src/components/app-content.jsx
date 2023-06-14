@@ -5,7 +5,7 @@ import { useStore } from '@deriv/stores';
 import { isAction, reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
-import AdvertiserPage from 'Components/advertiser-page/advertiser-page.jsx';
+import AdvertiserPage from 'Components/advertiser-page';
 import BuySell from './buy-sell/buy-sell.jsx';
 import Dp2pBlocked from './dp2p-blocked';
 import { localize } from './i18next';

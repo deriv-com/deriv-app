@@ -14,20 +14,20 @@ declare module 'react' {
 }
 
 type TTabsProps = RouteComponentProps & {
-    active_icon_color: string;
+    active_icon_color?: string;
     active_index?: number;
-    background_color: string;
+    background_color?: string;
     bottom?: boolean;
-    center: boolean;
+    center?: boolean;
     children: React.ReactElement[];
     className?: string;
-    fit_content: boolean;
+    fit_content?: boolean;
     has_active_line?: boolean;
     has_bottom_line?: boolean;
     header_fit_content?: boolean;
     history: History;
-    icon_color: string;
-    icon_size: number;
+    icon_color?: string;
+    icon_size?: number;
     is_100vw?: boolean;
     is_full_width?: boolean;
     is_overflow_hidden?: boolean;
@@ -39,20 +39,20 @@ type TTabsProps = RouteComponentProps & {
 };
 
 const Tabs = ({
-    active_icon_color,
+    active_icon_color = '',
     active_index = 0,
-    background_color,
-    bottom,
-    center,
+    background_color = '',
+    bottom = false,
+    center = false,
     children,
     className,
-    fit_content,
+    fit_content = false,
     has_active_line = true,
     has_bottom_line = true,
     header_fit_content,
     history,
-    icon_color,
-    icon_size,
+    icon_color = '',
+    icon_size = 1,
     is_100vw,
     is_full_width,
     is_overflow_hidden,

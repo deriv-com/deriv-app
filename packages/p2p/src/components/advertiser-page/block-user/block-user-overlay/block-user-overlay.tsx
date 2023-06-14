@@ -1,11 +1,19 @@
 import React from 'react';
+import { observer } from 'mobx-react-lite';
 import { Button, Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
-import { useStores } from 'Stores';
-import { observer } from 'mobx-react-lite';
-import PropTypes from 'prop-types';
+import { useStores } from 'Stores/index';
 
-const BlockUserOverlay = ({ children, is_visible, onClickUnblock }) => {
+type TBlockUserOverlayProps = {
+    is_visible: boolean;
+    onClickUnblock: () => void;
+};
+
+const BlockUserOverlay = ({
+    children,
+    is_visible,
+    onClickUnblock,
+}: React.PropsWithChildren<TBlockUserOverlayProps>) => {
     const { advertiser_page_store } = useStores();
 
     if (is_visible) {
@@ -27,13 +35,7 @@ const BlockUserOverlay = ({ children, is_visible, onClickUnblock }) => {
             </div>
         );
     }
-    return children;
-};
-
-BlockUserOverlay.propTypes = {
-    children: PropTypes.any,
-    is_visible: PropTypes.bool.isRequired,
-    onClickUnblock: PropTypes.func,
+    return <>{children}</>;
 };
 
 export default observer(BlockUserOverlay);

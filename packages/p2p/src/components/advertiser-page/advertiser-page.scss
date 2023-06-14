@@ -25,6 +25,9 @@
 
             &-placeholder {
                 top: auto;
+                .dc-text {
+                    color: var(--text-prominent);
+                }
             }
         }
 
@@ -211,30 +214,42 @@
 
     &__stats {
         border-bottom: none;
-        display: flex;
+        display: grid;
         grid-template-columns: repeat(3, 1fr);
-        height: 5rem;
-        justify-content: space-between;
-        margin: 2rem 0;
+        margin-top: 2rem;
         width: 100%;
 
         @include mobile {
+            border-bottom: none;
             grid-template-columns: repeat(2, 1fr);
-            margin: 0.6rem;
-            width: 90vw;
+            margin: 0.5rem 0;
+            width: 100vw;
         }
 
         &-cell {
-            display: grid;
             min-width: 20rem;
-            text-align: center;
-            margin-right: 10rem;
+            border-right: 1px solid var(--general-section-2);
+            margin-bottom: 2.4rem;
+            padding-left: 2.4rem;
+
+            @include desktop {
+                &:first-child,
+                &:nth-child(4) {
+                    padding-left: 0;
+                }
+
+                &:nth-child(3),
+                &:last-child {
+                    border-right: none;
+                }
+            }
 
             @include mobile {
                 min-width: 12rem;
+                margin-right: 1.5rem;
 
-                &:nth-child(5) {
-                    min-width: 16rem;
+                &:nth-child(odd) {
+                    padding-left: 0;
                 }
             }
 
@@ -265,7 +280,8 @@
 
         &--wrapper {
             align-items: center;
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
 
             @media (max-height: 580px) {
                 height: 5rem;

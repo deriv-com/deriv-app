@@ -1026,6 +1026,8 @@ export const icons =
         'IcWalletModalTetherDark',
         'IcWalletModalTetherLight',
         'IcWalletMyApps',
+        'IcWalletOptionsDark',
+        'IcWalletOptionsLight',
         'IcWalletPaymentAgentDark',
         'IcWalletPaymentAgentLight',
         'IcWalletTetherDark',

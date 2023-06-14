@@ -1,12 +1,12 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Button, Icon, Modal, Text } from '@deriv/components';
-import { localize, Localize } from '@deriv/translations';
+import { isMobile } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import ContractResultOverlay from 'Components/contract-result-overlay';
 import { contract_stages } from 'Constants/contract-stage';
 import { connect } from 'Stores/connect';
-import { isMobile } from '@deriv/shared';
 
 const CircularWrapper = ({ className }) => (
     <div className={classNames('circular-wrapper', className)}>

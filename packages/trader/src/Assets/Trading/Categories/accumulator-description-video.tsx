@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import { Loading } from '@deriv/components';
 import { getUrlBase } from '@deriv/shared';
 
-const AccumulatorDescriptionVideo = () => {
+const AccumulatorDescriptionVideo = ({ selected_contract_type }: { selected_contract_type: string }) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const getVideoSource = (extension: 'mp4' | 'webm') => {
         return getUrlBase(`/public/images/common/accumulator_description.${extension}`);
@@ -12,6 +12,7 @@ const AccumulatorDescriptionVideo = () => {
     const mp4_src = React.useMemo(() => getVideoSource('mp4'), []);
     const webm_src = React.useMemo(() => getVideoSource('webm'), []);
 
+    if (selected_contract_type !== 'accumulator') return null;
     return (
         <div className='accumulator-description-video'>
             {is_loading && <Loading is_fullscreen={false} />}

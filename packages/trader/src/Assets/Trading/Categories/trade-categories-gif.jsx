@@ -20,7 +20,7 @@ import ImageVanilla from 'Assets/SvgComponents/trade_explanations/img-vanilla.sv
 import AccumulatorDescriptionVideo from './accumulator-description-video';
 
 // TODO: Replace static image svgs with themed GIFs or animated SVGs
-const TradeCategoriesGIF = ({ category }) => {
+const TradeCategoriesGIF = ({ category, selected_contract_type }) => {
     switch (category) {
         case 'asian':
             return <ImageAsianUpDown />;
@@ -53,7 +53,7 @@ const TradeCategoriesGIF = ({ category }) => {
         case 'run_high_low':
             return <ImageRunHighLow />;
         case 'accumulator':
-            return <AccumulatorDescriptionVideo />;
+            return <AccumulatorDescriptionVideo selected_contract_type={selected_contract_type} />;
         case 'tick_high_low':
             return <ImageTickHighLow />;
         case 'touch':
@@ -67,6 +67,7 @@ const TradeCategoriesGIF = ({ category }) => {
 
 TradeCategoriesGIF.propTypes = {
     category: PropTypes.string,
+    selected_contract_type: PropTypes.string,
 };
 
 export default TradeCategoriesGIF;

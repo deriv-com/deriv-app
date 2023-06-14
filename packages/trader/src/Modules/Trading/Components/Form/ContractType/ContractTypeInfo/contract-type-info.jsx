@@ -63,7 +63,10 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                         })}
                     >
                         {is_description_tab_selected ? (
-                            <TradeCategoriesGIF category={type.value} />
+                            <TradeCategoriesGIF
+                                category={type.value}
+                                selected_contract_type={selected_contract_type?.value}
+                            />
                         ) : (
                             <ContractTypeGlossary category={type.value} />
                         )}

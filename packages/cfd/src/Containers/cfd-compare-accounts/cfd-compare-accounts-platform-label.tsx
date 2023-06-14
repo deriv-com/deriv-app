@@ -1,19 +1,24 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { TTradingPlatformAvailableAccount } from 'Components/props.types';
-import { getMarketType, getPlatformLabel } from '../../Helpers/compare-accounts-config';
+import classNames from 'classnames';
+import { TModifiedTradingPlatformAvailableAccount } from 'Components/props.types';
+import { getPlatformLabel, getHeaderColor } from '../../Helpers/compare-accounts-config';
 
 type TCFDCompareAccountsPlatformLabelProps = {
-    trading_platforms: TTradingPlatformAvailableAccount;
+    trading_platforms: TModifiedTradingPlatformAvailableAccount;
 };
 
 const CFDCompareAccountsPlatformLabel: React.FC<TCFDCompareAccountsPlatformLabelProps> = ({ trading_platforms }) => {
-    const market_type = getMarketType(trading_platforms);
-    const platform_label = getPlatformLabel(market_type);
+    const platform_label = getPlatformLabel(trading_platforms.platform || '');
+    const header_color = getHeaderColor(platform_label);
 
     return (
-        <div className={'compare-cfd-account-platform-label'}>
-            <Text as='p' weight='bold' size='xxxs' align='center' color='blue'>
+        <div
+            className={classNames('compare-cfd-account-platform-label', {
+                'compare-cfd-account-platform-label-others': platform_label,
+            })}
+        >
+            <Text as='p' weight='bold' size='xxxs' align='center' color={header_color}>
                 {platform_label}
             </Text>
         </div>

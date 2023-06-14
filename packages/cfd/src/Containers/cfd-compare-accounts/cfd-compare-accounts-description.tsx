@@ -1,10 +1,10 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { TTradingPlatformAvailableAccount } from 'Components/props.types';
+import { TModifiedTradingPlatformAvailableAccount } from 'Components/props.types';
 import { getJuridisctionDescription, getMarketType } from '../../Helpers/compare-accounts-config';
 
 type TCFDCompareAccountsDescriptionProps = {
-    trading_platforms: TTradingPlatformAvailableAccount;
+    trading_platforms: TModifiedTradingPlatformAvailableAccount;
 };
 
 const CFDCompareAccountsDescription: React.FC<TCFDCompareAccountsDescriptionProps> = ({ trading_platforms }) => {

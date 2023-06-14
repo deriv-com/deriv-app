@@ -1,10 +1,10 @@
 import React from 'react';
 import InstumentsIconWithLabel from './instruments-icon-with-label';
-import { TTradingPlatformAvailableAccount, TIconData } from 'Components/props.types';
+import { TIconData, TModifiedTradingPlatformAvailableAccount } from 'Components/props.types';
 import { getHighlightedIconLabel } from '../../Helpers/compare-accounts-config';
 
 type TCFDInstrumentsLabelHighlightedProps = {
-    trading_platforms: TTradingPlatformAvailableAccount;
+    trading_platforms: TModifiedTradingPlatformAvailableAccount;
 };
 
 const CFDInstrumentsLabelHighlighted: React.FC<TCFDInstrumentsLabelHighlightedProps> = ({ trading_platforms }) => {

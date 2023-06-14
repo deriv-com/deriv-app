@@ -1,8 +1,13 @@
-import { TTradingPlatformAvailableAccount, TIconData } from '../Components/props.types';
+import {
+    TTradingPlatformAvailableAccount,
+    TIconData,
+    TAvailableCFDAccounts,
+    TModifiedTradingPlatformAvailableAccount,
+} from '../Components/props.types';
 
 type TCFDConfig = string;
 
-const getHighlightedIconLabel = (trading_platforms: TTradingPlatformAvailableAccount): TIconData[] => {
+const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvailableAccount): TIconData[] => {
     switch (trading_platforms.market_type) {
         case 'gaming':
             return [
@@ -61,6 +66,8 @@ const getAccountCardTitle = (shortcode: TCFDConfig) => {
             return 'Financial - Labuan';
         case 'all_svg':
             return 'Swap-Free - SVG';
+        case 'dxtrade':
+            return 'Deriv X';
         default:
             return 'CFDs';
     }
@@ -68,9 +75,11 @@ const getAccountCardTitle = (shortcode: TCFDConfig) => {
 
 const getPlatformLabel = (shortcode: TCFDConfig) => {
     switch (shortcode) {
+        case 'dxtrade':
+            return 'Other CFDs';
         case 'synthetic':
         case 'financial':
-        case 'all':
+        case 'mt5':
         default:
             return 'MT5 Platform';
     }
@@ -84,13 +93,26 @@ const getAccountIcon = (shortcode: TCFDConfig) => {
             return 'Financial';
         case 'all':
             return 'SwapFree';
+        case 'dxtrade':
+            return 'DerivX';
         default:
             return 'CFDs';
     }
 };
 
-const getMarketType = (trading_platforms: TTradingPlatformAvailableAccount) => {
+const getMarketType = (trading_platforms: TModifiedTradingPlatformAvailableAccount) => {
     return trading_platforms.market_type === 'gaming' ? 'synthetic' : trading_platforms.market_type;
+};
+
+const getHeaderColor = (shortcode: TCFDConfig) => {
+    switch (shortcode) {
+        case 'MT5 Platform':
+            return 'blue';
+        case 'Other CFDs':
+            return 'green';
+        default:
+            return 'blue';
+    }
 };
 
 const cfdConfig = {
@@ -171,6 +193,8 @@ const getJuridisctionDescription = (shortcode: TCFDConfig) => {
                 regulator: 'Labuan Financial Services Authority',
                 regulatorDescription: '(licence no. MB/18/0024) Regulator/External Dispute Resolution',
             };
+        // Dxtrade
+        case 'all_':
         case 'all_svg':
             return {
                 ...cfdConfig,
@@ -185,12 +209,45 @@ const getJuridisctionDescription = (shortcode: TCFDConfig) => {
     }
 };
 
-const getSortedAvailableAccounts = (available_accounts: TTradingPlatformAvailableAccount[]) => {
-    const swap_free_accounts = available_accounts.filter(item => item.market_type === 'all');
-    const financial_accounts = available_accounts.filter(item => item.market_type === 'financial');
-    const gaming_accounts = available_accounts.filter(item => item.market_type === 'gaming');
-
+// Sort the MT5 accounts in the order of derived, financial and swap-free
+const getSortedAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
+    const swap_free_accounts = available_accounts
+        .filter(item => item.market_type === 'all')
+        .map(item => ({ ...item, platform: 'mt5' } as const));
+    const financial_accounts = available_accounts
+        .filter(item => item.market_type === 'financial')
+        .map(item => ({ ...item, platform: 'mt5' } as const));
+    const gaming_accounts = available_accounts
+        .filter(item => item.market_type === 'gaming')
+        .map(item => ({ ...item, platform: 'mt5' } as const));
     return [...gaming_accounts, ...financial_accounts, ...swap_free_accounts];
+};
+const getDxtradeAccountAvailabaility = (available_accounts: TAvailableCFDAccounts[]) => {
+    return available_accounts.some(account => account.platform !== 'mt5');
+};
+
+const prepareDxtradeData = (
+    name: string,
+    market_type: TModifiedTradingPlatformAvailableAccount['market_type']
+): TModifiedTradingPlatformAvailableAccount => {
+    return {
+        // linkable_landing_companies:,
+        market_type,
+        name,
+        requirements: {
+            after_first_deposit: {
+                financial_assessment: [''],
+            },
+            compliance: {
+                mt5: [''],
+                tax_information: [''],
+            },
+            signup: [''],
+        },
+        shortcode: 'bvi',
+        sub_account_type: '',
+        platform: 'dxtrade',
+    };
 };
 
 export {
@@ -202,4 +259,7 @@ export {
     getAccountIcon,
     getPlatformLabel,
     getSortedAvailableAccounts,
+    getDxtradeAccountAvailabaility,
+    prepareDxtradeData,
+    getHeaderColor,
 };

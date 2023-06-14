@@ -1,12 +1,12 @@
 import React from 'react';
-import { TTradingPlatformAvailableAccount } from 'Components/props.types';
+import { TTradingPlatformAvailableAccount, TModifiedTradingPlatformAvailableAccount } from 'Components/props.types';
 import CFDInstrumentsLabelHighlighted from './cfd-instruments-label-highlighted';
 import CFDCompareAccountsDescription from './cfd-compare-accounts-description';
 import CFDCompareAccountsTitleIcon from './cfd-compare-accounts-title-icon';
 import CFDCompareAccountsPlatformLabel from './cfd-compare-accounts-platform-label';
 
 type TCFDCompareAccountsCardProps = {
-    trading_platforms: TTradingPlatformAvailableAccount;
+    trading_platforms: TModifiedTradingPlatformAvailableAccount;
 };
 
 const CFDCompareAccountsCard: React.FC<TCFDCompareAccountsCardProps> = ({ trading_platforms }) => {

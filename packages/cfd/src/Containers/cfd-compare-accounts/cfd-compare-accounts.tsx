@@ -5,16 +5,31 @@ import { Text, Icon, PageOverlay, DesktopWrapper, MobileWrapper, CFDCompareAccou
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import CFDCompareAccountsCard from './cfd-compare-accounts-card';
-import { getSortedAvailableAccounts } from '../../Helpers/compare-accounts-config';
+import {
+    getSortedAvailableAccounts,
+    getDxtradeAccountAvailabaility,
+    prepareDxtradeData,
+} from '../../Helpers/compare-accounts-config';
 
 import { useStore } from '@deriv/stores';
 
 const CompareCFDs = observer(() => {
-    const { client } = useStore();
-    const { trading_platform_available_accounts } = client;
-
     const history = useHistory();
+    const { client, traders_hub } = useStore();
+    const { trading_platform_available_accounts } = client;
+    const { available_cfd_accounts } = traders_hub;
+
     const sorted_available_accounts = getSortedAvailableAccounts(trading_platform_available_accounts);
+
+    const has_dxtrade_account_available = getDxtradeAccountAvailabaility(available_cfd_accounts);
+
+    const dxtrade_data = available_cfd_accounts.filter(accounts => accounts.platform === 'dxtrade');
+    const { name, market_type } = dxtrade_data[0];
+    const dxtrade_account = prepareDxtradeData(name, market_type);
+
+    const all_sorted_available_accounts = has_dxtrade_account_available
+        ? [...sorted_available_accounts, dxtrade_account]
+        : [...sorted_available_accounts];
 
     const DesktopHeader = (
         <div className='compare-cfd-header'>
@@ -45,13 +60,11 @@ const CompareCFDs = observer(() => {
                     <div className='compare-cfd-account-container'>
                         <div className='card-list'>
                             <CFDCompareAccountsCarousel>
-                                {sorted_available_accounts.map(item => (
-                                    <React.Fragment key={item.market_type + item.shortcode}>
-                                        <CFDCompareAccountsCard
-                                            trading_platforms={item}
-                                            key={item.market_type + item.shortcode}
-                                        />
-                                    </React.Fragment>
+                                {all_sorted_available_accounts.map(item => (
+                                    <CFDCompareAccountsCard
+                                        trading_platforms={item}
+                                        key={item.market_type + item.shortcode}
+                                    />
                                 ))}
                             </CFDCompareAccountsCarousel>
                         </div>

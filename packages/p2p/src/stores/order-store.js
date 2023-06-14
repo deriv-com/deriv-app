@@ -330,7 +330,6 @@ export default class OrderStore {
     onUnmount() {
         clearTimeout(this.order_rerender_timeout);
         this.unsubscribeFromCurrentOrder();
-        this.hideDetails(false);
     }
 
     setOrderDetails(response) {

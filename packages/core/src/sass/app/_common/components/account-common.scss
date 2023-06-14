@@ -468,7 +468,6 @@
 
             &-content {
                 grid-area: section-content;
-                width: 40rem;
                 @include mobile {
                     width: 100%;
                 }

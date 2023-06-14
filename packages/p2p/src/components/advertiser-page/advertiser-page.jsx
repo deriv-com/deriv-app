@@ -99,6 +99,7 @@ const AdvertiserPage = () => {
                             has_close_icon: false,
                             onClose: () => {
                                 buy_sell_store.hideAdvertiserPage();
+                                history.push(general_store.active_tab_route);
                                 if (general_store.active_index !== 0)
                                     my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
                                 advertiser_page_store.onCancel();

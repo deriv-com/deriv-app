@@ -1,6 +1,6 @@
+import React from 'react';
 import { Dialog, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import React from 'react';
 
 export type TStopBotModalContent = {
     is_running: boolean;

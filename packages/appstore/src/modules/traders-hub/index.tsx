@@ -7,17 +7,21 @@ import TourGuide from 'Modules/tour-guide/tour-guide';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import { useStores } from 'Stores/index';
-import { isDesktop, routes, ContentFlag, isMobile, LocalStore } from '@deriv/shared';
+import { isDesktop, routes, ContentFlag, isMobile } from '@deriv/shared';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
 
 import './traders-hub.scss';
-import { set } from 'mobx';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();
-    const { notification_messages_ui: Notifications, openRealAccountSignup, is_from_signup_account } = ui;
+    const {
+        notification_messages_ui: Notifications,
+        openRealAccountSignup,
+        is_from_signup_account,
+        setIsFromSignupAccount,
+    } = ui;
     const {
         is_landing_company_loaded,
         is_logged_in,
@@ -29,7 +33,6 @@ const TradersHub = () => {
     const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef<HTMLDivElement>(null);
 
-    const eu_user_closed_real_account_first_time = LocalStore.get('eu_user_closed_real_account_first_time');
     const can_show_notify = !is_switching && !is_logging_in && is_account_setting_loaded && is_landing_company_loaded;
 
     const [scrolled, setScrolled] = React.useState(false);
@@ -42,17 +45,9 @@ const TradersHub = () => {
     };
     React.useEffect(() => {
         if (is_eu_user) setTogglePlatformType('cfd');
-        if (
-            !has_active_real_account &&
-            is_logged_in &&
-            is_from_signup_account &&
-            !eu_user_closed_real_account_first_time
-        ) {
-            if (is_eu_user) {
-                openRealAccountSignup('maltainvest');
-            } else {
-                openRealAccountSignup('svg');
-            }
+        if (!has_active_real_account && is_logged_in && is_from_signup_account && is_eu_user) {
+            openRealAccountSignup('maltainvest');
+            setIsFromSignupAccount(false);
         }
     }, []);
 

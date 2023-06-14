@@ -114,6 +114,7 @@ const RealAccountSignup = ({
     state_value,
     is_trading_experience_incomplete,
     is_trading_assessment_for_new_user_enabled,
+    toggleIsTourOpen,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -415,6 +416,10 @@ const RealAccountSignup = ({
 
         if (modal_content[getActiveModalIndex()].action === 'signup') {
             setIsClosingCreateRealAccountModal(true);
+            if (show_eu_related_content) {
+                toggleIsTourOpen(true);
+            }
+
             return;
         }
         closeRealAccountSignup();
@@ -700,4 +705,5 @@ export default connect(({ ui, client, traders_hub, modules }) => ({
     state_value: ui.real_account_signup,
     show_eu_related_content: traders_hub.show_eu_related_content,
     is_trading_assessment_for_new_user_enabled: ui.is_trading_assessment_for_new_user_enabled,
+    toggleIsTourOpen: traders_hub.toggleIsTourOpen,
 }))(withRouter(RealAccountSignup));

@@ -8,7 +8,6 @@ import MyProfileContent from './my-profile-content.jsx';
 import MyProfileHeader from './my-profile-header';
 import MyProfileDetailsContainer from './my-profile-stats/my-profile-details-container/my-profile-details-container.jsx';
 import DailyLimitModal from 'Components/daily-limit-modal';
-import Dp2pBlocked from 'Components/dp2p-blocked';
 
 const MyProfile = () => {
     const { general_store, my_profile_store } = useStores();
@@ -26,10 +25,6 @@ const MyProfile = () => {
 
     if (isEmptyObject(general_store.advertiser_info) && !general_store.should_show_dp2p_blocked) {
         return <Loading is_fullscreen={false} />;
-    }
-
-    if (general_store.should_show_dp2p_blocked) {
-        return <Dp2pBlocked />;
     }
 
     if (my_profile_store.error_message) {

@@ -279,7 +279,7 @@ const ProofOfAddressForm = ({
                 <>
                     <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                     {form_state.should_show_form && (
-                        <form noValidate className='account-form' onSubmit={handleSubmit}>
+                        <form noValidate className='account-form account-form_poa' onSubmit={handleSubmit}>
                             <FormBody scroll_offset={isMobile() ? mobile_scroll_offset : '80px'}>
                                 {is_resubmit && (
                                     <Text size='xs' align='left' color='loss-danger'>

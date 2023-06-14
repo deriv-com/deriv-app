@@ -55,6 +55,7 @@ export { default as Icon } from './components/icon';
 export { default as IconTradeTypes } from './components/icon-trade-types';
 // export { default as Icon/icons.js } from './components/icon/icons.js';
 export { default as InfiniteDataList } from './components/infinite-data-list';
+export * from './components/inline-message';
 export { default as Input } from './components/input';
 export { default as InputField } from './components/input-field';
 export { default as InputWithCheckbox } from './components/input-wth-checkbox';
@@ -90,6 +91,7 @@ export { default as RouteWithSubroutes } from './components/route-with-subroutes
 export { default as SelectNative } from './components/select-native';
 export { default as StaticUrl } from './components/static-url';
 export { default as SendEmailTemplate } from './components/send-email-template';
+export * from './components/side-note';
 export { default as StatusBadge } from './components/status-badge';
 export { default as SwipeableWrapper } from './components/swipeable-wrapper';
 export { default as RelativeDatepicker } from './components/relative-datepicker';

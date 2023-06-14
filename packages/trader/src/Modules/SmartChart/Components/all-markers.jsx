@@ -191,7 +191,6 @@ const draw_shaded_barriers = ({
         ctx.stroke();
     }
     if (middle_top < end_top) {
-        const global_composite_operation = ctx.globalCompositeOperation;
         ctx.globalCompositeOperation = 'destination-over';
         const { radius, preceding_tick, stroke_color: prev_tick_stroke_color } = previous_tick || {};
         if (preceding_tick) {
@@ -226,7 +225,7 @@ const draw_shaded_barriers = ({
         ctx.moveTo(start_left + (radius || 0), middle_top);
         ctx.lineTo(end_left, middle_top);
         ctx.stroke();
-        ctx.globalCompositeOperation = global_composite_operation;
+        ctx.globalCompositeOperation = 'source-over';
     }
     if (is_bottom_visible || has_persistent_borders) {
         ctx.fillStyle = stroke_color;

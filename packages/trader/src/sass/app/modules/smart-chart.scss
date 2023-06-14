@@ -57,13 +57,18 @@
             height: 16px;
         }
         &--accumulator {
-            &-middle {
+            &-middle,
+            &-middle--preexit {
                 width: 6px;
                 height: 6px;
                 top: -3px;
                 margin-left: -4px;
                 background-color: var(--text-less-prominent);
 
+                &--preexit {
+                    background-color: var(--status-info);
+                    border: 2px solid var(--status-info);
+                }
                 @include mobile {
                     width: 4px;
                     height: 4px;
@@ -75,7 +80,6 @@
                 width: 2rem;
                 height: 2rem;
                 margin-left: -0.95rem;
-                border-width: 0.2rem;
                 background-color: var(--general-main-4);
                 &:after {
                     content: '';

@@ -102,18 +102,18 @@ const createTickMarkers = contract_info => {
         let marker_config;
         if (is_entry_spot) {
             marker_config = createMarkerSpotEntry(contract_info);
-        } else if (is_middle_spot && !is_accu_preexit_spot) {
+        } else if (is_middle_spot && (!is_accu_preexit_spot || is_contract_closed)) {
             marker_config = createMarkerSpotMiddle(contract_info, tick, idx);
         } else if (is_exit_spot && !is_accu_current_last_spot) {
             tick.align_label = 'top'; // force exit spot label to be 'top' to avoid overlapping
             marker_config = createMarkerSpotExit(contract_info, tick, idx);
         }
         if (is_accumulator) {
-            if (is_accu_current_last_spot && !is_contract_closed) return;
+            if ((is_accu_current_last_spot || is_exit_spot) && !is_contract_closed) return;
             if (marker_config && (is_middle_spot || is_exit_spot)) {
                 const spot_className = marker_config.content_config.spot_className;
                 marker_config.content_config.spot_className = `${spot_className} ${spot_className}--accumulator${
-                    is_exit_spot ? '-exit' : '-middle'
+                    is_exit_spot ? '-exit' : `-middle${is_accu_preexit_spot ? '--preexit' : ''}`
                 }`;
             }
         }

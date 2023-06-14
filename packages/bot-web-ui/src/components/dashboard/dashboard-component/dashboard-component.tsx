@@ -1,14 +1,14 @@
+import React from 'react';
+import classNames from 'classnames';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import classNames from 'classnames';
-import React from 'react';
+import { useDBotStore } from 'Stores/useDBotStore';
+import Local from './load-bot-preview/local';
 import Cards from './cards';
 import InfoPanel from './info-panel';
-import Local from './load-bot-preview/local';
 import UserGuide from './user-guide';
-import { useDBotStore } from 'Stores/useDBotStore';
-import { observer } from '@deriv/stores';
 
 type TMobileIconGuide = {
     has_dashboard_strategies: boolean;

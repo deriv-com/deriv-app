@@ -1,13 +1,13 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { ToolboxItems } from './toolbox-items';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import SearchBox from './search-box';
-import { isMobile } from '@deriv/shared';
 import ToolbarButton from '../toolbar/toolbar-button';
+import SearchBox from './search-box';
+import { ToolboxItems } from './toolbox-items';
 
 type TToolbox = {
     hasSubCategory: (param: HTMLCollection) => boolean;

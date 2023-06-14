@@ -1,13 +1,13 @@
-import { DataList, Icon, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import classnames from 'classnames';
-import { contract_stages } from 'Constants/contract-stage';
 import React from 'react';
+import classnames from 'classnames';
+import { DataList, Icon, Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { contract_stages } from 'Constants/contract-stage';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
-import { JournalItem, JournalLoader, JournalTools } from './journal-components';
 import { TCheckedFilters, TFilterMessageValues, TJournalDataListArgs, TJournalProps } from './journal.types';
-import { isMobile } from '@deriv/shared';
+import { JournalItem, JournalLoader, JournalTools } from './journal-components';
 
 const Journal = ({
     contract_stage,

@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
-import { InputField } from '.';
+import { isMobile } from '@deriv/shared';
 import { TInputsFieldNames } from '../quick-strategy.types';
 import { TInputs } from './components.types';
-import { isMobile } from '@deriv/shared';
+import { InputField } from '.';
 
 const Inputs = ({
     idx,

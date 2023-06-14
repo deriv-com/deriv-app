@@ -1,6 +1,5 @@
 import merge from 'lodash.merge';
 import type { TStores } from '../types';
-import useStore from './useStore';
 
 const mock = (): TStores & { is_mock: boolean } => {
     return {
@@ -197,7 +196,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_any_real_account: false,
             real_account_creation_unlock_date: 0,
             setPrevAccountType: jest.fn(),
-            user_id: '',
         },
         common: {
             error: {

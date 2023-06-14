@@ -3,6 +3,9 @@
     border-radius: 1.6rem;
     padding: 3rem;
     @include desktop {
+        display: flex;
+        gap: 2.4rem;
+        flex-direction: column;
         min-width: 132rem;
     }
     @include mobile {
@@ -22,6 +25,9 @@
         }
     }
     &--eu {
+        @include desktop {
+            flex-direction: column-reverse;
+        }
         padding-bottom: 7rem;
     }
 

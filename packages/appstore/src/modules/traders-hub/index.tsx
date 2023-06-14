@@ -7,16 +7,16 @@ import TourGuide from 'Modules/tour-guide/tour-guide';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import { useStores } from 'Stores/index';
-import { isDesktop, routes, ContentFlag, isMobile, LocalStore } from '@deriv/shared';
+import { isDesktop, routes, ContentFlag, LocalStore } from '@deriv/shared';
 import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import classNames from 'classnames';
 
 import './traders-hub.scss';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStores();
-    const { notification_messages_ui: Notifications, openRealAccountSignup, is_from_signup_account } = ui;
+    const { notification_messages_ui: Notifications, openRealAccountSignup, is_from_signup_account, is_mobile } = ui;
     const {
         is_landing_company_loaded,
         is_logged_in,
@@ -76,15 +76,10 @@ const TradersHub = () => {
 
     const is_eu_low_risk = content_flag === ContentFlag.LOW_RISK_CR_EU;
 
-    const platform_toggle_options = is_eu_user
-        ? [
-              { text: 'CFDs', value: 'cfd' },
-              { text: `${eu_title ? 'Multipliers' : 'Options & Multipliers'}`, value: 'options' },
-          ]
-        : [
-              { text: `${eu_title ? 'Multipliers' : 'Options & Multipliers'}`, value: 'options' },
-              { text: 'CFDs', value: 'cfd' },
-          ];
+    const platform_toggle_options = [
+        { text: `${eu_title ? localize('Multipliers') : localize('Options & Multipliers')}`, value: 'options' },
+        { text: localize('CFDs'), value: 'cfd' },
+    ];
 
     const platformTypeChange = (event: {
         target: {
@@ -96,32 +91,15 @@ const TradersHub = () => {
     };
     if (!is_logged_in) return null;
 
-    const EUDisclamer = () => {
+    const renderOrderedPlatformSections = (is_cfd_visible = true, is_options_and_multipliers_visible = true) => {
         return (
-            <div className='disclamer'>
-                <Text align='left' className='disclamer-text' size={isMobile() ? 'xxxs' : 'xs'}>
-                    <Localize
-                        i18n_default_text='<0>EU statutory disclaimer</0>: CFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. <0>71% of retail investor accounts lose money when trading CFDs with this provider</0>. You should consider whether you understand how CFDs work and whether you can afford to take the high risk of losing your money.'
-                        components={[<strong key={0} />]}
-                    />
-                </Text>
-            </div>
-        );
-    };
-
-    const contentForOptionandCfdListing = () => {
-        if (is_eu_user) {
-            return (
-                <div className='traders-hub__main-container'>
-                    <CFDsListing />
-                    <OptionsAndMultipliersListing />
-                </div>
-            );
-        }
-        return (
-            <div className='traders-hub__main-container'>
-                <OptionsAndMultipliersListing />
-                <CFDsListing />
+            <div
+                className={classNames('traders-hub__main-container', {
+                    'traders-hub__main-container-reversed': is_eu_user,
+                })}
+            >
+                {is_options_and_multipliers_visible && <OptionsAndMultipliersListing />}
+                {is_cfd_visible && <CFDsListing />}
             </div>
         );
     };
@@ -138,11 +116,11 @@ const TradersHub = () => {
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     <MainTitleBar />
-                    <DesktopWrapper>{contentForOptionandCfdListing()}</DesktopWrapper>
+                    <DesktopWrapper>{renderOrderedPlatformSections()}</DesktopWrapper>
                     <MobileWrapper>
                         {is_landing_company_loaded ? (
                             <ButtonToggle
-                                buttons_arr={platform_toggle_options}
+                                buttons_arr={is_eu_user ? platform_toggle_options.reverse() : platform_toggle_options}
                                 className='traders-hub__button-toggle'
                                 has_rounded_button
                                 is_traders_hub={window.location.pathname === routes.traders_hub}
@@ -153,14 +131,25 @@ const TradersHub = () => {
                         ) : (
                             <ButtonToggleLoader />
                         )}
-                        {selected_platform_type === 'options' && <OptionsAndMultipliersListing />}
-                        {selected_platform_type === 'cfd' && <CFDsListing />}
+                        {renderOrderedPlatformSections(
+                            selected_platform_type === 'cfd',
+                            selected_platform_type === 'options'
+                        )}
                     </MobileWrapper>
                     <ModalManager />
                     {scrolled && <TourGuide />}
                 </div>
             </Div100vhContainer>
-            {is_eu_low_risk && <EUDisclamer />}
+            {is_eu_low_risk && (
+                <div className='disclamer'>
+                    <Text align='left' className='disclamer-text' size={is_mobile ? 'xxxs' : 'xs'}>
+                        <Localize
+                            i18n_default_text='<0>EU statutory disclaimer</0>: CFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. <0>71% of retail investor accounts lose money when trading CFDs with this provider</0>. You should consider whether you understand how CFDs work and whether you can afford to take the high risk of losing your money.'
+                            components={[<strong key={0} />]}
+                        />
+                    </Text>
+                </div>
+            )}
         </>
     );
 };

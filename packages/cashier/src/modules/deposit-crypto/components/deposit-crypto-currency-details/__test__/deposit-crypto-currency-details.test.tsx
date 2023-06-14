@@ -18,6 +18,17 @@ jest.mock('@deriv/shared', () => ({
     },
 }));
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useCurrencyConfig: jest.fn(() => ({
+        getConfig: (currency: string) => ({
+            icon: 'icCurrencyIcon',
+            name: currency === 'BTC' ? 'Bitcoin' : 'Ethereum',
+            code: currency,
+        }),
+    })),
+}));
+
 describe('DepositCryptoCurrencyDetails', () => {
     test('should show correct message for BTC', async () => {
         const mock = mockStore({ client: { currency: 'BTC' } });

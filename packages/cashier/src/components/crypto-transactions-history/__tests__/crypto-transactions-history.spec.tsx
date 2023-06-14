@@ -15,6 +15,7 @@ describe('<CryptoTransactionsHistory />', () => {
                         crypto_transactions: [],
                         is_loading: false,
                         setIsCryptoTransactionsVisible: jest.fn(),
+                        onMount: jest.fn(),
                     },
                     general_store: {
                         setIsDeposit: jest.fn(),

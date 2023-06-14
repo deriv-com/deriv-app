@@ -4,6 +4,13 @@ import { render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../../cashier-providers';
 import CashierOnboardingSideNotes from '../cashier-onboarding-side-notes';
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useCurrencyConfig: jest.fn(() => ({
+        getConfig: (currency: string) => ({ is_crypto: currency === 'BTC', is_fiat: currency !== 'BTC' }),
+    })),
+}));
+
 describe('CashierOnboardingSideNotes', () => {
     test('should render CashierOnboardingSideNoteFiat on mobile if is_crypto is false', () => {
         const mock = mockStore({ ui: { is_mobile: true } });
@@ -19,7 +26,7 @@ describe('CashierOnboardingSideNotes', () => {
     test('should render CashierOnboardingSideNoteCrypto on mobile on mobile if is_crypto is true', async () => {
         const mock = mockStore({
             ui: { is_mobile: true },
-            client: { is_crypto: () => true },
+            client: { currency: 'BTC' },
             modules: {
                 cashier: {
                     general_store: {

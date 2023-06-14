@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
 import { useCashierLocked, useCurrencyConfig, useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
-import { Virtual } from 'Components/cashier-container';
-import CashierLocked from 'Components/cashier-locked';
+import { Virtual } from '../cashier-container';
+import CashierLocked from '../cashier-locked';
 
 const CashierLockedChecker: React.FC<React.PropsWithChildren<unknown>> = observer(({ children }) => {
     const { client } = useStore();

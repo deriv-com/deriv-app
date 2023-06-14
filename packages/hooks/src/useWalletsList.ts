@@ -9,6 +9,7 @@ const useWalletList = () => {
         payload: { authorize: accounts[loginid || ''].token },
         options: { enabled: Boolean(loginid) },
     });
+    const { data: balance_data } = useFetch('balance', { payload: { account: 'all' } });
 
     const sortedWallets = useMemo(() => {
         // @ts-expect-error Need to update @deriv/api-types to fix the TS error
@@ -19,8 +20,15 @@ const useWalletList = () => {
         // Should remove this once the API is fixed
         const modified_wallets = wallets?.map(wallet => ({
             ...wallet,
-            balance: 1000,
-            landing_company_shortcode: wallet.landing_company_name,
+            /** Indicating whether the wallet is a virtual-money wallet. */
+            is_demo: wallet.is_virtual === 1,
+            /** Wallet balance */
+            balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance,
+            /** Landing company shortcode the account belongs to. */
+            landing_company_name: wallet.landing_company_name === 'maltainvest' ? 'malta' : wallet.landing_company_name,
+            /** @deprecated should use `landing_company_name` instead */
+            landing_company_shortcode:
+                wallet.landing_company_name === 'maltainvest' ? 'malta' : wallet.landing_company_name,
         }));
 
         // Sort the wallets alphabetically by fiat, crypto, then virtual
@@ -33,7 +41,7 @@ const useWalletList = () => {
 
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });
-    }, [data, is_crypto]);
+    }, [balance_data?.balance?.accounts, data?.authorize?.account_list, is_crypto]);
 
     return {
         ...reset,

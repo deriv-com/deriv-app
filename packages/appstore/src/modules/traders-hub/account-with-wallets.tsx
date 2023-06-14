@@ -5,25 +5,15 @@ import { useWalletList } from '@deriv/hooks';
 import { Loading } from '@deriv/components';
 
 const AccountWithWallets = observer(() => {
-    const { data, isLoading } = useWalletList();
-    const [selected_wallet, setSelectedWallet] = React.useState<NonNullable<typeof data>[number]['loginid']>();
+    const { data } = useWalletList();
 
-    if (isLoading) return <Loading is_fullscreen={false} />;
+    if (!data) return <Loading is_fullscreen={false} />;
 
     return (
         <React.Fragment>
-            {data?.map(wallet => {
-                return (
-                    <Wallet
-                        key={wallet.loginid}
-                        wallet_account={wallet}
-                        active={selected_wallet === wallet.loginid}
-                        setActive={() =>
-                            setSelectedWallet(previous => (previous === wallet.loginid ? undefined : wallet.loginid))
-                        }
-                    />
-                );
-            })}
+            {data?.map(wallet => (
+                <Wallet key={wallet.loginid} data={wallet} />
+            ))}
         </React.Fragment>
     );
 });

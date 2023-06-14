@@ -31,6 +31,7 @@
         "@deriv/cfd": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
+        "@deriv/hooks": "^1.0.0",
         "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
         "@deriv/ui": "^0.8.0",

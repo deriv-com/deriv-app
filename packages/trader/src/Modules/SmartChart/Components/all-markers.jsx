@@ -199,7 +199,7 @@ const draw_shaded_barriers = ({
                 ctx.strokeStyle = preceding_tick.color;
                 ctx.fillStyle = preceding_tick.color;
                 ctx.beginPath();
-                ctx.arc(preceding_tick.left - 1, preceding_tick.top, radius, 0, Math.PI * 2);
+                ctx.arc(preceding_tick.left - 1, preceding_tick.top, preceding_tick.radius, 0, Math.PI * 2);
                 ctx.fill();
                 ctx.stroke();
             }
@@ -373,11 +373,12 @@ const TickContract = RawMarkerMaker(
                 labels: !is_in_contract_details && accu_barriers_difference,
                 previous_tick: is_in_contract_details
                     ? {
-                          radius: is_mobile ? 1.5 : 2.5,
+                          radius: 1.5,
                           stroke_color: getColor({ status: 'open', is_dark_theme }),
                           preceding_tick: {
                               ...preceding_tick,
                               color: getColor({ status: 'grey_border', is_dark_theme }),
+                              radius: is_mobile ? 1 : 1.5,
                           },
                       }
                     : {

@@ -2,8 +2,9 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import AdvertiserPageHeader from '../advertiser-page-header';
 import userEvent from '@testing-library/user-event';
+import { isMobile } from '@deriv/shared';
 
-jest.mock('../advertiser-page-dropdown-menu', () => jest.fn(() => <div>dropdown menu</div>));
+jest.mock('../../advertiser-page-dropdown-menu', () => jest.fn(() => <div>dropdown menu</div>));
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     MobileWrapper: jest.fn(({ children }) => children),
@@ -29,9 +30,8 @@ describe('<AdvertiserPageHeader />', () => {
         userEvent.click(back_button);
         expect(props.onClickPageReturn).toHaveBeenCalledTimes(1);
     });
-    it('Should display dropdown menu icon when in mobile view and user is on his own advertiser page', () => {
-        const new_props = { ...props, is_my_advert: true };
-        render(<AdvertiserPageHeader {...new_props} />);
+    it('Should display dropdown menu icon when in mobile view and user is on other advertiser page', () => {
+        render(<AdvertiserPageHeader {...props} />);
 
         expect(screen.getByText('dropdown menu')).toBeInTheDocument();
     });

@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { useStores } from 'Stores/index';
 import AdvertisePageStats from '../advertiser-page-stats';
+import { isMobile } from '@deriv/shared';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     advertiser_page_store: {
@@ -39,6 +40,11 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
     useStores: jest.fn(() => mock_store),
+}));
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    isMobile: jest.fn(() => false),
 }));
 
 const mock = mockStore({
@@ -77,5 +83,15 @@ describe('<AdvertisePageStats/>', () => {
         expect(screen.getByText('Avg. release time')).toBeInTheDocument();
         expect(screen.getByText('Trade volume')).toBeInTheDocument();
         expect(screen.getByText('Trade partners')).toBeInTheDocument();
+    });
+    it('should render the stats section in responsive view', () => {
+        (isMobile as jest.Mock).mockReturnValue(true);
+        render(
+            <StoreProvider store={mock}>
+                <AdvertisePageStats />
+            </StoreProvider>
+        );
+
+        expect(screen.getByText('Buy completion')).toBeInTheDocument();
     });
 });

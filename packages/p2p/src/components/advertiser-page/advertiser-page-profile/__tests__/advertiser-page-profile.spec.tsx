@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useStores } from 'Stores/index';
 import AdvertiserPageProfile from '../advertiser-page-profile';
+import { isMobile } from '@deriv/shared';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     advertiser_page_store: {
@@ -46,6 +47,11 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
     useStores: jest.fn(() => mock_store),
+}));
+
+jest.mock('@deriv/shared', () => ({
+    ...jest.requireActual('@deriv/shared'),
+    isMobile: jest.fn(() => false),
 }));
 
 jest.mock('../advertiser-page-stats', () => jest.fn(() => <div>stats</div>));
@@ -135,6 +141,23 @@ describe('<AdvertiserPageProfile/>', () => {
     });
     it('should display user own info when user opens own advertiser profile page', () => {
         mock_store.advertiser_page_store.advertiser_details_id = 'id2';
+        render(<AdvertiserPageProfile />);
+
+        expect(screen.getByText('test name')).toBeInTheDocument();
+    });
+    it('should display advertiser profile page in responsive view', () => {
+        (isMobile as jest.Mock).mockReturnValue(true);
+        (useStores as jest.Mock).mockReturnValue({
+            ...mock_store,
+            advertiser_page_store: {
+                ...mock_store.advertiser_page_store,
+                counterparty_advertiser_info: {
+                    ...mock_store.advertiser_page_store.counterparty_advertiser_info,
+                    rating_average: 4.5,
+                    rating_count: 3,
+                },
+            },
+        });
         render(<AdvertiserPageProfile />);
 
         expect(screen.getByText('test name')).toBeInTheDocument();

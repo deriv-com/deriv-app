@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Text, Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { ContentFlag, routes } from '@deriv/shared';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -85,6 +85,7 @@ const WizardHeading = ({ country_standpoint, currency, is_isle_of_man_residence,
 const RealAccountSignup = ({
     available_crypto_currencies,
     closeRealAccountSignup,
+    content_flag,
     country_standpoint,
     currency,
     deposit_real_account_signup_target,
@@ -416,7 +417,7 @@ const RealAccountSignup = ({
 
         if (modal_content[getActiveModalIndex()].action === 'signup') {
             setIsClosingCreateRealAccountModal(true);
-            if (show_eu_related_content) {
+            if ([ContentFlag.EU_REAL, ContentFlag.EU_DEMO].includes(content_flag)) {
                 toggleIsTourOpen(true);
             }
 
@@ -676,6 +677,7 @@ export default connect(({ ui, client, traders_hub, modules }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     cfd_score: client.cfd_score,
     closeRealAccountSignup: ui.closeRealAccountSignup,
+    content_flag: traders_hub.content_flag,
     country_standpoint: client.country_standpoint,
     currency: client.currency,
     deposit_real_account_signup_target: ui.deposit_real_account_signup_target,

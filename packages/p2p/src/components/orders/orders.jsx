@@ -5,10 +5,11 @@ import { observer } from '@deriv/stores';
 import OrderDetails from 'Components/order-details/order-details.jsx';
 import { useStores } from 'Stores';
 import OrderTable from './order-table/order-table.jsx';
+import Dp2pBlocked from 'Components/dp2p-blocked';
 import './orders.scss';
 
 const Orders = observer(() => {
-    const { order_store } = useStores();
+    const { general_store, order_store } = useStores();
 
     // This is a bit hacky, but it allows us to force re-render this
     // component when the timer expired. This is created due to BE
@@ -40,6 +41,10 @@ const Orders = observer(() => {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    if (general_store.should_show_dp2p_blocked) {
+        return <Dp2pBlocked />;
+    }
 
     if (order_store.order_information) {
         return (

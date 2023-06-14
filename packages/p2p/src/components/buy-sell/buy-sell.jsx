@@ -4,6 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import Verification from 'Components/verification/verification.jsx';
+import Dp2pBlocked from 'Components/dp2p-blocked';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import BuySellHeader from './buy-sell-header.jsx';
@@ -11,7 +12,7 @@ import BuySellTable from './buy-sell-table.jsx';
 import './buy-sell.scss';
 
 const BuySell = () => {
-    const { buy_sell_store } = useStores();
+    const { general_store, buy_sell_store } = useStores();
     const previous_scroll_top = React.useRef(0);
 
     React.useEffect(() => {
@@ -43,6 +44,10 @@ const BuySell = () => {
                 <Verification />
             </React.Fragment>
         );
+    }
+
+    if (general_store.should_show_dp2p_blocked) {
+        return <Dp2pBlocked />;
     }
 
     return (

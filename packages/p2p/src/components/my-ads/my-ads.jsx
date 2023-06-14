@@ -6,6 +6,7 @@ import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import { TableError } from 'Components/table/table-error.jsx';
 import CreateAd from './create-ad.jsx';
+import Dp2pBlocked from 'Components/dp2p-blocked';
 import EditAd from './edit-ad.jsx';
 import MyAdsTable from './my-ads-table.jsx';
 import Verification from '../verification/verification.jsx';
@@ -33,6 +34,10 @@ const MyAds = () => {
 
     if (my_ads_store.is_loading) {
         return <Loading is_fullscreen={false} />;
+    }
+
+    if (general_store.should_show_dp2p_blocked) {
+        return <Dp2pBlocked />;
     }
 
     if (general_store.is_restricted) {

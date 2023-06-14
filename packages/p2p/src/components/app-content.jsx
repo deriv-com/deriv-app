@@ -6,7 +6,6 @@ import { isMobile } from '@deriv/shared';
 import { Loading, Tabs } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
 import classNames from 'classnames';
-import Dp2pBlocked from './dp2p-blocked';
 import { localize } from './i18next';
 import NicknameForm from './nickname-form';
 import TemporarilyBarredHint from './temporarily-barred-hint';
@@ -48,16 +47,15 @@ const AppContent = ({ order_id }) => {
         return <Loading is_fullscreen={false} />;
     }
 
-    if (general_store.should_show_dp2p_blocked) {
-        return <Dp2pBlocked />;
-    }
-
     if (general_store.should_show_popup) {
         return <NicknameForm />;
     }
 
     // return empty or else the tabs will be shown above when displaying the advertiser page
-    if (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) {
+    if (
+        (buy_sell_store?.show_advertiser_page && !buy_sell_store.should_show_verification) ||
+        general_store.should_show_dp2p_blocked
+    ) {
         return <></>;
     }
 

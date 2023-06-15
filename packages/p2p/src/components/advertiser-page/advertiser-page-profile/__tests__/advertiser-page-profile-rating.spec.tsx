@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useStores } from 'Stores/index';
-import AdvertiserPageProfile from '../advertiser-page-profile';
+import AdvertiserPageProfileRating from '../advertiser-page-profile-rating';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     advertiser_page_store: {
@@ -32,16 +32,10 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => mock_store),
 }));
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    isMobile: jest.fn(() => false),
-}));
-
-jest.mock('../advertiser-page-stats', () => jest.fn(() => <div>stats</div>));
 jest.mock('Components/recommended-by', () => jest.fn(() => <div>recommended by </div>));
 jest.mock('Components/star-rating', () => jest.fn(() => <div>star rating</div>));
 
-describe('<AdvertiserPageProfile/>', () => {
+describe('<AdvertiserPageProfileRating/>', () => {
     it('should display 1 rating count when only 1 rating present', () => {
         (useStores as jest.Mock).mockReturnValue({
             ...mock_store,
@@ -54,7 +48,7 @@ describe('<AdvertiserPageProfile/>', () => {
                 },
             },
         });
-        render(<AdvertiserPageProfile />);
+        render(<AdvertiserPageProfileRating />);
         expect(screen.getByText('4.0')).toBeInTheDocument();
         expect(screen.getByText('(1 rating)')).toBeInTheDocument();
     });
@@ -70,7 +64,7 @@ describe('<AdvertiserPageProfile/>', () => {
                 },
             },
         });
-        render(<AdvertiserPageProfile />);
+        render(<AdvertiserPageProfileRating />);
         expect(screen.getByText('4.5')).toBeInTheDocument();
         expect(screen.getByText('(3 ratings)')).toBeInTheDocument();
     });

@@ -7,7 +7,7 @@ import RecommendedBy from 'Components/recommended-by';
 import StarRating from 'Components/star-rating';
 import { useStores } from 'Stores/index';
 
-const AdvertiserPage = () => {
+const AdvertiserPageProfileRating = () => {
     const { advertiser_page_store, general_store } = useStores();
 
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
@@ -79,4 +79,4 @@ const AdvertiserPage = () => {
     );
 };
 
-export default observer(AdvertiserPage);
+export default observer(AdvertiserPageProfileRating);

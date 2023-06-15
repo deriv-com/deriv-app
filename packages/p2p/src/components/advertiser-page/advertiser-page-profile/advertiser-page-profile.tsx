@@ -11,7 +11,7 @@ import AdvertiserPageDropdownMenu from '../advertiser-page-dropdown-menu';
 import AdvertiserPageProfileRating from './advertiser-page-profile-rating';
 import AdvertiserPageStats from './advertiser-page-stats';
 
-const AdvertiserPage = () => {
+const AdvertiserPageProfile = () => {
     const { advertiser_page_store, general_store } = useStores();
 
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
@@ -114,4 +114,4 @@ const AdvertiserPage = () => {
     );
 };
 
-export default observer(AdvertiserPage);
+export default observer(AdvertiserPageProfile);

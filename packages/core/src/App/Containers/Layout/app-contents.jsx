@@ -4,7 +4,15 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import WS from 'Services/ws-methods';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
-import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, platforms, routes , rudderstack } from '@deriv/shared';
+import {
+    CookieStorage,
+    isMobile,
+    TRACKING_STATUS_KEY,
+    PlatformContext,
+    platforms,
+    routes,
+    rudderstack,
+} from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 import { useStore } from '@deriv/stores';
@@ -45,7 +53,8 @@ const AppContents = ({
             rudderstack.identifyEvent(user_id, {
                 language: getLanguage().toLowerCase() || 'en',
             });
-            rudderstack.pageView();
+            const current_page = window.location.hostname + window.location.pathname;
+            rudderstack.pageView(current_page);
         });
 
         if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);

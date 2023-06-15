@@ -1618,6 +1618,8 @@ export default class ClientStore extends BaseStore {
                 rudderstack.identifyEvent(this.user_id, {
                     language: getLanguage().toLowerCase(),
                 });
+                const current_page = window.location.hostname + window.location.pathname;
+                rudderstack.pageView(current_page);
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',

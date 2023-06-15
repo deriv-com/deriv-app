@@ -1,5 +1,4 @@
 import * as rudderanalytics from 'rudder-sdk-js';
-import { isProduction } from '../config';
 
 type SignupProvider = 'email' | 'phone' | 'google' | 'facebook' | 'apple';
 
@@ -88,7 +87,7 @@ type IdentifyAction = {
     language: string;
 };
 
-type RSEvents = {
+type TEvents = {
     ce_virtual_signup_form: VirtualSignupFormAction;
     ce_real_account_signup_form: RealAccountSignupFormAction;
     ce_virtual_signup_email_confirmation: VirtualSignupEmailConfirmationAction;
@@ -102,29 +101,29 @@ class RudderStack {
     current_page = '';
 
     constructor() {
-        const write_key = isProduction() ? process.env.RUDDERSTACK_PRODUCTION_KEY : process.env.RUDDERSTACK_STAGING_KEY;
-        if (write_key) {
-            rudderanalytics.load(write_key, 'https://deriv-dataplane.rudderstack.com');
+        this.init();
+    }
+
+    init() {
+        if (process.env.RUDDERSTACK_KEY && process.env.RUDDERSTACK_URL) {
+            rudderanalytics.load(process.env.RUDDERSTACK_KEY, process.env.RUDDERSTACK_URL);
             rudderanalytics.ready(() => {
                 this.has_initialized = true;
             });
         }
     }
 
-    identifyEvent = (user_id: string, payload: RSEvents['identify']) => {
+    identifyEvent = (user_id: string, payload: TEvents['identify']) => {
         if (this.has_initialized) {
             rudderanalytics.identify(user_id, payload);
             this.has_identified = true;
-            this.pageView();
         }
     };
 
     /**
      * Pushes page view track event to rudderstack
      */
-    pageView() {
-        const current_page = window.location.hostname + window.location.pathname;
-
+    pageView(current_page: string) {
         if (this.has_initialized && this.has_identified && current_page !== this.current_page) {
             rudderanalytics.page('Deriv App', current_page);
             this.current_page = current_page;
@@ -144,12 +143,9 @@ class RudderStack {
     /**
      * Pushes track event to rudderstack
      */
-    track<EventType extends keyof RSEvents, EventPayload extends RSEvents[EventType]>(
-        event_type: EventType,
-        payload: EventPayload
-    ) {
+    track<T extends keyof TEvents>(event: T, payload: TEvents[T]) {
         if (this.has_initialized && this.has_identified) {
-            rudderanalytics.track(event_type, payload);
+            rudderanalytics.track(event, payload);
         }
     }
 }

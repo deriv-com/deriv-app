@@ -27,7 +27,6 @@ const AdvertiserPageDropdownMenu = () => {
                                 !advertiser_page_store.is_dropdown_menu_visible
                             )
                         }
-                        size={16}
                     />
                     {advertiser_page_store.is_dropdown_menu_visible && (
                         <div

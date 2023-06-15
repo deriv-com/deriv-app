@@ -1,5 +1,5 @@
-import { Checkbox } from '@deriv/components';
 import React from 'react';
+import { Checkbox } from '@deriv/components';
 import { TFiltersProps } from '../journal.types';
 
 const Filters = ({

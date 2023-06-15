@@ -30,9 +30,7 @@ const HeaderBackground = ({ is_demo, is_dark, children, currency }: React.PropsW
 
     return (
         <div
-            className={classNames(`header-background wallet-header__${active_currency.toLowerCase()}-bg`, {
-                [`wallet-header__${active_currency.toLowerCase()}-bg--dark`]: is_dark,
-            })}
+            className={`header-background wallet-header__${active_currency.toLowerCase()}-bg${is_dark ? '--dark' : ''}`}
         >
             {children}
         </div>

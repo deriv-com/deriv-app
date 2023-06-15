@@ -773,7 +773,7 @@ $wallet-bg-color: (
 ///
 /// @example
 ///     .wallet-header__usd-bg
-///     .wallet__usd-bg--dark
+///     .wallet-header__usd-bg--dark
 @mixin wallet-bg-color($currencies-map: $wallet-bg-color) {
     @each $currency, $types in $currencies-map {
         @each $type, $themes in $types {

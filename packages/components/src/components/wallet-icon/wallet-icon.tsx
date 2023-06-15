@@ -11,6 +11,8 @@ type TWalletIconProps = {
     size?: TWalletIconSizes;
     type?: 'fiat' | 'crypto' | 'app';
     has_bg?: boolean;
+    is_demo?: boolean;
+    is_dark?: boolean;
 };
 
 const sizes = {
@@ -45,16 +47,19 @@ const sizes = {
     },
 } as const;
 
-const WalletIcon = ({ currency, icon, size = 'medium', type, has_bg }: TWalletIconProps) => {
+const WalletIcon = ({ currency, icon, size = 'medium', type, has_bg, is_demo, is_dark }: TWalletIconProps) => {
     if (!icon) {
         return null;
     }
 
+    const active_currency_for_bg = is_demo ? 'demo' : currency;
+
     return (
         <div
             className={classNames('wallet-icon', {
-                [`wallet-icon--${size} wallet-icon__default-bg wallet-card__${currency?.toLowerCase()}-bg`]:
-                    (!!currency && type !== 'app') || has_bg,
+                [`wallet-icon--${size} wallet-icon__default-bg wallet-card__${active_currency_for_bg?.toLowerCase()}-bg${
+                    is_dark ? '--dark' : ''
+                }`]: (!!currency && type !== 'app') || has_bg,
             })}
         >
             {(type === 'fiat' || type === 'app') && <Icon icon={icon} size={sizes.fiat[size]} />}

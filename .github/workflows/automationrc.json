@@ -8,7 +8,7 @@
     "pull_request": {
         "checks_timeout": 60000,
         "refetch_timeout": 10000,
-        "refetch_limit": 10,
+        "refetch_limit": 20,
         "checks_limit": 40
     },
     "circleci": {

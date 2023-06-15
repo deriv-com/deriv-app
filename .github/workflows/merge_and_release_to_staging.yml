@@ -12,6 +12,7 @@ on:
         description: Platform
         options:
           - Deriv.app
+          - DSmartTrader
       skip_circleci_checks:
         description: "Skip checking CircleCI workflow"
         type: boolean
@@ -40,7 +41,7 @@ jobs:
         run: |
           sleep 10
       - name: Release issues in Deriv.app
-        uses: binary-com/fe-toolbox@production_V20230607_0
+        uses: binary-com/fe-toolbox@production_V20230615_0
         with:
           tag: ${{ inputs.tag }}
           platform: ${{ inputs.platform }}

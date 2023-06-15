@@ -11,6 +11,7 @@ type TFieldset = {
     className: string;
     header?: string | React.ReactNode;
     header_tooltip?: string | React.ReactNode;
+    is_tooltip_disabled?: boolean;
     is_center?: boolean;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
@@ -22,6 +23,7 @@ const Fieldset = ({
     header,
     header_tooltip,
     is_center,
+    is_tooltip_disabled,
     onMouseEnter,
     onMouseLeave,
 }: TFieldset) => {
@@ -40,14 +42,20 @@ const Fieldset = ({
                 <div className={fieldset_header_class}>
                     <span className={fieldset_info_class}>{header}</span>
                     {header_tooltip && (
-                        <Popover
-                            alignment='left'
-                            icon='info'
-                            is_bubble_hover_enabled
-                            message={header_tooltip}
-                            margin={216}
-                            relative_render
-                        />
+                        <span
+                            className={classNames('', {
+                                'trade-container__fieldset-header--tooltip-disabled': is_tooltip_disabled,
+                            })}
+                        >
+                            <Popover
+                                alignment='left'
+                                icon='info'
+                                is_bubble_hover_enabled
+                                message={header_tooltip}
+                                margin={216}
+                                relative_render
+                            />
+                        </span>
                     )}
                 </div>
             )}

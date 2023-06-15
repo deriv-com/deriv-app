@@ -11,6 +11,7 @@ const PurchaseFieldset = ({
     basis,
     buy_info,
     currency,
+    growth_rate,
     has_cancellation,
     info,
     index,
@@ -42,6 +43,7 @@ const PurchaseFieldset = ({
                 currency={currency}
                 info={info}
                 index={index}
+                growth_rate={growth_rate}
                 has_deal_cancellation={is_multiplier && has_cancellation}
                 is_accumulator={is_accumulator}
                 is_disabled={is_disabled}
@@ -149,6 +151,7 @@ PurchaseFieldset.propTypes = {
     basis: PropTypes.string,
     buy_info: PropTypes.object,
     currency: PropTypes.string,
+    growth_rate: PropTypes.number,
     has_cancellation: PropTypes.bool,
     index: PropTypes.number,
     info: PropTypes.object,

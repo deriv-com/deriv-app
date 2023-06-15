@@ -19,7 +19,7 @@ const DerivRealAccountRequiredModal = ({
             openRealAccountSignup('maltainvest');
         } else {
             onClose();
-            openRealAccountSignup();
+            openRealAccountSignup('svg');
         }
     };
 

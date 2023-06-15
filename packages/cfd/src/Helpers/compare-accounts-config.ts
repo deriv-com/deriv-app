@@ -1,9 +1,4 @@
-import {
-    TTradingPlatformAvailableAccount,
-    TIconData,
-    TAvailableCFDAccounts,
-    TModifiedTradingPlatformAvailableAccount,
-} from '../Components/props.types';
+import { TIconData, TAvailableCFDAccounts, TModifiedTradingPlatformAvailableAccount } from '../Components/props.types';
 
 type TCFDConfig = string;
 
@@ -83,6 +78,11 @@ const getPlatformLabel = (shortcode: TCFDConfig) => {
         default:
             return 'MT5 Platform';
     }
+};
+
+const platfromsHeaderLabel = {
+    mt5: 'MT5 Platform',
+    other_cfds: 'Other CFDs',
 };
 
 const getAccountIcon = (shortcode: TCFDConfig) => {
@@ -223,7 +223,7 @@ const getSortedAvailableAccounts = (available_accounts: TModifiedTradingPlatform
     return [...gaming_accounts, ...financial_accounts, ...swap_free_accounts];
 };
 const getDxtradeAccountAvailabaility = (available_accounts: TAvailableCFDAccounts[]) => {
-    return available_accounts.some(account => account.platform !== 'mt5');
+    return available_accounts.some(account => account.platform === 'dxtrade');
 };
 
 const prepareDxtradeData = (
@@ -262,4 +262,5 @@ export {
     getDxtradeAccountAvailabaility,
     prepareDxtradeData,
     getHeaderColor,
+    platfromsHeaderLabel,
 };

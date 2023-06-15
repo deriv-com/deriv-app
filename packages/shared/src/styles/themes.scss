@@ -197,6 +197,9 @@
         --badge-blue: #{$color-blue-4};
         --badge-violet: #{$color-blue-2};
         --badge-green: #{$color-green-3};
+        // Header
+        --header-background-mt5: #{$color-blue-8};
+        --header-background-others: #{$color-green-7};
     }
     .theme--dark {
         // General
@@ -311,5 +314,8 @@
         --badge-blue: #{$color-blue-4};
         --badge-violet: #{$color-blue-2};
         --badge-green: #{$color-green-3};
+        // Header
+        --header-background-mt5: #{$color-blue-8};
+        --header-background-others: #{$color-green-7};
     }
 }

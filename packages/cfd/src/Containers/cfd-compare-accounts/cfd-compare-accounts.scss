@@ -33,6 +33,9 @@
         border: 1px solid var(--general-hover);
         padding: 2.4rem;
         border-radius: 2.4rem;
+        &:hover {
+            box-shadow: 0 2px 8px 0 var(--shadow-menu);
+        }
     }
     &-outline {
         display: flex;
@@ -51,15 +54,20 @@
         flex-direction: column;
         gap: 0.5rem;
         align-items: center;
-        text-decoration-line: underline;
     }
     &-platform-label {
-        background-color: #e6f5ff;
+        background-color: var(--header-background-mt5);
         position: relative;
         top: 2rem;
         padding: 0.9rem;
         border-top-left-radius: 1.4rem;
         border-top-right-radius: 1.4rem;
+        &--other-cfds {
+            background-color: var(--header-background-others);
+        }
+    }
+    &-underline {
+        border-top: 1px solid var(--less-prominent);
     }
 }
 .card-list {

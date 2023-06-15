@@ -22,12 +22,15 @@ const CFDCompareAccountsTitleIcon: React.FC<TCFDCompareAccountsTitleIconProps> =
 
     const icon_size = 48;
     return (
-        <div className={'compare-cfd-account-icon-title'}>
-            <TradigPlatformIconProps icon={jurisdiction_card_icon} size={icon_size} />
-            <Text as='h1' weight='bold' size='xs' align='center'>
-                {jurisdiction_card_title}
-            </Text>
-        </div>
+        <React.Fragment>
+            <div className={'compare-cfd-account-icon-title'}>
+                <TradigPlatformIconProps icon={jurisdiction_card_icon} size={icon_size} />
+                <Text as='h1' weight='bold' size='xs' align='center'>
+                    {jurisdiction_card_title}
+                </Text>
+            </div>
+            <hr className='compare-cfd-account-underline' />
+        </React.Fragment>
     );
 };
 

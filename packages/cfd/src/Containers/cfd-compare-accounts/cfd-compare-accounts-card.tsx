@@ -1,5 +1,5 @@
 import React from 'react';
-import { TTradingPlatformAvailableAccount, TModifiedTradingPlatformAvailableAccount } from 'Components/props.types';
+import { TModifiedTradingPlatformAvailableAccount } from 'Components/props.types';
 import CFDInstrumentsLabelHighlighted from './cfd-instruments-label-highlighted';
 import CFDCompareAccountsDescription from './cfd-compare-accounts-description';
 import CFDCompareAccountsTitleIcon from './cfd-compare-accounts-title-icon';

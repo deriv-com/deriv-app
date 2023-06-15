@@ -2,7 +2,7 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
 import { Text, Icon, PageOverlay, DesktopWrapper, MobileWrapper, CFDCompareAccountsCarousel } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { routes, CFD_PLATFORMS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import CFDCompareAccountsCard from './cfd-compare-accounts-card';
 import {
@@ -23,7 +23,7 @@ const CompareCFDs = observer(() => {
 
     const has_dxtrade_account_available = getDxtradeAccountAvailabaility(available_cfd_accounts);
 
-    const dxtrade_data = available_cfd_accounts.filter(accounts => accounts.platform === 'dxtrade');
+    const dxtrade_data = available_cfd_accounts.filter(accounts => accounts.platform === CFD_PLATFORMS.DXTRADE);
     const { name, market_type } = dxtrade_data[0];
     const dxtrade_account = prepareDxtradeData(name, market_type);
 

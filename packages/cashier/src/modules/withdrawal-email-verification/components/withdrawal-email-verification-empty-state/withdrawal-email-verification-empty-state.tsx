@@ -1,5 +1,6 @@
 import React from 'react';
 import { MobileWrapper } from '@deriv/components';
+import { useCashierStore } from '../../../../stores/useCashierStores';
 import { isCryptocurrency } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -12,6 +13,11 @@ type TWithdrawalEmailVerificationEmptyState = {
 
 const WithdrawalEmailVerificationEmptyState = observer(({ send }: TWithdrawalEmailVerificationEmptyState) => {
     const { client } = useStore();
+    const { transaction_history } = useCashierStore();
+
+    React.useEffect(() => {
+        transaction_history.onMount();
+    }, [transaction_history]);
 
     return (
         <>

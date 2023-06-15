@@ -55,7 +55,7 @@ const TakeProfit = observer(props => {
                 onChange={changeValue}
                 setCurrentFocus={setCurrentFocus}
                 tooltip_label={localize(
-                    'Your contract is closed automatically when your profit is more than or equal to this amount.'
+                    'Your contract will be closed automatically if your profit reaches this amount.'
                 )}
                 tooltip_alignment='left'
                 error_message_alignment='left'

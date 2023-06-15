@@ -22,7 +22,7 @@ const DepositCryptoCurrencyDetails: React.FC = observer(() => {
             <Text align='center' size={is_mobile ? 'xs' : 's'} weight='bold'>
                 {localize('Send only {{currency_name}} ({{currency_code}}) to this address.', {
                     currency_name: currency_config.name,
-                    currency_code: currency_config.code,
+                    currency_code: currency_config.display_code,
                 })}
             </Text>
         </>

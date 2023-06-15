@@ -1,9 +1,9 @@
 import React from 'react';
 import { SideNote } from '@deriv/components';
-import { getCurrencyDisplayCode, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useCashierStore } from '../../../../stores/useCashierStores';
+import { useCurrencyConfig } from '@deriv/hooks';
 
 const CashierOnboardingSideNoteCrypto: React.FC = observer(() => {
     const { client, ui } = useStore();
@@ -11,10 +11,11 @@ const CashierOnboardingSideNoteCrypto: React.FC = observer(() => {
     const { currency } = client;
     const { openRealAccountSignup } = ui;
     const { setDepositTarget } = general_store;
-    const currency_code = getCurrencyDisplayCode(currency);
+    const { getConfig } = useCurrencyConfig();
+    const currency_config = getConfig(currency);
 
     const onClick = () => {
-        setDepositTarget(routes.cashier_deposit);
+        setDepositTarget('/cashier/deposit');
         openRealAccountSignup('add_crypto');
     };
 
@@ -22,7 +23,7 @@ const CashierOnboardingSideNoteCrypto: React.FC = observer(() => {
         <SideNote
             description={localize(
                 "Don't want to trade in {{currency_code}}? You can open another cryptocurrency account.",
-                { currency_code }
+                { currency_code: currency_config?.display_code }
             )}
             action={{ onClick, label: localize('Manage your accounts') }}
         />

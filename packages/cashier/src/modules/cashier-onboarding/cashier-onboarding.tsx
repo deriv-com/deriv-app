@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { useHasSetCurrency } from '@deriv/hooks';
-import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { useHistory } from 'react-router';
 import { PageContainer } from '../../components/page-container';
@@ -28,8 +27,8 @@ const CashierOnboarding: React.FC = observer(() => {
 
         return () => {
             setIsCashierOnboarding(false);
-            if (!has_set_currency && window.location.pathname.includes(routes.cashier)) {
-                history.push(routes.trade);
+            if (!has_set_currency && window.location.pathname.includes('/cashier')) {
+                history.push('/');
                 toggleSetCurrencyModal();
             }
         };

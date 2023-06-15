@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useCurrencyConfig, useHasFiatCurrency, useHasUSDCurrency, useIsP2PEnabled } from '@deriv/hooks';
-import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
@@ -25,20 +24,20 @@ const CashierOnboardingP2PCard: React.FC = observer(() => {
     const [is_dialog_visible, setIsDialogVisible] = useState(false);
 
     const onClick = () => {
-        setDepositTarget(routes.cashier_p2p);
+        setDepositTarget('/cashier/p2p');
 
         if (can_switch_to_fiat_account) {
             setIsDialogVisible(true);
         } else if (currency_config?.is_crypto) {
             openRealAccountSignup('add_fiat');
         } else {
-            history.push(routes.cashier_p2p);
+            history.push('/cashier/p2p');
         }
     };
 
     const onSwitchDone = () => {
         setIsDialogVisible(false);
-        history.push(routes.cashier_p2p);
+        history.push('/cashier/p2p');
     };
 
     if (!should_show_p2p_card) return null;

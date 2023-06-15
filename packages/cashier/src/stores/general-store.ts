@@ -51,7 +51,7 @@ export default class GeneralStore extends BaseStore {
     active_container: 'account_transfer' | 'deposit' | 'payment_agent' | 'payment_agent_transfer' | 'withdraw' =
         'deposit';
     cashier_route_tab_index = 0;
-    deposit_target = '';
+    deposit_target: '/cashier/deposit' | '/cashier/on-ramp' | '/cashier/p2p' | '/cashier/payment-agent' | '' = '';
     is_cashier_onboarding = true;
     is_deposit = false;
     is_loading = false;
@@ -107,7 +107,7 @@ export default class GeneralStore extends BaseStore {
         this.is_cashier_onboarding = is_cashier_onboarding;
     }
 
-    setDepositTarget(target: string): void {
+    setDepositTarget(target: typeof this.deposit_target): void {
         this.deposit_target = target;
     }
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useCurrencyConfig, useHasCryptoCurrency } from '@deriv/hooks';
-import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useCashierStore } from '../../../../stores/useCashierStores';
@@ -22,10 +21,10 @@ const CashierOnboardingOnrampCard: React.FC = observer(() => {
     const currency_config = getConfig(currency);
 
     const onClick = () => {
-        setDepositTarget(routes.cashier_onramp);
+        setDepositTarget('/cashier/on-ramp');
         if (currency_config?.is_crypto || has_crypto_account) {
             openRealAccountSignup('choose');
-            shouldNavigateAfterChooseCrypto(routes.cashier_onramp);
+            shouldNavigateAfterChooseCrypto('/cashier/on-ramp');
         } else {
             openRealAccountSignup('add_crypto');
         }

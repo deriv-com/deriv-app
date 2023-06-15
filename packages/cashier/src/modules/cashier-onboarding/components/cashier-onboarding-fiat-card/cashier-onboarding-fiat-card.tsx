@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useCurrencyConfig, useHasFiatCurrency } from '@deriv/hooks';
-import { routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { SwitchToFiatAccountDialog } from '../../../../components/switch-to-fiat-account-dialog';
@@ -28,7 +27,7 @@ const CashierOnboardingFiatCard: React.FC = observer(() => {
     const [is_dialog_visible, setIsDialogVisible] = useState(false);
 
     const onClick = () => {
-        setDepositTarget(routes.cashier_deposit);
+        setDepositTarget('/cashier/deposit');
 
         if (can_switch_to_fiat_account) {
             setIsDialogVisible(true);

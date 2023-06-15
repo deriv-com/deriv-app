@@ -9,7 +9,7 @@ const useDepositFiatAddress = () => {
     const deposit_iframe_url =
         typeof data?.cashier === 'string' ? `${data?.cashier}&DarkMode=${is_dark_mode_on ? 'on' : 'off'}` : undefined;
 
-    const send = useCallback(() => mutate([{ payload: { cashier: 'deposit', provider: 'doughflow' } }]), [mutate]);
+    const send = useCallback(() => mutate({ payload: { cashier: 'deposit', provider: 'doughflow' } }), [mutate]);
 
     useEffect(() => {
         send();

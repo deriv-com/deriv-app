@@ -999,3 +999,4 @@ import './wallet/ic-wallet-tether-dark.svg';
 import './wallet/ic-wallet-tether-light.svg';
 import './wallet/ic-wallet-usd-coin-dark.svg';
 import './wallet/ic-wallet-usd-coin-light.svg';
+import './wallet/ic-wallet-warning.svg';

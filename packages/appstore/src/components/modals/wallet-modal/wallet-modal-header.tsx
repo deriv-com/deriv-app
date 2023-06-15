@@ -6,16 +6,14 @@ import { Badge, Icon, Text, Watermark } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getWalletCurrencyIcon } from 'Constants/utils';
+import type { TWallet } from './wallet-modal';
 
 type TWalletModalHeaderProps = {
-    balance?: string | number;
-    currency: string;
-    is_dark: boolean;
-    is_demo: boolean;
-    is_mobile: boolean;
-    shortcode: string;
     closeModal: VoidFunction;
+    is_dark: boolean;
+    is_mobile: boolean;
     is_wallet_name_visible: boolean;
+    wallet: TWallet;
 };
 
 type THeaderBackground = {
@@ -34,20 +32,14 @@ const HeaderBackground = ({ is_demo, is_dark, children }: React.PropsWithChildre
 };
 
 const WalletModalHeader = ({
-    balance,
     closeModal,
-    currency,
     is_dark,
-    is_demo,
     is_mobile,
-    shortcode,
     is_wallet_name_visible,
+    wallet,
 }: TWalletModalHeaderProps) => {
+    const { balance, currency, is_demo, name, shortcode } = wallet;
     const header_class_name = 'modal-header';
-
-    const wallet_title = React.useMemo(() => {
-        return `${is_demo ? localize('Demo') : ''} ${getCurrencyDisplayCode(currency)} ${localize('Wallet')}`;
-    }, [currency, is_demo]);
 
     const getBadgeLabel = React.useCallback(() => {
         if (is_demo) return localize('Demo');
@@ -122,7 +114,7 @@ const WalletModalHeader = ({
                             as='span'
                             className={getStylesByClassName(`${header_class_name}__title-wallet`)}
                         >
-                            {wallet_title}
+                            {name}
                         </Text>
                         {is_demo ? (
                             <Badge type='contained' background_color='blue' label={getBadgeLabel()} />

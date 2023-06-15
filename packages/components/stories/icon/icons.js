@@ -1032,5 +1032,6 @@ export const icons =
         'IcWalletTetherLight',
         'IcWalletUsdCoinDark',
         'IcWalletUsdCoinLight',
+        'IcWalletWarning',
     ],
 }

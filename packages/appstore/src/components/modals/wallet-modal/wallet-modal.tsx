@@ -1,19 +1,40 @@
 import React from 'react';
 import { Modal } from '@deriv/components';
+import { getCurrencyDisplayCode } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import WalletModalHeader from './wallet-modal-header';
 import WalletModalBody from './wallet-modal-body';
 import { observer, useStore } from '@deriv/stores';
+import type { TWalletType } from './provider';
+
+export type TWallet = {
+    balance: string | number | undefined;
+    currency: string;
+    is_crypto: boolean;
+    is_demo: boolean;
+    name: string;
+    shortcode: string;
+    wallet_type: TWalletType;
+};
 
 const WalletModal = observer(() => {
     const store = useStore();
     const {
-        client: { balance, currency, landing_company_shortcode: shortcode },
+        client: { balance, currency, is_crypto, landing_company_shortcode: shortcode },
         ui: { is_dark_mode_on, is_wallet_modal_visible, is_mobile, setIsWalletModalVisible },
         traders_hub: { is_demo },
     } = store;
 
-    // TODO: Temporary wallet type. Will be refactored later. Add correct type
-    const wallet_type = is_demo ? 'demo' : 'real';
+    // TODO Replace this object with current wallet
+    const wallet = {
+        balance,
+        currency,
+        shortcode,
+        is_crypto: is_crypto(currency),
+        is_demo,
+        name: `${is_demo ? localize('Demo') : ''} ${getCurrencyDisplayCode(currency)} ${localize('Wallet')}`,
+        wallet_type: (is_demo ? 'demo' : 'real') as TWalletType,
+    };
 
     const [active_tab_index, setActiveTabIndex] = React.useState<number>(0);
     const [is_wallet_name_visible, setIsWalletNameVisible] = React.useState<boolean>(true);
@@ -40,25 +61,21 @@ const WalletModal = observer(() => {
     return (
         <Modal is_open={is_wallet_modal_visible} className='wallet-modal' portalId='deriv_app'>
             <WalletModalHeader
-                balance={balance}
+                wallet={wallet}
                 closeModal={closeModal}
-                currency={currency}
                 is_dark={is_dark_mode_on}
-                is_demo={is_demo}
                 is_mobile={is_mobile}
-                shortcode={shortcode}
                 is_wallet_name_visible={is_wallet_name_visible}
             />
             <WalletModalBody
                 active_tab_index={active_tab_index}
                 contentScrollHandler={contentScrollHandler}
                 is_dark={is_dark_mode_on}
-                is_demo={is_demo}
                 is_mobile={is_mobile}
                 is_wallet_name_visible={is_wallet_name_visible}
                 setActiveTabIndex={setActiveTabIndex}
                 setIsWalletNameVisible={setIsWalletNameVisible}
-                wallet_type={wallet_type}
+                wallet={wallet}
             />
         </Modal>
     );

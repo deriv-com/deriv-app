@@ -1,31 +1,32 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Tabs, ThemedScrollbars, Div100vhContainer } from '@deriv/components';
-import { getCashierOptions, TWalletType } from './provider';
+import { getCashierOptions } from './provider';
+import type { TWallet } from './wallet-modal';
 
 type TWalletModalBodyProps = {
     active_tab_index: number;
     contentScrollHandler: React.UIEventHandler<HTMLDivElement>;
     is_dark: boolean;
-    is_demo: boolean;
     is_mobile: boolean;
+    is_wallet_name_visible: boolean;
     setActiveTabIndex: (index: number) => void;
     setIsWalletNameVisible: (value: boolean) => void;
-    is_wallet_name_visible: boolean;
-    wallet_type: TWalletType;
+    wallet: TWallet;
 };
 
 const WalletModalBody = ({
     active_tab_index,
     contentScrollHandler,
     is_dark,
-    is_demo,
     is_mobile,
+    is_wallet_name_visible,
     setActiveTabIndex,
     setIsWalletNameVisible,
-    is_wallet_name_visible,
-    wallet_type,
+    wallet,
 }: TWalletModalBodyProps) => {
+    const { is_demo, wallet_type } = wallet;
+
     const getHeightOffset = React.useCallback(() => {
         const desktop_header_height = '24.4rem';
         const mobile_header_height = '8.2rem';
@@ -63,6 +64,7 @@ const WalletModalBody = ({
                                     {option.content({
                                         is_wallet_name_visible,
                                         setIsWalletNameVisible,
+                                        wallet,
                                     })}
                                 </div>
                             </Div100vhContainer>

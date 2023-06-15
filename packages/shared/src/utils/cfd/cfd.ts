@@ -64,7 +64,14 @@ export const getCFDAccountKey = ({ market_type, sub_account_type, platform, shor
                     return 'all_demo';
             }
         } else {
-            return platform === CFD_PLATFORMS.DERIVEZ ? 'derivez' : 'dxtrade';
+            switch (platform) {
+                case CFD_PLATFORMS.DERIVEZ:
+                    return 'derivez';
+                case CFD_PLATFORMS.DXTRADE:
+                        return 'dxtrade';
+                case CFD_PLATFORMS.CTRADER:
+                    return 'ctrader';
+            }
         }
     }
 

@@ -8,7 +8,14 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 
-const Purchase = observer(({ is_market_closed }) => {
+type TProposalTypeInfo = {
+    has_error?: boolean;
+    id?: string;
+    has_increased?: boolean;
+    message?: string;
+};
+
+const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) => {
     const {
         portfolio: { active_positions },
         ui: { purchase_states: purchased_states_arr, is_mobile, setPurchaseState },
@@ -33,10 +40,11 @@ const Purchase = observer(({ is_market_closed }) => {
         trade_types,
         is_trade_enabled,
     } = useTraderStore();
+
     const is_high_low = /^high_low$/.test(contract_type.toLowerCase());
-    const isLoading = info => {
+    const isLoading = (info: TProposalTypeInfo | Record<string, never>) => {
         const has_validation_error = Object.values(validation_errors).some(e => e.length);
-        return !has_validation_error && !info.has_error && !info.id;
+        return !has_validation_error && !info?.has_error && !info.id;
     };
     const is_proposal_empty = isEmptyObject(proposal_info);
     const components = [];
@@ -46,17 +54,17 @@ const Purchase = observer(({ is_market_closed }) => {
             if (getContractTypePosition(type) === 'bottom') return 1;
             return index;
         };
-        const info = proposal_info[type] || {};
+        const info = proposal_info?.type || {};
         const is_disabled = !is_trade_enabled || !info.id || !is_purchase_enabled;
         const is_proposal_error =
-            is_multiplier || (is_accumulator && !is_mobile) ? info.has_error && !!info.message : info.has_error;
+            is_multiplier || (is_accumulator && !is_mobile) ? info?.has_error && !!info?.message : info?.has_error;
         const purchase_fieldset = (
             <div className='trade-params--mobile__payout-container'>
                 {is_vanilla && isMobile() && (
                     <ContractInfo
                         basis={basis}
                         currency={currency}
-                        has_increased={info.has_increased}
+                        has_increased={info?.has_increased}
                         is_loading={isLoading(info)}
                         is_multiplier={is_multiplier}
                         is_vanilla={is_vanilla}
@@ -70,7 +78,7 @@ const Purchase = observer(({ is_market_closed }) => {
                     currency={currency}
                     info={info}
                     key={index}
-                    index={getSortedIndex(index, type)}
+                    index={getSortedIndex()}
                     growth_rate={growth_rate}
                     has_cancellation={has_cancellation}
                     is_disabled={is_disabled}
@@ -78,7 +86,6 @@ const Purchase = observer(({ is_market_closed }) => {
                     is_high_low={is_high_low}
                     is_loading={isLoading(info)}
                     is_market_closed={is_market_closed}
-                    is_mobile={is_mobile}
                     is_multiplier={is_multiplier}
                     is_vanilla={is_vanilla}
                     is_proposal_empty={is_proposal_empty}
@@ -124,7 +131,7 @@ const Purchase = observer(({ is_market_closed }) => {
             />
         );
     }
-    return components;
+    return <>{components}</>;
 });
 
 export default Purchase;

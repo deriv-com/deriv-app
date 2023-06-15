@@ -995,6 +995,8 @@ import './wallet/ic-wallet-lite-coin-light.svg';
 import './wallet/ic-wallet-modal-tether-dark.svg';
 import './wallet/ic-wallet-modal-tether-light.svg';
 import './wallet/ic-wallet-my-apps.svg';
+import './wallet/ic-wallet-options-dark.svg';
+import './wallet/ic-wallet-options-light.svg';
 import './wallet/ic-wallet-payment-agent-dark.svg';
 import './wallet/ic-wallet-payment-agent-light.svg';
 import './wallet/ic-wallet-tether-dark.svg';

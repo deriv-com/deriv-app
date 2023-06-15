@@ -117,6 +117,7 @@
 .dc-tabs--modal-body__tabs {
     width: 100%;
     margin-top: -4.8rem;
+    z-index: 9999;
 
     @include mobile {
         top: 8.2rem;

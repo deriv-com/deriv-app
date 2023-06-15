@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import WalletModalBody from '../wallet-modal-body';
 
 jest.mock('Components/wallet-transfer', () => jest.fn(() => <div>WalletTransfer</div>));
+jest.mock('Components/fiat-transaction-list', () => jest.fn(() => <div>Transactions</div>));
 
 describe('WalletModalBody', () => {
     let mocked_props: React.ComponentProps<typeof WalletModalBody>;

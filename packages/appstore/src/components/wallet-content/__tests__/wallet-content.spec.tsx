@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletContent from '../wallet-content';
-import { TWalletAccount } from 'Types';
 
 const mockedRootStore = mockStore({
     modules: {
@@ -15,19 +14,19 @@ const mockedRootStore = mockStore({
 
 jest.mock('./../../containers/currency-switcher-container', () => jest.fn(({ children }) => <div>{children}</div>));
 
-const wallet_account: TWalletAccount = {
-    balance: 10415.24,
-    currency: 'USD',
-    landing_company_shortcode: 'svg',
-    is_virtual: 1,
-    loginid: 'CRW12345',
-};
-
 describe('<WalletContent />', () => {
     it('Check class', () => {
+        const mocked_data = {
+            is_demo: false,
+            currency: 'USD',
+            landing_company_name: 'malta',
+            balance: 10000,
+            loginid: 'CR123123',
+            landing_company_shortcode: 'malta',
+        };
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent wallet_account={wallet_account} is_demo={false} is_eu={false} />
+                <WalletContent data={mocked_data} />
             </StoreProvider>
         );
 
@@ -38,9 +37,17 @@ describe('<WalletContent />', () => {
     });
 
     it('Check class for demo', () => {
+        const mocked_data = {
+            is_demo: true,
+            currency: 'USD',
+            landing_company_name: 'svg',
+            balance: 10000,
+            loginid: 'CR123123',
+            landing_company_shortcode: 'svg',
+        };
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent wallet_account={wallet_account} is_demo={true} is_eu={false} />
+                <WalletContent data={mocked_data} />
             </StoreProvider>
         );
 
@@ -52,9 +59,17 @@ describe('<WalletContent />', () => {
 
     // data-testid='dt_disclaimer_wrapper'
     it('Check there is NOT disclaimer for demo', () => {
+        const mocked_data = {
+            is_demo: true,
+            currency: 'USD',
+            landing_company_name: 'svg',
+            balance: 10000,
+            loginid: 'CR123123',
+            landing_company_shortcode: 'svg',
+        };
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent wallet_account={wallet_account} is_demo={true} is_eu={false} />
+                <WalletContent data={mocked_data} />
             </StoreProvider>
         );
 
@@ -64,9 +79,17 @@ describe('<WalletContent />', () => {
     });
 
     it('Check there is NOT disclaimer for Non-EU', () => {
+        const mocked_data = {
+            is_demo: false,
+            currency: 'USD',
+            landing_company_name: 'svg',
+            balance: 10000,
+            loginid: 'CR123123',
+            landing_company_shortcode: 'svg',
+        };
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent wallet_account={wallet_account} is_demo={false} is_eu={false} />
+                <WalletContent data={mocked_data} />
             </StoreProvider>
         );
 
@@ -76,9 +99,17 @@ describe('<WalletContent />', () => {
     });
 
     it('Check there is disclaimer for EU and not demo', () => {
+        const mocked_data = {
+            is_demo: false,
+            currency: 'USD',
+            landing_company_name: 'malta',
+            balance: 10000,
+            loginid: 'CR123123',
+            landing_company_shortcode: 'malta',
+        };
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent wallet_account={wallet_account} is_demo={false} is_eu={true} />
+                <WalletContent data={mocked_data} />
             </StoreProvider>
         );
 

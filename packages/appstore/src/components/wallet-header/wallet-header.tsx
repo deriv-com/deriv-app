@@ -16,24 +16,25 @@ type TWalletHeader = {
 
 const WalletHeader = observer(({ data }: TWalletHeader) => {
     const { client, traders_hub } = useStore();
-    const { switchAccount, loginid, is_authorize } = client;
+    const { switchAccount, loginid } = client;
     const is_active = loginid === data.loginid;
-    const [is_loading, setIsLoading] = useState(false);
+    // const [is_loading, setIsLoading] = useState(false);
     const { multipliers_account_status } = traders_hub;
 
     const wallet_btns = getWalletHeaderButtons(data.is_demo);
 
     const onArrowClickHandler = async () => {
-        setIsLoading(true);
+        // setIsLoading(true);
         if (loginid !== data.loginid) await switchAccount(data.loginid);
-        setIsLoading(false);
+        // setIsLoading(false);
     };
 
-    useEffect(() => {
-        if (is_authorize) {
-            setIsLoading(false);
-        }
-    }, [is_authorize]);
+    /** @todo: uncomment this when we have a skeleton loader for wallet header*/
+    // useEffect(() => {
+    //     if (is_authorize) {
+    //         setIsLoading(false);
+    //     }
+    // }, [is_authorize]);
 
     return (
         <div className={classNames('wallet-header', { 'wallet-header__demo': data.is_demo })}>
@@ -61,7 +62,6 @@ const WalletHeader = observer(({ data }: TWalletHeader) => {
                             'wallet-header__balance-arrow-icon-active': is_active,
                         })}
                     />
-                    {is_loading && <p>loading</p>}
                 </div>
             </div>
         </div>

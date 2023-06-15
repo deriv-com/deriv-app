@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withRouter } from 'react-router';
+import { useLocation, withRouter } from 'react-router';
 import WS from 'Services/ws-methods';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
 import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, platforms, routes } from '@deriv/shared';
@@ -35,6 +35,9 @@ const AppContents = ({
     const tracking_status = tracking_status_cookie.get(TRACKING_STATUS_KEY);
 
     const scroll_ref = React.useRef(null);
+    const child_ref = React.useRef(null);
+
+    const location = useLocation();
 
     React.useEffect(() => {
         if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);
@@ -56,6 +59,13 @@ const AppContents = ({
             });
         }
     }, [tracking_status, is_logged_in, is_eu_country, is_logging_in]);
+
+    React.useEffect(() => {
+        // Gets the reference of the child element and scrolls it to the top
+        if (child_ref.current) {
+            child_ref.current.scrollTop = 0;
+        }
+    }, [location?.pathname]);
 
     // rudderstack page view trigger
     identifyEvent();
@@ -106,9 +116,11 @@ const AppContents = ({
             <DesktopWrapper>
                 {/* Calculate height of user screen and offset height of header and footer */}
                 {window.location.pathname === routes.onboarding ? (
-                    <ThemedScrollbars style={{ maxHeight: '', height: '100%' }}>{children}</ThemedScrollbars>
+                    <ThemedScrollbars style={{ maxHeight: '', height: '100%' }} refSetter={child_ref}>
+                        {children}
+                    </ThemedScrollbars>
                 ) : (
-                    <ThemedScrollbars height='calc(100vh - 84px)' has_horizontal>
+                    <ThemedScrollbars height='calc(100vh - 84px)' has_horizontal refSetter={child_ref}>
                         {children}
                     </ThemedScrollbars>
                 )}

@@ -1,1 +1,1 @@
-export * from './withdrawal_email_verification_step';
+export * from './withdrawal-email-verification-empty-state';

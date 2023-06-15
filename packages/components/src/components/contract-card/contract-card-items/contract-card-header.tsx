@@ -1,7 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
-import { isHighLow, getCurrentTick, getGrowthRatePercentage, isBot, isAccumulatorContract } from '@deriv/shared';
+import {
+    isHighLow,
+    getCurrentTick,
+    getGrowthRatePercentage,
+    isBot,
+    isAccumulatorContract,
+    isMobile,
+} from '@deriv/shared';
 import ContractTypeCell from './contract-type-cell';
 import Button from '../../button';
 import Icon from '../../icon';
@@ -35,7 +42,6 @@ const ContractCardHeader = ({
     getContractTypeDisplay,
     has_progress_slider,
     id,
-    is_mobile,
     is_sell_requested,
     is_sold: is_contract_sold,
     is_valid_to_sell,
@@ -57,6 +63,7 @@ const ContractCardHeader = ({
     const { is_pathname_bot } = isBot();
     const is_sold = !!contract_info.is_sold || is_contract_sold;
     const is_accumulator = isAccumulatorContract(contract_type || '');
+    const is_mobile = isMobile();
     const contract_type_list_info = [
         {
             is_param_displayed: multiplier,
@@ -77,12 +84,21 @@ const ContractCardHeader = ({
                 className={classNames('dc-contract-card__grid', 'dc-contract-card__grid-underlying-trade', {
                     'dc-contract-card__grid-underlying-trade--mobile': is_mobile && !multiplier && !is_accumulator,
                     'dc-contract-card__grid-underlying-trade--trader': !is_pathname_bot,
-                    'dc-contract-card__grid-underlying-trade--trader--accumulator': is_accumulator,
+                    'dc-contract-card__grid-underlying-trade--trader--accumulator': !is_mobile && is_accumulator,
                     'dc-contract-card__grid-underlying-trade--trader--accumulator-sold': is_accumulator && is_sold,
                 })}
             >
-                <div id='dc-contract_card_underlying_label' className='dc-contract-card__underlying-name'>
-                    <Icon icon={underlying ? `IcUnderlying${underlying}` : 'IcUnknown'} width={40} size={32} />
+                <div
+                    id='dc-contract_card_underlying_label'
+                    className={classNames('dc-contract-card__underlying-name', {
+                        'dc-contract-card__underlying-name--accumulator': is_accumulator,
+                    })}
+                >
+                    <Icon
+                        icon={underlying ? `IcUnderlying${underlying}` : 'IcUnknown'}
+                        width={is_accumulator ? 46 : 40}
+                        size={32}
+                    />
                     <Text size='xxs' className='dc-contract-card__symbol' weight='bold'>
                         {display_name || contract_info.display_name}
                     </Text>
@@ -127,14 +143,14 @@ const ContractCardHeader = ({
                         </CSSTransition>
                     ) : null}
                 </MobileWrapper>
-                {!is_sold && is_accumulator && (
-                    <TickCounterBar
-                        current_tick={tick_passed}
-                        max_ticks_duration={tick_count}
-                        label={getCardLabels().TICKS}
-                    />
-                )}
             </div>
+            {!is_sold && is_accumulator && (
+                <TickCounterBar
+                    current_tick={tick_passed}
+                    max_ticks_duration={tick_count}
+                    label={getCardLabels().TICKS}
+                />
+            )}
             <MobileWrapper>
                 <div className='dc-progress-slider--completed' />
             </MobileWrapper>

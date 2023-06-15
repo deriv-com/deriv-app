@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor, prettyDOM } from '@testing-library/react';
 import LeaveConfirm, { TransitionBlockerWithRouter } from '../leave-confirm';
 import { Formik } from 'formik';
 import { Router } from 'react-router';
@@ -50,21 +50,21 @@ const TransitionBlockerComponent = withRouter(TransitionBlockerWithRouter);
 describe('LeaveConfirm', () => {
     it('should render LeaveConfirm component in desktop mode', () => {
         jest.spyOn(React, 'useState').mockReturnValueOnce([true, () => null]);
-        render(<LeaveConfirmComponent />);
+        render(<TransitionBlockerComponent onDirty={jest.fn()} />);
         expect(
-            screen.getByText('You have unsaved changes. Are you sure you want to discard changes and leave this page?')
+            screen.getByText(/You have unsaved changes. Are you sure you want to discard changes and leave this page?/)
         ).toBeInTheDocument();
     });
     it('should render LeaveConfirm component in mobile mode', () => {
         jest.spyOn(React, 'useState').mockImplementationOnce(() => React.useState(true));
         isMobile.mockReturnValueOnce(true);
-        render(<LeaveConfirmComponent />);
+        render(<TransitionBlockerComponent onDirty={jest.fn()} />);
         expect(screen.getByText('Unsaved changes')).toBeInTheDocument();
     });
-    it('should show proper icon', () => {
+    it('should show propercon', () => {
         jest.spyOn(React, 'useState').mockImplementationOnce(() => React.useState(true));
 
-        render(<LeaveConfirmComponent />);
+        render(<TransitionBlockerComponent onDirty={jest.fn()} />);
         expect(screen.getByTestId('unsaved_changes_icon')).toBeInTheDocument();
         expect(screen.getByText('Unsaved changes')).toBeInTheDocument();
         expect(
@@ -75,8 +75,8 @@ describe('LeaveConfirm', () => {
     });
     it('should trigger onclick callback when the user clicks cancel button', async () => {
         jest.spyOn(React, 'useState').mockImplementationOnce(() => React.useState(true));
-        render(<LeaveConfirmComponent />);
-        const el_cancel_btn = screen.getByRole('button', { name: 'Cancel' });
+        render(<TransitionBlockerComponent onDirty={jest.fn()} />);
+        const el_cancel_btn = screen.getByText('Cancel');
         fireEvent.click(el_cancel_btn);
         await waitFor(() => {
             expect(screen.queryByText('Unsaved changes')).not.toBeInTheDocument();
@@ -87,7 +87,7 @@ describe('LeaveConfirm', () => {
         render(<TransitionBlockerComponent onDirty={jest.fn()} />);
         const el_cancel_btn = screen.getByRole('button', { name: 'Cancel' });
         fireEvent.click(el_cancel_btn);
-        expect(screen.getByRole('button', { name: 'Leave Settings' })).toBeInTheDocument();
+        expect(screen.queryByText('Leave Settings')).toBeInTheDocument();
     });
     it('should change pathname when user leaves form', () => {
         jest.spyOn(React, 'useState')

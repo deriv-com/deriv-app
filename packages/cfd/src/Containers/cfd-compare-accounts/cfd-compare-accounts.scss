@@ -18,15 +18,56 @@
 }
 
 .compare-cfd-account {
-    &-outline {
-        display: flex;
-        flex-direction: column;
+    max-width: 123.2rem;
+    margin: auto;
+    padding: 5rem 0;
+    &-container {
+        margin: 1.5rem;
+    }
+    &-main-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    &-card-container {
+        width: 27rem;
         border: 1px solid var(--general-hover);
         padding: 2.4rem;
         border-radius: 2.4rem;
+        &:hover {
+            box-shadow: 0 2px 8px 0 var(--shadow-menu);
+        }
     }
-    &-container {
-        margin: 5rem;
+    &-outline {
+        display: flex;
+        flex-direction: column;
+        padding: 2.4rem;
+        border-radius: 2.4rem;
+    }
+    &-text-container {
+        height: 30rem;
+        &__separator {
+            margin: 1.5rem;
+        }
+    }
+    &-icon-title {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+    }
+    &-platform-label {
+        background-color: var(--header-background-mt5);
+        position: relative;
+        top: 2rem;
+        padding: 0.9rem;
+        border-top-left-radius: 1.4rem;
+        border-top-right-radius: 1.4rem;
+        &--other-cfds {
+            background-color: var(--header-background-others);
+        }
+    }
+    &-underline {
+        border-top: 1px solid var(--less-prominent);
     }
 }
 .card-list {

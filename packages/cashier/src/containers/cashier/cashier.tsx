@@ -11,15 +11,20 @@ import {
     VerticalTab,
     Loading,
 } from '@deriv/components';
-import { useOnrampVisible, useAccountTransferVisible, useP2PNotificationCount } from '@deriv/hooks';
+import {
+    useOnrampVisible,
+    useAccountTransferVisible,
+    useIsP2PEnabled,
+    usePaymentAgentTransferVisible,
+    useP2PNotificationCount,
+} from '@deriv/hooks';
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
-import AccountPromptDialog from '../../components/account-prompt-dialog';
 import ErrorDialog from '../../components/error-dialog';
 import { TRoute } from '../../types';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
-import type { TStores } from '@deriv/stores';
+import type { TCoreStores } from '@deriv/stores/types';
 import './cashier.scss';
 
 type TCashierProps = RouteComponentProps & {
@@ -28,8 +33,8 @@ type TCashierProps = RouteComponentProps & {
     onMount: (should_remount?: boolean) => void;
     setAccountSwitchListener: () => void;
     setTabIndex: (index: number) => void;
-    routeBackInApp: TStores['common']['routeBackInApp'];
-    toggleCashier: TStores['ui']['toggleCashier'];
+    routeBackInApp: TCoreStores['common']['routeBackInApp'];
+    toggleCashier: TCoreStores['ui']['toggleCashier'];
     resetLastLocation: () => void;
 };
 
@@ -37,51 +42,49 @@ type TCashierOptions = {
     count?: number;
     default?: boolean;
     has_side_note: boolean;
-    icon?: string;
+    icon: string;
     label: string;
     path?: string;
-    value: TRoute['component'];
+    value?: typeof React.Component;
 };
 
 const Cashier = observer(({ history, location, routes: routes_config }: TCashierProps) => {
     const { common, ui, client } = useStore();
-    const {
-        withdraw,
-        general_store,
-        transaction_history,
-        payment_agent_transfer,
-        payment_agent,
-        account_prompt_dialog,
-    } = useCashierStore();
+    const { withdraw, general_store, transaction_history, payment_agent } = useCashierStore();
     const { error } = withdraw;
     const {
         is_cashier_onboarding,
         is_loading,
-        is_p2p_enabled,
         onMountCommon: onMount,
         setAccountSwitchListener,
         setCashierTabIndex: setTabIndex,
         cashier_route_tab_index: tab_index,
     } = general_store;
     const { is_crypto_transactions_visible } = transaction_history;
-    const { is_payment_agent_transfer_visible } = payment_agent_transfer;
+    const {
+        data: is_payment_agent_transfer_visible,
+        isLoading: is_payment_agent_checking,
+        isSuccess: is_payment_agent_transfer_visible_is_success,
+    } = usePaymentAgentTransferVisible();
     const { is_payment_agent_visible } = payment_agent;
-    const { resetLastLocation } = account_prompt_dialog;
     const { is_from_derivgo } = common;
     const { is_cashier_visible: is_visible, toggleCashier } = ui;
     const { is_account_setting_loaded, is_logged_in, is_logging_in } = client;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const p2p_notification_count = useP2PNotificationCount();
+    const {
+        data: is_p2p_enabled,
+        isSuccess: is_p2p_enabled_success,
+        isLoading: is_p2p_enabled_loading,
+    } = useIsP2PEnabled();
 
     React.useEffect(() => {
         toggleCashier();
         // we still need to populate the tabs shown on cashier
         return () => {
             toggleCashier();
-            resetLastLocation();
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [toggleCashier]);
 
     React.useEffect(() => {
@@ -93,6 +96,22 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
             }
         })();
     }, [is_logged_in, onMount, setAccountSwitchListener]);
+
+    React.useEffect(() => {
+        if (
+            is_payment_agent_transfer_visible_is_success &&
+            !is_payment_agent_transfer_visible &&
+            history.location.pathname === routes.cashier_pa_transfer
+        ) {
+            history.push(routes.cashier_deposit);
+        }
+    }, [history, is_payment_agent_transfer_visible, is_payment_agent_transfer_visible_is_success]);
+
+    React.useEffect(() => {
+        if (is_p2p_enabled_success && !is_p2p_enabled && history.location.pathname === routes.cashier_p2p) {
+            history.push(routes.cashier_deposit);
+        }
+    }, [history, is_p2p_enabled, is_p2p_enabled_success]);
 
     const onClickClose = () => history.push(routes.traders_hub);
     const getMenuOptions = () => {
@@ -130,7 +149,12 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: location.pathname }).default;
 
     // '|| !is_account_setting_loaded' condition added to make sure client_tnc_status loaded
-    if (((!is_logged_in || isMobile()) && is_logging_in) || !is_account_setting_loaded) {
+    if (
+        ((!is_logged_in || isMobile()) && is_logging_in) ||
+        !is_account_setting_loaded ||
+        is_payment_agent_checking ||
+        is_p2p_enabled_loading
+    ) {
         return <Loading is_fullscreen />;
     }
 
@@ -142,7 +166,6 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
 
     return (
         <FadeWrapper is_visible={is_visible} className='cashier__page-wrapper' keyname='cashier__page-wrapper'>
-            <AccountPromptDialog />
             <ErrorDialog error={error} />
             <div className='cashier'>
                 <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>

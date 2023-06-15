@@ -64,7 +64,7 @@ const StaticDashboard = ({
     loginid,
 }: TStaticDashboard) => {
     const { client, traders_hub } = useStores();
-    const { content_flag, CFDs_restricted_countries } = traders_hub;
+    const { content_flag, CFDs_restricted_countries, financial_restricted_countries } = traders_hub;
     const { is_eu_country, is_logged_in } = client;
 
     const [index, setIndex] = React.useState<number>(0);
@@ -434,7 +434,7 @@ const StaticDashboard = ({
                         </div>
 
                         <div className='static-dashboard-wrapper__body'>
-                            {!is_eu_user && (
+                            {!is_eu_user && !financial_restricted_countries && (
                                 <StaticCFDAccountManager
                                     type='synthetic'
                                     platform='mt5'
@@ -453,7 +453,7 @@ const StaticDashboard = ({
                                 />
                             )}
                             {isMobile() && !has_account && <Divider />}
-                            {is_eu_user && (
+                            {is_eu_user && !financial_restricted_countries && (
                                 <StaticCFDAccountManager
                                     type='financial'
                                     platform='mt5'
@@ -471,25 +471,49 @@ const StaticDashboard = ({
                                     is_eu_user={is_eu_user}
                                 />
                             )}
+
                             {!is_eu_user && !CFDs_restricted_countries && (
-                                <StaticCFDAccountManager
-                                    type='financial'
-                                    platform='mt5'
-                                    appname={localize('Financial')}
-                                    description={localize(
-                                        'Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
+                                <React.Fragment>
+                                    <StaticCFDAccountManager
+                                        type='financial'
+                                        platform='mt5'
+                                        appname={localize('Financial')}
+                                        description={localize(
+                                            'Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
+                                        )}
+                                        financial_amount={financial_amount}
+                                        derived_amount={derived_amount}
+                                        loginid={loginid}
+                                        currency={currency}
+                                        has_account={has_account}
+                                        is_last_step={is_last_step}
+                                        is_blurry={is_blurry}
+                                        is_onboarding_animated={is_onboarding_animated}
+                                        is_financial_last_step={is_financial_last_step}
+                                        is_eu_user={is_eu_user}
+                                    />
+                                    {isMobile() && !has_account && <Divider />}
+                                    {!financial_restricted_countries && (
+                                        <StaticCFDAccountManager
+                                            type='swap_free'
+                                            platform='mt5'
+                                            appname={localize('Swap-Free')}
+                                            description={localize(
+                                                'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs.'
+                                            )}
+                                            financial_amount={financial_amount}
+                                            derived_amount={derived_amount}
+                                            loginid={loginid}
+                                            currency={currency}
+                                            has_account={has_account}
+                                            is_last_step={is_last_step}
+                                            is_blurry={is_blurry}
+                                            is_onboarding_animated={is_onboarding_animated}
+                                            is_financial_last_step={is_financial_last_step}
+                                            is_eu_user={is_eu_user}
+                                        />
                                     )}
-                                    financial_amount={financial_amount}
-                                    derived_amount={derived_amount}
-                                    loginid={loginid}
-                                    currency={currency}
-                                    has_account={has_account}
-                                    is_last_step={is_last_step}
-                                    is_blurry={is_blurry}
-                                    is_onboarding_animated={is_onboarding_animated}
-                                    is_financial_last_step={is_financial_last_step}
-                                    is_eu_user={is_eu_user}
-                                />
+                                </React.Fragment>
                             )}
                             {isDesktop() && has_account && !eu_user && (
                                 <StaticGetMoreAccounts
@@ -501,7 +525,7 @@ const StaticDashboard = ({
                                 />
                             )}
                         </div>
-                        {!is_eu_user && !CFDs_restricted_countries && (
+                        {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                             <React.Fragment>
                                 <Divider />
                                 <div className='static-dashboard-wrapper__body--header'>
@@ -520,7 +544,7 @@ const StaticDashboard = ({
                                 </div>
                             </React.Fragment>
                         )}
-                        {!is_eu_user && !CFDs_restricted_countries && (
+                        {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                             <StaticCFDAccountManager
                                 type='all'
                                 platform='dxtrade'

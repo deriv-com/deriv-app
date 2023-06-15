@@ -89,9 +89,6 @@ const DerivPassword = ({
                                 description='trader'
                             />
                         </Popover>
-                        <Popover alignment='bottom' message={platform_name_trader}>
-                            <Icon icon={`${getPlatformSettings('derivez').icon}`} size={32} description='derivez' />
-                        </Popover>
                         {!is_eu_user && !financial_restricted_countries && (
                             <React.Fragment>
                                 <Popover alignment='bottom' message={platform_name_dbot}>
@@ -111,13 +108,22 @@ const DerivPassword = ({
                             </React.Fragment>
                         )}
                         {(!is_eu_user || financial_restricted_countries) && (
-                            <Popover alignment='bottom' message={platform_name_go}>
-                                <Icon
-                                    icon={`${getPlatformSettings('go').icon}-dashboard`}
-                                    size={32}
-                                    description='derivgo'
-                                />
-                            </Popover>
+                            <React.Fragment>
+                                <Popover alignment='bottom' message={platform_name_go}>
+                                    <Icon
+                                        icon={`${getPlatformSettings('go').icon}-dashboard`}
+                                        size={32}
+                                        description='derivgo'
+                                    />
+                                </Popover>
+                                <Popover alignment='bottom' message={platform_name_trader}>
+                                    <Icon
+                                        icon={`${getPlatformSettings('derivez').icon}`}
+                                        size={32}
+                                        description='derivez'
+                                    />
+                                </Popover>
+                            </React.Fragment>
                         )}
                     </div>
                 </React.Fragment>

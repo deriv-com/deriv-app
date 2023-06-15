@@ -1,29 +1,29 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
 import useEmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel-react';
 import { PrevButton, NextButton } from './cfd-compare-accounts-arrows';
 
-type PropType = {
+type TCFDCompareAccountsCarousel = {
     children: React.ReactNode;
 };
 
-const CFDCompareAccountsCarousel: React.FC<PropType> = props => {
+const CFDCompareAccountsCarousel: React.FC<TCFDCompareAccountsCarousel> = props => {
     const options: EmblaOptionsType = {
         align: 0,
         containScroll: 'trimSnaps',
     };
     const [emblaRef, emblaApi] = useEmblaCarousel(options);
-    const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
-    const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
+    const [prev_btn_enabled, setPrevBtnEnabled] = React.useState(false);
+    const [next_btn_enabled, setNextBtnEnabled] = React.useState(false);
 
-    const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
-    const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
+    const scrollPrev = React.useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi]);
+    const scrollNext = React.useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi]);
 
-    const onSelect = useCallback((embla_api: EmblaCarouselType) => {
+    const onSelect = React.useCallback((embla_api: EmblaCarouselType) => {
         setPrevBtnEnabled(embla_api.canScrollPrev());
         setNextBtnEnabled(embla_api.canScrollNext());
     }, []);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (!emblaApi) return;
 
         onSelect(emblaApi);
@@ -32,12 +32,12 @@ const CFDCompareAccountsCarousel: React.FC<PropType> = props => {
     }, [emblaApi, onSelect]);
 
     return (
-        <div className='embla'>
-            <div className='embla__viewport' ref={emblaRef}>
-                <div className='embla__container'>{props.children}</div>
+        <div className='cfd-compare-accounts-carousel'>
+            <div className='cfd-compare-accounts-carousel__viewport' ref={emblaRef}>
+                <div className='cfd-compare-accounts-carousel__container'>{props.children}</div>
             </div>
-            <PrevButton onClick={scrollPrev} enabled={prevBtnEnabled} />
-            <NextButton onClick={scrollNext} enabled={nextBtnEnabled} />
+            <PrevButton onClick={scrollPrev} enabled={prev_btn_enabled} />
+            <NextButton onClick={scrollNext} enabled={next_btn_enabled} />
         </div>
     );
 };

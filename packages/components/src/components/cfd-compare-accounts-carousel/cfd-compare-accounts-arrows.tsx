@@ -1,27 +1,35 @@
 import React from 'react';
 import Icon from '../icon';
 
-type PrevNextButtonProps = {
+type TPrevNextButtonProps = {
     enabled: boolean;
     onClick: () => void;
 };
 
-export const PrevButton: React.FC<PrevNextButtonProps> = props => {
+export const PrevButton: React.FC<TPrevNextButtonProps> = props => {
     const { enabled, onClick } = props;
 
     return (
-        <button className='embla__button embla__button--prev' onClick={onClick} disabled={!enabled}>
-            <Icon icon='IcChevronLeftBold' className='embla__button__svg' />
+        <button
+            className='cfd-compare-accounts-carousel__button cfd-compare-accounts-carousel__button--prev'
+            onClick={onClick}
+            disabled={!enabled}
+        >
+            <Icon icon='IcChevronLeftBold' className='cfd-compare-accounts-carousel__button__svg' />
         </button>
     );
 };
 
-export const NextButton: React.FC<PrevNextButtonProps> = props => {
+export const NextButton: React.FC<TPrevNextButtonProps> = props => {
     const { enabled, onClick } = props;
 
     return (
-        <button className='embla__button embla__button--next' onClick={onClick} disabled={!enabled}>
-            <Icon icon='IcChevronRightBold' className='embla__button__svg' />
+        <button
+            className='cfd-compare-accounts-carousel__button cfd-compare-accounts-carousel__button--next'
+            onClick={onClick}
+            disabled={!enabled}
+        >
+            <Icon icon='IcChevronRightBold' className='cfd-compare-accounts-carousel__button__svg' />
         </button>
     );
 };

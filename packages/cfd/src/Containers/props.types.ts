@@ -1,3 +1,4 @@
+import React from 'react';
 import {
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
@@ -8,7 +9,15 @@ import {
 } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
-import { TTradingPlatformAvailableAccount, TExistingData } from '../Components/props.types';
+import {
+    TTradingPlatformAvailableAccount,
+    TExistingData,
+    TJurisdictionCardSection,
+    TJurisdictionCardSectionTitleIndicators,
+    TClickableDescription,
+    TJurisdictionCardItems,
+    TJurisdictionCardItemVerification,
+} from '../Components/props.types';
 import RootStore from '../Stores/index';
 
 export type TCFDPersonalDetailsContainerProps = {
@@ -162,15 +171,49 @@ export type TCFDPasswordManagerModal = {
 };
 
 export type TJurisdictionCardProps = {
-    jurisdiction_selected_shortcode: string;
-    context: RootStore;
-    synthetic_available_accounts: TTradingPlatformAvailableAccount[];
-    financial_available_accounts: TTradingPlatformAvailableAccount[];
-    swapfree_available_accounts: TTradingPlatformAvailableAccount[];
-    setJurisdictionSelectedShortcode: (card_type: string) => void;
+    account_status: GetAccountStatus;
     account_type: string;
-    type_of_card: string;
     disabled: boolean;
+    is_non_idv_design: boolean;
+    jurisdiction_selected_shortcode: string;
+    setJurisdictionSelectedShortcode: (card_type: string) => void;
+    type_of_card: TJurisdictionCardType;
+};
+
+export type TJurisdictionCardBackProps = {
+    card_classname: string;
+    disabled: boolean;
+    is_card_selected: boolean;
+    toggleCardFlip: React.MouseEventHandler<HTMLSpanElement>;
+    verification_docs: TJurisdictionCardItemVerification | undefined;
+};
+
+export type TJurisdictionCardFrontProps = TJurisdictionCardBackProps & {
+    account_status: GetAccountStatus;
+    card_data: TJurisdictionCardSection[];
+    card_values: TJurisdictionCardItems;
+    disabled: boolean;
+    type_of_card: TJurisdictionCardType;
+};
+
+export type TJurisdictionClickableDescriptionProps = {
+    clickable_description: Array<TClickableDescription>;
+    toggleCardFlip: React.MouseEventHandler<HTMLSpanElement>;
+};
+
+export type TJurisdictionTitleIndicatorProps = {
+    account_status: GetAccountStatus;
+    title_indicators: TJurisdictionCardSectionTitleIndicators;
+    type_of_card: TJurisdictionCardType;
+    verification_docs: TJurisdictionCardItemVerification | undefined;
+};
+
+export type TJurisdictionCardSectionProps = {
+    account_status: GetAccountStatus;
+    card_section_item: TJurisdictionCardSection;
+    toggleCardFlip: React.MouseEventHandler<HTMLSpanElement>;
+    type_of_card: TJurisdictionCardType;
+    verification_docs: TJurisdictionCardItemVerification | undefined;
 };
 
 export type TJurisdictionCardType = 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest';
@@ -204,37 +247,46 @@ type TOpenAccountTransferMeta = {
     type?: string;
 };
 
-export type TJurisdictionModalProps = {
+type TJurisdictionModalCommonProps = {
     account_type: {
         type: string;
         category: string;
     };
-    account_status: GetAccountStatus;
     context: RootStore;
-    disableApp: () => void;
-    enableApp: () => void;
     is_jurisdiction_modal_visible: boolean;
+    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    show_eu_related_content: boolean;
+    toggleJurisdictionModal: () => void;
+};
+
+export type TJurisdictionModalContentWrapperProps = TJurisdictionModalCommonProps & {
+    account_status: GetAccountStatus;
+    fetchAccountSettings: () => void;
+    has_submitted_cfd_personal_details: boolean;
     is_virtual: boolean;
     jurisdiction_selected_shortcode: string;
-    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
+    real_financial_accounts_existing_data: TExistingData;
+    real_swapfree_accounts_existing_data: TExistingData;
+    real_synthetic_accounts_existing_data: TExistingData;
+    residence: string;
+    residence_list: ResidenceList;
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
-    show_eu_related_content: boolean;
-    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
-    fetchAccountSettings: () => void;
-    toggleJurisdictionModal: () => void;
     toggleCFDVerificationModal: () => void;
-    real_synthetic_accounts_existing_data: TExistingData;
-    real_financial_accounts_existing_data: TExistingData;
-    real_swapfree_accounts_existing_data: TExistingData;
+    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     updateMT5Status: () => void;
-    has_submitted_cfd_personal_details: boolean;
+};
+
+export type TJurisdictionModalProps = TJurisdictionModalCommonProps & {
+    disableApp: () => void;
+    enableApp: () => void;
 };
 
 export type TJurisdictionModalContentProps = {
-    context: RootStore;
+    account_status: GetAccountStatus;
     account_type: string;
+    is_non_idv_design: boolean;
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
     synthetic_available_accounts: TTradingPlatformAvailableAccount[];

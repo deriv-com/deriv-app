@@ -82,6 +82,10 @@
     .poi-form-on-signup__fields {
         .proof-of-identity__container {
             width: 100%;
+            @include mobile {
+                padding-left: 0;
+                padding-right: 0;
+            }
         }
         .proof-of-identity__fieldset {
             @include desktop {

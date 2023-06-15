@@ -20,14 +20,13 @@ export default class MyProfileStore extends BaseStore {
     is_block_user_table_loading = false;
     is_button_loading = false;
     is_confirm_delete_modal_open = false;
-    is_daily_limit_modal_open = false;
-    is_daily_limit_success_modal_open = false;
+    is_daily_limit_upgrade_success = false;
+    is_daily_limit_upgrading = false;
     is_delete_payment_method_error_modal_open = false;
-    is_error_modal_open = false;
     is_filter_modal_open = false;
     is_loading = false;
-    is_loading_modal_open = false;
     is_submit_success = false;
+    is_there_daily_limit_error = false;
     is_trade_partners_list_empty = true;
     payment_method_value = undefined;
     payment_methods_list = [];
@@ -68,14 +67,13 @@ export default class MyProfileStore extends BaseStore {
             is_block_user_table_loading: observable,
             is_button_loading: observable,
             is_confirm_delete_modal_open: observable,
-            is_daily_limit_modal_open: observable,
-            is_daily_limit_success_modal_open: observable,
+            is_daily_limit_upgrade_success: observable,
+            is_daily_limit_upgrading: observable,
             is_delete_payment_method_error_modal_open: observable,
-            is_error_modal_open: observable,
             is_filter_modal_open: observable,
             is_loading: observable,
-            is_loading_modal_open: observable,
             is_submit_success: observable,
+            is_there_daily_limit_error: observable,
             is_trade_partners_list_empty: observable,
             payment_method_value: observable,
             payment_methods_list: observable,
@@ -139,15 +137,14 @@ export default class MyProfileStore extends BaseStore {
             setHasMoreItemsToLoad: action.bound,
             setIsBlockUserTableLoading: action.bound,
             setIsConfirmDeleteModalOpen: action.bound,
-            setIsDailyLimitModalOpen: action.bound,
-            setIsDailyLimitSuccessModalOpen: action.bound,
+            setIsDailyLimitUpgradeSuccess: action.bound,
             setIsDeletePaymentMethodErrorModalOpen: action.bound,
-            setIsErrorModalOpen: action.bound,
             setIsFilterModalOpen: action.bound,
             setIsLoading: action.bound,
-            setIsLoadingModalOpen: action.bound,
             setIsSubmitSuccess: action.bound,
+            setIsThereDailyLimitError: action.bound,
             setIsTradePartnersListEmpty: action.bound,
+            setIsDailyLimitUpgrading: action.bound,
             setPaymentMethodValue: action.bound,
             setPaymentMethodsList: action.bound,
             setPaymentMethodToDelete: action.bound,
@@ -801,20 +798,16 @@ export default class MyProfileStore extends BaseStore {
         this.is_confirm_delete_modal_open = is_confirm_delete_modal_open;
     }
 
-    setIsDailyLimitModalOpen(is_daily_limit_modal_open) {
-        this.is_daily_limit_modal_open = is_daily_limit_modal_open;
+    setIsDailyLimitUpgradeSuccess(is_daily_limit_upgrade_success) {
+        this.is_daily_limit_upgrade_success = is_daily_limit_upgrade_success;
     }
 
-    setIsDailyLimitSuccessModalOpen(is_daily_limit_success_modal_open) {
-        this.is_daily_limit_success_modal_open = is_daily_limit_success_modal_open;
+    setIsDailyLimitUpgrading(is_daily_limit_upgrading) {
+        this.is_daily_limit_upgrading = is_daily_limit_upgrading;
     }
 
     setIsDeletePaymentMethodErrorModalOpen(is_delete_payment_method_error_modal_open) {
         this.is_delete_payment_method_error_modal_open = is_delete_payment_method_error_modal_open;
-    }
-
-    setIsErrorModalOpen(is_error_modal_open) {
-        this.is_error_modal_open = is_error_modal_open;
     }
 
     setIsFilterModalOpen(is_filter_modal_open) {
@@ -825,12 +818,12 @@ export default class MyProfileStore extends BaseStore {
         this.is_loading = is_loading;
     }
 
-    setIsLoadingModalOpen(is_loading_modal_open) {
-        this.is_loading_modal_open = is_loading_modal_open;
-    }
-
     setIsSubmitSuccess(is_submit_success) {
         this.is_submit_success = is_submit_success;
+    }
+
+    setIsThereDailyLimitError(is_there_daily_limit_error) {
+        this.is_there_daily_limit_error = is_there_daily_limit_error;
     }
 
     setIsTradePartnersListEmpty(is_trade_partners_list_empty) {
@@ -910,10 +903,10 @@ export default class MyProfileStore extends BaseStore {
 
         requestWS({ p2p_advertiser_update: 1, upgrade_limits: 1 }).then(response => {
             if (response) {
-                this.setIsLoadingModalOpen(false);
+                this.setIsDailyLimitUpgrading(false);
 
-                if (response.error) this.setIsErrorModalOpen(true);
-                else this.setIsDailyLimitSuccessModalOpen(true);
+                if (response.error) this.setIsThereDailyLimitError(true);
+                else this.setIsDailyLimitUpgradeSuccess(true);
 
                 general_store.external_stores.notifications.removeNotificationByKey({
                     key: 'p2p_daily_limit_increase',

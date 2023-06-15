@@ -1,9 +1,9 @@
-import * as React from 'react';
+import React from 'react';
 import { Text, ToggleSwitch } from '@deriv/components';
-import { observer } from 'mobx-react-lite';
-import { Localize } from 'Components/i18next';
-import { useStores } from 'Stores';
 import { isDesktop } from '@deriv/shared';
+import { observer } from '@deriv/stores';
+import { useStores } from 'Stores';
+import { Localize } from 'Components/i18next';
 
 const MyProfilePrivacy = () => {
     const { general_store, my_profile_store } = useStores();

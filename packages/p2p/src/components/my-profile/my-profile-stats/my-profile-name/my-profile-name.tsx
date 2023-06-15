@@ -1,15 +1,15 @@
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
-import { observer } from 'mobx-react-lite';
-import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
-import { useStores } from 'Stores';
 import { daysSince, isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
+import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
-import TradeBadge from '../../../trade-badge';
-import MyProfilePrivacy from '../my-profile-privacy';
-import StarRating from 'Components/star-rating';
-import RecommendedBy from 'Components/recommended-by';
 import BlockUserCount from 'Components/advertiser-page/block-user/block-user-count';
+import RecommendedBy from 'Components/recommended-by';
+import StarRating from 'Components/star-rating';
+import TradeBadge from 'Components/trade-badge';
+import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
+import MyProfilePrivacy from '../my-profile-privacy';
 
 const MyProfileName = () => {
     const { general_store } = useStores();
@@ -26,7 +26,8 @@ const MyProfileName = () => {
         sell_orders_count,
     } = general_store.advertiser_info;
 
-    const joined_since = daysSince(created_time);
+    const date_joined = new Date(created_time * 1000).toISOString().split('T')[0];
+    const joined_since = daysSince(date_joined);
     // rating_average_decimal converts rating_average to 1 d.p number
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
 
@@ -34,14 +35,14 @@ const MyProfileName = () => {
         <div className='my-profile-name'>
             <UserAvatar
                 className='my-profile-name__avatar'
-                nickname={general_store.nickname}
+                nickname={general_store.nickname ?? ''}
                 size={isMobile() ? 32 : 64}
                 text_size={isMobile() ? 's' : 'sm'}
             />
             <div className='my-profile-name__name'>
                 <div className='my-profile-name--privacy'>
                     <div className='my-profile-name--column'>
-                        <Text color='prominent' weight='bold' size='s' line_height='m'>
+                        <Text color='prominent' weight='bold'>
                             {general_store.nickname}
                         </Text>
                         <MobileWrapper>
@@ -130,7 +131,6 @@ const MyProfileName = () => {
                                 </div>
                             </DesktopWrapper>
                         </div>
-
                         <MobileWrapper>
                             <div className='my-profile-name__row'>
                                 <div className='my-profile-name--rating__row'>

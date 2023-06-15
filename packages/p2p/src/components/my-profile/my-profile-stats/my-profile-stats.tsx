@@ -1,14 +1,14 @@
 import React from 'react';
 import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
-import { observer } from 'mobx-react-lite';
-import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import { observer } from '@deriv/stores';
 import { useStores } from 'Stores';
-import MyProfileStatsTable from './my-profile-stats-table';
-import SeparatorContainerLine from 'Components/separator-container-line';
 import { Localize, localize } from 'Components/i18next';
+import SeparatorContainerLine from 'Components/separator-container-line';
+import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import MyProfileStatsTable from './my-profile-stats-table';
 import MyProfilePrivacy from './my-profile-privacy';
 
-const MyStats = () => {
+const MyProfileStats = () => {
     const { my_profile_store } = useStores();
     const [should_show_stats_and_ratings, setShouldShowStatsAndRatings] = React.useState(false);
     const tabs = [
@@ -36,6 +36,9 @@ const MyStats = () => {
                 height_offset='80px'
                 is_flex
                 is_modal_open={should_show_stats_and_ratings}
+                onClickClose={() => {
+                    // do nothing
+                }}
                 page_header_text={localize('Stats')}
                 pageHeaderReturnFn={() => setShouldShowStatsAndRatings(false)}
             >
@@ -68,4 +71,4 @@ const MyStats = () => {
     );
 };
 
-export default observer(MyStats);
+export default observer(MyProfileStats);

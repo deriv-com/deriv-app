@@ -7,12 +7,6 @@ on:
       tag:
         description: "Tag"
         required: true
-      platform:
-        type: choice
-        description: Platform
-        options:
-          - Deriv.app
-          - DSmartTrader
       skip_circleci_checks:
         description: "Skip checking CircleCI workflow"
         type: boolean
@@ -44,7 +38,7 @@ jobs:
         uses: binary-com/fe-toolbox@production_V20230615_0
         with:
           tag: ${{ inputs.tag }}
-          platform: ${{ inputs.platform }}
+          platform: 'Deriv.app'
           list_id: ${{ secrets.LIST_ID }}
           release_tags_list_id: ${{ secrets.RELEASE_TAGS_LIST_ID }}
           regression_testing_template_id: ${{ secrets.REGRESSION_TESTING_TEMPLATE_ID }}

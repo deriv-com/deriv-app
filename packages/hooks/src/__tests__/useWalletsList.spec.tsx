@@ -26,6 +26,9 @@ describe('useWalletsList', () => {
                             account_category: 'wallet',
                             currency: 'USD',
                             is_virtual: 0,
+                            landing_company_name: 'svg',
+                            landing_company_shortcode: 'svg',
+                            is_demo: 0,
                         },
                     ],
                 },
@@ -45,7 +48,9 @@ describe('useWalletsList', () => {
                 account_category: 'wallet',
                 currency: 'USD',
                 is_virtual: 0,
-                balance: 1000,
+                landing_company_shortcode: 'svg',
+                landing_company_name: 'svg',
+                is_demo: false,
             },
         ]);
     });

@@ -15,10 +15,11 @@ type TWalletHeader = {
 };
 
 const WalletHeader = observer(({ data }: TWalletHeader) => {
-    const { client } = useStore();
+    const { client, traders_hub } = useStore();
     const { switchAccount, loginid, is_authorize } = client;
     const is_active = loginid === data.loginid;
     const [is_loading, setIsLoading] = useState(false);
+    const { multipliers_account_status } = traders_hub;
 
     const wallet_btns = getWalletHeaderButtons(data.is_demo);
 
@@ -45,19 +46,13 @@ const WalletHeader = observer(({ data }: TWalletHeader) => {
                         landing_company_name={data.landing_company_name}
                     />
                     <WalletHeaderButtons
-                        // is_disabled={!!account_status}
-                        is_disabled={false}
+                        is_disabled={!!multipliers_account_status}
                         is_open={is_active}
                         btns={wallet_btns}
                     />
                 </div>
                 <div className='wallet-header__balance'>
-                    <WalletHeaderBalance
-                        account_status={'pending'}
-                        // account_status={account_status}
-                        balance={data.balance}
-                        currency={data.currency}
-                    />
+                    <WalletHeaderBalance balance={data.balance} currency={data.currency} />
                     <Icon
                         data_testid='dt_arrow'
                         onClick={onArrowClickHandler}

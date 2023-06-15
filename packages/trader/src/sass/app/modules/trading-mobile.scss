@@ -511,7 +511,7 @@
             left: 2.4rem !important;
 
             &__content {
-                max-width: 32.8rem;
+                max-width: calc(min(32.8rem, 85vw));
                 left: 2.5rem;
                 &--vanilla {
                     top: -0.9rem;

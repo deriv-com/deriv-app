@@ -59,10 +59,10 @@
         &--accumulator {
             &-middle,
             &-middle--preexit {
-                width: 0.2rem;
-                height: 0.2rem;
-                top: -0.2rem;
-                margin-left: -0.3rem;
+                width: 6px;
+                height: 6px;
+                top: -3px;
+                margin-left: -4px;
                 background-color: var(--text-less-prominent);
 
                 &--preexit {
@@ -70,11 +70,10 @@
                     border: 2px solid var(--status-info);
                 }
                 @include mobile {
-                    width: 0.15rem;
-                    height: 0.15rem;
-                    top: -0.15rem;
-                    margin-left: -0.25rem;
-                    border-width: 0.15rem;
+                    width: 4px;
+                    height: 4px;
+                    top: -2px;
+                    margin-left: -3px;
                 }
             }
             &-exit {
@@ -84,20 +83,20 @@
                 background-color: var(--general-main-4);
                 &:after {
                     content: '';
-                    width: 0.4rem;
-                    height: 0.4rem;
+                    width: 0.6rem;
+                    height: 0.6rem;
                     border-radius: 50%;
                     background-color: var(--border-active);
                     @include mobile {
-                        width: 0.24rem;
-                        height: 0.24rem;
+                        width: 0.4rem;
+                        height: 0.4rem;
                     }
                 }
                 @include mobile {
-                    width: 1.2rem;
-                    height: 1.2rem;
-                    margin-left: -0.5rem;
-                    margin-top: 0.4rem;
+                    width: 1.6rem;
+                    height: 1.6rem;
+                    margin-left: -0.7rem;
+                    margin-top: 0.6rem;
                     border-width: 0.1rem;
                 }
             }

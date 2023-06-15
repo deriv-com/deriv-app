@@ -47,7 +47,6 @@ export default class AppStore {
     handleErrorForEu = (show_default_error = false) => {
         const { client, common, ui, traders_hub } = this.core;
         const toggleAccountsDialog = ui?.toggleAccountsDialog;
-        const recovery_low_risk_cr_eu = traders_hub?.selected_region;
 
         if (!client?.is_logged_in && client?.is_eu_country) {
             return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients());
@@ -57,28 +56,34 @@ export default class AppStore {
             return false;
         }
 
-        if (
-            window.location.pathname === routes.bot &&
-            client.should_show_eu_error &&
-            (traders_hub.content_flag === ContentFlag.EU_REAL || traders_hub.content_flag === ContentFlag.EU_DEMO) &&
-            recovery_low_risk_cr_eu === 'EU'
-        ) {
-            return showDigitalOptionsUnavailableError(common.showError, this.getErrorForEuClients(client.is_logged_in));
-        }
+        if (window.location.pathname === routes.bot) {
+            if (client.should_show_eu_error) {
+                return showDigitalOptionsUnavailableError(
+                    common.showError,
+                    this.getErrorForEuClients(client.is_logged_in)
+                );
+            }
 
-        if (
-            (traders_hub.content_flag === ContentFlag.LOW_RISK_CR_NON_EU && recovery_low_risk_cr_eu === 'Non-EU') ||
-            traders_hub.content_flag === ContentFlag.HIGH_RISK_CR
-        ) {
-            return false;
-        }
+            if (traders_hub.content_flag === ContentFlag.HIGH_RISK_CR) {
+                return false;
+            }
 
-        if (
-            window.location.pathname === routes.bot &&
-            traders_hub.content_flag === ContentFlag.LOW_RISK_CR_EU &&
-            recovery_low_risk_cr_eu === 'EU'
-        ) {
-            if (toggleAccountsDialog) {
+            if (traders_hub.content_flag === ContentFlag.LOW_RISK_CR_EU && toggleAccountsDialog) {
+                return showDigitalOptionsUnavailableError(
+                    common.showError,
+                    this.getErrorForNonEuClients(),
+                    toggleAccountsDialog,
+                    false,
+                    false
+                );
+            }
+
+            if (
+                ((!client.is_bot_allowed && client.is_eu && client.should_show_eu_error) ||
+                    isEuResidenceWithOnlyVRTC(client.active_accounts) ||
+                    client.is_options_blocked) &&
+                toggleAccountsDialog
+            ) {
                 return showDigitalOptionsUnavailableError(
                     common.showError,
                     this.getErrorForNonEuClients(),
@@ -89,24 +94,7 @@ export default class AppStore {
             }
         }
 
-        if (
-            (window.location.pathname === routes.bot &&
-                !client.is_bot_allowed &&
-                client.is_eu &&
-                client.should_show_eu_error) ||
-            isEuResidenceWithOnlyVRTC(client.active_accounts) ||
-            client.is_options_blocked
-        ) {
-            if (toggleAccountsDialog) {
-                showDigitalOptionsUnavailableError(
-                    common.showError,
-                    this.getErrorForNonEuClients(),
-                    toggleAccountsDialog,
-                    false,
-                    false
-                );
-            }
-        } else if (show_default_error && common.has_error) {
+        if (show_default_error && common.has_error) {
             common.setError(false, null);
         }
         return false;

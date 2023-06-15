@@ -1,6 +1,6 @@
 import React from 'react';
 import useEmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel-react';
-import { PrevButton, NextButton } from './cfd-compare-accounts-arrows';
+import CFDCompareAccountsCarouselButton from './cfd-compare-accounts-carousel-button';
 
 type TCFDCompareAccountsCarousel = {
     children: React.ReactNode;
@@ -36,8 +36,8 @@ const CFDCompareAccountsCarousel = (props: TCFDCompareAccountsCarousel) => {
             <div className='cfd-compare-accounts-carousel__viewport' ref={emblaRef}>
                 <div className='cfd-compare-accounts-carousel__container'>{props.children}</div>
             </div>
-            <PrevButton onClick={scrollPrev} enabled={prev_btn_enabled} />
-            <NextButton onClick={scrollNext} enabled={next_btn_enabled} />
+            <CFDCompareAccountsCarouselButton onClick={scrollPrev} isNext={false} enabled={prev_btn_enabled} />
+            <CFDCompareAccountsCarouselButton onClick={scrollNext} isNext={true} enabled={next_btn_enabled} />
         </div>
     );
 };

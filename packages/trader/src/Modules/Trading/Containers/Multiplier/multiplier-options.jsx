@@ -3,10 +3,13 @@ import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multipl
 import RadioGroupWithInfoMobile from 'Modules/Trading/Components/Form/RadioGroupWithInfoMobile';
 import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 import { useIsMounted, WS } from '@deriv/shared';
 
-const MultiplierOptions = ({ amount, multiplier, multiplier_range_list, onChange, toggleModal, trade_store }) => {
+const MultiplierOptions = observer(() => {
+    const { amount, multiplier, multiplier_range_list, onChange, toggleModal, trade_store } = useTraderStore();
+
     const [commission, setCommission] = React.useState(null);
     const [stop_out, setStopOut] = React.useState(null);
     const isMounted = useIsMounted();
@@ -52,12 +55,6 @@ const MultiplierOptions = ({ amount, multiplier, multiplier_range_list, onChange
             />
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ modules }) => ({
-    amount: modules.trade.amount,
-    multiplier: modules.trade.multiplier,
-    multiplier_range_list: modules.trade.multiplier_range_list,
-    onChange: modules.trade.onChange,
-    trade_store: modules.trade,
-}))(MultiplierOptions);
+export default MultiplierOptions;

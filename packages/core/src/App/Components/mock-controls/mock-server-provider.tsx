@@ -2,11 +2,11 @@ import React, { ReactNode } from 'react';
 import { useWS } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 
-export const ACTIVE_MOCK_ID = 'mock_id';
+export const SESSION_ID_KEY = 'session_id';
 
 type MockServerData = {
-    active_mock_id: string;
-    handleSetActiveMockId: (mock_id: string) => void;
+    active_session_id: string;
+    handleSetActiveSessionId: (session_id: string) => void;
 };
 
 const MockServerContext = React.createContext<MockServerData | null>(null);
@@ -17,22 +17,22 @@ type MockServerProviderProps = {
 
 export const MockServerProvider = ({ children }: MockServerProviderProps) => {
     const WS = useWS();
-    const [active_mock_id, setActiveMockId] = React.useState(localStorage.getItem('mock_id') || '');
+    const [active_session_id, setActiveSessionId] = React.useState(localStorage.getItem(SESSION_ID_KEY) || '');
 
     React.useEffect(() => {
-        if (active_mock_id) {
-            WS.closeAndOpenNewConnection(getLanguage(), active_mock_id);
+        if (active_session_id) {
+            WS.closeAndOpenNewConnection(getLanguage(), active_session_id);
         }
-    }, [active_mock_id]);
+    }, [active_session_id]);
 
-    const handleSetActiveMockId = (mock_id: string) => {
-        if (!mock_id) return;
-        window.localStorage.setItem(ACTIVE_MOCK_ID, mock_id);
-        setActiveMockId(mock_id);
+    const handleSetActiveSessionId = (session_id: string) => {
+        if (!session_id) return;
+        window.localStorage.setItem(SESSION_ID_KEY, session_id);
+        setActiveSessionId(session_id);
     };
 
     return (
-        <MockServerContext.Provider value={{ active_mock_id, handleSetActiveMockId }}>
+        <MockServerContext.Provider value={{ active_session_id, handleSetActiveSessionId }}>
             {children}
         </MockServerContext.Provider>
     );
@@ -41,7 +41,7 @@ export const MockServerProvider = ({ children }: MockServerProviderProps) => {
 export const useMockServer = () => {
     const mock_server_contect = React.useContext(MockServerContext);
     if (!mock_server_contect) {
-        throw new Error('useUserData must be within UserDataProvider');
+        throw new Error('useMockServer must be within UserDataProvider');
     }
 
     return mock_server_contect;

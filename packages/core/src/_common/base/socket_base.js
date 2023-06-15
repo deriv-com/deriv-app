@@ -44,10 +44,10 @@ const BinarySocketBase = (() => {
         binary_socket.close();
     };
 
-    const closeAndOpenNewConnection = (language = getLanguage(), mock_id = '') => {
+    const closeAndOpenNewConnection = (language = getLanguage(), session_id = '') => {
         close();
         is_switching_socket = true;
-        openNewConnection(language, mock_id);
+        openNewConnection(language, session_id);
     };
 
     const hasReadyState = (...states) => binary_socket && states.some(s => binary_socket.readyState === s);
@@ -59,28 +59,28 @@ const BinarySocketBase = (() => {
         client_store = client;
     };
 
-    const openNewConnection = (language = getLanguage(), mock_id = '') => {
+    const openNewConnection = (language = getLanguage(), session_id = '') => {
         if (wrong_app_id === getAppId()) return;
 
         if (!is_switching_socket) config.wsEvent('init');
 
         if (isClose()) {
             is_disconnect_called = false;
-            binary_socket = new WebSocket(getSocketUrl(language, mock_id));
+            binary_socket = new WebSocket(getSocketUrl(language, session_id));
 
-            if (mock_id) {
+            if (session_id) {
                 const originalSend = DerivAPIBasic.prototype.send;
                 const originalSubscribe = DerivAPIBasic.prototype.subscribe;
 
                 DerivAPIBasic.prototype.send = function (...args) {
                     const modifiedArgs = [...args];
-                    modifiedArgs[0] = { ...modifiedArgs[0], mock_id };
+                    modifiedArgs[0] = { ...modifiedArgs[0], session_id };
                     return originalSend.apply(this, modifiedArgs);
                 };
 
                 DerivAPIBasic.prototype.subscribe = function (...args) {
                     const modifiedArgs = [...args];
-                    modifiedArgs[0] = { ...modifiedArgs[0], mock_id };
+                    modifiedArgs[0] = { ...modifiedArgs[0], session_id };
                     return originalSubscribe.apply(this, modifiedArgs);
                 };
             }

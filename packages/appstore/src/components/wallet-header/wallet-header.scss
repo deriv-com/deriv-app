@@ -71,7 +71,7 @@
                 border-radius: $BORDER_RADIUS * 4;
                 padding: 0.6rem 1.6rem;
                 margin-right: 0.8rem;
-                border: 1px solid var(--text-general);
+                border: 1px solid var(--border-hover);
                 background-color: var(--prominent);
 
                 &:hover:not(&-disabled) {

@@ -105,7 +105,7 @@ const ProofOfIdentityContainer = ({
         const { is_hard_redirect = false, url = '' } = platform ?? {};
         if (is_hard_redirect) {
             window.location.href = url;
-            window.localStorage.removeItem('config.platform');
+            window.sessionStorage.removeItem('config.platform');
         } else {
             routeBackTo(from_platform.route);
         }

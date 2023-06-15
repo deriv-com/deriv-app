@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Icon, Modal, Text, Popover } from '@deriv/components';
-import { useIsMounted } from '@deriv/shared';
+import { isDesktop, useIsMounted } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ApiTokenContext from './api-token-context';
 import { TPopoverAlignment, TToken, TApiContext } from 'Types';
@@ -18,16 +18,16 @@ const ApiTokenDeleteButton = ({ token, popover_alignment = 'left' }: TApiTokenDe
     const isMounted = useIsMounted();
 
     const getConfirmationBeforeDelete = () => {
-        setIsPopoverOpen(false);
+        if (isDesktop()) setIsPopoverOpen(false);
         setIsDeleting(true);
     };
 
     const onMouseEnterHandler = () => {
-        if (!is_deleting) setIsPopoverOpen(true);
+        if (!is_deleting && isDesktop()) setIsPopoverOpen(true);
     };
 
     const onMouseLeaveHandler = () => {
-        if (!is_deleting) setIsPopoverOpen(false);
+        if (!is_deleting && isDesktop()) setIsPopoverOpen(false);
     };
 
     const handleNo = () => setIsDeleting(false);

@@ -6,7 +6,7 @@ type TCFDCompareAccountsCarousel = {
     children: React.ReactNode;
 };
 
-const CFDCompareAccountsCarousel: React.FC<TCFDCompareAccountsCarousel> = props => {
+const CFDCompareAccountsCarousel = (props: TCFDCompareAccountsCarousel) => {
     const options: EmblaOptionsType = {
         align: 0,
         containScroll: 'trimSnaps',

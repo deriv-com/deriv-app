@@ -8,7 +8,7 @@ type TCFDCompareAccountsTitleIconProps = {
     trading_platforms: TModifiedTradingPlatformAvailableAccount;
 };
 
-const CFDCompareAccountsTitleIcon: React.FC<TCFDCompareAccountsTitleIconProps> = ({ trading_platforms }) => {
+const CFDCompareAccountsTitleIcon = ({ trading_platforms }: TCFDCompareAccountsTitleIconProps) => {
     const market_type = getMarketType(trading_platforms);
     const jurisdiction_shortcode = market_type.concat('_', trading_platforms.shortcode);
     const jurisdiction_card_icon =
@@ -20,11 +20,10 @@ const CFDCompareAccountsTitleIcon: React.FC<TCFDCompareAccountsTitleIconProps> =
             ? getAccountCardTitle(trading_platforms.platform)
             : getAccountCardTitle(jurisdiction_shortcode);
 
-    const icon_size = 48;
     return (
         <React.Fragment>
             <div className={'compare-cfd-account-icon-title'}>
-                <TradigPlatformIconProps icon={jurisdiction_card_icon} size={icon_size} />
+                <TradigPlatformIconProps icon={jurisdiction_card_icon} size={48} />
                 <Text as='h1' weight='bold' size='xs' align='center'>
                     {jurisdiction_card_title}
                 </Text>

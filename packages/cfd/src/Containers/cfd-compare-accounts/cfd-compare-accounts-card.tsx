@@ -9,7 +9,7 @@ type TCFDCompareAccountsCardProps = {
     trading_platforms: TModifiedTradingPlatformAvailableAccount;
 };
 
-const CFDCompareAccountsCard: React.FC<TCFDCompareAccountsCardProps> = ({ trading_platforms }) => {
+const CFDCompareAccountsCard = ({ trading_platforms }: TCFDCompareAccountsCardProps) => {
     return (
         <div className='compare-cfd-account-main-container'>
             <CFDCompareAccountsPlatformLabel trading_platforms={trading_platforms} />

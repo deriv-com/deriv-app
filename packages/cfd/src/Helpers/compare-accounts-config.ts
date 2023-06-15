@@ -1,7 +1,5 @@
 import { TIconData, TAvailableCFDAccounts, TModifiedTradingPlatformAvailableAccount } from '../Components/props.types';
 
-type TCFDConfig = string;
-
 const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvailableAccount): TIconData[] => {
     switch (trading_platforms.market_type) {
         case 'gaming':
@@ -43,7 +41,7 @@ const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvai
             ];
     }
 };
-const getAccountCardTitle = (shortcode: TCFDConfig) => {
+const getAccountCardTitle = (shortcode: string) => {
     switch (shortcode) {
         case 'synthetic_svg':
             return 'Derived - SVG';
@@ -68,7 +66,7 @@ const getAccountCardTitle = (shortcode: TCFDConfig) => {
     }
 };
 
-const getPlatformLabel = (shortcode: TCFDConfig) => {
+const getPlatformLabel = (shortcode: string) => {
     switch (shortcode) {
         case 'dxtrade':
             return 'Other CFDs';
@@ -85,7 +83,7 @@ const platfromsHeaderLabel = {
     other_cfds: 'Other CFDs',
 };
 
-const getAccountIcon = (shortcode: TCFDConfig) => {
+const getAccountIcon = (shortcode: string) => {
     switch (shortcode) {
         case 'synthetic':
             return 'Derived';
@@ -104,7 +102,7 @@ const getMarketType = (trading_platforms: TModifiedTradingPlatformAvailableAccou
     return trading_platforms.market_type === 'gaming' ? 'synthetic' : trading_platforms.market_type;
 };
 
-const getHeaderColor = (shortcode: TCFDConfig) => {
+const getHeaderColor = (shortcode: string) => {
     switch (shortcode) {
         case 'MT5 Platform':
             return 'blue';
@@ -117,92 +115,92 @@ const getHeaderColor = (shortcode: TCFDConfig) => {
 
 const cfdConfig = {
     leverage: '1:1000',
-    leverageDescription: 'Maximum Leverage',
+    leverage_description: 'Maximum Leverage',
     spread: '0.5 pips',
-    spreadDescription: 'Spread from',
-    counterpartyCompany: 'Deriv (SVG) LLC',
-    counterpartyCompanyDescription: 'Counterparty company',
+    spread_description: 'Spread from',
+    counterparty_company: 'Deriv (SVG) LLC',
+    counterparty_company_description: 'Counterparty company',
     jurisdiction: 'St. Vincent & Grenadines',
-    jurisdictionDescription: 'Jurisdiction',
+    jurisdiction_description: 'Jurisdiction',
     regulator: 'Financial Commission',
-    regulatorDescription: 'Regulator/External dispute resolution',
+    regulator_description: 'Regulator/External dispute resolution',
 };
-const getJuridisctionDescription = (shortcode: TCFDConfig) => {
+const getJuridisctionDescription = (shortcode: string) => {
     switch (shortcode) {
         case 'synthetic_svg':
             return {
                 ...cfdConfig,
-                counterpartyCompany: 'Deriv (SVG) LLC',
+                counterparty_company: 'Deriv (SVG) LLC',
                 jurisdiction: 'St. Vincent & Grenadines',
-                jurisdictionDescription: 'Jurisdiction',
+                jurisdiction_description: 'Jurisdiction',
                 regulator: 'Financial Commission',
-                regulatorDescription: 'Regulator/External dispute resolution',
+                regulator_description: 'Regulator/External dispute resolution',
             };
         case 'synthetic_bvi':
             return {
                 ...cfdConfig,
-                counterpartyCompany: 'Deriv (BVI) Ltd',
+                counterparty_company: 'Deriv (BVI) Ltd',
                 jurisdiction: 'British Virgin Islands',
-                jurisdictionDescription: 'Jurisdiction',
+                jurisdiction_description: 'Jurisdiction',
                 regulator: 'British Virgin Islands Financial Services Commission',
-                regulatorDescription: '(License no. SIBA/L/18/1114) Regulator/External dispute Resolution',
+                regulator_description: '(License no. SIBA/L/18/1114) Regulator/External dispute Resolution',
             };
         case 'synthetic_vanuatu':
             return {
                 ...cfdConfig,
-                counterpartyCompany: 'Deriv (V) Ltd',
+                counterparty_company: 'Deriv (V) Ltd',
                 jurisdiction: 'Vanuatu',
-                jurisdictionDescription: 'Jurisdiction',
+                jurisdiction_description: 'Jurisdiction',
                 regulator: 'Vanuatu Financial Services Commission',
-                regulatorDescription: 'Regulator/External dispute resolution',
+                regulator_description: 'Regulator/External dispute resolution',
             };
         case 'financial_svg':
             return {
                 ...cfdConfig,
-                counterpartyCompany: 'Deriv (SVG) LLC',
+                counterparty_company: 'Deriv (SVG) LLC',
                 jurisdiction: 'St. Vincent & Grenadines',
-                jurisdictionDescription: 'Jurisdiction',
+                jurisdiction_description: 'Jurisdiction',
                 regulator: 'Financial Commission',
-                regulatorDescription: 'Regulator/External dispute resolution',
+                regulator_description: 'Regulator/External dispute resolution',
             };
         case 'financial_bvi':
             return {
                 ...cfdConfig,
-                counterpartyCompany: 'Deriv (BVI) Ltd',
+                counterparty_company: 'Deriv (BVI) Ltd',
                 jurisdiction: 'British Virgin Islands',
-                jurisdictionDescription: 'Jurisdiction',
+                jurisdiction_description: 'Jurisdiction',
                 regulator: 'British Virgin Islands Financial Services Commission',
-                regulatorDescription: '(License no. SIBA/L/18/1114) Regulator/External Dispute Resolution',
+                regulator_description: '(License no. SIBA/L/18/1114) Regulator/External Dispute Resolution',
             };
         case 'financial_vanuatu':
             return {
                 ...cfdConfig,
-                counterpartyCompany: 'Deriv (V) Ltd',
+                counterparty_company: 'Deriv (V) Ltd',
                 jurisdiction: 'Vanuatu',
-                jurisdictionDescription: 'Jurisdiction',
+                jurisdiction_description: 'Jurisdiction',
                 regulator: 'Vanuatu Financial Services Commission',
-                regulatorDescription: 'Regulator/External Dispute Resolution',
+                regulator_description: 'Regulator/External Dispute Resolution',
             };
         case 'financial_labuan':
             return {
                 ...cfdConfig,
                 leverage: '1:100',
-                counterpartyCompany: 'Deriv (FX) Ltd',
+                counterparty_company: 'Deriv (FX) Ltd',
                 jurisdiction: 'Labuan',
-                jurisdictionDescription: 'Jurisdiction',
+                jurisdiction_description: 'Jurisdiction',
                 regulator: 'Labuan Financial Services Authority',
-                regulatorDescription: '(licence no. MB/18/0024) Regulator/External Dispute Resolution',
+                regulator_description: '(licence no. MB/18/0024) Regulator/External Dispute Resolution',
             };
         // Dxtrade
         case 'all_':
         case 'all_svg':
             return {
                 ...cfdConfig,
-                counterpartyCompany: 'Deriv (SVG) LLC',
+                counterparty_company: 'Deriv (SVG) LLC',
                 jurisdiction: 'St. Vincent & Grenadines',
-                jurisdictionDescription: 'Jurisdiction',
+                jurisdiction_description: 'Jurisdiction',
                 regulator: 'Financial Commission',
-                regulatorDescription: 'Regulator/External dispute resolution',
+                regulator_description: 'Regulator/External dispute resolution',
             };
         default:
             return cfdConfig;

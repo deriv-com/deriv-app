@@ -7,7 +7,7 @@ type TCFDInstrumentsLabelHighlightedProps = {
     trading_platforms: TModifiedTradingPlatformAvailableAccount;
 };
 
-const CFDInstrumentsLabelHighlighted: React.FC<TCFDInstrumentsLabelHighlightedProps> = ({ trading_platforms }) => {
+const CFDInstrumentsLabelHighlighted = ({ trading_platforms }: TCFDInstrumentsLabelHighlightedProps) => {
     const iconData: TIconData[] = [...getHighlightedIconLabel(trading_platforms)];
 
     return (

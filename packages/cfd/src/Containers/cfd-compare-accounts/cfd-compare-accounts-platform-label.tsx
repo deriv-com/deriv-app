@@ -8,7 +8,7 @@ type TCFDCompareAccountsPlatformLabelProps = {
     trading_platforms: TModifiedTradingPlatformAvailableAccount;
 };
 
-const CFDCompareAccountsPlatformLabel: React.FC<TCFDCompareAccountsPlatformLabelProps> = ({ trading_platforms }) => {
+const CFDCompareAccountsPlatformLabel = ({ trading_platforms }: TCFDCompareAccountsPlatformLabelProps) => {
     const platform_label = getPlatformLabel(trading_platforms.platform || '');
     const header_color = getHeaderColor(platform_label);
 

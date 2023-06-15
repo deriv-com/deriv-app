@@ -6,7 +6,7 @@ type TPrevNextButtonProps = {
     onClick: () => void;
 };
 
-export const PrevButton: React.FC<TPrevNextButtonProps> = props => {
+export const PrevButton = (props: TPrevNextButtonProps) => {
     const { enabled, onClick } = props;
 
     return (
@@ -20,7 +20,7 @@ export const PrevButton: React.FC<TPrevNextButtonProps> = props => {
     );
 };
 
-export const NextButton: React.FC<TPrevNextButtonProps> = props => {
+export const NextButton = (props: TPrevNextButtonProps) => {
     const { enabled, onClick } = props;
 
     return (

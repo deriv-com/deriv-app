@@ -96,6 +96,6 @@ export const MultiplierOptionsWidget = observer(() => {
 export const AccumulatorOptionsWidget = observer(() => {
     const { growth_rate } = useTraderStore();
     const displayed_trade_param = `${getGrowthRatePercentage(growth_rate)}%`;
-    const modal_title = localize('Accumulate');
+    const modal_title = localize('Growth rate');
     return <RadioGroupOptionsWidget displayed_trade_param={displayed_trade_param} modal_title={modal_title} />;
 });

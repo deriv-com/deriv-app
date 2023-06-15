@@ -1,8 +1,6 @@
 import React from 'react';
-//TODO: uncomment when backgrounds for modal will be ready
-// import { DemoLight, DemoDark } from '../../../public/images/index';
 import classNames from 'classnames';
-import { Badge, Icon, Text, Watermark } from '@deriv/components';
+import { Badge, Icon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getWalletCurrencyIcon } from 'Constants/utils';
@@ -21,13 +19,21 @@ type TWalletModalHeaderProps = {
 type THeaderBackground = {
     is_dark: boolean;
     is_demo: boolean;
+    currency: string;
 };
 
-const HeaderBackground = ({ is_demo, is_dark, children }: React.PropsWithChildren<THeaderBackground>) => {
+const HeaderBackground = ({ is_demo, is_dark, children, currency }: React.PropsWithChildren<THeaderBackground>) => {
+    // The currency for the demo should be set to 'demo'
+    // because its color will be determined based on the is_demo flag in the demo modal
+    // not the actual currency.
+    const active_currency = is_demo ? 'demo' : currency;
+
     return (
-        <div className='header-background'>
-            {/* TODO: uncomment when backgrounds for modal will be ready
-            {is_demo && <Watermark image={`url(${is_dark ? DemoDark : DemoLight})`} opacity={is_dark ? 0.32 : 0.24} />} */}
+        <div
+            className={classNames(`header-background wallet-header__${active_currency.toLowerCase()}-bg`, {
+                [`wallet-header__${active_currency.toLowerCase()}-bg--dark`]: is_dark,
+            })}
+        >
             {children}
         </div>
     );
@@ -109,7 +115,7 @@ const WalletModalHeader = ({
     }, [currency, getCurrencyIconSize, is_dark, is_demo]);
 
     return (
-        <HeaderBackground is_demo={is_demo} is_dark={is_dark}>
+        <HeaderBackground is_demo={is_demo} is_dark={is_dark} currency={currency}>
             <div
                 className={classNames(header_class_name, {
                     [`${header_class_name}--hidden-title`]: !is_wallet_name_visible,

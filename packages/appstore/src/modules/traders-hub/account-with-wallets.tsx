@@ -3,6 +3,7 @@ import Wallet from 'Components/containers/wallet';
 import { observer } from '@deriv/stores';
 import { useWalletList } from '@deriv/hooks';
 import { Loading } from '@deriv/components';
+import AddWallets from 'Components/add-more-wallets';
 
 const AccountWithWallets = observer(() => {
     const { data, isLoading } = useWalletList();
@@ -24,6 +25,7 @@ const AccountWithWallets = observer(() => {
                     />
                 );
             })}
+            <AddWallets />
         </React.Fragment>
     );
 });

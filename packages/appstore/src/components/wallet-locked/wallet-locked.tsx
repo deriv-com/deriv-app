@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
+import { Icon, LegacyInlineMessage, Text } from '@deriv/components';
 import { useIsSystemMaintenance } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import getMessage from './wallet-locked-provider';
@@ -22,7 +22,7 @@ const WalletLocked = observer(({ wallet }: TWalletLocked) => {
     });
 
     return (
-        <>
+        <div className='wallet-locked'>
             <div className='wallet-locked__state'>
                 {state?.title && (
                     <Text
@@ -49,15 +49,8 @@ const WalletLocked = observer(({ wallet }: TWalletLocked) => {
                     </Text>
                 )}
             </div>
-            <div className='wallet-locked__alert-message'>
-                <div className='wallet-locked__alert-message__wrapper'>
-                    <Icon icon='IcWalletWarning' />
-                    <Text align='left' size={is_mobile ? 'xxs' : 'xs'}>
-                        {state?.title}
-                    </Text>
-                </div>
-            </div>
-        </>
+            <LegacyInlineMessage message={state?.title} type={state?.type} />
+        </div>
     );
 });
 

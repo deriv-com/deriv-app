@@ -7,7 +7,13 @@ type TProps = {
     wallet_name: string;
 };
 
-const getMessage = ({ is_crypto, is_system_maintenance, wallet_name }: TProps) => {
+type getMessageReturnType = {
+    description?: React.ReactNode;
+    title?: React.ReactNode;
+    type?: 'warning' | 'information' | 'success' | 'error';
+};
+
+const getMessage = ({ is_crypto, is_system_maintenance, wallet_name }: TProps): getMessageReturnType => {
     if (true) {
         if (true)
             return {
@@ -24,6 +30,7 @@ const getMessage = ({ is_crypto, is_system_maintenance, wallet_name }: TProps) =
                         values={{ wallet_name }}
                     />
                 ),
+                type: 'warning',
             };
     }
 

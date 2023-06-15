@@ -13,26 +13,20 @@
         }
     }
 
-    &__alert-message {
-        background-color: rgba(255, 173, 58, 1);
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        right: 0;
+    .legacy-inline-message {
+        max-width: 128rem;
+        margin: 0 auto;
+        padding: 1.6rem 4rem;
 
-        &__wrapper {
-            display: flex;
-            column-gap: 0.8rem;
-            justify-content: flex-start;
-            align-items: center;
-            padding: 1.6rem 4rem;
-            max-width: 128rem;
-            width: 100%;
-            margin: 0 auto;
+        @include mobile {
+            padding: 1.6rem;
+        }
 
-            @include mobile {
-                padding: 1.6rem;
-            }
+        &__container {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            right: 0;
         }
     }
 }

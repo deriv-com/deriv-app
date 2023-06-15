@@ -5,8 +5,8 @@ import TitleCardLoader from 'Components/pre-loader/title-card-loader';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import WalletTransferBlock from 'Components/wallet-content/wallet-transfer-block';
-import './listing-container.scss';
 import { TWalletAccount } from 'Types';
+import './listing-container.scss';
 
 type ListingContainerProps = {
     title: ReactNode;

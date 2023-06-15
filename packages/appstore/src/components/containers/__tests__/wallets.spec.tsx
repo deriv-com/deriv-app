@@ -3,16 +3,10 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { TCoreStores } from '@deriv/stores/types';
 import Wallet from '../wallet';
+import { TWalletAccount } from 'Types';
 
-const mockedRootStore = mockStore({
-    modules: {
-        cfd: {
-            toggleCompareAccountsModal: jest.fn(),
-        },
-    },
-});
+const mockedRootStore = mockStore({});
 
 jest.mock('@deriv/account', () => ({
     ...jest.requireActual('@deriv/account'),
@@ -22,46 +16,64 @@ jest.mock('@deriv/account', () => ({
 jest.mock('./../currency-switcher-container', () => jest.fn(({ children }) => <div>{children}</div>));
 jest.mock('./../../wallet-content', () => jest.fn(() => <span>wallet test content</span>));
 
-let wallet_account: TCoreStores['client']['accounts'][0];
+let wallet_account: TWalletAccount;
 
 describe('<Wallets />', () => {
-    beforeEach(() => {
-        wallet_account = {
-            balance: 10415.24,
-            currency: 'USD',
-            landing_company_shortcode: 'svg',
-            is_virtual: 1,
-            loginid: 'CRW12345',
-        };
-    });
+    beforeEach(
+        () =>
+            (wallet_account = {
+                name: 'Demo',
+                currency: 'USD',
+                icon: '',
+                balance: 10784,
+                icon_type: 'fiat',
+                landing_company_shortcode: 'svg',
+                is_disabled: false,
+                is_virtual: true,
+                loginid: 'CRW10001',
+            })
+    );
 
     it('Check class for NOT demo', () => {
-        wallet_account.is_virtual = 0;
+        wallet_account.is_virtual = false;
 
-        const { container } = render(
-            <StoreProvider store={mockedRootStore}>
-                <Wallet wallet_account={wallet_account} />
-            </StoreProvider>
-        );
+        const Wrapper = () => {
+            const [is_open, wrapperSetIsOpen] = React.useState(false);
+
+            return (
+                <StoreProvider store={mockedRootStore}>
+                    <Wallet wallet_account={wallet_account} active={is_open} setActive={wrapperSetIsOpen} />
+                </StoreProvider>
+            );
+        };
+
+        const { container } = render(<Wrapper />);
 
         expect(container.childNodes[0]).toHaveClass('wallet');
         expect(container.childNodes[0]).not.toHaveClass('wallet__demo');
     });
 
     it('Check class for demo', () => {
-        const { container } = render(
-            <StoreProvider store={mockedRootStore}>
-                <Wallet wallet_account={wallet_account} />
-            </StoreProvider>
-        );
+        const Wrapper = () => {
+            const [is_open, wrapperSetIsOpen] = React.useState(false);
+
+            return (
+                <StoreProvider store={mockedRootStore}>
+                    <Wallet wallet_account={wallet_account} active={is_open} setActive={wrapperSetIsOpen} />
+                </StoreProvider>
+            );
+        };
+
+        const { container } = render(<Wrapper />);
 
         expect(container.childNodes[0]).toHaveClass('wallet');
         expect(container.childNodes[0]).toHaveClass('wallet__demo');
     });
 
-    it('Should show content when clicking on arrow icon', async () => {
+    it('Check content appears after arrow button click', async () => {
         const Wrapper = () => {
             const [is_open, wrapperSetIsOpen] = React.useState(false);
+
             return (
                 <StoreProvider store={mockedRootStore}>
                     <Wallet wallet_account={wallet_account} active={is_open} setActive={wrapperSetIsOpen} />
@@ -70,19 +82,26 @@ describe('<Wallets />', () => {
         };
 
         render(<Wrapper />);
-        const arrow_icon = screen.getByTestId('dt_arrow');
 
+        const arrow_icon = screen.getByTestId('dt_arrow');
         expect(screen.queryByText('wallet test content')).not.toBeInTheDocument();
         userEvent.click(arrow_icon);
         expect(screen.queryByText('wallet test content')).toBeInTheDocument();
     });
 
     it('Check for demo wallet header', () => {
-        render(
-            <StoreProvider store={mockedRootStore}>
-                <Wallet wallet_account={wallet_account} />
-            </StoreProvider>
-        );
+        const Wrapper = () => {
+            const [is_open, wrapperSetIsOpen] = React.useState(false);
+
+            return (
+                <StoreProvider store={mockedRootStore}>
+                    <Wallet wallet_account={wallet_account} active={is_open} setActive={wrapperSetIsOpen} />
+                </StoreProvider>
+            );
+        };
+
+        render(<Wrapper />);
+
         const currency_card = screen.queryByTestId(`dt_demo`);
 
         expect(currency_card).toBeInTheDocument();

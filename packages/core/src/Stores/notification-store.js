@@ -338,7 +338,7 @@ export default class NotificationStore extends BaseStore {
             this.handlePOAAddressMismatchNotifications();
 
             // TODO: Update logic when BE API is integrated [Wallets]
-            this.showSuccessWalletsUpgradeNotification();
+            // this.showSuccessWalletsUpgradeNotification();
 
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);

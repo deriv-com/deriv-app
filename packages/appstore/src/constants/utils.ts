@@ -1,5 +1,7 @@
-import { isMobile } from '@deriv/shared';
+import { useWalletsList } from '@deriv/hooks';
+import { isCryptocurrency, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { TWalletAccount } from 'Types';
 
 /**
  * This function checks whether the current item should have a border at the bottom 'aka "divider" '.
@@ -22,6 +24,7 @@ export const getHasDivider = (current_item_index: number, list_size: number, ava
     );
 };
 
+// TODO: Moved to shared package! Delete it later, right now it uses for cashier wallet modals
 // TODO: Refactor using data transformation layer pattern when we will have API for wallets (e.g. wallet.icon)
 export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_modal = false) => {
     switch (currency) {
@@ -119,4 +122,41 @@ export const getWalletHeaderButtons = (is_demo: boolean) => {
                   },
               },
           ];
+};
+
+export const convertWallets = (
+    wallets: ReturnType<typeof useWalletsList>['data'],
+    is_dark_mode_on: boolean
+): TWalletAccount[] => {
+    return (
+        wallets?.map(wallet => {
+            const {
+                currency = 'USD',
+                account_category,
+                account_type,
+                balance = 0,
+                is_disabled,
+                is_virtual,
+                landing_company_shortcode,
+                loginid = '',
+            } = wallet;
+
+            const is_fiat = !isCryptocurrency(currency) && currency !== 'USDT';
+            const name = is_virtual ? `Demo ${currency}` : currency;
+
+            return {
+                account_category,
+                account_type,
+                balance,
+                currency,
+                is_disabled: !!is_disabled,
+                is_virtual: !!is_virtual,
+                landing_company_shortcode: landing_company_shortcode as 'svg' | 'malta',
+                loginid,
+                icon: getWalletCurrencyIcon(is_virtual ? 'demo' : currency, is_dark_mode_on),
+                icon_type: is_fiat && !is_virtual ? 'fiat' : 'crypto',
+                name,
+            };
+        }) || []
+    );
 };

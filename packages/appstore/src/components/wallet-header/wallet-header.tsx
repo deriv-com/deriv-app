@@ -7,31 +7,36 @@ import WalletHeaderTitle from './wallet-header-title';
 import WalletHeaderBalance from './wallet-header-balance';
 import { TAccountCategory, TAccountStatus, TWalletShortcode, TWalletCurrency } from 'Types';
 import { getWalletHeaderButtons } from 'Constants/utils';
+import { formatMoney } from '@deriv/shared';
 import './wallet-header.scss';
 
 type TWalletHeader = {
     account_type: TAccountCategory;
     shortcode?: TWalletShortcode;
     currency?: TWalletCurrency;
-    balance?: string;
+    balance?: number;
     account_status?: TAccountStatus;
     is_open_wallet: boolean;
-    setIsOpen: (is_open: boolean) => void;
+    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    icon?: string;
+    icon_type?: string;
 };
 
 const WalletHeader = React.memo(
     ({
         account_status = '',
-        balance = '0.00',
+        balance = 0,
         currency = 'USD',
         shortcode = 'svg',
         account_type = 'real',
         is_open_wallet,
         setIsOpen,
+        icon,
+        icon_type,
     }: TWalletHeader) => {
         const is_demo = account_type === 'demo';
 
-        const wallet_btns = getWalletHeaderButtons(is_demo);
+        const wallet_buttons = getWalletHeaderButtons(is_demo);
 
         const onArrowClickHandler = () => {
             setIsOpen(!is_open_wallet);
@@ -44,17 +49,26 @@ const WalletHeader = React.memo(
                 })}
             >
                 <div className='wallet-header__container'>
-                    <WalletCurrencyCard account_type={account_type} currency={currency} />
+                    <WalletCurrencyCard
+                        account_type={account_type}
+                        currency={currency}
+                        icon={icon}
+                        icon_type={icon_type}
+                    />
                     <div className='wallet-header__description'>
                         <WalletHeaderTitle is_demo={is_demo} currency={currency} shortcode={shortcode} />
                         <WalletHeaderButtons
                             is_disabled={!!account_status}
                             is_open={is_open_wallet}
-                            btns={wallet_btns}
+                            buttons={wallet_buttons}
                         />
                     </div>
                     <div className='wallet-header__balance'>
-                        <WalletHeaderBalance account_status={account_status} balance={balance} currency={currency} />
+                        <WalletHeaderBalance
+                            account_status={account_status}
+                            balance={formatMoney(currency, balance, true)}
+                            currency={currency}
+                        />
                         <Icon
                             data_testid='dt_arrow'
                             onClick={onArrowClickHandler}

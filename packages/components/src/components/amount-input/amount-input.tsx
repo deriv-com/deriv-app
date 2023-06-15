@@ -40,6 +40,10 @@ const AmountInput = ({
     );
 
     useEffect(() => {
+        setValue(initial_value);
+    }, [initial_value]);
+
+    useEffect(() => {
         // update caret position every time the value changes (this happens after onChange)
         const updated_caret_position = displayNumber(value).length - caret_right_offset;
         target?.setSelectionRange(updated_caret_position, updated_caret_position);

@@ -1,5 +1,4 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { useWalletList } from '@deriv/hooks';
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { RegionAvailability } from 'Constants/platform-config';
 
@@ -185,4 +184,16 @@ export type TLinkedTo = {
     currency?: string;
 };
 
-export type TWalletAccount = NonNullable<ReturnType<typeof useWalletList>['data']>[number];
+export type TWalletAccount = {
+    account_category?: 'wallet' | 'trading';
+    account_type?: string;
+    balance?: number;
+    currency: string;
+    landing_company_shortcode: 'svg' | 'malta';
+    loginid: string;
+    is_disabled: boolean;
+    is_virtual: boolean;
+    icon: string;
+    icon_type: 'fiat' | 'crypto' | 'app';
+    name: string;
+};

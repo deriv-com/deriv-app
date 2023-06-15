@@ -25,6 +25,7 @@
     "license": "Apache-2.0",
     "dependencies": {
         "@deriv/account": "^1.0.0",
+        "@deriv/api": "^1.0.0",
         "@deriv/api-types": "^1.0.94",
         "@deriv/cashier": "^1.0.0",
         "@deriv/components": "^1.0.0",
@@ -46,7 +47,8 @@
         "react-router": "^5.2.0",
         "react-joyride": "^2.5.3",
         "react-router-dom": "^5.2.0",
-        "react-transition-group": "4.4.2"
+        "react-transition-group": "4.4.2",
+        "swiper": "^9.4.0"
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",

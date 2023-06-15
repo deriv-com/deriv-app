@@ -1,15 +1,17 @@
 import React from 'react';
 import Wallet from 'Components/containers/wallet';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
+import WalletCardsCarousel from 'Components/wallet-cards-carousel';
 import { useWalletList } from '@deriv/hooks';
 import { Loading } from '@deriv/components';
-import { getWalletCurrencyIcon } from 'Constants/utils';
+import { getWalletCurrencyIcon, convertWallets } from 'Constants/utils';
 
 const AccountWithWallets = observer(() => {
-    const { data, isLoading } = useWalletList();
-    const [selected_wallet, setSelectedWallet] = React.useState<NonNullable<typeof data>[number]['loginid']>();
+    const {
+        ui: { is_mobile, is_dark_mode_on },
+    } = useStore();
 
-    if (isLoading) return <Loading is_fullscreen={false} />;
+    const { data, isLoading } = useWalletList();
 
     // TODO: delete it when wallets API starts to work
     const fake_wallet_accounts: any[] = [
@@ -147,20 +149,32 @@ const AccountWithWallets = observer(() => {
         },
     ];
 
+    // TODO: We have to create ONE type for desktop and responsive wallet!!!
+    const wallet_accounts = React.useMemo(() => convertWallets(data, is_dark_mode_on), [data, is_dark_mode_on]);
+
+    const [selected_wallet, setSelectedWallet] = React.useState<NonNullable<typeof data>[number]['loginid']>(
+        wallet_accounts.length ? wallet_accounts[0].loginid : undefined
+    );
+
+    const desktop_wallets_component = fake_wallet_accounts.map(wallet => {
+        const setIsOpenWallet = () =>
+            setSelectedWallet(selected_id => (selected_id === wallet.loginid ? undefined : wallet.loginid));
+
+        return (
+            <Wallet
+                key={wallet.loginid}
+                wallet_account={wallet}
+                active={selected_wallet === wallet.loginid}
+                setActive={setIsOpenWallet}
+            />
+        );
+    });
+
+    if (isLoading) return <Loading is_fullscreen={false} />;
+
     return (
         <React.Fragment>
-            {fake_wallet_accounts?.map(wallet => {
-                return (
-                    <Wallet
-                        key={wallet.loginid}
-                        wallet_account={wallet}
-                        active={selected_wallet === wallet.loginid}
-                        setActive={() =>
-                            setSelectedWallet(previous => (previous === wallet.loginid ? undefined : wallet.loginid))
-                        }
-                    />
-                );
-            })}
+            {is_mobile ? <WalletCardsCarousel items={wallet_accounts} /> : desktop_wallets_component}
         </React.Fragment>
     );
 });

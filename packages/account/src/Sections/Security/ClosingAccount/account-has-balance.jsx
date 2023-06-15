@@ -124,7 +124,7 @@ const AccountHasPendingConditions = ({
                     dxtrade_balance.push({ ...dxtrade_account, ...info });
                 }
 
-                const ctrader_account = getCurrDxtradeAccount(ctrader_accounts_list, login_id);
+                const ctrader_account = getCurrCTraderAccount(ctrader_accounts_list, login_id);
                 if (ctrader_account) {
                     ctrader_balance.push({ ...ctrader_account, ...info });
                 }
@@ -291,7 +291,7 @@ const AccountHasPendingConditions = ({
                         {ctrader_open_positions.map(account => (
                             <Content
                                 key={account.login}
-                                currency_icon={`IcCTrader-${getCFDAccount({
+                                currency_icon={`IcDxtrade-${getCFDAccount({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
                                     platform: CFD_PLATFORMS.CTRADER,
@@ -319,7 +319,7 @@ const AccountHasPendingConditions = ({
                         {ctrader_balance.map(account => (
                             <Content
                                 key={account.login}
-                                currency_icon={`IcCTrader-${getCFDAccount({
+                                currency_icon={`IcDxtrade-${getCFDAccount({
                                     market_type: account.market_type,
                                     sub_account_type: account.sub_account_type,
                                     platform: CFD_PLATFORMS.CTRADER,

@@ -73,7 +73,7 @@ const GeneralErrorContent = ({ message, onClick }) => (
 const character_limit_no = 110;
 const max_allowed_reasons = 3;
 
-const ClosingAccountReason = ({ onBackClick, mt5_login_list, client_accounts, dxtrade_accounts_list }) => {
+const ClosingAccountReason = ({ onBackClick, mt5_login_list, client_accounts, dxtrade_accounts_list, ctrader_accounts_list }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     const [is_account_closed, setIsAccountClosed] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -230,6 +230,7 @@ const ClosingAccountReason = ({ onBackClick, mt5_login_list, client_accounts, dx
                         mt5_login_list={mt5_login_list}
                         client_accounts={client_accounts}
                         dxtrade_accounts_list={dxtrade_accounts_list}
+                        ctrader_accounts_list={ctrader_accounts_list}
                         onBackClick={onBackClick}
                     />
                 )}
@@ -245,4 +246,5 @@ export default connect(({ client }) => ({
     client_accounts: client.account_list,
     mt5_login_list: client.mt5_login_list,
     dxtrade_accounts_list: client.dxtrade_accounts_list,
+    ctrader_accounts_list: client.ctrader_accounts_list,
 }))(ClosingAccountReason);

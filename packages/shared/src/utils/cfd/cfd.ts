@@ -35,7 +35,7 @@ export const getMT5Title = (account_type: string) => {
     return CFD_text.financial;
 };
 
-type TPlatform = 'dxtrade' | 'mt5' | 'derivez';
+type TPlatform = 'dxtrade' | 'mt5' | 'derivez' | 'ctrader';
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
 type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu';
 type TGetAccount = {
@@ -186,6 +186,7 @@ export const getCFDAccountDisplay = ({
     // TODO condition will be changed when card 74063 is merged
     if (market_type === 'synthetic' && platform === CFD_PLATFORMS.DXTRADE) return localize('Synthetic');
     if (market_type === 'all' && platform === CFD_PLATFORMS.DXTRADE && is_transfer_form) return '';
+    if (market_type === 'all' && platform === CFD_PLATFORMS.CTRADER && is_transfer_form) return '';
     if (platform === CFD_PLATFORMS.DERIVEZ) return '';
 
     return cfd_account_display;

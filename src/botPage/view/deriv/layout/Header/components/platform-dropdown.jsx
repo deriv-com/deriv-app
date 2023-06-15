@@ -24,44 +24,46 @@ const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcher
         <div id='platform__dropdown' className='platform__dropdown show'>
             <div id='platform__list' className='platform__dropdown-list' ref={platformDropdownRef}>
                 {config.platforms.map(platform => {
-                    if (platform.title === translate('DTrader')) {
+                    if (platform.title === 'DTrader') {
                         const related_deriv_origin = getRelatedDeriveOrigin();
                         platform.link = `${related_deriv_origin.origin}/?lang=${localStorage
                             .getItem('lang')
                             .toLowerCase() || 'en'}`;
                     }
-                    if (platform.title === translate('DBot')) {
+                    if (platform.title === 'DBot') {
                         const related_deriv_origin = getRelatedDeriveOrigin();
                         platform.link = `${related_deriv_origin.origin}/bot/?lang=${localStorage
                             .getItem('lang')
                             .toLowerCase() || 'en'}`;
                     }
-                    if (platform.title === translate('SmartTrader')) {
+                    if (platform.title === 'SmartTrader') {
                         const related_deriv_origin = getRelatedDeriveOrigin();
                         platform.link = `https://${related_deriv_origin.prefix}smarttrader.deriv.${
                             related_deriv_origin.extension
-                            }/${localStorage.getItem('lang').toLowerCase() || 'en'}/trading`;
+                        }/${localStorage.getItem('lang').toLowerCase() || 'en'}/trading`;
                     }
 
-                    const is_binary_bot = platform.title === translate('Binary Bot') && location.pathname === '/';
+                    const is_binary_bot = platform.title === 'Binary Bot' && location.pathname === '/';
                     return (
                         <a
                             href={is_binary_bot ? '#' : platform.link}
                             className={classNames('platform__list-item', {
-                                'platform__list-item--active': translate(platform.title) === 'Binary Bot',
+                                'platform__list-item--active': platform.title === 'Binary Bot',
                             })}
                             key={`link-to-${platform.title.replace(/ /g, '').toLowerCase()}`}
                             onClick={e => handleClick(e, is_binary_bot)}
                         >
                             <img src={platform.logo} className='platform__list-item-icon' />
                             <div className='platform__list-item-text'>
-                                <div className='platform__list-item-name'>{translate(platform.title)}</div>
                                 <div className='platform__list-item-desc'>{translate(platform.description)}</div>
                             </div>
                         </a>
                     );
                 })}
             </div>
+            <a href={config.tradershub.url}>
+                <span>{translate("Looking for CFDs? Go to Trader's Hub")}</span>
+            </a>
         </div>
     );
 });

@@ -136,18 +136,6 @@ export default {
             logo: 'image/deriv/brand/ic-brand-dbot.svg',
         },
         {
-            title: 'DMT5',
-            description: translate('Trade on Deriv MetaTrader 5 (DMT5), the all-in-one FX and CFD trading platform.'),
-            link: `${related_deriv_origin.origin}/mt5`,
-            logo: 'image/deriv/brand/ic-brand-dmt5.svg',
-        },
-        {
-            title: 'Deriv X',
-            description: translate('Trade FX and CFDs on a customisable, easy-to-use trading platform.'),
-            link: `${related_deriv_origin.origin}/derivx`,
-            logo: 'image/deriv/brand/ic-brand-dxtrade.svg',
-        },
-        {
             title: 'SmartTrader',
             description: translate("Trade the world's markets with our popular user-friendly platform."),
             link: `https://${related_deriv_origin.prefix}smarttrader.deriv.${related_deriv_origin.extension}/`,

@@ -89,6 +89,9 @@ const DerivPassword = ({
                                 description='trader'
                             />
                         </Popover>
+                        <Popover alignment='bottom' message={platform_name_trader}>
+                            <Icon icon={`${getPlatformSettings('derivez').icon}`} size={32} description='derivez' />
+                        </Popover>
                         {!is_eu_user && !financial_restricted_countries && (
                             <React.Fragment>
                                 <Popover alignment='bottom' message={platform_name_dbot}>

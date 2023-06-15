@@ -1,12 +1,12 @@
+import React from 'react';
+import classNames from 'classnames';
 import { Button, Icon } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/root-store';
-import React from 'react';
 import LocalFooter from './local-footer';
 import WorkspaceControl from './workspace-control';
-import classNames from 'classnames';
 
 type TLocalComponentProps = {
     active_tab: number;

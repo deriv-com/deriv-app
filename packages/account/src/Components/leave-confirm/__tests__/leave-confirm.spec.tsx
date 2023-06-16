@@ -28,24 +28,30 @@ const mock_set_show = jest.fn();
 const mock_set_next_location = jest.fn();
 
 const get_leave_confirm_states = () => {
-    jest.spyOn(React, 'useState')
+    return jest
+        .spyOn(React, 'useState')
         .mockImplementationOnce(() => [null, jest.fn()])
         .mockImplementationOnce(() => [true, mock_set_show])
         .mockImplementationOnce(() => [{ pathname: '/' }, mock_set_next_location]);
 };
 
-const get_transition_blocker_states = () => {
-    jest.spyOn(React, 'useState')
+const get_transition_blocker_states = ({ pathname }: { pathname: string | null }) => {
+    return jest
+        .spyOn(React, 'useState')
         .mockImplementationOnce(() => [true, mock_set_show])
-        .mockImplementationOnce(() => [{ pathname: '/' }, mock_set_next_location]);
+        .mockImplementationOnce(() => [pathname ? { pathname: '/' } : null, mock_set_next_location]);
 };
+
+const on_dirty = jest.fn();
 
 const LeaveConfirmComponent = () => {
     const history = createBrowserHistory();
     return (
         <Router history={history}>
-            <Formik initialValues={{}} enableReinitialize validate={jest.fn()} onSubmit={jest.fn()}>
-                {() => <LeaveConfirm onDirty={jest.fn()} />}
+            <Formik initialValues={{ field: '' }} enableReinitialize validate={jest.fn()} onSubmit={jest.fn()}>
+                {() => {
+                    return <LeaveConfirm onDirty={on_dirty()} />;
+                }}
             </Formik>
         </Router>
     );
@@ -98,15 +104,35 @@ describe('LeaveConfirm', () => {
         expect(mock_set_show).toHaveBeenCalled();
         expect(mock_set_next_location).toHaveBeenCalled();
     });
+    it('should sehow modal when value is dirty and trigger unblock function', () => {
+        get_transition_blocker_states({ pathname: '/' });
+        render(<TransitionBlockerComponent dirty onDirty={on_dirty} />);
+        const el_leave_settings_btn = screen.getByRole('button', { name: 'Leave Settings' });
+        userEvent.click(el_leave_settings_btn);
+
+        expect(on_dirty).toHaveBeenCalled();
+        expect(mock_set_show).toHaveBeenCalled();
+        expect(mock_set_next_location).toHaveBeenCalled();
+    });
+
     it('should set values as dirty when the user leaves modal', () => {
-        get_transition_blocker_states();
-        render(<TransitionBlockerComponent onDirty={jest.fn()} />);
+        get_transition_blocker_states({ pathname: '/' });
+        render(<TransitionBlockerComponent onDirty={on_dirty} />);
         const el_cancel_btn = screen.getByRole('button', { name: 'Cancel' });
         userEvent.click(el_cancel_btn);
-        expect(screen.getByRole('button', { name: 'Leave Settings' })).toBeInTheDocument();
+
+        expect(on_dirty).toHaveBeenCalled();
     });
     it('should change pathname when user leaves form', () => {
-        get_transition_blocker_states();
+        get_transition_blocker_states({ pathname: '/' });
+        render(<TransitionBlockerComponent />);
+        const el_leave_settings_btn = screen.getByRole('button', { name: 'Leave Settings' });
+        userEvent.click(el_leave_settings_btn);
+        expect(screen.getByRole('button', { name: 'Leave Settings' })).toBeInTheDocument();
+    });
+
+    it('should not change pathname when user leaves form', () => {
+        get_transition_blocker_states({ pathname: null });
         render(<TransitionBlockerComponent />);
         const el_leave_settings_btn = screen.getByRole('button', { name: 'Leave Settings' });
         userEvent.click(el_leave_settings_btn);

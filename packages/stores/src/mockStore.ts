@@ -1,5 +1,5 @@
 import merge from 'lodash.merge';
-import { TStores } from '../types';
+import type { TStores } from '../types';
 
 const mock = (): TStores & { is_mock: boolean } => {
     return {
@@ -8,6 +8,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             account_settings: {},
             accounts: {},
             active_account_landing_company: '',
+            trading_platform_available_accounts: [],
             account_limits: {
                 daily_transfers: {
                     dxtrade: {
@@ -135,6 +136,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_trading_experience_incomplete: false,
             is_virtual: false,
             is_withdrawal_lock: false,
+            is_populating_account_list: false,
             landing_company_shortcode: '',
             local_currency_config: {
                 currency: '',
@@ -194,6 +196,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTwoFAChangedStatus: jest.fn(),
             has_any_real_account: false,
             real_account_creation_unlock_date: 0,
+            setPrevAccountType: jest.fn(),
         },
         common: {
             error: {
@@ -260,6 +263,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_real_acc_signup_on: false,
             is_need_real_account_for_cashier_modal_visible: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
+            populateHeaderExtensions: jest.fn(),
+            populateSettingsExtensions: jest.fn(),
             setShouldShowCooldownModal: jest.fn(),
         },
         traders_hub: {
@@ -275,6 +280,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_real: false,
             selectRegion: jest.fn(),
             is_low_risk_cr_eu_real: false,
+            toggleRegulatorsCompareModal: jest.fn(),
+            selected_region: '',
             is_demo: false,
             financial_restricted_countries: false,
             selected_account_type: 'real',
@@ -285,6 +292,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTogglePlatformType: jest.fn(),
             setSelectedAccount: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
+            selectAccountType: jest.fn(),
         },
         menu: {
             attach: jest.fn(),
@@ -317,6 +325,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             },
             getPositionById: jest.fn(),
             is_loading: false,
+            is_accumulator: false,
             is_multiplier: false,
             onClickCancel: jest.fn(),
             onClickSell: jest.fn(),
@@ -332,9 +341,14 @@ const mock = (): TStores & { is_mock: boolean } => {
             update: jest.fn(),
             unmount: jest.fn(),
         },
+        feature_flags: {
+            data: undefined,
+            update: jest.fn(),
+            unmount: jest.fn(),
+        },
     };
 };
 
 const mockStore = (override: DeepPartial<TStores>): TStores => merge(mock(), override);
 
-export { mockStore };
+export default mockStore;

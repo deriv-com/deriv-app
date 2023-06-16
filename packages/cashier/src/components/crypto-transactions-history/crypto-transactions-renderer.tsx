@@ -66,11 +66,7 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
     if (status && isMobile()) {
         return (
             <div>
-                <Table.Row
-                    className={`crypto-transactions-history__table-row${
-                        transaction_type === 'deposit' ? '--with-confirm' : ''
-                    }`}
-                >
+                <Table.Row className={'crypto-transactions-history__table-row'}>
                     <Table.Cell className='crypto-transactions-history__table-cell'>
                         <Icon
                             icon={transaction_type === 'withdrawal' ? 'IcCashierWithdrawal' : 'IcCashierDeposit'}
@@ -163,13 +159,11 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                             {localize('Confirmations')}
                         </Text>
                     </Table.Cell>
-                    {transaction_type === 'deposit' && (
-                        <Table.Cell className='crypto-transactions-history__table-time'>
-                            <Text as='p' size='xxs' color='red'>
-                                {confirmations ?? localize('Pending')}
-                            </Text>
-                        </Table.Cell>
-                    )}
+                    <Table.Cell className='crypto-transactions-history__table-time'>
+                        <Text as='p' size='xxs' color='red'>
+                            {transaction_type === 'deposit' ? confirmations ?? localize('Pending') : ''}
+                        </Text>
+                    </Table.Cell>
                     <Table.Cell>
                         <Text as='p' color='prominent' size='xxs' weight='bold'>
                             {localize('Time')}
@@ -205,11 +199,7 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
 
     return (
         <div>
-            <Table.Row
-                className={`crypto-transactions-history__table-row${
-                    transaction_type === 'deposit' ? '--with-confirm' : ''
-                }`}
-            >
+            <Table.Row className={'crypto-transactions-history__table-row'}>
                 <Table.Cell className='crypto-transactions-history__table-type'>
                     <Icon
                         icon={transaction_type === 'withdrawal' ? 'IcCashierWithdrawal' : 'IcCashierDeposit'}
@@ -291,13 +281,11 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                             </Text>
                         ))}
                 </Table.Cell>
-                {transaction_type === 'deposit' && (
-                    <Table.Cell>
-                        <Text as='p' size='xs' color='red'>
-                            {confirmations ?? localize('Pending')}
-                        </Text>
-                    </Table.Cell>
-                )}
+                <Table.Cell>
+                    <Text as='p' size='xs' color='red'>
+                        {transaction_type === 'deposit' ? confirmations ?? localize('Pending') : ''}
+                    </Text>
+                </Table.Cell>
                 {!is_transaction_clicked && (
                     <Table.Cell>
                         <Text as='p' size='xs'>

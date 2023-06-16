@@ -44,13 +44,11 @@
             justify-content: center;
             align-items: center;
             padding: 1.5rem;
-            width: 13rem;
+            width: 15rem;
             height: 2rem;
-            right: -4rem;
-            top: 1rem;
             background: var(--status-transfer);
             color: var(--text-colored-background);
-            transform: rotate(45deg);
+            transform: translateX(17rem) translateY(-2rem) rotate(45deg);
         }
     }
     &-outline {

@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { TModifiedTradingPlatformAvailableAccount, TCompareAccountsCard } from 'Components/props.types';
+import { TCompareAccountsCard } from 'Components/props.types';
 import CFDInstrumentsLabelHighlighted from './cfd-instruments-label-highlighted';
 import CFDCompareAccountsDescription from './cfd-compare-accounts-description';
 import CFDCompareAccountsTitleIcon from './cfd-compare-accounts-title-icon';

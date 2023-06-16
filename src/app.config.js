@@ -12,7 +12,7 @@ export default {
         // fr: 'Français',
         // id: 'Indonesia',
         // pl: 'Polish',
-        pt: 'Português',
+        // pt: 'Português',
         // ru: 'Русский',
         // zh_cn: '简体中文',
         // zh_tw: '繁體中文',

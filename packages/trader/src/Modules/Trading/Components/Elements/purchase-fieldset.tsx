@@ -1,11 +1,41 @@
 import classNames from 'classnames';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button.jsx';
 import CancelDealInfo from '../Form/Purchase/cancel-deal-info.jsx';
+
+type TProposalTypeInfo = {
+    has_error?: boolean;
+    id?: string;
+    has_increased?: boolean;
+    message?: string;
+};
+
+type TPurchaseFieldset = {
+    basis: string;
+    buy_info: { error?: string };
+    currency: string;
+    growth_rate: number;
+    has_cancellation: boolean;
+    index: number;
+    info: TProposalTypeInfo;
+    is_accumulator: boolean;
+    is_disabled: boolean;
+    is_high_low: boolean;
+    is_loading: boolean;
+    is_market_closed: boolean;
+    is_multiplier: boolean;
+    is_proposal_empty: boolean;
+    is_proposal_error: boolean;
+    is_vanilla: boolean;
+    onClickPurchase: (is_over: boolean, contract_type: string) => void;
+    onHoverPurchase: (is_over: boolean, contract_type: string) => void;
+    purchased_states_arr: boolean[];
+    setPurchaseState: (index: number) => void;
+    type: string;
+};
 
 const PurchaseFieldset = ({
     basis,
@@ -29,7 +59,7 @@ const PurchaseFieldset = ({
     onHoverPurchase,
     setPurchaseState,
     type,
-}) => {
+}: TPurchaseFieldset) => {
     const [should_fade, setShouldFade] = React.useState(false);
 
     React.useEffect(() => {
@@ -103,7 +133,7 @@ const PurchaseFieldset = ({
                         }}
                         onMouseLeave={() => {
                             if (!is_disabled) {
-                                onHoverPurchase(false);
+                                onHoverPurchase(false, type);
                             }
                         }}
                     >
@@ -145,30 +175,6 @@ const PurchaseFieldset = ({
             </MobileWrapper>
         </Fieldset>
     );
-};
-
-PurchaseFieldset.propTypes = {
-    basis: PropTypes.string,
-    buy_info: PropTypes.object,
-    currency: PropTypes.string,
-    growth_rate: PropTypes.number,
-    has_cancellation: PropTypes.bool,
-    index: PropTypes.number,
-    info: PropTypes.object,
-    is_accumulator: PropTypes.bool,
-    is_disabled: PropTypes.bool,
-    is_high_low: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    is_market_closed: PropTypes.bool,
-    is_multiplier: PropTypes.bool,
-    is_proposal_empty: PropTypes.bool,
-    is_proposal_error: PropTypes.bool,
-    is_vanilla: PropTypes.bool,
-    onClickPurchase: PropTypes.func,
-    onHoverPurchase: PropTypes.func,
-    purchased_states_arr: PropTypes.array,
-    setPurchaseState: PropTypes.func,
-    type: PropTypes.string,
 };
 
 export default React.memo(PurchaseFieldset);

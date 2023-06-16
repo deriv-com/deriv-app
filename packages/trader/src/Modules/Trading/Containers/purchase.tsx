@@ -2,7 +2,7 @@ import React from 'react';
 import { isAccumulatorContract, isEmptyObject, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import PurchaseButtonsOverlay from 'Modules/Trading/Components/Elements/purchase-buttons-overlay.jsx';
-import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
+import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset';
 import { getContractTypePosition } from 'Constants/contract';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
@@ -89,7 +89,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
                     is_multiplier={is_multiplier}
                     is_vanilla={is_vanilla}
                     is_proposal_empty={is_proposal_empty}
-                    is_proposal_error={is_proposal_error}
+                    is_proposal_error={!!is_proposal_error}
                     purchased_states_arr={purchased_states_arr}
                     onHoverPurchase={onHoverPurchase}
                     onClickPurchase={onClickPurchase}

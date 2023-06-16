@@ -24,7 +24,11 @@ const BuySellHeaderDropdown = () => {
                 />
             </DesktopWrapper>
             <MobileWrapper>
-                <div className='buy-sell-header-dropdown--sort' onClick={() => showModal({ key: 'SortModal' })}>
+                <div
+                    className='buy-sell-header-dropdown--sort'
+                    data-testid='dt_buy_sell_header_dropdown'
+                    onClick={() => showModal({ key: 'SortModal' })}
+                >
                     <Icon icon='IcCashierSort' size={16} />
                 </div>
             </MobileWrapper>

@@ -9,7 +9,7 @@ import BuySellTableNoAds from 'Components/buy-sell/buy-sell-table/buy-sell-table
 import { useStores } from 'Stores';
 
 type TBuySellTableProps = {
-    onScroll: () => void;
+    onScroll?: () => void;
 };
 
 const BuySellTable = ({ onScroll }: TBuySellTableProps) => {

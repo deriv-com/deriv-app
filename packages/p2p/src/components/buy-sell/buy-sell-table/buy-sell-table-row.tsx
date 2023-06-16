@@ -27,7 +27,7 @@ type TBuySellTableRowProps = {
         local_currency: string;
         max_order_amount_limit_display: string;
         min_order_amount_limit_display: string;
-        payment_method_names: string;
+        payment_method_names: Array<string>;
         price_display?: string;
         rate_type?: string;
         rate?: number;
@@ -87,7 +87,7 @@ const BuySellTableRow = ({ row: advert }: TBuySellTableRowProps) => {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes
         // an empty item with an item that holds the same height of the toggle container.
         // Also see: buy-sell-table.jsx
-        return <div style={{ height: '140px' }} />;
+        return <div data-testid='dt_buy_sell_table_empty_row' style={{ height: '140px' }} />;
     }
 
     if (advert_id === 'NO_MATCH_ROW') {
@@ -199,6 +199,7 @@ const BuySellTableRow = ({ row: advert }: TBuySellTableRowProps) => {
                             className={classNames('buy-sell-table-row__cell', {
                                 'buy-sell-table-row__cell-hover': !is_barred,
                             })}
+                            data-testid='dt_buy_sell_table_row_advertiser'
                             onClick={() => onClickRow()}
                         >
                             <OnlineStatusAvatar
@@ -241,7 +242,7 @@ const BuySellTableRow = ({ row: advert }: TBuySellTableRowProps) => {
                         </div>
                     </Table.Cell>
                     <Table.Cell>
-                        {min_order_amount_limit_display}&ndash;{max_order_amount_limit_display} {account_currency}
+                        {min_order_amount_limit_display} {max_order_amount_limit_display} {account_currency}
                     </Table.Cell>
                     <Table.Cell>
                         <Text color='profit-success' size='xs' weight='bold'>

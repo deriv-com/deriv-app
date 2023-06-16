@@ -626,7 +626,7 @@ export default class BuySellStore extends BaseStore {
                 v => !!v,
                 v => v >= this.advert.min_order_amount_limit,
                 v => v <= this.advert.max_order_amount_limit,
-                v => (this.root_store.buy_sell_store.is_buy_advert ? true : v <= this.root_store.general_store.balance),
+                v => (this.is_buy_advert ? true : v <= this.root_store.general_store.balance),
                 v => countDecimalPlaces(v) <= getDecimalPlaces(this.account_currency),
             ],
         };

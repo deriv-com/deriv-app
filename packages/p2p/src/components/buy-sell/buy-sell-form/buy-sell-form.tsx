@@ -397,6 +397,7 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                                 <Input
                                                     {...field}
                                                     data-lpignore='true'
+                                                    data_testId='dt_buy_sell_form_amount'
                                                     type='number'
                                                     error={errors.amount}
                                                     label={
@@ -463,6 +464,7 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                                         <Input
                                                             {...field}
                                                             data-lpignore='true'
+                                                            data_testId='dt_buy_sell_form_bank_details'
                                                             type='textarea'
                                                             error={touched.payment_info && errors.payment_info}
                                                             hint={localize(
@@ -486,6 +488,7 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                                     <Input
                                                         {...field}
                                                         data-lpignore='true'
+                                                        data_testId='dt_buy_sell_form_contact_details'
                                                         type='textarea'
                                                         error={touched.contact_info && errors.contact_info}
                                                         label={localize('Your contact details')}

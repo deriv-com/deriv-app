@@ -112,6 +112,7 @@ const BuySellHeader = ({ table_type }: TBuySellHeaderProps) => {
                     <BuySellHeaderDropdown />
                     <Icon
                         className='buy-sell-header__row--filter'
+                        data_testid='dt_buy_sell_header_row_filter'
                         icon='IcFilter'
                         onClick={() => showModal({ key: 'FilterModal', props: {} })}
                         size={40}

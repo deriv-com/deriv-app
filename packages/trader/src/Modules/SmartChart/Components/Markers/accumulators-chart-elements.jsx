@@ -26,10 +26,10 @@ const AccumulatorsChartElements = ({
                 <ChartMarker
                     marker_config={{
                         ContentComponent: 'div',
-                        custom_className: 'sc-current-spot-emphasizer',
                         x: current_spot_time,
                         y: current_spot,
                     }}
+                    marker_content_props={{ className: 'sc-current-spot-emphasizer' }}
                 />
             )}
         </React.Fragment>

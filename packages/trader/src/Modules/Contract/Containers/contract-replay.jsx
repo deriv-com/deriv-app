@@ -193,7 +193,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const {
         accumulator_previous_spot,
         contract_config,
-        marker,
+        marker: accumulators_barriers_marker,
         is_digit_contract,
         barriers_array,
         markers_array,
@@ -224,7 +224,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const all_ticks = audit_details ? audit_details.all_ticks : [];
     const { wsForget, wsSubscribe, wsSendRequest, wsForgetStream } = trade;
 
-    const accu_barriers_marker_component = allMarkers[marker?.type];
+    const accu_barriers_marker_component = allMarkers[accumulators_barriers_marker?.type];
 
     const isBottomWidgetVisible = () => {
         return isDesktop() && is_digit_contract;
@@ -294,13 +294,13 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
             {is_accumulator_contract && !!markers_array && (
                 <DelayedAccuBarriersMarker
                     marker_component={accu_barriers_marker_component}
-                    key={marker.key}
+                    key={accumulators_barriers_marker.key}
                     is_dark_theme={is_dark_theme}
                     granularity={granularity}
                     is_mobile={isMobile()}
                     is_in_contract_details
                     previous_spot={accumulator_previous_spot}
-                    {...marker}
+                    {...accumulators_barriers_marker}
                 />
             )}
         </SmartChart>

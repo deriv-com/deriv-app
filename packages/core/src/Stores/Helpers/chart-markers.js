@@ -66,7 +66,7 @@ const addLabelAlignment = (tick, idx, arr) => {
     return tick;
 };
 
-const createTickMarkers = contract_info => {
+export const createTickMarkers = contract_info => {
     const is_accumulator = isAccumulatorContract(contract_info.contract_type);
     const is_contract_closed = contract_info.status !== 'open';
     const available_ticks = (is_accumulator && contract_info.audit_details?.all_ticks) || contract_info.tick_stream;

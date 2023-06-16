@@ -15,13 +15,9 @@ type TDelayedAccuBarriersMarkerProps = {
 };
 
 const DelayedAccuBarriersMarker = React.memo(
-    ({ marker_component: MarkerComponent, ...props }: TDelayedAccuBarriersMarkerProps) => {
-        const passthrough_props = { ...props } as Omit<TDelayedAccuBarriersMarkerProps, 'previous_spot'> & {
-            previous_spot?: number | null;
-        };
-        delete passthrough_props.previous_spot;
-        return <MarkerComponent {...passthrough_props} />;
-    }, // barrier range will get updated only when previous_spot changes:
+    ({ marker_component: MarkerComponent, ...props }: TDelayedAccuBarriersMarkerProps) => (
+        <MarkerComponent {...{ ...props, previous_spot: undefined }} />
+    ), // barrier range will get updated only when previous_spot changes:
     (prevProps, nextProps) => prevProps.previous_spot === nextProps.previous_spot
 );
 DelayedAccuBarriersMarker.displayName = 'DelayedAccuBarriersMarker';

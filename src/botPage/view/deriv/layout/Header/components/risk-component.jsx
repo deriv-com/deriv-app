@@ -56,9 +56,9 @@ const RiskComponent = ({ non_eu_accounts = [], eu_accounts = [], is_country_low_
     ];
 
     const [accordion_array, setAccordionArray] = React.useState(risk_array);
-    const toggleAccordion = (id) => {
+    const toggleAccordion = id => {
         const newTodos = accordion_array.slice();
-        const objIndex = newTodos.findIndex((obj => obj.id === id));
+        const objIndex = newTodos.findIndex(obj => obj.id === id);
         newTodos[objIndex].acc_open = !newTodos[objIndex].acc_open;
         setAccordionArray(newTodos);
     };
@@ -70,18 +70,20 @@ const RiskComponent = ({ non_eu_accounts = [], eu_accounts = [], is_country_low_
                 if (should_show) {
                     return (
                         <React.Fragment key={title + index}>
-                            <div onClick={() => toggleAccordion(id)}
-                                className='account__switcher-container__title'>
+                            <div onClick={() => toggleAccordion(id)} className='account__switcher-container__title'>
                                 {title}
-                                <img className={classNames('header__expand open', {
-                                    'header__expand--close open': acc_open,
-                                })}
-                                    src="image/deriv/ic-chevron-down.svg"
+                                <img
+                                    className={classNames('header__expand open', {
+                                        'header__expand--close open': acc_open,
+                                    })}
+                                    src='image/deriv/ic-chevron-down.svg'
                                 />
                             </div>
-                            <div className={classNames('account__switcher-container__content', {
-                                'account__switcher-container__content--close': acc_open,
-                            })}>
+                            <div
+                                className={classNames('account__switcher-container__content', {
+                                    'account__switcher-container__content--close': acc_open,
+                                })}
+                            >
                                 <div
                                     className={classNames('account__switcher-container__content', {
                                         'account__switcher-container__content--low-risk': low_risk_without_account,
@@ -106,4 +108,3 @@ const RiskComponent = ({ non_eu_accounts = [], eu_accounts = [], is_country_low_
 };
 
 export default RiskComponent;
-

@@ -10,20 +10,22 @@ export const supportedLanguages = {
 const fallbackLang = en;
 let translation = {};
 
-const t = key => (key in translation ? translation[key] : fallbackLang[key]);
+const t = key => (translation && key in translation ? translation[key] : fallbackLang[key]);
 
 export const init = lang => {
-    translation = supportedLanguages[lang];
+    translation = supported_languages[lang];
 };
 
 export const translate = str => (str && t(sha1(str))) || str;
 
 export const translateLangToLang = (str, fromLang, toLang) => {
-    if (supportedLanguages[fromLang]) {
-        const hashIndex = Object.values(supportedLanguages[fromLang]).findIndex(translatedStr => str === translatedStr);
+    if (supported_languages[fromLang]) {
+        const hashIndex = Object.values(supported_languages[fromLang]).findIndex(
+            translatedStr => str === translatedStr
+        );
         if (hashIndex !== -1) {
-            const hash = Object.keys(supportedLanguages[fromLang])[hashIndex];
-            const translatedStr = supportedLanguages[toLang][hash];
+            const hash = Object.keys(supported_languages[fromLang])[hashIndex];
+            const translatedStr = supported_languages[toLang][hash];
             if (translatedStr) {
                 return translatedStr;
             }

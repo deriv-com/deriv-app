@@ -118,7 +118,7 @@ export const getAppIdFallback = () => getCustomEndpoint().appId || getDefaultEnd
 export const generateWebSocketURL = serverUrl => `wss://${serverUrl}`;
 
 export const getOAuthURL = () =>
-    `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}&brand=deriv`;
+    `https://${generateOAuthDomain()}/oauth2/authorize?app_id=${getAppIdFallback()}&l=${getLanguage()?.toUpperCase()}&brand=deriv`;
 
 export async function addTokenIfValid(token, tokenObjectList) {
     try {

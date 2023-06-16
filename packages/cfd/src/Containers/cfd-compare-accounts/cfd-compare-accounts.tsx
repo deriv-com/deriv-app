@@ -4,14 +4,13 @@ import { useHistory } from 'react-router-dom';
 import { Text, Icon, PageOverlay, DesktopWrapper, MobileWrapper, CFDCompareAccountsCarousel } from '@deriv/components';
 import { routes, CFD_PLATFORMS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { useStore } from '@deriv/stores';
 import CFDCompareAccountsCard from './cfd-compare-accounts-card';
 import {
     getSortedAvailableAccounts,
     getDxtradeAccountAvailabaility,
     prepareDxtradeData,
 } from '../../Helpers/compare-accounts-config';
-
-import { useStore } from '@deriv/stores';
 
 const CompareCFDs = observer(() => {
     const history = useHistory();

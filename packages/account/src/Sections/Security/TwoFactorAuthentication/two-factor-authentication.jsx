@@ -25,7 +25,6 @@ const TwoFactorAuthentication = ({
     setTwoFAStatus,
     getTwoFAStatus,
     has_enabled_two_fa,
-    Notifications,
     setTwoFAChangedStatus,
 }) => {
     const [is_loading, setLoading] = React.useState(true);
@@ -200,7 +199,6 @@ const TwoFactorAuthentication = ({
                     'two-factor__wrapper-dashboard': is_appstore,
                 })}
             >
-                {Notifications && <Notifications />}
                 {has_enabled_two_fa ? TwoFactorEnabled : TwoFactorDisabled}
             </div>
         </section>
@@ -213,16 +211,14 @@ TwoFactorAuthentication.propTypes = {
     setTwoFAStatus: PropTypes.func,
     getTwoFAStatus: PropTypes.func,
     has_enabled_two_fa: PropTypes.bool,
-    Notifications: PropTypes.node,
     setTwoFAChangedStatus: PropTypes.func,
 };
 
-export default connect(({ client, ui }) => ({
+export default connect(({ client }) => ({
     email_address: client.email_address,
     is_switching: client.is_switching,
     setTwoFAStatus: client.setTwoFAStatus,
     getTwoFAStatus: client.getTwoFAStatus,
     has_enabled_two_fa: client.has_enabled_two_fa,
-    Notifications: ui.notification_messages_ui,
     setTwoFAChangedStatus: client.setTwoFAChangedStatus,
 }))(TwoFactorAuthentication);

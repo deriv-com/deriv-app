@@ -109,7 +109,6 @@ export const PersonalDetailsForm = ({
     refreshNotifications,
     showPOAAddressMismatchSuccessNotification,
     showPOAAddressMismatchFailureNotification,
-    Notifications,
     fetchResidenceList,
     fetchStatesList,
     has_residence,
@@ -555,7 +554,6 @@ export const PersonalDetailsForm = ({
                 dirty,
             }) => (
                 <React.Fragment>
-                    {Notifications && <Notifications />}
                     <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                     {show_form && (
                         <Form
@@ -1286,7 +1284,6 @@ PersonalDetailsForm.propTypes = {
     refreshNotifications: PropTypes.func,
     showPOAAddressMismatchSuccessNotification: PropTypes.func,
     showPOAAddressMismatchFailureNotification: PropTypes.func,
-    Notifications: PropTypes.node,
     fetchResidenceList: PropTypes.func,
     fetchStatesList: PropTypes.func,
     has_residence: PropTypes.bool,
@@ -1300,7 +1297,7 @@ PersonalDetailsForm.propTypes = {
     is_language_changing: PropTypes.bool,
 };
 
-export default connect(({ client, notifications, ui, common }) => ({
+export default connect(({ client, notifications, common }) => ({
     account_settings: client.account_settings,
     authentication_status: client.authentication_status,
     has_residence: client.has_residence,
@@ -1319,7 +1316,6 @@ export default connect(({ client, notifications, ui, common }) => ({
     refreshNotifications: notifications.refreshNotifications,
     showPOAAddressMismatchSuccessNotification: notifications.showPOAAddressMismatchSuccessNotification,
     showPOAAddressMismatchFailureNotification: notifications.showPOAAddressMismatchFailureNotification,
-    Notifications: ui.notification_messages_ui,
     updateAccountStatus: client.updateAccountStatus,
     has_poa_address_mismatch: client.account_status.status?.includes('poa_address_mismatch'),
     is_language_changing: common.is_language_changing,

@@ -23,8 +23,8 @@ import {
     setCurrencies,
     toMoment,
     urlForLanguage,
-    rudderstack,
 } from '@deriv/shared';
+import { rudderstack } from '@deriv/analytics';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType, getAvailableAccount } from './Helpers/client';

@@ -95,7 +95,7 @@ type TEvents = {
     identify: IdentifyAction;
 };
 
-class RudderStack {
+export class RudderStack {
     has_identified = false;
     has_initialized = false;
     current_page = '';

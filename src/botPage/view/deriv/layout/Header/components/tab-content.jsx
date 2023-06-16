@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setAccountSwitcherToken } from '../../../store/ui-slice';
 import classNames from 'classnames';
 import config from '../../../../../../app.config';
+import { CRYPTO_CURRENCIES } from '../../../../../common/const';
 
 const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, title = 'Deriv Accounts' }) => {
     const [isAccordionOpen, setIsAccordionOpen] = React.useState(true);
@@ -45,7 +46,20 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                         accounts.length > 0 &&
                         accounts
                             .sort((acc, acc1) => {
-                                return acc !== active_account_name ? -1 : acc1 === active_account_name ? 1 : 0;
+                                const a_currency = acc.currency;
+                                const b_currency = acc1.currency;
+                                const a_is_crypto = CRYPTO_CURRENCIES.includes(a_currency);
+                                const b_is_crypto = CRYPTO_CURRENCIES.includes(b_currency);
+                                const a_is_fiat = !a_is_crypto;
+                                const b_is_fiat = !b_is_crypto;
+                                if (acc.is_virtual || acc1.is_virtual) {
+                                    return acc.is_virtual ? 1 : -1;
+                                } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
+                                    return a_currency < b_currency ? -1 : 1;
+                                } else if (a_is_fiat && b_is_crypto) {
+                                    return -1;
+                                }
+                                return 1;
                             })
                             .map((account, index) => {
                                 const { demo_account, currency, balance } = account;
@@ -73,15 +87,15 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                                             <input type='hidden' name='account_name' value={account.account} />
                                             <img src={`image/deriv/currency/ic-currency-${currency_icon}.svg`} />
                                             <span>
-                                                {!currency && (
+                                                {!currency && !active_account_name?.includes('MF') && (
                                                     <span className='symbols'>{translate('No currency assigned')}</span>
                                                 )}
                                                 {demo_account
                                                     ? translate('Demo')
                                                     : account.account?.includes('MF') &&
-                                                      active_account_name?.includes('MF')
-                                                    ? 'Multiplers'
-                                                    : config.currency_name_map[currency]?.name || currency}
+                                                        (active_account_name?.includes('MF'))
+                                                        ? 'Multiplers'
+                                                        : config.currency_name_map[currency]?.name || currency}
 
                                                 <div className='account__switcher-loginid'>{account.account}</div>
                                             </span>

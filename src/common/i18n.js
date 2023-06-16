@@ -1,10 +1,8 @@
 import sha1 from 'sha1';
-import pt from './translations/pt_PT/i10n.json';
 import es from './translations/es_ES/i10n.json';
 import en from './translations/en/i10n.json';
 
-export const supported_languages = {
-    pt,
+export const supportedLanguages = {
     es,
     en,
 };

@@ -31,10 +31,8 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
     const { accounts, balance, currency, account_type } = useSelector(state => state.client);
 
     const {
-        country_code = '',
         low_risk_without_account = false,
         high_risk_without_account = false,
-        high_risk_or_eu = false,
     } = account_type;
     const is_country_low_risk = low_risk_countries.includes(localStorage.getItem('client.country'));
     const { is_bot_running, show_bot_unavailable_page } = useSelector(state => state.ui);
@@ -47,25 +45,12 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
     let virtual_accounts = [];
     let eu_accounts = [];
     let non_eu_accounts = [];
-
     Object.keys(accounts).forEach(account => {
         if (account.startsWith('VR')) virtual_accounts.push({ ...accounts[account], account });
         if (account.startsWith('MF')) eu_accounts.push({ ...accounts[account], account });
         if (account.startsWith('CR')) non_eu_accounts.push({ ...accounts[account], account });
-    });
+    });    
     let real_account = [...non_eu_accounts, ...eu_accounts];
-
-    const getEmptyAccountCountry = is_country_low_risk => {
-        if (is_country_low_risk && !low_risk_without_account) {
-            const low_risk_without_non_eu = non_eu_accounts && non_eu_accounts.length === 0;
-            const low_risk_without_eu = eu_accounts && eu_accounts.length === 0;
-            return {
-                low_risk_without_non_eu,
-                low_risk_without_eu,
-            };
-        }
-        return false;
-    };
 
     const is_real = activeTab === 'real';
 
@@ -143,7 +128,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                         <>
                             <ShouldShowNoAcc />
                             <Separator />
-                            <ShouldShowRealAcc title={'Eu Deriv accounts'} />
+                            <ShouldShowRealAcc title={'Eu Deriv account'} />
                         </>
                     ) : null}
                     {/* only real non eu account*/}
@@ -159,7 +144,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                         <>
                             <ShouldShowRealAcc title={'Non-Eu Deriv accounts'} acc={non_eu_accounts} />
                             <Separator />
-                            <ShouldShowRealAcc title={'Eu Deriv accounts'} acc={eu_accounts} />
+                            <ShouldShowRealAcc title={'Eu Deriv account'} acc={eu_accounts} />
                         </>
                     ) : null}
                     {/* should show real accounts */}
@@ -178,11 +163,10 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                         <span className='account__switcher-total-balance-amount account__switcher-balance'>
                             {activeTab === 'demo'
                                 ? getTotalDemo(accounts)
-                                : low_risk_without_account || high_risk_without_account
-                                ? 0
-                                : balance.toLocaleString(undefined, {
-                                      minimumFractionDigits: config.currency_name_map[currency]?.fractional_digits ?? 2,
-                                  })}
+                                : low_risk_without_account || high_risk_without_account ? 0 : balance.toLocaleString(undefined, {
+                                    minimumFractionDigits: config.currency_name_map[currency]?.fractional_digits ?? 2,
+                                })
+                            }
                             <span className='symbols'>&nbsp;{activeTab === 'demo' ? 'USD' : currency}</span>
                         </span>
                     </div>
@@ -193,8 +177,8 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                     {/* only if we have real account */}
 
                     {(eu_accounts && eu_accounts.length) ||
-                    (non_eu_accounts && non_eu_accounts.length) ||
-                    activeTab === 'demo' ? (
+                        (non_eu_accounts && non_eu_accounts.length) ||
+                        activeTab === 'demo' ? (
                         <a href={config.tradershub.url} className={'account__switcher-total--link'}>
                             <span>{translate("Looking for CFD accounts? Go to Trader's hub")}</span>
                         </a>

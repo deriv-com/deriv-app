@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Formik } from 'formik';
 import { createBrowserHistory } from 'history';
@@ -20,18 +20,25 @@ beforeAll(() => {
     document.body.appendChild(modal_root_el);
 });
 
-const mock_set_show = jest.fn();
-const mock_set_next_location = jest.fn();
-beforeEach(() => {
-    jest.spyOn(React, 'useState')
-        .mockImplementationOnce(() => [true, mock_set_show]) // TransitionBlockerComponent component uses this as show state
-        .mockImplementationOnce(() => [true, mock_set_show]) // LeaveConfirm compoenent uses this as show state
-        .mockImplementationOnce(() => [{ pathname: '/' }, mock_set_next_location]);
-});
-
 afterAll(() => {
     document.body.removeChild(modal_root_el);
 });
+
+const mock_set_show = jest.fn();
+const mock_set_next_location = jest.fn();
+
+const get_leave_confirm_states = () => {
+    jest.spyOn(React, 'useState')
+        .mockImplementationOnce(() => [null, jest.fn()])
+        .mockImplementationOnce(() => [true, mock_set_show])
+        .mockImplementationOnce(() => [{ pathname: '/' }, mock_set_next_location]);
+};
+
+const get_transition_blocker_states = () => {
+    jest.spyOn(React, 'useState')
+        .mockImplementationOnce(() => [true, mock_set_show])
+        .mockImplementationOnce(() => [{ pathname: '/' }, mock_set_next_location]);
+};
 
 const LeaveConfirmComponent = () => {
     const history = createBrowserHistory();
@@ -59,17 +66,20 @@ const TransitionBlockerComponent = withRouter(TransitionBlocker);
 
 describe('LeaveConfirm', () => {
     it('should render LeaveConfirm component in desktop mode', () => {
+        get_leave_confirm_states();
         render(<LeaveConfirmComponent />);
         expect(
             screen.getByText('You have unsaved changes. Are you sure you want to discard changes and leave this page?')
         ).toBeInTheDocument();
     });
     it('should render LeaveConfirm component in mobile mode', () => {
+        get_leave_confirm_states();
         (isMobile as jest.Mock).mockReturnValueOnce(true);
         render(<LeaveConfirmComponent />);
         expect(screen.getByText('Unsaved changes')).toBeInTheDocument();
     });
     it('should show proper icon', () => {
+        get_leave_confirm_states();
         render(<LeaveConfirmComponent />);
         expect(screen.getByTestId('unsaved_changes_icon')).toBeInTheDocument();
         expect(screen.getByText('Unsaved changes')).toBeInTheDocument();
@@ -80,6 +90,7 @@ describe('LeaveConfirm', () => {
         expect(screen.getByRole('button', { name: 'Leave Settings' })).toBeInTheDocument();
     });
     it('should trigger onclick callback when the user clicks cancel button', async () => {
+        get_leave_confirm_states();
         render(<LeaveConfirmComponent />);
         const el_cancel_btn = screen.getByRole('button', { name: 'Cancel' });
         await userEvent.click(el_cancel_btn);
@@ -88,15 +99,17 @@ describe('LeaveConfirm', () => {
         expect(mock_set_next_location).toHaveBeenCalled();
     });
     it('should set values as dirty when the user leaves modal', () => {
+        get_transition_blocker_states();
         render(<TransitionBlockerComponent onDirty={jest.fn()} />);
         const el_cancel_btn = screen.getByRole('button', { name: 'Cancel' });
-        fireEvent.click(el_cancel_btn);
+        userEvent.click(el_cancel_btn);
         expect(screen.getByRole('button', { name: 'Leave Settings' })).toBeInTheDocument();
     });
     it('should change pathname when user leaves form', () => {
+        get_transition_blocker_states();
         render(<TransitionBlockerComponent />);
         const el_leave_settings_btn = screen.getByRole('button', { name: 'Leave Settings' });
-        fireEvent.click(el_leave_settings_btn);
+        userEvent.click(el_leave_settings_btn);
         expect(screen.getByRole('button', { name: 'Leave Settings' })).toBeInTheDocument();
     });
 });

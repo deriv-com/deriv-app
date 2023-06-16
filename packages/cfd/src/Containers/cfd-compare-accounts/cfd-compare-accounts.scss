@@ -84,6 +84,11 @@
     &-underline {
         border-top: 1px solid var(--less-prominent);
     }
+    &__button {
+        width: 23rem;
+        height: 4rem;
+        margin: 2rem;
+    }
 }
 .card-list {
     display: flex;

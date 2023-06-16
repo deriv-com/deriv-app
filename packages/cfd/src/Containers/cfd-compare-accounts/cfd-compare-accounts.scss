@@ -5,7 +5,7 @@
     &-navigation {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 1rem;
         cursor: pointer;
     }
     &-title {
@@ -39,18 +39,16 @@
         }
         &__banner {
             position: absolute;
-            z-index: 50;
+            z-index: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 5px 10px;
-            width: 200px;
-            height: 26px;
-            right: -70px;
-            top: 15px;
+            padding: 1.5rem;
+            width: 15rem;
+            height: 2rem;
             background: var(--status-transfer);
             color: var(--text-colored-background);
-            transform: rotate(45deg);
+            transform: translateX(17rem) translateY(-2rem) rotate(45deg);
         }
     }
     &-outline {

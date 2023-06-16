@@ -1,11 +1,12 @@
 import React from 'react';
+import { Text } from '@deriv/components';
+import { CFD_PLATFORMS } from '@deriv/shared';
+import { Localize } from '@deriv/translations';
 import { TCompareAccountsCard } from 'Components/props.types';
 import CFDInstrumentsLabelHighlighted from './cfd-instruments-label-highlighted';
 import CFDCompareAccountsDescription from './cfd-compare-accounts-description';
 import CFDCompareAccountsTitleIcon from './cfd-compare-accounts-title-icon';
 import CFDCompareAccountsPlatformLabel from './cfd-compare-accounts-platform-label';
-import { Text } from '@deriv/components';
-import { CFD_PLATFORMS } from '@deriv/shared';
 import CFDCompareAccountsButton from './cfd-compare-accounts-button';
 
 const CFDCompareAccountsCard = ({ trading_platforms }: TCompareAccountsCard) => {
@@ -16,7 +17,7 @@ const CFDCompareAccountsCard = ({ trading_platforms }: TCompareAccountsCard) => 
                 {(trading_platforms.platform === CFD_PLATFORMS.DERIVEZ ||
                     trading_platforms.platform === CFD_PLATFORMS.CTRADER) && (
                     <Text className='compare-cfd-account-card-container__banner' weight='bold' size='xs'>
-                        New!
+                        <Localize i18n_default_text='New!' />
                     </Text>
                 )}
                 <CFDCompareAccountsTitleIcon trading_platforms={trading_platforms} />

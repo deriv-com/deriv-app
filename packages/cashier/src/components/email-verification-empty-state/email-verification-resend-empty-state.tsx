@@ -1,6 +1,6 @@
 import React from 'react';
+import { EmptyState } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import EmptyState from 'Components/empty-state';
 
 type TEmailVerificationResendEmptyStateProps = {
     is_counter_running: boolean;

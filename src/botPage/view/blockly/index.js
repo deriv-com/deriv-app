@@ -373,7 +373,7 @@ export default class _Blockly {
                     getFile(xmlFile);
                 });
 
-                createDataStore(workspace);
+                this.is_workspace_rendered = createDataStore(workspace).rendered;
             });
         });
     }

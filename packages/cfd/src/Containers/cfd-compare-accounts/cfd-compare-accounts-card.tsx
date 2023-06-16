@@ -17,6 +17,7 @@ const CFDCompareAccountsCard = ({ trading_platforms }: TCFDCompareAccountsCardPr
                 <CFDCompareAccountsTitleIcon trading_platforms={trading_platforms} />
                 <CFDCompareAccountsDescription trading_platforms={trading_platforms} />
                 <CFDInstrumentsLabelHighlighted trading_platforms={trading_platforms} />
+                {/* Add Button Code starts from here */}
             </div>
         </div>
     );

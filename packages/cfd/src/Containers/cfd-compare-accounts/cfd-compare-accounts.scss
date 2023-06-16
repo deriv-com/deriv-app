@@ -50,11 +50,6 @@
             color: var(--text-colored-background);
             transform: translateX(17rem) translateY(-2rem) rotate(45deg);
         }
-        &__button {
-            width: calc(100% - 4rem);
-            height: 4rem;
-            margin: 2rem;
-        }
     }
     &-outline {
         display: flex;
@@ -86,6 +81,11 @@
     }
     &-underline {
         border-top: 1px solid var(--less-prominent);
+    }
+    &__button {
+        width: calc(100% - 4rem);
+        height: 4rem;
+        margin: 2rem;
     }
 }
 .card-list {

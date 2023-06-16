@@ -5,7 +5,7 @@ import { TCompareAccountsCard } from 'Components/props.types';
 
 const CFDCompareAccountsButton = ({ trading_platforms }: TCompareAccountsCard) => {
     return (
-        <Button className='compare-cfd-account-card-container__button' type='button' primary_light>
+        <Button className='compare-cfd-account__button' primary_light>
             {localize('Add')}
         </Button>
     );

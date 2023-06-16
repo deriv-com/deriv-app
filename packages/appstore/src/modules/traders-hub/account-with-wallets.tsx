@@ -23,8 +23,8 @@ const AccountWithWallets = observer(() => {
     const { data, isLoading } = useWalletList();
 
     const platform_toggle_options = [
-        { text: eu_title ? 'Multipliers' : 'Options & Multipliers', value: 'options' },
         { text: 'CFDs', value: 'cfd' },
+        { text: eu_title ? 'Multipliers' : 'Options & Multipliers', value: 'options' },
     ];
 
     const platformTypeChange = (event: {
@@ -77,10 +77,10 @@ const AccountWithWallets = observer(() => {
                     ) : (
                         <ButtonToggleLoader />
                     )}
+                    {selected_platform_type === 'cfd' && <WalletCFDsListing wallet_account={wallet_accounts[0]} />}
                     {selected_platform_type === 'options' && (
                         <WalletOptionsAndMultipliersListing wallet_account={wallet_accounts[0]} />
                     )}
-                    {selected_platform_type === 'cfd' && <WalletCFDsListing wallet_account={wallet_accounts[0]} />}
                 </React.Fragment>
             ) : (
                 <React.Fragment>{desktop_wallets_component}</React.Fragment>

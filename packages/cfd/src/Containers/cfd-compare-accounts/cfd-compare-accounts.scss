@@ -83,8 +83,9 @@
         border-top: 1px solid var(--less-prominent);
     }
     &__button {
-        width: 100%;
+        width: calc(100% - 4rem);
         height: 4rem;
+        margin: 2rem;
     }
 }
 .card-list {

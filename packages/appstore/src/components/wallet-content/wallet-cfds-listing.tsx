@@ -138,14 +138,6 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
 
     const FiatCFDs = () => (
         <React.Fragment>
-            {is_mobile && (
-                <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
-                    <Text size='xs' color='red' weight='bold' line_height='s'>
-                        {accounts_sub_text}
-                    </Text>
-                </div>
-            )}
-
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
                 <Text line_height='m' weight='bold' color='prominent'>
                     {localize('Deriv MT5')}
@@ -276,6 +268,13 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
             }
             is_outside_grid_container={!is_fiat}
         >
+            {is_mobile && (
+                <div className='cfd-accounts__compare-table-title' onClick={toggleCompareAccountsModal}>
+                    <Text size='xs' color='red' weight='bold' line_height='s'>
+                        {accounts_sub_text}
+                    </Text>
+                </div>
+            )}
             {is_fiat ? <FiatCFDs /> : <CryptoCFDs />}
         </ListingContainer>
     );

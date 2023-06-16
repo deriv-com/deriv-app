@@ -1,16 +1,12 @@
 import React from 'react';
-import { TModifiedTradingPlatformAvailableAccount } from 'Components/props.types';
+import { TCompareAccountsCard } from 'Components/props.types';
 import CFDInstrumentsLabelHighlighted from './cfd-instruments-label-highlighted';
 import CFDCompareAccountsDescription from './cfd-compare-accounts-description';
 import CFDCompareAccountsTitleIcon from './cfd-compare-accounts-title-icon';
 import CFDCompareAccountsPlatformLabel from './cfd-compare-accounts-platform-label';
 import CFDCompareAccountsButton from './cfd-compare-accounts-button';
 
-type TCFDCompareAccountsCardProps = {
-    trading_platforms: TModifiedTradingPlatformAvailableAccount;
-};
-
-const CFDCompareAccountsCard = ({ trading_platforms }: TCFDCompareAccountsCardProps) => {
+const CFDCompareAccountsCard = ({ trading_platforms }: TCompareAccountsCard) => {
     return (
         <div className='compare-cfd-account-main-container'>
             <CFDCompareAccountsPlatformLabel trading_platforms={trading_platforms} />

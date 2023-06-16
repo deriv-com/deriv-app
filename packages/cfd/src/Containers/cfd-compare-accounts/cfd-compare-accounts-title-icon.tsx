@@ -1,14 +1,10 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import TradigPlatformIconProps from '../../Assets/svgs/trading-platform';
-import { TModifiedTradingPlatformAvailableAccount } from 'Components/props.types';
+import { TCompareAccountsCard } from 'Components/props.types';
 import { getAccountCardTitle, getMarketType, getAccountIcon } from '../../Helpers/compare-accounts-config';
 
-type TCFDCompareAccountsTitleIconProps = {
-    trading_platforms: TModifiedTradingPlatformAvailableAccount;
-};
-
-const CFDCompareAccountsTitleIcon = ({ trading_platforms }: TCFDCompareAccountsTitleIconProps) => {
+const CFDCompareAccountsTitleIcon = ({ trading_platforms }: TCompareAccountsCard) => {
     const market_type = getMarketType(trading_platforms);
     const jurisdiction_shortcode = market_type.concat('_', trading_platforms.shortcode);
     const jurisdiction_card_icon =

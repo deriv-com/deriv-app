@@ -229,7 +229,6 @@ const prepareDxtradeData = (
     market_type: TModifiedTradingPlatformAvailableAccount['market_type']
 ): TModifiedTradingPlatformAvailableAccount => {
     return {
-        // linkable_landing_companies:,
         market_type,
         name,
         requirements: {
@@ -242,7 +241,7 @@ const prepareDxtradeData = (
             },
             signup: [''],
         },
-        shortcode: 'bvi',
+        shortcode: 'derivx',
         sub_account_type: '',
         platform: 'dxtrade',
     };

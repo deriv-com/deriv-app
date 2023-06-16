@@ -68,9 +68,13 @@ export type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
 };
 
-export type TModifiedTradingPlatformAvailableAccount = Omit<TTradingPlatformAvailableAccount, 'market_type'> & {
+export type TModifiedTradingPlatformAvailableAccount = Omit<
+    TTradingPlatformAvailableAccount,
+    'market_type' | 'shortcode'
+> & {
     platform?: 'mt5' | 'dxtrade';
-    market_type: 'synthetic' | 'financial' | 'all' | 'gaming';
+    market_type: TTradingPlatformAvailableAccount['market_type'] | 'synthetic';
+    shortcode: TTradingPlatformAvailableAccount['shortcode'] | 'derivx';
 };
 
 export type TCardFlipStatus = {
@@ -264,4 +268,8 @@ export type TAvailableCFDAccounts = {
     market_type: 'synthetic' | 'financial' | 'all' | 'gaming';
     name: string;
     platform: 'mt5' | 'dxtrade';
+};
+
+export type TCompareAccountsCard = {
+    trading_platforms: TModifiedTradingPlatformAvailableAccount;
 };

@@ -1,13 +1,9 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { TModifiedTradingPlatformAvailableAccount } from 'Components/props.types';
+import { TCompareAccountsCard } from 'Components/props.types';
 import { getJuridisctionDescription, getMarketType } from '../../Helpers/compare-accounts-config';
 
-type TCFDCompareAccountsDescriptionProps = {
-    trading_platforms: TModifiedTradingPlatformAvailableAccount;
-};
-
-const CFDCompareAccountsDescription = ({ trading_platforms }: TCFDCompareAccountsDescriptionProps) => {
+const CFDCompareAccountsDescription = ({ trading_platforms }: TCompareAccountsCard) => {
     const market_type = getMarketType(trading_platforms);
     const jurisdiction_shortcode = market_type.concat('_', trading_platforms.shortcode);
     const juridisction_data = getJuridisctionDescription(jurisdiction_shortcode);

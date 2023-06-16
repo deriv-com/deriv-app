@@ -1,6 +1,7 @@
 import React from 'react';
+import { ApiHelpers, ServerTime, setColors } from '@deriv/bot-skeleton';
 import { Loading } from '@deriv/components';
-import { ServerTime, ApiHelpers, setColors } from '@deriv/bot-skeleton';
+import { observer, useStore } from '@deriv/stores';
 import {
     Audio,
     BotFooterExtensions,
@@ -9,12 +10,12 @@ import {
     NetworkToastPopup,
     RoutePromptDialog,
 } from 'Components';
-import BlocklyLoading from '../components/blockly-loading';
-import { MobxContentProvider } from 'Stores/connect';
-import { observer, useStore } from '@deriv/stores';
-import { useDBotStore } from 'Stores/useDBotStore';
-import GTM from 'Utils/gtm';
 import BotBuilder from 'Components/dashboard/bot-builder';
+import TransactionDetailsModal from 'Components/transaction-details';
+import GTM from 'Utils/gtm';
+import { MobxContentProvider } from 'Stores/connect';
+import { useDBotStore } from 'Stores/useDBotStore';
+import BlocklyLoading from '../components/blockly-loading';
 import './app.scss';
 
 const AppContent = observer(() => {
@@ -101,6 +102,7 @@ const AppContent = observer(() => {
                 <NetworkToastPopup />
                 <BotBuilder />
                 <RoutePromptDialog />
+                <TransactionDetailsModal />
             </div>
         </MobxContentProvider>
     );

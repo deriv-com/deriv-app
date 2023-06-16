@@ -1,14 +1,15 @@
-import classnames from 'classnames';
-import { Icon, DesktopWrapper, DataList, ThemedScrollbars, Text } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { useNewRowTransition, isMobile } from '@deriv/shared';
-import { PropTypes } from 'prop-types';
 import React from 'react';
+import classnames from 'classnames';
+import { PropTypes } from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
+import { Button, DataList, Icon, Text, ThemedScrollbars } from '@deriv/components';
+import { isMobile, useNewRowTransition } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import Download from 'Components/download';
 import { contract_stages } from 'Constants/contract-stage';
 import { transaction_elements } from 'Constants/transactions';
 import { connect } from 'Stores/connect';
+import { useDBotStore } from 'Stores/useDBotStore';
 import Transaction from './transaction.jsx';
 
 const TransactionItem = ({ row, is_new_row }) => {
@@ -37,6 +38,9 @@ const TransactionItem = ({ row, is_new_row }) => {
 };
 
 const Transactions = ({ contract_stage, elements, is_drawer_open, onMount, onUnmount }) => {
+    const { transactions } = useDBotStore();
+    const { toggleTransactionDetailsModal } = transactions;
+
     React.useEffect(() => {
         onMount();
         return () => onUnmount();
@@ -51,11 +55,19 @@ const Transactions = ({ contract_stage, elements, is_drawer_open, onMount, onUnm
                 'run-panel-tab__content--mobile': is_mobile && is_drawer_open,
             })}
         >
-            <DesktopWrapper>
-                <div className='download__container'>
-                    <Download tab='transactions' />
-                </div>
-            </DesktopWrapper>
+            <div className='download__container transaction-details__button-container'>
+                <Download tab='transactions' />
+                <Button
+                    id='download__container-view-detail-button'
+                    className='download__container-view-detail-button'
+                    is_disabled={!elements.length}
+                    text={localize('View Detail')}
+                    onClick={() => {
+                        toggleTransactionDetailsModal(true);
+                    }}
+                    secondary
+                />
+            </div>
             <div className='transactions__header'>
                 <span className='transactions__header-column transactions__header-type'>{localize('Type')}</span>
                 <span className='transactions__header-column transactions__header-spot'>

@@ -141,7 +141,7 @@ class RudderStack {
     }
 
     /**
-     * Pushes track event to rudderstack
+     * Pushes track events to rudderstack
      */
     track<T extends keyof TEvents>(event: T, payload: TEvents[T]) {
         if (this.has_initialized && this.has_identified) {

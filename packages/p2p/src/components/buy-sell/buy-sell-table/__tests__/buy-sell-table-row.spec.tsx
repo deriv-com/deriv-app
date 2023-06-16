@@ -2,7 +2,7 @@ import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from '@testing-library/react';
-import { isMobile } from '@deriv/shared';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { useStores } from 'Stores/index';
 import BuySellTableRow from '../buy-sell-table-row';
 
@@ -35,6 +35,7 @@ jest.mock('Stores', () => ({
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
+    isDesktop: jest.fn(() => true),
     isMobile: jest.fn(() => false),
 }));
 
@@ -67,7 +68,8 @@ describe('BuySellTableRow', () => {
     });
 
     it('should render the row with the advert details in responsive', () => {
-        (isMobile as jest.Mock).mockReturnValue(true);
+        (isDesktop as jest.Mock).mockReturnValueOnce(false);
+        (isMobile as jest.Mock).mockReturnValueOnce(true);
         const advert = {
             account_currency: 'USD',
             advertiser_details: {

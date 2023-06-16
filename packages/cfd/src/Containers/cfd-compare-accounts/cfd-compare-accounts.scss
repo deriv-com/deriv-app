@@ -80,7 +80,8 @@
         }
     }
     &-underline {
-        border-top: 1px solid var(--less-prominent);
+        border-top: 0.5rem solid var(--less-prominent);
+        width: 21.3rem;
     }
     &__button {
         width: calc(100% - 4rem);

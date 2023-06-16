@@ -70,7 +70,7 @@ export type TTradingPlatformAvailableAccount = {
 
 export type TModifiedTradingPlatformAvailableAccount = Omit<TTradingPlatformAvailableAccount, 'market_type'> & {
     platform?: 'mt5' | 'dxtrade';
-    market_type: 'synthetic' | 'financial' | 'all' | 'gaming';
+    market_type: TTradingPlatformAvailableAccount['market_type'] | 'synthetic';
 };
 
 export type TCardFlipStatus = {
@@ -264,4 +264,8 @@ export type TAvailableCFDAccounts = {
     market_type: 'synthetic' | 'financial' | 'all' | 'gaming';
     name: string;
     platform: 'mt5' | 'dxtrade';
+};
+
+export type TCompareAccountsCard = {
+    trading_platforms: TModifiedTradingPlatformAvailableAccount;
 };

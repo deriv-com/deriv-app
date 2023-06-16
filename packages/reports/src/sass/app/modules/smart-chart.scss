@@ -79,7 +79,8 @@
             &-exit {
                 width: 2rem;
                 height: 2rem;
-                margin-left: -0.95rem;
+                margin-left: -1.05rem;
+                top: -0.95rem;
                 background-color: var(--general-main-4);
                 &:after {
                     content: '';
@@ -95,8 +96,8 @@
                 @include mobile {
                     width: 1.6rem;
                     height: 1.6rem;
-                    margin-left: -0.7rem;
-                    margin-top: 0.6rem;
+                    margin-left: -0.85rem;
+                    top: -0.85rem;
                     border-width: 0.1rem;
                 }
             }

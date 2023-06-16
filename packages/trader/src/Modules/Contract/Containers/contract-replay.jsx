@@ -30,6 +30,7 @@ import UnsupportedContractModal from 'App/Components/Elements/Modals/Unsupported
 import { SmartChart } from 'Modules/SmartChart';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
 import ChartMarker from 'Modules/SmartChart/Components/Markers/marker.jsx';
+import DelayedAccuBarriersMarker from 'Modules/SmartChart/Components/Markers/delayed-accu-barriers-marker';
 import allMarkers from 'Modules/SmartChart/Components/all-markers.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -182,14 +183,6 @@ ContractReplay.propTypes = {
 };
 
 export default ContractReplay;
-
-const DelayedAccuBarriersMarker = React.memo(
-    ({ marker_component: MarkerComponent, previous_spot, ...props }) => {
-        return <MarkerComponent {...props} />;
-    }, // barrier range will get updated only when previous_spot changes:
-    (prevProps, nextProps) => prevProps.previous_spot === nextProps.previous_spot
-);
-DelayedAccuBarriersMarker.displayName = 'DelayedAccuBarriersMarker';
 
 // CHART -----------------------------------------
 

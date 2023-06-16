@@ -1,7 +1,5 @@
 import React from 'react';
-import { screen, render, waitFor, fireEvent } from '@testing-library/react';
-import { useStores } from 'Stores/index';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { screen, render } from '@testing-library/react';
 import EmailVerificationModal from '../email-verification-modal';
 import userEvent from '@testing-library/user-event';
 

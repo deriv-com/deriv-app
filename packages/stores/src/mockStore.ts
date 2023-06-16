@@ -307,6 +307,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             selected_region: 'All',
             getExistingAccounts: jest.fn(),
             available_dxtrade_accounts: [],
+            can_get_more_cfd_mt5_accounts: false,
+            toggleAccountTypeModalVisibility: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

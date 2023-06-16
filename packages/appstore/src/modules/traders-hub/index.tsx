@@ -63,13 +63,18 @@ const TradersHub = observer(() => {
             <Div100vhContainer
                 className={classNames('traders-hub--mobile', {
                     'traders-hub--mobile--eu-user': is_eu_user,
-                    // 'traders-hub__wallets-bg': is_wallet_account,
                 })}
                 height_offset='50px'
                 is_disabled={isDesktop()}
             >
                 {can_show_notify && <Notifications />}
-                <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
+                <div
+                    id='traders-hub'
+                    ref={traders_hub_ref}
+                    className={classNames('traders-hub', {
+                        'traders-hub__wallets': is_wallet_account,
+                    })}
+                >
                     {is_wallet_account ? <AccountWithWallets /> : <AccountWithoutWallets />}
                     <ModalManager />
                     {scrolled && <TourGuide />}

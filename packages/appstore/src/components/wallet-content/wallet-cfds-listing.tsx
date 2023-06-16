@@ -9,6 +9,7 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
 import { useStore, observer } from '@deriv/stores';
 import { useHistory } from 'react-router';
+import GetMoreAccounts from 'Components/get-more-accounts';
 
 type TProps = {
     wallet_account: TWalletAccount;
@@ -29,6 +30,8 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
         selected_account_type,
         available_dxtrade_accounts,
         combined_cfd_mt5_accounts,
+        can_get_more_cfd_mt5_accounts,
+        toggleAccountTypeModalVisibility,
     } = traders_hub;
 
     const { currency } = wallet_account;
@@ -180,6 +183,14 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
                             />
                         );
                     })}
+                    {can_get_more_cfd_mt5_accounts && (
+                        <GetMoreAccounts
+                            onClick={toggleAccountTypeModalVisibility}
+                            icon='IcAppstoreGetMoreAccounts'
+                            title={localize('Get more')}
+                            description={localize('Get more Deriv MT5 account with different type and jurisdiction.')}
+                        />
+                    )}
                 </React.Fragment>
             ) : (
                 <PlatformLoader />

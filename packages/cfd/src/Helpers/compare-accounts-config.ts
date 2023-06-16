@@ -241,7 +241,7 @@ const prepareDxtradeData = (
             },
             signup: [''],
         },
-        shortcode: 'derivx',
+        shortcode: 'svg',
         sub_account_type: '',
         platform: 'dxtrade',
     };

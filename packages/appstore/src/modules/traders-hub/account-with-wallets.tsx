@@ -2,152 +2,39 @@ import React from 'react';
 import Wallet from 'Components/containers/wallet';
 import { observer, useStore } from '@deriv/stores';
 import WalletCardsCarousel from 'Components/wallet-cards-carousel';
-import { useWalletList } from '@deriv/hooks';
-import { Loading } from '@deriv/components';
-import { getWalletCurrencyIcon, convertWallets } from 'Constants/utils';
+import { useContentFlag, useWalletList } from '@deriv/hooks';
+import { Loading, ButtonToggle } from '@deriv/components';
+import { convertWallets } from 'Constants/utils';
+import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
+import { routes } from '@deriv/shared';
+import WalletOptionsAndMultipliersListing from 'Components/wallet-content/wallet-option-multipliers-listing';
+import WalletCFDsListing from 'Components/wallet-content/wallet-cfds-listing';
 
 const AccountWithWallets = observer(() => {
     const {
         ui: { is_mobile, is_dark_mode_on },
+        client: { is_landing_company_loaded },
+        traders_hub: { selected_platform_type, setTogglePlatformType, is_eu_user },
     } = useStore();
+
+    const { is_eu_demo, is_eu_real } = useContentFlag();
+    const eu_title = is_eu_demo || is_eu_real || is_eu_user;
 
     const { data, isLoading } = useWalletList();
 
-    // TODO: delete it when wallets API starts to work
-    const fake_wallet_accounts: any[] = [
-        {
-            name: 'USD',
-            currency: 'USD',
-            icon: getWalletCurrencyIcon('USD', false),
-            balance: '10,784',
-            icon_type: 'fiat',
-            landing_company_shortcode: 'svg',
-            is_disabled: false,
-            is_virtual: false,
-            loginid: 'CRW10001',
-        },
-        {
-            name: 'Demo USD',
-            currency: 'USD',
-            icon: getWalletCurrencyIcon('demo', false),
-            balance: '10,0000',
-            icon_type: 'fiat',
-            landing_company_shortcode: 'svg',
-            is_disabled: false,
-            is_virtual: true,
-            loginid: 'CRW10002',
-        },
-        {
-            name: 'AUD',
-            currency: 'AUD',
-            icon: getWalletCurrencyIcon('AUD', false),
-            balance: '5,374',
-            icon_type: 'fiat',
-            landing_company_shortcode: 'svg',
-            is_disabled: false,
-            is_virtual: false,
-            loginid: 'CRW10001',
-        },
-        {
-            name: 'Bitcoin',
-            currency: 'BTC',
-            icon: getWalletCurrencyIcon('BTC', false),
-            balance: '2.34',
-            icon_type: 'crypto',
-            landing_company_shortcode: 'svg',
-            is_disabled: false,
-            is_virtual: false,
-            loginid: 'CRW10001',
-        },
-        {
-            name: 'EUR',
-            currency: 'EUR',
-            balance: '10,784.73',
-            icon_type: 'fiat',
-            landing_company_shortcode: 'malta',
-            icon: getWalletCurrencyIcon('EUR', false),
-            is_disabled: false,
-            is_virtual: false,
-            loginid: 'CRW10001',
-        },
-        {
-            name: 'USD',
-            currency: 'USD',
-            balance: '3,231.05',
-            icon_type: 'fiat',
-            landing_company_shortcode: 'malta',
-            icon: getWalletCurrencyIcon('USD', false),
-            is_disabled: false,
-            is_virtual: false,
-            loginid: 'MFW10005',
-        },
-        {
-            name: 'ETH',
-            currency: 'ETH',
-            balance: '0.012342',
-            icon_type: 'crypto',
-            landing_company_shortcode: 'svg',
-            icon: getWalletCurrencyIcon('ETH', false),
-            is_disabled: false,
-            is_virtual: false,
-            loginid: 'CRW10007',
-        },
-        {
-            name: 'LTC',
-            currency: 'LTC',
-            balance: '1.2342',
-            icon_type: 'crypto',
-            landing_company_shortcode: 'svg',
-            icon: getWalletCurrencyIcon('LTC', false),
-            is_disabled: false,
-            is_virtual: false,
-            loginid: 'CRW10007',
-        },
-        {
-            name: 'USDC',
-            currency: 'USDC',
-            balance: '3.064',
-            icon_type: 'crypto',
-            landing_company_shortcode: 'svg',
-            icon: getWalletCurrencyIcon('USDC', false),
-            is_disabled: false,
-            is_virtual: false,
-            loginid: 'CRW10008',
-        },
-        {
-            name: 'USDT',
-            currency: 'USDT',
-            balance: '1.064',
-            icon_type: 'crypto',
-            landing_company_shortcode: 'svg',
-            icon: getWalletCurrencyIcon('USDT', false),
-            is_disabled: false,
-            is_virtual: false,
-            loginid: 'CRW10009',
-        },
-        {
-            name: 'eUSDT',
-            currency: 'eUSDT',
-            balance: '5.034',
-            icon_type: 'crypto',
-            landing_company_shortcode: 'svg',
-            icon: getWalletCurrencyIcon('eUSDT', false),
-            is_disabled: false,
-            is_virtual: false,
-            loginid: 'CRW10010',
-        },
-        {
-            name: 'tUSDT',
-            currency: 'tUSDT',
-            balance: '0.111',
-            icon_type: 'crypto',
-            landing_company_shortcode: 'svg',
-            icon: getWalletCurrencyIcon('tUSDT', false),
-            is_disabled: false,
-            is_virtual: false,
-            loginid: 'CRW10011',
-        },
+    const platform_toggle_options = [
+        { text: eu_title ? 'Multipliers' : 'Options & Multipliers', value: 'options' },
+        { text: 'CFDs', value: 'cfd' },
     ];
+
+    const platformTypeChange = (event: {
+        target: {
+            value: string;
+            name: string;
+        };
+    }) => {
+        setTogglePlatformType(event.target.value);
+    };
 
     // TODO: We have to create ONE type for desktop and responsive wallet!!!
     const wallet_accounts = React.useMemo(() => convertWallets(data, is_dark_mode_on), [data, is_dark_mode_on]);
@@ -156,7 +43,7 @@ const AccountWithWallets = observer(() => {
         wallet_accounts.length ? wallet_accounts[0].loginid : undefined
     );
 
-    const desktop_wallets_component = fake_wallet_accounts.map(wallet => {
+    const desktop_wallets_component = wallet_accounts.map(wallet => {
         const setIsOpenWallet = () =>
             setSelectedWallet(selected_id => (selected_id === wallet.loginid ? undefined : wallet.loginid));
 
@@ -174,7 +61,30 @@ const AccountWithWallets = observer(() => {
 
     return (
         <React.Fragment>
-            {is_mobile ? <WalletCardsCarousel items={wallet_accounts} /> : desktop_wallets_component}
+            {is_mobile ? (
+                <React.Fragment>
+                    <WalletCardsCarousel items={wallet_accounts} />
+                    {is_landing_company_loaded ? (
+                        <ButtonToggle
+                            buttons_arr={platform_toggle_options}
+                            className='traders-hub__button-toggle'
+                            has_rounded_button
+                            is_traders_hub={window.location.pathname === routes.traders_hub}
+                            name='platform_type'
+                            onChange={platformTypeChange}
+                            value={selected_platform_type}
+                        />
+                    ) : (
+                        <ButtonToggleLoader />
+                    )}
+                    {selected_platform_type === 'options' && (
+                        <WalletOptionsAndMultipliersListing wallet_account={wallet_accounts[0]} />
+                    )}
+                    {selected_platform_type === 'cfd' && <WalletCFDsListing wallet_account={wallet_accounts[0]} />}
+                </React.Fragment>
+            ) : (
+                <React.Fragment>{desktop_wallets_component}</React.Fragment>
+            )}
         </React.Fragment>
     );
 });

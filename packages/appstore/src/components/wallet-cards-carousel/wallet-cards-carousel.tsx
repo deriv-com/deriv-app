@@ -15,7 +15,7 @@ const WalletCardsCarousel = ({ items }: TProps) => {
     const wallet_buttons = getWalletHeaderButtons(items[active_page]?.is_virtual);
 
     return (
-        <div className='wallet-cards-carousel'>
+        <div className='wallet-cards-carousel traders-hub__wallets-bg'>
             <CardsSliderSwiper items={items} setActivePage={setActivePage} />
             <div className='wallet-cards-carousel__buttons'>
                 {wallet_buttons.map(button => (

@@ -5,17 +5,10 @@ import { getTokenList } from '../../../../../../common/utils/storageManager';
 import { useDispatch } from 'react-redux';
 import { setAccountSwitcherToken } from '../../../store/ui-slice';
 import classNames from 'classnames';
-import { observer as globalObserver } from '../../../../../../common/utils/observer';
 import config from '../../../../../../app.config';
+import { CRYPTO_CURRENCIES } from '../../../../../common/const';
 
-const TabContent = ({
-    tab = 'real',
-    isActive,
-    setIsAccDropdownOpen,
-    accounts,
-    title = translate('Deriv accounts')
-}) => {
-   
+const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, title = 'Deriv Accounts' }) => {
     const [isAccordionOpen, setIsAccordionOpen] = React.useState(true);
     const dispatch = useDispatch();
     const { active_account_name } = useSelector(state => state.client);
@@ -29,27 +22,46 @@ const TabContent = ({
             setIsAccDropdownOpen(false);
         }
     };
-
+    const low_risk_countries = ['za', 'ec', 'bw'];
+    const is_country_low_risk = low_risk_countries.includes(localStorage.getItem('client.country'));
     return (
         <div className={`account__switcher-tabs-content ${isActive ? '' : 'hide'}`}>
             <div className='account__switcher-accordion'>
-                <h3
-                    className='ui-accordion-header ui-state-default'
-                    onClick={() => setIsAccordionOpen(!isAccordionOpen)}
-                >
-                    <div className='account__switcher-accordion-header-text'>
-                        <span>{title}</span>
-                        <img
-                            className={`header__expand ${isAccordionOpen ? 'open' : ''}`}
-                            src='image/deriv/ic-chevron-down.svg'
-                        />
-                    </div>
-                </h3>
+                {accounts && accounts.length > 0 && (
+                    <h3
+                        className='ui-accordion-header ui-state-default'
+                        onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+                    >
+                        <div className='account__switcher-accordion-header-text'>
+                            <span>{is_country_low_risk && isReal ? title : translate('Deriv Accounts')}</span>
+                            <img
+                                className={`header__expand ${isAccordionOpen ? 'open' : ''}`}
+                                src='image/deriv/ic-chevron-down.svg'
+                            />
+                        </div>
+                    </h3>
+                )}
                 <div className={`account__switcher-list ${isAccordionOpen ? 'open' : ''}`}>
-                    {accounts && accounts.sort((acc, acc1) => {
-                                return acc === active_account_name ? -1 : acc1 === active_account_name ? 1 : 0;
+                    {accounts &&
+                        accounts.length > 0 &&
+                        accounts
+                            .sort((acc, acc1) => {
+                                const a_currency = acc.currency;
+                                const b_currency = acc1.currency;
+                                const a_is_crypto = CRYPTO_CURRENCIES.includes(a_currency);
+                                const b_is_crypto = CRYPTO_CURRENCIES.includes(b_currency);
+                                const a_is_fiat = !a_is_crypto;
+                                const b_is_fiat = !b_is_crypto;
+                                if (acc.is_virtual || acc1.is_virtual) {
+                                    return acc.is_virtual ? 1 : -1;
+                                } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
+                                    return a_currency < b_currency ? -1 : 1;
+                                } else if (a_is_fiat && b_is_crypto) {
+                                    return -1;
+                                }
+                                return 1;
                             })
-                        .map((account, index) => {
+                            .map((account, index) => {
                                 const { demo_account, currency, balance } = account;
                                 const currency_icon = demo_account ? 'virtual' : currency?.toLowerCase() || 'unknown';
                                 const getBalance = () => {
@@ -57,12 +69,13 @@ const TabContent = ({
                                         minimumFractionDigits:
                                             config.currency_name_map[currency]?.fractional_digits ?? 2,
                                     });
-                                };            
+                                };
                                 return (
-                                    (isReal) !== Boolean(demo_account) && (
+                                    isReal !== Boolean(demo_account) && (
                                         <div
                                             className={classNames('account__switcher-acc', {
-                                                'account__switcher-acc--active': active_account_name === account.account,
+                                                'account__switcher-acc--active':
+                                                    active_account_name === account.account,
                                             })}
                                             key={account.account}
                                             onClick={e => {
@@ -71,18 +84,18 @@ const TabContent = ({
                                             }}
                                             ref={el => (item_ref.current[index] = el)}
                                         >
-                                            
                                             <input type='hidden' name='account_name' value={account.account} />
                                             <img src={`image/deriv/currency/ic-currency-${currency_icon}.svg`} />
                                             <span>
-                                                {!currency && (
+                                                {!currency && !active_account_name?.includes('MF') && (
                                                     <span className='symbols'>{translate('No currency assigned')}</span>
                                                 )}
                                                 {demo_account
                                                     ? translate('Demo')
-                                                    : (account.account?.includes('MF') && active_account_name?.includes('MF'))
-                                                    ? 'Multiplers'
-                                                    : config.currency_name_map[currency]?.name || currency}
+                                                    : account.account?.includes('MF') &&
+                                                        (active_account_name?.includes('MF'))
+                                                        ? 'Multiplers'
+                                                        : config.currency_name_map[currency]?.name || currency}
 
                                                 <div className='account__switcher-loginid'>{account.account}</div>
                                             </span>

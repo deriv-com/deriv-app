@@ -193,15 +193,14 @@ export const convertForDerivStore = tokenList => {
     const accountList = tokenList[0]?.loginInfo.accountList ? 'accountList' : 'account_list';
     tokenList.forEach((account, index) => {
         const accId = account.accountName;
-
         clientAccounts[accId] = {};
-        clientAccounts[accId].account_type = tokenList[0].loginInfo[accountList].find(
-            acc => acc.loginid === accId
-        ).account_type;
+        clientAccounts[accId].account_type =
+            tokenList[0].loginInfo[accountList]?.find(acc => acc?.loginid === accId)?.account_type ||
+            account.loginInfo.account_type;
         clientAccounts[accId].currency = account.loginInfo.currency;
-        clientAccounts[accId].is_disabled = tokenList[0].loginInfo[accountList].find(
-            acc => acc.loginid === accId
-        ).is_disabled;
+        clientAccounts[accId].is_disabled =
+            tokenList[0].loginInfo[accountList]?.find(acc => acc?.loginid === accId)?.is_disabled ||
+            account.loginInfo.is_disabled;
         clientAccounts[accId].is_virtual = account.loginInfo.is_virtual;
         clientAccounts[accId].landing_company_shortcode = account.loginInfo.landing_company_name; // how shortcode is different from name?
         clientAccounts[accId].trading = account.loginInfo.trading;

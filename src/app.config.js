@@ -12,7 +12,7 @@ export default {
         // fr: 'Français',
         // id: 'Indonesia',
         // pl: 'Polish',
-        pt: 'Português',
+        // pt: 'Português',
         // ru: 'Русский',
         // zh_cn: '简体中文',
         // zh_tw: '繁體中文',
@@ -136,18 +136,6 @@ export default {
             logo: 'image/deriv/brand/ic-brand-dbot.svg',
         },
         {
-            title: 'DMT5',
-            description: translate('Trade on Deriv MetaTrader 5 (DMT5), the all-in-one FX and CFD trading platform.'),
-            link: `${related_deriv_origin.origin}/mt5`,
-            logo: 'image/deriv/brand/ic-brand-dmt5.svg',
-        },
-        {
-            title: 'Deriv X',
-            description: translate('Trade FX and CFDs on a customisable, easy-to-use trading platform.'),
-            link: `${related_deriv_origin.origin}/derivx`,
-            logo: 'image/deriv/brand/ic-brand-dxtrade.svg',
-        },
-        {
             title: 'SmartTrader',
             description: translate("Trade the world's markets with our popular user-friendly platform."),
             link: `https://${related_deriv_origin.prefix}smarttrader.deriv.${related_deriv_origin.extension}/`,
@@ -179,7 +167,7 @@ export default {
     trading_view_chart: {
         visible: true,
         // URL to the chart
-        url: 'https://tradingview.binary.com/',
+        url: 'https://tradingview.deriv.com/deriv',
         label: translate('Trading View'),
     },
     login: {

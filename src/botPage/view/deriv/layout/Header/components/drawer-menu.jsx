@@ -44,7 +44,6 @@ const DrawerMenu = ({
                         onClick={() => setIsPlatformSwitcherOpen(!isPlatformSwitcherOpen)}
                     >
                         <img className='header__logo' src={config.app_logo} />
-                        <div className='platform__switcher-header'>{config.app_title}</div>
                         <img
                             id='platform__switcher-expand'
                             className={classNames('header__icon header__expand', { open: isPlatformSwitcherOpen })}

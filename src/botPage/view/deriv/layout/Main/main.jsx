@@ -28,11 +28,13 @@ import BotUnavailableMessage from '../Error/bot-unavailable-message-page.jsx';
 import ToolBox from '../ToolBox';
 
 const Main = () => {
+
 	const [blockly, setBlockly] = React.useState(null);
 	const [is_workspace_rendered, setIsWorkspaceRendered] = React.useState(false);
 	const dispatch = useDispatch();
 	const history = useHistory();
 	const { should_reload_workspace } = useSelector(state => state.ui);
+  const { account_type } = useSelector(state => state.client);
 
 	React.useEffect(() => {
 		if (should_reload_workspace) {
@@ -53,7 +55,7 @@ const Main = () => {
             dispatch(setShouldReloadWorkspace(false));
             applyToolboxPermissions();
         }
-    }, [should_reload_workspace]);
+    }, [should_reload_workspace, account_type]);
 
     const init = () => {
         const local_storage_sync = document.getElementById('localstorage-sync');

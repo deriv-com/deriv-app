@@ -1,6 +1,54 @@
 /* eslint-disable import/prefer-default-export */
 import api from '../botPage/view/deriv/api';
 import { get as getStorage, getTokenList } from '../common/utils/storageManager';
+import { isLoggedIn } from '../botPage/view/deriv/utils';
+
+const eu_countries = [
+    'it',
+    'de',
+    'fr',
+    'lu',
+    'gr',
+    'mf',
+    'es',
+    'sk',
+    'lt',
+    'nl',
+    'at',
+    'bg',
+    'si',
+    'cy',
+    'be',
+    'ro',
+    'hr',
+    'pt',
+    'pl',
+    'lv',
+    'ee',
+    'cz',
+    'fi',
+    'hu',
+    'dk',
+    'se',
+    'ie',
+    'im',
+    'gb',
+    'mt',
+];
+// TODO: [duplicate_code] - Move this to shared package
+// check if client is from EU
+export const isEu = country => eu_countries.includes(country);
+
+/**
+ *
+ * @param {*} token_list list of the tokens from the local storage
+ * @returns
+ */
+export const isEuByAccount = (token_list = []) => {
+    const [active_token = {}] = token_list;
+    const { loginInfo = {} } = active_token;
+    return eu_countries.includes(loginInfo.country);
+};
 /* eslint-disable camelcase */
 export const isEuLandingCompany = landing_company => /^(maltainvest|malta|iom)$/.test(landing_company);
 
@@ -35,7 +83,7 @@ const isEmptyObject = obj => {
     return is_empty;
 };
 
-const isLowRisk = async (financial_company, gaming_company, token_list) => {
+const isLowRisk = (financial_company, gaming_company, token_list) => {
     const upgradable_companies = token_list.map(data => {
         const {
             loginInfo: { upgradeable_landing_companies },
@@ -51,7 +99,7 @@ const isLowRisk = async (financial_company, gaming_company, token_list) => {
     );
 };
 
-const isHighRisk = async (financial_company, gaming_company, risk_classification) => {
+const isHighRisk = (financial_company, gaming_company, risk_classification) => {
     const restricted_countries =
         financial_company?.shortcode === 'svg' ||
         (gaming_company?.shortcode === 'svg' && financial_company?.shortcode !== 'maltainvest');
@@ -60,7 +108,7 @@ const isHighRisk = async (financial_company, gaming_company, risk_classification
     return risk_classification === 'high' || high_risk_landing_company || restricted_countries;
 };
 
-export const isMultiplier = async landing_company_list => {
+export const isMultiplier = landing_company_list => {
     const multiplier_account = landing_company_list?.financial_company?.legal_allowed_contract_categories;
     const is_multiplier = multiplier_account?.includes('multiplier');
     return {
@@ -70,9 +118,15 @@ export const isMultiplier = async landing_company_list => {
 };
 
 export const checkSwitcherType = async () => {
-    const is_eu = await isEuCountry();
+    if (!isLoggedIn()) return null;
     const token_list = await getTokenList();
-    const { landing_company } = await api.send({ landing_company: token_list[0]?.loginInfo.country });
+    const is_eu = isEuByAccount(token_list);
+    const client_accounts = JSON.parse(getStorage('client.accounts'));
+    const client_country_code = token_list[0]?.loginInfo?.country || localStorage.getItem('client.country');
+    if (!client_country_code) return null;
+    const { landing_company } = await api.send({
+        landing_company: client_country_code,
+    });
 
     const { is_multiplier, country_code } = await isMultiplier(landing_company);
 
@@ -83,10 +137,9 @@ export const checkSwitcherType = async () => {
         get_account_status: { risk_classification },
     } = account_status;
 
-    let is_low_risk = await isLowRisk(financial_company, gaming_company, token_list);
-    let is_high_risk = await isHighRisk(financial_company, gaming_company, risk_classification);
+    let is_low_risk = isLowRisk(financial_company, gaming_company, token_list);
+    let is_high_risk = isHighRisk(financial_company, gaming_company, risk_classification);
 
-    const client_accounts = JSON.parse(getStorage('client.accounts'));
     if (isEmptyObject(client_accounts || token_list)) return false;
 
     const low_risk_no_account = is_low_risk && Object.keys(client_accounts).length === 1;
@@ -111,11 +164,11 @@ export const checkSwitcherType = async () => {
 
     return {
         low_risk: is_low_risk,
-        high_risk: is_high_risk,
+        high_risk: !!is_high_risk,
         low_risk_without_account: low_risk_no_account,
         high_risk_without_account: high_risk_no_account,
         high_risk_or_eu: is_high_risk_or_eu,
-        is_multiplier,
-        country_code,
+        is_multiplier: !!is_multiplier,
+        country_code: country_code || token_list[0]?.loginInfo.country,
     };
 };

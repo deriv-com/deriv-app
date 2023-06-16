@@ -3,18 +3,21 @@ import React from 'react';
 import { DesktopWrapper, MobileWrapper, Popover } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
-import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button.jsx';
-import CancelDealInfo from '../Form/Purchase/cancel-deal-info.jsx';
+import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button';
+import CancelDealInfo from '../Form/Purchase/cancel-deal-info';
 
 type TProposalTypeInfo = {
     has_error?: boolean;
-    id?: string;
+    id: string;
     has_increased?: boolean;
     message?: string;
     cancellation?: {
         ask_price: number;
         date_expiry: number;
     };
+    growth_rate?: number;
+    returns?: string;
+    stake: string;
 };
 
 type TPurchaseFieldset = {
@@ -34,7 +37,7 @@ type TPurchaseFieldset = {
     is_proposal_empty: boolean;
     is_proposal_error: boolean;
     is_vanilla: boolean;
-    onClickPurchase: (is_over: boolean, contract_type: string) => void;
+    onClickPurchase: (proposal_id: string, price: string | number, type: string) => void;
     onHoverPurchase: (is_over: boolean, contract_type: string) => void;
     purchased_states_arr: boolean[];
     setPurchaseState: (index: number) => void;

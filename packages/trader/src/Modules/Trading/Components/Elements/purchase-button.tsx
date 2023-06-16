@@ -1,13 +1,58 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes, Text } from '@deriv/components';
 import { getContractTypeDisplay } from 'Constants/contract';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 import { getGrowthRatePercentage } from '@deriv/shared';
 
+type TProposalTypeInfo = {
+    has_error?: boolean;
+    id: string;
+    has_increased?: boolean;
+    message?: string;
+    cancellation?: {
+        ask_price: number;
+        date_expiry: number;
+    };
+    growth_rate?: number;
+    returns?: string;
+    stake: string;
+};
+
+type TPurchaseButton = {
+    basis: string;
+    buy_info: { error?: string };
+    currency: string;
+    growth_rate: number;
+    has_deal_cancellation: boolean;
+    index: number;
+    info: TProposalTypeInfo;
+    is_accumulator: boolean;
+    is_disabled: boolean;
+    is_high_low: boolean;
+    is_loading: boolean;
+    is_multiplier: boolean;
+    is_proposal_empty: boolean;
+    is_vanilla: boolean;
+    onClickPurchase: (proposal_id: string, price: string | number, type: string) => void;
+    purchased_states_arr: boolean[];
+    should_fade: boolean;
+    setPurchaseState: (index: number) => void;
+    type: string;
+};
+
 // TODO [lazy-loading-required] Responsive related components
-const ButtonTextWrapper = ({ should_fade, is_loading, type, is_high_low }) => {
+const ButtonTextWrapper = ({
+    should_fade,
+    is_loading,
+    type,
+    is_high_low,
+}: {
+    should_fade: boolean;
+    is_loading: boolean;
+    type: string;
+    is_high_low: boolean;
+}) => {
     return (
         <div className='btn-purchase__text_wrapper'>
             <Text size='xs' weight='bold' color='colored-background'>
@@ -17,7 +62,7 @@ const ButtonTextWrapper = ({ should_fade, is_loading, type, is_high_low }) => {
     );
 };
 
-const IconComponentWrapper = ({ type }) => (
+const IconComponentWrapper = ({ type }: { type: string }) => (
     <div className='btn-purchase__icon_wrapper'>
         <IconTradeTypes type={type} className='btn-purchase__icon' color='active' />
     </div>
@@ -43,14 +88,15 @@ const PurchaseButton = ({
     should_fade,
     onClickPurchase,
     type,
-}) => {
+}: TPurchaseButton) => {
     const getIconType = () => {
         if (!should_fade && is_loading) return '';
         return is_high_low ? `${type.toLowerCase()}_barrier` : type.toLowerCase();
     };
     const { has_increased } = info;
     const is_button_disabled = (is_disabled && !is_loading) || is_proposal_empty;
-    const non_multiplier_info_right = is_accumulator ? `${getGrowthRatePercentage(info.growth_rate)}%` : info.returns;
+    const non_multiplier_info_right =
+        is_accumulator && info.growth_rate ? `${getGrowthRatePercentage(info.growth_rate)}%` : info.returns;
 
     let button_value;
 
@@ -142,28 +188,6 @@ const PurchaseButton = ({
             </MobileWrapper>
         </button>
     );
-};
-
-PurchaseButton.propTypes = {
-    basis: PropTypes.string,
-    buy_info: PropTypes.object,
-    currency: PropTypes.string,
-    growth_rate: PropTypes.number,
-    has_deal_cancellation: PropTypes.bool,
-    index: PropTypes.number,
-    info: PropTypes.object,
-    is_accumulator: PropTypes.bool,
-    is_disabled: PropTypes.bool,
-    is_high_low: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    is_multiplier: PropTypes.bool,
-    is_proposal_empty: PropTypes.bool,
-    is_vanilla: PropTypes.bool,
-    onClickPurchase: PropTypes.func,
-    purchased_states_arr: PropTypes.array,
-    should_fade: PropTypes.bool,
-    setPurchaseState: PropTypes.func,
-    type: PropTypes.string,
 };
 
 export default PurchaseButton;

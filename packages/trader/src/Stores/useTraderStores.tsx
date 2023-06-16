@@ -34,9 +34,16 @@ type TOverrideTradeStore = Omit<
     proposal_info: {
         [key: string]: {
             has_error?: boolean;
-            id?: string;
+            id: string;
             has_increased?: boolean;
             message?: string;
+            cancellation?: {
+                ask_price: number;
+                date_expiry: number;
+            };
+            growth_rate?: number;
+            returns?: string;
+            stake: string;
         };
     };
     ticks_history_stats: {

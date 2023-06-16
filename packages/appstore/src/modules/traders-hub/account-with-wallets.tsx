@@ -43,6 +43,11 @@ const AccountWithWallets = observer(() => {
         wallet_accounts.length ? wallet_accounts[0].loginid : undefined
     );
 
+    const active_wallet_index =
+        wallet_accounts.findIndex(item => item?.loginid === selected_wallet) === -1
+            ? 0
+            : wallet_accounts.findIndex(item => item?.loginid === selected_wallet);
+
     const desktop_wallets_component = wallet_accounts.map(wallet => {
         const setIsOpenWallet = () =>
             setSelectedWallet(selected_id => (selected_id === wallet.loginid ? undefined : wallet.loginid));
@@ -63,7 +68,11 @@ const AccountWithWallets = observer(() => {
         <React.Fragment>
             {is_mobile ? (
                 <React.Fragment>
-                    <WalletCardsCarousel items={wallet_accounts} />
+                    <WalletCardsCarousel
+                        items={wallet_accounts}
+                        selected_wallet={selected_wallet}
+                        setSelectedWallet={setSelectedWallet}
+                    />
                     {is_landing_company_loaded ? (
                         <ButtonToggle
                             buttons_arr={platform_toggle_options}
@@ -77,9 +86,11 @@ const AccountWithWallets = observer(() => {
                     ) : (
                         <ButtonToggleLoader />
                     )}
-                    {selected_platform_type === 'cfd' && <WalletCFDsListing wallet_account={wallet_accounts[0]} />}
+                    {selected_platform_type === 'cfd' && (
+                        <WalletCFDsListing wallet_account={wallet_accounts[active_wallet_index]} />
+                    )}
                     {selected_platform_type === 'options' && (
-                        <WalletOptionsAndMultipliersListing wallet_account={wallet_accounts[0]} />
+                        <WalletOptionsAndMultipliersListing wallet_account={wallet_accounts[active_wallet_index]} />
                     )}
                 </React.Fragment>
             ) : (

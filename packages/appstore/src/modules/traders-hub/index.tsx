@@ -55,8 +55,7 @@ const TradersHub = observer(() => {
     if (!is_logged_in) return null;
 
     // TODO: change it when 'wallet' property will be in authorize response
-    // const is_wallet_account = Object.keys(accounts).some(key => accounts[key]?.account_category === 'wallet');
-    const is_wallet_account = true;
+    const is_wallet_account = Object.keys(accounts).some(key => accounts[key]?.account_category === 'wallet');
 
     return (
         <React.Fragment>

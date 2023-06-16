@@ -86,6 +86,7 @@ export type TCFDPOAProps = {
     storeProofOfAddress: TStoreProofOfAddress;
     value: TFormValue;
     jurisdiction_selected_shortcode: TJurisdiction;
+    is_authenticated_with_idv_photoid: boolean;
 };
 type TUpload = {
     upload: () => void;
@@ -99,6 +100,7 @@ const CFDPOA = ({
     onSubmit,
     refreshNotifications,
     jurisdiction_selected_shortcode,
+    is_authenticated_with_idv_photoid,
     ...props
 }: TCFDPOAProps) => {
     const form = React.useRef<FormikProps<TFormValues> | null>(null);
@@ -268,7 +270,8 @@ const CFDPOA = ({
     } = props;
     const { form_error, poa_status } = form_state;
 
-    const is_form_visible = !is_loading && poa_status !== PoaStatusCodes.verified;
+    const is_form_visible =
+        !is_loading && (poa_status !== PoaStatusCodes.verified || is_authenticated_with_idv_photoid);
 
     return (
         <Formik

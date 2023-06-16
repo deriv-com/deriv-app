@@ -271,7 +271,7 @@ export default class SendbirdStore extends BaseStore {
 
     onMessagesScroll() {
         if (this.scroll_debounce) {
-            clearInterval(this.scroll_debounce);
+            clearTimeout(this.scroll_debounce);
         }
 
         this.scroll_debounce = setTimeout(() => {
@@ -310,7 +310,13 @@ export default class SendbirdStore extends BaseStore {
     }
 
     registerEventListeners() {
-        const markMessagesAsReadCheckScroll = () => this.markMessagesAsRead(true);
+        const markMessagesAsReadCheckScroll = () => {
+            if (this.scroll_debounce) {
+                return null;
+            }
+
+            return this.markMessagesAsRead(true);
+        };
         window.addEventListener('focus', markMessagesAsReadCheckScroll);
         return () => window.removeEventListener('focus', markMessagesAsReadCheckScroll);
     }

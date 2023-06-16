@@ -20,28 +20,28 @@ const TransactionList = () => {
 
     const filter_options = [
         {
-            text: 'All',
+            text: localize('All'),
             value: '',
         },
         ...(is_demo
             ? ([
                   {
-                      text: 'Reset balance',
+                      text: localize('Reset balance'),
                       value: 'reset_balance',
                   },
               ] as const)
             : ([
                   {
-                      text: 'Deposit',
+                      text: localize('Deposit'),
                       value: 'deposit',
                   },
                   {
-                      text: 'Withdrawal',
+                      text: localize('Withdrawal'),
                       value: 'withdrawal',
                   },
               ] as const)),
         {
-            text: 'Transfer',
+            text: localize('Transfer'),
             value: 'transfer',
         },
     ] as const;

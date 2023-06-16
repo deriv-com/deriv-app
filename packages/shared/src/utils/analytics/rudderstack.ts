@@ -50,7 +50,7 @@ type TradeTypesFormAction =
     | {
           action: 'open' | 'close' | 'info_close';
           trade_type_name?: string;
-          tab_name: string;
+          tab_name?: string;
           form_source?: string;
           form_name?: string;
           subform_name?: string;

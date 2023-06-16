@@ -1,8 +1,13 @@
 import React from 'react';
-import { WithdrawalFiatIframe } from './components/withdrawal-fiat-iframe';
+import { PageContainer } from '../../components/page-container';
+import { WithdrawalFiatIframe } from './components';
 
 const WithdrawalFiat = () => {
-    return <WithdrawalFiatIframe />;
+    return (
+        <PageContainer hide_breadcrumb={true}>
+            <WithdrawalFiatIframe />
+        </PageContainer>
+    );
 };
 
 export default WithdrawalFiat;

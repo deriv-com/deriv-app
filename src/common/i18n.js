@@ -2,7 +2,7 @@ import sha1 from 'sha1';
 import es from './translations/es_ES/i10n.json';
 import en from './translations/en/i10n.json';
 
-export const supportedLanguages = {
+export const supported_languages = {
     es,
     en,
 };

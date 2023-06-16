@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { Statement } from '@deriv/api-types';
 import { renderHook } from '@testing-library/react-hooks';
-import useGroupedFiatTransactions from '../useGroupedFiatTransactions';
+import useGroupedTransactions from '../useGroupedTransactions';
 
 describe('useGroupedFiatTransactions', () => {
     test('should return empty array when client has no fiat transactions', async () => {
         const mock_transaction_list = [] as Statement['transactions'];
 
-        const { result } = renderHook(() => useGroupedFiatTransactions(mock_transaction_list));
+        const { result } = renderHook(() => useGroupedTransactions(mock_transaction_list));
 
         expect(result.current).toEqual({});
     });
@@ -43,7 +43,7 @@ describe('useGroupedFiatTransactions', () => {
             },
         ] as unknown as Statement['transactions'];
 
-        const { result } = renderHook(() => useGroupedFiatTransactions(mock_transaction_list));
+        const { result } = renderHook(() => useGroupedTransactions(mock_transaction_list));
 
         expect(result.current).toEqual({
             '26 May 2023': [

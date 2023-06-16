@@ -2,7 +2,7 @@ import _ from 'lodash';
 import moment from 'moment';
 import { Statement } from '@deriv/api-types';
 
-const useGroupedFiatTransactions = (transactions: Statement['transactions']) => {
+const useGroupedTransactions = (transactions: Statement['transactions']) => {
     const grouped_transactions = _.pickBy(
         _.groupBy(transactions, transaction => {
             return transaction.transaction_time
@@ -17,4 +17,4 @@ const useGroupedFiatTransactions = (transactions: Statement['transactions']) => 
     return grouped_transactions;
 };
 
-export default useGroupedFiatTransactions;
+export default useGroupedTransactions;

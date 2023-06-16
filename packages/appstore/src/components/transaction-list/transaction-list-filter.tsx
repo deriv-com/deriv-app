@@ -2,14 +2,23 @@ import React from 'react';
 import { Dropdown } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-type TTransactionFilter = {
+type TTransactionListFilter = {
     onChange: React.ComponentProps<typeof Dropdown>['onChange'];
-    options: string[];
+    options: React.ComponentProps<typeof Dropdown>['list'];
     value: string;
 };
 
-const TransactionFilter = ({ onChange, options, value }: TTransactionFilter) => {
-    return <Dropdown className='' list={options} onChange={onChange} placeholder={localize('Filter')} value={value} />;
+const TransactionListFilter = ({ onChange, options, value }: TTransactionListFilter) => {
+    return (
+        <Dropdown
+            className=''
+            is_align_text_left
+            list={options}
+            onChange={onChange}
+            placeholder={localize('Filter')}
+            value={value}
+        />
+    );
 };
 
-export default TransactionFilter;
+export default TransactionListFilter;

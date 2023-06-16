@@ -2,7 +2,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
-import FiatTransactionList from 'Components/fiat-transaction-list';
+import TransactionList from 'Components/transaction-list';
 import WalletTransfer from 'Components/wallet-transfer';
 
 export type TWalletType = 'real' | 'demo' | 'p2p' | 'payment_agent';
@@ -81,7 +81,7 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcStatement',
                     label: localize('Transactions'),
-                    content: () => <FiatTransactionList />,
+                    content: () => <TransactionList />,
                 },
             ];
         case 'demo':
@@ -94,7 +94,7 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcStatement',
                     label: localize('Transactions'),
-                    content: () => <FiatTransactionList />,
+                    content: () => <TransactionList />,
                 },
                 {
                     icon: 'IcAdd',

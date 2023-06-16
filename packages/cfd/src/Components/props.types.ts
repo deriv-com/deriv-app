@@ -68,13 +68,9 @@ export type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
 };
 
-export type TModifiedTradingPlatformAvailableAccount = Omit<
-    TTradingPlatformAvailableAccount,
-    'market_type' | 'shortcode'
-> & {
+export type TModifiedTradingPlatformAvailableAccount = Omit<TTradingPlatformAvailableAccount, 'market_type'> & {
     platform?: 'mt5' | 'dxtrade';
     market_type: TTradingPlatformAvailableAccount['market_type'] | 'synthetic';
-    shortcode: TTradingPlatformAvailableAccount['shortcode'] | 'derivx';
 };
 
 export type TCardFlipStatus = {

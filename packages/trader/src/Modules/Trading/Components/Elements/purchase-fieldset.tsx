@@ -11,6 +11,10 @@ type TProposalTypeInfo = {
     id?: string;
     has_increased?: boolean;
     message?: string;
+    cancellation?: {
+        ask_price: number;
+        date_expiry: number;
+    };
 };
 
 type TPurchaseFieldset = {

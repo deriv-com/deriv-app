@@ -13,6 +13,10 @@ type TProposalTypeInfo = {
     id?: string;
     has_increased?: boolean;
     message?: string;
+    cancellation?: {
+        ask_price: number;
+        date_expiry: number;
+    };
 };
 
 const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) => {

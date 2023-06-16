@@ -1,6 +1,6 @@
 import React from 'react';
 import { reaction } from 'mobx';
-import { DesktopWrapper, InfiniteDataList, Loading, Table, Text } from '@deriv/components';
+import { DesktopWrapper, InfiniteDataList, Loading, Table } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';

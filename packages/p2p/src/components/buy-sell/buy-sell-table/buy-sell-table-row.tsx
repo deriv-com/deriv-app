@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Button, DesktopWrapper, Icon, MobileWrapper, Table, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { buy_sell } from 'Constants/buy-sell';
-import { Localize, localize } from 'Components/i18next';
+import { Localize } from 'Components/i18next';
 import { OnlineStatusAvatar } from 'Components/online-status';
 import StarRating from 'Components/star-rating';
 import TradeBadge from 'Components/trade-badge';
@@ -157,9 +157,9 @@ const BuySellTableRow = ({ row: advert }: TBuySellTableRowProps) => {
                         </div>
                         <div className='buy-sell-table-row__payment-methods-list'>
                             {payment_method_names ? (
-                                payment_method_names.map((payment_method, key) => {
+                                payment_method_names.map(payment_method => {
                                     return (
-                                        <div className='buy-sell-table-row__payment-method' key={key}>
+                                        <div className='buy-sell-table-row__payment-method' key={payment_method}>
                                             {payment_method}
                                         </div>
                                     );
@@ -252,9 +252,9 @@ const BuySellTableRow = ({ row: advert }: TBuySellTableRowProps) => {
                     <Table.Cell>
                         <div className='buy-sell-table-row__payment-method'>
                             {payment_method_names ? (
-                                payment_method_names.map((payment_method, key) => {
+                                payment_method_names.map(payment_method => {
                                     return (
-                                        <div className='buy-sell-table-row__payment-method--label' key={key}>
+                                        <div className='buy-sell-table-row__payment-method--label' key={payment_method}>
                                             <Text size='xs' line-height='l'>
                                                 {payment_method}
                                             </Text>

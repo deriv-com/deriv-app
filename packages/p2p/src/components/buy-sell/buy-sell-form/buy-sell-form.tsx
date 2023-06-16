@@ -238,30 +238,18 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                             <Localize i18n_default_text='Payment methods' />
                                         </Text>
                                     )}
-                                    {payment_method_names &&
-                                        payment_method_names.map((payment_method, key) => {
-                                            const method = payment_method.replace(/\s|-/gm, '');
+                                    {payment_method_names?.map(payment_method => {
+                                        const method = payment_method.replace(/\s|-/gm, '');
 
-                                            if (method === 'BankTransfer' || method === 'Other') {
-                                                return (
-                                                    <div className='buy-sell-form__payment-method--row' key={key}>
-                                                        <Icon
-                                                            className='buy-sell-form__payment-method--icon'
-                                                            icon={`IcCashier${method}`}
-                                                            size={16}
-                                                        />
-                                                        <Text as='p' size='xs'>
-                                                            {payment_method}
-                                                        </Text>
-                                                    </div>
-                                                );
-                                            }
-
+                                        if (method === 'BankTransfer' || method === 'Other') {
                                             return (
-                                                <div className='buy-sell-form__payment-method--row' key={key}>
+                                                <div
+                                                    className='buy-sell-form__payment-method--row'
+                                                    key={payment_method}
+                                                >
                                                     <Icon
                                                         className='buy-sell-form__payment-method--icon'
-                                                        icon='IcCashierEwallet'
+                                                        icon={`IcCashier${method}`}
                                                         size={16}
                                                     />
                                                     <Text as='p' size='xs'>
@@ -269,7 +257,21 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                                     </Text>
                                                 </div>
                                             );
-                                        })}
+                                        }
+
+                                        return (
+                                            <div className='buy-sell-form__payment-method--row' key={payment_method}>
+                                                <Icon
+                                                    className='buy-sell-form__payment-method--icon'
+                                                    icon='IcCashierEwallet'
+                                                    size={16}
+                                                />
+                                                <Text as='p' size='xs'>
+                                                    {payment_method}
+                                                </Text>
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                                 <div className='buy-sell-form__field-wrapper'>
                                     <div className='buy-sell-form__field'>
@@ -284,8 +286,8 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                             ?.trim()
                                             .replace(/([\r\n]){2,}/g, '\n\n')
                                             .split('\n')
-                                            .map((text, idx) => (
-                                                <Text key={idx} as='p' size='xs'>
+                                            .map(text => (
+                                                <Text key={text} as='p' size='xs'>
                                                     {text || '-'}
                                                 </Text>
                                             ))}
@@ -320,7 +322,7 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                                         })}
                                                     >
                                                         {payment_method_names
-                                                            ?.map((add_payment_method, key) => {
+                                                            ?.map(add_payment_method => {
                                                                 const matching_payment_methods =
                                                                     advertiser_payment_methods_list.filter(
                                                                         advertiser_payment_method =>
@@ -331,7 +333,7 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                                                     matching_payment_methods.map(payment_method => (
                                                                         <PaymentMethodCard
                                                                             is_vertical_ellipsis_visible={false}
-                                                                            key={key}
+                                                                            key={add_payment_method}
                                                                             medium
                                                                             onClick={() =>
                                                                                 onClickPaymentMethodCard(payment_method)
@@ -351,7 +353,7 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                                                     <PaymentMethodCard
                                                                         add_payment_method={add_payment_method}
                                                                         is_add
-                                                                        key={key}
+                                                                        key={add_payment_method}
                                                                         medium
                                                                         onClickAdd={() => {
                                                                             if (!should_disable_field) {

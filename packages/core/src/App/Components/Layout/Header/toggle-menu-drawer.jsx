@@ -1,188 +1,24 @@
 import classNames from 'classnames';
 import React from 'react';
-import { NavLink, useHistory, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
 import {
     useOnrampVisible,
     useAccountTransferVisible,
-    useIsRealAccountNeededForCashier,
     useIsP2PEnabled,
     usePaymentAgentTransferVisible,
 } from '@deriv/hooks';
-import { isMobile, routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
+import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, getAllowedLanguages, Localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
-import { BinaryLink, LanguageLink } from 'App/Components/Routes';
+import { LanguageLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
-import { changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 import PlatformSwitcher from './platform-switcher';
-
-const MenuLink = observer(
-    ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink, is_hidden }) => {
-        const { common, ui, client } = useStore();
-        const { changeCurrentLanguage, setMobileLanguageMenuOpen } = common;
-        const deriv_static_url = getStaticUrl(link_to);
-        const history = useHistory();
-        const { has_any_real_account, is_virtual } = client;
-        const { toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
-        const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
-
-        const cashier_link =
-            link_to === routes.cashier_deposit ||
-            link_to === routes.cashier_withdrawal ||
-            link_to === routes.cashier_acc_transfer;
-
-        if (is_hidden) return null;
-
-        const traders_hub_path = window.location.pathname === routes.traders_hub;
-
-        if (isMobile() && link_to === routes.languages) {
-            return (
-                <div
-                    className={classNames('header__menu-mobile-link', {
-                        'header__menu-mobile-link--disabled': is_disabled,
-                    })}
-                    onClick={() => setMobileLanguageMenuOpen(true)}
-                >
-                    <Icon className='header__menu-mobile-link-icon' icon={icon} />
-                    <span className='header__menu-mobile-link-text'>{text}</span>
-                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-                </div>
-            );
-        }
-
-        if (real_account_needed_for_cashier && cashier_link && traders_hub_path) {
-            const handleClickCashier = () => {
-                onClickLink();
-                toggleNeedRealAccountForCashierModal();
-            };
-            return (
-                <div
-                    className={classNames('header__menu-mobile-link', {
-                        'header__menu-mobile-link--disabled': is_disabled,
-                    })}
-                    onClick={handleClickCashier}
-                >
-                    <Icon className='header__menu-mobile-link-icon' icon={icon} />
-                    <span className='header__menu-mobile-link-text'>{text}</span>
-                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-                </div>
-            );
-        }
-
-        if (cashier_link && is_virtual && !has_any_real_account) {
-            const toggle_modal_routes =
-                window.location.pathname === routes.root || window.location.pathname === routes.traders_hub;
-
-            const toggleModal = () => {
-                if (toggle_modal_routes && !has_any_real_account) {
-                    toggleReadyToDepositModal();
-                }
-            };
-
-            const handleClickCashier = () => {
-                if (is_virtual && has_any_real_account) {
-                    history.push(routes.cashier_deposit);
-                } else if (!has_any_real_account && is_virtual) {
-                    toggleModal();
-                }
-                onClickLink();
-            };
-            return (
-                <div
-                    className={classNames('header__menu-mobile-link', {
-                        'header__menu-mobile-link--disabled': is_disabled,
-                    })}
-                    onClick={handleClickCashier}
-                >
-                    <Icon className='header__menu-mobile-link-icon' icon={icon} />
-                    <span className='header__menu-mobile-link-text'>{text}</span>
-                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-                </div>
-            );
-        }
-
-        if (is_language) {
-            return (
-                <span
-                    className={classNames('header__menu-mobile-link', {
-                        'header__menu-mobile-link--disabled': is_disabled,
-                        'header__menu-mobile-link--active': is_active,
-                    })}
-                    onClick={() => {
-                        onClickLink();
-                        changeLanguage(link_to, changeCurrentLanguage);
-                    }}
-                >
-                    <Icon className='header__menu-mobile-link-flag-icon' size={32} icon={icon} />
-                    <span className='header__menu-mobile-link-text'>{text}</span>
-                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-                </span>
-            );
-        } else if (!link_to) {
-            return (
-                <div
-                    className={classNames('header__menu-mobile-link', {
-                        'header__menu-mobile-link--disabled': is_disabled,
-                    })}
-                >
-                    <Icon className='header__menu-mobile-link-icon' icon={icon} />
-                    <span className='header__menu-mobile-link-text'>{text}</span>
-                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-                </div>
-            );
-        } else if (deriv_static_url) {
-            return (
-                <NavLink
-                    className={classNames('header__menu-mobile-link', {
-                        'header__menu-mobile-link--disabled': is_disabled,
-                        'header__menu-mobile-link--active': is_active,
-                    })}
-                    to={link_to}
-                    onClick={onClickLink}
-                >
-                    <Icon className='header__menu-mobile-link-icon' icon={icon} />
-                    <Text
-                        className={text === localize('Trade') ? '' : 'header__menu-mobile-link-text'}
-                        as='h3'
-                        size='xs'
-                        weight={window.location.pathname === '/' && text === localize('Trade') ? 'bold' : null}
-                    >
-                        {text}
-                    </Text>
-                    {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-                </NavLink>
-            );
-        }
-
-        return (
-            <BinaryLink
-                to={link_to}
-                className={classNames('header__menu-mobile-link', {
-                    'header__menu-mobile-link--disabled': is_disabled,
-                    'header__menu-mobile-link--active': is_active,
-                })}
-                active_class='header__menu-mobile-link--active'
-                onClick={onClickLink}
-            >
-                <Icon className='header__menu-mobile-link-icon' icon={icon} />
-                <Text
-                    className={text === localize('Trade') ? '' : 'header__menu-mobile-link-text'}
-                    as='h3'
-                    size='xs'
-                    weight={window.location.pathname === '/' && text === localize('Trade') ? 'bold' : null}
-                >
-                    {text}
-                </Text>
-                {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-            </BinaryLink>
-        );
-    }
-);
+import { MenuLink } from './menu-link';
 
 const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { common, ui, client, traders_hub, modules } = useStore();

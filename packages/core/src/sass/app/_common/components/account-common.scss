@@ -42,9 +42,13 @@
         top: 1.6rem;
         left: 50%;
         z-index: 1;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%);
         max-width: max-content;
         width: 100% !important;
+
+        @include mobile {
+            top: -0.4rem;
+        }
     }
 
     &__status-message {

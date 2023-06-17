@@ -456,22 +456,18 @@ export default class LoadModalStore implements ILoadModalStore {
         const reader = new FileReader();
         reader.onload = action(e => {
             const load_options = { block_string: e.target.result, drop_event, from: save_types.LOCAL };
-            if (is_preview) {
-                const ref = document.getElementById('load-strategy__blockly-container');
-                if (ref) {
-                    this.local_workspace = Blockly.inject(ref, {
-                        media: `${__webpack_public_path__}media/`, // eslint-disable-line
-                        zoom: {
-                            wheel: false,
-                            startScale: config.workspaces.previewWorkspaceStartScale,
-                        },
-                        readOnly: true,
-                        scrollbars: true,
-                    });
-                    load_options.workspace = this.local_workspace;
-                } else {
-                    return;
-                }
+            const ref = document.getElementById('load-strategy__blockly-container');
+            if (is_preview && ref) {
+                this.local_workspace = Blockly.inject(ref, {
+                    media: `${__webpack_public_path__}media/`, // eslint-disable-line
+                    zoom: {
+                        wheel: false,
+                        startScale: config.workspaces.previewWorkspaceStartScale,
+                    },
+                    readOnly: true,
+                    scrollbars: true,
+                });
+                load_options.workspace = this.local_workspace;
             } else {
                 load_options.workspace = Blockly.derivWorkspace;
                 load_options.file_name = file_name;

@@ -151,7 +151,10 @@ export const convertWallets = (
                 currency,
                 is_disabled: !!is_disabled,
                 is_virtual: !!is_virtual,
-                landing_company_shortcode: landing_company_shortcode as 'svg' | 'malta',
+                landing_company_shortcode:
+                    landing_company_shortcode === 'maltainvest'
+                        ? 'malta'
+                        : (landing_company_shortcode as 'svg' | 'malta'),
                 loginid,
                 icon: getWalletCurrencyIcon(is_virtual ? 'demo' : currency, is_dark_mode_on),
                 icon_type: is_fiat && !is_virtual ? 'fiat' : 'crypto',

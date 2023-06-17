@@ -7,16 +7,12 @@ import './wallet-cards-carousel.scss';
 
 type TProps = {
     readonly items: TWalletAccount[];
-    selected_wallet: string | undefined;
-    setSelectedWallet: React.Dispatch<React.SetStateAction<string | undefined>>;
+    setSelectedWallet: (value: string) => void;
+    active_wallet_index: number;
 };
 
-const WalletCardsCarousel = ({ items, selected_wallet, setSelectedWallet }: TProps) => {
-    const [active_page, setActivePage] = React.useState(
-        items.findIndex(item => item?.loginid === selected_wallet) === -1
-            ? 0
-            : items.findIndex(item => item?.loginid === selected_wallet)
-    );
+const WalletCardsCarousel = ({ items, setSelectedWallet, active_wallet_index }: TProps) => {
+    const [active_page, setActivePage] = React.useState(active_wallet_index);
 
     React.useEffect(() => {
         setSelectedWallet(items[active_page]?.loginid);

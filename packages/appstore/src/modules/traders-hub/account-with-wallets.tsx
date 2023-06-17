@@ -13,7 +13,7 @@ import WalletCFDsListing from 'Components/wallet-content/wallet-cfds-listing';
 const AccountWithWallets = observer(() => {
     const {
         ui: { is_mobile, is_dark_mode_on },
-        client: { is_landing_company_loaded },
+        client: { is_landing_company_loaded, active_wallet_loginid, setActiveWalletLoginid },
         traders_hub: { selected_platform_type, setTogglePlatformType, is_eu_user },
     } = useStore();
 
@@ -39,26 +39,23 @@ const AccountWithWallets = observer(() => {
     // TODO: We have to create ONE type for desktop and responsive wallet!!!
     const wallet_accounts = React.useMemo(() => convertWallets(data, is_dark_mode_on), [data, is_dark_mode_on]);
 
-    // TODO: in my opinion we have to add 'active_wallet' in client-store, because we use it
+    // In my opinion we have to add 'active_wallet' in client-store, because we use it
     // for desktop wallets, in responsive mode, for wallet modal and we will use it for DTrader header
-    const [selected_wallet, setSelectedWallet] = React.useState<NonNullable<typeof data>[number]['loginid']>(
-        wallet_accounts.length ? wallet_accounts[0].loginid : undefined
-    );
 
     const active_wallet_index =
-        wallet_accounts.findIndex(item => item?.loginid === selected_wallet) === -1
+        wallet_accounts.findIndex(item => item?.loginid === active_wallet_loginid) === -1
             ? 0
-            : wallet_accounts.findIndex(item => item?.loginid === selected_wallet);
+            : wallet_accounts.findIndex(item => item?.loginid === active_wallet_loginid);
 
     const desktop_wallets_component = wallet_accounts.map(wallet => {
         const setIsOpenWallet = () =>
-            setSelectedWallet(selected_id => (selected_id === wallet.loginid ? undefined : wallet.loginid));
+            setActiveWalletLoginid(active_wallet_loginid === wallet.loginid ? '' : wallet.loginid);
 
         return (
             <Wallet
                 key={wallet.loginid}
                 wallet_account={wallet}
-                active={selected_wallet === wallet.loginid}
+                active={active_wallet_loginid === wallet.loginid}
                 setActive={setIsOpenWallet}
             />
         );
@@ -72,8 +69,8 @@ const AccountWithWallets = observer(() => {
                 <React.Fragment>
                     <WalletCardsCarousel
                         items={wallet_accounts}
-                        selected_wallet={selected_wallet}
-                        setSelectedWallet={setSelectedWallet}
+                        setSelectedWallet={setActiveWalletLoginid}
+                        active_wallet_index={active_wallet_index}
                     />
                     {is_landing_company_loaded ? (
                         <ButtonToggle

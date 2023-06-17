@@ -285,6 +285,8 @@ type TClientStore = {
     has_any_real_account: boolean;
     real_account_creation_unlock_date: number;
     setPrevAccountType: (account_type: string) => void;
+    active_wallet_loginid: string;
+    setActiveWalletLoginid: (loginid: string) => void;
 };
 
 type TCommonStoreError = {

@@ -1,4 +1,11 @@
 .deposit-crypto-wallet-address {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 2.4rem;
+    justify-content: center;
+    align-items: center;
+
     &__qrcode-container {
         padding: 1px;
         background-color: #fff;

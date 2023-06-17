@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
+import { Divider } from '../../components/divider';
 import { PageContainer } from '../../components/page-container';
 import { useCashierStore } from '../../stores/useCashierStores';
 import {
@@ -8,9 +9,10 @@ import {
     DepositCryptoTryFiatOnRamp,
     DepositCryptoWalletAddress,
 } from './components';
-import './deposit-crypto.scss';
 
 const DepositCrypto: React.FC = observer(() => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
     const { general_store } = useCashierStore();
     const { setIsDeposit } = general_store;
 
@@ -23,10 +25,15 @@ const DepositCrypto: React.FC = observer(() => {
     }, [setIsDeposit]);
 
     return (
-        <PageContainer right={<DepositCryptoSideNotes />}>
+        <PageContainer
+            // Hide the side note and render it in the page content on mobile to match the design
+            right={is_mobile ? undefined : <DepositCryptoSideNotes />}
+        >
             <DepositCryptoCurrencyDetails />
             <DepositCryptoWalletAddress />
-            <div className='deposit-crypto__divider' />
+            <Divider />
+            {is_mobile && <DepositCryptoSideNotes />}
+            {is_mobile && <Divider />}
             <DepositCryptoTryFiatOnRamp />
         </PageContainer>
     );

@@ -24,13 +24,13 @@ jest.mock('@deriv/hooks', () => ({
         getConfig: (currency: string) => ({
             icon: 'icCurrencyIcon',
             name: currency === 'BTC' ? 'Bitcoin' : 'Ethereum',
-            code: currency,
+            display_code: currency,
         }),
     })),
 }));
 
 describe('DepositCryptoCurrencyDetails', () => {
-    test('should show correct message for BTC', async () => {
+    test('should show correct message for BTC', () => {
         const mock = mockStore({ client: { currency: 'BTC' } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -41,7 +41,7 @@ describe('DepositCryptoCurrencyDetails', () => {
         expect(screen.getByText('Send only Bitcoin (BTC) to this address.')).toBeInTheDocument();
     });
 
-    test('should show correct message for ETH', async () => {
+    test('should show correct message for ETH', () => {
         const mock = mockStore({ client: { currency: 'ETH' } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (

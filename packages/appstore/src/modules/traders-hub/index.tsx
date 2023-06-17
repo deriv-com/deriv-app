@@ -62,6 +62,7 @@ const TradersHub = observer(() => {
             <Div100vhContainer
                 className={classNames('traders-hub--mobile', {
                     'traders-hub--mobile--eu-user': is_eu_user,
+                    'traders-hub__wallets-bg': is_wallet_account,
                 })}
                 height_offset='50px'
                 is_disabled={isDesktop()}

@@ -6,6 +6,7 @@
     @include mobile {
         padding: 2rem;
         width: 100%;
+        background-color: var(--general-main-1);
     }
 
     &__wallets {

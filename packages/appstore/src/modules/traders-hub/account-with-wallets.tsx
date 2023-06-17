@@ -39,6 +39,8 @@ const AccountWithWallets = observer(() => {
     // TODO: We have to create ONE type for desktop and responsive wallet!!!
     const wallet_accounts = React.useMemo(() => convertWallets(data, is_dark_mode_on), [data, is_dark_mode_on]);
 
+    // TODO: in my opinion we have to add 'active_wallet' in client-store, because we use it
+    // for desktop wallets, in responsive mode, for wallet modal and we will use it for DTrader header
     const [selected_wallet, setSelectedWallet] = React.useState<NonNullable<typeof data>[number]['loginid']>(
         wallet_accounts.length ? wallet_accounts[0].loginid : undefined
     );

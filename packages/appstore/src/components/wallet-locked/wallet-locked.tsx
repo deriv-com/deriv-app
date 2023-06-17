@@ -1,18 +1,17 @@
 import React from 'react';
-import { Icon, Text } from '@deriv/components';
+import { LegacyInlineMessage, Text } from '@deriv/components';
 import { useIsSystemMaintenance } from '@deriv/hooks';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import getMessage from './wallet-locked-provider';
 import type { TWallet } from 'Components/modals/wallet-modal/wallet-modal';
 import './wallet-locked.scss';
 
 type TWalletLocked = {
+    is_mobile: boolean;
     wallet: TWallet;
 };
 
-const WalletLocked = observer(({ wallet }: TWalletLocked) => {
-    const { ui } = useStore();
-    const { is_mobile } = ui;
+const WalletLocked = observer(({ is_mobile, wallet }: TWalletLocked) => {
     const is_system_maintenance = useIsSystemMaintenance();
 
     const state = getMessage({
@@ -22,7 +21,7 @@ const WalletLocked = observer(({ wallet }: TWalletLocked) => {
     });
 
     return (
-        <>
+        <div className='wallet-locked'>
             <div className='wallet-locked__state'>
                 {state?.title && (
                     <Text
@@ -49,15 +48,8 @@ const WalletLocked = observer(({ wallet }: TWalletLocked) => {
                     </Text>
                 )}
             </div>
-            <div className='wallet-locked__alert-message'>
-                <div className='wallet-locked__alert-message__wrapper'>
-                    <Icon icon='IcWalletWarning' />
-                    <Text align='left' size={is_mobile ? 'xxs' : 'xs'}>
-                        {state?.title}
-                    </Text>
-                </div>
-            </div>
-        </>
+            {state?.type && <LegacyInlineMessage message={state?.title} type={state?.type} />}
+        </div>
     );
 });
 

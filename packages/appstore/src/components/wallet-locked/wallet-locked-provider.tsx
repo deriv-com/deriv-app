@@ -7,9 +7,15 @@ type TProps = {
     wallet_name: string;
 };
 
-const getMessage = ({ is_crypto, is_system_maintenance, wallet_name }: TProps) => {
-    if (true) {
-        if (true)
+export type getMessageReturnType = {
+    description?: React.ReactNode;
+    title?: React.ReactNode;
+    type?: 'warning' | 'information' | 'success' | 'error';
+} | null;
+
+const getMessage = ({ is_crypto, is_system_maintenance, wallet_name }: TProps): getMessageReturnType => {
+    if (is_system_maintenance) {
+        if (is_crypto)
             return {
                 title: (
                     <Localize
@@ -24,6 +30,7 @@ const getMessage = ({ is_crypto, is_system_maintenance, wallet_name }: TProps) =
                         values={{ wallet_name }}
                     />
                 ),
+                type: 'warning',
             };
     }
 

@@ -1,0 +1,25 @@
+.legacy-inline-message {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: 1.6rem;
+    column-gap: 0.8rem;
+
+    &__warning {
+        background: var(--status-warning);
+    }
+
+    &__information {
+        background: $color-blue;
+    }
+
+    &__success {
+        background: var(--status-success);
+    }
+
+    &__error {
+        background: var(--status-danger);
+    }
+}

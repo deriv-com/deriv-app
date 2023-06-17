@@ -25,7 +25,7 @@ const WalletModal = observer(() => {
         traders_hub: { is_demo },
     } = store;
 
-    // TODO Replace this object with current wallet
+    // TODO: Replace this object with current wallet
     const wallet = {
         balance,
         currency,

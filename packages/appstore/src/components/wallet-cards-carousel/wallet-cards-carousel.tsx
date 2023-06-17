@@ -13,7 +13,9 @@ type TProps = {
 
 const WalletCardsCarousel = ({ items, selected_wallet, setSelectedWallet }: TProps) => {
     const [active_page, setActivePage] = React.useState(
-        items.findIndex(item => item?.loginid === selected_wallet) || 0
+        items.findIndex(item => item?.loginid === selected_wallet) === -1
+            ? 0
+            : items.findIndex(item => item?.loginid === selected_wallet)
     );
 
     React.useEffect(() => {

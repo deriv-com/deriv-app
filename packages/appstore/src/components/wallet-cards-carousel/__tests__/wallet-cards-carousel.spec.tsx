@@ -38,7 +38,7 @@ describe('<WalletCardsCarousel />', () => {
     it('Should render slider', () => {
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletCardsCarousel items={items} />
+                <WalletCardsCarousel selected_wallet='' setSelectedWallet={jest.fn} items={items} />
             </StoreProvider>
         );
         const slider = screen.queryByText('slider');
@@ -50,7 +50,7 @@ describe('<WalletCardsCarousel />', () => {
         const item = [items[0]];
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletCardsCarousel items={item} />
+                <WalletCardsCarousel selected_wallet='' setSelectedWallet={jest.fn} items={item} />
             </StoreProvider>
         );
 
@@ -67,11 +67,13 @@ describe('<WalletCardsCarousel />', () => {
 
     it('Should render buttons for DEMO', () => {
         const item = [items[1]];
+        // console.log('item = ', item);
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletCardsCarousel items={item} />
+                <WalletCardsCarousel selected_wallet='' setSelectedWallet={jest.fn} items={item} />
             </StoreProvider>
         );
+
         const btn1 = screen.queryByText(/Transfer/i);
         const btn2 = screen.queryByText(/Transactions/i);
         const btn3 = screen.queryByText(/Reset balance/i);

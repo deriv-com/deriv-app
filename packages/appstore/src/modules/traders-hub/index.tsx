@@ -73,6 +73,7 @@ const TradersHub = observer(() => {
                     ref={traders_hub_ref}
                     className={classNames('traders-hub', {
                         'traders-hub__wallets': is_wallet_account,
+                        // 'traders-hub__wallets-demo-bg': is_wallet_account,
                     })}
                 >
                     {is_wallet_account ? <AccountWithWallets /> : <AccountWithoutWallets />}

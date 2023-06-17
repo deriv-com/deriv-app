@@ -41,18 +41,15 @@ type TPurchaseButton = {
     type: string;
 };
 
-// TODO [lazy-loading-required] Responsive related components
-const ButtonTextWrapper = ({
-    should_fade,
-    is_loading,
-    type,
-    is_high_low,
-}: {
+type TButtonTextWrapper = {
     should_fade: boolean;
     is_loading: boolean;
     type: string;
     is_high_low: boolean;
-}) => {
+};
+
+// TODO [lazy-loading-required] Responsive related components
+const ButtonTextWrapper = ({ should_fade, is_loading, type, is_high_low }: TButtonTextWrapper) => {
     return (
         <div className='btn-purchase__text_wrapper'>
             <Text size='xs' weight='bold' color='colored-background'>

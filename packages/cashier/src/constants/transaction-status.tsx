@@ -1,12 +1,14 @@
 import React from 'react';
 import { StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { TTransactionItem } from '../types';
+import type { TSocketResponse } from '@deriv/api/types';
+
+type TCryptoTransactionItem = NonNullable<TSocketResponse<'cashier_payments'>['cashier_payments']>['crypto'][number];
 
 export const getStatus = (
-    transaction_hash: TTransactionItem['transaction_hash'],
-    transaction_type: TTransactionItem['transaction_type'],
-    status_code: TTransactionItem['status_code']
+    transaction_hash: TCryptoTransactionItem['transaction_hash'],
+    transaction_type: TCryptoTransactionItem['transaction_type'],
+    status_code: TCryptoTransactionItem['status_code']
 ) => {
     const formatted_transaction_hash = transaction_hash
         ? `${transaction_hash.substring(0, 4)}....${transaction_hash.substring(transaction_hash.length - 4)}`
@@ -99,10 +101,11 @@ export const getStatus = (
         },
     };
 
-    const isDeposit = (status: TTransactionItem['status_code']): status is keyof typeof status_list.deposit =>
+    const isDeposit = (status: TCryptoTransactionItem['status_code']): status is keyof typeof status_list.deposit =>
         Object.keys(status_list.deposit).includes(status);
-    const isWithdrawal = (status: TTransactionItem['status_code']): status is keyof typeof status_list.withdrawal =>
-        Object.keys(status_list.withdrawal).includes(status);
+    const isWithdrawal = (
+        status: TCryptoTransactionItem['status_code']
+    ): status is keyof typeof status_list.withdrawal => Object.keys(status_list.withdrawal).includes(status);
 
     if (transaction_type === 'deposit' && isDeposit(status_code)) {
         return status_list[transaction_type][status_code];

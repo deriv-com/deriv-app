@@ -5,11 +5,11 @@ import { epochToMoment, formatMoney, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import { getStatus } from '../../constants/transaction-status';
-import { TTransactionItem } from '../../types';
 import { useCashierStore } from '../../stores/useCashierStores';
+import type { TSocketResponse } from '@deriv/api/types';
 
 type TCryptoTransactionsRendererProps = {
-    row: TTransactionItem;
+    row: NonNullable<TSocketResponse<'cashier_payments'>['cashier_payments']>['crypto'][number];
     onTooltipClick: VoidFunction;
 };
 

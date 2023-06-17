@@ -6,7 +6,6 @@ import { epochToMoment } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import { useCashierStore } from '../../../stores/useCashierStores';
-import { TTransactionItem } from '../../../types';
 import './side-note-crypto-resent-transaction.scss';
 
 const SideNoteCryptoRecentTransaction: React.FC = observer(() => {
@@ -18,8 +17,8 @@ const SideNoteCryptoRecentTransaction: React.FC = observer(() => {
     // const { subscribe, data, is_loading, error } = useSubscription('cashier_payments');
     const { data, isLoading, error } = useFetch('cashier_payments');
     const transactions = data?.cashier_payments?.crypto;
-    const has_transactions = transactions?.length > 0;
-    const recent_transactions: TTransactionItem | undefined = has_transactions ? transactions?.[0] : undefined;
+    const has_transactions = transactions && transactions?.length > 0;
+    const recent_transactions = has_transactions ? transactions?.[0] : undefined;
     const { getConfig } = useCurrencyConfig();
     const currency_config = getConfig(currency);
 

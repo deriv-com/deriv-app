@@ -36,14 +36,31 @@
     }
 
     &__cfd {
+        & .listing-container__content {
+            padding-block-start: 0;
+        }
+
+        & .cfd-accounts__compare-table-title {
+            padding-left: 0.8rem;
+        }
+
         &-crypto {
             display: flex;
             flex-direction: column;
             align-items: center;
             padding: 2.4rem;
 
+            @include mobile {
+                padding: 0;
+            }
+
             &-title {
                 padding: 2.4rem;
+
+                @include mobile {
+                    padding: 2.4rem 1.6rem;
+                    text-align: center;
+                }
             }
         }
     }

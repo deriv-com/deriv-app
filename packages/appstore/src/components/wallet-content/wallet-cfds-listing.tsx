@@ -57,7 +57,13 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
 
     const CryptoCFDs = () => (
         <div className='wallet-content__cfd-crypto'>
-            <Text size='s' weight='bold' line_height='xxl' as='p' className='wallet-content__cfd-crypto-title'>
+            <Text
+                size={is_mobile ? 'xs' : 's'}
+                weight='bold'
+                line_height={is_mobile ? 'xl' : 'xxl'}
+                as='p'
+                className='wallet-content__cfd-crypto-title'
+            >
                 <Localize
                     i18n_default_text='To trade CFDs, you’ll need to use your {{fiat_wallet_currency}} Wallet. Click Transfer to move your {{currency}} to your {{fiat_wallet_currency}} Wallet.'
                     values={{ fiat_wallet_currency, currency }}
@@ -78,7 +84,7 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
 
     const FiatCFDs = () => (
         <React.Fragment>
-            <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
+            <div className='cfd-full-row'>
                 <Text line_height='m' weight='bold' color='prominent'>
                     {localize('Deriv MT5')}
                 </Text>
@@ -181,7 +187,7 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
 
     return (
         <ListingContainer
-            className='wallet-content__border-reset'
+            className='wallet-content__border-reset wallet-content__cfd'
             title={
                 !is_mobile && (
                     <div className='cfd-accounts__title'>

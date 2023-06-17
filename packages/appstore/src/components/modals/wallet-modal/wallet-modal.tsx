@@ -7,6 +7,7 @@ import WalletModalBody from './wallet-modal-body';
 import { observer, useStore } from '@deriv/stores';
 import type { TWalletType } from './provider';
 
+// TODO: remove this type when we can use real current wallet object
 export type TWallet = {
     balance: string | number | undefined;
     currency: string;

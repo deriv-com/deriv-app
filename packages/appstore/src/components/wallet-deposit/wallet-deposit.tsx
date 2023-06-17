@@ -17,7 +17,7 @@ const WalletDeposit = observer(({ wallet }: TWalletDeposit) => {
         return <WalletLocked is_mobile={is_mobile} wallet={wallet} />;
     }
 
-    // Here we are going to return  DepositCryptoModule/DepositFiatModule
+    // Here we will DepositCryptoModule/DepositFiatModule
     return null;
 });
 

@@ -5,20 +5,7 @@ import Fieldset from 'App/Components/Form/fieldset.jsx';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button';
 import CancelDealInfo from '../Form/Purchase/cancel-deal-info';
-
-type TProposalTypeInfo = {
-    has_error?: boolean;
-    id: string;
-    has_increased?: boolean;
-    message?: string;
-    cancellation?: {
-        ask_price: number;
-        date_expiry: number;
-    };
-    growth_rate?: number;
-    returns?: string;
-    stake: string;
-};
+import { TProposalTypeInfo } from '../../Containers/purchase';
 
 type TPurchaseFieldset = {
     basis: string;

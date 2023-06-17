@@ -5,20 +5,7 @@ import { isDesktop, isMobile, getDecimalPlaces } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
-
-type TProposalTypeInfo = {
-    has_error?: boolean;
-    id: string;
-    has_increased?: boolean;
-    message?: string;
-    cancellation?: {
-        ask_price: number;
-        date_expiry: number;
-    };
-    growth_rate?: number;
-    returns?: string;
-    stake: string;
-};
+import { TProposalTypeInfo } from '../../../Containers/purchase';
 
 const CancelDealInfo = observer(({ proposal_info }: { proposal_info: TProposalTypeInfo }) => {
     const { currency, has_cancellation } = useTraderStore();

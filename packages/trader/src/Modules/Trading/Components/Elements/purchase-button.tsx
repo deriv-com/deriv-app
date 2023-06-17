@@ -4,20 +4,7 @@ import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes, Text } from '@der
 import { getContractTypeDisplay } from 'Constants/contract';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 import { getGrowthRatePercentage } from '@deriv/shared';
-
-type TProposalTypeInfo = {
-    has_error?: boolean;
-    id: string;
-    has_increased?: boolean;
-    message?: string;
-    cancellation?: {
-        ask_price: number;
-        date_expiry: number;
-    };
-    growth_rate?: number;
-    returns?: string;
-    stake: string;
-};
+import { TProposalTypeInfo } from '../../Containers/purchase';
 
 type TPurchaseButton = {
     basis: string;

@@ -8,7 +8,7 @@ import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 
-type TProposalTypeInfo = {
+export type TProposalTypeInfo = {
     has_error?: boolean;
     id: string;
     has_increased?: boolean;
@@ -61,7 +61,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
             if (getContractTypePosition(type) === 'bottom') return 1;
             return index;
         };
-        const info = proposal_info?.type || {};
+        const info = proposal_info?.[type] || {};
         const is_disabled = !is_trade_enabled || !info.id || !is_purchase_enabled;
         const is_proposal_error =
             is_multiplier || (is_accumulator && !is_mobile) ? info?.has_error && !!info?.message : info?.has_error;

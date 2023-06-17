@@ -5,6 +5,13 @@ import WalletModal from '../wallet-modal';
 
 jest.mock('../wallet-modal-header', () => jest.fn(() => <div>WalletModalHeader</div>));
 jest.mock('../wallet-modal-body', () => jest.fn(() => <div>WalletModalBody</div>));
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useCurrencyConfig: jest.fn(() => ({
+        getConfig: (currency: string) => ({}),
+    })),
+    useWalletList: jest.fn(() => undefined),
+}));
 
 describe('WalletModal', () => {
     let modal_root_el: HTMLDivElement;

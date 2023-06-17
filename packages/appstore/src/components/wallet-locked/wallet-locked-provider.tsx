@@ -2,7 +2,7 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 
 type TProps = {
-    is_crypto: boolean;
+    is_crypto?: boolean;
     is_system_maintenance: boolean;
     wallet_name: string;
 };

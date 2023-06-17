@@ -8,14 +8,18 @@ describe('WalletModalHeader', () => {
 
     beforeEach(() => {
         mocked_props = {
-            balance: 999,
             closeModal: jest.fn(),
-            currency: 'USD',
             is_dark: false,
-            is_demo: true,
             is_mobile: false,
             is_wallet_name_visible: true,
-            shortcode: 'SVG',
+            wallet: {
+                balance: 999,
+                currency: 'USD',
+                is_demo: true,
+                landing_company_shortcode: 'SVG',
+                name: 'Demo USD Wallet',
+                wallet_type: 'demo',
+            },
         };
     });
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Modal } from '@deriv/components';
+import { useCurrencyConfig, useWalletList } from '@deriv/hooks';
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import WalletModalHeader from './wallet-modal-header';
@@ -8,31 +9,33 @@ import { observer, useStore } from '@deriv/stores';
 import type { TWalletType } from './provider';
 
 // TODO: remove this type when we can use real current wallet object
-export type TWallet = {
-    balance: string | number | undefined;
-    currency: string;
-    is_crypto: boolean;
+export type TWallet = Omit<Exclude<ReturnType<typeof useWalletList>['data'], undefined>[0], 'balance'> & {
+    balance?: string | number;
+    is_crypto?: boolean;
     is_demo: boolean;
     name: string;
-    shortcode: string;
     wallet_type: TWalletType;
 };
 
 const WalletModal = observer(() => {
     const store = useStore();
     const {
-        client: { balance, currency, is_crypto, landing_company_shortcode: shortcode },
+        client: { balance, currency, landing_company_shortcode },
         ui: { is_dark_mode_on, is_wallet_modal_visible, is_mobile, setIsWalletModalVisible },
         traders_hub: { is_demo },
     } = store;
+
+    const { getConfig } = useCurrencyConfig();
+    const currency_config = getConfig(currency);
+    const is_crypto = currency_config?.is_crypto;
 
     // TODO: Replace this object with current wallet
     const wallet = {
         balance,
         currency,
-        shortcode,
-        is_crypto: is_crypto(currency),
+        is_crypto,
         is_demo,
+        landing_company_shortcode,
         name: `${is_demo ? localize('Demo') : ''} ${getCurrencyDisplayCode(currency)} ${localize('Wallet')}`,
         wallet_type: (is_demo ? 'demo' : 'real') as TWalletType,
     };

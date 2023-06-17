@@ -15,12 +15,16 @@ describe('WalletModalBody', () => {
             active_tab_index: 0,
             contentScrollHandler: jest.fn(),
             is_dark: false,
-            is_demo: true,
             is_mobile: false,
             setActiveTabIndex: jest.fn(),
             setIsWalletNameVisible: jest.fn(),
             is_wallet_name_visible: true,
-            wallet_type: 'demo',
+            wallet: {
+                is_demo: true,
+                wallet_type: 'demo',
+                landing_company_shortcode: 'SVG',
+                name: 'Demo USD Wallet',
+            },
         };
     });
 

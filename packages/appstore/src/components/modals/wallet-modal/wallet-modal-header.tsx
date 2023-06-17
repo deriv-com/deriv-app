@@ -38,7 +38,7 @@ const WalletModalHeader = ({
     is_wallet_name_visible,
     wallet,
 }: TWalletModalHeaderProps) => {
-    const { balance, currency, is_demo, name, shortcode } = wallet;
+    const { balance, currency, is_demo, name, landing_company_shortcode: shortcode } = wallet;
     const header_class_name = 'modal-header';
 
     const getBadgeLabel = React.useCallback(() => {
@@ -73,9 +73,11 @@ const WalletModalHeader = ({
     const getCurrencyIconSize = React.useCallback(() => {
         // TODO: add p2p and payment_agent check
         const is_square_icon =
-            ['btc', 'eth', 'ltc', 'usdt', 'eusdt', 'tusdt', 'ust', 'usdc', 'p2p', 'payment_agent'].includes(
-                currency.toLowerCase()
-            ) || is_demo;
+            (currency &&
+                ['btc', 'eth', 'ltc', 'usdt', 'eusdt', 'tusdt', 'ust', 'usdc', 'p2p', 'payment_agent'].includes(
+                    currency.toLowerCase()
+                )) ||
+            is_demo;
 
         const sizes = {
             mobile: {
@@ -94,7 +96,7 @@ const WalletModalHeader = ({
     }, [currency, is_demo, is_mobile]);
 
     const getCurrencyIconProps = React.useCallback(() => {
-        const icon = getWalletCurrencyIcon(is_demo ? 'demo' : currency, is_dark, true);
+        const icon = currency && getWalletCurrencyIcon(is_demo ? 'demo' : currency, is_dark, true);
         const size = getCurrencyIconSize();
 
         return { icon, ...size };

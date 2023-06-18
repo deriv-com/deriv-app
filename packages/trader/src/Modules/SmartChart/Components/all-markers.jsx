@@ -172,13 +172,13 @@ const draw_shaded_barriers = ({
     ctx.lineWidth = 1;
     ctx.strokeStyle = stroke_color;
     ctx.setLineDash([]);
+    ctx.font = labels?.font;
+    ctx.textAlign = 'right';
 
     if (is_top_visible || has_persistent_borders) {
         ctx.fillStyle = stroke_color;
         // draw difference between high barrier and previous spot price
         if (labels?.top) {
-            ctx.textAlign = 'right';
-            ctx.font = '14px IBM Plex Sans';
             ctx.fillText(labels?.top, end_left - 1, displayed_top - 10);
         }
         // draw top barrier with an arrow
@@ -190,35 +190,19 @@ const draw_shaded_barriers = ({
         ctx.fill();
         ctx.stroke();
     }
-    if (middle_top < end_top) {
-        ctx.globalCompositeOperation = 'destination-over';
-        const { radius, preceding_tick, stroke_color: prev_tick_stroke_color } = previous_tick || {};
-        if (preceding_tick) {
-            // draw markers for previous tick & a tick preceding previous tick in C.Details
-            if (preceding_tick) {
-                ctx.strokeStyle = preceding_tick.color;
-                ctx.fillStyle = preceding_tick.color;
-                ctx.beginPath();
-                ctx.arc(preceding_tick.left - 1, preceding_tick.top, radius, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.stroke();
-            }
-            ctx.strokeStyle = prev_tick_stroke_color;
-            ctx.fillStyle = prev_tick_stroke_color;
-            ctx.beginPath();
-            ctx.arc(start_left - 1, middle_top, radius, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.stroke();
-        } else if (prev_tick_stroke_color) {
+    if (middle_top < end_top && previous_tick) {
+        const { draw_line_without_tick_marker, radius, stroke_color: prev_tick_stroke_color } = previous_tick || {};
+        ctx.fillStyle = prev_tick_stroke_color;
+        if (prev_tick_stroke_color && !draw_line_without_tick_marker) {
             // draw previous tick marker in DTrader
             ctx.strokeStyle = prev_tick_stroke_color;
-            ctx.fillStyle = prev_tick_stroke_color;
             ctx.beginPath();
             ctx.arc(start_left - 1 * scale, middle_top, radius, 0, Math.PI * 2);
             ctx.fill();
             ctx.stroke();
         }
         // draw horizontal dashed line between barriers to accentuate that they're related to previous tick
+        ctx.globalCompositeOperation = 'destination-over';
         ctx.strokeStyle = stroke_color;
         ctx.beginPath();
         ctx.setLineDash([2, 4]);
@@ -231,8 +215,6 @@ const draw_shaded_barriers = ({
         ctx.fillStyle = stroke_color;
         // draw difference between low barrier and previous spot price
         if (labels?.bottom && displayed_bottom + 12 < end_top) {
-            ctx.textAlign = 'right';
-            ctx.font = '14px IBM Plex Sans';
             ctx.fillText(labels?.bottom, end_left - 1, displayed_bottom + 12);
         }
         // draw bottom barrier with an arrow
@@ -287,7 +269,6 @@ const TickContract = RawMarkerMaker(
         is_last_contract,
         is_dark_theme,
         is_in_contract_details,
-        is_mobile,
         granularity,
         contract_info: {
             accu_barriers_difference,
@@ -299,21 +280,33 @@ const TickContract = RawMarkerMaker(
             is_accumulator_trade_without_contract,
             is_sold,
             // tick_stream,
+            should_hide_prev_tick_marker,
             tick_count,
         },
     }) => {
         /** @type {CanvasRenderingContext2D} */
         const ctx = context;
 
+        const is_accumulator_contract = isAccumulatorContract(contract_type);
+        const is_accu_contract_open = isAccumulatorContractOpen(
+            {
+                contract_type,
+                current_spot: exit?.top,
+                high_barrier: barrier,
+                low_barrier: barrier_2,
+                status,
+                exit_tick,
+            },
+            true
+        );
         const color = getColor({
             is_dark_theme,
             status,
-            profit: is_sold ? profit : null,
+            profit: is_sold || !is_accu_contract_open ? profit : null,
         });
 
         const draw_start_line = is_last_contract && start.visible && !is_sold;
-        const is_accumulator_contract = isAccumulatorContract(contract_type);
-        const is_contract_ended = status !== 'open';
+        const is_contract_ended = status !== 'open' || !is_accu_contract_open;
         const scale = calc_scale(start.zoom);
         const canvas_height = canvas_fixed_height / window.devicePixelRatio;
 
@@ -337,6 +330,7 @@ const TickContract = RawMarkerMaker(
                 }),
                 labels: accu_barriers_difference,
                 previous_tick: {
+                    draw_line_without_tick_marker: should_hide_prev_tick_marker,
                     stroke_color: getColor({ status: 'fg', is_dark_theme }) + opacity,
                     radius: 1.5 * scale,
                 },
@@ -354,19 +348,7 @@ const TickContract = RawMarkerMaker(
                 (!contract_type && start))
         ) {
             // draw 2 barriers with a shade between them for an ongoing ACCU contract:
-            const is_accu_contract_open = isAccumulatorContractOpen(
-                {
-                    contract_type,
-                    current_spot: exit?.top,
-                    high_barrier: barrier,
-                    low_barrier: barrier_2,
-                    status,
-                    exit_tick,
-                },
-                true
-            );
             const contract_details_start_left = is_accu_contract_open ? exit?.left : previous_tick?.left;
-            const preceding_tick = ticks.length > 2 && is_accu_contract_open && ticks[ticks.length - 2];
             draw_shaded_barriers({
                 bottom: barrier_2,
                 ctx,
@@ -378,19 +360,11 @@ const TickContract = RawMarkerMaker(
                 // we should show barrier lines in contract details even when they are outside of the chart:
                 has_persistent_borders: is_in_contract_details,
                 labels: !is_in_contract_details && accu_barriers_difference,
-                previous_tick: is_in_contract_details
-                    ? {
-                          radius: is_mobile ? 1.5 : 2.5,
-                          stroke_color: getColor({ status: 'open', is_dark_theme }),
-                          preceding_tick: {
-                              ...preceding_tick,
-                              color: getColor({ status: 'grey_border', is_dark_theme }),
-                          },
-                      }
-                    : {
-                          stroke_color: color + opacity,
-                          radius: 1.5 * scale,
-                      },
+                previous_tick: {
+                    draw_line_without_tick_marker: should_hide_prev_tick_marker || is_in_contract_details,
+                    stroke_color: color + opacity,
+                    radius: 1.5 * scale,
+                },
                 scale,
                 start_left: is_in_contract_details ? contract_details_start_left : start.left,
                 stroke_color: getColor({
@@ -517,7 +491,7 @@ const TickContract = RawMarkerMaker(
             });
         }
         // status marker
-        if (exit.visible && is_sold) {
+        if (exit.visible && (is_sold || !is_accu_contract_open)) {
             draw_path(ctx, {
                 top: is_accumulator_contract ? entry.top - 9 * scale : barrier - 9 * scale,
                 left: exit.left + 8 * scale,

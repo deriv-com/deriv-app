@@ -11,9 +11,8 @@ describe('DelayedAccuBarriersMarker', () => {
         granularity: 0,
         is_dark_theme: false,
         is_in_contract_details: true,
-        is_mobile: false,
         marker_component: jest.fn(({ price_array }) => <div>{getMarkerComponentInnerHTML(price_array)}</div>),
-        previous_spot: 1111.11,
+        previous_spot_time: 1111.11,
         price_array: [4444.44, 2222.22],
         type: 'TickContract',
     };

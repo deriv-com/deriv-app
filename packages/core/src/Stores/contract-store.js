@@ -17,6 +17,7 @@ import {
     getAccuBarriersDelayTimeMs,
     getAccuBarriersForContractDetails,
     getEndTime,
+    isAccumulatorContractOpen,
 } from '@deriv/shared';
 import { getChartConfig } from './Helpers/logic';
 import { setLimitOrderBarriers, getLimitOrder } from './Helpers/limit-orders';
@@ -32,7 +33,7 @@ export default class ContractStore extends BaseStore {
         });
 
         makeObservable(this, {
-            accumulator_previous_spot: observable,
+            accumulator_previous_spot_time: observable,
             cached_barriers_data: observable,
             digits_info: observable,
             sell_info: observable,
@@ -83,7 +84,7 @@ export default class ContractStore extends BaseStore {
     end_time = null;
 
     // Accumulator contract
-    accumulator_previous_spot = null;
+    accumulator_previous_spot_time = null;
     cached_barriers_data = {};
 
     // Multiplier contract update config
@@ -166,9 +167,9 @@ export default class ContractStore extends BaseStore {
         const {
             barrier,
             contract_type,
-            current_spot,
             current_spot_high_barrier,
             current_spot_low_barrier,
+            current_spot_time,
             high_barrier,
             low_barrier,
             status,
@@ -202,11 +203,15 @@ export default class ContractStore extends BaseStore {
                             return;
                         }
                         if (contract_info) {
-                            this.accumulator_previous_spot = null;
+                            this.accumulator_previous_spot_time = null;
                             if (isBarrierSupported(contract_type) && accu_high_barrier && accu_low_barrier) {
                                 main_barrier?.updateBarriers(accu_high_barrier, accu_low_barrier);
                             }
-                            this.accumulator_previous_spot = current_spot;
+                            this.markers_array = createChartMarkers(
+                                contract_info,
+                                isAccumulatorContractOpen(contract_info)
+                            );
+                            this.accumulator_previous_spot_time = current_spot_time;
                         }
                     }),
                 getAccuBarriersDelayTimeMs(underlying)

@@ -2,7 +2,7 @@ import moment from 'moment';
 import { unique } from '../object';
 import { TContractInfo, TContractInfoWithNumericBarriers, TLimitOrder, TDigitsInfo, TTickItem } from './contract-types';
 
-export const DELAY_TIME_1S_SYMBOL = 320;
+export const DELAY_TIME_1S_SYMBOL = 500;
 // generation_interval will be provided via API later to help us distinguish between 1-second and 2-second symbols
 export const symbols_1s = [
     '1HZ100V',

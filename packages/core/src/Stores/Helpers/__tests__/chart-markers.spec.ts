@@ -62,8 +62,40 @@ describe('createTickMarkers', () => {
         contract_info.contract_type = 'ACCU';
         contract_info.status = 'open';
         const result = createTickMarkers(contract_info);
-        expect(result.length).toBe(8); // preexit and exit ticks are not drawn for open accumulator contracts
-        expect(result[result.length - 1].content_config.spot_value).toBe('1.238');
-        expect(result[result.length - 1].type).toBe('SPOT_MIDDLE_7');
+        expect(result.length).toBe(9); // exit tick should not be marked for an ongoing accumulator contract
+        expect(result[result.length - 1].content_config.spot_value).toBe('1.2385');
+        expect(result[result.length - 1].type).toBe('SPOT_MIDDLE_8');
+    });
+    it('should append --preexit class to previous spot of accumulator contract to highlight it when is_delayed_markers_update=false or contract is closed', () => {
+        contract_info.contract_type = 'ACCU';
+        contract_info.status = 'open';
+        const result = createTickMarkers(contract_info, false);
+        expect(result[result.length - 1].content_config.spot_className).toBe(
+            'chart-spot__spot chart-spot__spot--accumulator-middle--preexit'
+        );
+
+        contract_info.status = 'lost';
+        contract_info.exit_tick_time = 10;
+        contract_info.exit_tick_display_value = '1.239';
+        const result_for_closed_contract = createTickMarkers(contract_info);
+        expect(result_for_closed_contract[result_for_closed_contract.length - 2].content_config.spot_className).toBe(
+            'chart-spot__spot chart-spot__spot--accumulator-middle--preexit'
+        );
+    });
+    it('should not append --preexit class to previous spot of accumulator contract when is_delayed_markers_update=true for open contract only', () => {
+        contract_info.contract_type = 'ACCU';
+        contract_info.status = 'open';
+        const result = createTickMarkers(contract_info, true);
+        expect(result[result.length - 1].content_config.spot_className).toBe(
+            'chart-spot__spot chart-spot__spot--accumulator-middle'
+        );
+
+        contract_info.status = 'lost';
+        contract_info.exit_tick_time = 10;
+        contract_info.exit_tick_display_value = '1.239';
+        const result_for_closed_contract = createTickMarkers(contract_info, true);
+        expect(result_for_closed_contract[result_for_closed_contract.length - 2].content_config.spot_className).toBe(
+            'chart-spot__spot chart-spot__spot--accumulator-middle--preexit'
+        );
     });
 });

@@ -191,7 +191,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const { contract_replay, common, ui } = useStore();
     const { contract_store, chart_state, chartStateChange, margin } = contract_replay;
     const {
-        accumulator_previous_spot,
+        accumulator_previous_spot_time,
         contract_config,
         marker: accumulators_barriers_marker,
         is_digit_contract,
@@ -297,9 +297,8 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                     key={accumulators_barriers_marker.key}
                     is_dark_theme={is_dark_theme}
                     granularity={granularity}
-                    is_mobile={isMobile()}
                     is_in_contract_details
-                    previous_spot={accumulator_previous_spot}
+                    previous_spot_time={accumulator_previous_spot_time}
                     {...accumulators_barriers_marker}
                 />
             )}

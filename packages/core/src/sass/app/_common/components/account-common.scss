@@ -78,6 +78,10 @@
             text-align: center;
             z-index: 1;
             width: 100%;
+
+            @include mobile {
+                top: -0.4rem;
+            }
         }
     }
 }

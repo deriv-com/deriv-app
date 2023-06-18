@@ -1,16 +1,16 @@
-import { Button, Drawer, Modal, Money, Tabs, ThemedScrollbars, Text } from '@deriv/components';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import React from 'react';
-import { localize, Localize } from '@deriv/translations';
+import classNames from 'classnames';
+import PropTypes from 'prop-types';
+import { Button, Drawer, Modal, Money, Tabs, Text, ThemedScrollbars } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import Journal from 'Components/journal';
-import Summary from 'Components/summary';
-import Transactions from 'Components/transactions';
-import TradeAnimation from 'Components/trade-animation';
 import SelfExclusion from 'Components/self-exclusion';
+import Summary from 'Components/summary';
+import TradeAnimation from 'Components/trade-animation';
+import Transactions from 'Components/transactions';
 import { popover_zindex } from 'Constants/z-indexes';
 import { connect } from 'Stores/connect';
-import { isMobile } from '@deriv/shared';
 
 const StatisticsTile = ({ content, contentClassName, title }) => (
     <div className='run-panel__tile'>

@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
-import { PlatformContext } from '@deriv/shared';
+import { PlatformContext, isMobile } from '@deriv/shared';
 
 export type TFormBodySection = {
     has_side_note?: boolean;
@@ -19,7 +19,7 @@ const FormBodySection = ({ children, has_side_note, side_note }: React.PropsWith
             >
                 <div className='account-form__section-side-note'>
                     {typeof side_note === 'string' ? (
-                        <Text size='xxs' data-testid='side-note-text'>
+                        <Text color='less-prominent' size={isMobile() ? 'xxs' : 'xs'} data-testid='side-note-text'>
                             {side_note}
                         </Text>
                     ) : (

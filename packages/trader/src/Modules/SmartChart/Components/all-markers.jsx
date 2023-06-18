@@ -193,6 +193,7 @@ const draw_shaded_barriers = ({
     if (middle_top < end_top && previous_tick) {
         const { draw_line_without_tick_marker, radius, stroke_color: prev_tick_stroke_color } = previous_tick || {};
         ctx.fillStyle = prev_tick_stroke_color;
+        ctx.globalCompositeOperation = 'destination-over';
         if (prev_tick_stroke_color && !draw_line_without_tick_marker) {
             // draw previous tick marker in DTrader
             ctx.strokeStyle = prev_tick_stroke_color;
@@ -202,7 +203,6 @@ const draw_shaded_barriers = ({
             ctx.stroke();
         }
         // draw horizontal dashed line between barriers to accentuate that they're related to previous tick
-        ctx.globalCompositeOperation = 'destination-over';
         ctx.strokeStyle = stroke_color;
         ctx.beginPath();
         ctx.setLineDash([2, 4]);
@@ -280,7 +280,6 @@ const TickContract = RawMarkerMaker(
             is_accumulator_trade_without_contract,
             is_sold,
             // tick_stream,
-            should_hide_prev_tick_marker,
             tick_count,
         },
     }) => {
@@ -330,7 +329,6 @@ const TickContract = RawMarkerMaker(
                 }),
                 labels: accu_barriers_difference,
                 previous_tick: {
-                    draw_line_without_tick_marker: should_hide_prev_tick_marker,
                     stroke_color: getColor({ status: 'fg', is_dark_theme }) + opacity,
                     radius: 1.5 * scale,
                 },
@@ -361,7 +359,7 @@ const TickContract = RawMarkerMaker(
                 has_persistent_borders: is_in_contract_details,
                 labels: !is_in_contract_details && accu_barriers_difference,
                 previous_tick: {
-                    draw_line_without_tick_marker: should_hide_prev_tick_marker || is_in_contract_details,
+                    draw_line_without_tick_marker: is_in_contract_details,
                     stroke_color: color + opacity,
                     radius: 1.5 * scale,
                 },

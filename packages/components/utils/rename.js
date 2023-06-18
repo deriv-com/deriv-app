@@ -6,8 +6,18 @@
 const { join } = require('path');
 const { readdirSync, renameSync } = require('fs');
 
+const escapeStringRegExp = str => {
+    const matchOperatorsRegex = /[|\\{}()[\]^$+*?.-]/g;
+
+    if (typeof str !== 'string') {
+        throw new TypeError('Expected a string');
+    }
+
+    return str.replace(matchOperatorsRegex, '\\$&');
+};
+
 const [dir, search, replace] = process.argv.slice(2);
-const match = RegExp(search, 'g');
+const match = RegExp(escapeStringRegExp(search), 'g');
 const files = readdirSync(dir);
 
 files

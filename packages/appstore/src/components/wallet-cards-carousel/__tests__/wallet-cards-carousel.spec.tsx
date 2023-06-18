@@ -38,7 +38,7 @@ describe('<WalletCardsCarousel />', () => {
     it('Should render slider', () => {
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletCardsCarousel selected_wallet='' setSelectedWallet={jest.fn} items={items} />
+                <WalletCardsCarousel active_wallet_index={0} setSelectedWallet={jest.fn} items={items} />
             </StoreProvider>
         );
         const slider = screen.queryByText('slider');
@@ -47,10 +47,9 @@ describe('<WalletCardsCarousel />', () => {
     });
 
     it('Should render buttons for REAL', () => {
-        const item = [items[0]];
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletCardsCarousel selected_wallet='' setSelectedWallet={jest.fn} items={item} />
+                <WalletCardsCarousel active_wallet_index={0} setSelectedWallet={jest.fn} items={items} />
             </StoreProvider>
         );
 
@@ -66,11 +65,9 @@ describe('<WalletCardsCarousel />', () => {
     });
 
     it('Should render buttons for DEMO', () => {
-        const item = [items[1]];
-        // console.log('item = ', item);
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletCardsCarousel selected_wallet='' setSelectedWallet={jest.fn} items={item} />
+                <WalletCardsCarousel active_wallet_index={1} setSelectedWallet={jest.fn} items={items} />
             </StoreProvider>
         );
 

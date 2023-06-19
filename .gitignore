@@ -13,3 +13,4 @@ old/
 CNAME
 *.env
 .env
+translations/

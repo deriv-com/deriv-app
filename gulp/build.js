@@ -36,13 +36,3 @@ gulp.task(
         done();
     })
 );
-
-gulp.task(
-    'build-min',
-    gulp.series('static', 'webpack-prod', 'pull-blockly-translations', done => {
-        genHtml();
-        done();
-    })
-);
-
-gulp.task('build', gulp.parallel('build-dev-js', 'build-dev-static', 'pull-blockly-translations'));

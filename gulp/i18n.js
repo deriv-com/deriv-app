@@ -3,8 +3,6 @@ const fs = require('fs');
 const gulp = require('gulp');
 const hash = require('sha1');
 const paths = require('vinyl-paths');
-const remoteSrc = require('gulp-remote-src');
-const rename = require('gulp-rename');
 const scanner = require('i18next-scanner');
 require('./static');
 
@@ -71,20 +69,4 @@ gulp.task(
             .pipe(scanner(options, customTransform))
             .pipe(gulp.dest('./'))
     )
-);
-
-gulp.task(
-    'pull-blockly-translations',
-    gulp.series(done => {
-        const blocklyLanguages = ['en', 'it', 'vi', 'pl', 'ru', 'pt', 'es', 'fr', 'zh-hans', 'zh-hant'];
-        remoteSrc(
-            blocklyLanguages.map(lang => `${lang}.js?_=${Date.now()}`),
-            {
-                base: 'https://blockly-demo.appspot.com/static/build/msg/',
-            }
-        )
-            .pipe(rename(path => (path.extname = '.js')))
-            .pipe(gulp.dest('www/translations'));
-        done();
-    })
 );

@@ -4,13 +4,14 @@ const Dotenv = require('dotenv-webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const BlocklyConcatPlugin = require('./customPlugins/blockly-concat-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const PullBlocklyTranslationsPlugin = require('./customPlugins/blockly-translation-plugin');
 
 module.exports = {
     entry: path.join(__dirname, 'src', 'botPage', 'view', 'index.js'),
     output: {
         path: path.resolve(__dirname, 'www'),
-        filename: 'index.min.js',
-        sourceMapFilename: 'index.min.js.map',
+        filename: 'index.js',
+        sourceMapFilename: 'index.js.map',
     },
     target: 'node',
     externals: {
@@ -34,7 +35,7 @@ module.exports = {
                     loader: 'file-loader',
                     options: {
                         name: '[name].[ext]',
-                        outputPath: path.resolve(__dirname, 'www', 'public', 'image'),
+                        outputPath: 'image',
                     },
                 },
             },
@@ -44,7 +45,7 @@ module.exports = {
                     loader: 'file-loader',
                     options: {
                         name: '[name].[ext]',
-                        outputPath: path.resolve(__dirname, 'www', 'public', 'font'),
+                        outputPath: 'public/font',
                     },
                 },
             },
@@ -52,6 +53,19 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(['www']),
+        new BlocklyConcatPlugin({
+            outputPath: '/',
+            fileName: 'blockly.js',
+            filesToConcat: [
+                './node_modules/blockly/blockly_compressed.js',
+                './node_modules/blockly/blocks_compressed.js',
+                './node_modules/blockly/javascript_compressed.js',
+                './node_modules/blockly/msg/messages.js',
+            ],
+        }),
+        new PullBlocklyTranslationsPlugin({
+            outputPath: path.resolve(__dirname, 'translations'),
+        }),
         new Dotenv(),
         new webpack.ProvidePlugin({
             $: 'jquery',
@@ -84,17 +98,11 @@ module.exports = {
                 from: 'templates/index.html',
                 to: path.resolve(__dirname, 'www'),
             },
+            {
+                from: 'translations',
+                to: path.resolve(__dirname, 'www/translations'),
+            },
         ]),
-        new BlocklyConcatPlugin({
-            outputPath: path.resolve(__dirname, 'www'),
-            fileName: 'blockly.js',
-            filesToConcat: [
-                './node_modules/blockly/blockly_compressed.js',
-                './node_modules/blockly/blocks_compressed.js',
-                './node_modules/blockly/javascript_compressed.js',
-                './node_modules/blockly/msg/messages.js',
-            ],
-        }),
         new webpack.optimize.UglifyJsPlugin({
             include: /\.js$/,
             minimize: true,

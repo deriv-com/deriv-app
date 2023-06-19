@@ -3,7 +3,6 @@ const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const BlocklyConcatPlugin = require('./customPlugins/blockly-concat-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
     entry: path.join(__dirname, 'src', 'botPage', 'view', 'index.js'),
@@ -36,7 +35,7 @@ module.exports = {
                     loader: 'file-loader',
                     options: {
                         name: '[name].[ext]',
-                        outputPath: path.resolve(__dirname, 'www', 'public', 'image'),
+                        outputPath: 'image',
                     },
                 },
             },
@@ -46,14 +45,26 @@ module.exports = {
                     loader: 'file-loader',
                     options: {
                         name: '[name].[ext]',
-                        outputPath: path.resolve(__dirname, 'www', 'public', 'font'),
+                        outputPath: 'public/font',
                     },
                 },
             },
         ],
     },
     plugins: [
-        new CleanWebpackPlugin(['www']),
+        new BlocklyConcatPlugin({
+            outputPath: path.resolve(__dirname, 'www'),
+            fileName: 'blockly.js',
+            filesToConcat: [
+                './node_modules/blockly/blockly_compressed.js',
+                './node_modules/blockly/blocks_compressed.js',
+                './node_modules/blockly/javascript_compressed.js',
+                './node_modules/blockly/msg/messages.js',
+            ],
+        }),
+        // new PullBlocklyTranslationsPlugin({
+        //     outputPath: path.resolve(__dirname, 'translations'),
+        // }),
         new Dotenv(),
         new webpack.ProvidePlugin({
             $: 'jquery',
@@ -83,16 +94,6 @@ module.exports = {
                 to: path.resolve(__dirname, 'www'),
             },
         ]),
-        new BlocklyConcatPlugin({
-            outputPath: path.resolve(__dirname, 'www'),
-            fileName: 'blockly.js',
-            filesToConcat: [
-                './node_modules/blockly/blockly_compressed.js',
-                './node_modules/blockly/blocks_compressed.js',
-                './node_modules/blockly/javascript_compressed.js',
-                './node_modules/blockly/msg/messages.js',
-            ],
-        }),
     ],
     devServer: {
         contentBase: path.resolve(__dirname, 'www'),

@@ -23,7 +23,8 @@
         "prepare": "husky install",
         "prettify": "npx prettier --write **/{src}/**/*.{js,jsx,ts,tsx,md,html,mustache,css,scss,}",
         "start:1": "webpack-dev-server --config webpack.config.web --open",
-        "build:1": "webpack --config webpack.config.cli"
+        "build:1": "webpack --config webpack.config.cli",
+        "prebuild": "node customPlugins/fetch-blockly-translations.js"
     },
     "husky": {
         "hooks": {
@@ -115,6 +116,7 @@
         "@deriv/deriv-api": "^1.0.9",
         "@deriv/deriv-charts": "^0.3.44",
         "@reduxjs/toolkit": "^1.7.1",
+        "axios": "^0.21.4",
         "binary-style": "^0.2.4",
         "blockly": "github:binary-com/blockly#fix-blockly",
         "classnames": "^2.3.1",

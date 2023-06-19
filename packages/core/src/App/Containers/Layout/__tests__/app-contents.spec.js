@@ -2,7 +2,19 @@ import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
+import { ThemedScrollbars } from '@deriv/components';
 import AppContents from '../app-contents';
+
+let child_ref;
+
+const MockComp = ({ children }, ...props) => {
+    child_ref = React.useRef();
+    return (
+        <div {...props} ref={child_ref}>
+            {children}
+        </div>
+    );
+};
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
@@ -20,7 +32,7 @@ jest.mock('@deriv/shared', () => ({
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
-    MobileWrapper: () => <div>Rendered mobile</div>,
+    ThemedScrollbars: props => <MockComp {...props} />,
 }));
 
 const { client, ui, common } = mockStore({});
@@ -69,6 +81,15 @@ describe('<AppContents/>', () => {
         waitFor(() => {
             expect(screen.queryByText('Don’t accept')).not.toBeInTheDocument();
             expect(screen.queryByText('Accept')).not.toBeInTheDocument();
+        });
+    });
+
+    it('should move scroll to top', async () => {
+        const new_props = { ...mock_props, is_eu_country: false };
+        render(<AppContents {...new_props} />, { wrapper: BrowserRouter });
+
+        await waitFor(() => {
+            expect(child_ref.current.scrollTop).toBe(0);
         });
     });
 });

@@ -2,7 +2,7 @@ import { Button, Text, Icon } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import React from 'react';
 
-export const POORejetced = ({ onTryAgain }) => {
+export const POORejected = ({ onTryAgain }) => {
     return (
         <div className='proof-of-ownership__container'>
             <div className='proof-of-ownership__container--content'>

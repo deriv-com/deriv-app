@@ -1,7 +1,13 @@
 import React from 'react';
 import { QRCode } from 'react-qrcode';
 import { TCFDsPlatformType } from 'Components/props.types';
-import { getDXTradeWebTerminalLink, platformsText, DERIVEZ_URL, platformsIcons, mobileDownloadLink } from './constants';
+import {
+    getDXTradeWebTerminalLink,
+    getDerivEzWebTerminalLink,
+    platformsText,
+    platformsIcons,
+    mobileDownloadLink,
+} from './constants';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isMobile, OSDetect, isDesktopOs } from '@deriv/shared';
@@ -15,14 +21,14 @@ export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
     return (
         <React.Fragment>
             <QRCode
-                value={mobileDownloadLink(acc_type, checkForDesktop)}
+                value={platformsText(acc_type) === 'EZ' ? 'https://onelink.to/bkdwkd' : 'https://onelink.to/grmtyx'}
                 size={5}
                 style={{ height: 'auto', maxWidth: '100%', width: qr_code_width }}
             />
             <Text align='center' size='xxs'>
                 <Localize
                     i18n_default_text='Scan the QR code to download Deriv {{ platform }}.'
-                    values={{ platform: platformsText(acc_type) }}
+                    values={{ platform: platformsText(acc_type) === 'EZ' ? 'GO' : platformsText(acc_type) }}
                 />
             </Text>
         </React.Fragment>
@@ -32,14 +38,23 @@ export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
 type TPlatformsDesktopDownload = {
     platform: TCFDsPlatformType;
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
+    derivez_tokens: TCFDDashboardContainer['derivez_tokens'];
     is_demo: string;
 };
 
-export const PlatformsDesktopDownload = ({ platform, dxtrade_tokens, is_demo }: TPlatformsDesktopDownload) => {
+export const PlatformsDesktopDownload = ({
+    platform,
+    dxtrade_tokens,
+    derivez_tokens,
+    is_demo,
+}: TPlatformsDesktopDownload) => {
     const PlatformsDesktopDownloadLinks = () => {
         switch (platform) {
             case 'derivez':
-                return DERIVEZ_URL;
+                return getDerivEzWebTerminalLink(
+                    is_demo ? 'demo' : 'real',
+                    derivez_tokens && derivez_tokens[is_demo ? 'demo' : 'real']
+                );
             case 'dxtrade':
                 return getDXTradeWebTerminalLink(
                     is_demo ? 'demo' : 'real',

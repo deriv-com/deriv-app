@@ -67,8 +67,6 @@ const StaticDashboard = ({
     const { content_flag, CFDs_restricted_countries, financial_restricted_countries } = traders_hub;
     const { is_eu_country, is_logged_in } = client;
 
-    //starting ctrader project
-
     const [index, setIndex] = React.useState<number>(0);
 
     const Divider = () => <div className='divider' />;
@@ -473,25 +471,49 @@ const StaticDashboard = ({
                                     is_eu_user={is_eu_user}
                                 />
                             )}
+
                             {!is_eu_user && !CFDs_restricted_countries && (
-                                <StaticCFDAccountManager
-                                    type='financial'
-                                    platform='mt5'
-                                    appname={localize('Financial')}
-                                    description={localize(
-                                        'Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
+                                <React.Fragment>
+                                    <StaticCFDAccountManager
+                                        type='financial'
+                                        platform='mt5'
+                                        appname={localize('Financial')}
+                                        description={localize(
+                                            'Trade CFDs on MT5 with forex, stocks, stock indices, commodities, and cryptocurrencies.'
+                                        )}
+                                        financial_amount={financial_amount}
+                                        derived_amount={derived_amount}
+                                        loginid={loginid}
+                                        currency={currency}
+                                        has_account={has_account}
+                                        is_last_step={is_last_step}
+                                        is_blurry={is_blurry}
+                                        is_onboarding_animated={is_onboarding_animated}
+                                        is_financial_last_step={is_financial_last_step}
+                                        is_eu_user={is_eu_user}
+                                    />
+                                    {isMobile() && !has_account && <Divider />}
+                                    {!financial_restricted_countries && (
+                                        <StaticCFDAccountManager
+                                            type='swap_free'
+                                            platform='mt5'
+                                            appname={localize('Swap-Free')}
+                                            description={localize(
+                                                'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs.'
+                                            )}
+                                            financial_amount={financial_amount}
+                                            derived_amount={derived_amount}
+                                            loginid={loginid}
+                                            currency={currency}
+                                            has_account={has_account}
+                                            is_last_step={is_last_step}
+                                            is_blurry={is_blurry}
+                                            is_onboarding_animated={is_onboarding_animated}
+                                            is_financial_last_step={is_financial_last_step}
+                                            is_eu_user={is_eu_user}
+                                        />
                                     )}
-                                    financial_amount={financial_amount}
-                                    derived_amount={derived_amount}
-                                    loginid={loginid}
-                                    currency={currency}
-                                    has_account={has_account}
-                                    is_last_step={is_last_step}
-                                    is_blurry={is_blurry}
-                                    is_onboarding_animated={is_onboarding_animated}
-                                    is_financial_last_step={is_financial_last_step}
-                                    is_eu_user={is_eu_user}
-                                />
+                                </React.Fragment>
                             )}
                             {isDesktop() && has_account && !eu_user && (
                                 <StaticGetMoreAccounts
@@ -547,13 +569,14 @@ const StaticDashboard = ({
                                     platform='derivez'
                                     appname={localize('Deriv EZ')}
                                     description={localize(
-                                        'Trade CFDs on forex, commodities, cryptocurrencies, stocks, stock indices, and derived indices.'
+                                        'Trade CFDs on an easy-to-get-started platform with all your favourite assets.'
                                     )}
                                     loginid={loginid}
                                     currency={currency}
                                     has_account={has_account}
                                     derived_amount={derived_amount}
                                     financial_amount={financial_amount}
+                                    is_derivx_last_step={is_derivx_last_step}
                                     is_blurry={is_blurry}
                                     is_onboarding_animated={is_onboarding_animated}
                                     is_eu_user={is_eu_user}

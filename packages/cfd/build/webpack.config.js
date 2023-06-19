@@ -6,7 +6,7 @@ module.exports = function (env) {
 
     return {
         context: path.resolve(__dirname, '../'),
-        devtool: IS_RELEASE ? undefined : 'eval-cheap-module-source-map',
+        devtool: IS_RELEASE ? 'source-map' : 'eval-cheap-module-source-map',
         entry: {
             cfd: path.resolve(__dirname, '../src', 'index.tsx'),
             CFDStore: 'Stores/Modules/CFD/cfd-store',
@@ -22,6 +22,7 @@ module.exports = function (env) {
             CFDPasswordManagerModal: 'Containers/cfd-password-manager-modal.tsx',
             CFDFinancialStpRealAccountSignup: 'Containers/cfd-financial-stp-real-account-signup.tsx',
             getDXTradeWebTerminalLink: 'Helpers/constants.ts',
+            getDerivEzWebTerminalLink: 'Helpers/constants.ts',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

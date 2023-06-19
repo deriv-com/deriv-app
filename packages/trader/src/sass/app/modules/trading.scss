@@ -85,6 +85,9 @@
                 display: flex;
                 justify-content: flex-end;
             }
+            &--tooltip-disabled {
+                pointer-events: none !important;
+            }
         }
         &-info {
             @include typeface(--paragraph-left-normal-black);
@@ -129,15 +132,22 @@
             padding: 0;
         }
         &.accu-info-display {
-            height: 7rem;
+            height: 7.6rem;
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            padding: 1.5rem 1.6rem;
+            padding: 1.5rem 0.8rem 1.5rem 1.6rem;
 
-            .accu-info-display__column {
+            .accu-info-display__row,
+            .accu-info-display__row > div {
                 display: flex;
-                flex-direction: column;
+                height: 2rem;
                 justify-content: space-between;
+                align-items: center;
+                gap: 0.8rem;
+                .dc-popover__target {
+                    height: 1.6rem;
+                }
             }
         }
         .dc-datepicker {
@@ -705,7 +715,7 @@
         cursor: not-allowed;
 
         &__caption {
-            width: 17.2rem;
+            width: 18rem;
             height: 4rem;
             color: var(--text-less-prominent);
             text-align: center;

@@ -21,6 +21,7 @@ type TTradeModalProps = {
     ) => void;
     toggleModal: () => void;
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
+    derivez_tokens: TCFDDashboardContainer['derivez_tokens'];
     is_demo: string;
     platform: TCFDsPlatformType;
 };
@@ -50,6 +51,7 @@ const TradeModal = ({
     onPasswordManager,
     toggleModal,
     dxtrade_tokens,
+    derivez_tokens,
     is_demo,
     platform,
 }: TTradeModalProps) => {
@@ -66,27 +68,76 @@ const TradeModal = ({
             </div>
         );
     };
-    const downloadCenterAppOption = (platform_type: TCFDsPlatformType) => {
-        if (platform_type === 'dxtrade') {
-            return (
-                <div className='cfd-trade-modal__download-center-app--option'>
-                    <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
-                        {localize('Run Deriv X on your browser')}
+    const downloadCenterDescription = () => {
+        switch (platform) {
+            case 'dxtrade':
+                return (
+                    <Text
+                        align='center'
+                        as='p'
+                        className='cfd-trade-modal__download-center-text'
+                        size={isMobile() ? 'xxxs' : 'xxs'}
+                        weight='bold'
+                    >
+                        {localize('Download Deriv X on your phone to trade with the Deriv X account')}
                     </Text>
-                    <PlatformsDesktopDownload platform={platform} is_demo={is_demo} dxtrade_tokens={dxtrade_tokens} />
-                </div>
-            );
-        } else if (platform_type === 'derivez') {
-            return (
-                <div className='cfd-trade-modal__download-center-app--option'>
-                    <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
-                        {localize('Run Deriv EZ on your browser')}
+                );
+            case 'derivez':
+                return (
+                    <Text
+                        align='center'
+                        as='p'
+                        className='cfd-trade-modal__download-center-text'
+                        size={isMobile() ? 'xxxs' : 'xxs'}
+                        weight='bold'
+                    >
+                        {localize('Download Deriv GO on your phone to trade with the Deriv EZ account')}
                     </Text>
-                    <PlatformsDesktopDownload platform={platform} is_demo={is_demo} dxtrade_tokens={dxtrade_tokens} />
-                </div>
-            );
+                );
+            case 'ctrader':
+                return (
+                    <Text
+                        align='center'
+                        as='p'
+                        className='cfd-trade-modal__download-center-text'
+                        size={isMobile() ? 'xxxs' : 'xxs'}
+                        weight='bold'
+                    >
+                        {localize('Download Deriv cTrader on your phone to trade with the Deriv cTrader account')}
+                    </Text>
+                );
+            default:
+                return '';
         }
-        return undefined;
+    };
+
+    const downloadCenterAppOption = (platform_type: TCFDsPlatformType) => {
+        let appTitle = '';
+        if (platform_type === 'dxtrade') {
+            appTitle = 'Run Deriv X on your browser';
+        } else if (platform_type === 'derivez') {
+            appTitle = 'Run Deriv EZ on your browser';
+        } else if (platform_type === 'ctrader') {
+            appTitle = 'Run Deriv cTrader on your browser';
+        } else {
+            return null;
+        }
+
+        return (
+            <React.Fragment>
+                <div className='cfd-trade-modal__download-center-app--option'>
+                    <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
+                        {localize(appTitle)}
+                    </Text>
+                    <PlatformsDesktopDownload
+                        platform={platform}
+                        is_demo={is_demo}
+                        dxtrade_tokens={dxtrade_tokens}
+                        derivez_tokens={derivez_tokens}
+                    />
+                </div>
+            </React.Fragment>
+        );
     };
 
     return (
@@ -147,12 +198,21 @@ const TradeModal = ({
                     />
                     <div className='cfd-trade-modal__maintenance-text'>
                         <Text size='xxxs' className='cfd-trade-modal__maintenance-text'>
-                            <Localize i18n_default_text='Server maintenance starts at 06:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.' />
+                            {platform === CFD_PLATFORMS.DXTRADE && (
+                                <Localize i18n_default_text='Server maintenance starts at 06:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.' />
+                            )}
+                            {platform === CFD_PLATFORMS.MT5 && (
+                                <Localize i18n_default_text='Server maintenance starts at 01:00 GMT every Sunday, and this process may take up to 2 hours to complete. Service may be disrupted during this time.' />
+                            )}
+                            {platform === CFD_PLATFORMS.DERIVEZ && (
+                                <Localize i18n_default_text='Server maintenance starts at 01:00 GMT every Sunday and may last up to 2 hours. You may experience service disruption during this time.' />
+                            )}
                         </Text>
                     </div>
                 </div>
             </div>
             <div className='cfd-trade-modal__download-center-app'>{downloadCenterAppOption(platform)}</div>
+            <div className='cfd-trade-modal__download-center-description'>{downloadCenterDescription()}</div>
             <div className='cfd-trade-modal__download-center-options'>
                 <div className='cfd-trade-modal__download-center-options--mobile-links'>
                     <div className='cfd-trade-modal__download-center-options--mobile-links--apple'>
@@ -163,8 +223,15 @@ const TradeModal = ({
                     <a href={mobileDownloadLink(platform, 'android')} target='_blank' rel='noopener noreferrer'>
                         <Icon icon='IcInstallationGoogle' width={135} height={40} />
                     </a>
+                    <a href={mobileDownloadLink(platform, 'huawei')} target='_blank' rel='noopener noreferrer'>
+                        <Icon icon='IcInstallationHuawei' width={135} height={40} />
+                    </a>
                 </div>
-                <div className='cfd-trade-modal__download-center-options--qrcode'>{getPlatformQRCode(platform)}</div>
+                {!isMobile() && (
+                    <div className='cfd-trade-modal__download-center-options--qrcode'>
+                        {getPlatformQRCode(platform)}
+                    </div>
+                )}
             </div>
         </div>
     );

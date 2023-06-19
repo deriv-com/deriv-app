@@ -31,7 +31,7 @@ const mobileDownloadLink = (platform: TCFDsPlatformType, type: 'ios' | 'android'
         case 'derivez':
             return getPlatformDerivEZDownloadLink(type);
         default:
-            return getPlatformDXTradeDownloadLink(type);
+            return '';
     }
 };
 
@@ -44,6 +44,9 @@ const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
 const DERIVEZ_URL = 'https://dqwsqxuu0r6t9.cloudfront.net/';
+const DERIVEZ_IOS_APP_URL = 'https://apps.apple.com/my/app/deriv-go/id1550561298';
+const DERIVEZ_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.app&pli=1';
+const DERIVEZ_HUAWEI_APP_URL = 'https://appgallery.huawei.com/#/app/C103801913';
 
 const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503';
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
@@ -64,19 +67,21 @@ const getPlatformDXTradeDownloadLink = (platform?: 'ios' | 'android' | 'huawei')
             return DXTRADE_IOS_APP_URL;
         case 'huawei':
             return DXTRADE_HUAWEI_APP_URL;
-        default:
+        case 'android':
             return DXTRADE_ANDROID_APP_URL;
+        default:
+            return '';
     }
 };
 
 const getPlatformDerivEZDownloadLink = (platform: 'ios' | 'android' | 'huawei') => {
     switch (platform) {
         case 'ios':
-            return 'a';
+            return DERIVEZ_IOS_APP_URL;
         case 'android':
-            return 'a';
+            return DERIVEZ_ANDROID_APP_URL;
         case 'huawei':
-            return 'a';
+            return DERIVEZ_HUAWEI_APP_URL;
         default:
             return '';
     }
@@ -103,6 +108,16 @@ const getPlatformMt5DownloadLink = (platform: string | undefined = undefined) =>
 
 const getDXTradeWebTerminalLink = (category: string, token?: string) => {
     let url = category === 'real' ? REAL_DXTRADE_URL : DEMO_DXTRADE_URL;
+
+    if (token) {
+        url += `?token=${token}`;
+    }
+
+    return url;
+};
+
+const getDerivEzWebTerminalLink = (category: string, token?: string) => {
+    let url = DERIVEZ_URL;
 
     if (token) {
         url += `?token=${token}`;
@@ -140,6 +155,7 @@ export {
     getPlatformDerivEZDownloadLink,
     getPlatformMt5DownloadLink,
     getDXTradeWebTerminalLink,
+    getDerivEzWebTerminalLink,
     getMT5WebTerminalLink,
     getTopUpConfig,
 };

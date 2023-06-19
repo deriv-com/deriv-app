@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { loginUrl, routes, PlatformContext } from '@deriv/shared';
-import { useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import { WS } from 'Services';
@@ -10,6 +9,8 @@ import { WS } from 'Services';
 const Redirect = ({
     history,
     currency,
+    loginid,
+    setLoginId,
     setVerificationCode,
     verification_code,
     hasAnyRealAccount,
@@ -21,8 +22,6 @@ const Redirect = ({
     toggleResetEmailModal,
     toggleUpdateEmailModal,
 }) => {
-    const { client } = useStore();
-    const { loginid, setLoginId } = client;
     const url_query_string = window.location.search;
     const url_params = new URLSearchParams(url_query_string);
     let redirected_to_route = false;
@@ -216,6 +215,7 @@ export default withRouter(
     connect(({ client, ui }) => ({
         currency: client.currency,
         loginid: client.loginid,
+        setLoginId: client.setLoginId,
         is_eu: client.is_eu,
         setVerificationCode: client.setVerificationCode,
         verification_code: client.verification_code,

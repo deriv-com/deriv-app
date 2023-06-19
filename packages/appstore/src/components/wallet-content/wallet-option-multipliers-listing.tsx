@@ -99,24 +99,19 @@ const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps)
                     />
                 </div>
             )}
-
-            {is_landing_company_loaded ? (
-                available_platforms.map((available_platform, index) => (
-                    <TradingAppCard
-                        key={`trading_app_card_${available_platform.name}`}
-                        {...available_platform}
-                        action_type={
-                            is_demo || (!no_CR_account && !is_eu_user) || (has_maltainvest_account && is_eu_user)
-                                ? 'trade'
-                                : 'none'
-                        }
-                        is_deriv_platform
-                        has_divider={getHasDivider(index, available_platforms.length, 3)}
-                    />
-                ))
-            ) : (
-                <PlatformLoader />
-            )}
+            {available_platforms.map((available_platform, index) => (
+                <TradingAppCard
+                    key={`trading_app_card_${available_platform.name}`}
+                    {...available_platform}
+                    action_type={
+                        is_demo || (!no_CR_account && !is_eu_user) || (has_maltainvest_account && is_eu_user)
+                            ? 'trade'
+                            : 'none'
+                    }
+                    is_deriv_platform
+                    has_divider={getHasDivider(index, available_platforms.length, 3)}
+                />
+            ))}
         </ListingContainer>
     );
 });

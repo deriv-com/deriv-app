@@ -14,7 +14,6 @@ const ALL_LANGUAGES = Object.freeze({
     ID: 'Indonesian',
     IT: 'Italiano',
     PL: 'Polish',
-    PT: 'Português',
     RU: 'Русский',
     VI: 'Tiếng Việt',
     ZH_CN: '简体中文',
@@ -24,7 +23,6 @@ const ALL_LANGUAGES = Object.freeze({
 export const getAllowedLanguages = () => {
     const allowed_languages = {
         EN: 'English',
-        PT: 'Português',
         ES: 'Español',
         RU: 'Русский',
         FR: 'Français',
@@ -50,7 +48,7 @@ const isStaging = () => /staging-app\.deriv\.com/i.test(window.location.hostname
 
 const isLocal = () => /localhost\.binary\.sx/i.test(window.location.hostname);
 
-export const isLanguageAvailable = (lang: string) => {
+const isLanguageAvailable = (lang: string) => {
     if (!lang) return false;
 
     const selected_language = lang.toUpperCase();

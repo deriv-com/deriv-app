@@ -114,14 +114,6 @@ export const getUnsupportedContracts = () => ({
         name: localize('Low Tick'),
         position: 'bottom',
     },
-    ASIANU: {
-        name: localize('Asian Up'),
-        position: 'top',
-    },
-    ASIAND: {
-        name: localize('Asian Down'),
-        position: 'bottom',
-    },
     LBFLOATCALL: {
         name: localize('Close-Low'),
         position: 'top',
@@ -220,6 +212,14 @@ export const getSupportedContracts = is_high_low => ({
     },
     UPORDOWN: {
         name: localize('Goes Outside'),
+        position: 'bottom',
+    },
+    ASIANU: {
+        name: localize('Asian Up'),
+        position: 'top',
+    },
+    ASIAND: {
+        name: localize('Asian Down'),
         position: 'bottom',
     },
 });

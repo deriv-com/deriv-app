@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { PropTypes as MobxPropTypes } from 'mobx-react';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Dropdown, ButtonToggle, InputField, Text } from '@deriv/components';
+import { Dropdown, ButtonToggle, InputField } from '@deriv/components';
 import { toMoment, hasIntradayDurationUnit } from '@deriv/shared';
 import RangeSlider from 'App/Components/Form/RangeSlider';
 import TradingDatePicker from '../../DatePicker';

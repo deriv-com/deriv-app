@@ -162,6 +162,7 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
             text: 'Central Singapore',
             value: '01',
         },
+        jurisdiction_selected_shortcode: 'svg',
     };
 
     it('should render CFDFinancialStpRealAccountSignup component', () => {

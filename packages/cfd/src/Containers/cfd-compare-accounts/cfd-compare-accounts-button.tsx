@@ -9,6 +9,8 @@ import { TCompareAccountsCard } from 'Components/props.types';
 import { getMarketType, getAccountVerficationStatus, isMt5AccountAdded } from '../../Helpers/compare-accounts-config';
 
 const CFDCompareAccountsButton = observer(({ trading_platforms }: TCompareAccountsCard) => {
+    const history = useHistory();
+
     const market_type = getMarketType(trading_platforms);
     const jurisdiction_shortcode = market_type.concat('_', trading_platforms.shortcode);
     const {
@@ -17,7 +19,7 @@ const CFDCompareAccountsButton = observer(({ trading_platforms }: TCompareAccoun
         client,
         traders_hub,
     } = useStore();
-    const history = useHistory();
+
     const {
         setAccountType,
         setJurisdictionSelectedShortcode,
@@ -25,12 +27,9 @@ const CFDCompareAccountsButton = observer(({ trading_platforms }: TCompareAccoun
         toggleCFDVerificationModal,
         current_list,
     } = cfd;
-    const { setAppstorePlatform } = common;
-    const type_of_account = {
-        category: 'real',
-        type: market_type,
-    };
     const { is_demo } = traders_hub;
+    const { setAppstorePlatform } = common;
+
     const {
         account_status,
         account_settings,
@@ -41,6 +40,7 @@ const CFDCompareAccountsButton = observer(({ trading_platforms }: TCompareAccoun
         setAccountSettings,
         updateMT5Status,
     } = client;
+
     const {
         poi_or_poa_not_submitted,
         poi_acknowledged_for_vanuatu_maltainvest,
@@ -48,6 +48,11 @@ const CFDCompareAccountsButton = observer(({ trading_platforms }: TCompareAccoun
         poa_acknowledged,
         poa_pending,
     } = getAuthenticationStatusInfo(account_status);
+
+    const type_of_account = {
+        category: is_demo ? 'demo' : 'real',
+        type: market_type,
+    };
 
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
     const is_account_added = isMt5AccountAdded(current_list, jurisdiction_shortcode, is_demo);

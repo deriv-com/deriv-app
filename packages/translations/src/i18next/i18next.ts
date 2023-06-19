@@ -18,6 +18,7 @@ const ALL_LANGUAGES = Object.freeze({
     VI: 'Tiếng Việt',
     ZH_CN: '简体中文',
     ZH_TW: '繁體中文',
+    TH: 'ไทย',
 });
 
 export const getAllowedLanguages = () => {
@@ -26,6 +27,7 @@ export const getAllowedLanguages = () => {
         ES: 'Español',
         RU: 'Русский',
         FR: 'Français',
+        TH: 'ไทย',
         VI: 'Tiếng Việt',
     };
     const exclude_languages = ['ACH'];

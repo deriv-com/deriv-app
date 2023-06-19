@@ -72,8 +72,7 @@ type TResponse = {
     };
 };
 
-const SelfExclusion = observer(
-    ({ footer_ref, is_app_settings, is_appstore, overlay_ref, setIsOverlayShown }: TSelfExclusion) => {
+const SelfExclusion = ({ footer_ref, is_app_settings, is_appstore, overlay_ref, setIsOverlayShown }: TSelfExclusion) => {
         const { client, ui } = useStore();
         const { currency, is_virtual, is_switching, standpoint, is_eu, is_uk, logout, landing_company_shortcode } =
             client;
@@ -471,7 +470,6 @@ const SelfExclusion = observer(
                 {overlay_ref && state.show_article && <SelfExclusionArticleContent is_in_overlay />}
             </SelfExclusionContext.Provider>
         );
-    }
-);
+    };
 
-export default SelfExclusion;
+export default observer(SelfExclusion);

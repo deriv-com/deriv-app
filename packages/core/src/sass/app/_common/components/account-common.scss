@@ -61,10 +61,8 @@
         transition: transform 0.35s ease, opacity 0.35s linear;
         transform-origin: top;
         opacity: 1;
-
-        @include mobile {
-            width: 90% !important;
-        }
+        width: 100% !important;
+        margin: 0 !important;
 
         &--exit {
             transform: scale(1, 0);
@@ -73,15 +71,11 @@
 
         &_container {
             position: absolute;
-            top: 0.4rem;
+            top: 0;
             min-height: 3.4rem;
             text-align: center;
             z-index: 1;
             width: 100%;
-
-            @include mobile {
-                top: -0.4rem;
-            }
         }
     }
 }

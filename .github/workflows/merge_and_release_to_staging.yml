@@ -1,0 +1,53 @@
+name: Merge and release to staging
+permissions:
+  pull-requests: write
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag"
+        required: true
+      skip_circleci_checks:
+        description: "Skip checking CircleCI workflow"
+        type: boolean
+        required: false
+      skip_pending_checks:
+        description: "Skip waiting for pull request checks"
+        type: boolean
+        required: false
+
+concurrency:
+  group: release_automation_group
+
+jobs:
+  release_issues:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    timeout-minutes: 600
+    steps:
+      - name: Checkout to repo
+        uses: actions/checkout@v3
+        with:
+          ref: main
+      - name: Setup node
+        uses: actions/setup-node@v2
+      - name: Wait for logs to accumulate
+        run: |
+          sleep 10
+      - name: Release issues in Deriv.app
+        uses: binary-com/fe-toolbox@production_V20230615_0
+        with:
+          tag: ${{ inputs.tag }}
+          platform: 'Deriv.app'
+          list_id: ${{ secrets.LIST_ID }}
+          release_tags_list_id: ${{ secrets.RELEASE_TAGS_LIST_ID }}
+          regression_testing_template_id: ${{ secrets.REGRESSION_TESTING_TEMPLATE_ID }}
+          config_path: ./.github/workflows/automationrc.json
+          skip_circleci_checks: ${{ inputs.skip_circleci_checks }}
+          skip_pending_checks: ${{ inputs.skip_pending_checks }}
+          CIRCLECI_TOKEN: ${{ secrets.CIRCLECI_TOKEN }}
+          CLICKUP_API_TOKEN: ${{ secrets.CLICKUP_API_TOKEN }}
+          SLACK_APP_TOKEN: ${{ secrets.SLACK_APP_TOKEN }}
+          SLACK_USER_TOKEN: ${{ secrets.SLACK_USER_TOKEN }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}

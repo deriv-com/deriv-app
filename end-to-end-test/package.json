@@ -8,8 +8,14 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "eslintConfig": {
+    "rules": {
+      "testing-library/no-await-sync-query": "off",
+      "testing-library/prefer-screen-queries": "off"
+    }
+  },
   "dependencies": {
-    "@playwright/test": "^1.29.2",
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "@playwright/test": "^1.33.0"
   }
 }

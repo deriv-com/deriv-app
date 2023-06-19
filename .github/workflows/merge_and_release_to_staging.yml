@@ -28,7 +28,7 @@ jobs:
       - name: Checkout to repo
         uses: actions/checkout@v3
         with:
-          ref: main
+          ref: master
       - name: Setup node
         uses: actions/setup-node@v2
       - name: Wait for logs to accumulate

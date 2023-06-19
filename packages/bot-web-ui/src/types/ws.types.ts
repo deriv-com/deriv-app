@@ -1,10 +1,10 @@
 import {
     PriceProposalOpenContractsRequest,
     PriceProposalOpenContractsResponse,
-    UpdateContractRequest,
-    UpdateContractResponse,
     TicksStreamRequest,
     TicksStreamResponse,
+    UpdateContractRequest,
+    UpdateContractResponse,
 } from '@deriv/api-types';
 
 export type TServerError = {

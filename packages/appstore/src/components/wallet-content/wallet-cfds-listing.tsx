@@ -34,11 +34,18 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
         toggleAccountTypeModalVisibility,
     } = traders_hub;
 
-    const { currency } = wallet_account;
-
     const { toggleCompareAccountsModal } = cfd;
-    const { is_landing_company_loaded } = client;
+    const { is_landing_company_loaded, is_logging_in } = client;
     const { is_mobile } = ui;
+
+    if (!wallet_account || is_logging_in)
+        return (
+            <div className='wallet-content__loader'>
+                <PlatformLoader />
+            </div>
+        );
+
+    const { currency } = wallet_account;
     const accounts_sub_text =
         wallet_account.landing_company_shortcode === 'svg' || wallet_account.is_virtual
             ? localize('Compare accounts')

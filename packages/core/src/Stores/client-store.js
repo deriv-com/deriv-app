@@ -152,7 +152,6 @@ export default class ClientStore extends BaseStore {
     p2p_advertiser_info = {};
     prev_account_type = 'demo';
     external_url_params = {};
-    active_wallet_loginid = '';
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -221,7 +220,6 @@ export default class ClientStore extends BaseStore {
             prev_real_account_loginid: observable,
             p2p_advertiser_info: observable,
             prev_account_type: observable,
-            active_wallet_loginid: observable,
             balance: computed,
             account_open_date: computed,
             is_reality_check_visible: computed,
@@ -403,7 +401,6 @@ export default class ClientStore extends BaseStore {
             setPrevRealAccountLoginid: action.bound,
             setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
-            setActiveWalletLoginid: action.bound,
         });
 
         reaction(
@@ -2713,9 +2710,5 @@ export default class ClientStore extends BaseStore {
 
         return is_p2p_visible;
     }
-
-    setActiveWalletLoginid = loginid => {
-        this.active_wallet_loginid = loginid;
-    };
 }
 /* eslint-enable */

@@ -21,7 +21,7 @@ const TradersHub = observer(() => {
         is_logging_in,
         is_account_setting_loaded,
         accounts,
-        active_wallet_loginid,
+        loginid,
     } = client;
     const { is_tour_open, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
@@ -74,8 +74,7 @@ const TradersHub = observer(() => {
                     ref={traders_hub_ref}
                     className={classNames('traders-hub', {
                         'traders-hub__wallets': is_wallet_account,
-                        'traders-hub__wallets-demo-bg':
-                            is_wallet_account && accounts?.[active_wallet_loginid]?.is_virtual,
+                        'traders-hub__wallets-demo-bg': is_wallet_account && loginid && accounts?.[loginid]?.is_virtual,
                     })}
                 >
                     {is_wallet_account ? <AccountWithWallets /> : <AccountWithoutWallets />}

@@ -10,7 +10,7 @@ type TScreenLarge = {
     is_market_closed?: boolean;
     is_trade_enabled: boolean;
 };
-const ScreenLarge = ({ is_market_closed, is_trade_enabled }: TScreenLarge) => (
+const ScreenLarge = ({ is_market_closed = false, is_trade_enabled }: TScreenLarge) => (
     <div
         className={classNames('sidebar__items', {
             'sidebar__items--market-closed': is_market_closed,
@@ -25,7 +25,7 @@ const ScreenLarge = ({ is_market_closed, is_trade_enabled }: TScreenLarge) => (
                 </Fieldset>
                 <TradeParams />
                 <div className='purchase-container'>
-                    <Purchase is_market_closed={!!is_market_closed} />
+                    <Purchase is_market_closed={is_market_closed} />
                 </div>
             </React.Fragment>
         )}

@@ -310,7 +310,7 @@ type TUiStore = {
     setShouldShowCooldownModal: (value: boolean) => void;
 };
 
-type TPortfolioPos = {
+type TPortfolioPositionContract = {
     buy_price?: number;
     contract_id?: number;
     contract_type?: string;
@@ -331,7 +331,7 @@ type TPortfolioPos = {
 };
 
 type TPortfolioPositions = {
-    contract_info: TPortfolioPos;
+    contract_info: TPortfolioPositionContract;
     details: string;
     display_name: string;
     id?: number;
@@ -341,7 +341,7 @@ type TPortfolioPositions = {
     reference: number;
     type?: string;
     is_unsupported: boolean;
-    contract_update: TPortfolioPos['limit_order'];
+    contract_update: TPortfolioPositionContract['limit_order'];
 }[];
 
 type TPortfolioStore = {

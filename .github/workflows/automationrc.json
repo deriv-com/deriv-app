@@ -14,6 +14,7 @@
     "circleci": {
         "project_slug": "gh/binary-com/deriv-app",
         "branch": "master",
-        "workflow_name": "release_staging"
+        "workflow_name": "release_staging",
+        "checks_to_skip": ["/gitguardian/i"]
     }
 }

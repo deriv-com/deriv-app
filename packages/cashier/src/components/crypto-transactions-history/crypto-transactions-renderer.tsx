@@ -5,11 +5,11 @@ import { epochToMoment, formatMoney, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import { getStatus } from '../../constants/transaction-status';
-import { TTransactionItem } from '../../types';
 import { useCashierStore } from '../../stores/useCashierStores';
+import type { TSocketResponse } from '@deriv/api/types';
 
 type TCryptoTransactionsRendererProps = {
-    row: TTransactionItem;
+    row: NonNullable<TSocketResponse<'cashier_payments'>['cashier_payments']>['crypto'][number];
     onTooltipClick: VoidFunction;
 };
 
@@ -66,7 +66,7 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
     if (status && isMobile()) {
         return (
             <div>
-                <Table.Row className={'crypto-transactions-history__table-row'}>
+                <Table.Row className='crypto-transactions-history__table-row'>
                     <Table.Cell className='crypto-transactions-history__table-cell'>
                         <Icon
                             icon={transaction_type === 'withdrawal' ? 'IcCashierWithdrawal' : 'IcCashierDeposit'}
@@ -159,9 +159,9 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                             {localize('Confirmations')}
                         </Text>
                     </Table.Cell>
-                    <Table.Cell className='crypto-transactions-history__table-time'>
+                    <Table.Cell>
                         <Text as='p' size='xxs' color='red'>
-                            {transaction_type === 'deposit' ? confirmations ?? localize('Pending') : ''}
+                            {transaction_type === 'deposit' ? confirmations ?? localize('Pending') : '-'}
                         </Text>
                     </Table.Cell>
                     <Table.Cell>
@@ -199,7 +199,7 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
 
     return (
         <div>
-            <Table.Row className={'crypto-transactions-history__table-row'}>
+            <Table.Row className='crypto-transactions-history__table-row'>
                 <Table.Cell className='crypto-transactions-history__table-type'>
                     <Icon
                         icon={transaction_type === 'withdrawal' ? 'IcCashierWithdrawal' : 'IcCashierDeposit'}
@@ -281,11 +281,13 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                             </Text>
                         ))}
                 </Table.Cell>
-                <Table.Cell>
-                    <Text as='p' size='xs' color='red'>
-                        {transaction_type === 'deposit' ? confirmations ?? localize('Pending') : ''}
-                    </Text>
-                </Table.Cell>
+                {!is_transaction_clicked && (
+                    <Table.Cell className='crypto-transactions-history__table-confirmations'>
+                        <Text as='p' size='xs' color='red'>
+                            {transaction_type === 'deposit' ? confirmations ?? localize('Pending') : '-'}
+                        </Text>
+                    </Table.Cell>
+                )}
                 {!is_transaction_clicked && (
                     <Table.Cell>
                         <Text as='p' size='xs'>

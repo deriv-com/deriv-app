@@ -13,9 +13,10 @@ const useUnsafeCashierRouteHandler = () => {
     useEffect(() => {
         const destination_hash = history.location.hash;
         const is_current_route_deposit = history.location.pathname === routes.cashier_deposit;
-        const is_hash_cashier_onboarding = destination_hash === '#cashier_onboarding';
         const is_hash_deposit = destination_hash === '#deposit';
         const is_hash_crypto_transactions_visible = destination_hash === '#crypto_transactions';
+        const is_hash_cashier_onboarding =
+            destination_hash === '#cashier_onboarding' || (!is_hash_deposit && !is_hash_crypto_transactions_visible);
 
         if (is_current_route_deposit) {
             setIsCashierOnboarding(is_hash_cashier_onboarding);

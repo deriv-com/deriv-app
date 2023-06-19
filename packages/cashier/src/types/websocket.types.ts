@@ -1,4 +1,4 @@
-import {
+import type {
     AccountStatusResponse,
     Balance,
     CashierInformationRequest,
@@ -15,18 +15,7 @@ import {
     PaymentAgentDetailsResponse,
     PaymentAgentListResponse,
 } from '@deriv/api-types';
-import { TSocketEndpointNames, TSocketResponse } from '@deriv/api/types';
-import type { TTransactionItem } from './transactions.types';
-
-export type TCashierPayments = {
-    provider?: string;
-    transaction_type?: string;
-};
-
-export type TSubscribeCashierPayments = {
-    error?: TServerError;
-    cashier_payments: { crypto: TTransactionItem[] };
-};
+import type { TSocketEndpointNames, TSocketResponse, TSocketRequestPayload } from '@deriv/api/types';
 
 export type TAuthorizedSend = {
     error?: TServerError;
@@ -78,12 +67,13 @@ type TWebSocketCall = {
         action: string,
         parameters: Omit<CashierInformationRequest, 'cashier'>
     ) => Promise<CashierInformationResponse & { error: TServerError }>;
-    cashierPayments?: (request?: TCashierPayments) => Promise<TSubscribeCashierPayments>;
+    cashierPayments?: (
+        request?: TSocketRequestPayload<'cashier_payments'>['payload']
+    ) => Promise<TSocketResponse<'cashier_payments'>>;
     getAccountStatus: () => Promise<AccountStatusResponse>;
     paymentAgentTransfer: (
         request: TPaymentAgentTransferRequest
     ) => Promise<PaymentAgentTransferResponse & { error: TServerError }>;
-    p2pAdvertiserInfo?: () => Promise<unknown>;
     send?: (obj: unknown) => Promise<TAuthorizedSend>;
     storage: TStorage;
     transferBetweenAccounts: (
@@ -98,7 +88,6 @@ type TWebSocketCall = {
 };
 
 export type TWebSocket = {
-    allPaymentAgentList: (residence: string) => Promise<PaymentAgentListResponse>;
     authorized: TWebSocketCall;
     balanceAll: () => Promise<Balance>;
     cancelCryptoTransaction?: (transaction_id: string) => Promise<{ error: TServerError }>;
@@ -111,8 +100,7 @@ export type TWebSocket = {
     }>;
     send: (obj: unknown) => Promise<{ error: TServerError; exchange_rates: { rates: { [k: string]: string } } }>;
     serviceToken: (req: TServiceTokenRequest) => Promise<TServiceTokenResponse>;
-    subscribeCashierPayments?: (callback: (response: TSubscribeCashierPayments) => void) => Promise<void>;
-    verifyEmail?: (email: string, withdrawal_type: string) => Promise<unknown>;
+    subscribeCashierPayments?: (callback: (response: TSocketResponse<'cashier_payments'>) => void) => Promise<void>;
     storage: {
         mt5LoginList: () => Promise<{
             mt5_login_list: DetailsOfEachMT5Loginid[];

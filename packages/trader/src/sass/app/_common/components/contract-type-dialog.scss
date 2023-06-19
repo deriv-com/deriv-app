@@ -12,18 +12,17 @@
 
     &__wrapper {
         position: absolute;
-        width: 290px;
         right: calc(100% + 10px);
         top: -66px;
         display: grid;
         grid-auto-columns: 1fr;
         z-index: 2;
         border-radius: 4px;
-        background: var(--general-main-2);
+        background: var(--general-main-1);
         box-shadow: 0 2px 8px 0 var(--shadow-menu);
         min-width: 560px;
+        width: 290px;
         height: 680px;
-        max-height: calc(100vh - 100px);
         overflow: hidden;
 
         /* postcss-bem-linter: ignore */
@@ -36,6 +35,10 @@
             border-bottom: 2px solid var(--general-section-1);
             height: 56px;
             width: 320px;
+
+            &--contract-type-info-header {
+                width: 56rem;
+            }
 
             /* postcss-bem-linter: ignore */
             .dc-input {
@@ -97,5 +100,11 @@
         max-height: 100%;
         opacity: 1;
         pointer-events: auto;
+    }
+}
+
+.dc-mobile-dialog {
+    &__content {
+        height: 100%;
     }
 }

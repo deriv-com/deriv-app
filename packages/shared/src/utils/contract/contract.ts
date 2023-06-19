@@ -23,6 +23,12 @@ export const symbols_1s = [
     'DEX900DN',
 ];
 
+export const getContractStatus = ({ contract_type, exit_tick_time, profit, status }: TContractInfo) => {
+    return isAccumulatorContract(contract_type)
+        ? (status === 'open' && !exit_tick_time && 'open') || (profit && profit < 0 && exit_tick_time ? 'lost' : 'won')
+        : status;
+};
+
 export const getFinalPrice = (contract_info: TContractInfo) => contract_info.sell_price || contract_info.bid_price;
 
 export const getIndicativePrice = (contract_info: TContractInfo) =>
@@ -42,7 +48,7 @@ export const isEnded = (contract_info: TContractInfo) =>
         contract_info.is_settleable
     );
 
-export const isOpen = (contract_info: TContractInfo) => contract_info.status === 'open';
+export const isOpen = (contract_info: TContractInfo) => getContractStatus(contract_info) === 'open';
 
 export const isUserSold = (contract_info: TContractInfo) => contract_info.status === 'sold';
 
@@ -53,25 +59,13 @@ export const isValidToSell = (contract_info: TContractInfo) =>
 
 export const hasContractEntered = (contract_info: TContractInfo) => !!contract_info.entry_spot;
 
-export const isAccumulatorContract = (contract_type: string) => /ACCU/i.test(contract_type);
+export const isAccumulatorContract = (contract_type = '') => /ACCU/i.test(contract_type);
 
-export const isAccumulatorContractOpen = (
-    {
-        contract_type,
-        current_spot,
-        exit_tick,
-        high_barrier,
-        low_barrier,
-        status,
-    }: TContractInfo | TContractInfoWithNumericBarriers = {},
-    in_pixels?: boolean
-) => {
-    const has_crossed_barriers =
-        !!(current_spot && high_barrier && low_barrier) &&
-        (in_pixels
-            ? current_spot <= +high_barrier || current_spot >= +low_barrier
-            : current_spot >= +high_barrier || current_spot <= +low_barrier);
-    return isAccumulatorContract(contract_type || '') && status === 'open' && !has_crossed_barriers && !exit_tick;
+export const isAccumulatorContractOpen = (contract_info: TContractInfo | TContractInfoWithNumericBarriers = {}) => {
+    return (
+        isAccumulatorContract(contract_info.contract_type) &&
+        getContractStatus(contract_info as TContractInfo) === 'open'
+    );
 };
 
 export const isMultiplierContract = (contract_type: string) => /MULT/i.test(contract_type);
@@ -85,11 +79,11 @@ export const getAccuBarriersDelayTimeMs = (symbol: string) => {
 };
 
 export const getAccuBarriersForContractDetails = (contract_info: TContractInfo) => {
-    if (!isAccumulatorContract(contract_info.contract_type || '')) return {};
-    const is_accu_contract_open = isAccumulatorContractOpen(contract_info);
+    if (!isAccumulatorContract(contract_info.contract_type)) return {};
+    const is_contract_open = isOpen(contract_info);
     const { current_spot_high_barrier, current_spot_low_barrier, high_barrier, low_barrier } = contract_info || {};
-    const accu_high_barrier = is_accu_contract_open ? current_spot_high_barrier : high_barrier;
-    const accu_low_barrier = is_accu_contract_open ? current_spot_low_barrier : low_barrier;
+    const accu_high_barrier = is_contract_open ? current_spot_high_barrier : high_barrier;
+    const accu_low_barrier = is_contract_open ? current_spot_low_barrier : low_barrier;
     return { accu_high_barrier, accu_low_barrier };
 };
 

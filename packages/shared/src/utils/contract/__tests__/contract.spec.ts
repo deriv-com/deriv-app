@@ -323,66 +323,59 @@ describe('isAccumulatorContractOpen', () => {
         };
         expect(ContractUtils.isAccumulatorContractOpen(contract_info)).toEqual(false);
     });
-    it('should return false if current spot has crossed high barrier', () => {
-        const contract_info: TContractInfo = {
-            contract_type: 'ACCU',
-            current_spot: 1232.44,
-            high_barrier: '1232.333',
-            low_barrier: '1232.222',
-            status: 'open',
-        };
-        expect(ContractUtils.isAccumulatorContractOpen(contract_info)).toEqual(false);
-    });
-    it('should return false if current spot has crossed low barrier', () => {
-        const contract_info: TContractInfo = {
-            contract_type: 'ACCU',
-            current_spot: 1232.44,
-            high_barrier: '1232.666',
-            low_barrier: '1232.555',
-            status: 'open',
-        };
-        expect(ContractUtils.isAccumulatorContractOpen(contract_info)).toEqual(false);
-    });
-    it('should return true if current spot top position is more than high barrier top position and less than low barrier top position in pixels', () => {
-        const contract_info: TContractInfoWithNumericBarriers = {
-            contract_type: 'ACCU',
-            current_spot: 555,
-            high_barrier: 444,
-            low_barrier: 666,
-            status: 'open',
-        };
-        expect(ContractUtils.isAccumulatorContractOpen(contract_info, true)).toEqual(true);
-    });
-    it('should return false if current spot top position is less than high barrier top position in pixels', () => {
-        const contract_info: TContractInfoWithNumericBarriers = {
-            contract_type: 'ACCU',
-            current_spot: 555,
-            high_barrier: 666,
-            low_barrier: 777,
-            status: 'open',
-        };
-        expect(ContractUtils.isAccumulatorContractOpen(contract_info, true)).toEqual(false);
-    });
-    it('should return false if current spot top position is more than low barrier top position in pixels', () => {
-        const contract_info: TContractInfoWithNumericBarriers = {
-            contract_type: 'ACCU',
-            current_spot: 777,
-            high_barrier: 555,
-            low_barrier: 666,
-            status: 'open',
-        };
-        expect(ContractUtils.isAccumulatorContractOpen(contract_info, true)).toEqual(false);
-    });
-    it('should return false if exit_tick is present', () => {
+    it('should return false if exit_tick_time is present', () => {
         const contract_info: TContractInfo = {
             contract_type: 'ACCU',
             current_spot: 1232.44,
             high_barrier: '1232.555',
             low_barrier: '1232.333',
             status: 'open',
-            exit_tick: 1232.44,
+            exit_tick_time: 10000001,
         };
         expect(ContractUtils.isAccumulatorContractOpen(contract_info)).toEqual(false);
+    });
+});
+
+describe('isOpen', () => {
+    it('isOpen returns true for an open contract', () => {
+        expect(
+            ContractUtils.isOpen({
+                contract_type: 'CALL',
+                exit_tick_time: undefined,
+                profit: undefined,
+                status: 'open',
+            })
+        ).toBe(true);
+    });
+    it('isOpen returns false for a closed contract', () => {
+        expect(
+            ContractUtils.isOpen({
+                contract_type: 'CALL',
+                exit_tick_time: 1608098748,
+                profit: 10,
+                status: 'won',
+            })
+        ).toBe(false);
+    });
+    it('isOpen returns false for an accumulator contract that has recently lost', () => {
+        expect(
+            ContractUtils.isOpen({
+                contract_type: 'ACCU',
+                exit_tick_time: 1608098748,
+                profit: -10,
+                status: 'open',
+            })
+        ).toBe(false);
+    });
+    it('isOpen returns false for an accumulator contract that has recently won', () => {
+        expect(
+            ContractUtils.isOpen({
+                contract_type: 'ACCU',
+                exit_tick_time: 1608098748,
+                profit: 10,
+                status: 'open',
+            })
+        ).toBe(false);
     });
 });
 
@@ -430,31 +423,13 @@ describe('getAccuBarriersForContractDetails', () => {
         };
         expect(ContractUtils.getAccuBarriersForContractDetails(contract_info)).toEqual(previous_spot_barriers);
     });
-    it('should return an object { accu_high_barrier: high_barrier, accu_low_barrier: low_barrier } if current spot has crossed high barrier', () => {
-        const contract_info: TContractInfo = {
-            ...mocked_contract_info,
-            current_spot: 1232.777,
-            current_spot_high_barrier: '1232.999',
-            current_spot_low_barrier: '1232.555',
-        };
-        expect(ContractUtils.getAccuBarriersForContractDetails(contract_info)).toEqual(previous_spot_barriers);
-    });
-    it('should return an object { accu_high_barrier: high_barrier, accu_low_barrier: low_barrier } if current spot has crossed low barrier', () => {
-        const contract_info: TContractInfo = {
-            ...mocked_contract_info,
-            current_spot: 1232.111,
-            current_spot_high_barrier: '1232.333',
-            current_spot_low_barrier: '1231.999',
-        };
-        expect(ContractUtils.getAccuBarriersForContractDetails(contract_info)).toEqual(previous_spot_barriers);
-    });
-    it('should return an object { accu_high_barrier: high_barrier, accu_low_barrier: low_barrier } if exit_tick is present', () => {
+    it('should return an object { accu_high_barrier: high_barrier, accu_low_barrier: low_barrier } if exit_tick_time is present', () => {
         const contract_info: TContractInfo = {
             ...mocked_contract_info,
             current_spot: 1232.555,
             current_spot_high_barrier: '1232.777',
             current_spot_low_barrier: '1232.333',
-            exit_tick: 1232.555,
+            exit_tick_time: 10000001,
         };
         expect(ContractUtils.getAccuBarriersForContractDetails(contract_info)).toEqual(previous_spot_barriers);
     });
@@ -464,5 +439,47 @@ describe('getAccuBarriersForContractDetails', () => {
             current_spot: 1232.555,
         };
         expect(ContractUtils.getAccuBarriersForContractDetails(contract_info)).toEqual({});
+    });
+});
+
+describe('getContractStatus', () => {
+    it('should return original status for non-accumulator contracts', () => {
+        expect(
+            ContractUtils.getContractStatus({
+                contract_type: 'CALL',
+                exit_tick_time: 0,
+                profit: 100,
+                status: 'lost',
+            })
+        ).toBe('lost');
+    });
+    it('should return "open" for accumulator contracts without exit_tick_time and with open status', () => {
+        expect(
+            ContractUtils.getContractStatus({
+                contract_type: 'ACCU',
+                profit: 0,
+                status: 'open',
+            })
+        ).toBe('open');
+    });
+    it('should return "lost" for accumulator contracts with profit less than 0 and exit_tick_time present', () => {
+        expect(
+            ContractUtils.getContractStatus({
+                contract_type: 'ACCU',
+                exit_tick_time: 10000001,
+                profit: -100,
+                status: 'open',
+            })
+        ).toBe('lost');
+    });
+    it('should return "won" for accumulator contracts with profit >= 0 and status !== "open"', () => {
+        expect(
+            ContractUtils.getContractStatus({
+                contract_type: 'ACCU',
+                exit_tick_time: 10000001,
+                profit: 100,
+                status: 'won',
+            })
+        ).toBe('won');
     });
 });

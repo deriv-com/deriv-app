@@ -3,7 +3,7 @@
 // 2- Please read RawMarker.jsx in https://github.com/binary-com/SmartCharts
 // 3- Please read contract-store.js & trade.jsx carefully
 import React from 'react';
-import { getDecimalPlaces, isAccumulatorContract, isAccumulatorContractOpen, isVanillaContract } from '@deriv/shared';
+import { getContractStatus, getDecimalPlaces, isAccumulatorContract, isVanillaContract } from '@deriv/shared';
 import { RawMarker } from 'Modules/SmartChart';
 import * as ICONS from './icons';
 
@@ -273,7 +273,7 @@ const TickContract = RawMarkerMaker(
         contract_info: {
             accu_barriers_difference,
             contract_type,
-            exit_tick,
+            exit_tick_time,
             status,
             profit,
             has_crossed_accu_barriers,
@@ -286,26 +286,17 @@ const TickContract = RawMarkerMaker(
         /** @type {CanvasRenderingContext2D} */
         const ctx = context;
 
+        const contract_status = getContractStatus({ contract_type, profit, exit_tick_time, status });
         const is_accumulator_contract = isAccumulatorContract(contract_type);
-        const is_accu_contract_open = isAccumulatorContractOpen(
-            {
-                contract_type,
-                current_spot: exit?.top,
-                high_barrier: barrier,
-                low_barrier: barrier_2,
-                status,
-                exit_tick,
-            },
-            true
-        );
+        const is_accu_contract_open = is_accumulator_contract && contract_status === 'open';
         const color = getColor({
             is_dark_theme,
-            status,
+            status: contract_status,
             profit: is_sold || !is_accu_contract_open ? profit : null,
         });
 
         const draw_start_line = is_last_contract && start.visible && !is_sold;
-        const is_contract_ended = status !== 'open' || !is_accu_contract_open;
+        const is_contract_ended = !!is_sold || !is_accu_contract_open;
         const scale = calc_scale(start.zoom);
         const canvas_height = canvas_fixed_height / window.devicePixelRatio;
 
@@ -352,7 +343,9 @@ const TickContract = RawMarkerMaker(
                 ctx,
                 fill_color: getColor({
                     status:
-                        has_crossed_accu_barriers || status === 'lost' ? 'accu_shade_crossed' : 'accu_contract_shade',
+                        has_crossed_accu_barriers || contract_status === 'lost'
+                            ? 'accu_shade_crossed'
+                            : 'accu_contract_shade',
                     is_dark_theme,
                 }),
                 // we should show barrier lines in contract details even when they are outside of the chart:
@@ -366,7 +359,7 @@ const TickContract = RawMarkerMaker(
                 scale,
                 start_left: is_in_contract_details ? contract_details_start_left : start.left,
                 stroke_color: getColor({
-                    status: has_crossed_accu_barriers || status === 'lost' ? 'lost' : 'won',
+                    status: has_crossed_accu_barriers || contract_status === 'lost' ? 'lost' : 'won',
                     is_dark_theme,
                 }),
                 top: barrier,
@@ -489,7 +482,7 @@ const TickContract = RawMarkerMaker(
             });
         }
         // status marker
-        if (exit.visible && (is_sold || !is_accu_contract_open)) {
+        if (exit.visible && is_contract_ended) {
             draw_path(ctx, {
                 top: is_accumulator_contract ? entry.top - 9 * scale : barrier - 9 * scale,
                 left: exit.left + 8 * scale,

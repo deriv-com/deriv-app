@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { isEmptyObject } from '../object';
-import { isAccumulatorContract, isUserSold } from '../contract';
+import { isAccumulatorContract, isOpen, isUserSold } from '../contract';
 import { TContractInfo, TContractStore } from '../contract/contract-types';
 
 type TTick = {
@@ -58,11 +58,10 @@ export const getEndTime = (contract_info: TGetEndTime) => {
         is_expired,
         is_path_dependent,
         sell_time,
-        status,
         tick_count: is_tick_contract,
     } = contract_info;
 
-    const is_finished = status !== 'open' && (is_expired || isAccumulatorContract(contract_type));
+    const is_finished = !isOpen(contract_info) && (is_expired || isAccumulatorContract(contract_type));
 
     if (!is_finished && !isUserSold(contract_info) && !isUserCancelled(contract_info)) return undefined;
 

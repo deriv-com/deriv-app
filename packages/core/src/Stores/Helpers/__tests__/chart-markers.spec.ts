@@ -2,6 +2,7 @@ import { TContractInfo } from '@deriv/shared';
 import { createTickMarkers } from '../chart-markers';
 
 describe('createTickMarkers', () => {
+    const previous_spot_classname = 'chart-spot__spot chart-spot__spot--accumulator-middle';
     let contract_info: TContractInfo;
     beforeEach(() => {
         contract_info = {
@@ -70,32 +71,28 @@ describe('createTickMarkers', () => {
         contract_info.contract_type = 'ACCU';
         contract_info.status = 'open';
         const result = createTickMarkers(contract_info, false);
-        expect(result[result.length - 1].content_config.spot_className).toBe(
-            'chart-spot__spot chart-spot__spot--accumulator-middle--preexit'
-        );
+        expect(result[result.length - 1].content_config.spot_className).toBe(`${previous_spot_classname}--preexit`);
 
         contract_info.status = 'lost';
         contract_info.exit_tick_time = 10;
         contract_info.exit_tick_display_value = '1.239';
         const result_for_closed_contract = createTickMarkers(contract_info);
         expect(result_for_closed_contract[result_for_closed_contract.length - 2].content_config.spot_className).toBe(
-            'chart-spot__spot chart-spot__spot--accumulator-middle--preexit'
+            `${previous_spot_classname}--preexit`
         );
     });
     it('should not append --preexit class to previous spot of accumulator contract when is_delayed_markers_update=true for open contract only', () => {
         contract_info.contract_type = 'ACCU';
         contract_info.status = 'open';
         const result = createTickMarkers(contract_info, true);
-        expect(result[result.length - 1].content_config.spot_className).toBe(
-            'chart-spot__spot chart-spot__spot--accumulator-middle'
-        );
+        expect(result[result.length - 1].content_config.spot_className).toBe(previous_spot_classname);
 
         contract_info.status = 'lost';
         contract_info.exit_tick_time = 10;
         contract_info.exit_tick_display_value = '1.239';
         const result_for_closed_contract = createTickMarkers(contract_info, true);
         expect(result_for_closed_contract[result_for_closed_contract.length - 2].content_config.spot_className).toBe(
-            'chart-spot__spot chart-spot__spot--accumulator-middle--preexit'
+            `${previous_spot_classname}--preexit`
         );
     });
 });

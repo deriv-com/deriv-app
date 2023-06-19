@@ -131,7 +131,9 @@ const POISubmissionForMT5 = ({
                 );
             }
             case service_code.manual:
-                return <Unsupported is_mt5 handlePOIforMT5Complete={handlePOIComplete} />;
+                return (
+                    <Unsupported country_code={citizen_data.value} is_mt5 handlePOIforMT5Complete={handlePOIComplete} />
+                );
             default:
                 return null;
         }

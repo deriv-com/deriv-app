@@ -25,6 +25,7 @@ type TSettings = {
     expirationDate?: string;
     documentId?: string;
     lifetimeValid?: boolean;
+    document_issuing_country?: string;
 };
 
 type TFileObject = TSettings & {

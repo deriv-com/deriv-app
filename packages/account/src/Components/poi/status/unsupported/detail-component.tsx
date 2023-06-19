@@ -85,6 +85,7 @@ const DetailComponent = ({
                     expirationDate: expiration_date,
                     documentId: data.document_id || '',
                     lifetimeValid: +(lifetime_valid && !expiration_date),
+                    document_issuing_country: country_code_key,
                 })
                     .then(response => {
                         file_to_upload_index += 1;
@@ -157,7 +158,7 @@ const DetailComponent = ({
                             <OnfidoUpload
                                 country_code={country_code_key}
                                 documents_supported={[document.onfido_name]}
-                                height={height ?? null}
+                                height={height}
                                 handleComplete={is_mt5 ? handlePOIforMT5Complete : handleComplete}
                                 {...props}
                             />

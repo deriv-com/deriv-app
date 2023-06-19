@@ -8,6 +8,7 @@ import { useStores } from 'Stores';
 import { localize, Localize } from 'Components/i18next';
 import PropTypes from 'prop-types';
 import './buy-ad-payment-methods-list.scss';
+import { getPaymentMethodIcon } from 'Utils/adverts';
 
 const BuyAdPaymentMethodsList = ({
     is_alignment_top,
@@ -181,14 +182,7 @@ const BuyAdPaymentMethodsList = ({
                                                     hide_list={hide_list}
                                                     is_alignment_top={is_alignment_top}
                                                     leading_icon={
-                                                        <Icon
-                                                            icon={
-                                                                payment_method_icon === 'BankTransfer' ||
-                                                                payment_method_icon === 'Other'
-                                                                    ? `IcCashier${payment_method_icon}`
-                                                                    : 'IcCashierEwallet'
-                                                            }
-                                                        />
+                                                        <Icon icon={getPaymentMethodIcon(payment_method_icon)} />
                                                     }
                                                     list_items={[method]}
                                                     list_portal_id={list_portal_id ?? 'deriv_app'}

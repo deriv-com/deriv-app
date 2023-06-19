@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { Checkbox, Dropdown, Icon, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import { getPaymentMethodIcon } from 'Utils/adverts';
 import PropTypes from 'prop-types';
 
 const PaymentMethodCard = ({
@@ -27,10 +28,7 @@ const PaymentMethodCard = ({
     const payment_bank_name = payment_method?.fields?.bank_name?.value;
     const payment_name = payment_method?.fields?.name?.value;
     const payment_method_name = payment_method?.display_name.replace(/\s|-/gm, '');
-    const icon_method =
-        payment_method_name === 'BankTransfer' || payment_method_name === 'Other'
-            ? `IcCashier${payment_method_name}`
-            : 'IcCashierEwallet';
+    const icon_method = getPaymentMethodIcon(payment_method_name);
 
     if (is_add) {
         return (

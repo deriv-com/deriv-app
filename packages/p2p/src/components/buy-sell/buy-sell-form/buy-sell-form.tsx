@@ -11,6 +11,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 import PaymentMethodCard from 'Components/my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
+import { getPaymentMethodIcon } from 'Utils/adverts';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
 import { countDecimalPlaces } from 'Utils/string';
 import { floatingPointValidator } from 'Utils/validations';
@@ -242,19 +243,17 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                     {payment_method_names?.map(payment_method => {
                                         const method = payment_method.replace(/\s|-/gm, '');
 
-                                        <div className='buy-sell-form__payment-method--row' key={payment_method}>
-                                            <Icon
-                                                className='buy-sell-form__payment-method--icon'
-                                                icon={
-                                                    method === 'BankTransfer' || method === 'Other'
-                                                        ? `IcCashier${method}`
-                                                        : 'IcCashierEwallet'
-                                                }
-                                            />
-                                            <Text as='p' size='xs'>
-                                                {payment_method}
-                                            </Text>
-                                        </div>;
+                                        return (
+                                            <div className='buy-sell-form__payment-method--row' key={payment_method}>
+                                                <Icon
+                                                    className='buy-sell-form__payment-method--icon'
+                                                    icon={getPaymentMethodIcon(method)}
+                                                />
+                                                <Text as='p' size='xs'>
+                                                    {payment_method}
+                                                </Text>
+                                            </div>
+                                        );
                                     })}
                                 </div>
                                 <div className='buy-sell-form__field-wrapper'>

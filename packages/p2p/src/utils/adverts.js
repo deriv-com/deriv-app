@@ -23,3 +23,9 @@ export const generateErrorDialogBody = (error_code, error_message) => {
     }
     return error_message;
 };
+
+export const getPaymentMethodIcon = payment_method => {
+    return payment_method === 'BankTransfer' || payment_method === 'Other'
+        ? `IcCashier${payment_method}`
+        : 'IcCashierEwallet';
+};

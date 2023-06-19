@@ -120,15 +120,17 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
         }
         history.push(routes.traders_hub);
     };
+    // Added this condition for time being until Deriv X code is merged
     return (
         <Button
             className='compare-cfd-account__button'
             primary_light
             onClick={onClickAdd}
-            disabled={is_account_added}
-            data-testid='dt_compare_cfd_account_button'
+            disabled={is_account_added && trading_platforms.platform !== CFD_PLATFORMS.DXTRADE}
         >
-            {is_account_added ? localize('Added') : localize('Add')}
+            {is_account_added && trading_platforms.platform !== CFD_PLATFORMS.DXTRADE
+                ? localize('Added')
+                : localize('Add')}
         </Button>
     );
 });

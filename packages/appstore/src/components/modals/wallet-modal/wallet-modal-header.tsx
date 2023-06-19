@@ -112,7 +112,7 @@ const WalletModalHeader = ({
         <HeaderBackground is_demo={is_demo} is_dark={is_dark}>
             <div
                 className={classNames(header_class_name, {
-                    [`${header_class_name}--hidden-title`]: !is_wallet_name_visible,
+                    [`${header_class_name}--hidden-title`]: is_mobile && !is_wallet_name_visible,
                 })}
             >
                 <div className={`${header_class_name}__title-wrapper`}>

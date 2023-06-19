@@ -43,7 +43,7 @@ export type TApiToken = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
 };
 
-const ApiToken = observer(({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown }: TApiToken) => {
+const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown }: TApiToken) => {
     const { client } = useStore();
     const { is_switching } = client;
     const isMounted = useIsMounted();
@@ -354,6 +354,6 @@ const ApiToken = observer(({ footer_ref, is_app_settings, overlay_ref, setIsOver
             </ApiTokenContext.Provider>
         </React.Fragment>
     );
-});
+};
 
-export default ApiToken;
+export default observer(ApiToken);

@@ -246,6 +246,62 @@ const prepareDxtradeData = (
         platform: 'dxtrade',
     };
 };
+const getAccountVerficationStatus = (
+    jurisdiction_shortcode: string,
+    poi_or_poa_not_submitted: boolean,
+    poi_acknowledged_for_vanuatu_maltainvest: boolean,
+    poi_acknowledged_for_bvi_labuan: boolean,
+    poa_acknowledged: boolean,
+    poa_pending: boolean,
+    should_restrict_bvi_account_creation: boolean,
+    should_restrict_vanuatu_account_creation: boolean,
+    is_demo: boolean,
+    has_submitted_personal_details: boolean
+) => {
+    switch (jurisdiction_shortcode) {
+        case 'synthetic_svg':
+        case 'financial_svg':
+            return true;
+        case 'synthetic_bvi':
+        case 'financial_bvi':
+            if (
+                poi_acknowledged_for_bvi_labuan &&
+                !poi_or_poa_not_submitted &&
+                !should_restrict_bvi_account_creation &&
+                has_submitted_personal_details &&
+                poa_acknowledged
+            ) {
+                return true;
+            }
+            return false;
+        case 'synthetic_vanuatu':
+        case 'financial_vanuatu':
+            if (
+                poi_acknowledged_for_vanuatu_maltainvest &&
+                !poi_or_poa_not_submitted &&
+                !should_restrict_vanuatu_account_creation &&
+                has_submitted_personal_details &&
+                poa_acknowledged
+            ) {
+                return true;
+            }
+            return false;
+
+        case 'financial_labuan':
+            if (poi_acknowledged_for_bvi_labuan && poa_acknowledged && has_submitted_personal_details) {
+                return true;
+            }
+            return false;
+
+        case 'financial_maltainvest':
+            if ((poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) || is_demo) {
+                return true;
+            }
+            return false;
+        default:
+            return false;
+    }
+};
 
 export {
     getHighlightedIconLabel,
@@ -260,4 +316,5 @@ export {
     prepareDxtradeData,
     getHeaderColor,
     platfromsHeaderLabel,
+    getAccountVerficationStatus,
 };

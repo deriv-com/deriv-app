@@ -1,22 +1,24 @@
 import React from 'react';
-import { observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
 import { Text, Icon, PageOverlay, DesktopWrapper, MobileWrapper, CFDCompareAccountsCarousel } from '@deriv/components';
 import { routes, CFD_PLATFORMS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import CFDCompareAccountsCard from './cfd-compare-accounts-card';
 import {
     getSortedAvailableAccounts,
     getDxtradeAccountAvailabaility,
     prepareDxtradeData,
 } from '../../Helpers/compare-accounts-config';
+import CFDPasswordModal from '../cfd-password-modal';
 
 const CompareCFDs = observer(() => {
     const history = useHistory();
-    const { client, traders_hub } = useStore();
+    const store = useStore();
+    const { client, traders_hub, common } = store;
     const { trading_platform_available_accounts } = client;
     const { available_cfd_accounts } = traders_hub;
+    const { platform } = common;
 
     const sorted_available_accounts = getSortedAvailableAccounts(trading_platform_available_accounts);
 
@@ -69,6 +71,7 @@ const CompareCFDs = observer(() => {
                         </div>
                     </div>
                 </div>
+                {/* <CFDPasswordModal context={store} platform={platform} /> */}
             </DesktopWrapper>
             <MobileWrapper>
                 <PageOverlay

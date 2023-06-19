@@ -17,14 +17,8 @@ const SortModal = () => {
                 selected={selected_value}
                 required
             >
-                {sort_list.map((list_item, key) => {
-                    return (
-                        <RadioGroup.Item
-                            key={key}
-                            value={list_item.value}
-                            label={<Text color='prominent'>{list_item.text}</Text>}
-                        />
-                    );
+                {sort_list.map(({ value, text }) => {
+                    return <RadioGroup.Item key={value} value={value} label={<Text color='prominent'>{text}</Text>} />;
                 })}
             </RadioGroup>
         </Modal>

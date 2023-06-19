@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import StoreContext from './storeContext';
-import { ExchangeRatesStore, WebsiteStatusStore } from './stores';
+import { ExchangeRatesStore, FeatureFlagsStore, WebsiteStatusStore } from './stores';
 import { ExchangeRatesProvider, WebsiteStatusProvider } from './providers';
 import type { TCoreStores, TStores } from '../types';
 
@@ -13,6 +13,7 @@ const StoreProvider = ({ children, store }: React.PropsWithChildren<{ store: TCo
         return {
             ...store,
             exchange_rates: new ExchangeRatesStore(),
+            feature_flags: new FeatureFlagsStore(),
             website_status: new WebsiteStatusStore(),
         };
     }, [store]);

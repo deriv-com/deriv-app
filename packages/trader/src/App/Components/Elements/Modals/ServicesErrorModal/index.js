@@ -1,3 +1,3 @@
-import ServicesErrorModal from './services-error-modal.jsx';
+import ServicesErrorModal from './services-error-modal';
 
 export default ServicesErrorModal;

@@ -174,9 +174,9 @@ export default class ContractStore extends BaseStore {
             low_barrier,
             status,
             underlying,
-        } = contract_info || {};
+        } = (isAccumulatorContract(contract_info.contract_type) && this.contract_info) || contract_info || {};
         const main_barrier = this.barriers_array?.[0];
-        if (isAccumulatorContract(contract_info.contract_type)) {
+        if (isAccumulatorContract(this.contract_info.contract_type)) {
             // even though updateBarriersArray is called both in DTrader & C.Details pages,
             // the below code will delay Accumulator barriers and their labels only in Contract Details.
             if (
@@ -191,30 +191,37 @@ export default class ContractStore extends BaseStore {
             setTimeout(
                 () =>
                     runInAction(() => {
-                        const { accu_high_barrier, accu_low_barrier } =
-                            getAccuBarriersForContractDetails(contract_info);
+                        const { accu_high_barrier, accu_low_barrier } = getAccuBarriersForContractDetails(
+                            this.contract_info
+                        );
                         if (!this.barriers_array.length) {
                             const accu_contract_info = {
-                                ...contract_info,
+                                ...this.contract_info,
                                 high_barrier: accu_high_barrier,
                                 low_barrier: accu_low_barrier,
                             };
                             this.barriers_array = this.createBarriersArray(accu_contract_info, is_dark_mode);
                             return;
                         }
-                        if (contract_info) {
-                            this.accumulator_previous_spot_time = null;
+                        if (this.contract_info) {
                             if (isBarrierSupported(contract_type) && accu_high_barrier && accu_low_barrier) {
+                                // updating barrier labels in C.Details page
                                 main_barrier?.updateBarriers(accu_high_barrier, accu_low_barrier);
                             }
+                            // this.marker contains horizontal barrier lines & shade between rendered as DelayedAccuBarriersMarker in C.Details page
+                            if (!this.marker) {
+                                this.marker = calculate_marker(this.contract_info);
+                            }
+                            // this.markers_array contains tick markers & start/end vertical lines in C.Details page
                             this.markers_array = createChartMarkers(
-                                contract_info,
-                                isAccumulatorContractOpen(contract_info)
+                                this.contract_info,
+                                isAccumulatorContractOpen(this.contract_info)
                             );
+                            // this observable controls the update of DelayedAccuBarriersMarker in C.Details page
                             this.accumulator_previous_spot_time = current_spot_time;
                         }
                     }),
-                getAccuBarriersDelayTimeMs(underlying)
+                this.contract_info.exit_tick_time ? 0 : getAccuBarriersDelayTimeMs(underlying)
             );
             this.cached_barriers_data = {
                 current_spot_high_barrier,

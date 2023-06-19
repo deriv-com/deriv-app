@@ -4,12 +4,26 @@ import { DesktopWrapper, InfiniteDataList, Loading, Table } from '@deriv/compone
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { TableError } from 'Components/table/table-error.jsx';
-import BuySellTableRow from 'Components/buy-sell/buy-sell-table/buy-sell-table-row';
+import BuySellTableRow, { TBuySellTableRowProps } from 'Components/buy-sell/buy-sell-table/buy-sell-table-row';
 import BuySellTableNoAds from 'Components/buy-sell/buy-sell-table/buy-sell-table-no-ads';
 import { useStores } from 'Stores';
 
 type TBuySellTableProps = {
     onScroll?: () => void;
+};
+
+const BuySellTableRowRenderer = (props: TBuySellTableRowProps) => {
+    const { buy_sell_store } = useStores();
+    const { is_buy, setSelectedAdvert, showAdvertiserPage } = buy_sell_store;
+
+    return (
+        <BuySellTableRow
+            {...props}
+            is_buy={is_buy}
+            setSelectedAdvert={setSelectedAdvert}
+            showAdvertiserPage={showAdvertiserPage}
+        />
+    );
 };
 
 const BuySellTable = ({ onScroll }: TBuySellTableProps) => {
@@ -23,8 +37,6 @@ const BuySellTable = ({ onScroll }: TBuySellTableProps) => {
         items,
         loadMoreItems,
         rendered_items,
-        setSelectedAdvert,
-        showAdvertiserPage,
     } = buy_sell_store;
     const { getPaymentMethodsList } = my_profile_store;
     const {
@@ -82,14 +94,7 @@ const BuySellTable = ({ onScroll }: TBuySellTableProps) => {
                     <InfiniteDataList
                         data_list_className='buy-sell-table__data-list'
                         items={rendered_items}
-                        rowRenderer={props => (
-                            <BuySellTableRow
-                                {...props}
-                                is_buy={is_buy}
-                                setSelectedAdvert={setSelectedAdvert}
-                                showAdvertiserPage={showAdvertiserPage}
-                            />
-                        )}
+                        rowRenderer={props => <BuySellTableRowRenderer {...props} />}
                         loadMoreRowsFn={loadMoreItems}
                         has_filler
                         has_more_items_to_load={has_more_items_to_load}

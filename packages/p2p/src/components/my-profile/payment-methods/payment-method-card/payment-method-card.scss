@@ -53,6 +53,16 @@
         width: 13.6rem;
     }
 
+    &--disabled {
+        cursor: not-allowed;
+    }
+
+    &--selected {
+        border-color: var(--brand-secondary);
+        border-width: 2px;
+        cursor: pointer;
+    }
+
     @include mobile {
         margin: 1rem;
         min-height: 8.8rem;

@@ -10,7 +10,7 @@ import TradeBadge from 'Components/trade-badge';
 import { useStores } from 'Stores';
 import { generateEffectiveRate } from 'Utils/format-value';
 
-type TBuySellTableRowProps = {
+export type TBuySellTableRowProps = {
     row: {
         account_currency: string;
         advertiser_details: {

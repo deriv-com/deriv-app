@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Checkbox, Dropdown, Icon, Text } from '@deriv/components';
-import { isEmptyObject } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import PropTypes from 'prop-types';
@@ -10,6 +9,7 @@ const PaymentMethodCard = ({
     add_payment_method,
     disabled,
     is_add = false,
+    is_selected = false,
     is_vertical_ellipsis_visible = true,
     label = undefined,
     large,
@@ -19,7 +19,6 @@ const PaymentMethodCard = ({
     payment_method,
     show_payment_method_name = true,
     small,
-    style,
 }) => {
     const { general_store, my_ads_store, my_profile_store } = useStores();
     const method = !is_add && payment_method?.display_name.replace(/\s|-/gm, '');
@@ -40,9 +39,10 @@ const PaymentMethodCard = ({
                     'payment-method-card--large': large,
                     'payment-method-card--medium': medium,
                     'payment-method-card--small': small,
+                    'payment-method-card--disabled': disabled,
+                    'payment-method-card--selected': is_selected,
                 })}
                 onClick={onClickAdd}
-                style={style}
             >
                 <Icon
                     icon='IcAddCircle'
@@ -63,9 +63,10 @@ const PaymentMethodCard = ({
                 'payment-method-card--large': large,
                 'payment-method-card--medium': medium,
                 'payment-method-card--small': small,
+                'payment-method-card--disabled': disabled,
+                'payment-method-card--selected': is_selected,
             })}
             onClick={onClick}
-            style={style}
         >
             <div className='payment-method-card__header'>
                 <Icon className='payment-method-card__icon' icon={icon_method} size={medium || small ? 16 : 24} />
@@ -94,7 +95,7 @@ const PaymentMethodCard = ({
                             !my_ads_store.payment_method_ids.includes(payment_method.ID)
                         }
                         onChange={onClick}
-                        value={!isEmptyObject(style)}
+                        value={is_selected}
                     />
                 )}
             </div>
@@ -119,6 +120,7 @@ PaymentMethodCard.propTypes = {
     add_payment_method: PropTypes.string,
     disabled: PropTypes.bool,
     is_add: PropTypes.bool,
+    is_selected: PropTypes.bool,
     is_vertical_ellipsis_visible: PropTypes.bool,
     label: PropTypes.string,
     large: PropTypes.bool,

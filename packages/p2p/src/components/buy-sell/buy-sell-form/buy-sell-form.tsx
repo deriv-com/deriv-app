@@ -17,7 +17,7 @@ import { floatingPointValidator } from 'Utils/validations';
 
 type TBuySellFormProps = {
     setIsSubmitDisabled: (v: boolean) => void;
-    setPageFooterParent: () => void;
+    setPageFooterParent: (component: React.ReactNode) => void;
     setSubmitForm: (submitForm: () => void) => void;
 };
 
@@ -70,11 +70,6 @@ const BuySellForm = (props: TBuySellFormProps) => {
     const [input_amount, setInputAmount] = React.useState(min_order_amount_limit);
     const should_disable_field =
         !is_buy_advert && (parseFloat(balance) === 0 || parseFloat(balance) < min_order_amount_limit);
-    const style = {
-        borderColor: 'var(--brand-secondary)',
-        borderWidth: '2px',
-        cursor: should_disable_field ? 'not-allowed' : 'pointer',
-    };
     const { effective_rate, display_effective_rate } = generateEffectiveRate({
         price,
         rate_type,
@@ -139,16 +134,16 @@ const BuySellForm = (props: TBuySellFormProps) => {
     }, [input_amount, effective_rate]);
 
     const onClickPaymentMethodCard = payment_method => {
+        const { ID } = payment_method;
+
         if (!should_disable_field) {
-            if (!payment_method_ids.includes(payment_method.ID)) {
+            if (!payment_method_ids.includes(ID)) {
                 if (payment_method_ids.length < 3) {
-                    payment_method_ids.push(payment_method.ID);
-                    setSelectedMethods([...selected_methods, payment_method.ID]);
+                    payment_method_ids.push(ID);
+                    setSelectedMethods([...selected_methods, ID]);
                 }
             } else {
-                setPaymentMethodIds(
-                    payment_method_ids.filter(payment_method_id => payment_method_id !== payment_method.ID)
-                );
+                setPaymentMethodIds(payment_method_ids.filter((payment_method_id: string) => payment_method_id !== ID));
                 setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
             }
         }
@@ -283,7 +278,7 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                             ?.trim()
                                             .replace(/([\r\n]){2,}/g, '\n\n')
                                             .split('\n')
-                                            .map(text => (
+                                            .map((text: string) => (
                                                 <Text key={text} as='p' size='xs'>
                                                     {text || '-'}
                                                 </Text>
@@ -328,6 +323,9 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                                                 return matching_payment_methods.length > 0 ? (
                                                                     matching_payment_methods.map(payment_method => (
                                                                         <PaymentMethodCard
+                                                                            is_selected={selected_methods.includes(
+                                                                                payment_method.ID
+                                                                            )}
                                                                             is_vertical_ellipsis_visible={false}
                                                                             key={add_payment_method}
                                                                             medium
@@ -335,13 +333,6 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                                                                 onClickPaymentMethodCard(payment_method)
                                                                             }
                                                                             payment_method={payment_method}
-                                                                            style={
-                                                                                selected_methods.includes(
-                                                                                    payment_method.ID
-                                                                                )
-                                                                                    ? style
-                                                                                    : {}
-                                                                            }
                                                                             disabled={should_disable_field}
                                                                         />
                                                                     ))
@@ -360,11 +351,6 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                                                             }
                                                                         }}
                                                                         disabled={should_disable_field}
-                                                                        style={{
-                                                                            cursor: should_disable_field
-                                                                                ? 'not-allowed'
-                                                                                : 'pointer',
-                                                                        }}
                                                                     />
                                                                 );
                                                             })
@@ -391,7 +377,7 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                     </Text>
                                     <section className='buy-sell-form__input-field'>
                                         <Field name='amount'>
-                                            {({ field }) => (
+                                            {({ field }: FieldProps) => (
                                                 <Input
                                                     {...field}
                                                     data-lpignore='true'

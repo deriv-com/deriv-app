@@ -52,7 +52,7 @@ describe('BuySellTableNoAds', () => {
         });
     });
 
-    it('shoulde render the component if there is no ad for the other currency selected', () => {
+    it('should render the component if there is no ad for the other currency selected', () => {
         (useStores as jest.Mock).mockReturnValue({
             ...mock_store,
             buy_sell_store: {

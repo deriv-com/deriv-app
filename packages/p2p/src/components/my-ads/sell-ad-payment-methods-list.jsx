@@ -18,11 +18,6 @@ const SellAdPaymentMethodsList = ({
 }) => {
     const { my_profile_store } = useStores();
 
-    const style = {
-        borderColor: 'var(--brand-secondary)',
-        borderWidth: '2px',
-    };
-
     // payment method order: Bank Transfer -> EWallets -> Others
     const payment_method_order = { bank_transfer: 0, other: 2 };
     const getPaymentMethodOrder = method => (!(method in payment_method_order) ? 1 : payment_method_order[method]);
@@ -41,12 +36,12 @@ const SellAdPaymentMethodsList = ({
         >
             {sortPaymentMethods([...my_profile_store.advertiser_payment_methods_list]).map((payment_method, key) => (
                 <PaymentMethodCard
+                    is_selected={selected_methods.includes(payment_method.ID)}
                     is_vertical_ellipsis_visible={false}
                     key={key}
                     medium
                     onClick={() => onClickPaymentMethodCard(payment_method)}
                     payment_method={payment_method}
-                    style={selected_methods.includes(payment_method.ID) ? style : {}}
                 />
             ))}
             <PaymentMethodCard is_add label={localize('Payment method')} medium onClickAdd={onClickAdd} />

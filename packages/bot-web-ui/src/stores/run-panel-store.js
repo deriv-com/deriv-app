@@ -147,6 +147,8 @@ export default class RunPanelStore {
     }
 
     async onRunButtonClick() {
+        performance.mark('bot-start');
+
         window.sendRequestsStatistic(false);
         performance.clearMeasures();
         const { summary_card, route_prompt_dialog, self_exclusion } = this.root_store;

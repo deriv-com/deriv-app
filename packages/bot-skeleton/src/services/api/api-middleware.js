@@ -62,7 +62,9 @@ const REQUESTS = [
     'account_security',
     'p2p_advertiser_info',
     'platform',
-    'history', // only response, there is no `history` type but instead it is response type
+    'history',
+    'amount',
+    'run-proposal',
 ];
 
 const log = (measures = [], is_bot_running) => {
@@ -108,6 +110,13 @@ class APIMiddleware {
                 } else {
                     performance.mark(`${res_type}_end`);
                     measure = performance.measure(`${res_type}`, `${res_type}_start`, `${res_type}_end`);
+                }
+                if (res_type === 'proposal') {
+                    performance.mark('proposal_end');
+                    if (performance.getEntriesByName('bot-start', 'mark').length) {
+                        measure = performance.measure('run-proposal', 'bot-start', 'proposal_end');
+                        performance.clearMarks('bot-start');
+                    }
                 }
                 measure.startTimeDate = new Date(Date.now() - measure.startTime);
             }

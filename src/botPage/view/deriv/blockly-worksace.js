@@ -43,14 +43,14 @@ const checkForRequiredBlocks = () => {
 
     if (missingBlocksTypes.length) {
         missingBlocksTypes.forEach(blockType =>
-            displayError(`"${blockLabels[blockType]}" ${translate('block should be added to the workspace')}.`)
+            displayError(`'${blockLabels[blockType]}' ${translate('block should be added to the workspace')}.`)
         );
         return false;
     }
 
     if (disabledBlocksTypes.length) {
         disabledBlocksTypes.forEach(blockType =>
-            displayError(`"${blockLabels[blockType]}" ${translate('block should be enabled')}.`)
+            displayError(`'${blockLabels[blockType]}' ${translate('block should be enabled')}.`)
         );
         return false;
     }
@@ -58,9 +58,9 @@ const checkForRequiredBlocks = () => {
     if (unattachedPairs.length) {
         unattachedPairs.forEach(pair =>
             displayError(
-                `"${blockLabels[pair.childBlock]}" ${translate('must be added inside:')} "${
+                `'${blockLabels[pair.childBlock]}' ${translate('must be added inside:')} '${
                     blockLabels[pair.parentBlock]
-                }"`
+                }'`
             )
         );
         return false;
@@ -71,7 +71,7 @@ const checkForRequiredBlocks = () => {
 
 export function applyToolboxPermissions() {
     const fn = getTokenList().length ? 'show' : 'hide';
-    $('#runButton, #showSummary, #logButton')
+    $('#runButton')
         [fn]()
         .prevAll('.toolbox-separator:first')
         [fn]();
@@ -149,6 +149,41 @@ const setElementActions = blockly => {
     addEventHandlers(blockly);
 };
 
+const exportContent = {};
+exportContent.summaryPanel = () => {
+    globalObserver.emit('summary.export');
+};
+
+exportContent.logPanel = () => {
+    globalObserver.emit('log.export');
+};
+
+const addExportButtonToPanel = panelId => {
+    const buttonHtml =
+        '<button class="icon-save" style="position:absolute;top:50%;margin:-10px 0 0 0;right:2em;padding:0.2em"></button>';
+    const $button = $(buttonHtml);
+    const panelSelector = `[aria-describedby="${panelId}"]`;
+    if (!$(`${panelSelector} .icon-save`).length) {
+        $button.insertBefore(`${panelSelector} .icon-close`);
+        $(`${panelSelector} .icon-close`).blur();
+        $($(`${panelSelector} .icon-save`)).click(() => {
+            exportContent[panelId]();
+        });
+    }
+};
+
+export const showSummary = () => {
+    $('#summaryPanel')
+        .dialog('option', 'minWidth', 770)
+        .dialog('open');
+    addExportButtonToPanel('summaryPanel');
+};
+
+export const logButton = () => {
+    $('#logPanel').dialog('open');
+    addExportButtonToPanel('logPanel');
+};
+
 const addBindings = blockly => {
     const stop = e => {
         if (e) {
@@ -204,43 +239,6 @@ const addBindings = blockly => {
     $('#tradingViewButton').click(() => {
         tradingView.open();
     });
-
-    const exportContent = {};
-    exportContent.summaryPanel = () => {
-        globalObserver.emit('summary.export');
-    };
-
-    exportContent.logPanel = () => {
-        globalObserver.emit('log.export');
-    };
-
-    const addExportButtonToPanel = panelId => {
-        const buttonHtml =
-            '<button class="icon-save" style="position:absolute;top:50%;margin:-10px 0 0 0;right:2em;padding:0.2em"></button>';
-        const $button = $(buttonHtml);
-        const panelSelector = `[aria-describedby="${panelId}"]`;
-        if (!$(`${panelSelector} .icon-save`).length) {
-            $button.insertBefore(`${panelSelector} .icon-close`);
-            $(`${panelSelector} .icon-close`).blur();
-            $($(`${panelSelector} .icon-save`)).click(() => {
-                exportContent[panelId]();
-            });
-        }
-    };
-
-    const showSummary = () => {
-        $('#summaryPanel')
-            .dialog('option', 'minWidth', 770)
-            .dialog('open');
-        addExportButtonToPanel('summaryPanel');
-    };
-
-    $('#logButton').click(() => {
-        $('#logPanel').dialog('open');
-        addExportButtonToPanel('logPanel');
-    });
-
-    $('#showSummary').click(showSummary);
 
     globalObserver.register('ui.logout', () => {
         saveBeforeUnload();
@@ -315,6 +313,7 @@ const addBindings = blockly => {
         });
     });
 };
+
 const stopBlockly = blockly => blockly.stop();
 
 const addEventHandlers = blockly => {

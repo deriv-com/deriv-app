@@ -12,7 +12,7 @@ export default {
         // fr: 'Français',
         // id: 'Indonesia',
         // pl: 'Polish',
-        pt: 'Português',
+        // pt: 'Português',
         // ru: 'Русский',
         // zh_cn: '简体中文',
         // zh_tw: '繁體中文',
@@ -134,18 +134,6 @@ export default {
             description: translate('Automated trading at your fingertips. No coding needed.'),
             link: `${related_deriv_origin.origin}/bot`,
             logo: 'public/images/ic-brand-dbot.svg',
-        },
-        {
-            title: 'DMT5',
-            description: translate('Trade on Deriv MetaTrader 5 (DMT5), the all-in-one FX and CFD trading platform.'),
-            link: `${related_deriv_origin.origin}/mt5`,
-            logo: 'public/images/ic-brand-dmt5.svg',
-        },
-        {
-            title: 'Deriv X',
-            description: translate('Trade FX and CFDs on a customisable, easy-to-use trading platform.'),
-            link: `${related_deriv_origin.origin}/derivx`,
-            logo: 'public/images/ic-brand-dxtrade.svg',
         },
         {
             title: 'SmartTrader',

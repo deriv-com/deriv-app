@@ -93,6 +93,10 @@ module.exports = {
                 from: 'templates/index.html',
                 to: path.resolve(__dirname, 'www'),
             },
+            {
+                from: 'translations',
+                to: path.resolve(__dirname, 'www/translations'),
+            },
         ]),
     ],
     devServer: {

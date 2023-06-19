@@ -60,7 +60,8 @@ commands:
             echo TRACKJS_TOKEN=${TRACKJS_TOKEN} >> .env
       - run:
           name: "npm run build"
-          command: node_modules/gulp/bin/gulp.js build-min
+          # command: node_modules/gulp/bin/gulp.js build-min
+          command: npm run build
   deploy:
     description: "Deploy to static branches"
     parameters:
@@ -202,7 +203,7 @@ jobs:
  
   publish_cloudflare_staging:
     docker:
-      - image: circleci/node:16.13.1-stretch
+      - image: cimg/node:20.2.0
     steps:
       - attach_workspace:
           at: www
@@ -210,7 +211,7 @@ jobs:
 
   publish_cloudflare_production:
     docker:
-      - image: circleci/node:16.13.1-stretch
+      - image: cimg/node:20.2.0
     steps:
       - attach_workspace:
           at: www

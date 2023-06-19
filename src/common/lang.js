@@ -1,20 +1,21 @@
-import { parseQueryString } from '../common/utils/tools';
-import { set as setStorage, get as getStorage } from '../common/utils/storageManager';
-import { setCookieLanguage } from '../common/utils/cookieManager';
-import { supportedLanguages, translate, init } from './i18n';
+import { get as getStorage } from '../common/utils/storageManager';
+import { parseQueryString, redirectToSupportedLang, setLanguage } from '../common/utils/tools';
+import { init, supported_languages, translate } from './i18n';
 
 export const getLanguage = () => {
-    const queryLang = parseQueryString().l ? parseQueryString().l || getStorage('lang') : 'en';
+    const parsed_url = parseQueryString().lang || parseQueryString().l;
+    const parsed_valid_url =
+        parsed_url?.length > 1 ? document.location.search.match(/(lang|l)=([a-z]{2})/)[2] : parsed_url;
+    const supported_storage_lang = getStorage('lang') in supported_languages ? getStorage('lang') : null;
+    const query_lang = parsed_valid_url ? parsed_valid_url || supported_storage_lang : 'en';
+    const is_query_lang_supported = query_lang in supported_languages;
 
-    const lang =
-        getStorage('lang') in supportedLanguages
-            ? getStorage('lang')
-            : queryLang in supportedLanguages
-            ? queryLang
-            : 'en';
-    setStorage('lang', lang);
-    setCookieLanguage(lang);
-    return lang;
+    if (is_query_lang_supported) {
+        return setLanguage(query_lang);
+    }
+
+    redirectToSupportedLang('en');
+    return setLanguage('en');
 };
 
 const addUiLang = () => {
@@ -30,13 +31,17 @@ const addUiLang = () => {
     });
 };
 
-export const load = () => {
+export const load = async () => {
     if (typeof $ !== 'function') return; // Adding this check to skip unit test
-    const lang = getLanguage();
+
+    const lang = await getLanguage();
+    if (lang) {
+        init(lang);
+    }
 
     $('#select_language li:not(:first)').click(function click() {
         const newLang = $(this).attr('class');
-        document.location.search = `l=${newLang}`;
+        redirectToSupportedLang(newLang);
     });
 
     $('.language').text(
@@ -53,9 +58,6 @@ export const load = () => {
         script.src = `${document.location.protocol}//cdn.crowdin.com/jipt/jipt.js`;
         $('body').append(script);
     }
-
-    init(lang);
-
     addUiLang();
 };
 

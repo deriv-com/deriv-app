@@ -19,7 +19,7 @@ import {
     updateActiveToken,
     updateAccountType,
 } from '../../store/client-slice';
-import { setAccountSwitcherLoader, updateShowMessagePage, setShouldReloadWorkspace } from '../../store/ui-slice';
+import { setAccountSwitcherLoader, updateShowMessagePage } from '../../store/ui-slice';
 import { DrawerMenu, AuthButtons, AccountActions, MenuLinks, AccountSwitcherLoader } from './components';
 import { queryToObjectArray } from '../../../../../common/appId';
 import api from '../../api';
@@ -195,7 +195,6 @@ const Header = () => {
                             onClick={() => setIsPlatformSwitcherOpen(!isPlatformSwitcherOpen)}
                         >
                             <img className='header__logo' src={config.app_logo} />
-                            <div className='platform__switcher-header'>{config.app_title}</div>
                             <img
                                 id='platform__switcher-expand'
                                 className={classNames('header__icon header__expand', {

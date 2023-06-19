@@ -1,47 +1,31 @@
 import sha1 from 'sha1';
-import zhTw from './translations/zh_TW/i10n.json';
-import zhCn from './translations/zh_CN/i10n.json';
-import it from './translations/it_IT/i10n.json';
-import vi from './translations/vi_VN/i10n.json';
-import pl from './translations/pl_PL/i10n.json';
-import ru from './translations/ru_RU/i10n.json';
-import pt from './translations/pt_PT/i10n.json';
 import es from './translations/es_ES/i10n.json';
-import fr from './translations/fr_FR/i10n.json';
 import en from './translations/en/i10n.json';
-import ach from './translations/ach_UG/i10n.json';
 
-export const supportedLanguages = {
-    zh_tw: zhTw,
-    zh_cn: zhCn,
-    it,
-    vi,
-    pl,
-    ru,
-    pt,
+export const supported_languages = {
     es,
-    fr,
     en,
-    ach,
 };
 
 const fallbackLang = en;
 let translation = {};
 
-const t = key => (key in translation ? translation[key] : fallbackLang[key]);
+const t = key => (translation && key in translation ? translation[key] : fallbackLang[key]);
 
 export const init = lang => {
-    translation = supportedLanguages[lang];
+    translation = supported_languages[lang];
 };
 
 export const translate = str => (str && t(sha1(str))) || str;
 
 export const translateLangToLang = (str, fromLang, toLang) => {
-    if (supportedLanguages[fromLang]) {
-        const hashIndex = Object.values(supportedLanguages[fromLang]).findIndex(translatedStr => str === translatedStr);
+    if (supported_languages[fromLang]) {
+        const hashIndex = Object.values(supported_languages[fromLang]).findIndex(
+            translatedStr => str === translatedStr
+        );
         if (hashIndex !== -1) {
-            const hash = Object.keys(supportedLanguages[fromLang])[hashIndex];
-            const translatedStr = supportedLanguages[toLang][hash];
+            const hash = Object.keys(supported_languages[fromLang])[hashIndex];
+            const translatedStr = supported_languages[toLang][hash];
             if (translatedStr) {
                 return translatedStr;
             }

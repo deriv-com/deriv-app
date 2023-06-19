@@ -10,15 +10,13 @@ import {
     getDxtradeAccountAvailabaility,
     prepareDxtradeData,
 } from '../../Helpers/compare-accounts-config';
-import CFDPasswordModal from '../cfd-password-modal';
 
 const CompareCFDs = observer(() => {
     const history = useHistory();
     const store = useStore();
-    const { client, traders_hub, common } = store;
+    const { client, traders_hub } = store;
     const { trading_platform_available_accounts } = client;
     const { available_cfd_accounts } = traders_hub;
-    const { platform } = common;
 
     const sorted_available_accounts = getSortedAvailableAccounts(trading_platform_available_accounts);
 

@@ -271,7 +271,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             populateHeaderExtensions: jest.fn(),
             populateSettingsExtensions: jest.fn(),
             setShouldShowCooldownModal: jest.fn(),
-            // openSwitchToRealAccountModal: jest.fn(),
         },
         traders_hub: {
             closeModal: jest.fn(),
@@ -300,8 +299,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             setSelectedAccount: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
             selectAccountType: jest.fn(),
-            // getAccount: jest.fn(),
-            // toggleAccountTypeModalVisibility: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

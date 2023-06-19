@@ -320,7 +320,6 @@ type TUiStore = {
     populateHeaderExtensions: (header_items: JSX.Element | null) => void;
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     setShouldShowCooldownModal: (value: boolean) => void;
-    // openSwitchToRealAccountModal: () => void;
 };
 
 type TPortfolioStore = {
@@ -390,8 +389,6 @@ type TTradersHubStore = {
     is_demo: boolean;
     selectAccountType: (account_type: string) => void;
     available_cfd_accounts: TAvailableCFDAccounts[];
-    // getAccount: () => void;
-    // toggleAccountTypeModalVisibility: () => void;
 };
 
 /**

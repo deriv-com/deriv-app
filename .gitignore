@@ -13,4 +13,4 @@ old/
 CNAME
 *.env
 .env
-translations/
+translations/*.js

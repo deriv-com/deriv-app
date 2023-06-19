@@ -156,6 +156,7 @@ type TClientStore = {
     is_deposit_lock: boolean;
     is_dxtrade_allowed: boolean;
     is_eu: boolean;
+    is_eu_country: boolean;
     is_authorize: boolean;
     is_financial_account: boolean;
     is_financial_information_incomplete: boolean;
@@ -275,6 +276,7 @@ type TUiStore = {
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
+    is_app_disabled: boolean;
     is_mobile: boolean;
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'

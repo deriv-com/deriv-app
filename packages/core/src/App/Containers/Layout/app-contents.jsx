@@ -2,9 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useLocation, withRouter } from 'react-router';
-import WS from 'Services/ws-methods';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
-import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, platforms, routes } from '@deriv/shared';
+import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, platforms, routes, WS } from '@deriv/shared';
 import { connect } from 'Stores/connect';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 

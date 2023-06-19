@@ -113,8 +113,6 @@ const TradingHubHeader = ({
     has_any_real_account,
     toggleReadyToDepositModal,
     toggleNeedRealAccountForCashierModal,
-    //Remove after QA testing
-    setIsWalletModalVisible,
 }) => {
     const { pathname } = useLocation();
     const cashier_routes = pathname.startsWith(routes.cashier);
@@ -223,9 +221,6 @@ const TradingHubHeader = ({
             <div className='trading-hub-header__menu-left'>
                 <MobileWrapper>
                     <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
-
-                    {/* Remove after QA testing */}
-                    <button onClick={() => setIsWalletModalVisible(true)}>Modal</button>
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
                 <div
@@ -239,8 +234,6 @@ const TradingHubHeader = ({
                 </div>
                 <DesktopWrapper>
                     <Divider />
-                    {/* Remove after QA testing */}
-                    <button onClick={() => setIsWalletModalVisible(true)}>Open modal</button>
                     <TradersHubHomeButton is_dark_mode={is_dark_mode} />
                 </DesktopWrapper>
                 <MenuLinks is_traders_hub_routes />
@@ -342,8 +335,6 @@ TradingHubHeader.propTypes = {
     has_any_real_account: PropTypes.bool,
     toggleReadyToDepositModal: PropTypes.func,
     toggleNeedRealAccountForCashierModal: PropTypes.func,
-    //Remove after QA testing
-    setIsWalletModalVisible: PropTypes.func,
 };
 
 export default connect(({ client, common, notifications, ui, traders_hub }) => ({
@@ -375,6 +366,4 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
     toggleNeedRealAccountForCashierModal: ui.toggleNeedRealAccountForCashierModal,
     content_flag: traders_hub.content_flag,
-    //Remove after QA testing
-    setIsWalletModalVisible: ui.setIsWalletModalVisible,
 }))(withRouter(TradingHubHeader));

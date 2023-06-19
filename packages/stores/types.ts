@@ -447,6 +447,8 @@ type TTradersHubStore = {
     selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
     available_dxtrade_accounts: AvailableAccount[];
+    active_modal_tab_index: number;
+    setWalletModalActiveTabIndex: (index: number) => void;
 };
 
 /**

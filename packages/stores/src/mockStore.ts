@@ -307,6 +307,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             selected_region: 'All',
             getExistingAccounts: jest.fn(),
             available_dxtrade_accounts: [],
+            active_modal_tab_index: 0,
+            setWalletModalActiveTabIndex: jest.fn(),
         },
         menu: {
             attach: jest.fn(),

@@ -2,6 +2,8 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
+import { observer, useStore } from '@deriv/stores';
+import { TWalletAccount } from 'Types';
 
 type TWalletButton = {
     name: string;
@@ -14,9 +16,27 @@ type TWalletHeaderButtons = {
     is_disabled: boolean;
     is_open: boolean;
     btns: TWalletButton[];
+    data: TWalletAccount;
 };
 
-const WalletHeaderButtons = ({ is_disabled, is_open, btns }: TWalletHeaderButtons) => {
+const WalletHeaderButtons = observer(({ is_disabled, is_open, btns, data }: TWalletHeaderButtons) => {
+    const { client, ui, traders_hub } = useStore();
+
+    const { switchAccount, loginid } = client;
+
+    const { setIsWalletModalVisible } = ui;
+
+    const { setWalletModalActiveTabIndex } = traders_hub;
+
+    const handleAction = (name: string) => {
+        const actionMap = { Deposit: 0, Withdraw: 1, Transfer: 2, Transactions: 3 };
+        const tabIndex = actionMap[name as keyof typeof actionMap];
+
+        if (tabIndex !== undefined) {
+            setWalletModalActiveTabIndex(tabIndex);
+        }
+    };
+
     return (
         <div className='wallet-header__description-buttons'>
             {btns.map(btn => (
@@ -25,7 +45,14 @@ const WalletHeaderButtons = ({ is_disabled, is_open, btns }: TWalletHeaderButton
                     className={classNames('wallet-header__description-buttons-item', {
                         'wallet-header__description-buttons-item-disabled': is_disabled,
                     })}
-                    onClick={btn.action}
+                    onClick={async () => {
+                        setIsWalletModalVisible(true);
+                        handleAction(btn.name);
+                        if (loginid !== data.loginid) {
+                            await new Promise(resolve => setTimeout(resolve, 1000));
+                            switchAccount(data.loginid);
+                        }
+                    }}
                 >
                     <Icon
                         icon={btn.icon}
@@ -51,6 +78,5 @@ const WalletHeaderButtons = ({ is_disabled, is_open, btns }: TWalletHeaderButton
             ))}
         </div>
     );
-};
-WalletHeaderButtons.displayName = 'WalletHeaderButtons';
+});
 export default WalletHeaderButtons;

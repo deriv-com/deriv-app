@@ -10,19 +10,18 @@ const WalletModal = observer(() => {
     const {
         client: { balance, currency, landing_company_shortcode: shortcode },
         ui: { is_dark_mode_on, is_wallet_modal_visible, is_mobile, setIsWalletModalVisible },
-        traders_hub: { is_demo },
+        traders_hub: { is_demo, active_modal_tab_index, setWalletModalActiveTabIndex },
     } = store;
 
     // TODO: Temporary wallet type. Will be refactored later. Add correct type
     const wallet_type = is_demo ? 'demo' : 'real';
 
     const mobile_dialog_ref = React.useRef<HTMLDivElement>(null);
-    const [active_tab_index, setActiveTabIndex] = React.useState<number>(0);
     const [is_wallet_name_visible, setIsWalletNameVisible] = React.useState<boolean>(true);
 
     const closeModal = () => {
         setIsWalletModalVisible(false);
-        setActiveTabIndex(0);
+        setWalletModalActiveTabIndex(0);
     };
 
     React.useEffect(() => {
@@ -42,10 +41,10 @@ const WalletModal = observer(() => {
         return () => {
             el_mobile_dialog?.removeEventListener('scroll', handleScroll);
         };
-    }, [active_tab_index, is_wallet_modal_visible, is_mobile]);
+    }, [active_modal_tab_index, is_wallet_modal_visible, is_mobile]);
 
     const body = (
-        <>
+        <React.Fragment>
             <WalletModalHeader
                 balance={balance}
                 closeModal={closeModal}
@@ -57,19 +56,19 @@ const WalletModal = observer(() => {
                 is_wallet_name_visible={is_wallet_name_visible}
             />
             <WalletModalBody
-                active_tab_index={active_tab_index}
+                active_tab_index={active_modal_tab_index}
                 is_dark={is_dark_mode_on}
                 is_demo={is_demo}
                 is_mobile={is_mobile}
                 is_wallet_name_visible={is_wallet_name_visible}
-                setActiveTabIndex={setActiveTabIndex}
+                setActiveTabIndex={setWalletModalActiveTabIndex}
                 wallet_type={wallet_type}
             />
-        </>
+        </React.Fragment>
     );
 
     return (
-        <>
+        <React.Fragment>
             <DesktopWrapper>
                 <Modal is_open={is_wallet_modal_visible} className='wallet-modal' portalId='deriv_app'>
                     {body}
@@ -89,7 +88,7 @@ const WalletModal = observer(() => {
                     {body}
                 </MobileDialog>
             </MobileWrapper>
-        </>
+        </React.Fragment>
     );
 });
 

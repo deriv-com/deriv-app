@@ -50,6 +50,7 @@ const WalletHeader = observer(({ data }: TWalletHeader) => {
                         is_disabled={!!multipliers_account_status}
                         is_open={is_active}
                         btns={wallet_btns}
+                        data={data}
                     />
                 </div>
                 <div className='wallet-header__balance'>

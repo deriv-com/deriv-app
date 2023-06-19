@@ -24,28 +24,8 @@ export const CardsSliderSwiper = ({ items, setActivePage }: TProps) => {
         [setActivePage]
     );
 
-    const swiper_slides = React.useMemo(
-        () =>
-            items?.map((item: TWalletAccount) => (
-                <SwiperSlide
-                    style={{ width: 'auto' }}
-                    key={`${item.name} ${item.currency} ${item.landing_company_shortcode}`}
-                >
-                    <WalletCard
-                        wallet={{
-                            ...item,
-                            balance: formatMoney(item.currency, item.balance, true),
-                            jurisdiction_title: item.landing_company_shortcode,
-                        }}
-                        size='medium'
-                    />
-                </SwiperSlide>
-            )),
-        [items]
-    );
-
-    return (
-        <div className='swiper'>
+    const swiper_component = React.useMemo(
+        () => (
             <Swiper
                 ref={swiper_ref}
                 slidesPerView={'auto'}
@@ -56,8 +36,29 @@ export const CardsSliderSwiper = ({ items, setActivePage }: TProps) => {
                     setActivePage(activeIndex);
                 }}
             >
-                {swiper_slides}
+                {items?.map((item: TWalletAccount) => (
+                    <SwiperSlide
+                        style={{ width: 'auto' }}
+                        key={`${item.name} ${item.currency} ${item.landing_company_shortcode}`}
+                    >
+                        <WalletCard
+                            wallet={{
+                                ...item,
+                                balance: formatMoney(item.currency, item.balance, true),
+                                jurisdiction_title: item.landing_company_shortcode,
+                            }}
+                            size='medium'
+                        />
+                    </SwiperSlide>
+                ))}
             </Swiper>
+        ),
+        [items.length, setActivePage]
+    );
+
+    return (
+        <div className='swiper'>
+            {swiper_component}
             <div className='wallet-cards-carousel__pagination'>
                 <ProgressBarOnboarding
                     step={swiper_ref?.current?.swiper?.activeIndex ? swiper_ref?.current?.swiper?.activeIndex + 1 : 1}

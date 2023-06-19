@@ -15,11 +15,16 @@ type TProps = {
 const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps) => {
     const { traders_hub, client, ui } = useStore();
     const { is_mobile, setShouldShowCooldownModal, openRealAccountSignup } = ui;
-    const { is_landing_company_loaded, has_maltainvest_account, real_account_creation_unlock_date, is_logging_in } =
-        client;
+    const {
+        is_landing_company_loaded,
+        has_maltainvest_account,
+        real_account_creation_unlock_date,
+        is_logging_in,
+        is_switching,
+    } = client;
     const { available_platforms, is_eu_user, is_real, no_MF_account, no_CR_account, is_demo } = traders_hub;
 
-    if (!wallet_account || is_logging_in)
+    if (!wallet_account || is_switching || is_logging_in || !is_landing_company_loaded)
         return (
             <div className='wallet-content__loader'>
                 <PlatformLoader />

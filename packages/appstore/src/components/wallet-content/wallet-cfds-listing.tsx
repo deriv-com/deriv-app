@@ -35,10 +35,10 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
     } = traders_hub;
 
     const { toggleCompareAccountsModal } = cfd;
-    const { is_landing_company_loaded, is_logging_in } = client;
+    const { is_landing_company_loaded, is_logging_in, is_switching } = client;
     const { is_mobile } = ui;
 
-    if (!wallet_account || is_logging_in)
+    if (!wallet_account || !is_landing_company_loaded || is_switching || is_logging_in)
         return (
             <div className='wallet-content__loader'>
                 <PlatformLoader />

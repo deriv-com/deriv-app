@@ -1,7 +1,7 @@
 import React from 'react';
-import './mock-dialog.scss';
 import { Button, Checkbox, Input, Text } from '@deriv/components';
 import { useMockServer } from './mock-server-provider';
+import './mock-dialog.scss';
 
 const MockDialog = () => {
     const { active_session_id, handleSetActiveSessionId } = useMockServer();

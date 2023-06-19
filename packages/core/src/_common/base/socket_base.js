@@ -60,15 +60,17 @@ const BinarySocketBase = (() => {
     };
 
     const openNewConnection = (language = getLanguage(), session_id = '') => {
+        const parsed_session_id = localStorage.getItem('session_id') || '';
+
         if (wrong_app_id === getAppId()) return;
 
         if (!is_switching_socket) config.wsEvent('init');
 
         if (isClose()) {
             is_disconnect_called = false;
-            binary_socket = new WebSocket(getSocketUrl(language, session_id));
+            binary_socket = new WebSocket(getSocketUrl(language, parsed_session_id));
 
-            if (session_id) {
+            if (parsed_session_id) {
                 const originalSend = DerivAPIBasic.prototype.send;
                 const originalSubscribe = DerivAPIBasic.prototype.subscribe;
 

@@ -1,10 +1,64 @@
-.fiat-transaction-list {
+.transaction-list {
     display: flex;
     flex-direction: column;
     gap: 0.8rem;
-    margin: 0 auto;
-    width: 100%;
-    max-width: 800px;
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        gap: 1.6rem;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 800px;
+    }
+
+    &__filter {
+        align-self: end;
+
+        .dc-dropdown__container {
+            height: 4rem;
+            width: 19.5rem;
+        }
+
+        .dc-list {
+            width: 19.5rem;
+        }
+
+        .dc-dropdown__display-text {
+            padding-left: 4rem;
+        }
+
+        .dc-dropdown__display-placeholder {
+            left: 1.6rem;
+            top: -0.5rem;
+            height: 1rem;
+
+            &--is-title {
+                padding: 0;
+                transform: none;
+            }
+        }
+
+        .dc-dropdown__display-placeholder-text {
+            position: absolute;
+            top: 0;
+            font-size: 1rem;
+        }
+
+        .suffix-icon {
+            height: 1.2rem;
+            width: 1.2rem;
+        }
+
+        @include mobile {
+            align-self: auto;
+
+            .dc-dropdown__container,
+            .dc-list {
+                width: 100%;
+            }
+        }
+    }
 
     &__day {
         display: flex;

@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import { useFetch } from '@deriv/api';
 import { Statement } from '@deriv/api-types';
 import { getCurrencyDisplayCode, isCryptocurrency } from '@deriv/shared';
-import { Text } from '@deriv/components';
+import { Text, Dropdown } from '@deriv/components';
 import { useGroupedFiatTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { getWalletCurrencyIcon } from 'Constants/utils';
 import FiatTransactionListItem from './fiat-transaction-list-item';
 import './transaction-list.scss';
-import TransactionListFilter from './transaction-list-filter';
 
 const TransactionList = () => {
     const {
@@ -97,9 +96,9 @@ const TransactionList = () => {
         transaction_list: Required<Statement>['transactions'];
     }) => {
         return (
-            <div className='fiat-transaction-list__day'>
+            <div className='transaction-list__day'>
                 <Text
-                    className='fiat-transaction-list__day_header'
+                    className='transaction-list__day_header'
                     size={is_mobile ? 'xxxxs' : 'xxxs'}
                     line_height={is_mobile ? 'm' : 's'}
                     color='less-prominent'
@@ -180,20 +179,17 @@ const TransactionList = () => {
     };
 
     return (
-        <div
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-            }}
-        >
-            <TransactionListFilter
-                onChange={e => {
-                    setFilter(e.target.value);
-                }}
-                options={filter_options}
-                value={filter}
-            />
-            <div className='fiat-transaction-list'>
+        <div className='transaction-list__container'>
+            <div className='transaction-list'>
+                <Dropdown
+                    className='transaction-list__filter'
+                    is_align_text_left
+                    list={filter_options}
+                    onChange={(e: { target: { value: typeof filter } }) => setFilter(e.target.value)}
+                    placeholder={localize('Filter')}
+                    suffix_icon='IcFilter'
+                    value={filter}
+                />
                 {Object.entries(grouped_transactions).map(([day, transaction_list]) => (
                     <TransactionsForADay
                         key={day}

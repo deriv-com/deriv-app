@@ -37,8 +37,8 @@ const FiatTransactionListItem = ({
     const formatActionType = (value: string) => value[0].toUpperCase() + value.substring(1).replace(/_/, ' ');
 
     return (
-        <div className='fiat-transaction-list__item'>
-            <div className='fiat-transaction-list__item__left'>
+        <div className='transaction-list__item'>
+            <div className='transaction-list__item__left'>
                 {is_deriv_apps ? (
                     <AppLinkedWithWalletIcon
                         app_icon={is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight'}
@@ -49,7 +49,7 @@ const FiatTransactionListItem = ({
                 ) : (
                     <WalletIcon currency={account_currency} icon={icon} type={icon_type} has_bg size='medium' />
                 )}
-                <div className='fiat-transaction-list__item__left__title'>
+                <div className='transaction-list__item__left__title'>
                     <Text
                         size={is_mobile ? 'xxxs' : 'xxs'}
                         color='less-prominent'
@@ -68,7 +68,7 @@ const FiatTransactionListItem = ({
                     </Text>
                 </div>
             </div>
-            <div className='fiat-transaction-list__item__right'>
+            <div className='transaction-list__item__right'>
                 <Text
                     size={is_mobile ? 'xxxs' : 'xxs'}
                     color={amount > 0 ? 'profit-success' : 'loss-danger'}

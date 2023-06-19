@@ -5,7 +5,7 @@ import Fieldset from 'App/Components/Form/fieldset.jsx';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 import PurchaseButton from 'Modules/Trading/Components/Elements/purchase-button';
 import CancelDealInfo from '../Form/Purchase/cancel-deal-info';
-import { TProposalTypeInfo } from '../../Containers/purchase';
+import { TProposalTypeInfo } from '../../../../../types';
 
 type TPurchaseFieldset = {
     basis: string;

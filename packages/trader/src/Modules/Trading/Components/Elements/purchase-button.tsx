@@ -4,7 +4,7 @@ import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes, Text } from '@der
 import { getContractTypeDisplay } from 'Constants/contract';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 import { getGrowthRatePercentage } from '@deriv/shared';
-import { TProposalTypeInfo } from '../../Containers/purchase';
+import { TProposalTypeInfo } from '../../../../../types';
 
 type TPurchaseButton = {
     basis: string;

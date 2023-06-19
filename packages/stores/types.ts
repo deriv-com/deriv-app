@@ -327,7 +327,7 @@ type TPortfolioPos = {
         stop_loss?: null | number;
         take_profit?: null | number;
     };
-    underlying?: string; // check this
+    underlying?: string;
 };
 
 type TPortfolioPositions = {

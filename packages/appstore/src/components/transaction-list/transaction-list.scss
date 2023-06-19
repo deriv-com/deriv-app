@@ -15,34 +15,27 @@
     &__filter {
         align-self: end;
 
-        .dc-dropdown__container {
-            height: 4rem;
-            width: 19.5rem;
-        }
-
         .dc-list {
             width: 19.5rem;
         }
 
-        .dc-dropdown__display-text {
-            padding-left: 4rem;
-        }
-
-        .dc-dropdown__display-placeholder {
-            left: 1.6rem;
-            top: -0.5rem;
-            height: 1rem;
-
-            &--is-title {
-                padding: 0;
-                transform: none;
+        .dc-dropdown {
+            &__container {
+                height: 4rem;
+                width: 19.5rem;
             }
-        }
 
-        .dc-dropdown__display-placeholder-text {
-            position: absolute;
-            top: 0;
-            font-size: 1rem;
+            &__label {
+                transform: translate(1rem, -1rem) scale(0.75);
+            }
+
+            &__display {
+                height: 4rem;
+            }
+
+            &__display-text {
+                padding-left: 4rem;
+            }
         }
 
         .suffix-icon {
@@ -52,6 +45,9 @@
 
         @include mobile {
             align-self: auto;
+            margin: 0;
+            width: 100%;
+            max-width: 100%;
 
             .dc-dropdown__container,
             .dc-list {

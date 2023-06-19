@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useFetch } from '@deriv/api';
 import { Statement } from '@deriv/api-types';
 import { getCurrencyDisplayCode, isCryptocurrency } from '@deriv/shared';
 import { Text, Dropdown } from '@deriv/components';
@@ -9,6 +8,199 @@ import { localize } from '@deriv/translations';
 import { getWalletCurrencyIcon } from 'Constants/utils';
 import FiatTransactionListItem from './fiat-transaction-list-item';
 import './transaction-list.scss';
+
+const useFetch = (name: string, props: any) => {
+    const {
+        client: { loginid },
+        traders_hub: { is_demo },
+    } = useStore();
+
+    const mock_transactions = is_demo
+        ? [
+              {
+                  action_type: 'transfer',
+                  amount: 5,
+                  from: {
+                      loginid,
+                      account_category: 'wallet',
+                      account_type: '',
+                  },
+                  to: {
+                      loginid: 'CR90000100',
+                      account_category: 'trading',
+                      account_type: 'derivapps',
+                  },
+                  app_id: {},
+                  balance_after: 9995,
+                  transaction_id: 17494415484,
+                  transaction_time: 1685942139,
+              },
+              {
+                  action_type: 'reset_balance',
+                  amount: 350,
+                  balance_after: 10000,
+                  transaction_id: 13693003421,
+                  transaction_time: 1685942138,
+              },
+              {
+                  action_type: 'transfer',
+                  amount: 200,
+                  from: {
+                      loginid: 'CR90000100',
+                      account_category: 'trading',
+                      account_type: 'derivapps',
+                  },
+                  to: {
+                      loginid,
+                      account_category: 'wallet',
+                  },
+                  balance_after: 9650,
+                  transaction_id: 17494415483,
+                  transaction_time: 1685855740,
+              },
+              {
+                  action_type: 'transfer',
+                  amount: 550,
+                  from: {
+                      loginid,
+                      account_category: 'wallet',
+                      account_type: '',
+                  },
+                  to: {
+                      loginid: 'CR90000100',
+                      account_category: 'trading',
+                  },
+                  app_id: {},
+                  balance_after: 9450,
+                  transaction_id: 17494415482,
+                  transaction_time: 1685855739,
+              },
+              {
+                  action_type: 'initial_fund',
+                  amount: 10000,
+                  balance_after: 10000,
+                  transaction_id: 13693011401,
+                  transaction_time: 1685855738,
+              },
+          ]
+        : [
+              {
+                  action_type: 'transfer',
+                  amount: 5,
+                  from: {
+                      loginid,
+                      account_category: 'wallet',
+                      account_type: '',
+                  },
+                  to: {
+                      loginid: 'CR90000100',
+                      account_category: 'trading',
+                  },
+                  balance_after: 0,
+                  transaction_id: 17494117541,
+                  transaction_time: 1685942138,
+              },
+              {
+                  action_type: 'transfer',
+                  amount: 20,
+                  from: {
+                      loginid,
+                      account_category: 'wallet',
+                      account_type: '',
+                  },
+                  to: {
+                      loginid: 'CR90000043',
+                      account_category: 'wallet',
+                  },
+                  balance_after: 5,
+                  transaction_id: 17494415489,
+                  transaction_time: 1685942137,
+              },
+              {
+                  action_type: 'deposit',
+                  amount: 25,
+                  balance_after: 25,
+                  transaction_id: 17494415481,
+                  transaction_time: 1685942136,
+              },
+              {
+                  action_type: 'withdrawal',
+                  amount: 750,
+                  balance_after: 0,
+                  transaction_id: 17494415480,
+                  transaction_time: 1685942135,
+              },
+              {
+                  action_type: 'transfer',
+                  amount: 100,
+                  from: {
+                      loginid: 'CR90000100',
+                      account_category: 'trading',
+                  },
+                  to: {
+                      loginid,
+                      account_category: 'wallet',
+                      account_type: '',
+                  },
+                  balance_after: 750,
+                  transaction_id: 17494415479,
+                  transaction_time: 1685855738,
+              },
+              {
+                  action_type: 'transfer',
+                  amount: 200,
+                  from: {
+                      loginid: 'CR90000043',
+                      account_category: 'wallet',
+                      account_type: 'crypto',
+                  },
+                  to: {
+                      loginid,
+                      account_category: 'wallet',
+                      account_type: '',
+                  },
+                  balance_after: 650,
+                  transaction_id: 17494117541,
+                  transaction_time: 1685855737,
+              },
+              {
+                  action_type: 'transfer',
+                  amount: 550,
+                  from: {
+                      loginid,
+                      account_category: 'wallet',
+                      account_type: '',
+                  },
+                  to: {
+                      loginid: 'CR90000043',
+                      account_category: 'wallet',
+                      account_type: 'crypto',
+                  },
+                  balance_after: 450,
+                  transaction_id: 17494117540,
+                  transaction_time: 1685855736,
+              },
+              {
+                  action_type: 'deposit',
+                  amount: 1000,
+                  balance_after: 1000,
+                  transaction_id: 17494117539,
+                  transaction_time: 1685769338,
+              },
+          ];
+
+    return {
+        data: {
+            statement: {
+                transactions: (mock_transactions as { action_type: string }[]).filter(
+                    el => !props?.payload?.action_type || el.action_type === props?.payload?.action_type
+                ),
+            },
+        },
+        isLoading: false,
+        isSuccess: true,
+    };
+};
 
 const TransactionList = () => {
     const {
@@ -60,9 +252,6 @@ const TransactionList = () => {
 
     // TODO: change grouping logic
     const grouped_transactions = useGroupedFiatTransactions(transactions);
-    const linked_accounts = Object.values(accounts)
-        .flatMap(account => account.linked_to)
-        .filter(Boolean);
 
     const wallet_title = React.useMemo(() => {
         return `${is_demo ? localize('Demo') : ''} ${getCurrencyDisplayCode(wallet_currency)} ${localize('Wallet')}`;
@@ -93,7 +282,11 @@ const TransactionList = () => {
         transaction_list,
     }: {
         day: string;
-        transaction_list: Required<Statement>['transactions'];
+        transaction_list: Required<Statement>['transactions'] &
+            {
+                to?: { account_category: 'wallet' | 'trading'; account_type: string };
+                from?: { account_category: 'wallet' | 'trading'; account_type: string };
+            }[];
     }) => {
         return (
             <div className='transaction-list__day'>
@@ -120,10 +313,8 @@ const TransactionList = () => {
                         let icon_type = 'fiat';
                         let is_deriv_apps = false;
                         if (transaction.action_type === 'transfer') {
-                            const other_loginid =
-                                transaction.to?.loginid === loginid
-                                    ? transaction.from?.loginid
-                                    : transaction.to?.loginid;
+                            const other_party = transaction.to?.loginid === loginid ? transaction.from : transaction.to;
+                            const other_loginid = other_party?.loginid;
                             if (!other_loginid) return null;
                             const other_account = accounts[other_loginid];
                             if (other_account) {
@@ -141,8 +332,6 @@ const TransactionList = () => {
                                 );
                                 icon_type = isCryptocurrency(account_currency) ? 'crypto' : 'fiat';
                             } else {
-                                const app_account = linked_accounts.find(account => account?.loginid === other_loginid);
-                                if (!app_account) return null;
                                 const landing_company_name = landingCompanyName(shortcode);
                                 const account_category = is_demo ? localize('Demo') : `(${landing_company_name})`;
                                 account_title = `${localize('Deriv Apps')} ${account_category} ${localize('account')}`;
@@ -186,7 +375,7 @@ const TransactionList = () => {
                     is_align_text_left
                     list={filter_options}
                     onChange={(e: { target: { value: typeof filter } }) => setFilter(e.target.value)}
-                    placeholder={localize('Filter')}
+                    label={localize('Filter')}
                     suffix_icon='IcFilter'
                     value={filter}
                 />

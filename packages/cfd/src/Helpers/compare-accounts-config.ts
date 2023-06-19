@@ -1,4 +1,10 @@
-import { TIconData, TAvailableCFDAccounts, TModifiedTradingPlatformAvailableAccount } from '../Components/props.types';
+import { CFD_PLATFORMS } from '@deriv/shared';
+import {
+    TIconData,
+    TAvailableCFDAccounts,
+    TModifiedTradingPlatformAvailableAccount,
+    TDetailsOfEachMT5Loginid,
+} from '../Components/props.types';
 
 const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvailableAccount): TIconData[] => {
     switch (trading_platforms.market_type) {
@@ -303,6 +309,18 @@ const getAccountVerficationStatus = (
     }
 };
 
+const isMt5AccountAdded = (current_list: Record<string, TDetailsOfEachMT5Loginid>, item: string, is_demo: boolean) =>
+    Object.entries(current_list).some(([key, value]) => {
+        const [market, type] = item.split('_');
+        const current_account_type = is_demo ? 'demo' : 'real';
+        return (
+            value.market_type === market &&
+            value.landing_company_short === type &&
+            value.account_type === current_account_type &&
+            key.includes(CFD_PLATFORMS.MT5)
+        );
+    });
+
 export {
     getHighlightedIconLabel,
     cfdConfig,
@@ -317,4 +335,5 @@ export {
     getHeaderColor,
     platfromsHeaderLabel,
     getAccountVerficationStatus,
+    isMt5AccountAdded,
 };

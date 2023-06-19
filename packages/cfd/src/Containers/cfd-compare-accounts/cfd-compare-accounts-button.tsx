@@ -1,12 +1,12 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { routes, getAuthenticationStatusInfo, WS } from '@deriv/shared';
+import { routes, getAuthenticationStatusInfo, WS, CFD_PLATFORMS } from '@deriv/shared';
 import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { GetSettings, GetAccountSettingsResponse } from '@deriv/api-types';
 import { TCompareAccountsCard } from 'Components/props.types';
-import { getMarketType, getAccountVerficationStatus } from '../../Helpers/compare-accounts-config';
+import { getMarketType, getAccountVerficationStatus, isMt5AccountAdded } from '../../Helpers/compare-accounts-config';
 
 const CFDCompareAccountsButton = observer(({ trading_platforms }: TCompareAccountsCard) => {
     const market_type = getMarketType(trading_platforms);
@@ -18,8 +18,13 @@ const CFDCompareAccountsButton = observer(({ trading_platforms }: TCompareAccoun
         traders_hub,
     } = useStore();
     const history = useHistory();
-    const { setAccountType, setJurisdictionSelectedShortcode, enableCFDPasswordModal, toggleCFDVerificationModal } =
-        cfd;
+    const {
+        setAccountType,
+        setJurisdictionSelectedShortcode,
+        enableCFDPasswordModal,
+        toggleCFDVerificationModal,
+        current_list,
+    } = cfd;
     const { setAppstorePlatform } = common;
     const type_of_account = {
         category: 'real',
@@ -45,6 +50,7 @@ const CFDCompareAccountsButton = observer(({ trading_platforms }: TCompareAccoun
     } = getAuthenticationStatusInfo(account_status);
 
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
+    const is_account_added = isMt5AccountAdded(current_list, jurisdiction_shortcode, is_demo);
 
     React.useEffect(() => {
         if (is_logged_in && !is_virtual) {
@@ -94,8 +100,8 @@ const CFDCompareAccountsButton = observer(({ trading_platforms }: TCompareAccoun
         history.push(routes.traders_hub);
     };
     return (
-        <Button className='compare-cfd-account__button' primary_light onClick={onClickAdd}>
-            {localize('Add')}
+        <Button className='compare-cfd-account__button' primary_light onClick={onClickAdd} disabled={is_account_added}>
+            {is_account_added ? localize('Added') : localize('Add')}
         </Button>
     );
 });

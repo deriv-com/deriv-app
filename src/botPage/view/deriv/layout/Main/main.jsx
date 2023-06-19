@@ -111,7 +111,8 @@ const Main = () => {
         });
     };
 
-    const initializeBlockly = _blockly => initialize(_blockly).then(() => {
+    const initializeBlockly = _blockly =>
+        initialize(_blockly).then(() => {
             $('.show-on-load').show();
             $('.barspinner').hide();
             window.dispatchEvent(new Event('resize'));

@@ -36,12 +36,12 @@ const ToolboxButton = ({
     position = 'bottom',
     is_bot_running,
 }) => (
-        <Popover id={id_container} class_container={class_container} content={tooltip} position={position}>
-            <button id={id} onClick={onClick} className={classes} disabled={is_bot_running}>
-                {label}
-            </button>
-        </Popover>
-    );
+    <Popover id={id_container} class_container={class_container} content={tooltip} position={position}>
+        <button id={id} onClick={onClick} className={classes} disabled={is_bot_running}>
+            {label}
+        </button>
+    </Popover>
+);
 
 const ToolBox = ({ blockly, is_workspace_rendered }) => {
     const [should_show_modal, setShowModal] = React.useState(false);

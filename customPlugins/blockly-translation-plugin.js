@@ -22,7 +22,12 @@ class PullBlocklyTranslationsPlugin {
                 .then(translations => {
                     translations.forEach(({ lang, content }) => {
                         const file_path = path.join(this.options.outputPath, `${lang}.js`);
-                        if (!fs.existsSync(this.options.outputPath)) {
+                        const had_folder = fs.existsSync(this.options.outputPath);
+                        
+                        // eslint-disable-next-line no-console
+                        console.log(had_folder, 'had_folder ================================================= has_folder');
+
+                        if (!had_folder) {
                             fs.mkdirSync(this.options.outputPath);
                         }
                         fs.writeFile(file_path, content, err => {

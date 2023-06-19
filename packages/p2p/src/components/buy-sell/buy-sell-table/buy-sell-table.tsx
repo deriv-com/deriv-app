@@ -94,7 +94,7 @@ const BuySellTable = ({ onScroll }: TBuySellTableProps) => {
                     <InfiniteDataList
                         data_list_className='buy-sell-table__data-list'
                         items={rendered_items}
-                        rowRenderer={props => <BuySellTableRowRenderer {...props} />}
+                        rowRenderer={<BuySellTableRowRenderer />}
                         loadMoreRowsFn={loadMoreItems}
                         has_filler
                         has_more_items_to_load={has_more_items_to_load}

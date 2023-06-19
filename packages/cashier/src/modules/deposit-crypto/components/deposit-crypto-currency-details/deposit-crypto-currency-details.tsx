@@ -1,18 +1,14 @@
 import React from 'react';
 import { Icon, Text } from '@deriv/components';
-import { useCurrencyConfig } from '@deriv/hooks';
+import { useCurrentCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import './deposit-crypto-currency-details.scss';
 
 const DepositCryptoCurrencyDetails: React.FC = observer(() => {
-    const { client, ui } = useStore();
-    const { currency } = client;
+    const { ui } = useStore();
     const { is_mobile } = ui;
-    const { getConfig } = useCurrencyConfig();
-    const currency_config = getConfig(currency);
-
-    if (!currency_config) return null;
+    const currency_config = useCurrentCurrencyConfig();
 
     return (
         <>

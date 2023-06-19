@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useFetch } from '@deriv/api';
 import { Button, Loading, SideNote, Text } from '@deriv/components';
-import { useCurrencyConfig } from '@deriv/hooks';
+import { useCurrentCurrencyConfig } from '@deriv/hooks';
 import { epochToMoment } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
@@ -9,8 +9,7 @@ import { useCashierStore } from '../../../stores/useCashierStores';
 import './side-note-crypto-resent-transaction.scss';
 
 const SideNoteCryptoRecentTransaction: React.FC = observer(() => {
-    const { client, ui } = useStore();
-    const { currency } = client;
+    const { ui } = useStore();
     const { is_mobile } = ui;
     const { transaction_history } = useCashierStore();
     const { setIsCryptoTransactionsVisible } = transaction_history;
@@ -19,8 +18,7 @@ const SideNoteCryptoRecentTransaction: React.FC = observer(() => {
     const transactions = data?.cashier_payments?.crypto;
     const has_transactions = transactions && transactions?.length > 0;
     const recent_transactions = has_transactions ? transactions?.[0] : undefined;
-    const { getConfig } = useCurrencyConfig();
-    const currency_config = getConfig(currency);
+    const currency_config = useCurrentCurrencyConfig();
 
     // useEffect(() => {
     //     subscribe();
@@ -81,7 +79,7 @@ const SideNoteCryptoRecentTransaction: React.FC = observer(() => {
         <SideNote>
             <div className='deposit-crypto-recent-transaction-side-note'>
                 <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
-                    {localize('{{currency}} recent transactions', { currency: currency_config?.code })}
+                    {localize('{{currency}} recent transactions', { currency: currency_config.code })}
                 </Text>
                 <div className='deposit-crypto-recent-transaction-side-note__divider' />
                 {isLoading && <Loading is_fullscreen={false} />}

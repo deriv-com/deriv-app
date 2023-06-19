@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useCurrencyConfig, useHasFiatCurrency } from '@deriv/hooks';
+import { useCurrentCurrencyConfig, useHasFiatCurrency } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { SwitchToFiatAccountDialog } from '../../../../components/switch-to-fiat-account-dialog';
@@ -15,15 +15,13 @@ const icons: React.ComponentProps<typeof CashierOnboardingIconMarquee>['icons'] 
 ];
 
 const CashierOnboardingFiatCard: React.FC = observer(() => {
-    const { client, ui } = useStore();
+    const { ui } = useStore();
     const { general_store } = useCashierStore();
-    const { currency } = client;
     const { openRealAccountSignup } = ui;
     const { setDepositTarget, setIsDeposit } = general_store;
-    const { getConfig } = useCurrencyConfig();
-    const currency_config = getConfig(currency);
+    const currency_config = useCurrentCurrencyConfig();
     const has_fiat_currency = useHasFiatCurrency();
-    const can_switch_to_fiat_account = currency_config?.is_crypto && has_fiat_currency;
+    const can_switch_to_fiat_account = currency_config.is_crypto && has_fiat_currency;
     const [is_dialog_visible, setIsDialogVisible] = useState(false);
 
     const onClick = () => {
@@ -31,7 +29,7 @@ const CashierOnboardingFiatCard: React.FC = observer(() => {
 
         if (can_switch_to_fiat_account) {
             setIsDialogVisible(true);
-        } else if (currency_config?.is_crypto) {
+        } else if (currency_config.is_crypto) {
             openRealAccountSignup('add_fiat');
         } else {
             setIsDeposit(true);

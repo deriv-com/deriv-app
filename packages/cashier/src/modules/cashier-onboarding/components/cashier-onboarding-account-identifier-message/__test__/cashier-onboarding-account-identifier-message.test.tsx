@@ -3,10 +3,17 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import CashierOnboardingAccountIdentifierMessage from '../cashier-onboarding-account-identifier-message';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useCurrencyConfig: jest.fn(() => ({
-        getConfig: (currency: string) => ({ is_crypto: currency === 'BTC' }),
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useFetch: jest.fn(() => ({
+        data: {
+            website_status: {
+                currencies_config: {
+                    USD: { type: 'fiat', name: 'US Dollar' },
+                    BTC: { type: 'crypto', name: 'Bitcoin' },
+                },
+            },
+        },
     })),
 }));
 

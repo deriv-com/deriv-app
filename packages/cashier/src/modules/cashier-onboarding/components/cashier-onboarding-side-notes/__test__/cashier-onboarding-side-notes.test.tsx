@@ -4,16 +4,26 @@ import { render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../../cashier-providers';
 import CashierOnboardingSideNotes from '../cashier-onboarding-side-notes';
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useCurrencyConfig: jest.fn(() => ({
-        getConfig: (currency: string) => ({ is_crypto: currency === 'BTC', is_fiat: currency !== 'BTC' }),
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useFetch: jest.fn(() => ({
+        data: {
+            website_status: {
+                currencies_config: {
+                    USD: { type: 'fiat', name: 'US Dollar' },
+                    BTC: { type: 'crypto', name: 'Bitcoin' },
+                },
+            },
+        },
     })),
 }));
 
 describe('CashierOnboardingSideNotes', () => {
     test('should render CashierOnboardingSideNoteFiat on mobile if is_crypto is false', () => {
-        const mock = mockStore({ ui: { is_mobile: true } });
+        const mock = mockStore({
+            ui: { is_mobile: true },
+            client: { currency: 'USD' },
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <CashierProviders store={mock}>{children}</CashierProviders>

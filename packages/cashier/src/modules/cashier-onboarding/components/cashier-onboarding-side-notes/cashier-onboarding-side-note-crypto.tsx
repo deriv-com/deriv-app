@@ -1,18 +1,16 @@
 import React from 'react';
 import { SideNote } from '@deriv/components';
+import { useCurrentCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { useCashierStore } from '../../../../stores/useCashierStores';
-import { useCurrencyConfig } from '@deriv/hooks';
 
 const CashierOnboardingSideNoteCrypto: React.FC = observer(() => {
-    const { client, ui } = useStore();
+    const { ui } = useStore();
     const { general_store } = useCashierStore();
-    const { currency } = client;
     const { openRealAccountSignup } = ui;
     const { setDepositTarget } = general_store;
-    const { getConfig } = useCurrencyConfig();
-    const currency_config = getConfig(currency);
+    const currency_config = useCurrentCurrencyConfig();
 
     const onClick = () => {
         setDepositTarget('/cashier/deposit');

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFetch } from '@deriv/api';
 import { InlineMessage, Text } from '@deriv/components';
-import { useCurrencyConfig } from '@deriv/hooks';
+import { useCurrentCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import './deposit-crypto-disclaimers.scss';
@@ -16,13 +16,11 @@ const crypto_currency_to_network_mapper: Record<string, string> = {
 };
 
 const DepositCryptoDisclaimers: React.FC = observer(() => {
-    const { client, ui } = useStore();
-    const { currency } = client;
+    const { ui } = useStore();
     const { is_mobile } = ui;
+    const currency_config = useCurrentCurrencyConfig();
     const { data } = useFetch('crypto_config');
-    const minimum_deposit = data?.crypto_config?.currencies_config[currency]?.minimum_deposit;
-    const { getConfig } = useCurrencyConfig();
-    const currency_config = getConfig(currency);
+    const minimum_deposit = data?.crypto_config?.currencies_config[currency_config.code]?.minimum_deposit;
 
     return (
         <div className='deposit-crypto-disclaimers'>
@@ -32,7 +30,7 @@ const DepositCryptoDisclaimers: React.FC = observer(() => {
                     <li>
                         <Localize
                             i18n_default_text='A minimum deposit value of <0>{{minimum_deposit}}</0> {{currency}} is required. Otherwise, the funds will be lost and cannot be recovered.'
-                            values={{ minimum_deposit, currency: currency_config?.display_code }}
+                            values={{ minimum_deposit, currency: currency_config.display_code }}
                             components={[<strong key={0} />]}
                         />
                     </li>
@@ -42,7 +40,7 @@ const DepositCryptoDisclaimers: React.FC = observer(() => {
                 <li>
                     <Localize
                         i18n_default_text='In your cryptocurrency wallet, make sure to select the <0>{{network_name}} network</0> when you transfer funds to Deriv.'
-                        values={{ network_name: crypto_currency_to_network_mapper[currency] }}
+                        values={{ network_name: crypto_currency_to_network_mapper[currency_config.code] }}
                         components={[<strong key={0} />]}
                     />
                 </li>

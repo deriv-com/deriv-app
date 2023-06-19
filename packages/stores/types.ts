@@ -280,7 +280,7 @@ type TClientStore = {
     mt5_login_list: DetailsOfEachMT5Loginid[];
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
-    /** @deprecated Use `useCurrencyConfig` from `@deriv/hooks` package instead. */
+    /** @deprecated Use `useCurrencyConfig` or `useCurrentCurrencyConfig` from `@deriv/hooks` package instead. */
     is_crypto: (currency?: string) => boolean;
     dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
     default_currency: string;

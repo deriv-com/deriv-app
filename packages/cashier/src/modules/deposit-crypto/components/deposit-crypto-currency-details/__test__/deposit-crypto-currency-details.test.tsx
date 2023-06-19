@@ -3,29 +3,17 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import DepositCryptoCurrencyDetails from '../deposit-crypto-currency-details';
 
-jest.mock('@deriv/shared', () => ({
-    ...jest.requireActual('@deriv/shared'),
-    getCurrencyName: (currency: string) => (currency === 'BTC' ? 'Bitcoin' : 'Ethereum'),
-    CryptoConfig: {
-        get: () => ({
-            BTC: {
-                display_code: 'BTC',
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useFetch: jest.fn(() => ({
+        data: {
+            website_status: {
+                currencies_config: {
+                    ETH: { type: 'crypto', name: 'Ethereum' },
+                    BTC: { type: 'crypto', name: 'Bitcoin' },
+                },
             },
-            ETH: {
-                display_code: 'ETH',
-            },
-        }),
-    },
-}));
-
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useCurrencyConfig: jest.fn(() => ({
-        getConfig: (currency: string) => ({
-            icon: 'icCurrencyIcon',
-            name: currency === 'BTC' ? 'Bitcoin' : 'Ethereum',
-            display_code: currency,
-        }),
+        },
     })),
 }));
 

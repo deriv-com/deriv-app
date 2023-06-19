@@ -496,7 +496,7 @@ export const BOT_BUILDER_MOBILE: TStepMobile[] = [
 
 export const DBOT_ONBOARDING_MOBILE = [
     {
-        header: localize('Get started on DBot'),
+        header: localize('Get started on Deriv Bot'),
         content: [
             <Localize
                 key='get-started=mobile'

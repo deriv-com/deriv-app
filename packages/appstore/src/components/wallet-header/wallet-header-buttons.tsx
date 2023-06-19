@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { observer, useStore } from '@deriv/stores';
 import { TWalletAccount } from 'Types';
+import { useWalletModalActionHandler } from '@deriv/hooks';
 
 type TWalletButton = {
     name: string;
@@ -20,22 +21,13 @@ type TWalletHeaderButtons = {
 };
 
 const WalletHeaderButtons = observer(({ is_disabled, is_open, btns, data }: TWalletHeaderButtons) => {
-    const { client, ui, traders_hub } = useStore();
+    const { client, ui } = useStore();
 
     const { switchAccount, loginid } = client;
 
     const { setIsWalletModalVisible } = ui;
 
-    const { setWalletModalActiveTabIndex } = traders_hub;
-
-    const handleAction = (name: string) => {
-        const actionMap = { Deposit: 0, Withdraw: 1, Transfer: 2, Transactions: 3 };
-        const tabIndex = actionMap[name as keyof typeof actionMap];
-
-        if (tabIndex !== undefined) {
-            setWalletModalActiveTabIndex(tabIndex);
-        }
-    };
+    const { handleAction } = useWalletModalActionHandler();
 
     return (
         <div className='wallet-header__description-buttons'>
@@ -49,6 +41,7 @@ const WalletHeaderButtons = observer(({ is_disabled, is_open, btns, data }: TWal
                         setIsWalletModalVisible(true);
                         handleAction(btn.name);
                         if (loginid !== data.loginid) {
+                            /** Adding a delay as per requirement because the modal must appear first, then switch the account */
                             await new Promise(resolve => setTimeout(resolve, 1000));
                             switchAccount(data.loginid);
                         }

@@ -22,7 +22,7 @@ const ContractTypeDialog = ({
     const current_mobile_title = is_info_dialog_open ? (
         <Header title={item.text} onClickGoBack={onBackButtonClick} text_size='xs' />
     ) : (
-        localize('Trade type')
+        localize('Trade types')
     );
     return (
         <React.Fragment>

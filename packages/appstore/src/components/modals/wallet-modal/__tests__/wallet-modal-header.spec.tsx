@@ -9,6 +9,7 @@ describe('WalletModalHeader', () => {
     beforeEach(() => {
         mocked_props = {
             closeModal: jest.fn(),
+            currency_display_code: 'USD',
             is_dark: false,
             is_mobile: false,
             is_wallet_name_visible: true,

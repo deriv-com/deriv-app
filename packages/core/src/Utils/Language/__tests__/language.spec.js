@@ -7,7 +7,6 @@ const languages = {
     ID: 'Indonesian',
     IT: 'Italiano',
     PL: 'Polish',
-    PT: 'Português',
     RU: 'Русский',
     VI: 'Tiếng Việt',
     ZH_CN: '简体中文',

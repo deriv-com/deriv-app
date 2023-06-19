@@ -1,26 +1,24 @@
 import React from 'react';
 import { Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { useDisplayAvailableWallets } from '@deriv/hooks';
+import CarouselContainer from './carousel-container';
 import AddWalletCard from './wallet-add-card';
 import './add-more-wallets.scss';
 
 const AddWallets = () => {
+    const { data } = useDisplayAvailableWallets();
+
     return (
         <div className='add-wallets'>
             <Text as='h2' size='l' color='prominent' align='left' weight='bolder'>
                 {localize('Add more Wallets')}
             </Text>
-            <div className='add-wallets__wrapper'>
-                <div className='add-wallets__container'>
-                    <AddWalletCard />
-                    <AddWalletCard />
-                    <AddWalletCard />
-                    <AddWalletCard />
-                    <AddWalletCard />
-                    <AddWalletCard />
-                    <AddWalletCard />
-                </div>
-            </div>
+            <CarouselContainer>
+                {data?.map((wallet_info, idx) => (
+                    <AddWalletCard wallet_info={wallet_info} key={idx} />
+                ))}
+            </CarouselContainer>
         </div>
     );
 };

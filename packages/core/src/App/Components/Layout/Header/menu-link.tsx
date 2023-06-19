@@ -9,26 +9,28 @@ import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 
 type TMenuLink = {
-    link_to: string;
+    data_testid: string;
     icon: string;
     is_active: boolean;
     is_disabled: boolean;
+    is_hidden: boolean;
+    link_to: string;
+    onClickLink: () => void;
     suffix_icon: string;
     text: string;
-    onClickLink: () => void;
-    is_hidden: boolean;
 };
 
 const MenuLink = observer(
     ({
-        link_to,
+        data_testid,
         icon = '',
         is_active,
         is_disabled,
+        is_hidden,
+        link_to,
+        onClickLink,
         suffix_icon = '',
         text,
-        onClickLink,
-        is_hidden,
     }: Partial<TMenuLink>) => {
         const { common, ui, client } = useStore();
         const { setMobileLanguageMenuOpen } = common;
@@ -38,7 +40,7 @@ const MenuLink = observer(
         const { toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
         const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
 
-        const cashier_link =
+        const is_cashier_link =
             link_to === routes.cashier_deposit ||
             link_to === routes.cashier_withdrawal ||
             link_to === routes.cashier_acc_transfer;
@@ -54,6 +56,7 @@ const MenuLink = observer(
                         'header__menu-mobile-link--disabled': is_disabled,
                     })}
                     onClick={() => setMobileLanguageMenuOpen(true)}
+                    data-testid={data_testid}
                 >
                     <Icon className='header__menu-mobile-link-icon' icon={icon} />
                     <span className='header__menu-mobile-link-text'>{text}</span>
@@ -61,8 +64,7 @@ const MenuLink = observer(
                 </div>
             );
         }
-
-        if (real_account_needed_for_cashier && cashier_link && traders_hub_path) {
+        if (real_account_needed_for_cashier && is_cashier_link && traders_hub_path) {
             const handleClickCashier = () => {
                 onClickLink?.();
                 toggleNeedRealAccountForCashierModal();
@@ -73,6 +75,7 @@ const MenuLink = observer(
                         'header__menu-mobile-link--disabled': is_disabled,
                     })}
                     onClick={handleClickCashier}
+                    data-testid={data_testid}
                 >
                     <Icon className='header__menu-mobile-link-icon' icon={icon} />
                     <span className='header__menu-mobile-link-text'>{text}</span>
@@ -81,7 +84,7 @@ const MenuLink = observer(
             );
         }
 
-        if (cashier_link && is_virtual && !has_any_real_account) {
+        if (is_cashier_link && is_virtual && !has_any_real_account) {
             const toggle_modal_routes =
                 window.location.pathname === routes.root || window.location.pathname === routes.traders_hub;
 
@@ -105,6 +108,7 @@ const MenuLink = observer(
                         'header__menu-mobile-link--disabled': is_disabled,
                     })}
                     onClick={handleClickCashier}
+                    data-testid={data_testid}
                 >
                     <Icon className='header__menu-mobile-link-icon' icon={icon} />
                     <span className='header__menu-mobile-link-text'>{text}</span>
@@ -119,6 +123,7 @@ const MenuLink = observer(
                     className={classNames('header__menu-mobile-link', {
                         'header__menu-mobile-link--disabled': is_disabled,
                     })}
+                    data-testid={data_testid}
                 >
                     <Icon className='header__menu-mobile-link-icon' icon={icon} />
                     <span className='header__menu-mobile-link-text'>{text}</span>
@@ -134,6 +139,7 @@ const MenuLink = observer(
                     })}
                     to={link_to}
                     onClick={onClickLink}
+                    data-testid={data_testid}
                 >
                     <Icon className='header__menu-mobile-link-icon' icon={icon} />
                     <Text
@@ -158,6 +164,7 @@ const MenuLink = observer(
                 })}
                 active_class='header__menu-mobile-link--active'
                 onClick={onClickLink}
+                data-testid={data_testid}
             >
                 <Icon className='header__menu-mobile-link-icon' icon={icon} />
                 <Text

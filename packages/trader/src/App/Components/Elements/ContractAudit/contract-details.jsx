@@ -11,6 +11,7 @@ import {
     isMobile,
     isMultiplierContract,
     isSmartTraderContract,
+    isAsiansContract,
     hasTwoBarriers,
     isUserSold,
     isEndedBeforeCancellationExpired,
@@ -131,6 +132,14 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                                     value={getBarrierValue(contract_info) || ' - '}
                                 />
                             )}
+                        {isAsiansContract(contract_type) && (
+                            <ContractAuditItem
+                                id='dt_bt_label'
+                                icon={<Icon icon='IcContractStrike' size={24} />}
+                                label={getBarrierLabel(contract_info)}
+                                value={getBarrierValue(contract_info) || ' - '}
+                            />
+                        )}
                     </React.Fragment>
                 )}
                 {hasTwoBarriers(contract_type) && (

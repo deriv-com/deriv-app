@@ -42,6 +42,8 @@ export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contrac
 
 export const isSmartTraderContract = (contract_type = '') => /RUN|EXPIRY|RANGE|UPORDOWN|ASIA/i.test(contract_type);
 
+export const isAsiansContract = (contract_type = '') => /ASIA/i.test(contract_type);
+
 export const isCryptoContract = (underlying = '') => underlying.startsWith('cry');
 
 export const getCurrentTick = (contract_info: TContractInfo) => {

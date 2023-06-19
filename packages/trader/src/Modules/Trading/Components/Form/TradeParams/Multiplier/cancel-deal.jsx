@@ -1,21 +1,24 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Checkbox, Dropdown, Popover, PopoverMessageCheckbox } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { connect } from 'Stores/connect';
 import { onToggleCancellation, onChangeCancellationDuration } from 'Stores/Modules/Trading/Helpers/multiplier';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const CancelDeal = ({
-    cancellation_range_list,
-    cancellation_duration,
-    has_cancellation,
-    has_take_profit,
-    has_stop_loss,
-    onChangeMultiple,
-    should_show_cancellation_warning,
-    toggleCancellationWarning,
-}) => {
+const CancelDeal = observer(() => {
+    const { ui } = useStore();
+    const {
+        cancellation_range_list,
+        cancellation_duration,
+        has_cancellation,
+        has_stop_loss,
+        has_take_profit,
+        onChangeMultiple,
+    } = useTraderStore();
+
+    const { should_show_cancellation_warning, toggleCancellationWarning } = ui;
+
     const should_show_popover = (has_take_profit || has_stop_loss) && should_show_cancellation_warning;
     const [is_do_not_show_selected, setDoNotShowSelected] = React.useState(!should_show_cancellation_warning);
 
@@ -95,26 +98,6 @@ const CancelDeal = ({
             )}
         </Fieldset>
     );
-};
+});
 
-CancelDeal.propTypes = {
-    cancellation_range_list: PropTypes.array,
-    cancellation_duration: PropTypes.string,
-    has_cancellation: PropTypes.bool,
-    has_stop_loss: PropTypes.bool,
-    has_take_profit: PropTypes.bool,
-    onChangeMultiple: PropTypes.func,
-    should_show_cancellation_warning: PropTypes.bool,
-    toggleCancellationWarning: PropTypes.func,
-};
-
-export default connect(({ modules, ui }) => ({
-    cancellation_range_list: modules.trade.cancellation_range_list,
-    cancellation_duration: modules.trade.cancellation_duration,
-    has_cancellation: modules.trade.has_cancellation,
-    has_stop_loss: modules.trade.has_stop_loss,
-    has_take_profit: modules.trade.has_take_profit,
-    onChangeMultiple: modules.trade.onChangeMultiple,
-    should_show_cancellation_warning: ui.should_show_cancellation_warning,
-    toggleCancellationWarning: ui.toggleCancellationWarning,
-}))(CancelDeal);
+export default CancelDeal;

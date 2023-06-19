@@ -149,6 +149,13 @@ const BuySellForm = (props: TBuySellFormProps) => {
         }
     };
 
+    const onAddPaymentMethod = add_payment_method => {
+        if (!should_disable_field) {
+            setSelectedPaymentMethodDisplayName(add_payment_method);
+            setShouldShowAddPaymentMethodForm(true);
+        }
+    };
+
     const getAdvertiserMaxLimit = () => {
         if (is_buy_advert) {
             if (advertiser_buy_limit < max_order_amount_limit_display) return roundOffDecimal(advertiser_buy_limit);
@@ -186,11 +193,11 @@ const BuySellForm = (props: TBuySellFormProps) => {
                 onSubmit={(...args) => handleSubmit(() => isMounted(), ...args)}
             >
                 {({ errors, isSubmitting, isValid, setFieldValue, submitForm, touched }) => {
-                    props.setIsSubmitDisabled(
-                        !isValid ||
-                            isSubmitting ||
-                            (is_sell_advert && payment_method_names && selected_methods.length < 1)
-                    );
+                    const has_selected_payment_method =
+                        is_sell_advert && payment_method_names && selected_methods.length < 1;
+                    const is_submit_disabled = !isValid || isSubmitting || has_selected_payment_method;
+
+                    props.setIsSubmitDisabled(is_submit_disabled);
                     props.setSubmitForm(submitForm);
 
                     return (
@@ -235,34 +242,19 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                     {payment_method_names?.map(payment_method => {
                                         const method = payment_method.replace(/\s|-/gm, '');
 
-                                        if (method === 'BankTransfer' || method === 'Other') {
-                                            return (
-                                                <div
-                                                    className='buy-sell-form__payment-method--row'
-                                                    key={payment_method}
-                                                >
-                                                    <Icon
-                                                        className='buy-sell-form__payment-method--icon'
-                                                        icon={`IcCashier${method}`}
-                                                    />
-                                                    <Text as='p' size='xs'>
-                                                        {payment_method}
-                                                    </Text>
-                                                </div>
-                                            );
-                                        }
-
-                                        return (
-                                            <div className='buy-sell-form__payment-method--row' key={payment_method}>
-                                                <Icon
-                                                    className='buy-sell-form__payment-method--icon'
-                                                    icon='IcCashierEwallet'
-                                                />
-                                                <Text as='p' size='xs'>
-                                                    {payment_method}
-                                                </Text>
-                                            </div>
-                                        );
+                                        <div className='buy-sell-form__payment-method--row' key={payment_method}>
+                                            <Icon
+                                                className='buy-sell-form__payment-method--icon'
+                                                icon={
+                                                    method === 'BankTransfer' || method === 'Other'
+                                                        ? `IcCashier${method}`
+                                                        : 'IcCashierEwallet'
+                                                }
+                                            />
+                                            <Text as='p' size='xs'>
+                                                {payment_method}
+                                            </Text>
+                                        </div>;
                                     })}
                                 </div>
                                 <div className='buy-sell-form__field-wrapper'>
@@ -343,12 +335,7 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                                                         key={add_payment_method}
                                                                         medium
                                                                         onClickAdd={() => {
-                                                                            if (!should_disable_field) {
-                                                                                setSelectedPaymentMethodDisplayName(
-                                                                                    add_payment_method
-                                                                                );
-                                                                                setShouldShowAddPaymentMethodForm(true);
-                                                                            }
+                                                                            onAddPaymentMethod(add_payment_method);
                                                                         }}
                                                                         disabled={should_disable_field}
                                                                     />

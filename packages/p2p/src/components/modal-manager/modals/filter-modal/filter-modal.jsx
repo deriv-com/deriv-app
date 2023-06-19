@@ -65,7 +65,20 @@ const FilterModal = () => {
         buy_sell_store.selected_payment_method_text ?? []
     );
     const [has_made_changes, setHasMadeChanges] = useSavedState('has_made_changes', false);
-    const [has_clicked_reset, setHasClickedReset] = useSavedState('has_clicked_reset', false);
+
+    const diff = (arr1, arr2) => arr1.filter(x => !arr2.includes(x));
+    // if user has previously already selected some payment methods and clicked Apply
+    const has_already_selected_payment_methods =
+        buy_sell_store.selected_payment_method_value?.length &&
+        (selected_methods.length !== buy_sell_store.selected_payment_method_value.length ||
+            diff(selected_methods, buy_sell_store.selected_payment_method_value).length > 0);
+    // if user is selecting payment methods for the first time and has selected some payment methods
+    const has_recently_selected_payment_methods =
+        buy_sell_store.selected_payment_method_value?.length === 0 && selected_methods.length > 0;
+    // if user has previously selected all payment methods
+    const has_selected_all_payment_methods =
+        buy_sell_store.selected_payment_method_value.length === my_profile_store.payment_methods_list.length;
+    const has_selected_payment_methods = has_already_selected_payment_methods || has_recently_selected_payment_methods;
 
     const onChange = payment_method => {
         if (!selected_methods.includes(payment_method.value)) {
@@ -118,13 +131,19 @@ const FilterModal = () => {
 
     const onClickReset = () => {
         buy_sell_store.setShouldUseClientLimits(false);
-        setSelectedMethods(buy_sell_store.selected_payment_method_value);
-        setSelectedMethodsText(buy_sell_store.selected_payment_method_text);
-        setHasClickedReset(true);
-        setHasMadeChanges(false);
+
+        setSelectedMethods([]);
+        setSelectedMethodsText([]);
+
+        setHasMadeChanges(
+            buy_sell_store.selected_payment_method_value.length > 0 &&
+                diff(selected_methods, buy_sell_store.selected_payment_method_value).length === 0
+        );
     };
 
     const onClickConfirmPaymentMethods = () => {
+        my_profile_store.setSearchTerm('');
+        my_profile_store.setSearchResults([]);
         buy_sell_store.setShowFilterPaymentMethods(false);
         setHasMadeChanges(true);
     };
@@ -135,30 +154,11 @@ const FilterModal = () => {
     };
 
     const onClickApply = () => {
-        if (has_clicked_reset) {
-            buy_sell_store.setSelectedPaymentMethodValue([]);
-            buy_sell_store.setSelectedPaymentMethodText([]);
-        } else {
-            buy_sell_store.setSelectedPaymentMethodValue(selected_methods);
-            buy_sell_store.setSelectedPaymentMethodText(selected_methods_text);
-            buy_sell_store.onClickApply(selected_methods, selected_methods_text);
-        }
+        buy_sell_store.setSelectedPaymentMethodValue(selected_methods);
+        buy_sell_store.setSelectedPaymentMethodText(selected_methods_text);
+        buy_sell_store.onClickApply(selected_methods, selected_methods_text);
         hideModal();
     };
-
-    const diff = (arr1, arr2) => arr1.filter(x => !arr2.includes(x));
-    // if user has previously already selected some payment methods and clicked Apply
-    const has_already_selected_payment_methods =
-        buy_sell_store.selected_payment_method_value?.length &&
-        (selected_methods.length !== buy_sell_store.selected_payment_method_value.length ||
-            diff(selected_methods, buy_sell_store.selected_payment_method_value).length > 0);
-    // if user is selecting payment methods for the first time and has selected some payment methods
-    const has_recently_selected_payment_methods =
-        buy_sell_store.selected_payment_method_value?.length === 0 && selected_methods.length > 0;
-    // if user has previously selected all payment methods
-    const has_selected_all_payment_methods =
-        buy_sell_store.selected_payment_method_value.length === my_profile_store.payment_methods_list.length;
-    const has_selected_payment_methods = has_already_selected_payment_methods || has_recently_selected_payment_methods;
 
     React.useEffect(() => {
         my_profile_store.getPaymentMethodsList();
@@ -262,7 +262,7 @@ const FilterModal = () => {
                         {buy_sell_store.show_filter_payment_methods ? (
                             <Button.Group>
                                 <Button
-                                    disabled={!has_selected_payment_methods && !has_selected_all_payment_methods}
+                                    disabled={selected_methods.length === 0}
                                     large
                                     secondary
                                     onClick={onClickClearPaymentMethods}

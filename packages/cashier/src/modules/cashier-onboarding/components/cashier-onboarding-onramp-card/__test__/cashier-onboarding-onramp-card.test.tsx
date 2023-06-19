@@ -4,11 +4,25 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../../cashier-providers';
 import CashierOnboardingOnrampCard from '../cashier-onboarding-onramp-card';
 
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useFetch: jest.fn(() => ({
+        data: {
+            website_status: {
+                currencies_config: {
+                    USD: { type: 'fiat', name: 'US Dollar' },
+                    BTC: { type: 'crypto', name: 'Bitcoin' },
+                },
+            },
+        },
+    })),
+}));
+
 describe('CashierOnboardingOnrampCard', () => {
     test('should call the onClick callback when clicked', () => {
         const mock = mockStore({
             client: {
-                is_crypto: () => false,
+                currency: 'USD',
             },
             modules: {
                 cashier: {

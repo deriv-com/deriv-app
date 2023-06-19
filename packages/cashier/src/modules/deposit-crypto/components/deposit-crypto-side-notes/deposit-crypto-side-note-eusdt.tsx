@@ -16,7 +16,6 @@ const DepositCryptoSideNoteeUSDT: React.FC = () => {
             }
         >
             <Modal
-                className='usdt-note-modal'
                 title={<Localize i18n_default_text='About Tether' />}
                 has_close_icon
                 is_open={is_modal_open}
@@ -29,14 +28,16 @@ const DepositCryptoSideNoteeUSDT: React.FC = () => {
                             'Tether is a blockchain-enabled platform designed to facilitate the use of fiat currencies in a digital manner.'
                         )}
                     </Text>
-                    <div>
-                        <li className='title'>{localize('Tether on Ethereum (eUSDT)')}</li>
-                        <Text size='xs' className='description'>
-                            {localize(
-                                'Tether on the Ethereum blockchain, as an ERC20 token, is a newer transport layer, which now makes Tether available in Ethereum smart contracts. As a standard ERC20 token, it can also be sent to any Ethereum address.'
-                            )}
-                        </Text>
-                    </div>
+                    <br />
+                    <br />
+                    <Text as='li' size='xs' weight='bold'>
+                        {localize('Tether on Ethereum (eUSDT)')}
+                    </Text>
+                    <Text as='ul' size='xs' style={{ paddingLeft: '2rem' }}>
+                        {localize(
+                            'Tether on the Ethereum blockchain, as an ERC20 token, is a newer transport layer, which now makes Tether available in Ethereum smart contracts. As a standard ERC20 token, it can also be sent to any Ethereum address.'
+                        )}
+                    </Text>
                 </Modal.Body>
             </Modal>
         </SideNote>

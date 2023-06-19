@@ -28,8 +28,12 @@ const DepositCryptoSideNoteUSDT: React.FC = () => {
                             'Tether is a blockchain-enabled platform designed to facilitate the use of fiat currencies in a digital manner.'
                         )}
                     </Text>
-                    <li>{localize('Tether on Omni Layer (USDT)')}</li>
-                    <Text size='xs'>
+                    <br />
+                    <br />
+                    <Text as='li' size='xs' weight='bold'>
+                        {localize('Tether on Omni Layer (USDT)')}
+                    </Text>
+                    <Text as='ul' size='xs' style={{ paddingLeft: '2rem' }}>
                         {localize(
                             'Tether was originally created to use the bitcoin network as its transport protocol ‒ specifically, the Omni Layer ‒ to allow transactions of tokenised traditional currency.'
                         )}

@@ -15,11 +15,25 @@ jest.mock('@deriv/hooks', () => ({
     useIsP2PEnabled: () => ({ data: true }),
 }));
 
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useFetch: jest.fn(() => ({
+        data: {
+            website_status: {
+                currencies_config: {
+                    USD: { type: 'fiat', name: 'US Dollar' },
+                    BTC: { type: 'crypto', name: 'Bitcoin' },
+                },
+            },
+        },
+    })),
+}));
+
 describe('CashierOnboardingP2PCard', () => {
     test('should call the onClick callback when clicked', () => {
         const mock = mockStore({
             client: {
-                is_crypto: () => false,
+                currency: 'USD',
             },
             modules: {
                 cashier: {

@@ -22,25 +22,26 @@ const EmptyState: React.FC<TProps> = ({ icon, title, description, action }) => (
         {icon && <Icon icon={icon} size={128} />}
         <br />
         {title && (
-            <Text size='s' weight='bold' align='center'>
+            <Text size='s' weight='bold' align='center' data-testid='dt_empty_state_title'>
                 {title}
             </Text>
         )}
         {description && (
-            <Text size='xs' align='center'>
+            <Text size='xs' align='center' data-testid='dt_empty_state_description'>
                 {description}
             </Text>
         )}
         <br />
         {action && (
             <Button
+                large
                 has_effect
                 text={action.label}
                 onClick={action.onClick}
                 primary={action.primary || true}
                 tertiary={action.tertiary}
                 is_disabled={action.disabled}
-                large
+                data-testid='dt_empty_state_action'
             />
         )}
     </div>

@@ -77,6 +77,7 @@ describe('<CFDPOI />', () => {
             is_loading: false,
             is_switching: false,
             is_virtual: false,
+            is_eu_user: false,
             onCancel: jest.fn(),
             onSave: jest.fn(),
             onSubmit: jest.fn(),

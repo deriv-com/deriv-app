@@ -23,7 +23,7 @@
         "prepare": "husky install",
         "prettify": "npx prettier --write **/{src}/**/*.{js,jsx,ts,tsx,md,html,mustache,css,scss,}",
         "start:1": "webpack-dev-server --config webpack.config.web --open",
-        "build": "webpack --config webpack.config.cli",
+        "build": "webpack --config webpack.config.cli.js",
         "prebuild": "node customPlugins/fetch-blockly-translations.js"
     },
     "husky": {

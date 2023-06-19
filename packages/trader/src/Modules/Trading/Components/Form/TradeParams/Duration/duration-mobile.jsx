@@ -116,6 +116,7 @@ const Numbers = observer(
         } = useTraderStore();
         const { value: duration_unit } = duration_unit_option;
         const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry, duration_unit);
+        const [has_error, setHasError] = React.useState(false);
 
         const validateDuration = value => {
             const localized_message = (
@@ -130,17 +131,21 @@ const Numbers = observer(
             if (parseInt(value) < min || parseInt(selected_duration) > max) {
                 addToast({ key: 'duration_error', content: localized_message, type: 'error', timeout: 2000 });
                 setDurationError(true);
+                setHasError(true);
                 return 'error';
             } else if (parseInt(value) > max) {
                 addToast({ key: 'duration_error', content: localized_message, type: 'error', timeout: 2000 });
+                setHasError(true);
                 return 'error';
             } else if (value.toString().length < 1) {
                 addToast({ key: 'duration_error', content: localized_message, type: 'error', timeout: 2000 });
                 setDurationError(true);
+                setHasError(true);
                 return false;
             }
 
             setDurationError(false);
+            setHasError(false);
             return true;
         };
 
@@ -162,13 +167,13 @@ const Numbers = observer(
         };
 
         const setExpiryDate = (epoch, duration) => {
-            let expiry_date = new Date(epoch * 1000);
+            let expiry_date = new Date((epoch - (trade_duration * 24 * 60 * 60)) * 1000);
 
             if (duration) {
-              expiry_date = new Date(expiry_date.getTime() + (duration - 1) * 24 * 60 * 60 * 1000);
+              expiry_date = new Date(expiry_date.getTime() + (duration) * 24 * 60 * 60 * 1000);
             }
 
-            return expiry_date.toUTCString().replace('GMT', 'GMT +0').substring(5);
+            return expiry_date.toUTCString().replace('GMT', 'GMT +0').substring(5).replace(/(\d{2}) (\w{3} \d{4})/, '$1 $2,');
         }
         
         const onNumberChange = num => {
@@ -182,7 +187,7 @@ const Numbers = observer(
                     <Text as='div' size='xxxs' line_height='s' className='expiry-text-container--mobile'>
                         <Localize 
                             i18n_default_text='Expiry: {{date}}'
-                            values={{ date: setExpiryDate(expiry_epoch, duration_values?.d_duration) }}
+                            values={{ date: !has_error ? setExpiryDate(expiry_epoch, duration_values?.d_duration) : '' }}
                         />
                     </Text>
                 )}

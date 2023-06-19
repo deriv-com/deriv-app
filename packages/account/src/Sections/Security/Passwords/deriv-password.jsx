@@ -31,6 +31,7 @@ const DerivPassword = ({
     const platform_name_go = getPlatformSettings('go').name;
     const platform_name_smarttrader = getPlatformSettings('smarttrader').name;
     const platform_name_trader = getPlatformSettings('trader').name;
+    const platform_name_derivez = getPlatformSettings('derivez').name;
 
     const PlatformDescription = () => {
         let text =
@@ -116,7 +117,7 @@ const DerivPassword = ({
                                         description='derivgo'
                                     />
                                 </Popover>
-                                <Popover alignment='bottom' message={platform_name_trader}>
+                                <Popover alignment='bottom' message={platform_name_derivez}>
                                     <Icon
                                         icon={`${getPlatformSettings('derivez').icon}`}
                                         size={32}

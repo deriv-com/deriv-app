@@ -1,5 +1,5 @@
 import * as ContractUtils from '../contract';
-import { TContractInfo, TContractInfoWithNumericBarriers, TDigitsInfo, TTickItem } from '../contract-types';
+import { TContractInfo, TDigitsInfo, TTickItem } from '../contract-types';
 
 describe('getFinalPrice', () => {
     it("should return sell_price as final price when it's available", () => {

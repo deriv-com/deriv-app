@@ -1,6 +1,6 @@
 import moment from 'moment';
 import { unique } from '../object';
-import { TContractInfo, TContractInfoWithNumericBarriers, TLimitOrder, TDigitsInfo, TTickItem } from './contract-types';
+import { TContractInfo, TLimitOrder, TDigitsInfo, TTickItem } from './contract-types';
 
 export const DELAY_TIME_1S_SYMBOL = 500;
 // generation_interval will be provided via API later to help us distinguish between 1-second and 2-second symbols
@@ -61,7 +61,7 @@ export const hasContractEntered = (contract_info: TContractInfo) => !!contract_i
 
 export const isAccumulatorContract = (contract_type = '') => /ACCU/i.test(contract_type);
 
-export const isAccumulatorContractOpen = (contract_info: TContractInfo | TContractInfoWithNumericBarriers = {}) => {
+export const isAccumulatorContractOpen = (contract_info: TContractInfo = {}) => {
     return (
         isAccumulatorContract(contract_info.contract_type) &&
         getContractStatus(contract_info as TContractInfo) === 'open'

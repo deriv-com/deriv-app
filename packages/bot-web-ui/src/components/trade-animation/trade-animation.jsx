@@ -132,6 +132,7 @@ const TradeAnimation = ({
                 id={is_stop_button_visible ? 'db-animation__stop-button' : 'db-animation__run-button'}
                 text={is_stop_button_visible ? localize('Stop') : localize('Run')}
                 icon={<Icon icon={is_stop_button_visible ? 'IcPause' : 'IcPlay'} color='active' />}
+                data-testid='btn-run-bot'
                 onClick={() => {
                     updateIsButtonDisabled(true);
                     if (is_stop_button_visible) {

@@ -223,6 +223,9 @@ const mock = (): TStores & { is_mock: boolean } => {
             server_time: undefined,
             is_language_changing: false,
         },
+        dashboard: {
+            active_tab: 0,
+        },
         ui: {
             app_contents_scroll_ref: {
                 current: null,

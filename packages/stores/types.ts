@@ -12,6 +12,12 @@ import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
 import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
 
+export type TDbotStores = {
+    dashboard: {
+        active_tab: number;
+    };
+};
+
 type TPopulateSettingsExtensionsMenuItem = {
     icon: string;
     label: string;
@@ -396,4 +402,5 @@ export type TCoreStores = {
 export type TStores = TCoreStores & {
     exchange_rates: ExchangeRatesStore;
     feature_flags: FeatureFlagsStore;
+    dbot_store: TDbotStores;
 };

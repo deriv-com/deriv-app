@@ -29,7 +29,7 @@ const BuySellHeaderDropdown = () => {
                     data-testid='dt_buy_sell_header_dropdown'
                     onClick={() => showModal({ key: 'SortModal' })}
                 >
-                    <Icon icon='IcCashierSort' size={16} />
+                    <Icon icon='IcCashierSort' />
                 </div>
             </MobileWrapper>
         </React.Fragment>

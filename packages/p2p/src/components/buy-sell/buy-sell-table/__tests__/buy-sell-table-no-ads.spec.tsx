@@ -35,7 +35,7 @@ jest.mock('Stores', () => ({
 }));
 
 describe('BuySellTableNoAds', () => {
-    it('shoulde render the component if there is no ad for the local currency selected', async () => {
+    it('should render the component if there is no ad for the local currency selected', async () => {
         render(<BuySellTableNoAds />);
 
         expect(

@@ -1,5 +1,5 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import { Formik, Field, FieldProps, Form } from 'formik';
 import { reaction } from 'mobx';
 import { HintBox, Icon, Input, Text } from '@deriv/components';
@@ -7,13 +7,13 @@ import { getDecimalPlaces, isDesktop, isMobile, useIsMounted } from '@deriv/shar
 import { observer, Observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import BuySellFormReceiveAmount from 'Components/buy-sell/buy-sell-form/buy-sell-form-receive-amount';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import PaymentMethodCard from 'Components/my-profile/payment-methods/payment-method-card/payment-method-card.jsx';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import { generateEffectiveRate, setDecimalPlaces, roundOffDecimal, removeTrailingZeros } from 'Utils/format-value';
 import { countDecimalPlaces } from 'Utils/string';
 import { floatingPointValidator } from 'Utils/validations';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 type TBuySellFormProps = {
     setIsSubmitDisabled: (v: boolean) => void;
@@ -203,7 +203,7 @@ const BuySellForm = (props: TBuySellFormProps) => {
                             <div className='buy-sell-form__content'>
                                 <div className='buy-sell-form__field-wrapper'>
                                     <div className='buy-sell-form__field'>
-                                        <Text as='p' color='less-prominent' line_height='m' size='xxs'>
+                                        <Text as='p' color='less-prominent' size='xxs'>
                                             {is_buy_advert ? (
                                                 <Localize i18n_default_text='Seller' />
                                             ) : (
@@ -215,7 +215,7 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                         </Text>
                                     </div>
                                     <div className='buy-sell-form__field'>
-                                        <Text as='p' color='less-prominent' line_height='m' size='xxs'>
+                                        <Text as='p' color='less-prominent' size='xxs'>
                                             <Localize
                                                 i18n_default_text='Rate (1 {{ currency }})'
                                                 values={{ currency: account_currency }}
@@ -232,7 +232,6 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                             as='p'
                                             className='buy-sell-form__payment-method--title'
                                             color='less-prominent'
-                                            line_height='m'
                                             size='xxs'
                                         >
                                             <Localize i18n_default_text='Payment methods' />
@@ -250,7 +249,6 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                                     <Icon
                                                         className='buy-sell-form__payment-method--icon'
                                                         icon={`IcCashier${method}`}
-                                                        size={16}
                                                     />
                                                     <Text as='p' size='xs'>
                                                         {payment_method}
@@ -264,7 +262,6 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                                 <Icon
                                                     className='buy-sell-form__payment-method--icon'
                                                     icon='IcCashierEwallet'
-                                                    size={16}
                                                 />
                                                 <Text as='p' size='xs'>
                                                     {payment_method}
@@ -275,7 +272,7 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                 </div>
                                 <div className='buy-sell-form__field-wrapper'>
                                     <div className='buy-sell-form__field'>
-                                        <Text as='p' color='less-prominent' line_height='m' size='xxs'>
+                                        <Text as='p' color='less-prominent' size='xxs'>
                                             {is_buy_advert ? (
                                                 <Localize i18n_default_text="Seller's instructions" />
                                             ) : (
@@ -301,12 +298,11 @@ const BuySellForm = (props: TBuySellFormProps) => {
                                                 as='p'
                                                 className='buy-sell-form__payment-method--title'
                                                 color='less-prominent'
-                                                line_height='m'
                                                 size='xxs'
                                             >
                                                 <Localize i18n_default_text='Receive payment to' />
                                             </Text>
-                                            <Text as='p' color='prominent' line_height='m' size='xxs'>
+                                            <Text as='p' color='prominent' size='xxs'>
                                                 {advertiser_has_payment_methods ? (
                                                     <Localize i18n_default_text='You may choose up to 3.' />
                                                 ) : (

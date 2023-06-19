@@ -11,7 +11,7 @@ const BuySellFormReceiveAmount = () => {
 
     return (
         <div className='buy-sell-form__receive-amount'>
-            <Text as='p' color='less-prominent' line_height='m' size='xxs'>
+            <Text as='p' color='less-prominent' size='xxs'>
                 {is_sell_advert ? (
                     <Localize i18n_default_text="You'll receive" />
                 ) : (

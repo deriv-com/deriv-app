@@ -134,7 +134,7 @@ const BuySellTableRow = ({ row: advert }: TBuySellTableRowProps) => {
                                 )}
                             </div>
                         </div>
-                        <Icon className='buy-sell-table-row__advertiser-arrow' icon='IcChevronRightBold' size={16} />
+                        <Icon className='buy-sell-table-row__advertiser-arrow' icon='IcChevronRightBold' />
                     </div>
                     <div className='buy-sell-table-row__information'>
                         <div className='buy-sell-table-row__rate'>
@@ -144,7 +144,7 @@ const BuySellTableRow = ({ row: advert }: TBuySellTableRowProps) => {
                             <Text as='div' color='profit-success' weight='bold'>
                                 {display_effective_rate} {local_currency}
                             </Text>
-                            <Text as='div' color='less-prominent' line_height='m' size='xxs'>
+                            <Text as='div' color='less-prominent' size='xxs'>
                                 <Localize
                                     i18n_default_text='Limits {{ min_order }}–{{ max_order }} {{ currency }}'
                                     values={{

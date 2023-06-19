@@ -44,6 +44,7 @@ describe('BuySellTableRow', () => {
         const advert = {
             account_currency: 'USD',
             advertiser_details: {
+                completed_orders_count: 2,
                 id: '14',
                 is_online: false,
                 name: 'Advertiser001',
@@ -51,9 +52,15 @@ describe('BuySellTableRow', () => {
                 rating_count: null,
             },
             counterparty_type: 'buy',
+            effective_rate: 13500,
+            id: '1',
+            local_currency: 'IDR',
             min_order_amount_limit_display: '1',
             max_order_amount_limit_display: '50',
             payment_method_names: ['Alipay'],
+            price_display: '13500.00',
+            rate_type: 'fixed',
+            rate: 13500,
         };
         render(
             <StoreProvider store={mock}>

@@ -92,4 +92,19 @@ describe('BuySellHeader', () => {
 
         jest.clearAllTimers();
     });
+    it('should load the proper adverts upon searching', async () => {
+        render(
+            <ModalManagerContextProvider>
+                <BuySellHeader table_type='buy' />
+            </ModalManagerContextProvider>
+        );
+
+        const search_field = screen.getByPlaceholderText('Search by nickname');
+        userEvent.type(search_field, 'client CR90000002');
+
+        await waitFor(() => {
+            expect(mock_store.buy_sell_store.setIsLoading).toBeCalledWith(true);
+            expect(mock_store.buy_sell_store.loadMoreItems).toBeCalled();
+        });
+    });
 });

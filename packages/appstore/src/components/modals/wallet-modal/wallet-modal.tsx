@@ -1,7 +1,6 @@
 import React from 'react';
 import { Modal } from '@deriv/components';
 import { useCurrencyConfig, useWalletList } from '@deriv/hooks';
-import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import WalletModalHeader from './wallet-modal-header';
 import WalletModalBody from './wallet-modal-body';
@@ -28,6 +27,7 @@ const WalletModal = observer(() => {
     const { getConfig } = useCurrencyConfig();
     const currency_config = getConfig(currency);
     const is_crypto = currency_config?.is_crypto;
+    const currency_display_code = currency_config?.display_code;
 
     // TODO: Replace this object with current wallet
     const wallet = {
@@ -36,7 +36,7 @@ const WalletModal = observer(() => {
         is_crypto,
         is_demo,
         landing_company_shortcode,
-        name: `${is_demo ? localize('Demo') : ''} ${getCurrencyDisplayCode(currency)} ${localize('Wallet')}`,
+        name: `${is_demo ? localize('Demo') : ''} ${currency_display_code} ${localize('Wallet')}`,
         wallet_type: (is_demo ? 'demo' : 'real') as TWalletType,
     };
 
@@ -67,6 +67,7 @@ const WalletModal = observer(() => {
             <WalletModalHeader
                 wallet={wallet}
                 closeModal={closeModal}
+                currency_display_code={currency_display_code}
                 is_dark={is_dark_mode_on}
                 is_mobile={is_mobile}
                 is_wallet_name_visible={is_wallet_name_visible}

@@ -3,13 +3,14 @@ import React from 'react';
 // import { DemoLight, DemoDark } from '../../../public/images/index';
 import classNames from 'classnames';
 import { Badge, Icon, Text, Watermark } from '@deriv/components';
-import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
+import { formatMoney } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getWalletCurrencyIcon } from 'Constants/utils';
 import type { TWallet } from './wallet-modal';
 
 type TWalletModalHeaderProps = {
     closeModal: VoidFunction;
+    currency_display_code?: string;
     is_dark: boolean;
     is_mobile: boolean;
     is_wallet_name_visible: boolean;
@@ -33,6 +34,7 @@ const HeaderBackground = ({ is_demo, is_dark, children }: React.PropsWithChildre
 
 const WalletModalHeader = ({
     closeModal,
+    currency_display_code,
     is_dark,
     is_mobile,
     is_wallet_name_visible,
@@ -130,7 +132,7 @@ const WalletModalHeader = ({
                         weight='bold'
                         className={getStylesByClassName(`${header_class_name}__title-balance`)}
                     >
-                        {formatMoney(currency, balance, true)} {getCurrencyDisplayCode(currency)}
+                        {formatMoney(currency, balance, true)} {currency_display_code}
                     </Text>
                 </div>
                 {/* TODO: replace Icon with WalletIcon component  */}

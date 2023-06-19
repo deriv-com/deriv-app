@@ -19,7 +19,7 @@ describe('formatPortfolioPosition', () => {
             display_name: 'Volatility 25 Index',
             id: 1234,
             indicative: 0,
-            is_unsupported: true,
+            is_unsupported: false,
             payout: 3500.1,
             contract_update: undefined,
             purchase: 2500.5,

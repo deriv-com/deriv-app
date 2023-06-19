@@ -47,6 +47,7 @@ const AccountWithWallets = observer(() => {
     const desktop_wallets_component = React.useMemo(
         () =>
             wallet_accounts.map(wallet => {
+                // TODO: We have to create hook for 'switchAccount' with useFetch() to use cache in the future
                 const setIsOpenWallet = () => switchAccount(loginid === wallet.loginid ? undefined : wallet.loginid);
 
                 return (

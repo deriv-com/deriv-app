@@ -244,7 +244,7 @@ type TClientStore = {
     setPrevAccountType: (account_type: string) => void;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
-    setAccountSettings: (settings: string) => void;
+    setAccountSettings: (get_settings_response: GetSettings) => void;
     updateMT5Status: () => void;
 };
 

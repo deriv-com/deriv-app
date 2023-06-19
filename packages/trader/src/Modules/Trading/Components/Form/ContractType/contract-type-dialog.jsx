@@ -35,7 +35,7 @@ const ContractTypeDialog = ({
                     wrapper_classname='contracts-modal-list'
                     visible={is_open}
                     onClose={onClose}
-                    has_content_scroll
+                    has_content_scroll={!is_info_dialog_open}
                 >
                     {children}
                 </MobileDialog>

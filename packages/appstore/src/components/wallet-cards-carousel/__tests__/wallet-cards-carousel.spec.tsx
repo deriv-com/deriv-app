@@ -38,7 +38,7 @@ describe('<WalletCardsCarousel />', () => {
     it('Should render slider', () => {
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletCardsCarousel active_wallet_index={0} setSelectedWallet={jest.fn} items={items} />
+                <WalletCardsCarousel items={items} />
             </StoreProvider>
         );
         const slider = screen.queryByText('slider');
@@ -49,7 +49,7 @@ describe('<WalletCardsCarousel />', () => {
     it('Should render buttons for REAL', () => {
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletCardsCarousel active_wallet_index={0} setSelectedWallet={jest.fn} items={items} />
+                <WalletCardsCarousel items={items} />
             </StoreProvider>
         );
 
@@ -65,9 +65,10 @@ describe('<WalletCardsCarousel />', () => {
     });
 
     it('Should render buttons for DEMO', () => {
+        mockedRootStore.client.loginid = 'CRW10002';
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletCardsCarousel active_wallet_index={1} setSelectedWallet={jest.fn} items={items} />
+                <WalletCardsCarousel items={items} />
             </StoreProvider>
         );
 

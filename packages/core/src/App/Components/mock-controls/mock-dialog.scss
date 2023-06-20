@@ -4,7 +4,7 @@
     right: 1rem;
     width: 34rem;
     border-radius: $BORDER_RADIUS;
-    padding: 1rem 1.6rem;
+    padding: 1.2rem 1.6rem;
     background-color: var(--general-main-1);
     box-shadow: 0 20px 13px rgba(0, 0, 0, 0.01), 0 4px 3px rgba(0, 0, 0, 0.02);
     border: 1px solid var(--general-hover);
@@ -20,6 +20,15 @@
         flex-direction: column;
         gap: 2rem;
 
+        &--dropdown-container {
+            display: inline-flex;
+            gap: 1rem;
+
+            button {
+                height: unset;
+            }
+        }
+
         &--input {
             margin-bottom: unset;
         }
@@ -27,6 +36,7 @@
         &--submit-container {
             display: flex;
             justify-content: end;
+            gap: 1rem;
         }
     }
 }

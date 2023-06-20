@@ -1,4 +1,4 @@
-const DerivAPIBasic = require('@deriv/deriv-api/dist/DerivAPIBasic');
+const DerivAPIBasic = require('deriv-api-experiments/dist/DerivAPIBasic');
 const getAppId = require('@deriv/shared').getAppId;
 const getSocketURL = require('@deriv/shared').getSocketURL;
 const cloneObject = require('@deriv/shared').cloneObject;
@@ -71,27 +71,10 @@ const BinarySocketBase = (() => {
             is_disconnect_called = false;
             binary_socket = new WebSocket(getSocketUrl(language, session_id));
 
-            if (session_id) {
-                const originalSend = DerivAPIBasic.prototype.send;
-                const originalSubscribe = DerivAPIBasic.prototype.subscribe;
-
-                DerivAPIBasic.prototype.send = async function (...args) {
-                    const modifiedArgs = [...args];
-                    modifiedArgs[0] = { ...modifiedArgs[0], session_id };
-                    return originalSend.apply(this, modifiedArgs);
-                };
-
-                DerivAPIBasic.prototype.subscribe = async function (...args) {
-                    const modifiedArgs = [...args];
-                    modifiedArgs[0] = { ...modifiedArgs[0], session_id };
-                    return originalSubscribe.apply(this, modifiedArgs);
-                };
-            }
-
             deriv_api = new DerivAPIBasic({
                 connection: binary_socket,
                 storage: SocketCache,
-                middleware: new APIMiddleware(config),
+                middleware: new APIMiddleware(config, session_id),
             });
         }
 

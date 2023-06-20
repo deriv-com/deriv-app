@@ -133,10 +133,10 @@ const MenuLink = observer(
                 >
                     <Icon className='header__menu-mobile-link-icon' icon={icon} />
                     <Text
-                        className={text === localize('Trade') ? '' : 'header__menu-mobile-link-text'}
+                        className={is_trade_text ? '' : 'header__menu-mobile-link-text'}
                         as='h3'
                         size='xs'
-                        weight={window.location.pathname === '/' && text === localize('Trade') ? 'bold' : undefined}
+                        weight={window.location.pathname === '/' && is_trade_text ? 'bold' : undefined}
                     >
                         {text}
                     </Text>

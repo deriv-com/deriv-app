@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
@@ -37,7 +37,6 @@ const MenuLink = observer(
         const { common, ui, client } = useStore();
         const { setMobileLanguageMenuOpen } = common;
         const deriv_static_url = getStaticUrl(link_to);
-        const history = useHistory();
         const { has_any_real_account, is_virtual } = client;
         const { toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
         const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();

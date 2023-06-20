@@ -14,7 +14,6 @@
         ]
     },
     "scripts": {
-        "start": "gulp watch",
         "test": "eslint src/",
         "release": "d() { test -z $1 && echo 'Please specify branch.' && exit 1; (git show-branch $1) || exit 1;  git stash; git checkout $1; npm i; rm -rf branch/$1; mkdir -p branch/$1 ; gulp build-min --test --branch $1; cp -r www/ branch/$1; cp www/index.html www/404.html; gulp release-branch --branch $1;}; d",
         "release-production": "d() { git stash; git checkout master; npm i;gulp build-min;gulp release-master;}; d",
@@ -22,9 +21,9 @@
         "build-min": "webpack --config webpack.config.cli.js",
         "prepare": "husky install",
         "prettify": "npx prettier --write **/{src}/**/*.{js,jsx,ts,tsx,md,html,mustache,css,scss,}",
-        "start:1": "webpack-dev-server --config webpack.config.web --open",
-        "build": "webpack --config webpack.config.cli.js",
-        "prebuild": "node customPlugins/fetch-blockly-translations.js"
+        "prebuild": "node customPlugins/fetch-blockly-translations.js",
+        "start": "npm run prebuild && webpack-dev-server --config webpack.config.web --open",
+        "build": "webpack --config webpack.config.cli.js"
     },
     "husky": {
         "hooks": {

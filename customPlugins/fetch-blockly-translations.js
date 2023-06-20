@@ -5,6 +5,9 @@ const axios = require('axios');
 const blocklyLanguages = ['en', 'it', 'vi', 'pl', 'ru', 'pt', 'es', 'fr', 'zh-hans', 'zh-hant'];
 
 function pullBlocklyTranslations() {
+    if (!fs.existsSync(path.resolve('translations'))) {
+        fs.mkdirSync(path.resolve('translations'));
+    }
     return Promise.all(
         blocklyLanguages.map(lang => {
             const url = `https://blockly-demo.appspot.com/static/build/msg/${lang}.js?_=${Date.now()}`;

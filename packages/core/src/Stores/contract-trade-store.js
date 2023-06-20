@@ -156,12 +156,21 @@ export default class ContractTradeStore extends BaseStore {
         ) {
             return;
         }
-        this.setNewAccumulatorBarriersData(barriers_data, should_update_contract_barriers);
-        this.accu_barriers_timeout_id = setTimeout(() => {
-            runInAction(() => {
-                this.setNewAccumulatorBarriersData(delayed_barriers_data, should_update_contract_barriers);
-            });
-        }, getAccuBarriersDelayTimeMs(underlying));
+        if (isEmptyObject(this.accumulator_barriers_data)) {
+            // update barriers in DTrader page immediately on first render
+            this.setNewAccumulatorBarriersData(
+                { ...barriers_data, ...delayed_barriers_data },
+                should_update_contract_barriers
+            );
+        } else {
+            // update barriers in DTrader page with delay after first render
+            this.setNewAccumulatorBarriersData(barriers_data, should_update_contract_barriers);
+            this.accu_barriers_timeout_id = setTimeout(() => {
+                runInAction(() => {
+                    this.setNewAccumulatorBarriersData(delayed_barriers_data, should_update_contract_barriers);
+                });
+            }, getAccuBarriersDelayTimeMs(underlying));
+        }
         this.cached_barriers_data = delayed_barriers_data;
     }
 

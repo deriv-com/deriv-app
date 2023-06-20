@@ -9,7 +9,7 @@ import {
     getSortedAvailableAccounts,
     getDxtradeAccountAvailabaility,
     prepareDxtradeData,
-    getDemoData,
+    getMT5DemoData,
 } from '../../Helpers/compare-accounts-config';
 
 const CompareCFDs = observer(() => {
@@ -31,7 +31,7 @@ const CompareCFDs = observer(() => {
         ? [...sorted_available_accounts, dxtrade_account]
         : [...sorted_available_accounts];
 
-    const demo_available_accounts = getDemoData(all_real_sorted_available_accounts);
+    const demo_available_accounts = getMT5DemoData(all_real_sorted_available_accounts);
     const all_available_accounts =
         is_demo && demo_available_accounts.length > 0 ? demo_available_accounts : all_real_sorted_available_accounts;
 

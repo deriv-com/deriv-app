@@ -21,7 +21,12 @@ describe('<WalletHeader />', () => {
             const account_type = 'demo';
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader account_type={account_type} is_open_wallet={false} setIsOpen={setIsOpen} />
+                    <WalletHeader
+                        account_type={account_type}
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
+                        gradient_for='demo'
+                    />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_demo`);
@@ -39,6 +44,7 @@ describe('<WalletHeader />', () => {
                         account_type={account_type}
                         currency={currency}
                         shortcode='svg'
+                        gradient_for='aud'
                         is_open_wallet={false}
                         setIsOpen={setIsOpen}
                     />
@@ -59,6 +65,7 @@ describe('<WalletHeader />', () => {
                         account_type={account_type}
                         currency={currency}
                         shortcode='svg'
+                        gradient_for='eth'
                         is_open_wallet={false}
                         setIsOpen={setIsOpen}
                     />
@@ -79,6 +86,7 @@ describe('<WalletHeader />', () => {
                         account_type={account_type}
                         currency={currency}
                         shortcode='malta'
+                        gradient_for='eur'
                         is_open_wallet={false}
                         setIsOpen={setIsOpen}
                     />
@@ -102,6 +110,7 @@ describe('<WalletHeader />', () => {
                         balance={balance}
                         currency={currency}
                         shortcode='svg'
+                        gradient_for='eur'
                         is_open_wallet={false}
                         setIsOpen={setIsOpen}
                     />
@@ -121,6 +130,7 @@ describe('<WalletHeader />', () => {
                         account_type={account_type}
                         currency={currency}
                         shortcode='svg'
+                        gradient_for='eur'
                         is_open_wallet={false}
                         setIsOpen={setIsOpen}
                     />
@@ -144,6 +154,7 @@ describe('<WalletHeader />', () => {
                         account_type={account_type}
                         currency={currency}
                         shortcode='svg'
+                        gradient_for='eur'
                         is_open_wallet={false}
                         setIsOpen={setIsOpen}
                     />
@@ -169,6 +180,7 @@ describe('<WalletHeader />', () => {
                         account_type={account_type}
                         currency={currency}
                         shortcode='svg'
+                        gradient_for='eur'
                         is_open_wallet={false}
                         setIsOpen={setIsOpen}
                     />
@@ -195,6 +207,7 @@ describe('<WalletHeader />', () => {
                         account_type={account_type}
                         currency={currency}
                         shortcode='svg'
+                        gradient_for='eur'
                         is_open_wallet={false}
                         setIsOpen={setIsOpen}
                     />
@@ -213,7 +226,7 @@ describe('<WalletHeader />', () => {
         it('Buttons collapsed', () => {
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader account_type='demo' is_open_wallet={false} setIsOpen={setIsOpen} />
+                    <WalletHeader account_type='demo' is_open_wallet={false} setIsOpen={setIsOpen} gradient_for='eur' />
                 </StoreProvider>
             );
 
@@ -225,7 +238,7 @@ describe('<WalletHeader />', () => {
         it('Buttons uncollapsed', () => {
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader account_type='demo' is_open_wallet={true} setIsOpen={setIsOpen} />
+                    <WalletHeader account_type='demo' is_open_wallet={true} setIsOpen={setIsOpen} gradient_for='eur' />
                 </StoreProvider>
             );
 
@@ -240,7 +253,12 @@ describe('<WalletHeader />', () => {
 
                 return (
                     <StoreProvider store={mockedRootStore}>
-                        <WalletHeader account_type='demo' is_open_wallet={is_open} setIsOpen={wrapperSetIsOpen} />
+                        <WalletHeader
+                            account_type='demo'
+                            is_open_wallet={is_open}
+                            setIsOpen={wrapperSetIsOpen}
+                            gradient_for='eur'
+                        />
                     </StoreProvider>
                 );
             };
@@ -257,7 +275,7 @@ describe('<WalletHeader />', () => {
         it('Check buttons for demo', () => {
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader account_type='demo' is_open_wallet={true} setIsOpen={setIsOpen} />
+                    <WalletHeader account_type='demo' is_open_wallet={true} setIsOpen={setIsOpen} gradient_for='eur' />
                 </StoreProvider>
             );
 
@@ -276,6 +294,7 @@ describe('<WalletHeader />', () => {
                     <WalletHeader
                         account_type='real'
                         shortcode='svg'
+                        gradient_for='usd'
                         currency='USD'
                         is_open_wallet={true}
                         setIsOpen={setIsOpen}

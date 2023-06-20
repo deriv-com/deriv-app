@@ -32,6 +32,7 @@ describe('<Wallets />', () => {
             landing_company_shortcode: 'svg',
             is_virtual: 1,
             loginid: 'CRW12345',
+            gradient_for: 'demo',
         };
     });
 

@@ -158,7 +158,7 @@ const DetailComponent = ({
                             <OnfidoUpload
                                 country_code={country_code_key}
                                 documents_supported={[document.onfido_name]}
-                                height={height}
+                                height={height ?? null}
                                 handleComplete={is_mt5 ? handlePOIforMT5Complete : handleComplete}
                                 {...props}
                             />

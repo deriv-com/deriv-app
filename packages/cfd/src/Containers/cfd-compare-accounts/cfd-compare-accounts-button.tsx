@@ -60,12 +60,13 @@ const CFDCompareAccountsButton = observer(({ trading_platforms }: TCompareAccoun
     };
 
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
-    const is_account_added =
-        trading_platforms.platform === CFD_PLATFORMS.MT5
-            ? isMt5AccountAdded(current_list, jurisdiction_shortcode, is_demo)
-            : trading_platforms.platform === CFD_PLATFORMS.DXTRADE
-            ? isDxtradeAccountAdded(current_list, is_demo)
-            : false;
+    let is_account_added = false;
+
+    if (trading_platforms.platform === CFD_PLATFORMS.MT5) {
+        is_account_added = isMt5AccountAdded(current_list, jurisdiction_shortcode, is_demo);
+    } else if (trading_platforms.platform === CFD_PLATFORMS.DXTRADE) {
+        is_account_added = isDxtradeAccountAdded(current_list, is_demo);
+    }
 
     React.useEffect(() => {
         if (is_logged_in && !is_virtual) {

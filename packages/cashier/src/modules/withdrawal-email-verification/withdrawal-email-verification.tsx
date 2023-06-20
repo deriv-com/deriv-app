@@ -11,7 +11,7 @@ import Error from '../../components/error';
 import { useCashierStore } from '../../stores/useCashierStores';
 import ErrorStore from '../../stores/error-store';
 
-const WithdrawalVerificationEmail = observer(() => {
+const WithdrawalEmailVerification = observer(() => {
     const verify = useVerifyEmail('payment_withdraw');
     const { client } = useStore();
     const { transaction_history } = useCashierStore();
@@ -47,4 +47,4 @@ const WithdrawalVerificationEmail = observer(() => {
     );
 });
 
-export default WithdrawalVerificationEmail;
+export default WithdrawalEmailVerification;

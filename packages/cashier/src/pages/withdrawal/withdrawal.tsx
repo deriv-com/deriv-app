@@ -6,9 +6,7 @@ import { useStore, observer } from '@deriv/stores';
 import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
 import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
-import Withdraw from './withdraw';
 import WithdrawalLocked from './withdrawal-locked';
-import WithdrawalVerificationEmail from './withdrawal-verification-email';
 import CashierLocked from '../../components/cashier-locked';
 import Error from '../../components/error';
 import NoBalance from '../../components/no-balance';
@@ -18,7 +16,8 @@ import USDTSideNote from '../../components/usdt-side-note';
 import { Virtual } from '../../components/cashier-container';
 import { useCashierStore } from '../../stores/useCashierStores';
 import { useCashierLocked, useIsSystemMaintenance } from '@deriv/hooks';
-import { WithdrawalEmailVerification } from '../../modules/withdrawal-email-verification';
+import { WithdrawalEmailVerificationModule } from '../../modules/withdrawal-email-verification';
+import { WithdrawalFiatModule } from '../../modules/withdrawal-fiat';
 
 type TWithdrawalSideNoteProps = {
     currency: string;
@@ -159,7 +158,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
     }
 
     if (!is_crypto && (verification_code || iframe_url)) {
-        return <Withdraw />;
+        return <WithdrawalFiatModule />;
     }
 
     if (verification_code && is_crypto && !is_withdraw_confirmed && !is_crypto_transactions_visible) {
@@ -181,8 +180,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
 
     return (
         <>
-            {/* <WithdrawalVerificationEmail /> */}
-            <WithdrawalEmailVerification withdraw_type='payment_withdraw' />
+            <WithdrawalEmailVerificationModule />
             {is_crypto && <WithdrawalSideNote currency={currency} is_mobile />}
         </>
     );

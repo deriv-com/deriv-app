@@ -246,6 +246,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             openRealAccountSignup: jest.fn(),
             setIsClosingCreateRealAccountModal: jest.fn(),
             setRealAccountSignupEnd: jest.fn(),
+            setPurchaseState: jest.fn(),
             shouldNavigateAfterChooseCrypto: jest.fn(),
             toggleLanguageSettingsModal: jest.fn(),
             toggleSetCurrencyModal: jest.fn(),
@@ -265,6 +266,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleNeedRealAccountForCashierModal: jest.fn(),
             populateHeaderExtensions: jest.fn(),
             populateSettingsExtensions: jest.fn(),
+            purchase_states: [],
             setShouldShowCooldownModal: jest.fn(),
         },
         traders_hub: {
@@ -311,6 +313,7 @@ const mock = (): TStores & { is_mock: boolean } => {
         },
         portfolio: {
             active_positions: [],
+            all_positions: [],
             error: {
                 header: '',
                 message: '',

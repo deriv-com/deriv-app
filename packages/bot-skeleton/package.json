@@ -4,6 +4,16 @@
     "description": "Visual automation for Deriv.com",
     "main": "src/app.ts",
     "private": true,
+    "jest": {
+        "setupFilesAfterEnv": [
+            "<rootDir>/.jest"
+        ],
+        "testPathIgnorePatterns": [
+            "/node_modules/",
+            "tools.js",
+            "Misc.js"
+        ]
+    },
     "scripts": {
         "start": "npm run test && npm run serve",
         "build": "shx rm -rf ./dist/ && shx mkdir -p ./dist/media && npm run build:copy",

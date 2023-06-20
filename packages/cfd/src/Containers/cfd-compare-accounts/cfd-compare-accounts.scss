@@ -69,6 +69,16 @@
         gap: 0.5rem;
         padding-top: 2rem;
         align-items: center;
+        &__separator {
+            display: flex;
+            align-items: center;
+            gap: 0.8em;
+        }
+    }
+    &-labuan-tooltip {
+        position: relative;
+        left: 0.5rem;
+        top: 0.2rem;
     }
     &-platform-label {
         background-color: var(--header-background-mt5);
@@ -80,7 +90,8 @@
         }
     }
     &-underline {
-        border-top: 1px solid var(--less-prominent);
+        border-top: 0.5rem solid var(--less-prominent);
+        width: 21.3rem;
     }
     &__button {
         width: calc(100% - 4rem);

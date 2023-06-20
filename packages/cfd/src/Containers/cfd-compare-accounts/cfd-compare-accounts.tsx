@@ -1,10 +1,9 @@
 import React from 'react';
-import { observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
 import { Text, Icon, PageOverlay, DesktopWrapper, MobileWrapper, CFDCompareAccountsCarousel } from '@deriv/components';
 import { routes, CFD_PLATFORMS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import CFDCompareAccountsCard from './cfd-compare-accounts-card';
 import {
     getSortedAvailableAccounts,
@@ -14,7 +13,8 @@ import {
 
 const CompareCFDs = observer(() => {
     const history = useHistory();
-    const { client, traders_hub } = useStore();
+    const store = useStore();
+    const { client, traders_hub } = store;
     const { trading_platform_available_accounts } = client;
     const { available_cfd_accounts } = traders_hub;
 

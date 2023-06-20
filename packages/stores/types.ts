@@ -242,6 +242,10 @@ type TClientStore = {
     has_any_real_account: boolean;
     real_account_creation_unlock_date: number;
     setPrevAccountType: (account_type: string) => void;
+    should_restrict_bvi_account_creation: boolean;
+    should_restrict_vanuatu_account_creation: boolean;
+    setAccountSettings: (get_settings_response: GetSettings) => void;
+    updateMT5Status: () => void;
 };
 
 type TCommonStoreError = {
@@ -270,6 +274,7 @@ type TCommonStore = {
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
     is_language_changing: boolean;
+    setAppstorePlatform: (platform?: string) => void;
 };
 
 type TUiStore = {
@@ -352,6 +357,7 @@ type TNotificationStore = {
 };
 
 type TTradersHubStore = {
+    getAccount: () => void;
     closeModal: () => void;
     content_flag: 'low_risk_cr_eu' | 'low_risk_cr_non_eu' | 'high_risk_cr' | 'cr_demo' | 'eu_demo' | 'eu_real' | '';
     combined_cfd_mt5_accounts: DetailsOfEachMT5Loginid &

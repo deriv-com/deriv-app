@@ -125,7 +125,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
             />
         );
     }
-    return <React.Fragment>{components}</React.Fragment>;
+    return components as unknown as JSX.Element;
 });
 
 export default Purchase;

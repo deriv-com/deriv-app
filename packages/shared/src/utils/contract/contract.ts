@@ -24,8 +24,9 @@ export const symbols_1s = [
 ];
 
 export const getContractStatus = ({ contract_type, exit_tick_time, profit, status }: TContractInfo) => {
+    const closed_contract_status = profit && profit < 0 && exit_tick_time ? 'lost' : 'won';
     return isAccumulatorContract(contract_type)
-        ? (status === 'open' && !exit_tick_time && 'open') || (profit && profit < 0 && exit_tick_time ? 'lost' : 'won')
+        ? (status === 'open' && !exit_tick_time && 'open') || closed_contract_status
         : status;
 };
 
@@ -62,10 +63,7 @@ export const hasContractEntered = (contract_info: TContractInfo) => !!contract_i
 export const isAccumulatorContract = (contract_type = '') => /ACCU/i.test(contract_type);
 
 export const isAccumulatorContractOpen = (contract_info: TContractInfo = {}) => {
-    return (
-        isAccumulatorContract(contract_info.contract_type) &&
-        getContractStatus(contract_info as TContractInfo) === 'open'
-    );
+    return isAccumulatorContract(contract_info.contract_type) && getContractStatus(contract_info) === 'open';
 };
 
 export const isMultiplierContract = (contract_type: string) => /MULT/i.test(contract_type);

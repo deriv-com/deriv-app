@@ -1,5 +1,5 @@
 import React from 'react';
-import Icon from '../../../../components/src/components/icon/icon';
+import { Icon } from '@deriv/components';
 
 type PrevNextButtonProps = {
     enabled: boolean;

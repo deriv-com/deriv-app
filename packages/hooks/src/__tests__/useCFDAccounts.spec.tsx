@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
-import useCFDAccounts from '../useCfdAccounts';
+import useCFDAccounts from '../useCFDAccounts';
 
 describe('useCFDAccounts', () => {
     test('should return empty array when client has no CFD accounts', async () => {

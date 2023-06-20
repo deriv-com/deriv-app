@@ -383,9 +383,16 @@ const isMt5AccountAdded = (current_list: Record<string, TDetailsOfEachMT5Loginid
         );
     });
 
-const getDemoData = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
+const isDxtradeAccountAdded = (current_list: Record<string, TDetailsOfEachMT5Loginid>, is_demo?: boolean) =>
+    Object.entries(current_list).some(([key, value]) => {
+        const current_account_type = is_demo ? 'demo' : 'real';
+        return value.account_type === current_account_type && key.includes(CFD_PLATFORMS.DXTRADE);
+    });
+
+// Get the MT5 demo accounts of the user
+const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
     const swap_free_demo_accounts = available_accounts.filter(
-        item => item.market_type === 'all' && item.shortcode === 'svg'
+        item => item.market_type === 'all' && item.shortcode === 'svg' && item.platform === CFD_PLATFORMS.MT5
     );
     const financial_demo_accounts = available_accounts.filter(
         item => item.market_type === 'financial' && item.shortcode === 'svg'
@@ -394,6 +401,9 @@ const getDemoData = (available_accounts: TModifiedTradingPlatformAvailableAccoun
         item => item.market_type === 'gaming' && item.shortcode === 'svg'
     );
     return [...gaming_demo_accounts, ...financial_demo_accounts, ...swap_free_demo_accounts];
+};
+const getDxtradeDemoData = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
+    return available_accounts.filter(item => item.platform === CFD_PLATFORMS.DXTRADE);
 };
 
 export {
@@ -410,5 +420,7 @@ export {
     platfromsHeaderLabel,
     getAccountVerficationStatus,
     isMt5AccountAdded,
-    getDemoData,
+    isDxtradeAccountAdded,
+    getMT5DemoData,
+    getDxtradeDemoData,
 };

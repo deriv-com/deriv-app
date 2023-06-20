@@ -24,7 +24,7 @@ export const CardsSliderSwiper = ({ items, setActivePage }: TProps) => {
         [setActivePage]
     );
 
-    const swiper_component = React.useMemo(
+    const swiperComponent = React.useMemo(
         () => (
             <Swiper
                 ref={swiper_ref}
@@ -58,7 +58,7 @@ export const CardsSliderSwiper = ({ items, setActivePage }: TProps) => {
 
     return (
         <div className='swiper'>
-            {swiper_component}
+            {swiperComponent}
             <div className='wallet-cards-carousel__pagination'>
                 <ProgressBarOnboarding
                     step={swiper_ref?.current?.swiper?.activeIndex ? swiper_ref?.current?.swiper?.activeIndex + 1 : 1}

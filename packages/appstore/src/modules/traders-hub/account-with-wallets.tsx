@@ -44,7 +44,7 @@ const AccountWithWallets = observer(() => {
             ? 0
             : wallet_accounts.findIndex(item => item?.loginid === loginid);
 
-    const desktop_wallets_component = React.useMemo(
+    const desktopWalletsComponent = React.useMemo(
         () =>
             wallet_accounts.map(wallet => {
                 // TODO: We have to create hook for 'switchAccount' with useFetch() to use cache in the future
@@ -61,6 +61,10 @@ const AccountWithWallets = observer(() => {
             }),
         [loginid, switchAccount, wallet_accounts]
     );
+
+    React.useEffect(() => {
+        setTogglePlatformType('cfd');
+    }, []);
 
     return (
         <React.Fragment>
@@ -92,7 +96,7 @@ const AccountWithWallets = observer(() => {
                     )}
                 </React.Fragment>
             ) : (
-                <React.Fragment>{desktop_wallets_component}</React.Fragment>
+                <React.Fragment>{desktopWalletsComponent}</React.Fragment>
             )}
         </React.Fragment>
     );

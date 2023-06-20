@@ -111,8 +111,7 @@ const AppNotificationMessages = ({
         const is_not_marked_notification = !marked_notifications.includes(message.key);
         const is_non_hidden_notification = isMobile()
             ? [
-                  'system_maintenance',
-                  'site_maintenance',
+                  ...maintenance_notifications,
                   'authenticate',
                   'deriv_go',
                   'document_needs_action',

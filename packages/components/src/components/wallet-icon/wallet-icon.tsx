@@ -11,7 +11,6 @@ type TWalletIconProps = {
     size?: TWalletIconSizes;
     type?: 'demo' | 'fiat' | 'crypto' | 'app';
     has_bg?: boolean;
-    is_demo?: boolean;
     is_dark?: boolean;
     hide_watermark?: boolean;
 };

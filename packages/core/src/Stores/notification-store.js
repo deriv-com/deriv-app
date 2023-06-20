@@ -316,7 +316,7 @@ export default class NotificationStore extends BaseStore {
 
         let has_missing_required_field;
 
-        if (website_status.message && website_status.message.length) {
+        if (website_status?.message?.length) {
             this.addNotificationMessage(this.client_notifications.site_maintenance);
         } else {
             this.removeNotificationByKey({ key: this.client_notifications.site_maintenance });

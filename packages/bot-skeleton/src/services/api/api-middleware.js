@@ -29,7 +29,7 @@ datadogLogs.init({
     env: dataDogEnv,
 });
 
-const REQUESTS = [
+export const REQUESTS = [
     'authorize',
     'balance',
     'active_symbols',
@@ -67,29 +67,6 @@ const REQUESTS = [
     'run-proposal',
 ];
 
-const log = (measures = [], is_bot_running) => {
-    if (measures && measures.length) {
-        measures.forEach(measure => {
-            datadogLogs.logger.info(measure.name, {
-                name: measure.name,
-                startTime: measure.startTimeDate,
-                duration: measure.duration,
-                detail: measure.detail,
-                isBotRunning: is_bot_running,
-            });
-        });
-    }
-};
-
-const getRequestType = request => {
-    let req_type;
-    REQUESTS.forEach(type => {
-        if (type in request && !req_type) req_type = type;
-    });
-
-    return req_type;
-};
-
 class APIMiddleware {
     constructor(config) {
         this.config = config;
@@ -97,28 +74,58 @@ class APIMiddleware {
         this.addGlobalMethod();
     }
 
+    getRequestType = request => {
+        let req_type;
+        REQUESTS.forEach(type => {
+            if (type in request && !req_type) req_type = type;
+        });
+
+        return req_type;
+    };
+
+    log = (measures = [], is_bot_running) => {
+        if (measures && measures.length) {
+            measures.forEach(measure => {
+                datadogLogs.logger.info(measure.name, {
+                    name: measure.name,
+                    startTime: measure.startTimeDate,
+                    duration: measure.duration,
+                    detail: measure.detail,
+                    isBotRunning: is_bot_running,
+                });
+            });
+        }
+    };
+
+    defineMeasure = res_type => {
+        if (res_type) {
+            let measure;
+            if (res_type === 'history') {
+                performance.mark('ticks_history_end');
+                measure = performance.measure('ticks_history', 'ticks_history_start', 'ticks_history_end');
+            } else {
+                performance.mark(`${res_type}_end`);
+                measure = performance.measure(`${res_type}`, `${res_type}_start`, `${res_type}_end`);
+            }
+            if (res_type === 'proposal') {
+                performance.mark('proposal_end');
+                if (performance.getEntriesByName('bot-start', 'mark').length) {
+                    measure = performance.measure('run-proposal', 'bot-start', 'proposal_end');
+                    performance.clearMarks('bot-start');
+                }
+            }
+            return (measure.startTimeDate = new Date(Date.now() - measure.startTime));
+        }
+        return false;
+    };
+
     sendIsCalled = ({ response_promise, args: [request] }) => {
-        const req_type = getRequestType(request);
+        const req_type = this.getRequestType(request);
         if (req_type) performance.mark(`${req_type}_start`);
         response_promise.then(res => {
-            const res_type = getRequestType(res);
+            const res_type = this.getRequestType(res);
             if (res_type) {
-                let measure;
-                if (res_type === 'history') {
-                    performance.mark('ticks_history_end');
-                    measure = performance.measure('ticks_history', 'ticks_history_start', 'ticks_history_end');
-                } else {
-                    performance.mark(`${res_type}_end`);
-                    measure = performance.measure(`${res_type}`, `${res_type}_start`, `${res_type}_end`);
-                }
-                if (res_type === 'proposal') {
-                    performance.mark('proposal_end');
-                    if (performance.getEntriesByName('bot-start', 'mark').length) {
-                        measure = performance.measure('run-proposal', 'bot-start', 'proposal_end');
-                        performance.clearMarks('bot-start');
-                    }
-                }
-                measure.startTimeDate = new Date(Date.now() - measure.startTime);
+                this.defineMeasure(res_type);
             }
         });
         return response_promise;
@@ -128,7 +135,7 @@ class APIMiddleware {
         REQUESTS.forEach(req_type => {
             const measure = performance.getEntriesByName(req_type);
             if (measure && measure.length) {
-                log(measure, is_bot_running, req_type);
+                this.log(measure, is_bot_running, req_type);
             }
         });
         performance.clearMeasures();

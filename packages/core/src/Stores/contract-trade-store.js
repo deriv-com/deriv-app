@@ -33,7 +33,6 @@ export default class ContractTradeStore extends BaseStore {
     accu_barriers_timeout_id = null;
     accumulator_barriers_data = {};
     accumulator_contract_barriers_data = {};
-    cached_barriers_data = {};
 
     constructor(root_store) {
         super({ root_store });
@@ -42,7 +41,6 @@ export default class ContractTradeStore extends BaseStore {
             accu_barriers_timeout_id: observable,
             accumulator_barriers_data: observable.struct,
             accumulator_contract_barriers_data: observable.struct,
-            cached_barriers_data: observable.struct,
             clearAccumulatorBarriersData: action.bound,
             contracts: observable.shallow,
             has_crossed_accu_barriers: computed,
@@ -107,10 +105,9 @@ export default class ContractTradeStore extends BaseStore {
 
     clearAccumulatorBarriersData(should_clear_contract_data_only, should_clear_timeout = true) {
         if (this.accu_barriers_timeout_id && should_clear_timeout) clearTimeout(this.accu_barriers_timeout_id);
-        if (!isEmptyObject(this.accumulator_barriers_data) && !should_clear_contract_data_only) {
+        this.accumulator_contract_barriers_data = {};
+        if (!should_clear_contract_data_only) {
             this.accumulator_barriers_data = {};
-        } else if (!isEmptyObject(this.accumulator_contract_barriers_data) && should_clear_contract_data_only) {
-            this.accumulator_contract_barriers_data = {};
         }
     }
 
@@ -149,14 +146,20 @@ export default class ContractTradeStore extends BaseStore {
             previous_spot_time: current_spot_time,
         };
         if (
-            !isEmptyObject(this.cached_barriers_data) &&
-            Object.keys(this.cached_barriers_data).every(
-                key => this.cached_barriers_data[key] === delayed_barriers_data[key]
+            Object.keys(delayed_barriers_data).every(key =>
+                should_update_contract_barriers
+                    ? this.accumulator_contract_barriers_data[key] === delayed_barriers_data[key]
+                    : this.accumulator_barriers_data[key] === delayed_barriers_data[key]
             )
         ) {
+            // skip update for duplicate data
             return;
         }
-        if (isEmptyObject(this.accumulator_barriers_data)) {
+        if (
+            should_update_contract_barriers
+                ? isEmptyObject(this.accumulator_contract_barriers_data)
+                : isEmptyObject(this.accumulator_barriers_data)
+        ) {
             // update barriers in DTrader page immediately on first render
             this.setNewAccumulatorBarriersData(
                 { ...barriers_data, ...delayed_barriers_data },
@@ -171,7 +174,6 @@ export default class ContractTradeStore extends BaseStore {
                 });
             }, getAccuBarriersDelayTimeMs(underlying));
         }
-        this.cached_barriers_data = delayed_barriers_data;
     }
 
     updateChartType(type) {

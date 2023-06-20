@@ -41,7 +41,7 @@ const Toolbar = (props: TToolbar) => {
                 <div className='toolbar__section'>
                     {isMobile() && (
                         <ToolbarButton
-                            popover_message={localize('Click here to start building your DBot.')}
+                            popover_message={localize('Click here to start building your Deriv Bot.')}
                             button_id='db-toolbar__get-started-button'
                             button_classname='toolbar__btn toolbar__btn--icon toolbar__btn--start'
                             buttonOnClick={props.loadDataStrategy}
@@ -65,7 +65,7 @@ const Toolbar = (props: TToolbar) => {
             >
                 {is_running ? (
                     <Localize
-                        i18n_default_text='DBot will not proceed with any new trades. Any ongoing trades will be completed by our system. Any unsaved changes will be lost.<0>Note: Please check your statement to view completed transactions.</0>'
+                        i18n_default_text='Deriv Bot will not proceed with any new trades. Any ongoing trades will be completed by our system. Any unsaved changes will be lost.<0>Note: Please check your statement to view completed transactions.</0>'
                         components={[
                             <div
                                 key={0}

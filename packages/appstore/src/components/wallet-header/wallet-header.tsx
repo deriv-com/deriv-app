@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Icon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import classNames from 'classnames';
@@ -11,21 +11,21 @@ import { getWalletHeaderButtons } from 'Constants/utils';
 import './wallet-header.scss';
 
 type TWalletHeader = {
-    data: TWalletAccount;
+    wallet_account: TWalletAccount;
 };
 
-const WalletHeader = observer(({ data }: TWalletHeader) => {
+const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
     const { client, traders_hub } = useStore();
     const { switchAccount, loginid } = client;
-    const is_active = loginid === data.loginid;
+    const is_active = loginid === wallet_account.loginid;
     // const [is_loading, setIsLoading] = useState(false);
     const { multipliers_account_status } = traders_hub;
 
-    const wallet_btns = getWalletHeaderButtons(data.is_demo);
+    const wallet_btns = getWalletHeaderButtons(wallet_account.is_demo);
 
     const onArrowClickHandler = async () => {
         // setIsLoading(true);
-        if (loginid !== data.loginid) await switchAccount(data.loginid);
+        if (loginid !== wallet_account.loginid) await switchAccount(wallet_account.loginid);
         // setIsLoading(false);
     };
 
@@ -37,24 +37,24 @@ const WalletHeader = observer(({ data }: TWalletHeader) => {
     // }, [is_authorize]);
 
     return (
-        <div className={classNames('wallet-header', { 'wallet-header__demo': data.is_demo })}>
+        <div className={classNames('wallet-header', { 'wallet-header__demo': wallet_account.is_demo })}>
             <div className='wallet-header__container'>
-                <WalletCurrencyCard is_demo={data.is_demo} currency={data.currency} />
+                <WalletCurrencyCard is_demo={wallet_account.is_demo} currency={wallet_account.currency} />
                 <div className='wallet-header__description'>
                     <WalletHeaderTitle
-                        is_demo={data.is_demo}
-                        currency={data.currency}
-                        landing_company_name={data.landing_company_name}
+                        is_demo={wallet_account.is_demo}
+                        currency={wallet_account.currency}
+                        landing_company_name={wallet_account.landing_company_name}
                     />
                     <WalletHeaderButtons
                         is_disabled={!!multipliers_account_status}
                         is_open={is_active}
                         btns={wallet_btns}
-                        data={data}
+                        wallet_account={wallet_account}
                     />
                 </div>
                 <div className='wallet-header__balance'>
-                    <WalletHeaderBalance balance={data.balance} currency={data.currency} />
+                    <WalletHeaderBalance balance={wallet_account.balance} currency={wallet_account.currency} />
                     <Icon
                         data_testid='dt_arrow'
                         onClick={onArrowClickHandler}

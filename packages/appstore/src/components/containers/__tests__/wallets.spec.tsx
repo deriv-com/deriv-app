@@ -37,7 +37,7 @@ describe('<Wallets />', () => {
         };
         const { container } = render(
             <StoreProvider store={mockedRootStore}>
-                <Wallet data={mocked_data} />
+                <Wallet wallet_account={mocked_data} />
             </StoreProvider>
         );
 
@@ -56,7 +56,7 @@ describe('<Wallets />', () => {
         };
         const { container } = render(
             <StoreProvider store={mockedRootStore}>
-                <Wallet data={mocked_data} />
+                <Wallet wallet_account={mocked_data} />
             </StoreProvider>
         );
 
@@ -75,7 +75,7 @@ describe('<Wallets />', () => {
         };
         render(
             <StoreProvider store={mockedRootStore}>
-                <Wallet data={mocked_data} />
+                <Wallet wallet_account={mocked_data} />
             </StoreProvider>
         );
 
@@ -99,7 +99,7 @@ describe('<Wallets />', () => {
         };
         render(
             <StoreProvider store={mockedRootStore}>
-                <Wallet data={mocked_data} />
+                <Wallet wallet_account={mocked_data} />
             </StoreProvider>
         );
         const currency_card = screen.queryByTestId(`dt_demo`);

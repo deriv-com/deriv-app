@@ -8,22 +8,22 @@ import EUDisclaimer from 'Components/eu-disclaimer';
 import './wallet-content.scss';
 
 type TProps = {
-    data: TWalletAccount;
+    wallet_account: TWalletAccount;
 };
 
-const WalletContent = ({ data }: TProps) => {
-    const is_eu = data.landing_company_name === 'malta';
+const WalletContent = ({ wallet_account }: TProps) => {
+    const is_eu = wallet_account.landing_company_name === 'malta';
 
     return (
         <div
-            className={classNames('wallet-content', { 'wallet-content__demo': data.is_demo })}
+            className={classNames('wallet-content', { 'wallet-content__demo': wallet_account.is_demo })}
             data-testid='dt_wallet-content'
         >
-            <ContentDivider is_demo_divider={data.is_demo} />
-            <WalletCfdsListing wallet_account={data} />
+            <ContentDivider is_demo_divider={wallet_account.is_demo} />
+            <WalletCfdsListing wallet_account={wallet_account} />
             <ContentDivider />
-            <WalletOptionsAndMultipliersListing wallet_account={data} />
-            {is_eu && !data.is_demo && (
+            <WalletOptionsAndMultipliersListing wallet_account={wallet_account} />
+            {is_eu && !wallet_account.is_demo && (
                 <EUDisclaimer
                     is_wallet={true}
                     wrapperClassName='wallet-content__disclaimer'

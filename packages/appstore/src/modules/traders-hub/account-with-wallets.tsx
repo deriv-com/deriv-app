@@ -12,7 +12,7 @@ const AccountWithWallets = observer(() => {
     return (
         <React.Fragment>
             {data?.map(wallet => (
-                <Wallet key={wallet.loginid} data={wallet} />
+                <Wallet key={wallet.loginid} wallet_account={wallet} />
             ))}
         </React.Fragment>
     );

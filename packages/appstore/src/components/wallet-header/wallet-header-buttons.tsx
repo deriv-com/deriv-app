@@ -17,10 +17,10 @@ type TWalletHeaderButtons = {
     is_disabled: boolean;
     is_open: boolean;
     btns: TWalletButton[];
-    data: TWalletAccount;
+    wallet_account: TWalletAccount;
 };
 
-const WalletHeaderButtons = observer(({ is_disabled, is_open, btns, data }: TWalletHeaderButtons) => {
+const WalletHeaderButtons = observer(({ is_disabled, is_open, btns, wallet_account }: TWalletHeaderButtons) => {
     const { client, ui } = useStore();
 
     const { switchAccount, loginid } = client;
@@ -40,10 +40,10 @@ const WalletHeaderButtons = observer(({ is_disabled, is_open, btns, data }: TWal
                     onClick={async () => {
                         setIsWalletModalVisible(true);
                         handleAction(btn.name);
-                        if (loginid !== data.loginid) {
+                        if (loginid !== wallet_account.loginid) {
                             /** Adding a delay as per requirement because the modal must appear first, then switch the account */
                             await new Promise(resolve => setTimeout(resolve, 1000));
-                            switchAccount(data.loginid);
+                            switchAccount(wallet_account.loginid);
                         }
                     }}
                 >

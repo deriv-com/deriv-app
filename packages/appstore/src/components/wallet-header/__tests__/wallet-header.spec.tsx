@@ -25,7 +25,7 @@ describe('<WalletHeader />', () => {
             };
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader data={mocked_data} />
+                    <WalletHeader wallet_account={mocked_data} />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_demo`);
@@ -44,7 +44,7 @@ describe('<WalletHeader />', () => {
             };
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader data={mocked_data} />
+                    <WalletHeader wallet_account={mocked_data} />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_${mocked_data.currency.toLowerCase()}`);
@@ -63,7 +63,7 @@ describe('<WalletHeader />', () => {
             };
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader data={mocked_data} />
+                    <WalletHeader wallet_account={mocked_data} />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_${mocked_data.currency.toLowerCase()}`);
@@ -82,7 +82,7 @@ describe('<WalletHeader />', () => {
             };
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader data={mocked_data} />
+                    <WalletHeader wallet_account={mocked_data} />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_${mocked_data.currency.toLowerCase()}`);
@@ -103,7 +103,7 @@ describe('<WalletHeader />', () => {
             };
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader data={mocked_data} />
+                    <WalletHeader wallet_account={mocked_data} />
                 </StoreProvider>
             );
             const balance_label = screen.getByText('2,345.56 EUR');
@@ -122,7 +122,7 @@ describe('<WalletHeader />', () => {
             };
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader data={mocked_data} />
+                    <WalletHeader wallet_account={mocked_data} />
                 </StoreProvider>
             );
             const balance_label = screen.queryByText(`0.00 ${mocked_data.currency}`);
@@ -143,7 +143,7 @@ describe('<WalletHeader />', () => {
             };
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader data={mocked_data} />
+                    <WalletHeader wallet_account={mocked_data} />
                 </StoreProvider>
             );
 
@@ -170,7 +170,7 @@ describe('<WalletHeader />', () => {
 
             render(
                 <StoreProvider store={mocked_store}>
-                    <WalletHeader data={mocked_data} />
+                    <WalletHeader wallet_account={mocked_data} />
                 </StoreProvider>
             );
 
@@ -191,7 +191,7 @@ describe('<WalletHeader />', () => {
 
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader data={mocked_data} />
+                    <WalletHeader wallet_account={mocked_data} />
                 </StoreProvider>
             );
 
@@ -221,7 +221,7 @@ describe('<WalletHeader />', () => {
 
             render(
                 <StoreProvider store={mocked_store}>
-                    <WalletHeader data={mocked_data} />
+                    <WalletHeader wallet_account={mocked_data} />
                 </StoreProvider>
             );
 
@@ -252,7 +252,7 @@ describe('<WalletHeader />', () => {
 
             render(
                 <StoreProvider store={mocked_store}>
-                    <WalletHeader data={mocked_data} />
+                    <WalletHeader wallet_account={mocked_data} />
                 </StoreProvider>
             );
 

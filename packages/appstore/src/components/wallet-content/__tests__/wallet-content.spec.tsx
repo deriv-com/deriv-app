@@ -26,7 +26,7 @@ describe('<WalletContent />', () => {
         };
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent data={mocked_data} />
+                <WalletContent wallet_account={mocked_data} />
             </StoreProvider>
         );
 
@@ -47,7 +47,7 @@ describe('<WalletContent />', () => {
         };
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent data={mocked_data} />
+                <WalletContent wallet_account={mocked_data} />
             </StoreProvider>
         );
 
@@ -69,7 +69,7 @@ describe('<WalletContent />', () => {
         };
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent data={mocked_data} />
+                <WalletContent wallet_account={mocked_data} />
             </StoreProvider>
         );
 
@@ -89,7 +89,7 @@ describe('<WalletContent />', () => {
         };
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent data={mocked_data} />
+                <WalletContent wallet_account={mocked_data} />
             </StoreProvider>
         );
 
@@ -109,7 +109,7 @@ describe('<WalletContent />', () => {
         };
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent data={mocked_data} />
+                <WalletContent wallet_account={mocked_data} />
             </StoreProvider>
         );
 

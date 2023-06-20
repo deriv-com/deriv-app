@@ -8,19 +8,19 @@ import { TWalletAccount } from 'Types';
 import './wallet.scss';
 
 type TWallet = {
-    data: TWalletAccount;
+    wallet_account: TWalletAccount;
 };
 
-const Wallet = observer(({ data }: TWallet) => {
+const Wallet = observer(({ wallet_account }: TWallet) => {
     const { client } = useStore();
     const { loginid } = client;
-    const is_active = loginid === data.loginid;
+    const is_active = loginid === wallet_account.loginid;
 
     return (
-        <div className={classNames('wallet', { wallet__demo: data.is_demo })}>
-            <WalletHeader data={data} />
+        <div className={classNames('wallet', { wallet__demo: wallet_account.is_demo })}>
+            <WalletHeader wallet_account={wallet_account} />
             <CSSTransition appear in={is_active} timeout={240} classNames='wallet__content-transition' unmountOnExit>
-                <WalletContent data={data} />
+                <WalletContent wallet_account={wallet_account} />
             </CSSTransition>
         </div>
     );

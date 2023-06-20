@@ -2,6 +2,7 @@ type TMessage = () => string;
 type TParameter = string | number;
 
 export type TFormErrorMessagesTypes = Record<
+    | 'empty_address'
     | 'address'
     | 'barrier'
     | 'email'

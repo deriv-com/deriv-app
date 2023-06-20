@@ -30,7 +30,7 @@ const FundsProtection = () => {
                     />
                 }
             </p>
-            <Button onClick={() => mutate([{ payload: { ukgc_funds_protection: 1 } }])} primary large type='submit'>
+            <Button onClick={() => mutate({ payload: { ukgc_funds_protection: 1 } })} primary large type='submit'>
                 {localize('Deposit now')}
             </Button>
         </div>

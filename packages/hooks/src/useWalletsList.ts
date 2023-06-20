@@ -20,6 +20,7 @@ const useWalletList = () => {
         const modified_wallets = wallets?.map(wallet => ({
             ...wallet,
             balance: 1000,
+            gradient_for: wallet.is_virtual === 1 ? 'demo' : wallet.currency?.toLowerCase(),
             landing_company_shortcode: wallet.landing_company_name,
         }));
 

@@ -14,27 +14,7 @@ type TWalletModalHeaderProps = {
     shortcode: string;
     closeModal: VoidFunction;
     is_wallet_name_visible: boolean;
-};
-
-type THeaderBackground = {
-    is_dark: boolean;
-    is_demo: boolean;
-    currency: string;
-};
-
-const HeaderBackground = ({ is_demo, is_dark, children, currency }: React.PropsWithChildren<THeaderBackground>) => {
-    // The currency for the demo should be set to 'demo'
-    // because its color will be determined based on the is_demo flag in the demo modal
-    // not the actual currency.
-    const active_currency = is_demo ? 'demo' : currency;
-
-    return (
-        <div
-            className={`header-background wallet-header__${active_currency.toLowerCase()}-bg${is_dark ? '--dark' : ''}`}
-        >
-            {children}
-        </div>
-    );
+    gradient_for: string;
 };
 
 const WalletModalHeader = ({
@@ -46,6 +26,7 @@ const WalletModalHeader = ({
     is_mobile,
     shortcode,
     is_wallet_name_visible,
+    gradient_for,
 }: TWalletModalHeaderProps) => {
     const header_class_name = 'modal-header';
 
@@ -113,7 +94,7 @@ const WalletModalHeader = ({
     }, [currency, getCurrencyIconSize, is_dark, is_demo]);
 
     return (
-        <HeaderBackground is_demo={is_demo} is_dark={is_dark} currency={currency}>
+        <div className={`header-background wallet-header__${gradient_for}-bg${is_dark ? '--dark' : ''}`}>
             <div
                 className={classNames(header_class_name, {
                     [`${header_class_name}--hidden-title`]: !is_wallet_name_visible,
@@ -151,7 +132,7 @@ const WalletModalHeader = ({
                     <Icon icon={getCloseIcon()} onClick={closeModal} data_testid='dt_close_icon' />
                 </div>
             </div>
-        </HeaderBackground>
+        </div>
     );
 };
 

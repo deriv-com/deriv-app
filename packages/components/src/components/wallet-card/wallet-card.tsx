@@ -15,25 +15,22 @@ type TWalletCardProps = {
         balance: string;
         currency: string;
         icon: string;
-        icon_type: 'fiat' | 'crypto' | 'app';
+        icon_type: 'fiat' | 'crypto' | 'app' | 'demo';
         jurisdiction_title: string;
         name: string;
+        gradient_for: string;
     };
     size?: 'small' | 'medium' | 'large';
     state?: 'active' | 'add' | 'added' | 'default' | 'disabled' | 'faded';
     is_dark?: boolean;
-    is_demo?: boolean;
 };
 
 const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
     wallet,
     is_dark,
-    is_demo,
     size = 'medium',
     state = 'default',
 }) => {
-    const active_currency_for_bg = is_demo ? 'demo' : wallet.currency;
-
     const IconComponent = () => {
         let icon_size: React.ComponentProps<typeof WalletIcon>['size'] = 'large';
         if (size === 'small') icon_size = 'medium';
@@ -45,9 +42,9 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
     return (
         <div className={`wallet-card wallet-card--${size} wallet-card--${state}`}>
             <div
-                className={`wallet-card__container wallet-card__container--${state} wallet-card__container--${size} wallet-card__${active_currency_for_bg.toLowerCase()}-bg${
-                    is_dark ? '--dark' : ''
-                }`}
+                className={`wallet-card__container wallet-card__container--${state} wallet-card__container--${size} wallet-card__${
+                    wallet.gradient_for
+                }-bg${is_dark ? '--dark' : ''}`}
             >
                 {size !== 'small' && <div className='wallet-card__shine' />}
                 <div

@@ -451,18 +451,18 @@ $wallet-bg-color: (
             'light': (
                 'mobile':
                     radial-gradient(
-                        100% 277.78% at 0% 100%,
+                        126.04% 350.12% at 0% 100%,
                         rgba(247, 147, 27, 0.24) 0%,
                         rgba(247, 199, 27, 0.477) 99.99%,
-                        rgba(255, 100, 68, 0.48) 100%
+                        rgba(255, 100, 68, 0.48)
                     )
                     #ffffff,
                 'desktop':
                     radial-gradient(
-                        100% 277.78% at 0% 100%,
+                        126.04% 350.12% at 0% 100%,
                         rgba(247, 147, 27, 0.24) 0%,
                         rgba(247, 199, 27, 0.477) 99.99%,
-                        rgba(255, 100, 68, 0.48) 100%
+                        rgba(255, 100, 68, 0.48)
                     )
                     #ffffff,
             ),
@@ -605,7 +605,7 @@ $wallet-bg-color: (
                         rgba(165, 168, 169, 0.16) 50.52%,
                         rgba(193, 204, 207, 0.4) 100%
                     )
-                    #ffffff,
+                    #151717,
             ),
         ),
         'header': (
@@ -620,11 +620,12 @@ $wallet-bg-color: (
                     #ffffff,
                 'desktop':
                     radial-gradient(
-                        100% 277.78% at 0% 100%,
-                        rgba(165, 168, 169, 0.24) 0%,
-                        rgba(193, 204, 207, 0.48) 100%
+                        100% 4130.74% at 0% 100%,
+                        rgba(165, 168, 169, 0.4) 0%,
+                        rgba(165, 168, 169, 0.16) 50.52%,
+                        rgba(193, 204, 207, 0.4) 100%
                     )
-                    #151717,
+                    #ffffff,
             ),
             'dark': (
                 'mobile':
@@ -646,6 +647,7 @@ $wallet-bg-color: (
             ),
         ),
     ),
+    'ust': $usdt-color,
     'usdt': $usdt-color,
     'tusdt': $usdt-color,
     'eusdt': $usdt-color,
@@ -787,19 +789,21 @@ $wallet-bg-color: (
                         position: relative;
                         $demo-icon: if($theme == 'dark', 'wallet-demo-bg-dark', 'wallet-demo-bg-light');
 
-                        &:before {
-                            content: '';
-                            display: block;
-                            position: absolute;
-                            left: 0;
-                            top: 0;
-                            width: 100%;
-                            height: 100%;
-                            background-image: url('../../../../public/images/app/wallet/#{$demo-icon}.svg');
-                            background-repeat: repeat;
-                            background-size: 70px;
-                            mix-blend-mode: overlay;
-                            opacity: 0.24;
+                        &:not([class*='--hide-watermark']):not([class*='--small']) {
+                            &:before {
+                                content: '';
+                                display: block;
+                                position: absolute;
+                                left: 0;
+                                top: 0;
+                                width: 100%;
+                                height: 100%;
+                                background-image: url('../../../../public/images/app/wallet/#{$demo-icon}.svg');
+                                background-repeat: repeat;
+                                background-size: 70px;
+                                mix-blend-mode: overlay;
+                                opacity: 0.24;
+                            }
                         }
                     }
 

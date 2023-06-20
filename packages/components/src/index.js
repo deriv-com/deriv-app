@@ -115,7 +115,6 @@ export { default as Tooltip } from './components/tooltip';
 export { default as UILoader } from './components/u-i-loader';
 export { default as UnhandledErrorModal } from './components/unhandled-error-modal';
 export { default as VerticalTab } from './components/vertical-tab';
-export * from './components/watermark';
 export { default as Wizard } from './components/wizard';
 export * from './components/wallet-card';
 export * from './components/wallet-icon';

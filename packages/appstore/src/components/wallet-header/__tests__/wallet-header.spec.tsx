@@ -4,7 +4,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletHeader from '..';
-import { TAccountStatus, TWalletAccount } from 'Types';
+import { TWalletAccount } from 'Types';
 import { getStatusBadgeConfig } from '@deriv/account';
 
 const mockedRootStore = mockStore({});

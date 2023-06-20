@@ -1,7 +1,6 @@
 import React from 'react';
 import { useStore } from '@deriv/stores';
 import TradeStore from './Modules/Trading/trade-store';
-import { BuyContractRequest, PriceProposalRequest, Proposal, ProposalOpenContract } from '@deriv/api-types';
 
 type TToastBoxListItem = {
     contract_category: string;

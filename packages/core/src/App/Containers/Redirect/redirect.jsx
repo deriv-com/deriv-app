@@ -184,7 +184,7 @@ const Redirect = ({
             break;
     }
 
-    if (!redirected_to_route && history.location.pathname === routes.root) {
+    if (!redirected_to_route && history.location.pathname !== routes.root) {
         history.push({
             pathname: routes.root,
             search: url_query_string,

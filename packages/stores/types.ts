@@ -250,7 +250,7 @@ type TCommonStoreError = {
 
 type TCommonStore = {
     changeCurrentLanguage: (new_language: string) => void;
-    changeSelectedLanguage: (key: string) => void;
+    changeSelectedLanguage: (key: string) => Promise<void>;
     current_language: string;
     error: TCommonStoreError;
     has_error: boolean;

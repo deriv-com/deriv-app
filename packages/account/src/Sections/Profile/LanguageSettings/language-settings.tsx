@@ -10,7 +10,7 @@ import TCoreStore from '../../../Stores';
 
 type TLanguageSettings = {
     current_language: string;
-    changeSelectedLanguage: (lang: string) => void;
+    changeSelectedLanguage: (lang: string) => Promise<void>;
 };
 
 const LanguageSettings = ({ changeSelectedLanguage, current_language }: TLanguageSettings) => {

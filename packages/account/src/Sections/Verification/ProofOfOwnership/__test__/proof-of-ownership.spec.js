@@ -17,6 +17,7 @@ describe('proof-of-ownership.jsx', () => {
                     },
                 }}
                 updateAccountStatus={jest.fn()}
+                citizen='id'
             />
         );
         const element = screen.getByText("Your proof of ownership isn't required.", { exact: true });
@@ -31,6 +32,7 @@ describe('proof-of-ownership.jsx', () => {
                     },
                 }}
                 updateAccountStatus={jest.fn()}
+                citizen='id'
             />
         );
         const element = screen.getByText('Proof of ownership verification passed.', { exact: true });
@@ -45,6 +47,7 @@ describe('proof-of-ownership.jsx', () => {
                     },
                 }}
                 updateAccountStatus={jest.fn()}
+                citizen='id'
             />
         );
         const element = screen.getByText('We’ve received your proof of ownership.', { exact: true });
@@ -59,6 +62,7 @@ describe('proof-of-ownership.jsx', () => {
                     },
                 }}
                 updateAccountStatus={jest.fn()}
+                citizen='id'
             />
         );
         const element = screen.getByTestId('dt_try-again-button', { exact: true });
@@ -74,6 +78,7 @@ describe('proof-of-ownership.jsx', () => {
                     },
                 }}
                 updateAccountStatus={jest.fn()}
+                citizen='id'
             />
         );
         expect(screen.getByTestId('dt_poo_form', { exact: true })).toBeInTheDocument();

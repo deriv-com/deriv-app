@@ -9,6 +9,7 @@ import getPaymentMethodsConfig from './payment-method-config.js';
 
 export const ProofOfOwnership = ({
     account_status,
+    citizen,
     client_email,
     is_dark_mode,
     refreshNotifications,
@@ -52,6 +53,7 @@ export const ProofOfOwnership = ({
                 updateAccountStatus={updateAccountStatus}
                 refreshNotifications={refreshNotifications}
                 client_email={client_email}
+                citizen={citizen}
             />
         ); // Proof of ownership is required.
     }
@@ -76,4 +78,5 @@ export default connect(({ client, notifications, ui }) => ({
     is_dark_mode: ui.is_dark_mode_on,
     refreshNotifications: notifications.refreshNotifications,
     updateAccountStatus: client.updateAccountStatus,
+    citizen: client.account_settings?.citizen ?? client.account_settings?.country_code,
 }))(withRouter(ProofOfOwnership));

@@ -37,7 +37,7 @@ const FileProperties = () => {
     );
 };
 
-const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFileDrop, onRef }) => {
+const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFileDrop, onRef, settings }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     const ref = React.useRef();
 
@@ -55,7 +55,7 @@ const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFil
                 <div className='account-poa__upload-file account-poa__upload-file-dashboard'>
                     <FileProperties />
                     <div className='account-poa__upload-file-zone'>
-                        <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} />
+                        <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} settings={settings} />
                     </div>
                 </div>
             </div>
@@ -118,7 +118,7 @@ const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFil
                     'account-poa__upload-file--dashboard': isDesktop() && is_appstore,
                 })}
             >
-                <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} />
+                <FileUploader getSocket={getSocketFunc} ref={ref} onFileDrop={onFileDrop} settings={settings} />
             </div>
         </div>
     );
@@ -129,6 +129,7 @@ FileUploaderContainer.propTypes = {
     getSocket: PropTypes.func,
     onFileDrop: PropTypes.func,
     onRef: PropTypes.func,
+    settings: PropTypes.object,
 };
 
 export default FileUploaderContainer;

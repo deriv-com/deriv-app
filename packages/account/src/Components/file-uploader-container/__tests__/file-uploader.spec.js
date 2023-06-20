@@ -24,6 +24,7 @@ describe('<FileUploader />', () => {
         onFileDrop: jest.fn(),
         getSocket: jest.fn(),
         ref: React.createRef(),
+        settings: {},
     };
 
     const large_file_error_msg = /file size should be 8mb or less/i;

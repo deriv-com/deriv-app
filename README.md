@@ -292,3 +292,4 @@ If preferable to use manual deployment, you can use [gh-pages](https://pages.git
 
     We have added `bootstrap:dev` to scripts. If you are updating or adding a package and you want to regenerate `package-lock.json` file, you should run this command
     `npm run bootstrap:dev`
+

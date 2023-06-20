@@ -321,6 +321,19 @@ const isMt5AccountAdded = (current_list: Record<string, TDetailsOfEachMT5Loginid
         );
     });
 
+const getDemoData = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
+    const swap_free_demo_accounts = available_accounts.filter(
+        item => item.market_type === 'all' && item.shortcode === 'svg'
+    );
+    const financial_demo_accounts = available_accounts.filter(
+        item => item.market_type === 'financial' && item.shortcode === 'svg'
+    );
+    const gaming_demo_accounts = available_accounts.filter(
+        item => item.market_type === 'gaming' && item.shortcode === 'svg'
+    );
+    return [...gaming_demo_accounts, ...financial_demo_accounts, ...swap_free_demo_accounts];
+};
+
 export {
     getHighlightedIconLabel,
     cfdConfig,
@@ -336,4 +349,5 @@ export {
     platfromsHeaderLabel,
     getAccountVerficationStatus,
     isMt5AccountAdded,
+    getDemoData,
 };

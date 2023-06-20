@@ -9,6 +9,7 @@ import {
     getSortedAvailableAccounts,
     getDxtradeAccountAvailabaility,
     prepareDxtradeData,
+    getDemoData,
 } from '../../Helpers/compare-accounts-config';
 
 const CompareCFDs = observer(() => {
@@ -16,7 +17,7 @@ const CompareCFDs = observer(() => {
     const store = useStore();
     const { client, traders_hub } = store;
     const { trading_platform_available_accounts } = client;
-    const { available_cfd_accounts } = traders_hub;
+    const { available_cfd_accounts, is_demo } = traders_hub;
 
     const sorted_available_accounts = getSortedAvailableAccounts(trading_platform_available_accounts);
 
@@ -26,9 +27,13 @@ const CompareCFDs = observer(() => {
     const { name, market_type } = dxtrade_data[0];
     const dxtrade_account = prepareDxtradeData(name, market_type);
 
-    const all_sorted_available_accounts = has_dxtrade_account_available
+    const all_real_sorted_available_accounts = has_dxtrade_account_available
         ? [...sorted_available_accounts, dxtrade_account]
         : [...sorted_available_accounts];
+
+    const demo_available_accounts = getDemoData(all_real_sorted_available_accounts);
+    const all_available_accounts =
+        is_demo && demo_available_accounts.length > 0 ? demo_available_accounts : all_real_sorted_available_accounts;
 
     const DesktopHeader = (
         <div className='compare-cfd-header'>
@@ -59,7 +64,7 @@ const CompareCFDs = observer(() => {
                     <div className='compare-cfd-account-container'>
                         <div className='card-list'>
                             <CFDCompareAccountsCarousel>
-                                {all_sorted_available_accounts.map(item => (
+                                {all_available_accounts.map(item => (
                                     <CFDCompareAccountsCard
                                         trading_platforms={item}
                                         key={item.market_type + item.shortcode}
@@ -79,7 +84,7 @@ const CompareCFDs = observer(() => {
                 >
                     <div className='compare-cfd-account-container'>
                         <CFDCompareAccountsCarousel>
-                            {all_sorted_available_accounts.map(item => (
+                            {all_available_accounts.map(item => (
                                 <CFDCompareAccountsCard
                                     trading_platforms={item}
                                     key={item.market_type + item.shortcode}

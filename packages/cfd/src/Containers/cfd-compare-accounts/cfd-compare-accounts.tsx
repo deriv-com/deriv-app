@@ -19,7 +19,7 @@ const CompareCFDs = observer(() => {
     const store = useStore();
     const { client, traders_hub } = store;
     const { trading_platform_available_accounts } = client;
-    const { is_demo, is_eu_user, available_dxtrade_accounts } = traders_hub;
+    const { is_demo, is_eu_user, available_dxtrade_accounts, available_cfd_accounts } = traders_hub;
 
     const sorted_available_accounts = !is_eu_user
         ? getSortedCFDAvailableAccounts(trading_platform_available_accounts)

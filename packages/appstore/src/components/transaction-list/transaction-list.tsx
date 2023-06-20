@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Statement } from '@deriv/api-types';
 import { getCurrencyDisplayCode, isCryptocurrency } from '@deriv/shared';
 import { Text, Dropdown } from '@deriv/components';
-import { useGroupedFiatTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
+import { groupTransactionsByDay } from '@deriv/utils';
 import { getWalletCurrencyIcon } from 'Constants/utils';
 import FiatTransactionListItem from './fiat-transaction-list-item';
 import './transaction-list.scss';
@@ -251,7 +251,7 @@ const TransactionList = () => {
     const transactions = data?.statement?.transactions;
 
     // TODO: change grouping logic
-    const grouped_transactions = useGroupedFiatTransactions(transactions);
+    const grouped_transactions = groupTransactionsByDay(transactions);
 
     const wallet_title = React.useMemo(() => {
         return `${is_demo ? localize('Demo') : ''} ${getCurrencyDisplayCode(wallet_currency)} ${localize('Wallet')}`;

@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import { useRequest } from '@deriv/api';
-import { observer, useStore } from '@deriv/stores';
+import { useStore } from '@deriv/stores';
 
 const useWithdrawalFiatAddress = () => {
     const { client } = useStore();

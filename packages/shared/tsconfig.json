@@ -6,5 +6,5 @@
             "@deriv/*": ["../*/src"]
         }
     },
-    "include": ["src", "../../utils.d.ts", "../analytics"]
+    "include": ["src", "../../utils.d.ts"]
 }

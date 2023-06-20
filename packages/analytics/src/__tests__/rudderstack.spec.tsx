@@ -5,7 +5,7 @@ jest.mock('rudder-sdk-js', () => {
     return {
         ...original_module,
         load: jest.fn(),
-        ready: callback => callback(),
+        ready: (callback: () => any) => callback(),
         track: jest.fn(),
     };
 });
@@ -52,7 +52,7 @@ describe('rudderstack', () => {
             action: 'open',
         });
 
-        expect(spy).toHaveBeenCalled();
+        expect(spy).toHaveBeenCalledTimes(1);
     });
 
     test('should not be identified when reset is called', () => {

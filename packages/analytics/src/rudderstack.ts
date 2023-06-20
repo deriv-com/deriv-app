@@ -105,8 +105,10 @@ export class RudderStack {
     }
 
     init() {
-        if (process.env.RUDDERSTACK_KEY && process.env.RUDDERSTACK_URL) {
-            rudderanalytics.load(process.env.RUDDERSTACK_KEY, process.env.RUDDERSTACK_URL);
+        const RUDDERSTACK_KEY = process.env.RUDDERSTACK_KEY;
+        const RUDDERSTACK_URL = process.env.RUDDERSTACK_URL;
+        if (RUDDERSTACK_KEY && RUDDERSTACK_URL) {
+            rudderanalytics.load(RUDDERSTACK_KEY, RUDDERSTACK_URL);
             rudderanalytics.ready(() => {
                 this.has_initialized = true;
             });

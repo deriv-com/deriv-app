@@ -3,17 +3,51 @@ import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 import useCurrencyConfig from './useCurrencyConfig';
 
+// TODO: Maybe move this function to deriv/utils. But this function will be used only this, so...
+const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_modal = false) => {
+    switch (currency) {
+        case 'demo':
+            if (is_modal) return 'IcWalletDerivDemoLight';
+            return is_dark_mode_on ? 'IcWalletDerivDemoDark' : 'IcWalletDerivDemoLight';
+        case 'USD':
+            return 'IcWalletCurrencyUsd';
+        case 'EUR':
+            return 'IcWalletCurrencyEur';
+        case 'AUD':
+            return 'IcWalletCurrencyAud';
+        case 'GBP':
+            return 'IcWalletCurrencyGbp';
+        case 'BTC':
+            return is_dark_mode_on ? 'IcWalletBitcoinDark' : 'IcWalletBitcoinLight';
+        case 'ETH':
+            return is_dark_mode_on ? 'IcWalletEtheriumDark' : 'IcWalletEtheriumLight';
+        case 'USDT':
+        case 'eUSDT':
+        case 'tUSDT':
+        case 'UST':
+            if (is_modal) {
+                return is_dark_mode_on ? 'IcWalletModalTetherDark' : 'IcWalletModalTetherLight';
+            }
+            return is_dark_mode_on ? 'IcWalletTetherDark' : 'IcWalletTetherLight';
+        case 'LTC':
+            return is_dark_mode_on ? 'IcWalletLiteCoinDark' : 'IcWalletLiteCoinLight';
+        case 'USDC':
+            return is_dark_mode_on ? 'IcWalletUsdCoinDark' : 'IcWalletUsdCoinLight';
+        default:
+            return 'Unknown';
+    }
+};
+
 const useWalletList = () => {
-    const { client } = useStore();
+    const { client, ui } = useStore();
+    const { is_dark_mode_on } = ui;
     const { accounts, loginid, is_crypto } = client;
-    const { data, ...reset } = useFetch('authorize', {
+    const { getConfig, isSuccess: currencyConfigLoaded } = useCurrencyConfig();
+    const { data, ...rest } = useFetch('authorize', {
         payload: { authorize: accounts[loginid || ''].token },
-        options: { enabled: Boolean(loginid), keepPreviousData: true },
+        options: { enabled: Boolean(loginid) && currencyConfigLoaded, keepPreviousData: true },
     });
     const { data: balance_data } = useFetch('balance', { payload: { account: 'all' } });
-    // const { data: test } = useFetch('website_status');
-
-    const { getConfig } = useCurrencyConfig();
 
     const sortedWallets = useMemo(() => {
         // @ts-expect-error Need to update @deriv/api-types to fix the TS error
@@ -24,16 +58,19 @@ const useWalletList = () => {
         // Should remove this once the API is fixed
         const modified_wallets =
             wallets?.map(wallet => {
-                const currency_config = getConfig(wallet?.currency || 'USD');
+                const currency = wallet?.currency || 'USD';
+                const currency_config = getConfig(currency);
                 const is_crypto_currency = currency_config?.is_crypto;
                 const is_fiat = currency_config?.is_fiat;
                 const currency_display_code = currency_config?.display_code || '';
-                const icon = currency_config?.icon;
-                const name = `${wallet.is_virtual ? 'Demo' : ''} ${currency_display_code} ${'Wallet'}`;
+                const icon = getWalletCurrencyIcon(currency, is_dark_mode_on);
+                const modal_icon = getWalletCurrencyIcon(currency, is_dark_mode_on, true);
+                const name = `${wallet.is_virtual ? 'Demo ' : ''}${currency_display_code} ${'Wallet'}`;
 
                 return {
                     ...wallet,
                     /** Indicating whether the wallet is a virtual-money wallet. */
+                    /** In my opinion we don't need this because we have property is_virtaul */
                     is_demo: wallet.is_virtual === 1,
                     /** Wallet balance */
                     balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,
@@ -49,6 +86,7 @@ const useWalletList = () => {
                     is_fiat,
                     currency_display_code,
                     icon,
+                    modal_icon,
                     name,
                     // needs for WalletIcon, maybe refactor during cleanUp
                     icon_type: is_fiat && !wallet.is_virtual ? 'fiat' : 'crypto',
@@ -65,10 +103,10 @@ const useWalletList = () => {
 
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });
-    }, [balance_data?.balance?.accounts, data?.authorize?.account_list, getConfig, is_crypto]);
+    }, [balance_data?.balance?.accounts, data?.authorize?.account_list, getConfig, is_crypto, is_dark_mode_on]);
 
     return {
-        ...reset,
+        ...rest,
         data: sortedWallets,
     };
 };

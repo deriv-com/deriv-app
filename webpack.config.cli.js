@@ -63,9 +63,6 @@ module.exports = {
                 './node_modules/blockly/msg/messages.js',
             ],
         }),
-        new PullBlocklyTranslationsPlugin({
-            outputPath: path.resolve(__dirname, 'translations'),
-        }),
         new Dotenv(),
         new webpack.ProvidePlugin({
             $: 'jquery',
@@ -98,11 +95,10 @@ module.exports = {
                 from: 'templates/index.html',
                 to: path.resolve(__dirname, 'www'),
             },
-            {
-                from: 'translations',
-                to: path.resolve(__dirname, 'www/translations'),
-            },
         ]),
+        new PullBlocklyTranslationsPlugin({
+            outputPath: path.resolve(__dirname, 'www/translations'),
+        }),
         new webpack.optimize.UglifyJsPlugin({
             include: /\.js$/,
             minimize: true,

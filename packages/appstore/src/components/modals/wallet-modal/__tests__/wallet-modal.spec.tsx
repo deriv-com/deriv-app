@@ -2,14 +2,39 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletModal from '../wallet-modal';
-import { APIProvider, useFetch } from '@deriv/api';
+import { APIProvider } from '@deriv/api';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useFetch: jest.fn(),
-}));
+    useFetch: jest.fn((name: string) => {
+        if (name === 'authorize') {
+            return {
+                data: {
+                    authorize: {
+                        account_list: [
+                            {
+                                loginid: 'CRW000000',
+                                account_category: 'wallet',
+                                is_virtual: 0,
+                                landing_company_name: 'maltainvest',
+                                currency: 'USD',
+                            },
+                            {
+                                loginid: 'MXN000000',
+                                account_category: 'trading',
+                                is_virtual: 0,
+                                landing_company_name: 'maltainvest',
+                                currency: 'BTC',
+                            },
+                        ],
+                    },
+                },
+            };
+        }
 
-const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
+        return { data: undefined };
+    }),
+}));
 
 jest.mock('../wallet-modal-header', () => jest.fn(() => <div>WalletModalHeader</div>));
 jest.mock('../wallet-modal-body', () => jest.fn(() => <div>WalletModalBody</div>));
@@ -22,24 +47,20 @@ describe('WalletModal', () => {
         document.body.appendChild(modal_root_el);
     });
 
-    const mocked_store = mockStore({});
+    const mocked_store = mockStore({
+        client: {
+            currency: 'USD',
+            loginid: 'CRW000000',
+            accounts: {
+                CRW000000: {
+                    token: 'token',
+                },
+            },
+        },
+    });
 
     it('Should render cashier modal if is_wallet_modal_visible is true', () => {
         mocked_store.ui.is_wallet_modal_visible = true;
-
-        mockUseFetch.mockReturnValue({
-            data: {
-                authorize: {
-                    account_list: [
-                        {
-                            account_category: 'wallet',
-                            currency: 'USD',
-                            is_virtual: 0,
-                        },
-                    ],
-                },
-            },
-        });
 
         render(
             <APIProvider>

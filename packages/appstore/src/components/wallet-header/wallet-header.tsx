@@ -18,16 +18,11 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
     const { client, traders_hub } = useStore();
     const { switchAccount, loginid } = client;
     const is_active = loginid === wallet_account.loginid;
-    // const [is_loading, setIsLoading] = useState(false);
     const { multipliers_account_status } = traders_hub;
 
     const is_demo = wallet_account.is_virtual;
 
     const wallet_buttons = getWalletHeaderButtons(is_demo);
-
-    // const onArrowClickHandler = () => {
-    //     setIsOpen(!is_open_wallet);
-    // };
 
     const onArrowClickHandler = async () => {
         if (loginid !== wallet_account.loginid) await switchAccount(wallet_account.loginid);

@@ -2,6 +2,7 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { useWithdrawalFiatAddress } from '@deriv/hooks';
+import './withdrawal-fiat-iframe.scss';
 
 const WithdrawalFiatIframe = observer(() => {
     const { data: iframe_url, isSuccess } = useWithdrawalFiatAddress();
@@ -16,7 +17,7 @@ const WithdrawalFiatIframe = observer(() => {
             {is_loading && <Loading />}
             {isSuccess && (
                 <iframe
-                    key={iframe_url}
+                    className='withdrawal-fiat-iframe'
                     onLoad={() => setIsLoading(false)}
                     src={iframe_url}
                     style={{ display: is_loading ? 'none' : 'block' }}

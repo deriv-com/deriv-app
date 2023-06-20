@@ -59,8 +59,9 @@ const BinarySocketBase = (() => {
         client_store = client;
     };
 
-    const openNewConnection = (language = getLanguage(), session_id = '') => {
+    const openNewConnection = (language = getLanguage(), mock_id = '') => {
         const parsed_session_id = localStorage.getItem('session_id') || '';
+        const session_id = mock_id || parsed_session_id;
 
         if (wrong_app_id === getAppId()) return;
 
@@ -68,19 +69,19 @@ const BinarySocketBase = (() => {
 
         if (isClose()) {
             is_disconnect_called = false;
-            binary_socket = new WebSocket(getSocketUrl(language, parsed_session_id));
+            binary_socket = new WebSocket(getSocketUrl(language, session_id));
 
-            if (parsed_session_id) {
+            if (session_id) {
                 const originalSend = DerivAPIBasic.prototype.send;
                 const originalSubscribe = DerivAPIBasic.prototype.subscribe;
 
-                DerivAPIBasic.prototype.send = function (...args) {
+                DerivAPIBasic.prototype.send = async function (...args) {
                     const modifiedArgs = [...args];
                     modifiedArgs[0] = { ...modifiedArgs[0], session_id };
                     return originalSend.apply(this, modifiedArgs);
                 };
 
-                DerivAPIBasic.prototype.subscribe = function (...args) {
+                DerivAPIBasic.prototype.subscribe = async function (...args) {
                     const modifiedArgs = [...args];
                     modifiedArgs[0] = { ...modifiedArgs[0], session_id };
                     return originalSubscribe.apply(this, modifiedArgs);

@@ -12,7 +12,7 @@ module.exports = function (env) {
             publicPath: base,
             open: openChromeBasedOnPlatform(process.platform),
             openPage: sub_path,
-            host: 'localhost.binary.sx',
+            host: '127.0.0.1',
             https: true,
             port: 443,
             historyApiFallback: true,

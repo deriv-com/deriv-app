@@ -19,7 +19,7 @@ import { APIProvider } from '@deriv/api';
 import { StoreProvider } from '@deriv/stores';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
-import { MockDialog, MockServerProvider } from './Components/mock-controls';
+import { MockDialog } from './Components/mock-controls';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 import BinaryBotIFrame from 'Modules/BinaryBotIFrame';
 import AppToastMessages from './Containers/app-toast-messages.jsx';
@@ -82,27 +82,25 @@ const AppWithoutTranslation = ({ root_store }) => {
                     <MobxContentProvider store={root_store}>
                         <StoreProvider store={root_store}>
                             <APIProvider>
-                                <MockServerProvider>
-                                    <PlatformContainer>
-                                        <Header />
-                                        <ErrorBoundary>
-                                            <AppContents>
-                                                {/* TODO: [trader-remove-client-base] */}
-                                                <Routes passthrough={platform_passthrough} />
-                                            </AppContents>
-                                        </ErrorBoundary>
-                                        <DesktopWrapper>
-                                            <Footer />
-                                        </DesktopWrapper>
-                                        <ErrorBoundary>
-                                            <AppModals />
-                                        </ErrorBoundary>
-                                        <SmartTraderIFrame />
-                                        <BinaryBotIFrame />
-                                        <AppToastMessages />
-                                    </PlatformContainer>
-                                    <MockDialog />
-                                </MockServerProvider>
+                                <PlatformContainer>
+                                    <Header />
+                                    <ErrorBoundary>
+                                        <AppContents>
+                                            {/* TODO: [trader-remove-client-base] */}
+                                            <Routes passthrough={platform_passthrough} />
+                                        </AppContents>
+                                    </ErrorBoundary>
+                                    <DesktopWrapper>
+                                        <Footer />
+                                    </DesktopWrapper>
+                                    <ErrorBoundary>
+                                        <AppModals />
+                                    </ErrorBoundary>
+                                    <SmartTraderIFrame />
+                                    <BinaryBotIFrame />
+                                    <AppToastMessages />
+                                </PlatformContainer>
+                                <MockDialog />
                             </APIProvider>
                         </StoreProvider>
                     </MobxContentProvider>

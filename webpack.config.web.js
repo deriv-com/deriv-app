@@ -48,6 +48,10 @@ module.exports = {
         ],
     },
     plugins: [
+        new Dotenv(),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('development'),
+        }),
         new BlocklyConcatPlugin({
             outputPath: path.resolve(__dirname, 'www'),
             fileName: 'blockly.js',
@@ -57,13 +61,6 @@ module.exports = {
                 './node_modules/blockly/javascript_compressed.js',
                 './node_modules/blockly/msg/messages.js',
             ],
-        }),
-        // new PullBlocklyTranslationsPlugin({
-        //     outputPath: path.resolve(__dirname, 'translations'),
-        // }),
-        new Dotenv(),
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('development'),
         }),
         new webpack.ProvidePlugin({
             $: 'jquery',

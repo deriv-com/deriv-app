@@ -102,13 +102,13 @@ module.exports = {
                 to: path.resolve(__dirname, 'www'),
             },
         ]),
-        new webpack.optimize.UglifyJsPlugin({
-            include: /\.js$/,
-            minimize: true,
-            sourceMap: true,
-            compress: {
-                warnings: false,
-            },
-        }),
+        // new webpack.optimize.UglifyJsPlugin({
+        //     include: /\.js$/,
+        //     minimize: true,
+        //     sourceMap: true,
+        //     compress: {
+        //         warnings: false,
+        //     },
+        // }),
     ],
 };

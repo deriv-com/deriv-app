@@ -39,4 +39,4 @@ export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useVerifyEmail } from './useVerifyEmail';
 export { default as useContentFlag } from './useContentFlag';
 export { default as useWalletList } from './useWalletsList';
-export { default as useWalletStatement } from './useWalletStatement';
+export { default as useWalletStatement } from './useWalletTransactions';

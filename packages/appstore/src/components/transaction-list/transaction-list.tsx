@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Statement } from '@deriv/api-types';
 import { Text, Dropdown } from '@deriv/components';
-import { useWalletStatement } from '@deriv/hooks';
+import { useWalletList, useWalletStatement } from '@deriv/hooks';
 import { getCurrencyDisplayCode, isCryptocurrency } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
@@ -9,6 +9,7 @@ import { groupTransactionsByDay } from '@deriv/utils';
 import { getWalletCurrencyIcon } from 'Constants/utils';
 import FiatTransactionListItem from './fiat-transaction-list-item';
 import './transaction-list.scss';
+import useWalletTransactions from '@deriv/hooks/src/useWalletTransactions';
 
 const TransactionList = () => {
     const {
@@ -16,6 +17,7 @@ const TransactionList = () => {
         traders_hub: { is_demo },
         ui: { is_dark_mode_on, is_mobile },
     } = useStore();
+    const { data: wallets } = useWalletList();
 
     const filter_options = [
         {
@@ -47,18 +49,13 @@ const TransactionList = () => {
 
     const [filter, setFilter] = useState<typeof filter_options[number]['value']>('');
 
-    const { data } = useWalletStatement(filter);
-    const transactions = data.statement.transactions;
+    const { transactions } = useWalletStatement(filter);
 
-    // TODO: change grouping logic
+    // TODO: change the way grouping is being done
     const grouped_transactions = groupTransactionsByDay(transactions);
 
-    const wallet_title = React.useMemo(() => {
-        return `${is_demo ? localize('Demo') : ''} ${getCurrencyDisplayCode(wallet_currency)} ${localize('Wallet')}`;
-    }, [wallet_currency, is_demo]);
-    const wallet_icon = React.useMemo(() => {
-        return getWalletCurrencyIcon(is_demo ? 'demo' : wallet_currency, is_dark_mode_on, false);
-    }, [wallet_currency, is_demo, is_dark_mode_on]);
+    // TODO: refactor once we have useActiveWallet merged
+    const current_wallet = wallets.find(wallet => wallet.loginid === loginid) as typeof wallets[number];
 
     const accountName = (is_virtual: boolean, currency: string, is_wallet: boolean) =>
         `${is_virtual ? localize('Demo') : ''} ${getCurrencyDisplayCode(currency)} ${localize(
@@ -82,11 +79,7 @@ const TransactionList = () => {
         transaction_list,
     }: {
         day: string;
-        transaction_list: Required<Statement>['transactions'] &
-            {
-                to?: { account_category: 'wallet' | 'trading'; account_type: string };
-                from?: { account_category: 'wallet' | 'trading'; account_type: string };
-            }[];
+        transaction_list: ReturnType<typeof useWalletTransactions>['transactions'];
     }) => {
         return (
             <div className='transaction-list__day'>
@@ -107,9 +100,9 @@ const TransactionList = () => {
                             transaction.action_type === undefined
                         )
                             return null;
-                        let account_title = wallet_title;
+                        let account_title = current_wallet.name;
                         let account_currency = wallet_currency;
-                        let icon = wallet_icon;
+                        let icon = current_wallet.icon;
                         let icon_type = 'fiat';
                         let is_deriv_apps = false;
                         if (transaction.action_type === 'transfer') {
@@ -143,9 +136,7 @@ const TransactionList = () => {
                                 key={transaction.transaction_id}
                                 action_type={
                                     // TODO fix this mismatch somehow
-                                    transaction.action_type as React.ComponentProps<
-                                        typeof FiatTransactionListItem
-                                    >['action_type']
+                                    transaction.action_type
                                 }
                                 account_currency={account_currency}
                                 account_name={account_title}

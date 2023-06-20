@@ -2,7 +2,14 @@ import { useFetch } from '@deriv/api';
 import { Statement } from '@deriv/api-types';
 import { useStore } from '@deriv/stores';
 
-const useWalletStatement = (action_type: '' | 'deposit' | 'withdrawal' | 'reset_balance' | 'transfer') => {
+type TWalletTransaction =
+    | Omit<Required<Statement>['transactions'][number], 'action_type'> & {
+          action_type: 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer';
+      };
+
+const useWalletTransactions = (
+    action_type: '' | 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer'
+) => {
     const {
         client: { loginid },
         traders_hub: { is_demo },
@@ -188,7 +195,7 @@ const useWalletStatement = (action_type: '' | 'deposit' | 'withdrawal' | 'reset_
           ];
 
     // @ts-expect-error reset_balance is not supported in the API yet
-    const { data } = useFetch('statement', {
+    const { data, isLoading, isSuccess } = useFetch('statement', {
         options: { keepPreviousData: true },
         ...(!!action_type && {
             payload: {
@@ -196,20 +203,21 @@ const useWalletStatement = (action_type: '' | 'deposit' | 'withdrawal' | 'reset_
             },
         }),
     });
+    const transactions = data?.statement?.transactions?.filter(
+        el =>
+            !!el.action_type &&
+            ['deposit', 'withdrawal', 'initial_fund', 'reset_balance', 'transfer'].includes(el.action_type)
+    ) as TWalletTransaction[];
 
-    // return { data };
+    // return { transactions, isLoading, isSuccess };
 
     return {
-        data: {
-            statement: {
-                transactions: (mock_transactions as Required<Statement>['transactions']).filter(
-                    el => !action_type || el.action_type === action_type
-                ),
-            },
-        },
+        transactions: (mock_transactions as Required<Statement>['transactions']).filter(
+            el => !action_type || el.action_type === action_type
+        ) as TWalletTransaction[],
         isLoading: false,
         isSuccess: true,
     };
 };
 
-export default useWalletStatement;
+export default useWalletTransactions;

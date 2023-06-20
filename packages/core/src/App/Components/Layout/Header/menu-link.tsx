@@ -1,5 +1,4 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
@@ -35,21 +34,22 @@ const MenuLink = observer(
         if (is_hidden) return null;
 
         const { common, ui, client } = useStore();
-        const { setMobileLanguageMenuOpen } = common;
-        const deriv_static_url = getStaticUrl(link_to);
         const { has_any_real_account, is_virtual } = client;
+        const { setMobileLanguageMenuOpen } = common;
         const { toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
         const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
-
+        const is_trade_text = text === localize('Trade');
+        const deriv_static_url = getStaticUrl(link_to);
+        const traders_hub_path = window.location.pathname === routes.traders_hub;
+        const is_languages_link_on_mobile = isMobile() && link_to === routes.languages;
+        const is_exetrnal_link_to = deriv_static_url && isExternalLink(link_to);
         const is_cashier_link = [
             routes.cashier_deposit,
             routes.cashier_withdrawal,
             routes.cashier_acc_transfer,
         ].includes(link_to);
 
-        const traders_hub_path = window.location.pathname === routes.traders_hub;
-
-        if (isMobile() && link_to === routes.languages) {
+        if (is_languages_link_on_mobile) {
             return (
                 <div
                     className={classNames('header__menu-mobile-link', {
@@ -122,7 +122,7 @@ const MenuLink = observer(
                     {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
                 </div>
             );
-        } else if (deriv_static_url && isExternalLink(link_to)) {
+        } else if (is_exetrnal_link_to) {
             return (
                 <a
                     className={classNames('header__menu-mobile-link', {
@@ -159,10 +159,10 @@ const MenuLink = observer(
             >
                 <Icon className='header__menu-mobile-link-icon' icon={icon} />
                 <Text
-                    className={text === localize('Trade') ? '' : 'header__menu-mobile-link-text'}
+                    className={is_trade_text ? '' : 'header__menu-mobile-link-text'}
                     as='h3'
                     size='xs'
-                    weight={window.location.pathname === '/' && text === localize('Trade') ? 'bold' : undefined}
+                    weight={window.location.pathname === '/' && is_trade_text ? 'bold' : undefined}
                 >
                     {text}
                 </Text>

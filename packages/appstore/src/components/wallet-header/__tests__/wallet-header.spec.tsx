@@ -111,6 +111,87 @@ describe('<WalletHeader />', () => {
 
             expect(balance_label).toBeInTheDocument();
         });
+
+        it('Should render badge Pending verification', () => {
+            getStatusBadgeConfig.mockReturnValue({ icon: '', text: 'Pending verification' });
+
+            mocked_props.balance = 0;
+            mocked_props.currency = 'EUR';
+            mocked_props.landing_company_name = 'malta';
+
+            const mocked_store = mockStore({
+                client: {
+                    loginid: 'MFW1231',
+                },
+                traders_hub: { multipliers_account_status: 'pending', is_eu_user: true },
+            });
+
+            render(
+                <StoreProvider store={mocked_store}>
+                    <WalletHeader wallet_account={mocked_props} />
+                </StoreProvider>
+            );
+
+            const badge = screen.queryByText(/Pending verification/i);
+            const balance_label = screen.queryByText(/balance/i);
+
+            expect(badge).toBeInTheDocument();
+            expect(balance_label).not.toBeInTheDocument();
+        });
+
+        it('Should render badge Verification failed', () => {
+            getStatusBadgeConfig.mockReturnValue({ icon: '', text: 'Verification failed' });
+
+            mocked_props.balance = 0;
+            mocked_props.currency = 'EUR';
+            mocked_props.landing_company_name = 'malta';
+
+            const mocked_store = mockStore({
+                client: {
+                    loginid: 'MFW1231',
+                },
+                traders_hub: { multipliers_account_status: 'failed', is_eu_user: true },
+            });
+
+            render(
+                <StoreProvider store={mocked_store}>
+                    <WalletHeader wallet_account={mocked_props} />
+                </StoreProvider>
+            );
+
+            const badge = screen.queryByText(/Verification failed/i);
+            const balance_label = screen.queryByText(/balance/i);
+
+            expect(badge).toBeInTheDocument();
+            expect(balance_label).not.toBeInTheDocument();
+        });
+
+        it('Should render badge Need verification', () => {
+            getStatusBadgeConfig.mockReturnValue({ icon: '', text: 'Need verification' });
+
+            mocked_props.balance = 0;
+            mocked_props.currency = 'EUR';
+            mocked_props.landing_company_name = 'malta';
+
+            const mocked_store = mockStore({
+                client: {
+                    loginid: 'MFW1231',
+                },
+                traders_hub: { multipliers_account_status: 'need_verification', is_eu_user: true },
+            });
+
+            render(
+                <StoreProvider store={mocked_store}>
+                    <WalletHeader wallet_account={mocked_props} />
+                </StoreProvider>
+            );
+
+            const badge = screen.queryByText(/Need verification/i);
+            const balance_label = screen.queryByText(/balance/i);
+
+            expect(badge).toBeInTheDocument();
+            expect(balance_label).not.toBeInTheDocument();
+        });
     });
 
     describe('Check buttons', () => {

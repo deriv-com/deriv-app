@@ -1,22 +1,42 @@
 import type {
     AccountLimitsResponse,
     Authorize,
+    ContractUpdate,
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
     GetSettings,
     LogOutResponse,
+    Portfolio1,
     ProposalOpenContract,
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
 import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
-import { formatPortfolioPosition } from '../shared/src/utils/helpers';
 
 type TPopulateSettingsExtensionsMenuItem = {
     icon: string;
     label: string;
     value: <T extends object>(props: T) => JSX.Element;
+};
+
+type TPortfolioPosition = {
+    contract_info: ProposalOpenContract &
+        Portfolio1 & {
+            contract_update?: ContractUpdate | undefined;
+        };
+    details?: string;
+    display_name: string;
+    id?: number;
+    indicative: number;
+    payout?: number;
+    purchase?: number;
+    reference: number;
+    type?: string;
+    is_unsupported: boolean;
+    contract_update: ProposalOpenContract['limit_order'];
+    is_sell_requested: boolean;
+    profit_loss: number;
 };
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
@@ -310,16 +330,17 @@ type TUiStore = {
 };
 
 export type TPortfolioStore = {
-    active_positions: TPortfolioStore['positions'];
+    active_positions: TPortfolioPosition[];
     error: string;
-    getPositionById: (id: number) => TPortfolioStore['positions'][number];
+    getPositionById: (id: number) => TPortfolioPosition;
     is_accumulator: boolean;
     is_loading: boolean;
     is_multiplier: boolean;
+    is_turbos: boolean;
     onClickCancel: (contract_id?: number) => void;
     onClickSell: (contract_id?: number) => void;
     onMount: () => void;
-    positions: Array<ReturnType<typeof formatPortfolioPosition> & { is_sell_requested: boolean; profit_loss: number }>;
+    positions: TPortfolioPosition[];
     removePositionById: (id: number) => void;
 };
 

@@ -4,41 +4,74 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+
+    @include mobile {
+        height: calc(100% - 148.5px);
+        &--has-toggle-buttons {
+            height: calc(100% - 74px);
+        }
+    }
 
     & .dc-carousel {
         width: 100%;
 
+        &__wrapper {
+            padding: 0;
+        }
+        &__card {
+            padding-bottom: 0;
+        }
+        &__icon {
+            &--disabled {
+                pointer-events: none;
+            }
+        }
+        &__nav {
+            padding: 0 1.2rem;
+        }
+
         @include mobile {
             &__wrapper {
-                padding: 1.6rem 0 0;
+                padding: 0;
             }
             &__nav {
-                margin: 3.2rem 0 0;
+                margin: 1.6rem auto;
+                padding: 0 2rem;
+            }
+            &__container {
+                height: 100%;
+            }
+            &__box {
+                height: 100%;
             }
         }
     }
     &__card {
-        min-height: calc(100vh - 210px);
-        max-height: calc(100vh - 268px);
         display: flex;
         flex-direction: column;
-        padding: 0.4rem 1rem;
-        @media screen and (min-height: 768px) and (max-height: 820px) {
-            min-height: calc(100vh - 288px);
-        }
-        @media screen and (min-height: 821px) {
-            min-height: 535px;
-        }
+        justify-content: space-between;
+
         @include mobile {
-            min-height: calc(100vh - 140px);
+            height: 100%;
             padding: 0;
         }
     }
     &__content {
         overflow: hidden;
-
         /* postcss-bem-linter: ignore */
+        &-glossary {
+            &--heading {
+                margin: 0 !important;
+            }
+        }
+        &-definition {
+            color: var(--brand-red-coral);
+
+            &:hover {
+                text-decoration: underline;
+                cursor: pointer;
+            }
+        }
         h2 {
             @include typeface(--paragraph-left-bold-black, none);
             margin-bottom: 0.8rem;
@@ -62,7 +95,6 @@
             }
         }
         @include mobile {
-            width: 32rem;
             /* postcss-bem-linter: ignore */
             h2 {
                 @include typeface(--small-left-bold-black, none);
@@ -82,31 +114,37 @@
     }
     &__gif {
         width: 100%;
-        height: 148px;
+        height: 16.4rem;
         border-radius: 4px;
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 1.6rem;
 
         @include mobile {
             width: 32.8rem;
-            height: 14.1rem;
+            height: 16.4rem;
             background-color: var(--general-section-1);
             svg {
                 width: 100%;
                 height: 100%;
             }
         }
+
+        &--has-toggle-buttons {
+            margin-top: 1.6rem;
+        }
     }
     &__action-bar {
         display: flex;
         align-items: center;
-        justify-content: center;
         width: 100%;
+        padding-left: 2.4rem;
 
         @include mobile {
-            gap: 2.4rem;
+            padding-left: 2.4rem;
         }
     }
     &__title {
-        margin: auto;
         cursor: default;
     }
     &__nav {
@@ -144,17 +182,68 @@
     }
     &__icon {
         cursor: pointer;
+        padding-right: 2.4rem;
     }
     &__scrollbars {
-        margin-top: 2.4rem;
-        margin-bottom: auto;
+        position: relative;
+        &-description--active {
+            transition: transform 0.3s linear;
+        }
+        &-glossary {
+            margin-top: 0;
+            &--active {
+                position: relative;
+                transition: transform 0.3s linear;
+            }
+        }
+    }
+    &__trade-type-btn-wrapper {
+        display: flex;
+        justify-content: center;
+        border-top: 2px solid var(--general-section-1);
+        padding: 1.6rem 2.4rem;
+        margin-top: 1.6rem;
+
+        @include mobile {
+            margin-top: 0;
+            padding: 1.6rem;
+        }
     }
     &__button {
-        margin-top: 2.4rem;
+        flex-shrink: 0;
+        width: 52.3rem;
+
         @include mobile {
-            width: 27.2rem;
             padding: 1.5rem 0;
             align-self: center;
+            width: 32.8rem;
+        }
+    }
+    &__button-wrapper {
+        background: var(--general-section-1);
+        padding: 0.4rem;
+        margin: 1.6rem;
+        border-radius: $BORDER_RADIUS * 1.5;
+        width: 52.3rem;
+
+        @include mobile {
+            width: 32.8rem;
+            margin: 1.6rem auto;
+        }
+
+        .dc-button-menu__button {
+            background-color: var(--general-section-1) !important;
+
+            .dc-btn__text {
+                color: var(--text-less-prominent) !important;
+            }
+            &--active {
+                background-color: var(--button-toggle-alternate) !important;
+
+                .dc-btn__text {
+                    color: var(--text-prominent) !important;
+                }
+            }
         }
     }
 }

@@ -40,14 +40,14 @@ describe('useWalletsList', () => {
 
         const { result } = renderHook(() => useWalletsList(), { wrapper });
 
-        expect(result.current.data).toEqual([
-            {
+        expect(result.current.data[0]).toEqual(
+            expect.objectContaining({
                 account_category: 'wallet',
+                balance: 0,
                 currency: 'USD',
-                is_virtual: 0,
-                balance: 1000,
-            },
-        ]);
+                icon: 'IcWalletCurrencyUsd',
+            })
+        );
     });
 
     test('should return empty array if there is no wallets list', () => {

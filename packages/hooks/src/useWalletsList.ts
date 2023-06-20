@@ -1,7 +1,6 @@
 import { useMemo } from 'react';
 import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
-import useCurrencyConfig from './useCurrencyConfig';
 
 // TODO: Maybe move this function to deriv/utils. But this function will be used only here, so...
 const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_modal = false) => {
@@ -42,10 +41,9 @@ const useWalletList = () => {
     const { client, ui } = useStore();
     const { is_dark_mode_on } = ui;
     const { accounts, loginid, is_crypto } = client;
-    const { getConfig, isSuccess } = useCurrencyConfig();
     const { data, ...rest } = useFetch('authorize', {
         payload: { authorize: accounts[loginid || ''].token },
-        options: { enabled: Boolean(loginid) && isSuccess, keepPreviousData: true },
+        options: { enabled: Boolean(loginid), keepPreviousData: true },
     });
     const { data: balance_data } = useFetch('balance', { payload: { account: 'all' } });
 
@@ -59,15 +57,11 @@ const useWalletList = () => {
         const modified_wallets =
             wallets?.map(wallet => {
                 const currency = wallet?.currency || 'USD';
-                const currency_config = getConfig(currency);
-                const is_crypto_currency = currency_config?.is_crypto;
-                const is_fiat = currency_config?.is_fiat;
-                // uncomment when display_code will be in currency_config
-                // const currency_display_code = currency_config?.display_code || '';
-                const currency_display_code = '';
+                const is_crypto_currency = is_crypto(currency);
+                const is_fiat = !is_crypto_currency;
                 const icon = getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : currency, is_dark_mode_on);
                 const modal_icon = getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : currency, is_dark_mode_on, true);
-                const name = `${wallet.is_virtual ? 'Demo ' : ''}${currency_display_code} ${'Wallet'}`;
+                const name = `${wallet.is_virtual ? 'Demo ' : ''}${currency} ${'Wallet'}`;
 
                 return {
                     ...wallet,
@@ -86,7 +80,6 @@ const useWalletList = () => {
                     is_virtual: Boolean(wallet.is_virtual),
                     is_crypto: is_crypto_currency,
                     is_fiat,
-                    currency_display_code,
                     icon,
                     modal_icon,
                     name,
@@ -105,7 +98,7 @@ const useWalletList = () => {
 
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });
-    }, [balance_data?.balance?.accounts, data?.authorize?.account_list, getConfig, is_crypto, is_dark_mode_on]);
+    }, [balance_data?.balance?.accounts, data?.authorize?.account_list, is_crypto, is_dark_mode_on]);
 
     return {
         ...rest,

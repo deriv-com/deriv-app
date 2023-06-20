@@ -2,6 +2,7 @@
 import React from 'react';
 import { WS, Jurisdiction, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
 import Unsupported from 'Components/poi/status/unsupported';
+import CountrySelector from 'Components/poi/poi-country-selector';
 import OnfidoUpload from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
 import { IdvDocSubmitOnSignup } from 'Components/poi/poi-form-on-signup/idv-doc-submit-on-signup/idv-doc-submit-on-signup';
@@ -12,17 +13,25 @@ const POISubmissionForMT5 = ({
     account_settings,
     getChangeableFields,
     idv,
+    is_eu_user,
     is_idv_disallowed,
+    is_from_external,
     onfido,
     onStateChange,
     refreshNotifications,
+    residence_list,
     citizen_data,
     has_idv_error,
     jurisdiction_selected_shortcode,
 }) => {
     const [submission_status, setSubmissionStatus] = React.useState(); // submitting
     const [submission_service, setSubmissionService] = React.useState();
+    const [selected_country, setSelectedCountry] = React.useState({});
     React.useEffect(() => {
+        if (is_eu_user) {
+            setSubmissionStatus(submission_status_code.selecting);
+            return;
+        }
         if (citizen_data) {
             const { submissions_left: idv_submissions_left } = idv;
             const { submissions_left: onfido_submissions_left } = onfido;
@@ -42,7 +51,26 @@ const POISubmissionForMT5 = ({
             }
             setSubmissionStatus(submission_status_code.submitting);
         }
-    }, [citizen_data]);
+    }, [citizen_data, is_eu_user]);
+
+    const handleSelectionNext = () => {
+        if (Object.keys(selected_country).length) {
+            const { submissions_left: idv_submissions_left } = idv;
+            const { submissions_left: onfido_submissions_left } = onfido;
+            const is_idv_supported = selected_country.identity.services.idv.is_country_supported;
+            const is_onfido_supported =
+                selected_country.identity.services.onfido.is_country_supported && selected_country.value !== 'ng';
+
+            if (is_idv_supported && Number(idv_submissions_left) > 0 && !is_idv_disallowed) {
+                setSubmissionService(service_code.idv);
+            } else if (onfido_submissions_left && is_onfido_supported) {
+                setSubmissionService(service_code.onfido);
+            } else {
+                setSubmissionService(service_code.manual);
+            }
+            setSubmissionStatus(submission_status_code.submitting);
+        }
+    };
 
     const handlePOIComplete = () => {
         if (onStateChange && typeof onStateChange === 'function') {
@@ -95,48 +123,60 @@ const POISubmissionForMT5 = ({
             handlePOIComplete();
         });
     };
-
-    if (submission_status === submission_status_code.submitting) {
-        switch (submission_service) {
-            case service_code.idv:
-                return (
-                    <IdvDocSubmitOnSignup
-                        citizen_data={citizen_data}
-                        onNext={handleIdvSubmit}
-                        has_idv_error={has_idv_error}
-                        getChangeableFields={getChangeableFields}
-                        account_settings={account_settings}
-                    />
-                );
-            case service_code.onfido: {
-                const country_code = citizen_data.value;
-                const doc_obj = citizen_data.identity.services.onfido.documents_supported;
-                const documents_supported = Object.keys(doc_obj).map(d => doc_obj[d].display_name);
-
-                return (
-                    <AutoHeightWrapper default_height={620} height_offset={50}>
-                        {({ setRef, height }) => (
-                            <div ref={setRef} style={{ height }}>
-                                <OnfidoUpload
-                                    account_settings={account_settings}
-                                    getChangeableFields={getChangeableFields}
-                                    country_code={country_code}
-                                    documents_supported={documents_supported}
-                                    handleViewComplete={handlePOIComplete}
-                                    height={height}
-                                />
-                            </div>
-                        )}
-                    </AutoHeightWrapper>
-                );
-            }
-            case service_code.manual:
-                return <Unsupported is_mt5 handlePOIforMT5Complete={handlePOIComplete} />;
-            default:
-                return null;
+    switch (submission_status) {
+        case submission_status_code.selecting: {
+            return (
+                <CountrySelector
+                    handleSelectionNext={handleSelectionNext}
+                    is_from_external={is_from_external}
+                    residence_list={residence_list}
+                    selected_country={selected_country}
+                    setSelectedCountry={setSelectedCountry}
+                />
+            );
         }
-    } else {
-        return null;
+        case submission_status_code.submitting: {
+            switch (submission_service) {
+                case service_code.idv:
+                    return (
+                        <IdvDocSubmitOnSignup
+                            citizen_data={citizen_data}
+                            onNext={handleIdvSubmit}
+                            has_idv_error={has_idv_error}
+                            getChangeableFields={getChangeableFields}
+                            account_settings={account_settings}
+                        />
+                    );
+                case service_code.onfido: {
+                    const country_code = citizen_data.value;
+                    const doc_obj = citizen_data.identity.services.onfido.documents_supported;
+                    const documents_supported = Object.keys(doc_obj).map(d => doc_obj[d].display_name);
+
+                    return (
+                        <AutoHeightWrapper default_height={620} height_offset={50}>
+                            {({ setRef, height }) => (
+                                <div ref={setRef} style={{ height }}>
+                                    <OnfidoUpload
+                                        account_settings={account_settings}
+                                        getChangeableFields={getChangeableFields}
+                                        country_code={country_code}
+                                        documents_supported={documents_supported}
+                                        handleViewComplete={handlePOIComplete}
+                                        height={height}
+                                    />
+                                </div>
+                            )}
+                        </AutoHeightWrapper>
+                    );
+                }
+                case service_code.manual:
+                    return <Unsupported is_mt5 handlePOIforMT5Complete={handlePOIComplete} />;
+                default:
+                    return null;
+            }
+        }
+        default:
+            return null;
     }
 };
 

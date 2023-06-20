@@ -680,6 +680,78 @@
             grid-template-rows: minmax(20rem, 1fr);
         }
 
+        .proof-of-identity {
+            &__container {
+                min-height: 50vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+
+                @include mobile {
+                    min-height: unset;
+                    overflow-y: scroll;
+                    justify-content: center;
+                }
+
+                .external-dropdown {
+                    .dc-dropdown-list {
+                        z-index: 5;
+                    }
+                }
+            }
+
+            &__country-text {
+                margin-bottom: 1.6rem;
+            }
+
+            &__header {
+                margin: 5.4rem 0 1.6rem;
+
+                @include mobile {
+                    margin: 2.4rem 0 0.8rem;
+                }
+            }
+
+            &__fieldset {
+                width: 39.5rem;
+
+                @include mobile {
+                    width: 94%;
+                    margin: 0.4rem 0 3.2rem;
+                }
+
+                .country-dropdown {
+                    min-height: 35.2rem;
+                }
+            }
+
+            &__footer {
+                height: 8rem;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                display: flex;
+                width: 100%;
+                padding: 1.6rem 2.4rem;
+                align-items: center;
+                justify-content: flex-end;
+                z-index: 4;
+                border-radius: 0 4px 4px 0;
+                border-top: 0.1rem solid var(--general-section-1);
+                background-color: var(--general-main-1);
+
+                @include mobile {
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: flex-end;
+                    position: fixed;
+                    bottom: 0;
+                }
+            }
+        }
+
         .manual-poi {
             margin: auto;
             width: max-content;

@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletHeader from '..';
+import { TWalletAccount } from 'Types';
 
 const mockedRootStore = mockStore({});
 
@@ -13,19 +14,23 @@ jest.mock('@deriv/account', () => ({
 }));
 
 describe('<WalletHeader />', () => {
+    let mocked_props: TWalletAccount;
+    beforeEach(() => {
+        mocked_props = {
+            is_demo: false,
+            currency: 'USD',
+            landing_company_name: 'svg',
+            balance: 10000,
+            loginid: 'CR123123',
+            landing_company_shortcode: 'svg',
+        };
+    });
     describe('Check currency card', () => {
         it('Should render right currency card for DEMO', () => {
-            const mocked_data = {
-                is_demo: true,
-                currency: 'USD',
-                landing_company_name: 'svg',
-                balance: 10000,
-                loginid: 'CR123123',
-                landing_company_shortcode: 'svg',
-            };
+            mocked_props.is_demo = true;
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader wallet_account={mocked_data} />
+                    <WalletHeader wallet_account={mocked_props} />
                 </StoreProvider>
             );
             const currency_card = screen.queryByTestId(`dt_demo`);
@@ -34,58 +39,38 @@ describe('<WalletHeader />', () => {
         });
 
         it('Should render right currency card for REAL SVG fiat', () => {
-            const mocked_data = {
-                is_demo: false,
-                currency: 'AUD',
-                landing_company_name: 'svg',
-                balance: 10000,
-                loginid: 'CR123123',
-                landing_company_shortcode: 'svg',
-            };
+            mocked_props.currency = 'AUD';
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader wallet_account={mocked_data} />
+                    <WalletHeader wallet_account={mocked_props} />
                 </StoreProvider>
             );
-            const currency_card = screen.queryByTestId(`dt_${mocked_data.currency.toLowerCase()}`);
-
+            const currency_card = screen.queryByTestId(`dt_${mocked_props.currency.toLowerCase()}`);
             expect(currency_card).toBeInTheDocument();
         });
 
         it('Should render right currency card for REAL SVG crypto', () => {
-            const mocked_data = {
-                is_demo: false,
-                currency: 'ETH',
-                landing_company_name: 'svg',
-                balance: 10000,
-                loginid: 'CR123123',
-                landing_company_shortcode: 'svg',
-            };
+            mocked_props.currency = 'ETH';
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader wallet_account={mocked_data} />
+                    <WalletHeader wallet_account={mocked_props} />
                 </StoreProvider>
             );
-            const currency_card = screen.queryByTestId(`dt_${mocked_data.currency.toLowerCase()}`);
+            const currency_card = screen.queryByTestId(`dt_${mocked_props.currency.toLowerCase()}`);
 
             expect(currency_card).toBeInTheDocument();
         });
 
         it('Should render right currency card for REAL MALTA fiat', () => {
-            const mocked_data = {
-                is_demo: false,
-                currency: 'EUR',
-                landing_company_name: 'malta',
-                balance: 10000,
-                loginid: 'CR123123',
-                landing_company_shortcode: 'malta',
-            };
+            mocked_props.currency = 'ETH';
+            mocked_props.landing_company_shortcode = 'malta';
+            mocked_props.landing_company_name = 'malta';
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader wallet_account={mocked_data} />
+                    <WalletHeader wallet_account={mocked_props} />
                 </StoreProvider>
             );
-            const currency_card = screen.queryByTestId(`dt_${mocked_data.currency.toLowerCase()}`);
+            const currency_card = screen.queryByTestId(`dt_${mocked_props.currency.toLowerCase()}`);
 
             expect(currency_card).toBeInTheDocument();
         });
@@ -93,17 +78,13 @@ describe('<WalletHeader />', () => {
 
     describe('Check balance', () => {
         it('Should render right balance with balance as props', () => {
-            const mocked_data = {
-                is_demo: false,
-                currency: 'EUR',
-                landing_company_name: 'malta',
-                balance: 2345.56,
-                loginid: 'CR123123',
-                landing_company_shortcode: 'malta',
-            };
+            mocked_props.balance = 2345.56;
+            mocked_props.currency = 'EUR';
+            mocked_props.landing_company_shortcode = 'malta';
+            mocked_props.landing_company_name = 'malta';
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader wallet_account={mocked_data} />
+                    <WalletHeader wallet_account={mocked_props} />
                 </StoreProvider>
             );
             const balance_label = screen.getByText('2,345.56 EUR');
@@ -112,20 +93,16 @@ describe('<WalletHeader />', () => {
         });
 
         it('Should render balance === 0.00', () => {
-            const mocked_data = {
-                is_demo: false,
-                currency: 'EUR',
-                landing_company_name: 'malta',
-                balance: 0,
-                loginid: 'CR123123',
-                landing_company_shortcode: 'malta',
-            };
+            mocked_props.balance = 0;
+            mocked_props.currency = 'EUR';
+            mocked_props.landing_company_shortcode = 'malta';
+            mocked_props.landing_company_name = 'malta';
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader wallet_account={mocked_data} />
+                    <WalletHeader wallet_account={mocked_props} />
                 </StoreProvider>
             );
-            const balance_label = screen.queryByText(`0.00 ${mocked_data.currency}`);
+            const balance_label = screen.queryByText(`0.00 ${mocked_props.currency}`);
 
             expect(balance_label).toBeInTheDocument();
         });
@@ -133,17 +110,12 @@ describe('<WalletHeader />', () => {
 
     describe('Check buttons', () => {
         it('Buttons collapsed', () => {
-            const mocked_data = {
-                is_demo: true,
-                currency: 'EUR',
-                landing_company_name: 'svg',
-                balance: 0,
-                loginid: 'CR123123',
-                landing_company_shortcode: 'svg',
-            };
+            mocked_props.is_demo = true;
+            mocked_props.currency = 'EUR';
+            mocked_props.balance = 0;
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader wallet_account={mocked_data} />
+                    <WalletHeader wallet_account={mocked_props} />
                 </StoreProvider>
             );
 
@@ -153,14 +125,10 @@ describe('<WalletHeader />', () => {
         });
 
         it('Buttons uncollapsed', () => {
-            const mocked_data = {
-                is_demo: true,
-                currency: 'EUR',
-                landing_company_name: 'svg',
-                balance: 0,
-                loginid: 'CRW1231',
-                landing_company_shortcode: 'svg',
-            };
+            mocked_props.is_demo = true;
+            mocked_props.currency = 'EUR';
+            mocked_props.balance = 0;
+            mocked_props.loginid = 'CRW1231';
 
             const mocked_store = mockStore({
                 client: {
@@ -170,7 +138,7 @@ describe('<WalletHeader />', () => {
 
             render(
                 <StoreProvider store={mocked_store}>
-                    <WalletHeader wallet_account={mocked_data} />
+                    <WalletHeader wallet_account={mocked_props} />
                 </StoreProvider>
             );
 
@@ -180,18 +148,13 @@ describe('<WalletHeader />', () => {
         });
 
         it('Arrow button click and switchAccount should be called', async () => {
-            const mocked_data = {
-                is_demo: true,
-                currency: 'EUR',
-                landing_company_name: 'svg',
-                balance: 0,
-                loginid: 'CRW1231',
-                landing_company_shortcode: 'svg',
-            };
-
+            mocked_props.is_demo = true;
+            mocked_props.currency = 'EUR';
+            mocked_props.balance = 0;
+            mocked_props.loginid = 'CRW1231';
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader wallet_account={mocked_data} />
+                    <WalletHeader wallet_account={mocked_props} />
                 </StoreProvider>
             );
 
@@ -204,14 +167,10 @@ describe('<WalletHeader />', () => {
         });
 
         it('Check buttons for demo', () => {
-            const mocked_data = {
-                is_demo: true,
-                currency: 'EUR',
-                landing_company_name: 'svg',
-                balance: 0,
-                loginid: 'VRW123123',
-                landing_company_shortcode: 'svg',
-            };
+            mocked_props.is_demo = true;
+            mocked_props.currency = 'EUR';
+            mocked_props.balance = 0;
+            mocked_props.loginid = 'VRW123123';
 
             const mocked_store = mockStore({
                 client: {
@@ -221,7 +180,7 @@ describe('<WalletHeader />', () => {
 
             render(
                 <StoreProvider store={mocked_store}>
-                    <WalletHeader wallet_account={mocked_data} />
+                    <WalletHeader wallet_account={mocked_props} />
                 </StoreProvider>
             );
 
@@ -235,14 +194,9 @@ describe('<WalletHeader />', () => {
         });
 
         it('Check buttons for real', () => {
-            const mocked_data = {
-                is_demo: false,
-                currency: 'EUR',
-                landing_company_name: 'svg',
-                balance: 1230,
-                loginid: 'CRW123123',
-                landing_company_shortcode: 'svg',
-            };
+            mocked_props.currency = 'EUR';
+            mocked_props.balance = 1230;
+            mocked_props.loginid = 'CRW123123';
 
             const mocked_store = mockStore({
                 client: {
@@ -252,7 +206,7 @@ describe('<WalletHeader />', () => {
 
             render(
                 <StoreProvider store={mocked_store}>
-                    <WalletHeader wallet_account={mocked_data} />
+                    <WalletHeader wallet_account={mocked_props} />
                 </StoreProvider>
             );
 

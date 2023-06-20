@@ -4,6 +4,7 @@ import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import Wallet from '../wallet';
+import { TWalletAccount } from 'Types';
 
 const mockedRootStore = mockStore({
     modules: {
@@ -26,8 +27,9 @@ jest.mock('./../currency-switcher-container', () => jest.fn(({ children }) => <d
 jest.mock('./../../wallet-content', () => jest.fn(() => <span>wallet test content</span>));
 
 describe('<Wallets />', () => {
-    it('Check class for NOT demo', () => {
-        const mocked_data = {
+    let mocked_props: TWalletAccount;
+    beforeEach(() => {
+        mocked_props = {
             is_demo: false,
             currency: 'USD',
             landing_company_name: 'svg',
@@ -35,28 +37,22 @@ describe('<Wallets />', () => {
             loginid: 'CR123123',
             landing_company_shortcode: 'svg',
         };
+    });
+    it('Check class for NOT demo', () => {
         const { container } = render(
             <StoreProvider store={mockedRootStore}>
-                <Wallet wallet_account={mocked_data} />
+                <Wallet wallet_account={mocked_props} />
             </StoreProvider>
         );
-
         expect(container.childNodes[0]).toHaveClass('wallet');
         expect(container.childNodes[0]).not.toHaveClass('wallet__demo');
     });
 
     it('Check class for demo', () => {
-        const mocked_data = {
-            is_demo: true,
-            currency: 'USD',
-            landing_company_name: 'svg',
-            balance: 10000,
-            loginid: 'CR123123',
-            landing_company_shortcode: 'svg',
-        };
+        mocked_props.is_demo = true;
         const { container } = render(
             <StoreProvider store={mockedRootStore}>
-                <Wallet wallet_account={mocked_data} />
+                <Wallet wallet_account={mocked_props} />
             </StoreProvider>
         );
 
@@ -65,17 +61,10 @@ describe('<Wallets />', () => {
     });
 
     it('Should show content when button is clicked ', async () => {
-        const mocked_data = {
-            is_demo: true,
-            currency: 'USD',
-            landing_company_name: 'svg',
-            balance: 10000,
-            loginid: 'CR123123',
-            landing_company_shortcode: 'svg',
-        };
+        mocked_props.is_demo = true;
         render(
             <StoreProvider store={mockedRootStore}>
-                <Wallet wallet_account={mocked_data} />
+                <Wallet wallet_account={mocked_props} />
             </StoreProvider>
         );
 
@@ -89,21 +78,13 @@ describe('<Wallets />', () => {
     });
 
     it('Check for demo wallet header', () => {
-        const mocked_data = {
-            is_demo: true,
-            currency: 'USD',
-            landing_company_name: 'svg',
-            balance: 10000,
-            loginid: 'CR123123',
-            landing_company_shortcode: 'svg',
-        };
+        mocked_props.is_demo = true;
         render(
             <StoreProvider store={mockedRootStore}>
-                <Wallet wallet_account={mocked_data} />
+                <Wallet wallet_account={mocked_props} />
             </StoreProvider>
         );
         const currency_card = screen.queryByTestId(`dt_demo`);
-
         expect(currency_card).toBeInTheDocument();
     });
 });

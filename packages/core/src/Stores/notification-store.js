@@ -583,31 +583,28 @@ export default class NotificationStore extends BaseStore {
 
     showCompletedOrderNotification(advertiser_name, order_id) {
         const notification_key = `p2p_order_${order_id}`;
+        const { setP2POrderTab, navigateToOrderDetails } = this.p2p_order_props;
+        const is_p2p_route = window.location.pathname.includes(routes.cashier_p2p);
+
+        const notification_redirect_action = is_p2p_route
+            ? {
+                  onClick: () => {
+                      setP2POrderTab(order_id);
+                      navigateToOrderDetails(order_id);
+                      this.setP2POrderProps({ ...this.p2p_order_props, order_id });
+
+                      if (this.is_notifications_visible) this.toggleNotificationsModal();
+                      this.refreshNotifications();
+                  },
+                  text: localize('Give feedback'),
+              }
+            : {
+                  route: `${routes.p2p_orders}?order=${order_id}`,
+                  text: localize('Give feedback'),
+              };
 
         this.addNotificationMessage({
-            action:
-                this.p2p_order_props?.order_id === order_id
-                    ? {
-                          onClick: () => {
-                              this.p2p_order_props.setIsRatingModalOpen(true);
-                              if (this.is_notifications_visible) this.toggleNotificationsModal();
-                              this.refreshNotifications();
-                          },
-                          text: localize('Give feedback'),
-                      }
-                    : {
-                          onClick: () => {
-                              this.p2p_order_props.setP2POrderTab(order_id);
-                              this.p2p_order_props.navigateToOrderDetails(order_id);
-                              this.setP2POrderProps({
-                                  ...this.p2p_order_props,
-                                  order_id,
-                              });
-                              if (this.is_notifications_visible) this.toggleNotificationsModal();
-                              this.refreshNotifications();
-                          },
-                          text: localize('Give feedback'),
-                      },
+            action: notification_redirect_action,
             header: <Localize i18n_default_text='Your order {{order_id}} is complete' values={{ order_id }} />,
             key: notification_key,
             message: (

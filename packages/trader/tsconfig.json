@@ -13,6 +13,7 @@
             "Services/*": ["src/Services/*"],
             "Stores/*": ["src/Stores/*"],
             "Translations/*": ["src/public/translations/*"],
+            "Types": ["src/Types"],
             "Utils/*": ["src/Utils/*"],
             "@deriv/*": ["../*/src"]
         },

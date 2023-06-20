@@ -6,7 +6,7 @@ import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-field
 import { getContractTypePosition } from 'Constants/contract';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
-import { TProposalTypeInfo } from '../../../../types';
+import { TProposalTypeInfo } from 'Types';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 
 const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) => {

@@ -172,8 +172,8 @@ const AppNotificationMessages = ({
 
     const notifications_sublist =
         window.location.pathname === routes.cashier_deposit
-            ? filtered_excluded_notifications.filter(
-                  message => message.key.includes('switched_to_real') || maintenance_notifications.includes(message.key)
+            ? filtered_excluded_notifications.filter(message =>
+                  ['switched_to_real', ...maintenance_notifications].includes(message.key)
               )
             : filtered_excluded_notifications.slice(0, notifications_limit);
 

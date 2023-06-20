@@ -8,7 +8,7 @@ import { GetAccountStatus } from '@deriv/api-types';
 type TPoiPoaDocsSubmitted = {
     account_status: GetAccountStatus;
     onClickOK: () => void;
-    jurisdiction_selected_shortcode: string;
+    jurisdiction_selected_shortcode: typeof Jurisdiction[keyof typeof Jurisdiction];
     has_created_account_for_selected_jurisdiction: boolean;
     openPasswordModal: () => void;
     updateAccountStatus: () => Promise<void>;
@@ -43,9 +43,11 @@ const PoiPoaDocsSubmitted = ({
     const getDescription = () => {
         const { manual_status, poi_verified_for_vanuatu_maltainvest, poi_verified_for_bvi_labuan, poa_pending } =
             getAuthenticationStatusInfo(account_status);
-        const is_vanuatu_or_maltainvest_selected = [Jurisdiction.VANUATU, Jurisdiction.MALTA_INVEST].includes(
-            jurisdiction_selected_shortcode
-        );
+
+        const is_vanuatu_or_maltainvest_selected =
+            jurisdiction_selected_shortcode === Jurisdiction.VANUATU ||
+            jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST;
+
         if (
             (is_vanuatu_or_maltainvest_selected && poi_verified_for_vanuatu_maltainvest && poa_pending) ||
             (!is_vanuatu_or_maltainvest_selected && poi_verified_for_bvi_labuan && poa_pending) ||

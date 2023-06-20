@@ -1,7 +1,6 @@
 import React from 'react';
 import { PlatformContext } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { TPlatformContext } from 'Types';
 import { TCoreStore } from 'Stores/index';
 import DemoMessage from 'Components/demo-message';
 import ProofOfIncomeContainer from './proof-of-income-container';
@@ -12,7 +11,7 @@ type TProofOfIncome = {
     refreshNotifications: () => void;
 };
 const ProofOfIncome = ({ is_virtual, is_switching, refreshNotifications }: TProofOfIncome) => {
-    const { is_appstore } = React.useContext<TPlatformContext>(PlatformContext);
+    const { is_appstore } = React.useContext(PlatformContext);
     if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button />;
 
     return (

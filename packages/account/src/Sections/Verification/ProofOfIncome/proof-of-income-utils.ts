@@ -1,18 +1,14 @@
 import { localize } from '@deriv/translations';
 
-export type TPoincStatusCodes = Readonly<Record<'none' | 'pending' | 'rejected' | 'verified' | 'locked', string>>;
-
-export const income_status_codes: TPoincStatusCodes = {
+export const income_status_codes = {
     none: 'none',
     pending: 'pending',
     rejected: 'rejected',
     verified: 'verified',
     locked: 'locked',
-};
+} as const;
 
-type TPoincDocumentList = { text: string; value: string }[];
-
-export const poinc_documents_list: TPoincDocumentList = [
+export const poinc_documents_list = [
     { text: localize('Tax return'), value: 'tax_return' },
     { text: localize('Employment contract'), value: 'employment_contract' },
     { text: localize('Payslip'), value: 'payslip' },
@@ -22,4 +18,4 @@ export const poinc_documents_list: TPoincDocumentList = [
     { text: localize('Memorandum'), value: 'memorandum' },
     { text: localize('Authorisation letter'), value: 'authorisation_letter' },
     { text: localize('Declarations'), value: 'declarations' },
-];
+] as const;

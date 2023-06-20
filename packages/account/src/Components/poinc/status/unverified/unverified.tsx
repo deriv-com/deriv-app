@@ -2,10 +2,10 @@ import React from 'react';
 import { Button, Icon } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import IconMessageContent from 'Components/icon-message-content';
-import { TPoincStatusCodes } from 'Sections/Verification/ProofOfIncome/proof-of-income-utils';
+import { income_status_codes } from 'Sections/Verification/ProofOfIncome/proof-of-income-utils';
 
 type TPoincUnverified = {
-    onReSubmit: (status: keyof TPoincStatusCodes) => void;
+    onReSubmit: (status: keyof typeof income_status_codes) => void;
 };
 
 export const PoincUnverified = ({ onReSubmit }: TPoincUnverified) => (

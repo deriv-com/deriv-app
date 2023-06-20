@@ -1,4 +1,6 @@
-export const populateVerificationStatus = account_status => {
+import { GetAccountStatus } from '@deriv/api-types';
+
+export const populateVerificationStatus = (account_status: DeepRequired<GetAccountStatus>) => {
     const { attempts, document, identity, income, needs_verification } = account_status.authentication;
     const has_poa = !(document && document.status === 'none');
     const has_poi = !(identity && identity.status === 'none');

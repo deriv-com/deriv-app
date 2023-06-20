@@ -19,7 +19,7 @@ const Accumulator = observer(() => {
         return acc;
     }, []);
     const has_error_or_not_loaded =
-        proposal_info?.ACCU?.has_error ?? !proposal_info?.ACCU?.id ?? isEmptyObject(proposal_info);
+        proposal_info?.ACCU?.has_error || !proposal_info?.ACCU?.id || isEmptyObject(proposal_info);
     if (!accumulator_range_list?.length) return null;
     return (
         <Fieldset

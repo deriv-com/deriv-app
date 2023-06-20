@@ -19,7 +19,7 @@ const RadioGroupOptionsModal = observer(({ is_open, modal_title, toggleModal }: 
     // Fix to prevent iOS from zooming in erratically on quick taps
     usePreventIOSZoom();
     const has_error_or_not_loaded =
-        proposal_info?.ACCU?.has_error ?? !proposal_info?.ACCU?.id ?? isEmptyObject(proposal_info);
+        proposal_info?.ACCU?.has_error || !proposal_info?.ACCU?.id || isEmptyObject(proposal_info);
 
     return (
         <React.Fragment>

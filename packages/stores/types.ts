@@ -242,6 +242,10 @@ type TClientStore = {
     has_any_real_account: boolean;
     real_account_creation_unlock_date: number;
     setPrevAccountType: (account_type: string) => void;
+    should_restrict_bvi_account_creation: boolean;
+    should_restrict_vanuatu_account_creation: boolean;
+    setAccountSettings: (get_settings_response: GetSettings) => void;
+    updateMT5Status: () => void;
 };
 
 type TCommonStoreError = {
@@ -270,6 +274,7 @@ type TCommonStore = {
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
     is_language_changing: boolean;
+    setAppstorePlatform: (platform?: string) => void;
 };
 
 type TUiStore = {

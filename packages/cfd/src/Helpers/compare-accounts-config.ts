@@ -1,4 +1,10 @@
-import { TIconData, TAvailableCFDAccounts, TModifiedTradingPlatformAvailableAccount } from '../Components/props.types';
+import { CFD_PLATFORMS } from '@deriv/shared';
+import {
+    TIconData,
+    TAvailableCFDAccounts,
+    TModifiedTradingPlatformAvailableAccount,
+    TDetailsOfEachMT5Loginid,
+} from '../Components/props.types';
 
 const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvailableAccount): TIconData[] => {
     switch (trading_platforms.market_type) {
@@ -41,16 +47,16 @@ const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvai
             ];
     }
 };
-const getAccountCardTitle = (shortcode: string) => {
+const getAccountCardTitle = (shortcode: string, is_demo: boolean) => {
     switch (shortcode) {
         case 'synthetic_svg':
-            return 'Derived - SVG';
+            return is_demo ? 'Derived - Demo' : 'Derived - SVG';
         case 'synthetic_bvi':
             return 'Derived - BVI';
         case 'synthetic_vanuatu':
             return 'Derived - Vanuatu';
         case 'financial_svg':
-            return 'Financial - SVG';
+            return is_demo ? 'Financial - Demo' : 'Financial - SVG';
         case 'financial_bvi':
             return 'Financial - BVI';
         case 'financial_vanuatu':
@@ -58,7 +64,7 @@ const getAccountCardTitle = (shortcode: string) => {
         case 'financial_labuan':
             return 'Financial - Labuan';
         case 'all_svg':
-            return 'Swap-Free - SVG';
+            return is_demo ? 'Swap-Free - Demo' : 'Swap-Free - SVG';
         case 'dxtrade':
             return 'Deriv X';
         default:
@@ -246,6 +252,88 @@ const prepareDxtradeData = (
         platform: 'dxtrade',
     };
 };
+const getAccountVerficationStatus = (
+    jurisdiction_shortcode: string,
+    poi_or_poa_not_submitted: boolean,
+    poi_acknowledged_for_vanuatu_maltainvest: boolean,
+    poi_acknowledged_for_bvi_labuan: boolean,
+    poa_acknowledged: boolean,
+    poa_pending: boolean,
+    should_restrict_bvi_account_creation: boolean,
+    should_restrict_vanuatu_account_creation: boolean,
+    is_demo: boolean,
+    has_submitted_personal_details: boolean
+) => {
+    switch (jurisdiction_shortcode) {
+        case 'synthetic_svg':
+        case 'financial_svg':
+        case 'all_svg':
+            return true;
+        case 'synthetic_bvi':
+        case 'financial_bvi':
+            if (
+                poi_acknowledged_for_bvi_labuan &&
+                !poi_or_poa_not_submitted &&
+                !should_restrict_bvi_account_creation &&
+                has_submitted_personal_details &&
+                poa_acknowledged
+            ) {
+                return true;
+            }
+            return false;
+        case 'synthetic_vanuatu':
+        case 'financial_vanuatu':
+            if (
+                poi_acknowledged_for_vanuatu_maltainvest &&
+                !poi_or_poa_not_submitted &&
+                !should_restrict_vanuatu_account_creation &&
+                has_submitted_personal_details &&
+                poa_acknowledged
+            ) {
+                return true;
+            }
+            return false;
+
+        case 'financial_labuan':
+            if (poi_acknowledged_for_bvi_labuan && poa_acknowledged && has_submitted_personal_details) {
+                return true;
+            }
+            return false;
+
+        case 'financial_maltainvest':
+            if ((poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) || is_demo) {
+                return true;
+            }
+            return false;
+        default:
+            return false;
+    }
+};
+
+const isMt5AccountAdded = (current_list: Record<string, TDetailsOfEachMT5Loginid>, item: string, is_demo: boolean) =>
+    Object.entries(current_list).some(([key, value]) => {
+        const [market, type] = item.split('_');
+        const current_account_type = is_demo ? 'demo' : 'real';
+        return (
+            value.market_type === market &&
+            value.landing_company_short === type &&
+            value.account_type === current_account_type &&
+            key.includes(CFD_PLATFORMS.MT5)
+        );
+    });
+
+const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
+    const swap_free_demo_accounts = available_accounts.filter(
+        item => item.market_type === 'all' && item.shortcode === 'svg' && item.platform === CFD_PLATFORMS.MT5
+    );
+    const financial_demo_accounts = available_accounts.filter(
+        item => item.market_type === 'financial' && item.shortcode === 'svg'
+    );
+    const gaming_demo_accounts = available_accounts.filter(
+        item => item.market_type === 'gaming' && item.shortcode === 'svg'
+    );
+    return [...gaming_demo_accounts, ...financial_demo_accounts, ...swap_free_demo_accounts];
+};
 
 export {
     getHighlightedIconLabel,
@@ -260,4 +348,7 @@ export {
     prepareDxtradeData,
     getHeaderColor,
     platfromsHeaderLabel,
+    getAccountVerficationStatus,
+    isMt5AccountAdded,
+    getMT5DemoData,
 };

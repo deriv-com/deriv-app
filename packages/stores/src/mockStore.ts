@@ -197,6 +197,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_any_real_account: false,
             real_account_creation_unlock_date: 0,
             setPrevAccountType: jest.fn(),
+            should_restrict_bvi_account_creation: false,
+            should_restrict_vanuatu_account_creation: false,
+            setAccountSettings: jest.fn(),
+            updateMT5Status: jest.fn(),
         },
         common: {
             error: {
@@ -222,6 +226,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_network_online: false,
             server_time: undefined,
             is_language_changing: false,
+            setAppstorePlatform: jest.fn(),
         },
         ui: {
             app_contents_scroll_ref: {

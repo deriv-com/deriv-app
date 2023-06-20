@@ -9,21 +9,15 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(() => false),
 }));
 
-jest.mock('@deriv/translations', () => {
-    const original_module = jest.requireActual('@deriv/translations');
-    return {
-        ...original_module,
-        getAllowedLanguages: jest.fn(() => ({ lang_1: 'Test Lang 1', lang_2: 'Test Lang 2' })),
-    };
-});
+jest.mock('@deriv/translations', () => ({
+    ...jest.requireActual('@deriv/translations'),
+    getAllowedLanguages: jest.fn(() => ({ lang_1: 'Test Lang 1', lang_2: 'Test Lang 2' })),
+}));
 
-jest.mock('@deriv/components', () => {
-    const original_module = jest.requireActual('@deriv/components');
-    return {
-        ...original_module,
-        Icon: jest.fn(() => <div>Flag Icon</div>),
-    };
-});
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    Icon: jest.fn(() => <div>Flag Icon</div>),
+}));
 
 jest.mock('Stores/connect.js', () => ({
     __esModule: true,
@@ -62,6 +56,7 @@ describe('LanguageSettings', () => {
         expect(lang_2).toBeInTheDocument();
         expect(/(active)/i.test(lang_2.className)).toBeFalsy();
     });
+
     it('should trigger language change', () => {
         render(<LanguageSettings {...mock_props} />);
 
@@ -70,6 +65,7 @@ describe('LanguageSettings', () => {
 
         expect(mock_props.changeSelectedLanguage).toHaveBeenCalled();
     });
+
     it('should redirect for mobile', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         Object.defineProperty(window, 'location', {

@@ -1,5 +1,6 @@
 import React from 'react';
 import './progress-bar-onboarding.scss';
+import classNames from 'classnames';
 
 type TProgressBarOnboarding = {
     step: number;
@@ -9,8 +10,6 @@ type TProgressBarOnboarding = {
 };
 
 const ProgressBarOnboarding = ({ step, amount_of_steps, setStep, is_transition }: TProgressBarOnboarding) => {
-    const transition_class = is_transition ? 'progress-bar-transition' : '';
-
     return (
         <div className='progress-bar'>
             {amount_of_steps.map((st, index) => {
@@ -20,11 +19,11 @@ const ProgressBarOnboarding = ({ step, amount_of_steps, setStep, is_transition }
                     <div
                         key={st}
                         onClick={() => setStep(index + 1)}
-                        className={
-                            active
-                                ? `progress-bar-rectangle ${transition_class}`
-                                : `progress-bar-circle ${transition_class}`
-                        }
+                        className={classNames({
+                            'progress-bar-rectangle': active,
+                            'progress-bar-circle': !active,
+                            'progress-bar-transition': is_transition,
+                        })}
                     />
                 );
             })}

@@ -228,6 +228,10 @@ export default class NotificationStore extends BaseStore {
             this.notification_messages = this.notification_messages.filter(
                 notification => notification.platform === 'Account'
             );
+        } else if (window.location.pathname === routes.trade || window.location.pathname === routes.bot) {
+            // TODO: Add BE flag to trigger the notification
+            this.addNotificationMessage(this.client_notifications.wallets_migrated);
+            this.addNotificationMessage(this.client_notifications.wallets_failed);
         } else if (window.location.pathname !== routes.cashier_p2p) {
             this.notification_messages = this.notification_messages.filter(notification => {
                 if (notification.platform === undefined || notification.platform.includes(getPathname())) {
@@ -336,9 +340,6 @@ export default class NotificationStore extends BaseStore {
             } = getStatusValidations(status || []);
 
             this.handlePOAAddressMismatchNotifications();
-
-            // TODO: Update logic when BE API is integrated [Wallets]
-            this.showSuccessWalletsUpgradeNotification();
 
             if (!has_enabled_two_fa && obj_total_balance.amount_real > 0) {
                 this.addNotificationMessage(this.client_notifications.two_f_a);
@@ -716,7 +717,7 @@ export default class NotificationStore extends BaseStore {
 
     setClientNotifications(client_data = {}) {
         const { ui } = this.root_store;
-        const { has_enabled_two_fa, setTwoFAChangedStatus } = this.root_store.client;
+        const { has_enabled_two_fa, setTwoFAChangedStatus, logout } = this.root_store.client;
         const two_fa_status = has_enabled_two_fa ? localize('enabled') : localize('disabled');
         const mx_mlt_custom_header = this.custom_notifications.mx_mlt_notification.header();
         const mx_mlt_custom_content = this.custom_notifications.mx_mlt_notification.main();
@@ -1495,6 +1496,34 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Submit proof of identity'),
                 },
             },
+            wallets_migrated: {
+                key: 'wallets_migrated',
+                header: localize('Your Wallets are ready'),
+                message: localize(
+                    'To complete the upgrade, please log out and log in again to add more accounts and make transactions with your Wallets.'
+                ),
+                action: {
+                    onClick: async () => {
+                        await logout();
+                    },
+                    text: localize('Log out'),
+                },
+                type: 'announce',
+            },
+            wallets_failed: {
+                key: 'wallets_failed',
+                header: localize('Sorry for the interruption'),
+                message: localize(
+                    "We're unable to complete with the Wallet upgrade. Please try again later or contact us via live chat."
+                ),
+                action: {
+                    onClick: async () => {
+                        window.LC_API.open_chat_window();
+                    },
+                    text: localize('Go to LiveChat'),
+                },
+                type: 'danger',
+            },
         };
 
         this.client_notifications = notifications;
@@ -1585,27 +1614,4 @@ export default class NotificationStore extends BaseStore {
             this.p2p_completed_orders = response?.p2p_order_list?.list || [];
         }
     }
-
-    showSuccessWalletsUpgradeNotification = () => {
-        const { client } = this.root_store;
-        const { logout } = client;
-        this.addNotificationMessage({
-            key: 'success_wallets_upgrade',
-            header: localize('Your Wallets are ready'),
-            message: localize(
-                'To complete the upgrade, please log out and log in again to add more accounts and make transactions with your Wallets.'
-            ),
-            action: {
-                onClick: async () => {
-                    await logout();
-                    this.removeNotificationMessage({
-                        key: this.client_notifications.failed_wallets_upgrade.key,
-                        should_show_again: false,
-                    });
-                },
-                text: localize('Log out'),
-            },
-            type: 'announce',
-        });
-    };
 }

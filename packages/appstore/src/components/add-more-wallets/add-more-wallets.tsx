@@ -10,7 +10,7 @@ const AddWallets = () => {
     const { data } = useDisplayAvailableWallets();
 
     return (
-        <div className='add-wallets'>
+        <div className='add-wallets' data-testid='dt-add-wallets'>
             <Text as='h2' size='l' color='prominent' align='left' weight='bolder'>
                 {localize('Add more Wallets')}
             </Text>

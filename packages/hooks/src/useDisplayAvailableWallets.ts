@@ -10,6 +10,8 @@ const useDisplayAvailableWallets = () => {
         payload: { authorize: accounts[loginid || ''].token },
         options: { enabled: Boolean(loginid) },
     });
+
+    // @ts-expect-error Need to update @deriv/api-types to fix the TS error
     const { data: account_type_data } = useFetch('get_account_types', {
         payload: { company: data?.authorize?.landing_company_name },
         options: { enabled: Boolean(data?.authorize?.landing_company_name) },
@@ -19,13 +21,19 @@ const useDisplayAvailableWallets = () => {
 
     const sortedWallets = React.useMemo(() => {
         if (!account_type_data) return null;
-
+        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
         const { crypto, doughflow } = account_type_data?.get_account_types?.wallet;
         const crypto_currencies = crypto.currencies;
         const fiat_currencies = doughflow.currencies;
 
         if (!crypto_currencies || !fiat_currencies) return null;
         const available_wallets = [...fiat_currencies, ...crypto_currencies];
+
+        // remove virtual from added_wallets
+        const virtualIndex = added_wallets?.findIndex(wallet => wallet.is_virtual === 1);
+        if (virtualIndex !== -1) {
+            if (virtualIndex) added_wallets?.splice(virtualIndex, 1);
+        }
 
         const unAddedWallets = available_wallets.filter(
             currency => !added_wallets?.some(added => added.currency === currency)

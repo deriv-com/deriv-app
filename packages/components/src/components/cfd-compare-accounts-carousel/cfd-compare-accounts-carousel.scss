@@ -60,5 +60,8 @@
             width: 50%;
             height: 35%;
         }
+        @include mobile {
+            display: none;
+        }
     }
 }

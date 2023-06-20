@@ -69,7 +69,6 @@ const CompareCFDs = observer(() => {
                         </div>
                     </div>
                 </div>
-                {/* <CFDPasswordModal context={store} platform={platform} /> */}
             </DesktopWrapper>
             <MobileWrapper>
                 <PageOverlay
@@ -78,7 +77,16 @@ const CompareCFDs = observer(() => {
                     is_from_app={!routes.traders_hub}
                     onClickClose={() => history.push(routes.traders_hub)}
                 >
-                    mobile wrapper
+                    <div className='compare-cfd-account-container'>
+                        <CFDCompareAccountsCarousel>
+                            {all_sorted_available_accounts.map(item => (
+                                <CFDCompareAccountsCard
+                                    trading_platforms={item}
+                                    key={item.market_type + item.shortcode}
+                                />
+                            ))}
+                        </CFDCompareAccountsCarousel>
+                    </div>
                 </PageOverlay>
             </MobileWrapper>
         </React.Fragment>

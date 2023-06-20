@@ -9,7 +9,7 @@ const CFDInstrumentsLabelHighlighted = ({ trading_platforms }: TCompareAccountsC
     return (
         <div className={'compare-cfd-account-outline'}>
             {iconData.map(item => (
-                <InstumentsIconWithLabel key={item.text} {...item} />
+                <InstumentsIconWithLabel key={item.text} {...item} className='compare-cfd-account-instrument-icon' />
             ))}
         </div>
     );

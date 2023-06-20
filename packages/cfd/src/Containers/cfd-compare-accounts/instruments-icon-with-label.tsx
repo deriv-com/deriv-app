@@ -18,21 +18,14 @@ type TIconProps = {
 };
 
 const InstumentsIconWithLabel = ({ icon, text, highlighted, className }: TIconProps) => {
-    let size = 24;
-    const dummyFunc = () => {
-        size = 24;
-    };
     return (
         <div
             style={{
-                display: 'flex',
-                alignItems: 'center',
-                margin: '3px',
                 opacity: highlighted ? '' : '0.2',
             }}
             className={className}
         >
-            <TradingInstrumentsIcon icon={icon} size={size} className='trading-instruments__icon' onClick={dummyFunc} />
+            <TradingInstrumentsIcon icon={icon} size={24} className='trading-instruments__icon' />
             <span
                 style={{
                     marginLeft: '0.5rem',

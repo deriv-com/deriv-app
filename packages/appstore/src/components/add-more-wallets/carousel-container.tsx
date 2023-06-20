@@ -2,7 +2,7 @@ import React from 'react';
 import useEmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel-react';
 import { PrevButton, NextButton } from './carousel-buttons';
 
-const CarouselContainer = ({ children }: JSX.Element) => {
+const CarouselContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const options: EmblaOptionsType = {
         align: 0,
         containScroll: 'trimSnaps',

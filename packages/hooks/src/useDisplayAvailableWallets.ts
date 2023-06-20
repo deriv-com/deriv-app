@@ -5,7 +5,7 @@ import useWalletList from './useWalletsList';
 
 const useDisplayAvailableWallets = () => {
     const { client } = useStore();
-    const { accounts, loginid } = client;
+    const { accounts, loginid, is_crypto } = client;
     const { data, ...rest } = useFetch('authorize', {
         payload: { authorize: accounts[loginid || ''].token },
         options: { enabled: Boolean(loginid) },
@@ -27,12 +27,37 @@ const useDisplayAvailableWallets = () => {
         if (!crypto_currencies || !fiat_currencies) return null;
         const available_wallets = [...fiat_currencies, ...crypto_currencies];
 
-        return available_wallets.map(currency => ({
+        const unAddedWallets = available_wallets.filter(
+            currency => !added_wallets?.some(added => added.currency === currency)
+        );
+
+        const addedWallets = available_wallets.filter(currency =>
+            added_wallets?.some(added => added.currency === currency)
+        );
+
+        // Sort the unadded wallets alphabetically by fiat, crypto, then virtual
+        unAddedWallets.sort((a, b) => {
+            if (a.is_virtual !== b.is_virtual) {
+                return a.is_virtual ? 1 : -1;
+            } else if (is_crypto(a.currency) !== is_crypto(b.currency)) {
+                return is_crypto(a.currency) ? 1 : -1;
+            }
+            return (a.currency || 'USD').localeCompare(b.currency || 'USD');
+        });
+
+        // Sort the added wallets alphabetically based on the order of unadded wallets
+        addedWallets.sort((a, b) => {
+            const aIndex = unAddedWallets.findIndex(currency => currency === a.currency);
+            const bIndex = unAddedWallets.findIndex(currency => currency === b.currency);
+            return aIndex - bIndex;
+        });
+
+        return [...unAddedWallets, ...addedWallets].map(currency => ({
             currency,
             landing_company_shortcode: data?.authorize?.landing_company_name,
             added: added_wallets?.some(added => added.currency === currency),
         }));
-    }, [added_wallets, account_type_data]);
+    }, [added_wallets, account_type_data, data?.authorize?.landing_company_name, is_crypto]);
 
     return {
         ...rest,

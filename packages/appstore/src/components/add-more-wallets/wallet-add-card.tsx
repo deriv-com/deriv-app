@@ -3,7 +3,15 @@ import { Text, WalletCard } from '@deriv/components';
 import { useCurrencyConfig } from '@deriv/hooks';
 import { getAddWalletDetails } from 'Constants/add-wallet-card-content';
 
-const AddWalletCard = ({ wallet_info }) => {
+type TWalletInfo = {
+    wallet_info: {
+        currency: string;
+        landing_company_shortcode?: string;
+        added?: boolean;
+    };
+};
+
+const AddWalletCard = ({ wallet_info }: React.PropsWithChildren<TWalletInfo>) => {
     const { getConfig } = useCurrencyConfig();
     const { currency, landing_company_shortcode, added } = wallet_info;
     const { title, description } = getAddWalletDetails(currency);
@@ -12,7 +20,7 @@ const AddWalletCard = ({ wallet_info }) => {
         currency,
         icon: getConfig(currency)?.icon,
         icon_type: 'app',
-        jurisdiction_title: landing_company_shortcode.toUpperCase(),
+        jurisdiction_title: landing_company_shortcode?.toUpperCase(),
         name: getConfig(currency)?.name,
     };
 

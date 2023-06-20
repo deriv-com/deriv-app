@@ -5,83 +5,69 @@ import WalletCurrencyCard from './wallet-currency-card';
 import WalletHeaderButtons from './wallet-header-buttons';
 import WalletHeaderTitle from './wallet-header-title';
 import WalletHeaderBalance from './wallet-header-balance';
-import { TAccountCategory, TAccountStatus, TWalletShortcode, TWalletCurrency } from 'Types';
+import { TWalletAccount } from 'Types';
 import { getWalletHeaderButtons } from 'Constants/utils';
-import { formatMoney } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import './wallet-header.scss';
 
 type TWalletHeader = {
-    account_type: TAccountCategory;
-    shortcode?: TWalletShortcode;
-    currency?: TWalletCurrency;
-    balance?: number;
-    account_status?: TAccountStatus;
-    is_open_wallet: boolean;
-    setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    icon?: string;
-    icon_type?: string;
+    wallet_account: TWalletAccount;
 };
 
-const WalletHeader = React.memo(
-    ({
-        account_status = '',
-        balance = 0,
-        currency = 'USD',
-        shortcode = 'svg',
-        account_type = 'real',
-        is_open_wallet,
-        setIsOpen,
-        icon,
-        icon_type,
-    }: TWalletHeader) => {
-        const is_demo = account_type === 'demo';
+const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
+    const { client, traders_hub } = useStore();
+    const { switchAccount, loginid } = client;
+    const is_active = loginid === wallet_account.loginid;
+    // const [is_loading, setIsLoading] = useState(false);
+    const { multipliers_account_status } = traders_hub;
 
-        const wallet_buttons = getWalletHeaderButtons(is_demo);
+    const is_demo = wallet_account.is_virtual;
 
-        const onArrowClickHandler = () => {
-            setIsOpen(!is_open_wallet);
-        };
+    const wallet_buttons = getWalletHeaderButtons(is_demo);
 
-        return (
-            <div
-                className={classNames('wallet-header', {
-                    'wallet-header__demo': is_demo,
-                })}
-            >
-                <div className='wallet-header__container'>
-                    <WalletCurrencyCard
-                        account_type={account_type}
-                        currency={currency}
-                        icon={icon}
-                        icon_type={icon_type}
+    // const onArrowClickHandler = () => {
+    //     setIsOpen(!is_open_wallet);
+    // };
+
+    const onArrowClickHandler = async () => {
+        if (loginid !== wallet_account.loginid) await switchAccount(wallet_account.loginid);
+    };
+
+    return (
+        <div className={classNames('wallet-header', { 'wallet-header__demo': wallet_account.is_demo })}>
+            <div className='wallet-header__container'>
+                <WalletCurrencyCard
+                    currency={wallet_account.currency}
+                    is_demo={wallet_account.is_virtual}
+                    icon={wallet_account.icon}
+                    icon_type={wallet_account.icon_type}
+                />
+                <div className='wallet-header__description'>
+                    <WalletHeaderTitle
+                        is_demo={wallet_account.is_demo}
+                        currency={wallet_account.currency}
+                        landing_company_name={wallet_account.landing_company_name}
                     />
-                    <div className='wallet-header__description'>
-                        <WalletHeaderTitle is_demo={is_demo} currency={currency} shortcode={shortcode} />
-                        <WalletHeaderButtons
-                            is_disabled={!!account_status}
-                            is_open={is_open_wallet}
-                            buttons={wallet_buttons}
-                        />
-                    </div>
-                    <div className='wallet-header__balance'>
-                        <WalletHeaderBalance
-                            account_status={account_status}
-                            balance={formatMoney(currency, balance, true)}
-                            currency={currency}
-                        />
-                        <Icon
-                            data_testid='dt_arrow'
-                            onClick={onArrowClickHandler}
-                            icon='IcChevronDownBold'
-                            className={classNames('wallet-header__balance-arrow-icon', {
-                                'wallet-header__balance-arrow-icon-active': is_open_wallet,
-                            })}
-                        />
-                    </div>
+                    <WalletHeaderButtons
+                        is_disabled={!!multipliers_account_status}
+                        is_open={is_active}
+                        buttons={wallet_buttons}
+                    />
+                </div>
+                <div className='wallet-header__balance'>
+                    <WalletHeaderBalance balance={wallet_account.balance} currency={wallet_account.currency} />
+                    <Icon
+                        data_testid='dt_arrow'
+                        onClick={onArrowClickHandler}
+                        icon='IcChevronDownBold'
+                        className={classNames('wallet-header__balance-arrow-icon', {
+                            'wallet-header__balance-arrow-icon-active': is_active,
+                        })}
+                    />
                 </div>
             </div>
-        );
-    }
-);
-WalletHeader.displayName = 'WalletHeader';
+        </div>
+    );
+});
+
 export default WalletHeader;

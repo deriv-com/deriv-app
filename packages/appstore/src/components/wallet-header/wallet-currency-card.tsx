@@ -1,16 +1,10 @@
 import React from 'react';
 import { WalletIcon } from '@deriv/components';
-import type { TAccountCategory, TWalletCurrency } from 'Types';
+import type { TWalletAccount } from 'Types';
 
-type TWalletCurrencyCard = {
-    account_type: TAccountCategory;
-    currency: TWalletCurrency;
-    icon_type?: string;
-    icon?: string;
-};
+type TWalletCurrencyCard = Pick<TWalletAccount, 'is_demo' | 'currency' | 'icon' | 'icon_type'>;
 
-const WalletCurrencyCard = ({ account_type, currency, icon_type = 'fiat', icon = '' }: TWalletCurrencyCard) => {
-    const is_demo = account_type === 'demo';
+const WalletCurrencyCard = ({ is_demo, currency, icon, icon_type }: TWalletCurrencyCard) => {
     const converted_currency = is_demo ? 'demo' : currency.toLowerCase();
 
     return (

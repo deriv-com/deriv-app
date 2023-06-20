@@ -6,13 +6,9 @@ import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
 import { useStore, observer } from '@deriv/stores';
-import { TWalletAccount } from 'Types';
+import './wallet-content.scss';
 
-type TProps = {
-    wallet_account: TWalletAccount;
-};
-
-const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps) => {
+const WalletOptionsAndMultipliersListing = observer(() => {
     const { traders_hub, client, ui } = useStore();
     const { is_mobile, setShouldShowCooldownModal, openRealAccountSignup } = ui;
     const {
@@ -21,8 +17,12 @@ const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps)
         real_account_creation_unlock_date,
         is_logging_in,
         is_switching,
+        loginid,
+        accounts,
     } = client;
     const { available_platforms, is_eu_user, is_real, no_MF_account, no_CR_account, is_demo } = traders_hub;
+
+    const wallet_account = accounts?.[loginid || ''];
 
     if (!wallet_account || is_switching || is_logging_in || !is_landing_company_loaded)
         return (

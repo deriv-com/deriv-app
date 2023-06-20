@@ -4,19 +4,19 @@ import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import { formatMoney, isCryptocurrency, routes } from '@deriv/shared';
 import TradingAppCard from 'Components/containers/trading-app-card';
-import { AvailableAccount, TDetailsOfEachMT5Loginid, TWalletAccount } from 'Types';
+import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
 import { useStore, observer } from '@deriv/stores';
 import { useHistory } from 'react-router';
 import GetMoreAccounts from 'Components/get-more-accounts';
+import './wallet-content.scss';
 
 type TProps = {
-    wallet_account: TWalletAccount;
     fiat_wallet_currency?: string;
 };
 
-const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'USD' }: TProps) => {
+const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) => {
     const history = useHistory();
     const {
         client,
@@ -35,8 +35,10 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
     } = traders_hub;
 
     const { toggleCompareAccountsModal } = cfd;
-    const { is_landing_company_loaded, is_logging_in, is_switching } = client;
+    const { is_landing_company_loaded, is_logging_in, is_switching, loginid, accounts } = client;
     const { is_mobile } = ui;
+
+    const wallet_account = accounts?.[loginid || ''];
 
     if (!wallet_account || !is_landing_company_loaded || is_switching || is_logging_in)
         return (
@@ -44,6 +46,8 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
                 <PlatformLoader />
             </div>
         );
+
+    // console.log('loginid = ', loginid, ', acc[loginid] = ', accounts?.[loginid || '']);
 
     const { currency } = wallet_account;
     const accounts_sub_text =

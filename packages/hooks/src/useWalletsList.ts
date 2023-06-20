@@ -42,10 +42,10 @@ const useWalletList = () => {
     const { client, ui } = useStore();
     const { is_dark_mode_on } = ui;
     const { accounts, loginid, is_crypto } = client;
-    const { getConfig, isSuccess: currencyConfigLoaded } = useCurrencyConfig();
+    const { getConfig, isSuccess } = useCurrencyConfig();
     const { data, ...rest } = useFetch('authorize', {
         payload: { authorize: accounts[loginid || ''].token },
-        options: { enabled: Boolean(loginid) && currencyConfigLoaded, keepPreviousData: true },
+        options: { enabled: Boolean(loginid) && isSuccess, keepPreviousData: true },
     });
     const { data: balance_data } = useFetch('balance', { payload: { account: 'all' } });
 
@@ -69,8 +69,8 @@ const useWalletList = () => {
 
                 return {
                     ...wallet,
+                    currency,
                     /** Indicating whether the wallet is a virtual-money wallet. */
-                    /** In my opinion we don't need this because we have property is_virtaul */
                     is_demo: wallet.is_virtual === 1,
                     /** Wallet balance */
                     balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,

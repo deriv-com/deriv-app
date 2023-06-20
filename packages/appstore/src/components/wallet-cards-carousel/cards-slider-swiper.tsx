@@ -1,74 +1,80 @@
 import React from 'react';
-import { Swiper, SwiperSlide, SwiperRef } from 'swiper/react';
 import { TWalletAccount } from 'Types';
 import { WalletCard, ProgressBarOnboarding } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
-import 'swiper/css';
+import useEmblaCarousel, { EmblaOptionsType } from 'embla-carousel-react';
+import { useStore, observer } from '@deriv/stores';
 import './wallet-cards-carousel.scss';
 
 type TProps = {
     readonly items: TWalletAccount[];
     setActivePage: React.Dispatch<React.SetStateAction<number>>;
+    active_page: number;
 };
 
-// TODO: Refactor this component later. Maybe move to package/components
-export const CardsSliderSwiper = ({ items, setActivePage }: TProps) => {
-    const steps = items.map((_, idx) => idx.toString());
-    const swiper_ref = React.useRef<SwiperRef | null>(null);
+const CardsSliderSwiper = observer(({ items, setActivePage, active_page }: TProps) => {
+    const {
+        ui: { is_dark_mode_on },
+    } = useStore();
 
-    const handlerGoTo = React.useCallback(
-        (slideNumber: number) => {
-            setActivePage(slideNumber);
-            swiper_ref?.current?.swiper?.slideTo(slideNumber - 1);
+    const OPTIONS: EmblaOptionsType = { skipSnaps: true };
+    const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
+
+    const steps = items.map((_, idx) => idx.toString());
+
+    const scrollTo = React.useCallback(
+        (index: number) => {
+            if (emblaApi) emblaApi.scrollTo(index - 1);
+            setActivePage(index - 1);
         },
-        [setActivePage]
+        [emblaApi, setActivePage]
     );
 
-    const swiperComponent = React.useMemo(
-        () => (
-            <Swiper
-                ref={swiper_ref}
-                slidesPerView={'auto'}
-                centeredSlides={true}
-                spaceBetween={24}
-                onSlideChange={swiperCore => {
-                    const { activeIndex } = swiperCore;
-                    setActivePage(activeIndex);
-                }}
-            >
-                {items?.map((item: TWalletAccount) => (
-                    <SwiperSlide
-                        style={{ width: 'auto' }}
-                        key={`${item.name} ${item.currency} ${item.landing_company_shortcode}`}
-                    >
-                        <WalletCard
-                            wallet={{
-                                ...item,
-                                balance: formatMoney(item.currency, item.balance, true),
-                                jurisdiction_title: item.landing_company_shortcode,
-                            }}
-                            size='medium'
-                        />
-                    </SwiperSlide>
-                ))}
-            </Swiper>
-        ),
-        [items.length, setActivePage]
+    const onSelect = React.useCallback(() => {
+        if (emblaApi) setActivePage(emblaApi.selectedScrollSnap());
+    }, [emblaApi, setActivePage]);
+
+    React.useEffect(() => {
+        if (!emblaApi) return;
+
+        onSelect();
+        emblaApi.on('reInit', onSelect);
+        emblaApi.on('select', onSelect);
+    }, [emblaApi, onSelect]);
+
+    const slider = React.useMemo(
+        () =>
+            items?.map((item: TWalletAccount) => (
+                <div key={`${item.name} ${item.currency} ${item.landing_company_shortcode}`}>
+                    <WalletCard
+                        wallet={{
+                            ...item,
+                            balance: formatMoney(item.currency, item.balance, true),
+                            // jurisdiction_title: item.landing_company_shortcode,
+                            jurisdiction_title: item.landing_company_name,
+                        }}
+                        size='medium'
+                    />
+                </div>
+            )),
+        [items.length, is_dark_mode_on]
     );
 
     return (
-        <div className='swiper'>
-            {swiperComponent}
+        <React.Fragment>
+            <div className='wallet-cards-carousel__viewport' ref={emblaRef}>
+                <div className='wallet-cards-carousel__container'>{slider}</div>
+            </div>
             <div className='wallet-cards-carousel__pagination'>
                 <ProgressBarOnboarding
-                    step={swiper_ref?.current?.swiper?.activeIndex ? swiper_ref?.current?.swiper?.activeIndex + 1 : 1}
+                    step={Number(active_page) + 1}
                     amount_of_steps={steps}
                     is_transition={true}
-                    setStep={handlerGoTo}
+                    setStep={scrollTo}
                 />
             </div>
-        </div>
+        </React.Fragment>
     );
-};
+});
 
 export default CardsSliderSwiper;

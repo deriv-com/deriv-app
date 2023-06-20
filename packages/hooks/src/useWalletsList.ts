@@ -3,7 +3,7 @@ import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 import useCurrencyConfig from './useCurrencyConfig';
 
-// TODO: Maybe move this function to deriv/utils. But this function will be used only this, so...
+// TODO: Maybe move this function to deriv/utils. But this function will be used only here, so...
 const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_modal = false) => {
     switch (currency) {
         case 'demo':
@@ -63,8 +63,8 @@ const useWalletList = () => {
                 const is_crypto_currency = currency_config?.is_crypto;
                 const is_fiat = currency_config?.is_fiat;
                 const currency_display_code = currency_config?.display_code || '';
-                const icon = getWalletCurrencyIcon(currency, is_dark_mode_on);
-                const modal_icon = getWalletCurrencyIcon(currency, is_dark_mode_on, true);
+                const icon = getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : currency, is_dark_mode_on);
+                const modal_icon = getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : currency, is_dark_mode_on, true);
                 const name = `${wallet.is_virtual ? 'Demo ' : ''}${currency_display_code} ${'Wallet'}`;
 
                 return {

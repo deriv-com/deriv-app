@@ -68,6 +68,11 @@ export type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
 };
 
+export type TModifiedTradingPlatformAvailableAccount = Omit<TTradingPlatformAvailableAccount, 'market_type'> & {
+    platform?: 'mt5' | 'dxtrade';
+    market_type: TTradingPlatformAvailableAccount['market_type'] | 'synthetic';
+};
+
 export type TCardFlipStatus = {
     svg: boolean;
     bvi: boolean;
@@ -250,4 +255,17 @@ export type TIconData = {
         | 'ETF';
     text: string;
     highlighted: boolean;
+};
+
+export type TAvailableCFDAccounts = {
+    availability: 'Non-EU' | 'EU' | 'All';
+    description: string;
+    icon: 'Derived' | 'Financial' | 'DerivX' | 'SwapFree';
+    market_type: 'synthetic' | 'financial' | 'all' | 'gaming';
+    name: string;
+    platform: 'mt5' | 'dxtrade';
+};
+
+export type TCompareAccountsCard = {
+    trading_platforms: TModifiedTradingPlatformAvailableAccount;
 };

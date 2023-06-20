@@ -1,18 +1,34 @@
 import React from 'react';
 import { observer } from 'mobx-react';
 import { useHistory } from 'react-router-dom';
-import { Text, Icon, PageOverlay, DesktopWrapper, MobileWrapper } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { Text, Icon, PageOverlay, DesktopWrapper, MobileWrapper, CFDCompareAccountsCarousel } from '@deriv/components';
+import { routes, CFD_PLATFORMS } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import CFDInstrumentsLabelHighlighted from './cfd-instruments-label-highlighted';
-
 import { useStore } from '@deriv/stores';
+import CFDCompareAccountsCard from './cfd-compare-accounts-card';
+import {
+    getSortedAvailableAccounts,
+    getDxtradeAccountAvailabaility,
+    prepareDxtradeData,
+} from '../../Helpers/compare-accounts-config';
 
 const CompareCFDs = observer(() => {
-    const { client } = useStore();
-    const { trading_platform_available_accounts } = client;
-
     const history = useHistory();
+    const { client, traders_hub } = useStore();
+    const { trading_platform_available_accounts } = client;
+    const { available_cfd_accounts } = traders_hub;
+
+    const sorted_available_accounts = getSortedAvailableAccounts(trading_platform_available_accounts);
+
+    const has_dxtrade_account_available = getDxtradeAccountAvailabaility(available_cfd_accounts);
+
+    const dxtrade_data = available_cfd_accounts.filter(accounts => accounts.platform === CFD_PLATFORMS.DXTRADE);
+    const { name, market_type } = dxtrade_data[0];
+    const dxtrade_account = prepareDxtradeData(name, market_type);
+
+    const all_sorted_available_accounts = has_dxtrade_account_available
+        ? [...sorted_available_accounts, dxtrade_account]
+        : [...sorted_available_accounts];
 
     const DesktopHeader = (
         <div className='compare-cfd-header'>
@@ -29,7 +45,7 @@ const CompareCFDs = observer(() => {
             </div>
             <h1 className='compare-cfd-header-title'>
                 <Text size='m' weight='bold' color='prominent'>
-                    <Localize i18n_default_text='Compare all available accounts' />
+                    <Localize i18n_default_text='Compare CFDs accounts' />
                 </Text>
             </h1>
         </div>
@@ -38,15 +54,19 @@ const CompareCFDs = observer(() => {
     return (
         <React.Fragment>
             <DesktopWrapper>
-                <PageOverlay header={DesktopHeader} is_from_app={routes.traders_hub} />
-                <div className='compare-cfd-account-container'>
-                    <div className='card-list'>
-                        {trading_platform_available_accounts.map(item => (
-                            <CFDInstrumentsLabelHighlighted
-                                key={item.market_type + item.shortcode}
-                                trading_platforms={item}
-                            />
-                        ))}
+                <div className='compare-cfd-account'>
+                    <PageOverlay header={DesktopHeader} is_from_app={routes.traders_hub} />
+                    <div className='compare-cfd-account-container'>
+                        <div className='card-list'>
+                            <CFDCompareAccountsCarousel>
+                                {all_sorted_available_accounts.map(item => (
+                                    <CFDCompareAccountsCard
+                                        trading_platforms={item}
+                                        key={item.market_type + item.shortcode}
+                                    />
+                                ))}
+                            </CFDCompareAccountsCarousel>
+                        </div>
                     </div>
                 </div>
             </DesktopWrapper>

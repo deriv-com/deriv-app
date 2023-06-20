@@ -74,6 +74,15 @@ type TTradingPlatformAvailableAccount = {
     sub_account_type: string;
 };
 
+type TAvailableCFDAccounts = {
+    availability: 'Non-EU' | 'EU' | 'All';
+    description: string;
+    icon: 'Derived' | 'Financial' | 'DerivX' | 'SwapFree';
+    market_type: 'synthetic' | 'financial' | 'all' | 'gaming';
+    name: string;
+    platform: 'mt5' | 'dxtrade';
+};
+
 type TAuthenticationStatus = { document_status: string; identity_status: string };
 
 type TMenuItem = {
@@ -374,6 +383,7 @@ type TTradersHubStore = {
     toggleAccountTransferModal: () => void;
     is_demo: boolean;
     selectAccountType: (account_type: string) => void;
+    available_cfd_accounts: TAvailableCFDAccounts[];
 };
 
 /**

@@ -5,7 +5,7 @@
     &-navigation {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: 1rem;
         cursor: pointer;
     }
     &-title {
@@ -18,15 +18,74 @@
 }
 
 .compare-cfd-account {
+    max-width: 123.2rem;
+    margin: auto;
+    padding: 5rem 0;
+    &-container {
+        margin: 1.5rem;
+    }
+    &-main-container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    &-card-container {
+        position: relative;
+        overflow: hidden;
+        width: 27rem;
+        border: 1px solid var(--general-hover);
+        border-radius: 2.4rem;
+        &:hover {
+            box-shadow: 0 2px 8px 0 var(--shadow-menu);
+        }
+        &__banner {
+            position: absolute;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            width: 15rem;
+            height: 2rem;
+            background: var(--status-transfer);
+            color: var(--text-colored-background);
+            transform: translateX(17rem) translateY(-2rem) rotate(45deg);
+        }
+    }
     &-outline {
         display: flex;
         flex-direction: column;
-        border: 1px solid var(--general-hover);
         padding: 2.4rem;
         border-radius: 2.4rem;
     }
-    &-container {
-        margin: 5rem;
+    &-text-container {
+        height: 30rem;
+        &__separator {
+            margin: 1.5rem;
+        }
+    }
+    &-icon-title {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        padding-top: 2rem;
+        align-items: center;
+    }
+    &-platform-label {
+        background-color: var(--header-background-mt5);
+        padding: 0.9rem;
+        border-top-left-radius: 1.4rem;
+        border-top-right-radius: 1.4rem;
+        &--other-cfds {
+            background-color: var(--header-background-others);
+        }
+    }
+    &-underline {
+        border-top: 1px solid var(--less-prominent);
+    }
+    &__button {
+        width: calc(100% - 4rem);
+        height: 4rem;
+        margin: 2rem;
     }
 }
 .card-list {

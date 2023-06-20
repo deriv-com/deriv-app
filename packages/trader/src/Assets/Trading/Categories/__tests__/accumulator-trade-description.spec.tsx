@@ -1,14 +1,22 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { AccumulatorTradeDescription } from '../accumulator-trade-description';
+import AccumulatorTradeDescription from '../accumulator-trade-description';
+import userEvent from '@testing-library/user-event';
 
 describe('<AccumulatorTradeDescription />', () => {
     it('Ensure content of component is rendered properly', () => {
         render(<AccumulatorTradeDescription />);
         expect(
             screen.getByText(
-                /As long as the price change for each tick is within the barrier, your payout will grow at every tick, based on the accumulator value you’ve selected./i
+                /Your stake will continue to grow as long as the current spot price remains within a specified/i
             )
         ).toBeInTheDocument();
+    });
+    it('Ensure clicking on definition works', () => {
+        const onClick = jest.fn();
+        render(<AccumulatorTradeDescription onClick={onClick} />);
+        const glossary_definition = screen.getByText(/growth rate/i);
+        userEvent.click(glossary_definition);
+        expect(onClick).toHaveBeenCalled();
     });
 });

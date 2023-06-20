@@ -2,7 +2,7 @@ import React from 'react';
 import { Localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
 
-const AccumulatorTradeDescription = ({ onClick }: { onClick: () => void }) => {
+const AccumulatorTradeDescription = ({ onClick }: { onClick?: () => void }) => {
     const content = [
         'Accumulators allow you to express a view on the range of movement of an index and grow your stake exponentially at a fixed <0>growth rate</0>.',
         'Your <0>payout</0> is the sum of your inital stake and profit.',

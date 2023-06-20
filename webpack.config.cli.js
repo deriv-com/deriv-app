@@ -53,6 +53,10 @@ module.exports = {
     },
     plugins: [
         new CleanWebpackPlugin(['www']),
+        new Dotenv(),
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('production'),
+        }),
         new BlocklyConcatPlugin({
             outputPath: '/',
             fileName: 'blockly.js',
@@ -63,7 +67,9 @@ module.exports = {
                 './node_modules/blockly/msg/messages.js',
             ],
         }),
-        new Dotenv(),
+        new PullBlocklyTranslationsPlugin({
+            outputPath: path.resolve(__dirname, 'www/translations'),
+        }),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
@@ -96,9 +102,6 @@ module.exports = {
                 to: path.resolve(__dirname, 'www'),
             },
         ]),
-        new PullBlocklyTranslationsPlugin({
-            outputPath: path.resolve(__dirname, 'www/translations'),
-        }),
         new webpack.optimize.UglifyJsPlugin({
             include: /\.js$/,
             minimize: true,

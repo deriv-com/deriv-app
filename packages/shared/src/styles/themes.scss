@@ -116,6 +116,7 @@
         --button-primary-light-hover: #{$alpha-color-red-3};
         --button-toggle-primary: #{$color-blue-3};
         --button-toggle-secondary: #{$color-grey-5};
+        --button-toggle-alternate: #{$color-white};
         // Overlay
         --overlay-outside-dialog: #{$alpha-color-black-1};
         --overlay-inside-dialog: #{$alpha-color-white-1};
@@ -247,6 +248,7 @@
         --button-primary-light-hover: #{$alpha-color-red-3};
         --button-toggle-primary: #{$color-blue-3};
         --button-toggle-secondary: #{$color-black-8};
+        --button-toggle-alternate: #{$color-black-8};
         // Overlay
         --overlay-outside-dialog: #{$alpha-color-black-1};
         --overlay-inside-dialog: #{$alpha-color-black-2};

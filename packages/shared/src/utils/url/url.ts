@@ -177,3 +177,5 @@ export const excludeParamsFromUrlQuery = (search_param: string, excluded_keys: s
     const filtered_queries = [...search_params].filter(([key]) => !excluded_keys.includes(key));
     return filtered_queries.length ? `?${new URLSearchParams(filtered_queries).toString()}` : '';
 };
+
+export const isExternalLink = (link: string) => /^(http|https|mailto):/i.test(link);

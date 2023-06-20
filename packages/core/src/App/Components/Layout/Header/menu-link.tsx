@@ -3,7 +3,7 @@ import { NavLink, useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
 import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
-import { isMobile, routes, getStaticUrl } from '@deriv/shared';
+import { isExternalLink, isMobile, routes, getStaticUrl } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
@@ -27,11 +27,13 @@ const MenuLink = observer(
         is_active,
         is_disabled,
         is_hidden,
-        link_to,
+        link_to = '',
         onClickLink,
         suffix_icon = '',
         text,
     }: Partial<TMenuLink>) => {
+        if (is_hidden) return null;
+
         const { common, ui, client } = useStore();
         const { setMobileLanguageMenuOpen } = common;
         const deriv_static_url = getStaticUrl(link_to);
@@ -40,12 +42,11 @@ const MenuLink = observer(
         const { toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
         const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
 
-        const is_cashier_link =
-            link_to === routes.cashier_deposit ||
-            link_to === routes.cashier_withdrawal ||
-            link_to === routes.cashier_acc_transfer;
-
-        if (is_hidden) return null;
+        const is_cashier_link = [
+            routes.cashier_deposit,
+            routes.cashier_withdrawal,
+            routes.cashier_acc_transfer,
+        ].includes(link_to);
 
         const traders_hub_path = window.location.pathname === routes.traders_hub;
 
@@ -88,17 +89,9 @@ const MenuLink = observer(
             const toggle_modal_routes =
                 window.location.pathname === routes.root || window.location.pathname === routes.traders_hub;
 
-            const toggleModal = () => {
-                if (toggle_modal_routes && !has_any_real_account) {
-                    toggleReadyToDepositModal();
-                }
-            };
-
             const handleClickCashier = () => {
-                if (is_virtual && has_any_real_account) {
-                    history.push(routes.cashier_deposit);
-                } else if (!has_any_real_account && is_virtual) {
-                    toggleModal();
+                if (toggle_modal_routes) {
+                    toggleReadyToDepositModal();
                 }
                 onClickLink?.();
             };
@@ -130,15 +123,14 @@ const MenuLink = observer(
                     {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
                 </div>
             );
-        } else if (deriv_static_url) {
+        } else if (deriv_static_url && isExternalLink(link_to)) {
             return (
-                <NavLink
+                <a
                     className={classNames('header__menu-mobile-link', {
                         'header__menu-mobile-link--disabled': is_disabled,
                         'header__menu-mobile-link--active': is_active,
                     })}
-                    to={link_to}
-                    onClick={onClickLink}
+                    href={link_to}
                     data-testid={data_testid}
                 >
                     <Icon className='header__menu-mobile-link-icon' icon={icon} />
@@ -151,7 +143,7 @@ const MenuLink = observer(
                         {text}
                     </Text>
                     {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-                </NavLink>
+                </a>
             );
         }
 

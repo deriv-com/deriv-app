@@ -46,12 +46,12 @@ describe('MenuLink', () => {
         };
     });
 
-    const render_check = () => {
+    const renderCheck = () => {
         expect(screen.getByText('Mock Link Icon')).toBeInTheDocument();
         expect(screen.getByText('Mock text')).toBeInTheDocument();
     };
 
-    const render_component = () => {
+    const renderComponent = () => {
         const history = createBrowserHistory();
         render(<MenuLink {...mock_props} />, {
             wrapper: ({ children }) => (
@@ -63,9 +63,9 @@ describe('MenuLink', () => {
     };
 
     it('should render no links with icon and text without passing link_to', () => {
-        render_component();
+        renderComponent();
 
-        render_check();
+        renderCheck();
         const link = screen.getByTestId('dt_menu_link');
         expect(link.onclick).toBeFalsy();
     });
@@ -73,9 +73,9 @@ describe('MenuLink', () => {
     it('should render menu link if deriv_static_url', () => {
         mock_props.link_to = 'MockLink';
 
-        render_component();
+        renderComponent();
 
-        render_check();
+        renderCheck();
         const link = screen.getByTestId('dt_menu_link');
         userEvent.click(link);
         expect(mock_props.onClickLink).toHaveBeenCalled();
@@ -85,9 +85,9 @@ describe('MenuLink', () => {
         (getStaticUrl as jest.Mock).mockReturnValue('');
         mock_props.link_to = 'MockLink';
 
-        render_component();
+        renderComponent();
 
-        render_check();
+        renderCheck();
         const link = screen.getByTestId('dt_menu_link');
         userEvent.click(link);
         expect(mock_props.onClickLink).toHaveBeenCalled();
@@ -96,7 +96,7 @@ describe('MenuLink', () => {
     it('should not render if  is_hidden is passed', () => {
         mock_props.is_hidden = true;
 
-        render_component();
+        renderComponent();
 
         expect(screen.queryByText('Mock Link Icon')).not.toBeInTheDocument();
         expect(screen.queryByText('Mock text')).not.toBeInTheDocument();
@@ -109,7 +109,7 @@ describe('MenuLink', () => {
         mock_props.link_to = '/account/languages';
         mock_props.suffix_icon = 'suffix_icon';
 
-        render_component();
+        renderComponent();
 
         const icons = screen.getAllByText('Mock Link Icon');
         expect(icons.length).toBe(2);
@@ -127,9 +127,9 @@ describe('MenuLink', () => {
             value: { pathname: routes.traders_hub },
         });
 
-        render_component();
+        renderComponent();
 
-        render_check();
+        renderCheck();
         const link = screen.getByTestId('dt_menu_link');
         userEvent.click(link);
         expect(mockRootStore.ui.toggleNeedRealAccountForCashierModal).toHaveBeenCalled();
@@ -145,9 +145,9 @@ describe('MenuLink', () => {
             value: { pathname: routes.traders_hub },
         });
 
-        render_component();
+        renderComponent();
 
-        render_check();
+        renderCheck();
         const link = screen.getByTestId('dt_menu_link');
         userEvent.click(link);
         expect(mockRootStore.ui.toggleReadyToDepositModal).toHaveBeenCalled();

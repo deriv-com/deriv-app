@@ -8,6 +8,7 @@ export default class BlockConversion {
         this.blocks_pending_reconnect = {};
         this.workspace = this.createWorkspace();
         this.workspace_variables = {};
+        this.has_market_block = false;
     }
 
     getConversions() {
@@ -212,7 +213,10 @@ export default class BlockConversion {
             lists_create_with: block_node =>
                 generateGrowingListBlock(block_node, 'lists_create_with', localize('list'), 'VALUE'),
             macda: block_node => generateIndicatorBlock(block_node, 'macda_statement', 'macda'),
-            market: block_node => tradeOptions(block_node),
+            market: block_node => {
+                this.has_market_block = true;
+                return tradeOptions(block_node);
+            },
             rsi: block_node => generateIndicatorBlock(block_node, 'rsi_statement', 'rsi'),
             rsia: block_node => generateIndicatorBlock(block_node, 'rsia_statement', 'rsia'),
             sma: block_node => generateIndicatorBlock(block_node, 'sma_statement', 'sma'),
@@ -352,10 +356,14 @@ export default class BlockConversion {
         // to "Run once at start". Legacy "market" blocks had no such thing as "Run once at start"
         // not moving everything would kill Martingale strategies as they'd be reinitialised each run.
         const trade_definition_block = this.workspace.getTradeDefinitionBlock();
-
+        const has_initialization_block = trade_definition_block.getBlocksInStatement('INITIALIZATION').length > 0;
         if (trade_definition_block) {
             trade_definition_block.getBlocksInStatement('SUBMARKET').forEach(block => {
-                if (block.type !== 'trade_definition_tradeoptions') {
+                if (
+                    block.type !== 'trade_definition_tradeoptions' &&
+                    this.has_market_block &&
+                    !has_initialization_block
+                ) {
                     const last_connection = trade_definition_block.getLastConnectionInStatement('INITIALIZATION');
                     block.unplug(true);
                     last_connection.connect(block.previousConnection);

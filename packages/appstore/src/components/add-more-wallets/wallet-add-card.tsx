@@ -1,19 +1,15 @@
 import React from 'react';
 import { Text, WalletCard } from '@deriv/components';
-import { useCurrencyConfig } from '@deriv/hooks';
+import { useCurrencyConfig, useDisplayAvailableWallets } from '@deriv/hooks';
 import { getAddWalletDetails } from 'Constants/add-wallet-card-content';
 
 type TWalletInfo = {
-    wallet_info: {
-        currency: string;
-        landing_company_shortcode?: string;
-        added?: boolean;
-    };
+    wallet_info: NonNullable<ReturnType<typeof useDisplayAvailableWallets>['data']>[number];
 };
 
 const AddWalletCard = ({ wallet_info }: React.PropsWithChildren<TWalletInfo>) => {
     const { getConfig } = useCurrencyConfig();
-    const { currency, landing_company_shortcode, added } = wallet_info;
+    const { currency, landing_company_shortcode, is_added } = wallet_info;
     const { title, description } = getAddWalletDetails(currency);
 
     const wallet_details = {
@@ -28,7 +24,7 @@ const AddWalletCard = ({ wallet_info }: React.PropsWithChildren<TWalletInfo>) =>
         <div className='add-wallets__card'>
             <div className='add-wallets__card-wrapper'>
                 <div className='add-wallets__card-description'>
-                    <WalletCard wallet={wallet_details} size='medium' state={added ? 'added' : 'add'} />
+                    <WalletCard wallet={wallet_details} size='medium' state={is_added ? 'added' : 'add'} />
                     <Text as='h3' size='s' weight='bold'>
                         {title}
                     </Text>

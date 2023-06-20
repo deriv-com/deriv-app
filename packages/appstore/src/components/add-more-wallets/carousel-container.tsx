@@ -1,12 +1,17 @@
 import React from 'react';
 import useEmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel-react';
 import { PrevButton, NextButton } from './carousel-buttons';
+import { observer, useStore } from '@deriv/stores';
 
-const CarouselContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const CarouselContainer: React.FC<{ children: React.ReactNode }> = observer(({ children }) => {
+    const {
+        ui: { is_mobile },
+    } = useStore();
+
     const options: EmblaOptionsType = {
         align: 0,
         containScroll: 'trimSnaps',
-        watchDrag: false,
+        watchDrag: !is_mobile && false,
     };
 
     const [emblaRef, emblaApi] = useEmblaCarousel(options);
@@ -33,10 +38,12 @@ const CarouselContainer: React.FC<{ children: React.ReactNode }> = ({ children }
             <div className='add-wallets__viewport' ref={emblaRef}>
                 <div className='add-wallets__container'>{children}</div>
             </div>
-            <PrevButton enabled={prev_btn_disabled} onClick={scrollPrev} />
-            <NextButton enabled={next_btn_disabled} onClick={scrollNext} />
+            <React.Fragment>
+                <PrevButton enabled={prev_btn_disabled} onClick={scrollPrev} />
+                <NextButton enabled={next_btn_disabled} onClick={scrollNext} />
+            </React.Fragment>
         </div>
     );
-};
+});
 
 export default CarouselContainer;

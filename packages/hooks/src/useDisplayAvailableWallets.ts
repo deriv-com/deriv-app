@@ -27,44 +27,38 @@ const useDisplayAvailableWallets = () => {
         const fiat_currencies = doughflow.currencies;
 
         if (!crypto_currencies || !fiat_currencies) return null;
-        const available_wallets = [...fiat_currencies, ...crypto_currencies];
+        const available_currencies = [...fiat_currencies, ...crypto_currencies];
 
-        // remove virtual from added_wallets
-        const virtualIndex = added_wallets?.findIndex(wallet => wallet.is_virtual === 1);
-        if (virtualIndex !== -1) {
-            if (virtualIndex) added_wallets?.splice(virtualIndex, 1);
-        }
+        const non_virtual_wallets = added_wallets?.filter(wallet => wallet.is_virtual !== 1);
 
-        const unAddedWallets = available_wallets.filter(
-            currency => !added_wallets?.some(added => added.currency === currency)
-        );
+        const modified_wallets = non_virtual_wallets?.map(wallet => ({
+            currency: wallet.currency,
+            landing_company_shortcode: wallet.landing_company_shortcode,
+            is_added: available_currencies.includes(wallet.currency),
+        }));
 
-        const addedWallets = available_wallets.filter(currency =>
-            added_wallets?.some(added => added.currency === currency)
-        );
+        const available_wallets = available_currencies
+            .filter(currency => !modified_wallets?.some(wallet => wallet.currency === currency))
+            .map(currency => ({
+                currency,
+                landing_company_shortcode: data?.authorize?.landing_company_name,
+                is_added: false,
+            }));
+
+        const all_wallets_list = [...available_wallets, ...(modified_wallets || [])];
 
         // Sort the unadded wallets alphabetically by fiat, crypto, then virtual
-        unAddedWallets.sort((a, b) => {
-            if (a.is_virtual !== b.is_virtual) {
-                return a.is_virtual ? 1 : -1;
-            } else if (is_crypto(a.currency) !== is_crypto(b.currency)) {
+        all_wallets_list?.sort((a, b) => {
+            if (a.is_added) return 1;
+
+            if (is_crypto(a.currency) !== is_crypto(b.currency)) {
                 return is_crypto(a.currency) ? 1 : -1;
             }
+
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });
 
-        // Sort the added wallets alphabetically based on the order of unadded wallets
-        addedWallets.sort((a, b) => {
-            const aIndex = unAddedWallets.findIndex(currency => currency === a.currency);
-            const bIndex = unAddedWallets.findIndex(currency => currency === b.currency);
-            return aIndex - bIndex;
-        });
-
-        return [...unAddedWallets, ...addedWallets].map(currency => ({
-            currency,
-            landing_company_shortcode: data?.authorize?.landing_company_name,
-            added: added_wallets?.some(added => added.currency === currency),
-        }));
+        return all_wallets_list;
     }, [added_wallets, account_type_data, data?.authorize?.landing_company_name, is_crypto]);
 
     return {

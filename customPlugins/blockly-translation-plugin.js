@@ -25,7 +25,6 @@ class PullBlocklyTranslationsPlugin {
                     }
                     translations.forEach(({ lang, content }) => {
                         const file_path = path.join(this.options.outputPath, `${lang}.js`);
-                        
 
                         fs.writeFile(file_path, content, err => {
                             if (err) {

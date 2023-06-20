@@ -1,4 +1,4 @@
-const Cookies = require('js-cookie');
+import Cookies from 'js-cookie';
 
 export const CookieStorage = function(cookieName, cookieDomain) {
     this.initialized = false;

@@ -98,7 +98,7 @@ const AnimateTrade = () => {
     const is_contract_closed = contract_status === CONTRACT_STATUS.contract_closed;
 
     React.useEffect(() => {
-        if ( contract_status === CONTRACT_STATUS.contract_closed ){
+        if (contract_status === CONTRACT_STATUS.contract_closed) {
             setIndicatorMessage(INDICATOR_MESSAGES.stopped);
             $('#summaryStopButton').hide();
             $('#summaryRunButton').show();
@@ -116,7 +116,7 @@ const AnimateTrade = () => {
         }
     }, [contract_status]);
 
-    if (is_contract_closed){
+    if (is_contract_closed) {
         dispatch(setIsBotRunning(false));
     }
 

@@ -15,11 +15,10 @@ const ClearButton = () => {
     }, []);
 
     React.useEffect(() => {
-    if (is_bot_running === false) {
-        setIsButtonDisabled(false);
-    }
+        if (is_bot_running === false) {
+            setIsButtonDisabled(false);
+        }
     }, [is_bot_running]);
-
 
     globalObserver.register('bot.stop', () => setIsButtonDisabled(false));
 
@@ -34,7 +33,7 @@ const ClearButton = () => {
         })
             .then(() => globalObserver.emit('summary.clear'))
             .catch(() => {});
-    }
+    };
     return (
         <button
             title='Clear summary log'
@@ -44,6 +43,6 @@ const ClearButton = () => {
             disabled={is_button_disabled}
         />
     );
-}
+};
 
 export default ClearButton;

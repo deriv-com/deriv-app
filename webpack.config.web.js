@@ -14,10 +14,6 @@ module.exports = {
     devtool: 'source-map',
     watch: true,
     target: 'web',
-    externals: {
-        CIQ: 'CIQ',
-        blockly: 'Blockly',
-    },
     module: {
         rules: [
             {

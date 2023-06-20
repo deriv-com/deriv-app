@@ -14,10 +14,6 @@ module.exports = {
         sourceMapFilename: 'index.js.map',
     },
     target: 'node',
-    externals: {
-        CIQ: 'CIQ',
-        blockly: 'Blockly',
-    },
     module: {
         rules: [
             {

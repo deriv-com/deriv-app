@@ -14,7 +14,7 @@ const WithdrawalFiatIframe = observer(() => {
 
     return (
         <React.Fragment>
-            {is_loading && <Loading />}
+            {is_loading && <Loading className='withdrawal-fiat-loader' />}
             {isSuccess && (
                 <iframe
                     className='withdrawal-fiat-iframe'

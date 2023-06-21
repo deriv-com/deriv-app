@@ -2,7 +2,7 @@ import React from 'react';
 import Wallet from 'Components/containers/wallet';
 import { observer, useStore } from '@deriv/stores';
 import WalletCardsCarousel from 'Components/wallet-cards-carousel';
-import { useContentFlag, useWalletList } from '@deriv/hooks';
+import { useContentFlag, useWalletsList } from '@deriv/hooks';
 import { ButtonToggle } from '@deriv/components';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import { routes } from '@deriv/shared';
@@ -19,7 +19,7 @@ const AccountWithWallets = observer(() => {
     const { is_eu_demo, is_eu_real } = useContentFlag();
     const eu_title = is_eu_demo || is_eu_real || is_eu_user;
 
-    const { data: wallet_accounts } = useWalletList();
+    const { data: wallet_accounts } = useWalletsList();
 
     const platform_toggle_options = [
         { text: 'CFDs', value: 'cfd' },

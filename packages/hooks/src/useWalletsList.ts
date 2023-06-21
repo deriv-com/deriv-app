@@ -37,7 +37,7 @@ const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_mo
     }
 };
 
-const useWalletList = () => {
+const useWalletsList = () => {
     const { client, ui } = useStore();
     const { is_dark_mode_on } = ui;
     const { accounts, loginid, is_crypto } = client;
@@ -66,15 +66,12 @@ const useWalletList = () => {
                 return {
                     ...wallet,
                     currency,
-                    /** Indicating whether the wallet is a virtual-money wallet. */
-                    is_demo: wallet.is_virtual === 1,
+                    /** Indicating whether the wallet is the currently selected wallet. */
+                    is_selected: wallet.loginid === loginid,
                     /** Wallet balance */
                     balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,
                     /** Landing company shortcode the account belongs to. */
                     landing_company_name:
-                        wallet.landing_company_name === 'maltainvest' ? 'malta' : wallet.landing_company_name,
-                    /** @deprecated should use `landing_company_name` instead */
-                    landing_company_shortcode:
                         wallet.landing_company_name === 'maltainvest' ? 'malta' : wallet.landing_company_name,
                     is_disabled: Boolean(wallet.is_disabled),
                     is_virtual: Boolean(wallet.is_virtual),
@@ -98,7 +95,7 @@ const useWalletList = () => {
 
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });
-    }, [balance_data?.balance?.accounts, data?.authorize?.account_list, is_crypto, is_dark_mode_on]);
+    }, [balance_data?.balance?.accounts, data?.authorize?.account_list, is_crypto, is_dark_mode_on, loginid]);
 
     return {
         ...rest,
@@ -106,4 +103,4 @@ const useWalletList = () => {
     };
 };
 
-export default useWalletList;
+export default useWalletsList;

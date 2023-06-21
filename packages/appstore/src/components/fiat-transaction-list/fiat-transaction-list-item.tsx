@@ -12,7 +12,7 @@ type TFiatTransactionListItem = Pick<TStatementTransaction, 'amount' | 'balance_
         | 'reset_balance';
     account_name: string;
     currency: string;
-    gradient_for: string;
+    gradient_class: string;
     icon: string;
     icon_type: string;
     is_deriv_apps?: boolean;
@@ -24,7 +24,7 @@ const FiatTransactionListItem = ({
     amount,
     balance_after,
     currency,
-    gradient_for,
+    gradient_class,
     icon,
     icon_type,
     is_deriv_apps,
@@ -42,14 +42,14 @@ const FiatTransactionListItem = ({
                 {is_deriv_apps ? (
                     <AppLinkedWithWalletIcon
                         app_icon={is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight'}
-                        gradient_for={gradient_for}
+                        gradient_class={gradient_class}
                         type={icon_type}
                         wallet_icon={icon}
                         hide_watermark
                     />
                 ) : (
                     <WalletIcon
-                        gradient_for={gradient_for}
+                        gradient_class={gradient_class}
                         icon={icon}
                         type={icon_type}
                         has_bg

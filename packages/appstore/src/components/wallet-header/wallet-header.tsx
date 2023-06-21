@@ -14,7 +14,7 @@ type TWalletHeader = {
     shortcode?: TWalletShortcode;
     currency?: TWalletCurrency;
     balance?: string;
-    gradient_for: string;
+    gradient_class: string;
     account_status?: TAccountStatus;
     is_open_wallet: boolean;
     setIsOpen: (is_open: boolean) => void;
@@ -28,7 +28,7 @@ const WalletHeader = React.memo(
         shortcode = 'svg',
         account_type = 'real',
         is_open_wallet,
-        gradient_for,
+        gradient_class,
         setIsOpen,
     }: TWalletHeader) => {
         const is_demo = account_type === 'demo';
@@ -46,7 +46,11 @@ const WalletHeader = React.memo(
                 })}
             >
                 <div className='wallet-header__container'>
-                    <WalletCurrencyCard account_type={account_type} currency={currency} gradient_for={gradient_for} />
+                    <WalletCurrencyCard
+                        account_type={account_type}
+                        currency={currency}
+                        gradient_class={gradient_class}
+                    />
                     <div className='wallet-header__description'>
                         <WalletHeaderTitle is_demo={is_demo} currency={currency} shortcode={shortcode} />
                         <WalletHeaderButtons

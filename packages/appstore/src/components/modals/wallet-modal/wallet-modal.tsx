@@ -50,7 +50,7 @@ const WalletModal = observer(() => {
                 balance={balance}
                 closeModal={closeModal}
                 currency={currency}
-                gradient_for={current_wallet?.gradient_for || ''}
+                gradient_class={current_wallet?.gradient_header_class || ''}
                 is_dark={is_dark_mode_on}
                 is_demo={is_demo}
                 is_mobile={is_mobile}

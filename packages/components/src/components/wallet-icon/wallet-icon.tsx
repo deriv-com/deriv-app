@@ -6,12 +6,11 @@ import './wallet-icon.scss';
 type TWalletIconSizes = keyof typeof sizes['square' | 'box'];
 
 type TWalletIconProps = {
-    gradient_for?: string;
+    gradient_class?: string;
     icon: string;
     size?: TWalletIconSizes;
     type?: 'demo' | 'fiat' | 'crypto' | 'app';
     has_bg?: boolean;
-    is_dark?: boolean;
     hide_watermark?: boolean;
 };
 
@@ -48,15 +47,7 @@ const sizes = {
     },
 } as const;
 
-const WalletIcon = ({
-    gradient_for,
-    icon,
-    size = 'medium',
-    type,
-    has_bg,
-    is_dark,
-    hide_watermark,
-}: TWalletIconProps) => {
+const WalletIcon = ({ gradient_class, icon, size = 'medium', type, has_bg, hide_watermark }: TWalletIconProps) => {
     if (!icon) {
         return null;
     }
@@ -64,9 +55,8 @@ const WalletIcon = ({
     return (
         <div
             className={classNames('wallet-icon', {
-                [`wallet-icon--${size} wallet-icon__default-bg wallet-card__${gradient_for}-bg${
-                    is_dark ? '--dark' : ''
-                }`]: (!!gradient_for && type !== 'app') || has_bg,
+                [`wallet-icon--${size} wallet-icon__default-bg ${gradient_class}`]:
+                    (!!gradient_class && type !== 'app') || has_bg,
                 'wallet-card--hide-watermark': hide_watermark,
             })}
         >

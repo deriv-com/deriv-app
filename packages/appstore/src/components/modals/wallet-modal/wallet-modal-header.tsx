@@ -14,7 +14,7 @@ type TWalletModalHeaderProps = {
     shortcode: string;
     closeModal: VoidFunction;
     is_wallet_name_visible: boolean;
-    gradient_for: string;
+    gradient_class: string;
 };
 
 const WalletModalHeader = ({
@@ -26,7 +26,7 @@ const WalletModalHeader = ({
     is_mobile,
     shortcode,
     is_wallet_name_visible,
-    gradient_for,
+    gradient_class,
 }: TWalletModalHeaderProps) => {
     const header_class_name = 'modal-header';
 
@@ -94,7 +94,7 @@ const WalletModalHeader = ({
     }, [currency, getCurrencyIconSize, is_dark, is_demo]);
 
     return (
-        <div className={`header-background wallet-header__${gradient_for}-bg${is_dark ? '--dark' : ''}`}>
+        <div className={`header-background ${gradient_class}`}>
             <div
                 className={classNames(header_class_name, {
                     [`${header_class_name}--hidden-title`]: !is_wallet_name_visible,

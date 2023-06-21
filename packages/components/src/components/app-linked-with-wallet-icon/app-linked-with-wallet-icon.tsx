@@ -4,7 +4,7 @@ import './app-linked-with-wallet-icon.scss';
 
 type TAppIconProps = {
     app_icon: string;
-    gradient_for: string;
+    gradient_class: string;
     has_bg?: boolean;
     hide_watermark?: boolean;
     size?: 'small' | 'medium' | 'large';
@@ -30,13 +30,13 @@ const sizes = {
 
 const AppLinkedWithWalletIcon = ({
     app_icon,
-    gradient_for,
+    gradient_class,
     hide_watermark,
     size = 'medium',
     type,
     wallet_icon,
 }: TAppIconProps) => {
-    if (!app_icon || !wallet_icon || !gradient_for) {
+    if (!app_icon || !wallet_icon || !gradient_class) {
         return null;
     }
 
@@ -51,7 +51,7 @@ const AppLinkedWithWalletIcon = ({
             <div className='app-icon__bottom-icon'>
                 <WalletIcon
                     icon={wallet_icon}
-                    gradient_for={gradient_for}
+                    gradient_class={gradient_class}
                     type={type}
                     size={sizes.bottom[size]}
                     has_bg

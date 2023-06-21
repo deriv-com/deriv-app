@@ -24,7 +24,7 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }: TProofOf
         allow_document_upload: false,
         allow_poinc_resubmission: false,
         needs_poinc: false,
-        income_status: income_status_codes.none,
+        income_status: income_status_codes.NONE,
         is_age_verified: false,
     });
 
@@ -52,7 +52,7 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }: TProofOf
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [is_switching]);
 
-    const handleSubmit = (status: keyof typeof income_status_codes) => {
+    const handleSubmit = (status: typeof income_status_codes[keyof typeof income_status_codes]) => {
         setAuthenticationStatus({ ...authentication_status, ...{ income_status: status } });
     };
 
@@ -64,18 +64,18 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }: TProofOf
         allow_document_upload &&
         needs_poinc &&
         is_age_verified &&
-        ((allow_poinc_resubmission && income_status === income_status_codes.locked) ||
-            income_status === income_status_codes.none)
+        ((allow_poinc_resubmission && income_status === income_status_codes.LOCKED) ||
+            income_status === income_status_codes.NONE)
     ) {
         return <ProofOfIncomeForm onSubmit={handleSubmit} poinc_documents_list={poinc_documents_list} />;
     }
-    if (!allow_document_upload || !needs_poinc || (!is_age_verified && income_status === income_status_codes.none)) {
+    if (!allow_document_upload || !needs_poinc || (!is_age_verified && income_status === income_status_codes.NONE)) {
         return <PoincNotRequired />;
     }
-    if (income_status === income_status_codes.pending) return <PoincReceived />;
-    if (income_status === income_status_codes.verified) return <PoincVerified />;
-    if (income_status === income_status_codes.rejected) return <PoincUnverified onReSubmit={handleSubmit} />;
-    if (income_status === income_status_codes.locked) return <PoincLimited />;
+    if (income_status === income_status_codes.PENDING) return <PoincReceived />;
+    if (income_status === income_status_codes.VERIFIED) return <PoincVerified />;
+    if (income_status === income_status_codes.REJECTED) return <PoincUnverified onReSubmit={handleSubmit} />;
+    if (income_status === income_status_codes.LOCKED) return <PoincLimited />;
 
     return null;
 };

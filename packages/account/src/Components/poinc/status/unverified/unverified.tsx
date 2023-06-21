@@ -5,7 +5,7 @@ import IconMessageContent from 'Components/icon-message-content';
 import { income_status_codes } from 'Sections/Verification/ProofOfIncome/proof-of-income-utils';
 
 type TPoincUnverified = {
-    onReSubmit: (status: keyof typeof income_status_codes) => void;
+    onReSubmit: (status: typeof income_status_codes[keyof typeof income_status_codes]) => void;
 };
 
 export const PoincUnverified = ({ onReSubmit }: TPoincUnverified) => (

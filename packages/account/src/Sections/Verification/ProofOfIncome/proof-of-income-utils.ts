@@ -1,11 +1,11 @@
 import { localize } from '@deriv/translations';
 
 export const income_status_codes = {
-    none: 'none',
-    pending: 'pending',
-    rejected: 'rejected',
-    verified: 'verified',
-    locked: 'locked',
+    NONE: 'none',
+    PENDING: 'pending',
+    REJECTED: 'rejected',
+    VERIFIED: 'verified',
+    LOCKED: 'locked',
 } as const;
 
 export const poinc_documents_list = [

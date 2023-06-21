@@ -8,6 +8,7 @@ import RunButton from './RunButton';
 import ClearButton from './ClearButton';
 import useIsMounted from '../../../common/hooks/isMounted';
 import api from '../deriv/api';
+import './summary-panel.scss';
 
 const TradeInfoPanel = () => {
     const [account_id, setAccountId] = React.useState('');
@@ -29,7 +30,7 @@ const TradeInfoPanel = () => {
     }, []);
 
     return (
-        <span id='summaryPanel' className='draggable-dialog' title={translate('Summary')}>
+        <span id='summary-panel' className='draggable-dialog' title={translate('Summary')}>
             <div>
                 <div className='content'>
                     <div className='content-row'>

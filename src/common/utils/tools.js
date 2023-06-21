@@ -1,4 +1,3 @@
-import React from 'react';
 import { TrackJSError } from '../../botPage/view/logger';
 import AppIdMap from '../../common/appIdResolver';
 import { translate as i18nTranslate } from '../../common/i18n';
@@ -114,7 +113,7 @@ export const translate = (input, params = []) => {
         }
     });
 
-    return <div dangerouslySetInnerHTML={{ __html: translatedString }} />;
+    return translatedString;
 };
 
 export const getExtension = () => {

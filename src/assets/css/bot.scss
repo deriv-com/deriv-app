@@ -103,34 +103,7 @@ body {
     color: #333;
     margin: 0px auto;
 }
-.notifyjs-bootstrap-base,
-.notifyjs-bootstrap-success,
-.notifyjs-bootstrap-warn,
-.notifyjs-bootstrap-error {
-    white-space: unset !important;
-    max-width: 40vw;
-    min-height: 30px;
-    padding: 8px 30px !important;
-    word-break: break-word !important;
-    @include mobile {
-        max-width: 80vw !important;
-    }
-}
-.notifyjs-corner {
-    @include mobile {
-        min-height: 30px;
-        font-size: 12px;
-    }
-}
 
-.notifyjs-bootstrap-base span {
-    @include mobile {
-        min-height: 30px;
-        max-width: 40vw;
-        // padding: 2px;
-        word-break: break-word;
-    }
-}
 [data-notify-text],
 [data-notify-html] {
     @include mobile {
@@ -139,14 +112,6 @@ body {
         max-width: 40vw !important;
         word-break: break-word;
     }
-}
-
-.barspinner {
-    position: fixed;
-    left: 50%;
-    top: 50%;
-    z-index: 9999;
-    transform: translate(-50%, 50%);
 }
 
 .icon-remove:before {

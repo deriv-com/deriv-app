@@ -1,3 +1,8 @@
+
+a:hover {
+    text-decoration: none;
+}
+
 // inline-icons
 
 /*
@@ -34,7 +39,6 @@
     }
 }
 
-
 .btn {
     @include deriv-btn('default', null);
 
@@ -63,3 +67,34 @@
     }
 }
 
+.content-row {
+    overflow-x: auto;
+
+    &-table {
+        overflow-x: auto;
+
+        @include mobile {
+            width: 760px;
+        }
+    }
+
+    &>div {
+        overflow: auto !important;
+    }
+
+    & table {
+        @include mobile {
+            min-width: 760px;
+        }
+
+        overflow: auto;
+    }
+}
+
+.barspinner {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    z-index: 9999;
+    transform: translate(-50%, 50%);
+}

@@ -26,6 +26,7 @@ import api from '../../api';
 import config from '../../../../../app.config';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
 import { checkSwitcherType, isEuByAccount } from '../../../../../common/footer-checks';
+import './header.scss';
 
 // [Todo] We will update this during the API improvement process
 let is_subscribed = false;

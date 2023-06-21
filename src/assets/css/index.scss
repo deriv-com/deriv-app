@@ -1,7 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@700&display=swap');
-@import 'constants';
+@import 'variables';
 @import 'mixins';
 @import 'common';
+@import 'overrides';
+
 @import 'dbot-banner';
 @import 'bot';
 
@@ -125,9 +127,6 @@ ul.bullet {
         margin: 9px auto !important;
     }
 }
-
-
-
 
 // =======================================================================================================
 
@@ -309,7 +308,6 @@ ul.bullet {
     }
 }
 
-
 .header {
     left: 0px;
     top: 0px;
@@ -374,7 +372,7 @@ ul.bullet {
             align-self: center;
             border-bottom: 1px solid var(--general-section-1);
 
-            >* {
+            > * {
                 display: inline-flex;
                 flex: 1;
             }
@@ -450,7 +448,7 @@ ul.bullet {
                     background: var(--state-hover);
                 }
 
-                >span {
+                > span {
                     align-self: center;
                 }
             }
@@ -459,7 +457,7 @@ ul.bullet {
         &-right {
             justify-content: flex-end;
 
-            >* {
+            > * {
                 align-self: center;
             }
 
@@ -468,7 +466,7 @@ ul.bullet {
                 height: 100%;
                 text-align: right;
 
-                &>svg {
+                & > svg {
                     max-height: 80%;
                     margin-right: 10px;
                 }
@@ -476,7 +474,7 @@ ul.bullet {
         }
 
         &-left {
-            >* {
+            > * {
                 align-self: center;
             }
         }
@@ -727,7 +725,7 @@ ul.bullet {
                 padding: 10px 24px 10px 16px;
                 display: flex;
 
-                >img {
+                > img {
                     width: 16px;
                     height: 16px;
                     margin: 2px 8px 0 0;
@@ -787,7 +785,7 @@ ul.bullet {
             }
         }
 
-        >img {
+        > img {
             height: 24px;
             width: 24px;
 
@@ -804,7 +802,7 @@ ul.bullet {
             padding: 0 16px;
             cursor: pointer;
 
-            >* {
+            > * {
                 align-self: center;
             }
 
@@ -1127,7 +1125,6 @@ ul.bullet {
                 }
 
                 h3.ui-state-active {
-
                     .header__expand,
                     .header__expand-light {
                         transform: rotate(180deg);
@@ -1438,7 +1435,7 @@ ul.bullet {
             align-items: center;
             border-bottom: 1px solid var(--general-section-1);
 
-            >img {
+            > img {
                 border-right: 1px solid var(--general-section-1);
                 padding: 6px 8px;
             }
@@ -1609,160 +1606,6 @@ ul.bullet {
     color: #333;
 }
 
-
-/** @define footer; weak */
-.footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    height: $FOOTER_HEIGHT;
-    box-sizing: border-box;
-    z-index: 999;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    transition: opacity 0.3s;
-    backface-visibility: hidden;
-    background: var(--general-main-1);
-    color: var(--text-prominent);
-    border-top: 1px solid var(--general-section-1);
-
-    &--is-disabled {
-        border-top: none;
-
-        &:after {
-            opacity: 1;
-            pointer-events: auto;
-        }
-    }
-
-    &__links {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-        flex-direction: row;
-        height: 100%;
-
-        &--left {
-            margin-right: auto;
-        }
-
-        /* fix issue with rogue tiny-popover div generated in footer links */
-        div {
-            height: inherit;
-            display: inline-flex;
-            align-items: center;
-            position: relative;
-        }
-    }
-
-    &__link {
-        padding: 0 1.28em;
-        text-decoration: none;
-        height: 100%;
-        display: inline-flex;
-        align-items: center;
-        position: relative;
-        cursor: pointer;
-
-        &:hover {
-            background: var(--general-hover);
-
-            .footer__icon {
-                @extend %inline-icon;
-            }
-        }
-    }
-
-    &__icon {
-        width: 1.6em;
-        height: 1.6em;
-        @extend %inline-icon;
-    }
-
-    @media (max-width: 768px) {
-        display: none;
-    }
-}
-
-@keyframes blinking-network-status {
-    40% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-    }
-}
-
-/** @define network-status  */
-.network-status {
-    &__wrapper {
-        height: 1.4em;
-        position: relative;
-
-        &--is-mobile {
-            .network-status__circle {
-                margin: 0.2em 0 0.2em -0.2em;
-            }
-        }
-    }
-
-    &__tooltip {
-        left: unset;
-        text-decoration-line: none;
-    }
-
-    &__circle {
-        background: var(--general-section-1);
-        width: 1em;
-        height: 1em;
-        margin: 0.2em 1.6em;
-        border-radius: 50%;
-
-        &--online {
-            background: var(--text-profit-success);
-        }
-
-        &--offline {
-            background: var(--text-loss-danger);
-        }
-
-        &--blinker {
-            animation: blinking-network-status 0.4s alternate infinite;
-            background: var(--text-profit-success);
-        }
-    }
-}
-
-#language-select {
-    height: inherit;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-
-    &:hover {
-        background: var(--general-hover);
-    }
-
-    & img {
-        padding: 0 0.8rem;
-    }
-}
-
-/** @define server-time */
-.server-time {
-    display: inline-flex;
-    align-self: center;
-    padding: 0 1em;
-    color: var(--text-general);
-
-    &--is-mobile {
-        padding: 0 1em 0 0;
-        margin-right: 0;
-    }
-}
-
 /** @define ic-settings */
 .ic-settings {
     &--active {
@@ -1780,8 +1623,7 @@ ul.bullet {
         }
 
         .ic-settings__icon {
-            @extend %inline-icon,
-            .active;
+            @extend %inline-icon, .active;
             pointer-events: none;
         }
     }
@@ -1806,111 +1648,5 @@ ul.bullet {
         justify-content: center;
         align-items: flex-start;
         margin-bottom: 2.4em;
-    }
-}
-
-/** @define footer-icon-separator */
-.footer-icon-separator {
-    width: 1px;
-    height: 1.6em !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--general-section-1);
-    margin: 0 0.1em;
-}
-
-.react-tiny-popover-container {
-    z-index: 10000;
-
-    @include mobile {
-        display: none;
-    }
-}
-
-
-// =================================== index
-
-.header {
-    font-size: $FONT_BASE;
-    font-family: $FONT_STACK;
-}
-
-.footer {
-    font-size: var(--font-size-xxs);
-    font-family: $FONT_STACK;
-}
-
-a:hover {
-    text-decoration: none;
-}
-
-// Make summary panel to cover full viewport
-.ui-dialog[aria-describedby='summaryPanel'] {
-    @include mobile {
-        width: 100vw !important;
-        height: auto !important;
-        top: 0;
-        left: 0;
-    }
-}
-
-#summaryPanel {
-    &>div {
-        @include mobile {
-            overflow: scroll;
-        }
-    }
-}
-
-.ui-dialog {
-    @include mobile {
-        width: 90vw !important;
-    }
-}
-
-.content-row {
-    overflow-x: auto;
-
-    &-table {
-        overflow-x: auto;
-
-        @include mobile {
-            width: 760px;
-        }
-    }
-
-    &>div {
-        overflow: auto !important;
-    }
-
-    & table {
-        @include mobile {
-            min-width: 760px;
-        }
-
-        overflow: auto;
-    }
-}
-
-.notifyjs {
-    &-corner {
-        @include mobile {
-            max-width: 90vw;
-        }
-    }
-
-    &-bootstrap {
-        &-info {
-            @include mobile {
-                white-space: break-spaces !important;
-            }
-        }
-
-        &-base {
-            @include mobile {
-                background-position: left !important;
-            }
-        }
     }
 }

@@ -149,13 +149,13 @@ const setElementActions = blockly => {
     addEventHandlers(blockly);
 };
 
-const exportContent = {};
-exportContent.summaryPanel = () => {
-    globalObserver.emit('summary.export');
-};
-
-exportContent.logPanel = () => {
-    globalObserver.emit('log.export');
+const exportContent = {
+    'exportContent': () => {
+        globalObserver.emit('summary.export');
+    },
+    logPanel: () => {
+        globalObserver.emit('log.export');
+    },
 };
 
 const addExportButtonToPanel = panelId => {
@@ -173,10 +173,10 @@ const addExportButtonToPanel = panelId => {
 };
 
 export const showSummary = () => {
-    $('#summaryPanel')
+    $('#summary-panel')
         .dialog('option', 'minWidth', 770)
         .dialog('open');
-    addExportButtonToPanel('summaryPanel');
+    addExportButtonToPanel('summary-panel');
 };
 
 export const logButton = () => {
@@ -292,11 +292,11 @@ const addBindings = blockly => {
         .click(e => stop(e))
         .hide();
 
-    $('[aria-describedby="summaryPanel"]').on('click', '#summaryRunButton', () => {
+    $('[aria-describedby="summary-panel"]').on('click', '#summaryRunButton', () => {
         $('#runButton').trigger('click');
     });
 
-    $('[aria-describedby="summaryPanel"]').on('click', '#summaryStopButton', () => {
+    $('[aria-describedby="summary-panel"]').on('click', '#summaryStopButton', () => {
         $('#stopButton').trigger('click');
     });
 

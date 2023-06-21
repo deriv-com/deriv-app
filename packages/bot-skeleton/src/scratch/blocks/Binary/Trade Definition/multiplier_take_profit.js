@@ -29,14 +29,18 @@ Blockly.Blocks.multiplier_take_profit = {
             colourTertiary: Blockly.Colours.Base.colourTertiary,
             previousStatement: null,
             nextStatement: null,
-            tooltip: localize('Your contract will be closed automatically if your profit reaches this amount.'),
+            tooltip: localize(
+                'Your contract is closed automatically when your profit is more than or equals to this amount. This block can only be used with the multipliers trade type.'
+            ),
             category: Blockly.Categories.Trade_Definition,
         };
     },
     meta() {
         return {
             display_name: localize('Take Profit'),
-            description: localize('Your contract will be closed automatically if your profit reaches this amount.'),
+            description: localize(
+                'Your contract is closed automatically when your profit is more than or equals to this amount. This block can only be used with the multipliers trade type.'
+            ),
         };
     },
     onchange(event) {

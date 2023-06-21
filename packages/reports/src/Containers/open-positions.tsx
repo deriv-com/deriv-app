@@ -44,11 +44,12 @@ import {
 import PlaceholderComponent from '../Components/placeholder-component';
 import { connect } from 'Stores/connect';
 import type { TRootStore } from 'Stores/index';
-import { TPortfolioStore } from '@deriv/stores/types';
 import { TDataList, TMobileRowRenderer, TRowRenderer } from '../../../components/src/components/data-list/data-list';
 import { TColIndex } from 'Types';
 import { TDataListCell } from '../../../components/src/components/data-list/data-list-cell';
 import moment from 'moment';
+
+type TPortfolioStore = TRootStore['portfolio'];
 
 type TRangeFloatZeroToOne = React.ComponentProps<typeof ProgressBar>['value'];
 

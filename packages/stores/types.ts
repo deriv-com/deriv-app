@@ -329,7 +329,7 @@ type TUiStore = {
     setShouldShowCooldownModal: (value: boolean) => void;
 };
 
-export type TPortfolioStore = {
+type TPortfolioStore = {
     active_positions: TPortfolioPosition[];
     error: string;
     getPositionById: (id: number) => TPortfolioPosition;

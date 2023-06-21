@@ -1,7 +1,7 @@
 import React from 'react';
 import SuccessDialog from '../Components/success-dialog.jsx';
 import { Icon, Modal, Button, Money, Text } from '@deriv/components';
-import { getCFDPlatformLabel } from '@deriv/shared';
+import { CFD_PLATFORMS, getCFDPlatformLabel } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import RootStore from '../Stores/index';
@@ -55,7 +55,9 @@ const CFDTopUpDemoModal = ({
         closeSuccessTopUpModal();
     };
 
-    const platform_title = getCFDPlatformLabel(platform);
+    const has_sub_title = [CFD_PLATFORMS.CTRADER].includes(platform);
+
+    const platform_title = getCFDPlatformLabel(platform, has_sub_title);
 
     if ((!mt5_companies && !dxtrade_companies && !ctrader_companies) || !current_account) return null;
 

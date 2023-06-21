@@ -16,6 +16,11 @@ type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: number;
 };
 
+type TCtraderAccountsList = DetailsOfEachMT5Loginid & {
+    display_balance?: string;
+    platform?: string;
+};
+
 type TAccountsList = {
     account?: {
         balance?: string | number;
@@ -199,6 +204,7 @@ type TClientStore = {
     logout: () => Promise<LogOutResponse>;
     should_allow_authentication: boolean;
     is_crypto: (currency?: string) => boolean;
+    ctrader_accounts_list: TCtraderAccountsList[];
     dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
     default_currency: string;
     resetVirtualBalance: () => Promise<void>;

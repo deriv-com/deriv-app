@@ -8,7 +8,6 @@ import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getTradingHubContents } from 'Constants/trading-hub-content';
 import { useHistory } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-
 import EmptyOnboarding from './empty-onboarding';
 
 type TOnboardingProps = {

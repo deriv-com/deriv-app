@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Text } from '@deriv/components';
+import { Button } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
@@ -53,14 +53,10 @@ const OrderDetailsFooter = observer(() => {
                     <div className='order-details-footer--right'>
                         <Button.Group>
                             <Button large secondary onClick={showCancelOrderModal} is_disabled={!chat_channel_url}>
-                                <Text line_height='s' size='xs' weight='bold'>
-                                    <Localize i18n_default_text='Cancel order' />
-                                </Text>
+                                <Localize i18n_default_text='Cancel order' />
                             </Button>
                             <Button large primary onClick={showConfirmOrderModal} is_disabled={!chat_channel_url}>
-                                <Text color='colored-background' line_height='s' size='xs' weight='bold'>
-                                    <Localize i18n_default_text="I've paid" />
-                                </Text>
+                                <Localize i18n_default_text="I've paid" />
                             </Button>
                         </Button.Group>
                     </div>
@@ -76,14 +72,10 @@ const OrderDetailsFooter = observer(() => {
                     <div className='order-details-footer--right'>
                         <Button.Group>
                             <Button large tertiary onClick={showComplainOrderModal}>
-                                <Text color='loss-danger' line_height='s' size='xs' weight='bold'>
-                                    <Localize i18n_default_text='Complain' />
-                                </Text>
+                                <Localize i18n_default_text='Complain' />
                             </Button>
                             <Button large primary onClick={showConfirmOrderModal}>
-                                <Text line_height='s' size='xs'>
-                                    <Localize i18n_default_text="I've received payment" />
-                                </Text>
+                                <Localize i18n_default_text="I've received payment" />
                             </Button>
                         </Button.Group>
                     </div>
@@ -104,9 +96,7 @@ const OrderDetailsFooter = observer(() => {
                 <div className='order-details-footer'>
                     <div className='order-details-footer--right'>
                         <Button large tertiary onClick={showComplainOrderModal}>
-                            <Text color='loss-danger' line_height='s' size='xs' weight='bold'>
-                                <Localize i18n_default_text='Complain' />
-                            </Text>
+                            <Localize i18n_default_text='Complain' />
                         </Button>
                     </div>
                 </div>
@@ -126,9 +116,7 @@ const OrderDetailsFooter = observer(() => {
                 <div className='order-details-footer'>
                     <div className='order-details-footer--right'>
                         <Button large primary onClick={showConfirmOrderModal}>
-                            <Text line_height='s' size='xs'>
-                                <Localize i18n_default_text="I've received payment" />
-                            </Text>
+                            <Localize i18n_default_text="I've received payment" />
                         </Button>
                     </div>
                 </div>

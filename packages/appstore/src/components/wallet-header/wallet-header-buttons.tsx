@@ -4,10 +4,9 @@ import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
 import { observer, useStore } from '@deriv/stores';
 import { TWalletAccount } from 'Types';
-import { useWalletModalActionHandler } from '@deriv/hooks';
 
 type TWalletButton = {
-    name: string;
+    name: Parameters<ReturnType<typeof useStore>['traders_hub']['setWalletModalActiveTab']>[0];
     text: string;
     icon: string;
     action: () => void;
@@ -23,11 +22,10 @@ type TWalletHeaderButtons = {
 const WalletHeaderButtons = observer(({ is_disabled, is_open, btns, wallet_account }: TWalletHeaderButtons) => {
     const { ui, traders_hub } = useStore();
     const { setIsWalletModalVisible } = ui;
-    const { setWalletModalActiveWalletID } = traders_hub;
-    const { handleAction } = useWalletModalActionHandler();
+    const { setWalletModalActiveWalletID, setWalletModalActiveTab } = traders_hub;
 
     const handleOnClick = async (btn: TWalletButton) => {
-        handleAction(btn.name);
+        setWalletModalActiveTab(btn.name);
         setIsWalletModalVisible(true);
         setWalletModalActiveWalletID(wallet_account.loginid);
     };

@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 
-const useWalletList = () => {
+const useWalletsList = () => {
     const { client } = useStore();
     const { accounts, loginid, is_crypto } = client;
     const { data, ...reset } = useFetch('authorize', {
@@ -52,4 +52,4 @@ const useWalletList = () => {
     };
 };
 
-export default useWalletList;
+export default useWalletsList;

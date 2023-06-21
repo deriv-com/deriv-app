@@ -6,9 +6,9 @@
     flex-direction: column;
 
     @include mobile {
-        height: calc(100% - 74px);
+        height: calc(100% - 7.4rem);
         &--has-toggle-buttons {
-            height: calc(100% - 148.5px);
+            height: calc(100% - 14.85rem);
         }
     }
 

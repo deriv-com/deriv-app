@@ -23,7 +23,7 @@ type TPopulateSettingsExtensionsMenuItem = {
 type TPortfolioPosition = {
     contract_info: ProposalOpenContract &
         Portfolio1 & {
-            contract_update?: ContractUpdate | undefined;
+            contract_update?: ContractUpdate;
         };
     details?: string;
     display_name: string;

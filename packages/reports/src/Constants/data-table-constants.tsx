@@ -37,6 +37,10 @@ export type TKeys = keyof typeof map;
 
 const getModeFromValue = (key: TKeys) => map[key] || map.default;
 
+type TAccumulatorOpenPositionstemplateProps = Omit<
+    TMultiplierOpenPositionstemplateProps,
+    'onClickCancel' | 'server_time'
+>;
 type TMultiplierOpenPositionstemplateProps = Pick<
     TPortfolioStore,
     'getPositionById' | 'onClickCancel' | 'onClickSell'
@@ -438,7 +442,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
     currency,
     onClickSell,
     getPositionById,
-}: Omit<TMultiplierOpenPositionstemplateProps, 'onClickCancel' | 'server_time'>) => [
+}: TAccumulatorOpenPositionstemplateProps) => [
     {
         title: isMobile() ? '' : localize('Type'),
         col_index: 'type',

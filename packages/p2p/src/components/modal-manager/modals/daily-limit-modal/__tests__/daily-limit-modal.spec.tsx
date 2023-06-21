@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { useStores } from 'Stores/index';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import DailyLimitModal from '../daily-limit-modal';
 
 let mock_store: DeepPartial<ReturnType<typeof useStores>>;

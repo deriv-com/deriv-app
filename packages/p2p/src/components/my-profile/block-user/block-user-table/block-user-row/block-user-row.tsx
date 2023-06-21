@@ -1,14 +1,20 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
-import PropTypes from 'prop-types';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
 import classNames from 'classnames';
 import { Button, Table, Text } from '@deriv/components';
-import { localize } from 'Components/i18next';
+import { observer } from '@deriv/stores';
+import { useStores } from 'Stores';
+import { Localize } from 'Components/i18next';
 import UserAvatar from 'Components/user/user-avatar';
 
-const BlockUserRow = ({ row: advertiser }) => {
+type TBlockUserRowProps = {
+    row: {
+        id: string;
+        is_blocked: number;
+        name: string;
+    };
+};
+
+const BlockUserRow = ({ row: advertiser }: TBlockUserRowProps) => {
     const { buy_sell_store, general_store, my_profile_store } = useStores();
     const { id, is_blocked, name } = advertiser;
 
@@ -30,9 +36,7 @@ const BlockUserRow = ({ row: advertiser }) => {
                 >
                     <UserAvatar nickname={name} size={32} text_size='s' />
                     <div className='block-user-row__cell-container'>
-                        <Text size='xs' line_height='m' color='general'>
-                            {name}
-                        </Text>
+                        <Text size='xs'>{name}</Text>
                     </div>
                 </div>
             </Table.Cell>
@@ -44,7 +48,7 @@ const BlockUserRow = ({ row: advertiser }) => {
                         medium
                         onClick={() => my_profile_store.onClickUnblock(advertiser)}
                     >
-                        {localize('Unblock')}
+                        <Localize i18n_default_text='Unblock' />
                     </Button>
                 ) : (
                     <Button
@@ -53,16 +57,12 @@ const BlockUserRow = ({ row: advertiser }) => {
                         medium
                         onClick={() => my_profile_store.onClickUnblock(advertiser)}
                     >
-                        {localize('Block')}
+                        <Localize i18n_default_text='Block' />
                     </Button>
                 )}
             </Table.Cell>
         </Table.Row>
     );
-};
-
-BlockUserRow.propTypes = {
-    advertiser: PropTypes.object,
 };
 
 export default observer(BlockUserRow);

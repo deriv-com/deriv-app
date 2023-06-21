@@ -1,20 +1,18 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Modal, RadioGroup, Text } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import { useStores } from 'Stores';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const BlockUserFilterModal = () => {
     const { my_profile_store } = useStores();
+    const { is_modal_open, hideModal } = useModalManagerContext();
 
     return (
-        <Modal
-            is_open={my_profile_store.is_filter_modal_open}
-            height='10rem'
-            toggleModal={() => my_profile_store.setIsFilterModalOpen(false)}
-            width='80vw'
-        >
+        <Modal is_open={is_modal_open} height='10rem' toggleModal={hideModal} width='80vw'>
             <RadioGroup
                 className='sort-radiogroup'
+                name='block-user-filter-modal'
                 onToggle={my_profile_store.handleChange}
                 selected={my_profile_store.selected_sort_value}
                 required

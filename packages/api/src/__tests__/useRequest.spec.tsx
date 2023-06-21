@@ -22,7 +22,7 @@ describe('useRequest', () => {
 
         const { result, waitFor } = renderHook(() => useRequest('verify_email'), { wrapper });
 
-        result.current.mutate([{ payload: { verify_email: 'john@example.com', type: 'request_email' } }]);
+        result.current.mutate({ payload: { verify_email: 'john@example.com', type: 'request_email' } });
 
         await waitFor(() => result.current.isSuccess, { timeout: 10000 });
 

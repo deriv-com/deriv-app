@@ -34,8 +34,6 @@ const CarouselContainer: React.FC<React.PropsWithChildren<unknown>> = observer((
         emblaApi.on('select', onSelect);
     }, [emblaApi, onSelect]);
 
-    // if (is_mobile) setIsHovered(true);
-
     return (
         <div
             className='add-wallets__content'

@@ -23,6 +23,7 @@ describe('<WalletHeader />', () => {
             balance: 10000,
             loginid: 'CRW123123',
             is_virtual: false,
+            is_selected: true,
         };
     });
 
@@ -196,6 +197,7 @@ describe('<WalletHeader />', () => {
             mocked_props.is_virtual = true;
             mocked_props.currency = 'EUR';
             mocked_props.balance = 0;
+            mocked_props.is_selected = false;
             render(
                 <StoreProvider store={mockedRootStore}>
                     <WalletHeader wallet_account={mocked_props} />
@@ -212,6 +214,7 @@ describe('<WalletHeader />', () => {
             mocked_props.currency = 'EUR';
             mocked_props.balance = 0;
             mocked_props.loginid = 'CRW1231';
+            mocked_props.is_selected = true;
 
             const mocked_store = mockStore({
                 client: {
@@ -235,6 +238,8 @@ describe('<WalletHeader />', () => {
             mocked_props.currency = 'EUR';
             mocked_props.balance = 0;
             mocked_props.loginid = 'CRW1231';
+            mocked_props.is_selected = false;
+
             render(
                 <StoreProvider store={mockedRootStore}>
                     <WalletHeader wallet_account={mocked_props} />

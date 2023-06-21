@@ -263,18 +263,15 @@ export default class ContractStore extends BaseStore {
     createBarriersArray = (contract_info, is_dark_mode) => {
         let barriers = [];
         if (contract_info) {
-            const { contract_type, barrier, entry_spot, high_barrier, low_barrier } = contract_info;
-
+            const { contract_type, barrier, entry_spot, high_barrier: high, low_barrier } = contract_info;
+            const high_barrier = this.accu_high_barrier || barrier || high;
             if (
                 isBarrierSupported(contract_type) &&
-                (this.accu_high_barrier ||
-                    barrier ||
-                    high_barrier ||
-                    (entry_spot && !isAccumulatorContract(contract_type)))
+                (high_barrier || (entry_spot && !isAccumulatorContract(contract_type)))
             ) {
                 // create barrier only when it's available in response
                 const main_barrier = new ChartBarrierStore(
-                    this.accu_high_barrier || barrier || high_barrier || entry_spot,
+                    high_barrier || entry_spot,
                     this.accu_low_barrier || low_barrier,
                     null,
                     {

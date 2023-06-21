@@ -55,10 +55,10 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
     const handleCloseButton = async () => {
         toggleIsTourOpen(false);
         history.push(routes.traders_hub);
-        if (has_active_real_account) {
-            await selectAccountType(prev_account_type);
-        } else {
+        if (content_flag === ContentFlag.EU_REAL && !has_active_real_account) {
             await selectAccountType('demo');
+        } else {
+            await selectAccountType(prev_account_type);
         }
     };
 

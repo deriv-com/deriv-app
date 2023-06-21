@@ -22,7 +22,7 @@ const ContractTypeDialog = ({
     const current_mobile_title = is_info_dialog_open ? (
         <Header title={item.text} onClickGoBack={onBackButtonClick} text_size='xs' />
     ) : (
-        localize('Trade type')
+        localize('Trade types')
     );
     return (
         <React.Fragment>
@@ -35,7 +35,7 @@ const ContractTypeDialog = ({
                     wrapper_classname='contracts-modal-list'
                     visible={is_open}
                     onClose={onClose}
-                    has_content_scroll
+                    has_content_scroll={!is_info_dialog_open}
                 >
                     {children}
                 </MobileDialog>

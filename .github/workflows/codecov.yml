@@ -12,16 +12,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Use Node.js 16.x
+      - name: Use Node.js 18.x
         uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: 18.x
       - name: install, bootstrap and make test coverage
         run: |
           npm install
           npm run bootstrap
           npm run build:all
-          npm run test:jest
+          npm run test:jest 4
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3.1.1

@@ -3,7 +3,7 @@ import { Text, Icon } from '@deriv/components';
 import classNames from 'classnames';
 import { getAllowedLanguages } from '@deriv/translations';
 
-type TLanguageRadioButton = {
+export type TLanguageRadioButton = {
     is_current_language: boolean;
     id: string;
     language_code: string;
@@ -19,6 +19,7 @@ const LanguageRadioButton = ({ is_current_language, id, language_code, name, onC
                 'settings-language__language-link--active': is_current_language,
             })}
             id={`dt_settings_${language_code}_button`}
+            data-testid={'dt_language_settings_button'}
         >
             <input
                 type='radio'

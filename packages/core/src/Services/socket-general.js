@@ -259,6 +259,7 @@ const BinarySocketGeneral = (() => {
         WS.storage.getSettings();
         WS.getAccountStatus();
         WS.storage.payoutCurrencies();
+        client_store.setIsAuthorize(true);
         if (!client_store.is_virtual) {
             WS.getSelfExclusion();
         }

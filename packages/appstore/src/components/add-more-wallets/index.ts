@@ -1,3 +1,3 @@
-import AddWallets from './add-more-wallets';
+import AddMoreWallets from './add-more-wallets';
 
-export default AddWallets;
+export default AddMoreWallets;

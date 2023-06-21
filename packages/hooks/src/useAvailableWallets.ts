@@ -3,7 +3,7 @@ import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 import useWalletList from './useWalletsList';
 
-const useDisplayAvailableWallets = () => {
+const useAvailableWallets = () => {
     const { client } = useStore();
     const { accounts, loginid, is_crypto } = client;
     const { data, ...rest } = useFetch('authorize', {
@@ -67,4 +67,4 @@ const useDisplayAvailableWallets = () => {
     };
 };
 
-export default useDisplayAvailableWallets;
+export default useAvailableWallets;

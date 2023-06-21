@@ -1,6 +1,6 @@
 import React from 'react';
 import { APIProvider } from '@deriv/api';
-import useDisplayAvailableWallets from '../useDisplayAvailableWallets';
+import useAvailableWallets from '../useAvailableWallets';
 import { renderHook } from '@testing-library/react-hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
@@ -41,7 +41,7 @@ jest.mock('@deriv/api', () => ({
     }),
 }));
 
-describe('useDisplayAvailableWallets', () => {
+describe('useAvailableWallets', () => {
     it('should return available wallets', () => {
         const mock = mockStore({
             client: {
@@ -57,7 +57,7 @@ describe('useDisplayAvailableWallets', () => {
             </APIProvider>
         );
 
-        const { result } = renderHook(() => useDisplayAvailableWallets(), { wrapper });
+        const { result } = renderHook(() => useAvailableWallets(), { wrapper });
 
         expect(result.current?.data).toEqual([
             {
@@ -108,7 +108,7 @@ describe('useDisplayAvailableWallets', () => {
             </APIProvider>
         );
 
-        const { result } = renderHook(() => useDisplayAvailableWallets(), { wrapper });
+        const { result } = renderHook(() => useAvailableWallets(), { wrapper });
 
         expect(result.current?.data).not.toEqual([
             {

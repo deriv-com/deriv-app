@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import AddWallets from '../add-more-wallets';
+import AddMoreWallets from '../add-more-wallets';
 import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
@@ -53,7 +53,7 @@ jest.mock('@deriv/api', () => ({
     }),
 }));
 
-describe('AddWallets', () => {
+describe('AddMoreWallets', () => {
     it('should render the component without errors', () => {
         const mock = mockStore({
             client: {
@@ -73,7 +73,7 @@ describe('AddWallets', () => {
             </APIProvider>
         );
 
-        render(<AddWallets />, { wrapper });
+        render(<AddMoreWallets />, { wrapper });
 
         expect(screen.getByTestId('dt-add-wallets')).toBeInTheDocument();
     });
@@ -97,7 +97,7 @@ describe('AddWallets', () => {
             </APIProvider>
         );
 
-        render(<AddWallets />, { wrapper });
+        render(<AddMoreWallets />, { wrapper });
         expect(screen.getByText('Add more Wallets')).toBeInTheDocument();
     });
 
@@ -120,7 +120,7 @@ describe('AddWallets', () => {
             </APIProvider>
         );
 
-        render(<AddWallets />, { wrapper });
+        render(<AddMoreWallets />, { wrapper });
         expect(screen.getByTestId('dt-carousel-container')).toBeInTheDocument();
     });
 
@@ -143,7 +143,7 @@ describe('AddWallets', () => {
             </APIProvider>
         );
 
-        render(<AddWallets />, { wrapper });
+        render(<AddMoreWallets />, { wrapper });
         const wallet_cards = screen.queryAllByTestId('dt-add-wallet-card');
         expect(wallet_cards).toHaveLength(4);
     });

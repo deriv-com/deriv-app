@@ -10,24 +10,26 @@ type TFiatTransactionListItem = Pick<TStatementTransaction, 'amount' | 'balance_
         | (TStatementTransaction['action_type'] & ('deposit' | 'withdrawal' | 'transfer'))
         | 'initial_fund'
         | 'reset_balance';
+    account_category?: string;
     account_currency: string;
     account_name: string;
+    account_type?: string;
     currency: string;
     icon: string;
     icon_type: string;
-    is_deriv_apps?: boolean;
 };
 
 const NonPendingTransaction = ({
+    account_category,
     account_currency,
     account_name,
+    account_type,
     action_type,
     amount,
     balance_after,
     currency,
     icon,
     icon_type,
-    is_deriv_apps,
 }: TFiatTransactionListItem) => {
     const {
         ui: { is_dark_mode_on, is_mobile },
@@ -36,12 +38,25 @@ const NonPendingTransaction = ({
 
     const formatActionType = (value: string) => value[0].toUpperCase() + value.substring(1).replace(/_/, ' ');
 
+    const getAppIcon = () => {
+        switch (account_type) {
+            case 'standard':
+                return is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight';
+            case 'mt5':
+                return 'IcMt5CfdPlatform';
+            case 'dxtrade':
+                return '';
+            default:
+                return '';
+        }
+    };
+
     return (
         <div className='transaction-list__item'>
             <div className='transaction-list__item__left'>
-                {is_deriv_apps ? (
+                {account_category === 'trading' ? (
                     <AppLinkedWithWalletIcon
-                        app_icon={is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight'}
+                        app_icon={getAppIcon()}
                         currency={account_currency}
                         type={icon_type}
                         wallet_icon={icon}

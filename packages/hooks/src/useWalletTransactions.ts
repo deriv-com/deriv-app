@@ -13,17 +13,37 @@ const useWalletTransactions = (
     action_type: '' | 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer'
 ) => {
     const {
-        client: { accounts, currency: wallet_currency, loginid, landing_company_shortcode: shortcode },
+        client: { loginid, landing_company_shortcode: shortcode },
         traders_hub: { is_demo },
         ui: { is_dark_mode_on },
     } = useStore();
     const { data: wallets } = useWalletList();
-    const { demo: demo_platform_accounts, real: real_platform_accounts } = usePlatformAccounts();
+    let { demo: demo_platform_account } = usePlatformAccounts();
+    const { real: real_platform_accounts } = usePlatformAccounts();
     const cfd_accounts = useCFDAllAccounts();
+    // TODO remove this mock when we're to switch to API data
+    demo_platform_account = {
+        account_category: 'trading',
+        account_type: 'standard',
+        loginid: 'VRTCMOCK0001',
+        is_virtual: 1,
+        landing_company_shortcode: shortcode as 'svg' | 'malta',
+        token: '',
+    };
+    real_platform_accounts.push({
+        account_category: 'trading',
+        account_type: 'standard',
+        loginid: 'CRMOCK0001',
+        is_virtual: 0,
+        landing_company_shortcode: shortcode as 'svg' | 'malta',
+        token: '',
+    });
+    const accounts = [demo_platform_account, ...real_platform_accounts];
     const { getConfig } = useCurrencyConfig();
 
-    const accountName = (is_virtual: boolean, currency: string, is_wallet: boolean) =>
-        `${is_virtual ? 'Demo' : ''} ${currency} ${is_wallet ? 'Wallet' : 'account'}`;
+    const accountName = (is_virtual: boolean, currency: string, is_wallet: boolean) => {
+        return `${is_virtual ? 'Demo' : ''} ${currency} ${is_wallet ? 'Wallet' : 'account'}`;
+    };
 
     // TODO: refactor once we have useActiveWallet merged
     const current_wallet = wallets.find(wallet => wallet.loginid === loginid) as typeof wallets[number];
@@ -36,13 +56,9 @@ const useWalletTransactions = (
                   amount: 5,
                   from: {
                       loginid,
-                      account_category: 'wallet',
-                      account_type: '',
                   },
                   to: {
-                      loginid: 'CR90000100',
-                      account_category: 'trading',
-                      account_type: 'standard',
+                      loginid: 'VRTCMOCK0001',
                   },
                   app_id: {},
                   balance_after: 9995,
@@ -60,13 +76,10 @@ const useWalletTransactions = (
                   action_type: 'transfer',
                   amount: 200,
                   from: {
-                      loginid: 'CR90000100',
-                      account_category: 'trading',
-                      account_type: 'standard',
+                      loginid: 'VRTCMOCK0001',
                   },
                   to: {
                       loginid,
-                      account_category: 'wallet',
                   },
                   balance_after: 9650,
                   transaction_id: 17494415483,
@@ -77,13 +90,9 @@ const useWalletTransactions = (
                   amount: 550,
                   from: {
                       loginid,
-                      account_category: 'wallet',
-                      account_type: '',
                   },
                   to: {
-                      loginid: 'CR90000100',
-                      account_category: 'trading',
-                      account_type: 'standard',
+                      loginid: 'VRTCMOCK0001',
                   },
                   app_id: {},
                   balance_after: 9450,
@@ -104,13 +113,9 @@ const useWalletTransactions = (
                   amount: 5,
                   from: {
                       loginid,
-                      account_category: 'wallet',
-                      account_type: '',
                   },
                   to: {
-                      loginid: 'CR90000100',
-                      account_category: 'trading',
-                      account_type: 'standard',
+                      loginid: 'CRMOCK0001',
                   },
                   balance_after: 0,
                   transaction_id: 17494117541,
@@ -121,13 +126,9 @@ const useWalletTransactions = (
                   amount: 20,
                   from: {
                       loginid,
-                      account_category: 'wallet',
-                      account_type: '',
                   },
                   to: {
-                      loginid: 'CR90000043',
-                      account_category: 'wallet',
-                      account_type: 'crypto',
+                      loginid: 'CRMOCK0001',
                   },
                   balance_after: 5,
                   transaction_id: 17494415489,
@@ -151,14 +152,10 @@ const useWalletTransactions = (
                   action_type: 'transfer',
                   amount: 100,
                   from: {
-                      loginid: 'CR90000100',
-                      account_category: 'trading',
-                      account_type: 'standard',
+                      loginid: 'CRMOCK0001',
                   },
                   to: {
                       loginid,
-                      account_category: 'wallet',
-                      account_type: '',
                   },
                   balance_after: 750,
                   transaction_id: 17494415479,
@@ -168,14 +165,10 @@ const useWalletTransactions = (
                   action_type: 'transfer',
                   amount: 200,
                   from: {
-                      loginid: 'CR90000043',
-                      account_category: 'wallet',
-                      account_type: 'crypto',
+                      loginid: 'CRMOCK0001',
                   },
                   to: {
                       loginid,
-                      account_category: 'wallet',
-                      account_type: '',
                   },
                   balance_after: 650,
                   transaction_id: 17494117541,
@@ -186,13 +179,9 @@ const useWalletTransactions = (
                   amount: 550,
                   from: {
                       loginid,
-                      account_category: 'wallet',
-                      account_type: '',
                   },
                   to: {
-                      loginid: 'CR90000043',
-                      account_category: 'wallet',
-                      account_type: 'crypto',
+                      loginid: 'CRMOCK0001',
                   },
                   balance_after: 450,
                   transaction_id: 17494117540,
@@ -236,44 +225,48 @@ const useWalletTransactions = (
                 transaction.action_type === undefined
             )
                 return null;
+            let account_category = 'wallet';
+            let account_type = current_wallet.account_type;
             let account_name = current_wallet.name;
-            let account_currency = wallet_currency;
+            let account_currency = current_wallet.currency;
             let icon = current_wallet.icon;
-            let icon_type = 'fiat';
-            let is_deriv_apps = false;
+            let icon_type = current_wallet.icon_type;
             if (transaction.action_type === 'transfer') {
-                const other_party = transaction.to?.loginid === loginid ? transaction.from : transaction.to;
-                const other_loginid = other_party?.loginid;
+                const other_loginid =
+                    transaction.to?.loginid === loginid ? transaction.from?.loginid : transaction.to?.loginid;
                 if (!other_loginid) return null;
-                const other_account = accounts[other_loginid];
-                if (other_account) {
-                    if (!other_account.currency) return null;
-                    account_currency = other_account.currency;
-                    account_name = accountName(
-                        !!other_account.is_virtual,
-                        other_account.currency,
-                        other_account.account_category === 'wallet'
-                    );
-                    icon = getWalletCurrencyIcon(
-                        other_account.is_virtual ? 'demo' : other_account.currency || '',
-                        is_dark_mode_on,
-                        false
-                    );
-                    const currency_config = getConfig(account_currency);
-                    const is_crypto = currency_config?.is_crypto;
-                    icon_type = is_crypto ? 'crypto' : 'fiat';
-                } else {
-                    const landing_company_name = shortcode;
-                    const account_category = is_demo ? 'Demo' : `(${landing_company_name})`;
-                    account_name = `Deriv Apps ${account_category} account`;
-                    is_deriv_apps = true;
-                }
+                const other_account = accounts.find(el => el.loginid === other_loginid);
+                if (
+                    !other_account ||
+                    !other_account.currency ||
+                    !other_account.account_category ||
+                    !other_account.account_type
+                )
+                    return null;
+                account_category = other_account.account_category;
+                account_currency = other_account.currency;
+                account_name = accountName(
+                    !!other_account.is_virtual,
+                    other_account.currency,
+                    other_account.account_category === 'wallet'
+                );
+                account_type = other_account.account_type;
+                icon = getWalletCurrencyIcon(
+                    other_account.is_virtual ? 'demo' : other_account.currency || '',
+                    is_dark_mode_on,
+                    false
+                );
+                const currency_config = getConfig(account_currency);
+                const is_crypto = currency_config?.is_crypto;
+                icon_type = is_crypto ? 'crypto' : 'fiat';
             }
 
             return {
                 ...transaction,
-                account_name,
+                account_category,
                 account_currency,
+                account_name,
+                account_type,
                 icon,
                 icon_type,
             };

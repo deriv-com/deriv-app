@@ -70,12 +70,11 @@ const TransactionList = () => {
                 {transaction_list.map(transaction => (
                     <NonPendingTransaction
                         key={transaction.transaction_id}
-                        action_type={
-                            // TODO fix this mismatch somehow
-                            transaction.action_type
-                        }
+                        account_category={transaction?.account_category}
                         account_currency={transaction.account_currency}
                         account_name={transaction?.account_name}
+                        account_type={transaction?.account_type}
+                        action_type={transaction.action_type}
                         amount={
                             (transaction.action_type === 'transfer' &&
                             transaction?.from?.loginid === loginid &&
@@ -87,7 +86,6 @@ const TransactionList = () => {
                         currency={wallet_currency}
                         icon={transaction.icon}
                         icon_type={is_demo ? 'demo' : transaction.icon_type}
-                        is_deriv_apps={false}
                     />
                 ))}
             </div>

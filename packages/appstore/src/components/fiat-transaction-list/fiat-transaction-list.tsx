@@ -282,7 +282,10 @@ const FiatTransactionList = () => {
                         let icon = wallet_icon;
                         let icon_type = is_crypto(wallet_currency) ? 'crypto' : 'fiat';
                         let is_deriv_apps = false;
-                        const gradient_for = 'demo';
+
+                        // TODO: use the gradient_for value from wallets object when we have it
+                        let gradient_for = is_demo ? 'demo' : wallet_currency.toLowerCase();
+
                         if (transaction.action_type === 'transfer') {
                             const other_loginid =
                                 transaction.to?.loginid === loginid
@@ -291,6 +294,9 @@ const FiatTransactionList = () => {
                             if (!other_loginid) return null;
                             const other_account = accounts[other_loginid];
                             if (other_account) {
+                                gradient_for = other_account.is_virtual
+                                    ? 'demo'
+                                    : other_account?.gradient_for || wallet_currency.toLowerCase();
                                 if (!other_account.currency) return null;
                                 account_currency = other_account.currency;
                                 account_title = accountName(
@@ -313,6 +319,7 @@ const FiatTransactionList = () => {
                                 is_deriv_apps = true;
                             }
                         }
+
                         return (
                             <FiatTransactionListItem
                                 key={transaction.transaction_id}

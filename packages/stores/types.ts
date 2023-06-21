@@ -103,6 +103,7 @@ type TActiveAccount = TAccount & {
     balance?: string | number;
     landing_company_shortcode: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
     is_virtual: number;
+    gradient_for: string;
     account_category?: 'wallet' | 'trading';
     linked_to?: { loginid: string; platform: string }[];
     token: string;

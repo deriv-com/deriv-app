@@ -18,11 +18,11 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
     const [carousel_index, setCarouselIndex] = React.useState('');
     const [selected_tab, setSelectedTab] = React.useState(TABS.DESCRIPTION);
     const contract_types = getContractTypes(list, item).filter(i => i.value !== 'rise_fall_equal');
-    const no_toggle_buttons = carousel_index !== 'accumulator' && carousel_index !== 'vanilla';
+    const has_toggle_buttons = /accumulator|vanilla/i.test(carousel_index);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
     const width = isMobile() ? '328' : '528';
-    const scroll_bar_height = no_toggle_buttons ? '560px' : '464px';
+    const scroll_bar_height = has_toggle_buttons ? '464px' : '560px';
     const selected_contract_type = contract_types.find(type => type.value === carousel_index);
 
     const onClickGlossary = () => setSelectedTab(TABS.GLOSSARY);
@@ -33,12 +33,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
 
     const cards = contract_types.map((type, idx) => {
         return (
-            <div
-                key={idx}
-                className={classNames('contract-type-info__card', {
-                    'contract-type-info__card--no-toggle-buttons': !no_toggle_buttons,
-                })}
-            >
+            <div key={idx} className='contract-type-info__card'>
                 <ThemedScrollbars
                     className={classNames('contract-type-info__scrollbars', {
                         'contract-type-info__scrollbars-description--active': is_description_tab_selected,
@@ -54,7 +49,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                 >
                     <div
                         className={classNames({
-                            'contract-type-info__gif--no-toggle-buttons': no_toggle_buttons,
+                            'contract-type-info__gif--has-toggle-buttons': has_toggle_buttons,
                             'contract-type-info__content': is_glossary_tab_selected,
                             'contract-type-info__gif': is_description_tab_selected,
                             'contract-type-info__gif--has-video':
@@ -82,7 +77,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
 
     return (
         <React.Fragment>
-            {!no_toggle_buttons && (
+            {has_toggle_buttons && (
                 <div className='contract-type-info__button-wrapper'>
                     <ButtonToggle
                         buttons_arr={[
@@ -101,7 +96,7 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
             )}
             <Carousel
                 className={classNames('contract-type-info', {
-                    'contract-type-info--no-toggle-buttons': no_toggle_buttons,
+                    'contract-type-info--has-toggle-buttons': has_toggle_buttons,
                 })}
                 disable_swipe={isMobile()}
                 onItemSelect={handleItemSelect}

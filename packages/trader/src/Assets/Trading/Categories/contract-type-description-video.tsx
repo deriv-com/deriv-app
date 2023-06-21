@@ -3,17 +3,18 @@ import { localize } from '@deriv/translations';
 import { getUrlBase, isMobile } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 
-const AccumulatorDescriptionVideo = ({ selected_contract_type }: { selected_contract_type: string }) => {
+const ContractTypeDescriptionVideo = ({ selected_contract_type }: { selected_contract_type: string }) => {
     const { ui } = useStore();
     const { is_dark_mode_on: is_dark_theme } = ui;
-    const [is_loading, setIsLoading] = React.useState(true);
     const getVideoSource = React.useCallback(
         (extension: 'mp4' | 'webm') => {
             return getUrlBase(
-                `/public/images/common/accumulator_description${is_dark_theme ? '_dark' : '_light'}.${extension}`
+                `/public/images/common/${selected_contract_type}_description${
+                    is_dark_theme ? '_dark' : '_light'
+                }.${extension}`
             );
         },
-        [is_dark_theme]
+        [is_dark_theme, selected_contract_type]
     );
 
     // memoize file paths for videos and open the modal only after we get them
@@ -39,4 +40,4 @@ const AccumulatorDescriptionVideo = ({ selected_contract_type }: { selected_cont
     );
 };
 
-export default React.memo(AccumulatorDescriptionVideo);
+export default React.memo(ContractTypeDescriptionVideo);

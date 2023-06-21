@@ -92,4 +92,30 @@ describe('useDisplayAvailableWallets', () => {
             },
         ]);
     });
+
+    it('should not return unavailable wallets', () => {
+        const mock = mockStore({
+            client: {
+                accounts: { CRW909900: { token: '12345', landing_company_name: 'svg' } },
+                loginid: 'CRW909900',
+                is_crypto: (currency: string) => ['BTC', 'ETH', 'LTC'].includes(currency),
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
+        );
+
+        const { result } = renderHook(() => useDisplayAvailableWallets(), { wrapper });
+
+        expect(result.current?.data).not.toEqual([
+            {
+                currency: 'GBP',
+                is_added: false,
+                landing_company_shortcode: 'svg',
+            },
+        ]);
+    });
 });

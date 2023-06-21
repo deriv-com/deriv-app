@@ -11,7 +11,7 @@ const AddWallets = () => {
 
     return (
         <div className='add-wallets' data-testid='dt-add-wallets'>
-            <Text as='h2' size='l' color='prominent' align='left' weight='bolder'>
+            <Text as='h2' size='l' color='prominent' align='left' weight='bolder' className='add-wallets__title'>
                 {localize('Add more Wallets')}
             </Text>
             <CarouselContainer>

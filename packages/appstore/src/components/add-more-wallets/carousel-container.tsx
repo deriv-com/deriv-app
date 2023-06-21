@@ -2,6 +2,7 @@ import React from 'react';
 import useEmblaCarousel, { EmblaCarouselType, EmblaOptionsType } from 'embla-carousel-react';
 import { PrevButton, NextButton } from './carousel-buttons';
 import { observer, useStore } from '@deriv/stores';
+import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 
 const CarouselContainer: React.FC<{ children: React.ReactNode }> = observer(({ children }) => {
     const {
@@ -15,6 +16,7 @@ const CarouselContainer: React.FC<{ children: React.ReactNode }> = observer(({ c
     };
 
     const [emblaRef, emblaApi] = useEmblaCarousel(options);
+    const [is_hovered, setIsHovered] = React.useState(false);
     const [prev_btn_disabled, setPrevBtnEnabled] = React.useState(false);
     const [next_btn_disabled, setNextBtnEnabled] = React.useState(false);
 
@@ -33,16 +35,32 @@ const CarouselContainer: React.FC<{ children: React.ReactNode }> = observer(({ c
         emblaApi.on('reInit', onSelect);
         emblaApi.on('select', onSelect);
     }, [emblaApi, onSelect]);
+
     return (
-        <div className='add-wallets__content'>
-            <div className='add-wallets__viewport' ref={emblaRef}>
-                <div className='add-wallets__container'>{children}</div>
-            </div>
-            <React.Fragment>
-                <PrevButton enabled={prev_btn_disabled} onClick={scrollPrev} />
-                <NextButton enabled={next_btn_disabled} onClick={scrollNext} />
-            </React.Fragment>
-        </div>
+        <React.Fragment>
+            <DesktopWrapper>
+                <div
+                    className='add-wallets__content'
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                >
+                    <div className='carousel' ref={emblaRef}>
+                        <div className='carousel__wrapper'>{children}</div>
+                    </div>
+                    {is_hovered && <PrevButton enabled={prev_btn_disabled} onClick={scrollPrev} />}
+                    {is_hovered && <NextButton enabled={next_btn_disabled} onClick={scrollNext} />}
+                </div>
+            </DesktopWrapper>
+            <MobileWrapper>
+                <div className='add-wallets__content'>
+                    <div className='carousel' ref={emblaRef}>
+                        <div className='carousel__wrapper'>{children}</div>
+                    </div>
+                    <PrevButton enabled={prev_btn_disabled} onClick={scrollPrev} />
+                    <NextButton enabled={next_btn_disabled} onClick={scrollNext} />
+                </div>
+            </MobileWrapper>
+        </React.Fragment>
     );
 });
 

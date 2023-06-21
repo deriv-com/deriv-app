@@ -23,12 +23,12 @@ const AddWalletCard = ({ wallet_info }: React.PropsWithChildren<TWalletInfo>) =>
     return (
         <div className='add-wallets__card'>
             <div className='add-wallets__card-wrapper'>
+                <WalletCard wallet={wallet_details} size='medium' state={is_added ? 'added' : 'add'} />
                 <div className='add-wallets__card-description'>
-                    <WalletCard wallet={wallet_details} size='medium' state={is_added ? 'added' : 'add'} />
-                    <Text as='h3' size='s' weight='bold'>
+                    <Text as='h3' weight='bold' className='add-wallets__card-description__header'>
                         {title}
                     </Text>
-                    <Text as='p' size='xs'>
+                    <Text as='p' size='xs' className='add-wallets__card-description__text'>
                         {description}
                     </Text>
                 </div>

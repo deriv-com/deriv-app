@@ -5,12 +5,14 @@ import { APIProvider } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('../wallet-add-card', () => {
-    const AddWalletCard = () => <div>AddWalletCard</div>;
+    const AddWalletCard = () => <div data-testid='dt-add-wallet-card'>AddWalletCard</div>;
     return AddWalletCard;
 });
 
 jest.mock('../carousel-container', () => {
-    const CarouselContainer = ({ children }: { children: React.ReactNode }) => <div>{children}</div>;
+    const CarouselContainer = ({ children }: { children: React.ReactNode }) => (
+        <div data-testid='dt-carousel-container'>{children}</div>
+    );
     return CarouselContainer;
 });
 
@@ -77,7 +79,72 @@ describe('AddWallets', () => {
     });
 
     it('should render the title correctly', () => {
-        render(<AddWallets />);
+        const mock = mockStore({
+            client: {
+                loginid: 'CRW909900',
+                accounts: {
+                    CRW909900: {
+                        token: '12345',
+                    },
+                },
+                is_crypto: (currency: string) => currency === 'BTC',
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
+        );
+
+        render(<AddWallets />, { wrapper });
         expect(screen.getByText('Add more Wallets')).toBeInTheDocument();
+    });
+
+    it('should render the carousel', () => {
+        const mock = mockStore({
+            client: {
+                loginid: 'CRW909900',
+                accounts: {
+                    CRW909900: {
+                        token: '12345',
+                    },
+                },
+                is_crypto: (currency: string) => currency === 'BTC',
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
+        );
+
+        render(<AddWallets />, { wrapper });
+        expect(screen.getByTestId('dt-carousel-container')).toBeInTheDocument();
+    });
+
+    it('should render the wallet add card', () => {
+        const mock = mockStore({
+            client: {
+                loginid: 'CRW909900',
+                accounts: {
+                    CRW909900: {
+                        token: '12345',
+                    },
+                },
+                is_crypto: (currency: string) => currency === 'BTC',
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
+        );
+
+        render(<AddWallets />, { wrapper });
+        const wallet_cards = screen.queryAllByTestId('dt-add-wallet-card');
+        expect(wallet_cards).toHaveLength(4);
     });
 });

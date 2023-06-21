@@ -277,7 +277,7 @@ export type TCompareAccountsCard = {
 
 export type TJurisdictionData = Record<
     'jurisdiction',
-    'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest' | 'malta' | 'seychelles' | undefined
+    'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest' | 'malta' | undefined
 >;
 
 export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {

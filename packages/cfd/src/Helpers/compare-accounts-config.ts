@@ -47,16 +47,16 @@ const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvai
             ];
     }
 };
-const getAccountCardTitle = (shortcode: string) => {
+const getAccountCardTitle = (shortcode: string, is_demo: boolean) => {
     switch (shortcode) {
         case 'synthetic_svg':
-            return 'Derived - SVG';
+            return is_demo ? 'Derived - Demo' : 'Derived - SVG';
         case 'synthetic_bvi':
             return 'Derived - BVI';
         case 'synthetic_vanuatu':
             return 'Derived - Vanuatu';
         case 'financial_svg':
-            return 'Financial - SVG';
+            return is_demo ? 'Financial - Demo' : 'Financial - SVG';
         case 'financial_bvi':
             return 'Financial - BVI';
         case 'financial_vanuatu':
@@ -64,7 +64,7 @@ const getAccountCardTitle = (shortcode: string) => {
         case 'financial_labuan':
             return 'Financial - Labuan';
         case 'all_svg':
-            return 'Swap-Free - SVG';
+            return is_demo ? 'Swap-Free - Demo' : 'Swap-Free - SVG';
         case 'dxtrade':
             return 'Deriv X';
         default:
@@ -327,6 +327,19 @@ const isDxtradeAccountAdded = (current_list: Record<string, TDetailsOfEachMT5Log
         return value.account_type === current_account_type && key.includes(CFD_PLATFORMS.DXTRADE);
     });
 
+const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
+    const swap_free_demo_accounts = available_accounts.filter(
+        item => item.market_type === 'all' && item.shortcode === 'svg' && item.platform === CFD_PLATFORMS.MT5
+    );
+    const financial_demo_accounts = available_accounts.filter(
+        item => item.market_type === 'financial' && item.shortcode === 'svg'
+    );
+    const gaming_demo_accounts = available_accounts.filter(
+        item => item.market_type === 'gaming' && item.shortcode === 'svg'
+    );
+    return [...gaming_demo_accounts, ...financial_demo_accounts, ...swap_free_demo_accounts];
+};
+
 export {
     getHighlightedIconLabel,
     cfdConfig,
@@ -343,4 +356,5 @@ export {
     getAccountVerficationStatus,
     isMt5AccountAdded,
     isDxtradeAccountAdded,
+    getMT5DemoData,
 };

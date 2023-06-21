@@ -1,11 +1,14 @@
 import React from 'react';
 import { Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
+import { observer, useStore } from '@deriv/stores';
 import TradigPlatformIconProps from '../../Assets/svgs/trading-platform';
 import { TCompareAccountsCard } from 'Components/props.types';
 import { getAccountCardTitle, getMarketType, getAccountIcon } from '../../Helpers/compare-accounts-config';
 
-const CFDCompareAccountsTitleIcon = ({ trading_platforms }: TCompareAccountsCard) => {
+const CFDCompareAccountsTitleIcon = observer(({ trading_platforms }: TCompareAccountsCard) => {
+    const { traders_hub } = useStore();
+    const { is_demo } = traders_hub;
     const market_type = getMarketType(trading_platforms);
     const jurisdiction_shortcode = market_type.concat('_', trading_platforms.shortcode);
     const jurisdiction_card_icon =
@@ -14,8 +17,8 @@ const CFDCompareAccountsTitleIcon = ({ trading_platforms }: TCompareAccountsCard
             : getAccountIcon(market_type);
     const jurisdiction_card_title =
         trading_platforms.platform === 'dxtrade'
-            ? getAccountCardTitle(trading_platforms.platform)
-            : getAccountCardTitle(jurisdiction_shortcode);
+            ? getAccountCardTitle(trading_platforms.platform, is_demo)
+            : getAccountCardTitle(jurisdiction_shortcode, is_demo);
     const labuan_jurisdiction_message = localize(
         'Choosing this jurisdiction will give you a Financial STP account. Your trades will go directly to the market and have tighter spreads.'
     );
@@ -45,6 +48,6 @@ const CFDCompareAccountsTitleIcon = ({ trading_platforms }: TCompareAccountsCard
             <hr className='compare-cfd-account-underline' />
         </React.Fragment>
     );
-};
+});
 
 export default CFDCompareAccountsTitleIcon;

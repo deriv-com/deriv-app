@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useVerifyEmail, useWithdrawalEmailVerification } from '@deriv/hooks';
+import { useWithdrawalEmailVerification } from '@deriv/hooks';
 import WithdrawalEmailVerification from '../withdrawal-email-verification';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
@@ -12,7 +12,6 @@ jest.mock('@deriv/hooks', () => ({
 
 const mock_store = mockStore({});
 
-const mockUseVerifyEmail = useVerifyEmail as jest.MockedFunction<typeof useVerifyEmail>;
 const mockUseWithdrawalEmailVerification = useWithdrawalEmailVerification as jest.MockedFunction<
     typeof useWithdrawalEmailVerification
 >;

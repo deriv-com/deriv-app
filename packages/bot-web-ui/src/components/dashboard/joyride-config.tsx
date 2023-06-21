@@ -1,10 +1,10 @@
-import React from 'react';
-import { Text, Icon } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
-import { CallBackProps } from 'react-joyride';
-import { storeSetting, getSetting } from '../../utils/settings';
-import TourGuide from './tour-guide';
 import { getImageLocation } from '../../public-path';
+import React from 'react';
+import { CallBackProps } from 'react-joyride';
+import { Icon, Text } from '@deriv/components';
+import { Localize, localize } from '@deriv/translations';
+import { getSetting, storeSetting } from '../../utils/settings';
+import TourGuide from './tour-guide';
 
 type TJoyrideConfig = Record<
     'showProgress' | 'spotlightClicks' | 'disableBeacon' | 'disableOverlay' | 'disableCloseOnEsc',
@@ -496,7 +496,7 @@ export const BOT_BUILDER_MOBILE: TStepMobile[] = [
 
 export const DBOT_ONBOARDING_MOBILE = [
     {
-        header: localize('Get started on DBot'),
+        header: localize('Get started on Deriv Bot'),
         content: [
             <Localize
                 key='get-started=mobile'

@@ -93,13 +93,10 @@ const LocalComponent = ({
                                 >
                                     <Icon
                                         className='tab__dashboard__preview__retrigger__icon'
-                                        width='2.4rem'
-                                        height='2.4rem'
                                         icon={'IcDbotUserGuide'}
                                     />
                                     {!is_mobile && (
                                         <Text
-                                            color='prominent'
                                             size='xs'
                                             line_height='s'
                                             className={'tab__dashboard__preview__retrigger__text'}

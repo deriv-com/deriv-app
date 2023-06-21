@@ -11,40 +11,48 @@ import Error from '../../../components/error';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import ErrorStore from '../../../stores/error-store';
 
-const WithdrawalVerificationEmail = observer(() => {
-    const verify = useVerifyEmail('payment_withdraw');
-    const { client } = useStore();
-    const { transaction_history } = useCashierStore();
+type TWithdrawalVerificationEmailProps = {
+    request_email_icon?: string;
+    sent_email_icon?: string;
+};
 
-    React.useEffect(() => {
-        transaction_history.onMount();
-    }, [transaction_history]);
+const WithdrawalVerificationEmail = observer(
+    ({ request_email_icon, sent_email_icon }: TWithdrawalVerificationEmailProps) => {
+        const verify = useVerifyEmail('payment_withdraw');
+        const { client } = useStore();
+        const { transaction_history } = useCashierStore();
 
-    if (verify.error) return <Error error={verify.error as ErrorStore} />;
+        React.useEffect(() => {
+            transaction_history.onMount();
+        }, [transaction_history]);
 
-    if (verify.has_been_sent) return <EmailVerificationEmptyState type={'payment_withdraw'} />;
+        if (verify.error) return <Error error={verify.error as ErrorStore} />;
 
-    return (
-        <>
-            <EmptyState
-                icon='IcCashierAuthenticate'
-                title={localize('Please help us verify your withdrawal request.')}
-                description={
-                    <>
-                        <Localize i18n_default_text="Hit the button below and we'll send you an email with a link. Click that link to verify your withdrawal request." />
-                        <br />
-                        <br />
-                        <Localize i18n_default_text='This is to protect your account from unauthorised withdrawals.' />
-                    </>
-                }
-                action={{
-                    label: localize('Send email'),
-                    onClick: verify.send,
-                }}
-            />
-            <MobileWrapper>{isCryptocurrency(client.currency) && <RecentTransaction />}</MobileWrapper>
-        </>
-    );
-});
+        if (verify.has_been_sent)
+            return <EmailVerificationEmptyState icon={sent_email_icon} type={'payment_withdraw'} />;
+
+        return (
+            <>
+                <EmptyState
+                    icon={request_email_icon || 'IcCashierAuthenticate'}
+                    title={localize('Please help us verify your withdrawal request.')}
+                    description={
+                        <>
+                            <Localize i18n_default_text="Hit the button below and we'll send you an email with a link. Click that link to verify your withdrawal request." />
+                            <br />
+                            <br />
+                            <Localize i18n_default_text='This is to protect your account from unauthorised withdrawals.' />
+                        </>
+                    }
+                    action={{
+                        label: localize('Send email'),
+                        onClick: verify.send,
+                    }}
+                />
+                <MobileWrapper>{isCryptocurrency(client.currency) && <RecentTransaction />}</MobileWrapper>
+            </>
+        );
+    }
+);
 
 export default WithdrawalVerificationEmail;

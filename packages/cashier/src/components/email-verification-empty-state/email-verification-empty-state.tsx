@@ -1,15 +1,16 @@
 import React from 'react';
 import { useVerifyEmail } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
-import EmptyState from 'Components/empty-state';
+import EmptyState from '../empty-state';
 import EmailVerificationResendEmptyState from './email-verification-resend-empty-state';
 import './email-verification-empty-state.scss';
 
 type TEmailVerificationEmptyStateProps = {
     type: Parameters<typeof useVerifyEmail>[0];
+    icon?: string;
 };
 
-const EmailVerificationEmptyState = ({ type }: TEmailVerificationEmptyStateProps) => {
+const EmailVerificationEmptyState = ({ type, icon }: TEmailVerificationEmptyStateProps) => {
     const verify = useVerifyEmail(type);
 
     const action = {
@@ -21,7 +22,7 @@ const EmailVerificationEmptyState = ({ type }: TEmailVerificationEmptyStateProps
     return (
         <div className='email-verification-empty-state'>
             <EmptyState
-                icon='IcEmailSent'
+                icon={icon || 'IcEmailSent'}
                 title={localize("We've sent you an email.")}
                 description={localize('Please check your email for the verification link to complete the process.')}
                 action={verify.has_been_sent ? undefined : action}

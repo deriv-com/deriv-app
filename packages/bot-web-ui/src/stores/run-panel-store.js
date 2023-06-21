@@ -236,13 +236,13 @@ export default class RunPanelStore {
         this.showClearStatDialog();
     }
 
-    clearStat(disconnect = false) {
+    clearStat(is_websocket_disconnected = false) {
         const { summary_card, journal, transactions } = this.root_store;
 
         this.setIsRunning(false);
         this.setHasOpenContract(false);
         this.clear();
-        if (!disconnect) {
+        if (!is_websocket_disconnected) {
             journal.clear();
             summary_card.clear();
             transactions.clear();

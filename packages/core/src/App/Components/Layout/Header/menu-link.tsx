@@ -31,8 +31,6 @@ const MenuLink = observer(
         suffix_icon = '',
         text,
     }: Partial<TMenuLink>) => {
-        if (is_hidden) return null;
-
         const { common, ui, client } = useStore();
         const { has_any_real_account, is_virtual } = client;
         const { setMobileLanguageMenuOpen } = common;
@@ -48,6 +46,8 @@ const MenuLink = observer(
             routes.cashier_withdrawal,
             routes.cashier_acc_transfer,
         ].includes(link_to);
+
+        if (is_hidden) return null;
 
         if (is_languages_link_on_mobile) {
             return (

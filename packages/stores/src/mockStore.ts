@@ -111,6 +111,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             current_currency_type: '',
             current_fiat_currency: '',
             cfd_score: 0,
+            ctrader_accounts_list: [],
             setCFDScore: jest.fn(),
             getLimits: jest.fn(),
             has_active_real_account: false,

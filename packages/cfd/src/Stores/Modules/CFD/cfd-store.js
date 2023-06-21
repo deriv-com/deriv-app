@@ -575,7 +575,7 @@ export default class CFDStore extends BaseStore {
             case CFD_PLATFORMS.DXTRADE: {
                 response = await WS.authorized.send({
                     trading_platform_deposit: 1,
-                    platform: CFD_PLATFORMS.DXTRADE,
+                    platform,
                     to_account: this.current_account.account_id,
                 });
                 break;

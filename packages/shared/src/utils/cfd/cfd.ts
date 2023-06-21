@@ -163,6 +163,7 @@ export const getCFDAccountDisplay = ({
     // TODO condition will be changed when card 74063 is merged
     if (market_type === 'synthetic' && platform === CFD_PLATFORMS.DXTRADE) return localize('Synthetic');
     if (market_type === 'all' && platform === CFD_PLATFORMS.DXTRADE && is_transfer_form) return '';
+    if (market_type === 'all' && platform === CFD_PLATFORMS.CTRADER && is_transfer_form) return '';
     if (platform === CFD_PLATFORMS.DERIVEZ) return '';
     if (platform === CFD_PLATFORMS.CTRADER) return cfd_account_display;
 
@@ -171,15 +172,24 @@ export const getCFDAccountDisplay = ({
 
 type TGetCFDAccount = TGetAccount & {
     is_eu?: boolean;
+    is_transfer_form?: boolean;
 };
 
-export const getCFDAccount = ({ market_type, sub_account_type, platform, is_eu }: TGetCFDAccount) => {
+export const getCFDAccount = ({
+    market_type,
+    sub_account_type,
+    platform,
+    is_eu,
+    is_transfer_form = false,
+}: TGetCFDAccount) => {
     let cfd_account_key = getCFDAccountKey({ market_type, sub_account_type, platform });
     if (!cfd_account_key) return undefined;
 
     if (cfd_account_key === 'financial' && is_eu) {
         cfd_account_key = 'cfd';
     }
+
+    if (cfd_account_key === 'ctrader' && is_transfer_form) return 'Ctrader';
 
     return CFD_text[cfd_account_key as keyof typeof CFD_text];
 };
@@ -200,14 +210,14 @@ export const getAccountListKey = (account: TAccount, platform: TPlatform, shortc
     }`;
 };
 
-export const getCFDPlatformLabel = (platform: TPlatform) => {
+export const getCFDPlatformLabel = (platform: TPlatform, has_sub_title = false) => {
     switch (platform) {
         case CFD_PLATFORMS.MT5:
             return 'Deriv MT5';
         case CFD_PLATFORMS.DXTRADE:
             return 'Deriv X';
         case CFD_PLATFORMS.CTRADER:
-            return 'cTrader';
+            return has_sub_title ? 'Deriv cTrader' : 'cTrader';
         default:
             return '';
     }

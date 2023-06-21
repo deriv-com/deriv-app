@@ -22,6 +22,7 @@ type TPlatformAppstore = {
 };
 
 type TPlatforms = {
+    ctrader: TPlatform;
     trader: TPlatform;
     dbot: TPlatform;
     mt5: TPlatform;

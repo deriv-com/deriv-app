@@ -25,6 +25,7 @@ const FiatTransactionList = () => {
         account_type: 'binary',
         balance: 0,
         currency: 'BTC',
+        // @ts-expect-error This should be fixed when we remove the mock transactions
         gradient_class: `wallet-card__btc-bg${is_dark_mode_on ? '--dark' : ''}`,
         is_virtual: 0,
         landing_company_name: 'SVG',
@@ -36,6 +37,7 @@ const FiatTransactionList = () => {
         account_type: 'binary',
         balance: 0,
         currency: 'BTC',
+        // @ts-expect-error This should be fixed when we remove the mock transactions
         gradient_class: `wallet-card__btc-bg${is_dark_mode_on ? '--dark' : ''}`,
         is_virtual: 0,
         landing_company_name: 'SVG',
@@ -47,6 +49,7 @@ const FiatTransactionList = () => {
         account_type: 'binary',
         balance: 0,
         currency: 'BTC',
+        // @ts-expect-error This should be fixed when we remove the mock transactions
         gradient_class: `wallet-card__btc-bg${is_dark_mode_on ? '--dark' : ''}`,
         is_virtual: 0,
         landing_company_name: 'SVG',

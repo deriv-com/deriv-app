@@ -25,7 +25,7 @@ describe('<WalletHeader />', () => {
                         account_type={account_type}
                         is_open_wallet={false}
                         setIsOpen={setIsOpen}
-                        gradient_for='demo'
+                        gradient_class='wallet-card__demo-bg'
                     />
                 </StoreProvider>
             );
@@ -44,7 +44,7 @@ describe('<WalletHeader />', () => {
                         account_type={account_type}
                         currency={currency}
                         shortcode='svg'
-                        gradient_for='aud'
+                        gradient_class='wallet-card__aud-bg'
                         is_open_wallet={false}
                         setIsOpen={setIsOpen}
                     />
@@ -65,7 +65,7 @@ describe('<WalletHeader />', () => {
                         account_type={account_type}
                         currency={currency}
                         shortcode='svg'
-                        gradient_for='eth'
+                        gradient_class='wallet-card__eth-bg'
                         is_open_wallet={false}
                         setIsOpen={setIsOpen}
                     />
@@ -86,7 +86,7 @@ describe('<WalletHeader />', () => {
                         account_type={account_type}
                         currency={currency}
                         shortcode='malta'
-                        gradient_for='eur'
+                        gradient_class='wallet-card__eur-bg'
                         is_open_wallet={false}
                         setIsOpen={setIsOpen}
                     />
@@ -110,7 +110,7 @@ describe('<WalletHeader />', () => {
                         balance={balance}
                         currency={currency}
                         shortcode='svg'
-                        gradient_for='eur'
+                        gradient_class='wallet-card__eur-bg'
                         is_open_wallet={false}
                         setIsOpen={setIsOpen}
                     />
@@ -130,7 +130,7 @@ describe('<WalletHeader />', () => {
                         account_type={account_type}
                         currency={currency}
                         shortcode='svg'
-                        gradient_for='eur'
+                        gradient_class='wallet-card__eur-bg'
                         is_open_wallet={false}
                         setIsOpen={setIsOpen}
                     />
@@ -154,7 +154,7 @@ describe('<WalletHeader />', () => {
                         account_type={account_type}
                         currency={currency}
                         shortcode='svg'
-                        gradient_for='eur'
+                        gradient_class='wallet-card__eur-bg'
                         is_open_wallet={false}
                         setIsOpen={setIsOpen}
                     />
@@ -180,7 +180,7 @@ describe('<WalletHeader />', () => {
                         account_type={account_type}
                         currency={currency}
                         shortcode='svg'
-                        gradient_for='eur'
+                        gradient_class='wallet-card__eur-bg'
                         is_open_wallet={false}
                         setIsOpen={setIsOpen}
                     />
@@ -207,7 +207,7 @@ describe('<WalletHeader />', () => {
                         account_type={account_type}
                         currency={currency}
                         shortcode='svg'
-                        gradient_for='eur'
+                        gradient_class='wallet-card__eur-bg'
                         is_open_wallet={false}
                         setIsOpen={setIsOpen}
                     />
@@ -226,7 +226,12 @@ describe('<WalletHeader />', () => {
         it('Buttons collapsed', () => {
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader account_type='demo' is_open_wallet={false} setIsOpen={setIsOpen} gradient_for='eur' />
+                    <WalletHeader
+                        account_type='demo'
+                        is_open_wallet={false}
+                        setIsOpen={setIsOpen}
+                        gradient_class='wallet-card__eur-bg'
+                    />
                 </StoreProvider>
             );
 
@@ -238,7 +243,12 @@ describe('<WalletHeader />', () => {
         it('Buttons uncollapsed', () => {
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader account_type='demo' is_open_wallet={true} setIsOpen={setIsOpen} gradient_for='eur' />
+                    <WalletHeader
+                        account_type='demo'
+                        is_open_wallet={true}
+                        setIsOpen={setIsOpen}
+                        gradient_class='wallet-card__eur-bg'
+                    />
                 </StoreProvider>
             );
 
@@ -257,7 +267,7 @@ describe('<WalletHeader />', () => {
                             account_type='demo'
                             is_open_wallet={is_open}
                             setIsOpen={wrapperSetIsOpen}
-                            gradient_for='eur'
+                            gradient_class='wallet-card__eur-bg'
                         />
                     </StoreProvider>
                 );
@@ -275,7 +285,12 @@ describe('<WalletHeader />', () => {
         it('Check buttons for demo', () => {
             render(
                 <StoreProvider store={mockedRootStore}>
-                    <WalletHeader account_type='demo' is_open_wallet={true} setIsOpen={setIsOpen} gradient_for='eur' />
+                    <WalletHeader
+                        account_type='demo'
+                        is_open_wallet={true}
+                        setIsOpen={setIsOpen}
+                        gradient_class='wallet-card__eur-bg'
+                    />
                 </StoreProvider>
             );
 
@@ -294,7 +309,7 @@ describe('<WalletHeader />', () => {
                     <WalletHeader
                         account_type='real'
                         shortcode='svg'
-                        gradient_for='usd'
+                        gradient_class='wallet-card__usd-bg'
                         currency='USD'
                         is_open_wallet={true}
                         setIsOpen={setIsOpen}

@@ -23,7 +23,7 @@ const WalletCurrencyCard = observer(({ account_type, currency, gradient_class }:
     const currency_icon_name = getWalletCurrencyIcon(is_demo ? 'demo' : currency, is_dark_mode_on);
 
     return (
-        <div className='wallet-header__currency' data-testid={`dt_${is_demo ? 'demo' : currency}`}>
+        <div className='wallet-header__currency' data-testid={`dt_${is_demo ? 'demo' : currency.toLowerCase()}`}>
             <WalletIcon
                 gradient_class={gradient_class}
                 icon={currency_icon_name}

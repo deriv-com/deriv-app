@@ -1,51 +1,55 @@
 .dc-tick-picker {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     width: 100%;
     max-width: 300px;
     height: 328px;
     background-color: inherit;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
 
     div {
         display: flex;
     }
+
     &__calculation {
-        margin-bottom: 28px;
         justify-content: space-evenly;
         align-items: center;
+        margin-bottom: 28px;
 
         .dc-tick-picker__holder {
-            color: var(--purchase-main-2);
             flex-direction: column;
             justify-content: center;
-            text-align: center;
             margin: 0 1.4rem;
+            color: var(--purchase-main-2);
+            text-align: center;
         }
+
         .operator {
-            background-color: var(--general-section-2);
             width: 48px;
             height: 48px;
+            background-color: var(--general-section-2);
 
             .dc-btn__text {
                 transform: scale(2);
             }
         }
     }
+
     &__submit-wrapper {
-        margin-bottom: 1.6rem;
         justify-content: center;
+        margin-bottom: 1.6rem;
 
         button {
-            background-color: var(--general-section-2);
-            height: 48px;
             width: 112px;
+            height: 48px;
+            background-color: var(--general-section-2);
 
             span {
                 color: var(--text-prominent);
                 font-size: 1.6rem;
             }
         }
+
         &--is-disabled {
             pointer-events: none;
 

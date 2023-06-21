@@ -3,9 +3,9 @@
     grid-gap: 0.8rem;
 
     &__tick {
-        border-radius: 50%;
         width: 0.8rem;
         height: 0.8rem;
+        border-radius: 50%;
         background-color: var(--fill-disabled);
 
         &--on {

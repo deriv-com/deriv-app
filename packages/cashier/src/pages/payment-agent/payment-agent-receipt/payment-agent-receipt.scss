@@ -1,19 +1,5 @@
 .payment-agent-receipt {
     & .cashier__form-submit {
-        display: flex;
-        justify-content: center;
-        flex-flow: row;
-        margin: 0 0 3.2rem;
-        &-button {
-            margin: 0;
-            max-width: 20rem;
-            &:first-child {
-                margin-right: 0.4rem;
-            }
-            &:last-child {
-                margin-left: 0.4rem;
-            }
-        }
         @include mobile {
             &-button {
                 width: unset;
@@ -21,59 +7,93 @@
                 padding: 0 1rem;
             }
         }
+
+        display: flex;
+        flex-flow: row;
+        justify-content: center;
+        margin: 0 0 3.2rem;
+
+        &-button {
+            max-width: 20rem;
+            margin: 0;
+
+            &:first-child {
+                margin-right: 0.4rem;
+            }
+
+            &:last-child {
+                margin-left: 0.4rem;
+            }
+        }
     }
+
     &__header {
-        margin-top: 9.6rem;
         @include mobile {
             margin-top: 3.2rem;
         }
+
+        margin-top: 9.6rem;
+
         &-listed {
-            margin-bottom: 4.8rem;
             @include mobile {
                 margin-bottom: 1.6rem;
             }
+
+            margin-bottom: 4.8rem;
         }
+
         &-unlisted {
             margin-bottom: 7.4rem;
         }
     }
+
     &__transferred-contact {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
-        column-gap: 1.6rem;
-        margin: 0.8rem 0 3.2rem;
         @include mobile {
             flex-direction: column;
-            align-items: center;
             row-gap: 0.8rem;
+            align-items: center;
         }
+
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin: 0.8rem 0 3.2rem;
+        column-gap: 1.6rem;
+
         .payment-agent-detail {
             align-items: center;
+
             &__icon-wrapper {
-                margin-right: 0.5rem;
                 @include mobile {
                     margin-right: 0.9rem;
                 }
+
+                margin-right: 0.5rem;
             }
+
             &__desc-wrapper {
                 display: flex;
                 flex-direction: column;
             }
+
             &__link {
-                word-break: normal;
                 font-weight: normal;
+                word-break: normal;
             }
+
             &__paragraph {
                 font-weight: normal;
             }
         }
     }
+
     &__explanation {
-        margin: 0.8rem 0 2.4rem;
         @include mobile {
             width: 32rem;
         }
+
+        margin: 0.8rem 0 2.4rem;
+
         &-unlisted {
             margin-bottom: 7.4rem;
         }

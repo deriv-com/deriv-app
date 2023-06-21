@@ -1,15 +1,15 @@
 .block-user-table {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-
     @include mobile {
         height: 100%;
     }
 
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
     &__body {
-        flex: 1;
         display: flex;
+        flex: 1;
         flex-direction: column;
 
         & .data-list {
@@ -21,7 +21,7 @@
 
     &__text {
         display: inline-block;
-        padding-top: 3rem;
         width: 100%;
+        padding-top: 3rem;
     }
 }

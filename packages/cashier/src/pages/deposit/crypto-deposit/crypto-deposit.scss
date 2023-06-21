@@ -1,25 +1,28 @@
 .crypto-deposit {
     &__wrapper {
-        margin: 0 auto;
-        max-width: 51rem;
         @include mobile {
             max-width: none;
         }
+
+        max-width: 51rem;
+        margin: 0 auto;
     }
 
     &__transaction-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        border-bottom: 2px solid var(--general-section-1);
-        padding-bottom: 2.4rem;
         @include mobile {
             margin-top: 2.4rem;
         }
 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-bottom: 2.4rem;
+        border-bottom: 2px solid var(--general-section-1);
+
         .qrcode {
             margin: 2.4rem 0;
         }
+
         .crypto-api-error {
             display: flex;
             flex-direction: column;
@@ -44,16 +47,18 @@
             }
         }
     }
+
     &__transaction-currency {
-        margin: 2.4rem 0 0.8rem;
         @include mobile {
             margin-bottom: 2.4rem;
         }
+
+        margin: 2.4rem 0 0.8rem;
     }
 
     &__dropdown-menu {
-        margin: 2.4rem 0 0.8rem;
         width: 55%;
+        margin: 2.4rem 0 0.8rem;
     }
 
     &__eth-option-message {
@@ -63,11 +68,11 @@
     &__clipboard-wrapper {
         display: flex;
         align-items: center;
-        border-radius: $BORDER_RADIUS;
-        line-height: 0;
         width: fit-content;
         padding: 1rem 1.3rem;
+        border-radius: $BORDER_RADIUS;
         background-color: var(--general-section-1);
+        line-height: 0;
 
         .dc-popover__wrapper {
             margin: 0.3rem 0.3rem 0.3rem 0.6rem;
@@ -78,14 +83,17 @@
             }
         }
     }
+
     &__fiat-onramp-wrapper {
         display: flex;
         flex-direction: column;
         align-items: center;
     }
+
     &__fiat-onramp-description {
         margin: 2.4rem 0;
     }
+
     &__fiat-onramp-button {
         margin-bottom: 2.4rem;
     }

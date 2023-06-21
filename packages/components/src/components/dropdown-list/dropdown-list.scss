@@ -1,62 +1,69 @@
 .dc-dropdown-list {
     position: absolute;
+    z-index: 1;
     margin-top: 4px;
     border-radius: 4px;
-    z-index: 1;
-    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.24);
-    transform-origin: top;
+    background-color: var(--state-normal);
+    box-shadow: 0 4px 6px 0 rgb(0 0 0 / 24%);
+    cursor: pointer;
     transition: transform 0.25s ease, opacity 0.25s linear;
     transform: scale(1, 0);
-    cursor: pointer;
-    background-color: var(--state-normal);
+    transform-origin: top;
 
     &--enter,
     &--exit {
-        transform: scale(1, 0);
         opacity: 0;
+        transform: scale(1, 0);
     }
+
     &--enter-done {
-        transform: scale(1, 1);
         opacity: 1;
+        transform: scale(1, 1);
     }
+
     &__group {
         &-header {
-            padding: 0.6rem;
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: var(--brand-red-coral);
-            height: 3.6rem;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            height: 3.6rem;
+            padding: 0.6rem;
+            color: var(--brand-red-coral);
+            font-weight: bold;
+            font-size: 1.4rem;
         }
     }
+
     &__item {
-        min-height: 40px;
         display: flex;
         align-items: center;
+        min-height: 40px;
         padding: 1rem 1.6rem;
-        font-size: 1.4rem;
         color: var(--text-general);
+        font-size: 1.4rem;
 
         &:hover {
             background-color: var(--state-hover);
         }
+
         &--active {
             background-color: var(--state-active);
         }
+
         &-icon {
             margin-right: 8px;
         }
+
         &--disabled {
             color: var(--text-disabled);
             cursor: not-allowed;
         }
     }
+
     &__separator {
         display: flex;
         width: calc(100% - 3.2rem);
-        border-bottom: 1px solid var(--border-normal);
         margin: 1.6rem;
+        border-bottom: 1px solid var(--border-normal);
     }
 }

@@ -3,8 +3,8 @@
 
     &__content {
         display: flex;
-        align-items: center;
         gap: 1.2rem;
+        align-items: center;
     }
 
     &__description {
@@ -14,12 +14,12 @@
     &__container {
         display: flex;
         flex-direction: column;
+        gap: 1.6rem;
+        margin-top: 0.8rem;
         padding: 1.6rem;
         border: 2px solid var(--border-normal-1);
         border-radius: $BORDER_RADIUS * 2;
-        margin-top: 0.8rem;
         cursor: pointer;
-        gap: 1.6rem;
         transition: all 0.25s ease;
 
         &:hover {

@@ -1,24 +1,24 @@
 .search-box {
-    margin: 2.4rem 0.8rem;
-    width: 24rem;
-
     @include mobile {
-        margin: 0;
         width: auto;
+        margin: 0;
 
         .dc-input {
             height: 4rem;
         }
     }
 
+    width: 24rem;
+    margin: 2.4rem 0.8rem;
+
     &__cross-icon {
         cursor: pointer;
     }
 
     &__field {
+        height: 4.2rem;
         margin-bottom: 0 !important;
         text-indent: 2rem;
-        height: 4.2rem;
 
         ::placeholder {
             opacity: 0.5;
@@ -28,30 +28,32 @@
             justify-content: center;
 
             &__field {
-                flex-grow: 1;
-                padding-right: 2rem;
-                width: unset;
-                text-indent: 2.4rem;
-                ::placeholder {
-                    opacity: 0.5;
-                }
-
                 @include mobile {
                     grid-column: 1;
                     width: 100%;
                     margin-left: -1.1rem;
                 }
+
+                flex-grow: 1;
+                width: unset;
+                padding-right: 2rem;
+                text-indent: 2.4rem;
+
+                ::placeholder {
+                    opacity: 0.5;
+                }
             }
 
             &__leading-icon {
-                cursor: pointer;
+                @include mobile {
+                    padding-right: 0.3rem;
+                    padding-bottom: 0.1rem;
+                }
+
                 top: 31%;
                 margin-left: 0.9rem;
+                cursor: pointer;
                 pointer-events: unset;
-                @include mobile {
-                    padding-bottom: 0.1rem;
-                    padding-right: 0.3rem;
-                }
             }
         }
     }

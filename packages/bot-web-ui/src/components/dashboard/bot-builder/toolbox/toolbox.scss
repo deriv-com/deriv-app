@@ -2,14 +2,14 @@
     $toolbox: &;
     $category-text-spacing: 10px;
 
-    width: 25.6rem !important;
     position: absolute;
     top: 0 !important;
+    width: 25.6rem !important;
     height: 100%;
 
     &__search {
-        padding: 0.8rem;
         height: 5rem;
+        padding: 0.8rem;
 
         &-field {
             margin-bottom: 0 !important;
@@ -23,39 +23,39 @@
                 justify-content: center;
 
                 &__field {
+                    flex-grow: 1;
                     width: unset;
                     height: 3.2rem;
-                    flex-grow: 1;
                     padding: 0.8rem;
                 }
 
                 &__leading-icon {
                     position: unset;
-                    pointer-events: unset;
                     margin-left: 0.8rem;
                     cursor: pointer;
+                    pointer-events: unset;
                 }
             }
         }
     }
 
     &__content {
+        z-index: 1;
         display: flex;
         flex-direction: column;
         overflow: hidden;
-        user-select: none;
-        z-index: 1;
         visibility: visible;
+        user-select: none;
     }
 
     &__header {
-        padding: 8px;
         position: relative;
+        padding: 8px;
+        background-color: var(--general-section-5);
+        color: var(--text-general);
         font-weight: bold;
         font-size: 1.6em;
         text-align: center;
-        color: var(--text-general);
-        background-color: var(--general-section-5);
     }
 
     &__item {
@@ -82,19 +82,19 @@
 
     &__category-menu {
         display: flex;
-        flex-direction: column;
         flex-grow: 1;
-        min-height: 0;
-        overflow-y: auto;
+        flex-direction: column;
         overflow-x: hidden;
+        overflow-y: auto;
+        min-height: 0;
     }
 
     &__category-text {
         display: flex;
-        align-self: center;
         justify-content: space-between;
-        margin: 10px;
+        align-self: center;
         width: 100%;
+        margin: 10px;
     }
 
     &__description {
@@ -108,8 +108,8 @@
         margin-right: $category-text-spacing;
 
         > svg {
-            height: 25px;
             width: 25px;
+            height: 25px;
         }
     }
 
@@ -120,8 +120,8 @@
     }
 
     &__row {
-        cursor: pointer;
         border-top: 1px solid var(--general-section-6);
+        cursor: pointer;
 
         #{$toolbox}__category--selected {
             background-color: var(--general-active);
@@ -133,13 +133,13 @@
     }
 
     &__button.dc-btn {
-        margin: 16px auto;
-        padding: 0;
         width: 152px;
         height: 32px;
+        margin: 16px auto;
+        padding: 0;
         color: var(--text-colored-background);
-        font-size: 14px;
         font-weight: bold;
+        font-size: 14px;
         line-height: 1.4;
     }
 
@@ -156,10 +156,10 @@
 }
 
 .loader {
+    width: 16px;
+    height: 16px;
     border: 1px solid var(--general-active);
     border-top: 1px solid var(--brand-secondary);
     border-radius: 50%;
-    width: 16px;
-    height: 16px;
     animation: spin 1s linear infinite;
 }

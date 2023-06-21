@@ -3,10 +3,6 @@ $card-height: 650px;
 $card-width: 456px;
 
 .order-details {
-    display: flex;
-    flex-direction: row;
-    flex: 1;
-
     @include tablet-up {
         min-height: $card-height;
         max-height: $card-height;
@@ -19,17 +15,21 @@ $card-width: 456px;
         }
     }
 
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+
     &--body {
         display: flex;
         flex-direction: column;
     }
 
     &--warning {
-        margin-bottom: 1.6rem;
-
         @include mobile {
             margin: 1rem 2rem;
         }
+
+        margin-bottom: 1.6rem;
 
         .dc-hint-box {
             &__icon {
@@ -44,28 +44,28 @@ $card-width: 456px;
 }
 
 .order-details-card {
-    background-color: var(--general-main-1);
-    display: flex;
-    flex-direction: column;
-    height: fit-content;
-
     @include tablet-up {
-        border-radius: 4px;
-        border: 8px solid var(--general-section-1);
         width: $card-width;
+        border: 8px solid var(--general-section-1);
+        border-radius: 4px;
     }
 
     @include mobile {
-        height: 100%;
         width: 100%;
+        height: 100%;
     }
 
-    &--rating {
-        margin: 2.4rem;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    background-color: var(--general-main-1);
 
+    &--rating {
         @include mobile {
             margin: 1.6rem;
         }
+
+        margin: 2.4rem;
 
         &__line {
             margin: 0 0 0.5rem;
@@ -100,14 +100,17 @@ $card-width: 456px;
             flex-direction: column;
             padding-left: 1.6rem;
         }
+
         &-icon {
             flex-shrink: 0;
         }
+
         &-row {
             display: flex;
             flex-direction: row;
             align-items: center;
         }
+
         &-title {
             display: flex;
             flex-direction: column;
@@ -121,21 +124,14 @@ $card-width: 456px;
         }
 
         .dc-accordion__item-header {
-            align-items: center;
-            border: none;
             display: flex;
             justify-content: space-between;
+            align-items: center;
+            border: none;
         }
     }
 
     &__header {
-        display: flex;
-        justify-content: space-between;
-        color: var(--text-general);
-        position: relative;
-        border-bottom: 1px solid var(--general-section-1);
-        align-items: center;
-
         @include tablet-up {
             padding: 1.6rem 2.4rem;
         }
@@ -144,51 +140,67 @@ $card-width: 456px;
             padding: 1.6rem;
         }
 
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--general-section-1);
+        color: var(--text-general);
+
         &--left {
             align-self: flex-start;
         }
+
         &--right {
             @include mobile {
-                align-items: center;
                 display: flex;
+                align-items: center;
             }
         }
+
         &-id {
+            margin-top: 0.4rem;
             color: var(--text-less-prominent);
             font-size: var(--text-size-xxs);
             line-height: 1.8rem;
-            margin-top: 0.4rem;
         }
+
         &-status {
+            font-weight: bold;
             font-size: var(--text-size-s);
             line-height: 2.4rem;
-            font-weight: bold;
 
             &--info {
                 color: var(--text-less-prominent);
             }
+
             &--success {
                 color: var(--status-success);
             }
+
             &--danger {
                 color: var(--status-danger);
             }
+
             &--alert {
                 color: var(--status-warning);
             }
         }
+
         &-amount {
-            line-height: 1.5;
             font-size: 2.4rem;
+            line-height: 1.5;
         }
+
         &-method {
-            font-size: 1.2rem;
-            border: 1px solid var(--border-normal);
             width: fit-content;
-            border-radius: 1.6rem;
-            padding: 0.4rem 1rem;
             margin-top: 0.8rem;
+            padding: 0.4rem 1rem;
+            border: 1px solid var(--border-normal);
+            border-radius: 1.6rem;
+            font-size: 1.2rem;
         }
+
         &-timer {
             font-size: 1.2rem;
             line-height: 1.5;
@@ -196,16 +208,17 @@ $card-width: 456px;
 
             &-counter {
                 margin-top: 0.4rem;
+                padding: 0.4rem 0.8rem;
                 border: 1px solid var(--border-normal);
                 border-radius: 16px;
-                padding: 0.4rem 0.8rem;
             }
         }
+
         &-payment-info {
             margin-top: 0.8rem;
+            color: var(--text-general);
             font-size: 1.4rem;
             line-height: 1.4;
-            color: var(--text-general);
             word-break: break-word;
         }
     }
@@ -227,11 +240,11 @@ $card-width: 456px;
             &-value {
                 display: flex;
                 flex-direction: column;
+                color: var(--text-general);
                 font-size: 1.4rem;
                 line-height: 1.43;
-                color: var(--text-general);
-                word-break: break-word;
                 white-space: pre-line;
+                word-break: break-word;
             }
         }
 
@@ -244,27 +257,29 @@ $card-width: 456px;
         &--right,
         &--left {
             display: flex;
-            flex-flow: column nowrap;
             flex: 1;
+            flex-flow: column nowrap;
         }
     }
-    &__footer {
-        display: flex;
-        justify-content: space-between;
-        margin-top: auto;
-        font-size: 1.4rem;
-        line-height: 1.43;
-        color: var(--text-general);
-        padding: 1.6rem 2.4rem;
 
+    &__footer {
         @include mobile {
             width: 100%;
             padding: unset;
         }
+
         @include tablet-up {
             width: 100%;
             padding: 0 1.6rem 1.6rem;
         }
+
+        display: flex;
+        justify-content: space-between;
+        margin-top: auto;
+        padding: 1.6rem 2.4rem;
+        color: var(--text-general);
+        font-size: 1.4rem;
+        line-height: 1.43;
 
         &--right {
             margin-left: auto;
@@ -272,15 +287,15 @@ $card-width: 456px;
     }
 
     &--line {
+        width: $card-width;
         margin: 0;
         padding: 0;
-        width: $card-width;
     }
 
     &__message {
+        color: var(--text-general);
         font-size: var(--text-size-xs);
         line-height: 2rem;
-        color: var(--text-general);
     }
 
     &__modal-checkbox {
@@ -294,16 +309,16 @@ $card-width: 456px;
         margin: 2.4rem 1.6rem;
 
         &--icon {
-            align-self: center;
             display: flex;
+            align-self: center;
             margin-right: 0.9rem;
         }
 
         &--row {
-            align-items: center;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+            align-items: center;
             max-width: 80%;
         }
     }

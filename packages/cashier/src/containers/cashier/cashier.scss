@@ -5,35 +5,39 @@
         top: 0.4rem;
         right: -1.5rem;
     }
+
     &__content {
         width: 100%;
 
         &-header {
-            margin-bottom: 3.2rem;
             @include mobile {
-                padding-top: 1.6rem;
                 margin-bottom: 0;
+                padding-top: 1.6rem;
             }
+
+            margin-bottom: 3.2rem;
         }
     }
+
     &__wrapper {
-        text-align: center;
         display: flex;
         flex-direction: column;
         align-items: center;
+        text-align: center;
 
         &,
         &--align-left {
-            color: var(--text-general);
-            width: 100%;
-            height: 100%;
-            line-height: 1.43;
             @include mobile {
                 height: inherit;
             }
 
+            width: 100%;
+            height: 100%;
+            color: var(--text-general);
+            line-height: 1.43;
+
             // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-            @media (max-width: 926px) {
+            @media (width <= 926px) {
                 width: auto;
                 height: auto;
                 margin: 0 1.6rem;
@@ -43,99 +47,116 @@
                 fill: var(--text-general);
             }
         }
+
         &--align-left {
             text-align: left;
         }
+
         &-padding {
             padding: 1.6rem;
         }
+
         &--align-center {
-            text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
+            text-align: center;
         }
-        &--is-mobile {
-            // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-            @media (max-width: 926px) {
-                width: 100vw;
-            }
 
+        &--is-mobile {
             @include mobile {
                 width: 100vw;
                 margin-top: 4rem;
+
                 .dc-collapsible {
                     position: relative;
-                    background-color: var(--general-section-1);
-                    margin-bottom: 0.8rem;
-                    transform: none;
-                    width: 100%;
                     z-index: 1;
+                    width: 100%;
+                    margin-bottom: 0.8rem;
+                    background-color: var(--general-section-1);
+                    transform: none;
                 }
+
                 .cashier__wrapper {
                     width: calc(100% - 3.2rem);
                     margin: 0 1.6rem;
 
                     &-error {
                         display: flex;
-                        align-items: center;
-                        justify-content: flex-start;
                         flex-direction: column;
+                        justify-content: flex-start;
+                        align-items: center;
                         padding-top: 2.4rem;
                     }
                 }
+
                 .barspinner {
                     margin-top: 6rem;
                 }
             }
+
+            // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
+            @media (width <= 926px) {
+                width: 100vw;
+            }
         }
+
         .withdraw__input {
-            width: fit-content;
-            min-width: 36rem;
             @include mobile {
                 width: 100%;
                 min-width: auto;
                 margin-bottom: 1.3rem !important;
             }
+
+            width: fit-content;
+            min-width: 36rem;
         }
     }
+
     &__loader {
         font-size: 1rem;
     }
+
     &__header {
         @include mobile {
             font-size: 1.4rem;
         }
     }
+
     &__form {
-        &-submit {
-            text-align: right;
-            margin-top: 3.2rem;
+        @include mobile {
+            &-submit {
+                flex-flow: column;
+                height: unset;
+                margin: 1.6rem 0;
+                margin-bottom: 1.6rem;
+            }
+
+            &-submit-button {
+                width: 100%;
+                margin: 0;
+            }
         }
+
+        &-submit {
+            margin-top: 3.2rem;
+            text-align: right;
+        }
+
         &-submit-button {
             margin: 3.9rem 0 2.4rem 2.4rem;
         }
-
-        @include mobile {
-            &-submit {
-                margin: 1.6rem 0;
-                flex-flow: column;
-                height: unset;
-                margin-bottom: 1.6rem;
-            }
-            &-submit-button {
-                margin: 0;
-                width: 100%;
-            }
-        }
     }
+
     &__input {
-        display: inline-block !important;
-        margin-bottom: 0 !important;
         @include mobile {
             margin-bottom: 3.2rem !important;
         }
+
+        display: inline-block !important;
+        margin-bottom: 0 !important;
     }
+
     &__drop-down,
     &__drop-down-wrapper .cashier__drop-down {
         &-wrapper {
@@ -146,42 +167,48 @@
                 background-color: var(--general-main-1);
             }
         }
+
         &-display {
-            justify-content: left;
-            min-height: 4rem;
-            min-width: 28.3rem;
-            height: auto;
             @include mobile {
-                min-height: auto;
-                min-width: calc(100% - 4rem);
                 display: flex;
                 align-items: center;
+                min-width: calc(100% - 4rem);
+                min-height: auto;
             }
 
+            justify-content: left;
+            min-width: 28.3rem;
+            height: auto;
+            min-height: 4rem;
+
             &-span {
-                font-size: 1.4rem;
-                text-align: left;
-                padding: 0.9rem 3.6rem 0.9rem 1.2rem;
-                text-transform: none;
-                line-height: 1.43;
                 display: flex;
                 align-items: center;
+                padding: 0.9rem 3.6rem 0.9rem 1.2rem;
+                font-size: 1.4rem;
+                line-height: 1.43;
+                text-align: left;
+                text-transform: none;
             }
         }
+
         &-items,
         &-label {
             justify-content: left;
         }
+
         &-items {
             svg {
                 width: 2.4rem;
                 height: 2.4rem;
             }
         }
+
         &-label {
             margin: 0 1.6rem;
         }
     }
+
     &__transferred {
         &-amount {
             margin-top: 2rem;
@@ -191,13 +218,14 @@
                 padding-left: 0.8rem;
             }
         }
+
         &-details {
-            margin-left: 0.8rem;
-            margin-right: 0.8rem;
-            vertical-align: super;
-            max-width: 20rem;
             display: flex;
+            vertical-align: super;
             flex-direction: column;
+            max-width: 20rem;
+            margin-right: 0.8rem;
+            margin-left: 0.8rem;
 
             &-wrapper {
                 display: flex;
@@ -205,54 +233,53 @@
                 align-items: center;
             }
         }
+
         &-icon {
             @extend %inline-icon;
-            transform: scale(-1, 1);
+
             vertical-align: middle;
             margin: 0 1.6rem;
+            transform: scale(-1, 1);
         }
     }
+
     &__paragraph {
         align-self: center;
     }
+
     &__text {
-        max-width: 70%;
-        margin-left: auto;
-        margin-right: auto;
         @include mobile {
-            max-width: 100%;
             min-width: unset;
+            max-width: 100%;
             margin: 0;
             padding: 0;
             text-align: left;
         }
+
+        max-width: 70%;
+        margin-right: auto;
+        margin-left: auto;
     }
+
     &__tab-header-note {
         max-width: 25.6rem;
     }
+
     &__success {
-        text-align: center;
-        background-color: var(--general-main-1);
-        padding: 2.4rem;
         width: 50.4rem;
         margin: 0 auto 2rem;
+        padding: 2.4rem;
+        background-color: var(--general-main-1);
+        text-align: center;
     }
+
     &__done-button {
         width: 18.9rem;
         margin-left: 0.8rem;
         white-space: normal;
     }
-    &__no-balance {
-        &-icon {
-            margin-bottom: 1.6rem;
 
-            + .dc-text {
-                margin-bottom: 0.8rem;
-            }
-        }
-        &-button {
-            margin: 3.2rem auto;
-        }
+    &__no-balance {
         @include mobile {
             display: flex;
             flex-direction: column;
@@ -262,11 +289,25 @@
             &-button {
                 width: calc(100% - 3.2rem);
             }
+
             &-icon {
                 margin-top: 3.2rem;
             }
         }
+
+        &-icon {
+            margin-bottom: 1.6rem;
+
+            + .dc-text {
+                margin-bottom: 0.8rem;
+            }
+        }
+
+        &-button {
+            margin: 3.2rem auto;
+        }
     }
+
     &__page-wrapper {
         @include mobile {
             /* postcss-bem-linter: ignore */
@@ -278,7 +319,7 @@
             }
 
             .dc-page-overlay__header.dc-page-app__header {
-                top: 0rem;
+                top: 0;
             }
         }
 
@@ -287,12 +328,13 @@
             padding: 0.6rem 0.8rem;
         }
     }
+
     &-locked {
-        width: 100%;
         display: flex;
         flex-direction: column;
-        align-items: center;
         justify-content: center;
+        align-items: center;
+        width: 100%;
         max-width: 67.2rem;
         margin: 4rem auto 0;
 
@@ -305,23 +347,28 @@
         .dc-checklist__item-text {
             max-width: 32rem;
         }
+
         &__icon {
             width: 12.8rem;
             height: 12.8rem;
             margin-bottom: 2.4rem;
         }
+
         &__title {
-            margin-bottom: 0.8rem;
             @include mobile {
-                margin-left: 1.2rem;
                 margin-right: 1.2rem;
+                margin-left: 1.2rem;
             }
+
+            margin-bottom: 0.8rem;
         }
+
         &__desc {
-            margin-bottom: 3.2rem;
             @include mobile {
                 padding: 0 1rem;
             }
+
+            margin-bottom: 3.2rem;
         }
     }
 
@@ -333,7 +380,7 @@
 }
 
 // Able to scroll the page container (app-contents) until 926px (MobileWrapper) if it should be scrollable
-@media (max-width: 926px) {
+@media (width <= 926px) {
     .app-contents--is-mobile,
     .app-contents--is-scrollable {
         overflow-y: auto;

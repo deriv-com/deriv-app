@@ -1,4 +1,8 @@
 .cashier-breadcrumb {
+    @include mobile {
+        margin-top: 1.6rem;
+    }
+
     width: 100%;
     margin-bottom: 1.6rem;
 
@@ -8,9 +12,5 @@
 
     li {
         text-align: left;
-    }
-
-    @include mobile {
-        margin-top: 1.6rem;
     }
 }

@@ -2,18 +2,19 @@
     .dc-dialog {
         &__footer {
             @include mobile {
-                flex-wrap: unset;
                 display: flex;
+                flex-wrap: unset;
                 justify-content: flex-end;
                 align-items: flex-start;
                 width: 100%;
 
                 button {
                     flex-basis: unset;
+                    margin-bottom: unset;
+
                     &:first-child {
                         margin-right: 1rem;
                     }
-                    margin-bottom: unset;
                 }
             }
         }

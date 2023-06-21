@@ -1,14 +1,14 @@
 .block-user-row {
     display: grid;
-    padding: 1.6rem;
     grid-template-columns: 1fr 1fr;
+    padding: 1.6rem;
 
     &:hover {
-        background-color: var(--general-hover);
-
         @include mobile {
             background-color: inherit;
         }
+
+        background-color: var(--general-hover);
     }
 
     &__button-group {
@@ -44,8 +44,8 @@
     }
 
     &__cell {
-        align-items: center;
         display: flex;
+        align-items: center;
         cursor: pointer;
 
         &--barred {

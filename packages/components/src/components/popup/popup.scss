@@ -11,21 +11,21 @@
         }
 
         &-container {
-            width: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
         }
 
         &-close {
-            margin-left: 2.1rem;
-            margin-top: -0.3rem;
-            margin-right: -0.3rem;
-
             @include mobile {
                 margin-top: 0.5rem;
                 margin-right: 0.5rem;
             }
+
+            margin-top: -0.3rem;
+            margin-right: -0.3rem;
+            margin-left: 2.1rem;
 
             &-icon {
                 cursor: pointer;
@@ -33,11 +33,11 @@
         }
 
         &-button {
-            margin-left: 1.6rem;
-
             @include mobile {
                 margin-left: 2.2rem;
             }
+
+            margin-left: 1.6rem;
         }
 
         &-balance {
@@ -46,20 +46,20 @@
         }
 
         &-banner {
-            background-color: var(--status-warning);
-            border-radius: 10rem;
-            padding: 0.4rem 0.8rem;
-            display: flex;
-            align-items: center;
-
             @include desktop {
                 margin-top: 0.4rem;
             }
 
             @include mobile {
-                background-color: var(--general-main-1);
                 margin-left: 0.8rem;
+                background-color: var(--general-main-1);
             }
+
+            display: flex;
+            align-items: center;
+            padding: 0.4rem 0.8rem;
+            border-radius: 10rem;
+            background-color: var(--status-warning);
         }
 
         &-big-text {
@@ -75,13 +75,13 @@
     }
 
     &__body {
+        flex: 1;
+        min-height: 0;
+        padding: 0;
+
         &:first-child {
             padding-top: 0 !important;
         }
-
-        padding: 0;
-        flex: 1;
-        min-height: 0;
 
         & .dc-tabs {
             &__content--popup {
@@ -92,12 +92,13 @@
                 &--header--popup {
                     @include mobile {
                         overflow-y: hidden;
-
-                        @media (min-width: 27.5rem) {
-                            overflow-x: hidden;
-                        }
                         -ms-overflow-style: none; /* IE and Edge */
                         scrollbar-width: none; /* Firefox */
+
+                        @media (width >= 27.5rem) {
+                            overflow-x: hidden;
+                        }
+
                         &::-webkit-scrollbar {
                             display: none; /* Chrome Safari */
                         }
@@ -108,27 +109,27 @@
                     @include mobile {
                         height: 5.8rem !important;
 
-                        @media (max-width: 27.5rem) {
-                            margin-right: 4.2rem;
+                        @media (width <= 27.5rem) {
                             width: 123% !important;
+                            margin-right: 4.2rem;
                         }
                     }
                 }
             }
 
             &__item--popup {
-                border-radius: 16px 16px 0px 0px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-
                 @include mobile {
-                    height: 5.8rem;
-                    width: 8.2rem !important;
                     flex-direction: column;
-                    font-size: 12px;
                     box-sizing: border-box;
+                    width: 8.2rem !important;
+                    height: 5.8rem;
+                    font-size: 12px;
                 }
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 16px 16px 0 0;
             }
 
             &__active--popup {
@@ -136,20 +137,20 @@
             }
 
             &--popup {
-                height: 100%;
                 display: flex;
                 flex-direction: column;
+                height: 100%;
             }
         }
     }
 
     &__footer {
+        position: fixed;
+        bottom: 0;
         display: flex;
         justify-content: flex-end;
-        padding: 1.6rem;
-        position: fixed;
         width: 100%;
-        bottom: 0;
+        padding: 1.6rem;
 
         &__separator {
             border-top: 2px solid var(--general-section-1);
@@ -157,20 +158,17 @@
     }
 
     &__overlay {
-        transition: opacity 0.1s ease-in-out;
-        opacity: 0;
-        padding: 3.2rem;
-        overflow-y: auto;
-        background-color: var(--general-main-1);
+        position: absolute;
+        inset: 0;
         display: flex;
         flex-direction: column;
-        align-items: center;
         justify-content: center;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 0;
-        left: 0;
+        align-items: center;
+        overflow-y: auto;
+        padding: 3.2rem;
+        background-color: var(--general-main-1);
+        opacity: 0;
+        transition: opacity 0.1s ease-in-out;
 
         &:empty {
             display: none;
@@ -181,6 +179,7 @@
                 opacity: 0.95;
             }
         }
+
         &--exit {
             opacity: 0;
         }
@@ -193,15 +192,15 @@
             }
 
             &-separator {
-                height: 1px;
                 width: 100%;
+                height: 1px;
                 background-color: var(--general-section-1);
             }
 
             &-list {
+                margin-top: 2.4rem;
                 padding-left: 1.6rem;
                 list-style-type: disc;
-                margin-top: 2.4rem;
 
                 li::marker {
                     color: var(--text-general);
@@ -223,26 +222,28 @@
 .dc-modal {
     &-header {
         &--popup {
-            height: fit-content;
-            align-items: flex-start;
             flex-grow: 0;
+            align-items: flex-start;
+            height: fit-content;
         }
+
         &__title {
             &--popup {
-                width: 100%;
-
                 @include mobile {
                     align-items: flex-start;
                 }
+
+                width: 100%;
             }
         }
+
         &__section {
             &--popup {
                 padding: 2.4rem;
             }
 
             .dc-modal-header__close {
-                margin: 2.1rem 2.1rem 0rem 0rem;
+                margin: 2.1rem 2.1rem 0 0;
             }
         }
     }

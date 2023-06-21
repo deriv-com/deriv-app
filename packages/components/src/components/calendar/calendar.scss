@@ -1,32 +1,35 @@
 /** @define dc-calendar */
 .dc-calendar {
-    outline: 0;
-    border-radius: 5px;
     z-index: 999;
     box-sizing: border-box;
-    font-size: 1rem;
+    border-radius: 5px;
     background: var(--general-main-2);
     box-shadow: 0 2px 8px 0 var(--shadow-menu);
+    outline: 0;
+    font-size: 1rem;
 
     &__header,
     &__footer {
         position: relative;
         display: flex;
         align-items: center;
-        height: 5rem;
-        border-radius: 5px;
-        padding: 1.6rem;
         box-sizing: border-box;
+        height: 5rem;
+        padding: 1.6rem;
+        border-radius: 5px;
     }
+
     &__header {
         justify-content: center;
     }
+
     &__footer {
         :last-child:not(:only-child),
         .dc-calendar__btn--today {
             margin-left: auto;
         }
     }
+
     &__body {
         border-top: 0.1rem solid var(--general-section-2);
         border-bottom: 0.1rem solid var(--general-section-2);
@@ -46,6 +49,7 @@
                 border-radius: 5px;
             }
         }
+
         &--date {
             grid-template-columns: repeat(7, 2.4rem);
             grid-auto-rows: 2.4rem;
@@ -55,6 +59,7 @@
                 height: 100%;
             }
         }
+
         &--month,
         &--year,
         &--decade {
@@ -65,33 +70,36 @@
                 width: 5.6rem;
                 height: 3.2rem;
 
-                &--other:not(.dc-calendar__cell--today):not(.dc-calendar__cell--active):not(.dc-calendar__cell--disabled) {
+                &--other:not(.dc-calendar__cell--today, .dc-calendar__cell--active, .dc-calendar__cell--disabled) {
                     color: var(--text-general);
                 }
             }
         }
+
         &--decade {
             .dc-calendar__cell {
                 width: 100%;
             }
         }
     }
+
     &__icon {
-        cursor: pointer;
         right: 5%;
+        cursor: pointer;
 
         &--today:hover {
             cursor: pointer;
         }
     }
+
     &__btn {
-        text-align: center;
         padding: 0 0.2rem;
-        font-weight: bold;
-        cursor: pointer;
         border: none;
-        outline: none;
         background: none;
+        outline: none;
+        font-weight: bold;
+        text-align: center;
+        cursor: pointer;
 
         &--disabled {
             cursor: default;
@@ -101,150 +109,174 @@
                 cursor: default;
             }
         }
+
         &--is-hidden {
             display: none;
         }
+
         &--select {
             @include typeface(--paragraph-left-bold-black);
+
             color: var(--text-prominent);
         }
+
         &--prev-year,
         &--next-year,
         &--prev-month,
         &--next-month {
             position: absolute;
-            padding: 0 0.5em;
             height: 1.4em;
+            padding: 0 0.5em;
         }
+
         &--prev-year {
             left: 7%;
         }
+
         &--next-year {
             right: 7%;
         }
+
         &--prev-month {
             left: 14%;
         }
+
         &--next-month {
             right: 14%;
         }
     }
+
     &__cell {
         @include typeface(--small-left-normal-black);
+
+        position: relative;
         align-self: center;
         justify-self: center;
-        position: relative;
-        cursor: pointer;
-        color: var(--text-general);
         box-sizing: border-box;
+        color: var(--text-general);
+        cursor: pointer;
 
         &--hover {
-            color: var(--text-general);
             background: var(--state-hover);
+            color: var(--text-general);
         }
+
         &:nth-child(7n) {
             &:before {
                 padding: 0;
                 border-radius: $BORDER_RADIUS;
             }
         }
+
         &:nth-child(7n + 1) {
             &:before {
                 left: 0;
                 border-radius: $BORDER_RADIUS;
             }
+
             &:after {
                 content: none;
             }
         }
+
         &--bold {
             @include typeface(--paragraph-left-bold-black);
+
             color: var(--text-prominent);
         }
-        &--disabled:not(.dc-calendar__cell--today):not(.dc-calendar__cell--between),
-        &--other:not(.dc-calendar__cell--today):not(.dc-calendar__cell--active):not(.dc-calendar__cell--between) {
+
+        &--disabled:not(.dc-calendar__cell--today, .dc-calendar__cell--between),
+        &--other:not(.dc-calendar__cell--today, .dc-calendar__cell--active, .dc-calendar__cell--between) {
             color: var(--text-disabled);
-            transition: none;
             cursor: default;
+            transition: none;
         }
+
         &--is-hidden {
             display: none;
         }
+
         &--today {
-            font-weight: bold;
-            color: var(--text-prominent);
             border: 1px solid var(--state-active);
+            color: var(--text-prominent);
+            font-weight: bold;
 
             &-duration {
                 background: var(--state-active);
             }
         }
+
         &--active {
-            font-weight: bold;
-            color: var(--text-prominent);
             background: var(--state-active);
+            color: var(--text-prominent);
+            font-weight: bold;
 
             &:hover {
                 background: var(--state-active);
             }
+
             &-duration {
                 background: var(--state-active);
 
                 &:after {
-                    position: absolute;
                     content: '';
-                    width: 100%;
+                    position: absolute;
                     top: 0;
                     right: 50%;
                     z-index: -1;
+                    width: 100%;
                     height: 100%;
                     padding-left: 1rem;
                     background: var(--state-active);
                 }
             }
         }
+
         &--between {
-            font-weight: bold;
-            color: var(--text-prominent);
             background: var(--state-active);
+            color: var(--text-prominent);
+            font-weight: bold;
 
             &-hover {
                 &:before {
-                    position: absolute;
                     content: '';
-                    width: 100%;
+                    position: absolute;
                     z-index: -2;
+                    width: 100%;
                     height: 100%;
                     padding-left: 3.2rem;
                     background: var(--state-hover);
                 }
             }
+
             &:hover {
                 background: var(--state-active);
             }
+
             &:before {
-                position: absolute;
                 content: '';
-                width: 100%;
+                position: absolute;
                 z-index: -1;
+                width: 100%;
                 height: 100%;
                 padding-left: 3.2rem;
                 background: var(--state-active);
             }
         }
+
         &-tooltip {
             position: absolute;
-            display: inline-grid;
-            cursor: pointer;
-            height: 0;
             top: 0;
             left: 0;
+            display: inline-grid;
             justify-content: center;
             width: 100%;
+            height: 0;
+            cursor: pointer;
 
             &-icon {
-                margin-top: 0.1rem;
                 display: inherit;
+                margin-top: 0.1rem;
             }
         }
     }

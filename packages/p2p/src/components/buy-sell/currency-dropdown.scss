@@ -1,16 +1,16 @@
 .currency-dropdown {
-    margin-top: 2.4rem;
-    position: relative;
-
     @include mobile {
-        grid-column: 2;
         grid-row: 1;
+        grid-column: 2;
         margin: 0;
     }
 
+    position: relative;
+    margin-top: 2.4rem;
+
     &__list {
-        min-width: unset;
         width: 10rem;
+        min-width: unset;
 
         &-item {
             display: flex;
@@ -32,9 +32,6 @@
     }
 
     .dc-dropdown__display {
-        height: 4.2rem;
-        justify-content: start;
-
         @include mobile {
             height: 4rem;
 
@@ -42,5 +39,8 @@
                 border-color: var(--border-normal);
             }
         }
+
+        justify-content: start;
+        height: 4.2rem;
     }
 }

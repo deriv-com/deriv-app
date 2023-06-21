@@ -2,6 +2,7 @@
     0% {
         opacity: 0;
     }
+
     100% {
         opacity: 1;
     }
@@ -13,16 +14,16 @@
     position: absolute;
     top: 0;
     left: 0;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
     border-radius: $BORDER_RADIUS;
-    border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    box-sizing: border-box;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border-bottom-left-radius: 0;
     background-color: var(--overlay-inside-dialog);
     animation: animate-fade-in 0.3s;
 
@@ -33,14 +34,17 @@
             opacity: 0;
         }
     }
+
     &-caption {
         display: flex;
         align-items: center;
         transition: opacity 0.25s linear;
     }
+
     &-icon {
         margin-left: 10px;
     }
+
     &--won {
         background-image: $COLOR_LIGHT_GREEN_GRADIENT; // TODO: Update when gradients are added.
 
@@ -48,6 +52,7 @@
             color: var(--text-profit-success);
         }
     }
+
     &--lost {
         background-image: $COLOR_LIGHT_RED_GRADIENT; // TODO: Update when gradients are added.
 

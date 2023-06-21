@@ -1,12 +1,12 @@
 .dc-counter {
-    align-items: center;
-    background: var(--status-danger);
-    border-radius: 0.8rem;
-    color: var(--text-colored-background);
     display: inline-flex;
-    font-size: 1rem;
-    font-weight: bold;
     justify-content: center;
-    line-height: 1;
+    align-items: center;
     padding: 3px 5px;
+    border-radius: 0.8rem;
+    background: var(--status-danger);
+    color: var(--text-colored-background);
+    font-weight: bold;
+    font-size: 1rem;
+    line-height: 1;
 }

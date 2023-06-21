@@ -2,24 +2,25 @@
 .no-results-found {
     display: flex;
     flex-direction: column;
-    padding: 2.4rem 0.8rem;
-    justify-content: center;
     align-content: center;
-    text-align: center;
+    justify-content: center;
     max-width: 32rem;
+    padding: 2.4rem 0.8rem;
+    text-align: center;
 
     &__title {
-        font-size: var(--text-size-xs);
+        margin-bottom: 0.8rem;
+        color: var(--text-general);
         font-weight: normal;
         font-style: normal;
+        font-size: var(--text-size-xs);
         line-height: 1.43;
         letter-spacing: normal;
         text-align: center;
-        margin-bottom: 0.8rem;
-        color: var(--text-general);
     }
+
     &__subtitle {
-        letter-spacing: normal;
         margin: 0;
+        letter-spacing: normal;
     }
 }

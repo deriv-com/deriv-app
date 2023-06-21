@@ -1,5 +1,4 @@
 $MIN_HEIGHT_FULL_SCREEN: calc(100vh - #{$HEADER_HEIGHT + $FOOTER_HEIGHT});
-
 $FLOATING_PADDING: 2.4rem;
 $FLOATING_HEADER_HEIGHT: 53px;
 $MIN_HEIGHT_FLOATING: calc(
@@ -8,82 +7,91 @@ $MIN_HEIGHT_FLOATING: calc(
 
 .dc-vertical-tab {
     display: flex;
-    align-items: flex-start;
     justify-content: flex-start;
-    border-radius: $BORDER_RADIUS;
+    align-items: flex-start;
     height: 100%;
+    border-radius: $BORDER_RADIUS;
 
     &:not(&--floating) {
         background-color: var(--general-section-1);
     }
+
     &--floating {
         justify-content: center;
     }
+
     &--grid {
         display: grid;
-        height: calc(100vh - #{$HEADER_HEIGHT});
         grid-template-areas: 'form-sidebar form-title' 'form-sidebar form-content';
         grid-template-rows: 5.2rem auto;
+        height: calc(100vh - #{$HEADER_HEIGHT});
     }
+
     &__title {
         grid-area: form-title;
         height: 5rem;
         border-top: 1px solid var(--general-section-1);
     }
+
     &__content-container,
     &__content-inner {
         position: relative;
         z-index: 0;
-        height: 100%;
-        width: 100%;
         display: flex;
-    }
-    &--full-screen {
-        min-height: $MIN_HEIGHT_FULL_SCREEN;
         width: 100%;
+        height: 100%;
+    }
+
+    &--full-screen {
+        width: 100%;
+        min-height: $MIN_HEIGHT_FULL_SCREEN;
 
         // .dc-vertical-tab__tab {
         //     min-width: 15%;
         // }
     }
+
     &--full-screen.dc-vertical-tab--floating {
         min-height: $MIN_HEIGHT_FLOATING;
     }
-    &:not(.dc-vertical-tab--full-screen):not(.dc-vertical-tab--floating) {
+
+    &:not(.dc-vertical-tab--full-screen, .dc-vertical-tab--floating) {
         // height: 600px;
 
         .dc-vertical-tab__content {
             padding: 2.4rem;
         }
     }
+
     &__action-bar {
-        width: 100%;
         display: flex;
         flex-flow: row-reverse nowrap;
         justify-content: space-between;
         align-items: center;
-        padding: 1.6rem;
         box-sizing: border-box;
+        width: 100%;
+        padding: 1.6rem;
 
         &-wrapper {
-            cursor: pointer;
+            margin-left: auto;
             padding: 0.4rem 0.4rem 0.2rem;
             border-radius: $BORDER_RADIUS;
-            margin-left: auto;
+            cursor: pointer;
 
             &:hover {
                 background: var(--general-hover);
             }
         }
     }
+
     &__tab {
+        position: relative;
         display: flex;
+        flex-direction: column;
         min-width: 28%;
         height: 100%;
-        flex-direction: column;
         border-radius: $BORDER_RADIUS 0 0 $BORDER_RADIUS;
         background-color: var(--general-section-1);
-        position: relative;
 
         &--floating {
             min-width: 256px;
@@ -95,26 +103,31 @@ $MIN_HEIGHT_FLOATING: calc(
                 border-radius: $BORDER_RADIUS;
             }
         }
+
         &-meta-wrapper {
             // a class used to wrap `.dc-vertical-tab__tab-bottom-note` and `.dc-vertical-tab__tab`
             grid-area: form-sidebar;
+
             &--floating {
                 position: sticky;
                 top: calc(2.4rem + 41px); // 41px for the header of PageOverlay
             }
         }
+
         &-bottom-note {
             position: sticky;
             margin-top: 1.6rem;
         }
     }
+
     &__header-title {
-        padding: 1.6rem;
         display: flex;
         align-items: center;
-        transition: background-color 0.1s ease-in;
+        padding: 1.6rem;
         text-decoration: none;
+        transition: background-color 0.1s ease-in;
     }
+
     &--grouped {
         .dc-vertical-tab__header {
             padding-left: 4.4rem;
@@ -122,16 +135,19 @@ $MIN_HEIGHT_FLOATING: calc(
             &--highlight {
                 z-index: -1;
             }
+
             &--active {
                 padding-left: 4.8rem;
             }
         }
     }
+
     &__header {
         &__icon.dc-vertical-tab__header__icon--active {
             margin-right: 2rem;
         }
     }
+
     &__header-group {
         &-chevron {
             position: absolute;
@@ -143,27 +159,31 @@ $MIN_HEIGHT_FLOATING: calc(
             }
         }
     }
+
     &__header,
     &__header-group {
         @include typeface(--paragraph-left-bold-black, none);
-        line-height: 1.5;
-        color: var(--text-general);
-        padding: 1rem 1.2rem 1rem 1.6rem;
-        cursor: pointer;
+
+        z-index: 1;
         display: flex;
         align-items: center;
-        transition: background-color 0.1s ease-in;
+        padding: 1rem 1.2rem 1rem 1.6rem;
+        color: var(--text-general);
+        line-height: 1.5;
         text-decoration: none;
-        z-index: 1;
+        cursor: pointer;
         user-select: none;
+        transition: background-color 0.1s ease-in;
 
-        &:hover:not(.dc-vertical-tab__header--active):not(.dc-vertical-tab__header-group--active) {
+        &:hover:not(.dc-vertical-tab__header--active, .dc-vertical-tab__header-group--active) {
             background-color: var(--state-hover);
         }
+
         &__link {
-            font-weight: normal;
             margin-right: 0.4rem;
+            font-weight: normal;
         }
+
         &__icon {
             margin-right: 1.6rem;
 
@@ -171,56 +191,63 @@ $MIN_HEIGHT_FLOATING: calc(
                 --fill-color1: var(--text-prominent);
             }
         }
+
         &__counter {
             position: absolute;
             right: 2rem;
         }
+
         &--active &__link {
             color: var(--text-prominent);
             font-weight: bold;
         }
+
         &--highlight {
+            content: '';
+
             // This selector has a `transition` property that's set inline
             position: absolute;
+            z-index: 0;
             display: block;
-            content: '';
-            color: var(--text-prominent);
-            background-color: var(--state-normal);
-            border-left: 4px solid var(--brand-red-coral);
             width: 100%;
             height: 41px;
+            border-left: 4px solid var(--brand-red-coral);
+            background-color: var(--state-normal);
+            color: var(--text-prominent);
             transform: translate3d(0, 0, 0);
-            z-index: 0;
         }
+
         &--new {
-            font-size: 1rem;
-            font-weight: bold;
-            padding: 0 0.4rem;
             margin: 0 0.4rem;
+            padding: 0 0.4rem;
+            border-radius: 8px;
             background-color: var(--text-loss-danger);
             color: var(--status-colored-background);
-            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
         }
+
         &--floating {
             border-radius: $BORDER_RADIUS;
         }
     }
+
     &__content {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        grid-area: form-content;
+        justify-content: flex-start;
+        align-items: flex-start;
         width: 100%;
         height: 100%;
         min-height: inherit;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
         border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
-        position: relative;
         background-color: var(--general-main-1);
 
-        grid-area: form-content;
         &-container {
-            flex-flow: column nowrap;
             flex-grow: 1;
+            flex-flow: column nowrap;
         }
 
         &-side-note {
@@ -228,23 +255,25 @@ $MIN_HEIGHT_FLOATING: calc(
             margin-left: 2.4rem;
 
             &-item {
-                background-color: var(--general-section-1);
-                border-radius: 8px;
+                width: 25.6rem;
+                margin-bottom: 2.4rem;
                 padding: 1.6rem 2.4rem;
+                border-radius: 8px;
+                background-color: var(--general-section-1);
                 color: var(--text-general);
                 font-size: var(--text-size-xxs);
                 line-height: 1.5;
-                margin-bottom: 2.4rem;
-                width: 25.6rem;
             }
         }
+
         &.dc-vertical-tab:not(.dc-vertical-tab--full-screen) {
-            padding: 2.4rem;
             height: 100%;
+            padding: 2.4rem;
         }
+
         &--floating {
-            max-width: 952px;
             min-width: 672px;
+            max-width: 952px;
             margin-left: 2.4rem;
         }
     }

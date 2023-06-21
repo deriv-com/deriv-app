@@ -1,70 +1,79 @@
 /** @define cookie-banner; weak */
 .cookie-banner {
-    position: fixed;
-    background-color: var(--general-main-2);
-    box-shadow: 0 24px 24px 0 rgba(0, 0, 0, 0.08), 0 0 24px 0 rgba(0, 0, 0, 0.08);
     @include typeface(--paragraph-center-normal-black);
-    color: var(--text-general);
-    font-stretch: normal;
-    font-style: normal;
-    line-height: 1.5;
-    letter-spacing: normal;
-    padding: 2.8rem 0;
-    bottom: 0;
-    width: 100%;
-    height: fit-content;
-    text-align: center;
-    transition: top 0.3s ease-in-out;
-    z-index: 1000;
 
     @include mobile {
-        font-size: 12px;
-        font-weight: bold;
         height: fit-content;
         padding: 2.4rem 0;
+        font-weight: bold;
+        font-size: 12px;
     }
 
+    position: fixed;
+    bottom: 0;
+    z-index: 1000;
+    width: 100%;
+    height: fit-content;
+    padding: 2.8rem 0;
+    background-color: var(--general-main-2);
+    color: var(--text-general);
+    box-shadow: 0 24px 24px 0 rgb(0 0 0 / 8%), 0 0 24px 0 rgb(0 0 0 / 8%);
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 1.5;
+    letter-spacing: normal;
+    text-align: center;
+    transition: top 0.3s ease-in-out;
+
     &--theme-dark {
-        box-shadow: 0 24px 24px 0 rgba(0, 0, 0, 0.64), 0 0 24px 0 rgba(0, 0, 0, 0.64);
+        box-shadow: 0 24px 24px 0 rgb(0 0 0 / 64%), 0 0 24px 0 rgb(0 0 0 / 64%);
     }
+
     &--is-closed {
-        transform: translateY(152px);
         @include mobile {
             transform: translateY(168px);
         }
+
+        transform: translateY(152px);
     }
+
     .description {
-        margin: 0 auto;
         @include desktop {
             width: 640px;
         }
+
         @include mobile {
             max-width: 296px;
         }
+
+        margin: 0 auto;
     }
+
     &__btn-dont-accept,
     &__btn-dont-accept:hover,
     &__btn-accept,
     &__btn-accept:hover {
-        margin: 20px auto 0;
-        height: 40px;
-        border-width: 2px;
-        border-radius: $BORDER_RADIUS;
-        font-stretch: normal;
-        font-style: normal;
-        line-height: 1.43;
-        letter-spacing: normal;
-
         @include mobile {
             height: 32px;
             border-width: 1px;
         }
+
+        height: 40px;
+        margin: 20px auto 0;
+        border-width: 2px;
+        border-radius: $BORDER_RADIUS;
+        font-style: normal;
+        font-stretch: normal;
+        line-height: 1.43;
+        letter-spacing: normal;
     }
+
     &__btn-dont-accept,
     &__btn-dont-accept:hover {
         width: fit-content;
         margin-right: 8px;
     }
+
     &__btn-accept {
         width: fit-content;
     }

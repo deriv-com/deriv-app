@@ -4,6 +4,7 @@
             margin-right: 1rem;
         }
     }
+
     &__button {
         @include desktop {
             margin-right: 1rem;
@@ -11,16 +12,20 @@
     }
 
     &-container {
+        @include mobile {
+            width: 100%;
+        }
+
         display: inline-flex;
-        align-items: center;
+        flex-shrink: 0;
+        gap: 1.6rem;
         justify-content: space-between;
+        align-items: center;
         height: 72px;
+        margin-left: auto;
+        padding: 2rem 1.6rem;
         border: 1px solid var(--general-hover);
         border-radius: 8px;
-        padding: 2rem 1.6rem;
-        margin-left: auto;
-        gap: 1.6rem;
-        flex-shrink: 0;
         cursor: pointer;
         transition: all 0.3s ease-in-out;
 
@@ -30,15 +35,12 @@
             }
         }
 
-        @include mobile {
-            width: 100%;
-        }
-
         &__content {
             display: flex;
             flex-direction: column;
             justify-content: center;
             margin-left: 1rem;
+
             &--text {
                 padding-bottom: 0.5rem;
                 font-size: var(--text-size-xs);
@@ -54,10 +56,12 @@
                 padding-left: 1rem;
             }
         }
+
         &--left {
             display: inline-flex;
             align-items: center;
         }
+
         &--right {
             display: inline-flex;
             align-items: center;

@@ -1,46 +1,53 @@
 .dc-modal__container {
     &_real-account-signup-modal {
-        display: flex;
-        flex-direction: column;
-        transition: all 0.3s ease-in-out;
         @include tablet {
             max-height: calc(100vh - 10.2rem) !important; // Header and footer
         }
+
+        display: flex;
+        flex-direction: column;
         background-color: var(--general-main-1);
+        transition: all 0.3s ease-in-out;
 
         &--success {
-            border-radius: $BORDER_RADIUS;
             overflow: hidden;
-            max-width: 47.8rem;
             min-width: initial !important;
+            max-width: 47.8rem;
             max-height: initial !important;
+            border-radius: $BORDER_RADIUS;
         }
+
         .dc-modal-header__title {
-            text-transform: none;
             border-top-left-radius: 1rem;
+            text-transform: none;
         }
+
         &--error {
             .account-wizard--error {
                 display: flex;
-                align-items: center;
-                justify-content: start;
                 flex-direction: column;
-                height: 100%;
+                justify-content: start;
+                align-items: center;
                 width: 100%;
+                height: 100%;
                 padding-top: 10rem;
 
                 &__restricted-country-error {
                     padding: 3.3rem 2.4rem 2.4rem;
+
                     .dc-btn {
                         margin-top: 1.9rem;
                     }
                 }
+
                 &__invalid-input-error {
                     margin: 2.4rem auto;
                     padding-top: unset;
+
                     .dc-btn {
                         margin-top: 1.9rem;
                     }
+
                     .invalid_fields_input {
                         display: list-item;
                         margin: 0.5rem auto;
@@ -51,38 +58,46 @@
             }
 
             & > svg {
+                align-self: center;
                 width: 12.8rem;
                 height: 12.8rem;
-                align-self: center;
                 margin: 2rem 0 0;
             }
+
             h1 {
                 @include typeface(--title-center-bold-black);
-                text-transform: none;
-                color: var(--text-general);
+
                 margin: 1.6rem 0 0.8rem;
+                color: var(--text-general);
+                text-transform: none;
             }
+
             p {
                 @include typeface(--paragraph-center-normal-prominent);
-                text-transform: none;
+
                 width: 80%;
                 margin-bottom: 2.4rem;
+                text-transform: none;
             }
+
             a.dc-btn {
                 @include typeface(--paragraph-center-bold-black);
-                text-transform: none;
-                text-decoration: none;
-                color: var(--text-colored-background);
+
                 display: flex;
-                align-items: center;
                 justify-content: center;
+                align-items: center;
                 align-self: center;
+                color: var(--text-colored-background);
+                text-decoration: none;
+                text-transform: none;
             }
+
             a.email-inline {
                 color: var(--brand-red-coral);
                 font-weight: bold;
                 text-decoration: none;
             }
+
             span.chat-inline {
                 color: var(--brand-red-coral);
                 font-weight: bold;
@@ -90,6 +105,7 @@
                 cursor: pointer;
             }
         }
+
         &--loading {
             width: 30rem;
             max-height: 30rem;
@@ -98,52 +114,65 @@
                 height: 0;
             }
         }
+
         & .dc-themed-scrollbars {
             height: 100%;
         }
     }
+
     &--risk-message {
-        height: auto !important;
-        width: 44rem !important;
-        .dc-themed-scrollbars {
-            max-height: none !important;
-        }
-        .dc-modal-footer {
-            border-top: none;
-            padding: 2.4rem;
-        }
         @include mobile {
             width: 30rem !important;
         }
+
+        width: 44rem !important;
+        height: auto !important;
+
+        .dc-themed-scrollbars {
+            max-height: none !important;
+        }
+
+        .dc-modal-footer {
+            padding: 2.4rem;
+            border-top: none;
+        }
     }
+
     &_center-risk-modal {
         .dc-modal {
             &-header {
                 border-bottom: 1px solid var(--general-section-1);
             }
+
             &-body {
-                text-align: center;
-                padding: 2.4rem 2.4rem 0rem;
                 @include mobile {
-                    padding: 1.6rem 1.6rem 0rem;
+                    padding: 1.6rem 1.6rem 0;
                 }
+
+                padding: 2.4rem 2.4rem 0;
+                text-align: center;
+
                 .risk-acceptance__text {
                     margin-top: 2.4rem;
                 }
+
                 .verified-account__text {
                     margin-top: 2.4rem;
                 }
             }
+
             &-footer {
                 justify-content: center;
             }
         }
     }
+
     &_verified_account {
         .dc-modal {
             &-body {
                 text-align: center;
             }
+
             &-footer {
                 justify-content: center;
             }
@@ -156,13 +185,14 @@
         p {
             text-align: center;
         }
+
         span.chat-inline {
+            display: block;
             color: var(--brand-red-coral);
             font-weight: bold;
+            text-align: center;
             text-decoration: none;
             cursor: pointer;
-            display: block;
-            text-align: center;
         }
     }
 }
@@ -172,29 +202,29 @@
 }
 
 .account-wizard {
-    display: grid;
-    grid-template-rows: 13rem minmax(10rem, 1fr);
-    height: calc(100% - 5.7rem);
-    position: relative;
-    width: 100%;
     @include desktop {
         transform: translateY(0);
+
         &--deriv-crypto {
             grid-template-rows: 0 !important;
         }
+
         .currency-list__items {
             &__is-crypto {
                 margin-bottom: 9rem;
             }
         }
+
         .dc-input__label {
             background-color: var(--fill-normal) !important;
         }
+
         .dc-modal-footer {
-            background-color: var(--general-main-1);
             z-index: 1;
+            background-color: var(--general-main-1);
         }
     }
+
     @include mobile {
         grid-template-rows: 1fr auto;
         overflow: hidden;
@@ -204,192 +234,27 @@
         }
     }
 
-    &.add-or-manage {
-        grid-template-rows: 1fr 1fr;
-
-        & .dc-form-submit-button {
-            padding: 2rem;
-        }
-        @include desktop {
-            & form {
-                grid-template-rows: auto;
-            }
-        }
-        @include mobile {
-            grid-template-rows: 1fr 1fr;
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-    }
-    & > h2 {
-        text-transform: none;
-        margin-top: 2.4rem;
-        @include typeface(--title-center-bold-black);
-        color: var(--text-less-prominent);
-        @include mobile {
-            margin-top: 0.8rem;
-            font-size: 1.2rem;
-        }
-    }
-    & > h3 {
-        @include typeface(--small-center-normal-black);
-        text-transform: none;
-        color: var(--text-general);
-        margin-bottom: 1.6rem;
-    }
-    form {
-        width: 100%;
-        height: 100%;
-
-        @include tablet-up {
-            display: grid;
-            grid-template-rows: minmax(20rem, 1fr);
-        }
-
-        .currency-selector {
-            &__radio-group {
-                display: flex;
-                flex-direction: column;
-                flex-grow: 1;
-                justify-content: center;
-                align-items: center;
-
-                &--is-header {
-                    font-size: 1.6rem;
-                    margin: 2rem 0 0;
-                    font-weight: bold;
-                    color: var(--text-prominent);
-                }
-            }
-            &__description {
-                margin-top: 2.4rem;
-                @include typeface(--paragraph-center-normal-prominent);
-                @include mobile {
-                    text-align: center;
-                }
-            }
-            &__container {
-                width: 100%;
-                @include mobile {
-                    overflow-x: hidden;
-                    overflow-y: auto;
-
-                    &--no-top-margin {
-                        margin-top: 0;
-                    }
-                }
-            }
-            &__button {
-                margin-top: 1.6rem;
-            }
-            @include mobile {
-                &--deriv-account {
-                    border-top: 2px solid var(--general-section-1);
-                    padding-top: 1rem;
-
-                    .dc-btn:last-child {
-                        width: 90%;
-                        margin: 0 auto;
-                    }
-                }
-            }
-        }
-    }
-    &__body {
-        display: flex;
-
-        & .details-form {
-            @include tablet {
-                grid-template-rows: minmax(10rem, 1fr);
-            }
-        }
-    }
-    &__set-currency {
-        p {
-            margin: 2.4rem 0;
-            @include typeface(--paragraph-center-normal-black);
-            text-transform: initial;
-            color: var(--text-prominent);
-
-            @include mobile {
-                font-size: 1.2rem;
-                margin: 2.4rem auto 0 2.4rem;
-                text-align: left;
-            }
-        }
-        h2 {
-            @include mobile {
-                font-size: 1.2rem;
-                text-align: left;
-                margin-left: 2.4rem;
-            }
-        }
-    }
-    .checkbox {
-        align-items: center;
-        margin: 1rem 0 0;
-
-        &__box--active {
-            background-color: var(--brand-red-coral);
-        }
-        &__box--active:after {
-            font-size: 1.3rem;
-            line-height: 2rem;
-        }
-        &__label {
-            @include typeface(--paragraph-left-normal-black);
-            text-transform: none;
-        }
-    }
-    &--disabled {
-        position: relative;
-
-        .currency-list__items {
-            margin-top: 2.4rem;
-        }
-        .currency-list__item {
-            pointer-events: none;
-
-            svg {
-                opacity: 0.08;
-            }
-            .label {
-                color: var(--text-disabled);
-            }
-        }
-        &-message {
-            display: flex;
-            justify-content: center;
-
-            &-description {
-                margin-top: 2.4rem;
-                width: 78%;
-                background-color: var(--status-warning-transparent);
-                padding: 0.8rem 0;
-                border-radius: $BORDER_RADIUS;
-            }
-        }
-    }
     @include mobile {
         &--error {
-            margin-top: $MOBILE_HEADER_HEIGHT;
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin-top: $MOBILE_HEADER_HEIGHT;
 
             &__restricted-country-error,
             &__invalid-input-error {
-                margin: auto 2.4rem;
-                height: calc(100vh - 84px);
                 display: flex;
+                gap: 0.8rem;
                 justify-content: center;
                 align-items: center;
-                gap: 0.8rem;
+                height: calc(100vh - 84px);
+                margin: auto 2.4rem;
 
                 .dc-btn {
-                    margin-top: 1.9rem;
                     width: 100%;
+                    margin-top: 1.9rem;
                 }
+
                 .invalid_fields_input {
                     display: list-item;
                     margin: 0.5rem auto;
@@ -399,39 +264,244 @@
             }
 
             h1 {
-                font-size: 2.4rem;
-                text-align: center;
-                font-weight: bold;
-                line-height: 1.5;
                 color: var(--text-prominent);
+                font-weight: bold;
+                font-size: 2.4rem;
+                line-height: 1.5;
+                text-align: center;
             }
+
             p {
-                font-size: 1.4rem;
                 margin: 1.6rem;
-                line-height: 1.4;
                 color: var(--text-general);
+                font-size: 1.4rem;
+                line-height: 1.4;
             }
+
             .dc-btn {
                 height: 4rem;
             }
+
             .dc-ion {
                 width: 100%;
                 max-width: 9.6rem;
-                margin-top: 2rem;
                 height: auto;
+                margin-top: 2rem;
             }
         }
+
         &__header {
             &-steps {
-                padding: 1.6rem 0 0;
                 width: 100%;
+                padding: 1.6rem 0 0;
 
                 &-title {
                     padding: 0 1.6rem 0.8rem;
                 }
+
                 &-subtitle {
                     padding: 1.6rem 1.6rem 0;
                 }
+            }
+        }
+    }
+
+    position: relative;
+    display: grid;
+    grid-template-rows: 13rem minmax(10rem, 1fr);
+    width: 100%;
+    height: calc(100% - 5.7rem);
+
+    &.add-or-manage {
+        @include desktop {
+            & form {
+                grid-template-rows: auto;
+            }
+        }
+
+        @include mobile {
+            grid-template-rows: 1fr 1fr;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        grid-template-rows: 1fr 1fr;
+
+        & .dc-form-submit-button {
+            padding: 2rem;
+        }
+    }
+
+    & > h2 {
+        @include typeface(--title-center-bold-black);
+
+        @include mobile {
+            margin-top: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        margin-top: 2.4rem;
+        color: var(--text-less-prominent);
+        text-transform: none;
+    }
+
+    & > h3 {
+        @include typeface(--small-center-normal-black);
+
+        margin-bottom: 1.6rem;
+        color: var(--text-general);
+        text-transform: none;
+    }
+
+    form {
+        @include tablet-up {
+            display: grid;
+            grid-template-rows: minmax(20rem, 1fr);
+        }
+
+        width: 100%;
+        height: 100%;
+
+        .currency-selector {
+            @include mobile {
+                &--deriv-account {
+                    padding-top: 1rem;
+                    border-top: 2px solid var(--general-section-1);
+
+                    .dc-btn:last-child {
+                        width: 90%;
+                        margin: 0 auto;
+                    }
+                }
+            }
+
+            &__radio-group {
+                display: flex;
+                flex-grow: 1;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                &--is-header {
+                    margin: 2rem 0 0;
+                    color: var(--text-prominent);
+                    font-weight: bold;
+                    font-size: 1.6rem;
+                }
+            }
+
+            &__description {
+                @include typeface(--paragraph-center-normal-prominent);
+
+                @include mobile {
+                    text-align: center;
+                }
+
+                margin-top: 2.4rem;
+            }
+
+            &__container {
+                @include mobile {
+                    overflow-x: hidden;
+                    overflow-y: auto;
+
+                    &--no-top-margin {
+                        margin-top: 0;
+                    }
+                }
+
+                width: 100%;
+            }
+
+            &__button {
+                margin-top: 1.6rem;
+            }
+        }
+    }
+
+    &__body {
+        display: flex;
+
+        & .details-form {
+            @include tablet {
+                grid-template-rows: minmax(10rem, 1fr);
+            }
+        }
+    }
+
+    &__set-currency {
+        p {
+            @include typeface(--paragraph-center-normal-black);
+
+            @include mobile {
+                margin: 2.4rem auto 0 2.4rem;
+                font-size: 1.2rem;
+                text-align: left;
+            }
+
+            margin: 2.4rem 0;
+            color: var(--text-prominent);
+            text-transform: initial;
+        }
+
+        h2 {
+            @include mobile {
+                margin-left: 2.4rem;
+                font-size: 1.2rem;
+                text-align: left;
+            }
+        }
+    }
+
+    .checkbox {
+        align-items: center;
+        margin: 1rem 0 0;
+
+        &__box--active {
+            background-color: var(--brand-red-coral);
+        }
+
+        &__box--active:after {
+            font-size: 1.3rem;
+            line-height: 2rem;
+        }
+
+        &__label {
+            @include typeface(--paragraph-left-normal-black);
+
+            text-transform: none;
+        }
+    }
+
+    &--disabled {
+        position: relative;
+
+        .currency-list__items {
+            margin-top: 2.4rem;
+        }
+
+        .currency-list__item {
+            pointer-events: none;
+
+            svg {
+                opacity: 0.08;
+            }
+
+            .label {
+                color: var(--text-disabled);
+            }
+        }
+
+        &-message {
+            display: flex;
+            justify-content: center;
+
+            &-description {
+                width: 78%;
+                margin-top: 2.4rem;
+                padding: 0.8rem 0;
+                border-radius: $BORDER_RADIUS;
+                background-color: var(--status-warning-transparent);
             }
         }
     }
@@ -439,19 +509,6 @@
 
 .add-crypto-currency,
 .change-currency {
-    height: 100%;
-
-    &__title {
-        margin-top: 3rem;
-    }
-    &__sub-title {
-        margin-bottom: 1rem;
-    }
-    &__button {
-        margin-top: 1.6rem;
-        width: 100%;
-    }
-
     @include mobile {
         .dc-form-submit-button {
             position: fixed;
@@ -460,75 +517,119 @@
             padding: 1.5rem;
             background-color: var(--general-main-1);
         }
+
         & .dc-btn {
             width: 100%;
         }
     }
+
+    height: 100%;
+
+    &__title {
+        margin-top: 3rem;
+    }
+
+    &__sub-title {
+        margin-bottom: 1rem;
+    }
+
+    &__button {
+        width: 100%;
+        margin-top: 1.6rem;
+    }
 }
 
 .cashier-deposit {
-    @media screen and (max-height: 568px) {
+    @media screen and (height <= 568px) {
         .currency-selector__radio-group--with-margin {
             margin-bottom: 6rem;
         }
     }
 }
+
 /* TODO: [refactor-components] Refactor form subheader to components */
 .account-form {
     &__header {
-        font-size: var(--text-size-xs);
-        font-weight: bold;
-        margin-bottom: 1.6rem;
         position: relative;
         height: 1.6rem;
+        margin-bottom: 1.6rem;
+        font-weight: bold;
+        font-size: var(--text-size-xs);
         white-space: nowrap;
 
         &-section {
             display: flex;
-            align-items: center;
             justify-content: flex-start;
+            align-items: center;
         }
+
         &-section:after {
-            border-top: 1px solid var(--general-section-1);
-            content: '';
-            height: 100%;
-            width: 100%;
-            margin-top: 0.3rem;
             @include mobile {
                 border-top-color: var(--general-disabled);
             }
+
+            content: '';
+            width: 100%;
+            height: 100%;
+            margin-top: 0.3rem;
+            border-top: 1px solid var(--general-section-1);
         }
+
         &--has-description {
             margin-bottom: 0.5rem;
         }
     }
+
     &__header:not(:first-child) {
         margin-top: 1.6rem;
     }
+
     &__title {
         padding-right: 0.8rem;
     }
+
     &__subtitle {
         align-self: baseline;
-        padding-right: 0.8rem;
         margin-top: 0.2rem;
+        padding-right: 0.8rem;
     }
+
     &__description {
-        font-size: 1.2rem;
-        font-weight: normal;
-        color: var(--text-prominent);
         margin-bottom: 2rem;
+        color: var(--text-prominent);
+        font-weight: normal;
+        font-size: 1.2rem;
         line-height: 1.5;
     }
 }
 
 .emp-status {
-    @include mobile() {
+    @include mobile {
         padding-right: 2rem;
     }
 }
 
 .trading-assessment {
+    @include mobile {
+        overflow: auto;
+        height: calc(100vh - 16rem);
+    }
+
+    @include mobile {
+        .dc-dropdown__display-placeholder {
+            width: 100%;
+
+            .trading-assessment__form .dc-dropdown__display .dc-dropdown__display-placeholder-text-limit-fit {
+                width: 90%;
+            }
+        }
+
+        .dc-dropdown__display-placeholder--is-left-text.dc-dropdown__display-placeholder--is-title {
+            line-height: 1.6rem;
+            white-space: normal !important;
+        }
+    }
+
     display: flex;
     flex-direction: column;
 
@@ -537,18 +638,14 @@
         align-items: flex-start;
     }
 
-    @include mobile() {
-        height: calc(100vh - 16rem);
-        overflow: auto;
-    }
-
     &--existing-user {
-        @include desktop() {
+        @include desktop {
             margin-top: 9.2rem;
         }
 
-        @include mobile() {
+        @include mobile {
             height: calc(100vh - 12rem);
+
             .trading-assessment__side-note {
                 padding: 2.2rem 1.6rem;
             }
@@ -560,18 +657,18 @@
     }
 
     &__side-note {
-        text-align: justify;
-        padding: 0 10rem;
-
-        @include mobile() {
+        @include mobile {
             padding: 0 1.6rem;
         }
+
+        padding: 0 10rem;
+        text-align: justify;
     }
 
     &__form {
-        margin-top: 2.2rem;
         display: grid;
         grid-template-rows: 4.7fr 1fr;
+        margin-top: 2.2rem;
 
         &--existing_user {
             grid-template-rows: 5.8fr 1fr;
@@ -582,16 +679,16 @@
         }
 
         &--fields {
-            display: flex;
-            padding: 0 10rem;
-
-            @include desktop() {
+            @include desktop {
                 justify-content: center;
             }
 
-            @include mobile() {
+            @include mobile {
                 padding: 0 1.6rem;
             }
+
+            display: flex;
+            padding: 0 10rem;
         }
 
         .dc-themed-scrollbars {
@@ -599,75 +696,65 @@
         }
 
         .dc-dropdown__display .dc-dropdown__display-placeholder-text-limit-fit {
-            max-width: initial;
-            padding-bottom: 0.5rem;
-            @include mobile() {
+            @include mobile {
                 width: 90%;
                 white-space: normal;
             }
+
+            max-width: initial;
+            padding-bottom: 0.5rem;
         }
     }
 
     &__wrapper__question {
-        @include desktop() {
+        @include desktop {
             padding: 0 2rem;
         }
-        .dc-radio-group {
-            gap: 1.6rem;
-        }
-        @include mobile() {
+
+        @include mobile {
             .dc-radio-group__circle {
                 align-self: flex-start !important;
             }
         }
+
+        .dc-radio-group {
+            gap: 1.6rem;
+        }
     }
 
     &__wrapper__dropdown {
-        gap: 2.4rem;
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        @include desktop() {
+        @include desktop {
             padding: 0 3rem;
         }
+
+        display: flex;
+        flex-direction: column;
+        gap: 2.4rem;
+        width: 100%;
     }
 
     .disable-pointer {
         cursor: not-allowed;
     }
 
-    @include mobile() {
-        .dc-dropdown__display-placeholder {
-            width: 100%;
-            .trading-assessment__form .dc-dropdown__display .dc-dropdown__display-placeholder-text-limit-fit {
-                width: 90%;
-            }
-        }
-
-        .dc-dropdown__display-placeholder--is-left-text.dc-dropdown__display-placeholder--is-title {
-            white-space: normal !important;
-            line-height: 1.6rem;
-        }
-    }
-
     &__existing_btn {
-        border-top: 2px solid var(--general-disabled);
-        display: flex;
-        justify-content: end;
-        padding: 1rem 2rem;
         position: fixed;
         bottom: 0;
+        display: flex;
+        justify-content: end;
         width: 100%;
+        padding: 1rem 2rem;
+        border-top: 2px solid var(--general-disabled);
     }
 
     &__btn-group {
-        @include mobile() {
+        @include mobile {
             position: fixed;
             bottom: 0;
+            display: flex;
+            width: 100%;
             padding: 1.6rem;
             border-top: 2px solid var(--general-disabled);
-            width: 100%;
-            display: flex;
             background: var(--general-main-1);
 
             &--btn {
@@ -679,27 +766,31 @@
 
 .dc-mobile-dialog {
     &__risk-acceptance {
-        margin-top: 9.4rem;
-        margin-inline: 1.6rem;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
         row-gap: 2.4rem;
+        justify-content: center;
+        align-items: center;
+        margin-inline: 1.6rem;
+        margin-top: 9.4rem;
     }
+
     &__test-warning {
         margin-top: 1.6rem;
+
         .dc-modal-body {
             padding-inline: 1.6rem;
         }
+
         .dc-modal-footer {
             position: fixed;
             bottom: 0;
+            display: flex;
+            width: 100%;
             padding: 1.6rem;
             border-top: 2px solid var(--general-disabled);
-            width: 100%;
-            display: flex;
             background: var(--general-main-1);
+
             .dc-btn {
                 width: 100%;
             }
@@ -709,68 +800,78 @@
 
 .highlight {
     animation: shake 150ms 2 linear;
-    -moz-animation: shake 150ms 2 linear;
-    -webkit-animation: shake 150ms 2 linear;
-    -o-animation: shake 150ms 2 linear;
+    animation: shake 150ms 2 linear;
+    animation: shake 150ms 2 linear;
+    animation: shake 150ms 2 linear;
 }
 
 @keyframes shake {
     0% {
         transform: translate(3px, 0);
     }
+
     50% {
         transform: translate(-3px, 0);
     }
+
     100% {
         transform: translate(0, 0);
     }
 }
 
-@-moz-keyframes shake {
+@keyframes shake {
     0% {
-        -moz-transform: translate(3px, 0);
+        transform: translate(3px, 0);
     }
+
     50% {
-        -moz-transform: translate(-3px, 0);
+        transform: translate(-3px, 0);
     }
+
     100% {
-        -moz-transform: translate(0, 0);
+        transform: translate(0, 0);
     }
 }
 
-@-webkit-keyframes shake {
+@keyframes shake {
     0% {
-        -webkit-transform: translate(3px, 0);
+        transform: translate(3px, 0);
     }
+
     50% {
-        -webkit-transform: translate(-3px, 0);
+        transform: translate(-3px, 0);
     }
+
     100% {
-        -webkit-transform: translate(0, 0);
+        transform: translate(0, 0);
     }
 }
 
-@-ms-keyframes shake {
+@keyframes shake {
     0% {
-        -ms-transform: translate(3px, 0);
+        transform: translate(3px, 0);
     }
+
     50% {
-        -ms-transform: translate(-3px, 0);
+        transform: translate(-3px, 0);
     }
+
     100% {
-        -ms-transform: translate(0, 0);
+        transform: translate(0, 0);
     }
 }
 
-@-o-keyframes shake {
+@keyframes shake {
     0% {
-        -o-transform: translate(3px, 0);
+        transform: translate(3px, 0);
     }
+
     50% {
-        -o-transform: translate(-3px, 0);
+        transform: translate(-3px, 0);
     }
+
     100% {
-        -o-transform: translate(0, 0);
+        transform: translate(0, 0);
     }
 }
 
@@ -782,9 +883,9 @@
             }
 
             .dc-dropdown__display .dc-dropdown__display-placeholder-text-limit-fit {
-                @include desktop() {
-                    white-space: inherit;
+                @include desktop {
                     text-overflow: unset;
+                    white-space: inherit;
                 }
             }
         }
@@ -797,23 +898,25 @@
 
 .risk-tolerance-modal {
     &__title {
-        margin-bottom: 3.7rem;
         display: flex;
-        align-items: center;
         gap: 0.8rem;
+        align-items: center;
+        margin-bottom: 3.7rem;
 
         &--separator {
-            border-top: 2px solid var(--general-section-5);
             width: 50%;
+            border-top: 2px solid var(--general-section-5);
         }
     }
+
     &__wrapper {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        justify-content: center;
         gap: 2.4rem;
+        justify-content: center;
+        align-items: center;
     }
+
     &__footer {
         display: flex;
         justify-content: center;
@@ -822,10 +925,11 @@
 
 .personal-details-form,
 .address-details-form {
-    width: 100%;
     @include desktop {
         padding: 0 16rem;
     }
+
+    width: 100%;
 }
 
 .personal-details-form {

@@ -16,6 +16,15 @@
     }
 
     &__textarea {
+        @include mobile {
+            width: 96vw;
+            margin: 0 1vw;
+
+            .dc-input__label {
+                padding: 0 0.8rem !important;
+            }
+        }
+
         height: 9.8rem;
         margin-bottom: 1rem;
 
@@ -26,15 +35,6 @@
 
             &__field {
                 height: 100% !important;
-            }
-        }
-
-        @include mobile {
-            margin: 0 1vw;
-            width: 96vw;
-
-            .dc-input__label {
-                padding: 0 0.8rem !important;
             }
         }
     }
@@ -54,6 +54,7 @@
             &__wrapper {
                 margin-top: 2.5rem;
             }
+
             &__footer {
                 margin-bottom: 2rem;
             }
@@ -61,22 +62,22 @@
     }
 
     &__footer {
-        border-top: 2px solid var(--general-section-1);
-        background-color: var(--general-main-1);
-        text-align: right;
-
         @include mobile {
-            width: 100vw;
-            padding: 1.6rem;
             position: fixed;
             bottom: 0;
             left: 0;
+            width: 100vw;
+            padding: 1.6rem;
         }
 
         @include tablet-up {
             bottom: 36px;
             padding: 1.6rem 2.4rem;
         }
+
+        border-top: 2px solid var(--general-section-1);
+        background-color: var(--general-main-1);
+        text-align: right;
 
         &-button {
             @include mobile {

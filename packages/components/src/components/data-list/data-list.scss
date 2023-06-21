@@ -1,9 +1,9 @@
 /** @define data-list; weak */
 .data-list {
     position: relative;
-    height: 100%;
     display: flex;
     flex-direction: column;
+    height: 100%;
 
     &__body {
         flex: 1;
@@ -14,15 +14,21 @@
             height: 100%;
         }
     }
+
     &__footer {
-        width: 100%;
-        background: var(--general-main-1);
-        border-top: 2px solid var(--border-disabled);
+        position: relative;
         display: flex;
         align-items: center;
-        position: relative;
+        width: 100%;
+        border-top: 2px solid var(--border-disabled);
+        background: var(--general-main-1);
     }
+
     &__item {
+        @include mobile {
+            border-radius: $BORDER_RADIUS;
+        }
+
         height: inherit;
 
         &--wrapper {
@@ -31,42 +37,44 @@
             -webkit-touch-callout: none;
             -webkit-tap-highlight-color: transparent;
         }
-        @include mobile {
-            border-radius: $BORDER_RADIUS;
-        }
     }
+
     &__row {
         display: flex;
         flex-direction: row;
-        padding: 4px 16px;
         width: 100%;
+        padding: 4px 16px;
 
         > * {
             flex: 1;
         }
+
         &-content {
+            color: var(--text-general);
             font-size: 1.4rem;
             line-height: 2rem;
-            color: var(--text-general);
         }
+
         &-cell {
             &--amount {
                 display: flex;
+                flex: none;
                 flex-direction: column;
                 align-items: flex-end;
-                flex: none;
             }
         }
-        &-title {
-            font-size: 1.4rem;
-            font-weight: bold;
-            color: var(--text-prominent);
-            line-height: 2rem;
 
+        &-title {
             @include mobile {
                 font-size: 1.2rem;
             }
+
+            color: var(--text-prominent);
+            font-weight: bold;
+            font-size: 1.4rem;
+            line-height: 2rem;
         }
+
         &-divider {
             margin: 0 1.6rem;
 
@@ -76,22 +84,25 @@
                 border-top: 1px solid var(--general-main-1);
             }
         }
+
         &--wrapper:not(.data-list__item--dynamic-height-wrapper) {
             height: 100%;
         }
+
         &--vanilla {
             flex: none;
         }
     }
+
     &__desc {
         &--wrapper {
-            height: inherit;
             display: flex;
-            text-align: center;
             align-items: center;
-            font-size: var(--text-size-xxs);
-            color: var(--text-general);
+            height: inherit;
             padding: 1rem;
+            color: var(--text-general);
+            font-size: var(--text-size-xxs);
+            text-align: center;
         }
     }
 }

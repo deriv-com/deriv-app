@@ -5,11 +5,11 @@
 
     &__modal {
         &-body {
-            padding: 1rem 2.4rem;
-
             @include mobile {
                 padding: 0 1.6rem;
             }
+
+            padding: 1rem 2.4rem;
         }
     }
 
@@ -18,8 +18,8 @@
     }
 
     &--icon {
-        cursor: pointer;
         margin-left: 0.5rem;
+        cursor: pointer;
     }
 
     &--row {

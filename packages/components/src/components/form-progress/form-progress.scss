@@ -1,73 +1,75 @@
 .dc-form-progress {
-    width: 100%;
     position: relative;
+    width: 100%;
 
     &__header {
-        align-items: center;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        align-items: center;
         margin-bottom: 3.2rem;
 
         & > h2 {
-            text-transform: none;
             margin: 2rem 0 0;
+            text-transform: none;
         }
     }
+
     &__step {
-        align-items: center;
+        z-index: 2;
         display: flex;
         flex-direction: column;
-        height: 6rem;
         justify-content: space-around;
+        align-items: center;
         width: 160px;
-        z-index: 2;
+        height: 6rem;
 
         & .identifier {
-            border-radius: 50%;
             display: block;
             width: 24px;
-            background-color: var(--text-less-prominent);
             border: 1px solid var(--text-less-prominent);
+            border-radius: 50%;
+            background-color: var(--text-less-prominent);
 
             &--active {
-                background-color: var(--brand-red-coral) !important;
                 border: 1px solid var(--brand-red-coral) !important;
+                background-color: var(--brand-red-coral) !important;
             }
         }
     }
+
     &__steps {
-        align-items: center;
+        position: relative;
         display: flex;
         justify-content: center;
+        align-items: center;
         margin-top: 20px;
-        position: relative;
 
         &--before {
-            bottom: 0;
             content: '';
-            left: 0;
-            margin: 0 auto; /* this centers the line to the full width specified */
             position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
-            right: 0;
-            top: 1.7rem;
+            inset: 1.7rem 0 0;
+            margin: 0 auto; /* this centers the line to the full width specified */
             border-top: 2px solid var(--text-less-prominent);
         }
+
         &--after {
-            border-top: 2px solid var(--brand-red-coral);
-            transition: width 0.3s ease;
             @include desktop {
-                bottom: 0;
                 content: '';
-                left: 0;
-                margin: 0 auto; /* this centers the line to the full width specified */
                 position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
                 top: 1.7rem;
+                bottom: 0;
+                left: 0;
+                margin: 0 auto; /* this centers the line to the full width specified */
             }
+
             @include mobile {
                 position: absolute;
                 top: 0;
             }
+
+            border-top: 2px solid var(--brand-red-coral);
+            transition: width 0.3s ease;
         }
     }
 

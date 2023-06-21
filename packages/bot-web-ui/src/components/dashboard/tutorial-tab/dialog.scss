@@ -1,19 +1,20 @@
 .tutorials-wrap {
     .dc-dialog {
         &__dialog {
-            width: 80vw;
-            height: 80vh;
-            max-width: unset;
-            max-height: unset;
-            padding: 0;
-            border-radius: 0;
-            position: relative;
-            z-index: 1;
             @include mobile {
                 width: 94%;
                 height: auto;
                 max-height: 80%;
             }
+
+            position: relative;
+            z-index: 1;
+            width: 80vw;
+            max-width: unset;
+            height: 80vh;
+            max-height: unset;
+            padding: 0;
+            border-radius: 0;
         }
 
         &__header-wrapper {
@@ -27,8 +28,8 @@
 
         &__content {
             max-width: unset;
-            margin-bottom: 0;
             height: 100%;
+            margin-bottom: 0;
         }
 
         &__footer {
@@ -39,36 +40,39 @@
 
 .tour-dialog {
     transition: unset;
-    .dc-dialog__dialog {
-        transform: unset;
-        opacity: unset;
-        transition: unset;
 
+    .dc-dialog__dialog {
         @include mobile {
             width: 90vw;
             padding: 1.6rem;
         }
+
         @include tablet {
             width: 90vw;
             padding: 1.6rem;
         }
-    }
-    &--end {
-        .dc-btn--secondary {
-            display: none;
-        }
 
+        opacity: unset;
+        transition: unset;
+        transform: unset;
+    }
+
+    &--end {
         @include mobile {
             .dc-btn--primary {
                 padding: 1rem;
             }
         }
+
+        .dc-btn--secondary {
+            display: none;
+        }
     }
 
     .dc-dialog__content {
         &__header {
-            text-align: left;
             margin-bottom: 2.4rem;
+            text-align: left;
         }
 
         &__description {
@@ -84,13 +88,13 @@
         @include mobile {
             display: flex;
             flex-direction: column;
-            height: unset;
             align-content: flex-end;
+            height: unset;
 
             button {
                 &:first-child {
-                    margin-bottom: unset;
                     margin-right: 0.8rem;
+                    margin-bottom: unset;
                 }
             }
         }

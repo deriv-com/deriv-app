@@ -1,7 +1,7 @@
 .main-title-bar {
-    width: 100%;
     display: inline-flex;
     align-items: center;
+    width: 100%;
     margin-bottom: 2.4rem;
 
     &__text {
@@ -10,8 +10,8 @@
 
     &__right {
         display: inline-flex;
-        align-items: center;
         gap: 1.2rem;
+        align-items: center;
     }
 
     &-mobile {
@@ -22,8 +22,8 @@
 
         &--regulator {
             display: flex;
-            align-items: center;
             justify-content: flex-end;
+            align-items: center;
             width: 14rem;
 
             &__container.content-loader {

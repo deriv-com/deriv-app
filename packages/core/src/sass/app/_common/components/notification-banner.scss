@@ -1,114 +1,135 @@
 .notification-banner {
+    @include mobile {
+        top: -0.2rem;
+        left: 0.8rem;
+        width: calc(100vw - 1.6rem);
+        height: 100%;
+        max-height: 13.8rem;
+    }
+
     position: relative;
+    z-index: 10;
     display: flex;
-    background-color: var(--general-main-1);
-    color: var(--text-prominent);
-    border-radius: $BORDER_RADIUS;
-    box-shadow: 0 4px 6px 0 var(--shadow-menu), 0 4px 6px 0 var(--shadow-menu);
     width: 100%;
     max-width: 40rem;
     min-height: 14.4rem;
-    transition: transform 0.25s ease, opacity 0.25s linear;
-    z-index: 10;
     margin-bottom: 16px;
+    border-radius: $BORDER_RADIUS;
+    background-color: var(--general-main-1);
+    color: var(--text-prominent);
+    box-shadow: 0 4px 6px 0 var(--shadow-menu), 0 4px 6px 0 var(--shadow-menu);
+    transition: transform 0.25s ease, opacity 0.25s linear;
 
     &--enter-done {
         opacity: 1;
         transform: translateY(0);
     }
+
     &--enter,
     &--exit {
         opacity: 0;
         transform: translateY(-16px);
     }
+
     &--left {
         z-index: 12;
-        padding: 1.6rem 0 1.6rem 1.6rem;
         width: 50%;
         min-width: 210px;
+        padding: 1.6rem 0 1.6rem 1.6rem;
     }
+
     &--right {
         position: relative;
-        width: calc(100% - 138px);
         overflow: hidden;
+        width: calc(100% - 138px);
     }
+
     &__title {
         @include desktop {
             white-space: nowrap;
         }
     }
+
     &__description {
         margin-top: 0.8rem;
     }
+
     &__btn {
         &-wrapper {
+            @include mobile {
+                margin-top: 1rem;
+            }
+
             display: flex;
             flex-direction: row;
             gap: 0.8rem;
             margin-top: 4rem;
-
-            @include mobile {
-                margin-top: 1rem;
-            }
         }
     }
+
     &__bg {
         position: absolute;
         right: 0;
-        background-color: #ff6444;
+        z-index: 11;
         width: 100%;
         height: 100%;
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 100%);
         border-top-right-radius: $BORDER_RADIUS;
         border-bottom-right-radius: $BORDER_RADIUS;
-        z-index: 11;
+        background-color: #ff6444;
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 100%);
 
         .notification-banner__trustpilot & {
-            max-width: 13.8rem;
-
             @include mobile {
                 max-width: 11rem;
             }
+
+            max-width: 13.8rem;
         }
     }
+
     &__img {
+        @include mobile {
+            right: 0.8rem;
+            bottom: 0;
+            height: 12rem;
+        }
+
         position: absolute;
         right: 1.2rem;
         bottom: -0.8rem;
-        object-fit: contain;
-        height: 15.2rem;
-        width: auto;
         z-index: 12;
+        object-fit: contain;
+        width: auto;
+        height: 15.2rem;
         pointer-events: none;
-
-        @include mobile {
-            height: 12rem;
-            bottom: 0;
-            right: 0.8rem;
-        }
     }
+
     &__close-icon {
         position: absolute;
-        z-index: 12;
-        right: 1.6rem;
         top: 1.6rem;
+        right: 1.6rem;
+        z-index: 12;
         cursor: pointer;
     }
+
     &__acuity {
         .notification-banner {
             &__bg {
                 width: 12.8rem;
                 clip-path: polygon(0 0, 100% 0, 100% 100%, 63% 100%);
             }
+
             &__btn-wrapper {
                 margin-top: 1.6rem;
             }
+
             &__img {
-                width: 12.7rem;
-                height: auto;
                 right: 0.3rem;
                 bottom: 1.4rem;
+                width: 12.7rem;
+                height: auto;
             }
+
             &--left {
                 width: unset;
             }
@@ -117,29 +138,24 @@
 
     &__acuity-mt5 {
         min-width: 55rem;
+
         .notification-banner {
             &--left {
                 min-width: 42.2rem;
             }
+
             &__bg {
-                background-color: var(--icon-grey-background);
                 width: 12.8rem;
+                background-color: var(--icon-grey-background);
                 clip-path: polygon(0 0, 100% 0, 100% 100%, 60% 100%);
             }
+
             &__img {
-                width: 15rem;
-                height: 11.5rem;
                 right: -1rem;
                 bottom: 3rem;
+                width: 15rem;
+                height: 11.5rem;
             }
         }
-    }
-
-    @include mobile {
-        height: 100%;
-        max-height: 13.8rem;
-        width: calc(100vw - 1.6rem);
-        left: 0.8rem;
-        top: -0.2rem;
     }
 }

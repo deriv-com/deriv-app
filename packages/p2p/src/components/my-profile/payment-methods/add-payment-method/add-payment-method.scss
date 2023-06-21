@@ -1,13 +1,14 @@
 .add-payment-method {
     &__modal {
         @include mobile {
-            width: 100vw;
-            height: 100%;
             display: flex;
             flex-direction: column;
+            width: 100vw;
+            height: 100%;
             padding: 1.5rem 2rem;
         }
     }
+
     &__cross-icon {
         cursor: pointer;
     }
@@ -17,11 +18,11 @@
     }
 
     &-select {
-        height: 30vh;
-
         @include mobile {
             height: 100%;
         }
+
+        height: 30vh;
     }
 
     &-hint {
@@ -39,12 +40,12 @@
             }
 
             &--separated-footer {
-                border-top: 2px solid var(--general-section-1);
                 display: flex;
                 flex-direction: row;
                 justify-content: flex-end;
                 margin-top: auto;
                 padding: 1.6rem 2.4rem;
+                border-top: 2px solid var(--general-section-1);
 
                 &-profile {
                     padding: 0 2.4rem 2rem;
@@ -85,8 +86,8 @@
 
                     &__field {
                         height: 100% !important;
-                        padding-left: 0;
                         padding-right: 0;
+                        padding-left: 0;
                     }
                 }
             }

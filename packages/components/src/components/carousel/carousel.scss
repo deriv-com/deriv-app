@@ -1,8 +1,8 @@
 .dc-carousel {
-    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    height: 100%;
 
     &--mt5 {
         justify-content: unset;
@@ -11,9 +11,10 @@
     &__container {
         display: flex;
         flex-direction: row;
-        align-items: center;
         justify-content: center;
+        align-items: center;
     }
+
     &__box {
         overflow: hidden;
 
@@ -21,51 +22,57 @@
             margin: 0 -1.4rem;
         }
     }
+
     &__wrapper {
         display: flex;
         flex-direction: row;
-        transition: transform 0.3s linear;
         width: fit-content;
-        padding: 0.5rem 0;
         height: 100%;
+        padding: 0.5rem 0;
+        transition: transform 0.3s linear;
 
         &--mt5 {
             padding-top: unset;
         }
     }
+
     &__card {
         display: flex;
         flex-direction: column;
         padding-bottom: 0.8rem;
     }
+
     &__nav {
-        align-items: center;
-        box-sizing: border-box;
         display: flex;
-        width: 100%;
-        padding: 0 2.4rem;
-        overflow: hidden;
-        margin-bottom: 2.4rem;
         justify-content: space-between;
+        align-items: center;
+        overflow: hidden;
+        box-sizing: border-box;
+        width: 100%;
+        margin-bottom: 2.4rem;
+        padding: 0 2.4rem;
 
         &--upper {
             margin-bottom: 0;
         }
+
         &-list {
-            display: inline-block;
-            text-align: center;
-            margin: 0 auto;
             position: relative;
+            display: inline-block;
+            margin: 0 auto;
+            text-align: center;
         }
+
         &--lower {
             margin-bottom: 0;
         }
+
         &-item {
+            display: inline-block;
             width: 0.8rem;
             height: 0.8rem;
-            border-radius: 50%;
-            display: inline-block;
             margin: 0 0.8rem;
+            border-radius: 50%;
             cursor: pointer;
 
             &--active {
@@ -77,6 +84,7 @@
             }
         }
     }
+
     &__icon {
         cursor: pointer;
 
@@ -86,14 +94,14 @@
         }
 
         &--mt5 {
-            background: var(--icon-grey-background);
+            justify-content: space-between;
             width: 6rem;
             height: 6rem;
             border-radius: 50%;
-            transform: scale(0.5);
+            background: var(--icon-grey-background);
             line-height: 6rem;
             text-align: center;
-            justify-content: space-between;
+            transform: scale(0.5);
         }
     }
 }

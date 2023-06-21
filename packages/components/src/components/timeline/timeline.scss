@@ -1,45 +1,50 @@
 .dc-timeline {
     &__flex {
-        display: flex;
-        border-left: var(--brand-red-coral) solid 1px;
         position: relative;
+        display: flex;
         margin-left: 1.2rem;
+        border-left: var(--brand-red-coral) solid 1px;
 
         &--no-border {
             border-left: unset;
         }
     }
+
     &__container {
         margin-top: 4px;
         margin-left: 20px;
     }
-    &__title {
-        max-width: 500px;
 
+    &__title {
         @at-root .dc-timeline__flex--disabled & {
             color: $color-grey-7;
         }
-    }
-    &__oval {
-        width: 24px;
-        height: 24px;
-        line-height: 2.35rem;
-        background-color: var(--brand-red-coral);
-        border-radius: 50%;
-        text-align: center;
-        margin-right: 8px;
-        position: absolute;
-        padding-left: 1px;
-        left: -12px;
 
+        max-width: 500px;
+    }
+
+    &__oval {
         @at-root .dc-timeline__flex--disabled & {
             background-color: $color-grey-7;
         }
+
+        position: absolute;
+        left: -12px;
+        width: 24px;
+        height: 24px;
+        margin-right: 8px;
+        padding-left: 1px;
+        border-radius: 50%;
+        background-color: var(--brand-red-coral);
+        line-height: 2.35rem;
+        text-align: center;
     }
+
     &__number {
         position: relative;
         left: -1px;
     }
+
     &__content {
         margin: 16px 0;
         color: var(--text-prominent);

@@ -1,20 +1,20 @@
 /** @define notification-messages; */
 .notification-messages {
-    width: 40rem;
-    z-index: 6;
+    @include mobile {
+        right: 1.6rem;
+        left: 1.6rem;
+        max-width: calc(100% - 3.2rem);
+    }
+
     position: absolute;
     right: 0;
+    z-index: 6;
+    width: 40rem;
 
     > div {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
-    }
-
-    @include mobile {
-        max-width: calc(100% - 3.2rem);
-        left: 1.6rem;
-        right: 1.6rem;
     }
 
     &--traders-hub {
@@ -24,110 +24,123 @@
 
 /** @define notification; weak */
 .notification {
+    @include mobile {
+        width: calc(100% - 0.8rem);
+        max-width: 328px;
+        margin-right: 0.4rem;
+    }
+
     position: relative;
     display: flex;
-    border-radius: $BORDER_RADIUS;
+    overflow: hidden;
     width: 100%;
     max-width: 40rem;
     padding: 1.6rem;
-    color: var(--text-prominent);
+    border-radius: $BORDER_RADIUS;
     background-color: var(--general-main-2);
+    color: var(--text-prominent);
     box-shadow: 0 4px 6px 0 var(--shadow-menu), 0 4px 6px 0 var(--shadow-menu);
-    overflow: hidden;
     transition: transform 0.25s ease, opacity 0.25s linear;
 
     &--enter-done {
         opacity: 1;
         transform: translateY(0);
     }
+
     &--enter,
     &--exit {
         opacity: 0;
         transform: translateY(-16px);
     }
+
     &--small {
         max-width: 28rem;
     }
+
     &__cta-button {
-        padding: 0 0.8rem;
-        margin-top: 1.6rem;
-        height: 24px;
+        align-self: flex-end;
         width: fit-content;
         max-width: 25rem; // minimum required to fit in long FR, ES & PT text
-        align-self: flex-end;
+        height: 24px;
+        margin-top: 1.6rem;
+        padding: 0 0.8rem;
     }
+
     &__text-container {
+        z-index: 2;
         display: flex;
         flex-direction: column;
-        z-index: 2;
         width: 100%;
     }
+
     &__text-body {
         font-size: 1.4rem;
         line-height: 1.43;
     }
+
     &__action {
         display: flex;
         justify-content: flex-end;
     }
+
     &__header {
-        margin-bottom: 0.8rem;
         margin-right: 3.2rem;
+        margin-bottom: 0.8rem;
     }
+
     &__close-button {
         position: absolute;
         top: 1.05rem;
         right: 1.6rem;
-        visibility: visible;
-        background: none;
-        border: none;
-        padding: 0;
-        cursor: pointer;
         z-index: 2;
+        padding: 0;
+        border: none;
+        background: none;
+        visibility: visible;
+        cursor: pointer;
 
         &:focus,
         &:active {
             outline: none;
         }
+
         &:after {
             content: '\0000D7';
-            font-size: 30px;
-            font-weight: 400;
             color: var(--text-prominent);
+            font-weight: 400;
+            font-size: 30px;
             font-family: monospace;
         }
     }
+
     &__icon {
         &-type {
-            margin-right: 1.6rem;
-            margin-top: 0.4rem;
             width: 1.6rem;
             height: 1.6rem;
+            margin-top: 0.4rem;
+            margin-right: 1.6rem;
 
             &--is-background {
                 width: 21rem;
                 height: 21rem;
             }
         }
+
         &-background {
             position: absolute;
-            left: -25px;
             bottom: -5px;
-            pointer-events: none;
-            opacity: 0.08;
+            left: -25px;
             z-index: 0;
+            opacity: 0.08;
+            pointer-events: none;
 
             &--header-only {
                 bottom: -10.5rem;
             }
         }
     }
+
     &:not(:last-child) {
         margin-bottom: 16px;
-    }
-    @include mobile {
-        max-width: 328px;
-        width: calc(100% - 0.8rem);
-        margin-right: 0.4rem;
     }
 }

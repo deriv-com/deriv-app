@@ -1,15 +1,11 @@
 .static-applauncher {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
     width: 22rem;
     margin-left: 1rem;
-    align-items: center;
-    justify-content: space-between;
 
     &--grey {
-        background: var(--general-section-1);
-        width: 22rem;
-        margin-left: 0;
-
         @include desktop {
             height: 6rem;
         }
@@ -18,13 +14,19 @@
             width: 70%;
             margin-left: 1.5rem;
         }
+
+        width: 22rem;
+        margin-left: 0;
+        background: var(--general-section-1);
     }
 
     &__icon {
         margin-right: 1rem;
+
         &--blurry {
             opacity: 0.2;
         }
+
         &--selected {
             margin-left: 1rem;
         }
@@ -37,11 +39,11 @@
 
     &__buttons {
         display: flex;
-        align-items: flex-start;
         flex-direction: column;
-        margin-left: 1rem;
-        margin-right: 0.5rem;
+        align-items: flex-start;
         width: auto;
+        margin-right: 0.5rem;
+        margin-left: 1rem;
 
         &--animated {
             animation: triggerAnimation 0.5s linear infinite alternate;

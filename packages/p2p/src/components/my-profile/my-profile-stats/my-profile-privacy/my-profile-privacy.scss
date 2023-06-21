@@ -1,27 +1,30 @@
 .my-profile-privacy {
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 2.4rem;
-
     @include mobile {
         justify-content: space-between;
     }
 
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 2.4rem;
+
     &__toggle {
+        width: 3.2rem;
+        height: 1.7rem;
         margin-left: 0.8rem;
         padding-left: 0.3rem;
+        border-radius: 3.2rem;
 
         &-container {
-            align-items: center;
-            display: flex;
-            flex-direction: column;
-            margin-top: 1.6rem;
-
             @include mobile {
                 align-items: unset;
                 margin-top: 0;
             }
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 1.6rem;
         }
 
         &-button {
@@ -29,10 +32,6 @@
             height: 1.3rem;
             border-radius: 1.3rem;
         }
-
-        width: 3.2rem;
-        height: 1.7rem;
-        border-radius: 3.2rem;
     }
 }
 

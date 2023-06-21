@@ -1,13 +1,13 @@
 .side-note-legacy {
     &--mobile {
-        background-color: var(--general-section-1);
-        border-radius: $BORDER_RADIUS * 2;
+        width: auto;
+        margin: 2.4rem 0;
         padding: 1.6rem 2.4rem;
+        border-radius: $BORDER_RADIUS * 2;
+        background-color: var(--general-section-1);
         color: var(--text-general);
         font-size: var(--text-size-xxs);
         line-height: 1.5;
-        margin: 2.4rem 0;
-        width: auto;
         text-align: left;
 
         &.outside-wrapper {
@@ -18,14 +18,15 @@
     &__text {
         margin-bottom: 0.8rem;
     }
+
     &__bullet {
-        background-color: var(--text-general);
-        border-radius: 100%;
-        margin-right: 0.8rem;
+        flex: none;
         width: 0.4rem;
         height: 0.4rem;
-        flex: none;
         margin-top: 0.8rem;
+        margin-right: 0.8rem;
+        border-radius: 100%;
+        background-color: var(--text-general);
 
         &-wrapper {
             display: flex;

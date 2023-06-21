@@ -1,8 +1,8 @@
 .notify {
     &__item {
         &-button {
-            margin-top: 8px;
             height: 2.8rem !important;
+            margin-top: 8px;
             margin-left: 100%;
             transform: translateX(-100%);
 
@@ -10,10 +10,12 @@
                 font-size: var(--text-size-xxs);
             }
         }
+
         &-container {
             display: flex;
             align-items: center;
         }
+
         &-message {
             margin-left: 8px;
             font-size: var(--text-size-xxs);

@@ -1,73 +1,81 @@
 $header-height: 4em;
 
 .contract-drawer {
+    z-index: 2;
+    box-sizing: border-box;
     width: $POSITIONS_DRAWER_WIDTH;
+
     // removing 2px below for borders
     height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT} - 2px - (#{$POSITIONS_DRAWER_MARGIN} * 4));
-    z-index: 2;
     padding: 0 0.8rem;
-    box-sizing: border-box;
-    will-change: transform, opacity;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    border-radius: $BORDER_RADIUS;
     border: 1px solid var(--general-section-1);
+    border-radius: $BORDER_RADIUS;
     background: var(--general-section-1);
     color: var(--text-prominent);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    will-change: transform, opacity;
 
     svg {
         @extend %inline-icon;
     }
+
     h2 {
         margin-left: 8px;
-        text-transform: none;
         color: var(--text-prominent);
+        text-transform: none;
     }
+
     .currency-badge {
         margin-bottom: 5px;
     }
+
     &--contract-mode {
         &:before {
-            background: var(--general-section-1);
             content: '';
             position: absolute;
             top: 38px;
             left: -3px;
             width: calc(100% + 6px);
             height: calc(100% - 32px);
+            background: var(--general-section-1);
             filter: blur(3px);
         }
     }
+
     &__heading {
+        @include typeface(--title-left-bold-black);
+
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        padding: 0.5em;
         margin-left: -8px;
-        @include typeface(--title-left-bold-black);
+        padding: 0.5em;
         color: var(--text-general);
 
         &-btn {
-            padding: 4px 8px 0;
             margin-bottom: -4px;
-            cursor: pointer;
+            padding: 4px 8px 0;
             border-radius: $BORDER_RADIUS;
             background: var(--general-section-1);
+            cursor: pointer;
 
             &:hover {
                 background: var(--general-hover);
             }
         }
     }
+
     &__icon {
         margin-right: 16px;
     }
-    &__body {
-        display: flex;
-        flex-direction: column;
 
+    &__body {
         @include desktop {
             height: 100%;
         }
+
+        display: flex;
+        flex-direction: column;
     }
 }
 
@@ -77,55 +85,61 @@ $header-height: 4em;
         position: absolute;
         top: 0;
         left: 0;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         width: 100%;
         height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
         padding: 0;
         background-image: var(--contract-gradient-danger);
-        z-index: 1000;
 
         &__title {
             margin-bottom: 1rem;
         }
+
         &--loading {
             display: none;
         }
+
         &--disabled {
             cursor: not-allowed;
         }
+
         &--hidden {
             opacity: 0;
         }
     }
+
     &__footer {
         margin-bottom: 0.5rem;
         padding: 0 0.4rem;
 
         &-wrapper {
             @include typeface(--small-center-normal-black);
-            color: var(--text-prominent);
-            padding: 0.8rem 0.8rem 0;
+
             display: grid;
             grid-template-columns: 1fr 1fr;
+            padding: 0.8rem 0.8rem 0;
+            color: var(--text-prominent);
         }
     }
+
     &__sell-button {
         display: flex;
-        align-items: center;
         justify-content: center;
-        transition: transform 0.25s ease, opacity 0.25s linear;
+        align-items: center;
         border-top: 1px solid var(--general-section-1);
+        transition: transform 0.25s ease, opacity 0.25s linear;
 
         .dc-btn--sell,
         .dc-btn--cancel {
-            height: 2.4rem;
-
             @include mobile {
                 height: 3.2rem;
             }
+
+            height: 2.4rem;
         }
     }
 }

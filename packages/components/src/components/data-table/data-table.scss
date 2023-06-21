@@ -8,83 +8,95 @@ $header-height: 52px;
 
 /** @define table */
 .table {
+    @include typeface(--paragraph-center-normal-black, default);
+
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    @include typeface(--paragraph-center-normal-black, default);
     color: var(--text-general);
 
     &__cell {
-        padding: 0.75em;
         display: flex;
         align-items: center;
+        padding: 0.75em;
 
         &:first-child {
             padding-left: 0;
         }
+
         &:last-child {
             padding-right: 0;
         }
     }
+
     &__row {
+        position: relative;
         display: grid;
         grid-auto-rows: max-content; // safari fix
-        padding: 0 1.6em;
         box-sizing: border-box;
+        padding: 0 1.6em;
         text-decoration: none;
-        position: relative;
 
         &,
         &:active,
         &:visited {
             color: var(--text-general);
         }
+
         &--preloader {
             position: absolute;
             top: 0;
             left: 0;
+            width: 100%;
             height: 100%;
             max-height: 64px;
-            width: 100%;
         }
+
         &--icon {
             margin-left: 1rem;
         }
     }
+
     &__head {
-        border-bottom: 2px solid var(--general-section-1);
         height: $header-height;
+        border-bottom: 2px solid var(--general-section-1);
     }
+
     &__head &__row {
-        color: var(--text-prominent);
         height: 100%;
         border-bottom: none;
+        color: var(--text-prominent);
     }
+
     &__body {
-        overflow: hidden;
-        flex-grow: 1;
         display: flex;
-        flex-direction: column;
+        flex-grow: 1;
         flex-basis: 0;
+        flex-direction: column;
+        overflow: hidden;
 
         .table__row-link:hover {
             background-color: var(--state-hover);
             cursor: pointer;
         }
+
         .table__row:last-child {
             border-bottom: none;
         }
     }
+
     &__head,
     &__foot {
         font-weight: 500;
         white-space: nowrap;
     }
+
     &__foot {
         border-top: 2px solid var(--general-section-1);
     }
+
     &__foot &__row {
-        color: var(--text-general);
         border-bottom: none;
+        color: var(--text-general);
     }
 }

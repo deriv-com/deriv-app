@@ -5,15 +5,16 @@
         }
 
         .cashier-recent-transaction {
-            overflow: auto;
             @include mobile {
-                margin-bottom: 1rem;
                 min-width: 25.6rem;
+                margin-bottom: 1rem;
                 padding: 1.6rem 2.4rem;
                 border-radius: $BORDER_RADIUS * 2;
                 background-color: var(--general-section-1);
                 white-space: nowrap;
             }
+
+            overflow: auto;
 
             &__data-wrapper {
                 display: flex;
@@ -26,17 +27,21 @@
                     flex: 1;
                 }
             }
+
             &__icon {
                 margin-right: 0.4rem;
             }
+
             &__status-wrapper {
-                display: flex;
-                justify-content: space-between;
-                min-width: 17.2rem;
                 @include mobile {
                     min-width: 24.2rem;
                 }
+
+                display: flex;
+                justify-content: space-between;
+                min-width: 17.2rem;
             }
+
             &__status {
                 display: flex;
                 align-items: center;
@@ -44,20 +49,22 @@
 
                 &-indicator {
                     display: block;
-                    border-radius: 50%;
-                    margin-right: 0.2rem;
                     width: 5px;
                     height: 5px;
+                    margin-right: 0.2rem;
+                    border-radius: 50%;
                     background-color: var(--status-warning);
 
                     &-successful {
                         background-color: var(--status-success);
                     }
+
                     &-unsuccessful {
                         background-color: var(--status-danger);
                     }
                 }
             }
+
             &__hash-wrapper {
                 margin-top: 0.4rem;
             }

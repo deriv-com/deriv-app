@@ -1,32 +1,45 @@
 .account-transfer-form {
+    @include desktop {
+        &__form-submit {
+            width: fit-content;
+            min-width: 36rem;
+            margin: 2rem auto 0;
+        }
+    }
+
     &__hint {
         color: var(--text-general);
+
         &__disabled {
             color: var(--text-less-prominent);
         }
     }
+
     &__submit-button {
         @include desktop {
             margin: 3.4rem 0 2.4rem;
         }
+
         @include mobile {
             margin: 2.4rem 0;
         }
     }
+
     &__deposit-button {
         @include desktop {
             margin: 3.4rem 0.8rem 2.4rem 0;
         }
+
         @include mobile {
             margin: 2.4rem 0.8rem 2.4rem 0;
         }
     }
 
     &__button-link {
-        cursor: pointer;
-        margin: 3.4rem 0.8rem 2.4rem 6.4rem;
         position: absolute;
         left: 0;
+        margin: 3.4rem 0.8rem 2.4rem 6.4rem;
+        cursor: pointer;
 
         &:hover {
             text-decoration: underline var(--brand-red-coral);
@@ -36,10 +49,12 @@
             margin-right: 0.4rem;
         }
     }
+
     &__crypto {
         &--disabled {
             pointer-events: none;
         }
+
         &--percentage-selector {
             display: flex;
             flex-direction: column;
@@ -47,6 +62,7 @@
             margin-bottom: 2.4rem;
         }
     }
+
     &__drop-down-wrapper {
         @include mobile {
             margin-top: 1.2rem;
@@ -56,39 +72,46 @@
             }
         }
     }
+
     &__drop-down {
-        display: inline-block;
-        min-width: 20.3rem;
-        min-height: 4rem;
-        line-height: 1.43;
-        text-align: left;
-        max-width: 40rem;
-        margin: 0 auto 5.1rem;
         @include mobile {
             width: 100%;
             min-width: auto;
             margin-bottom: 2.4rem;
         }
 
+        display: inline-block;
+        min-width: 20.3rem;
+        max-width: 40rem;
+        min-height: 4rem;
+        margin: 0 auto 5.1rem;
+        line-height: 1.43;
+        text-align: left;
+
         &--to-dropdown {
             @include desktop {
                 margin: 0 auto 3.3rem;
             }
+
             @include mobile {
                 margin-bottom: 2.4rem;
             }
         }
+
         & .dc-dropdown__display-text {
-            width: 100%;
             align-items: center;
+            width: 100%;
         }
+
         & .dc-field--error {
             padding-top: 0.5rem;
+
             .link {
                 pointer-events: all;
             }
         }
     }
+
     &__notes {
         @include mobile {
             padding: 1.6rem 0;
@@ -102,63 +125,75 @@
             margin-top: 0;
         }
     }
+
     &__bullet {
-        background-color: var(--text-general);
-        border-radius: 100%;
-        margin-right: 0.8rem;
+        flex: none;
         width: 0.4rem;
         height: 0.4rem;
-        flex: none;
         margin-top: 0.8rem;
+        margin-right: 0.8rem;
+        border-radius: 100%;
+        background-color: var(--text-general);
 
         &-wrapper {
             display: flex;
             margin-bottom: 0.8rem;
         }
     }
+
     &__wrapper {
         .cashier__form-submit {
             margin-top: 0;
         }
+
         .account-transfer-form__input {
-            margin-bottom: -0.8rem !important;
-            min-width: 36rem;
-            .dc-input__hint {
-                margin: 0.9rem 0 -1.9rem 1.3rem;
-            }
-            &-fit-content {
-                width: fit-content;
-            }
             @include mobile {
                 width: 100%;
                 min-width: auto;
             }
+
+            min-width: 36rem;
+            margin-bottom: -0.8rem !important;
+
+            .dc-input__hint {
+                margin: 0.9rem 0 -1.9rem 1.3rem;
+            }
+
+            &-fit-content {
+                width: fit-content;
+            }
         }
     }
+
     &__currency,
     &__balance {
         line-height: 1.43;
     }
+
     &__currency {
         &-icon {
             align-self: center;
         }
+
         &-wrapper {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: flex-start;
-            margin-left: 8px;
             margin-right: 8px;
+            margin-left: 8px;
         }
     }
+
     &__icon {
         display: flex;
         justify-content: center;
     }
+
     &__balance {
         margin-left: auto;
     }
+
     &__form-submit {
         display: flex;
         flex-direction: column;
@@ -168,6 +203,7 @@
         > * {
             width: auto;
         }
+
         &--align-end {
             align-items: flex-end;
 
@@ -190,28 +226,24 @@
 
     &__loader {
         &-wrapper {
-            display: flex;
-            height: 100%;
             @include mobile {
                 height: initial;
             }
-        }
-    }
-    @include desktop {
-        &__form-submit {
-            min-width: 36rem;
-            width: fit-content;
-            margin: 2rem auto 0;
+
+            display: flex;
+            height: 100%;
         }
     }
 }
+
 .dc-modal__container_account_transfer {
     &_switch_modal {
         .dc-modal {
-            @include mobile() {
+            @include mobile {
                 &-header__close {
                     margin: 2.4rem 1.6rem 0;
                 }
+
                 &-body {
                     font-size: 1.4rem;
                 }
@@ -220,9 +252,11 @@
             &-header__title {
                 padding: 2.4rem 2.4rem 0;
             }
+
             &-body {
                 padding: 2.4rem;
             }
+
             &-footer {
                 padding: 0 2.4rem 2.4rem;
             }

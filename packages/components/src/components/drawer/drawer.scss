@@ -3,109 +3,122 @@
 .dc-drawer {
     $toggler-width: 16px;
 
-    position: fixed;
-    will-change: transform;
-    transition: transform 0.3s ease;
-    background: var(--general-main-2);
-
-    &--left {
-        display: flex;
-        flex-direction: row-reverse;
-        right: calc(100vw - 16px);
-    }
-    &--right {
-        display: flex;
-        flex-direction: row;
-        left: calc(100vw - 16px);
-    }
-
     @include mobile {
+        top: calc(100% - 9.8rem) !important;
         width: 100vw !important;
         height: calc(100% - 10.1rem) !important;
-        top: calc(100% - 9.8rem) !important;
     }
+
+    position: fixed;
+    background: var(--general-main-2);
+    transition: transform 0.3s ease;
+    will-change: transform;
+
+    &--left {
+        right: calc(100vw - 16px);
+        display: flex;
+        flex-direction: row-reverse;
+    }
+
+    &--right {
+        left: calc(100vw - 16px);
+        display: flex;
+        flex-direction: row;
+    }
+
     &__container {
+        @include mobile {
+            height: calc(100% - 3.6rem);
+        }
+
         display: flex;
         flex-direction: column;
-        height: 100%;
         width: 100%;
+        height: 100%;
 
         &--left {
             padding-right: $toggler-width;
         }
+
         &--right {
             padding-left: $toggler-width;
         }
-
-        @include mobile {
-            height: calc(100% - 3.6rem);
-        }
     }
+
     &__header {
         border-bottom: 1px solid var(--general-section-1);
-        line-height: 40px;
         font-weight: 700;
         font-size: 1.6em;
+        line-height: 40px;
     }
+
     &__content {
         flex-grow: 1;
         overflow: auto;
     }
+
     &__footer {
-        background-color: var(--general-main-2);
+        align-items: center;
         border-top: 1px solid var(--general-section-1);
-        line-height: 40px;
+        background-color: var(--general-main-2);
         font-weight: 700;
         font-size: 1.6em;
-        align-items: center;
+        line-height: 40px;
     }
+
     &__toggle {
-        align-items: center;
-        border-left: 1px solid var(--border-disabled);
-        border-right: 1px solid var(--border-disabled);
-        display: flex;
+        @include mobile {
+            position: unset;
+            justify-content: center;
+            width: 100%;
+            height: 3.6rem;
+            border-top: solid 1px var(--general-section-1);
+            background-color: var(--general-main-1);
+        }
+
         position: absolute;
+        display: flex;
+        align-items: center;
         width: $toggler-width;
         height: 100%;
+        border-right: 1px solid var(--border-disabled);
+        border-left: 1px solid var(--border-disabled);
         background-color: var(--general-section-5);
         cursor: pointer;
 
-        @include mobile {
-            position: unset;
-            width: 100%;
-            height: 3.6rem;
-            justify-content: center;
-            background-color: var(--general-main-1);
-            border-top: solid 1px var(--general-section-1);
-        }
         &-icon {
-            transition: 0.25s ease;
-            &--left {
-                transform: rotate(0);
-            }
-            &--right {
-                transform: rotate(180deg);
-            }
-
             @include mobile {
                 width: 2.5rem;
                 height: 0.8rem;
                 transform: rotate(0);
             }
-        }
-        &--open > &-icon {
+
+            transition: 0.25s ease;
+
             &--left {
-                transform: rotate(180deg);
-            }
-            &--right {
                 transform: rotate(0);
             }
 
-            @include mobile {
+            &--right {
                 transform: rotate(180deg);
             }
         }
+
+        &--open > &-icon {
+            @include mobile {
+                transform: rotate(180deg);
+            }
+
+            &--left {
+                transform: rotate(180deg);
+            }
+
+            &--right {
+                transform: rotate(0);
+            }
+        }
     }
+
     &--open {
         @include mobile {
             transform: translateY(calc(-100% + 3.6rem));

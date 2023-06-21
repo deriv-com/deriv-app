@@ -5,10 +5,11 @@
     &__icon {
         &--container {
             display: inline-flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100%;
             padding: 0 0 2rem;
+
             &__clickable {
                 cursor: pointer;
             }
@@ -21,25 +22,26 @@
         align-items: center;
         width: 100%;
         height: 100%;
-        padding: 0 0 2rem;
         margin-left: 1.6rem;
+        padding: 0 0 2rem;
     }
 
     &__details {
-        user-select: none;
         display: inline-flex;
         flex-direction: column;
         justify-content: center;
+        width: 100%;
         height: 100%;
         padding: 0 2rem 0 0;
-        width: 100%;
+        user-select: none;
+
         &__short-code {
-            padding: 0.4rem;
-            height: fit-content;
             width: fit-content;
+            height: fit-content;
             margin-left: 1rem;
-            background-color: var(--icon-grey-background);
+            padding: 0.4rem;
             border-radius: 4px;
+            background-color: var(--icon-grey-background);
         }
     }
 

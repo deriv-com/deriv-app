@@ -5,13 +5,13 @@
 
     &__text {
         &--demo {
-            color: var(--status-info);
             padding-right: 0.5rem;
+            color: var(--status-info);
         }
 
         &--real {
-            color: var(--status-success);
             padding-right: 0.5rem;
+            color: var(--status-success);
         }
     }
 

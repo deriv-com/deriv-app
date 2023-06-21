@@ -1,22 +1,24 @@
 .payment-agent-deposit-details {
+    @include mobile {
+        grid-template-columns: 1fr;
+        margin-top: 2.4rem;
+    }
+
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 1rem;
     row-gap: 0.8rem;
     margin-top: 3.2rem;
+    column-gap: 1rem;
+
     & > .payment-agent-detail:nth-child(-n + 2) {
-        margin-bottom: 2.4rem;
         @include mobile {
             margin-bottom: 0;
         }
+
+        margin-bottom: 2.4rem;
     }
+
     .payment-agent-detail {
-        &__icon-wrapper {
-            width: 3.2rem;
-            height: 3.2rem;
-            background: var(--icon-grey-background);
-            border-radius: $BORDER_RADIUS * 2;
-        }
         @include mobile {
             &.deposit-commission {
                 order: 5;
@@ -26,9 +28,12 @@
                 order: 6;
             }
         }
-    }
-    @include mobile {
-        grid-template-columns: 1fr;
-        margin-top: 2.4rem;
+
+        &__icon-wrapper {
+            width: 3.2rem;
+            height: 3.2rem;
+            border-radius: $BORDER_RADIUS * 2;
+            background: var(--icon-grey-background);
+        }
     }
 }

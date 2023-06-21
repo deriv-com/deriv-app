@@ -1,41 +1,42 @@
 .p2p-my-ads {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-
     @include mobile {
         .page-return {
-            border-bottom: 2px solid var(--general-section-1);
             margin: 1rem 0;
             padding: 0 1.6rem 1.6rem;
+            border-bottom: 2px solid var(--general-section-1);
         }
 
         .dc-list {
-            margin-left: 1vw;
             width: 88vw;
+            margin-left: 1vw;
 
             &__item {
                 padding-top: 0.4rem;
             }
         }
+
         .dc-mobile-full-page-modal {
             opacity: 1 !important;
         }
     }
 
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
     &__modal {
         &-body {
             display: flex;
             flex-direction: column;
-            padding: 1rem 1.6rem 0;
             width: 100vw;
+            padding: 1rem 1.6rem 0;
 
             &--scroll {
                 overflow: auto;
             }
 
             &--horizontal {
-                padding-right: 0rem;
+                padding-right: 0;
             }
         }
 
@@ -43,6 +44,7 @@
             .dc-modal-header__title--p2p-my-ads__modal-error {
                 padding: 2.4rem 2.4rem 0 !important;
             }
+
             .dc-modal__container_p2p-my-ads__modal-error {
                 .dc-modal-footer {
                     padding-top: 0 !important;

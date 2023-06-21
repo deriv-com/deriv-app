@@ -1,20 +1,20 @@
 .ad-type {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
     @include mobile {
         justify-content: flex-end;
     }
 
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
     &__badge {
-        align-items: center;
-        border-radius: 0.4rem;
-        border: 1px solid var(--border-normal);
         display: flex;
         flex-direction: row;
+        align-items: center;
+        width: fit-content;
         margin: 0.3rem 0.5rem 0.3rem 0;
         padding: 0.1rem 0.8rem;
-        width: fit-content;
+        border: 1px solid var(--border-normal);
+        border-radius: 0.4rem;
     }
 }

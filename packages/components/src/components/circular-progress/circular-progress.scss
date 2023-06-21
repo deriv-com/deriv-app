@@ -1,30 +1,33 @@
 .dc-circular-progress {
     position: relative;
-    line-height: 0;
     width: fit-content;
+    line-height: 0;
 
     &__bar {
+        stroke: var(--brand-secondary);
+        transition: stroke-dashoffset 1s;
         transform: scaleX(-1) rotate(-90deg);
         transform-origin: 50% 50%;
-        transition: stroke-dashoffset 1s;
-        stroke: var(--brand-secondary);
 
         &--warning {
             stroke: var(--status-warning);
         }
+
         &--danger {
             stroke: var(--status-danger);
         }
     }
+
     &--clockwise {
         transform: rotate(-90deg);
     }
+
     &__icon {
         position: absolute;
+        top: 50%;
+        left: 50%;
         width: 1.6rem;
         height: 100%;
-        left: 50%;
-        top: 50%;
         transform: translate(-50%, -50%);
     }
 }

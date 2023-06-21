@@ -1,10 +1,10 @@
 .dc-content-expander {
-    cursor: pointer;
+    position: relative;
     display: flex;
     align-items: center;
-    padding: 0 0.8rem;
     height: 4rem;
-    position: relative;
+    padding: 0 0.8rem;
+    cursor: pointer;
 
     &__content {
         transition: opacity 0.25s linear;
@@ -12,13 +12,16 @@
         &--enter {
             opacity: 0;
         }
+
         &--enter-done {
             opacity: 1;
         }
+
         &--exit {
             opacity: 0;
         }
     }
+
     &__title {
         display: block;
         padding-right: 0.8rem;
@@ -27,6 +30,7 @@
             flex: 1;
         }
     }
+
     &--expanded {
         .dc-content-expander__select-arrow {
             transform: rotate(180deg);
@@ -36,17 +40,20 @@
             }
         }
     }
+
     &__select-arrow {
+        @extend %inline-icon;
+
         pointer-events: none;
+        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
         transform: rotate(0);
         transform-origin: 50% 45%;
-        transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-        @extend %inline-icon;
 
         &--invert {
             transform: rotate(180deg);
         }
     }
+
     &__wrapper {
         display: flex;
         flex-direction: column;

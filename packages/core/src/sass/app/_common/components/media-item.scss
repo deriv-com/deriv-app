@@ -3,33 +3,39 @@
 
     &__heading {
         @include typeface(--paragraph-left-bold-black);
-        color: var(--text-prominent);
+
         margin: 0 0 16px;
+        color: var(--text-prominent);
         text-transform: none;
     }
+
     &__icon {
-        height: 120px;
         @include toEm(margin-right, 16px);
-        border-radius: $BORDER_RADIUS;
+
         min-width: 160px;
+        height: 120px;
+        border-radius: $BORDER_RADIUS;
 
         &:empty {
             background-color: var(--general-disabled);
         }
     }
+
     &__description {
+        @include typeface(--paragraph-left-normal-black);
+
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
-        @include typeface(--paragraph-left-normal-black);
         color: var(--text-prominent);
     }
+
     &__form {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
         align-items: flex-start;
-        text-transform: initial;
         color: var(--text-prominent);
+        text-transform: initial;
     }
 }

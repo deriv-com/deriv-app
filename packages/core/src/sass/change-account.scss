@@ -1,14 +1,16 @@
 .change-currency {
-    border-bottom-left-radius: $BORDER_RADIUS;
     border-bottom-right-radius: $BORDER_RADIUS;
+    border-bottom-left-radius: $BORDER_RADIUS;
 
     &__title,
     &__sub-title {
         text-transform: none;
     }
+
     &__title {
         margin-top: 3rem;
     }
+
     &__sub-title {
         margin-bottom: 1.6rem;
     }

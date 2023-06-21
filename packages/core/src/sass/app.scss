@@ -2,11 +2,11 @@
 @import 'app/_common/base/index';
 
 // Fonts
-@import '~@deriv/shared/src/styles/google-fonts.scss';
+@import '~@deriv/shared/src/styles/google-fonts';
 
 // Shared
-@import '~@deriv/shared/src/styles/reset.scss';
-@import '~@deriv/shared/src/styles/themes.scss';
+@import '~@deriv/shared/src/styles/reset';
+@import '~@deriv/shared/src/styles/themes';
 
 // General
 
@@ -21,6 +21,7 @@
 
 // Components
 @import 'app/_common/components/account-settings-toggle';
+
 //@import 'app/_common/components/amount';
 //@import 'app/_common/components/allow-equals';
 //@import 'app/_common/components/card-list';
@@ -31,11 +32,13 @@
 //@import 'app/_common/components/trade-type-info-dialog';
 @import 'app/_common/components/error-boundary';
 @import 'app/_common/components/login-prompt';
+
 //@import 'app/_common/components/market-is-closed-overlay';
 //@import 'app/_common/components/market-symbol-icon';
 @import 'app/_common/components/media-item';
 @import 'app/_common/components/side-menu';
 @import 'app/_common/components/live-chat';
+
 //@import 'app/_common/components/number-selector';
 //@import 'app/_common/components/popconfirm';
 //@import 'app/_common/components/pl-card';
@@ -49,12 +52,14 @@
 @import 'app/_common/components/notification-close-mx-mlt';
 @import 'app/_common/components/notification-promo';
 @import 'app/_common/components/onfido-container';
+
 // Modules
 @import 'app/modules/page-404';
 @import 'app/modules/account-closed';
 @import 'app/modules/reality-check';
 @import 'app/modules/reset-password';
 @import 'app/modules/reset-email';
+
 //@import 'app/modules/contract';
 //@import 'app/modules/contract/bottom-widgets';
 @import 'app/modules/external-link';

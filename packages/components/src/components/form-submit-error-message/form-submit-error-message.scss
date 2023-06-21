@@ -1,21 +1,21 @@
 /** @define dc-form-submit-error-message; weak */
 .dc-form-submit-error-message {
+    @include mobile {
+        position: absolute;
+        bottom: 7rem;
+        padding: 0 1.6rem 1rem;
+    }
+
     display: flex;
+    flex: 1;
     align-items: center;
     margin-right: auto;
-    flex: 1;
 
     p {
-        padding-left: 0.8rem;
-
         @include mobile {
             line-height: 20px;
         }
-    }
 
-    @include mobile {
-        padding: 0 1.6rem 1rem;
-        position: absolute;
-        bottom: 7rem;
+        padding-left: 0.8rem;
     }
 }

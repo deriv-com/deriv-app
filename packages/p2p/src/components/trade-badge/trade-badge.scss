@@ -1,13 +1,13 @@
 .trade-badge {
-    align-items: center;
-    border-radius: 3.4rem;
-    cursor: default;
     display: flex;
-    height: 1.8rem;
     justify-content: center;
+    align-items: center;
+    width: fit-content;
+    height: 1.8rem;
     margin-right: 0.4rem;
     padding: 0.2rem 0.7rem;
-    width: fit-content;
+    border-radius: 3.4rem;
+    cursor: default;
 
     &--blue {
         background-image: var(--gradient-blue);

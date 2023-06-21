@@ -178,12 +178,13 @@ const CFDsListing = () => {
                 <React.Fragment>
                     {combined_cfd_mt5_accounts.map((existing_account: TDetailedExistingAccount, index: number) => {
                         const list_size = combined_cfd_mt5_accounts.length;
-                        const has_mt5_account_status = existing_account.status
-                            ? getMT5AccountAuthStatus(
-                                  existing_account.status,
-                                  existing_account?.short_code_and_region?.toLowerCase()
-                              )
-                            : null;
+                        const has_mt5_account_status =
+                            existing_account.status || is_idv_revoked
+                                ? getMT5AccountAuthStatus(
+                                      existing_account.status,
+                                      existing_account?.short_code_and_region?.toLowerCase()
+                                  )
+                                : null;
 
                         return (
                             <TradingAppCard

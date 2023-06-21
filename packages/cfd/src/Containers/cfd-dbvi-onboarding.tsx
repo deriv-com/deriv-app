@@ -66,7 +66,9 @@ const CFDDbviOnboarding = ({
                     poi_acknowledged_for_bvi_labuan,
                     poa_acknowledged,
                     poa_resubmit_for_labuan,
+                    need_poa_submission,
                 } = getAuthenticationStatusInfo(get_account_status);
+
                 if (jurisdiction_selected_shortcode === Jurisdiction.VANUATU) {
                     setShowSubmittedModal(
                         poi_acknowledged_for_vanuatu_maltainvest &&
@@ -76,10 +78,10 @@ const CFDDbviOnboarding = ({
                 } else if (jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) {
                     setShowSubmittedModal(poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged);
                 } else if (jurisdiction_selected_shortcode === Jurisdiction.LABUAN) {
+                    /* When verified with IDV+ Photo ID, POA is auto verified */
+                    const is_poa_submitted = poa_resubmit_for_labuan ? false : !need_poa_submission;
                     setShowSubmittedModal(
-                        poi_acknowledged_for_bvi_labuan &&
-                            has_submitted_cfd_personal_details &&
-                            !poa_resubmit_for_labuan
+                        poi_acknowledged_for_bvi_labuan && has_submitted_cfd_personal_details && is_poa_submitted
                     );
                 } else
                     setShowSubmittedModal(

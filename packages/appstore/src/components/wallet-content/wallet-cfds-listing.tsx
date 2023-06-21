@@ -10,6 +10,7 @@ import { getHasDivider } from 'Constants/utils';
 import { useStore, observer } from '@deriv/stores';
 import { useHistory } from 'react-router';
 import GetMoreAccounts from 'Components/get-more-accounts';
+import { useActiveWallet } from '@deriv/hooks';
 import './wallet-content.scss';
 
 type TProps = {
@@ -35,10 +36,10 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
     } = traders_hub;
 
     const { toggleCompareAccountsModal } = cfd;
-    const { is_landing_company_loaded, is_logging_in, is_switching, loginid, accounts } = client;
+    const { is_landing_company_loaded, is_logging_in, is_switching } = client;
     const { is_mobile } = ui;
 
-    const wallet_account = accounts?.[loginid || ''];
+    const wallet_account = useActiveWallet();
 
     if (!wallet_account || !is_landing_company_loaded || is_switching || is_logging_in)
         return (

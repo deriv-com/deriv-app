@@ -22,11 +22,7 @@ const Wallet = ({ wallet_account }: TWallet) => {
         >
             <WalletHeader wallet_account={wallet_account} />
             <CSSTransition appear in={active} timeout={240} classNames='wallet__content-transition' unmountOnExit>
-                <WalletContent
-                    is_demo={!!is_demo}
-                    is_eu={wallet_account.landing_company_name === 'malta'}
-                    wallet_account={wallet_account}
-                />
+                <WalletContent is_demo={!!is_demo} is_eu={wallet_account.landing_company_name === 'malta'} />
             </CSSTransition>
         </div>
     );

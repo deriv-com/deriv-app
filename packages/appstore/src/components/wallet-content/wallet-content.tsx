@@ -10,10 +10,9 @@ import './wallet-content.scss';
 type TProps = {
     is_demo: boolean;
     is_eu: boolean;
-    wallet_account: TWalletAccount;
 };
 
-const WalletContent = React.memo(({ is_demo, is_eu, wallet_account }: TProps) => {
+const WalletContent = React.memo(({ is_demo, is_eu }: TProps) => {
     return (
         <div
             className={classNames('wallet-content', {
@@ -22,9 +21,9 @@ const WalletContent = React.memo(({ is_demo, is_eu, wallet_account }: TProps) =>
             data-testid='dt_wallet-content'
         >
             <ContentDivider is_demo_divider={is_demo} />
-            <WalletCfdsListing wallet_account={wallet_account} />
+            <WalletCfdsListing />
             <ContentDivider />
-            <WalletOptionsAndMultipliersListing wallet_account={wallet_account} />
+            <WalletOptionsAndMultipliersListing />
             {is_eu && !is_demo && (
                 <EUDisclaimer
                     is_wallet={true}

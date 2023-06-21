@@ -18,19 +18,16 @@ describe('<WalletHeader />', () => {
     let mocked_props: TWalletAccount;
     beforeEach(() => {
         mocked_props = {
-            is_demo: false,
             currency: 'USD',
             landing_company_name: 'svg',
             balance: 10000,
             loginid: 'CRW123123',
-            landing_company_shortcode: 'svg',
             is_virtual: false,
         };
     });
 
     describe('Check currency card', () => {
         it('Should render right currency card for DEMO', () => {
-            mocked_props.is_demo = true;
             mocked_props.is_virtual = true;
             render(
                 <StoreProvider store={mockedRootStore}>
@@ -196,7 +193,6 @@ describe('<WalletHeader />', () => {
 
     describe('Check buttons', () => {
         it('Buttons collapsed', () => {
-            mocked_props.is_demo = true;
             mocked_props.is_virtual = true;
             mocked_props.currency = 'EUR';
             mocked_props.balance = 0;
@@ -212,7 +208,6 @@ describe('<WalletHeader />', () => {
         });
 
         it('Buttons uncollapsed', () => {
-            mocked_props.is_demo = true;
             mocked_props.is_virtual = true;
             mocked_props.currency = 'EUR';
             mocked_props.balance = 0;
@@ -236,7 +231,7 @@ describe('<WalletHeader />', () => {
         });
 
         it('Arrow button click and switchAccount should be called', async () => {
-            mocked_props.is_demo = true;
+            mocked_props.is_virtual = true;
             mocked_props.currency = 'EUR';
             mocked_props.balance = 0;
             mocked_props.loginid = 'CRW1231';
@@ -255,7 +250,6 @@ describe('<WalletHeader />', () => {
         });
 
         it('Check buttons for demo', () => {
-            mocked_props.is_demo = true;
             mocked_props.is_virtual = true;
             mocked_props.currency = 'EUR';
             mocked_props.balance = 0;

@@ -49,7 +49,7 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
 
     const { currency } = wallet_account;
     const accounts_sub_text =
-        wallet_account.landing_company_shortcode === 'svg' || wallet_account.is_virtual
+        wallet_account.landing_company_name === 'svg' || wallet_account.is_virtual
             ? localize('Compare accounts')
             : localize('Account information');
 
@@ -111,7 +111,7 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
                         icon={existing_account.icon}
                         sub_title={existing_account?.sub_title}
                         name={!has_mt5_account_status ? existing_account?.name : ''}
-                        short_code_and_region={wallet_account.landing_company_shortcode}
+                        short_code_and_region={wallet_account.landing_company_name}
                         platform={existing_account.platform}
                         description={existing_account.description}
                         key={existing_account.key}

@@ -53,7 +53,7 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
                         <div className='wallet-card__top-wrapper'>
                             <IconComponent />
                             {wallet.jurisdiction_title === 'virtual' ? (
-                                <Badge label={'Demo'} type='contained' background_color='blue' />
+                                <Badge label={localize('Demo')} type='contained' background_color='blue' />
                             ) : (
                                 <Badge
                                     custom_color='var(--text-prominent)'

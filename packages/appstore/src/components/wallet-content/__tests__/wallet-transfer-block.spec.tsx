@@ -10,7 +10,7 @@ const wallet_account: TWalletAccount = {
     icon: '',
     balance: 10415.24,
     icon_type: 'fiat',
-    landing_company_shortcode: 'svg',
+    landing_company_name: 'svg',
     is_disabled: false,
     is_virtual: false,
     loginid: 'CRW10001',

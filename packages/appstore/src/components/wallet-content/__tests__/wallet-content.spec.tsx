@@ -18,7 +18,7 @@ jest.mock('./../../containers/currency-switcher-container', () => jest.fn(({ chi
 const wallet_account: TWalletAccount = {
     balance: 10415.24,
     currency: 'USD',
-    landing_company_shortcode: 'svg',
+    landing_company_name: 'svg',
     is_virtual: 1,
     loginid: 'CRW12345',
 };

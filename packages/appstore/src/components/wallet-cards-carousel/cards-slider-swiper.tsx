@@ -45,12 +45,11 @@ const CardsSliderSwiper = observer(({ items, setActivePage, active_page }: TProp
     const slider = React.useMemo(
         () =>
             items?.map((item: TWalletAccount) => (
-                <div key={`${item.name} ${item.currency} ${item.landing_company_shortcode}`}>
+                <div key={`${item.name} ${item.currency} ${item.landing_company_name}`}>
                     <WalletCard
                         wallet={{
                             ...item,
                             balance: formatMoney(item.currency, item.balance, true),
-                            // jurisdiction_title: item.landing_company_shortcode,
                             jurisdiction_title: item.landing_company_name,
                         }}
                         size='medium'

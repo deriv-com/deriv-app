@@ -32,13 +32,13 @@ const WalletOptionsAndMultipliersListing = observer(() => {
         );
 
     const OptionsTitle = () => {
-        if (wallet_account.landing_company_shortcode === 'svg' && !is_mobile) {
+        if (wallet_account.landing_company_name === 'svg' && !is_mobile) {
             return (
                 <Text size='sm' line_height='m' weight='bold'>
                     {localize('Options & multipliers')}
                 </Text>
             );
-        } else if (wallet_account.landing_company_shortcode !== 'svg' && !is_mobile) {
+        } else if (wallet_account.landing_company_name !== 'svg' && !is_mobile) {
             return (
                 <Text size='sm' line_height='m' weight='bold' color='prominent'>
                     {localize('Multipliers')}
@@ -49,7 +49,7 @@ const WalletOptionsAndMultipliersListing = observer(() => {
     };
 
     const listing_container_description =
-        wallet_account.landing_company_shortcode === 'svg' ? (
+        wallet_account.landing_company_name === 'svg' ? (
             <Text size='xs' line_height='s'>
                 <Localize
                     i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'

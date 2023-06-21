@@ -23,6 +23,11 @@ jest.mock('@deriv/account', () => ({
     getStatusBadgeConfig: jest.fn(() => ({ icon: '', text: '' })),
 }));
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useWalletModalActionHandler: jest.fn(() => ({ setWalletModalActiveTabIndex: jest.fn(), handleAction: jest.fn() })),
+}));
+
 jest.mock('./../currency-switcher-container', () => jest.fn(({ children }) => <div>{children}</div>));
 jest.mock('./../../wallet-content', () => jest.fn(() => <span>wallet test content</span>));
 
@@ -36,6 +41,8 @@ describe('<Wallets />', () => {
             balance: 10000,
             loginid: 'CR123123',
             landing_company_shortcode: 'svg',
+            is_malta_wallet: false,
+            is_selected: false,
         };
     });
     it('Check class for NOT demo', () => {

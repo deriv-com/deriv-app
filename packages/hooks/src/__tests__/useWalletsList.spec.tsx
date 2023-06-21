@@ -29,6 +29,8 @@ describe('useWalletsList', () => {
                             landing_company_name: 'svg',
                             landing_company_shortcode: 'svg',
                             is_demo: 0,
+                            is_selected: true,
+                            is_malta_wallet: false,
                         },
                     ],
                 },
@@ -51,6 +53,9 @@ describe('useWalletsList', () => {
                 landing_company_shortcode: 'svg',
                 landing_company_name: 'svg',
                 is_demo: false,
+                is_selected: false,
+                is_malta_wallet: false,
+                balance: 0,
             },
         ]);
     });

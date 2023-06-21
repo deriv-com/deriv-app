@@ -6,6 +6,13 @@ import WalletModal from '../wallet-modal';
 jest.mock('../wallet-modal-header', () => jest.fn(() => <div>WalletModalHeader</div>));
 jest.mock('../wallet-modal-body', () => jest.fn(() => <div>WalletModalBody</div>));
 
+jest.mock('@deriv/hooks', () => ({
+    useActiveWallet: () => ({
+        active_wallet: 'CRW000000',
+    }),
+    useWalletModalActionHandler: jest.fn(() => ({ setWalletModalActiveTabIndex: jest.fn(), handleAction: jest.fn() })),
+}));
+
 describe('WalletModal', () => {
     let modal_root_el: HTMLDivElement;
     beforeAll(() => {

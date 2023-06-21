@@ -3,16 +3,22 @@ import { Modal } from '@deriv/components';
 import WalletModalHeader from './wallet-modal-header';
 import WalletModalBody from './wallet-modal-body';
 import { observer, useStore } from '@deriv/stores';
+import { useActiveWallet, useWalletModalActionHandler } from '@deriv/hooks';
 
 const WalletModal = observer(() => {
     const store = useStore();
+
     const {
         client: { balance, currency, landing_company_shortcode: shortcode },
         ui: { is_dark_mode_on, is_wallet_modal_visible, is_mobile, setIsWalletModalVisible },
-        traders_hub: { is_demo, active_modal_tab_index, setWalletModalActiveTabIndex },
+        traders_hub: { active_modal_tab_index },
     } = store;
 
-    // TODO: Temporary wallet type. Will be refactored later. Add correct type
+    const wallet = useActiveWallet();
+
+    const { setWalletModalActiveTabIndex } = useWalletModalActionHandler();
+
+    const is_demo = wallet?.is_demo || false;
     const wallet_type = is_demo ? 'demo' : 'real';
 
     const [is_wallet_name_visible, setIsWalletNameVisible] = React.useState<boolean>(true);

@@ -12,7 +12,7 @@ type TProps = {
 };
 
 const WalletContent = ({ wallet_account }: TProps) => {
-    const is_eu = wallet_account.landing_company_name === 'malta';
+    const is_malta_wallet = wallet_account.is_malta_wallet;
 
     return (
         <div
@@ -23,7 +23,7 @@ const WalletContent = ({ wallet_account }: TProps) => {
             <WalletCfdsListing wallet_account={wallet_account} />
             <ContentDivider />
             <WalletOptionsAndMultipliersListing wallet_account={wallet_account} />
-            {is_eu && !wallet_account.is_demo && (
+            {is_malta_wallet && !wallet_account.is_demo && (
                 <EUDisclaimer
                     is_wallet={true}
                     wrapperClassName='wallet-content__disclaimer'

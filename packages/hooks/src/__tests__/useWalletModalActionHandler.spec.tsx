@@ -3,6 +3,13 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useWalletModalActionHandler from '../useWalletModalActionHandler';
 
+jest.mock('../useActiveWallet', () => ({
+    __esModule: true,
+    default: () => ({
+        active_wallet: 'CRW000000',
+    }),
+}));
+
 describe('useWalletModalActionHandler', () => {
     test('should return handleAction with Deposit action', () => {
         const mock = mockStore({});

@@ -25,6 +25,8 @@ describe('<WalletContent />', () => {
             balance: 10000,
             loginid: 'CR123123',
             landing_company_shortcode: 'svg',
+            is_malta_wallet: false,
+            is_selected: false,
         };
     });
     it('Check class', () => {
@@ -83,6 +85,7 @@ describe('<WalletContent />', () => {
     it('Check there is disclaimer for EU and not demo', () => {
         mocked_props.landing_company_name = 'malta';
         mocked_props.landing_company_shortcode = 'malta';
+        mocked_props.is_malta_wallet = true;
         render(
             <StoreProvider store={mockedRootStore}>
                 <WalletContent wallet_account={mocked_props} />

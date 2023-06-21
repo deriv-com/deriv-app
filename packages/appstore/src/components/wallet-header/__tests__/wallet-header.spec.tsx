@@ -13,6 +13,11 @@ jest.mock('@deriv/account', () => ({
     getStatusBadgeConfig: jest.fn(() => ({ icon: '', text: '' })),
 }));
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useWalletModalActionHandler: jest.fn(() => ({ setWalletModalActiveTabIndex: jest.fn(), handleAction: jest.fn() })),
+}));
+
 describe('<WalletHeader />', () => {
     let mocked_props: TWalletAccount;
     beforeEach(() => {
@@ -21,8 +26,10 @@ describe('<WalletHeader />', () => {
             currency: 'USD',
             landing_company_name: 'svg',
             balance: 10000,
-            loginid: 'CR123123',
+            loginid: 'CRW123123',
             landing_company_shortcode: 'svg',
+            is_malta_wallet: false,
+            is_selected: true,
         };
     });
     describe('Check currency card', () => {

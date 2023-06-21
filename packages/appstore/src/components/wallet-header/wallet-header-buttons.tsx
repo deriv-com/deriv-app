@@ -29,6 +29,16 @@ const WalletHeaderButtons = observer(({ is_disabled, is_open, btns, wallet_accou
 
     const { handleAction } = useWalletModalActionHandler();
 
+    const handleOnClick = async (btn: TWalletButton) => {
+        setIsWalletModalVisible(true);
+        handleAction(btn.name);
+        if (loginid !== wallet_account.loginid) {
+            /** Adding a delay as per requirement because the modal must appear first, then switch the account */
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            switchAccount(wallet_account.loginid);
+        }
+    };
+
     return (
         <div className='wallet-header__description-buttons'>
             {btns.map(btn => (
@@ -37,15 +47,7 @@ const WalletHeaderButtons = observer(({ is_disabled, is_open, btns, wallet_accou
                     className={classNames('wallet-header__description-buttons-item', {
                         'wallet-header__description-buttons-item-disabled': is_disabled,
                     })}
-                    onClick={async () => {
-                        setIsWalletModalVisible(true);
-                        handleAction(btn.name);
-                        if (loginid !== wallet_account.loginid) {
-                            /** Adding a delay as per requirement because the modal must appear first, then switch the account */
-                            await new Promise(resolve => setTimeout(resolve, 1000));
-                            switchAccount(wallet_account.loginid);
-                        }
-                    }}
+                    onClick={() => handleOnClick(btn)}
                 >
                     <Icon
                         icon={btn.icon}

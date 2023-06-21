@@ -33,7 +33,7 @@ const WalletOptionsAndMultipliersListing = observer(() => {
     const OptionsTitle = () => {
         if (wallet_account.landing_company_name === 'svg' && !is_mobile) {
             return (
-                <Text size='sm' line_height='m' weight='bold'>
+                <Text size='sm' line_height='m' weight='bold' color='prominent'>
                     {localize('Options & multipliers')}
                 </Text>
             );

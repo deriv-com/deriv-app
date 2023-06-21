@@ -123,6 +123,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_deposit_lock: false,
             is_dxtrade_allowed: false,
             is_eu: false,
+            is_eu_country: false,
             is_financial_account: false,
             is_financial_information_incomplete: false,
             is_low_risk: false,
@@ -197,6 +198,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_any_real_account: false,
             real_account_creation_unlock_date: 0,
             setPrevAccountType: jest.fn(),
+            prev_account_type: 'demo',
         },
         common: {
             error: {
@@ -285,6 +287,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleRegulatorsCompareModal: jest.fn(),
             selected_region: '',
             is_demo: false,
+            is_demo_low_risk: false,
             financial_restricted_countries: false,
             selected_account_type: 'real',
             no_CR_account: false,
@@ -294,6 +297,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTogglePlatformType: jest.fn(),
             setSelectedAccount: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
+            toggleIsTourOpen: jest.fn(),
             selectAccountType: jest.fn(),
         },
         menu: {

@@ -83,6 +83,8 @@ const TradersHub = () => {
         { text: localize('CFDs'), value: 'cfd' },
     ];
 
+    const platform_toggle_options_eu = [...platform_toggle_options].reverse();
+
     const platformTypeChange = (event: {
         target: {
             value: string;
@@ -122,7 +124,7 @@ const TradersHub = () => {
                     <MobileWrapper>
                         {is_landing_company_loaded ? (
                             <ButtonToggle
-                                buttons_arr={is_eu_user ? platform_toggle_options.reverse() : platform_toggle_options}
+                                buttons_arr={is_eu_user ? platform_toggle_options_eu : platform_toggle_options}
                                 className='traders-hub__button-toggle'
                                 has_rounded_button
                                 is_traders_hub={window.location.pathname === routes.traders_hub}

@@ -3,7 +3,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import FiatTransactionList from 'Components/fiat-transaction-list';
 import WalletTransfer from 'Components/wallet-transfer';
-import WithdrawRequestVerification from 'Components/withdraw-request-verification';
+import WithdrawRequestVerification from '../../withdraw-request-verification';
 
 export type TWalletType = 'real' | 'demo' | 'p2p' | 'payment_agent';
 

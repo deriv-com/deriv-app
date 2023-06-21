@@ -15,7 +15,7 @@ const ClearButton = () => {
     }, []);
 
     React.useEffect(() => {
-        if (is_bot_running === false) {
+        if (!is_bot_running) {
             setIsButtonDisabled(false);
         }
     }, [is_bot_running]);

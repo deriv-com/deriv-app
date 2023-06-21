@@ -40,7 +40,6 @@ describe('<Wallets />', () => {
             landing_company_name: 'svg',
             balance: 10000,
             loginid: 'CR123123',
-            landing_company_shortcode: 'svg',
             is_malta_wallet: false,
             is_selected: false,
         };

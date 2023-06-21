@@ -26,11 +26,8 @@ const useWalletsList = () => {
             is_demo: wallet.is_virtual === 1,
             /** Wallet balance */
             balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,
-            /** Landing company shortcode the account belongs to. */
+            /** Landing company shortcode the account belongs to. Use this instead of landing_company_shortcode for wallets */
             landing_company_name: wallet.landing_company_name === 'maltainvest' ? 'malta' : wallet.landing_company_name,
-            /** @deprecated should use `landing_company_name` instead */
-            landing_company_shortcode:
-                wallet.landing_company_name === 'maltainvest' ? 'malta' : wallet.landing_company_name,
             is_malta_wallet: wallet.landing_company_name === 'malta',
         }));
 

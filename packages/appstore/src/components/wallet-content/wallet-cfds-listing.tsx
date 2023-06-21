@@ -30,7 +30,7 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
     // TODO: delete when wallets API will work and get related accounts
     const getFakeAccounts = () => {
         const available_dxtrade_accounts =
-            wallet_account.landing_company_shortcode === 'svg'
+            wallet_account.landing_company_name === 'svg'
                 ? [
                       {
                           availability: 'Non-EU',
@@ -44,7 +44,7 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
                 : [];
 
         const combined_cfd_mt5_accounts =
-            wallet_account.landing_company_shortcode === 'svg'
+            wallet_account.landing_company_name === 'svg'
                 ? [
                       {
                           action_type: 'get',
@@ -91,9 +91,7 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
     const { is_landing_company_loaded } = client;
     const { is_mobile } = ui;
     const accounts_sub_text =
-        wallet_account.landing_company_shortcode === 'svg'
-            ? localize('Compare accounts')
-            : localize('Account information');
+        wallet_account.landing_company_name === 'svg' ? localize('Compare accounts') : localize('Account information');
 
     const getMT5AccountAuthStatus = (current_acc_status: string) => {
         if (current_acc_status === 'proof_failed') {
@@ -157,7 +155,7 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
                                 icon={existing_account.icon}
                                 sub_title={existing_account?.sub_title}
                                 name={!has_mt5_account_status ? existing_account?.name : ''}
-                                short_code_and_region={wallet_account.landing_company_shortcode}
+                                short_code_and_region={wallet_account.landing_company_name}
                                 platform={existing_account.platform}
                                 description={existing_account.description}
                                 key={existing_account.key}

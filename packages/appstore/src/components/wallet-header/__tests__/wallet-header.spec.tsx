@@ -27,7 +27,6 @@ describe('<WalletHeader />', () => {
             landing_company_name: 'svg',
             balance: 10000,
             loginid: 'CRW123123',
-            landing_company_shortcode: 'svg',
             is_malta_wallet: false,
             is_selected: true,
         };
@@ -70,7 +69,6 @@ describe('<WalletHeader />', () => {
 
         it('Should render right currency card for REAL MALTA fiat', () => {
             mocked_props.currency = 'ETH';
-            mocked_props.landing_company_shortcode = 'malta';
             mocked_props.landing_company_name = 'malta';
             render(
                 <StoreProvider store={mockedRootStore}>
@@ -87,7 +85,6 @@ describe('<WalletHeader />', () => {
         it('Should render right balance with balance as props', () => {
             mocked_props.balance = 2345.56;
             mocked_props.currency = 'EUR';
-            mocked_props.landing_company_shortcode = 'malta';
             mocked_props.landing_company_name = 'malta';
             render(
                 <StoreProvider store={mockedRootStore}>
@@ -102,7 +99,6 @@ describe('<WalletHeader />', () => {
         it('Should render balance === 0.00', () => {
             mocked_props.balance = 0;
             mocked_props.currency = 'EUR';
-            mocked_props.landing_company_shortcode = 'malta';
             mocked_props.landing_company_name = 'malta';
             render(
                 <StoreProvider store={mockedRootStore}>

@@ -1,23 +1,18 @@
 import React, { useState } from 'react';
 import { Text, Dropdown } from '@deriv/components';
-import { useCFDAllAccounts, usePlatformAccounts, useWalletList, useWalletTransactions } from '@deriv/hooks';
-import { getCurrencyDisplayCode, isCryptocurrency } from '@deriv/shared';
+import { useWalletTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { groupTransactionsByDay } from '@deriv/utils';
-import { getWalletCurrencyIcon } from 'Constants/utils';
 import NonPendingTransaction from './non-pending-transaction';
 import './transaction-list.scss';
 
 const TransactionList = () => {
     const {
-        client: { accounts, currency: wallet_currency, loginid, landing_company_shortcode: shortcode },
+        client: { currency: wallet_currency, loginid },
         traders_hub: { is_demo },
-        ui: { is_dark_mode_on, is_mobile },
+        ui: { is_mobile },
     } = useStore();
-    const { data: wallets } = useWalletList();
-    const { demo: demo_platform_accounts, real: real_platform_accounts } = usePlatformAccounts();
-    const cfd_accounts = useCFDAllAccounts();
 
     const filter_options = [
         {
@@ -51,28 +46,8 @@ const TransactionList = () => {
 
     const { transactions } = useWalletTransactions(filter);
 
-    // TODO: change the way grouping is being done
+    // @ts-expect-error reset_balance is not supported in the API yet
     const grouped_transactions = groupTransactionsByDay(transactions);
-
-    // TODO: refactor once we have useActiveWallet merged
-    const current_wallet = wallets.find(wallet => wallet.loginid === loginid) as typeof wallets[number];
-
-    const accountName = (is_virtual: boolean, currency: string, is_wallet: boolean) =>
-        `${is_virtual ? localize('Demo') : ''} ${getCurrencyDisplayCode(currency)} ${localize(
-            is_wallet ? 'Wallet' : 'account'
-        )}`;
-
-    const landingCompanyName = (landing_company_shortcode: string) => {
-        switch (landing_company_shortcode) {
-            case 'svg':
-                return landing_company_shortcode.toUpperCase();
-            case 'malta':
-            case 'maltainvest':
-                return 'Malta';
-            default:
-                return '';
-        }
-    };
 
     const TransactionsForADay = ({
         day,

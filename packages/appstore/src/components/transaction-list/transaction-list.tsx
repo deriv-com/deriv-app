@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
-import { Statement } from '@deriv/api-types';
 import { Text, Dropdown } from '@deriv/components';
-import { useWalletList, useWalletStatement } from '@deriv/hooks';
+import { useCFDAllAccounts, usePlatformAccounts, useWalletList, useWalletTransactions } from '@deriv/hooks';
 import { getCurrencyDisplayCode, isCryptocurrency } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { groupTransactionsByDay } from '@deriv/utils';
 import { getWalletCurrencyIcon } from 'Constants/utils';
-import FiatTransactionListItem from './fiat-transaction-list-item';
+import NonPendingTransaction from './non-pending-transaction';
 import './transaction-list.scss';
-import useWalletTransactions from '@deriv/hooks/src/useWalletTransactions';
 
 const TransactionList = () => {
     const {
@@ -18,6 +16,8 @@ const TransactionList = () => {
         ui: { is_dark_mode_on, is_mobile },
     } = useStore();
     const { data: wallets } = useWalletList();
+    const { demo: demo_platform_accounts, real: real_platform_accounts } = usePlatformAccounts();
+    const cfd_accounts = useCFDAllAccounts();
 
     const filter_options = [
         {
@@ -49,7 +49,7 @@ const TransactionList = () => {
 
     const [filter, setFilter] = useState<typeof filter_options[number]['value']>('');
 
-    const { transactions } = useWalletStatement(filter);
+    const { transactions } = useWalletTransactions(filter);
 
     // TODO: change the way grouping is being done
     const grouped_transactions = groupTransactionsByDay(transactions);
@@ -92,68 +92,29 @@ const TransactionList = () => {
                 >
                     {day}
                 </Text>
-                {transaction_list
-                    .map(transaction => {
-                        if (
-                            transaction.amount === undefined ||
-                            transaction.balance_after === undefined ||
-                            transaction.action_type === undefined
-                        )
-                            return null;
-                        let account_title = current_wallet.name;
-                        let account_currency = wallet_currency;
-                        let icon = current_wallet.icon;
-                        let icon_type = 'fiat';
-                        let is_deriv_apps = false;
-                        if (transaction.action_type === 'transfer') {
-                            const other_party = transaction.to?.loginid === loginid ? transaction.from : transaction.to;
-                            const other_loginid = other_party?.loginid;
-                            if (!other_loginid) return null;
-                            const other_account = accounts[other_loginid];
-                            if (other_account) {
-                                if (!other_account.currency) return null;
-                                account_currency = other_account.currency;
-                                account_title = accountName(
-                                    !!other_account.is_virtual,
-                                    other_account.currency,
-                                    other_account.account_category === 'wallet'
-                                );
-                                icon = getWalletCurrencyIcon(
-                                    other_account.is_virtual ? 'demo' : other_account.currency || '',
-                                    is_dark_mode_on,
-                                    false
-                                );
-                                icon_type = isCryptocurrency(account_currency) ? 'crypto' : 'fiat';
-                            } else {
-                                const landing_company_name = landingCompanyName(shortcode);
-                                const account_category = is_demo ? localize('Demo') : `(${landing_company_name})`;
-                                account_title = `${localize('Deriv Apps')} ${account_category} ${localize('account')}`;
-                                is_deriv_apps = true;
-                            }
+                {transaction_list.map(transaction => (
+                    <NonPendingTransaction
+                        key={transaction.transaction_id}
+                        action_type={
+                            // TODO fix this mismatch somehow
+                            transaction.action_type
                         }
-                        return (
-                            <FiatTransactionListItem
-                                key={transaction.transaction_id}
-                                action_type={
-                                    // TODO fix this mismatch somehow
-                                    transaction.action_type
-                                }
-                                account_currency={account_currency}
-                                account_name={account_title}
-                                amount={
-                                    transaction.action_type === 'transfer' && transaction?.from?.loginid === loginid
-                                        ? -transaction.amount
-                                        : transaction.amount
-                                }
-                                balance_after={transaction.balance_after}
-                                currency={wallet_currency}
-                                icon={icon}
-                                icon_type={is_demo ? 'demo' : icon_type}
-                                is_deriv_apps={is_deriv_apps}
-                            />
-                        );
-                    })
-                    .filter(Boolean)}
+                        account_currency={transaction.account_currency}
+                        account_name={transaction?.account_name}
+                        amount={
+                            (transaction.action_type === 'transfer' &&
+                            transaction?.from?.loginid === loginid &&
+                            typeof transaction.amount === 'number'
+                                ? -transaction?.amount
+                                : transaction?.amount) || 0
+                        }
+                        balance_after={transaction.balance_after || 0}
+                        currency={wallet_currency}
+                        icon={transaction.icon}
+                        icon_type={is_demo ? 'demo' : transaction.icon_type}
+                        is_deriv_apps={false}
+                    />
+                ))}
             </div>
         );
     };

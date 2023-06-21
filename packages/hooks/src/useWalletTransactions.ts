@@ -1,6 +1,8 @@
 import { useFetch } from '@deriv/api';
 import { Statement } from '@deriv/api-types';
 import { useStore } from '@deriv/stores';
+import { getWalletCurrencyIcon } from '@deriv/utils';
+import { useCFDAllAccounts, useCurrencyConfig, usePlatformAccounts, useWalletList } from './index';
 
 type TWalletTransaction =
     | Omit<Required<Statement>['transactions'][number], 'action_type'> & {
@@ -11,11 +13,22 @@ const useWalletTransactions = (
     action_type: '' | 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer'
 ) => {
     const {
-        client: { loginid },
+        client: { accounts, currency: wallet_currency, loginid, landing_company_shortcode: shortcode },
         traders_hub: { is_demo },
+        ui: { is_dark_mode_on },
     } = useStore();
+    const { data: wallets } = useWalletList();
+    const { demo: demo_platform_accounts, real: real_platform_accounts } = usePlatformAccounts();
+    const cfd_accounts = useCFDAllAccounts();
+    const { getConfig } = useCurrencyConfig();
 
-    // TODO remove mock
+    const accountName = (is_virtual: boolean, currency: string, is_wallet: boolean) =>
+        `${is_virtual ? 'Demo' : ''} ${currency} ${is_wallet ? 'Wallet' : 'account'}`;
+
+    // TODO: refactor once we have useActiveWallet merged
+    const current_wallet = wallets.find(wallet => wallet.loginid === loginid) as typeof wallets[number];
+
+    // TODO remove this mock when we're to switch to API data
     const mock_transactions = is_demo
         ? [
               {
@@ -203,21 +216,71 @@ const useWalletTransactions = (
             },
         }),
     });
-    const transactions = data?.statement?.transactions?.filter(
-        el =>
-            !!el.action_type &&
-            ['deposit', 'withdrawal', 'initial_fund', 'reset_balance', 'transfer'].includes(el.action_type)
+
+    // TODO: un-comment this code when we're to switch to API data
+    // const transactions = data?.statement?.transactions?.filter(
+    //     el =>
+    //         !!el.action_type &&
+    //         ['deposit', 'withdrawal', 'initial_fund', 'reset_balance', 'transfer'].includes(el.action_type)
+    // ) as TWalletTransaction[];
+
+    const transactions = (mock_transactions as Required<Statement>['transactions']).filter(
+        el => !action_type || el.action_type === action_type
     ) as TWalletTransaction[];
 
-    // return { transactions, isLoading, isSuccess };
+    const modified_transactions = transactions
+        .map(transaction => {
+            if (
+                transaction.amount === undefined ||
+                transaction.balance_after === undefined ||
+                transaction.action_type === undefined
+            )
+                return null;
+            let account_name = current_wallet.name;
+            let account_currency = wallet_currency;
+            let icon = current_wallet.icon;
+            let icon_type = 'fiat';
+            let is_deriv_apps = false;
+            if (transaction.action_type === 'transfer') {
+                const other_party = transaction.to?.loginid === loginid ? transaction.from : transaction.to;
+                const other_loginid = other_party?.loginid;
+                if (!other_loginid) return null;
+                const other_account = accounts[other_loginid];
+                if (other_account) {
+                    if (!other_account.currency) return null;
+                    account_currency = other_account.currency;
+                    account_name = accountName(
+                        !!other_account.is_virtual,
+                        other_account.currency,
+                        other_account.account_category === 'wallet'
+                    );
+                    icon = getWalletCurrencyIcon(
+                        other_account.is_virtual ? 'demo' : other_account.currency || '',
+                        is_dark_mode_on,
+                        false
+                    );
+                    const currency_config = getConfig(account_currency);
+                    const is_crypto = currency_config?.is_crypto;
+                    icon_type = is_crypto ? 'crypto' : 'fiat';
+                } else {
+                    const landing_company_name = shortcode;
+                    const account_category = is_demo ? 'Demo' : `(${landing_company_name})`;
+                    account_name = `Deriv Apps ${account_category} account`;
+                    is_deriv_apps = true;
+                }
+            }
 
-    return {
-        transactions: (mock_transactions as Required<Statement>['transactions']).filter(
-            el => !action_type || el.action_type === action_type
-        ) as TWalletTransaction[],
-        isLoading: false,
-        isSuccess: true,
-    };
+            return {
+                ...transaction,
+                account_name,
+                account_currency,
+                icon,
+                icon_type,
+            };
+        })
+        .filter(<T>(value: T | null): value is T => value !== null);
+
+    return { transactions: modified_transactions, isLoading, isSuccess };
 };
 
 export default useWalletTransactions;

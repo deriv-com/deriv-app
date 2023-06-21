@@ -1,43 +1,9 @@
 import { useMemo } from 'react';
 import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
+import { getWalletCurrencyIcon } from '@deriv/utils';
 
-// TODO: Maybe move this function to deriv/utils. But this function will be used only here, so...
-const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_modal = false) => {
-    switch (currency) {
-        case 'demo':
-            if (is_modal) return 'IcWalletDerivDemoLight';
-            return is_dark_mode_on ? 'IcWalletDerivDemoDark' : 'IcWalletDerivDemoLight';
-        case 'USD':
-            return 'IcWalletCurrencyUsd';
-        case 'EUR':
-            return 'IcWalletCurrencyEur';
-        case 'AUD':
-            return 'IcWalletCurrencyAud';
-        case 'GBP':
-            return 'IcWalletCurrencyGbp';
-        case 'BTC':
-            return is_dark_mode_on ? 'IcWalletBitcoinDark' : 'IcWalletBitcoinLight';
-        case 'ETH':
-            return is_dark_mode_on ? 'IcWalletEtheriumDark' : 'IcWalletEtheriumLight';
-        case 'USDT':
-        case 'eUSDT':
-        case 'tUSDT':
-        case 'UST':
-            if (is_modal) {
-                return is_dark_mode_on ? 'IcWalletModalTetherDark' : 'IcWalletModalTetherLight';
-            }
-            return is_dark_mode_on ? 'IcWalletTetherDark' : 'IcWalletTetherLight';
-        case 'LTC':
-            return is_dark_mode_on ? 'IcWalletLiteCoinDark' : 'IcWalletLiteCoinLight';
-        case 'USDC':
-            return is_dark_mode_on ? 'IcWalletUsdCoinDark' : 'IcWalletUsdCoinLight';
-        default:
-            return 'Unknown';
-    }
-};
-
-const useWalletList = () => {
+const useWalletsList = () => {
     const { client, ui } = useStore();
     const { is_dark_mode_on } = ui;
     const { accounts, loginid, is_crypto } = client;
@@ -66,15 +32,12 @@ const useWalletList = () => {
                 return {
                     ...wallet,
                     currency,
-                    /** Indicating whether the wallet is a virtual-money wallet. */
-                    is_demo: wallet.is_virtual === 1,
+                    /** Indicating whether the wallet is the currently selected wallet. */
+                    is_selected: wallet.loginid === loginid,
                     /** Wallet balance */
                     balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,
                     /** Landing company shortcode the account belongs to. */
                     landing_company_name:
-                        wallet.landing_company_name === 'maltainvest' ? 'malta' : wallet.landing_company_name,
-                    /** @deprecated should use `landing_company_name` instead */
-                    landing_company_shortcode:
                         wallet.landing_company_name === 'maltainvest' ? 'malta' : wallet.landing_company_name,
                     is_disabled: Boolean(wallet.is_disabled),
                     is_virtual: Boolean(wallet.is_virtual),
@@ -98,7 +61,7 @@ const useWalletList = () => {
 
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });
-    }, [balance_data?.balance?.accounts, data?.authorize?.account_list, is_crypto, is_dark_mode_on]);
+    }, [balance_data?.balance?.accounts, data?.authorize?.account_list, is_crypto, is_dark_mode_on, loginid]);
 
     return {
         ...rest,
@@ -106,4 +69,4 @@ const useWalletList = () => {
     };
 };
 
-export default useWalletList;
+export default useWalletsList;

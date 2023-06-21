@@ -18,7 +18,7 @@ type TFiatTransactionListItem = Pick<TStatementTransaction, 'amount' | 'balance_
     is_deriv_apps?: boolean;
 };
 
-const FiatTransactionListItem = ({
+const NonPendingTransaction = ({
     account_currency,
     account_name,
     action_type,
@@ -90,4 +90,4 @@ const FiatTransactionListItem = ({
     );
 };
 
-export default FiatTransactionListItem;
+export default NonPendingTransaction;

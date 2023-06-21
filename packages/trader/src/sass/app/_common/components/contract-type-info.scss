@@ -7,7 +7,7 @@
 
     @include mobile {
         height: calc(100% - 148.5px);
-        &--has-toggle-buttons {
+        &--no-toggle-buttons {
             height: calc(100% - 74px);
         }
     }
@@ -130,7 +130,15 @@
             }
         }
 
-        &--has-toggle-buttons {
+        &--has-video {
+            height: 27rem;
+
+            @include mobile {
+                height: 18.45rem;
+            }
+        }
+
+        &--no-toggle-buttons {
             margin-top: 1.6rem;
         }
     }

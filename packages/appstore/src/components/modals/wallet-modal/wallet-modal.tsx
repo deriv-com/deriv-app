@@ -1,20 +1,28 @@
-import React from 'react';
-import { Modal } from '@deriv/components';
+import React, { useEffect } from 'react';
+import { Modal, Loading } from '@deriv/components';
 import WalletModalHeader from './wallet-modal-header';
 import WalletModalBody from './wallet-modal-body';
 import { observer, useStore } from '@deriv/stores';
 import { useActiveWallet, useWalletModalActionHandler } from '@deriv/hooks';
+import debounce from 'lodash.debounce';
 
 const WalletModal = observer(() => {
     const store = useStore();
 
     const {
-        client: { balance, currency, landing_company_shortcode: shortcode },
+        client: { balance, currency, landing_company_shortcode: shortcode, is_authorize, switchAccount },
         ui: { is_dark_mode_on, is_wallet_modal_visible, is_mobile, setIsWalletModalVisible },
-        traders_hub: { active_modal_tab_index },
+        traders_hub: { active_modal_tab_index, active_modal_wallet_id },
     } = store;
 
     const wallet = useActiveWallet();
+
+    useEffect(() => {
+        if (wallet?.loginid !== active_modal_wallet_id) {
+            // /** Adding a delay as per requirement because the modal must appear first, then switch the account */
+            debounce(switchAccount, 200)(active_modal_wallet_id);
+        }
+    }, [active_modal_wallet_id, switchAccount, wallet?.loginid]);
 
     const { setWalletModalActiveTabIndex } = useWalletModalActionHandler();
 
@@ -42,29 +50,41 @@ const WalletModal = observer(() => {
         [is_mobile, is_wallet_modal_visible]
     );
 
+    const ModalContent = () => {
+        if (wallet?.loginid !== active_modal_wallet_id) return <Loading is_fullscreen={false} />;
+
+        if (!is_authorize) return <Loading is_fullscreen={false} />;
+
+        return (
+            <React.Fragment>
+                <WalletModalHeader
+                    balance={balance}
+                    closeModal={closeModal}
+                    currency={currency}
+                    is_dark={is_dark_mode_on}
+                    is_demo={is_demo}
+                    is_mobile={is_mobile}
+                    shortcode={shortcode}
+                    is_wallet_name_visible={is_wallet_name_visible}
+                />
+                <WalletModalBody
+                    active_tab_index={active_modal_tab_index}
+                    contentScrollHandler={contentScrollHandler}
+                    is_dark={is_dark_mode_on}
+                    is_demo={is_demo}
+                    is_mobile={is_mobile}
+                    is_wallet_name_visible={is_wallet_name_visible}
+                    setActiveTabIndex={setWalletModalActiveTabIndex}
+                    setIsWalletNameVisible={setIsWalletNameVisible}
+                    wallet_type={wallet_type}
+                />
+            </React.Fragment>
+        );
+    };
+
     return (
         <Modal is_open={is_wallet_modal_visible} className='wallet-modal' portalId='deriv_app'>
-            <WalletModalHeader
-                balance={balance}
-                closeModal={closeModal}
-                currency={currency}
-                is_dark={is_dark_mode_on}
-                is_demo={is_demo}
-                is_mobile={is_mobile}
-                shortcode={shortcode}
-                is_wallet_name_visible={is_wallet_name_visible}
-            />
-            <WalletModalBody
-                active_tab_index={active_modal_tab_index}
-                contentScrollHandler={contentScrollHandler}
-                is_dark={is_dark_mode_on}
-                is_demo={is_demo}
-                is_mobile={is_mobile}
-                is_wallet_name_visible={is_wallet_name_visible}
-                setActiveTabIndex={setWalletModalActiveTabIndex}
-                setIsWalletNameVisible={setIsWalletNameVisible}
-                wallet_type={wallet_type}
-            />
+            <ModalContent />
         </Modal>
     );
 });

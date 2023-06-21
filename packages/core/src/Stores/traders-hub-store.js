@@ -31,6 +31,7 @@ export default class TradersHubStore extends BaseStore {
     is_real_wallets_upgrade_on = false;
     is_wallet_migration_failed = false;
     active_modal_tab_index = 0;
+    active_modal_wallet_id = undefined;
 
     constructor(root_store) {
         super({ root_store });
@@ -53,6 +54,7 @@ export default class TradersHubStore extends BaseStore {
             selected_account_type: observable,
             selected_platform_type: observable,
             active_modal_tab_index: observable,
+            active_modal_wallet_id: observable,
             selected_region: observable,
             open_failed_verification_for: observable,
             is_real_wallets_upgrade_on: observable,
@@ -66,6 +68,7 @@ export default class TradersHubStore extends BaseStore {
             getExistingAccounts: action.bound,
             handleTabItemClick: action.bound,
             setWalletModalActiveTabIndex: action.bound,
+            setWalletModalActiveWalletID: action.bound,
             has_any_real_account: computed,
             is_demo_low_risk: computed,
             is_demo: computed,
@@ -174,6 +177,10 @@ export default class TradersHubStore extends BaseStore {
 
     setWalletModalActiveTabIndex(index) {
         this.active_modal_tab_index = index;
+    }
+
+    setWalletModalActiveWalletID(wallet_id) {
+        this.active_modal_wallet_id = wallet_id;
     }
 
     get no_MF_account() {

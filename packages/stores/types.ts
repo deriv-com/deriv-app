@@ -450,6 +450,8 @@ type TTradersHubStore = {
     available_dxtrade_accounts: AvailableAccount[];
     active_modal_tab_index: number;
     setWalletModalActiveTabIndex: (index: number) => void;
+    active_modal_wallet_id?: string;
+    setWalletModalActiveWalletID: (wallet_id?: string) => void;
 };
 
 /**

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Modal } from '@deriv/components';
 import { useCurrencyConfig, useWalletList } from '@deriv/hooks';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import WalletModalHeader from './wallet-modal-header';
 import WalletModalBody from './wallet-modal-body';
-import { observer, useStore } from '@deriv/stores';
 import type { TWalletType } from './provider';
 
 // TODO: remove this type when we can use real current wallet object

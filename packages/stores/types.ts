@@ -234,7 +234,9 @@ type TClientStore = {
     has_any_real_account: boolean;
     real_account_creation_unlock_date: number;
     setPrevAccountType: (account_type: string) => void;
-    init: (login_new_user: object) => void;
+    init: (login_new_user?: object) => void;
+    setLoginId: (loginid: string) => void;
+    resetLocalStorageValues: (loginid: string) => void;
 };
 
 type TCommonStoreError = {

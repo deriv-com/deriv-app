@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Dropdown, Input, Text } from '@deriv/components';
+import classNames from 'classnames';
+import { Button, Checkbox, Dropdown, Input, Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { useWS } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
@@ -28,13 +29,15 @@ const MockDialog = () => {
     };
 
     const handleMockLogin = async () => {
-        const response = WS.send({
+        const response = await WS.send({
             generate_mock: 1,
             login: 1,
         });
         if (response) {
-            const { active_loginid, ...accounts } = response;
+            const { active_loginid, echo_req, req_id, ...accounts } = response;
+            client.setLoginId(active_loginid);
             client.setLoginInformation(accounts, active_loginid);
+            client.resetLocalStorageValues(active_loginid);
         }
     };
 
@@ -52,14 +55,33 @@ const MockDialog = () => {
         WS.closeAndOpenNewConnection(getLanguage(), '');
     };
 
+    const getServerStatus = (): 'online' | 'connecting' | 'offline' => {
+        if (session_id) {
+            return 'online';
+        } else if (session_id && !client.is_logged_in && client.is_logging_in) {
+            return 'connecting';
+        }
+        return 'offline';
+    };
+
     return (
         <div className='mock-dialog'>
             <div className='mock-dialog__title'>
-                <Text weight='bold' size='sm'>
+                <Text size='sm' weight='bold'>
                     Mock Server Config
                 </Text>
             </div>
+            <div className={classNames('mock-dialog__status', `mock-dialog__status--${getServerStatus()}`)}>
+                <Text size='xxs' weight='bold'>
+                    Mock Server status: {getServerStatus().toLocaleUpperCase()}
+                </Text>
+            </div>
             <div className='mock-dialog__form'>
+                <Checkbox
+                    label='Enable mock server'
+                    checked={!!session_id}
+                    onChange={() => handleSessionIdChange('default')}
+                />
                 <div className='mock-dialog__form--dropdown-container'>
                     <Dropdown
                         placeholder='Available session id'
@@ -96,9 +118,18 @@ const MockDialog = () => {
                     onChange={e => setSessionId(e.target.value)}
                 />
                 <div className='mock-dialog__form--submit-container'>
-                    <Button onClick={() => handleMockLogin()}>Login</Button>
-                    <Button onClick={() => handleSessionIdChange(session_id)}>Connect</Button>
-                    <Button onClick={() => handleClearAll()}>Reset All</Button>
+                    <Button disabled={getServerStatus() === 'offline'} onClick={() => handleMockLogin()}>
+                        Login
+                    </Button>
+                </div>
+                <div className=''>
+                    <Button
+                        disabled={getServerStatus() === 'offline'}
+                        onClick={() => handleSessionIdChange(session_id)}
+                    >
+                        Connect
+                    </Button>
+                    <Button onClick={() => handleClearAll()}>Disconnect</Button>
                 </div>
             </div>
         </div>

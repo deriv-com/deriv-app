@@ -132,6 +132,7 @@ type TCFDPasswordModalProps = RouteComponentProps & {
     form_error?: string;
     getAccountStatus: (platform: string) => void;
     is_eu: boolean;
+    is_eu_user: boolean;
     is_logged_in: boolean;
     is_fully_authenticated: boolean;
     is_cfd_password_modal_enabled: boolean;
@@ -646,6 +647,7 @@ const CFDPasswordModal = ({
     form_error,
     getAccountStatus,
     history,
+    is_eu_user,
     is_logged_in,
     context,
     is_cfd_password_modal_enabled,
@@ -841,24 +843,28 @@ const CFDPasswordModal = ({
             getDxCompanies()[category as keyof TDxCompanies][type as keyof TDxCompanies['demo' | 'real']].short_title;
         const jurisdiction_label =
             jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
-        const mt5_platform_label = jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'MT5' : '';
+        const mt5_platform_label =
+            is_eu_user || jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'MT5' : '';
 
         if (category === 'real') {
             return (
                 <React.Fragment>
                     <Localize
-                        i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}} {{jurisdiction_selected_shortcode}}</1> account. '
+                        i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{deriv_keyword}} {{platform}}</0> <1>{{type}} {{jurisdiction_selected_shortcode}}</1> account. '
                         values={{
                             // TODO: remove below condition once deriv x changes are completed
+                            deriv_keyword: is_eu_user ? 'Deriv' : '',
                             type: platform === CFD_PLATFORMS.DXTRADE ? deriv_x_type_label : type_label,
                             platform: platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : 'Deriv X',
                             category: category_label,
                             jurisdiction_selected_shortcode:
-                                platform === CFD_PLATFORMS.MT5 && !show_eu_related_content ? jurisdiction_label : '',
+                                is_eu_user || (platform === CFD_PLATFORMS.MT5 && !show_eu_related_content)
+                                    ? jurisdiction_label
+                                    : '',
                         }}
                         components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}
                     />
-                    {platform === CFD_PLATFORMS.DXTRADE ? (
+                    {is_eu_user || platform === CFD_PLATFORMS.DXTRADE ? (
                         <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
                     ) : (
                         <ReviewMessageForMT5
@@ -1005,6 +1011,7 @@ export default connect(({ client, modules, traders_hub }: RootStore) => ({
     landing_companies: client.landing_companies,
     is_eu: client.is_eu,
     is_eu_country: client.is_eu_country,
+    is_eu_user: traders_hub.is_eu_user,
     is_logged_in: client.is_logged_in,
     is_cfd_success_dialog_enabled: modules.cfd.is_cfd_success_dialog_enabled,
     is_cfd_password_modal_enabled: modules.cfd.is_cfd_password_modal_enabled,

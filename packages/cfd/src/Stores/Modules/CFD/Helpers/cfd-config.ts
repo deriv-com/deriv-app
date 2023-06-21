@@ -232,6 +232,9 @@ export const getFormattedJurisdictionCode = (jurisdiction_code: string) => {
         case Jurisdiction.VANUATU:
             formatted_label = localize('Vanuatu');
             break;
+        case Jurisdiction.MALTA_INVEST:
+            formatted_label = localize('Malta');
+            break;
         default:
             formatted_label = jurisdiction_code?.toUpperCase();
             break;

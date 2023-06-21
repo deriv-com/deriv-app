@@ -12,7 +12,7 @@ const mock_props = {
 
 describe('UnsupportedContractModal', () => {
     it('should render modal component', () => {
-        const mock_root_store = mockStore({});
+        const mock_root_store = mockStore({ ui: { is_unsupported_contract_modal_visible: true } });
 
         ReactDOM.createPortal = jest.fn(component => {
             return component;

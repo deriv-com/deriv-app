@@ -8,7 +8,6 @@ import WalletHeaderBalance from './wallet-header-balance';
 import { TWalletAccount } from 'Types';
 import { getWalletHeaderButtons } from 'Constants/utils';
 import { observer, useStore } from '@deriv/stores';
-import { useActiveWallet } from '@deriv/hooks';
 import './wallet-header.scss';
 
 type TWalletHeader = {
@@ -18,7 +17,7 @@ type TWalletHeader = {
 const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
     const { client, traders_hub } = useStore();
     const { switchAccount } = client;
-    const is_active = useActiveWallet()?.is_selected;
+    const is_active = wallet_account.is_selected;
     const { multipliers_account_status } = traders_hub;
 
     const is_demo = wallet_account.is_virtual;

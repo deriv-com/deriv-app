@@ -4,7 +4,6 @@ import WalletHeader from 'Components/wallet-header';
 import WalletContent from 'Components/wallet-content';
 import { CSSTransition } from 'react-transition-group';
 import { TWalletAccount } from 'Types';
-import { useActiveWallet } from '@deriv/hooks';
 import './wallet.scss';
 
 type TWallet = {
@@ -13,7 +12,7 @@ type TWallet = {
 
 const Wallet = ({ wallet_account }: TWallet) => {
     const is_demo = wallet_account.is_virtual;
-    const active = useActiveWallet()?.is_selected;
+    const active = wallet_account.is_selected;
 
     return (
         <div

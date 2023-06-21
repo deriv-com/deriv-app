@@ -13,7 +13,7 @@ module.exports = {
         filename: 'index.js',
         sourceMapFilename: 'index.js.map',
     },
-    target: 'node',
+    target: 'web',
     module: {
         rules: [
             {
@@ -22,9 +22,7 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: [
-                            ['@babel/preset-env', { targets: "defaults" }],
-                        ],
+                        presets: [['@babel/preset-env', { targets: 'defaults' }]],
                     },
                 },
             },

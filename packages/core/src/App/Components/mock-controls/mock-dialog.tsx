@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Dropdown, Input, Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { useWS } from '@deriv/shared';
+import { getLanguage } from '@deriv/translations';
 import './mock-dialog.scss';
 
 const MockDialog = () => {
@@ -40,9 +41,15 @@ const MockDialog = () => {
     const handleSessionIdChange = (id: string) => {
         window.localStorage.setItem('session_id', id);
         if (id !== session_id) {
-            WS.closeAndOpenNewConnection(id);
+            WS.closeAndOpenNewConnection(getLanguage(), id);
             setSessionId(id);
         }
+    };
+
+    const handleClearAll = () => {
+        window.localStorage.removeItem('session_id');
+        setSessionId('');
+        WS.closeAndOpenNewConnection(getLanguage(), '');
     };
 
     return (
@@ -91,7 +98,7 @@ const MockDialog = () => {
                 <div className='mock-dialog__form--submit-container'>
                     <Button onClick={() => handleMockLogin()}>Login</Button>
                     <Button onClick={() => handleSessionIdChange(session_id)}>Connect</Button>
-                    <Button>Disconnect</Button>
+                    <Button onClick={() => handleClearAll()}>Reset All</Button>
                 </div>
             </div>
         </div>

@@ -197,6 +197,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_any_real_account: false,
             real_account_creation_unlock_date: 0,
             setPrevAccountType: jest.fn(),
+            setLoginInformation: jest.fn(),
+            init: jest.fn(),
         },
         common: {
             error: {

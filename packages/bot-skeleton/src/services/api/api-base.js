@@ -38,7 +38,7 @@ class APIBase {
         if (window) {
             window.addEventListener('online', this.reconnectIfNotConnected);
             window.addEventListener('focus', this.reconnectIfNotConnected);
-            //we can even run the bot by opening a new websocket connection and run the bot from here!
+            //we can even run the bot by opening a new websocket connection here!
             document.addEventListener('visibilitychange', () => {
                 if (this.api.connection.readyState === 3) {
                     const { stopBot, clearStat } = DBotStore.instance.run_panel;

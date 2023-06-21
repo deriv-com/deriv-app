@@ -2,14 +2,13 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { isDesktop, isMobile } from '@deriv/shared';
 import IdvDocumentSubmit from '../idv-document-submit';
-// import { isSequentialNumber, isRecurringNumberRegex } from '../utils';
-import { FormikValues } from 'formik';
 
 jest.mock('react-router');
 jest.mock('Assets/ic-document-submit-icon.svg', () => jest.fn(() => 'DocumentSubmitLogo'));
-jest.mock('../utils.js', () => ({
-    getDocumentData(country_code: keyof FormikValues, key: number) {
-        const data: FormikValues = {
+jest.mock('Helpers/utils.ts', () => ({
+    ...jest.requireActual('Helpers/utils.ts'),
+    getDocumentData: jest.fn((country_code, key) => {
+        const data = {
             tc: {
                 document_1: {
                     new_display_name: '',
@@ -24,7 +23,7 @@ jest.mock('../utils.js', () => ({
             },
         };
         return data[country_code][key];
-    },
+    }),
     getRegex: jest.fn(() => /5436454364243/i),
 }));
 
@@ -35,7 +34,18 @@ jest.mock('@deriv/shared', () => ({
     formatInput: jest.fn(() => '5436454364243'),
     WS: {
         send: jest.fn(() => Promise.resolve({ error: '' })),
+        setSettings: jest.fn(() => Promise.resolve({ error: '' })),
+        authorized: {
+            storage: {
+                getSettings: jest.fn(() => Promise.resolve({ error: '' })),
+            },
+        },
     },
+    filterObjProperties: jest.fn(() => ({
+        first_name: 'test',
+        last_name: 'test',
+        date_of_birth: '1970-01-01',
+    })),
 }));
 
 describe('<IdvDocumentSubmit/>', () => {
@@ -57,19 +67,20 @@ describe('<IdvDocumentSubmit/>', () => {
             },
         },
         is_from_external: false,
+        account_settings: {},
+        getChangeableFields: jest.fn(() => []),
     };
 
     it('should render IdvDocumentSubmit component', () => {
         render(<IdvDocumentSubmit {...mock_props} />);
 
-        expect(screen.getByText(/verify your identity/i)).toBeInTheDocument();
-        expect(screen.getByText(/Please select the document type and enter the ID number/i)).toBeInTheDocument();
-        expect(screen.getByText('DocumentSubmitLogo')).toBeInTheDocument();
+        expect(screen.getByText(/Identity verification/i)).toBeInTheDocument();
+        expect(screen.getByText(/details/i)).toBeInTheDocument();
         expect(screen.queryByText('New ID type name')).not.toBeInTheDocument();
         expect(screen.queryByText('Please select a document type.')).not.toBeInTheDocument();
 
         const inputs = screen.getAllByRole<HTMLTextAreaElement>('textbox');
-        expect(inputs.length).toBe(2);
+        expect(inputs.length).toBe(5);
         expect(inputs[0].name).toBe('document_type');
         expect(inputs[1].name).toBe('document_number');
     });
@@ -104,9 +115,6 @@ describe('<IdvDocumentSubmit/>', () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
 
-        const selected_doc_msg =
-            'Please ensure all your personal details are the same as in your chosen document. If you wish to update your personal details, go to account settings.';
-
         render(<IdvDocumentSubmit {...mock_props} />);
 
         const verifyBtn = screen.getByRole('button', { name: /verify/i });
@@ -117,11 +125,9 @@ describe('<IdvDocumentSubmit/>', () => {
         const document_number_input = screen.getByPlaceholderText<HTMLTextAreaElement>('Enter your document number');
         expect(document_number_input.name).toBe('document_number');
         expect(document_number_input).toBeDisabled();
-        expect(screen.queryByText(selected_doc_msg)).not.toBeInTheDocument();
 
         fireEvent.change(document_type_input, { target: { value: 'Test document 2 name' } });
         expect(document_number_input).toBeEnabled();
-        expect(screen.getByText(selected_doc_msg)).toBeInTheDocument();
         expect(screen.queryByText(/please enter the correct format/i)).not.toBeInTheDocument();
 
         fireEvent.blur(document_number_input);

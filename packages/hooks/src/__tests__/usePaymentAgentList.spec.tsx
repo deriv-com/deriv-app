@@ -33,7 +33,7 @@ describe('usePaymentAgentList', () => {
         const mock = mockStore({});
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { list: [] } });
+        mockUseFetch.mockReturnValue({ data: { paymentagent_list: { list: [] } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>
@@ -50,7 +50,7 @@ describe('usePaymentAgentList', () => {
         const mock = mockStore({});
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { list: ['PAYMENT AGENT 1', 'PAYMENT AGENT 2'] } });
+        mockUseFetch.mockReturnValue({ data: { paymentagent_list: { list: ['PAYMENT AGENT 1', 'PAYMENT AGENT 2'] } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>

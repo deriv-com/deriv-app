@@ -1,7 +1,7 @@
 import React from 'react';
 import SuccessDialog from '../Components/success-dialog.jsx';
 import { Icon, Modal, Button, Money, Text } from '@deriv/components';
-import { getCFDPlatformLabel } from '@deriv/shared';
+import { getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import RootStore from '../Stores/index';
@@ -43,10 +43,27 @@ const CFDTopUpDemoModal = ({
     topUpVirtual,
 }: TCFDTopUpDemoModalProps) => {
     const getAccountTitle = React.useCallback(() => {
+        let title = '';
         if ((!mt5_companies && !dxtrade_companies) || !current_account) return '';
-        return mt5_companies[current_account.category as keyof TMtCompanies][
-            current_account.type as keyof TMtCompanies['demo' | 'real']
-        ].title;
+
+        switch (platform) {
+            case CFD_PLATFORMS.MT5:
+                title =
+                    mt5_companies[current_account.category as keyof TMtCompanies][
+                        current_account.type as keyof TMtCompanies['demo' | 'real']
+                    ].title;
+                break;
+            case CFD_PLATFORMS.DXTRADE:
+                title =
+                    dxtrade_companies[current_account.category as keyof TDxCompanies][
+                        current_account.type as keyof TDxCompanies['demo' | 'real']
+                    ].title;
+                break;
+            default:
+                break;
+        }
+
+        return title;
     }, [mt5_companies, dxtrade_companies, current_account]);
 
     const onCloseSuccess = () => {

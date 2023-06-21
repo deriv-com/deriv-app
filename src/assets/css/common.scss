@@ -1,3 +1,5 @@
+// inline-icons
+
 /*
     to use styles without modifier class on .inline-icon
     use @extend
@@ -14,16 +16,50 @@
     &.active {
         @include colorIcon(var(--text-prominent), none);
     }
+
     &.disabled {
         @include colorIcon(var(--text-disabled), none);
     }
+
     &.white {
         @include colorIcon(var(--text-prominent));
     }
+
     &.border_hover_color {
         @include colorIcon(var(--text-prominent));
     }
+
     &.secondary {
         @include colorIcon(var(--text-less-prominent));
     }
 }
+
+
+.btn {
+    @include deriv-btn('default', null);
+
+    &--primary {
+        @include deriv-btn(null, 'primary');
+    }
+
+    &--secondary {
+        @include deriv-btn(null, 'secondary');
+    }
+
+    &--tertiary {
+        @include deriv-btn(null, 'tertiary');
+    }
+
+    &--link {
+        @include deriv-btn(null, 'link');
+    }
+
+    &__small {
+        @include deriv-btn('small', null);
+    }
+
+    &__large {
+        @include deriv-btn('large', null);
+    }
+}
+

@@ -5,6 +5,7 @@ import { translate } from '../../../../../common/utils/tools';
 import { getDefaultEndpoint, getServerAddressFallback, getAppIdFallback, getLanguage } from '../../api';
 import { isLoggedIn } from '../../utils';
 import useLogout from '../../../../../common/hooks/useLogout';
+import './endpoint.scss';
 
 const getError = server => (
     <React.Fragment>

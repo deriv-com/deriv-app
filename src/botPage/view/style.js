@@ -63,7 +63,7 @@ export const bottomWarning = {
     bottom: '0px',
     position: 'fixed',
     zIndex: 9999,
-    background: '#c03',
+    background: 'var(--color-red)',
     color: 'white',
     width: '100%',
     textAlign: 'center',

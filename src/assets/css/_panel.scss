@@ -1,6 +1,4 @@
-@import 'color';
 @import 'toolbox';
-@import './deriv/devices.scss';
 
 @keyframes animate-circle {
     0% {
@@ -43,7 +41,7 @@
 
 #summaryPanel {
     border-radius: 4px;
-    border: 1px solid $brand-gray;
+    border: 1px solid var(--disabled-color);
     box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.1);
     .content-row {
         margin-bottom: 1em;
@@ -93,10 +91,10 @@
 
     .content {
         padding: 0 5px;
-        background: $white;
+        background: #fff;
         cursor: default;
         table {
-            border: 1px solid $brand-gray;
+            border: 1px solid (--disabled-color);
         }
     }
 
@@ -122,7 +120,7 @@
     #chart {
         width: 100%;
         height: 20em;
-        border: 1px solid $brand-gray;
+        border: 1px solid (--disabled-color);
         border-radius: 3px;
     }
 }
@@ -245,7 +243,7 @@
 #save-dialog {
     #collection {
         padding: 1.2em;
-        border: 1px solid $brand-gray;
+        border: 1px solid (--disabled-color);
         border-radius: 10px;
         & .description {
             margin-left: 21px;
@@ -261,7 +259,7 @@
         width: 100%;
 
         h2 {
-            color: $black;
+            color: #000;
             font-size: 20px;
             margin: 0 0 0.2em 0;
         }

@@ -2,6 +2,7 @@ import React from 'react';
 import config from '../../../../../../app.config';
 import { getLanguage } from '../../../../../../common/lang';
 import { redirectToSupportedLang, translate } from '../../../../../../common/utils/tools';
+import './language-selector.scss';
 
 const current_language = getLanguage();
 const toggleModal = () => $('#language-menu-modal').toggleClass('invisible');

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import './modal.scss';
 
 const Modal = ({ children, title, onClose, action, class_name }) => {
     const modal_container_ref = React.useRef();

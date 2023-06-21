@@ -1,3 +1,4 @@
+
 #language-menu-modal {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -34,17 +35,18 @@
             padding: 16px 24px;
             border-bottom: 2px solid var(--general-section-1);
         }
+
         &-close_btn {
             position: absolute;
             right: 16px;
             top: 12px;
             width: 32px;
             height: 32px;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%333' d='M3.707 2.293L8 6.587l4.293-4.294c.39-.39 1.023-.39 1.414 0 .39.39.39 1.023 0 1.414L9.414 8.001l4.293 4.295c.39.39.39 1.024 0 1.414-.39.39-1.024.39-1.414 0L8 9.416 3.707 13.71c-.39.39-1.023.39-1.414 0-.39-.39-.39-1.023 0-1.414l4.292-4.295-4.292-4.294c-.39-.39-.39-1.024 0-1.414.39-.39 1.024-.39 1.414 0z'/%3E%3C/svg%3E%0A")
-                no-repeat center;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%333' d='M3.707 2.293L8 6.587l4.293-4.294c.39-.39 1.023-.39 1.414 0 .39.39.39 1.023 0 1.414L9.414 8.001l4.293 4.295c.39.39.39 1.024 0 1.414-.39.39-1.024.39-1.414 0L8 9.416 3.707 13.71c-.39.39-1.023.39-1.414 0-.39-.39-.39-1.023 0-1.414l4.292-4.295-4.292-4.294c-.39-.39-.39-1.024 0-1.414.39-.39 1.024-.39 1.414 0z'/%3E%3C/svg%3E%0A") no-repeat center;
             border-radius: 4px;
             cursor: pointer;
         }
+
         &-list {
             display: grid;
             grid-template-columns: repeat(5, 80px);
@@ -52,6 +54,7 @@
             grid-gap: 40px;
             padding: 40px;
         }
+
         &-item {
             display: -webkit-box;
             display: -ms-flexbox;
@@ -73,13 +76,16 @@
                 border: 1px solid var(--border-active);
                 font-weight: 700;
             }
+
             &:hover {
                 border: 1px solid var(--border-hover);
             }
+
             img {
                 width: 36px;
                 height: 24px;
             }
+
             span {
                 font-size: 0.9rem;
                 color: var(--text-prominent);

@@ -2,7 +2,7 @@
     &__Table {
         &__rowColumn {
             align-items: center;
-            border-right: 1px solid #f2f2f2;
+            border-right: 1px solid var(--disabled-color);
             display: flex;
             flex: 1;
             height: 100%;
@@ -14,15 +14,15 @@
             }
         }
         &__Grid {
-            border-bottom: 1px solid #f2f2f2;
-            border-right: 1px solid #f2f2f2;
-            border-left: 1px solid #f2f2f2;
+            border-bottom: 1px solid var(--disabled-color);
+            border-right: 1px solid var(--disabled-color);
+            border-left: 1px solid var(--disabled-color);
         }
         &__headerRow {
-            border: 1px solid #f2f2f2;
+            border: 1px solid var(--disabled-color);
         }
         &__row {
-            border-bottom: 1px solid #f2f2f2;
+            border-bottom: 1px solid var(--disabled-color);
             height: 35px;
 
             &.warn {
@@ -72,7 +72,7 @@
         content: '';
         position: absolute;
         height: 100px;
-        border-right: 1px solid #f2f2f2;
+        border-right: 1px solid var(--disabled-color);
     }
 }
 

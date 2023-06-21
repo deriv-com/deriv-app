@@ -68,14 +68,14 @@ const Tour = () => {
                     },
 
                     buttonNext: {
-                        backgroundColor: '#2e8836',
+                        backgroundColor: 'var(--color-green-btn)',
                         borderRadius: '4px',
                         color: '#fff',
                         padding: '10px 25px',
                         border: 'none',
                     },
                     buttonBack: {
-                        backgroundColor: '#f2f2f2',
+                        backgroundColor: 'var(--disabled-color)',
                         color: '#000',
                         padding: '10px 25px',
                         marginRight: '8px',
@@ -87,7 +87,7 @@ const Tour = () => {
                         color: '#555',
                         textAlign: 'left',
                         paddingBottom: '5px',
-                        borderBottom: '1px solid #e98024',
+                        borderBottom: '1px solid var(--color-orange)',
                     },
                     tooltipContent: {
                         textAlign: 'left',

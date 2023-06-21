@@ -1,8 +1,8 @@
 import React from 'react';
-import { action, computed, makeObservable,observable, reaction, runInAction } from 'mobx';
-import { error_types, message_types,observer, unrecoverable_errors } from '@deriv/bot-skeleton';
+import { action, computed, makeObservable, observable, reaction, runInAction } from 'mobx';
+import { error_types, message_types, observer, unrecoverable_errors } from '@deriv/bot-skeleton';
 import { isSafari, mobileOSDetect } from '@deriv/shared';
-import { Localize,localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { contract_stages } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
 import { journalError, switch_account_notification } from 'Utils/bot-notifications';
@@ -343,8 +343,8 @@ export default class RunPanelStore {
         this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
-            title: localize("DBot isn't quite ready for real accounts"),
-            message: localize('Please switch to your demo account to run your DBot.'),
+            title: localize("Deriv Bot isn't quite ready for real accounts"),
+            message: localize('Please switch to your demo account to run your Deriv Bot.'),
         };
         this.is_dialog_open = true;
     }
@@ -369,7 +369,7 @@ export default class RunPanelStore {
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
             title: localize('Import error'),
-            message: localize('This strategy is currently not compatible with DBot.'),
+            message: localize('This strategy is currently not compatible with Deriv Bot.'),
         };
         this.is_dialog_open = true;
     }

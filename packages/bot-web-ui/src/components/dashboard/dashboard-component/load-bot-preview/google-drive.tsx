@@ -1,9 +1,9 @@
 import React from 'react';
 import classnames from 'classnames';
 import { Button, Icon, StaticUrl } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
-import { isMobile } from '@deriv/shared';
 import RootStore from 'Stores/root-store';
 
 type TGoogleDriveProps = {

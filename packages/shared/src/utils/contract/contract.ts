@@ -42,7 +42,7 @@ export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contrac
 
 export const isSmartTraderContract = (contract_type = '') => /RUN|EXPIRY|RANGE|UPORDOWN|ASIAN/i.test(contract_type);
 
-export const isAsiansContract = (contract_type = '') => /ASIA/i.test(contract_type);
+export const isAsiansContract = (contract_type = '') => /ASIAN/i.test(contract_type);
 
 export const isCryptoContract = (underlying = '') => underlying.startsWith('cry');
 

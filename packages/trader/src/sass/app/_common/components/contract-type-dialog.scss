@@ -103,6 +103,6 @@
     }
 }
 
-.dc-mobile-dialog__content:has(.dc-mobile-dialog__contracts-modal-list) {
+.contract-type-widget__header ~ .dc-mobile-dialog__content {
     height: 100%;
 }

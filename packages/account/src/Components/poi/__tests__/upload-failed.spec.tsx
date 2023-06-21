@@ -1,6 +1,6 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import UnsupportedFailed from '../unsupported-failed';
+import UploadFailed from 'Components/poi/poi-upload-failed';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -10,10 +10,10 @@ jest.mock('@deriv/components', () => {
     };
 });
 
-describe('<UnsupportedFailed />', () => {
+describe('<UploadFailed />', () => {
     const error = 'error';
-    it('should render <UnsupportedFailed /> component with its content', () => {
-        render(<UnsupportedFailed error={error} />);
+    it('should render <UploadFailed /> component with its content', () => {
+        render(<UploadFailed error={error} />);
         expect(screen.getByText('Proof of identity documents upload failed')).toBeInTheDocument();
         expect(screen.getByText('error')).toBeInTheDocument();
         expect(screen.getByText('Mocked Icon')).toBeInTheDocument();

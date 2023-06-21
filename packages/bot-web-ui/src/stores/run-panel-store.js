@@ -1,11 +1,11 @@
 import React from 'react';
-import { observable, action, reaction, computed, runInAction, makeObservable } from 'mobx';
-import { localize, Localize } from '@deriv/translations';
-import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
+import { action, computed, makeObservable,observable, reaction, runInAction } from 'mobx';
+import { error_types, message_types,observer, unrecoverable_errors } from '@deriv/bot-skeleton';
+import { isSafari, mobileOSDetect } from '@deriv/shared';
+import { Localize,localize } from '@deriv/translations';
 import { contract_stages } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
 import { journalError, switch_account_notification } from 'Utils/bot-notifications';
-import { isSafari, mobileOSDetect } from '@deriv/shared';
 
 export default class RunPanelStore {
     constructor(root_store, core) {
@@ -236,15 +236,17 @@ export default class RunPanelStore {
         this.showClearStatDialog();
     }
 
-    clearStat() {
+    clearStat(disconnect = false) {
         const { summary_card, journal, transactions } = this.root_store;
 
         this.setIsRunning(false);
         this.setHasOpenContract(false);
         this.clear();
-        journal.clear();
-        summary_card.clear();
-        transactions.clear();
+        if (!disconnect) {
+            journal.clear();
+            summary_card.clear();
+            transactions.clear();
+        }
         this.setContractStage(contract_stages.NOT_RUNNING);
     }
 
@@ -349,7 +351,7 @@ export default class RunPanelStore {
 
     showClearStatDialog() {
         this.onOkButtonClick = () => {
-            this.clearStat();
+            this.clearStat(false);
             this.onCloseDialog();
         };
         this.onCancelButtonClick = this.onCloseDialog;

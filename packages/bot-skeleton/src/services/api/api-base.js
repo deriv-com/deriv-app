@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-cycle
+import DBotStore from '../../scratch/dbot-store';
 import { observer as globalObserver } from '../../utils/observer';
 import { doUntilDone } from '../tradeEngine/utils/helpers';
 import { generateDerivApiInstance, getLoginId, getToken } from './appId';
@@ -36,6 +38,14 @@ class APIBase {
         if (window) {
             window.addEventListener('online', this.reconnectIfNotConnected);
             window.addEventListener('focus', this.reconnectIfNotConnected);
+            //we can even run the bot by opening a new websocket connection and continue to run the bot from here!
+            document.addEventListener('visibilitychange', () => {
+                if (this.api.connection.readyState === 3) {
+                    const { stopBot, clearStat } = DBotStore.instance.run_panel;
+                    stopBot();
+                    clearStat(true);
+                }
+            });
         }
     }
 

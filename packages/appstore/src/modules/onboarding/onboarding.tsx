@@ -1,4 +1,6 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 import { localize } from '@deriv/translations';
 import { useHasActiveRealAccount } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
@@ -6,8 +8,6 @@ import { isMobile, isDesktop, routes, ContentFlag } from '@deriv/shared';
 import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getTradingHubContents } from 'Constants/trading-hub-content';
-import { useHistory } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
 import EmptyOnboarding from './empty-onboarding';
 
 type TOnboardingProps = {

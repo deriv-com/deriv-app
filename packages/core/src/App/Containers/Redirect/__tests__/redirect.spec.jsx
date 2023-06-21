@@ -11,11 +11,11 @@ jest.mock('Stores/connect', () => ({
 }));
 
 describe('<Redirect />', () => {
-    const history = createBrowserHistory();
-    let mock_props;
+    let history,
+     mock_props;
 
     beforeEach(() => {
-        history.push('/redirect?action=payment_withdraw&lang=EN&code=FwGsJwTJ&loginid=CR456');
+        history = createBrowserHistory();
 
         mock_props = {
             loginid: 'CR1234',
@@ -31,6 +31,8 @@ describe('<Redirect />', () => {
     });
 
     it('should set login id provided to the one provided in the url before redirection', () => {
+        history.push('/redirect?action=payment_withdraw&lang=EN&code=FwGsJwTJ&loginid=CR456');
+
         render(
             <Router history={history}>
                 <Redirect {...mock_props} />

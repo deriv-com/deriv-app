@@ -42,7 +42,7 @@ describe('WalletModal', () => {
         expect(screen.getByText('WalletModalBody')).toBeInTheDocument();
     });
 
-    it('Should render cashier modal if is_wallet_modal_visible is true', () => {
+    it('Should not render cashier modal and show loader if authorize is true', () => {
         const mocked_store = mockStore({
             ui: { is_wallet_modal_visible: true },
             client: { is_authorize: true },

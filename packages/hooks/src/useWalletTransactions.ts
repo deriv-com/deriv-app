@@ -2,7 +2,10 @@ import { useFetch } from '@deriv/api';
 import { Statement } from '@deriv/api-types';
 import { useStore } from '@deriv/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
-import { useCFDAllAccounts, useCurrencyConfig, usePlatformAccounts, useWalletList } from './index';
+import useCFDAllAccounts from './useCFDAllAccounts';
+import useCurrencyConfig from './useCurrencyConfig';
+import usePlatformAccounts from './usePlatformAccounts';
+import useWalletList from './useWalletsList';
 
 type TWalletTransaction =
     | Omit<Required<Statement>['transactions'][number], 'action_type'> & {

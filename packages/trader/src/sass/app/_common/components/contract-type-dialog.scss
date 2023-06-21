@@ -103,8 +103,6 @@
     }
 }
 
-.dc-mobile-dialog {
-    &__content {
-        height: 100%;
-    }
+.contract-type-widget__header ~ .dc-mobile-dialog__content {
+    height: 100%;
 }

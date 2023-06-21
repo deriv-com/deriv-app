@@ -2,10 +2,10 @@ import React from 'react';
 import { WalletIcon } from '@deriv/components';
 import type { TWalletAccount } from 'Types';
 
-type TWalletCurrencyCard = Pick<TWalletAccount, 'is_demo' | 'currency' | 'icon' | 'icon_type'>;
+type TWalletCurrencyCard = Pick<TWalletAccount, 'is_virtual' | 'currency' | 'icon' | 'icon_type'>;
 
-const WalletCurrencyCard = ({ is_demo, currency, icon, icon_type }: TWalletCurrencyCard) => {
-    const converted_currency = is_demo ? 'demo' : currency.toLowerCase();
+const WalletCurrencyCard = ({ is_virtual, currency, icon, icon_type }: TWalletCurrencyCard) => {
+    const converted_currency = is_virtual ? 'demo' : currency.toLowerCase();
 
     return (
         <div className='wallet-header__currency' data-testid={`dt_${converted_currency}`}>

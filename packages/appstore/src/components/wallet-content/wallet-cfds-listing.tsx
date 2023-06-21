@@ -47,8 +47,6 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
             </div>
         );
 
-    // console.log('loginid = ', loginid, ', acc[loginid] = ', accounts?.[loginid || '']);
-
     const { currency } = wallet_account;
     const accounts_sub_text =
         wallet_account.landing_company_shortcode === 'svg' || wallet_account.is_virtual

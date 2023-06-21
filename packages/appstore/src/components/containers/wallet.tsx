@@ -4,20 +4,16 @@ import WalletHeader from 'Components/wallet-header';
 import WalletContent from 'Components/wallet-content';
 import { CSSTransition } from 'react-transition-group';
 import { TWalletAccount } from 'Types';
-import { observer, useStore } from '@deriv/stores';
+import { useActiveWallet } from '@deriv/hooks';
 import './wallet.scss';
 
 type TWallet = {
     wallet_account: TWalletAccount;
 };
 
-const Wallet = observer(({ wallet_account }: TWallet) => {
-    const {
-        client: { loginid },
-    } = useStore();
-
+const Wallet = ({ wallet_account }: TWallet) => {
     const is_demo = wallet_account.is_virtual;
-    const active = wallet_account.loginid === loginid;
+    const active = useActiveWallet()?.is_selected;
 
     return (
         <div
@@ -35,6 +31,6 @@ const Wallet = observer(({ wallet_account }: TWallet) => {
             </CSSTransition>
         </div>
     );
-});
+};
 
 export default Wallet;

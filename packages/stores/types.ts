@@ -250,6 +250,7 @@ type TCommonStoreError = {
 
 type TCommonStore = {
     error: TCommonStoreError;
+    services_error: { code: string; message: string; type: string };
     has_error: boolean;
     is_from_derivgo: boolean;
     is_network_online: boolean;
@@ -276,6 +277,7 @@ type TUiStore = {
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
+    is_services_error_visible: boolean;
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
@@ -285,6 +287,7 @@ type TUiStore = {
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
+    setHasOnlyForwardingContracts: (has_only_forward_starting_contracts: boolean) => void;
     sub_section_index: number;
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: string) => void;
@@ -293,6 +296,7 @@ type TUiStore = {
     toggleLanguageSettingsModal: () => void;
     toggleReadyToDepositModal: () => void;
     toggleSetCurrencyModal: () => void;
+    toggleServicesErrorModal: () => void;
     removeToast: (key: string) => void;
     is_ready_to_deposit_modal_visible: boolean;
     reports_route_tab_index: number;

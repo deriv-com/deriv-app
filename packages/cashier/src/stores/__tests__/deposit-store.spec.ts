@@ -2,7 +2,6 @@ import DepositStore from '../deposit-store';
 import { configure } from 'mobx';
 import { TRootStore, TWebSocket } from '../../types';
 import { mockStore } from '@deriv/stores';
-import { expect } from '@jest/globals';
 
 configure({ safeDescriptors: false });
 

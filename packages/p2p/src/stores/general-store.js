@@ -23,6 +23,7 @@ export default class GeneralStore extends BaseStore {
     balance;
     cancels_remaining = null;
     contact_info = '';
+    default_advert_description = '';
     error_code = '';
     external_stores = {};
     feature_level = null;
@@ -87,6 +88,7 @@ export default class GeneralStore extends BaseStore {
             external_stores: observable,
             feature_level: observable,
             formik_ref: observable,
+            default_advert_description: observable,
             error_code: observable,
             inactive_notification_count: observable,
             is_advertiser: observable,

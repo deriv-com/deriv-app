@@ -1,14 +1,14 @@
 import React from 'react';
 import classNames from 'classnames';
-import { setDecimalPlaces, removeTrailingZeros, percentOf, roundOffDecimal } from 'Utils/format-value';
 import { InputField, Text } from '@deriv/components';
 import { formatMoney, isMobile, mobileOSDetect } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
+import { useStores } from 'Stores/index';
+import { setDecimalPlaces, removeTrailingZeros, percentOf, roundOffDecimal } from 'Utils/format-value';
 
 type TFloatingRate = {
-    change_handler?: () => void;
+    change_handler?: (e: React.ChangeEvent<HTMLInputElement>) => void;
     className?: string;
     data_testid: string;
     error_messages: string;
@@ -29,7 +29,6 @@ const FloatingRate = ({
     fiat_currency,
     local_currency,
     name,
-    offset,
     onChange,
     required,
     value,

@@ -118,6 +118,8 @@ export default class MyAdsStore extends BaseStore {
             setIsTableLoading: action.bound,
             setItemOffset: action.bound,
             setP2pAdvertInformation: action.bound,
+            setPaymentMethodIds: action.bound,
+            setPaymentMethodNames: action.bound,
             setSelectedAdId: action.bound,
             setSelectedAdvert: action.bound,
             setShouldShowAddPaymentMethod: action.bound,
@@ -220,6 +222,8 @@ export default class MyAdsStore extends BaseStore {
         }
 
         const createAd = () => {
+            const { general_store } = this.root_store;
+            const { showModal } = general_store;
             requestWS(create_advert).then(response => {
                 // If we get an error we should let the user submit the form again else we just go back to the list of ads
                 if (response) {
@@ -230,19 +234,22 @@ export default class MyAdsStore extends BaseStore {
                     } else if (should_not_show_auto_archive_message !== 'true' && this.adverts_archive_period) {
                         this.setAdvertDetails(response.p2p_advert_create);
                         this.setIsAdCreatedModalVisible(true);
+                        showModal({
+                            key: 'AdCreatedModal',
+                        });
                     } else if (!this.is_ad_created_modal_visible) {
                         if (!response.p2p_advert_create.is_visible) {
                             this.setAdvertDetails(response.p2p_advert_create);
                         }
                         if (this.advert_details?.visibility_status?.includes(api_error_codes.AD_EXCEEDS_BALANCE)) {
-                            this.root_store.general_store.showModal({
+                            showModal({
                                 key: 'AdVisibilityErrorModal',
                                 props: { error_code: api_error_codes.AD_EXCEEDS_BALANCE },
                             });
                         } else if (
                             this.advert_details?.visibility_status?.includes(api_error_codes.AD_EXCEEDS_DAILY_LIMIT)
                         ) {
-                            this.root_store.general_store.showModal({
+                            showModal({
                                 key: 'AdVisibilityErrorModal',
                                 props: { error_code: api_error_codes.AD_EXCEEDS_DAILY_LIMIT },
                             });
@@ -350,6 +357,7 @@ export default class MyAdsStore extends BaseStore {
     }
 
     onClickSaveEditAd(values, { setSubmitting }) {
+        const { general_store } = this.root_store;
         const is_sell_ad = values.type === buy_sell.SELL;
         const update_advert = {
             p2p_advert_update: 1,
@@ -385,6 +393,9 @@ export default class MyAdsStore extends BaseStore {
                     this.setApiErrorCode(response.error.code);
                     this.setEditAdFormError(response.error.message);
                     this.setIsEditAdErrorModalVisible(true);
+                    general_store.showModal({
+                        key: 'AdEditErrorModal',
+                    });
                 } else {
                     this.setShowEditAdForm(false);
                 }
@@ -466,7 +477,7 @@ export default class MyAdsStore extends BaseStore {
         });
     }
 
-    restrictLength = (e, handleChange, max_characters = 15) => {
+    restrictLength = (e, handleChange, max_characters = 5) => {
         // typing more than 15 characters will break the layout
         // max doesn't disable typing, so we will use this to restrict length
         if (e.target.value.length > max_characters) {
@@ -578,6 +589,14 @@ export default class MyAdsStore extends BaseStore {
 
     setP2pAdvertInformation(p2p_advert_information) {
         this.p2p_advert_information = p2p_advert_information;
+    }
+
+    setPaymentMethodIds(payment_method_ids) {
+        this.payment_method_ids = payment_method_ids;
+    }
+
+    setPaymentMethodNames(payment_method_names) {
+        this.payment_method_names = payment_method_names;
     }
 
     setSelectedAdId(selected_ad_id) {

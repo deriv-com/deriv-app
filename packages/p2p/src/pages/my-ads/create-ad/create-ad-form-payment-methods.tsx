@@ -1,27 +1,55 @@
-import * as React from 'react';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
-import PaymentMethodCard from 'Pages/my-profile/payment-methods/payment-method-card';
+import React from 'react';
+import { observer } from '@deriv/stores';
+import { useStores } from 'Stores/index';
 import { localize } from 'Components/i18next';
-import BuyAdPaymentMethodsList from 'Pages/my-ads/buy-ad-payment-methods-list.jsx';
-import SellAdPaymentMethodsList from 'Pages/my-ads/sell-ad-payment-methods-list.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import PaymentMethodCard from 'Pages/my-profile/payment-methods/payment-method-card';
+import BuyAdPaymentMethodsList from '../buy-ad-payment-methods-list.jsx';
+import SellAdPaymentMethodsList from '../sell-ad-payment-methods-list.jsx';
 
-const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) => {
+type TPaymentMethod = {
+    ID: string;
+    name: string;
+    is_enabled: number;
+    method: string;
+    display_name: string;
+    fields: {
+        account: {
+            display_name: string;
+            required: number;
+            type: string;
+            value: string;
+        };
+        instructions: {
+            display_name: string;
+            required: number;
+            type: string;
+            value: string;
+        };
+    };
+};
+
+type TCreateAdFormPaymentMethodsProps = {
+    is_sell_advert: boolean;
+    onSelectPaymentMethods: (payment_methods: string[]) => void;
+};
+
+const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }: TCreateAdFormPaymentMethodsProps) => {
     const { my_ads_store, my_profile_store } = useStores();
-    const [selected_buy_methods, setSelectedBuyMethods] = React.useState([]);
-    const [selected_sell_methods, setSelectedSellMethods] = React.useState([]);
+    const { payment_method_ids, setPaymentMethodIds, setPaymentMethodNames } = my_ads_store;
+    const [selected_buy_methods, setSelectedBuyMethods] = React.useState<string[]>([]);
+    const [selected_sell_methods, setSelectedSellMethods] = React.useState<string[]>([]);
     const { showModal } = useModalManagerContext();
 
-    const onClickPaymentMethodCard = payment_method => {
-        if (!my_ads_store.payment_method_ids.includes(payment_method.ID)) {
-            if (my_ads_store.payment_method_ids.length < 3) {
-                my_ads_store.payment_method_ids.push(payment_method.ID);
+    const onClickPaymentMethodCard = (payment_method: TPaymentMethod) => {
+        if (!payment_method_ids.includes(payment_method.ID)) {
+            if (payment_method_ids.length < 3) {
+                payment_method_ids.push(payment_method.ID);
                 setSelectedSellMethods([...selected_sell_methods, payment_method.ID]);
             }
         } else {
-            my_ads_store.payment_method_ids = my_ads_store.payment_method_ids.filter(
-                payment_method_id => payment_method_id !== payment_method.ID
+            setPaymentMethodIds(
+                payment_method_ids.filter((payment_method_id: string) => payment_method_id !== payment_method.ID)
             );
             setSelectedSellMethods(selected_sell_methods.filter(i => i !== payment_method.ID));
         }
@@ -29,8 +57,8 @@ const CreateAdFormPaymentMethods = ({ is_sell_advert, onSelectPaymentMethods }) 
 
     React.useEffect(() => {
         return () => {
-            my_ads_store.payment_method_ids = [];
-            my_ads_store.payment_method_names = [];
+            setPaymentMethodIds([]);
+            setPaymentMethodNames([]);
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

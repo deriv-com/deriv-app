@@ -1,26 +1,32 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { Text } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Text } from '@deriv/components';
-import { buy_sell } from 'Constants/buy-sell';
 import { Localize } from 'Components/i18next';
+import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
-import { useStores } from 'Stores';
+import { useStores } from 'Stores/index';
 import { removeTrailingZeros, roundOffDecimal, percentOf } from 'Utils/format-value';
 import './create-ad-summary.scss';
 
-const CreateAdSummary = ({ offer_amount, price_rate, type }) => {
+type TCreateAdSummaryProps = {
+    offer_amount: string;
+    price_rate: string;
+    type: string;
+};
+
+const CreateAdSummary = ({ offer_amount, price_rate, type }: TCreateAdSummaryProps) => {
     const {
         client: { currency, local_currency_config },
     } = useStore();
 
     const { floating_rate_store } = useStores();
+    const { rate_type, market_rate } = floating_rate_store;
 
-    const market_feed = floating_rate_store.rate_type === ad_type.FLOAT ? floating_rate_store.market_rate : null;
+    const market_feed = rate_type === ad_type.FLOAT ? market_rate : null;
     const display_offer_amount = offer_amount ? formatMoney(currency, offer_amount, true) : '';
 
-    let display_price_rate = '';
+    let display_price_rate: string | number = '';
     let display_total = '';
 
     if (price_rate) {
@@ -29,8 +35,8 @@ const CreateAdSummary = ({ offer_amount, price_rate, type }) => {
 
     if (offer_amount && price_rate) {
         display_total = market_feed
-            ? formatMoney(local_currency_config.currency, offer_amount * display_price_rate, true)
-            : formatMoney(local_currency_config.currency, offer_amount * price_rate, true);
+            ? formatMoney(local_currency_config.currency, Number(offer_amount) * Number(display_price_rate), true)
+            : formatMoney(local_currency_config.currency, Number(offer_amount) * Number(price_rate), true);
     }
 
     if (offer_amount) {
@@ -103,12 +109,6 @@ const CreateAdSummary = ({ offer_amount, price_rate, type }) => {
             <Localize i18n_default_text="You're creating an ad to sell..." />
         </Text>
     );
-};
-
-CreateAdSummary.propTypes = {
-    offer_amount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    price_rate: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    type: PropTypes.string,
 };
 
 export default observer(CreateAdSummary);

@@ -28,7 +28,13 @@ const AdVisibilityErrorModal = ({ error_code }) => {
                     </Text>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button has_effect text={localize('Ok')} onClick={() => hideModal()} primary large />
+                    <Button
+                        has_effect
+                        text={localize('Ok')}
+                        onClick={() => hideModal({ should_hide_all_modals: true })}
+                        primary
+                        large
+                    />
                 </Modal.Footer>
             </Modal>
         );
@@ -63,7 +69,13 @@ const AdVisibilityErrorModal = ({ error_code }) => {
                     </Text>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button has_effect text={localize('Ok')} onClick={() => hideModal()} primary large />
+                    <Button
+                        has_effect
+                        text={localize('Ok')}
+                        onClick={() => hideModal({ should_hide_all_modals: true })}
+                        primary
+                        large
+                    />
                 </Modal.Footer>
             </Modal>
         );
@@ -82,7 +94,13 @@ const AdVisibilityErrorModal = ({ error_code }) => {
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button has_effect text={localize('Ok')} onClick={() => hideModal()} primary large />
+                <Button
+                    has_effect
+                    text={localize('Ok')}
+                    onClick={() => hideModal({ should_hide_all_modals: true })}
+                    primary
+                    large
+                />
             </Modal.Footer>
         </Modal>
     );

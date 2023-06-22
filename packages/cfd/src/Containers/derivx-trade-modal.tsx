@@ -117,7 +117,7 @@ const DxtradeDesktopDownload = ({ dxtrade_tokens, is_demo }: TDxtradeDesktopDown
             >
                 <Icon
                     className='cfd-trade-modal__dxtrade-button-icon'
-                    icon='IcRebrandingDerivxWordmark'
+                    icon='IcRebrandingDxtradeWordmark'
                     height={32}
                     width={42}
                     description={<Localize i18n_default_text='derivX wordmark' />}

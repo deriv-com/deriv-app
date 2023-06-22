@@ -63,6 +63,16 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
 
     const is_third_party_transaction = transaction_url?.includes('CP:');
 
+    let confirmation_label = '-';
+
+    if (transaction_type === 'deposit') {
+        if (status_code === 'CONFIRMED') {
+            confirmation_label = localize('Confirmed');
+        }
+
+        confirmation_label = confirmations ? `${confirmations}` : localize('Pending');
+    }
+
     if (status && isMobile()) {
         return (
             <div>
@@ -161,7 +171,7 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                     </Table.Cell>
                     <Table.Cell>
                         <Text as='p' size='xxs' color='red'>
-                            {transaction_type === 'deposit' ? confirmations ?? localize('Pending') : '-'}
+                            {confirmation_label}
                         </Text>
                     </Table.Cell>
                     <Table.Cell>
@@ -284,7 +294,7 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                 {!is_transaction_clicked && (
                     <Table.Cell className='crypto-transactions-history__table-confirmations'>
                         <Text as='p' size='xs' color='red'>
-                            {transaction_type === 'deposit' ? confirmations ?? localize('Pending') : '-'}
+                            {confirmation_label}
                         </Text>
                     </Table.Cell>
                 )}

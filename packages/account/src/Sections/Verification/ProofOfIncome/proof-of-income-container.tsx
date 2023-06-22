@@ -8,7 +8,7 @@ import PoincLimited from 'Components/poinc/status/limited';
 import PoincVerified from 'Components/poinc/status/verified';
 import PoincNotRequired from 'Components/poinc/status/not-required';
 import { populateVerificationStatus } from '../Helpers/verification';
-import ProofOfIncomeForm from './proof-of-income-form.jsx';
+import ProofOfIncomeForm from './proof-of-income-form';
 import { income_status_codes } from './proof-of-income-utils';
 
 type TProofOfIncomeContainer = {

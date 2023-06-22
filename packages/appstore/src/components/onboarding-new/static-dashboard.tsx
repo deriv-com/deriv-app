@@ -81,6 +81,8 @@ const StaticDashboard = ({
         { text: localize('CFDs'), value: 1 },
     ];
 
+    const toggle_options_eu = [...toggle_options].reverse();
+
     React.useEffect(() => {
         const change_index_interval_id = setInterval(() => {
             if (isMobile()) {
@@ -118,7 +120,7 @@ const StaticDashboard = ({
                                 {isMobile() ? (
                                     <React.Fragment>
                                         <ButtonToggle
-                                            buttons_arr={is_eu_user ? toggle_options.reverse() : toggle_options}
+                                            buttons_arr={is_eu_user ? toggle_options_eu : toggle_options}
                                             className='static-dashboard-wrapper__header--toggle-account'
                                             has_rounded_button
                                             is_animated
@@ -337,7 +339,7 @@ const StaticDashboard = ({
                             {isMobile() ? (
                                 <React.Fragment>
                                     <ButtonToggle
-                                        buttons_arr={is_eu_user ? toggle_options.reverse() : toggle_options}
+                                        buttons_arr={is_eu_user ? toggle_options_eu : toggle_options}
                                         className='static-dashboard-wrapper__header--toggle-account'
                                         has_rounded_button
                                         is_animated

@@ -156,6 +156,7 @@ type TClientStore = {
     is_deposit_lock: boolean;
     is_dxtrade_allowed: boolean;
     is_eu: boolean;
+    is_eu_country: boolean;
     is_authorize: boolean;
     is_financial_account: boolean;
     is_financial_information_incomplete: boolean;
@@ -178,6 +179,7 @@ type TClientStore = {
     };
     loginid?: string;
     pre_switch_broadcast: boolean;
+    prev_account_type: string;
     residence: string;
     responseMt5LoginList: ({
         mt5_login_list,
@@ -363,8 +365,10 @@ type TTradersHubStore = {
     is_eu_user: boolean;
     setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
+    is_demo_low_risk: boolean;
     selectRegion: (region: string) => void;
     toggleRegulatorsCompareModal: () => void;
+    toggleIsTourOpen: (is_tour_open: boolean) => void;
     selected_region: string;
     openFailedVerificationModal: (selected_account_type: string) => void;
     multipliers_account_status: string;

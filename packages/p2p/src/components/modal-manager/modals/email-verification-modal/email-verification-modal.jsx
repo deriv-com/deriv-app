@@ -15,7 +15,7 @@ const EmailVerificationModal = (
     const { order_store } = useStores();
     const { hideModal, is_modal_open } = useModalManagerContext();
     const [should_show_reasons_if_no_email, setShouldShowReasonsIfNoEmail] = React.useState(false);
-    const { confirmOrderRequest, order_information, user_email_address } = order_store;
+    const { confirmOrderRequest, order_information } = order_store;
 
     return (
         <Modal
@@ -30,20 +30,19 @@ const EmailVerificationModal = (
                 <Icon icon='IcEmailSentP2p' size='128' />
                 <Text
                     align='center'
-                    className='email-verification-modal--email_text'
+                    className='email-verification-modal--email__title'
                     color='prominent'
-                    size='s'
+                    size='m'
                     weight='bold'
                 >
-                    <Localize
-                        i18n_default_text="We've sent you an email at {{user_email_address}}.<0 />Please click the verification link in the email to verify your order."
-                        components={[<br key={0} />]}
-                        values={{ user_email_address }}
-                    />
+                    <Localize i18n_default_text='Check your email' />
+                </Text>
+                <Text align='center' className='email-verification-modal--email__text' color='prominent' weight='bold'>
+                    <Localize i18n_default_text='Hit the link in the email we sent you to authorise this transaction.' />
                 </Text>
                 <Text align='center' color='prominent' size='s'>
                     {/* TODO: Uncomment when time is available in BE response */}
-                    <Localize i18n_default_text='The verification link expires in 10 minutes' />
+                    <Localize i18n_default_text='The link will expire in 10 minutes.' />
                 </Text>
                 <Text
                     className='email-verification-modal--receive_email_text'

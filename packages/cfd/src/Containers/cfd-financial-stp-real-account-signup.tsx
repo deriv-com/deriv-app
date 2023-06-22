@@ -1,5 +1,6 @@
 import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
+import { useIsAccountStatusPresent } from '@deriv/hooks';
 import { isDesktop, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
 import { connect } from '../Stores/connect';
 import { LandingCompany, ResidenceList, GetSettings, StatesList, GetAccountStatus } from '@deriv/api-types';
@@ -69,8 +70,9 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     const state_index = step;
     let is_mounted = React.useRef(true).current;
 
-    const { need_poi_for_vanuatu_maltainvest, need_poi_for_bvi_labuan, poa_resubmit_for_labuan } =
-        getAuthenticationStatusInfo(account_status);
+    const is_authenticated_with_idv_photoid = useIsAccountStatusPresent('authenticated_with_idv_photoid');
+
+    const { need_poi_for_vanuatu_maltainvest, need_poi_for_bvi_labuan } = getAuthenticationStatusInfo(account_status);
 
     const poi_config: TItemsState = {
         body: CFDPOI,
@@ -126,7 +128,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     };
 
     const shouldShowPOA = () => {
-        if (Jurisdiction.LABUAN === jurisdiction_selected_shortcode && poa_resubmit_for_labuan) {
+        if (Jurisdiction.LABUAN === jurisdiction_selected_shortcode && is_authenticated_with_idv_photoid) {
             return true;
         }
         return !['pending', 'verified'].includes(authentication_status.document_status);
@@ -199,7 +201,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     }, {});
 
     if (shouldShowPOA()) {
-        passthrough.is_authenticated_with_idv_photoid = poa_resubmit_for_labuan;
+        passthrough.is_authenticated_with_idv_photoid = is_authenticated_with_idv_photoid;
     }
 
     return (

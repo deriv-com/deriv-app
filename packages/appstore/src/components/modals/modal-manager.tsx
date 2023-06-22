@@ -4,13 +4,14 @@ import { ResetTradingPasswordModal } from '@deriv/account';
 import {
     JurisdictionModal,
     CFDPasswordModal,
-    CFDDbviOnBoarding,
     CFDResetPasswordModal,
     CFDTopUpDemoModal,
     MT5TradeModal,
     CFDPasswordManagerModal,
     CompareAccountsModal,
 } from '@deriv/cfd';
+
+import CFDDbviOnBoarding from '@deriv/cfd/src/Containers/cfd-dbvi-onboarding';
 import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import MT5AccountTypeModal from './account-type-modal';
 import RegulatorsCompareModal from './regulators-compare-modal';

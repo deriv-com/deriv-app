@@ -23,11 +23,18 @@ export default class AppStore {
         this.core = core;
         this.dbot_store = null;
         this.api_helpers_store = null;
+        this.timer = null;
     }
 
     onMount() {
-        const { blockly_store } = this.root_store;
+        const { blockly_store, run_panel } = this.root_store;
         const { client, common } = this.core;
+
+        this.timer = setInterval(() => {
+            window.sendRequestsStatistic(run_panel?.is_running);
+            performance.clearMeasures();
+        }, 10000);
+
         this.showDigitalOptionsMaltainvestError(client, common);
 
         blockly_store.setLoading(true);
@@ -78,6 +85,10 @@ export default class AppStore {
 
         ui.setAccountSwitcherDisabledMessage(false);
         ui.setPromptHandler(false);
+
+        if (this.timer) clearInterval(this.timer);
+        window.sendRequestsStatistic(false);
+        performance.clearMeasures();
     }
 
     onBeforeUnload = event => {

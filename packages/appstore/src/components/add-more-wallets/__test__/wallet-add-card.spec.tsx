@@ -44,7 +44,7 @@ describe('AddWalletCard', () => {
     it('should render currency card', () => {
         render(
             <APIProvider>
-                <AddWalletCard wallet_info={{ currency: 'BTC', is_added: false, landing_company_shortcode: 'svg' }} />
+                <AddWalletCard wallet_info={{ currency: 'BTC', is_added: false, landing_company_name: 'svg' }} />
             </APIProvider>
         );
 
@@ -63,7 +63,7 @@ describe('AddWalletCard', () => {
     it('should disabled button when it is disabled', () => {
         render(
             <APIProvider>
-                <AddWalletCard wallet_info={{ currency: 'BTC', is_added: true, landing_company_shortcode: 'svg' }} />
+                <AddWalletCard wallet_info={{ currency: 'BTC', is_added: true, landing_company_name: 'svg' }} />
             </APIProvider>
         );
 

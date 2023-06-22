@@ -4,7 +4,11 @@ import { Text, WalletCard } from '@deriv/components';
 import { useCurrencyConfig } from '@deriv/hooks';
 import wallet_description_mapper from 'Constants/wallet_description_mapper';
 
-const AddWalletCard = ({ wallet_info }: React.PropsWithChildren<TWalletInfo>) => {
+type TAddWalletCard = {
+    wallet_info: React.PropsWithChildren<TWalletInfo>;
+};
+
+const AddWalletCard = ({ wallet_info }: TAddWalletCard) => {
     const { getConfig } = useCurrencyConfig();
     const { currency, landing_company_name, is_added } = wallet_info;
 

@@ -2,7 +2,6 @@ import React from 'react';
 import { Text, Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useAvailableWallets } from '@deriv/hooks';
-import { TWalletInfo } from 'Types';
 import CarouselContainer from './carousel-container';
 import AddWalletCard from './wallet-add-card';
 
@@ -20,9 +19,7 @@ const AddMoreWallets = () => {
                 {isLoading ? (
                     <Loading is_fullscreen={false} />
                 ) : (
-                    data?.map((wallet_info: TWalletInfo, idx: number) => (
-                        <AddWalletCard wallet_info={wallet_info} key={idx} />
-                    ))
+                    data && data.map((info, idx: number) => <AddWalletCard wallet_info={info} key={idx} />)
                 )}
             </CarouselContainer>
         </div>

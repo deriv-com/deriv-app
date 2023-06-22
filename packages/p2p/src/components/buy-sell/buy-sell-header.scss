@@ -89,7 +89,7 @@
             &-status {
                 position: absolute;
                 border-radius: 50px;
-                background: #ff444f;
+                background: var(--status-danger);
                 width: 7px;
                 height: 7px;
                 top: 4px;

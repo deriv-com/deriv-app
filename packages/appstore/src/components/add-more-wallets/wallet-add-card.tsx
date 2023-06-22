@@ -6,13 +6,13 @@ import wallet_description_mapper from 'Constants/wallet_description_mapper';
 
 const AddWalletCard = ({ wallet_info }: React.PropsWithChildren<TWalletInfo>) => {
     const { getConfig } = useCurrencyConfig();
-    const { currency, landing_company_shortcode, is_added } = wallet_info;
+    const { currency, landing_company_name, is_added } = wallet_info;
 
     const wallet_details = {
         currency,
         icon: getConfig(currency)?.icon,
         icon_type: 'app',
-        jurisdiction_title: landing_company_shortcode?.toUpperCase(),
+        jurisdiction_title: landing_company_name?.toUpperCase(),
         name: getConfig(currency)?.name,
     };
 

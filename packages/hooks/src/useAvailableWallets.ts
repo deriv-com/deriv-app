@@ -33,7 +33,7 @@ const useAvailableWallets = () => {
 
         const modified_wallets = non_virtual_wallets?.map(wallet => ({
             currency: wallet.currency,
-            landing_company_shortcode: wallet.landing_company_shortcode,
+            landing_company_name: wallet.landing_company_name,
             is_added: available_currencies.includes(wallet.currency),
         }));
 
@@ -41,7 +41,7 @@ const useAvailableWallets = () => {
             .filter(currency => !modified_wallets?.some(wallet => wallet.currency === currency))
             .map(currency => ({
                 currency,
-                landing_company_shortcode: data?.authorize?.landing_company_name,
+                landing_company_name: data?.authorize?.landing_company_name,
                 is_added: false,
             }));
 

@@ -63,7 +63,7 @@ describe('useAvailableWallets', () => {
             ['AUD', 'EUR', 'BTC', 'ETH', 'LTC', 'USD'].map(currency => ({
                 currency,
                 is_added: currency === 'USD',
-                landing_company_shortcode: 'svg',
+                landing_company_name: 'svg',
             }))
         );
     });
@@ -89,7 +89,7 @@ describe('useAvailableWallets', () => {
             {
                 currency: 'GBP',
                 is_added: false,
-                landing_company_shortcode: 'svg',
+                landing_company_name: 'svg',
             },
         ]);
     });

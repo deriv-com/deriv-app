@@ -2,7 +2,6 @@ import React from 'react';
 import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { TRootStore } from '@deriv/stores/types';
 import { TLanguageLink } from 'App/Components/Routes/language-link';
 import { LanguageLink } from '../index';
 

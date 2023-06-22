@@ -78,10 +78,11 @@ export default class TradeStore extends BaseStore {
 
     // Duration
     duration = 5;
+    duration_min_max = {};
     duration_unit = '';
     duration_units_list = [];
-    duration_min_max = {};
     expiry_date = '';
+    expiry_epoch = '';
     expiry_time = '';
     expiry_type = 'duration';
 
@@ -223,6 +224,7 @@ export default class TradeStore extends BaseStore {
             duration: observable,
             expiration: observable,
             expiry_date: observable,
+            expiry_epoch: observable,
             expiry_time: observable,
             expiry_type: observable,
             form_components: observable,
@@ -265,8 +267,8 @@ export default class TradeStore extends BaseStore {
             strike_price_choices: observable,
             symbol: observable,
             take_profit: observable,
-            ticks_history_stats: observable,
             tick_size_barrier: observable,
+            ticks_history_stats: observable,
             trade_types: observable,
             accountSwitcherListener: action.bound,
             barrier_pipsize: computed,
@@ -550,23 +552,10 @@ export default class TradeStore extends BaseStore {
             await Symbol.onChangeSymbolAsync(this.symbol);
             runInAction(() => {
                 const contract_categories = ContractType.getContractCategories();
-                //TODO yauheni, maryia - delete this 'if' statement when accumulators are allowed for real account, should leave 'else' box
-                if (
-                    this.is_accumulator &&
-                    !this.root_store.client.is_virtual &&
-                    contract_categories.contract_types_list.Accumulators
-                ) {
-                    delete contract_categories.contract_types_list.Accumulators;
-                    this.processNewValuesAsync({
-                        ...contract_categories,
-                        ...ContractType.getContractType(contract_categories.contract_types_list),
-                    });
-                } else {
-                    this.processNewValuesAsync({
-                        ...contract_categories,
-                        ...ContractType.getContractType(contract_categories.contract_types_list, this.contract_type),
-                    });
-                }
+                this.processNewValuesAsync({
+                    ...contract_categories,
+                    ...ContractType.getContractType(contract_categories.contract_types_list, this.contract_type),
+                });
                 this.processNewValuesAsync(ContractType.getContractValues(this));
             });
         }
@@ -1031,11 +1020,6 @@ export default class TradeStore extends BaseStore {
             }
             this.debouncedProposal();
         }
-
-        //TODO yauheni, maryia - delete this 'if' statement when accumulators are allowed for real account
-        if (!this.root_store.client.is_virtual) {
-            delete this.contract_types_list.Accumulators;
-        }
     }
 
     get is_synthetics_available() {
@@ -1130,6 +1114,7 @@ export default class TradeStore extends BaseStore {
 
         // add/update expiration or date_expiry for crypto indices from proposal
         const date_expiry = response.proposal?.date_expiry;
+        this.expiry_epoch = date_expiry || this.expiry_epoch;
 
         if (!response.error && !!date_expiry && this.is_crypto_multiplier) {
             this.expiration = date_expiry;

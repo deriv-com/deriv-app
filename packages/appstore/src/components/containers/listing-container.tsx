@@ -1,11 +1,9 @@
 import React, { HTMLAttributes, ReactNode } from 'react';
 import CurrencySwitcherCard from 'Components/currency-switcher-card';
 import GridContainer from 'Components/containers/grid-container';
-import './listing-container.scss';
-// import { useStores } from 'Stores/index';
-// import { observer } from 'mobx-react-lite';
 import TitleCardLoader from 'Components/pre-loader/title-card-loader';
 import { observer, useStore } from '@deriv/stores';
+import './listing-container.scss';
 
 type ListingContainerProps = {
     title: ReactNode;

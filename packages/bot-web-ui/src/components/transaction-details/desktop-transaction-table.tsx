@@ -67,7 +67,7 @@ export default function DesktopTransactionTable({
                 )}
             >
                 <TableHeader columns={transaction_columns} />
-                {transactions?.map((transaction, index) => {
+                {transactions?.map(transaction => {
                     const { data, type } = transaction;
                     if (type === transaction_elements.CONTRACT) {
                         return (
@@ -126,7 +126,7 @@ export default function DesktopTransactionTable({
                     return (
                         <div
                             className={`${PARENT_CLASS}__table-row`}
-                            key={`transaction-row-divider-${new Date().getTime()}-${index}`}
+                            key={`transaction-row-divider-${new Date().getTime()}`}
                         >
                             <div className={`${PARENT_CLASS}__divider`}>
                                 <div className='transactions__divider-line' />

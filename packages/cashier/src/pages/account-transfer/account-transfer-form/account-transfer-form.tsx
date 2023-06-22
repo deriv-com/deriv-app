@@ -256,7 +256,7 @@ const AccountTransferForm = observer(
         React.useEffect(() => {
             if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
                 const side_notes = [];
-                if (is_crypto && crypto_transactions?.length) {
+                if (is_crypto) {
                     side_notes.push(<RecentTransaction key={2} />);
                 }
                 side_notes.push(
@@ -612,7 +612,7 @@ const AccountTransferForm = observer(
                                     </div>
                                     {!is_from_outside_cashier && (
                                         <SideNote title={<Localize i18n_default_text='Notes' />} is_mobile>
-                                            {is_crypto && crypto_transactions?.length ? <RecentTransaction /> : null}
+                                            {is_crypto ? <RecentTransaction /> : null}
                                             <AccountTransferNote
                                                 allowed_transfers_count={{
                                                     internal: internal_remaining_transfers?.allowed,

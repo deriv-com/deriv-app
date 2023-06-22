@@ -31,6 +31,7 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
         transaction_hash,
         transaction_url,
         transaction_type,
+        confirmations,
     } = crypto;
     const formatted_address_hash = address_hash
         ? `${address_hash.substring(0, 4)}....${address_hash.substring(address_hash.length - 4)}`
@@ -61,6 +62,16 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
     };
 
     const is_third_party_transaction = transaction_url?.includes('CP:');
+
+    let confirmation_label = '-';
+
+    if (transaction_type === 'deposit') {
+        if (status_code === 'CONFIRMED') {
+            confirmation_label = localize('Confirmed');
+        } else {
+            confirmation_label = confirmations ? `${confirmations}` : localize('Pending');
+        }
+    }
 
     if (status && isMobile()) {
         return (
@@ -158,9 +169,9 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                             {localize('Confirmations')}
                         </Text>
                     </Table.Cell>
-                    <Table.Cell className='crypto-transactions-history__table-time'>
+                    <Table.Cell>
                         <Text as='p' size='xxs' color='red'>
-                            {crypto.confirmations ?? 0}/12
+                            {confirmation_label}
                         </Text>
                     </Table.Cell>
                     <Table.Cell>
@@ -285,6 +296,13 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                         {crypto.confirmations ?? 0}/12
                     </Text>
                 </Table.Cell>
+                {!is_transaction_clicked && (
+                    <Table.Cell className='crypto-transactions-history__table-confirmations'>
+                        <Text as='p' size='xs' color='red'>
+                            {confirmation_label}
+                        </Text>
+                    </Table.Cell>
+                )}
                 {!is_transaction_clicked && (
                     <Table.Cell>
                         <Text as='p' size='xs'>

@@ -34,9 +34,9 @@
             text-align: center;
             flex-direction: column;
             margin-right: 2.4rem;
-            width: 21.5rem;
             @include mobile {
                 flex-direction: row;
+                width: auto;
                 span {
                     text-align: left;
                     padding-left: 0.8rem;
@@ -71,6 +71,7 @@
             height: 13.5rem;
             background-position: center center;
             margin-bottom: 0.8rem;
+            width: 21.5rem;
             cursor: pointer;
             @include mobile {
                 height: 8.7rem;

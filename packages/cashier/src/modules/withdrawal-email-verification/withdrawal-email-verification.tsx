@@ -1,17 +1,20 @@
 import React from 'react';
 import { MobileWrapper } from '@deriv/components';
-import { useWithdrawalEmailVerification } from '@deriv/hooks';
+import { useWithdrawalEmailVerification, useVerifyEmail } from '@deriv/hooks';
+import { useStore, observer } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { isCryptocurrency } from '@deriv/shared';
-import { observer } from '@deriv/stores';
 import RecentTransaction from '../../components/recent-transaction';
 import EmailVerificationEmptyState from '../../components/email-verification-empty-state';
 import EmptyState from '../../components/empty-state';
 import Error from '../../components/error';
 import ErrorStore from '../../stores/error-store';
+import { useCashierStore } from 'Stores/useCashierStores';
 
 const WithdrawalEmailVerification = observer(() => {
-    const { currency, transaction_history, verify } = useWithdrawalEmailVerification();
+    const verify = useVerifyEmail('payment_withdraw');
+    const { client } = useStore();
+    const { transaction_history } = useCashierStore();
 
     React.useEffect(() => {
         transaction_history.onMount();
@@ -39,7 +42,7 @@ const WithdrawalEmailVerification = observer(() => {
                     onClick: verify.send,
                 }}
             />
-            <MobileWrapper>{isCryptocurrency(currency) && <RecentTransaction />}</MobileWrapper>
+            <MobileWrapper>{isCryptocurrency(client.currency) && <RecentTransaction />}</MobileWrapper>
         </>
     );
 });

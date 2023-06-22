@@ -57,10 +57,13 @@ const WarningCloseCreateRealAccountModal = React.lazy(() =>
     import(/* webpackChunkName: "warning-close-create-real-account" */ '../WarningCloseCreateRealAccountModal')
 );
 
+const VerificationModal = React.lazy(() => import(/* webpackChunkName: "verification-modal" */ '../VerificationModal'));
+
 const AppModals = ({
     is_account_needed_modal_on,
     is_acuity_modal_open,
     is_closing_create_real_account_modal,
+    is_from_eu,
     is_welcome_modal_visible,
     is_reality_check_visible,
     is_set_residence_modal_visible,
@@ -163,6 +166,10 @@ const AppModals = ({
         ComponentToLoad = <NeedRealAccountForCashierModal />;
     }
 
+    if (is_from_eu) {
+        ComponentToLoad = <VerificationModal />;
+    }
+
     return (
         <>
             <RedirectNoticeModal is_logged_in={is_logged_in} is_eu={is_eu_user} portal_id='popup_root' />
@@ -178,6 +185,7 @@ export default connect(({ client, ui, traders_hub }) => ({
     is_closing_create_real_account_modal: ui.is_closing_create_real_account_modal,
     is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
     is_close_uk_account_modal_visible: ui.is_close_uk_account_modal_visible,
+    is_from_eu: traders_hub.is_eu_user,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     is_logged_in: client.is_logged_in,

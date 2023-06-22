@@ -65,11 +65,10 @@ const CFDPOI = ({ index, onSave, onSubmit, height, ...props }: TCFDPOIProps) => 
     );
 };
 
-export default connect(({ client, common, notifications, traders_hub }: RootStore) => ({
+export default connect(({ client, common, notifications }: RootStore) => ({
     account_status: client.account_status,
     app_routing_history: common.app_routing_history,
     fetchResidenceList: client.fetchResidenceList,
-    is_eu_user: traders_hub.is_eu_user,
     is_switching: client.is_switching,
     is_virtual: client.is_virtual,
     is_high_risk: client.is_high_risk,

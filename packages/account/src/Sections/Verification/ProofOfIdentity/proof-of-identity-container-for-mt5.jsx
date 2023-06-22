@@ -14,7 +14,6 @@ const ProofOfIdentityContainerForMt5 = ({
     fetchResidenceList,
     getChangeableFields,
     height,
-    is_eu_user,
     is_from_external,
     is_switching,
     is_virtual,
@@ -79,7 +78,6 @@ const ProofOfIdentityContainerForMt5 = ({
             height={height ?? null}
             identity_last_attempt={identity_last_attempt}
             idv={idv}
-            is_eu_user={is_eu_user}
             is_from_external={!!is_from_external}
             is_idv_disallowed={is_idv_disallowed}
             manual={manual}

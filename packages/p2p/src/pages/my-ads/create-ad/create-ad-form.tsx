@@ -2,16 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, FieldProps, Form } from 'formik';
 import { reaction } from 'mobx';
-import {
-    Button,
-    DesktopWrapper,
-    Div100vhContainer,
-    Input,
-    MobileWrapper,
-    RadioGroup,
-    Text,
-    ThemedScrollbars,
-} from '@deriv/components';
+import { Button, Input, RadioGroup, Text, ThemedScrollbars } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import FloatingRate from 'Components/floating-rate';
@@ -22,6 +13,7 @@ import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods';
+import AdFormWrapper from '../ad-form-wrapper';
 import AdSummary from '../ad-summary';
 import './create-ad-form.scss';
 
@@ -34,17 +26,6 @@ type TFieldProps = {
     payment_info: string;
     rate_type: string;
     type: string;
-};
-
-const CreateAdFormWrapper = ({ children }: React.PropsWithChildren<unknown>) => {
-    return (
-        <React.Fragment>
-            <MobileWrapper>
-                <Div100vhContainer height_offset='auto'>{children}</Div100vhContainer>
-            </MobileWrapper>
-            <DesktopWrapper>{children}</DesktopWrapper>
-        </React.Fragment>
-    );
 };
 
 const CreateAdForm = () => {
@@ -197,7 +178,7 @@ const CreateAdForm = () => {
                                     className='create-ad-form__scrollbar'
                                     is_scrollbar_hidden={isMobile()}
                                 >
-                                    <CreateAdFormWrapper>
+                                    <AdFormWrapper>
                                         <div className='create-ad-form__scrollbar-container'>
                                             <Field name='type'>
                                                 {({ field }: FieldProps) => (
@@ -412,7 +393,7 @@ const CreateAdForm = () => {
                                                 <Localize i18n_default_text='Post ad' />
                                             </Button>
                                         </div>
-                                    </CreateAdFormWrapper>
+                                    </AdFormWrapper>
                                 </ThemedScrollbars>
                             </Form>
                         </div>

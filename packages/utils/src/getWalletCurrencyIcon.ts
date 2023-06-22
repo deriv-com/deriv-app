@@ -1,4 +1,4 @@
-const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_modal = false) => {
+const getWalletCurrencyIcon = (currency: string, is_dark_mode_on = false, is_modal = false) => {
     switch (currency) {
         case 'demo':
             if (is_modal) return 'IcWalletDerivDemoLight';

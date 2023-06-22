@@ -25,6 +25,7 @@ export const ValueMovement = ({
                     })}
                     currency={currency}
                     show_currency={show_currency}
+                    should_format={!is_vanilla}
                 />
             )}
         </div>

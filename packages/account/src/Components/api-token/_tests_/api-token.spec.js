@@ -1,7 +1,8 @@
 import React from 'react';
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { getPropertyValue, isDesktop, isMobile, useIsMounted } from '@deriv/shared';
-import ApiToken, { TApiToken } from '../api-token';
+import { getPropertyValue, isDesktop, isMobile, useIsMounted, WS } from '@deriv/shared';
+import ApiToken from '../api-token';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -9,6 +10,29 @@ jest.mock('@deriv/shared', () => ({
     isDesktop: jest.fn(() => true),
     isMobile: jest.fn(() => false),
     useIsMounted: jest.fn().mockImplementation(() => () => true),
+}));
+jest.mock('@deriv/shared/src/services/ws-methods', () => ({
+    __esModule: true, // this property makes it work,
+    default: 'mockedDefaultExport',
+    WS: {
+        apiToken: jest.fn(() =>
+            Promise.resolve({
+                api_token: {
+                    tokens: [],
+                },
+            })
+        ),
+        authorized: {
+            apiToken: jest.fn(() =>
+                Promise.resolve({
+                    api_token: {
+                        tokens: [],
+                    },
+                })
+            ),
+        },
+    },
+    useWS: () => undefined,
 }));
 
 jest.mock('@deriv/components', () => ({
@@ -48,13 +72,18 @@ describe('<ApiToken/>', () => {
     const your_access_description =
         "To access your mobile apps and other third-party apps, you'll first need to generate an API token.";
 
-    const mock_props: TApiToken = {
+    let store = mockStore();
+    store = mockStore({
+        client: {
+            is_switching: false,
+        },
+    });
+    const mock_props = {
         footer_ref: undefined,
         is_app_settings: false,
-        is_switching: false,
         overlay_ref: undefined,
         setIsOverlayShown: jest.fn(),
-        ws: {
+        WS: {
             apiToken: jest.fn(() =>
                 Promise.resolve({
                     api_token: {
@@ -75,9 +104,13 @@ describe('<ApiToken/>', () => {
     };
 
     it('should render ApiToken component without app_settings and footer', async () => {
-        render(<ApiToken {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <ApiToken {...mock_props} />
+            </StoreProvider>
+        );
 
-        expect(mock_props.ws.authorized.apiToken).toHaveBeenCalled();
+        expect(WS.authorized.apiToken).toHaveBeenCalled();
 
         expect(await screen.findByText(admin_scope_description)).toBeInTheDocument();
         expect(await screen.findByText(admin_scope_note)).toBeInTheDocument();
@@ -95,9 +128,13 @@ describe('<ApiToken/>', () => {
     it('should not render ApiToken component if is not mounted', () => {
         useIsMounted.mockImplementationOnce(() => () => false);
 
-        render(<ApiToken {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <ApiToken {...mock_props} />
+            </StoreProvider>
+        );
 
-        expect(mock_props.ws.authorized.apiToken).toHaveBeenCalled();
+        expect(WS.authorized.apiToken).toHaveBeenCalled();
         expect(screen.getByText('Loading')).toBeInTheDocument();
 
         expect(screen.queryByText(admin_scope_description)).not.toBeInTheDocument();
@@ -117,7 +154,11 @@ describe('<ApiToken/>', () => {
         isMobile.mockReturnValueOnce(true);
         isDesktop.mockReturnValueOnce(false);
 
-        render(<ApiToken {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <ApiToken {...mock_props} />
+            </StoreProvider>
+        );
 
         expect(await screen.findByText(admin_scope_description)).toBeInTheDocument();
         expect(await screen.findByText(admin_scope_note)).toBeInTheDocument();
@@ -134,7 +175,11 @@ describe('<ApiToken/>', () => {
     it('should render ApiToken component with app_settings', async () => {
         mock_props.is_app_settings = true;
 
-        render(<ApiToken {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <ApiToken {...mock_props} />
+            </StoreProvider>
+        );
 
         await waitFor(() => {
             expect(screen.queryByText(our_access_description)).not.toBeInTheDocument();
@@ -150,7 +195,11 @@ describe('<ApiToken/>', () => {
         mock_props.footer_ref = footer_portal_root_el;
         mock_props.overlay_ref = overlay_portal_root_el;
 
-        render(<ApiToken {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <ApiToken {...mock_props} />
+            </StoreProvider>
+        );
 
         expect(await screen.findByText(learn_more_title)).toBeInTheDocument();
         expect(screen.queryByText(our_access_description)).not.toBeInTheDocument();
@@ -166,14 +215,18 @@ describe('<ApiToken/>', () => {
     });
 
     it('should choose checkbox, enter a valid value and create token', async () => {
-        render(<ApiToken {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <ApiToken {...mock_props} />
+            </StoreProvider>
+        );
 
         expect(screen.queryByText('New token name')).not.toBeInTheDocument();
 
-        const checkboxes: HTMLInputElement[] = await screen.findAllByRole('checkbox');
+        const checkboxes = await screen.findAllByRole('checkbox');
         const create_btn = await screen.findByRole('button');
-        const read_checkbox = checkboxes.find(card => card.name === 'read') as HTMLInputElement; // Typecasting it since find can return undefined as well
-        const token_name_input: HTMLInputElement = await screen.findByLabelText('Token name');
+        const read_checkbox = checkboxes.find(card => card.name === 'read'); // Typecasting it since find can return undefined as well
+        const token_name_input = await screen.findByLabelText('Token name');
 
         expect(checkboxes.length).toBe(5);
         expect(create_btn).toBeDisabled();
@@ -202,7 +255,7 @@ describe('<ApiToken/>', () => {
         const updated_token_name_input = await screen.findByLabelText('Token name');
         expect(updated_token_name_input.value).toBe('');
 
-        const createToken = mock_props.ws.apiToken;
+        const createToken = WS.apiToken;
         expect(createToken).toHaveBeenCalledTimes(1);
     });
 
@@ -226,7 +279,11 @@ describe('<ApiToken/>', () => {
             },
         ]);
 
-        render(<ApiToken {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <ApiToken {...mock_props} />
+            </StoreProvider>
+        );
 
         expect(await screen.findByText('First test token')).toBeInTheDocument();
         expect(await screen.findByText('Last used')).toBeInTheDocument();
@@ -255,7 +312,7 @@ describe('<ApiToken/>', () => {
         expect(yes_btn_1).toBeInTheDocument();
 
         fireEvent.click(yes_btn_1);
-        const deleteToken = mock_props.ws.authorized.apiToken;
+        const deleteToken = WS.authorized.apiToken;
         expect(deleteToken).toHaveBeenCalled();
         await waitFor(() => {
             expect(yes_btn_1).not.toBeInTheDocument();
@@ -287,7 +344,11 @@ describe('<ApiToken/>', () => {
             },
         ]);
 
-        render(<ApiToken {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <ApiToken {...mock_props} />
+            </StoreProvider>
+        );
 
         expect(await screen.findByText('First test token')).toBeInTheDocument();
         expect(screen.queryByText('FirstTokenID')).not.toBeInTheDocument();
@@ -349,7 +410,11 @@ describe('<ApiToken/>', () => {
             },
         ]);
 
-        render(<ApiToken {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <ApiToken {...mock_props} />
+            </StoreProvider>
+        );
 
         expect((await screen.findAllByText('Name')).length).toBe(3);
         expect((await screen.findAllByText('Last Used')).length).toBe(3);
@@ -364,7 +429,7 @@ describe('<ApiToken/>', () => {
     });
 
     it('should show token error if exists', async () => {
-        mock_props.ws.authorized.apiToken = jest.fn(() =>
+        WS.authorized.apiToken = jest.fn(() =>
             Promise.resolve({
                 api_token: { tokens: [] },
                 error: { message: 'New test error' },
@@ -373,7 +438,11 @@ describe('<ApiToken/>', () => {
 
         getPropertyValue.mockReturnValue('New test error');
 
-        render(<ApiToken {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <ApiToken {...mock_props} />
+            </StoreProvider>
+        );
 
         expect(await screen.findByText('New test error')).toBeInTheDocument();
     });

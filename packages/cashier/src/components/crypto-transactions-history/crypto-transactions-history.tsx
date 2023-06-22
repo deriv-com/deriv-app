@@ -85,7 +85,7 @@ const CryptoTransactionsHistory = observer(() => {
                                             onTooltipClick={() => setIsModalVisible(true)}
                                         />
                                     )}
-                                    keyMapper={(row: TCryptoTransactionDetails) => row.id}
+                                    keyMapper={row => row.id}
                                     row_gap={isMobile() ? 8 : 0}
                                 />
                             )}

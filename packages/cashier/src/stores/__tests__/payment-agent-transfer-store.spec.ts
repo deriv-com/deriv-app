@@ -7,7 +7,7 @@ import { TWebSocket, TRootStore } from '../../types';
 configure({ safeDescriptors: false });
 
 let payment_agent_transfer_store: PaymentAgentTransferStore,
-    response_payment_agent: PaymentAgentListResponse,
+    response_payment_agent: Partial<PaymentAgentListResponse>,
     root_store: TRootStore,
     transfer_data: {
         transfer_to: string;
@@ -16,7 +16,7 @@ let payment_agent_transfer_store: PaymentAgentTransferStore,
         currency: string;
         dry_run?: 0 | 1;
     },
-    WS: TWebSocket;
+    WS: Partial<TWebSocket>;
 
 beforeEach(() => {
     WS = {
@@ -25,6 +25,12 @@ beforeEach(() => {
                 getSettings: jest.fn(),
             },
             paymentAgentTransfer: jest.fn(),
+            cashier: jest.fn(),
+            getAccountStatus: jest.fn(),
+            paymentAgentDetails: jest.fn(),
+            paymentAgentList: jest.fn(),
+            paymentAgentWithdraw: jest.fn(),
+            transferBetweenAccounts: jest.fn(),
         },
     };
     root_store = mockStore({
@@ -55,10 +61,26 @@ beforeEach(() => {
             is_real_acc_signup_on: false,
         },
     }) as TRootStore;
-    payment_agent_transfer_store = new PaymentAgentTransferStore(WS, root_store);
+    payment_agent_transfer_store = new PaymentAgentTransferStore(WS as TWebSocket, root_store);
     response_payment_agent = {
         paymentagent_list: {
-            list: [{ paymentagent_loginid: 'CR9000000' }],
+            list: [
+                {
+                    paymentagent_loginid: 'CR9000000',
+                    currencies: 'USD',
+                    deposit_commission: '10',
+                    email: 'myemail@email.com',
+                    further_information: 'Further information',
+                    max_withdrawal: '10000',
+                    min_withdrawal: '10',
+                    name: 'Paymenet agent',
+                    phone_numbers: [{ phone_number: '+123456789' }],
+                    summary: 'Summary',
+                    supported_payment_methods: [{ payment_method: 'Visa' }],
+                    urls: [{ url: 'https://urls.com' }],
+                    withdrawal_commission: '1',
+                },
+            ],
         },
     };
     transfer_data = {
@@ -135,7 +157,11 @@ describe('PaymentAgentTransferStore', () => {
     it('should get current payment agent from response_payment_agent', async () => {
         payment_agent_transfer_store.root_store.client.loginid = 'CR9000000';
 
-        expect(await payment_agent_transfer_store.getCurrentPaymentAgent(response_payment_agent)).toEqual({
+        expect(
+            await payment_agent_transfer_store.getCurrentPaymentAgent(
+                response_payment_agent as PaymentAgentListResponse
+            )
+        ).toEqual({
             paymentagent_loginid: 'CR9000000',
         });
     });
@@ -147,13 +173,21 @@ describe('PaymentAgentTransferStore', () => {
             paymentagent_loginid: 'CR9999999',
         });
 
-        expect(await payment_agent_transfer_store.getCurrentPaymentAgent(response_payment_agent)).toEqual({
+        expect(
+            await payment_agent_transfer_store.getCurrentPaymentAgent(
+                response_payment_agent as PaymentAgentListResponse
+            )
+        ).toEqual({
             paymentagent_loginid: 'CR9999999',
         });
     });
 
     it('should return an empty object if there are no payment agents', async () => {
-        expect(await payment_agent_transfer_store.getCurrentPaymentAgent(response_payment_agent)).toEqual({});
+        expect(
+            await payment_agent_transfer_store.getCurrentPaymentAgent(
+                response_payment_agent as PaymentAgentListResponse
+            )
+        ).toEqual({});
     });
 
     it('should mount payment agent transfer', async () => {

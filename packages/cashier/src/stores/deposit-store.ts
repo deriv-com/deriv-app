@@ -67,6 +67,7 @@ export default class DepositStore {
                 clearTimeoutCashierUrl();
             } else {
                 await checkIframeLoaded();
+                // @ts-expect-error since this store will be removed in upcoming PR we put expect error statement here
                 setIframeUrl(response_cashier.cashier);
                 setSessionTimeout(false);
                 setTimeoutCashierUrl();

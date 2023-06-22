@@ -17,7 +17,7 @@ describe('SideNoteCard', () => {
         render(<SideNoteCard {...props} />, { wrapper });
 
         expect(screen.getByText(props.title)).toBeInTheDocument();
-        expect(screen.getByText(props.description)).toBeInTheDocument();
+        expect(screen.getByText(props.description as string)).toBeInTheDocument();
     });
 
     test('should render the given children', async () => {
@@ -38,7 +38,7 @@ describe('SideNoteCard', () => {
         );
 
         expect(screen.getByText(props.title)).toBeInTheDocument();
-        expect(screen.getByText(props.description)).toBeInTheDocument();
+        expect(screen.getByText(props.description as string)).toBeInTheDocument();
         expect(screen.getByText('children')).toBeInTheDocument();
     });
 });

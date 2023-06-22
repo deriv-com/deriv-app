@@ -48,9 +48,23 @@ jest.mock('Pages/deposit', () => jest.fn(() => 'mockedDeposit'));
 jest.mock('Pages/withdrawal', () => jest.fn(() => 'mockedWithdrawal'));
 
 describe('<Cashier />', () => {
-    let history: BrowserHistory;
-    const renderWithRouter = (component: JSX.Element, mock_root_store: ReturnType<typeof mockStore>) => {
+    let history: BrowserHistory, cashier_props: React.ComponentProps<typeof Cashier>;
+
+    beforeEach(() => {
         history = createBrowserHistory();
+        cashier_props = {
+            routes: getRoutesConfig()[0].routes || [],
+            tab_index: 0,
+            onMount: jest.fn(),
+            setAccountSwitchListener: jest.fn(),
+            setTabIndex: jest.fn(),
+            routeBackInApp: jest.fn(),
+            toggleCashier: jest.fn(),
+            resetLastLocation: jest.fn(),
+        };
+    });
+
+    const renderWithRouter = (component: JSX.Element, mock_root_store: ReturnType<typeof mockStore>) => {
         return {
             ...render(<Router history={history}>{component}</Router>, {
                 wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
@@ -101,7 +115,7 @@ describe('<Cashier />', () => {
             },
         });
 
-        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
+        renderWithRouter(<Cashier {...cashier_props} />, mock_root_store);
 
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
@@ -150,7 +164,7 @@ describe('<Cashier />', () => {
             },
         });
 
-        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
+        renderWithRouter(<Cashier {...cashier_props} />, mock_root_store);
 
         expect(screen.getByRole('link', { name: 'Deposit' })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Withdrawal' })).toBeInTheDocument();
@@ -207,7 +221,7 @@ describe('<Cashier />', () => {
             },
         });
 
-        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
+        renderWithRouter(<Cashier {...cashier_props} />, mock_root_store);
 
         const learn_more_btn = screen.getByRole('button', { name: 'Learn more about payment methods' });
         fireEvent.click(learn_more_btn);
@@ -308,7 +322,7 @@ describe('<Cashier />', () => {
             },
         });
 
-        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
+        renderWithRouter(<Cashier {...cashier_props} />, mock_root_store);
 
         const withdrawal_link = screen.getByRole('link', { name: 'Withdrawal' });
         fireEvent.click(withdrawal_link);
@@ -359,7 +373,7 @@ describe('<Cashier />', () => {
             },
         });
 
-        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
+        renderWithRouter(<Cashier {...cashier_props} />, mock_root_store);
 
         expect(screen.queryByTestId('vertical_tab_side_note')).not.toBeInTheDocument();
     });
@@ -409,7 +423,7 @@ describe('<Cashier />', () => {
             },
         });
 
-        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
+        renderWithRouter(<Cashier {...cashier_props} />, mock_root_store);
 
         const withdrawal_link = screen.getByRole('link', { name: 'Withdrawal' });
         fireEvent.click(withdrawal_link);

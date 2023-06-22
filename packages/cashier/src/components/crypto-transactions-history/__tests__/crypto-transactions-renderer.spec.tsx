@@ -30,6 +30,7 @@ describe('<CryptoTransactionsRenderer />', () => {
         });
     });
     const props = {
+        onTooltipClick: jest.fn(),
         row: {
             address_hash: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
             address_url: 'https://www.blockchain.com/btc-testnet/address/tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
@@ -144,6 +145,7 @@ describe('<CryptoTransactionsRenderer />', () => {
     it('should display popover when hovering on tooltip for third-party transactions (CoinsPaid)', () => {
         (isMobile as jest.Mock).mockReturnValue(false);
         const tooltip_props = {
+            onTooltipClick: jest.fn(),
             row: {
                 address_hash: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
                 address_url: 'https://explorer.coinspaid.com/CP:Abcd1234',
@@ -154,10 +156,11 @@ describe('<CryptoTransactionsRenderer />', () => {
                 status_message:
                     "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
                 submit_date: 1640603927,
+                transaction_hash: '',
                 transaction_type: 'withdrawal',
                 transaction_url: 'CP:Abcd1234',
             },
-        };
+        } as const;
 
         render(<CryptoTransactionsRenderer {...tooltip_props} />, {
             wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,
@@ -177,6 +180,7 @@ describe('<CryptoTransactionsRenderer />', () => {
     it('should check whether the tooltip is clickable for third-party transactions (CoinsPaid)', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         const tooltip_props = {
+            onTooltipClick: jest.fn(),
             row: {
                 address_hash: 'tb1ql7w62elx9ucw4pj5lgw4l028hmuw80sndtntxt',
                 address_url: 'https://explorer.coinspaid.com/CP:Abcd1234',
@@ -187,11 +191,11 @@ describe('<CryptoTransactionsRenderer />', () => {
                 status_message:
                     "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
                 submit_date: 1640603927,
+                transaction_hash: '',
                 transaction_type: 'withdrawal',
                 transaction_url: 'CP:Abcd1234',
             },
-            onTooltipClick: jest.fn(),
-        };
+        } as const;
 
         render(<CryptoTransactionsRenderer {...tooltip_props} />, {
             wrapper: ({ children }) => <CashierProviders store={mockRootStore}>{children}</CashierProviders>,

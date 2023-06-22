@@ -23,7 +23,7 @@ const CellMeasurer = _CellMeasurer as unknown as React.FC<CellMeasurerProps>;
 export type TRowRenderer = (params: { row: any; is_footer?: boolean; measure?: () => void }) => React.ReactNode;
 export type TPassThrough = { isTopUp: (item: TRow) => boolean };
 export type TRow = {
-    [key: string]: string;
+    [key: string]: string | number;
 };
 
 type TDataList = {
@@ -32,7 +32,7 @@ type TDataList = {
     footer?: React.ReactNode;
     getRowAction?: (row: TRow) => string;
     getRowSize?: (params: { index: number }) => number;
-    keyMapper?: (row: TRow) => number | string;
+    keyMapper?: (row: TRow) => string | number;
     onRowsRendered?: () => void;
     onScroll?: React.UIEventHandler<HTMLDivElement>;
     passthrough?: TPassThrough;

@@ -82,7 +82,7 @@ const PageOverlayWrapper = ({
                 is_full_width
                 list={subroutes}
                 list_groups={list_groups}
-                extra_content={is_appstore && <AccountLogout />}
+                extra_content={is_appstore && <AccountLogout logout={logout} history={history} />}
             />
         );
     }

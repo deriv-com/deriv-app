@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Formik, Field } from 'formik';
 import {
     Autocomplete,
@@ -13,26 +12,23 @@ import {
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, WS } from '@deriv/shared';
-import { connect } from 'Stores/connect';
 import FormSubHeader from 'Components/form-sub-header';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
 import LoadErrorMessage from 'Components/load-error-message';
 import PoincFileUploaderContainer from 'Components/poinc/file-uploader-container';
+import { observer, useStore } from '@deriv/stores';
 
 let file_uploader_ref = null;
 
-const ProofOfIncomeForm = ({
-    addNotificationByKey,
-    removeNotificationByKey,
-    removeNotificationMessage,
-    poinc_documents_list,
-    onSubmit,
-}) => {
+const ProofOfIncomeForm = observer(({ poinc_documents_list, onSubmit }) => {
     const [document_file, setDocumentFile] = React.useState({ files: [], error_message: null });
     const [disabled_items, setDisabledItems] = React.useState([2]);
     const [api_initial_load_error, setAPIInitialLoadError] = React.useState(null);
     const [uploading_document_type, setUploadingDocumentType] = React.useState('');
+
+    const { notifications } = useStore();
+    const { addNotificationByKey, removeNotificationMessage, removeNotificationByKey } = notifications;
 
     const initial_form_values = {
         document_type: '',
@@ -215,18 +211,6 @@ const ProofOfIncomeForm = ({
             )}
         </Formik>
     );
-};
+});
 
-ProofOfIncomeForm.propTypes = {
-    addNotificationByKey: PropTypes.func,
-    onSubmit: PropTypes.func,
-    removeNotificationByKey: PropTypes.func,
-    removeNotificationMessage: PropTypes.func,
-    poinc_documents_list: PropTypes.array,
-};
-
-export default connect(({ notifications }) => ({
-    addNotificationByKey: notifications.addNotificationMessageByKey,
-    removeNotificationMessage: notifications.removeNotificationMessage,
-    removeNotificationByKey: notifications.removeNotificationByKey,
-}))(ProofOfIncomeForm);
+export default ProofOfIncomeForm;

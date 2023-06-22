@@ -24,7 +24,7 @@ import {
     getLocation,
     WS,
 } from '@deriv/shared';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
@@ -53,18 +53,14 @@ const UploaderSideNote = () => (
     </div>
 );
 
-const ProofOfAddressForm = ({
-    account_settings,
-    addNotificationByKey,
-    is_eu,
-    is_resubmit,
-    fetchResidenceList,
-    fetchStatesList,
-    onSubmit,
-    removeNotificationByKey,
-    removeNotificationMessage,
-    states_list,
-}) => {
+const ProofOfAddressForm = observer(({ is_resubmit, onSubmit }) => {
+    const { client, notifications } = useStore();
+    const { account_settings, fetchResidenceList, fetchStatesList, is_eu, states_list } = client;
+    const {
+        addNotificationMessageByKey: addNotificationByKey,
+        removeNotificationMessage,
+        removeNotificationByKey,
+    } = notifications;
     const [document_file, setDocumentFile] = React.useState({ files: [], error_message: null });
     const [is_loading, setIsLoading] = React.useState(true);
     const [form_values, setFormValues] = useStateCallback({});
@@ -458,28 +454,11 @@ const ProofOfAddressForm = ({
             )}
         </Formik>
     );
-};
+});
 
 ProofOfAddressForm.propTypes = {
-    account_settings: PropTypes.object,
-    addNotificationByKey: PropTypes.func,
-    is_eu: PropTypes.bool,
     is_resubmit: PropTypes.bool,
-    fetchResidenceList: PropTypes.func,
-    fetchStatesList: PropTypes.func,
     onSubmit: PropTypes.func,
-    removeNotificationByKey: PropTypes.func,
-    removeNotificationMessage: PropTypes.func,
-    states_list: PropTypes.array,
 };
 
-export default connect(({ client, notifications }) => ({
-    account_settings: client.account_settings,
-    is_eu: client.is_eu,
-    addNotificationByKey: notifications.addNotificationMessageByKey,
-    removeNotificationMessage: notifications.removeNotificationMessage,
-    removeNotificationByKey: notifications.removeNotificationByKey,
-    states_list: client.states_list,
-    fetchResidenceList: client.fetchResidenceList,
-    fetchStatesList: client.fetchStatesList,
-}))(ProofOfAddressForm);
+export default ProofOfAddressForm;

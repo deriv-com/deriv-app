@@ -256,11 +256,11 @@
         &__amount {
             &-keypad {
                 width: 100%;
-                padding: 1.6rem;
+                padding: 2.4rem 1.6rem 1.6rem;
                 height: auto;
-                margin-top: 0.8rem;
                 margin-bottom: 0.8rem;
                 display: flex;
+                flex-direction: column;
                 align-items: center;
                 justify-content: center;
 
@@ -511,7 +511,7 @@
             left: 2.4rem !important;
 
             &__content {
-                max-width: 32.8rem;
+                max-width: calc(min(32.8rem, 85vw));
                 left: 2.5rem;
                 &--vanilla {
                     top: -0.9rem;

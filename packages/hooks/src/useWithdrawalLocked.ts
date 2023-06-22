@@ -1,12 +1,14 @@
 import React from 'react';
 import { useStore } from '@deriv/stores';
 import { useFetch } from '@deriv/api';
+import useCheck10kLimit from './useCheck10kLimit';
 
 const useWithdrawalLocked = () => {
     const { modules } = useStore();
     const { withdraw } = modules.cashier;
+    const { is_10k_withdrawal_limit_reached: is_10K_limit } = useCheck10kLimit();
+
     const {
-        is_10k_withdrawal_limit_reached: is_10K_limit,
         error: { is_ask_financial_risk_approval },
     } = withdraw;
 

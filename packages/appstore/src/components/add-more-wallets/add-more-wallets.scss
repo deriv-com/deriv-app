@@ -20,7 +20,6 @@
         border: 0.1rem solid var(--general-active);
         background-color: var(--general-main-1);
         box-shadow: $wallet-card-shadow;
-
         &-description,
         &-wrapper {
             display: flex;
@@ -52,9 +51,9 @@
 
 .carousel {
     overflow: hidden;
+    padding: 3.2rem 1.6rem;
     &__wrapper {
         height: 100%;
-        padding: 3.2rem 1.6rem;
         display: flex;
         align-items: center;
         justify-content: flex-start;

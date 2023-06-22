@@ -190,14 +190,10 @@ export default class WithdrawStore {
 
         // if session has timed out reset everything
         setIframeUrl('');
-        if (!verification_code) {
-            setLoading(false);
-            // if no verification code, we should request again
-            return;
-        }
-        if (is_virtual) {
+        if (!verification_code || is_virtual) {
             setLoading(false);
             // if virtual, clear everything and don't proceed further
+            // if no verification code, we should request again
             return;
         }
 
@@ -294,7 +290,7 @@ export default class WithdrawStore {
         const remainder = (await client.getLimits())?.get_limits?.remainder;
         this.setMaxWithdrawAmount(Number(remainder));
         const min_withdrawal = getMinWithdrawal(client.currency);
-        const is_limit_reached = typeof remainder !== 'undefined' && +remainder < min_withdrawal;
+        const is_limit_reached = !!(typeof remainder !== 'undefined' && +remainder < min_withdrawal);
         this.set10kLimitation(is_limit_reached);
     }
 

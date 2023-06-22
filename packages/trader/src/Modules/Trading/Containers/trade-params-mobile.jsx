@@ -1,6 +1,6 @@
 import 'Sass/app/modules/trading-mobile.scss';
 
-import { Div100vhContainer, Modal, Money, Tabs, ThemedScrollbars, usePreventIOSZoom, Popover } from '@deriv/components';
+import { Div100vhContainer, Modal, Money, Tabs, ThemedScrollbars, usePreventIOSZoom } from '@deriv/components';
 
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
 import Barrier from 'Modules/Trading/Components/Form/TradeParams/barrier.jsx';
@@ -10,7 +10,7 @@ import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import React from 'react';
 import classNames from 'classnames';
-import { localize, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 
 const DEFAULT_DURATION = Object.freeze({
     t: 5,
@@ -34,7 +34,7 @@ const TradeParamsModal = observer(({ is_open, toggleModal }) => {
     const { client, ui } = useStore();
     const { currency } = client;
     const { enableApp, disableApp } = ui;
-    const { amount, form_components, duration, duration_unit, duration_units_list, is_vanilla } = useTraderStore();
+    const { amount, form_components, duration, duration_unit, duration_units_list } = useTraderStore();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const getDefaultDuration = React.useCallback(makeGetDefaultDuration(duration, duration_unit), []);
@@ -91,28 +91,6 @@ const TradeParamsModal = observer(({ is_open, toggleModal }) => {
 
     const isVisible = component_key => form_components.includes(component_key);
 
-    const setTooltipContent = () => {
-        if (is_vanilla && state.trade_param_tab_idx === 1)
-            return (
-                <div className='trade-params__vanilla-ic-info-wrapper'>
-                    <Popover
-                        alignment='bottom'
-                        icon='info'
-                        id='dt_vanilla-stake__tooltip'
-                        zIndex={9999}
-                        is_bubble_hover_enabled
-                        arrow_styles={{ top: '-9px' }}
-                        message={
-                            <Localize i18n_default_text='Your stake is a non-refundable one-time premium to purchase this contract. Your total profit/loss equals the contract value minus your stake.' />
-                        }
-                        classNameWrapper='trade-params--modal-wrapper'
-                        classNameBubble='trade-params--modal-wrapper__content--vanilla'
-                    />
-                </div>
-            );
-        return null;
-    };
-
     return (
         <React.Fragment>
             <Modal
@@ -125,7 +103,6 @@ const TradeParamsModal = observer(({ is_open, toggleModal }) => {
                 toggleModal={toggleModal}
                 height='auto'
                 width='calc(100vw - 32px)'
-                renderTitle={setTooltipContent}
             >
                 <ThemedScrollbars>
                     <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='120px'>
@@ -197,7 +174,7 @@ const TradeParamsMobile = observer(
         h_duration,
         d_duration,
     }) => {
-        const { basis_list, basis, is_vanilla } = useTraderStore();
+        const { basis_list, basis, is_vanilla, expiry_epoch } = useTraderStore();
         const getDurationText = () => {
             const duration = duration_units_list.find(d => d.value === duration_unit);
             return `${duration_value} ${
@@ -270,6 +247,8 @@ const TradeParamsMobile = observer(
                             d_duration={d_duration}
                             stake_value={stake_value}
                             payout_value={payout_value}
+                            is_vanilla={is_vanilla}
+                            expiry_epoch={expiry_epoch}
                         />
                     </div>
                 )}

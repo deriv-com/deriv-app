@@ -1,5 +1,5 @@
 import React from 'react';
-import config from '../../../../../../app.config';
+import config from '@config';
 
 const MenuLinks = () => (
     <div className='header__menu-item header__menu-links client_logged_in'>

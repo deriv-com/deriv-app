@@ -1,5 +1,5 @@
 import React from 'react';
-import config from '../../../../../../app.config';
+import config from '@config';
 import { getLanguage } from '../../../../../../common/lang';
 import { redirectToSupportedLang, translate } from '../../../../../../common/utils/tools';
 import './language-selector.scss';

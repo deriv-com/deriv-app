@@ -1,4 +1,4 @@
-import { load as loadLang } from 'lang';
+import { load as loadLang } from '@lang';
 import { translate } from '../../common/i18n';
 import api from '../view/deriv/api';
 

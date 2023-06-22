@@ -1,9 +1,9 @@
 import React from 'react';
 import classNames from 'classnames';
+import config from '@config';
 import { translate } from '../../../../../../common/utils/tools';
 import MenuLinks from './menu-links.jsx';
 import PlatformDropdown from './platform-dropdown.jsx';
-import config from '../../../../../../app.config';
 
 const DrawerMenu = ({
     updateShowDrawerMenu,

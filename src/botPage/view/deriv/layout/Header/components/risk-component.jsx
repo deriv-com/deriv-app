@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
-import config from '../../../../../../app.config';
+import config from '@config';
 import { translate } from '../../../../../../common/utils/tools';
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
 

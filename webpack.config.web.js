@@ -107,7 +107,8 @@ module.exports = {
     },
     resolve: {
         alias: {
-            lang: path.resolve(__dirname, 'src/common/lang'),
+            '@lang': path.resolve(__dirname, 'src/common/lang'),
+            '@config': path.resolve(__dirname, 'src/config'),
         },
     },
 };

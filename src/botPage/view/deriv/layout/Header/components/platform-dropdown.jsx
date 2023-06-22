@@ -1,8 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
+import config from '@config';
 import { useLocation } from 'react-router-dom';
 import { translate } from '../../../../../../common/utils/tools';
-import config from '../../../../../../app.config';
 import { getRelatedDeriveOrigin } from '../../../utils';
 
 const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcherOpen }, platformDropdownRef) => {

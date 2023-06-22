@@ -1,11 +1,11 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import config from '@config';
 import { translate } from '../../../../../../common/utils/tools';
 import { getTokenList } from '../../../../../../common/utils/storageManager';
 import { useDispatch } from 'react-redux';
 import { setAccountSwitcherToken } from '../../../store/ui-slice';
 import classNames from 'classnames';
-import config from '../../../../../../app.config';
 import { CRYPTO_CURRENCIES } from '../../../../../common/const';
 
 const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, title = 'Deriv Accounts' }) => {

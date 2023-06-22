@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import config from '../../../../../../app.config';
+import config from '@config';
 import useLogout from '../../../../../../common/hooks/useLogout.js';
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
 import { translate } from '../../../../../../common/utils/tools';

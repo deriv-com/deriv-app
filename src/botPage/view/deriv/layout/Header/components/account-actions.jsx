@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import classNames from 'classnames';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import config from '@config';
 import { translate } from '../../../../../../common/utils/tools';
 import Notifications from './notifications.jsx';
 import AccountDropdown from './account-dropdown.jsx';
@@ -20,7 +20,6 @@ import { addTokenIfValid, AppConstants } from '../../../../../../common/appId';
 import { getTokenList, set as setStorage } from '../../../../../../common/utils/storageManager';
 import { updateActiveToken } from '../../../store/client-slice';
 import Popover from '../../../components/popover';
-import config from '../../../../../../app.config';
 
 const AccountActions = () => {
     const { currency, is_virtual, balance, active_token, active_account_name } = useSelector(state => state.client);

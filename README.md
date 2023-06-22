@@ -126,7 +126,7 @@ git merge upstream/master
 ## Optional Branding
 
 ```
-Go to app.config.js file inside the src/directory of the project folder.
+Go to src/config.js file of the project folder.
 All the important branding settings are implemented in this file.
 User can make changes to Deriv branding related logo, text and their visibility.
 ```

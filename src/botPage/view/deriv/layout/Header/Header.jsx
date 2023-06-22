@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
+import config from '@config';
 import { isMobile, isDesktop, parseQueryString } from '../../../../../common/utils/tools';
 import PlatformDropdown from './components/platform-dropdown.jsx';
 import { isLoggedIn, getActiveToken, updateTokenList } from '../../utils';
@@ -23,7 +24,6 @@ import { setAccountSwitcherLoader, updateShowMessagePage } from '../../store/ui-
 import { DrawerMenu, AuthButtons, AccountActions, MenuLinks, AccountSwitcherLoader } from './components';
 import { queryToObjectArray } from '../../../../../common/appId';
 import api from '../../api';
-import config from '../../../../../app.config';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
 import { checkSwitcherType, isEuByAccount } from '../../../../../common/footer-checks';
 import './header.scss';

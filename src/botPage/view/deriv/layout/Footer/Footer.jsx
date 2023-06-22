@@ -3,7 +3,7 @@ import NetworkStatus from './components/network-status.jsx';
 import ServerTime from './components/server-time.jsx';
 import ToggleFullScreen from './components/toggle-fullscreen.jsx';
 import LanguageSelector from './components/language-selector.jsx';
-import config from '../../../../../app.config';
+import config from '@config';
 import './footer.scss';
 
 const FooterIconSeparator = () => <div className='footer__icon-separator' />;

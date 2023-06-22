@@ -1,7 +1,7 @@
 import { action, makeObservable, observable } from 'mobx';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
-import { TRootStore, TWebSocket } from '../types';
+import { TRootStore, TWebSocket } from 'Types';
 
 export default class DepositStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {
@@ -51,7 +51,7 @@ export default class DepositStore {
             return;
         }
 
-        if (!is_crypto) {
+        if (!is_crypto && active_container === 'deposit') {
             const response_cashier = await this.WS.authorized.cashier(active_container, {
                 verification_code: 'undefined',
             });

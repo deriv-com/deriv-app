@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import ReadMoreWrapper from 'Components/read-more-wrapper';
 import Constants from 'Constants/constants';
 import ErrorStore from './error-store';
-import { TWebSocket, TRootStore } from 'Types';
+import { TWebSocket, TRootStore } from '../types';
 
 export default class WithdrawStore {
     constructor(public WS: TWebSocket, public root_store: TRootStore) {

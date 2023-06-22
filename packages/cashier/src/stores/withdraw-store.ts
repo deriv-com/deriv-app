@@ -392,6 +392,8 @@ export default class WithdrawStore {
 
     get account_platform_icon() {
         const { account_list, loginid } = this.root_store.client;
-        return account_list.find(acc => loginid === acc.loginid)?.icon;
+        const platform_icon = account_list.find(acc => loginid === acc.loginid)?.icon;
+
+        return platform_icon;
     }
 }

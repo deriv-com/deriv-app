@@ -1,5 +1,6 @@
 .add-wallets {
-    margin: 2rem 0rem 4rem;
+    padding: 2rem 0rem 4rem;
+    margin-top: 2.4rem;
     &__title {
         @include mobile {
             font-size: var(--text-size-m);

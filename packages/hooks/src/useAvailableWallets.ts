@@ -22,7 +22,7 @@ const useAvailableWallets = () => {
     const sortedWallets = React.useMemo(() => {
         if (!account_type_data) return null;
         // @ts-expect-error Need to update @deriv/api-types to fix the TS error
-        const { crypto, doughflow } = account_type_data?.get_account_types?.wallet;
+        const { crypto, doughflow } = account_type_data?.get_account_types?.wallet || {};
         const crypto_currencies = crypto.currencies;
         const fiat_currencies = doughflow.currencies;
 

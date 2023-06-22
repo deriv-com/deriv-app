@@ -59,38 +59,13 @@ describe('useAvailableWallets', () => {
 
         const { result } = renderHook(() => useAvailableWallets(), { wrapper });
 
-        expect(result.current?.data).toEqual([
-            {
-                currency: 'AUD',
-                is_added: false,
+        expect(result.current?.data).toEqual(
+            ['AUD', 'EUR', 'BTC', 'ETH', 'LTC', 'USD'].map(currency => ({
+                currency,
+                is_added: currency === 'USD',
                 landing_company_shortcode: 'svg',
-            },
-            {
-                currency: 'EUR',
-                is_added: false,
-                landing_company_shortcode: 'svg',
-            },
-            {
-                currency: 'BTC',
-                is_added: false,
-                landing_company_shortcode: 'svg',
-            },
-            {
-                currency: 'ETH',
-                is_added: false,
-                landing_company_shortcode: 'svg',
-            },
-            {
-                currency: 'LTC',
-                is_added: false,
-                landing_company_shortcode: 'svg',
-            },
-            {
-                currency: 'USD',
-                is_added: true,
-                landing_company_shortcode: 'svg',
-            },
-        ]);
+            }))
+        );
     });
 
     it('should not return unavailable wallets', () => {

@@ -43,8 +43,12 @@ const CarouselContainer: React.FC<React.PropsWithChildren<unknown>> = observer((
             <div className='carousel' ref={emblaRef}>
                 <div className='carousel__wrapper'>{children}</div>
             </div>
-            {is_hovered && <PrevButton enabled={prev_btn_disabled} onClick={scrollPrev} />}
-            {is_hovered && <NextButton enabled={next_btn_disabled} onClick={scrollNext} />}
+            {is_hovered && (
+                <React.Fragment>
+                    <PrevButton enabled={prev_btn_disabled} onClick={scrollPrev} />
+                    <NextButton enabled={next_btn_disabled} onClick={scrollNext} />
+                </React.Fragment>
+            )}
         </div>
     );
 });

@@ -1,15 +1,16 @@
 import React from 'react';
-import ModalManager from 'Components/modals/modal-manager';
-import TourGuide from 'Modules/tour-guide/tour-guide';
+import classNames from 'classnames';
 import { isDesktop } from '@deriv/shared';
 import { Div100vhContainer } from '@deriv/components';
-import classNames from 'classnames';
+import { useStore, observer } from '@deriv/stores';
+import { useContentFlag } from '@deriv/hooks';
+import ModalManager from 'Components/modals/modal-manager';
+import TourGuide from 'Modules/tour-guide/tour-guide';
 import AccountWithWallets from './account-with-wallets';
 import AccountWithoutWallets from './account-without-wallets';
-import { useStore, observer } from '@deriv/stores';
 import EUDisclaimer from 'Components/eu-disclaimer';
+import AddMoreWallets from 'Components/add-more-wallets';
 import './traders-hub.scss';
-import { useContentFlag } from '@deriv/hooks';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStore();
@@ -72,6 +73,8 @@ const TradersHub = () => {
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
                     {is_high_risk_cr && <AccountWithWallets />}
+                    {/* TODO: Visibility of this section is depending whether the user is eligible to have wallets. */}
+                    <AddMoreWallets />
                     <AccountWithoutWallets />
                     <ModalManager />
                     {scrolled && <TourGuide />}

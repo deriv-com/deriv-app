@@ -44,7 +44,6 @@
         "i18next": "^22.4.6",
         "lodash.debounce": "^4.0.8",
         "mobx": "^6.6.1",
-        "mobx-react": "^7.5.1",
         "mobx-react-lite": "^3.4.0",
         "prop-types": "^15.7.2",
         "react": "^17.0.2",

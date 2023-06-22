@@ -4,7 +4,6 @@ const gulp = require('gulp');
 const hash = require('sha1');
 const paths = require('vinyl-paths');
 const scanner = require('i18next-scanner');
-require('./static');
 
 const options = {
     lngs: ['en'], // supported languages

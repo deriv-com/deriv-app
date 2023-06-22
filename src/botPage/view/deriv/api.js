@@ -4,7 +4,6 @@ import { supported_languages } from '../../../common/i18n';
 import { setCookieLanguage } from '../../../common/utils/cookieManager';
 
 // [Todo] getStorage, setStorage are duplicated here after update the structure of project we should remove them
-
 function getStorage(label) {
     return window.localStorage.getItem(label);
 }

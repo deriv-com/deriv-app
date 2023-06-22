@@ -48,7 +48,7 @@
         }
     }
 
-    &>div {
+    & > div {
         @include mobile {
             overflow: scroll;
         }

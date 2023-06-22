@@ -14,22 +14,24 @@ const HelpCenter = () => (
     </a>
 );
 
-const Footer = () => <footer className='footer'>
-    <NetworkStatus />
-    <FooterIconSeparator />
-    <LanguageSelector />
-    <FooterIconSeparator />
-    <ServerTime />
-    <FooterIconSeparator />
-    <div className='footer__links'>
-        {config.help_center.visible && (
-            <>
-                <HelpCenter />
-                <FooterIconSeparator />
-            </>
-        )}
-        <ToggleFullScreen />
-    </div>
-</footer>;
+const Footer = () => (
+    <footer className='footer'>
+        <NetworkStatus />
+        <FooterIconSeparator />
+        <LanguageSelector />
+        <FooterIconSeparator />
+        <ServerTime />
+        <FooterIconSeparator />
+        <div className='footer__links'>
+            {config.help_center.visible && (
+                <>
+                    <HelpCenter />
+                    <FooterIconSeparator />
+                </>
+            )}
+            <ToggleFullScreen />
+        </div>
+    </footer>
+);
 
 export default Footer;

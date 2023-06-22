@@ -105,4 +105,9 @@ module.exports = {
         port: 8081,
         open: true,
     },
+    resolve: {
+        alias: {
+            lang: path.resolve(__dirname, 'src/common/lang'),
+        },
+    },
 };

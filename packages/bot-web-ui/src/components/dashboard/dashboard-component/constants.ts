@@ -8,7 +8,7 @@ export type TSidebarItem = {
 
 export const SIDEBAR_INTRO: TSidebarItem[] = [
     {
-        label: localize('Welcome to DBot!'),
+        label: localize('Welcome to Deriv Bot!'),
         content: [
             localize(
                 'Ready to automate your trading strategy without writing any code? You’ve come to the right place.'
@@ -19,13 +19,13 @@ export const SIDEBAR_INTRO: TSidebarItem[] = [
     },
     {
         label: localize('Guide'),
-        content: [localize('DBot - your automated trading partner')],
+        content: [localize('Deriv Bot - your automated trading partner')],
         link: true,
     },
     {
         label: localize('FAQs'),
         content: [
-            localize('What is DBot?'),
+            localize('What is Deriv Bot?'),
             localize('Where do I find the blocks I need?'),
             localize('How do I remove blocks from the workspace?'),
         ],

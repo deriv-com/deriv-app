@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tabs, TickPicker, Numpad, RelativeDatepicker } from '@deriv/components';
+import { Tabs, TickPicker, Numpad, RelativeDatepicker, Text } from '@deriv/components';
 import { isEmptyObject, addComma, getDurationMinMaxValues } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 
@@ -90,16 +90,19 @@ const Ticks = observer(
 
 const Numbers = observer(
     ({
-        setDurationError,
         basis_option,
-        toggleModal,
-        duration_unit_option,
-        has_amount_error,
         contract_expiry = 'intraday',
+        duration_unit_option,
+        duration_values,
+        expiry_epoch,
+        has_amount_error,
+        is_vanilla,
         payout_value,
-        stake_value,
         selected_duration,
+        setDurationError,
         setSelectedDuration,
+        stake_value,
+        toggleModal,
     }) => {
         const { ui } = useStore();
         const { addToast } = ui;
@@ -113,6 +116,7 @@ const Numbers = observer(
         } = useTraderStore();
         const { value: duration_unit } = duration_unit_option;
         const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry, duration_unit);
+        const [has_error, setHasError] = React.useState(false);
 
         const validateDuration = value => {
             const localized_message = (
@@ -127,17 +131,21 @@ const Numbers = observer(
             if (parseInt(value) < min || parseInt(selected_duration) > max) {
                 addToast({ key: 'duration_error', content: localized_message, type: 'error', timeout: 2000 });
                 setDurationError(true);
+                setHasError(true);
                 return 'error';
             } else if (parseInt(value) > max) {
                 addToast({ key: 'duration_error', content: localized_message, type: 'error', timeout: 2000 });
+                setHasError(true);
                 return 'error';
             } else if (value.toString().length < 1) {
                 addToast({ key: 'duration_error', content: localized_message, type: 'error', timeout: 2000 });
                 setDurationError(true);
+                setHasError(true);
                 return false;
             }
 
             setDurationError(false);
+            setHasError(false);
             return true;
         };
 
@@ -158,6 +166,16 @@ const Numbers = observer(
             toggleModal();
         };
 
+        const setExpiryDate = (epoch, duration) => {
+            let expiry_date = new Date((epoch - (trade_duration * 24 * 60 * 60)) * 1000);
+
+            if (duration) {
+              expiry_date = new Date(expiry_date.getTime() + (duration) * 24 * 60 * 60 * 1000);
+            }
+
+            return expiry_date.toUTCString().replace('GMT', 'GMT +0').substring(5).replace(/(\d{2}) (\w{3} \d{4})/, '$1 $2,');
+        }
+        
         const onNumberChange = num => {
             setSelectedDuration(duration_unit, num);
             validateDuration(num);
@@ -165,6 +183,14 @@ const Numbers = observer(
 
         return (
             <div className='trade-params__amount-keypad'>
+                {is_vanilla && (
+                    <Text as='div' size='xxxs' line_height='s' className='expiry-text-container--mobile'>
+                        <Localize 
+                            i18n_default_text='Expiry: {{date}}'
+                            values={{ date: !has_error ? setExpiryDate(expiry_epoch, duration_values?.d_duration) : '' }}
+                        />
+                    </Text>
+                )}
                 <Numpad
                     value={selected_duration}
                     onSubmit={setDuration}
@@ -188,19 +214,21 @@ const Numbers = observer(
 const Duration = observer(
     ({
         amount_tab_idx,
-        toggleModal,
-        duration_tab_idx,
-        has_amount_error,
-        setDurationTabIdx,
-        setDurationError,
-        t_duration,
-        s_duration,
-        m_duration,
-        h_duration,
         d_duration,
+        duration_tab_idx,
+        expiry_epoch,
+        h_duration,
+        has_amount_error,
+        is_vanilla,
+        m_duration,
+        payout_value,
+        s_duration,
+        setDurationError,
+        setDurationTabIdx,
         setSelectedDuration,
         stake_value,
-        payout_value,
+        t_duration,
+        toggleModal,
     }) => {
         const { duration_units_list, duration_min_max, duration_unit, basis: trade_basis } = useTraderStore();
         const duration_values = {
@@ -315,6 +343,9 @@ const Duration = observer(
                                             setSelectedDuration={setSelectedDuration}
                                             stake_value={stake_value}
                                             payout_value={payout_value}
+                                            expiry_epoch={expiry_epoch}
+                                            is_vanilla={is_vanilla}
+                                            duration_values={duration_values}
                                         />
                                         <RelativeDatepicker
                                             onChange={handleRelativeChange}

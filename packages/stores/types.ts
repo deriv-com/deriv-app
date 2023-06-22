@@ -176,6 +176,7 @@ type TClientStore = {
     current_currency_type?: string;
     current_fiat_currency?: string;
     default_currency: string;
+    derivez_accounts_list: DetailsOfEachMT5Loginid[];
     dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
     email: string;
     fetchResidenceList: () => Promise<ResidenceList>;
@@ -198,6 +199,7 @@ type TClientStore = {
     is_dxtrade_allowed: boolean;
     is_fully_authenticated: boolean;
     is_eu: boolean;
+    is_eu_country: boolean;
     is_financial_account: boolean;
     is_financial_information_incomplete: boolean;
     is_identity_verification_needed: boolean;
@@ -391,6 +393,7 @@ type TNotificationStore = {
 };
 
 type TTradersHubStore = {
+    CFDs_restricted_countries: boolean;
     closeModal: () => void;
     combined_cfd_mt5_accounts: DetailsOfEachMT5Loginid &
         {

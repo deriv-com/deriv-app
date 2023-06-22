@@ -20,6 +20,7 @@ type TCardRow = {
 const CellLoader = () => (
     <ContentLoader
         className='transactions__loader-text'
+        data-testid='transaction_details_card_cell_loader'
         height={10}
         width={80}
         speed={3}

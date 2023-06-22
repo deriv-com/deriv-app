@@ -64,7 +64,7 @@ export type TDesktopTransactionTable = {
 };
 
 export type TTableCell = {
-    label: string | number | ReactElement;
+    label: string | number | ReactElement | undefined;
     loader?: boolean;
     extra_classes?: string[];
 };

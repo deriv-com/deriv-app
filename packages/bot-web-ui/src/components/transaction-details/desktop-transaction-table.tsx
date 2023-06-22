@@ -9,7 +9,7 @@ import { TColumn, TDesktopTransactionTable, TTableCell } from './types';
 
 const PARENT_CLASS = 'transaction-details-modal-desktop';
 
-const TableCell = ({ label = '', extra_classes = [], loader = false }: TTableCell) => {
+const TableCell = ({ label, extra_classes = [], loader = false }: TTableCell) => {
     return (
         <div className={classNames(`${PARENT_CLASS}__table-cell`, ...extra_classes)}>
             {loader ? <CellLoader /> : label}
@@ -17,9 +17,9 @@ const TableCell = ({ label = '', extra_classes = [], loader = false }: TTableCel
     );
 };
 
-const TableHeader = ({ columns = [] }: { columns: TColumn[] }) => (
+const TableHeader = ({ columns }: { columns: TColumn[] }) => (
     <div className={classNames(`${PARENT_CLASS}__table-row`, `${PARENT_CLASS}__table-header`)}>
-        {columns.map(column => (
+        {columns?.map(column => (
             <TableCell
                 key={column.key}
                 extra_classes={[column.extra_class ? `${PARENT_CLASS}__table-cell${column.extra_class}` : '']}
@@ -32,7 +32,7 @@ const TableHeader = ({ columns = [] }: { columns: TColumn[] }) => (
 
 const IconWrapper = ({ message, icon }: { message: string; icon: ReactElement }) => (
     <div className={`${PARENT_CLASS}__icon-wrapper`}>
-        <Popover alignment='left' message={message} zIndex={'7'}>
+        <Popover alignment='left' message={message} zIndex={'9999'}>
             {icon}
         </Popover>
     </div>
@@ -41,6 +41,7 @@ const IconWrapper = ({ message, icon }: { message: string; icon: ReactElement })
 const CellLoader = () => (
     <ContentLoader
         className='transactions__loader-text'
+        data-testid='transaction_details_table_cell_loader'
         height={10}
         width={80}
         speed={3}
@@ -54,11 +55,11 @@ const CellLoader = () => (
 export default function DesktopTransactionTable({
     result,
     result_columns,
-    transactions = [],
+    transactions,
     transaction_columns,
 }: TDesktopTransactionTable) {
     return (
-        <>
+        <div data-testid='transaction_details_tables'>
             <div
                 className={classNames(
                     `${PARENT_CLASS}__table-container`,
@@ -73,7 +74,7 @@ export default function DesktopTransactionTable({
                             <div className={`${PARENT_CLASS}__table-row`} key={data?.transaction_ids?.buy}>
                                 <TableCell
                                     label={
-                                        data?.date_start ??
+                                        data?.date_start &&
                                         convertDateFormat(
                                             data?.date_start,
                                             'YYYY-M-D HH:mm:ss [GMT]',
@@ -113,7 +114,7 @@ export default function DesktopTransactionTable({
                                                 [`${PARENT_CLASS}__profit--loss`]: data?.profit < 0,
                                             })}
                                         >
-                                            {Math.abs(data?.profit)}
+                                            {Math.abs(data?.profit || 0).toFixed(2)}
                                         </div>
                                     }
                                     loader={!data.is_completed}
@@ -134,11 +135,11 @@ export default function DesktopTransactionTable({
             <div className={classNames(`${PARENT_CLASS}__table-container`)}>
                 <TableHeader columns={result_columns} />
                 <div className={`${PARENT_CLASS}__table-row`}>
-                    <TableCell label={result?.number_of_runs ?? ''} />
-                    <TableCell label={result?.total_stake ?? ''} />
-                    <TableCell label={result?.total_payout ?? ''} />
-                    <TableCell label={result?.won_contracts ?? ''} />
-                    <TableCell label={result?.lost_contracts ?? ''} extra_classes={[`${PARENT_CLASS}__loss`]} />
+                    <TableCell label={result?.number_of_runs} />
+                    <TableCell label={Math.abs(result?.total_stake || 0).toFixed(2)} />
+                    <TableCell label={Math.abs(result?.total_payout || 0).toFixed(2)} />
+                    <TableCell label={result?.won_contracts} />
+                    <TableCell label={result?.lost_contracts} extra_classes={[`${PARENT_CLASS}__loss`]} />
                     <TableCell
                         label={
                             <div
@@ -148,6 +149,7 @@ export default function DesktopTransactionTable({
                                         [`${PARENT_CLASS}__profit--loss`]: result?.total_profit < 0,
                                     }
                                 )}
+                                data-testid='transaction_details_table_profit'
                             >
                                 {Math.abs(result?.total_profit || 0).toFixed(2)}
                             </div>
@@ -155,6 +157,6 @@ export default function DesktopTransactionTable({
                     />
                 </div>
             </div>
-        </>
+        </div>
     );
 }

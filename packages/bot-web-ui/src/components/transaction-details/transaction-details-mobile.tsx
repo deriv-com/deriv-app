@@ -26,7 +26,7 @@ const TransactionDetailsMobile = observer(() => {
             }}
             height_offset='80px'
         >
-            <div className='transaction-details-modal-mobile__wrapper'>
+            <div className='transaction-details-modal-mobile__wrapper' data-testid='transaction_details_cards'>
                 {elements?.map(({ data, type }, index) => {
                     if (type === transaction_elements.CONTRACT)
                         return <MobileTransactionCards transaction={data} key={data?.transaction_ids?.buy} />;

@@ -220,7 +220,7 @@ export default class TransactionsStore {
     }
 
     sortOutPositionsBeforeAction(positions, element_id = false) {
-        positions.forEach(position => {
+        positions?.forEach(position => {
             if (!element_id || (element_id && position.id === element_id)) {
                 const contract_details = position.contract_info;
                 this.updateResultsCompletedContract(contract_details);

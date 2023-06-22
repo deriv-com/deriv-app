@@ -30,7 +30,7 @@ const result_columns: TColumn[] = [
     // { key: 'balance', label: localize('Balance') },
 ];
 
-const TransactionDetailsModal = observer(() => {
+const TransactionDetailsDesktop = observer(() => {
     const { transactions, run_panel } = useDBotStore();
     const { toggleTransactionDetailsModal, is_transaction_details_modal_open, elements }: Partial<TTransactionStore> =
         transactions;
@@ -41,12 +41,11 @@ const TransactionDetailsModal = observer(() => {
             className='transaction-details-modal-desktop'
             confirm_button_text=''
             has_close_icon
-            is_mobile_full_width={true}
+            is_mobile_full_width
             is_visible={is_transaction_details_modal_open}
             onClose={() => {
                 toggleTransactionDetailsModal(false);
             }}
-            onConfirm={() => null}
             portal_element_id='modal_root'
             title={localize('Transactions detailed summary')}
         >
@@ -60,4 +59,4 @@ const TransactionDetailsModal = observer(() => {
     );
 });
 
-export default TransactionDetailsModal;
+export default TransactionDetailsDesktop;

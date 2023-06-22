@@ -227,7 +227,7 @@ describe('WithdrawStore', () => {
         const { setLoading } = withdraw_store.root_store.modules.cashier.general_store;
         const { setIframeUrl } = withdraw_store.root_store.modules.cashier.iframe;
         const { setVerificationCode } = withdraw_store.root_store.client;
-        const verification_code = '12313212313';
+        const verification_code = 'aBcDefXa';
 
         withdraw_store.root_store.client.is_virtual = true;
         withdraw_store.root_store.modules.cashier.iframe.is_session_timeout = true;

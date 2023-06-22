@@ -9,8 +9,6 @@ import type {
     ResidenceList,
     StatesList,
     ProposalOpenContract,
-    SetFinancialAssessmentRequest,
-    SetFinancialAssessmentResponse,
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
@@ -144,7 +142,7 @@ type TNotificationMessage = {
     key: string;
     message_popup?: string;
     message: string | JSX.Element;
-    platform?: 'p2p' | 'derivgo' | '';
+    platform?: string;
     primary_btn?: TButtonProps;
     secondary_btn?: TButtonProps;
     should_hide_close_btn?: boolean;
@@ -193,13 +191,13 @@ type TClientStore = {
     is_deposit_lock: boolean;
     is_dxtrade_allowed: boolean;
     is_eu: boolean;
+    is_eu_country: boolean;
     is_uk: boolean;
     is_social_signup: boolean;
     has_residence: boolean;
     is_authorize: boolean;
     is_financial_account: boolean;
     is_financial_information_incomplete: boolean;
-    is_fully_authenticated: boolean;
     is_identity_verification_needed: boolean;
     is_landing_company_loaded: boolean;
     is_logged_in: boolean;
@@ -207,7 +205,6 @@ type TClientStore = {
     is_low_risk: boolean;
     is_pending_proof_of_ownership: boolean;
     is_switching: boolean;
-    is_svg: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
     is_virtual: boolean;
@@ -241,9 +238,6 @@ type TClientStore = {
     };
     setAccountStatus: (status?: GetAccountStatus) => void;
     setBalanceOtherAccounts: (balance: number) => void;
-    setFinancialAndTradingAssessment: (
-        payload: Omit<SetFinancialAssessmentRequest, 'set_financial_assessment' | 'passthrough' | 'req_id'>
-    ) => SetFinancialAssessmentResponse;
     setInitialized: (status?: boolean) => void;
     setLogout: (status?: boolean) => void;
     setVisibilityRealityCheck: (value: boolean) => void;
@@ -273,6 +267,7 @@ type TClientStore = {
     should_allow_authentication: boolean;
     is_crypto: (currency?: string) => boolean;
     dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
+    derivez_accounts_list: DetailsOfEachMT5Loginid[];
     default_currency: string;
     resetVirtualBalance: () => Promise<void>;
     has_enabled_two_fa: boolean;
@@ -303,7 +298,7 @@ type TCommonStore = {
     has_error: boolean;
     is_from_derivgo: boolean;
     is_network_online: boolean;
-    platform: 'p2p' | 'derivgo' | '';
+    platform: string;
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
     server_time?: Moment;
@@ -421,9 +416,10 @@ type TTradersHubStore = {
     multipliers_account_status: string;
     financial_restricted_countries: boolean;
     selected_account_type: string;
+    setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
     no_CR_account: boolean;
     no_MF_account: boolean;
-    setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
+    CFDs_restricted_countries: boolean;
     toggleAccountTransferModal: () => void;
     is_demo: boolean;
     selectAccountType: (account_type: string) => void;

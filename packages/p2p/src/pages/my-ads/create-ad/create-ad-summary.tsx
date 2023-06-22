@@ -5,7 +5,7 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
-import { useStores } from 'Stores/index';
+import { useStores } from 'Stores';
 import { removeTrailingZeros, roundOffDecimal, percentOf } from 'Utils/format-value';
 import './create-ad-summary.scss';
 

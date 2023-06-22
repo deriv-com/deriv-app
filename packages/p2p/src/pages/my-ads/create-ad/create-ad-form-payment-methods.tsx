@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from '@deriv/stores';
-import { useStores } from 'Stores/index';
+import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import PaymentMethodCard from 'Pages/my-profile/payment-methods/payment-method-card';

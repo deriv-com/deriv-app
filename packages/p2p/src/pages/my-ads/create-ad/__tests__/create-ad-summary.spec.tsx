@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { useStores } from 'Stores/index';
+import { useStores } from 'Stores';
 import CreateAdSummary from '../create-ad-summary';
 
 const mocked_store_values: DeepPartial<ReturnType<typeof useStores>> = {

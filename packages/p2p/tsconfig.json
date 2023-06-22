@@ -7,12 +7,13 @@
             "Components/*": ["src/components/*"],
             "Constants/*": ["src/constants/*"],
             "Pages/*": ["src/pages/*"],
+            "Stores": ["src/stores"],
             "Stores/*": ["src/stores/*"],
             "Translations/*": ["src/translations/*"],
             "Utils/*": ["src/utils/*"],
             "@deriv/*": ["../*/src"]
         },
-        "outDir": "./lib"
+        "outDir": "./lib",
     },
     "include": ["src", "@deriv-stores.d.ts"]
 }

@@ -19,7 +19,7 @@ import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
-import { useStores } from 'Stores/index';
+import { useStores } from 'Stores';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods';
 import CreateAdSummary from './create-ad-summary';
 import './create-ad-form.scss';

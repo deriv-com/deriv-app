@@ -391,6 +391,7 @@ const mock = (): TStores & { is_mock: boolean } => {
         },
         notifications: {
             addNotificationMessage: jest.fn(),
+            addNotificationMessageByKey: jest.fn(),
             client_notifications: {},
             filterNotificationMessages: jest.fn(),
             refreshNotifications: jest.fn(),

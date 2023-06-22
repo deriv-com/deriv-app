@@ -377,13 +377,13 @@ type TMenuStore = {
 };
 
 type TNotificationStore = {
-    addNotificationMessageByKey: (key: string) => void;
     addNotificationMessage: (message: TNotification) => void;
+    addNotificationMessageByKey: (key: string) => void;
     client_notifications: object;
     filterNotificationMessages: () => void;
     refreshNotifications: () => void;
-    removeNotificationByKey: (key: string) => void;
-    removeNotificationMessage: (key: string, should_show_again?: boolean) => void;
+    removeNotificationByKey: ({ key }: { key: string }) => void;
+    removeNotificationMessage: ({ key, should_show_again }: { key: string; should_show_again?: boolean }) => void;
     setP2POrderProps: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;

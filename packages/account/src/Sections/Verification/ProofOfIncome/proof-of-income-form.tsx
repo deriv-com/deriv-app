@@ -1,41 +1,53 @@
 import React from 'react';
-import { Formik, Field } from 'formik';
+import { Field, Formik, FormikErrors, FormikHelpers, FormikValues } from 'formik';
 import {
     Autocomplete,
     Button,
     DesktopWrapper,
+    FormSubmitErrorMessage,
     MobileWrapper,
     SelectNative,
-    FormSubmitErrorMessage,
     Text,
     Timeline,
 } from '@deriv/components';
+import { AccountStatusResponse, DocumentUploadResponse } from '@deriv/api-types';
 import { localize, Localize } from '@deriv/translations';
 import { isDesktop, WS } from '@deriv/shared';
-import FormSubHeader from 'Components/form-sub-header';
-import FormFooter from 'Components/form-footer';
-import FormBody from 'Components/form-body';
-import LoadErrorMessage from 'Components/load-error-message';
-import PoincFileUploaderContainer from 'Components/poinc/file-uploader-container';
 import { observer, useStore } from '@deriv/stores';
+import FormBody from 'Components/form-body';
+import FormFooter from 'Components/form-footer';
+import FormSubHeader from 'Components/form-sub-header';
+import PoincFileUploaderContainer from 'Components/poinc/file-uploader-container';
+import { income_status_codes, poinc_documents_list } from 'Sections/Verification/ProofOfIncome/proof-of-income-utils';
 
-let file_uploader_ref = null;
+type TUpload = {
+    upload: () => Promise<DocumentUploadResponse>;
+};
 
-const ProofOfIncomeForm = observer(({ poinc_documents_list, onSubmit }) => {
+type TProofOfIncomeForm = {
+    onSubmit: (status: typeof income_status_codes[keyof typeof income_status_codes]) => void;
+};
+
+type TInitialValues = {
+    document_type: string;
+};
+
+let file_uploader_ref: React.RefObject<HTMLElement & TUpload>;
+
+const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
     const [document_file, setDocumentFile] = React.useState({ files: [], error_message: null });
     const [disabled_items, setDisabledItems] = React.useState([2]);
-    const [api_initial_load_error, setAPIInitialLoadError] = React.useState(null);
     const [uploading_document_type, setUploadingDocumentType] = React.useState('');
 
     const { notifications } = useStore();
-    const { addNotificationByKey, removeNotificationMessage, removeNotificationByKey } = notifications;
+    const { addNotificationMessageByKey, removeNotificationMessage, removeNotificationByKey } = notifications;
 
-    const initial_form_values = {
+    const initial_form_values: TInitialValues = {
         document_type: '',
     };
 
-    const validateFields = values => {
-        const errors = {};
+    const validateFields = (values: TInitialValues) => {
+        const errors: FormikErrors<TInitialValues> = {};
         const { document_type } = values;
 
         if (!document_type || !poinc_documents_list.find(c => c.text === document_type)) {
@@ -51,22 +63,18 @@ const ProofOfIncomeForm = observer(({ poinc_documents_list, onSubmit }) => {
         return errors;
     };
 
-    const onSubmitValues = (values, { setStatus, setSubmitting }) => {
+    const onSubmitValues = (values: TInitialValues, { setStatus, setSubmitting }: FormikHelpers<TInitialValues>) => {
         const uploading_value = poinc_documents_list.find(doc => doc.text === values.document_type)?.value;
-        setUploadingDocumentType(uploading_value);
+        setUploadingDocumentType(uploading_value ?? '');
 
         file_uploader_ref?.current
-            .upload()
+            ?.upload()
             .then(api_response => {
                 if (api_response.warning) {
                     setStatus({ msg: api_response.message });
                 } else {
-                    WS.authorized.storage.getAccountStatus().then(({ error, get_account_status }) => {
-                        if (error) {
-                            setAPIInitialLoadError(error.message);
-                            return;
-                        }
-                        const { income, needs_verification } = get_account_status.authentication;
+                    WS.authorized.getAccountStatus().then((response: DeepRequired<AccountStatusResponse>) => {
+                        const { income, needs_verification } = response.get_account_status.authentication;
                         const needs_poinc =
                             needs_verification.includes('income') && ['rejected', 'none'].includes(income?.status);
                         removeNotificationMessage({ key: 'authenticate' });
@@ -77,35 +85,33 @@ const ProofOfIncomeForm = observer(({ poinc_documents_list, onSubmit }) => {
                         removeNotificationByKey({ key: 'poinc_upload_limited' });
                         onSubmit(income?.status);
                         if (needs_poinc) {
-                            addNotificationByKey('needs_poinc');
+                            addNotificationMessageByKey('needs_poinc');
                         }
                     });
                 }
             })
-            .catch(error => {
-                setStatus({ msg: error.message });
+            .catch((error: Error) => {
+                if (error?.message) {
+                    setStatus({ msg: error.message });
+                }
             })
             .then(() => {
                 setSubmitting(false);
             });
     };
 
-    if (api_initial_load_error) {
-        return <LoadErrorMessage error_message={api_initial_load_error} />;
-    }
-
     return (
         <Formik initialValues={initial_form_values} onSubmit={onSubmitValues} validate={validateFields}>
             {({
-                values,
                 errors,
-                status,
-                touched,
                 handleChange,
                 handleSubmit,
                 isSubmitting,
                 setFieldValue,
                 setStatus,
+                status,
+                touched,
+                values,
             }) => (
                 <form noValidate className='account-poinc-form' onSubmit={handleSubmit}>
                     <FormBody scroll_offset={isDesktop() ? '0' : '200px'}>
@@ -113,7 +119,7 @@ const ProofOfIncomeForm = observer(({ poinc_documents_list, onSubmit }) => {
                             <Timeline.Item>
                                 <fieldset className='account-poinc-form__fieldset'>
                                     <Field name='document_type'>
-                                        {({ field }) => (
+                                        {({ field }: FormikValues) => (
                                             <React.Fragment>
                                                 <DesktopWrapper>
                                                     <Autocomplete
@@ -128,7 +134,10 @@ const ProofOfIncomeForm = observer(({ poinc_documents_list, onSubmit }) => {
                                                         list_items={poinc_documents_list}
                                                         value={values.document_type}
                                                         onChange={handleChange}
-                                                        onItemSelection={({ value, text }) => {
+                                                        onItemSelection={({
+                                                            value,
+                                                            text,
+                                                        }: typeof poinc_documents_list[number]) => {
                                                             setFieldValue('document_type', value ? text : '', true);
                                                             setStatus({ msg: '' });
                                                         }}
@@ -142,7 +151,7 @@ const ProofOfIncomeForm = observer(({ poinc_documents_list, onSubmit }) => {
                                                         label={localize('Please select a document to upload*')}
                                                         value={values.document_type}
                                                         list_items={poinc_documents_list}
-                                                        error={touched.document_type && errors.document_type}
+                                                        error={touched.document_type ? errors.document_type : undefined}
                                                         use_text={true}
                                                         onChange={e => {
                                                             setFieldValue('document_type', e.target.value, true);

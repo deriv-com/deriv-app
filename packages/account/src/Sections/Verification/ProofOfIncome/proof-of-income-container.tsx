@@ -9,7 +9,7 @@ import PoincVerified from 'Components/poinc/status/verified';
 import PoincNotRequired from 'Components/poinc/status/not-required';
 import { populateVerificationStatus } from '../Helpers/verification';
 import ProofOfIncomeForm from './proof-of-income-form.jsx';
-import { income_status_codes, poinc_documents_list } from './proof-of-income-utils';
+import { income_status_codes } from './proof-of-income-utils';
 
 type TProofOfIncomeContainer = {
     is_switching?: boolean;
@@ -67,7 +67,7 @@ const ProofOfIncomeContainer = ({ is_switching, refreshNotifications }: TProofOf
         ((allow_poinc_resubmission && income_status === income_status_codes.LOCKED) ||
             income_status === income_status_codes.NONE)
     ) {
-        return <ProofOfIncomeForm onSubmit={handleSubmit} poinc_documents_list={poinc_documents_list} />;
+        return <ProofOfIncomeForm onSubmit={handleSubmit} />;
     }
     if (!allow_document_upload || !needs_poinc || (!is_age_verified && income_status === income_status_codes.NONE)) {
         return <PoincNotRequired />;

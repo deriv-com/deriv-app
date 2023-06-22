@@ -5,7 +5,7 @@ import Text from '../text';
 type TOval = {
     children: number;
 };
-type TItem = React.HTMLAttributes<HTMLDivElement> & { item_title: React.ReactNode };
+type TItem = React.HTMLAttributes<HTMLDivElement> & { item_title?: React.ReactNode };
 type TTimeline = React.HTMLAttributes<HTMLDivElement> & { disabled_items?: number[]; line_height?: string };
 
 const Oval = ({ children }: TOval) => {

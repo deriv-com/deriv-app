@@ -18,4 +18,4 @@ export const poinc_documents_list = [
     { text: localize('Memorandum'), value: 'memorandum' },
     { text: localize('Authorisation letter'), value: 'authorisation_letter' },
     { text: localize('Declarations'), value: 'declarations' },
-] as const;
+];

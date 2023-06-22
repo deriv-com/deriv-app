@@ -44,7 +44,6 @@ type TCFDFinancialStpRealAccountSignupProps = {
     onFinish: () => void;
     jurisdiction_selected_shortcode: string;
     has_submitted_cfd_personal_details: boolean;
-    is_authenticated_with_idv_photoid: boolean;
 };
 
 type TNextStep = (index: number, value: { [key: string]: string | undefined }) => void;
@@ -64,14 +63,14 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
         refreshNotifications,
         has_submitted_cfd_personal_details,
         jurisdiction_selected_shortcode,
-        is_authenticated_with_idv_photoid,
     } = props;
     const [step, setStep] = React.useState(0);
     const [form_error, setFormError] = React.useState('');
     const state_index = step;
     let is_mounted = React.useRef(true).current;
 
-    const { need_poi_for_vanuatu_maltainvest, need_poi_for_bvi_labuan } = getAuthenticationStatusInfo(account_status);
+    const { need_poi_for_vanuatu_maltainvest, need_poi_for_bvi_labuan, poa_resubmit_for_labuan } =
+        getAuthenticationStatusInfo(account_status);
 
     const poi_config: TItemsState = {
         body: CFDPOI,
@@ -104,7 +103,6 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
             'storeProofOfAddress',
             'refreshNotifications',
             'jurisdiction_selected_shortcode',
-            'is_authenticated_with_idv_photoid',
         ],
     };
 
@@ -128,7 +126,7 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     };
 
     const shouldShowPOA = () => {
-        if (Jurisdiction.LABUAN === jurisdiction_selected_shortcode && is_authenticated_with_idv_photoid) {
+        if (Jurisdiction.LABUAN === jurisdiction_selected_shortcode && poa_resubmit_for_labuan) {
             return true;
         }
         return !['pending', 'verified'].includes(authentication_status.document_status);
@@ -192,14 +190,17 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
 
     const form_value = getCurrent('form_value');
 
-    const passthrough = ((getCurrent('forwarded_props') || []) as TItemsState['forwarded_props']).reduce(
-        (forwarded_prop, item) => {
-            return Object.assign(forwarded_prop, {
-                [item]: props[item],
-            });
-        },
-        {}
-    );
+    const passthrough: Partial<TCFDFinancialStpRealAccountSignupProps> & {
+        is_authenticated_with_idv_photoid?: boolean;
+    } = ((getCurrent('forwarded_props') || []) as TItemsState['forwarded_props']).reduce((forwarded_prop, item) => {
+        return Object.assign(forwarded_prop, {
+            [item]: props[item],
+        });
+    }, {});
+
+    if (shouldShowPOA()) {
+        passthrough.is_authenticated_with_idv_photoid = poa_resubmit_for_labuan;
+    }
 
     return (
         <Div100vhContainer
@@ -242,5 +243,4 @@ export default connect(({ client, modules: { cfd }, notifications }: RootStore) 
     account_status: client.account_status,
     jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
     has_submitted_cfd_personal_details: cfd.has_submitted_cfd_personal_details,
-    is_authenticated_with_idv_photoid: client.is_authenticated_with_idv_photoid,
 }))(CFDFinancialStpRealAccountSignup);

@@ -266,7 +266,6 @@ export default class ClientStore extends BaseStore {
             setCitizen: action.bound,
             is_mt5_password_not_set: computed,
             is_dxtrade_password_not_set: computed,
-            is_authenticated_with_idv_photoid: computed,
             is_financial_information_incomplete: computed,
             is_deposit_lock: computed,
             is_withdrawal_lock: computed,
@@ -278,7 +277,6 @@ export default class ClientStore extends BaseStore {
             is_pending_authentication: computed,
             is_financial_account: computed,
             is_age_verified: computed,
-            is_idv_revoked: computed,
             landing_company_shortcode: computed,
             landing_company: computed,
             is_valid_login: computed,
@@ -729,10 +727,6 @@ export default class ClientStore extends BaseStore {
         return this.account_status?.status?.includes('dxtrade_password_not_set');
     }
 
-    get is_authenticated_with_idv_photoid() {
-        return this.account_status?.status?.includes('authenticated_with_idv_photoid');
-    }
-
     get is_financial_information_incomplete() {
         return this.account_status?.status?.some(status => status === 'financial_information_not_complete');
     }
@@ -778,10 +772,6 @@ export default class ClientStore extends BaseStore {
 
     get is_age_verified() {
         return this.account_status?.status?.some(status => status === 'age_verification');
-    }
-
-    get is_idv_revoked() {
-        return this.account_status?.status?.find(status => status === 'idv_revoked');
     }
 
     get landing_company_shortcode() {

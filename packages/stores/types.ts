@@ -206,8 +206,6 @@ type TClientStore = {
     is_switching: boolean;
     is_tnc_needed: boolean;
     is_trading_experience_incomplete: boolean;
-    is_authenticated_with_idv_photoid: boolean;
-    is_idv_revoked: false;
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
     landing_company_shortcode: string;

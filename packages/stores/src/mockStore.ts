@@ -218,8 +218,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_switching: false,
             is_tnc_needed: false,
             is_trading_experience_incomplete: false,
-            is_authenticated_with_idv_photoid: false,
-            is_idv_revoked: false,
             is_virtual: false,
             is_withdrawal_lock: false,
             is_populating_account_list: false,

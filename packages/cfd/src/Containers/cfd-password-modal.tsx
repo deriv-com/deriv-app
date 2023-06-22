@@ -823,12 +823,19 @@ const CFDPasswordModal = ({
     const success_modal_submit_label = React.useMemo(() => {
         if (account_type.category === 'real') {
             if (platform === CFD_PLATFORMS.MT5) {
-                return is_selected_mt5_verified ? localize('Transfer now') : localize('OK');
+                return is_eu_user || is_selected_mt5_verified ? localize('Transfer now') : localize('OK');
             }
             return localize('Transfer now');
         }
         return localize('Continue');
-    }, [platform, account_type, is_selected_mt5_verified]);
+    }, [platform, account_type, is_eu_user, is_selected_mt5_verified]);
+
+    const success_modal_cancel_label = React.useMemo(() => {
+        if (is_eu_user && account_type.category === 'real' && platform === CFD_PLATFORMS.MT5) {
+            return localize('Maybe later');
+        }
+        return '';
+    }, [platform, account_type, is_eu_user]);
 
     const getSubmitText = () => {
         const { category, type } = account_type;
@@ -979,9 +986,10 @@ const CFDPasswordModal = ({
                 }
                 icon_size='xlarge'
                 text_submit={success_modal_submit_label}
+                text_cancel={success_modal_cancel_label}
                 has_cancel={
                     platform === CFD_PLATFORMS.MT5
-                        ? is_selected_mt5_verified && account_type.category === 'real'
+                        ? (is_eu_user || is_selected_mt5_verified) && account_type.category === 'real'
                         : account_type.category === 'real'
                 }
                 has_close_icon={false}

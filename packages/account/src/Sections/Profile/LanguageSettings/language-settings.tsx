@@ -3,18 +3,14 @@ import { Redirect } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { localize, getAllowedLanguages } from '@deriv/translations';
 import { isMobile, routes } from '@deriv/shared';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 import FormSubHeader from 'Components/form-sub-header';
 import LanguageRadioButton from 'Components/language-settings';
-import TCoreStore from '../../../Stores';
 
-type TLanguageSettings = {
-    current_language: string;
-    changeSelectedLanguage: (lang: string) => Promise<void>;
-};
-
-const LanguageSettings = ({ changeSelectedLanguage, current_language }: TLanguageSettings) => {
+const LanguageSettings = observer(() => {
     const { i18n } = useTranslation();
+    const { common } = useStore();
+    const { changeSelectedLanguage, current_language } = common;
 
     if (window.location.pathname === routes.languages && isMobile()) {
         return <Redirect to={routes.traders_hub} />;
@@ -43,9 +39,6 @@ const LanguageSettings = ({ changeSelectedLanguage, current_language }: TLanguag
             </div>
         </div>
     );
-};
+});
 
-export default connect(({ common }: TCoreStore) => ({
-    changeSelectedLanguage: common.changeSelectedLanguage,
-    current_language: common.current_language,
-}))(LanguageSettings);
+export default LanguageSettings;

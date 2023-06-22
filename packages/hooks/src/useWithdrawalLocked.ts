@@ -1,4 +1,3 @@
-import React from 'react';
 import { useStore } from '@deriv/stores';
 import { useFetch } from '@deriv/api';
 import useCheck10kLimit from './useCheck10kLimit';

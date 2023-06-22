@@ -1,4 +1,3 @@
-import React from 'react';
 import { useFetch } from '@deriv/api';
 import { getMinWithdrawal } from '../../shared/src/utils/currency';
 import { useStore } from '@deriv/stores';

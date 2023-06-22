@@ -3,10 +3,11 @@ import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
+import { useCashierLocked, useCheck10kLimit, useIsSystemMaintenance } from '@deriv/hooks';
 import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
 import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
-import WithdrawalLocked from './withdrawal-locked';
+import WithdrawalLocked from '../../modules/withdrawal-locked/withdrawal-locked';
 import CashierLocked from '../../components/cashier-locked';
 import Error from '../../components/error';
 import NoBalance from '../../components/no-balance';
@@ -15,7 +16,6 @@ import SideNote from '../../components/side-note';
 import USDTSideNote from '../../components/usdt-side-note';
 import { Virtual } from '../../components/cashier-container';
 import { useCashierStore } from '../../stores/useCashierStores';
-import { useCashierLocked, useIsSystemMaintenance } from '@deriv/hooks';
 import { WithdrawalEmailVerificationModule } from '../../modules/withdrawal-email-verification';
 import { WithdrawalFiatModule } from '../../modules/withdrawal-fiat';
 
@@ -70,15 +70,15 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         onMount: recentTransactionOnMount,
     } = transaction_history;
     const {
-        check10kLimit,
         container,
         error,
-        is_10k_withdrawal_limit_reached,
         is_withdraw_confirmed,
         is_withdrawal_locked,
         error: { setErrorMessage },
         willMountWithdraw,
     } = withdraw;
+
+    const { is_10k_withdrawal_limit_reached } = useCheck10kLimit();
 
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {
@@ -92,10 +92,6 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
             setErrorMessage({ code: '', message: '' });
         };
     }, [container, setActiveTab, setErrorMessage]);
-
-    React.useEffect(() => {
-        check10kLimit();
-    }, [check10kLimit]);
 
     React.useEffect(() => {
         return () => willMountWithdraw(verification_code);

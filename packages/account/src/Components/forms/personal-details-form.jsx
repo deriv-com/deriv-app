@@ -410,7 +410,7 @@ const PersonalDetailsForm = props => {
                                         onClick={e => {
                                             setIsTaxResidencePopoverOpen(false);
                                             setIsTinPopoverOpen(true);
-                                            e.stopPropagation();
+                                            if (e.target.tagName !== 'A') e.stopPropagation();
                                         }}
                                     >
                                         <Popover

@@ -67,7 +67,7 @@ export default function DesktopTransactionTable({
                 )}
             >
                 <TableHeader columns={transaction_columns} />
-                {transactions?.map((transaction, index) => {
+                {transactions?.map(transaction => {
                     const { data, type } = transaction;
                     if (type === transaction_elements.CONTRACT) {
                         return (
@@ -114,7 +114,7 @@ export default function DesktopTransactionTable({
                                                 [`${PARENT_CLASS}__profit--loss`]: data?.profit < 0,
                                             })}
                                         >
-                                            {Math.abs(data?.profit || 0).toFixed(2)}
+                                            {Math.abs(data?.profit ?? 0).toFixed(2)}
                                         </div>
                                     }
                                     loader={!data.is_completed}
@@ -124,7 +124,10 @@ export default function DesktopTransactionTable({
                     }
 
                     return (
-                        <div className={`${PARENT_CLASS}__table-row`} key={`transaction-row-divider-${index}`}>
+                        <div
+                            className={`${PARENT_CLASS}__table-row`}
+                            key={`transaction-row-divider-${new Date().getTime() * Math.random()}`}
+                        >
                             <div className={`${PARENT_CLASS}__divider`}>
                                 <div className='transactions__divider-line' />
                             </div>
@@ -136,8 +139,8 @@ export default function DesktopTransactionTable({
                 <TableHeader columns={result_columns} />
                 <div className={`${PARENT_CLASS}__table-row`}>
                     <TableCell label={result?.number_of_runs} />
-                    <TableCell label={Math.abs(result?.total_stake || 0).toFixed(2)} />
-                    <TableCell label={Math.abs(result?.total_payout || 0).toFixed(2)} />
+                    <TableCell label={Math.abs(result?.total_stake ?? 0).toFixed(2)} />
+                    <TableCell label={Math.abs(result?.total_payout ?? 0).toFixed(2)} />
                     <TableCell label={result?.won_contracts} />
                     <TableCell label={result?.lost_contracts} extra_classes={[`${PARENT_CLASS}__loss`]} />
                     <TableCell
@@ -151,7 +154,7 @@ export default function DesktopTransactionTable({
                                 )}
                                 data-testid='transaction_details_table_profit'
                             >
-                                {Math.abs(result?.total_profit || 0).toFixed(2)}
+                                {Math.abs(result?.total_profit ?? 0).toFixed(2)}
                             </div>
                         }
                     />

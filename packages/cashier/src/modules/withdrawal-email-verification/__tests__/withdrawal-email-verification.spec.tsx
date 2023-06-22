@@ -1,12 +1,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useWithdrawalEmailVerification } from '@deriv/hooks';
-import WithdrawalEmailVerification from '../withdrawal-email-verification';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import WithdrawalEmailVerification from '../withdrawal-email-verification';
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useVerifyEmail: jest.fn(),
     useWithdrawalEmailVerification: jest.fn(),
 }));
 

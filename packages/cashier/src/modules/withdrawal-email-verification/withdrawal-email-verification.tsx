@@ -1,6 +1,6 @@
 import React from 'react';
 import { MobileWrapper } from '@deriv/components';
-import { useWithdrawalEmailVerification, useVerifyEmail } from '@deriv/hooks';
+import { useVerifyEmail } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import { isCryptocurrency } from '@deriv/shared';

@@ -153,6 +153,7 @@ type TCFDPasswordModalProps = RouteComponentProps & {
         actions: FormikHelpers<TCFDPasswordFormValues>
     ) => void;
     updateAccountStatus: () => void;
+    toggleAccountTransferModal: () => void;
 };
 
 const getAccountTitle = (
@@ -665,6 +666,7 @@ const CFDPasswordModal = ({
     submitCFDPassword,
     updateAccountStatus,
     show_eu_related_content,
+    toggleAccountTransferModal,
 }: TCFDPasswordModalProps) => {
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
     const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
@@ -751,8 +753,12 @@ const CFDPasswordModal = ({
         disableCFDPasswordModal();
         closeDialogs();
         if (account_type.category === 'real') {
-            sessionStorage.setItem('cfd_transfer_to_login_id', cfd_new_account.login || '');
-            history.push(routes.cashier_acc_transfer);
+            if (is_eu_user) {
+                toggleAccountTransferModal();
+            } else {
+                sessionStorage.setItem('cfd_transfer_to_login_id', cfd_new_account.login || '');
+                history.push(routes.cashier_acc_transfer);
+            }
         }
     };
 
@@ -974,7 +980,11 @@ const CFDPasswordModal = ({
                 is_open={should_show_success}
                 toggleModal={closeModal}
                 onCancel={closeModal}
-                onSubmit={platform === CFD_PLATFORMS.MT5 && !is_selected_mt5_verified ? closeModal : closeOpenSuccess}
+                onSubmit={
+                    !is_eu_user && platform === CFD_PLATFORMS.MT5 && !is_selected_mt5_verified
+                        ? closeModal
+                        : closeOpenSuccess
+                }
                 classNameMessage='cfd-password-modal__message'
                 message={getSubmitText()}
                 icon={
@@ -1034,4 +1044,5 @@ export default connect(({ client, modules, traders_hub }: RootStore) => ({
     mt5_login_list: client.mt5_login_list,
     updateAccountStatus: client.updateAccountStatus,
     show_eu_related_content: traders_hub.show_eu_related_content,
+    toggleAccountTransferModal: traders_hub.toggleAccountTransferModal,
 }))(withRouter(CFDPasswordModal));

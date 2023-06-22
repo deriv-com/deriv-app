@@ -213,7 +213,7 @@ const RealAccountSignup = ({
                         local_props.state_value.error_message || local_props.state_value.error_code?.message_to_client
                     }
                     code={local_props.state_value.error_code}
-                    onConfirm={onErrorConfirm}
+                    onConfirm={() => onErrorConfirm(local_props.state_value.error_code)}
                 />
             ),
             title: () => localize('Add a real account'),
@@ -421,10 +421,10 @@ const RealAccountSignup = ({
         redirectToLegacyPlatform();
     };
 
-    const onErrorConfirm = () => {
+    const onErrorConfirm = err_code => {
         setParams({
             active_modal_index:
-                current_action === 'multi'
+                current_action === 'multi' || err_code === 'CurrencyTypeNotAllowed'
                     ? modal_pages_indices.add_or_manage_account
                     : modal_pages_indices.account_wizard,
         });

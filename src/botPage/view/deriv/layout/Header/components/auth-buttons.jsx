@@ -5,7 +5,6 @@ import { saveBeforeUnload } from '../../../../blockly/utils';
 import { setIsHeaderLoaded } from '../../../store/ui-slice';
 import Tour, { TourTargets } from '../../../components/tour';
 
-
 const AuthButtons = () => {
     const dispatch = useDispatch();
 

@@ -65,6 +65,16 @@ const RecentTransaction = observer(() => {
 
     const amount = crypto_transactions[0].amount;
 
+    let confirmation_label = '-';
+
+    if (transaction_type === 'deposit') {
+        if (status_code === 'CONFIRMED') {
+            confirmation_label = localize('Confirmed');
+        } else {
+            confirmation_label = confirmations ? `${confirmations}` : localize('Pending');
+        }
+    }
+
     return (
         <SideNoteContainer>
             <div className='cashier-recent-transaction__status-wrapper'>
@@ -130,7 +140,7 @@ const RecentTransaction = observer(() => {
                             &nbsp;
                         </Text>
                         <Text as='p' size='xxxs' color='red' line_height='s'>
-                            {confirmations ?? localize('Pending')}
+                            {confirmation_label}
                         </Text>
                     </div>
                 )}

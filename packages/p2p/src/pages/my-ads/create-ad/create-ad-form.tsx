@@ -17,11 +17,12 @@ import { observer, useStore } from '@deriv/stores';
 import FloatingRate from 'Components/floating-rate';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { ads } from 'Constants/ads';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods';
-import CreateAdSummary from './create-ad-summary';
+import AdSummary from '../ad-summary';
 import './create-ad-form.scss';
 
 type TFieldProps = {
@@ -219,10 +220,11 @@ const CreateAdForm = () => {
                                                     </RadioGroup>
                                                 )}
                                             </Field>
-                                            <CreateAdSummary
+                                            <AdSummary
                                                 offer_amount={errors.offer_amount ? '' : values.offer_amount}
                                                 price_rate={values.rate_type}
                                                 type={values.type}
+                                                ad_option={ads.CREATE}
                                             />
 
                                             <div className='create-ad-form__container'>

@@ -357,7 +357,6 @@ export default class MyAdsStore extends BaseStore {
     }
 
     onClickSaveEditAd(values, { setSubmitting }) {
-        const { general_store } = this.root_store;
         const is_sell_ad = values.type === buy_sell.SELL;
         const update_advert = {
             p2p_advert_update: 1,
@@ -393,9 +392,6 @@ export default class MyAdsStore extends BaseStore {
                     this.setApiErrorCode(response.error.code);
                     this.setEditAdFormError(response.error.message);
                     this.setIsEditAdErrorModalVisible(true);
-                    general_store.showModal({
-                        key: 'AdEditErrorModal',
-                    });
                 } else {
                     this.setShowEditAdForm(false);
                 }
@@ -477,7 +473,7 @@ export default class MyAdsStore extends BaseStore {
         });
     }
 
-    restrictLength = (e, handleChange, max_characters = 5) => {
+    restrictLength = (e, handleChange, max_characters = 15) => {
         // typing more than 15 characters will break the layout
         // max doesn't disable typing, so we will use this to restrict length
         if (e.target.value.length > max_characters) {

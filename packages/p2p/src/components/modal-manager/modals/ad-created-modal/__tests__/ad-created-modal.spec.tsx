@@ -15,13 +15,6 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
     useModalManagerContext: jest.fn(() => mock_modal_manager),
 }));
 
-Object.defineProperty(window, 'localStorage', {
-    value: {
-        setItem: jest.fn(),
-        getItem: jest.fn(),
-    },
-});
-
 const el_modal = document.createElement('div');
 
 describe('<AdCreatedModal />', () => {

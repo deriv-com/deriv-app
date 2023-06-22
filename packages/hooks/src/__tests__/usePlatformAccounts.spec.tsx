@@ -3,7 +3,7 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import usePlatformAccounts from '../usePlatformAccounts';
 
-describe('usePlatformRealAccounts', () => {
+describe('usePlatformAccounts', () => {
     test('should return proper data when user has no platform demo and real accounts', async () => {
         const mock = mockStore({});
 
@@ -64,17 +64,17 @@ describe('usePlatformRealAccounts', () => {
                 accounts: {
                     CR1234: {
                         is_virtual: 0,
-                        loginid: 'VR1234',
+                        loginid: 'CR1234',
                         landing_company_shortcode: 'svg',
                     },
                     MF1234: {
                         is_virtual: 0,
-                        loginid: 'VR1235',
+                        loginid: 'MF1234',
                         landing_company_shortcode: 'maltainvest',
                     },
                     VR1235: {
                         is_virtual: 1,
-                        loginid: 'VR1236',
+                        loginid: 'VR1235',
                     },
                 },
             },

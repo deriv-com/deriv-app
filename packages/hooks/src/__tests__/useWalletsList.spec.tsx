@@ -12,9 +12,13 @@ jest.mock('@deriv/api', () => ({
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
 
 describe('useWalletsList', () => {
-    test('should return wallets list for the current loginid', () => {
+    it('should return wallets list for the current loginid', () => {
         const mock = mockStore({
-            client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
+            client: {
+                accounts: { CRW909900: { token: '12345' } },
+                loginid: 'CRW909900',
+                is_crypto: () => false,
+            },
         });
 
         mockUseFetch.mockReturnValue({
@@ -26,8 +30,17 @@ describe('useWalletsList', () => {
                             account_category: 'wallet',
                             currency: 'USD',
                             is_virtual: 0,
+                            landing_company_name: 'SVG',
+                            loginid: 'CRW909900',
                         },
                     ],
+                },
+                balance: {
+                    accounts: {
+                        CRW909900: {
+                            balance: 1000,
+                        },
+                    },
                 },
             },
         });
@@ -43,9 +56,19 @@ describe('useWalletsList', () => {
         expect(result.current.data).toEqual([
             {
                 account_category: 'wallet',
-                currency: 'USD',
-                is_virtual: 0,
                 balance: 1000,
+                currency: 'USD',
+                icon: 'IcWalletCurrencyUsd',
+                icon_type: 'fiat',
+                is_crypto: false,
+                is_disabled: false,
+                is_fiat: true,
+                is_selected: true,
+                is_virtual: false,
+                landing_company_name: 'SVG',
+                loginid: 'CRW909900',
+                modal_icon: 'IcWalletCurrencyUsd',
+                name: 'USD Wallet',
             },
         ]);
     });

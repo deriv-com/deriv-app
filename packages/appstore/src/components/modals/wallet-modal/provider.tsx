@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
 import TransactionList from 'Components/transaction-list';
 import WalletTransfer from 'Components/wallet-transfer';
 

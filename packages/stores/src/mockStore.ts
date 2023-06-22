@@ -303,6 +303,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 setError: jest.fn(),
             },
             has_error: false,
+            isCurrentLanguage: jest.fn(),
             is_from_derivgo: false,
             is_language_changing: false,
             is_mobile_language_menu_open: false,

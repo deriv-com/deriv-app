@@ -68,9 +68,9 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
     if (transaction_type === 'deposit') {
         if (status_code === 'CONFIRMED') {
             confirmation_label = localize('Confirmed');
+        } else {
+            confirmation_label = confirmations ? `${confirmations}` : localize('Pending');
         }
-
-        confirmation_label = confirmations ? `${confirmations}` : localize('Pending');
     }
 
     if (status && isMobile()) {

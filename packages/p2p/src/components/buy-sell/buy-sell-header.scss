@@ -79,7 +79,26 @@
             border-radius: 4px;
             display: flex;
             margin-left: 0.8rem;
-            padding: 1.3rem;
+
+            &-icon {
+                align-self: center;
+                display: flex;
+                padding: 1.3rem;
+            }
+
+            &-status {
+                position: absolute;
+                border-radius: 50px;
+                background: #ff444f;
+                width: 7px;
+                height: 7px;
+                top: 4px;
+                right: 4px;
+
+                &--disabled {
+                    display: none;
+                }
+            }
 
             @include mobile {
                 justify-self: center;

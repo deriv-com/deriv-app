@@ -75,9 +75,6 @@ const FilterModal = () => {
     // if user is selecting payment methods for the first time and has selected some payment methods
     const has_recently_selected_payment_methods =
         buy_sell_store.selected_payment_method_value?.length === 0 && selected_methods.length > 0;
-    // if user has previously selected all payment methods
-    const has_selected_all_payment_methods =
-        buy_sell_store.selected_payment_method_value.length === my_profile_store.payment_methods_list.length;
     const has_selected_payment_methods = has_already_selected_payment_methods || has_recently_selected_payment_methods;
 
     const onChange = payment_method => {
@@ -305,9 +302,7 @@ const FilterModal = () => {
                                 {buy_sell_store.show_filter_payment_methods ? (
                                     <Button.Group className='filter-modal__footer-button-group'>
                                         <Button
-                                            disabled={
-                                                !has_selected_payment_methods && !has_selected_all_payment_methods
-                                            }
+                                            disabled={selected_methods.length === 0}
                                             large
                                             secondary
                                             onClick={onClickClearPaymentMethods}

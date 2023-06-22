@@ -4,8 +4,8 @@ import { useStores } from 'Stores/index';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import PaymentMethodCard from 'Pages/my-profile/payment-methods/payment-method-card';
-import BuyAdPaymentMethodsList from '../buy-ad-payment-methods-list.jsx';
-import SellAdPaymentMethodsList from '../sell-ad-payment-methods-list.jsx';
+import BuyAdPaymentMethodsList from '../buy-ad-payment-methods-list';
+import SellAdPaymentMethodsList from '../sell-ad-payment-methods-list';
 
 type TPaymentMethod = {
     ID: string;

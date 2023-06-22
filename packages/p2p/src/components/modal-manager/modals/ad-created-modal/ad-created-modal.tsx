@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Checkbox, Modal, Text } from '@deriv/components';
-import { observer } from 'mobx-react-lite';
+import { observer } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { api_error_codes } from 'Constants/api-error-codes.js';
+import { api_error_codes } from 'Constants/api-error-codes';
 import { useStores } from 'Stores/index';
 import { Localize } from '@deriv/translations';
 

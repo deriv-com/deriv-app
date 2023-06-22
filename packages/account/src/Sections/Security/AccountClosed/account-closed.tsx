@@ -3,14 +3,11 @@ import { useHistory } from 'react-router-dom';
 import { Modal, Text } from '@deriv/components';
 import { routes, getStaticUrl, PlatformContext } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
-import type { TCoreStores } from '@deriv/stores/types';
+import { observer, useStore } from '@deriv/stores';
 
-type TAccountClosed = {
-    logout: () => void;
-};
-
-const AccountClosed = ({ logout }: TAccountClosed) => {
+const AccountClosed = observer(() => {
+    const { client } = useStore();
+    const { logout } = client;
     const [is_modal_open, setModalState] = React.useState(true);
     const [timer, setTimer] = React.useState(10);
     const { is_appstore } = React.useContext(PlatformContext);
@@ -45,8 +42,6 @@ const AccountClosed = ({ logout }: TAccountClosed) => {
             </Text>
         </Modal>
     );
-};
+});
 
-export default connect(({ client }: TCoreStores) => ({
-    logout: client.logout,
-}))(AccountClosed);
+export default AccountClosed;

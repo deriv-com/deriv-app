@@ -199,7 +199,7 @@ const InputField = ({
         if (max_is_disabled) return;
         let increment_value;
 
-        const current_value = local_value || value?.toString();
+        const current_value = local_value || value.toString();
 
         const decimal_places = current_value ? getDecimals(current_value) : 0;
         const is_crypto = !!currency && isCryptocurrency(currency);
@@ -218,6 +218,7 @@ const InputField = ({
         } else {
             increment_value = parseFloat(((+current_value || 0) + 1).toString()).toFixed(decimal_places);
         }
+
         updateValue(increment_value, !!long_press_step);
     };
 
@@ -256,6 +257,7 @@ const InputField = ({
         if (is_negative_disabled && +decrement_value < 0) {
             return;
         }
+
         updateValue(decrement_value, !!long_press_step);
     };
 

@@ -8,7 +8,7 @@ export const getJurisdictionSvgContents = (): TJurisdictionCardItems => ({
         {
             key: 'assets',
             title: localize('Assets'),
-            description: localize('Synthetics, Basket indices and Derived FX'),
+            description: localize('Synthetics, Baskets and Derived FX'),
             title_indicators: {
                 type: 'displayText',
                 display_text: localize('40+'),

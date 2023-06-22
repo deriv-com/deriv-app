@@ -30,6 +30,7 @@ const CFDsListing = () => {
     } = useStores();
     const {
         available_dxtrade_accounts,
+        available_derivez_accounts,
         combined_cfd_mt5_accounts,
         selected_region,
         has_any_real_account,
@@ -206,16 +207,17 @@ const CFDsListing = () => {
                 <PlatformLoader />
             )}
             {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
-                <div className='cfd-full-row'>
-                    <hr className='divider' />
-                </div>
-            )}
-            {available_dxtrade_accounts?.length > 0 && (
-                <div className='cfd-full-row'>
-                    <Text line_height='m' weight='bold' color='prominent'>
-                        {localize('Other CFD Platforms')}
-                    </Text>
-                </div>
+                <React.Fragment>
+                    <div className='cfd-full-row'>
+                        <hr className='divider' />
+                    </div>
+
+                    <div className='cfd-full-row'>
+                        <Text line_height='m' weight='bold' color='prominent'>
+                            {localize('Other CFDs')}
+                        </Text>
+                    </div>
+                </React.Fragment>
             )}
             {is_landing_company_loaded ? (
                 available_dxtrade_accounts?.map((account: AvailableAccount) => {
@@ -279,6 +281,68 @@ const CFDsListing = () => {
             ) : (
                 <PlatformLoader />
             )}
+
+            {/* TODO: remove is_real flag to unblock the flow for derivez real account creation */}
+            {is_landing_company_loaded && !is_real
+                ? available_derivez_accounts?.map((account: AvailableAccount) => {
+                      const existing_accounts = getExistingAccounts(account.platform, account.market_type);
+                      const has_existing_accounts = existing_accounts.length > 0;
+                      return has_existing_accounts ? (
+                          existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => (
+                              <TradingAppCard
+                                  action_type='multi-action'
+                                  availability={selected_region}
+                                  clickable_icon
+                                  icon={account.icon}
+                                  sub_title={account.name}
+                                  name={`${formatMoney(
+                                      existing_account.currency,
+                                      existing_account.display_balance,
+                                      true
+                                  )} ${existing_account.currency}`}
+                                  description={existing_account.display_login}
+                                  platform={account.platform}
+                                  key={`trading_app_card_${existing_account.display_login}`}
+                                  onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
+                                      const button_name = e?.currentTarget?.name;
+                                      if (button_name === 'transfer-btn') {
+                                          toggleAccountTransferModal();
+                                          setSelectedAccount(existing_account);
+                                      } else if (button_name === 'topup-btn') {
+                                          showTopUpModal(existing_account);
+                                          setAppstorePlatform(account.platform);
+                                      } else {
+                                          startTrade(account.platform, existing_account);
+                                      }
+                                  }}
+                              />
+                          ))
+                      ) : (
+                          <TradingAppCard
+                              action_type='get'
+                              availability={selected_region}
+                              clickable_icon
+                              icon={account.icon}
+                              name={account.name}
+                              platform={account.platform}
+                              description={account.description}
+                              onAction={() => {
+                                  if ((has_no_real_account || no_CR_account) && is_real) {
+                                      openDerivRealAccountNeededModal();
+                                  } else {
+                                      setAccountType({
+                                          category: selected_account_type,
+                                          type: account.market_type,
+                                      });
+                                      setAppstorePlatform(account.platform);
+                                      getAccount();
+                                  }
+                              }}
+                              key={`trading_app_card_${account.name}`}
+                          />
+                      );
+                  })
+                : !is_real && <PlatformLoader />}
         </ListingContainer>
     );
 };

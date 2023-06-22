@@ -322,7 +322,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             setP2POrderProps: jest.fn(),
             showAccountSwitchToRealNotification: jest.fn(),
             setP2PRedirectTo: jest.fn(),
-            showSuccessWalletsUpgradeNotification: jest.fn(),
         },
         portfolio: {
             active_positions: [],

@@ -2,16 +2,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { AccumulatorTradeDescription } from './accumulator-trade-description';
+import AccumulatorTradeDescription from './accumulator-trade-description';
 
 // Templates are from Binary 1.0, it should be checked if they need change or not and add all of trade types
 // TODO: refactor the rest of descriptions to use them as components like AccumulatorTradeDescription
-const TradeCategories = ({ category }) => {
+const TradeCategories = ({ category, onClick }) => {
     let TradeTypeTemplate;
     if (category) {
         switch (category) {
             case 'accumulator':
-                TradeTypeTemplate = <AccumulatorTradeDescription />;
+                TradeTypeTemplate = <AccumulatorTradeDescription onClick={onClick} />;
                 break;
             case 'rise_fall':
                 TradeTypeTemplate = (
@@ -387,7 +387,7 @@ const TradeCategories = ({ category }) => {
                         </Text>
                         <Text as='p'>
                             {localize(
-                                'The Stop-out level on the chart indicates the price at which your potential loss equals your entire stake. When the market price reaches this level, your position will be closed automatically. This ensures that your loss does not exceed the amount you paid to purchase the contract.'
+                                'The stop-out level on the chart indicates the price at which your potential loss equals your entire stake. When the market price reaches this level, your position will be closed automatically. This ensures that your loss does not exceed the amount you paid to purchase the contract.'
                             )}
                         </Text>
                         <Text as='p'>{localize('These are optional parameters for each position that you open:')}</Text>
@@ -404,9 +404,10 @@ const TradeCategories = ({ category }) => {
                             </li>
                             <li>
                                 {localize(
-                                    'If you select “Deal cancellation”, you’ll be able to cancel your trade within a chosen time frame should the market move against your favour. We’ll charge a small fee for this, but we’ll return your stake amount without profit or loss. If the stop-out amount is reached before the deal cancellation expires, your position will be cancelled automatically and we’ll return your stake amount without profit or loss. While “Deal cancellation” is active:'
+                                    'If you select “Deal cancellation”, you’ll be able to cancel your trade within a chosen time frame should the market move against your favour. We’ll charge a small fee for this, but we’ll return your stake amount without profit or loss. If the stop-out amount is reached before the deal cancellation expires, your position will be cancelled automatically and we’ll return your stake amount without profit or loss.'
                                 )}
                             </li>
+                            <Text as='p'>{localize('While “Deal cancellation” is active:')}</Text>
                             <ul>
                                 <li>
                                     {localize(
@@ -434,25 +435,51 @@ const TradeCategories = ({ category }) => {
                     <React.Fragment>
                         <Text as='p'>
                             {localize(
-                                'Predict the market direction and movement size, and select either “Call” or “Put” to open a position.'
+                                'Vanilla options allow you to predict an upward (bullish) or downward (bearish) direction of the underlying asset by purchasing a "Call" or a "Put".'
                             )}
                         </Text>
                         <Text as='p'>
                             <Localize
-                                i18n_default_text='<0>For Call:</0><1/>You will get a payout if the market price is higher than the strike price at the expiry time. Your payout will grow proportionally to the distance between the market and strike prices. You will start making a profit when the payout is higher than your stake. If the market price is equal to or below the strike price at the expiry time, there won’t be a payout.'
-                                components={[<strong key={0} />, <br key={1} />]}
+                                i18n_default_text='If you select <0>"Call"</0>, you’ll earn a <1>payout</1> if the <1>final price</1> is above the <1>strike price</1> at <1>expiry</1>. Otherwise, you won’t receive a payout.'
+                                components={[
+                                    <strong key={0} />,
+                                    <span
+                                        className='contract-type-info__content-definition'
+                                        onClick={onClick}
+                                        key={1}
+                                    />,
+                                ]}
                             />
                         </Text>
                         <Text as='p'>
                             <Localize
-                                i18n_default_text='<0>For Put:</0><1/>You will get a payout if the market price is lower than the strike price at the expiry time. Your payout will grow proportionally to the distance between the market and strike prices. You will start making a profit when the payout is higher than your stake. If the market price is equal to or above the strike price at the expiry time, there won’t be a payout.'
-                                components={[<strong key={0} />, <br key={1} />]}
+                                i18n_default_text='If you select <0>"Put"</0>, you’ll earn a payout if the final price is below the strike price at expiry. Otherwise, you won’t receive a payout.'
+                                components={[<strong key={0} />]}
                             />
                         </Text>
                         <Text as='p'>
-                            {localize(
-                                'You can determine the expiry of your contract by setting the duration or end time.'
-                            )}
+                            <Localize
+                                i18n_default_text='Your payout is equal to the <0>payout per point</0> multiplied by the difference between the final price and the strike price. You will only earn a profit if your payout is higher than your initial stake.'
+                                components={[
+                                    <span
+                                        className='contract-type-info__content-definition'
+                                        onClick={onClick}
+                                        key={0}
+                                    />,
+                                ]}
+                            />
+                        </Text>
+                        <Text as='p'>
+                            <Localize
+                                i18n_default_text='You may sell the contract up until 60 seconds before expiry. If you do, we’ll pay you the <0>contract value</0>.'
+                                components={[
+                                    <span
+                                        className='contract-type-info__content-definition'
+                                        onClick={onClick}
+                                        key={0}
+                                    />,
+                                ]}
+                            />
                         </Text>
                     </React.Fragment>
                 );
@@ -467,6 +494,7 @@ const TradeCategories = ({ category }) => {
 
 TradeCategories.propTypes = {
     category: PropTypes.string,
+    onClick: PropTypes.func,
 };
 
 export default TradeCategories;

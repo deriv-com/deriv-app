@@ -2,6 +2,7 @@ import DepositStore from '../deposit-store';
 import { configure } from 'mobx';
 import { TRootStore, TWebSocket } from '../../types';
 import { mockStore } from '@deriv/stores';
+import { expect } from '@jest/globals';
 
 configure({ safeDescriptors: false });
 
@@ -87,5 +88,14 @@ describe('DepositStore', () => {
         await deposit_store.onMountDeposit();
         expect(checkIframeLoaded).not.toHaveBeenCalled();
         expect(setLoading).toHaveBeenCalledWith(false);
+    });
+    it('should call cashier deposit if the active_container is deposit and not on crypto', async () => {
+        const { checkIframeLoaded } = deposit_store.root_store.modules.cashier.iframe;
+
+        deposit_store.root_store.modules.cashier.iframe.is_session_timeout = true;
+
+        await deposit_store.onMountDeposit();
+        expect(checkIframeLoaded).toHaveBeenCalled();
+        expect(deposit_store.WS.authorized.cashier).toHaveBeenCalled();
     });
 });

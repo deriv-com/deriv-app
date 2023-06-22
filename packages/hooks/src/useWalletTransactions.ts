@@ -24,10 +24,11 @@ const useWalletTransactions = (
     let { demo: demo_platform_account } = usePlatformAccounts();
     const { real: real_platform_accounts } = usePlatformAccounts();
     const cfd_accounts = useCFDAllAccounts();
-    // TODO remove this mock when we're to switch to API data
+    // TODO remove these mocks when we're to switch to API data
     demo_platform_account = {
         account_category: 'trading',
         account_type: 'standard',
+        currency: 'USD',
         loginid: 'VRTCMOCK0001',
         is_virtual: 1,
         landing_company_shortcode: shortcode as 'svg' | 'malta',
@@ -36,16 +37,51 @@ const useWalletTransactions = (
     real_platform_accounts.push({
         account_category: 'trading',
         account_type: 'standard',
+        currency: 'USD',
         loginid: 'CRMOCK0001',
         is_virtual: 0,
         landing_company_shortcode: shortcode as 'svg' | 'malta',
         token: '',
     });
+    wallets.push({
+        account_type: 'crypto',
+        balance: 0,
+        currency: 'BTC',
+        icon: getWalletCurrencyIcon('BTC', is_dark_mode_on),
+        icon_type: 'crypto',
+        is_crypto: true,
+        is_disabled: false,
+        is_fiat: false,
+        is_selected: false,
+        is_virtual: is_demo,
+        landing_company_name: 'svg',
+        loginid: 'CRWMOCK00042',
+        modal_icon: '',
+        name: 'BTC Wallet',
+    });
     const accounts = [demo_platform_account, ...real_platform_accounts];
     const { getConfig } = useCurrencyConfig();
 
-    const accountName = (is_virtual: boolean, currency: string, is_wallet: boolean) => {
-        return `${is_virtual ? 'Demo' : ''} ${currency} ${is_wallet ? 'Wallet' : 'account'}`;
+    const trading_accounts_display_prefixes = {
+        standard: 'Deriv Apps',
+        mt5: 'MT5',
+        dxtrade: 'Deriv X',
+        binary: 'Binary',
+    } as const;
+
+    const landing_company_display_shortcodes = {
+        svg: 'SVG',
+        malta: 'Malta',
+    } as const;
+
+    const getTradingAccountName = (
+        account_type: 'standard' | 'mt5' | 'dxtrade' | 'binary',
+        is_virtual: boolean,
+        landing_company_shortcode: 'svg' | 'malta'
+    ) => {
+        return `${trading_accounts_display_prefixes[account_type]} ${
+            is_virtual ? 'Demo' : `(${landing_company_display_shortcodes[landing_company_shortcode]})`
+        } account`;
     };
 
     // TODO: refactor once we have useActiveWallet merged
@@ -131,7 +167,7 @@ const useWalletTransactions = (
                       loginid,
                   },
                   to: {
-                      loginid: 'CRMOCK0001',
+                      loginid: 'CRWMOCK00042',
                   },
                   balance_after: 5,
                   transaction_id: 17494415489,
@@ -168,7 +204,7 @@ const useWalletTransactions = (
                   action_type: 'transfer',
                   amount: 200,
                   from: {
-                      loginid: 'CRMOCK0001',
+                      loginid: 'CRWMOCK00042',
                   },
                   to: {
                       loginid,
@@ -239,20 +275,17 @@ const useWalletTransactions = (
                     transaction.to?.loginid === loginid ? transaction.from?.loginid : transaction.to?.loginid;
                 if (!other_loginid) return null;
                 const other_account = accounts.find(el => el.loginid === other_loginid);
-                if (
-                    !other_account ||
-                    !other_account.currency ||
-                    !other_account.account_category ||
-                    !other_account.account_type
-                )
-                    return null;
-                account_category = other_account.account_category;
+                if (!other_account || !other_account.currency || !other_account.account_type) return null;
+                account_category = other_account.account_category || 'wallet';
                 account_currency = other_account.currency;
-                account_name = accountName(
-                    !!other_account.is_virtual,
-                    other_account.currency,
+                account_name =
                     other_account.account_category === 'wallet'
-                );
+                        ? (wallets.find(el => el.loginid === other_account.loginid) as typeof wallets[number]).name
+                        : getTradingAccountName(
+                              other_account.account_type as 'standard' | 'mt5' | 'dxtrade' | 'binary',
+                              !!other_account.is_virtual,
+                              other_account.landing_company_shortcode as 'svg' | 'malta'
+                          );
                 account_type = other_account.account_type;
                 icon = getWalletCurrencyIcon(
                     other_account.is_virtual ? 'demo' : other_account.currency || '',

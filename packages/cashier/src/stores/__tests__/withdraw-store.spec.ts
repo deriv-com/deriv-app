@@ -211,15 +211,31 @@ describe('WithdrawStore', () => {
     });
 
     it('should not call withdraw request when no verification code', async () => {
+        const { setLoading } = withdraw_store.root_store.modules.cashier.general_store;
         const { setIframeUrl } = withdraw_store.root_store.modules.cashier.iframe;
         const { setVerificationCode } = withdraw_store.root_store.client;
-        const verification_code = '';
+        const verification_code = undefined;
+        withdraw_store.root_store.modules.cashier.iframe.is_session_timeout = true;
 
+        await withdraw_store.onMountWithdraw(verification_code);
+
+        expect(setIframeUrl).toHaveBeenCalledTimes(1);
+        expect(setLoading).toHaveBeenCalledTimes(2);
+        expect(withdraw_store.WS.authorized.cashier).toHaveBeenCalledTimes(0);
+    });
+    it('should not call withdraw request when on virtual account', async () => {
+        const { setLoading } = withdraw_store.root_store.modules.cashier.general_store;
+        const { setIframeUrl } = withdraw_store.root_store.modules.cashier.iframe;
+        const { setVerificationCode } = withdraw_store.root_store.client;
+        const verification_code = '12313212313';
+
+        withdraw_store.root_store.client.is_virtual = true;
         withdraw_store.root_store.modules.cashier.iframe.is_session_timeout = true;
         await withdraw_store.onMountWithdraw(verification_code);
 
         expect(setIframeUrl).toHaveBeenCalledTimes(1);
-        expect(setVerificationCode).toHaveBeenCalledTimes(0);
+        expect(setLoading).toHaveBeenCalledTimes(2);
+        expect(withdraw_store.WS.authorized.cashier).toHaveBeenCalledTimes(0);
     });
 
     it('should return an error on mount of crypto withdraw if verification code is not valid', async () => {

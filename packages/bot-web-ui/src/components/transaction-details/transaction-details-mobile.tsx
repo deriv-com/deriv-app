@@ -27,13 +27,13 @@ const TransactionDetailsMobile = observer(() => {
             height_offset='80px'
         >
             <div className='transaction-details-modal-mobile__wrapper' data-testid='transaction_details_cards'>
-                {elements?.map(({ data, type }) => {
+                {elements?.map(({ data, type }, index) => {
                     if (type === transaction_elements.CONTRACT)
                         return <MobileTransactionCards transaction={data} key={data?.transaction_ids?.buy} />;
                     return (
                         <div
                             className='transaction-details-modal-mobile__divider'
-                            key={`transaction-row-divider-${new Date().getTime() * Math.random()}`}
+                            key={`transaction-row-divider-${new Date().getTime()}-${index}`}
                         >
                             <div className='transactions__divider-line' />
                         </div>

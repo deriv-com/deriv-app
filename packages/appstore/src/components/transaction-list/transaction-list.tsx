@@ -67,27 +67,23 @@ const TransactionList = () => {
                 >
                     {day}
                 </Text>
-                {transaction_list.map(transaction => (
-                    <NonPendingTransaction
-                        key={transaction.transaction_id}
-                        account_category={transaction?.account_category}
-                        account_currency={transaction.account_currency}
-                        account_name={transaction?.account_name}
-                        account_type={transaction?.account_type}
-                        action_type={transaction.action_type}
-                        amount={
-                            (transaction.action_type === 'transfer' &&
-                            transaction?.from?.loginid === loginid &&
-                            typeof transaction.amount === 'number'
-                                ? -transaction?.amount
-                                : transaction?.amount) || 0
-                        }
-                        balance_after={transaction.balance_after || 0}
-                        currency={wallet_currency}
-                        icon={transaction.icon}
-                        icon_type={is_demo ? 'demo' : transaction.icon_type}
-                    />
-                ))}
+                {transaction_list.map(transaction => {
+                    const amount =
+                        (transaction?.action_type === 'transfer' &&
+                        transaction?.from?.loginid === loginid &&
+                        typeof transaction?.amount === 'number'
+                            ? -transaction.amount
+                            : transaction.amount) || 0;
+                    return (
+                        <NonPendingTransaction
+                            key={transaction.transaction_id}
+                            amount={amount}
+                            currency={wallet_currency}
+                            icon_type={is_demo ? 'demo' : transaction.icon_type}
+                            transaction={transaction}
+                        />
+                    );
+                })}
             </div>
         );
     };

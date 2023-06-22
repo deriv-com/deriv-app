@@ -18,8 +18,6 @@ const useWalletsList = () => {
         // Filter out accounts which has account_category as wallet
         const wallets = data?.authorize?.account_list?.filter(account => account.account_category === 'wallet');
 
-        // Modify the wallets to include the missing balance from the API response
-        // Should remove this once the API is fixed
         const modified_wallets =
             wallets?.map(wallet => {
                 const currency = wallet?.currency || 'USD';
@@ -42,7 +40,6 @@ const useWalletsList = () => {
                     is_disabled: Boolean(wallet.is_disabled),
                     is_virtual: Boolean(wallet.is_virtual),
                     is_crypto: is_crypto_currency,
-                    is_fiat,
                     icon,
                     modal_icon,
                     name,

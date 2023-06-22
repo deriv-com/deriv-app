@@ -1,39 +1,32 @@
 import React from 'react';
 import { Statement } from '@deriv/api-types';
-import { useStore } from '@deriv/stores';
 import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
+import { useWalletTransactions } from '@deriv/hooks';
+import { useStore } from '@deriv/stores';
 
 type TStatementTransaction = DeepRequired<Statement>['transactions'][number];
 
-type TFiatTransactionListItem = Pick<TStatementTransaction, 'amount' | 'balance_after'> & {
-    action_type:
-        | (TStatementTransaction['action_type'] & ('deposit' | 'withdrawal' | 'transfer'))
-        | 'initial_fund'
-        | 'reset_balance';
-    account_category?: string;
-    account_currency: string;
-    account_name: string;
-    account_type?: string;
+type TFiatTransactionListItem = Pick<TStatementTransaction, 'amount'> & {
     currency: string;
-    icon: string;
     icon_type: string;
+    transaction: ReturnType<typeof useWalletTransactions>['transactions'][0];
 };
 
-const NonPendingTransaction = ({
-    account_category,
-    account_currency,
-    account_name,
-    account_type,
-    action_type,
-    amount,
-    balance_after,
-    currency,
-    icon,
-    icon_type,
-}: TFiatTransactionListItem) => {
+const NonPendingTransaction = ({ amount, currency, icon_type, transaction }: TFiatTransactionListItem) => {
     const {
         ui: { is_dark_mode_on, is_mobile },
     } = useStore();
+
+    const {
+        account_category,
+        account_currency,
+        account_name,
+        account_type,
+        action_type,
+        balance_after = 0,
+        icon,
+    } = transaction;
+
     const formatAmount = (value: number) => value.toLocaleString(undefined, { minimumFractionDigits: 2 });
 
     const formatActionType = (value: string) => value[0].toUpperCase() + value.substring(1).replace(/_/, ' ');
@@ -42,8 +35,10 @@ const NonPendingTransaction = ({
         switch (account_type) {
             case 'standard':
                 return is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight';
+            //TODO: add proper icon for mt5
             case 'mt5':
                 return 'IcMt5CfdPlatform';
+            //TODO: add proper icon for dxtrade
             case 'dxtrade':
                 return '';
             default:

@@ -51,7 +51,6 @@ const useWalletTransactions = (
         icon_type: 'crypto',
         is_crypto: true,
         is_disabled: false,
-        is_fiat: false,
         is_selected: false,
         is_virtual: is_demo,
         landing_company_name: 'svg',

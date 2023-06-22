@@ -62,7 +62,6 @@ describe('useWalletsList', () => {
                 icon_type: 'fiat',
                 is_crypto: false,
                 is_disabled: false,
-                is_fiat: true,
                 is_selected: true,
                 is_virtual: false,
                 landing_company_name: 'SVG',

@@ -28,6 +28,7 @@ const ContractTypeDescriptionVideo = ({ selected_contract_type }: { selected_con
             loop
             playsInline
             disablePictureInPicture
+            controlsList='nodownload'
             onContextMenu={e => e.preventDefault()}
             preload='auto'
             controls

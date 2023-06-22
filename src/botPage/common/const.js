@@ -4,8 +4,25 @@ import api from '../view/deriv/api';
 
 loadLang();
 
-export const CRYPTO_CURRENCIES = ['BTC', 'BUSD', 'DAI', 'EURS', 'IDK', 'PAX', 'TUSD', 'USDC',
-    'USDK', 'eUSDT', 'tUSDT','BCH', 'ETH', 'ETC', 'LTC', 'UST', 'USDT'];
+export const CRYPTO_CURRENCIES = [
+    'BTC',
+    'BUSD',
+    'DAI',
+    'EURS',
+    'IDK',
+    'PAX',
+    'TUSD',
+    'USDC',
+    'USDK',
+    'eUSDT',
+    'tUSDT',
+    'BCH',
+    'ETH',
+    'ETC',
+    'LTC',
+    'UST',
+    'USDT',
+];
 
 const config = {
     lists: {

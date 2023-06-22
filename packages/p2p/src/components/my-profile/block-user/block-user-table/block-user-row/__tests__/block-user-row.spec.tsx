@@ -43,9 +43,9 @@ describe('<BlockUserRow/>', () => {
 
         render(<BlockUserRow {...block_user_row_props} />);
 
-        const advertiser_name = screen.getByText('test');
+        const advertiserName = screen.getByText('test');
 
-        userEvent.click(advertiser_name);
+        userEvent.click(advertiserName);
 
         expect(mock_store.my_profile_store.getCounterpartyAdvertiserInfo).toBeCalledWith(id);
         expect(mock_store.buy_sell_store.setSelectedAdState).toBeCalledWith({ advertiser_details: { id, name } });
@@ -54,12 +54,12 @@ describe('<BlockUserRow/>', () => {
     it('should render the Block button if advertiser is not blocked and call onClickUnblock when clicked', () => {
         render(<BlockUserRow {...block_user_row_props} />);
 
-        const block_button = screen.getByRole('button', { name: 'Block' });
+        const blockButton = screen.getByRole('button', { name: 'Block' });
 
-        expect(block_button).toBeInTheDocument();
+        expect(blockButton).toBeInTheDocument();
         expect(screen.queryByRole('button', { name: 'Unblock' })).not.toBeInTheDocument();
 
-        userEvent.click(block_button);
+        userEvent.click(blockButton);
 
         expect(mock_store.my_profile_store.onClickUnblock).toBeCalledWith(block_user_row_props.row);
     });
@@ -69,12 +69,12 @@ describe('<BlockUserRow/>', () => {
 
         render(<BlockUserRow {...block_user_row_props} />);
 
-        const unblock_button = screen.getByRole('button', { name: 'Unblock' });
+        const unblockButton = screen.getByRole('button', { name: 'Unblock' });
 
-        expect(unblock_button).toBeInTheDocument();
+        expect(unblockButton).toBeInTheDocument();
         expect(screen.queryByRole('button', { name: 'Block' })).not.toBeInTheDocument();
 
-        userEvent.click(unblock_button);
+        userEvent.click(unblockButton);
 
         expect(mock_store.my_profile_store.onClickUnblock).toBeCalledWith(block_user_row_props.row);
     });

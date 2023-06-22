@@ -33,9 +33,9 @@ describe('<BlockUserTableError />', () => {
     it('should call setActiveTab when clicking return icon', () => {
         render(<BlockUserTableError error_message='test error' />);
 
-        const page_return_icon = screen.getByTestId('dt_mobile_full_page_return_icon');
+        const pageReturnIcon = screen.getByTestId('dt_mobile_full_page_return_icon');
 
-        userEvent.click(page_return_icon);
+        userEvent.click(pageReturnIcon);
 
         expect(mock_store.my_profile_store.setActiveTab).toBeCalledWith(my_profile_tabs.MY_STATS);
     });

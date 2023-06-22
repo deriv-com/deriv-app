@@ -54,9 +54,9 @@ describe('<BlockUserDropdown />', () => {
     it('should call showModal when clicking on filter icon in mobile', () => {
         render(<BlockUserDropdown />);
 
-        const filter_icon = screen.getByTestId('dt_block_user_filter_icon');
+        const filterIcon = screen.getByTestId('dt_block_user_filter_icon');
 
-        userEvent.click(filter_icon);
+        userEvent.click(filterIcon);
 
         expect(mock_modal_manager.showModal).toBeCalledTimes(1);
         expect(mock_modal_manager.showModal).toBeCalledWith({ key: 'BlockUserFilterModal' });

@@ -1,13 +1,12 @@
 import React from 'react';
 import { reaction } from 'mobx';
-import { observer } from 'mobx-react-lite';
 import { InfiniteDataList, Loading, Table, Text } from '@deriv/components';
-import { localize } from 'Components/i18next';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
+import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import BlockUserRow from './block-user-row';
 import BlockUserEmpty from 'Components/block-user/block-user-empty';
-import './block-user-table.scss';
 
 const BlockUserTable = () => {
     const { general_store, my_profile_store } = useStores();
@@ -17,7 +16,7 @@ const BlockUserTable = () => {
         my_profile_store.getTradePartnersList({ startIndex: 0 }, true);
         my_profile_store.setSearchTerm('');
 
-        reaction(
+        const disposeIsBarredReaction = reaction(
             () => general_store.is_barred,
             () => {
                 if (!general_store.is_barred) general_store.setBlockUnblockUserError('');
@@ -26,7 +25,7 @@ const BlockUserTable = () => {
             }
         );
 
-        reaction(
+        const disposeTradePartnersListReaction = reaction(
             () => my_profile_store.trade_partners_list,
             () => {
                 if (my_profile_store.trade_partners_list.length > 0 && my_profile_store.is_trade_partners_list_empty)
@@ -35,6 +34,8 @@ const BlockUserTable = () => {
         );
 
         return () => {
+            disposeIsBarredReaction();
+            disposeTradePartnersListReaction();
             my_profile_store.setTradePartnersList([]);
             my_profile_store.setSearchTerm('');
             my_profile_store.setSearchResults([]);
@@ -49,14 +50,8 @@ const BlockUserTable = () => {
 
     if (my_profile_store.search_term && my_profile_store.rendered_trade_partners_list.length === 0) {
         return (
-            <Text
-                align='center'
-                className='block-user-table__text'
-                line_height='m'
-                size='s'
-                weight={isMobile() ? 'normal' : 'bold'}
-            >
-                {localize('There are no matching name.')}
+            <Text align='center' className='block-user-table__text' weight={isMobile() ? 'normal' : 'bold'}>
+                <Localize i18n_default_text='There are no matching name.' />
             </Text>
         );
     }

@@ -1,52 +1,54 @@
 import React from 'react';
 import { reaction } from 'mobx';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
+import { useStores } from 'Stores';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import BlockUserList from './block-user-list';
-import BlockUserFilterModal from './block-user-filter-modal';
-import './block-user.scss';
 
 const BlockUser = () => {
-    const { general_store, buy_sell_store, my_profile_store } = useStores();
+    const { buy_sell_store, general_store, my_profile_store } = useStores();
     const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
+
+    const { is_blocked, name } = my_profile_store.selected_trade_partner;
+    const { block_unblock_user_error, error_code } = general_store;
+
     const error_message = () => {
-        return my_profile_store.selected_trade_partner.is_blocked
+        return is_blocked
             ? localize("Unblocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
-                  name: my_profile_store.selected_trade_partner.name,
+                  name,
               })
             : localize("Blocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
-                  name: my_profile_store.selected_trade_partner.name,
+                  name,
               });
     };
 
     reaction(
-        () => general_store.block_unblock_user_error,
+        () => block_unblock_user_error,
         () => {
             if (
-                general_store.block_unblock_user_error &&
+                block_unblock_user_error &&
                 general_store.active_index === 3 &&
                 !buy_sell_store.show_advertiser_page &&
-                general_store?.error_code !== api_error_codes.TEMPORARY_BAR &&
-                general_store?.error_code !== api_error_codes.PERMISSION_DENIED
+                error_code !== api_error_codes.TEMPORARY_BAR &&
+                error_code !== api_error_codes.PERMISSION_DENIED
             ) {
                 showModal({
                     key: 'ErrorModal',
                     props: {
                         error_message:
-                            general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID
+                            error_code === api_error_codes.INVALID_ADVERTISER_ID
                                 ? error_message()
-                                : general_store.block_unblock_user_error,
+                                : block_unblock_user_error,
                         error_modal_button_text: localize('Got it'),
                         error_modal_title:
-                            general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID
+                            error_code === api_error_codes.INVALID_ADVERTISER_ID
                                 ? localize('{{name}} is no longer on Deriv P2P', {
-                                      name: my_profile_store.selected_trade_partner.name,
+                                      name,
                                   })
                                 : localize('Unable to block advertiser'),
 
@@ -67,8 +69,8 @@ const BlockUser = () => {
     useRegisterModalProps({
         key: 'BlockUserModal',
         props: {
-            advertiser_name: my_profile_store.selected_trade_partner.name,
-            is_advertiser_blocked: !!my_profile_store.selected_trade_partner.is_blocked,
+            advertiser_name: name,
+            is_advertiser_blocked: !!is_blocked,
             onCancel: hideModal,
             onSubmit: my_profile_store.onSubmit,
         },
@@ -80,7 +82,6 @@ const BlockUser = () => {
                 <BlockUserList />
             </DesktopWrapper>
             <MobileWrapper>
-                <BlockUserFilterModal />
                 <MobileFullPageModal
                     body_className='block-user__modal'
                     height_offset='80px'

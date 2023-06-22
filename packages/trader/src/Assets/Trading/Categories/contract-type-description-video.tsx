@@ -27,6 +27,8 @@ const ContractTypeDescriptionVideo = ({ selected_contract_type }: { selected_con
             autoPlay
             loop
             playsInline
+            disablePictureInPicture
+            onContextMenu={e => e.preventDefault()}
             preload='auto'
             controls
             width={isMobile() ? 328 : 480}

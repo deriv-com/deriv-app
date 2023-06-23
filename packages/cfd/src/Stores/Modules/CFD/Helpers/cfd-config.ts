@@ -32,13 +32,13 @@ export const getDxCompanies = () => {
             synthetic: {
                 dxtrade_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Demo Derived'),
+                title: localize('Derived'),
                 short_title: synthetic_config.short_title,
             },
             financial: {
                 dxtrade_account_type: financial_config.account_type,
                 leverage: financial_config.leverage,
-                title: localize('Demo Financial'),
+                title: localize('Financial'),
                 short_title: financial_config.short_title,
             },
         },
@@ -99,13 +99,13 @@ export const getMtCompanies = (is_eu: boolean) => {
             all: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
-                title: localize('Demo Swap-Free'),
+                title: localize('Swap-Free'),
                 short_title: all_config.short_title,
             },
             all_svg: {
                 mt5_account_type: all_config.account_type,
                 leverage: all_config.leverage,
-                title: localize('Demo Swap-Free SVG'),
+                title: localize('Swap-Free SVG'),
                 short_title: all_config.short_title,
             },
             derivez: {
@@ -117,32 +117,32 @@ export const getMtCompanies = (is_eu: boolean) => {
             synthetic: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Demo Derived'),
+                title: localize('Derived'),
                 short_title: synthetic_config.short_title,
             },
             financial: {
                 mt5_account_type: financial_config.account_type,
                 leverage: financial_config.leverage,
-                title: is_eu ? localize('Demo CFDs') : localize('Demo Financial'),
+                title: is_eu ? localize('CFDs') : localize('Financial'),
                 short_title: financial_config.short_title,
             },
             synthetic_svg: {
                 mt5_account_type: synthetic_config.account_type,
                 leverage: synthetic_config.leverage,
-                title: localize('Demo Derived SVG'),
+                title: localize('Derived SVG'),
                 short_title: synthetic_config.short_title,
             },
 
             financial_svg: {
                 mt5_account_type: financial_config.account_type,
                 leverage: financial_config.leverage,
-                title: is_eu ? localize('Demo CFDs') : localize('Demo Financial SVG'),
+                title: is_eu ? localize('CFDs') : localize('Financial SVG'),
                 short_title: financial_config.short_title,
             },
             financial_stp: {
                 mt5_account_type: financial_stp_config.account_type,
                 leverage: financial_stp_config.leverage,
-                title: localize('Demo Financial STP'),
+                title: localize('Financial STP'),
                 short_title: financial_stp_config.short_title,
             },
         },

@@ -43,7 +43,9 @@ const SubMenu = ({
                     <Text
                         as='h3'
                         size='xs'
-                        weight={window.location.pathname.startsWith(route_config_path) ? 'bold' : ''}
+                        weight={
+                            route_config_path && window.location.pathname.startsWith(route_config_path) ? 'bold' : ''
+                        }
                     >
                         {submenu_title}
                     </Text>

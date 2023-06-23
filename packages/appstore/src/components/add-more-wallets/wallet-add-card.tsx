@@ -9,7 +9,7 @@ type TAddWalletCard = {
 };
 
 const AddWalletCard = ({ wallet_info }: TAddWalletCard) => {
-    const { getConfig } = useCurrencyConfig();
+    const { getConfig, currencies_config } = useCurrencyConfig();
     const { currency, landing_company_name, is_added } = wallet_info;
 
     const wallet_details = {
@@ -26,7 +26,7 @@ const AddWalletCard = ({ wallet_info }: TAddWalletCard) => {
                 <WalletCard wallet={wallet_details} size='medium' state={is_added ? 'added' : 'add'} />
                 <div className='add-wallets__card-description'>
                     <Text as='h3' weight='bold' className='add-wallets__card-description__header'>
-                        {`${currency === 'UST' ? 'USDT' : currency} Wallet`}
+                        {`${currencies_config?.[currency].display_code} Wallet`}
                     </Text>
                     <Text as='p' size='xs' className='add-wallets__card-description__text'>
                         {wallet_description_mapper[currency]}

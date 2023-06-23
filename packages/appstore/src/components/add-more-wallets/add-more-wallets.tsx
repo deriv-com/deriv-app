@@ -19,7 +19,7 @@ const AddMoreWallets = () => {
                 {isLoading ? (
                     <Loading is_fullscreen={false} />
                 ) : (
-                    data && data.map((info, idx: number) => <AddWalletCard wallet_info={info} key={idx} />)
+                    data?.map(wallet => <AddWalletCard wallet_info={wallet} key={wallet.currency} />)
                 )}
             </CarouselContainer>
         </div>

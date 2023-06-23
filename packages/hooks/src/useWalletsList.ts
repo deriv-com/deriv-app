@@ -1,14 +1,11 @@
 import { useMemo } from 'react';
-import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
+import useAuthorizeResponse from './useAuthorizeResponse';
 
 const useWalletList = () => {
     const { client } = useStore();
-    const { accounts, loginid, is_crypto } = client;
-    const { data, ...reset } = useFetch('authorize', {
-        payload: { authorize: accounts[loginid || ''].token },
-        options: { enabled: Boolean(loginid) },
-    });
+    const { is_crypto } = client;
+    const { data } = useAuthorizeResponse();
 
     const sortedWallets = useMemo(() => {
         // @ts-expect-error Need to update @deriv/api-types to fix the TS error
@@ -36,7 +33,6 @@ const useWalletList = () => {
     }, [data, is_crypto]);
 
     return {
-        ...reset,
         data: sortedWallets,
     };
 };

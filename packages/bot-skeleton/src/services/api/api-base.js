@@ -34,17 +34,23 @@ class APIBase {
         if (this.api) this.api.disconnect();
     }
 
+    stopBotIfSocketDisconnected() {
+        if (this.api.connection.readyState === 3) {
+            const { stopBot, clearStat } = DBotStore.instance.run_panel;
+            const { updateTransactionIfSocketDisconnected } = DBotStore.instance.transactions;
+            stopBot();
+            clearStat(true);
+            updateTransactionIfSocketDisconnected();
+        }
+    }
+
     initEventListeners() {
         if (window) {
             window.addEventListener('online', this.reconnectIfNotConnected);
             window.addEventListener('focus', this.reconnectIfNotConnected);
             //we can even run the bot by opening a new websocket connection here!
             document.addEventListener('visibilitychange', () => {
-                if (this.api.connection.readyState === 3) {
-                    const { stopBot, clearStat } = DBotStore.instance.run_panel;
-                    stopBot();
-                    clearStat(true);
-                }
+                this.stopBotIfSocketDisconnected();
             });
         }
     }
@@ -56,6 +62,7 @@ class APIBase {
     }
 
     reconnectIfNotConnected = () => {
+        this.stopBotIfSocketDisconnected();
         // eslint-disable-next-line no-console
         console.log('connection state: ', this.api.connection.readyState);
         if (this.api.connection.readyState !== 1) {

@@ -180,6 +180,18 @@ export default class TransactionsStore {
         });
     }
 
+    // eslint-disable-next-line class-methods-use-this
+    updateTransactionIfSocketDisconnected() {
+        //TODO: need to remove this because the module does not load need to find why //just a workaround for now
+        // eslint-disable-next-line global-require
+        const lz_string = require('lz-string');
+        const stored_items = JSON.parse(lz_string.decompress(sessionStorage.getItem('transaction_cache')));
+        stored_items[this.account_id].map(account => {
+            return account.data && account.data.is_complete;
+        });
+        this.elements = stored_items;
+    }
+
     updateResultsCompletedContract(contract) {
         const { journal, summary_card } = this.root_store;
         const { contract_info } = summary_card;

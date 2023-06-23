@@ -1,2 +1,2 @@
 export { default as unFormatLocaleString } from './unFormatLocaleString';
-export * from './format-url';
+export * from './parse-url';

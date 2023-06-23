@@ -1,4 +1,4 @@
-import { isExternalLink } from '../format-url';
+import { isExternalLink } from '../parse-url';
 
 describe('isExternalLink', () => {
     it('should return true if the link matches the regex for external link', () => {

@@ -29,6 +29,7 @@ const AdSummary = ({ offer_amount, price_rate, type, ad_option }: TAdSummaryProp
     const market_feed = market_rate_type === ad_type.FLOAT ? market_rate : null;
     const display_offer_amount = offer_amount ? formatMoney(currency, offer_amount, true) : '';
     const ad_text = ad_option === ads.CREATE ? localize('creating') : localize('editing');
+    const ad_type_text = type === buy_sell.BUY ? localize('buy') : localize('sell');
 
     let display_price_rate: string | number = '';
     let display_total = '';
@@ -48,7 +49,7 @@ const AdSummary = ({ offer_amount, price_rate, type, ad_option }: TAdSummaryProp
             <Text key={0} className='ad-summary' weight='bold' size='xs' color='status-info-blue' />,
             <Text key={1} className='ad-summary' size='xs' color='status-info-blue' />,
         ];
-        const values = { target_amount: display_offer_amount, target_currency: currency, ad_text };
+        const values = { target_amount: display_offer_amount, target_currency: currency, ad_text, ad_type_text };
         if (price_rate) {
             Object.assign(values, {
                 local_amount: display_total,
@@ -58,34 +59,10 @@ const AdSummary = ({ offer_amount, price_rate, type, ad_option }: TAdSummaryProp
                 ),
             });
 
-            if (type === buy_sell.BUY) {
-                return (
-                    <Text className='ad-summary' size='xs' color='less-prominent'>
-                        <Localize
-                            i18n_default_text="You're {{ ad_text }} an ad to buy <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> <1>({{ price_rate }} {{local_currency}}/{{ target_currency }})</1>"
-                            components={components}
-                            values={values}
-                        />
-                    </Text>
-                );
-            }
-
             return (
                 <Text className='ad-summary' size='xs' color='less-prominent'>
                     <Localize
-                        i18n_default_text="You're {{ ad_text }} an ad to sell <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> <1>({{ price_rate }} {{local_currency}}/{{ target_currency }})</1>"
-                        components={components}
-                        values={values}
-                    />
-                </Text>
-            );
-        }
-
-        if (type === buy_sell.BUY) {
-            return (
-                <Text className='ad-summary' size='xs' color='less-prominent'>
-                    <Localize
-                        i18n_default_text="You're {{ ad_text }} an ad to buy <0>{{ target_amount }} {{ target_currency }}</0>..."
+                        i18n_default_text="You're {{ ad_text }} an ad to {{ ad_type_text }} <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> <1>({{ price_rate }} {{local_currency}}/{{ target_currency }})</1>"
                         components={components}
                         values={values}
                     />
@@ -96,7 +73,7 @@ const AdSummary = ({ offer_amount, price_rate, type, ad_option }: TAdSummaryProp
         return (
             <Text className='ad-summary' size='xs' color='less-prominent'>
                 <Localize
-                    i18n_default_text="You're {{ ad_text }} an ad to sell <0>{{ target_amount }} {{ target_currency }}</0>..."
+                    i18n_default_text="You're {{ ad_text }} an ad to {{ ad_type_text }} <0>{{ target_amount }} {{ target_currency }}</0>..."
                     components={components}
                     values={values}
                 />
@@ -104,13 +81,12 @@ const AdSummary = ({ offer_amount, price_rate, type, ad_option }: TAdSummaryProp
         );
     }
 
-    return type === buy_sell.BUY ? (
+    return (
         <Text className='ad-summary' size='xs' color='less-prominent'>
-            <Localize i18n_default_text="You're {{ ad_text }} an ad to buy..." values={{ ad_text }} />
-        </Text>
-    ) : (
-        <Text className='ad-summary' size='xs' color='less-prominent'>
-            <Localize i18n_default_text="You're {{ ad_text }} an ad to sell..." values={{ ad_text }} />
+            <Localize
+                i18n_default_text="You're {{ ad_text }} an ad to {{ ad_type_text }}..."
+                values={{ ad_text, ad_type_text }}
+            />
         </Text>
     );
 };

@@ -33,7 +33,7 @@ describe('<MyProfileBalanceModal />', () => {
     it('should call hideModal when clicking on the OK button', () => {
         const hideModalMock = jest.fn();
 
-        useModalManagerContext.mockImplementation(() => ({
+        (useModalManagerContext as jest.Mock).mockImplementation(() => ({
             hideModal: hideModalMock,
             is_modal_open: true,
         }));

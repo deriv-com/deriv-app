@@ -23,7 +23,7 @@ describe('<MyProfileBalance />', () => {
     it('should render MyProfileBalanceModal when icon is clicked on', () => {
         const showModalMock = jest.fn();
 
-        useModalManagerContext.mockImplementation(() => ({
+        (useModalManagerContext as jest.Mock).mockImplementation(() => ({
             showModal: showModalMock,
         }));
 

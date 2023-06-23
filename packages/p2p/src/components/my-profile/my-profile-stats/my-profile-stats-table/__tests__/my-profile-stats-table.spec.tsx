@@ -49,7 +49,7 @@ describe('<MyProfileStatsTable />', () => {
 
     it('should render be able to switch between 30d and lifetime for Trade volume', () => {
         const setShowLifetimeTurnoverValueMock = jest.spyOn(React, 'useState');
-        setShowLifetimeTurnoverValueMock.mockImplementation(initialValue => [initialValue, jest.fn()]);
+        (setShowLifetimeTurnoverValueMock as jest.Mock).mockImplementation(initialValue => [initialValue, jest.fn()]);
 
         render(<MyProfileStatsTable />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
@@ -71,7 +71,8 @@ describe('<MyProfileStatsTable />', () => {
 
     it('should render be able to switch between 30d and lifetime for Total orders', () => {
         const setShowLifetimeOrderValueMock = jest.spyOn(React, 'useState');
-        setShowLifetimeOrderValueMock.mockImplementation(initialValue => [initialValue, jest.fn()]);
+
+        (setShowLifetimeOrderValueMock as jest.Mock).mockImplementation(initialValue => [initialValue, jest.fn()]);
 
         render(<MyProfileStatsTable />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,

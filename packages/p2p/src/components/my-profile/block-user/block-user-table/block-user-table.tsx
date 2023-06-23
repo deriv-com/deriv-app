@@ -22,7 +22,8 @@ const BlockUserTable = () => {
                 if (!general_store.is_barred) general_store.setBlockUnblockUserError('');
                 my_profile_store.setSearchTerm('');
                 my_profile_store.getTradePartnersList({ startIndex: 0 }, true);
-            }
+            },
+            { fireImmediately: true }
         );
 
         const disposeTradePartnersListReaction = reaction(
@@ -30,7 +31,8 @@ const BlockUserTable = () => {
             () => {
                 if (my_profile_store.trade_partners_list.length > 0 && my_profile_store.is_trade_partners_list_empty)
                     my_profile_store.setIsTradePartnersListEmpty(false);
-            }
+            },
+            { fireImmediately: true }
         );
 
         return () => {

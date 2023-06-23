@@ -45,7 +45,7 @@ describe('<MyProfileDetailsTable />', () => {
     it('should render MyProfileDetailsTable component', () => {
         const showModalMock = jest.fn();
 
-        useModalManagerContext.mockImplementation(() => ({
+        (useModalManagerContext as jest.Mock).mockImplementation(() => ({
             showModal: showModalMock,
         }));
 

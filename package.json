@@ -5,6 +5,9 @@
     "bin": {
         "bot": "lib/index.js"
     },
+    "engine": {
+        "node": ">=18.16.0"
+    },
     "jest": {
         "setupFilesAfterEnv": [
             "<rootDir>/.jest"

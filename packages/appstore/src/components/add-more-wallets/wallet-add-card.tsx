@@ -2,21 +2,28 @@ import React from 'react';
 import { TWalletInfo } from 'Types';
 import { Text, WalletCard } from '@deriv/components';
 import { useCurrencyConfig } from '@deriv/hooks';
+import { observer, useStore } from '@deriv/stores';
+import { getWalletCurrencyIcon } from 'Constants/utils';
 import wallet_description_mapper from 'Constants/wallet_description_mapper';
 
 type TAddWalletCard = {
     wallet_info: React.PropsWithChildren<TWalletInfo>;
 };
 
-const AddWalletCard = ({ wallet_info }: TAddWalletCard) => {
+const AddWalletCard = observer(({ wallet_info }: TAddWalletCard) => {
+    const {
+        ui: { is_dark_mode_on },
+    } = useStore();
+
     const { currency, landing_company_name, is_added } = wallet_info;
     const { getConfig } = useCurrencyConfig();
     const currency_config = getConfig(currency);
+    const crypto_currency = currency_config?.type === 'crypto';
 
     const wallet_details = {
         currency,
-        icon: currency_config?.icon,
-        icon_type: 'app',
+        icon: crypto_currency ? getWalletCurrencyIcon(currency, is_dark_mode_on) : currency_config?.icon,
+        icon_type: crypto_currency ? 'crypto' : 'fiat',
         jurisdiction_title: landing_company_name?.toUpperCase(),
         name: currency_config?.name,
     };
@@ -36,6 +43,6 @@ const AddWalletCard = ({ wallet_info }: TAddWalletCard) => {
             </div>
         </div>
     );
-};
+});
 
 export default AddWalletCard;

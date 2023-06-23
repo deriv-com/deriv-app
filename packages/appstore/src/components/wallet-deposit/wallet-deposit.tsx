@@ -22,7 +22,7 @@ const WalletDeposit = observer(({ wallet }: TWalletDeposit) => {
     }
 
     // Here we will DepositCryptoModule/DepositFiatModule
-    return <div>Deposit Is In Progress</div>;
+    return <div>Deposit Development Is In Progress</div>;
 });
 
 export default WalletDeposit;

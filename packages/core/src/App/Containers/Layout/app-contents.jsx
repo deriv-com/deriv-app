@@ -5,7 +5,7 @@ import { withRouter } from 'react-router';
 import WS from 'Services/ws-methods';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
 import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, platforms, routes } from '@deriv/shared';
-import { rudderstack } from '@deriv/analytics';
+import { RudderStack } from '@deriv/analytics';
 import { connect } from 'Stores/connect';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
 import { useStore } from '@deriv/stores';
@@ -43,11 +43,11 @@ const AppContents = ({
     React.useEffect(() => {
         // rudderstack page view trigger
         WS.wait('authorize').then(() => {
-            rudderstack.identifyEvent(user_id, {
+            RudderStack.identifyEvent(user_id, {
                 language: getLanguage().toLowerCase() || 'en',
             });
             const current_page = window.location.hostname + window.location.pathname;
-            rudderstack.pageView(current_page);
+            RudderStack.pageView(current_page);
         });
 
         if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);

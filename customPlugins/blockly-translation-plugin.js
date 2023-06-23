@@ -21,6 +21,7 @@ class PullBlocklyTranslationsPlugin {
                 )
             )
                 .then(translations => {
+                    console.log(this.options.outputPath, '==================== the output path ======================');
                     if (!fs.existsSync(this.options.outputPath)) {
                         fs.mkdirSync(this.options.outputPath, { recursive: true });
                     }

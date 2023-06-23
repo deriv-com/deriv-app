@@ -34,10 +34,13 @@ const MockDialog = () => {
             login: 1,
         });
         if (response) {
-            const { active_loginid, echo_req, req_id, ...accounts } = response;
+            const { active_loginid, ...accounts } = response;
+            delete accounts.req_id;
+            delete accounts.echo_req;
             client.setLoginId(active_loginid);
             client.setLoginInformation(accounts, active_loginid);
             client.resetLocalStorageValues(active_loginid);
+            client.init();
         }
     };
 

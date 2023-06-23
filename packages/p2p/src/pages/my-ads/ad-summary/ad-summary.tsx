@@ -39,9 +39,11 @@ const AdSummary = ({ offer_amount, price_rate, type, ad_option }: TAdSummaryProp
     }
 
     if (offer_amount && price_rate) {
-        display_total = market_feed
-            ? formatMoney(local_currency_config.currency, Number(offer_amount) * Number(display_price_rate), true)
-            : formatMoney(local_currency_config.currency, Number(offer_amount) * Number(price_rate), true);
+        display_total = formatMoney(
+            local_currency_config.currency,
+            Number(offer_amount) * Number(market_feed ? display_price_rate : price_rate),
+            true
+        );
     }
 
     if (offer_amount) {

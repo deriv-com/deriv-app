@@ -12,7 +12,7 @@ jest.mock('@deriv/api', () => ({
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
 
 describe('useWalletsList', () => {
-    it('should return wallets list for the current loginid', () => {
+    test('should return wallets list for the current loginid', () => {
         const mock = mockStore({
             client: {
                 accounts: { CRW909900: { token: '12345' } },

@@ -1,6 +1,7 @@
 import React from 'react';
 import { APIProvider } from '@deriv/api';
 import { screen, render } from '@testing-library/react';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import AddWalletCard from '../wallet-add-card';
 
 jest.mock('@deriv/api', () => ({
@@ -56,10 +57,14 @@ jest.mock('@deriv/api', () => ({
 
 describe('AddWalletCard', () => {
     it('should render currency card', () => {
+        const mock = mockStore({});
+
         render(
-            <APIProvider>
-                <AddWalletCard wallet_info={{ currency: 'BTC', is_added: false, landing_company_name: 'svg' }} />
-            </APIProvider>
+            <StoreProvider store={mock}>
+                <APIProvider>
+                    <AddWalletCard wallet_info={{ currency: 'BTC', is_added: false, landing_company_name: 'svg' }} />
+                </APIProvider>
+            </StoreProvider>
         );
 
         const add_btn = screen.getByRole('button', { name: /Add/i });
@@ -75,10 +80,14 @@ describe('AddWalletCard', () => {
     });
 
     it('should disabled button when it is disabled', () => {
+        const mock = mockStore({});
+
         render(
-            <APIProvider>
-                <AddWalletCard wallet_info={{ currency: 'BTC', is_added: true, landing_company_name: 'svg' }} />
-            </APIProvider>
+            <StoreProvider store={mock}>
+                <APIProvider>
+                    <AddWalletCard wallet_info={{ currency: 'BTC', is_added: true, landing_company_name: 'svg' }} />
+                </APIProvider>
+            </StoreProvider>
         );
 
         const added_btn = screen.getByRole('button', { name: /Added/i });
@@ -87,12 +96,15 @@ describe('AddWalletCard', () => {
     });
 
     it('should show USDT instead of UST for UST currency', () => {
-        render(
-            <APIProvider>
-                <AddWalletCard wallet_info={{ currency: 'UST', is_added: true, landing_company_name: 'svg' }} />
-            </APIProvider>
-        );
+        const mock = mockStore({});
 
+        render(
+            <StoreProvider store={mock}>
+                <APIProvider>
+                    <AddWalletCard wallet_info={{ currency: 'UST', is_added: false, landing_company_name: 'svg' }} />
+                </APIProvider>
+            </StoreProvider>
+        );
         expect(screen.getByText('USDT Wallet')).toBeInTheDocument();
         expect(screen.queryByText('UST Wallet')).not.toBeInTheDocument();
     });

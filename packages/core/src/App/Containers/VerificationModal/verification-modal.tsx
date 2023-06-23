@@ -5,7 +5,12 @@ import { ProofOfIdentityContainer } from '@deriv/account';
 import { observer, useStore } from '@deriv/stores';
 import './verification-modal.scss';
 
-const VerificationModal = observer(({ is_from_external, onStateChange }: any) => {
+type TVerificationModal = {
+    is_from_external?: boolean;
+    onStateChange?: () => void;
+};
+
+const VerificationModal = observer(({ is_from_external, onStateChange }: TVerificationModal) => {
     const { client, common, notifications, ui } = useStore();
     const {
         account_status,

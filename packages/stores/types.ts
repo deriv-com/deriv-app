@@ -295,6 +295,7 @@ type TCommonStoreError = {
 };
 
 type TCommonStore = {
+    app_routing_history: object;
     isCurrentLanguage(language_code: string): boolean;
     error: TCommonStoreError;
     has_error: boolean;

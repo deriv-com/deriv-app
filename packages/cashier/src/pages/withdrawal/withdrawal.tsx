@@ -17,7 +17,7 @@ import USDTSideNote from '../../components/usdt-side-note';
 import { Virtual } from '../../components/cashier-container';
 import { useCashierStore } from '../../stores/useCashierStores';
 import { WithdrawalEmailVerificationModule } from '../../modules/withdrawal-email-verification';
-import { WithdrawalFiatModule } from '../../modules/withdrawal-fiat';
+import Withdraw from './withdraw/withdraw';
 
 type TWithdrawalSideNoteProps = {
     currency: string;
@@ -59,11 +59,10 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         is_virtual,
         verification_code: { payment_withdraw: verification_code },
     } = client;
-    const { iframe, general_store, transaction_history, withdraw } = useCashierStore();
+    const { general_store, transaction_history, withdraw } = useCashierStore();
     const { is_crypto, setActiveTab, cashier_route_tab_index: tab_index } = general_store;
     const is_cashier_locked = useCashierLocked();
     const is_system_maintenance = useIsSystemMaintenance();
-    const { iframe_url } = iframe;
     const {
         crypto_transactions,
         is_crypto_transactions_visible,
@@ -153,8 +152,8 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         return <Error error={error} />;
     }
 
-    if (!is_crypto && (verification_code || iframe_url)) {
-        return <WithdrawalFiatModule />;
+    if (!is_crypto && verification_code) {
+        return <Withdraw />;
     }
 
     if (verification_code && is_crypto && !is_withdraw_confirmed && !is_crypto_transactions_visible) {

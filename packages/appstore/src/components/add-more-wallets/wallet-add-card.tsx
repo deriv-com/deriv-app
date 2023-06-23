@@ -26,7 +26,7 @@ const AddWalletCard = ({ wallet_info }: TAddWalletCard) => {
                 <WalletCard wallet={wallet_details} size='medium' state={is_added ? 'added' : 'add'} />
                 <div className='add-wallets__card-description'>
                     <Text as='h3' weight='bold' className='add-wallets__card-description__header'>
-                        {`${currency} Wallet`}
+                        {`${currency === 'UST' ? 'USDT' : currency} Wallet`}
                     </Text>
                     <Text as='p' size='xs' className='add-wallets__card-description__text'>
                         {wallet_description_mapper[currency]}

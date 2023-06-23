@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import TableError from 'Components/section-error';
-import CreateAd from './create-ad.jsx';
+import CreateAd from './create-ad';
 import EditAd from './edit-ad.jsx';
 import MyAdsTable from './my-ads-table.jsx';
 import Verification from 'Components/verification';

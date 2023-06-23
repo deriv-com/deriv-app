@@ -186,10 +186,7 @@ export default class TransactionsStore {
         // eslint-disable-next-line global-require
         const lz_string = require('lz-string');
         const stored_items = JSON.parse(lz_string.decompress(sessionStorage.getItem('transaction_cache')));
-        stored_items[this.account_id].map(account => {
-            return account.data && account.data.is_complete;
-        });
-        this.elements = stored_items;
+        this.elements = stored_items[this.account_id]?.filter(account => account.data?.is_complete);
     }
 
     updateResultsCompletedContract(contract) {

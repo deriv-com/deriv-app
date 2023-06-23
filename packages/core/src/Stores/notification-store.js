@@ -90,6 +90,7 @@ export default class NotificationStore extends BaseStore {
             () => root_store.common.app_routing_history.map(i => i.pathname),
             () => {
                 this.filterNotificationMessages();
+                this.marked_notifications = JSON.parse(LocalStore.get('marked_notifications') || '[]');
             }
         );
         reaction(
@@ -257,7 +258,6 @@ export default class NotificationStore extends BaseStore {
         const is_p2p_notifications_visible = p2p_settings[loginid]
             ? p2p_settings[loginid].is_notifications_visible
             : false;
-
         if (refined_list.length) {
             refined_list.map(refined => {
                 if (refined.includes('p2p')) {
@@ -636,7 +636,10 @@ export default class NotificationStore extends BaseStore {
     }
 
     markNotificationMessage({ key }) {
-        this.marked_notifications.push(key);
+        if (!this.marked_notifications.includes(key)) {
+            this.marked_notifications.push(key);
+            LocalStore.set('marked_notifications', JSON.stringify(this.marked_notifications));
+        }
     }
 
     refreshNotifications() {

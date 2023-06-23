@@ -46,7 +46,12 @@ const TradingPlatformIcon = ({ icon, className, size, onClick }: IconProps<keyof
     const PlatformIcon = PlatformIcons[icon] as React.ElementType;
 
     return PlatformIcon ? (
-        <PlatformIcon className={className} style={{ width: size, height: size }} onClick={onClick} />
+        <PlatformIcon
+            className={className}
+            style={{ width: size, height: size }}
+            onClick={onClick}
+            data-testid={`dt_trading-platform-icon-${icon}`}
+        />
     ) : null;
 };
 

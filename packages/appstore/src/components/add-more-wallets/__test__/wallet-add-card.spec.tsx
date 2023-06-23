@@ -71,4 +71,15 @@ describe('AddWalletCard', () => {
         expect(added_btn).toBeInTheDocument();
         expect(added_btn).toBeDisabled();
     });
+
+    it('should show USDT instead of UST for UST currency', () => {
+        render(
+            <APIProvider>
+                <AddWalletCard wallet_info={{ currency: 'UST', is_added: true, landing_company_name: 'svg' }} />
+            </APIProvider>
+        );
+
+        expect(screen.getByText('USDT Wallet')).toBeInTheDocument();
+        expect(screen.queryByText('UST Wallet')).not.toBeInTheDocument();
+    });
 });

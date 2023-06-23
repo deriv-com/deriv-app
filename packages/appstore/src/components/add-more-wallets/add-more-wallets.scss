@@ -21,6 +21,7 @@
         border: 0.1rem solid var(--general-active);
         background-color: var(--general-main-1);
         box-shadow: $wallet-card-shadow;
+        cursor: pointer;
         &-description,
         &-wrapper {
             display: flex;

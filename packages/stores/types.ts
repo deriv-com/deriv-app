@@ -423,6 +423,7 @@ type TTradersHubStore = {
     toggleAccountTransferModal: () => void;
     is_demo: boolean;
     selectAccountType: (account_type: string) => void;
+    is_demo_low_risk: boolean;
 };
 
 /**

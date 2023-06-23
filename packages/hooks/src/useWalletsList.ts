@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 import { useStore } from '@deriv/stores';
-import useAuthorizeResponse from './useAuthorizeResponse';
+import useAuthorize from './useAuthorize';
 
 const useWalletList = () => {
     const { client } = useStore();
     const { is_crypto } = client;
-    const { data, ...rest } = useAuthorizeResponse();
+    const { data, ...rest } = useAuthorize();
 
     const sortedWallets = useMemo(() => {
         // @ts-expect-error Need to update @deriv/api-types to fix the TS error

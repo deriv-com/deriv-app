@@ -2,12 +2,12 @@ import React from 'react';
 import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 import useWalletList from './useWalletsList';
-import useAuthorizeResponse from './useAuthorizeResponse';
+import useAuthorize from './useAuthorize';
 
 const useAvailableWallets = () => {
     const { client } = useStore();
     const { is_crypto } = client;
-    const { data } = useAuthorizeResponse();
+    const { data } = useAuthorize();
 
     // @ts-expect-error Need to update @deriv/api-types to fix the TS error
     const { data: account_type_data, ...rest } = useFetch('get_account_types', {

@@ -2,7 +2,7 @@ import React from 'react';
 import { APIProvider, useFetch } from '@deriv/api';
 import { renderHook } from '@testing-library/react-hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import useAuthorizeResponse from '../useAuthorizeResponse';
+import useAuthorize from '../useAuthorize';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -11,7 +11,7 @@ jest.mock('@deriv/api', () => ({
 
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
 
-describe('useAuthorizeResponse', () => {
+describe('useAuthorize', () => {
     test('should return wallets list for the current loginid', () => {
         const mock = mockStore({
             client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
@@ -38,7 +38,7 @@ describe('useAuthorizeResponse', () => {
             </APIProvider>
         );
 
-        const { result } = renderHook(() => useAuthorizeResponse(), { wrapper });
+        const { result } = renderHook(() => useAuthorize(), { wrapper });
 
         expect(result.current.data).toEqual({
             authorize: { account_list: [{ account_category: 'wallet', currency: 'USD', is_virtual: 0 }] },

@@ -36,6 +36,20 @@ jest.mock('@deriv/api', () => ({
             };
         }
 
+        if (name === 'website_status') {
+            return {
+                data: {
+                    website_status: {
+                        currencies_config: {
+                            USD: { type: 'fiat', name: 'US Dollar' },
+                            BTC: { type: 'crypto', name: 'Bitcoin' },
+                            UST: { type: 'crypto', name: 'USDT' },
+                        },
+                    },
+                },
+            };
+        }
+
         return { data: undefined };
     }),
 }));

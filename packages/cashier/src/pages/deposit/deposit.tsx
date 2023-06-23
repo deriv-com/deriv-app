@@ -82,13 +82,14 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
                     ...(/^(UST)$/i.test(currency) ? [<USDTSideNote type='usdt' key={1} />] : []),
                     ...(/^(eUSDT)$/i.test(currency) ? [<USDTSideNote type='eusdt' key={1} />] : []),
                 ];
-                if (side_notes.length > 0) {
-                    setSideNotes([
-                        <SideNote has_title={false} key={0}>
-                            {side_notes}
-                        </SideNote>,
-                    ]);
-                }
+
+                setSideNotes([
+                    ...side_notes.map((side_note, index) => (
+                        <SideNote has_title={false} key={index}>
+                            {side_note}
+                        </SideNote>
+                    )),
+                ]);
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -41,7 +41,7 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
         ? epochToMoment(submit_date).format('DD MMM YYYY')
         : epochToMoment(submit_date).format('DD MMM YYYY HH:mm:ss [GMT]');
     const formatted_submit_time = epochToMoment(submit_date).format('HH:mm:ss [GMT]');
-    const status = getStatus(transaction_hash, transaction_type, status_code);
+    const status = getStatus(transaction_hash, transaction_type, status_code, confirmations);
 
     const [is_transaction_clicked, setTransactionClicked] = React.useState(false);
     const onClickCancel = () => {
@@ -62,16 +62,6 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
     };
 
     const is_third_party_transaction = transaction_url?.includes('CP:');
-
-    let confirmation_label = '-';
-
-    if (transaction_type === 'deposit') {
-        if (status_code === 'CONFIRMED') {
-            confirmation_label = localize('Confirmed');
-        } else {
-            confirmation_label = confirmations ? `${confirmations}` : localize('Pending');
-        }
-    }
 
     if (status && isMobile()) {
         return (
@@ -171,7 +161,7 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                     </Table.Cell>
                     <Table.Cell>
                         <Text as='p' size='xxs' color='red'>
-                            {confirmation_label}
+                            {status.confirmation_label}
                         </Text>
                     </Table.Cell>
                     <Table.Cell>
@@ -294,7 +284,7 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                 {!is_transaction_clicked && (
                     <Table.Cell className='crypto-transactions-history__table-confirmations'>
                         <Text as='p' size='xs' color='red'>
-                            {confirmation_label}
+                            {status?.confirmation_label}
                         </Text>
                     </Table.Cell>
                 )}

@@ -1,4 +1,4 @@
-import * as rudderanalytics from 'rudder-sdk-js';
+import * as RudderAnalytics from 'rudder-sdk-js';
 
 type SignupProvider = 'email' | 'phone' | 'google' | 'facebook' | 'apple';
 
@@ -108,8 +108,8 @@ export class RudderStack {
         const RUDDERSTACK_KEY = process.env.RUDDERSTACK_KEY;
         const RUDDERSTACK_URL = process.env.RUDDERSTACK_URL;
         if (RUDDERSTACK_KEY && RUDDERSTACK_URL) {
-            rudderanalytics.load(RUDDERSTACK_KEY, RUDDERSTACK_URL);
-            rudderanalytics.ready(() => {
+            RudderAnalytics.load(RUDDERSTACK_KEY, RUDDERSTACK_URL);
+            RudderAnalytics.ready(() => {
                 this.has_initialized = true;
             });
         }
@@ -117,7 +117,7 @@ export class RudderStack {
 
     identifyEvent = (user_id: string, payload: TEvents['identify']) => {
         if (this.has_initialized) {
-            rudderanalytics.identify(user_id, payload);
+            RudderAnalytics.identify(user_id, payload);
             this.has_identified = true;
         }
     };
@@ -127,7 +127,7 @@ export class RudderStack {
      */
     pageView(current_page: string) {
         if (this.has_initialized && this.has_identified && current_page !== this.current_page) {
-            rudderanalytics.page('Deriv App', current_page);
+            RudderAnalytics.page('Deriv App', current_page);
             this.current_page = current_page;
         }
     }
@@ -137,7 +137,7 @@ export class RudderStack {
      */
     reset() {
         if (this.has_initialized) {
-            rudderanalytics.reset();
+            RudderAnalytics.reset();
             this.has_identified = false;
         }
     }
@@ -147,7 +147,7 @@ export class RudderStack {
      */
     track<T extends keyof TEvents>(event: T, payload: TEvents[T]) {
         if (this.has_initialized && this.has_identified) {
-            rudderanalytics.track(event, payload);
+            RudderAnalytics.track(event, payload);
         }
     }
 }

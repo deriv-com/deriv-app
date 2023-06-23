@@ -10,6 +10,8 @@ import './add-more-wallets.scss';
 const AddMoreWallets = () => {
     const { data, isLoading } = useAvailableWallets();
 
+    if (!data) return <Loading is_fullscreen={false} />;
+
     return (
         <div className='add-wallets' data-testid='dt-add-wallets'>
             <Text as='h2' size='l' color='prominent' weight='bolder' className='add-wallets__title'>

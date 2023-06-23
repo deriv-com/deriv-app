@@ -10,7 +10,7 @@ const useAvailableWallets = () => {
     const { data } = useAuthorizeResponse();
 
     // @ts-expect-error Need to update @deriv/api-types to fix the TS error
-    const { data: account_type_data } = useFetch('get_account_types', {
+    const { data: account_type_data, ...rest } = useFetch('get_account_types', {
         payload: { company: data?.authorize?.landing_company_name },
         options: { enabled: Boolean(data?.authorize?.landing_company_name) },
     });
@@ -60,6 +60,7 @@ const useAvailableWallets = () => {
     }, [added_wallets, account_type_data, data?.authorize?.landing_company_name, is_crypto]);
 
     return {
+        ...rest,
         data: sortedWallets,
     };
 };

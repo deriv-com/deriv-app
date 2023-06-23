@@ -5,7 +5,7 @@ import useAuthorizeResponse from './useAuthorizeResponse';
 const useWalletList = () => {
     const { client } = useStore();
     const { is_crypto } = client;
-    const { data } = useAuthorizeResponse();
+    const { data, ...rest } = useAuthorizeResponse();
 
     const sortedWallets = useMemo(() => {
         // @ts-expect-error Need to update @deriv/api-types to fix the TS error
@@ -33,6 +33,7 @@ const useWalletList = () => {
     }, [data, is_crypto]);
 
     return {
+        ...rest,
         data: sortedWallets,
     };
 };

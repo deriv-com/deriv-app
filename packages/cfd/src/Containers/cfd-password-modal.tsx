@@ -862,23 +862,8 @@ const CFDPasswordModal = ({
             getDxCompanies()[category as keyof TDxCompanies][type as keyof TDxCompanies['demo' | 'real']].short_title;
         const jurisdiction_label =
             jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
-        const mt5_platform_label =
-            is_eu_user || jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'MT5' : '';
 
         if (category === 'real') {
-            let platformName = '';
-            switch (platform) {
-                case CFD_PLATFORMS.MT5:
-                    platformName = mt5_platform_label;
-                    break;
-                case CFD_PLATFORMS.DERIVEZ:
-                    platformName = 'Deriv Ez';
-                    break;
-                default:
-                    platformName = 'Deriv X';
-                    break;
-            }
-
             return (
                 <React.Fragment>
                     <Localize
@@ -891,8 +876,7 @@ const CFDPasswordModal = ({
                                     : platform === CFD_PLATFORMS.DXTRADE
                                     ? deriv_x_type_label
                                     : type_label,
-                            platform:
-                                platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : getCFDPlatformLabel(platform),
+                            platform: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
                             category: category_label,
                             jurisdiction_selected_shortcode:
                                 is_eu_user || (platform === CFD_PLATFORMS.MT5 && !show_eu_related_content)

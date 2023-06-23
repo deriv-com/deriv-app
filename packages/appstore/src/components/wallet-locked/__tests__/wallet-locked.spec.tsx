@@ -9,6 +9,7 @@ jest.mock('@deriv/components', () => ({
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
+    useDepositLocked: jest.fn(() => false),
     useIsSystemMaintenance: jest.fn(() => false),
 }));
 
@@ -31,7 +32,7 @@ describe('WalletLocked', () => {
                 is_crypto: false,
                 is_demo: false,
                 name: 'USD Wallet',
-                shortcode: 'SVG',
+                landing_company_shortcode: 'SVG',
                 wallet_type: 'real',
             },
         };

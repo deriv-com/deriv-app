@@ -7,6 +7,7 @@ describe('WalletLockedProvider', () => {
     beforeEach(() => {
         mock_props = {
             is_crypto: false,
+            is_deposit_locked: false,
             is_system_maintenance: false,
             wallet_name: 'Wallet Name',
         };
@@ -14,6 +15,7 @@ describe('WalletLockedProvider', () => {
 
     it('should return proper title, description and type if there is a system maintenance and selected wallet is equal to crypto', () => {
         mock_props.is_crypto = true;
+        mock_props.is_deposit_locked = true;
         mock_props.is_system_maintenance = true;
         mock_props.wallet_name = 'BTC Wallet';
 

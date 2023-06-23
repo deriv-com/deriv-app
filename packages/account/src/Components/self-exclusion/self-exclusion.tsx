@@ -8,6 +8,7 @@ import {
     getCurrencyDisplayCode,
     validNumber,
     useIsMounted,
+    WS,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import DemoMessage from 'Components/demo-message';
@@ -18,26 +19,15 @@ import SelfExclusionModal from './self-exclusion-modal';
 import SelfExclusionWrapper from './self-exclusion-wrapper';
 import SelfExclusionForm from './self-exclusion-form';
 import { FormikHelpers, FormikValues } from 'formik';
+import { observer, useStore } from '@deriv/stores';
 
 type TSelfExclusion = {
-    currency: string;
     footer_ref?: React.RefObject<HTMLElement>;
-    is_app_settings: boolean;
-    is_cr: boolean;
     is_appstore: boolean;
-    is_eu: boolean;
-    is_mf: boolean;
-    is_mlt: boolean;
-    is_mx: boolean;
-    is_switching: boolean;
-    is_tablet: boolean;
-    is_uk: boolean;
-    is_virtual: boolean;
+    is_app_settings: boolean;
     is_wrapper_bypassed: boolean;
-    logout: () => void;
     overlay_ref: HTMLDivElement;
     setIsOverlayShown?: React.Dispatch<React.SetStateAction<boolean>>;
-    ws: FormikValues;
 };
 
 type TExclusionData = {
@@ -83,25 +73,20 @@ type TResponse = {
 };
 
 const SelfExclusion = ({
-    currency,
     footer_ref,
     is_app_settings,
-    is_cr,
     is_appstore,
-    is_eu,
-    is_mf,
-    is_mlt,
-    is_mx,
-    is_switching,
-    is_tablet,
-    is_uk,
-    is_virtual,
-    is_wrapper_bypassed,
-    logout,
     overlay_ref,
     setIsOverlayShown,
-    ws,
 }: TSelfExclusion) => {
+    const { client, ui } = useStore();
+    const { currency, is_virtual, is_switching, standpoint, is_eu, is_uk, logout, landing_company_shortcode } = client;
+    const { is_tablet } = ui;
+    const is_wrapper_bypassed = false;
+    const is_mlt = landing_company_shortcode === 'malta';
+    const is_mf = landing_company_shortcode === 'maltainvest';
+    const is_mx = landing_company_shortcode === 'iom';
+    const is_cr = standpoint.svg;
     const exclusion_fields_settings = Object.freeze({
         max_number: 9999999999999,
         max_open_positions: 999999999,
@@ -196,7 +181,6 @@ const SelfExclusion = ({
     }, [state.show_article, setIsOverlayShown]);
 
     const resetState = () => setState(initial_state);
-
     const validateFields = (values: FormikValues) => {
         const errors: Record<string, string | null | undefined> = {};
 
@@ -309,7 +293,6 @@ const SelfExclusion = ({
         });
         return errors;
     };
-
     const handleSubmit = async (values: FormikValues, { setSubmitting }: FormikHelpers<FormikValues>) => {
         const need_logout_exclusions = ['exclude_until', 'timeout_until'];
         const string_exclusions = ['exclude_until'];
@@ -325,7 +308,7 @@ const SelfExclusion = ({
                     request[attr] = string_exclusions.includes(attr) ? values[attr] : +values[attr];
                 });
 
-                ws.authorized.setSelfExclusion(request).then((response: TResponse) => resolve(response));
+                WS.authorized.setSelfExclusion(request).then((response: TResponse) => resolve(response));
             });
 
         if (has_need_logout) {
@@ -404,7 +387,7 @@ const SelfExclusion = ({
     const getSelfExclusion = () => {
         setState({ is_loading: true });
 
-        ws.authorized.getSelfExclusion({ get_self_exclusion: 1 }).then((self_exclusion_response: FormikValues) => {
+        WS.authorized.getSelfExclusion({ get_self_exclusion: 1 }).then((self_exclusion_response: FormikValues) => {
             populateExclusionResponse(self_exclusion_response);
         });
     };
@@ -412,7 +395,7 @@ const SelfExclusion = ({
     const getLimits = () => {
         setState({ is_loading: true });
 
-        ws.authorized.getLimits({ get_limits: 1 }).then((limits: FormikValues) => {
+        WS.authorized.getLimits({ get_limits: 1 }).then((limits: FormikValues) => {
             exclusion_limits.current = limits;
         });
     };
@@ -484,7 +467,7 @@ const SelfExclusion = ({
     return (
         <SelfExclusionContext.Provider value={context_value}>
             <SelfExclusionWrapper>
-                {/* Only show the modal in non-"<AppSettings>" views, others will 
+                {/* Only show the modal in non-"<AppSettings>" views, others will
                     use the overlay provided by <AppSettings> */}
                 {!is_app_settings && <SelfExclusionModal />}
                 <SelfExclusionForm />
@@ -494,4 +477,4 @@ const SelfExclusion = ({
     );
 };
 
-export default SelfExclusion;
+export default observer(SelfExclusion);

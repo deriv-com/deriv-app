@@ -9,8 +9,12 @@ const useIsP2PEnabled = () => {
     const invalidate = useInvalidateQuery();
     const { data, ...rest } = useFetch('website_status', { options: { enabled: is_authorize } });
 
-    // TODO: should replace it once new BE p2p_settings endpoint is ready
-    const is_p2p_enabled = data?.website_status?.p2p_config?.disabled === 0 && !is_virtual && !is_low_risk_cr_eu_real;
+    const is_p2p_config_not_disabled = data?.website_status?.p2p_config?.disabled === 0;
+
+    const is_p2p_enabled = is_p2p_config_not_disabled && !is_virtual && !is_low_risk_cr_eu_real;
+
+    // Todo: should replace with the next line instead once BE is fixed.
+    // const is_p2p_enabled = data?.p2p_config?.disabled === 0;
 
     useEffect(() => {
         invalidate('website_status');

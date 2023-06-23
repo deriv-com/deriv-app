@@ -17,6 +17,7 @@ import {
     useIsP2PEnabled,
     usePaymentAgentTransferVisible,
     useP2PNotificationCount,
+    useIsHasP2PSupportedCurrencies,
 } from '@deriv/hooks';
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
 import ErrorDialog from '../../components/error-dialog';
@@ -73,12 +74,13 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const p2p_notification_count = useP2PNotificationCount();
+    const { data: is_has_p2p_supported_currencies } = useIsHasP2PSupportedCurrencies();
     const {
         data: is_p2p_enabled,
         isSuccess: is_p2p_enabled_success,
         isLoading: is_p2p_enabled_loading,
     } = useIsP2PEnabled();
-    const is_p2p_visible = !is_crypto() && is_p2p_enabled;
+    const is_p2p_visible = !is_crypto() && is_p2p_enabled && is_has_p2p_supported_currencies;
 
     React.useEffect(() => {
         toggleCashier();

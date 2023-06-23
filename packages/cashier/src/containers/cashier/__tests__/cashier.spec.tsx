@@ -16,6 +16,7 @@ jest.mock('@deriv/hooks', () => {
             isLoading: false,
             isSuccess: true,
         })),
+        useIsHasP2PSupportedCurrencies: jest.fn(() => ({ data: true })),
         useIsP2PEnabled: jest.fn(() => ({ data: true, isLoading: false, isSuccess: true })),
     };
 });

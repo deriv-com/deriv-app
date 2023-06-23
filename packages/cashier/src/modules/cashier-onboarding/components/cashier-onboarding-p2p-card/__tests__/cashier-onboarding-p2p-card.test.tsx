@@ -12,6 +12,7 @@ jest.mock('react-router', () => ({
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useHasUSDCurrency: () => true,
+    useIsHasP2PSupportedCurrencies: () => ({ data: true }),
     useIsP2PEnabled: () => ({ data: true }),
 }));
 
@@ -19,7 +20,7 @@ describe('CashierOnboardingP2PCard', () => {
     test('should call the onClick callback when clicked', async () => {
         const mock = mockStore({
             client: {
-                is_crypto: () => false,
+                is_crypto: () => true,
             },
             modules: {
                 cashier: {

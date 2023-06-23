@@ -4,14 +4,13 @@ import { useStore } from '@deriv/stores';
 
 const useIsHasP2PSupportedCurrencies = () => {
     const { client } = useStore();
-    const { account_list, is_authorize, loginid } = client;
+    const { active_accounts, is_authorize, loginid } = client;
     const invalidate = useInvalidateQuery();
     const { data, ...rest } = useFetch('website_status', { options: { enabled: is_authorize } });
 
-    // getting currency from the icon because account.currency is undefined
-    const real_account_currencies_list = account_list
+    const real_account_currencies_list = active_accounts
         .filter(account => !account.is_virtual)
-        .map(account => account.icon);
+        .map(account => account.currency?.toLowerCase());
 
     const is_has_p2p_supported_currencies = Boolean(
         data?.website_status?.p2p_config?.supported_currencies.some((currency: string) =>

@@ -12,17 +12,10 @@ jest.mock('@deriv/api', () => ({
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'website_status'>>;
 
 describe('useIsHasP2PSupportedCurrencies', () => {
-    test('should return false if supported currencies is not in account list', () => {
+    test('should return false if supported currencies is not in the account info', () => {
         const mock = mockStore({
             client: {
-                account_list: [
-                    {
-                        icon: 'eur',
-                        is_virtual: 0,
-                        loginid: 'CR90000250',
-                        title: 'EUR',
-                    },
-                ],
+                active_accounts: [{ currency: 'EUR', is_virtual: 0 }],
             },
         });
 
@@ -40,17 +33,10 @@ describe('useIsHasP2PSupportedCurrencies', () => {
         expect(result.current.data).toBe(false);
     });
 
-    test('should return true if supported currencies is in account list', () => {
+    test('should return true if supported currencies is in the account info', () => {
         const mock = mockStore({
             client: {
-                account_list: [
-                    {
-                        icon: 'usd',
-                        is_virtual: 0,
-                        loginid: 'CR90000250',
-                        title: 'USD',
-                    },
-                ],
+                active_accounts: [{ currency: 'USD', is_virtual: 0 }],
             },
         });
 
@@ -68,17 +54,10 @@ describe('useIsHasP2PSupportedCurrencies', () => {
         expect(result.current.data).toBe(true);
     });
 
-    test('should return false if no real account in the account_list', () => {
+    test('should return false if there is no real account', () => {
         const mock = mockStore({
             client: {
-                account_list: [
-                    {
-                        icon: 'usd',
-                        is_virtual: 1,
-                        loginid: 'CR90000250',
-                        title: 'USD',
-                    },
-                ],
+                active_accounts: [{ currency: 'USD', is_virtual: 1 }],
             },
         });
 

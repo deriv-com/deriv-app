@@ -1,6 +1,6 @@
 import React from 'react';
 import { LegacyInlineMessage, Text } from '@deriv/components';
-import { useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
+import { useIsSystemMaintenance } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
 import getMessage from './wallet-locked-provider';
 import type { TWallet } from 'Components/modals/wallet-modal/wallet-modal';
@@ -12,12 +12,10 @@ type TWalletLocked = {
 };
 
 const WalletLocked = observer(({ is_mobile, wallet }: TWalletLocked) => {
-    const is_deposit_locked = useDepositLocked();
     const is_system_maintenance = useIsSystemMaintenance();
 
     const state = getMessage({
         is_crypto: wallet.is_crypto,
-        is_deposit_locked,
         is_system_maintenance,
         wallet_name: wallet.name,
     });

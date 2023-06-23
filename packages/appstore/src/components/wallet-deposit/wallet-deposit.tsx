@@ -1,5 +1,5 @@
 import React from 'react';
-import { useIsSystemMaintenance } from '@deriv/hooks';
+import { useCashierLocked, useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import WalletLocked from 'Components/wallet-locked';
 import type { TWallet } from 'Components/modals/wallet-modal/wallet-modal';
@@ -11,14 +11,18 @@ type TWalletDeposit = {
 const WalletDeposit = observer(({ wallet }: TWalletDeposit) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
+    const is_cashier_locked = useCashierLocked();
+    const is_deposit_locked = useDepositLocked();
     const is_system_maintenance = useIsSystemMaintenance();
 
     if (is_system_maintenance) {
-        return <WalletLocked is_mobile={is_mobile} wallet={wallet} />;
+        if (is_cashier_locked || (is_deposit_locked && wallet.is_crypto)) {
+            return <WalletLocked is_mobile={is_mobile} wallet={wallet} />;
+        }
     }
 
     // Here we will DepositCryptoModule/DepositFiatModule
-    return null;
+    return <div>Deposit Is In Progress</div>;
 });
 
 export default WalletDeposit;

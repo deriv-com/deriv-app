@@ -9,7 +9,6 @@ jest.mock('@deriv/components', () => ({
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useDepositLocked: jest.fn(() => false),
     useIsSystemMaintenance: jest.fn(() => false),
 }));
 

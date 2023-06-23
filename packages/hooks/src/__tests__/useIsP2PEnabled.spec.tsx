@@ -12,15 +12,13 @@ jest.mock('@deriv/api', () => ({
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'website_status'>>;
 
 describe('useIsP2PEnabled', () => {
-    test('should return false if users currency is not supported in p2p', () => {
-        const mock = mockStore({ client: { currency: 'AUD' } });
-
+    test('should return false if p2p is disabled', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
+        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { disabled: 1 } } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
+                <StoreProvider store={mockStore({})}>{children}</StoreProvider>
             </APIProvider>
         );
 
@@ -29,16 +27,15 @@ describe('useIsP2PEnabled', () => {
         expect(result.current.data).toBe(false);
     });
 
-    test('should return false if users currency is supported in p2p but is virtual', () => {
+    test('should return false if p2p is not disabled but is virtual', () => {
         const mock = mockStore({
             client: {
-                currency: 'USD',
                 is_virtual: true,
             },
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
+        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { disabled: 1 } } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -51,19 +48,13 @@ describe('useIsP2PEnabled', () => {
         expect(result.current.data).toBe(false);
     });
 
-    test('should return true if users currency is supported in p2p and is_low_risk_cr_eu_real is false', () => {
-        const mock = mockStore({
-            client: {
-                currency: 'USD',
-            },
-        });
-
+    test('should return true if p2p is not disabled and is_low_risk_cr_eu_real is false', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
+        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { disabled: 0 } } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
+                <StoreProvider store={mockStore({})}>{children}</StoreProvider>
             </APIProvider>
         );
 
@@ -72,18 +63,15 @@ describe('useIsP2PEnabled', () => {
         expect(result.current.data).toBe(true);
     });
 
-    test('should return false if users currency is supported in p2p but is_low_risk_cr_eu_real is true', () => {
+    test('should return false if p2p is not disabled but is_low_risk_cr_eu_real is true', () => {
         const mock = mockStore({
-            client: {
-                currency: 'USD',
-            },
             traders_hub: {
                 is_low_risk_cr_eu_real: true,
             },
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
+        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { disabled: 0 } } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>

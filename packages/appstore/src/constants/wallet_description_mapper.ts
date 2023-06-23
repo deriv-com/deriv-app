@@ -9,9 +9,7 @@ const wallet_description_mapper: TWalletDescriptionMapper = {
     EUR: localize(
         'Deposit and withdraw euros into your accounts regulated by MFSA using credit or debit cards and e-wallets.'
     ),
-    USD: localize(
-        'Deposit and withdraw US dollars into your accounts regulated by MFSA using credit or debit cards and e-wallets.'
-    ),
+    USD: localize('Deposit and withdraw US dollars using credit or debit cards, e-wallets, or bank wires.'),
     BTC: localize(
         "Deposit and withdraw Bitcoin, the world's most popular cryptocurrency, hosted on the Bitcoin blockchain."
     ),

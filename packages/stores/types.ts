@@ -203,6 +203,7 @@ type TClientStore = {
     is_logged_in: boolean;
     is_logging_in: boolean;
     is_low_risk: boolean;
+    is_high_risk: boolean;
     is_pending_proof_of_ownership: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
@@ -322,6 +323,7 @@ type TUiStore = {
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
+    is_verification_modal_visible: boolean;
     is_mobile: boolean;
     sub_section_index: number;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
@@ -334,6 +336,7 @@ type TUiStore = {
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setIsFromSignupAccount: (value: boolean) => void;
+    setIsVerificationModalVisible: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: string) => void;

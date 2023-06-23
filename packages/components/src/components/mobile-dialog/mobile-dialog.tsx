@@ -66,8 +66,8 @@ const MobileDialog = (props: React.PropsWithChildren<TMobileDialog>) => {
 
     // sometimes input is covered by virtual keyboard on mobile chrome, uc browser
     const handleClick = (e: React.MouseEvent<HTMLInputElement>) => {
-        e.stopPropagation();
         const target = e.target as HTMLInputElement;
+        if (target.tagName !== 'A') e.stopPropagation();
         if (target.tagName === 'INPUT' && target.type === 'number') {
             const scrollToTarget = () => scrollToElement(e.currentTarget, target);
             window.addEventListener('resize', scrollToTarget, false);

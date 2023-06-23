@@ -878,10 +878,7 @@ const CFDPasswordModal = ({
                                     : type_label,
                             platform: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
                             category: category_label,
-                            jurisdiction_selected_shortcode:
-                                is_eu_user || (platform === CFD_PLATFORMS.MT5 && !show_eu_related_content)
-                                    ? jurisdiction_label
-                                    : '',
+                            jurisdiction_selected_shortcode: platform === CFD_PLATFORMS.MT5 ? jurisdiction_label : '',
                         }}
                         components={[<span key={0} />, <strong key={1} className='cfd-account__platform' />]}
                     />

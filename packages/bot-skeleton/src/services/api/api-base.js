@@ -63,8 +63,6 @@ class APIBase {
         this.stopBotIfSocketDisconnected();
         // eslint-disable-next-line no-console
         console.log('connection state: ', this.api.connection.readyState);
-        if (this.api.connection.readyState === 1)
-            document.removeEventListener('visibilitychange', () => this.stopBotIfSocketDisconnected());
         if (this.api.connection.readyState !== 1) {
             // eslint-disable-next-line no-console
             console.log('Info: Connection to the server was closed, trying to reconnect.');

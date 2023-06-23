@@ -11,7 +11,7 @@
         "url": "https://github.com/binary-com/deriv-app/issues"
     },
     "engines": {
-        "node": "^16.16.0"
+        "node": "18.x"
     },
     "scripts": {
         "start": "npm run test && npm run serve",
@@ -31,6 +31,7 @@
         "@deriv/api-types": "^1.0.94",
         "@deriv/components": "^1.0.0",
         "@deriv/shared": "^1.0.0",
+        "@deriv/stores":"^1.0.0",
         "@deriv/translations": "^1.0.0",
         "bowser": "^2.9.0",
         "classnames": "^2.2.6",

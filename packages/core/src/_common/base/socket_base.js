@@ -423,8 +423,8 @@ const BinarySocketBase = (() => {
         removeOnDisconnect: () => {
             delete config.onDisconnect;
         },
-        cache: delegateToObject({}, () => deriv_api.cache),
-        storage: delegateToObject({}, () => deriv_api.storage),
+        cache: delegateToObject({}, () => deriv_api?.cache),
+        storage: delegateToObject({}, () => deriv_api?.storage),
         buy,
         buyAndSubscribe,
         sell,

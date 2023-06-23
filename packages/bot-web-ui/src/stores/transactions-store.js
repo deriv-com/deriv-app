@@ -25,6 +25,7 @@ export default class TransactionsStore {
             updateResultsCompletedContract: action.bound,
             sortOutPositionsBeforeAction: action.bound,
             recoverPendingContractsById: action.bound,
+            setTransactions: action.bound,
         });
 
         this.root_store = root_store;
@@ -180,13 +181,16 @@ export default class TransactionsStore {
         });
     }
 
+    setTransactions(transactions) {
+        this.elements = transactions;
+    }
     // eslint-disable-next-line class-methods-use-this
     updateTransactionIfSocketDisconnected() {
         //TODO: need to remove this because the module does not load need to find why //just a workaround for now
         // eslint-disable-next-line global-require
         const lz_string = require('lz-string');
         const stored_items = JSON.parse(lz_string.decompress(sessionStorage.getItem('transaction_cache')));
-        this.elements = stored_items[this.account_id]?.filter(account => account.data?.is_complete);
+        this.setTransactions(stored_items[this.account_id]?.filter(account => account.data?.is_complete));
     }
 
     updateResultsCompletedContract(contract) {

@@ -20,14 +20,11 @@ import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 import PlatformSwitcher from './platform-switcher';
 import { MenuLink } from './menu-link';
 
-const MobileLanguageMenu = React.memo(
-    ({
-        expandSubMenu,
-        is_language_changing,
-        is_mobile_language_menu_open,
-        setMobileLanguageMenuOpen,
-        toggleDrawer,
-    }) => (
+const MobileLanguageMenu = observer(({ expandSubMenu, toggleDrawer }) => {
+    const {
+        common: { is_language_changing, is_mobile_language_menu_open, setMobileLanguageMenuOpen },
+    } = useStore();
+    return (
         <MobileDrawer.SubMenu
             is_expanded={is_mobile_language_menu_open}
             has_subheader
@@ -57,51 +54,46 @@ const MobileLanguageMenu = React.memo(
                 ))}
             </div>
         </MobileDrawer.SubMenu>
-    )
-);
+    );
+});
 
-MobileLanguageMenu.displayName = 'MobileLanguageMenu';
-
-const MenuTitle = React.memo(({ current_language, is_mobile_language_menu_open, setMobileLanguageMenuOpen }) => (
-    <React.Fragment>
-        <div>{localize('Menu')}</div>
-        <div
-            className='settings-language__language-button_wrapper'
-            onClick={() => {
-                if (!is_mobile_language_menu_open) {
-                    setMobileLanguageMenuOpen(true);
-                }
-            }}
-        >
-            {!is_mobile_language_menu_open && (
-                <React.Fragment>
-                    <Icon
-                        icon={`IcFlag${current_language.replace('_', '-')}`}
-                        data_testid='dt_icon'
-                        className='ic-settings-language__icon'
-                        type={current_language.replace(/(\s|_)/, '-').toLowerCase()}
-                        size={22}
-                    />
-                    <Text weight='bold' size='xxs'>
-                        <Localize i18n_default_text={current_language} />
-                    </Text>
-                </React.Fragment>
-            )}
-        </div>
-    </React.Fragment>
-));
-
-MenuTitle.displayName = 'MenuTitle';
+const MenuTitle = observer(() => {
+    const {
+        common: { current_language, is_mobile_language_menu_open, setMobileLanguageMenuOpen },
+    } = useStore();
+    return (
+        <React.Fragment>
+            <div>{localize('Menu')}</div>
+            <div
+                className='settings-language__language-button_wrapper'
+                onClick={() => {
+                    if (!is_mobile_language_menu_open) {
+                        setMobileLanguageMenuOpen(true);
+                    }
+                }}
+            >
+                {!is_mobile_language_menu_open && (
+                    <React.Fragment>
+                        <Icon
+                            icon={`IcFlag${current_language.replace('_', '-')}`}
+                            data_testid='dt_icon'
+                            className='ic-settings-language__icon'
+                            type={current_language.replace(/(\s|_)/, '-').toLowerCase()}
+                            size={22}
+                        />
+                        <Text weight='bold' size='xxs'>
+                            <Localize i18n_default_text={current_language} />
+                        </Text>
+                    </React.Fragment>
+                )}
+            </div>
+        </React.Fragment>
+    );
+});
 
 const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { common, ui, client, traders_hub, modules } = useStore();
-    const {
-        app_routing_history,
-        current_language,
-        is_language_changing,
-        is_mobile_language_menu_open,
-        setMobileLanguageMenuOpen,
-    } = common;
+    const { app_routing_history, current_language, is_mobile_language_menu_open, setMobileLanguageMenuOpen } = common;
     const { disableApp, enableApp, is_dark_mode_on: is_dark_mode, setDarkMode: toggleTheme } = ui;
     const {
         account_status,
@@ -321,13 +313,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 id='dt_mobile_drawer'
                 enableApp={enableApp}
                 disableApp={disableApp}
-                title={
-                    <MenuTitle
-                        is_mobile_language_menu_open={is_mobile_language_menu_open}
-                        current_language={current_language}
-                        setMobileLanguageMenuOpen={setMobileLanguageMenuOpen}
-                    />
-                }
+                title={<MenuTitle />}
                 height='100vh'
                 width='295px'
                 className='pre-appstore'
@@ -481,13 +467,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 <NetworkStatus is_mobile />
                             </MobileDrawer.Footer>
                             {is_mobile_language_menu_open && (
-                                <MobileLanguageMenu
-                                    is_language_changing={is_language_changing}
-                                    expandSubMenu={expandSubMenu}
-                                    is_mobile_language_menu_open={is_mobile_language_menu_open}
-                                    setMobileLanguageMenuOpen={setMobileLanguageMenuOpen}
-                                    toggleDrawer={toggleDrawer}
-                                />
+                                <MobileLanguageMenu expandSubMenu={expandSubMenu} toggleDrawer={toggleDrawer} />
                             )}
                         </React.Fragment>
                     </div>

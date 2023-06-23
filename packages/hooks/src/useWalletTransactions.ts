@@ -1,16 +1,9 @@
 import { useFetch } from '@deriv/api';
-import { Statement } from '@deriv/api-types';
 import { useStore } from '@deriv/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
-import useCFDAllAccounts from './useCFDAllAccounts';
 import useCurrencyConfig from './useCurrencyConfig';
 import usePlatformAccounts from './usePlatformAccounts';
 import useWalletList from './useWalletsList';
-
-type TWalletTransaction =
-    | Omit<Required<Statement>['transactions'][number], 'action_type'> & {
-          action_type: 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer';
-      };
 
 const useWalletTransactions = (
     action_type: '' | 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer'
@@ -23,7 +16,7 @@ const useWalletTransactions = (
     const { data: wallets } = useWalletList();
     let { demo: demo_platform_account } = usePlatformAccounts();
     const { real: real_platform_accounts } = usePlatformAccounts();
-    const cfd_accounts = useCFDAllAccounts();
+
     // TODO remove these mocks when we're to switch to API data
     demo_platform_account = {
         account_category: 'trading',
@@ -251,9 +244,7 @@ const useWalletTransactions = (
     //         ['deposit', 'withdrawal', 'initial_fund', 'reset_balance', 'transfer'].includes(el.action_type)
     // ) as TWalletTransaction[];
 
-    const transactions = (mock_transactions as Required<Statement>['transactions']).filter(
-        el => !action_type || el.action_type === action_type
-    ) as TWalletTransaction[];
+    const transactions = mock_transactions.filter(el => !action_type || el.action_type === action_type);
 
     const modified_transactions = transactions
         .map(transaction => {

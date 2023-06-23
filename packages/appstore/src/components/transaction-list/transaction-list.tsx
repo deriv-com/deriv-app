@@ -59,7 +59,7 @@ const TransactionList = () => {
         return (
             <div className='transaction-list__day'>
                 <Text
-                    className='transaction-list__day_header'
+                    className='transaction-list__day-header'
                     size={is_mobile ? 'xxxxs' : 'xxxs'}
                     line_height={is_mobile ? 'm' : 's'}
                     color='less-prominent'

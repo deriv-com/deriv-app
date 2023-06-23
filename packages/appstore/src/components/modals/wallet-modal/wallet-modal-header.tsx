@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import { Badge, Icon, Text, Watermark } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { getWalletCurrencyIcon } from 'Constants/utils';
+import { getWalletCurrencyIcon } from '@deriv/utils';
 
 type TWalletModalHeaderProps = {
     balance?: string | number;

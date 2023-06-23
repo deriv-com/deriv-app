@@ -2,8 +2,8 @@ import React from 'react';
 import { WalletIcon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import type { TAccountCategory, TWalletCurrency } from 'Types';
-import { getWalletCurrencyIcon } from 'Constants/utils';
 import { isCryptocurrency } from '@deriv/shared';
+import { getWalletCurrencyIcon } from '@deriv/utils';
 
 type TWalletCurrencyCard = {
     account_type: TAccountCategory;

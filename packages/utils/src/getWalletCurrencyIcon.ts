@@ -14,7 +14,7 @@ const getWalletCurrencyIcon = (currency: string, is_dark_mode_on = false, is_mod
         case 'BTC':
             return is_dark_mode_on ? 'IcWalletBitcoinDark' : 'IcWalletBitcoinLight';
         case 'ETH':
-            return is_dark_mode_on ? 'IcWalletEtheriumDark' : 'IcWalletEtheriumLight';
+            return is_dark_mode_on ? 'IcWalletEthereumDark' : 'IcWalletEthereumLight';
         case 'USDT':
         case 'eUSDT':
         case 'tUSDT':
@@ -28,7 +28,7 @@ const getWalletCurrencyIcon = (currency: string, is_dark_mode_on = false, is_mod
         case 'USDC':
             return is_dark_mode_on ? 'IcWalletUsdCoinDark' : 'IcWalletUsdCoinLight';
         default:
-            return 'Unknown';
+            return '';
     }
 };
 

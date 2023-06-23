@@ -19,7 +19,7 @@ export type TEmptyStateProps = {
 
 const EmptyState = ({ icon, title, description, action }: TEmptyStateProps) => (
     <div className='cashier-empty-state'>
-        {icon && <Icon icon={icon} data_testid='dt_empty_state_icon' className='cashier-empty-state__icon' />}
+        {icon && <Icon icon={icon} data_testid={`dt_empty_state_icon_${icon}`} className='cashier-empty-state__icon' />}
         {title && (
             <Text
                 as='h2'

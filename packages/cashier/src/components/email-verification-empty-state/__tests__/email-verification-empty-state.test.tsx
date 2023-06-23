@@ -23,5 +23,29 @@ describe('EmailVerificationEmptyState', () => {
         expect(screen.queryByTestId('dt_empty_state_action')).toBeDisabled();
     });
 
-    // TODO: Add more test cases.
+    test('should render the default icon if icon is not provided', () => {
+        render(<EmailVerificationEmptyState type='reset_password' />, {
+            wrapper: ({ children }) => <CashierProviders store={mock_store}>{children}</CashierProviders>,
+        });
+
+        expect(screen.queryByTestId('dt_empty_state_action')).toBeInTheDocument();
+
+        screen.queryByTestId('dt_empty_state_action')?.click();
+
+        expect(screen.queryByTestId('dt_empty_state_action')).toBeDisabled();
+        expect(screen.queryByTestId('dt_empty_state_icon_IcEmailSent')).toBeInTheDocument();
+    });
+
+    test('should render the proper icon', () => {
+        render(<EmailVerificationEmptyState type='reset_password' icon='IcWalletEmailVerification' />, {
+            wrapper: ({ children }) => <CashierProviders store={mock_store}>{children}</CashierProviders>,
+        });
+
+        expect(screen.queryByTestId('dt_empty_state_action')).toBeInTheDocument();
+
+        screen.queryByTestId('dt_empty_state_action')?.click();
+
+        expect(screen.queryByTestId('dt_empty_state_action')).toBeDisabled();
+        expect(screen.queryByTestId('dt_empty_state_icon_IcWalletEmailVerification')).toBeInTheDocument();
+    });
 });

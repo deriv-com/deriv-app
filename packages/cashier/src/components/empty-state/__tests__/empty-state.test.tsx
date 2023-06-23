@@ -40,7 +40,7 @@ describe('EmptyState', () => {
     test('should only render icon and title', () => {
         render(<EmptyState icon='foo' title='bar' />);
 
-        expect(screen.queryByTestId('dt_empty_state_icon')).toBeInTheDocument();
+        expect(screen.queryByTestId('dt_empty_state_icon_foo')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_empty_state_title')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_empty_state_title')).toHaveTextContent('bar');
 
@@ -51,7 +51,7 @@ describe('EmptyState', () => {
     test('should only render icon and description', () => {
         render(<EmptyState icon='foo' description='bar' />);
 
-        expect(screen.queryByTestId('dt_empty_state_icon')).toBeInTheDocument();
+        expect(screen.queryByTestId('dt_empty_state_icon_foo')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_empty_state_description')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_empty_state_description')).toHaveTextContent('bar');
 
@@ -62,7 +62,7 @@ describe('EmptyState', () => {
     test('should only render icon and and title and description', () => {
         render(<EmptyState icon='foo' title='bar' description='baz' />);
 
-        expect(screen.queryByTestId('dt_empty_state_icon')).toBeInTheDocument();
+        expect(screen.queryByTestId('dt_empty_state_icon_foo')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_empty_state_title')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_empty_state_title')).toHaveTextContent('bar');
         expect(screen.queryByTestId('dt_empty_state_description')).toBeInTheDocument();

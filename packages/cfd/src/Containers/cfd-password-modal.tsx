@@ -847,7 +847,7 @@ const CFDPasswordModal = ({
                 type_label =
                     getMtCompanies(show_eu_related_content)[category as keyof TMtCompanies][
                         type as keyof TMtCompanies['demo' | 'real']
-                    ].title;
+                    ].short_title;
                 break;
             case CFD_PLATFORMS.DXTRADE:
                 type_label =

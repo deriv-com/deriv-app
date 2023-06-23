@@ -55,11 +55,11 @@ describe('getWalletCurrencyIcon', () => {
         });
 
         it('should return proper icon for ETH currency in dark mode', () => {
-            expect(getWalletCurrencyIcon('ETH', false)).toBe('IcWalletEtheriumLight');
+            expect(getWalletCurrencyIcon('ETH', false)).toBe('IcWalletEthereumLight');
         });
 
         it('should return proper icon for ETH currency in light mode', () => {
-            expect(getWalletCurrencyIcon('ETH', true)).toBe('IcWalletEtheriumDark');
+            expect(getWalletCurrencyIcon('ETH', true)).toBe('IcWalletEthereumDark');
         });
 
         it('should return proper icon for USDT, eUSDT, tUSDT, UST currency in dark mode', () => {

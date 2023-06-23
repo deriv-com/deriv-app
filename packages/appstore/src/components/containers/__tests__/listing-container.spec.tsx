@@ -20,8 +20,6 @@ describe('ListingContainer', () => {
     const wrapper = ({ children }: { children: JSX.Element }) => <StoreProvider store={mock}>{children}</StoreProvider>;
 
     it('should render title and description when landing company is loaded', () => {
-        mock.client.is_landing_company_loaded = true;
-
         render(
             <ListingContainer title={<Title />} description={<Description />} is_deriv_platform={false}>
                 <div>Test Child</div>
@@ -56,8 +54,6 @@ describe('ListingContainer', () => {
     });
 
     it('should render TitleCardLoader when landing company is not loaded and is_deriv_platform is true', () => {
-        mock.client.is_landing_company_loaded = false;
-
         render(
             <ListingContainer title={<Title />} description={<Description />} is_deriv_platform={true}>
                 <div>Test Child</div>

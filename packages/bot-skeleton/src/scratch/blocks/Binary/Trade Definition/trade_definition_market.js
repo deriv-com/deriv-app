@@ -57,7 +57,9 @@ Blockly.Blocks.trade_definition_market = {
         const submarket = submarket_dropdown.getValue();
         const symbol = symbol_dropdown.getValue();
 
-        const market_options = active_symbols.getMarketDropdownOptions();
+        const market_options = active_symbols
+            .getMarketDropdownOptions()
+            .filter(option => option[1] !== 'cryptocurrency');
 
         const populateMarketDropdown = () => {
             market_dropdown.updateOptions(market_options, {

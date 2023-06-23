@@ -841,19 +841,29 @@ const CFDPasswordModal = ({
         if (!category && !type) return '';
 
         const category_label = category === 'real' ? localize('real') : localize('demo');
-        const type_label =
-            platform === CFD_PLATFORMS.MT5
-                ? getMtCompanies(show_eu_related_content)[category as keyof TMtCompanies][
-                      type as keyof TMtCompanies['demo' | 'real']
-                  ].title
-                : platform === CFD_PLATFORMS.DXTRADE
-                ? getDxCompanies()[category as keyof TDxCompanies][type as keyof TDxCompanies['demo' | 'real']]
-                      .short_title
-                : platform === CFD_PLATFORMS.DERIVEZ
-                ? getDerivezCompanies()[category as keyof TDerivezCompanies][
-                      type as keyof TDerivezCompanies['demo' | 'real']
-                  ].short_title
-                : '';
+        let type_label = '';
+        switch (platform) {
+            case CFD_PLATFORMS.MT5:
+                type_label =
+                    getMtCompanies(show_eu_related_content)[category as keyof TMtCompanies][
+                        type as keyof TMtCompanies['demo' | 'real']
+                    ].title;
+                break;
+            case CFD_PLATFORMS.DXTRADE:
+                type_label =
+                    getDxCompanies()[category as keyof TDxCompanies][type as keyof TDxCompanies['demo' | 'real']]
+                        .short_title;
+                break;
+            case CFD_PLATFORMS.DERIVEZ:
+                type_label =
+                    getDerivezCompanies()[category as keyof TDerivezCompanies][
+                        type as keyof TDerivezCompanies['demo' | 'real']
+                    ].short_title;
+                break;
+            default:
+                type_label = '';
+                break;
+        }
 
         const jurisdiction_label =
             jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);

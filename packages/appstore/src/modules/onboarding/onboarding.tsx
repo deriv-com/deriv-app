@@ -1,13 +1,13 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 import { localize } from '@deriv/translations';
 import { useHasActiveRealAccount } from '@deriv/hooks';
+import { useStore } from '@deriv/stores';
 import { isMobile, isDesktop, routes, ContentFlag } from '@deriv/shared';
 import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getTradingHubContents } from 'Constants/trading-hub-content';
-import { useHistory } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
 import EmptyOnboarding from './empty-onboarding';
 
 type TOnboardingProps = {
@@ -28,7 +28,7 @@ type TOnboardingProps = {
 const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) => {
     const history = useHistory();
     const number_of_steps = Object.keys(contents);
-    const { traders_hub, client, ui } = useStores();
+    const { traders_hub, client, ui } = useStore();
     const { toggleIsTourOpen, selectAccountType, is_demo_low_risk, content_flag } = traders_hub;
     const { is_eu_country, is_logged_in, is_landing_company_loaded, prev_account_type, setPrevAccountType } = client;
     const { is_from_signup_account } = ui;
@@ -54,10 +54,10 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
     const handleCloseButton = async () => {
         toggleIsTourOpen(false);
         history.push(routes.traders_hub);
-        if (has_active_real_account) {
-            await selectAccountType(prev_account_type);
-        } else {
+        if (content_flag === ContentFlag.EU_REAL && !has_active_real_account) {
             await selectAccountType('demo');
+        } else {
+            await selectAccountType(prev_account_type);
         }
     };
 

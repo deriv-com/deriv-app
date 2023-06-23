@@ -18,9 +18,6 @@ function pullBlocklyTranslations() {
                     if (err) {
                         // eslint-disable-next-line no-console
                         console.log('something went wrong:', err);
-                    } else {
-                        // eslint-disable-next-line no-console
-                        console.log(`File ${filePath} saved successfully.`);
                     }
                 });
             });
@@ -31,7 +28,7 @@ function pullBlocklyTranslations() {
 pullBlocklyTranslations()
     .then(() => {
         // eslint-disable-next-line no-console
-        console.log('Blockly translations pulled successfully.');
+        console.log('\x1b[32m%s\x1b[0m', 'Blockly translations pulled successfully \u{1F44D}');
     })
     .catch(error => {
         // eslint-disable-next-line no-console

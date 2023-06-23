@@ -1,59 +1,64 @@
 {
-  "root": true,
-  "parser": "babel-eslint",
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
-  "extends": [
-    "binary",
-    "plugin:import/errors",
-    "plugin:import/warnings"
-  ],
-  "env": {
-    "es6": true,
-    "browser": true,
-    "jquery": true,
-    "jasmine": true
-  },
-  "globals": {
-    "Blockly": false,
-    "trackJs": false,
-    "jest": false,
-    "dataLayer": false
-  },
-  "plugins": [
-    "react",
-    "prettier"
-  ],
-  "rules": {
-    "react/jsx-uses-react": "error",
-    "react/jsx-uses-vars": "error",
-    "import/no-extraneous-dependencies": 0,
-    "linebreak-style": 0,
-    "key-spacing" : 0,
-    "camelcase": 0,
-    "no-param-reassign": 0,
-    "indent": 0,
-    "quotes": 0,
-    "prefer-destructuring": ["error", {
-      "array": false,
-      "object": false
-    }, {
-      "enforceForRenamedProperties": false
-    }]
-  },
-  "settings": {
-    "react": {
-      "createClass": "createReactClass", // Regex for Component Factory to use, default to "createReactClass"
-      "pragma": "React",  // Pragma to use, default to "React"
-      "version": "15.0" // React version, default to the latest React stable release
+    "root": true,
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        }
     },
-    "import/resolver": {
-      "webpack": {
-        "config": "webpack.config.web.js"
-      }
+    "extends": ["binary", "plugin:import/errors", "plugin:import/warnings"],
+    "env": {
+        "es6": true,
+        "browser": true,
+        "jquery": true,
+        "jasmine": true
+    },
+    "globals": {
+        "Blockly": false,
+        "trackJs": false,
+        "jest": false,
+        "dataLayer": false
+    },
+    "plugins": ["react", "prettier"],
+    "rules": {
+        "react/jsx-uses-react": "error",
+        "react/jsx-uses-vars": "error",
+        "import/no-extraneous-dependencies": 0,
+        "linebreak-style": 0,
+        "key-spacing": 0,
+        "camelcase": 0,
+        "no-param-reassign": 0,
+        "indent": 0,
+        "quotes": 0,
+        "prefer-destructuring": [
+            "error",
+            {
+                "array": false,
+                "object": false
+            },
+            {
+                "enforceForRenamedProperties": false
+            }
+        ],
+        "import/extensions": [
+            "error",
+            "always",
+            {
+                "js": "never",
+                "jsx": "never"
+            }
+        ]
+    },
+    "settings": {
+        "react": {
+            "createClass": "createReactClass", // Regex for Component Factory to use, default to "createReactClass"
+            "pragma": "React", // Pragma to use, default to "React"
+            "version": "15.0" // React version, default to the latest React stable release
+        },
+        "import/resolver": {
+            "webpack": {
+                "config": "webpack.config.js"
+            }
+        }
     }
-  }
 }

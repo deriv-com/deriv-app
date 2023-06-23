@@ -2,11 +2,12 @@ const path = require('path');
 const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const BlocklyConcatPlugin = require('./customPlugins/blockly-concat-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const BlocklyConcatPlugin = require('./customPlugins/blockly-concat-plugin');
 const PullBlocklyTranslationsPlugin = require('./customPlugins/blockly-translation-plugin');
 
 module.exports = {
+    mode: 'production',
     entry: path.join(__dirname, 'src', 'botPage', 'view', 'index.js'),
     output: {
         path: path.resolve(__dirname, 'www'),
@@ -84,42 +85,43 @@ module.exports = {
             banner: '#!/usr/bin/env node',
             raw: true,
         }),
-        new CopyWebpackPlugin([
-            {
-                from: 'node_modules/@deriv/deriv-charts/dist/*.smartcharts.*',
-                to: path.resolve(__dirname, 'www/js'),
-                flatten: true,
-            },
-            {
-                from: 'node_modules/binary-style/src/images/favicons',
-                to: path.resolve(__dirname, 'www/image/favicons'),
-            },
-            {
-                from: 'public',
-                to: path.resolve(__dirname, 'www/public'),
-            },
-            {
-                from: 'public/localstorage-sync.html',
-                to: path.resolve(__dirname, 'www'),
-            },
-            {
-                from: 'templates/index.html',
-                to: path.resolve(__dirname, 'www'),
-            },
-        ]),
-        new webpack.optimize.UglifyJsPlugin({
-            include: /\.js$/,
-            minimize: true,
-            sourceMap: true,
-            compress: {
-                warnings: false,
-            },
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: 'node_modules/@deriv/deriv-charts/dist/*.smartcharts.*',
+                    to: path.resolve(__dirname, 'www/js', '[name][ext]'),
+                },
+                {
+                    from: 'node_modules/binary-style/src/images/favicons',
+                    to: path.resolve(__dirname, 'www/image/favicons'),
+                },
+                {
+                    from: 'public',
+                    to: path.resolve(__dirname, 'www/public'),
+                },
+                {
+                    from: 'public/localstorage-sync.html',
+                    to: path.resolve(__dirname, 'www'),
+                },
+                {
+                    from: 'templates/index.html',
+                    to: path.resolve(__dirname, 'www'),
+                },
+                {
+                    from: 'translations',
+                    to: path.resolve(__dirname, 'www/translations'),
+                },
+            ],
         }),
     ],
     resolve: {
+        extensions: ['.js', '.jsx'],
         alias: {
             '@lang': path.resolve(__dirname, 'src/common/lang'),
             '@config': path.resolve(__dirname, 'src/config'),
         },
+    },
+    optimization: {
+        minimize: true,
     },
 };

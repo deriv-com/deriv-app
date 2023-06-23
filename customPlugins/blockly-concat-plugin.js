@@ -7,7 +7,7 @@ class BlocklyConcatPlugin {
     }
 
     apply(compiler) {
-        compiler.plugin('emit', (compilation, callback) => {
+        compiler.hooks.emit.tapAsync('emit', (compilation, callback) => {
             const { outputPath, fileName, filesToConcat } = this.options;
 
             // Read the content of each file

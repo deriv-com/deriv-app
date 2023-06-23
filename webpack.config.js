@@ -5,6 +5,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const BlocklyConcatPlugin = require('./customPlugins/blockly-concat-plugin');
 
 module.exports = {
+    mode: 'development',
     entry: path.join(__dirname, 'src', 'botPage', 'view', 'index.js'),
     output: {
         path: path.resolve(__dirname, 'www'),
@@ -12,7 +13,6 @@ module.exports = {
         sourceMapFilename: 'index.js.map',
     },
     devtool: 'source-map',
-    watch: true,
     target: 'web',
     module: {
         rules: [
@@ -22,7 +22,7 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: [['@babel/preset-env', { targets: 'defaults' }]],
+                        presets: ['@babel/preset-env'],
                     },
                 },
             },
@@ -72,40 +72,42 @@ module.exports = {
             jQuery: 'jquery',
             'window.jQuery': 'jquery',
         }),
-        new CopyWebpackPlugin([
-            {
-                from: 'node_modules/@deriv/deriv-charts/dist/*.smartcharts.*',
-                to: path.resolve(__dirname, 'www/js'),
-                flatten: true,
-            },
-            {
-                from: 'node_modules/binary-style/src/images/favicons',
-                to: path.resolve(__dirname, 'www/image/favicons'),
-            },
-            {
-                from: 'public',
-                to: path.resolve(__dirname, 'www/public'),
-            },
-            {
-                from: 'public/localstorage-sync.html',
-                to: path.resolve(__dirname, 'www'),
-            },
-            {
-                from: 'templates/index.html',
-                to: path.resolve(__dirname, 'www'),
-            },
-            {
-                from: 'translations',
-                to: path.resolve(__dirname, 'www/translations'),
-            },
-        ]),
+        new CopyWebpackPlugin({
+            patterns: [
+                {
+                    from: 'node_modules/@deriv/deriv-charts/dist/*.smartcharts.*',
+                    to: path.resolve(__dirname, 'www/js'),
+                },
+                {
+                    from: 'node_modules/binary-style/src/images/favicons',
+                    to: path.resolve(__dirname, 'www/image/favicons'),
+                },
+                {
+                    from: 'public',
+                    to: path.resolve(__dirname, 'www/public'),
+                },
+                {
+                    from: 'public/localstorage-sync.html',
+                    to: path.resolve(__dirname, 'www'),
+                },
+                {
+                    from: 'templates/index.html',
+                    to: path.resolve(__dirname, 'www'),
+                },
+                {
+                    from: 'translations',
+                    to: path.resolve(__dirname, 'www/translations'),
+                },
+            ],
+        }),
     ],
     devServer: {
-        contentBase: path.resolve(__dirname, 'www'),
+        host: 'localhost',
         port: 8081,
         open: true,
     },
     resolve: {
+        extensions: ['.js', '.jsx'],
         alias: {
             '@lang': path.resolve(__dirname, 'src/common/lang'),
             '@config': path.resolve(__dirname, 'src/config'),

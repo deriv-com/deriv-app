@@ -99,7 +99,7 @@ describe('DepositStore', () => {
     });
     it('should not call cashier deposit if the active_container is not deposit and on crypto', async () => {
         const { checkIframeLoaded } = deposit_store.root_store.modules.cashier.iframe;
-        const { is_crypto } = deposit_store.root_store.modules.cashier.general_store;
+        deposit_store.root_store.modules.cashier.general_store.active_container = 'withdraw';
         deposit_store.root_store.modules.cashier.iframe.is_session_timeout = true;
 
         await deposit_store.onMountDeposit();

@@ -29,9 +29,14 @@ const TradingAppCard = ({
     selected_mt5_jurisdiction,
     openFailedVerificationModal,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
-    const { common, traders_hub } = useStores();
+    const {
+        common,
+        traders_hub,
+        modules: { cfd },
+    } = useStores();
     const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
     const { current_language } = common;
+    const { is_account_being_created } = cfd;
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -54,6 +59,7 @@ const TradingAppCard = ({
             window.open(getStaticUrl(`/dmt5`, {}, false, true));
         else if (platform === CFD_PLATFORMS.MT5 && availability !== 'EU') window.open(getStaticUrl(`/dmt5`));
         else if (platform === CFD_PLATFORMS.DXTRADE) window.open(getStaticUrl(`/derivx`));
+        else if (platform === CFD_PLATFORMS.DERIVEZ) window.open(getStaticUrl(`/derivez`));
         else if (icon === 'Options' && !is_eu_user) window.open(getStaticUrl(`/trade-types/options/`));
         else;
     };
@@ -113,6 +119,7 @@ const TradingAppCard = ({
                         is_external={is_external}
                         new_tab={new_tab}
                         is_buttons_disabled={!!mt5_acc_auth_status}
+                        is_account_being_created={!!is_account_being_created}
                         is_real={is_real}
                     />
                 </div>

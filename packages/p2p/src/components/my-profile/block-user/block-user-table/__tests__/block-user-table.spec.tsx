@@ -64,7 +64,7 @@ describe('<BlockUserTable />', () => {
         expect(screen.getByText('There are no matching name.')).toBeInTheDocument();
     });
 
-    it('should show trade_partners_list if it is not empty', async () => {
+    it('should show trade_partners_list if it is not empty', () => {
         act(() => {
             mock_store.my_profile_store.trade_partners_list = mock_trade_partners_list;
             mock_store.my_profile_store.rendered_trade_partners_list = mock_trade_partners_list;

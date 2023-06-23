@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { ButtonLink, Text } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
+import { Localize } from '@deriv/translations';
 import { epochToMoment } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { getStatus } from '../../constants/transaction-status';
@@ -56,7 +56,7 @@ const RecentTransaction = observer(() => {
 
     const { address_hash, transaction_hash, transaction_type, status_code, submit_date, confirmations } =
         crypto_transactions[0];
-    const status = getStatus(transaction_hash, transaction_type, status_code);
+    const status = getStatus(transaction_hash, transaction_type, status_code, confirmations);
     const submit_date_moment = epochToMoment(submit_date).format('MMM D, YYYY');
     const transaction_type_display_text = transaction_type[0].toUpperCase() + transaction_type.slice(1);
     const address_hash_display_value = `${address_hash.substring(0, 4)}....${address_hash.substring(
@@ -64,16 +64,6 @@ const RecentTransaction = observer(() => {
     )}`;
 
     const amount = crypto_transactions[0].amount;
-
-    let confirmation_label = '-';
-
-    if (transaction_type === 'deposit') {
-        if (status_code === 'CONFIRMED') {
-            confirmation_label = localize('Confirmed');
-        } else {
-            confirmation_label = confirmations ? `${confirmations}` : localize('Pending');
-        }
-    }
 
     return (
         <SideNoteContainer>
@@ -140,7 +130,7 @@ const RecentTransaction = observer(() => {
                             &nbsp;
                         </Text>
                         <Text as='p' size='xxxs' color='red' line_height='s'>
-                            {confirmation_label}
+                            {status?.confirmation_label}
                         </Text>
                     </div>
                 )}

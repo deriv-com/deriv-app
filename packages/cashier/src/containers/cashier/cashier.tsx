@@ -69,7 +69,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
     const { is_payment_agent_visible } = payment_agent;
     const { is_from_derivgo } = common;
     const { is_cashier_visible: is_visible, toggleCashier } = ui;
-    const { is_account_setting_loaded, is_logged_in, is_logging_in } = client;
+    const { is_account_setting_loaded, is_crypto, is_logged_in, is_logging_in } = client;
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const p2p_notification_count = useP2PNotificationCount();
@@ -78,6 +78,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         isSuccess: is_p2p_enabled_success,
         isLoading: is_p2p_enabled_loading,
     } = useIsP2PEnabled();
+    const is_p2p_visible = !is_crypto() && is_p2p_enabled;
 
     React.useEffect(() => {
         toggleCashier();
@@ -121,7 +122,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                 !route.is_invisible &&
                 (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
                 (route.path !== routes.cashier_pa_transfer || is_payment_agent_transfer_visible) &&
-                (route.path !== routes.cashier_p2p || is_p2p_enabled) &&
+                (route.path !== routes.cashier_p2p || is_p2p_visible) &&
                 (route.path !== routes.cashier_onramp || is_onramp_visible) &&
                 (route.path !== routes.cashier_acc_transfer || is_account_transfer_visible)
             ) {

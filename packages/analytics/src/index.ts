@@ -1,1 +1,3 @@
-export { default as Rudderstack } from './rudderstack'
+import rudderstack from './rudderstack';
+
+export { rudderstack };

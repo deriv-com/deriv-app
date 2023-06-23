@@ -98,7 +98,7 @@ const BuySellHeader = ({ table_type }) => {
                         placeholder={isDesktop() ? localize('Search by nickname') : localize('Search')}
                     />
                     <SortDropdown />
-                    <div style={{ position: 'relative' }} className='buy-sell__header-row--filter'>
+                    <div className='buy-sell__header-row--filter'>
                         <div
                             className={classNames('buy-sell__header-row--filter-status', {
                                 'buy-sell__header-row--filter-status--disabled':

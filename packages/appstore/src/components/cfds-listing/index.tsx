@@ -214,7 +214,7 @@ const CFDsListing = () => {
 
                     <div className='cfd-full-row'>
                         <Text line_height='m' weight='bold' color='prominent'>
-                            {localize('Other CFDs')}
+                            {localize('Other CFD Platforms')}
                         </Text>
                     </div>
                 </React.Fragment>

@@ -79,9 +79,7 @@ const Strike = observer(() => {
                             components={[<strong key={0} />]}
                             values={{
                                 trade_type:
-                                    vanilla_trade_type === 'VANILLALONGCALL'
-                                        ? localize('Call')
-                                        : localize('Put'),
+                                    vanilla_trade_type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
                                 payout_status:
                                     vanilla_trade_type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
                             }}

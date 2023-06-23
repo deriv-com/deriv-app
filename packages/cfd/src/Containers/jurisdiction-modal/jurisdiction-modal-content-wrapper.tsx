@@ -17,6 +17,7 @@ const JurisdictionModalContentWrapper = ({
     fetchAccountSettings,
     has_submitted_cfd_personal_details,
     is_jurisdiction_modal_visible,
+    is_eu_user,
     is_virtual,
     jurisdiction_selected_shortcode,
     openPasswordModal,
@@ -166,7 +167,7 @@ const JurisdictionModalContentWrapper = ({
                 toggleCFDVerificationModal();
             }
         } else if (is_maltainvest_selected) {
-            if (poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) {
+            if (is_eu_user || (poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged)) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();
@@ -241,6 +242,7 @@ export default connect(({ modules: { cfd }, client, traders_hub }: RootStore) =>
     fetchAccountSettings: client.fetchAccountSettings,
     has_submitted_cfd_personal_details: cfd.has_submitted_cfd_personal_details,
     is_jurisdiction_modal_visible: cfd.is_jurisdiction_modal_visible,
+    is_eu_user: traders_hub.is_eu_user,
     is_virtual: client.is_virtual,
     jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
     real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,

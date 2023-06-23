@@ -132,6 +132,7 @@ type TCFDPasswordModalProps = RouteComponentProps & {
     form_error?: string;
     getAccountStatus: (platform: string) => void;
     is_eu: boolean;
+    is_eu_user: boolean;
     is_logged_in: boolean;
     is_fully_authenticated: boolean;
     is_cfd_password_modal_enabled: boolean;
@@ -152,6 +153,7 @@ type TCFDPasswordModalProps = RouteComponentProps & {
         actions: FormikHelpers<TCFDPasswordFormValues>
     ) => void;
     updateAccountStatus: () => void;
+    toggleAccountTransferModal: () => void;
 };
 
 const getAccountTitle = (
@@ -652,6 +654,7 @@ const CFDPasswordModal = ({
     form_error,
     getAccountStatus,
     history,
+    is_eu_user,
     is_logged_in,
     context,
     is_cfd_password_modal_enabled,
@@ -669,6 +672,7 @@ const CFDPasswordModal = ({
     submitCFDPassword,
     updateAccountStatus,
     show_eu_related_content,
+    toggleAccountTransferModal,
 }: TCFDPasswordModalProps) => {
     const [is_password_modal_exited, setPasswordModalExited] = React.useState(true);
     const is_bvi = landing_companies?.mt_financial_company?.financial_stp?.shortcode === 'bvi';
@@ -755,8 +759,12 @@ const CFDPasswordModal = ({
         disableCFDPasswordModal();
         closeDialogs();
         if (account_type.category === 'real') {
-            sessionStorage.setItem('cfd_transfer_to_login_id', cfd_new_account.login || '');
-            history.push(routes.cashier_acc_transfer);
+            if (is_eu_user) {
+                toggleAccountTransferModal();
+            } else {
+                sessionStorage.setItem('cfd_transfer_to_login_id', cfd_new_account.login || '');
+                history.push(routes.cashier_acc_transfer);
+            }
         }
     };
 
@@ -827,12 +835,19 @@ const CFDPasswordModal = ({
     const success_modal_submit_label = React.useMemo(() => {
         if (account_type.category === 'real') {
             if (platform === CFD_PLATFORMS.MT5) {
-                return is_selected_mt5_verified ? localize('Transfer now') : localize('OK');
+                return is_eu_user || is_selected_mt5_verified ? localize('Transfer now') : localize('OK');
             }
             return localize('Transfer now');
         }
         return localize('Continue');
-    }, [platform, account_type, is_selected_mt5_verified]);
+    }, [platform, account_type, is_eu_user, is_selected_mt5_verified]);
+
+    const success_modal_cancel_label = React.useMemo(() => {
+        if (is_eu_user && account_type.category === 'real' && platform === CFD_PLATFORMS.MT5) {
+            return localize('Maybe later');
+        }
+        return '';
+    }, [platform, account_type, is_eu_user]);
 
     const getSubmitText = () => {
         const { category, type } = account_type;
@@ -847,42 +862,27 @@ const CFDPasswordModal = ({
             getDxCompanies()[category as keyof TDxCompanies][type as keyof TDxCompanies['demo' | 'real']].short_title;
         const jurisdiction_label =
             jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
-        const mt5_platform_label = jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'MT5' : '';
 
         if (category === 'real') {
-            let platformName = '';
-            switch (platform) {
-                case CFD_PLATFORMS.MT5:
-                    platformName = mt5_platform_label;
-                    break;
-                case CFD_PLATFORMS.DERIVEZ:
-                    platformName = 'Deriv Ez';
-                    break;
-                default:
-                    platformName = 'Deriv X';
-                    break;
-            }
-
             return (
                 <React.Fragment>
                     <Localize
-                        i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}} {{jurisdiction_selected_shortcode}}</1> account. '
+                        i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{deriv_keyword}} {{platform}}</0> <1>{{type}} {{jurisdiction_selected_shortcode}}</1> account. '
                         values={{
+                            deriv_keyword: is_eu_user ? 'Deriv' : '',
                             type:
                                 platform === CFD_PLATFORMS.DERIVEZ
                                     ? 'CFDs'
                                     : platform === CFD_PLATFORMS.DXTRADE
                                     ? deriv_x_type_label
                                     : type_label,
-                            platform:
-                                platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : getCFDPlatformLabel(platform),
+                            platform: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
                             category: category_label,
-                            jurisdiction_selected_shortcode:
-                                platform === CFD_PLATFORMS.MT5 && !show_eu_related_content ? jurisdiction_label : '',
+                            jurisdiction_selected_shortcode: platform === CFD_PLATFORMS.MT5 ? jurisdiction_label : '',
                         }}
                         components={[<span key={0} />, <strong key={1} className='cfd-account__platform' />]}
                     />
-                    {platform === CFD_PLATFORMS.DXTRADE ? (
+                    {is_eu_user || platform === CFD_PLATFORMS.DXTRADE ? (
                         <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
                     ) : (
                         <ReviewMessageForMT5
@@ -990,7 +990,11 @@ const CFDPasswordModal = ({
                 is_open={should_show_success}
                 toggleModal={closeModal}
                 onCancel={closeModal}
-                onSubmit={platform === CFD_PLATFORMS.MT5 && !is_selected_mt5_verified ? closeModal : closeOpenSuccess}
+                onSubmit={
+                    !is_eu_user && platform === CFD_PLATFORMS.MT5 && !is_selected_mt5_verified
+                        ? closeModal
+                        : closeOpenSuccess
+                }
                 classNameMessage='cfd-password-modal__message'
                 message={getSubmitText()}
                 icon={
@@ -1002,9 +1006,10 @@ const CFDPasswordModal = ({
                 }
                 icon_size='xlarge'
                 text_submit={success_modal_submit_label}
+                text_cancel={success_modal_cancel_label}
                 has_cancel={
                     platform === CFD_PLATFORMS.MT5
-                        ? is_selected_mt5_verified && account_type.category === 'real'
+                        ? (is_eu_user || is_selected_mt5_verified) && account_type.category === 'real'
                         : account_type.category === 'real'
                 }
                 has_close_icon={false}
@@ -1034,6 +1039,7 @@ export default connect(({ client, modules, traders_hub }: RootStore) => ({
     landing_companies: client.landing_companies,
     is_eu: client.is_eu,
     is_eu_country: client.is_eu_country,
+    is_eu_user: traders_hub.is_eu_user,
     is_logged_in: client.is_logged_in,
     is_cfd_success_dialog_enabled: modules.cfd.is_cfd_success_dialog_enabled,
     is_cfd_password_modal_enabled: modules.cfd.is_cfd_password_modal_enabled,
@@ -1048,4 +1054,5 @@ export default connect(({ client, modules, traders_hub }: RootStore) => ({
     mt5_login_list: client.mt5_login_list,
     updateAccountStatus: client.updateAccountStatus,
     show_eu_related_content: traders_hub.show_eu_related_content,
+    toggleAccountTransferModal: traders_hub.toggleAccountTransferModal,
 }))(withRouter(CFDPasswordModal));

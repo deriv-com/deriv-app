@@ -7,6 +7,13 @@ import PaymentMethodCard from 'Pages/my-profile/payment-methods/payment-method-c
 import BuyAdPaymentMethodsList from '../buy-ad-payment-methods-list';
 import SellAdPaymentMethodsList from '../sell-ad-payment-methods-list';
 
+type TPaymentMethodField = {
+    display_name: string;
+    required: number;
+    type: string;
+    value: string;
+};
+
 type TPaymentMethod = {
     ID: string;
     name: string;
@@ -14,18 +21,8 @@ type TPaymentMethod = {
     method: string;
     display_name: string;
     fields: {
-        account: {
-            display_name: string;
-            required: number;
-            type: string;
-            value: string;
-        };
-        instructions: {
-            display_name: string;
-            required: number;
-            type: string;
-            value: string;
-        };
+        account: TPaymentMethodField;
+        instructions: TPaymentMethodField;
     };
 };
 

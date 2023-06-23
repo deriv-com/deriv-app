@@ -1,5 +1,5 @@
-import { DesktopWrapper, Div100vhContainer, MobileWrapper } from '@deriv/components';
 import React from 'react';
+import { DesktopWrapper, Div100vhContainer, MobileWrapper } from '@deriv/components';
 
 const AdFormWrapper = ({ children }: React.PropsWithChildren<unknown>) => {
     return (

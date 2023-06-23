@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import api from '../botPage/view/deriv/api';
 import { get as getStorage, getTokenList } from '../common/utils/storageManager';
 import { isLoggedIn } from '../botPage/view/deriv/utils';

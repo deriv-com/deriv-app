@@ -5,7 +5,7 @@ import { getContractTypeName } from '@deriv/bot-skeleton';
 import { Icon, IconTradeTypes, Popover } from '@deriv/components';
 import { convertDateFormat } from '@deriv/shared';
 import { transaction_elements } from 'Constants/transactions';
-import { TColumn, TDesktopTransactionTable, TTableCell } from './types';
+import { TColumn, TDesktopTransactionTable, TTableCell } from './transaction-details.types';
 
 const PARENT_CLASS = 'transaction-details-modal-desktop';
 

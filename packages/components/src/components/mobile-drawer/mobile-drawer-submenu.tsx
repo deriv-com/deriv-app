@@ -12,7 +12,7 @@ type TMobileDrawerSubmenu = {
     submenu_icon?: string;
     submenu_title?: string | React.ReactElement;
     submenu_suffix_icon?: string;
-    route_config_path: string;
+    route_config_path?: string;
 };
 
 const SubMenu = ({

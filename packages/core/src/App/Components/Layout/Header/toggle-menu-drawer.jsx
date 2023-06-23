@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
+import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch } from '@deriv/components';
 import {
     useOnrampVisible,
     useAccountTransferVisible,
@@ -10,86 +10,15 @@ import {
 } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { localize, getAllowedLanguages, Localize } from '@deriv/translations';
+import { localize } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
-import { LanguageLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
 import LiveChat from 'App/Components/Elements/LiveChat';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 import PlatformSwitcher from './platform-switcher';
 import { MenuLink } from './menu-link';
-
-const MobileLanguageMenu = observer(({ expandSubMenu, toggleDrawer }) => {
-    const {
-        common: { is_language_changing, is_mobile_language_menu_open, setMobileLanguageMenuOpen },
-    } = useStore();
-    return (
-        <MobileDrawer.SubMenu
-            is_expanded={is_mobile_language_menu_open}
-            has_subheader
-            submenu_title={localize('Language')}
-            onToggle={is_expanded => {
-                expandSubMenu(is_expanded);
-                setMobileLanguageMenuOpen(false);
-            }}
-            submenu_toggle_class='dc-mobile-drawer__submenu-toggle--hidden'
-        >
-            <div
-                className={classNames('settings-language__language-container', {
-                    'settings-language__language-container--disabled': is_language_changing,
-                })}
-            >
-                {Object.keys(getAllowedLanguages()).map(lang => (
-                    <LanguageLink
-                        key={lang}
-                        icon_classname='settings-language__language-flag'
-                        is_clickable
-                        lang={lang}
-                        toggleModal={() => {
-                            toggleDrawer();
-                            setMobileLanguageMenuOpen(false);
-                        }}
-                    />
-                ))}
-            </div>
-        </MobileDrawer.SubMenu>
-    );
-});
-
-const MenuTitle = observer(() => {
-    const {
-        common: { current_language, is_mobile_language_menu_open, setMobileLanguageMenuOpen },
-    } = useStore();
-    return (
-        <React.Fragment>
-            <div>{localize('Menu')}</div>
-            <div
-                className='settings-language__language-button_wrapper'
-                onClick={() => {
-                    if (!is_mobile_language_menu_open) {
-                        setMobileLanguageMenuOpen(true);
-                    }
-                }}
-            >
-                {!is_mobile_language_menu_open && (
-                    <React.Fragment>
-                        <Icon
-                            icon={`IcFlag${current_language.replace('_', '-')}`}
-                            data_testid='dt_icon'
-                            className='ic-settings-language__icon'
-                            type={current_language.replace(/(\s|_)/, '-').toLowerCase()}
-                            size={22}
-                        />
-                        <Text weight='bold' size='xxs'>
-                            <Localize i18n_default_text={current_language} />
-                        </Text>
-                    </React.Fragment>
-                )}
-            </div>
-        </React.Fragment>
-    );
-});
+import { MobileLanguageMenu, MenuTitle } from './Components/ToggleMenu';
 
 const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { common, ui, client, traders_hub, modules } = useStore();

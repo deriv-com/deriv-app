@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { NavLink, useHistory, useLocation } from 'react-router-dom';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
 import {
     useOnrampVisible,
@@ -122,7 +122,7 @@ const MenuLink = observer(
             );
         } else if (deriv_static_url) {
             return (
-                <a
+                <NavLink
                     className={classNames('header__menu-mobile-link', {
                         'header__menu-mobile-link--disabled': is_disabled,
                         'header__menu-mobile-link--active': is_active,
@@ -139,7 +139,7 @@ const MenuLink = observer(
                         {text}
                     </Text>
                     {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
-                </a>
+                </NavLink>
             );
         }
 

@@ -10,7 +10,7 @@ import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import { localize } from '@deriv/translations';
-import { CFD_PLATFORMS, ContentFlag, getStaticUrl } from '@deriv/shared';
+import { CFD_PLATFORMS, ContentFlag, getStaticUrl, Jurisdiction } from '@deriv/shared';
 
 const TradingAppCard = ({
     availability,
@@ -112,8 +112,12 @@ const TradingAppCard = ({
                         onAction={onAction}
                         is_external={is_external}
                         new_tab={new_tab}
-                        is_buttons_disabled={!!mt5_acc_auth_status}
-                        is_real={is_real}
+                        is_buttons_disabled={
+                            //For MF, we disable the buttons only if verification failed. Rest of jurisdictions, disable the button for pending, failed and needs verification
+                            selected_mt5_jurisdiction === Jurisdiction.MALTA_INVEST
+                                ? mt5_acc_auth_status === 'failed'
+                                : !!mt5_acc_auth_status
+                        }
                     />
                 </div>
             </div>

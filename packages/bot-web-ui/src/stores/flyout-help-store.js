@@ -63,6 +63,7 @@ export default class FlyoutHelpStore {
             this.block_node = block_node;
             this.block_type = block_type;
             this.title = title;
+            /* eslint-disable-next-line import/namespace */
             this.help_string = help_strings[block_type];
         });
 
@@ -77,6 +78,7 @@ export default class FlyoutHelpStore {
         if (block_node) {
             const target_blocks = this.xml_list_group[block_node];
             const block_type = target_blocks[0].getAttribute('type');
+            /* eslint-disable-next-line import/namespace */
             block_content = help_strings[block_type];
         }
         return block_content;

@@ -105,6 +105,7 @@ module.exports = {
         'prettier/react',
         'airbnb-base',
         'binary',
+        'deriv',
         'plugin:react/recommended',
         'plugin:react-hooks/recommended',
         'plugin:jest-dom/recommended',

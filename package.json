@@ -40,6 +40,7 @@
         "eslint": "^7.18.0",
         "eslint-config-airbnb-base": "^14.2.1",
         "eslint-config-binary": "^1.0.2",
+        "eslint-config-deriv": "^1.0.0-beta.1",
         "eslint-config-prettier": "^7.2.0",
         "eslint-formatter-pretty": "^4.0.0",
         "eslint-import-resolver-typescript": "^2.7.1",

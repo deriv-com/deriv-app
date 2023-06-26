@@ -1,5 +1,7 @@
 module.exports = {
-    plugins: ['stylelint-no-unsupported-browser-features'],
+    extends: ['stylelint-config-hudochenkov/full', 'stylelint-config-standard-scss'],
+    ignoreFiles: ['packages/*/dist/**/*.css'],
+    plugins: ['stylelint-no-unsupported-browser-features', 'stylelint-selector-bem-pattern'],
     rules: {
         'at-rule-name-space-after': 'always',
         'color-named': 'never',
@@ -22,26 +24,22 @@ module.exports = {
         'selector-attribute-brackets-space-inside': 'never',
         'selector-attribute-operator-space-after': 'never',
         'selector-attribute-operator-space-before': 'never',
-        'selector-pseudo-class-no-unknown': [
-            true,
-            {
-                ignorePseudoClasses: ['export'],
-            },
-        ],
+        'selector-pseudo-class-no-unknown': [true, { ignorePseudoClasses: ['export'] }],
         'selector-pseudo-class-parentheses-space-inside': 'never',
         'selector-pseudo-element-colon-notation': 'single',
         'selector-pseudo-element-no-unknown': true,
         'selector-type-case': 'lower',
+        'selector-max-type': [0, { ignore: ['child', 'descendant', 'compounded'] }],
         'selector-type-no-unknown': [true, { ignoreTypes: ['from', 'to', '0%', '50%', '100%', '_'] }],
         'shorthand-property-no-redundant-values': true,
         'string-no-newline': true,
         'time-min-milliseconds': 100,
         'unit-allowed-list': ['fr', 'px', 'em', 'rem', '%', 'vw', 'vh', 'deg', 'ms', 's', 'dpcm'],
         'value-keyword-case': 'lower',
+
+        // Plugins Config
+        'plugin/selector-bem-pattern': {
+            preset: 'bem',
+        },
     },
-    extends: [
-        // other configs ...
-        'stylelint-config-prettier',
-    ],
-    ignoreFiles: ['packages/*/dist/**/*.css'],
 };

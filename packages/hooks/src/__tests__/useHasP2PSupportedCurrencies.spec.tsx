@@ -12,15 +12,16 @@ jest.mock('@deriv/api', () => ({
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'website_status'>>;
 
 describe('useHasP2PSupportedCurrencies', () => {
+    beforeEach(() => {
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
+    });
     test('should return false if supported currencies is not in the account info', () => {
         const mock = mockStore({
             client: {
                 active_accounts: [{ currency: 'EUR', is_virtual: 0 }],
             },
         });
-
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -40,9 +41,6 @@ describe('useHasP2PSupportedCurrencies', () => {
             },
         });
 
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
-
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
                 <StoreProvider store={mock}>{children}</StoreProvider>
@@ -60,9 +58,6 @@ describe('useHasP2PSupportedCurrencies', () => {
                 active_accounts: [{ currency: 'USD', is_virtual: 1 }],
             },
         });
-
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>

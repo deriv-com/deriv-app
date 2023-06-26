@@ -23,6 +23,10 @@ const mock_usefetch_return_value = {
 };
 
 describe('useIsP2PEnabled', () => {
+    beforeEach(() => {
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseFetch.mockReturnValue(mock_usefetch_return_value);
+    });
     test('should return false if p2p is disabled', () => {
         const mock = mockStore({
             client: {
@@ -31,8 +35,6 @@ describe('useIsP2PEnabled', () => {
         });
 
         mock_usefetch_return_value.data.website_status.p2p_config.disabled = 1;
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue(mock_usefetch_return_value);
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -53,8 +55,6 @@ describe('useIsP2PEnabled', () => {
             },
         });
         mock_usefetch_return_value.data.website_status.p2p_config.disabled = 0;
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue(mock_usefetch_return_value);
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -73,9 +73,6 @@ describe('useIsP2PEnabled', () => {
                 active_accounts: [{ currency: 'USD', is_virtual: 0 }],
             },
         });
-
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue(mock_usefetch_return_value);
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -118,9 +115,6 @@ describe('useIsP2PEnabled', () => {
                 active_accounts: [{ currency: 'EUR', is_virtual: 0 }],
             },
         });
-
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue(mock_usefetch_return_value);
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>

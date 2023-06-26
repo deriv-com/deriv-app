@@ -10,7 +10,7 @@ const CarouselContainer: React.FC<React.PropsWithChildren<unknown>> = observer((
     const options: EmblaOptionsType = {
         align: 0,
         containScroll: 'trimSnaps',
-        watchDrag: !!is_mobile,
+        watchDrag: is_mobile,
     };
 
     const [emblaRef, emblaApi] = useEmblaCarousel(options);

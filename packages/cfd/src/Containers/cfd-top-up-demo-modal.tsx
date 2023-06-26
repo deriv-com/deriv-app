@@ -3,7 +3,7 @@ import SuccessDialog from '../Components/success-dialog.jsx';
 import { Icon, Modal, Button, Money, Text } from '@deriv/components';
 import { getCFDPlatformLabel, CFD_PLATFORMS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { TDxCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
+import { TDxCompanies, TMtCompanies, TDerivezCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { getTopUpConfig } from '../Helpers/constants';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
@@ -23,17 +23,23 @@ const CFDTopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {
         closeSuccessTopUpModal,
     } = ui;
 
-    const { current_account, dxtrade_companies, mt5_companies, topUpVirtual } = useCfdStore();
+    const { current_account, dxtrade_companies, derivez_companies, mt5_companies, topUpVirtual } = useCfdStore();
 
     const getAccountTitle = React.useCallback(() => {
         let title = '';
-        if ((!mt5_companies && !dxtrade_companies) || !current_account) return '';
+        if ((!mt5_companies && !dxtrade_companies && !derivez_companies) || !current_account) return '';
 
         switch (platform) {
             case CFD_PLATFORMS.MT5:
                 title =
                     mt5_companies[current_account.category as keyof TMtCompanies][
                         current_account.type as keyof TMtCompanies['demo' | 'real']
+                    ].title;
+                break;
+            case CFD_PLATFORMS.DERIVEZ:
+                title =
+                    derivez_companies[current_account.category as keyof TDerivezCompanies][
+                        current_account.type as keyof TDerivezCompanies['demo' | 'real']
                     ].title;
                 break;
             case CFD_PLATFORMS.DXTRADE:
@@ -47,7 +53,7 @@ const CFDTopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {
         }
 
         return title;
-    }, [mt5_companies, dxtrade_companies, current_account]);
+    }, [mt5_companies, dxtrade_companies, current_account, derivez_companies]);
 
     const onCloseSuccess = () => {
         closeSuccessTopUpModal();
@@ -55,8 +61,7 @@ const CFDTopUpDemoModal = observer(({ platform }: TCFDTopUpDemoModalProps) => {
 
     const platform_title = getCFDPlatformLabel(platform);
 
-    if ((!mt5_companies && !dxtrade_companies) || !current_account) return null;
-
+    if ((!mt5_companies && !dxtrade_companies && !derivez_companies) || !current_account) return null;
     const { minimum_amount, additional_amount } = getTopUpConfig();
 
     return (

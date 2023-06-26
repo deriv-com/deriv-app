@@ -1,7 +1,7 @@
 import { DetailsOfEachMT5Loginid, Mt5NewAccount, VerifyEmailResponse } from '@deriv/api-types';
 import { TTradingPlatformAvailableAccount } from 'Components/props.types';
 import { TCFDPasswordFormValues } from 'Containers/cfd-password-modal';
-import { TDxCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
+import { TDerivezCompanies, TDxCompanies, TMtCompanies } from 'Stores/Modules/CFD/Helpers/cfd-config';
 import { FormikHelpers } from 'formik';
 
 type TStoreProofOfAddressArgs = {
@@ -17,6 +17,10 @@ export type TCFDStore = {
     setJurisdictionSelectedShortcode: (shortcode: string) => void;
     setAccountType: (account_type: { category: string; type?: string }) => void;
     dxtrade_tokens: {
+        demo: string;
+        real: string;
+    };
+    derivez_tokens: {
         demo: string;
         real: string;
     };
@@ -39,6 +43,7 @@ export type TCFDStore = {
     is_compare_accounts_visible: boolean;
     toggleCompareAccountsModal: () => void;
     dxtrade_companies: TDxCompanies;
+    derivez_companies: TDerivezCompanies;
     mt5_companies: TMtCompanies;
     platform: string;
     topUpVirtual: (platform: string) => void;

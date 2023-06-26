@@ -238,6 +238,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             fetchStatesList: jest.fn(),
             is_crypto: jest.fn(),
             dxtrade_accounts_list: [],
+            derivez_accounts_list: [],
             default_currency: 'USD',
             resetVirtualBalance: jest.fn(),
             has_enabled_two_fa: false,
@@ -341,6 +342,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             closeModal: jest.fn(),
             combined_cfd_mt5_accounts: [],
             content_flag: '',
+            CFDs_restricted_countries: false,
             openModal: jest.fn(),
             selected_account: {
                 login: '',
@@ -349,8 +351,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_eu_user: false,
             is_real: false,
             selectRegion: jest.fn(),
+            setSelectedAccount: jest.fn(),
             is_low_risk_cr_eu_real: false,
-            CFDs_restricted_countries: [],
             show_eu_related_content: false,
             platform_real_balance: {
                 currency: '',
@@ -378,7 +380,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             multipliers_account_status: '',
             openFailedVerificationModal: jest.fn(),
             setTogglePlatformType: jest.fn(),
-            setSelectedAccount: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
             selectAccountType: jest.fn(),
         },

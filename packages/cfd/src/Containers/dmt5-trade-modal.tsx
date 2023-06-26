@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Button, Icon, Money, Popover } from '@deriv/components';
-import { TPasswordBoxProps, TTradingPlatformAccounts, TCFDDashboardContainer } from '../Components/props.types';
+import { TPasswordBoxProps, TTradingPlatformAccounts } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import {
     CFD_PLATFORMS,
@@ -28,7 +28,6 @@ type TMT5TradeModalProps = {
         arg5: string | undefined
     ) => void;
     toggleModal: () => void;
-    dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
 };
 
 export type TSpecBoxProps = {

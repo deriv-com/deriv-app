@@ -36,6 +36,10 @@ export type TCFDDashboardContainer = {
         demo: string;
         real: string;
     };
+    derivez_tokens: {
+        demo: string;
+        real: string;
+    };
 };
 
 export type TMT5AccountOpeningRealFinancialStpModal = {
@@ -266,7 +270,8 @@ export type TCompareAccountRowProps = TCompareAccountContentProps & {
     is_pre_appstore_setting: boolean;
     pre_appstore_class: string;
     is_high_risk_for_mt5: boolean;
-    CFDs_restricted_countries: string[];
+    CFDs_restricted_countries: boolean;
+    financial_restricted_countries: boolean;
     is_preappstore_restricted_cr_demo_account: boolean;
 };
 
@@ -293,6 +298,14 @@ export type TDMT5CompareModalContentProps = {
     should_show_derivx: boolean;
     show_eu_related_content: boolean;
     toggleCompareAccounts: () => void;
+    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
+    updateMT5Status: () => void;
+    upgradeable_landing_companies: unknown[];
+    no_CR_account: boolean;
+    is_eu_user: boolean;
+    no_MF_account: boolean;
+    CFDs_restricted_countries: string[];
+    financial_restricted_countries: string[];
 };
 
 export type TCFDDbviOnboardingProps = {

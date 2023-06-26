@@ -35,6 +35,7 @@ const Row = ({
     content_flag,
     is_high_risk_for_mt5,
     CFDs_restricted_countries,
+    financial_restricted_countries,
     is_preappstore_restricted_cr_demo_account,
 }: TCompareAccountRowProps) => {
     const is_leverage_row = id === 'leverage';
@@ -53,9 +54,17 @@ const Row = ({
     if (is_platform_row && is_pre_appstore_setting && CFDs_restricted_countries) {
         values.synthetic_bvi = { text: 'MT5' };
     }
-
     if (CFDs_restricted_countries) {
+        if (is_leverage_row) values.synthetic_bvi = { text: localize('Up to 1:1000') };
         delete values.derivx;
+    }
+    if (is_platform_row && financial_restricted_countries) {
+        values.financial_svg = { text: localize('MT5') };
+        if ('financial_labuan' in values) values.financial_labuan = { text: localize('MT5') };
+    }
+    // As we only show one account for Demo
+    if (content_flag === ContentFlag.CR_DEMO) {
+        delete values.financial_labuan;
     }
 
     if (is_pre_appstore_setting && is_preappstore_restricted_cr_demo_account) {
@@ -180,7 +189,8 @@ const DMT5CompareModalContent = observer(
         } = client;
         const { openSwitchToRealAccountModal } = ui;
         const { setAppstorePlatform } = common;
-        const { no_CR_account, is_eu_user, no_MF_account, CFDs_restricted_countries } = traders_hub;
+        const { no_CR_account, is_eu_user, no_MF_account, CFDs_restricted_countries, financial_restricted_countries } =
+            traders_hub;
 
         const {
             clearCFDError,
@@ -516,6 +526,7 @@ const DMT5CompareModalContent = observer(
                                         content_flag={content_flag}
                                         is_high_risk_for_mt5={is_high_risk_for_mt5}
                                         CFDs_restricted_countries={CFDs_restricted_countries}
+                                        financial_restricted_countries={financial_restricted_countries}
                                         is_preappstore_restricted_cr_demo_account={
                                             is_preappstore_restricted_cr_demo_account
                                         }

@@ -1,5 +1,4 @@
 export { default as Audio } from './audio';
-export { default as BotFooterExtensions } from './bot-footer-extensions';
 export { default as BotNotificationMessages } from './bot-notification-messages';
 export { default as Chart } from './chart';
 export { default as ContractCardLoader } from './contract-card-loading';

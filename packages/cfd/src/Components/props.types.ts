@@ -3,9 +3,16 @@ import { TCFDPasswordReset } from '../Containers/props.types';
 
 export type TCFDPlatform = 'dxtrade' | 'mt5';
 
+export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'mt5' | 'ctrader';
+
 export type TCFDAccountCopy = {
     text: string | undefined;
     className: string;
+};
+
+export type TDxtradeDesktopDownloadProps = {
+    dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
+    is_demo: string;
 };
 
 export type TAccountIconValues = { [key: string]: string };
@@ -31,6 +38,10 @@ export type TCFDDashboardContainer = {
     active_index: number;
     is_dark_mode_on: boolean;
     dxtrade_tokens: {
+        demo: string;
+        real: string;
+    };
+    derivez_tokens: {
         demo: string;
         real: string;
     };
@@ -65,8 +76,10 @@ export type TTradingPlatformAvailableAccount = {
         };
         signup: string[];
     };
-    shortcode: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest';
+    shortcode: 'bvi' | 'labuan' | 'maltainvest' | 'svg' | 'vanuatu';
     sub_account_type: string;
+    account_type?: 'real' | 'demo';
+    landing_company_short?: 'bvi' | 'labuan' | 'svg' | 'vanuatu';
 };
 
 export type TCardFlipStatus = {

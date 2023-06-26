@@ -293,6 +293,7 @@ type TClientStore = {
     fetchStatesList: () => Promise<void>;
     is_crypto: (currency?: string) => boolean;
     dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
+    derivez_accounts_list: DetailsOfEachMT5Loginid[];
     default_currency: string;
     resetVirtualBalance: () => Promise<void>;
     has_enabled_two_fa: boolean;
@@ -322,7 +323,7 @@ type TCommonStore = {
     has_error: boolean;
     is_from_derivgo: boolean;
     is_network_online: boolean;
-    platform: string;
+    platform: 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;
     server_time?: Moment;
@@ -455,7 +456,6 @@ type TTradersHubStore = {
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
     show_eu_related_content: boolean;
-    CFDs_restricted_countries: string[];
     setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
     selectRegion: (region: string) => void;
@@ -465,9 +465,10 @@ type TTradersHubStore = {
     multipliers_account_status: string;
     financial_restricted_countries: boolean;
     selected_account_type: string;
+    setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
     no_CR_account: boolean;
     no_MF_account: boolean;
-    setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
+    CFDs_restricted_countries: boolean;
     toggleAccountTransferModal: () => void;
     is_demo: boolean;
     platform_real_balance: TBalance;

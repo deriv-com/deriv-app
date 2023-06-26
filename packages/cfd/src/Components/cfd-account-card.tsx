@@ -5,7 +5,11 @@ import { Icon, Money, Button, Text, DesktopWrapper, MobileWrapper, Popover } fro
 import { isMobile, mobileOSDetect, getCFDPlatformLabel, CFD_PLATFORMS, isDesktop } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { CFDAccountCopy } from './cfd-account-copy';
-import { getDXTradeWebTerminalLink, getPlatformDXTradeDownloadLink } from '../Helpers/constants';
+import {
+    getDXTradeWebTerminalLink,
+    getDerivEzWebTerminalLink,
+    getPlatformDXTradeDownloadLink,
+} from '../Helpers/constants';
 import {
     TAccountIconValues,
     TSpecBoxProps,
@@ -207,6 +211,7 @@ const CFDAccountCardComponent = observer(
 
         const {
             dxtrade_tokens,
+            derivez_tokens,
             setAccountType,
             setJurisdictionSelectedShortcode,
             setMT5TradeAccount,
@@ -733,6 +738,23 @@ const CFDAccountCardComponent = observer(
                                     <Localize i18n_default_text='Download the app' />
                                 </a>
                             )}
+                            {existing_data &&
+                                is_logged_in &&
+                                !is_web_terminal_unsupported &&
+                                platform === CFD_PLATFORMS.DERIVEZ && (
+                                    <a
+                                        className='dc-btn cfd-account-card__account-selection cfd-account-card__account-selection--primary'
+                                        type='button'
+                                        href={getDerivEzWebTerminalLink(
+                                            type.category,
+                                            derivez_tokens[type.category as 'demo' | 'real']
+                                        )}
+                                        target='_blank'
+                                        rel='noopener noreferrer'
+                                    >
+                                        <Localize i18n_default_text='Trade on web terminal' />
+                                    </a>
+                                )}
                             {!existing_data && is_logged_in && (
                                 <CFDAccountCardAction
                                     button_label={button_label}

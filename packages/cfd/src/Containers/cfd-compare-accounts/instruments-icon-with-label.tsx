@@ -29,6 +29,7 @@ const InstumentsIconWithLabel = ({ icon, text, highlighted, className }: TIconPr
             <span
                 style={{
                     marginLeft: '0.5rem',
+                    fontWeight: 'bold',
                 }}
             >
                 {text}

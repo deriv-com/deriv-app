@@ -21,15 +21,8 @@ jest.mock('@deriv/account', () => ({
     getStatusBadgeConfig: jest.fn(() => ({ icon: '', text: '' })),
 }));
 
-const mock = mockStore({
-    modules: {
-        cfd: {
-            is_account_being_created: true,
-        },
-    },
-});
-
 describe('TradingAppCard', () => {
+    let mock = mockStore({});
     let mocked_props: React.ComponentProps<typeof TradingAppCard>;
     beforeEach(() => {
         mocked_props = {
@@ -49,6 +42,14 @@ describe('TradingAppCard', () => {
             selected_mt5_jurisdiction: { platform: 'mt5', category: '', jurisdiction: 'svg' },
             openFailedVerificationModal: jest.fn(),
         };
+
+        mock = mockStore({
+            modules: {
+                cfd: {
+                    is_account_being_created: true,
+                },
+            },
+        });
     });
 
     const wrapper = ({ children }: { children: JSX.Element }) => <StoreProvider store={mock}>{children}</StoreProvider>;
@@ -104,7 +105,16 @@ describe('TradingAppCard', () => {
     });
 
     it('Should render Demo subtitle for demo account', () => {
-        mock.traders_hub.is_real = false;
+        mock = mockStore({
+            modules: {
+                cfd: {
+                    is_account_being_created: true,
+                },
+            },
+            traders_hub: {
+                is_real: false,
+            },
+        });
 
         render(<TradingAppCard {...mocked_props} />, {
             wrapper,
@@ -137,7 +147,17 @@ describe('TradingAppCard', () => {
 
     it('Should render the correct app description and link', () => {
         mocked_props.name = 'Test Appstore Name';
-        mock.traders_hub.is_eu_user = false;
+
+        mock = mockStore({
+            modules: {
+                cfd: {
+                    is_account_being_created: true,
+                },
+            },
+            traders_hub: {
+                is_eu_user: false,
+            },
+        });
 
         render(<TradingAppCard {...mocked_props} />, {
             wrapper,
@@ -152,9 +172,19 @@ describe('TradingAppCard', () => {
 
     it('Should render the correct app description and link for MF', () => {
         mocked_props.name = 'Test Appstore Name';
-        mock.traders_hub.is_eu_user = true;
-        mock.traders_hub.content_flag = 'eu_real';
-        mock.traders_hub.is_demo_low_risk = false;
+
+        mock = mockStore({
+            modules: {
+                cfd: {
+                    is_account_being_created: true,
+                },
+            },
+            traders_hub: {
+                is_eu_user: true,
+                content_flag: 'eu_real',
+                is_demo_low_risk: false,
+            },
+        });
 
         render(<TradingAppCard {...mocked_props} />, {
             wrapper,

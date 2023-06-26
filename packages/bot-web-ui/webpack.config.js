@@ -120,7 +120,7 @@ module.exports = function (env) {
                 'process.env.GD_API_KEY': JSON.stringify(process.env.GD_API_KEY),
                 'process.env.GD_APP_ID': JSON.stringify(process.env.GD_APP_ID),
                 'process.env.DATADOG_APPLICATION_ID': JSON.stringify(process.env.DATADOG_APPLICATION_ID),
-                'process.env.DATADOG_CLIENT_TOKEN': JSON.stringify(process.env.DATADOG_CLIENT_TOKEN),
+                'process.env.DATADOG_CLIENT_TOKEN_LOGS': JSON.stringify(process.env.DATADOG_CLIENT_TOKEN_LOGS),
                 'process.env.DATADOG_SESSION_REPLAY_SAMPLE_RATE': JSON.stringify(
                     process.env.DATADOG_SESSION_REPLAY_SAMPLE_RATE
                 ),

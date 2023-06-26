@@ -50,13 +50,13 @@ const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvai
 const getAccountCardTitle = (shortcode: string, is_demo: boolean) => {
     switch (shortcode) {
         case 'synthetic_svg':
-            return is_demo ? 'Derived - Demo' : 'Derived - SVG';
+            return is_demo ? 'Derived Demo' : 'Derived - SVG';
         case 'synthetic_bvi':
             return 'Derived - BVI';
         case 'synthetic_vanuatu':
             return 'Derived - Vanuatu';
         case 'financial_svg':
-            return is_demo ? 'Financial - Demo' : 'Financial - SVG';
+            return is_demo ? 'Financial Demo' : 'Financial - SVG';
         case 'financial_bvi':
             return 'Financial - BVI';
         case 'financial_vanuatu':
@@ -64,7 +64,7 @@ const getAccountCardTitle = (shortcode: string, is_demo: boolean) => {
         case 'financial_labuan':
             return 'Financial - Labuan';
         case 'all_svg':
-            return is_demo ? 'Swap-Free - Demo' : 'Swap-Free - SVG';
+            return is_demo ? 'Swap-Free Demo' : 'Swap-Free - SVG';
         case 'dxtrade':
             return 'Deriv X';
         default:

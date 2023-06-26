@@ -298,14 +298,6 @@ export type TDMT5CompareModalContentProps = {
     should_show_derivx: boolean;
     show_eu_related_content: boolean;
     toggleCompareAccounts: () => void;
-    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
-    updateMT5Status: () => void;
-    upgradeable_landing_companies: unknown[];
-    no_CR_account: boolean;
-    is_eu_user: boolean;
-    no_MF_account: boolean;
-    CFDs_restricted_countries: string[];
-    financial_restricted_countries: string[];
 };
 
 export type TCFDDbviOnboardingProps = {

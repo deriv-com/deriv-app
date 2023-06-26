@@ -31,8 +31,10 @@ export default class AppStore {
         const { client, common } = this.core;
 
         this.timer = setInterval(() => {
-            window.sendRequestsStatistic(run_panel?.is_running);
-            performance.clearMeasures();
+            if (window.sendRequestsStatistic) {
+                window.sendRequestsStatistic(run_panel?.is_running);
+                performance.clearMeasures();
+            }
         }, 10000);
 
         this.showDigitalOptionsMaltainvestError(client, common);
@@ -87,8 +89,10 @@ export default class AppStore {
         ui.setPromptHandler(false);
 
         if (this.timer) clearInterval(this.timer);
-        window.sendRequestsStatistic(false);
-        performance.clearMeasures();
+        if (window.sendRequestsStatistic) {
+            window.sendRequestsStatistic(false);
+            performance.clearMeasures();
+        }
     }
 
     onBeforeUnload = event => {

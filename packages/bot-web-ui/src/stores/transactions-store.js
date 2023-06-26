@@ -141,6 +141,7 @@ export default class TransactionsStore {
     }
 
     clear(is_socket_disconnected = false) {
+        debugger;
         if (is_socket_disconnected) {
             this.elements = this.elements.filter(account => account.data?.is_complete);
         } else {

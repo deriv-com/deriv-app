@@ -13,7 +13,13 @@ jest.mock('Components/containers/trading-app-card-actions', () =>
         </>
     ))
 );
-jest.mock('Assets/svgs/trading-platform', () => jest.fn(props => <span>trading-platform-icon__{props.icon}</span>));
+jest.mock('Assets/svgs/trading-platform', () =>
+    jest.fn(props => (
+        <span data-testid={`dt_trading-platform-icon-${props.onClick ? 'function' : 'none'}`}>
+            trading-platform-icon__{props.icon}
+        </span>
+    ))
+);
 jest.mock('Constants/platform-config');
 
 jest.mock('@deriv/account', () => ({
@@ -62,23 +68,27 @@ describe('TradingAppCard', () => {
         expect(container.childNodes[0]).toHaveClass('trading-app-card');
     });
 
-    // it('should render TradingPlatformIcon with right icon 2', async () => {
-    //     mocked_props.clickable_icon = false;
-    //     const props: React.ComponentProps<typeof TradingPlatformIcon> = {
-    //         icon: mocked_props.icon,
-    //         onClick: undefined,
-    //         // onClick: jest.fn,
-    //         size: 48,
-    //         // className: '',
-    //     };
-    //     // const testSpy = jest.spyOn(TradingPlatformIcon);
+    it('Should render TradingPlatformIcon with onClick === undefined', () => {
+        mocked_props.clickable_icon = false;
 
-    //     const { container } = render(<TradingAppCard {...mocked_props} />, {
-    //         wrapper,
-    //     });
+        render(<TradingAppCard {...mocked_props} />, {
+            wrapper,
+        });
 
-    //     expect(TradingPlatformIcon).toHaveBeenLastCalledWith(props);
-    // });
+        const icon = screen.getByTestId('dt_trading-platform-icon-none');
+        expect(icon).toBeInTheDocument();
+    });
+
+    it('Should render TradingPlatformIcon with onClick === function', () => {
+        mocked_props.clickable_icon = true;
+
+        render(<TradingAppCard {...mocked_props} />, {
+            wrapper,
+        });
+
+        const icon = screen.getByTestId('dt_trading-platform-icon-function');
+        expect(icon).toBeInTheDocument();
+    });
 
     it('Should render all the details correctly', () => {
         render(<TradingAppCard {...mocked_props} />, {

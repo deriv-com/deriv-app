@@ -1,4 +1,11 @@
-import { getUrlBinaryBot, getUrlSmartTrader, getPlatformSettingsAppstore, routes, getStaticUrl } from '@deriv/shared';
+import {
+    CFD_PLATFORMS,
+    getUrlBinaryBot,
+    getUrlSmartTrader,
+    getPlatformSettingsAppstore,
+    routes,
+    getStaticUrl,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { TAccountCategory, TRegionAvailability } from 'Types';
@@ -72,3 +79,20 @@ export const getMFAppstorePlatforms = (): MfPlatformConfig[] => [
         link_to: routes.trade,
     },
 ];
+
+export const openStaticPage = (
+    availability: RegionAvailability,
+    platform: string | undefined,
+    icon: BrandConfig['icon'],
+    is_eu_user: boolean
+) => {
+    return () => {
+        if (platform === CFD_PLATFORMS.MT5 && availability === 'EU')
+            window.open(getStaticUrl(`/dmt5`, {}, false, true));
+        else if (platform === CFD_PLATFORMS.MT5 && availability !== 'EU') window.open(getStaticUrl(`/dmt5`));
+        else if (platform === CFD_PLATFORMS.DXTRADE) window.open(getStaticUrl(`/derivx`));
+        else if (platform === CFD_PLATFORMS.DERIVEZ) window.open(getStaticUrl(`/derivez`));
+        else if (icon === 'Options' && !is_eu_user) window.open(getStaticUrl(`/trade-types/options/`));
+        else;
+    };
+};

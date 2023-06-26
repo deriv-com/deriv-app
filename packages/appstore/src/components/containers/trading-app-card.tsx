@@ -3,12 +3,12 @@ import classNames from 'classnames';
 import { getStatusBadgeConfig } from '@deriv/account';
 import { Text, StatusBadge } from '@deriv/components';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
-import { getAppstorePlatforms, getMFAppstorePlatforms, BrandConfig } from 'Constants/platform-config';
+import { getAppstorePlatforms, getMFAppstorePlatforms, BrandConfig, openStaticPage } from 'Constants/platform-config';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import { useStore, observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { CFD_PLATFORMS, ContentFlag, getStaticUrl } from '@deriv/shared';
+import { ContentFlag } from '@deriv/shared';
 import './trading-app-card.scss';
 
 const TradingAppCard = observer(
@@ -54,16 +54,6 @@ const TradingAppCard = observer(
             selected_mt5_jurisdiction
         );
 
-        const openStaticPage = () => {
-            if (platform === CFD_PLATFORMS.MT5 && availability === 'EU')
-                window.open(getStaticUrl(`/dmt5`, {}, false, true));
-            else if (platform === CFD_PLATFORMS.MT5 && availability !== 'EU') window.open(getStaticUrl(`/dmt5`));
-            else if (platform === CFD_PLATFORMS.DXTRADE) window.open(getStaticUrl(`/derivx`));
-            else if (platform === CFD_PLATFORMS.DERIVEZ) window.open(getStaticUrl(`/derivez`));
-            else if (icon === 'Options' && !is_eu_user) window.open(getStaticUrl(`/trade-types/options/`));
-            else;
-        };
-
         return (
             <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
                 <div
@@ -73,7 +63,7 @@ const TradingAppCard = observer(
                 >
                     <TradigPlatformIconProps
                         icon={icon}
-                        onClick={clickable_icon ? openStaticPage : undefined}
+                        onClick={clickable_icon ? openStaticPage(availability, platform, icon, is_eu_user) : undefined}
                         size={48}
                     />
                 </div>

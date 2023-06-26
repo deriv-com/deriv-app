@@ -156,7 +156,6 @@ type TClientStore = {
     is_deposit_lock: boolean;
     is_dxtrade_allowed: boolean;
     is_eu: boolean;
-    is_eu_country: boolean;
     is_authorize: boolean;
     is_financial_account: boolean;
     is_financial_information_incomplete: boolean;

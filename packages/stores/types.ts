@@ -6,6 +6,8 @@ import type {
     GetLimits,
     GetSettings,
     LogOutResponse,
+    ResidenceList,
+    StatesList,
     ProposalOpenContract,
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
@@ -62,6 +64,33 @@ type BrandConfig = {
     is_deriv_platform?: boolean;
 };
 
+type TAccountLimitsCollection = {
+    level?: string;
+    name: string;
+    payout_limit: number;
+    profile_name: string;
+    turnover_limit: number;
+};
+type TAccount_limits = {
+    api_initial_load_error?: string;
+    open_positions?: React.ReactNode;
+    account_balance: string | number;
+    daily_transfers?: object;
+    payout: string | number;
+    lifetime_limit?: number;
+    market_specific: {
+        commodities: TAccountLimitsCollection[];
+        cryptocurrency: TAccountLimitsCollection[];
+        forex: TAccountLimitsCollection[];
+        indices: TAccountLimitsCollection[];
+        synthetic_index: TAccountLimitsCollection[];
+    };
+    num_of_days?: number;
+    num_of_days_limit: string | number;
+    remainder: string | number;
+    withdrawal_for_x_days_monetary?: number;
+    withdrawal_since_inception_monetary: string | number;
+};
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: number;
     landing_company_shortcode?: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';
@@ -179,6 +208,9 @@ type TNotification =
     | ((excluded_until: number) => TNotificationMessage);
 
 type TClientStore = {
+    fetchResidenceList: () => Promise<ResidenceList>;
+    fetchStatesList: () => Promise<StatesList>;
+    getChangeableFields: () => string[];
     accounts: { [k: string]: TActiveAccount };
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
@@ -196,8 +228,11 @@ type TClientStore = {
     cfd_score: number;
     setCFDScore: (score: number) => void;
     currency: string;
+    residence_list: ResidenceList;
+    states_list: StatesList;
     current_currency_type?: string;
     current_fiat_currency?: string;
+    has_any_real_account: boolean;
     getLimits: () => Promise<{ get_limits?: GetLimits }>;
     has_active_real_account: boolean;
     has_logged_out: boolean;
@@ -207,6 +242,10 @@ type TClientStore = {
     is_deposit_lock: boolean;
     is_dxtrade_allowed: boolean;
     is_eu: boolean;
+    is_eu_country: boolean;
+    is_uk: boolean;
+    is_social_signup: boolean;
+    has_residence: boolean;
     is_authorize: boolean;
     is_financial_account: boolean;
     is_financial_information_incomplete: boolean;
@@ -243,7 +282,11 @@ type TClientStore = {
     }) => DetailsOfEachMT5Loginid[];
     standpoint: {
         iom: string;
+        svg: string;
         malta: string;
+        maltainvest: string;
+        gaming_company: string;
+        financial_company: string;
     };
     setAccountStatus: (status?: GetAccountStatus) => void;
     setBalanceOtherAccounts: (balance: number) => void;
@@ -276,13 +319,14 @@ type TClientStore = {
     should_allow_authentication: boolean;
     is_crypto: (currency?: string) => boolean;
     dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
+    derivez_accounts_list: DetailsOfEachMT5Loginid[];
     default_currency: string;
     resetVirtualBalance: () => Promise<void>;
     has_enabled_two_fa: boolean;
     setTwoFAStatus: (status: boolean) => void;
     has_changed_two_fa: boolean;
     setTwoFAChangedStatus: (status: boolean) => void;
-    has_any_real_account: boolean;
+    is_fully_authenticated: boolean;
     real_account_creation_unlock_date: number;
     setPrevAccountType: (account_type: string) => void;
 };
@@ -301,6 +345,7 @@ type TCommonStoreError = {
 };
 
 type TCommonStore = {
+    isCurrentLanguage(language_code: string): boolean;
     error: TCommonStoreError;
     has_error: boolean;
     is_from_derivgo: boolean;
@@ -329,6 +374,8 @@ type TUiStore = {
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
+    sub_section_index: number;
+    toggleShouldShowRealAccountsList: (value: boolean) => void;
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
@@ -339,7 +386,6 @@ type TUiStore = {
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
-    sub_section_index: number;
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: string) => void;
     toggleAccountsDialog: () => void;
@@ -347,6 +393,7 @@ type TUiStore = {
     toggleLanguageSettingsModal: () => void;
     toggleReadyToDepositModal: () => void;
     toggleSetCurrencyModal: () => void;
+    is_tablet: boolean;
     removeToast: (key: string) => void;
     is_ready_to_deposit_modal_visible: boolean;
     reports_route_tab_index: number;
@@ -385,12 +432,13 @@ type TMenuStore = {
 };
 
 type TNotificationStore = {
+    addNotificationMessageByKey: (key: string) => void;
     addNotificationMessage: (message: TNotification) => void;
     client_notifications: object;
     filterNotificationMessages: () => void;
     refreshNotifications: () => void;
-    removeNotificationByKey: (obj: { key: string }) => void;
-    removeNotificationMessage: (obj: { key: string; should_show_again?: boolean }) => void;
+    removeNotificationByKey: (key: string) => void;
+    removeNotificationMessage: (key: string, should_show_again?: boolean) => void;
     setP2POrderProps: () => void;
     showAccountSwitchToRealNotification: (loginid: string, currency: string) => void;
     setP2PRedirectTo: () => void;
@@ -430,9 +478,10 @@ type TTradersHubStore = {
     multipliers_account_status: string;
     financial_restricted_countries: boolean;
     selected_account_type: string;
+    setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
     no_CR_account: boolean;
     no_MF_account: boolean;
-    setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
+    CFDs_restricted_countries: boolean;
     toggleAccountTransferModal: () => void;
     is_real_wallets_upgrade_on: boolean;
     toggleWalletsUpgrade: (value: boolean) => void;
@@ -442,7 +491,6 @@ type TTradersHubStore = {
     is_tour_open: boolean;
     selected_platform_type: string;
     available_platforms: BrandConfig[];
-    CFDs_restricted_countries: boolean;
     is_demo_low_risk: boolean;
     selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];

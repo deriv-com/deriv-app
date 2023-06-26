@@ -60,6 +60,9 @@
         &--grow-mid {
             flex-grow: 1.5;
         }
+        .transactions__loader-text {
+            width: 100%;
+        }
     }
     &__loss {
         color: var(--text-loss-danger);

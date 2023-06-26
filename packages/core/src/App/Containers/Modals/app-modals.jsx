@@ -81,6 +81,7 @@ const AppModals = ({
     is_trading_experience_incomplete,
     should_show_risk_accept_modal,
     is_need_real_account_for_cashier_modal_visible,
+    should_show_deposit_or_account_success_modal,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -163,7 +164,10 @@ const AppModals = ({
     if (is_need_real_account_for_cashier_modal_visible) {
         ComponentToLoad = <NeedRealAccountForCashierModal />;
     }
-    ComponentToLoad = <ReadyToVerifyModal />;
+
+    if (should_show_deposit_or_account_success_modal) {
+        ComponentToLoad = <ReadyToVerifyModal />;
+    }
 
     return (
         <>
@@ -199,4 +203,5 @@ export default connect(({ client, ui, traders_hub }) => ({
     content_flag: traders_hub.content_flag,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     should_show_risk_accept_modal: ui.should_show_risk_accept_modal,
+    should_show_deposit_or_account_success_modal: ui.should_show_deposit_or_account_success_modal,
 }))(AppModals);

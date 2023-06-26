@@ -163,7 +163,7 @@ export default class UIStore extends BaseStore {
     should_show_risk_accept_modal = false;
     should_show_cooldown_modal = false;
     should_show_trading_assessment_modal = false;
-    should_show_deposit_or_account_success_modal = true;
+    should_show_deposit_or_account_success_modal = false;
     should_show_trade_assessment_form = false;
     should_trigger_tour_guide = false;
     is_trading_assessment_for_existing_user_enabled = false;

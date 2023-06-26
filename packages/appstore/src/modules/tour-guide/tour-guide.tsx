@@ -34,7 +34,7 @@ const TourGuide = () => {
     const high_risk_tour_step_locale = getHighRiskTourStepLocale();
 
     tour_step_locale.last = (
-        <span
+        <div
             onClick={() => {
                 setIsOnboardingVisited(true);
                 toggleIsTourOpen(false);
@@ -45,11 +45,11 @@ const TourGuide = () => {
             }}
         >
             <Localize i18n_default_text='OK' />
-        </span>
+        </div>
     );
 
     high_risk_tour_step_locale.last = (
-        <span
+        <div
             onClick={() => {
                 setIsOnboardingVisited(true);
                 toggleIsTourOpen(false);
@@ -59,7 +59,7 @@ const TourGuide = () => {
             }}
         >
             <Localize i18n_default_text='OK' />
-        </span>
+        </div>
     );
 
     if (joyride_index === 0) {

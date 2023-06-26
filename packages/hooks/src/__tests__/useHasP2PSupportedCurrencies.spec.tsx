@@ -6,16 +6,10 @@ import useHasP2PSupportedCurrencies from '../useHasP2PSupportedCurrencies';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useFetch: jest.fn(),
+    useFetch: jest.fn(() => ({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } })),
 }));
 
-const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'website_status'>>;
-
 describe('useHasP2PSupportedCurrencies', () => {
-    beforeEach(() => {
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
-    });
     test('should return false if supported currencies is not in the account info', () => {
         const mock = mockStore({
             client: {

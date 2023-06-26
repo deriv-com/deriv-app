@@ -4,14 +4,14 @@ import { PrevButton, NextButton } from './carousel-buttons';
 import { observer, useStore } from '@deriv/stores';
 
 const CarouselContainer: React.FC<React.PropsWithChildren<unknown>> = observer(({ children }) => {
+    const { ui } = useStore();
+    const { is_mobile } = ui;
+
     const options: EmblaOptionsType = {
         align: 0,
         containScroll: 'trimSnaps',
-        watchDrag: false,
+        watchDrag: !!is_mobile,
     };
-
-    const { ui } = useStore();
-    const { is_mobile } = ui;
 
     const [emblaRef, emblaApi] = useEmblaCarousel(options);
     const [is_hovered, setIsHovered] = React.useState(is_mobile);
@@ -43,7 +43,7 @@ const CarouselContainer: React.FC<React.PropsWithChildren<unknown>> = observer((
             <div className='carousel' ref={emblaRef}>
                 <div className='carousel__wrapper'>{children}</div>
             </div>
-            {is_hovered && (
+            {!is_mobile && is_hovered && (
                 <React.Fragment>
                     <PrevButton enabled={prev_btn_disabled} onClick={scrollPrev} />
                     <NextButton enabled={next_btn_disabled} onClick={scrollNext} />

@@ -18,7 +18,7 @@ jest.mock('Constants/platform-config');
 
 jest.mock('@deriv/account', () => ({
     ...jest.requireActual('@deriv/account'),
-    getStatusBadgeConfig: jest.fn(() => ({ icon: '', text: '' })),
+    getStatusBadgeConfig: jest.fn(() => ({ icon: 'getStatusBadgeConfig-icon', text: 'getStatusBadgeConfig-text' })),
 }));
 
 describe('TradingAppCard', () => {
@@ -194,5 +194,25 @@ describe('TradingAppCard', () => {
 
         const link = screen.getByText('TradingAppCardActions Link');
         expect(link).toHaveAttribute('href', 'getMFAppstorePlatforms.com');
+    });
+
+    it('Should render StatusBadge conponent', () => {
+        mocked_props.mt5_acc_auth_status = 'pending';
+
+        render(<TradingAppCard {...mocked_props} />, {
+            wrapper,
+        });
+
+        const text = screen.queryByText(/getStatusBadgeConfig-text/i);
+        expect(text).toBeInTheDocument();
+    });
+
+    it('Should NOT render StatusBadge conponent', () => {
+        render(<TradingAppCard {...mocked_props} />, {
+            wrapper,
+        });
+
+        const text = screen.queryByText(/getStatusBadgeConfig-text/i);
+        expect(text).not.toBeInTheDocument();
     });
 });

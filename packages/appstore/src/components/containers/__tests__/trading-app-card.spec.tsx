@@ -169,7 +169,6 @@ describe('TradingAppCard', () => {
         expect(subtitle_text).not.toBeInTheDocument();
     });
 
-    // here check the name
     it('Should render name', () => {
         mock = mockStore({
             modules: {
@@ -194,7 +193,6 @@ describe('TradingAppCard', () => {
 
     it('Should render DEMO name', () => {
         mocked_props.sub_title = '';
-        // {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
 
         mock = mockStore({
             modules: {
@@ -213,6 +211,32 @@ describe('TradingAppCard', () => {
 
         const demo_name_text = screen.queryByText(/Test Name Demo/i);
         expect(demo_name_text).toBeInTheDocument();
+    });
+
+    it('Should render general color when action_type !== trade', () => {
+        mocked_props.action_type = 'get';
+
+        render(<TradingAppCard {...mocked_props} />, {
+            wrapper,
+        });
+
+        const name_text = screen.queryByText(/Test Name/i);
+        const style = name_text?.getAttribute('style');
+        expect(style?.indexOf('--text-color: var(--text-general)')).toBeGreaterThanOrEqual(0);
+        expect(style?.indexOf('--text-color: var(--text-prominent)')).toBe(-1);
+    });
+
+    it('Should render prominent color when action_type === trade', () => {
+        mocked_props.action_type = 'trade';
+
+        render(<TradingAppCard {...mocked_props} />, {
+            wrapper,
+        });
+
+        const name_text = screen.queryByText(/Test Name/i);
+        const style = name_text?.getAttribute('style');
+        expect(style?.indexOf('--text-color: var(--text-prominent)')).toBeGreaterThanOrEqual(0);
+        expect(style?.indexOf('--text-color: var(--text-general)')).toBe(-1);
     });
 
     it('Should render TradingPlatformIcon with right icon', () => {

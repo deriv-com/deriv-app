@@ -140,8 +140,8 @@ export default class TransactionsStore {
         window.removeEventListener('click', this.onClickOutsideTransaction);
     }
 
-    clear(is_socket_disconnected = false) {
-        if (is_socket_disconnected) {
+    clear(is_websocket_disconnected = false) {
+        if (is_websocket_disconnected) {
             this.elements = this.elements.filter(account => account.data && account.data.is_completed);
         } else {
             this.elements = this.elements.slice(0, 0);

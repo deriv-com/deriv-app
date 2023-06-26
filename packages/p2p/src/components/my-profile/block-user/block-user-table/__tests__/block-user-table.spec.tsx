@@ -1,5 +1,5 @@
 import React from 'react';
-import { screen, render, act, waitFor } from '@testing-library/react';
+import { screen, render, act } from '@testing-library/react';
 import { useStores } from 'Stores/index';
 import BlockUserTable from '../block-user-table';
 

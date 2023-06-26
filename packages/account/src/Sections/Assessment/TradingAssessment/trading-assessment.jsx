@@ -16,7 +16,7 @@ import {
 } from '@deriv/components';
 import FormFooter from 'Components/form-footer';
 import { isMobile, routes, WS } from '@deriv/shared';
-import { observer, useStore } from '@deriv/stores';
+import { connect } from 'Stores/connect';
 import { useHistory, withRouter } from 'react-router';
 import { Formik, Form } from 'formik';
 
@@ -35,9 +35,7 @@ const populateData = form_data => {
     };
 };
 
-const TradingAssessment = observer(() => {
-    const { client } = useStore();
-    const { is_virtual, setFinancialAndTradingAssessment } = client;
+const TradingAssessment = ({ is_virtual, setFinancialAndTradingAssessment }) => {
     const history = useHistory();
     const [is_loading, setIsLoading] = React.useState(true);
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
@@ -284,6 +282,9 @@ const TradingAssessment = observer(() => {
             }}
         </Formik>
     );
-});
+};
 
-export default withRouter(TradingAssessment);
+export default connect(({ client }) => ({
+    is_virtual: client.is_virtual,
+    setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
+}))(withRouter(TradingAssessment));

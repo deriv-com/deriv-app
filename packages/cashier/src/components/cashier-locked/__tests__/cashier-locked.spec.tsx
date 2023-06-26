@@ -114,11 +114,7 @@ describe('<CashierLocked />', () => {
             wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
         });
 
-        expect(
-            screen.getByText(
-                'Our cashier is temporarily down due to system maintenance. You can access the Cashier in a few minutes when the maintenance is complete.'
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByText('Cashier is currently down for maintenance')).toBeInTheDocument();
     });
 
     it('should show the proper message if the client does not provide residence', () => {

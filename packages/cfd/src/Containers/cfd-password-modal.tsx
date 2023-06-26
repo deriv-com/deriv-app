@@ -215,8 +215,12 @@ const ReviewMessageForMT5 = ({
             return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
         }
         return <Localize i18n_default_text='We’re reviewing your documents. This should take about 5 minutes.' />;
-    } else if ([Jurisdiction.LABUAN, Jurisdiction.MALTA_INVEST].includes(jurisdiction_selected_shortcode)) {
+    } else if (jurisdiction_selected_shortcode === Jurisdiction.LABUAN) {
         return <Localize i18n_default_text='We’re reviewing your documents. This should take about 1 to 3 days.' />;
+    } else if (jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) {
+        return (
+            <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
+        );
     }
     return null;
 };
@@ -882,7 +886,7 @@ const CFDPasswordModal = ({
                         }}
                         components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}
                     />
-                    {is_eu_user || platform === CFD_PLATFORMS.DXTRADE ? (
+                    {platform === CFD_PLATFORMS.DXTRADE ? (
                         <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
                     ) : (
                         <ReviewMessageForMT5

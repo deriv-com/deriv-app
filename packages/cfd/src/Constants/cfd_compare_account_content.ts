@@ -46,13 +46,13 @@ export const getEuRealContent = (): TCompareAccountContentProps[] => [
         values: {
             financial_maltainvest: [
                 { text: localize('Synthetics'), options: { should_show_asterick_at_end: true } },
-                { text: localize('Forex: standard') },
+                { text: localize('Forex(standard)') },
                 { text: localize('Stocks') },
                 { text: localize('Stock indices') },
                 { text: localize('Commodities') },
                 { text: localize('Cryptocurrencies') },
                 {
-                    text: localize('*Boom 300 and Crash 300 Index'),
+                    text: localize('*Volatility 250 Index, Volatility 150 Index, Boom 300 and Crash 300 Index'),
                     options: { color: 'loss-danger', weight: 'bold', styles: { paddingTop: '2rem' } },
                 },
             ],

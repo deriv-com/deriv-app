@@ -113,10 +113,8 @@ const TradingAppCard = ({
                         is_external={is_external}
                         new_tab={new_tab}
                         is_buttons_disabled={
-                            //For MF, we disable the buttons only if verification failed. Rest of jurisdictions, disable the button for pending, failed and needs verification
-                            selected_mt5_jurisdiction === Jurisdiction.MALTA_INVEST
-                                ? mt5_acc_auth_status === 'failed'
-                                : !!mt5_acc_auth_status
+                            //For MF, we enable the button even if account is not authenticated. Rest of jurisdictions, disable the button for pending, failed and needs verification
+                            !is_eu_user && !!mt5_acc_auth_status
                         }
                     />
                 </div>

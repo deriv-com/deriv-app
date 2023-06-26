@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
 import { localize } from '@deriv/translations';
-import { isMobile } from '@deriv/shared';
 import FiatTransactionList from 'Components/fiat-transaction-list';
 import WalletTransfer from 'Components/wallet-transfer';
+import WithdrawRequestVerification from '../../withdraw-request-verification';
 
 export type TWalletType = 'real' | 'demo' | 'p2p' | 'payment_agent';
 
@@ -72,7 +72,7 @@ export const getCashierOptions = (type: TWalletType) => {
                         </div>
                     ),
                 },
-                { icon: 'IcMinus', label: localize('Withdraw'), content: () => <p>Withdraw Real</p> },
+                { icon: 'IcMinus', label: localize('Withdraw'), content: () => <WithdrawRequestVerification /> },
                 {
                     icon: 'IcAccountTransfer',
                     label: localize('Transfer'),

@@ -18,12 +18,11 @@ const AddWalletCard = observer(({ wallet_info }: TAddWalletCard) => {
     const { currency, landing_company_name, is_added } = wallet_info;
     const { getConfig } = useCurrencyConfig();
     const currency_config = getConfig(currency);
-    const crypto_currency = currency_config?.type === 'crypto';
 
     const wallet_details = {
         currency,
-        icon: crypto_currency ? getWalletCurrencyIcon(currency, is_dark_mode_on) : currency_config?.icon,
-        icon_type: crypto_currency ? 'crypto' : 'fiat',
+        icon: currency_config?.is_crypto ? getWalletCurrencyIcon(currency, is_dark_mode_on) : currency_config?.icon,
+        icon_type: currency_config?.type,
         jurisdiction_title: landing_company_name?.toUpperCase(),
         name: currency_config?.name,
     };

@@ -43,11 +43,16 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
     };
     const is_proposal_empty = isEmptyObject(proposal_info);
     const components = [];
-    Object.keys(trade_types).map((type, index) => {
+    Object.keys(trade_types).forEach((type, index) => {
         const getSortedIndex = () => {
-            if (getContractTypePosition(type) === 'top') return 0;
-            if (getContractTypePosition(type) === 'bottom') return 1;
-            return index;
+            switch (getContractTypePosition(type)) {
+                case 'top':
+                    return 0;
+                case 'bottom':
+                    return 1;
+                default:
+                    return index;
+            }
         };
         const info = proposal_info?.[type] || {};
         const is_disabled = !is_trade_enabled || !info.id || !is_purchase_enabled;
@@ -72,7 +77,7 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
                     buy_info={purchase_info}
                     currency={currency}
                     info={info}
-                    key={index}
+                    key={type}
                     index={getSortedIndex()}
                     growth_rate={growth_rate}
                     has_cancellation={has_cancellation}

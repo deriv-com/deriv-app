@@ -10,7 +10,7 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'www'),
         filename: 'index.js',
-        sourceMapFilename: 'index.js.map',
+        publicPath: 'auto',
     },
     devtool: 'source-map',
     target: 'web',
@@ -57,16 +57,6 @@ module.exports = {
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('development'),
         }),
-        new BlocklyConcatPlugin({
-            outputPath: path.resolve(__dirname, 'www'),
-            fileName: 'blockly.js',
-            filesToConcat: [
-                './node_modules/blockly/blockly_compressed.js',
-                './node_modules/blockly/blocks_compressed.js',
-                './node_modules/blockly/javascript_compressed.js',
-                './node_modules/blockly/msg/messages.js',
-            ],
-        }),
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
@@ -76,7 +66,7 @@ module.exports = {
             patterns: [
                 {
                     from: 'node_modules/@deriv/deriv-charts/dist/*.smartcharts.*',
-                    to: path.resolve(__dirname, 'www/js'),
+                    to: path.resolve(__dirname, 'www/js', '[name][ext]'),
                 },
                 {
                     from: 'node_modules/binary-style/src/images/favicons',
@@ -97,6 +87,10 @@ module.exports = {
                 {
                     from: 'translations',
                     to: path.resolve(__dirname, 'www/translations'),
+                },
+                {
+                    from: 'temp/blockly.js',
+                    to: path.resolve(__dirname, 'www/'),
                 },
             ],
         }),

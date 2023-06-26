@@ -7,7 +7,7 @@ class BlocklyConcatPlugin {
     }
 
     apply(compiler) {
-        compiler.hooks.emit.tapAsync('emit', (compilation, callback) => {
+        compiler.hooks.emit.tapAsync('BlocklyConcatPlugin', (compilation, callback) => {
             const { outputPath, fileName, filesToConcat } = this.options;
 
             // Read the content of each file
@@ -25,7 +25,7 @@ class BlocklyConcatPlugin {
                 source: () => mergedContent,
                 size: () => Buffer.byteLength(mergedContent),
             };
-
+            console.log('\x1b[32m%s\x1b[0m', 'Blockly pulled successfully \u{1F44D}');
             callback();
         });
     }

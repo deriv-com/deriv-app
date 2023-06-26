@@ -12,7 +12,6 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'www'),
         filename: 'index.js',
-        sourceMapFilename: 'index.js.map',
     },
     target: 'web',
     module: {

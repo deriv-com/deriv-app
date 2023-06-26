@@ -14,3 +14,4 @@ CNAME
 *.env
 .env
 translations/*.js
+temp

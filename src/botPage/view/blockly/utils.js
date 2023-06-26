@@ -307,6 +307,8 @@ export const expandDuration = duration =>
 
 const isProcedure = blockType => ['procedures_defreturn', 'procedures_defnoreturn'].indexOf(blockType) >= 0;
 
+console.log(Blockly, 'here');
+
 // dummy event to recover deleted blocks loaded by loader
 class DeleteStray extends Blockly.Events.Abstract {
     constructor(block) {

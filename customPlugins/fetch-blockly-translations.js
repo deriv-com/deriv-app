@@ -61,7 +61,7 @@ const axios = require('axios');
     const outputFile = path.join(outputPath, fileName);
     console.log(outputFile, 'output file');
     await fs.writeFile(outputFile, mergedContent, 'utf8', err => {
-        console.log(err, 'here');
+        console.log(err, 'Error fetching blockly');
     });
 
     console.log('\x1b[32m%s\x1b[0m', 'Blockly pulled successfully \u{1F44D}');

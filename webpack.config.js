@@ -32,23 +32,18 @@ module.exports = {
             },
             {
                 test: /\.(png|jpg|jpeg|gif|svg)$/,
+                type: 'asset/resource',
                 use: {
                     loader: 'file-loader',
                     options: {
-                        name: '[name].[ext]',
+                        name: '[name][ext]',
                         outputPath: 'image',
                     },
                 },
             },
             {
                 test: /\.(woff|woff2|eot|ttf|otf)$/,
-                use: {
-                    loader: 'file-loader',
-                    options: {
-                        name: '[name].[ext]',
-                        outputPath: 'public/font',
-                    },
-                },
+                type: 'asset/inline',
             },
         ],
     },

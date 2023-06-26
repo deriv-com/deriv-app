@@ -124,6 +124,50 @@ describe('TradingAppCard', () => {
         expect(demo_text).toBeInTheDocument();
     });
 
+    it('Should render NOT Demo subtitle for real account', () => {
+        mock = mockStore({
+            modules: {
+                cfd: {
+                    is_account_being_created: true,
+                },
+            },
+            traders_hub: {
+                is_real: true,
+            },
+        });
+
+        render(<TradingAppCard {...mocked_props} />, {
+            wrapper,
+        });
+
+        const demo_subtitle_text = screen.queryByText(/Test Subtitle Demo/i);
+        expect(demo_subtitle_text).not.toBeInTheDocument();
+        const subtitle_text = screen.queryByText(/Test Subtitle/i);
+        expect(subtitle_text).toBeInTheDocument();
+    });
+
+    it('Should NOT render subtitle', () => {
+        mocked_props.sub_title = '';
+
+        mock = mockStore({
+            modules: {
+                cfd: {
+                    is_account_being_created: true,
+                },
+            },
+            traders_hub: {
+                is_real: false,
+            },
+        });
+
+        render(<TradingAppCard {...mocked_props} />, {
+            wrapper,
+        });
+
+        const subtitle_text = screen.queryByText(/Test Subtitle/i);
+        expect(subtitle_text).not.toBeInTheDocument();
+    });
+
     it('Should render a clickable icon when clickable_icon is true', () => {
         mocked_props.clickable_icon = true;
 

@@ -41,6 +41,7 @@ module.exports = {
         'selector-class-pattern': null,
         'declaration-no-important': null,
         'no-descending-specificity': null,
+        'scss/dollar-variable-pattern': null,
 
         // Plugins Config
 

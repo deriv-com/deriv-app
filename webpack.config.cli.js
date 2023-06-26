@@ -93,10 +93,6 @@ module.exports = {
                     from: 'public',
                     to: path.resolve(__dirname, 'www/public'),
                 },
-                {
-                    from: 'templates/index.html',
-                    to: path.resolve(__dirname, 'www'),
-                },
             ],
         }),
     ],

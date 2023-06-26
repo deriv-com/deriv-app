@@ -84,7 +84,6 @@ const MobileFullPageModal = ({
                                     icon='IcArrowLeftBold'
                                     data_testid='dt_mobile_full_page_return_icon'
                                     onClick={pageHeaderReturnFn}
-                                    size={16}
                                 />
                             </div>
                         )}
@@ -93,7 +92,7 @@ const MobileFullPageModal = ({
                             {renderPageHeaderText ? (
                                 renderPageHeaderText()
                             ) : (
-                                <Text as='p' color='prominent' line_height='m' size='s' weight='bold'>
+                                <Text as='p' color='prominent' weight='bold'>
                                     {page_header_text}
                                 </Text>
                             )}

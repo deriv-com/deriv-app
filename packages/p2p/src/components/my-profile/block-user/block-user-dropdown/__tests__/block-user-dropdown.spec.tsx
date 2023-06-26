@@ -1,10 +1,9 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import BlockUserDropdown from '../block-user-dropdown';
-import userEvent from '@testing-library/user-event';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     my_profile_store: {

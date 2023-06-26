@@ -1,9 +1,9 @@
 import React from 'react';
 import { screen, render, act, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useStores } from 'Stores/index';
 import { localize } from 'Components/i18next';
 import BlockUserList from '../block-user-list';
-import userEvent from '@testing-library/user-event';
 
 const mock_trade_partners_list = [
     { id: '0', is_blocked: 0, name: 'testA' },

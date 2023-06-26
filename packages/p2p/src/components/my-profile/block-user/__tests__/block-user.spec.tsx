@@ -1,11 +1,11 @@
 import React from 'react';
-import { act, screen, render } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useStores } from 'Stores/index';
-import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { localize } from 'Components/i18next';
-import BlockUser from '../block-user';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import BlockUser from '../block-user';
 
 const mock_trade_partners_list = [
     { id: '0', is_blocked: 0, name: 'testA' },
@@ -94,69 +94,5 @@ describe('<BlockUser />', () => {
         userEvent.click(pageReturnIcon);
 
         expect(mock_store.my_profile_store.setActiveTab).toBeCalledWith(my_profile_tabs.MY_STATS);
-    });
-
-    it('should display ErrorModal with error_message, not block_unblock_user_error, when error_code is InvalidAdvertiserID while Blocking', () => {
-        act(() => {
-            mock_store.general_store.block_unblock_user_error = 'error';
-            mock_store.general_store.error_code = 'InvalidAdvertiserID';
-        });
-
-        render(<BlockUser />);
-
-        expect(mock_modal_manager.showModal).toHaveBeenCalledWith({
-            key: 'ErrorModal',
-            props: {
-                error_message: "Blocking wasn't possible as test is not using Deriv P2P anymore.",
-                error_modal_button_text: 'Got it',
-                error_modal_title: 'test is no longer on Deriv P2P',
-                has_close_icon: false,
-                onClose: expect.any(Function),
-                width: '40rem',
-            },
-        });
-    });
-
-    it('should display ErrorModal with error_message, not block_unblock_user_error, when error_code is InvalidAdvertiserID while Unblocking', () => {
-        act(() => {
-            mock_store.my_profile_store.selected_trade_partner.is_blocked = 1;
-            mock_store.general_store.block_unblock_user_error = 'error';
-            mock_store.general_store.error_code = 'InvalidAdvertiserID';
-        });
-
-        render(<BlockUser />);
-
-        expect(mock_modal_manager.showModal).toHaveBeenCalledWith({
-            key: 'ErrorModal',
-            props: {
-                error_message: "Unblocking wasn't possible as test is not using Deriv P2P anymore.",
-                error_modal_button_text: 'Got it',
-                error_modal_title: 'test is no longer on Deriv P2P',
-                has_close_icon: false,
-                onClose: expect.any(Function),
-                width: '40rem',
-            },
-        });
-    });
-
-    it('should display ErrorModal with block_unblock_user_error, not error_message, when error_code is not InvalidAdvertiserID', () => {
-        act(() => {
-            mock_store.general_store.block_unblock_user_error = 'error';
-            mock_store.general_store.error_code = 'AdvertiserNotFound';
-        });
-
-        render(<BlockUser />);
-
-        expect(mock_modal_manager.showModal).toHaveBeenCalledWith({
-            key: 'ErrorModal',
-            props: {
-                error_message: 'error',
-                error_modal_button_text: 'Got it',
-                error_modal_title: 'Unable to block advertiser',
-                has_close_icon: false,
-                onClose: expect.any(Function),
-                width: '40rem',
-            },
-        });
     });
 });

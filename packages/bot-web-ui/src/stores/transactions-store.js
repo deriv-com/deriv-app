@@ -186,7 +186,8 @@ export default class TransactionsStore {
         // eslint-disable-next-line global-require
         const lz_string = require('lz-string');
         const stored_items = JSON.parse(lz_string.decompress(sessionStorage.getItem('transaction_cache')));
-        const active_login_id = this.account_id || localStorage.getItem('active_loginid');
+        //const active_login_id = this.account_id || localStorage.getItem('active_loginid');
+        const active_login_id = localStorage.getItem('active_loginid');
         this.elements = stored_items[active_login_id]?.filter(account => account.data?.is_complete);
     }
 

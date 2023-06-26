@@ -10,13 +10,17 @@ jest.mock('Components/containers/grid-container', () => jest.fn(({ children }) =
 const Title = () => <span>Test Title</span>;
 const Description = () => <span>Test Description</span>;
 
-const mock = mockStore({});
+let mock = mockStore({});
 
 describe('ListingContainer', () => {
     const wrapper = ({ children }: { children: JSX.Element }) => <StoreProvider store={mock}>{children}</StoreProvider>;
 
     it('should render title and description when landing company is loaded', () => {
-        mock.client.is_landing_company_loaded = true;
+        mock = mockStore({
+            client: {
+                is_landing_company_loaded: true,
+            },
+        });
 
         render(
             <ListingContainer title={<Title />} description={<Description />} is_deriv_platform={false}>
@@ -34,7 +38,11 @@ describe('ListingContainer', () => {
     });
 
     it('should render title and description when landing company is not loaded and is not deriv platform', () => {
-        mock.client.is_landing_company_loaded = false;
+        mock = mockStore({
+            client: {
+                is_landing_company_loaded: false,
+            },
+        });
 
         render(
             <ListingContainer title={<Title />} description={<Description />} is_deriv_platform={false}>
@@ -52,7 +60,11 @@ describe('ListingContainer', () => {
     });
 
     it('should render TitleCardLoader when landing company is not loaded and is_deriv_platform is true', () => {
-        mock.client.is_landing_company_loaded = false;
+        mock = mockStore({
+            client: {
+                is_landing_company_loaded: false,
+            },
+        });
 
         render(
             <ListingContainer title={<Title />} description={<Description />} is_deriv_platform={true}>

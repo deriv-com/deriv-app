@@ -915,7 +915,7 @@ const CFDPasswordModal = ({
                 i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account. '
                 values={{
                     type: type_label,
-                    platform: getCFDPlatformLabel(platform),
+                    platform: platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : getCFDPlatformLabel(platform),
                     category: category_label,
                 }}
                 components={[<i key={0} className='cfd-account__platform' />, <strong key={1} />]}

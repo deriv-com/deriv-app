@@ -188,7 +188,14 @@ export default class TransactionsStore {
         const stored_items = JSON.parse(lz_string.decompress(sessionStorage.getItem('transaction_cache')));
         //const active_login_id = this.account_id || localStorage.getItem('active_loginid');
         const active_login_id = localStorage.getItem('active_loginid');
-        this.elements = stored_items[active_login_id]?.filter(account => account.data?.is_complete);
+        if (active_login_id) {
+            // eslint-disable-next-line max-len
+            const compressed_value = lz_string.compress(
+                JSON.stringify(stored_items[active_login_id]?.filter(account => account.data?.is_complete))
+            );
+            sessionStorage.setItem('transaction_cache', compressed_value);
+            //this.elements = stored_items[active_login_id]?.filter(account => account.data?.is_complete);
+        }
     }
 
     updateResultsCompletedContract(contract) {

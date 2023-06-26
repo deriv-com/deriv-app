@@ -1,14 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import { observer, useStore } from '@deriv/stores';
+import { connect } from 'Stores/connect';
 import { localize, Localize } from '@deriv/translations';
 import { Link } from 'react-router-dom';
 import { Button, Text, StaticUrl } from '@deriv/components';
 import { PlatformContext } from '@deriv/shared';
 
-const ClosingAccountSteps = observer(({ redirectToReasons }) => {
-    const { common } = useStore();
-    const { is_from_derivgo } = common;
+const ClosingAccountSteps = ({ redirectToReasons, is_from_derivgo }) => {
     const { is_appstore } = React.useContext(PlatformContext);
 
     return (
@@ -86,5 +84,5 @@ const ClosingAccountSteps = observer(({ redirectToReasons }) => {
             )}
         </div>
     );
-});
-export default ClosingAccountSteps;
+};
+export default connect(({ common }) => ({ is_from_derivgo: common.is_from_derivgo }))(ClosingAccountSteps);

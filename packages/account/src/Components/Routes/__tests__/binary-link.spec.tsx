@@ -6,6 +6,12 @@ import { PlatformContext } from '@deriv/shared';
 import { findRouteByPath } from '../helpers';
 import BinaryLink from '../binary-link';
 
+jest.mock('Stores/connect', () => ({
+    __esModule: true,
+    default: 'mockedDefaultExport',
+    connect: () => Component => Component,
+}));
+
 jest.mock('../helpers', () => ({
     findRouteByPath: jest.fn(() => '/test/path'),
     normalizePath: jest.fn(() => '/test/path'),

@@ -62,15 +62,6 @@ describe('TradingAppCard', () => {
         expect(container.childNodes[0]).toHaveClass('trading-app-card');
     });
 
-    it('Should render TradingPlatformIcon with right icon', () => {
-        render(<TradingAppCard {...mocked_props} />, {
-            wrapper,
-        });
-
-        const icon = screen.queryByText(`trading-platform-icon__${mocked_props.icon}`);
-        expect(icon).toBeInTheDocument();
-    });
-
     // it('should render TradingPlatformIcon with right icon 2', async () => {
     //     mocked_props.clickable_icon = false;
     //     const props: React.ComponentProps<typeof TradingPlatformIcon> = {
@@ -168,6 +159,61 @@ describe('TradingAppCard', () => {
         expect(subtitle_text).not.toBeInTheDocument();
     });
 
+    // here check the name
+    it('Should render name', () => {
+        mock = mockStore({
+            modules: {
+                cfd: {
+                    is_account_being_created: true,
+                },
+            },
+            traders_hub: {
+                is_real: true,
+            },
+        });
+
+        render(<TradingAppCard {...mocked_props} />, {
+            wrapper,
+        });
+
+        const name_text = screen.queryByText(/Test Name/i);
+        expect(name_text).toBeInTheDocument();
+        const demo_name_text = screen.queryByText(/Test Name Demo/i);
+        expect(demo_name_text).not.toBeInTheDocument();
+    });
+
+    it('Should render DEMO name', () => {
+        mocked_props.sub_title = '';
+        // {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
+
+        mock = mockStore({
+            modules: {
+                cfd: {
+                    is_account_being_created: true,
+                },
+            },
+            traders_hub: {
+                is_real: false,
+            },
+        });
+
+        render(<TradingAppCard {...mocked_props} />, {
+            wrapper,
+        });
+
+        const demo_name_text = screen.queryByText(/Test Name Demo/i);
+        expect(demo_name_text).toBeInTheDocument();
+    });
+
+    it('Should render TradingPlatformIcon with right icon', () => {
+        render(<TradingAppCard {...mocked_props} />, {
+            wrapper,
+        });
+
+        const icon = screen.queryByText(`trading-platform-icon__${mocked_props.icon}`);
+        expect(icon).toBeInTheDocument();
+    });
+
     it('Should render a clickable icon when clickable_icon is true', () => {
         mocked_props.clickable_icon = true;
 
@@ -240,7 +286,7 @@ describe('TradingAppCard', () => {
         expect(link).toHaveAttribute('href', 'getMFAppstorePlatforms.com');
     });
 
-    it('Should render StatusBadge conponent', () => {
+    it('Should render StatusBadge component', () => {
         mocked_props.mt5_acc_auth_status = 'pending';
 
         render(<TradingAppCard {...mocked_props} />, {
@@ -251,7 +297,7 @@ describe('TradingAppCard', () => {
         expect(text).toBeInTheDocument();
     });
 
-    it('Should NOT render StatusBadge conponent', () => {
+    it('Should NOT render StatusBadge component', () => {
         render(<TradingAppCard {...mocked_props} />, {
             wrapper,
         });

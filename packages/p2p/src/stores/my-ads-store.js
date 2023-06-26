@@ -391,7 +391,6 @@ export default class MyAdsStore extends BaseStore {
                     this.setEditAdFormError(response.error.message);
                     general_store.showModal({
                         key: 'AdEditErrorModal',
-                        props: {},
                     });
                 } else {
                     this.setShowEditAdForm(false);

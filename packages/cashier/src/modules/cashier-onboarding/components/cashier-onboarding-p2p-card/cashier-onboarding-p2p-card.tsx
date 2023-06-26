@@ -20,7 +20,7 @@ const CashierOnboardingP2PCard: React.FC = observer(() => {
     const has_fiat_currency = useHasFiatCurrency();
     const can_switch_to_fiat_account = is_crypto() && has_fiat_currency;
     const [is_dialog_visible, setIsDialogVisible] = useState(false);
-    const should_show_p2p_card = is_p2p_enabled || (is_crypto() && has_p2p_supported_currencies);
+    const should_show_p2p_card = is_p2p_enabled || has_p2p_supported_currencies;
 
     const onClick = () => {
         setDepositTarget(routes.cashier_p2p);

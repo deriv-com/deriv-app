@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHasFiatCurrency, useIsHasP2PSupportedCurrencies, useIsP2PEnabled } from '@deriv/hooks';
+import { useHasFiatCurrency, useHasP2PSupportedCurrencies, useIsP2PEnabled } from '@deriv/hooks';
 import { mockStore } from '@deriv/stores';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../../cashier-providers';
@@ -14,7 +14,7 @@ jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useFiatAccountList: () => [{ is_virtual: 0, loginid: 'CR80128121' }],
     useHasFiatCurrency: jest.fn(() => true),
-    useIsHasP2PSupportedCurrencies: jest.fn(() => ({ data: true })),
+    useHasP2PSupportedCurrencies: jest.fn(() => ({ data: true })),
     useIsP2PEnabled: jest.fn(() => ({ data: true })),
 }));
 
@@ -117,7 +117,7 @@ describe('CashierOnboardingP2PCard', () => {
                 },
             },
         });
-        (useIsHasP2PSupportedCurrencies as jest.Mock).mockImplementation(() => ({ data: false }));
+        (useHasP2PSupportedCurrencies as jest.Mock).mockImplementation(() => ({ data: false }));
         (useIsP2PEnabled as jest.Mock).mockImplementation(() => ({ data: false }));
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <CashierProviders store={mock}>{children}</CashierProviders>

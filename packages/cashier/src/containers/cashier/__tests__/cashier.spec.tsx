@@ -16,7 +16,6 @@ jest.mock('@deriv/hooks', () => {
             isLoading: false,
             isSuccess: true,
         })),
-        useIsHasP2PSupportedCurrencies: jest.fn(() => ({ data: true })),
         useIsP2PEnabled: jest.fn(() => ({ data: true, isLoading: false, isSuccess: true })),
     };
 });
@@ -107,7 +106,7 @@ describe('<Cashier />', () => {
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
-    it('should render the component without deriv p2p menu if client_tnc_status is loaded and is_crypto is true', () => {
+    it('should render the component without deriv p2p menu if client_tnc_status is loaded', () => {
         const mock_root_store = mockStore({
             common: {
                 routeBackInApp: jest.fn(),
@@ -158,64 +157,8 @@ describe('<Cashier />', () => {
         expect(screen.getByRole('link', { name: 'Transfer' })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Payment agents' })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Transfer to client' })).toBeInTheDocument();
-        expect(screen.queryByRole('link', { name: 'Deriv P2P' })).not.toBeInTheDocument();
+        expect(screen.queryByRole('link', { name: 'Deriv P2P' })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Fiat onramp' })).toBeInTheDocument();
-        expect(screen.getByRole('button', { name: 'Learn more about payment methods' })).toBeInTheDocument();
-    });
-
-    it('should render the component without fiat onramp menu if client_tnc_status is loaded and is_crypto is false', () => {
-        const mock_root_store = mockStore({
-            common: {
-                routeBackInApp: jest.fn(),
-                is_from_derivgo: true,
-            },
-            ui: {
-                is_cashier_visible: true,
-                toggleCashier: jest.fn(),
-            },
-            client: {
-                is_account_setting_loaded: true,
-                is_logged_in: true,
-                is_logging_in: true,
-                active_accounts: [],
-                is_virtual: false,
-                is_crypto: jest.fn(() => false),
-            },
-            notifications: {
-                showAccountSwitchToRealNotification: jest.fn(),
-            },
-            modules: {
-                cashier: {
-                    withdraw: {
-                        error: {},
-                    },
-                    general_store: {
-                        is_cashier_onboarding: true,
-                        is_loading: true,
-                        onMountCommon: jest.fn(),
-                        setAccountSwitchListener: jest.fn(),
-                        setCashierTabIndex: jest.fn(),
-                        cashier_route_tab_index: 0,
-                    },
-                    transaction_history: {
-                        is_crypto_transactions_visible: true,
-                    },
-                    payment_agent: {
-                        is_payment_agent_visible: true,
-                    },
-                },
-            },
-        });
-
-        renderWithRouter(<Cashier routes={getRoutesConfig()[0].routes || []} />, mock_root_store);
-
-        expect(screen.getByRole('link', { name: 'Deposit' })).toBeInTheDocument();
-        expect(screen.getByRole('link', { name: 'Withdrawal' })).toBeInTheDocument();
-        expect(screen.getByRole('link', { name: 'Transfer' })).toBeInTheDocument();
-        expect(screen.getByRole('link', { name: 'Payment agents' })).toBeInTheDocument();
-        expect(screen.getByRole('link', { name: 'Transfer to client' })).toBeInTheDocument();
-        expect(screen.getByRole('link', { name: 'Deriv P2P' })).toBeInTheDocument();
-        expect(screen.queryByRole('link', { name: 'Fiat onramp' })).not.toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Learn more about payment methods' })).toBeInTheDocument();
     });
 

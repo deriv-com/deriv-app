@@ -2,7 +2,7 @@ import * as React from 'react';
 import { APIProvider, useFetch } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
-import useIsHasP2PSupportedCurrencies from '../useIsHasP2PSupportedCurrencies';
+import useHasP2PSupportedCurrencies from '../useHasP2PSupportedCurrencies';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -11,7 +11,7 @@ jest.mock('@deriv/api', () => ({
 
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'website_status'>>;
 
-describe('useIsHasP2PSupportedCurrencies', () => {
+describe('useHasP2PSupportedCurrencies', () => {
     test('should return false if supported currencies is not in the account info', () => {
         const mock = mockStore({
             client: {
@@ -28,7 +28,7 @@ describe('useIsHasP2PSupportedCurrencies', () => {
             </APIProvider>
         );
 
-        const { result } = renderHook(() => useIsHasP2PSupportedCurrencies(), { wrapper });
+        const { result } = renderHook(() => useHasP2PSupportedCurrencies(), { wrapper });
 
         expect(result.current.data).toBe(false);
     });
@@ -49,7 +49,7 @@ describe('useIsHasP2PSupportedCurrencies', () => {
             </APIProvider>
         );
 
-        const { result } = renderHook(() => useIsHasP2PSupportedCurrencies(), { wrapper });
+        const { result } = renderHook(() => useHasP2PSupportedCurrencies(), { wrapper });
 
         expect(result.current.data).toBe(true);
     });
@@ -70,7 +70,7 @@ describe('useIsHasP2PSupportedCurrencies', () => {
             </APIProvider>
         );
 
-        const { result } = renderHook(() => useIsHasP2PSupportedCurrencies(), { wrapper });
+        const { result } = renderHook(() => useHasP2PSupportedCurrencies(), { wrapper });
 
         expect(result.current.data).toBe(false);
     });

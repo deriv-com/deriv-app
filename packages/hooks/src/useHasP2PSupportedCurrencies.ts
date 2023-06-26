@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useFetch, useInvalidateQuery } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 
-const useIsHasP2PSupportedCurrencies = () => {
+const useHasP2PSupportedCurrencies = () => {
     const { client } = useStore();
     const { active_accounts, is_authorize, loginid } = client;
     const invalidate = useInvalidateQuery();
@@ -12,7 +12,7 @@ const useIsHasP2PSupportedCurrencies = () => {
         .filter(account => !account.is_virtual)
         .map(account => account.currency?.toLowerCase());
 
-    const is_has_p2p_supported_currencies = Boolean(
+    const has_p2p_supported_currencies = Boolean(
         data?.website_status?.p2p_config?.supported_currencies.some((currency: string) =>
             real_account_currencies_list.includes(currency)
         )
@@ -24,8 +24,8 @@ const useIsHasP2PSupportedCurrencies = () => {
 
     return {
         ...rest,
-        data: is_has_p2p_supported_currencies,
+        data: has_p2p_supported_currencies,
     };
 };
 
-export default useIsHasP2PSupportedCurrencies;
+export default useHasP2PSupportedCurrencies;

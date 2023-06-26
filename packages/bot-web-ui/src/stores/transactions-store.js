@@ -141,13 +141,9 @@ export default class TransactionsStore {
     }
 
     clear(is_socket_disconnected = false) {
-        debugger;
-        console.log(is_socket_disconnected, 'is_socket_disconnected')
         if (is_socket_disconnected) {
-            console.log('check 1')
-            this.elements = this.elements.filter(account => account.data?.is_complete);
+            this.elements = this.elements.filter(account => account.data && account.data.is_completed);
         } else {
-            console.log('check 2')
             this.elements = this.elements.slice(0, 0);
         }
         this.recovered_completed_transactions = this.recovered_completed_transactions.slice(0, 0);

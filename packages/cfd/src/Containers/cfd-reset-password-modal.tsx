@@ -1,11 +1,11 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 import { Formik, FormikHelpers } from 'formik';
-import RootStore from '../Stores/index';
-import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
 import { validLength, validPassword, getErrorMessages, CFD_PLATFORMS, WS, redirectToLogin } from '@deriv/shared';
 import { localize, Localize, getLanguage } from '@deriv/translations';
+import RootStore from '../Stores/index';
 import { connect } from '../Stores/connect';
 import { getMtCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { TResetPasswordIntent, TCFDResetPasswordModal, TError } from './props.types';
@@ -22,8 +22,12 @@ const ResetPasswordIntent = ({ current_list, context, children, is_eu, ...props 
     let group, type, login, title, server;
     if (has_intent && current_list) {
         [server, group, type] = reset_password_intent.split('.');
+        let title_type;
+        title_type = type === 'financial_demo' ? (title_type = 'financial') : type;
         login = current_list[`mt5.${group}.${type}@${server}`].login;
-        title = getMtCompanies(is_eu)[group as keyof TMtCompanies][type as keyof TMtCompanies['demo' | 'real']].title;
+        title =
+            getMtCompanies(is_eu)[group as keyof TMtCompanies][title_type as keyof TMtCompanies['demo' | 'real']]
+                ?.title ?? '';
     } else if (current_list) {
         [server, group, type] = (Object.keys(current_list).pop() as string).split('.');
         login = current_list[`mt5.${group}.${type}@${server}`]?.login ?? '';
@@ -45,14 +49,14 @@ const ResetPasswordIntent = ({ current_list, context, children, is_eu, ...props 
 };
 
 const CFDResetPasswordModal = ({
-    current_list,
     email,
-    is_cfd_reset_password_modal_enabled,
     is_eu,
     context,
-    is_logged_in,
     platform,
+    is_logged_in,
+    current_list,
     setCFDPasswordResetModal,
+    is_cfd_reset_password_modal_enabled,
 }: TCFDResetPasswordModal) => {
     const [state, setState] = React.useState<{
         error_code: string | number | undefined;

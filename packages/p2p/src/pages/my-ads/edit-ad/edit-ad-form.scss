@@ -30,20 +30,6 @@
         }
     }
 
-    &__payment-methods {
-        &--empty {
-            max-width: 67.2rem;
-            padding: 1.2rem 0;
-        }
-
-        &--text {
-            display: flex;
-            flex-direction: column;
-            margin-top: 3.2rem;
-            padding-bottom: 1rem;
-        }
-    }
-
     &__radio-group {
         display: flex;
         margin-top: unset;

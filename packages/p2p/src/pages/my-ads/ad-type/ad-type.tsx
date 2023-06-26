@@ -1,25 +1,23 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { localize } from 'Components/i18next';
 import { Text } from '@deriv/components';
-import './ad-type.scss';
+import { Localize } from 'Components/i18next';
 
-const AdType = ({ ad_pause_color, float_rate }) => {
+type TAdTypeProps = {
+    ad_pause_color: string;
+    float_rate: number;
+};
+
+const AdType = ({ ad_pause_color, float_rate }: TAdTypeProps) => {
     return (
         <div className='ad-type'>
             <Text as='span' className='ad-type__badge' color={ad_pause_color} line_height='xs' size='xxs'>
-                {localize('Float')}
+                <Localize i18n_default_text='Float' />
             </Text>
             <Text as='span' color={ad_pause_color} line_height='xxs' size='xxs'>
                 {float_rate}%
             </Text>
         </div>
     );
-};
-
-AdType.propTypes = {
-    ad_pause_color: PropTypes.string,
-    float_rate: PropTypes.string,
 };
 
 export default AdType;

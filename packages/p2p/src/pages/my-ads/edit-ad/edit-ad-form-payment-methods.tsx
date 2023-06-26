@@ -1,25 +1,57 @@
-import * as React from 'react';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
-import PaymentMethodCard from 'Pages/my-profile/payment-methods/payment-method-card';
+import React from 'react';
+import { observer } from '@deriv/stores';
 import { localize } from 'Components/i18next';
-import BuyAdPaymentMethodsList from 'Pages/my-ads/buy-ad-payment-methods-list.jsx';
-import SellAdPaymentMethodsList from 'Pages/my-ads/sell-ad-payment-methods-list.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import PaymentMethodCard from 'Pages/my-profile/payment-methods/payment-method-card';
+import { useStores } from 'Stores';
+import BuyAdPaymentMethodsList from '../buy-ad-payment-methods-list';
+import SellAdPaymentMethodsList from '../sell-ad-payment-methods-list';
 
-const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelectedMethods, touched }) => {
+type TPaymentMethodField = {
+    display_name: string;
+    required: number;
+    type: string;
+    value: string;
+};
+
+type TPaymentMethod = {
+    ID: string;
+    name: string;
+    is_enabled: number;
+    method: string;
+    display_name: string;
+    fields: {
+        account: TPaymentMethodField;
+        instructions: TPaymentMethodField;
+    };
+};
+
+type TEditAdFormPaymentMethodsProps = {
+    is_sell_advert: boolean;
+    setSelectedMethods: (payment_methods: string[]) => void;
+    selected_methods: string[];
+    touched: (value: boolean) => void;
+};
+
+const EditAdFormPaymentMethods = ({
+    is_sell_advert,
+    selected_methods,
+    setSelectedMethods,
+    touched,
+}: TEditAdFormPaymentMethodsProps) => {
     const { my_ads_store, my_profile_store } = useStores();
+    const { payment_method_ids, setPaymentMethodIds, setPaymentMethodNames } = my_ads_store;
     const { showModal } = useModalManagerContext();
 
-    const onClickPaymentMethodCard = payment_method => {
-        if (!my_ads_store.payment_method_ids.includes(payment_method.ID)) {
-            if (my_ads_store.payment_method_ids.length < 3) {
-                my_ads_store.payment_method_ids.push(payment_method.ID);
+    const onClickPaymentMethodCard = (payment_method: TPaymentMethod) => {
+        if (!payment_method_ids.includes(payment_method.ID)) {
+            if (payment_method_ids.length < 3) {
+                payment_method_ids.push(payment_method.ID);
                 setSelectedMethods([...selected_methods, payment_method.ID]);
             }
         } else {
-            my_ads_store.payment_method_ids = my_ads_store.payment_method_ids.filter(
-                payment_method_id => payment_method_id !== payment_method.ID
+            setPaymentMethodIds(
+                payment_method_ids.filter((payment_method_id: string) => payment_method_id !== payment_method.ID)
             );
             setSelectedMethods(selected_methods.filter(i => i !== payment_method.ID));
         }
@@ -28,8 +60,8 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
 
     React.useEffect(() => {
         return () => {
-            my_ads_store.payment_method_ids = [];
-            my_ads_store.payment_method_names = [];
+            setPaymentMethodIds([]);
+            setPaymentMethodNames([]);
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -52,7 +84,7 @@ const EditAdFormPaymentMethods = ({ is_sell_advert, selected_methods, setSelecte
 
         return (
             <PaymentMethodCard
-                is_add={true}
+                is_add
                 label={localize('Payment method')}
                 medium
                 onClickAdd={() =>

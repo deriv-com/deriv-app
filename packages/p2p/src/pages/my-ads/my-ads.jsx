@@ -6,7 +6,7 @@ import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import TableError from 'Components/section-error';
 import CreateAd from './create-ad';
-import EditAd from './edit-ad.jsx';
+import EditAd from './edit-ad';
 import MyAdsTable from './my-ads-table.jsx';
 import Verification from 'Components/verification';
 import './my-ads.scss';

@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatMoney } from '@deriv/shared';
 import { localize, Localize } from 'Components/i18next';
 import { api_error_codes } from 'Constants/api-error-codes';
 
@@ -23,3 +24,12 @@ export const generateErrorDialogBody = (error_code, error_message) => {
     }
     return error_message;
 };
+
+export const getHint = (is_sell_advert, balance_available, currency) =>
+    // Using two "==" is intentional as we're checking for nullish
+    // rather than falsy values.
+    !is_sell_advert || balance_available == null
+        ? undefined
+        : localize('Your Deriv P2P balance is {{ dp2p_balance }}', {
+              dp2p_balance: `${formatMoney(currency, balance_available, true)} ${currency}`,
+          });

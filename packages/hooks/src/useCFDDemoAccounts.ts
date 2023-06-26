@@ -9,12 +9,7 @@ const useCFDDemoAccounts = () => {
     const { getRate } = useExchangeRate();
     const cfd_accounts = useCFDAllAccounts();
 
-    const cfd_demo_accounts = cfd_accounts
-        .filter(account => account.account_type === 'demo')
-        .map(account => ({
-            ...account,
-            balance: account.balance ? account.balance / getRate(account.currency || '') : account.balance,
-        }));
+    const cfd_demo_accounts = cfd_accounts.filter(account => account.account_type === 'demo');
 
     return cfd_demo_accounts;
 };

@@ -165,7 +165,7 @@ const AppModals = ({
     if (is_need_real_account_for_cashier_modal_visible) {
         ComponentToLoad = <NeedRealAccountForCashierModal />;
     }
-
+    //TODO: Have to update this when cashier pop-up is done,this is just temporary
     if (is_from_eu) {
         ComponentToLoad = <VerificationModal />;
     }

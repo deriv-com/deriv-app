@@ -9,9 +9,21 @@
 
     &__main-container {
         max-width: auto;
+
         .onfido-container {
             padding-top: 1.6rem;
         }
+
+        .manual-poi {
+            max-width: 67rem;
+            margin: 0 auto;
+            padding: 2rem;
+
+            &-details {
+                margin: 0 auto;
+            }
+        }
+
         .account-management {
             &__list {
                 &-container {
@@ -22,8 +34,7 @@
                 }
 
                 &-icon {
-                    margin-right: 1.2rem;
-                    margin-top: 0.2rem;
+                    margin: 0.2rem 1.2rem 0;
                 }
 
                 &-message {
@@ -49,7 +60,7 @@
                     display: flex;
                     width: 100%;
                     height: 100%;
-                    margin: 0 16px;
+                    margin: 0 1.6rem;
                     align-items: center;
                     flex-direction: column;
 
@@ -165,14 +176,13 @@
         }
 
         .icon {
-            width: 128px;
-            height: 128px;
-            margin-top: 5.2rem;
-            margin-bottom: 2.6rem;
+            width: 12.8rem;
+            height: 12.8rem;
+            margin: 5.2rem auto 2.6rem;
 
             @include mobile {
-                width: 72px;
-                height: 72px;
+                width: 7.2rem;
+                height: 7.2rem;
                 margin-top: 2.6rem;
             }
         }
@@ -253,7 +263,7 @@
         align-items: center;
         justify-content: flex-end;
         z-index: 4;
-        border-radius: 0 0.4rem 0.4rem 0;
+        border-radius: 0 $BORDER_RADIUS $BORDER_RADIUS 0;
         border-top: 0.1rem solid var(--general-section-1);
         background-color: var(--general-main-1);
 
@@ -292,25 +302,25 @@
         .country-dropdown {
             min-height: 35.2rem;
         }
-    }
 
-    &__fieldset-container {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+        &-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
 
-        @include mobile {
-            width: 100%;
+            @include mobile {
+                width: 100%;
+            }
         }
-    }
 
-    &__fieldset-input {
-        width: 39.5rem;
+        &-input {
+            width: 39.5rem;
 
-        @include mobile {
-            width: 94%;
-            margin-top: 0.4rem;
+            @include mobile {
+                width: 94%;
+                margin-top: 0.4rem;
+            }
         }
     }
 
@@ -321,27 +331,27 @@
             margin-left: unset;
             width: 94%;
         }
+
+        &-external {
+            margin-top: 2.8rem;
+        }
     }
 
-    &__sample-container-external {
-        margin-top: 2.8rem;
-    }
-
-    &__image-container {
+    &__sample-container &__image-container {
         width: fit-content;
         height: fit-content;
-        padding: 8px;
-        border-radius: 4px;
+        padding: 0.8rem;
+        border-radius: $BORDER_RADIUS;
         background-color: $color-grey-2;
     }
 
     &__image {
         max-width: 24.5rem;
-        border-radius: 4px;
+        border-radius: $BORDER_RADIUS;
         object-fit: contain;
 
         @include mobile {
-            max-width: calc(95vw - 16px);
+            max-width: calc(95vw - 1.6rem);
         }
     }
 

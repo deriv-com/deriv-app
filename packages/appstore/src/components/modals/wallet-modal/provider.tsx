@@ -3,7 +3,7 @@ import React from 'react';
 import { localize } from '@deriv/translations';
 import FiatTransactionList from 'Components/fiat-transaction-list';
 import WalletTransfer from 'Components/wallet-transfer';
-import WithdrawRequestVerification from '../../withdraw-request-verification';
+import WalletWithdrawal from '../../wallet-withdrawal';
 
 export type TWalletType = 'real' | 'demo' | 'p2p' | 'payment_agent';
 
@@ -14,7 +14,7 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcAdd',
                     label: localize('Deposit'),
-                    //Remove Lorem ipsum text after QA testing (testing scroll behaviour)
+                    //Remove Lorem ipsum text after QA testing (testing scroll behavior)
                     content: () => (
                         <div style={{ textAlign: 'justify' }}>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas euismod lectus odio, sed
@@ -72,7 +72,7 @@ export const getCashierOptions = (type: TWalletType) => {
                         </div>
                     ),
                 },
-                { icon: 'IcMinus', label: localize('Withdraw'), content: () => <WithdrawRequestVerification /> },
+                { icon: 'IcMinus', label: localize('Withdraw'), content: () => <WalletWithdrawal /> },
                 {
                     icon: 'IcAccountTransfer',
                     label: localize('Transfer'),

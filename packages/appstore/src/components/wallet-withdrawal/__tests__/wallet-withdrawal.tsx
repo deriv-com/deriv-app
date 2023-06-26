@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import WithdrawRequestVerification from '../withdraw-request-verification';
+import WalletWithdrawal from '../wallet-withdrawal';
 import { mockStore } from '@deriv/stores';
 import CashierProviders from '@deriv/cashier/src/cashier-providers';
 import { useRequest } from '@deriv/api';
@@ -20,12 +20,12 @@ const mock_store = mockStore({
     modules: { cashier: { transaction_history: { onMount: jest.fn() } } },
 });
 
-describe('WithdrawRequestVerification', () => {
+describe('WalletWithdrawal', () => {
     test('should render the component', () => {
         // @ts-expect-error ignore this until find a way to make arguments as partial
         mockUseRequest.mockReturnValue({});
 
-        render(<WithdrawRequestVerification />, {
+        render(<WalletWithdrawal />, {
             wrapper: ({ children }) => <CashierProviders store={mock_store}>{children}</CashierProviders>,
         });
 

@@ -1,7 +1,52 @@
 import { OSDetect } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { TCFDsPlatformType } from 'Components/props.types';
+
+const platformsText = (platform: TCFDsPlatformType) => {
+    switch (platform) {
+        case 'derivez':
+            return 'EZ';
+        case 'dxtrade':
+            return 'X';
+        default:
+            return '';
+    }
+};
+
+const platformsIcons = (platform: TCFDsPlatformType) => {
+    switch (platform) {
+        case 'derivez':
+            return 'DerivEz';
+        case 'dxtrade':
+            return 'Dxtrade';
+        default:
+            return '';
+    }
+};
+
+const mobileDownloadLink = (platform: TCFDsPlatformType, type: 'ios' | 'android' | 'huawei') => {
+    switch (platform) {
+        case 'dxtrade':
+            return getPlatformDXTradeDownloadLink(type);
+        case 'derivez':
+            return getPlatformDerivEZDownloadLink(type);
+        default:
+            return '';
+    }
+};
+
+const getTitle = (market_type: string, is_eu_user: boolean) => {
+    if (is_eu_user) localize('MT5 CFDs');
+    return market_type;
+};
 
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
+
+const DERIVEZ_URL = 'https://dqwsqxuu0r6t9.cloudfront.net/';
+const DERIVEZ_IOS_APP_URL = 'https://apps.apple.com/my/app/deriv-go/id1550561298';
+const DERIVEZ_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.app&pli=1';
+const DERIVEZ_HUAWEI_APP_URL = 'https://appgallery.huawei.com/#/app/C103801913';
 
 const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503';
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
@@ -16,14 +61,29 @@ const getTopUpConfig = () => {
     };
 };
 
-const getPlatformDXTradeDownloadLink = (platform: 'ios' | 'android' | 'huawei') => {
+const getPlatformDXTradeDownloadLink = (platform?: 'ios' | 'android' | 'huawei') => {
     switch (platform) {
         case 'ios':
             return DXTRADE_IOS_APP_URL;
         case 'huawei':
             return DXTRADE_HUAWEI_APP_URL;
-        default:
+        case 'android':
             return DXTRADE_ANDROID_APP_URL;
+        default:
+            return '';
+    }
+};
+
+const getPlatformDerivEZDownloadLink = (platform: 'ios' | 'android' | 'huawei') => {
+    switch (platform) {
+        case 'ios':
+            return DERIVEZ_IOS_APP_URL;
+        case 'android':
+            return DERIVEZ_ANDROID_APP_URL;
+        case 'huawei':
+            return DERIVEZ_HUAWEI_APP_URL;
+        default:
+            return '';
     }
 };
 
@@ -56,6 +116,16 @@ const getDXTradeWebTerminalLink = (category: string, token?: string) => {
     return url;
 };
 
+const getDerivEzWebTerminalLink = (category: string, token?: string) => {
+    let url = DERIVEZ_URL;
+
+    if (token) {
+        url += `?token=${token}`;
+    }
+
+    return url;
+};
+
 const getMT5WebTerminalLink = ({
     category,
     loginid,
@@ -75,10 +145,17 @@ const getMT5WebTerminalLink = ({
 export {
     REAL_DXTRADE_URL,
     DEMO_DXTRADE_URL,
+    DERIVEZ_URL,
     getBrokerName,
+    platformsText,
+    platformsIcons,
+    getTitle,
+    mobileDownloadLink,
     getPlatformDXTradeDownloadLink,
+    getPlatformDerivEZDownloadLink,
     getPlatformMt5DownloadLink,
     getDXTradeWebTerminalLink,
+    getDerivEzWebTerminalLink,
     getMT5WebTerminalLink,
     getTopUpConfig,
 };

@@ -31,7 +31,6 @@ const CFDsListing = () => {
     const {
         available_dxtrade_accounts,
         available_derivez_accounts,
-        available_derivez_accounts,
         combined_cfd_mt5_accounts,
         selected_region,
         has_any_real_account,

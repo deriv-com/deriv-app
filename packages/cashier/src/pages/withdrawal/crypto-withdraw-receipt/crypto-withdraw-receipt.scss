@@ -1,19 +1,22 @@
 .crypto-withdraw-receipt {
     &__detail {
-        display: inline-block;
         @include mobile {
             width: 100%;
             min-width: auto;
             margin-bottom: 2.6rem !important;
         }
+
+        display: inline-block;
     }
+
     &__button {
-        margin-top: 3rem;
         height: 4rem;
+        margin-top: 3rem;
 
         &-left {
             margin-right: 0.8rem;
         }
+
         &-wrapper {
             @include mobile {
                 display: flex;
@@ -23,44 +26,50 @@
             }
         }
     }
+
     &__icon {
         margin: 1.6rem;
     }
+
     &__status {
-        background-color: var(--general-section-1);
-        border-radius: $BORDER_RADIUS * 2;
-        height: 3.2rem;
-        width: fit-content;
-        min-width: 36rem;
-        margin-bottom: -0.8rem !important;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
         @include mobile {
             width: 100%;
             min-width: auto;
             margin-bottom: 2.4rem !important;
         }
 
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: fit-content;
+        min-width: 36rem;
+        height: 3.2rem;
+        margin-bottom: -0.8rem !important;
+        border-radius: $BORDER_RADIUS * 2;
+        background-color: var(--general-section-1);
+
         &-icon {
             margin: 0 0.4rem;
         }
     }
+
     &__crypto {
         min-width: 36rem;
         margin: 1.6rem 0;
     }
+
     &__account-info {
-        padding: 1rem 0;
-        width: fit-content;
-        min-width: 36rem;
-        border: 1px solid var(--border-normal);
-        border-radius: $BORDER_RADIUS * 2;
         @include mobile {
             width: 100%;
             min-width: auto;
         }
+
+        width: fit-content;
+        min-width: 36rem;
+        padding: 1rem 0;
+        border: 1px solid var(--border-normal);
+        border-radius: $BORDER_RADIUS * 2;
 
         &-detail {
             display: flex;
@@ -68,15 +77,16 @@
             justify-content: center;
             align-items: center;
             max-width: 100%;
-            padding: 0;
             margin: 0.8rem;
+            padding: 0;
 
             &-text {
+                max-width: 30rem;
                 margin: 0 0.4rem;
                 word-break: break-word;
-                max-width: 30rem;
             }
         }
+
         &-address {
             display: flex;
             flex-direction: row;

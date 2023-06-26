@@ -1,31 +1,37 @@
 .payment-agent-list {
-    padding: 0 4.2rem 1.6rem;
     @include mobile {
         padding: 0;
     }
+
+    padding: 0 4.2rem 1.6rem;
+
     .side-note--mobile {
-        padding: 0;
         margin: 0;
+        padding: 0;
     }
+
     &__instructions {
         @include mobile {
             display: grid;
             grid-template-columns: 1fr;
             grid-gap: 0.8rem;
+
             .dc-tabs__list--header--tabs--desktop {
                 @include mobile {
                     position: fixed;
-                    background-color: var(--general-main-1);
-                    width: 100%;
                     left: 0;
                     z-index: 2;
+                    width: 100%;
                     padding: 1.6rem 5rem;
+                    background-color: var(--general-main-1);
                 }
             }
+
             .dc-tabs__content {
                 margin-top: 7.2rem;
             }
         }
+
         &-hide-tabs {
             & .dc-tabs__list {
                 display: none;
@@ -40,113 +46,140 @@
                 padding: 1.6rem 5rem;
             }
         }
+
         .verification-email__icon {
             margin-top: 2.8rem;
         }
     }
+
     &__list {
-        &-header {
-            margin-top: 2.4rem;
-            margin-bottom: 1.6rem;
-            &-text {
-                min-width: fit-content;
-            }
-            @include mobile {
-                margin-top: 1.6rem;
-            }
-        }
-        &-selector {
-            margin-bottom: 2.4rem;
-            display: flex;
-            justify-content: space-between;
-            & .dc-dropdown {
-                &__container {
-                    width: 18rem;
-                }
-                &-container {
-                    margin-top: 0;
-                    min-width: unset;
-                    width: unset;
-                }
-                &__display {
-                    justify-content: flex-start;
-                    &-text {
-                        padding-left: 0.8rem;
-                        padding-right: 3.2rem;
-                        color: var(--text-less-prominent);
-                        overflow: hidden;
-                        max-width: 14.6rem;
-                    }
-                }
-                &__select-arrow {
-                    right: 10px;
-                }
-            }
-        }
         @include mobile {
             &-header {
                 position: relative;
                 z-index: 1;
             }
+
             &-selector {
-                margin-bottom: 1.6rem;
                 flex-direction: column;
+                margin-bottom: 1.6rem;
+
                 /* postcss-bem-linter: ignore */
                 & .dc-select-native {
                     margin-top: 1.6rem;
+
                     &__arrow {
-                        top: unset;
                         --fill-color1: var(--text-general);
+
+                        top: unset;
                     }
+
                     &__placeholder {
+                        top: unset;
+                        left: unset;
                         padding: 0 0.8rem;
                         background-color: var(--general-main-1);
                         color: var(--text-general);
-                        top: unset;
-                        left: unset;
                     }
+
                     &__display {
                         height: 3.2rem;
+
                         &-text {
                             line-height: 3.2rem;
                         }
                     }
+
                     &__picker {
                         height: 3.2rem;
                     }
+
                     &__wrapper {
                         height: 3.2rem;
                     }
                 }
             }
         }
+
+        &-header {
+            @include mobile {
+                margin-top: 1.6rem;
+            }
+
+            margin-top: 2.4rem;
+            margin-bottom: 1.6rem;
+
+            &-text {
+                min-width: fit-content;
+            }
+        }
+
+        &-selector {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2.4rem;
+
+            & .dc-dropdown {
+                &__container {
+                    width: 18rem;
+                }
+
+                &-container {
+                    width: unset;
+                    min-width: unset;
+                    margin-top: 0;
+                }
+
+                &__display {
+                    justify-content: flex-start;
+
+                    &-text {
+                        overflow: hidden;
+                        max-width: 14.6rem;
+                        padding-right: 3.2rem;
+                        padding-left: 0.8rem;
+                        color: var(--text-less-prominent);
+                    }
+                }
+
+                &__select-arrow {
+                    right: 10px;
+                }
+            }
+        }
     }
+
     &__search-warning {
         row-gap: 1.6rem;
         margin-top: 6.4rem;
     }
+
     &__error-dialog {
         .dc-dialog {
-            &__content {
-                font-size: var(--text-size-s);
-            }
-            &__header--title {
-                font-size: var(--text-size-sm);
-            }
             @include mobile {
                 &__dialog {
                     width: 100%;
                     margin: 0 1.6rem;
                 }
+
                 &__content {
                     font-size: var(--text-size-xxs);
                 }
+
                 &__header--title {
                     font-size: var(--text-size-xs);
                 }
             }
+
+            &__content {
+                font-size: var(--text-size-s);
+            }
+
+            &__header--title {
+                font-size: var(--text-size-sm);
+            }
         }
     }
+
     &__search-loader {
         @include mobile {
             height: unset;

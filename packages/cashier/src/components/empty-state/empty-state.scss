@@ -1,9 +1,9 @@
 .cashier-empty-state {
-    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    width: 100%;
     max-width: 67.2rem;
     margin: 4rem auto 0;
 
@@ -14,20 +14,20 @@
     }
 
     &__title {
-        margin-bottom: 0.8rem;
-
         @include mobile {
-            margin-left: 1.2rem;
             margin-right: 1.2rem;
+            margin-left: 1.2rem;
         }
+
+        margin-bottom: 0.8rem;
     }
 
     &__desc {
-        margin-bottom: 3.2rem;
-
         @include mobile {
             padding: 0 1rem;
         }
+
+        margin-bottom: 3.2rem;
     }
 
     &__action {

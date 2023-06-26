@@ -1,39 +1,48 @@
 .payment-agent-listed-withdraw-form {
-    padding: 0 1.6rem;
-    margin-top: 3.2rem;
     @include mobile {
         padding: 0;
     }
+
+    margin-top: 3.2rem;
+    padding: 0 1.6rem;
+
     &__header {
         margin-bottom: 1.6rem;
     }
+
     &__form {
-        display: flex;
         @include mobile {
             flex-direction: column;
         }
+
+        display: flex;
+
         .dc-input {
-            border-right: none;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-            margin-bottom: 1.8rem;
             @include mobile {
                 border: 1px solid var(--border-normal);
                 border-top-right-radius: 0.4rem;
                 border-bottom-right-radius: 0.4rem;
+
                 &--crypto-hint {
                     margin-bottom: 2.8rem;
                 }
             }
+
+            margin-bottom: 1.8rem;
+            border-right: none;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
         }
+
         .dc-btn {
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
             @include mobile {
                 margin-top: 1.2rem;
                 border-top-left-radius: 0.4rem;
                 border-bottom-left-radius: 0.4rem;
             }
+
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
         }
     }
 }

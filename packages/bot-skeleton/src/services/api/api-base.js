@@ -37,10 +37,8 @@ class APIBase {
     stopBotIfSocketDisconnected() {
         if (this.api.connection.readyState === 3) {
             const { stopBot, clearStat } = DBotStore.instance.run_panel;
-            const { updateTransactionIfSocketDisconnected } = DBotStore.instance.transactions;
             stopBot();
             clearStat(true);
-            updateTransactionIfSocketDisconnected();
         }
     }
 

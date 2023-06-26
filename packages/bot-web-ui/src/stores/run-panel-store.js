@@ -255,8 +255,8 @@ export default class RunPanelStore {
         if (!is_websocket_disconnected) {
             journal.clear();
             summary_card.clear();
-            transactions.clear();
         }
+        transactions.clear(is_websocket_disconnected);
         this.setContractStage(contract_stages.NOT_RUNNING);
     }
 

@@ -140,8 +140,12 @@ export default class TransactionsStore {
         window.removeEventListener('click', this.onClickOutsideTransaction);
     }
 
-    clear() {
-        this.elements = this.elements.slice(0, 0);
+    clear(is_socket_disconnected = false) {
+        if (is_socket_disconnected) {
+            this.elements = this.elements.filter(account => account.data?.is_complete);
+        } else {
+            this.elements = this.elements.slice(0, 0);
+        }
         this.recovered_completed_transactions = this.recovered_completed_transactions.slice(0, 0);
         this.recovered_transactions = this.recovered_transactions.slice(0, 0);
     }
@@ -178,24 +182,6 @@ export default class TransactionsStore {
             if (trx.is_completed || this.recovered_transactions.includes(trx.contract_id)) return;
             this.recoverPendingContractsById(trx.contract_id);
         });
-    }
-
-    // eslint-disable-next-line class-methods-use-this
-    updateTransactionIfSocketDisconnected() {
-        //TODO: need to remove this because the module does not load need to find why //just a workaround for now
-        // eslint-disable-next-line global-require
-        const lz_string = require('lz-string');
-        const stored_items = JSON.parse(lz_string.decompress(sessionStorage.getItem('transaction_cache')));
-        //const active_login_id = this.account_id || localStorage.getItem('active_loginid');
-        const active_login_id = localStorage.getItem('active_loginid');
-        if (active_login_id) {
-            // eslint-disable-next-line max-len
-            const compressed_value = lz_string.compress(
-                JSON.stringify(stored_items[active_login_id]?.filter(account => account.data?.is_complete))
-            );
-            sessionStorage.setItem('transaction_cache', compressed_value);
-            //this.elements = stored_items[active_login_id]?.filter(account => account.data?.is_complete);
-        }
     }
 
     updateResultsCompletedContract(contract) {

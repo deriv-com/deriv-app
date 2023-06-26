@@ -67,6 +67,7 @@ const TransactionDetailsDesktop = observer(() => {
             width={modalWidth}
             xaxis={xaxis}
             yaxis={yaxis}
+            header_title='Transactions detailed summary'
         >
             <DesktopTransactionTable
                 transaction_columns={transaction_columns}

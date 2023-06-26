@@ -8,6 +8,7 @@ type DraggableProps = {
     dragHandleClassName?: string;
     enableResizing?: boolean;
     height?: number | string;
+    header_title: string;
     is_visible: boolean;
     minWidth?: number | string;
     onCloseDraggable: () => void;
@@ -22,6 +23,7 @@ export default function Draggable({
     children,
     dragHandleClassName,
     enableResizing = false,
+    header_title,
     height = 'fit-content',
     is_visible,
     minWidth,
@@ -43,6 +45,7 @@ export default function Draggable({
             }}
             dragHandleClassName={dragHandleClassName}
             enableResizing={enableResizing}
+            header_title={header_title}
             minHeight={height}
             minWidth={minWidth}
         >
@@ -60,7 +63,7 @@ export default function Draggable({
             >
                 <>
                     <div className={`${PARENT_CLASS}-header`}>
-                        <div className={`${PARENT_CLASS}-header__title`}>This is the header</div>
+                        <div className={`${PARENT_CLASS}-header__title`}>{header_title}</div>
                         <div
                             role='button'
                             className={`${PARENT_CLASS}-header__close`}

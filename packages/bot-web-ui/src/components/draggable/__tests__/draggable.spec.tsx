@@ -1,7 +1,7 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import RootStore from 'Stores/index';
 import { DBotStoreProvider, mockDBotStore } from 'Stores/useDBotStore';
 import Draggable from '../draggable';
@@ -49,12 +49,19 @@ describe('Draggable', () => {
         );
     });
     it('should render Draggable', () => {
-        render(<Draggable is_visible={true} onCloseDraggable={jest.fn()} />, { wrapper });
+        render(<Draggable is_visible={true} onCloseDraggable={jest.fn()} header_title='dummy' />, { wrapper });
         expect(screen.getByTestId('react-rnd-wrapper')).toBeInTheDocument();
     });
     it('should not render Draggable', () => {
-        render(<Draggable is_visible={false} onCloseDraggable={jest.fn()} />, { wrapper });
+        render(<Draggable is_visible={false} onCloseDraggable={jest.fn()} header_title='' />, { wrapper });
         const draggable_element = screen.queryByTestId('react-rnd-wrapper');
         expect(draggable_element).not.toBeInTheDocument();
+    });
+    it('should call onClose function on close button click', () => {
+        const mock_close = jest.fn();
+        render(<Draggable is_visible={true} onCloseDraggable={mock_close} header_title='' />, { wrapper });
+        const close_btn = screen.getByTestId('react-rnd-close-modal');
+        fireEvent.click(close_btn);
+        expect(mock_close).toBeCalled();
     });
 });

@@ -1,7 +1,7 @@
 import { datadogLogs } from '@datadog/browser-logs';
 import { formatDate, formatTime } from '@deriv/shared';
 
-const DATADOG_CLIENT_TOKEN = process.env.DATADOG_CLIENT_TOKEN ?? '';
+const DATADOG_CLIENT_TOKEN_LOGS = process.env.DATADOG_CLIENT_TOKEN_LOGS ?? '';
 const isProduction = process.env.CIRCLE_JOB === 'release_production';
 const isStaging = process.env.CIRCLE_JOB === 'release_staging';
 
@@ -20,8 +20,8 @@ if (isProduction) {
 }
 
 datadogLogs.init({
-    clientToken: DATADOG_CLIENT_TOKEN,
-    site: 'datadoghq.eu',
+    clientToken: DATADOG_CLIENT_TOKEN_LOGS,
+    site: 'datadoghq.com',
     forwardErrorsToLogs: false,
     service: 'Dbot',
     sessionSampleRate: dataDogSessionSampleRate,

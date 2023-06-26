@@ -72,14 +72,6 @@ module.exports = {
                     to: path.resolve(__dirname, 'www/public'),
                 },
                 {
-                    from: 'public/localstorage-sync.html',
-                    to: path.resolve(__dirname, 'www'),
-                },
-                {
-                    from: 'templates/index.html',
-                    to: path.resolve(__dirname, 'www'),
-                },
-                {
                     from: 'translations',
                     to: path.resolve(__dirname, 'www/translations'),
                 },

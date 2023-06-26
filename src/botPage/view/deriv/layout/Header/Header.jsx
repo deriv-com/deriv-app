@@ -65,7 +65,7 @@ const Header = () => {
     const { is_bot_running } = useSelector(state => state.ui);
     const is_logged_in = isLoggedIn();
     const dispatch = useDispatch();
-    const hideDropdown = e => !platformDropdownRef.current.contains(e.target) && setIsPlatformSwitcherOpen(false);
+    const hideDropdown = e => !platformDropdownRef?.current?.contains(e.target) && setIsPlatformSwitcherOpen(false);
 
     React.useEffect(() => {
         const mountSwitcher = async () => {

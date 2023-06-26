@@ -1,22 +1,23 @@
 .da-account-limits {
     $this: &;
-    display: flex;
 
     @include mobile {
         flex-direction: column;
     }
 
-    &__table {
-        width: calc(100% - 2.4rem);
+    display: flex;
 
+    &__table {
         @include mobile {
             width: 100%;
         }
 
+        width: calc(100% - 2.4rem);
+
         tr {
-            border-bottom: 1px solid var(--general-section-2);
             display: flex;
             justify-content: space-between;
+            border-bottom: 1px solid var(--general-section-2);
         }
 
         & + & {
@@ -25,12 +26,12 @@
 
         &-header,
         &-cell {
-            padding: 0.8rem 0;
-            display: inline-flex;
-
             @include mobile {
                 flex-direction: column;
             }
+
+            display: inline-flex;
+            padding: 0.8rem 0;
 
             > .dc-text {
                 align-items: center;
@@ -49,17 +50,17 @@
             &--left {
                 text-align: left;
             }
+
             &--right {
                 text-align: right;
             }
+
             &--submarket {
                 padding-left: 1rem;
             }
         }
 
         &-wrapper {
-            flex: 1;
-
             @include desktop {
                 margin-right: 1rem;
             }
@@ -67,6 +68,8 @@
             @include mobile {
                 margin: 0 2rem 2rem;
             }
+
+            flex: 1;
         }
     }
 

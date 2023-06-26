@@ -1,7 +1,18 @@
 import { getExpiryType, getDurationMinMaxValues } from '@deriv/shared';
 import { ContractType } from 'Stores/Modules/Trading/Helpers/contract-type';
+import { TTradeStore } from 'Types';
 
-export const onChangeExpiry = store => {
+type TOnChangeExpiry = (store: TTradeStore) => {
+    contract_expiry_type: string;
+    barrier_count?: number;
+    barrier_1?: string;
+    barrier_2?: string;
+};
+type TAssertDurationParams = Partial<
+    Pick<TTradeStore, 'contract_expiry_type' | 'duration' | 'duration_min_max' | 'duration_unit'>
+>;
+
+export const onChangeExpiry: TOnChangeExpiry = store => {
     const contract_expiry_type = getExpiryType(store);
 
     // TODO: there will be no barrier available if contract is only daily but client chooses intraday endtime. we should find a way to handle this.
@@ -15,7 +26,7 @@ export const onChangeExpiry = store => {
     };
 };
 
-export const onChangeContractType = store => {
+export const onChangeContractType = (store: TTradeStore) => {
     const contract_expiry_type = getExpiryType(store);
 
     const { duration, duration_min_max, duration_unit } = store;
@@ -27,13 +38,18 @@ export const onChangeContractType = store => {
     };
 };
 
-const assertDuration = ({ contract_expiry_type, duration, duration_min_max, duration_unit } = {}) => {
-    const [min, max] = getDurationMinMaxValues(duration_min_max, contract_expiry_type, duration_unit);
+const assertDuration = ({
+    contract_expiry_type,
+    duration,
+    duration_min_max,
+    duration_unit,
+}: TAssertDurationParams = {}) => {
+    const [min, max] = getDurationMinMaxValues(duration_min_max ?? {}, contract_expiry_type ?? '', duration_unit ?? '');
 
-    if (duration < min) {
+    if (duration && min && duration < min) {
         return { duration: min };
     }
-    if (duration > max) {
+    if (duration && max && duration > max) {
         return { duration: max };
     }
     return {};

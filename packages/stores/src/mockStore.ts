@@ -8,7 +8,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             account_settings: {},
             accounts: {},
             is_high_risk: false,
-            is_social_signup: false,
             active_account_landing_company: '',
             trading_platform_available_accounts: [],
             account_limits: {
@@ -225,7 +224,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             routeTo: jest.fn(),
             changeCurrentLanguage: jest.fn(),
             changeSelectedLanguage: jest.fn(),
-            current_language: 'EN',
             is_network_online: false,
             server_time: undefined,
             is_language_changing: false,

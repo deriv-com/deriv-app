@@ -2,7 +2,11 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-const EmptyPortfolioMessage = ({ error }) => (
+type TEmptyPortfolioMessage = {
+    error: string;
+};
+
+const EmptyPortfolioMessage = ({ error }: TEmptyPortfolioMessage) => (
     <div className='portfolio-empty'>
         <div className='portfolio-empty__wrapper'>
             {error ? (

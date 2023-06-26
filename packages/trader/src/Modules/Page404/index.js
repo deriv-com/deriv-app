@@ -1,3 +1,3 @@
-import Page404 from './Components/Page404.jsx';
+import Page404 from './Components/Page404';
 
 export default Page404;

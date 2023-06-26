@@ -918,7 +918,7 @@ const CFDPasswordModal = ({
                     platform: getCFDPlatformLabel(platform),
                     category: category_label,
                 }}
-                components={[<span key={0} />, <strong key={1} className='cfd-account__platform' />]}
+                components={[<i key={0} className='cfd-account__platform' />, <strong key={1} />]}
             />
         );
     };

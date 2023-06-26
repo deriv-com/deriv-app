@@ -11,8 +11,12 @@ import store from './deriv/store';
 import App from './deriv/app';
 import '../../assets/css/index.scss';
 
-createRoot(document.getElementById('main')).render(
-<Provider store={store}>
-    <App />
-</Provider>);
+const container = document.getElementById('main');
+console.log('root container', container);
+const root = createRoot(container);
 
+root.render(
+    <Provider store={store}>
+        <App />
+    </Provider>
+);

@@ -27,7 +27,9 @@
         "prettify": "npx prettier --write **/{src}/**/*.{js,jsx,ts,tsx,md,html,mustache,css,scss,}",
         "fetch-translations": "node customPlugins/fetch-blockly-translations.js",
         "start": "npm run fetch-translations && webpack serve --open",
-        "build": "webpack --config webpack.config.cli.js --mode production"
+        "build": "webpack --config webpack.config.cli.js --mode production",
+        "cleanup": "rm -rf node_modules www temp translations",
+        "cleanup-cache": "rm -rf www temp translations"
     },
     "husky": {
         "hooks": {

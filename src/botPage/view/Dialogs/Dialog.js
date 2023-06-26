@@ -9,11 +9,14 @@ export default class Dialog {
     constructor(id, title, content, options = {}) {
         this.componentId = `${id}-component`;
 
-        createRoot(document.getElementById(id)).render(
+        const container = document.getElementById(id);
+        console.log('dialog container', container);
+        const root = createRoot(container);
+        root.render(
             <Provider store={store}>
                 <DialogComponent id={this.componentId} title={title} content={content} options={options} />
             </Provider>
-        )
+        );
     }
     open() {
         $(`#${this.componentId}`).dialog('open');

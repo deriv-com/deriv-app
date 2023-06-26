@@ -106,7 +106,7 @@ describe('<Cashier />', () => {
         expect(screen.getByText('mockedLoading')).toBeInTheDocument();
     });
 
-    it('should render the component without deriv p2p menu if client_tnc_status is loaded', () => {
+    it('should render the component if client_tnc_status is loaded', () => {
         const mock_root_store = mockStore({
             common: {
                 routeBackInApp: jest.fn(),
@@ -157,7 +157,7 @@ describe('<Cashier />', () => {
         expect(screen.getByRole('link', { name: 'Transfer' })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Payment agents' })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Transfer to client' })).toBeInTheDocument();
-        expect(screen.queryByRole('link', { name: 'Deriv P2P' })).toBeInTheDocument();
+        expect(screen.getByRole('link', { name: 'Deriv P2P' })).toBeInTheDocument();
         expect(screen.getByRole('link', { name: 'Fiat onramp' })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Learn more about payment methods' })).toBeInTheDocument();
     });

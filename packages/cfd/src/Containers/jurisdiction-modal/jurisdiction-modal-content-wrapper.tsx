@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
 import { getAuthenticationStatusInfo, isMobile, Jurisdiction } from '@deriv/shared';
@@ -174,57 +175,64 @@ const JurisdictionModalContentWrapper = ({
     };
 
     return (
-        <React.Fragment>
-            <JurisdictionModalContent
-                account_status={account_status}
-                account_type={account_type.type}
-                financial_available_accounts={financial_available_accounts}
-                is_non_idv_design={is_non_idv_design}
-                is_virtual={is_virtual}
-                real_financial_accounts_existing_data={real_financial_accounts_existing_data}
-                real_synthetic_accounts_existing_data={real_synthetic_accounts_existing_data}
-                jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                real_swapfree_accounts_existing_data={real_swapfree_accounts_existing_data}
-                setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
-                swapfree_available_accounts={swapfree_available_accounts}
-                synthetic_available_accounts={synthetic_available_accounts}
-            />
-            <div className={`cfd-jurisdiction-card--${account_type.type}__footer-wrapper`}>
-                <div className={`cfd-jurisdiction-card--${account_type.type}__footnotes-container`}>
-                    <JurisdictionModalFootNote
-                        account_status={account_status}
-                        account_type={account_type.type}
-                        card_classname={`cfd-jurisdiction-card--${account_type.type}`}
-                        context={context}
-                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                        should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
-                        should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
-                    />
-                    <JurisdictionCheckBox
-                        is_checked={checked}
-                        context={context}
-                        onCheck={() => setChecked(!checked)}
-                        class_name={`cfd-jurisdiction-card--${account_type.type}__jurisdiction-checkbox`}
-                        jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
-                        should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
-                        should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
-                    />
+        <div className='jurisdiction-modal__content-wrapper'>
+            <div className='jurisdiction-modal__scrollable-content'>
+                <JurisdictionModalContent
+                    account_status={account_status}
+                    account_type={account_type.type}
+                    financial_available_accounts={financial_available_accounts}
+                    is_non_idv_design={is_non_idv_design}
+                    is_virtual={is_virtual}
+                    real_financial_accounts_existing_data={real_financial_accounts_existing_data}
+                    real_synthetic_accounts_existing_data={real_synthetic_accounts_existing_data}
+                    jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                    real_swapfree_accounts_existing_data={real_swapfree_accounts_existing_data}
+                    setJurisdictionSelectedShortcode={setJurisdictionSelectedShortcode}
+                    swapfree_available_accounts={swapfree_available_accounts}
+                    synthetic_available_accounts={synthetic_available_accounts}
+                />
+                <div
+                    className={classNames(
+                        'jurisdiction-modal__footer-content',
+                        `cfd-jurisdiction-card--${account_type.type}__footer-wrapper`
+                    )}
+                >
+                    <div className={`cfd-jurisdiction-card--${account_type.type}__footnotes-container`}>
+                        <JurisdictionModalFootNote
+                            account_status={account_status}
+                            account_type={account_type.type}
+                            card_classname={`cfd-jurisdiction-card--${account_type.type}`}
+                            context={context}
+                            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                            should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
+                            should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
+                        />
+                        <JurisdictionCheckBox
+                            is_checked={checked}
+                            context={context}
+                            onCheck={() => setChecked(!checked)}
+                            class_name={`cfd-jurisdiction-card--${account_type.type}__jurisdiction-checkbox`}
+                            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                            should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
+                            should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
+                        />
+                    </div>
                 </div>
-                <Modal.Footer has_separator>
-                    <Button
-                        disabled={isNextButtonDisabled()}
-                        primary
-                        style={{ width: isMobile() ? '100%' : 'unset' }}
-                        onClick={() => {
-                            toggleJurisdictionModal();
-                            onSelectRealAccount();
-                        }}
-                    >
-                        {localize('Next')}
-                    </Button>
-                </Modal.Footer>
             </div>
-        </React.Fragment>
+            <Modal.Footer className='jurisdiction-modal__footer-button' has_separator>
+                <Button
+                    disabled={isNextButtonDisabled()}
+                    primary
+                    style={{ width: isMobile() ? '100%' : 'unset' }}
+                    onClick={() => {
+                        toggleJurisdictionModal();
+                        onSelectRealAccount();
+                    }}
+                >
+                    {localize('Next')}
+                </Button>
+            </Modal.Footer>
+        </div>
     );
 };
 export default connect(({ modules: { cfd }, client, traders_hub }: RootStore) => ({

@@ -12,6 +12,9 @@
         display: flex;
         flex-direction: column;
         gap: 2.4rem;
+        &-reversed {
+            flex-direction: column-reverse;
+        }
     }
 
     &__button-toggle {

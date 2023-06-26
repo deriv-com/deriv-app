@@ -1,10 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
+import Loadable from 'react-loadable';
 
 type TUILoader = {
     className?: string;
     classNameBlock?: string;
-};
+} & Loadable.LoadingComponentProps;
+
 const UILoader = ({ className, classNameBlock }: TUILoader) => {
     const block_class = classNames(classNameBlock, 'block-ui');
     const loading_class = classNames('block-ui__loading', className);

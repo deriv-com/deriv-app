@@ -20,7 +20,7 @@ const JurisdictionModal = ({
     const modal_title = show_eu_related_content
         ? localize('Choose a jurisdiction for your Deriv MT5 CFDs account')
         : localize('Choose a jurisdiction for your Deriv MT5 {{account_type}} account', {
-              account_type: getMT5Title(account_type.type),
+              account_type: localize(getMT5Title(account_type.type)),
           });
 
     return (
@@ -37,7 +37,7 @@ const JurisdictionModal = ({
                         toggleModal={toggleJurisdictionModal}
                         type='button'
                         context={context}
-                        width={account_type.type === 'financial' ? '1300px' : '1160px'}
+                        width={account_type.type === 'financial' ? '1200px' : '1040px'}
                     >
                         <JurisdictionModalContentWrapper openPasswordModal={openPasswordModal} context={context} />
                     </Modal>

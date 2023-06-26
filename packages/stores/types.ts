@@ -10,7 +10,13 @@ import type {
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
-import type { ExchangeRatesStore } from './src/stores';
+import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
+
+type TPopulateSettingsExtensionsMenuItem = {
+    icon: string;
+    label: string;
+    value: <T extends object>(props: T) => JSX.Element;
+};
 
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: number;
@@ -166,12 +172,14 @@ type TClientStore = {
     is_virtual: boolean;
     is_withdrawal_lock: boolean;
     landing_company_shortcode: string;
+    is_populating_account_list: boolean;
     local_currency_config: {
         currency: string;
         decimal_places?: number;
     };
     loginid?: string;
     pre_switch_broadcast: boolean;
+    prev_account_type: string;
     residence: string;
     responseMt5LoginList: ({
         mt5_login_list,
@@ -218,6 +226,7 @@ type TClientStore = {
     should_allow_authentication: boolean;
     is_crypto: (currency?: string) => boolean;
     dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
+    derivez_accounts_list: DetailsOfEachMT5Loginid[];
     default_currency: string;
     resetVirtualBalance: () => Promise<void>;
     has_enabled_two_fa: boolean;
@@ -266,6 +275,7 @@ type TUiStore = {
     has_real_account_signup_ended: boolean;
     is_cashier_visible: boolean;
     is_closing_create_real_account_modal: boolean;
+    is_from_signup_account: boolean;
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
@@ -278,6 +288,7 @@ type TUiStore = {
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
+    setIsFromSignupAccount: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     sub_section_index: number;
     setSubSectionIndex: (index: number) => void;
@@ -299,6 +310,8 @@ type TUiStore = {
     is_real_acc_signup_on: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
+    populateHeaderExtensions: (header_items: JSX.Element | null) => void;
+    populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     setShouldShowCooldownModal: (value: boolean) => void;
     setShouldTriggerTourGuide: (value: boolean) => void;
     toggleDepositOrAccountSuccessModal: () => void;
@@ -357,16 +370,19 @@ type TTradersHubStore = {
     is_eu_user: boolean;
     setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
+    is_demo_low_risk: boolean;
     selectRegion: (region: string) => void;
     toggleRegulatorsCompareModal: () => void;
+    toggleIsTourOpen: (is_tour_open: boolean) => void;
     selected_region: string;
     openFailedVerificationModal: (selected_account_type: string) => void;
     multipliers_account_status: string;
     financial_restricted_countries: boolean;
     selected_account_type: string;
+    setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
     no_CR_account: boolean;
     no_MF_account: boolean;
-    setSelectedAccount: (account: { login?: string; account_id?: string }) => void;
+    CFDs_restricted_countries: boolean;
     toggleAccountTransferModal: () => void;
     is_demo: boolean;
     selectAccountType: (account_type: string) => void;
@@ -391,4 +407,5 @@ export type TCoreStores = {
 
 export type TStores = TCoreStores & {
     exchange_rates: ExchangeRatesStore;
+    feature_flags: FeatureFlagsStore;
 };

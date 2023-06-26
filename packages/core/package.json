@@ -27,7 +27,7 @@
         "url": "https://github.com/binary-com/deriv-app/issues"
     },
     "engines": {
-        "node": "^16.16.0"
+        "node": "18.x"
     },
     "homepage": "https://github.com/binary-com/deriv-app",
     "devDependencies": {

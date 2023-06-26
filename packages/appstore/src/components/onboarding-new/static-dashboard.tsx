@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStores } from 'Stores';
+import { useStore } from '@deriv/stores';
 import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { Text, ButtonToggle, ThemedScrollbars, Button } from '@deriv/components';
@@ -63,25 +63,25 @@ const StaticDashboard = ({
     is_onboarding_animated,
     loginid,
 }: TStaticDashboard) => {
-    const { client, traders_hub } = useStores();
+    const { client, traders_hub } = useStore();
     const { content_flag, CFDs_restricted_countries, financial_restricted_countries } = traders_hub;
     const { is_eu_country, is_logged_in } = client;
-
-    const [index, setIndex] = React.useState<number>(0);
-
-    const Divider = () => <div className='divider' />;
-
     const eu_user =
         content_flag === ContentFlag.LOW_RISK_CR_EU ||
         content_flag === ContentFlag.EU_REAL ||
         content_flag === ContentFlag.EU_DEMO;
-
     const is_eu_user = (is_logged_in && eu_user) || (!is_logged_in && is_eu_country);
 
+    const [index, setIndex] = React.useState<number>(is_eu_user ? 1 : 0);
+
+    const Divider = () => <div className='divider' />;
+
     const toggle_options = [
-        { text: `${is_eu_user ? 'Multipliers' : 'Options & Multipliers'}`, value: 0 },
-        { text: 'CFDs', value: 1 },
+        { text: `${is_eu_user ? localize('Multipliers') : localize('Options & Multipliers')}`, value: 0 },
+        { text: localize('CFDs'), value: 1 },
     ];
+
+    const toggle_options_eu = [...toggle_options].reverse();
 
     React.useEffect(() => {
         const change_index_interval_id = setInterval(() => {
@@ -120,7 +120,7 @@ const StaticDashboard = ({
                                 {isMobile() ? (
                                     <React.Fragment>
                                         <ButtonToggle
-                                            buttons_arr={toggle_options}
+                                            buttons_arr={is_eu_user ? toggle_options_eu : toggle_options}
                                             className='static-dashboard-wrapper__header--toggle-account'
                                             has_rounded_button
                                             is_animated
@@ -219,7 +219,7 @@ const StaticDashboard = ({
                                     actions={
                                         <Button
                                             secondary
-                                            className={classNames('static-dashboard--deposit-button', {
+                                            className={classNames('', {
                                                 'static-dashboard--deposit-button-animated':
                                                     is_onboarding_animated.topup,
                                                 'static-dashboard--deposit-button-blurry': is_blurry.topup,
@@ -339,7 +339,7 @@ const StaticDashboard = ({
                             {isMobile() ? (
                                 <React.Fragment>
                                     <ButtonToggle
-                                        buttons_arr={toggle_options}
+                                        buttons_arr={is_eu_user ? toggle_options_eu : toggle_options}
                                         className='static-dashboard-wrapper__header--toggle-account'
                                         has_rounded_button
                                         is_animated
@@ -434,7 +434,7 @@ const StaticDashboard = ({
                         </div>
 
                         <div className='static-dashboard-wrapper__body'>
-                            {!is_eu_user && !financial_restricted_countries && (
+                            {!is_eu_user && !CFDs_restricted_countries && (
                                 <StaticCFDAccountManager
                                     type='synthetic'
                                     platform='mt5'
@@ -525,6 +525,7 @@ const StaticDashboard = ({
                                 />
                             )}
                         </div>
+
                         {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
                             <React.Fragment>
                                 <Divider />
@@ -539,29 +540,48 @@ const StaticDashboard = ({
                                                 : 'prominent'
                                         }
                                     >
-                                        {localize('Other CFDs')}
+                                        {localize('Other CFD Platforms')}
                                     </Text>
                                 </div>
                             </React.Fragment>
                         )}
-                        {!is_eu_user && !CFDs_restricted_countries && !financial_restricted_countries && (
-                            <StaticCFDAccountManager
-                                type='all'
-                                platform='dxtrade'
-                                appname={localize('Deriv X')}
-                                description={localize(
-                                    'Trade CFDs on Deriv X with financial markets and our Derived indices.'
-                                )}
-                                loginid={loginid}
-                                currency={currency}
-                                has_account={has_account}
-                                is_last_step={is_last_step}
-                                is_blurry={is_blurry}
-                                is_onboarding_animated={is_onboarding_animated}
-                                is_derivx_last_step={is_derivx_last_step}
-                                is_financial_last_step={is_financial_last_step}
-                                is_eu_user={is_eu_user}
-                            />
+                        {!is_eu_user && !CFDs_restricted_countries && (
+                            <div className='static-dashboard-wrapper__body'>
+                                <StaticCFDAccountManager
+                                    type='all'
+                                    platform='dxtrade'
+                                    appname={localize('Deriv X')}
+                                    description={localize(
+                                        'Trade CFDs on Deriv X with financial markets and our Derived indices.'
+                                    )}
+                                    loginid={loginid}
+                                    currency={currency}
+                                    has_account={has_account}
+                                    is_last_step={is_last_step}
+                                    is_blurry={is_blurry}
+                                    is_onboarding_animated={is_onboarding_animated}
+                                    is_derivx_last_step={is_derivx_last_step}
+                                    is_financial_last_step={is_financial_last_step}
+                                    is_eu_user={is_eu_user}
+                                />
+                                <StaticCFDAccountManager
+                                    type='Financial'
+                                    platform='derivez'
+                                    appname={localize('Deriv EZ')}
+                                    description={localize(
+                                        'Trade CFDs on an easy-to-get-started platform with all your favourite assets.'
+                                    )}
+                                    loginid={loginid}
+                                    currency={currency}
+                                    has_account={has_account}
+                                    derived_amount={derived_amount}
+                                    financial_amount={financial_amount}
+                                    is_derivx_last_step={is_derivx_last_step}
+                                    is_blurry={is_blurry}
+                                    is_onboarding_animated={is_onboarding_animated}
+                                    is_eu_user={is_eu_user}
+                                />
+                            </div>
                         )}
                     </div>
                 )}

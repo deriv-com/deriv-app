@@ -1,0 +1,20 @@
+{
+    "skip_pending_checks": false,
+    "skip_slack_integration": false,
+    "skip_updating_branch": true,
+    "merge_delay": 120000,
+    "first_merge_delay": 1200000,
+    "max_task_count": 15,
+    "pull_request": {
+        "checks_timeout": 60000,
+        "refetch_timeout": 10000,
+        "refetch_limit": 20,
+        "checks_limit": 40
+    },
+    "circleci": {
+        "project_slug": "gh/binary-com/deriv-app",
+        "branch": "master",
+        "workflow_name": "release_staging"
+    },
+    "checks_to_skip": ["/gitguardian/i"]
+}

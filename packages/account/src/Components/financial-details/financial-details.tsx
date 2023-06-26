@@ -22,6 +22,7 @@ import {
     SourceOfWealth,
 } from './financial-details-partials';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
+import InlineNoteWithIcon from 'Components/inline-note-with-icon';
 
 export type TFinancialDetails = {
     goToPreviousStep: () => void;
@@ -42,6 +43,7 @@ export type TFinancialDetails = {
 export type TFinancialInformationAndTradingExperience = {
     shared_props?: object;
     income_source_enum: object[];
+    is_eu_user?: boolean;
     employment_status_enum: object[];
     employment_industry_enum: object[];
     occupation_enum: object[];
@@ -92,6 +94,8 @@ const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTra
         props.onCancel(current_step, props.goToPreviousStep);
     };
 
+    const { is_eu_user } = props;
+
     const handleValidate = (values: FormikValues) => {
         const { errors } = splitValidationResultTypes(props.validate(values));
         return errors;
@@ -131,9 +135,27 @@ const FinancialDetails = (props: TFinancialDetails & TFinancialInformationAndTra
                                     height_offset='110px'
                                     is_disabled={isDesktop()}
                                 >
-                                    <Text as='p' color='prominent' size='xxs' className='trading-assessment__side-note'>
-                                        <Localize i18n_default_text='We collect information about your employment as part of our due diligence obligations, as required by anti-money laundering legislation.' />
-                                    </Text>
+                                    {is_eu_user && (
+                                        <div className='details-form__banner-container'>
+                                            <InlineNoteWithIcon
+                                                icon='IcAlertWarning'
+                                                message={localize(
+                                                    'We collect information about your employment as part of our due diligence obligations, as required by anti-money laundering legislation.'
+                                                )}
+                                                title={localize('Why do we collect this?')}
+                                            />
+                                        </div>
+                                    )}
+                                    {!is_eu_user && (
+                                        <Text
+                                            as='p'
+                                            color='prominent'
+                                            size='xxs'
+                                            className='trading-assessment__side-note'
+                                        >
+                                            <Localize i18n_default_text='We collect information about your employment as part of our due diligence obligations, as required by anti-money laundering legislation.' />
+                                        </Text>
+                                    )}
                                     <ThemedScrollbars
                                         autohide={!(window.innerHeight < 890)}
                                         height={Number(height) - 77}

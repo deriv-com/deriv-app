@@ -10,7 +10,6 @@ import {
     switch_to_tick_chart,
     isCallPut,
     getContractTypesConfig,
-    isEmptyObject,
     isMobile,
 } from '@deriv/shared';
 import ContractStore from './contract-store';
@@ -155,25 +154,13 @@ export default class ContractTradeStore extends BaseStore {
             // skip update for duplicate data
             return;
         }
-        if (
-            should_update_contract_barriers
-                ? isEmptyObject(this.accumulator_contract_barriers_data)
-                : isEmptyObject(this.accumulator_barriers_data)
-        ) {
-            // update barriers in DTrader page immediately on first render
-            this.setNewAccumulatorBarriersData(
-                { ...barriers_data, ...delayed_barriers_data },
-                should_update_contract_barriers
-            );
-        } else {
-            // update barriers in DTrader page with delay after first render
-            this.setNewAccumulatorBarriersData(barriers_data, should_update_contract_barriers);
-            this.accu_barriers_timeout_id = setTimeout(() => {
-                runInAction(() => {
-                    this.setNewAccumulatorBarriersData(delayed_barriers_data, should_update_contract_barriers);
-                });
-            }, getAccuBarriersDelayTimeMs(underlying));
-        }
+        // update barriers in DTrader page with delay
+        this.setNewAccumulatorBarriersData(barriers_data, should_update_contract_barriers);
+        this.accu_barriers_timeout_id = setTimeout(() => {
+            runInAction(() => {
+                this.setNewAccumulatorBarriersData(delayed_barriers_data, should_update_contract_barriers);
+            });
+        }, getAccuBarriersDelayTimeMs(underlying));
     }
 
     updateChartType(type) {
@@ -267,7 +254,7 @@ export default class ContractTradeStore extends BaseStore {
                 entry_tick_time &&
                 entry_tick_time !== current_spot_time) ||
                 (exit_tick_time && current_spot_time <= exit_tick_time)) &&
-                !isEmptyObject(this.accumulator_contract_barriers_data) &&
+                this.accumulator_contract_barriers_data?.accumulators_high_barrier &&
                 this.accumulator_contract_barriers_data) ||
             this.accumulator_barriers_data ||
             {};

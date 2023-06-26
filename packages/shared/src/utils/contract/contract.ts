@@ -21,6 +21,12 @@ export const symbols_1s = [
     'JD75',
     'DEX900UP',
     'DEX900DN',
+    'BOOM300N',
+    'BOOM500',
+    'BOOM1000',
+    'CRASH300N',
+    'CRASH500',
+    'CRASH1000',
 ];
 
 export const getContractStatus = ({ contract_type, exit_tick_time, profit, status }: TContractInfo) => {

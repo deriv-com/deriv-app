@@ -103,8 +103,8 @@ export default function DesktopTransactionTable({
                                         />
                                     }
                                 />
-                                <TableCell label={data?.entry_tick} loader={!data.is_completed} />
-                                <TableCell label={data?.exit_tick} loader={!data.is_completed} />
+                                <TableCell label={data?.entry_tick} loader={!data?.entry_tick} />
+                                <TableCell label={data?.exit_tick} loader={!data.exit_tick} />
                                 <TableCell label={data?.buy_price} />
                                 <TableCell
                                     label={

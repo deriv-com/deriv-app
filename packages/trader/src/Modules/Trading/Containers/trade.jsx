@@ -384,7 +384,7 @@ const Chart = props => {
                 top: isMobile() ? 76 : 106,
             }}
             isLive={true}
-            leftMargin={isDesktop() && is_positions_drawer_on ? 248 : undefined}
+            leftMargin={isDesktop() && is_positions_drawer_on ? 328 : 80}
         >
             {is_accumulator && (
                 <AccumulatorsChartElements

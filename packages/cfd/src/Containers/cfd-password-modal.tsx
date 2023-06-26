@@ -880,7 +880,7 @@ const CFDPasswordModal = ({
                             jurisdiction_selected_shortcode:
                                 platform === CFD_PLATFORMS.MT5 && !show_eu_related_content ? jurisdiction_label : '',
                         }}
-                        components={[<span key={0} />, <strong key={1} className='cfd-account__platform' />]}
+                        components={[<i key={0} className='cfd-account__platform' />, <strong key={1} />]}
                     />
                     {platform === CFD_PLATFORMS.DXTRADE ? (
                         <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
@@ -909,7 +909,7 @@ const CFDPasswordModal = ({
                     platform: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
                     category: category_label,
                 }}
-                components={[<span key={0} />, <strong key={1} className='cfd-account__platform' />]}
+                components={[<i key={0} className='cfd-account__platform' />, <strong key={1} />]}
             />
         );
     };

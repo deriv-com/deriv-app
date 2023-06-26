@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Formik, FormikHelpers } from 'formik';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
@@ -272,18 +271,6 @@ const CFDResetPasswordModal = ({
             )}
         </Modal>
     );
-};
-
-CFDResetPasswordModal.propTypes = {
-    current_list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-    email: PropTypes.string,
-    is_cfd_reset_password_modal_enabled: PropTypes.bool,
-    is_eu: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    platform: PropTypes.string,
-    setCFDPasswordResetModal: PropTypes.func,
-    history: PropTypes.object,
-    context: PropTypes.object,
 };
 
 export default React.memo(

@@ -1,7 +1,12 @@
 import React from 'react';
 import { fireEvent, screen, render } from '@testing-library/react';
 import IconWithMessage from '../icon-with-message';
-import { mockStore, StoreProvider } from '@deriv/stores';
+
+jest.mock('Stores/connect', () => ({
+    __esModule: true,
+    default: 'mockedDefaultExport',
+    connect: () => Component => Component,
+}));
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -15,46 +20,27 @@ describe('<IconWithMessage />', () => {
         icon: 'string',
         message: 'title',
     };
-    const store = mockStore();
 
     it('should render the IconWithMessage component', () => {
-        render(
-            <StoreProvider store={store}>
-                <IconWithMessage {...props} />
-            </StoreProvider>
-        );
+        render(<IconWithMessage {...props} />);
         expect(screen.getByText('mockedIcon')).toBeInTheDocument();
         expect(screen.getByText('title')).toBeInTheDocument();
     });
 
     it('should not render the button component if has_button is false', () => {
-        render(
-            <StoreProvider store={store}>
-                <IconWithMessage {...props} has_button={false} />
-            </StoreProvider>
-        );
+        render(<IconWithMessage {...props} has_button={false} />);
         const btn = screen.queryByTestId('icon-with-message-button');
         expect(btn).not.toBeInTheDocument();
     });
     it('should show "Switch to real account" button label if user have real account', () => {
-        store.client.has_any_real_account = true;
-        render(
-            <StoreProvider store={store}>
-                <IconWithMessage {...props} has_button={true} />
-            </StoreProvider>
-        );
+        render(<IconWithMessage {...props} has_button={true} has_real_account={true} />);
         const btn = screen.getByTestId('icon-with-message-button');
         expect(btn).toBeInTheDocument();
         expect(screen.getByText('Switch to real account')).toBeInTheDocument();
     });
 
     it('should show "Add a real account" button label if user doesnt have real account', () => {
-        store.client.has_any_real_account = false;
-        render(
-            <StoreProvider store={store}>
-                <IconWithMessage {...props} has_button={true} />
-            </StoreProvider>
-        );
+        render(<IconWithMessage {...props} has_button={true} has_real_account={false} />);
         expect(screen.getByText('Add a real account')).toBeInTheDocument();
     });
 
@@ -63,16 +49,16 @@ describe('<IconWithMessage />', () => {
             icon: 'string',
             message: 'title',
             has_button: true,
+            has_real_account: true,
         };
-        store.client.has_any_real_account = true;
         const toggleShouldShowRealAccountsList = jest.fn();
         const toggleAccountsDialog = jest.fn();
-        store.ui.toggleShouldShowRealAccountsList = toggleShouldShowRealAccountsList;
-        store.ui.toggleAccountsDialog = toggleAccountsDialog;
         render(
-            <StoreProvider store={store}>
-                <IconWithMessage {...new_props} />
-            </StoreProvider>
+            <IconWithMessage
+                {...new_props}
+                toggleAccountsDialog={toggleAccountsDialog}
+                toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
+            />
         );
         const btn = screen.getByTestId('icon-with-message-button');
         expect(btn).toBeInTheDocument();

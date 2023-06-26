@@ -32,7 +32,7 @@ const AddWalletCard = observer(({ wallet_info }: TAddWalletCard) => {
             <div className='add-wallets__card-wrapper'>
                 <WalletCard wallet={wallet_details} size='medium' state={is_added ? 'added' : 'add'} />
                 <div className='add-wallets__card-description'>
-                    <Text as='h3' weight='bold' className='add-wallets__card-description__header'>
+                    <Text as='h3' weight='bold' color='prominent' className='add-wallets__card-description__header'>
                         {`${currency_config?.display_code} Wallet`}
                     </Text>
                     <Text as='p' size='xs' className='add-wallets__card-description__text'>

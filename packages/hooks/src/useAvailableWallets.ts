@@ -32,7 +32,7 @@ const useAvailableWallets = () => {
         const modified_wallets = non_virtual_wallets?.map(wallet => ({
             currency: wallet.currency,
             landing_company_name: wallet.landing_company_name,
-            is_added: available_currencies.includes(wallet.currency),
+            is_added: wallet.is_added,
         }));
 
         const available_wallets = available_currencies
@@ -43,12 +43,8 @@ const useAvailableWallets = () => {
                 is_added: false,
             }));
 
-        const all_wallets_list = [...available_wallets, ...(modified_wallets || [])];
-
         // Sort the unadded wallets alphabetically by fiat, crypto, then virtual
-        all_wallets_list?.sort((a, b) => {
-            if (a.is_added) return 1;
-
+        available_wallets?.sort((a, b) => {
             if (is_crypto(a.currency) !== is_crypto(b.currency)) {
                 return is_crypto(a.currency) ? 1 : -1;
             }
@@ -56,7 +52,19 @@ const useAvailableWallets = () => {
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });
 
-        return all_wallets_list;
+        // Sort the added wallets alphabetically by fiat, crypto, then virtual (if any)
+        if (Array.isArray(modified_wallets)) {
+            modified_wallets?.sort((a, b) => {
+                if (is_crypto(a.currency) !== is_crypto(b.currency)) {
+                    return is_crypto(a.currency) ? 1 : -1;
+                }
+
+                return (a.currency || 'USD').localeCompare(b.currency || 'USD');
+            });
+            return [...available_wallets, ...modified_wallets];
+        }
+
+        return [...available_wallets];
     }, [added_wallets, account_type_data, data?.authorize?.landing_company_name, is_crypto]);
 
     return {

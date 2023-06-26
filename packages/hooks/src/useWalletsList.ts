@@ -18,6 +18,7 @@ const useWalletList = () => {
             ...wallet,
             balance: 1000,
             landing_company_shortcode: wallet.landing_company_name,
+            is_added: true,
         }));
 
         // Sort the wallets alphabetically by fiat, crypto, then virtual

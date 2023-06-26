@@ -31,6 +31,7 @@ const CFDsListing = () => {
     const {
         available_dxtrade_accounts,
         available_derivez_accounts,
+        available_derivez_accounts,
         combined_cfd_mt5_accounts,
         selected_region,
         has_any_real_account,
@@ -214,7 +215,7 @@ const CFDsListing = () => {
 
                     <div className='cfd-full-row'>
                         <Text line_height='m' weight='bold' color='prominent'>
-                            {localize('Other CFDs')}
+                            {localize('Other CFD Platforms')}
                         </Text>
                     </div>
                 </React.Fragment>

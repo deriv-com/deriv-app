@@ -6,7 +6,7 @@ import { StatisticsSummary } from 'Components/run-panel/run-panel';
 import { transaction_elements } from 'Constants/transactions';
 import { useDBotStore } from 'Stores/useDBotStore';
 import MobileTransactionCards from './mobile-transaction-card';
-import { TRunPanelStore, TTransactionStore } from './types';
+import { TRunPanelStore, TTransactionStore } from './transaction-details.types';
 import './transaction-details-mobile.scss';
 
 const TransactionDetailsMobile = observer(() => {

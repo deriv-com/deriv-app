@@ -5,7 +5,7 @@ import { getContractTypeName } from '@deriv/bot-skeleton';
 import { Icon, IconTradeTypes, Popover } from '@deriv/components';
 import { convertDateFormat } from '@deriv/shared';
 import { transaction_elements } from 'Constants/transactions';
-import { TColumn, TDesktopTransactionTable, TTableCell } from './types';
+import { TColumn, TDesktopTransactionTable, TTableCell } from './transaction-details.types';
 
 const PARENT_CLASS = 'transaction-details-modal-desktop';
 
@@ -103,8 +103,8 @@ export default function DesktopTransactionTable({
                                         />
                                     }
                                 />
-                                <TableCell label={data?.entry_tick} loader={!data.is_completed} />
-                                <TableCell label={data?.exit_tick} loader={!data.is_completed} />
+                                <TableCell label={data?.entry_tick} loader={!data?.entry_tick} />
+                                <TableCell label={data?.exit_tick} loader={!data.exit_tick} />
                                 <TableCell label={data?.buy_price} />
                                 <TableCell
                                     label={

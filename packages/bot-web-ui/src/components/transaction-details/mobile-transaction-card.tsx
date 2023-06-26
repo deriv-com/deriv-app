@@ -5,7 +5,7 @@ import { getContractTypeName } from '@deriv/bot-skeleton';
 import { Icon, IconTradeTypes, Popover } from '@deriv/components';
 import { convertDateFormat } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { TTransaction } from './types';
+import { TTransaction } from './transaction-details.types';
 
 const PARENT_CLASS = 'transaction-details-modal-mobile';
 
@@ -102,7 +102,7 @@ export default function MobileTransactionCards({ transaction }: { transaction: T
                     title='Entry Spot'
                     label={transaction?.entry_tick}
                     right_aligned
-                    loader={!transaction.is_completed}
+                    loader={!transaction.entry_tick}
                 />
             </div>
             <div className={`${PARENT_CLASS}__card__row`}>
@@ -111,7 +111,7 @@ export default function MobileTransactionCards({ transaction }: { transaction: T
                     title='Exit Spot'
                     label={transaction?.exit_tick}
                     right_aligned
-                    loader={!transaction.is_completed}
+                    loader={!transaction.exit_tick}
                 />
             </div>
 

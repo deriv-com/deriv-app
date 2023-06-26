@@ -391,7 +391,6 @@
         background: var(--brand-dark-grey);
         align-items: center;
         text-decoration: none;
-        padding: 0.2rem;
         border-radius: $BORDER_RADIUS;
 
         &-text {
@@ -401,6 +400,9 @@
                 padding-right: 0.5rem;
                 white-space: nowrap;
             }
+        }
+        &-icon {
+            margin-left: 0.6rem;
         }
     }
     &__specs {
@@ -452,6 +454,12 @@
         border-top: 2px solid var(--general-section-1);
         padding-top: 2rem;
         padding-bottom: 5.8rem;
+
+        &-description {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.4rem;
+        }
 
         &-app {
             display: flex;
@@ -524,7 +532,7 @@
                 display: flex;
                 flex-direction: column;
                 width: 13.6rem;
-                height: 14rem;
+                height: auto;
                 padding: 0.8rem;
                 align-items: center;
                 border: 1px solid var(--border-disabled);

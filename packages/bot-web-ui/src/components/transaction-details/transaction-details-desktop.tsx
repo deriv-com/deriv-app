@@ -4,7 +4,7 @@ import { localize } from '@deriv/translations';
 import Draggable from 'Components/draggable';
 import { useDBotStore } from 'Stores/useDBotStore';
 import DesktopTransactionTable from './desktop-transaction-table';
-import { TColumn, TRunPanelStore, TTransactionStore } from './types';
+import { TColumn, TRunPanelStore, TTransactionStore } from './transaction-details.types';
 import './transaction-details-desktop.scss';
 
 const transaction_columns: TColumn[] = [

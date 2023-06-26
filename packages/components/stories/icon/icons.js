@@ -817,7 +817,6 @@ export const icons =
         'IcTradetypeDigitunder',
         'IcTradetypeExpirymiss',
         'IcTradetypeExpiryrange',
-        'IcTradetypeExpiryrangee',
         'IcTradetypeLbcall',
         'IcTradetypeLbhighlow',
         'IcTradetypeLbput',

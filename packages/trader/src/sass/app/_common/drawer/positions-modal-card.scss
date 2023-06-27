@@ -3,13 +3,13 @@
 .positions-modal-card {
     $positions-modal-card: &;
 
-    box-sizing: border-box;
+    position: relative;
     display: flex;
     flex-direction: column;
-    text-decoration: none;
-    position: relative;
+    box-sizing: border-box;
     padding: 0.8rem;
     color: var(--text-general);
+    text-decoration: none;
     user-select: none;
     -webkit-touch-callout: none;
     -webkit-tap-highlight-color: transparent;
@@ -19,200 +19,230 @@
         &--exit {
             opacity: 0;
         }
+
         &--enter-done {
             opacity: 1;
         }
     }
+
     &__caption {
-        font-size: 1.6em;
-        font-weight: bold;
         display: flex;
         justify-content: center;
         align-items: center;
-        transition: opacity 0.25s ease;
-        cursor: pointer;
         width: 100%;
+        font-weight: bold;
+        font-size: 1.6em;
+        cursor: pointer;
+        transition: opacity 0.25s ease;
 
         &--won {
             color: var(--text-profit-success);
         }
+
         &--lost {
             color: var(--text-loss-danger);
         }
+
         &-wrapper {
-            cursor: pointer;
-            width: 100%;
             grid-row: 1 / -1;
             align-self: center;
             justify-self: center;
+            width: 100%;
             text-decoration: none;
+            cursor: pointer;
         }
     }
+
     &__icon {
         margin-left: 4px;
     }
+
     &__item {
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 1.4rem;
-        border-top: 1px solid var(--general-section-1);
         padding-top: 0.8rem;
+        border-top: 1px solid var(--general-section-1);
+        font-size: 1.4rem;
     }
+
     &__wrapper {
-        margin: 0.8rem;
-        border-radius: $BORDER_RADIUS;
-        transition: transform 0.25s ease, opacity 0.25s linear;
         position: relative;
-        background: var(--general-main-1);
+        margin: 0.8rem;
         border: 1px solid var(--border-disabled);
+        border-radius: $BORDER_RADIUS;
+        background: var(--general-main-1);
+        transition: transform 0.25s ease, opacity 0.25s linear;
     }
+
     &__grid {
         display: grid;
 
         &-header {
-            border-bottom: 1px solid var(--general-section-1);
             grid-template-columns: 1fr 1fr 1fr;
-            padding-bottom: 1rem;
             margin-bottom: 0.8rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--general-section-1);
         }
+
         &-body {
-            grid-template-columns: 2fr 1fr;
-            grid-template-rows: auto auto;
             display: grid;
+            grid-template-rows: auto auto;
+            grid-template-columns: 2fr 1fr;
         }
+
         &-underlying-trade {
             grid-template-columns: 1fr 1fr 1fr;
         }
+
         &-profit-payout {
-            grid-template-columns: 1fr 1fr;
             display: grid;
+            grid-template-columns: 1fr 1fr;
             grid-row: 1 / 2;
             grid-column: 1 / 2;
             padding: 8px 0;
             border-radius: $BORDER_RADIUS;
         }
+
         &-price-payout {
             display: grid;
+            grid-template-columns: 1fr 1fr;
             grid-row: 2 / 3;
             grid-column: 1 / 2;
-            grid-template-columns: 1fr 1fr;
         }
     }
+
     &__progress {
-        align-self: center;
         grid-row: 1 / 3;
         grid-column: 2 / 3;
-    }
-    &__sell-button {
-        justify-self: end;
         align-self: center;
+    }
+
+    &__sell-button {
+        align-self: center;
+        justify-self: end;
 
         .dc-btn--sell {
             height: 3.2rem !important;
         }
     }
+
     &__purchase,
     &__payout {
         &-label {
+            max-width: 90px;
             text-transform: none;
             white-space: nowrap;
-            max-width: 90px;
         }
+
         &-value {
             display: flex;
             justify-content: flex-start;
             align-items: center;
             padding: 4px 0 8px;
         }
+
         &-price {
             display: flex;
             flex-direction: column;
         }
     }
+
     &__type {
-        font-size: 1.2rem;
         display: flex;
         justify-content: flex-start;
         font-weight: bold;
+        font-size: 1.2rem;
 
         /* postcss-bem-linter: ignore */
         .category-type {
             .color1-fill {
                 fill: var(--brand-red-coral);
             }
+
             .color2-fill {
                 fill: var(--brand-secondary);
             }
         }
     }
+
     &__symbol {
         margin-left: 0.5rem;
+
         /* iPhone SE screen height fixes due to UI space restrictions */
-        @media only screen and (max-height: 480px) {
+        @media only screen and (height <= 480px) {
             font-size: 0.9rem;
         }
     }
+
     &__indicative {
-        font-size: 1.2rem;
-        font-weight: bold;
         display: flex;
         justify-content: flex-start;
         align-items: center;
         color: var(--text-general);
+        font-weight: bold;
+        font-size: 1.2rem;
 
         &-label {
-            font-size: 1rem;
-            font-weight: normal;
-            margin-bottom: 4px;
-            white-space: nowrap;
             max-width: 90px;
+            margin-bottom: 4px;
             color: var(--text-general);
+            font-weight: normal;
+            font-size: 1rem;
+            white-space: nowrap;
         }
+
         &--movement {
-            margin-left: 2px;
             width: 16px;
             height: 16px;
+            margin-left: 2px;
 
             &-complete,
             &-complete:after {
                 display: none;
             }
+
             &:after {
                 content: '';
                 width: 16px;
             }
         }
     }
+
     &__remaining-time {
-        font-size: 1.2em;
         color: var(--text-general);
+        font-size: 1.2em;
     }
+
     &__timer {
         margin: 0.2rem auto;
     }
+
     &__profit-loss {
-        font-size: 1.2rem;
         display: flex;
         justify-content: flex-start;
         align-items: center;
         font-weight: bold;
+        font-size: 1.2rem;
 
         &-label {
-            font-size: 1rem;
-            margin-bottom: 4px;
-            font-weight: normal;
-            white-space: normal;
             max-width: 90px;
+            margin-bottom: 4px;
             color: var(--text-general);
+            font-weight: normal;
+            font-size: 1rem;
+            white-space: normal;
+
             /* iPhone SE screen height fixes due to UI space restrictions */
-            @media only screen and (max-height: 480px) {
+            @media only screen and (height <= 480px) {
                 font-size: 0.8rem;
             }
         }
+
         &--is-crypto {
             margin-left: -6px;
         }
+
         &--negative {
             color: var(--text-loss-danger);
 
@@ -221,6 +251,7 @@
                 color: inherit;
             }
         }
+
         &--positive {
             color: var(--text-profit-success);
 
@@ -230,6 +261,7 @@
             }
         }
     }
+
     &__underlying-name {
         display: flex;
         justify-content: flex-start;
@@ -237,22 +269,26 @@
         font-weight: bold;
         font-size: 1.2em;
     }
+
     &--multiplier {
         .dc-contract-card {
             &__grid-items {
                 grid-template-columns: 1fr 1fr 1fr;
-                padding: 1.2rem 0rem;
+                padding: 1.2rem 0;
             }
+
             &__deal-cancel-fee,
             &__buy-price,
             &__stop-loss {
                 order: 1;
             }
         }
+
         .dc-contract-card__sell-button {
-            border-top: 0rem;
+            border-top: 0;
         }
     }
+
     .dc-contract-card .dc-contract-card__grid {
         grid-template-columns: 1.5fr 1fr;
     }
@@ -260,9 +296,9 @@
 
 /** @define dc-remaining-time; weak */
 .dc-remaining-time {
-    display: inline;
-
     @include mobile {
         font-size: 0.9rem;
     }
+
+    display: inline;
 }

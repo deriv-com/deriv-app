@@ -3,36 +3,40 @@ $HEIGHT: calc(100vh - 34em);
 
 .contract-audit {
     &__wrapper {
-        border-radius: $BORDER_RADIUS;
-        opacity: 1;
+        display: flex;
         flex: 1;
         overflow: hidden;
+        margin-bottom: 0.8rem;
+        border-radius: $BORDER_RADIUS;
         background-color: var(--general-main-1);
         color: var(--text-prominent);
-        display: flex;
-        margin-bottom: 0.8rem;
+        opacity: 1;
 
         /* postcss-bem-linter: ignore */
         .dc-tabs {
-            height: 100%;
-            width: 100%;
             display: flex;
             flex-direction: column;
+            width: 100%;
+            height: 100%;
+
             /* postcss-bem-linter: ignore */
             &__content {
                 display: flex;
                 height: calc(100% - 4rem);
+
                 /* postcss-bem-linter: ignore */
                 .dc-themed-scrollbars {
                     flex: 1;
                 }
             }
         }
+
         /* postcss-bem-linter: ignore */
         .dc-themed-scrollbars {
             width: 100%;
         }
     }
+
     &__grid {
         display: flex;
         padding: 0.8rem 0;
@@ -41,28 +45,34 @@ $HEIGHT: calc(100vh - 34em);
             border-top: 1px solid var(--general-section-2);
         }
     }
+
     &__icon {
         display: flex;
         align-items: flex-start;
         margin-right: 8px;
     }
+
     &__item {
         display: flex;
         flex-direction: column;
         margin: 0 4px;
     }
+
     &__label {
-        white-space: nowrap;
         max-width: 90px;
+        white-space: nowrap;
     }
+
     &__value-wrapper {
         display: flex;
         flex-direction: column;
     }
+
     &__value,
     &__value2 {
         padding-top: 2px;
     }
+
     &__timestamp {
         align-self: center;
         margin-left: auto;
@@ -71,31 +81,33 @@ $HEIGHT: calc(100vh - 34em);
             display: block;
         }
     }
+
     &__empty {
         display: flex;
-        height: 100%;
-        width: 100%;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
-        flex-direction: column;
+        width: 100%;
+        height: 100%;
         padding: 16px;
 
         &-header {
-            font-size: 1.4rem;
-            font-weight: bold;
-            text-align: center;
-            color: var(--text-less-prominent);
             padding: 8px;
+            color: var(--text-less-prominent);
+            font-weight: bold;
+            font-size: 1.4rem;
+            text-align: center;
         }
     }
+
     &__tabs {
         &-content {
-            padding: 0.8rem 1.6rem;
-            flex: 1;
-
             @include mobile {
                 overflow-y: auto;
             }
+
+            flex: 1;
+            padding: 0.8rem 1.6rem;
         }
     }
 }

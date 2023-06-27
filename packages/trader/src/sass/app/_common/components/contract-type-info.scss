@@ -1,69 +1,101 @@
 /** @define contract-type-info; */
 .contract-type-info {
-    overflow: hidden;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-
     @include mobile {
         height: calc(100% - 148.5px);
+
         &--has-toggle-buttons {
             height: calc(100% - 74px);
         }
     }
 
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 100%;
+
     & .dc-carousel {
+        @include mobile {
+            &__wrapper {
+                padding: 0;
+            }
+
+            &__nav {
+                margin: 1.6rem auto;
+                padding: 0 2rem;
+            }
+
+            &__container {
+                height: 100%;
+            }
+
+            &__box {
+                height: 100%;
+            }
+        }
+
         width: 100%;
 
         &__wrapper {
             padding: 0;
         }
+
         &__card {
             padding-bottom: 0;
         }
+
         &__icon {
             &--disabled {
                 pointer-events: none;
             }
         }
+
         &__nav {
             padding: 0 1.2rem;
         }
-
-        @include mobile {
-            &__wrapper {
-                padding: 0;
-            }
-            &__nav {
-                margin: 1.6rem auto;
-                padding: 0 2rem;
-            }
-            &__container {
-                height: 100%;
-            }
-            &__box {
-                height: 100%;
-            }
-        }
     }
-    &__card {
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
 
+    &__card {
         @include mobile {
             height: 100%;
             padding: 0;
         }
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
+
     &__content {
+        @include mobile {
+            /* postcss-bem-linter: ignore */
+            h2 {
+                @include typeface(--small-left-bold-black, none);
+
+                margin-bottom: 1.6rem;
+            }
+
+            /* postcss-bem-linter: ignore */
+            p,
+            ul li {
+                @include typeface(--small-left-normal-black, none);
+            }
+
+            h2,
+            p,
+            ul li {
+                line-height: 1.5;
+            }
+        }
+
         overflow: hidden;
+
         /* postcss-bem-linter: ignore */
         &-glossary {
             &--heading {
                 margin: 0 !important;
             }
         }
+
         &-definition {
             color: var(--brand-red-coral);
 
@@ -72,18 +104,23 @@
                 cursor: pointer;
             }
         }
+
         h2 {
             @include typeface(--paragraph-left-bold-black, none);
+
             margin-bottom: 0.8rem;
             color: var(--text-prominent);
         }
+
         /* postcss-bem-linter: ignore */
         p,
         ul li {
             @include typeface(--paragraph-left-normal-black, none);
+
             margin-bottom: 1.6rem;
             color: var(--text-general);
         }
+
         /* postcss-bem-linter: ignore */
         ul {
             margin-left: 1.6rem;
@@ -94,142 +131,139 @@
                 margin-bottom: 0.8rem;
             }
         }
-        @include mobile {
-            /* postcss-bem-linter: ignore */
-            h2 {
-                @include typeface(--small-left-bold-black, none);
-                margin-bottom: 1.6rem;
-            }
-            /* postcss-bem-linter: ignore */
-            p,
-            ul li {
-                @include typeface(--small-left-normal-black, none);
-            }
-            h2,
-            p,
-            ul li {
-                line-height: 1.5;
-            }
-        }
     }
-    &__gif {
-        width: 100%;
-        height: 16.4rem;
-        border-radius: 4px;
-        text-align: center;
-        margin-top: 0;
-        margin-bottom: 1.6rem;
 
+    &__gif {
         @include mobile {
             width: 32.8rem;
             height: 16.4rem;
             background-color: var(--general-section-1);
+
             svg {
                 width: 100%;
                 height: 100%;
             }
         }
 
+        width: 100%;
+        height: 16.4rem;
+        margin-top: 0;
+        margin-bottom: 1.6rem;
+        border-radius: 4px;
+        text-align: center;
+
         &--has-toggle-buttons {
             margin-top: 1.6rem;
         }
     }
+
     &__action-bar {
+        @include mobile {
+            padding-left: 2.4rem;
+        }
+
         display: flex;
         align-items: center;
         width: 100%;
         padding-left: 2.4rem;
-
-        @include mobile {
-            padding-left: 2.4rem;
-        }
     }
+
     &__title {
         cursor: default;
     }
+
     &__nav {
         display: flex;
         align-items: center;
-        width: 320px;
-        padding: 0 2.4rem;
         overflow: hidden;
+        width: 320px;
         margin-bottom: 2.4rem;
+        padding: 0 2.4rem;
 
         &-list {
-            display: inline-block;
-            text-align: center;
-            margin: 0 auto;
             position: relative;
+            display: inline-block;
+            margin: 0 auto;
+            text-align: center;
         }
+
         &-item {
+            display: inline-block;
             width: 0.8rem;
             height: 0.8rem;
-            border-radius: 50%;
-            display: inline-block;
             margin: 0 0.8rem;
-            cursor: pointer;
+            border-radius: 50%;
             background-color: var(--text-disabled);
+            cursor: pointer;
 
             &--active {
                 position: absolute;
                 top: 0;
                 left: 0;
+                background-color: var(--brand-red-coral);
                 cursor: initial;
                 transition: transform 0.3s linear;
-                background-color: var(--brand-red-coral);
             }
         }
     }
+
     &__icon {
-        cursor: pointer;
         padding-right: 2.4rem;
+        cursor: pointer;
     }
+
     &__scrollbars {
         position: relative;
+
         &-description--active {
             transition: transform 0.3s linear;
         }
+
         &-glossary {
             margin-top: 0;
+
             &--active {
                 position: relative;
                 transition: transform 0.3s linear;
             }
         }
     }
-    &__trade-type-btn-wrapper {
-        display: flex;
-        justify-content: center;
-        border-top: 2px solid var(--general-section-1);
-        padding: 1.6rem 2.4rem;
-        margin-top: 1.6rem;
 
+    &__trade-type-btn-wrapper {
         @include mobile {
             margin-top: 0;
             padding: 1.6rem;
         }
-    }
-    &__button {
-        flex-shrink: 0;
-        width: 52.3rem;
 
+        display: flex;
+        justify-content: center;
+        margin-top: 1.6rem;
+        padding: 1.6rem 2.4rem;
+        border-top: 2px solid var(--general-section-1);
+    }
+
+    &__button {
         @include mobile {
-            padding: 1.5rem 0;
             align-self: center;
             width: 32.8rem;
+            padding: 1.5rem 0;
         }
-    }
-    &__button-wrapper {
-        background: var(--general-section-1);
-        padding: 0.4rem;
-        margin: 1.6rem;
-        border-radius: $BORDER_RADIUS * 1.5;
-        width: 52.3rem;
 
+        flex-shrink: 0;
+        width: 52.3rem;
+    }
+
+    &__button-wrapper {
         @include mobile {
             width: 32.8rem;
             margin: 1.6rem auto;
         }
+
+        width: 52.3rem;
+        margin: 1.6rem;
+        padding: 0.4rem;
+        border-radius: $BORDER_RADIUS * 1.5;
+        background: var(--general-section-1);
 
         .dc-button-menu__button {
             background-color: var(--general-section-1) !important;
@@ -237,6 +271,7 @@
             .dc-btn__text {
                 color: var(--text-less-prominent) !important;
             }
+
             &--active {
                 background-color: var(--button-toggle-alternate) !important;
 

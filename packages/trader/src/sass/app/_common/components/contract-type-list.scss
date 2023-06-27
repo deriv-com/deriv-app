@@ -4,13 +4,16 @@
 
     &__label {
         @include typeface(--paragraph-left-bold-black);
-        color: var(--text-prominent);
+
         margin-bottom: 0.8rem;
         margin-left: 1.6rem;
+        color: var(--text-prominent);
     }
+
     &:last-child {
         border-bottom: none;
     }
+
     &__contracts-wrapper {
         margin-bottom: 1.4rem;
     }
@@ -18,24 +21,24 @@
 
 /** @define contract-type-item */
 .contract-type-item {
-    width: 100%;
-    cursor: pointer;
     display: inline-flex;
     flex-direction: row;
     align-items: center;
-    padding: 0.8rem 1.6rem;
     box-sizing: border-box;
-    transition: transform 0.3s opacity 0.3s;
-    color: var(--text-general);
+    width: 100%;
+    padding: 0.8rem 1.6rem;
     border-radius: 4px;
+    color: var(--text-general);
+    cursor: pointer;
+    transition: transform 0.3s opacity 0.3s;
 
     &:hover {
         background-color: var(--state-hover);
     }
 
     &__new {
-        padding: 0.3rem 0.4rem;
         margin-bottom: 0.8rem;
+        padding: 0.3rem 0.4rem;
         border-radius: $BORDER_RADIUS * 4;
     }
 
@@ -45,21 +48,22 @@
 
     &__container {
         display: flex;
-        align-items: center;
         gap: 1.6rem;
+        align-items: center;
     }
 
     &__icon {
-        margin-left: auto;
-
         @include mobile {
             display: block;
         }
+
+        margin-left: auto;
 
         /* postcss-bem-linter: ignore */
         .dc-icon {
             pointer-events: none;
         }
+
         &:hover {
             /* postcss-bem-linter: ignore */
             .dc-icon {
@@ -67,6 +71,7 @@
             }
         }
     }
+
     &--selected {
         background: var(--state-active);
         color: var(--text-prominent);
@@ -74,15 +79,18 @@
         &:hover {
             background: var(--state-active);
         }
+
         .contract-type-item__title {
-            font-weight: bold;
             color: var(--text-prominent);
+            font-weight: bold;
         }
+
         .contract-type-item__icon {
             /* postcss-bem-linter: ignore */
             .dc-icon {
                 pointer-events: none;
             }
+
             &:hover {
                 /* postcss-bem-linter: ignore */
                 .dc-icon {
@@ -91,10 +99,11 @@
             }
         }
     }
+
     &__icon-wrapper {
         display: inline-flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
 
         /* postcss-bem-linter: ignore */
         .category-wrapper + .category-wrapper {

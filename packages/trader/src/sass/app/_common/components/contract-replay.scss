@@ -1,20 +1,21 @@
 .dc-vertical-tab {
     &__action-bar {
-        width: 100%;
         display: flex;
         flex-flow: row-reverse nowrap;
         justify-content: space-between;
         align-items: center;
+        width: 100%;
         padding: 16px;
 
         &--icon {
             @include colorIcon(var(--text-general));
         }
+
         &-wrapper {
-            cursor: pointer;
+            margin-left: auto;
             padding: 4px 4px 2px;
             border-radius: $BORDER_RADIUS;
-            margin-left: auto;
+            cursor: pointer;
 
             &:hover {
                 background: var(--general-hover);

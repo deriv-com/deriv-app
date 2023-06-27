@@ -5,13 +5,13 @@
     & &__card {
         // keep & for higher specificity
         display: block;
-        text-decoration: none;
         max-width: 450px;
         margin: 0.6em auto;
+        border: 1px solid var(--general-main-2);
         border-radius: 4px;
         background-color: var(--general-main-2);
-        border: 1px solid var(--general-main-2);
         color: var(--text-prominent);
+        text-decoration: none;
 
         &-link {
             cursor: pointer;

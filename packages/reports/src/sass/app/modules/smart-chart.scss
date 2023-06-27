@@ -4,89 +4,98 @@
     flex-direction: column;
 
     &__spot {
-        position: absolute;
-        top: -1.1rem;
-        margin-left: -11.5px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-weight: bold;
-        color: var(--text-prominent);
-        background-color: var(--general-main-1);
-        border: 2px solid var(--text-less-prominent);
-
-        &--lost {
-            border-color: var(--text-loss-danger);
-            background: var(--text-loss-danger);
-        }
-        &--won {
-            background-color: var(--text-profit-success);
-            border-color: var(--text-profit-success);
-        }
-        &--won,
-        &--lost {
-            color: $COLOR_WHITE;
-        }
         @include mobile {
             bottom: -9.5px;
             margin-left: -8px;
             font-size: 0.8rem;
         }
-    }
-    &__entry {
-        left: -12px;
-        top: -12px;
-        position: relative;
-        border: 6px solid var(--brand-red-coral);
-        background-color: var(--general-main-2);
 
-        @include mobile {
-            border-width: 3px;
-            left: -9px;
-            top: -9px;
+        position: absolute;
+        top: -1.1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: -11.5px;
+        border: 2px solid var(--text-less-prominent);
+        background-color: var(--general-main-1);
+        color: var(--text-prominent);
+        font-weight: bold;
+
+        &--lost {
+            border-color: var(--text-loss-danger);
+            background: var(--text-loss-danger);
+        }
+
+        &--won {
+            border-color: var(--text-profit-success);
+            background-color: var(--text-profit-success);
+        }
+
+        &--won,
+        &--lost {
+            color: $COLOR_WHITE;
         }
     }
+
+    &__entry {
+        @include mobile {
+            top: -9px;
+            left: -9px;
+            border-width: 3px;
+        }
+
+        position: relative;
+        top: -12px;
+        left: -12px;
+        border: 6px solid var(--brand-red-coral);
+        background-color: var(--general-main-2);
+    }
+
     &__spot,
     &__entry {
-        width: 24px;
-        height: 24px;
-        border-radius: 50%;
-
         @include mobile {
             width: 16px;
             height: 16px;
         }
+
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+
         &--accumulator {
             &-small {
-                width: 6px;
-                height: 6px;
-                top: -3px;
-                margin-left: -4px;
-                background-color: var(--text-less-prominent);
-
                 @include mobile {
+                    top: -2px;
                     width: 4px;
                     height: 4px;
-                    top: -2px;
                     margin-left: -3px;
                 }
+
+                top: -3px;
+                width: 6px;
+                height: 6px;
+                margin-left: -4px;
+                background-color: var(--text-less-prominent);
             }
+
             &-bold {
-                border-width: 0.3rem;
                 @include mobile {
                     border-width: 0.2rem;
                 }
+
+                border-width: 0.3rem;
             }
         }
     }
+
     &__sell {
-        border-radius: 50%;
         width: 2px;
         height: 2px;
-        margin-left: -2px;
         margin-top: -2px;
-        background-color: var(--text-prominent);
+        margin-left: -2px;
         border: 2px solid var(--text-prominent);
+        border-radius: 50%;
+        background-color: var(--text-prominent);
     }
 }
 
@@ -99,8 +108,8 @@
 
         .chart-spot-label__value-container {
             padding: 0.8rem;
-            line-height: normal;
             border-radius: 0.6rem;
+            line-height: normal;
         }
 
         &--lost {
@@ -126,26 +135,30 @@
             transform: translateY(-50%) rotate(270deg);
         }
     }
+
     &__info-container {
-        width: 100%;
         position: relative;
+        width: 100%;
     }
+
     &__time-value-container {
         position: absolute;
-        transform: translateX(-50%);
         display: flex;
         flex-direction: column;
+        transform: translateX(-50%);
 
         &--top {
+            @include mobile {
+                bottom: 1.35rem;
+            }
+
             bottom: 21px;
 
             .chart-spot-label__time-container {
                 margin-bottom: 2px;
             }
-            @include mobile {
-                bottom: 1.35rem;
-            }
         }
+
         &--middle {
             bottom: 3.8rem;
 
@@ -153,23 +166,26 @@
                 margin-bottom: 0.2rem;
             }
         }
+
         &--bottom {
+            @include mobile {
+                top: 7.5px;
+            }
+
             top: 18px;
             flex-direction: column-reverse;
 
             .chart-spot-label__time-container {
                 margin-top: 2px;
             }
-            @include mobile {
-                top: 7.5px;
-            }
         }
     }
+
     &__time-container {
         display: flex;
-        align-items: center;
         justify-content: center;
-        padding: 0px 8px;
+        align-items: center;
+        padding: 0 8px;
 
         /* postcss-bem-linter: ignore */
         svg {
@@ -179,66 +195,80 @@
             }
         }
     }
+
     &__time-icon {
         margin-right: 2px;
     }
-    &__value-container {
-        background: var(--text-less-prominent);
-        font-size: 1.4rem;
-        padding: 4px 8px;
-        border-radius: 11px;
 
-        /* postcss-bem-linter: ignore */
-        p {
-            font-weight: bold;
-            color: $color-white;
-            margin-top: 2px;
-        }
-        &--lost {
-            background-color: var(--text-loss-danger);
-        }
-        &--won {
-            background-color: var(--text-profit-success);
-        }
-        &--won,
-        &--lost {
-            color: var(--text-colored-background);
-        }
+    &__value-container {
         @include mobile {
-            font-size: 1rem;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 0.5rem;
+            font-size: 1rem;
+        }
+
+        padding: 4px 8px;
+        border-radius: 11px;
+        background: var(--text-less-prominent);
+        font-size: 1.4rem;
+
+        /* postcss-bem-linter: ignore */
+        p {
+            margin-top: 2px;
+            color: $color-white;
+            font-weight: bold;
+        }
+
+        &--lost {
+            background-color: var(--text-loss-danger);
+        }
+
+        &--won {
+            background-color: var(--text-profit-success);
+        }
+
+        &--won,
+        &--lost {
+            color: var(--text-colored-background);
         }
     }
 }
 
 /** @define chart-marker-line */
 .chart-marker-line {
+    bottom: -100%;
+    z-index: 0 !important;
     height: 94.5%;
     margin-bottom: 0.8em;
-    z-index: 0 !important;
-    bottom: -100%;
     transition: none;
 
     &__wrapper {
-        border-left-width: 2px;
-        padding-left: 0.5em;
         height: 100%;
+        padding-left: 0.5em;
         border-color: var(--text-less-prominent);
+        border-left-width: 2px;
 
         &:after {
-            background: linear-gradient(to bottom, var(--general-main-1) 3%, transparent 10%);
-            position: absolute;
             content: ' ';
-            top: 0px;
+            position: absolute;
+            top: 0;
             left: -1px;
-            height: 100%;
             width: 3px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--general-main-1) 3%, transparent 10%);
         }
     }
+
     &__icon {
+        @include mobile {
+            bottom: -15px;
+            left: -7px;
+            width: 16px;
+            height: 16px;
+        }
+
         position: absolute;
         bottom: -23px;
         left: -11px;
@@ -250,28 +280,26 @@
                 fill: var(--text-less-prominent);
             }
         }
+
         &--won {
             /* postcss-bem-linter: ignore */
             circle {
                 fill: var(--text-profit-success);
             }
         }
+
         &--lost {
             /* postcss-bem-linter: ignore */
             circle {
                 fill: var(--text-loss-danger);
             }
         }
-        @include mobile {
-            bottom: -15px;
-            left: -7px;
-            width: 16px;
-            height: 16px;
-        }
     }
+
     &--solid {
         border-left-style: solid;
     }
+
     &--dash {
         border-left-style: dashed;
     }
@@ -281,7 +309,7 @@
 .sc-toolbar-widget {
     &--bottom {
         .ciq-menu {
-            margin: 0px;
+            margin: 0;
         }
     }
 }
@@ -289,21 +317,25 @@
 /** @define smartcharts-mobile; weak */
 .smartcharts-mobile {
     .cq-modal-dropdown {
-        left: 0px;
-        top: 0px;
+        top: 0;
+        left: 0;
     }
+
     .sc-chart-type,
     .sc-interval {
         .sc-tooltip__inner {
             display: none;
         }
     }
+
     .cq-chart-title .sc-dialog__body {
         height: 100% !important;
     }
+
     .sc-categorical-display {
         height: calc(100% - 38px) !important;
     }
+
     .cq-menu-dropdown .title .title-text {
         display: inline;
     }
@@ -311,81 +343,94 @@
 
 .sc-accumulators-profit-loss {
     &-text {
-        width: fit-content;
-        padding-left: 3rem;
         position: relative;
         display: flex;
         align-items: center;
+        width: fit-content;
+        padding-left: 3rem;
 
         &.won div {
             color: var(--text-profit-success);
         }
+
         &.lost div {
             color: var(--text-loss-danger);
         }
+
         &__profit {
+            position: relative;
             display: flex;
             transform: translateY(-54%);
-            position: relative;
 
             &--fading-in {
                 @keyframes fade-profit-in {
                     from {
                         opacity: 0;
                     }
+
                     to {
                         opacity: 1;
                     }
                 }
+
                 animation: 0.6s ease-in fade-profit-in;
             }
         }
+
         &__sliding-tenth {
             @keyframes slide-decimal {
                 0%,
                 100% {
-                    transform: translateY(0);
                     opacity: 1;
+                    transform: translateY(0);
                 }
+
                 25%,
                 27% {
-                    transform: translateY(-15px);
                     opacity: 0.2;
+                    transform: translateY(-15px);
                 }
+
                 50% {
-                    transform: translateY(-30px);
                     opacity: 0;
+                    transform: translateY(-30px);
                 }
             }
+
             animation: 0.1s cubic-bezier(0.49, -0.4, 0.11, 0.65) 3 both slide-decimal;
         }
+
         &__currency {
             padding-left: 0.3rem;
             transform: translateY(-92%);
         }
+
         &:before {
             content: '';
             position: absolute;
-            width: calc(100% - 3rem);
-            height: 8%;
             top: -4%;
             z-index: -2;
+            width: calc(100% - 3rem);
+            height: 8%;
             background-color: var(--general-main-1);
         }
+
         &:after {
             content: '';
             position: absolute;
-            width: calc(100% - 3rem);
-            height: 8%;
             top: -4%;
             z-index: -1;
-            background-color: rgba(0, 167, 158, 0.1);
-            box-shadow: 0 -8px 11px 0 rgba(0, 167, 158, 0.08), 0 8px 11px 0 rgba(0, 167, 158, 0.08),
-                0 0 11px -5px rgba(0, 167, 158, 0.08), 0 0 11px -5px rgba(0, 167, 158, 0.08);
+            width: calc(100% - 3rem);
+            height: 8%;
+            background-color: rgb(0 167 158 / 10%);
+            box-shadow: 0 -8px 11px 0 rgb(0 167 158 / 8%), 0 8px 11px 0 rgb(0 167 158 / 8%),
+                0 0 11px -5px rgb(0 167 158 / 8%), 0 0 11px -5px rgb(0 167 158 / 8%);
         }
     }
+
     &-tooltip {
         $self: &;
+
         width: 17.2rem;
         height: 6.55rem;
 
@@ -397,17 +442,21 @@
                 &.arrow-top:after {
                     border-bottom: 4px solid var(--text-loss-danger);
                 }
+
                 &.arrow-bottom:before {
                     border-top: 4px solid var(--text-loss-danger);
                 }
+
                 &.arrow-left:after {
                     border-right: 4px solid var(--text-loss-danger);
                 }
+
                 &.arrow-right:before {
                     border-left: 4px solid var(--text-loss-danger);
                 }
             }
         }
+
         &.won {
             #{$self}__spot-circle,
             #{$self}__content {
@@ -416,35 +465,40 @@
                 &.arrow-top:after {
                     border-bottom: 4px solid var(--text-profit-success);
                 }
+
                 &.arrow-bottom:before {
                     border-top: 4px solid var(--text-profit-success);
                 }
+
                 &.arrow-left:after {
                     border-right: 4px solid var(--text-profit-success);
                 }
+
                 &.arrow-right:before {
                     border-left: 4px solid var(--text-profit-success);
                 }
             }
         }
+
         &__spot-circle {
             position: absolute;
-            border-radius: 100%;
-            width: 0.5rem;
-            height: 0.5rem;
             top: -2.5px;
             left: -2.5px;
+            width: 0.5rem;
+            height: 0.5rem;
+            border-radius: 100%;
             cursor: pointer;
         }
+
         &__content {
             position: absolute;
-            width: 16.4rem;
-            height: 5.8rem;
-            border-radius: $BORDER_RADIUS;
             display: flex;
             flex-direction: column;
             gap: 0.4rem;
+            width: 16.4rem;
+            height: 5.8rem;
             padding: 0.8rem;
+            border-radius: $BORDER_RADIUS;
             opacity: 0.72;
             transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.1, 0.25);
 
@@ -461,24 +515,27 @@
             &:before {
                 content: '';
                 position: absolute;
+                display: none;
                 width: 0;
                 height: 0;
-                display: none;
             }
+
             &.arrow-top:after,
             &.arrow-bottom:before {
                 left: calc(50% - 4px);
-                border-left: 4px solid transparent;
-                border-right: 4px solid transparent;
                 display: block;
+                border-right: 4px solid transparent;
+                border-left: 4px solid transparent;
             }
+
             &.arrow-left:after,
             &.arrow-right:before {
                 top: calc(50% - 4px);
+                display: block;
                 border-top: 4px solid transparent;
                 border-bottom: 4px solid transparent;
-                display: block;
             }
+
             &.arrow-top {
                 transform: translateX(-50%) translateY(8.5px);
 
@@ -486,6 +543,7 @@
                     top: -4px;
                 }
             }
+
             &.arrow-bottom {
                 transform: translateX(-50%) translateY(calc(-100% - 8.5px));
 
@@ -493,6 +551,7 @@
                     top: 100%;
                 }
             }
+
             &.arrow-left {
                 transform: translateX(8.5px) translateY(-50%);
 
@@ -500,6 +559,7 @@
                     left: -4px;
                 }
             }
+
             &.arrow-right {
                 transform: translateX(calc(-100% - 8.5px)) translateY(-50%);
 
@@ -523,13 +583,13 @@
         position: absolute;
         width: 3.2rem;
         height: 3.2rem;
-        transform: translateX(-50%) translateY(-50%);
         border-radius: 50%;
+        transform: translateX(-50%) translateY(-50%);
         animation: 0.2s blue-emphasizer 0.8s;
     }
 }
 
-//Vanilla specific styles
+// Vanilla specific styles
 .vanilla-trade-chart {
     @include mobile {
         height: calc(100% - #{$MOBILE_HEADER_HEIGHT});

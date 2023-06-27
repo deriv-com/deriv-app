@@ -3,60 +3,64 @@
     position: absolute;
     top: 0;
     left: 0;
-    height: 100%;
-    width: 100%;
     z-index: 2;
-    border-radius: $BORDER_RADIUS;
     display: flex;
     align-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: $BORDER_RADIUS;
     background-color: var(--general-main-2);
     color: var(--text-prominent);
 
     &__close-btn {
         position: absolute;
-        cursor: pointer;
-        right: 2px;
         top: 2px;
+        right: 2px;
+        cursor: pointer;
 
         &-ic {
             width: 24px;
             height: 24px;
         }
     }
+
     &__result {
-        padding: 16px;
-        line-height: 1.5;
-        font-size: 0.8em;
         display: flex;
         flex-direction: column;
-        align-items: center;
         justify-content: center;
-        max-height: 187px;
-        height: 100%;
+        align-items: center;
         width: 100%;
+        height: 100%;
+        max-height: 187px;
+        padding: 16px;
         color: var(--text-prominent);
+        font-size: 0.8em;
+        line-height: 1.5;
 
         &-header {
             margin-bottom: 0.5rem;
             font-size: 12px;
         }
+
         &-label {
             margin-right: 4px;
-            font-size: 10px;
             color: var(--text-prominent);
+            font-size: 10px;
         }
+
         &-currency {
             position: relative;
             display: inline-flex;
         }
     }
+
     &__login {
         display: flex;
         flex-direction: column;
-        align-items: center;
         justify-content: center;
-        height: 100%;
+        align-items: center;
         width: 100%;
+        height: 100%;
         color: var(--text-prominent);
 
         &-btn {
@@ -66,37 +70,42 @@
                 font-size: 0.8em;
             }
         }
+
         &-info {
             font-weight: 300;
             font-size: 1.2em;
         }
+
         &-prompt {
-            line-height: 100%;
             margin-bottom: 0;
-            font-size: 0.8em;
             font-weight: 300;
+            font-size: 0.8em;
+            line-height: 100%;
         }
+
         &-link {
-            text-decoration: none;
             color: var(--text-prominent);
+            text-decoration: none;
 
             &-info {
                 padding: 5px 10px 10px;
-                font-weight: 500;
                 color: var(--status-info);
+                font-weight: 500;
             }
+
             &:hover,
             &:focus,
             &:active {
-                text-decoration: underline;
                 color: var(--text-prominent);
+                text-decoration: underline;
             }
         }
     }
+
     &__info {
         display: flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
         padding: 0.5rem 1.5rem;
         text-align: center;
     }

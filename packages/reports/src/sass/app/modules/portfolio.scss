@@ -1,18 +1,22 @@
 // TODO: Combine whatever selector / rule that's still needed from this and merge into positions_drawer
+
 /** @define portfolio; weak */
 .portfolio {
-    padding: 1.5em 1.2em;
     height: 100%;
+    padding: 1.5em 1.2em;
 
     &--card-view {
         background: var(--general-main-2);
     }
+
     &__table {
         height: 100%;
     }
+
     &__row {
         grid-template-columns: 6.5em 7em 1fr 6em 9em 6em 5em;
     }
+
     /* postcss-bem-linter: ignore */
     .payout,
     .indicative,
@@ -20,44 +24,51 @@
     .remaining_time {
         justify-content: flex-end;
     }
+
     .container {
         background: var(--general-section-1);
     }
+
     .contract-type {
-        flex-grow: 1;
         display: flex;
+        flex-grow: 1;
         flex-direction: column;
         align-items: center;
         text-align: center;
 
         .type-wrapper {
-            width: 2em;
-            height: 2em;
-            padding: 0.5em;
-            margin-bottom: 0.3em;
-            border-radius: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
+            width: 2em;
+            height: 2em;
+            margin-bottom: 0.3em;
+            padding: 0.5em;
+            border-radius: 100%;
             background: var(--state-normal);
         }
     }
+
     .reference a {
         color: $COLOR_SKY_BLUE;
         text-decoration: none;
     }
+
     .table__body .indicative {
         font-weight: bold;
     }
+
     .indicative {
         text-align: right;
 
         &--price-moved-up {
             color: var(--text-profit-success);
         }
+
         &--price-moved-down {
             color: var(--text-loss-danger);
         }
+
         &--no-resale {
             color: var(--text-general);
         }
@@ -65,23 +76,26 @@
 }
 
 // empty portfolio message
+
 /** @define portfolio-empty */
 .portfolio-empty {
-    height: calc(100vh - 240px);
     display: flex;
+    height: calc(100vh - 240px);
 
     &__wrapper {
         display: flex;
         flex-direction: column;
-        align-self: center;
         justify-content: center;
         align-items: center;
+        align-self: center;
         width: 100%;
     }
+
     &__icon {
         @extend %inline-icon.disabled;
-        height: 4.8em;
+
         width: 4.8em;
+        height: 4.8em;
         margin-bottom: 1.6em;
     }
 }

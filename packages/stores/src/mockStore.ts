@@ -316,18 +316,7 @@ const mock = (): TStores & { is_mock: boolean } => {
         portfolio: {
             active_positions: [],
             all_positions: [],
-            error: {
-                header: '',
-                message: '',
-                type: '',
-                redirect_label: '',
-                redirect_to: '',
-                should_clear_error_on_click: false,
-                should_show_refresh: false,
-                redirectOnClick: jest.fn(),
-                setError: jest.fn(),
-                app_routing_history: [],
-            },
+            error: '',
             getPositionById: jest.fn(),
             is_loading: false,
             is_accumulator: false,
@@ -335,6 +324,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             onClickCancel: jest.fn(),
             onClickSell: jest.fn(),
             onMount: jest.fn(),
+            positions: [],
             removePositionById: jest.fn(),
         },
         contract_trade: {

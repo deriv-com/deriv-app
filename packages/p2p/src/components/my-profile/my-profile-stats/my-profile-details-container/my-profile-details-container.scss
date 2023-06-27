@@ -1,21 +1,21 @@
 .my-profile-details-container {
-    border: 1px solid var(--general-hover);
-    border-radius: 0.8rem;
-    margin-top: 2.4rem;
-    padding: 2.4rem;
-
     @include mobile {
-        border: unset;
         padding: unset;
+        border: unset;
     }
 
-    &--table {
-        display: flex;
-        justify-content: space-between;
+    margin-top: 2.4rem;
+    padding: 2.4rem;
+    border: 1px solid var(--general-hover);
+    border-radius: 0.8rem;
 
+    &--table {
         @include mobile {
             flex-direction: column;
             gap: 1rem;
         }
+
+        display: flex;
+        justify-content: space-between;
     }
 }

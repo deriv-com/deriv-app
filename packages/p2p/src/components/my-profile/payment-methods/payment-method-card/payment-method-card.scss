@@ -1,7 +1,14 @@
 .payment-method-card {
+    @include mobile {
+        min-width: 13.6rem;
+        min-height: 8.8rem;
+        margin: 1rem;
+        padding-top: 0.8rem;
+    }
+
+    margin: 1.6rem 0;
     border: 1px solid var(--border-normal);
     border-radius: 8px;
-    margin: 1.6rem 0;
     overflow-wrap: break-word;
 
     .dc-dropdown__display {
@@ -9,18 +16,18 @@
     }
 
     &--add {
-        border: 1px dashed var(--border-normal);
-        border-radius: 8px;
-        cursor: pointer;
         display: flex;
         flex-direction: column;
         justify-content: center;
         margin: 1.6rem 0;
         padding: 0.8rem;
+        border: 1px dashed var(--border-normal);
+        border-radius: 8px;
+        cursor: pointer;
 
         &-icon {
-            margin-bottom: 0.8rem;
             width: auto;
+            margin-bottom: 0.8rem;
         }
 
         .dc-text {
@@ -32,9 +39,9 @@
     }
 
     &--large {
+        width: 20.8rem;
         min-height: 12.8rem;
         padding: 1.6rem;
-        width: 20.8rem;
 
         .payment-method-card__header {
             margin-bottom: 1.1rem;
@@ -42,34 +49,27 @@
     }
 
     &--medium {
+        width: 14.4rem;
         min-height: 9.4rem;
         padding: 1rem;
-        width: 14.4rem;
     }
 
     &--small {
+        width: 13.6rem;
         min-height: 8.8rem;
         padding: 0.9rem 1rem;
-        width: 13.6rem;
-    }
-
-    @include mobile {
-        margin: 1rem;
-        min-height: 8.8rem;
-        min-width: 13.6rem;
-        padding-top: 0.8rem;
     }
 
     &__ellipsis {
-        cursor: pointer;
-        height: 1rem;
         width: 0.2rem;
+        height: 1rem;
+        cursor: pointer;
     }
 
     &__header {
-        align-items: center;
         display: flex;
         justify-content: space-between;
+        align-items: center;
         min-height: 3.2rem;
 
         .dc-dropdown {
@@ -83,9 +83,9 @@
 
         .dc-text {
             display: inline-block;
-            white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
 
@@ -100,12 +100,12 @@
     }
 
     &__menu {
-        background-color: var(--general-main-1);
+        z-index: 1000;
         display: flex;
         flex-direction: column;
-        height: 12.8rem;
         width: 8rem;
-        z-index: 1000;
+        height: 12.8rem;
+        background-color: var(--general-main-1);
 
         &--text {
             cursor: pointer;
@@ -113,8 +113,8 @@
     }
 
     .suffix-icon {
-        left: auto;
         right: 0;
+        left: auto;
     }
 
     .dc-list--has-suffix-icon {

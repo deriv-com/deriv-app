@@ -3,19 +3,19 @@
         border-bottom: none;
 
         &__title {
-            padding: 2.4rem;
-
             @include mobile {
                 padding: 2.4rem 1.6rem 1.6rem;
             }
+
+            padding: 2.4rem;
         }
     }
 
     .dc-modal-body {
-        padding: 0 2.4rem;
-
         @include mobile {
             padding: 0.8rem 1.6rem;
         }
+
+        padding: 0 2.4rem;
     }
 }

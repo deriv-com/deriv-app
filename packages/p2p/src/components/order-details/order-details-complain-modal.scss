@@ -1,30 +1,28 @@
 .order-details-complain-modal {
     &__body {
-        flex-grow: 1;
-
         @include mobile {
             flex-direction: column;
         }
+
+        flex-grow: 1;
     }
 
     &__explanation {
-        background-color: var(--general-section-1);
-        margin-top: 1.6rem;
-        padding: 1.6rem;
-
         @include mobile {
-            border-radius: $BORDER_RADIUS;
             margin: 1.6rem;
+            border-radius: $BORDER_RADIUS;
         }
 
         @include tablet-up {
             border-radius: 8px;
         }
+
+        margin-top: 1.6rem;
+        padding: 1.6rem;
+        background-color: var(--general-section-1);
     }
 
     &__radio-group:not(.dc-radio-group__item) {
-        display: inline;
-
         @include mobile {
             margin-top: 0;
 
@@ -37,10 +35,12 @@
             }
         }
 
+        display: inline;
+
         .dc-radio-group__item {
             @include tablet-up {
-                border-bottom: 1px solid var(--general-section-1);
                 padding: 1.6rem 0;
+                border-bottom: 1px solid var(--general-section-1);
             }
 
             .dc-radio-group__label {

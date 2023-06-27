@@ -2,7 +2,8 @@
     &__column {
         display: flex;
         flex-direction: column;
-        @media (max-width: 450px) {
+
+        @media (width <= 450px) {
             width: 80%;
         }
     }
@@ -17,16 +18,17 @@
     }
 
     &__selected-payment-methods {
+        overflow: hidden;
         max-width: 350px;
         max-height: 45px;
-        overflow: hidden;
-        white-space: nowrap;
         text-overflow: ellipsis;
+        white-space: nowrap;
 
-        @media (max-width: 450px) {
+        @media (width <= 450px) {
             max-width: 300px;
         }
-        @media (max-width: 400px) {
+
+        @media (width <= 400px) {
             max-width: 250px;
         }
     }
@@ -39,16 +41,17 @@
     }
 
     &__row {
-        align-items: center;
-        border-bottom: 2px solid var(--general-section-5);
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        align-items: center;
         min-height: 8rem;
         padding: 0 2.4rem;
-        @media (max-width: 375px) {
-            padding: 0 0 0 1.5rem;
+        border-bottom: 2px solid var(--general-section-5);
+
+        @media (width <= 375px) {
             justify-content: initial;
+            padding: 0 0 0 1.5rem;
         }
     }
 
@@ -63,8 +66,8 @@
 
 .dc-modal__container_payment-methods {
     .dc-modal-header {
-        border-bottom: 2px solid var(--general-section-5);
         height: 5.6rem;
+        border-bottom: 2px solid var(--general-section-5);
 
         &__title {
             padding: 1.6rem 3.2rem;
@@ -72,8 +75,8 @@
     }
 
     .dc-modal-body {
-        padding: 0;
         min-width: 33rem;
+        padding: 0;
     }
 
     .dc-checkbox {

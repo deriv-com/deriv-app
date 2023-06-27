@@ -53,6 +53,7 @@ module.exports = {
         'no-empty-source': null,
         'selector-pseudo-element-no-unknown': null,
         'selector-pseudo-class-no-unknown': null,
+        'no-invalid-position-at-import-rule': null,
 
         // Plugins Config
 

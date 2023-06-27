@@ -1,34 +1,35 @@
 @mixin ad-status-base($background-color) {
-    &:before {
-        content: '';
-        height: 100%;
-        width: 100%;
-        opacity: 0.16;
-        display: block;
-        position: absolute;
-        left: 0;
-        top: 0;
-        border-radius: 1.6rem;
-        background-color: $background-color;
-    }
-    align-items: center;
+    position: relative;
     display: flex;
     justify-content: center;
+    align-items: center;
     padding: 0.1rem 1.2rem;
-    position: relative;
     text-align: center;
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: 1.6rem;
+        background-color: $background-color;
+        opacity: 0.16;
+    }
 }
 
 .ad-status {
     &--active {
         @include ad-status-base(var(--status-success));
 
-        width: fit-content;
-
         @include mobile {
             margin-bottom: 0.8rem;
             padding: 0.2rem 1rem;
         }
+
+        width: fit-content;
     }
 
     &--inactive {

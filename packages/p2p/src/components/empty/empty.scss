@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 2.4rem;
     max-width: 628px;
+    margin-top: 2.4rem;
 
     &--no-tabs {
         margin-top: calc(4rem + 4.4rem);
@@ -12,23 +12,26 @@
     &-icon {
         margin-bottom: 2.4rem;
     }
+
     &-title {
         margin: 0.8rem;
     }
+
     &-text {
-        font-size: var(--text-size-xs);
         margin: 1.2rem 0;
+        font-size: var(--text-size-xs);
 
         p {
             line-height: 1.43;
         }
     }
-    &__button {
-        text-decoration: none;
-        margin-top: 1.6rem;
 
+    &__button {
         @include mobile {
             width: calc(100vw - 3.2rem);
         }
+
+        margin-top: 1.6rem;
+        text-decoration: none;
     }
 }

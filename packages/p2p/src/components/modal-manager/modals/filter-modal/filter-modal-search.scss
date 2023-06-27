@@ -1,22 +1,22 @@
 .filter-modal-search {
-    border-bottom: 1px solid var(--border-normal);
-
-    .dc-input {
-        border: unset;
-        height: 5.2rem;
-    }
-
     @include mobile {
-        margin: 0.8rem 1.6rem 1rem;
         min-width: 25rem;
+        margin: 0.8rem 1.6rem 1rem;
 
         .dc-input {
             height: 4rem;
         }
     }
 
-    @media (max-width: 320px) {
+    border-bottom: 1px solid var(--border-normal);
+
+    @media (width <= 320px) {
         width: 14rem;
+    }
+
+    .dc-input {
+        height: 5.2rem;
+        border: unset;
     }
 
     &__cross-icon {
@@ -30,27 +30,28 @@
             justify-content: center;
 
             &__container {
-                border: none;
-                padding: 0;
                 height: 6rem;
+                padding: 0;
+                border: none;
             }
-            &__field {
-                flex-grow: 1;
-                height: 4rem;
-                padding-right: 3rem;
-                margin-left: 1.2rem;
-                width: unset;
 
+            &__field {
                 @include mobile {
                     padding: 0 2.8rem 0 0.4rem;
                 }
+
+                flex-grow: 1;
+                width: unset;
+                height: 4rem;
+                margin-left: 1.2rem;
+                padding-right: 3rem;
             }
 
             &__leading-icon {
-                cursor: pointer;
-                margin-left: 0.8rem;
-                pointer-events: unset;
                 position: unset;
+                margin-left: 0.8rem;
+                cursor: pointer;
+                pointer-events: unset;
             }
         }
     }

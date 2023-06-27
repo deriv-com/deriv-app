@@ -1,20 +1,15 @@
 .buy-sell {
     $mobile_tabs_height: 17.2rem;
-    flex: 1;
+
     display: flex;
+    flex: 1;
     flex-direction: column;
 
     &__advertiser-page-return {
-        margin-top: unset;
-
-        .dc-text {
-            align-self: flex-start;
-        }
-
         @include mobile {
-            border-bottom: 1px solid var(--general-section-1);
             margin: unset;
             padding: 1.2rem 0;
+            border-bottom: 1px solid var(--general-section-1);
 
             .page-return__button {
                 padding: 0 1.6rem;
@@ -23,6 +18,12 @@
             .dc-text {
                 align-self: self-end;
             }
+        }
+
+        margin-top: unset;
+
+        .dc-text {
+            align-self: flex-start;
         }
     }
 
@@ -38,10 +39,10 @@
         flex-direction: column;
 
         &-body {
-            height: 100%;
-            flex: 1;
             display: flex;
+            flex: 1;
             flex-direction: column;
+            height: 100%;
         }
 
         &-sort {
@@ -54,9 +55,9 @@
             }
 
             &-radiogroup {
-                height: 10rem;
                 display: flex;
                 flex-direction: column;
+                height: 10rem;
             }
         }
     }
@@ -87,8 +88,8 @@
     }
 
     &__table-row {
-        padding: 1.6rem;
         grid-template-columns: 2fr 1.5fr 1fr 1.5fr 1fr;
+        padding: 1.6rem;
 
         &:hover {
             background-color: var(--general-hover);
@@ -96,12 +97,13 @@
     }
 
     &__cell {
-        align-items: center;
         display: flex;
+        align-items: center;
 
         &-hover {
             cursor: pointer;
         }
+
         &--container {
             display: flex;
             flex-direction: column;
@@ -127,29 +129,30 @@
 
 .dc-modal__container {
     &_sort {
-        height: 100%;
         display: flex;
         flex-direction: column;
+        height: 100%;
     }
 }
 
 .dc-radio-group {
     &.sort-radiogroup {
-        height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
+        height: 100%;
         margin: unset;
     }
+
     .dc-radio-group__item {
         &.sort-radiogroup {
             display: flex;
             flex-direction: row-reverse;
             justify-content: space-between;
+            width: 100%;
             margin: unset;
             padding: 1.2rem 2.4rem;
-            width: 100%;
 
             &:first-child {
                 border-bottom: 1px solid var(--border-normal);

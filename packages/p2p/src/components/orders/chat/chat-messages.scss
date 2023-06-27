@@ -1,13 +1,14 @@
 &__messages {
-    background-color: var(--general-main-1);
+    flex: 1 1 0;
     margin-top: auto;
     margin-right: 0.8rem;
-    flex: 1 1 0;
+    background-color: var(--general-main-1);
 
     &-date {
         margin-top: 1.6rem;
         text-align: center;
     }
+
     &-item {
         display: flex;
         flex-direction: column;
@@ -16,34 +17,37 @@
         &-file {
             color: inherit;
         }
+
         &-image {
             width: 50%;
 
             > img {
-                border: 1px solid var(--border-normal);
-                border-radius: $BORDER_RADIUS;
                 width: 100%;
                 height: auto;
+                border: 1px solid var(--border-normal);
+                border-radius: $BORDER_RADIUS;
 
                 &:hover {
                     border: 1px solid var(--border-hover);
                 }
             }
         }
+
         &-message {
-            border-radius: 1.6rem;
+            width: fit-content;
             max-width: 100%;
             padding: 0.8rem 1.6rem;
-            width: fit-content;
+            border-radius: 1.6rem;
             word-break: break-word;
 
             > p {
                 white-space: pre-wrap;
             }
         }
+
         &-timestamp {
-            align-items: center;
             display: flex;
+            align-items: center;
             margin-top: 0.4rem;
 
             &-receipt {
@@ -55,16 +59,17 @@
             align-items: flex-start;
 
             .order-chat__messages-item-message {
-                background-color: var(--general-active);
                 border-bottom-left-radius: $BORDER_RADIUS;
+                background-color: var(--general-active);
             }
         }
+
         &--outgoing {
             align-items: flex-end;
 
             .order-chat__messages-item-message {
-                background-color: var(--brand-secondary);
                 border-bottom-right-radius: $BORDER_RADIUS;
+                background-color: var(--brand-secondary);
             }
         }
     }

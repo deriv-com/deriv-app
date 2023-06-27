@@ -1,122 +1,132 @@
 .floating-rate {
-    display: flex;
-    flex-direction: column;
-    margin-top: 2.1rem;
     @include mobile {
         margin-bottom: 6.5rem !important;
     }
-    &__field {
-        display: flex;
-        align-items: center;
 
+    display: flex;
+    flex-direction: column;
+    margin-top: 2.1rem;
+
+    &__field {
         @include mobile {
             margin-top: -3rem;
         }
+
+        display: flex;
+        align-items: center;
 
         &--prefix {
             margin-right: 2rem;
         }
     }
+
     &__input {
-        height: 4rem;
-        align-self: center;
-        appearance: none;
-        box-sizing: border-box;
-        border-radius: $BORDER_RADIUS;
-        color: var(--text-general);
-        background-image: none;
-        text-overflow: ellipsis;
         @include mobile {
             padding: 0;
         }
 
+        align-self: center;
+        box-sizing: border-box;
+        height: 4rem;
+        border-radius: $BORDER_RADIUS;
+        background-image: none;
+        color: var(--text-general);
+        text-overflow: ellipsis;
+        appearance: none;
+
         &--error-field {
-            color: $color-red-1;
             border-color: $color-red;
+            color: $color-red-1;
         }
     }
 
     &__percent {
-        order: 3;
-        background: transparent;
-        border-color: transparent;
-        padding: 0 0.2rem;
-        color: inherit;
         @include mobile {
             position: relative;
             right: 9rem;
         }
 
+        order: 3;
+        padding: 0 0.2rem;
+        border-color: transparent;
+        background: transparent;
+        color: inherit;
+
         &--symbol {
             font-size: 1.4rem;
             line-height: 1.5;
         }
+
         &:before {
             @include typeface(--paragraph-center-normal-black);
+
             color: inherit;
         }
     }
 
     &__mkt-rate {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
-        padding: 0.4rem 0.6rem;
-        position: static;
-        left: 10rem;
-        top: 0px;
-        background-color: var(--transparent-hint);
-        border-radius: 0px 4px 4px 0px;
-        /* Inside auto layout */
-        flex: none;
-        order: 1;
-        align-self: stretch;
-        flex-grow: 1;
-        gap: 0.2rem;
-
         @include mobile {
             flex-direction: row;
-            align-items: center;
             gap: 1rem;
+            align-items: center;
         }
+
+        position: static;
+        top: 0;
+        left: 10rem;
+        display: flex;
+
+        /* Inside auto layout */
+        flex: none;
+        flex-grow: 1;
+        flex-direction: column;
+        gap: 0.2rem;
+        justify-content: center;
+        align-items: flex-start;
+        align-self: stretch;
+        order: 1;
+        padding: 0.4rem 0.6rem;
+        border-radius: 0 4px 4px 0;
+        background-color: var(--transparent-hint);
 
         &--label {
             position: static;
-            font-style: normal;
             flex: none;
-            order: 1;
             flex-grow: 0;
-            margin: 0px;
+            order: 1;
+            margin: 0;
+            font-style: normal;
         }
 
         &--msg {
             position: static;
-            height: 18px;
-            left: 8px;
             top: 18px;
+            left: 8px;
             flex: none;
-            order: 2;
             flex-grow: 0;
-            margin: 0px;
+            order: 2;
+            height: 18px;
+            margin: 0;
         }
     }
 
     &__hint {
-        padding-left: 4rem;
-        text-transform: none;
-        margin-top: 0.3rem;
         @include mobile {
             padding-left: 1rem;
         }
+
+        margin-top: 0.3rem;
+        padding-left: 4rem;
+        text-transform: none;
     }
 
     &__error-message {
-        padding-left: 4rem;
-        text-transform: none;
         @include mobile {
             padding-left: 1rem;
         }
+
+        padding-left: 4rem;
+        text-transform: none;
     }
 
     .dc-input-wrapper {
@@ -131,6 +141,7 @@
 
         .dc-input-wrapper__button {
             top: unset;
+
             &--increment {
                 right: unset;
                 order: 4;
@@ -142,35 +153,39 @@
         }
 
         .input {
-            text-align: right;
+            @include mobile {
+                text-align: center;
+            }
+
+            padding: unset;
             border: unset;
             background-color: unset;
-            padding: unset;
             font-size: small;
+            text-align: right;
+
             &:focus {
                 border-color: unset;
             }
+
             &:hover {
                 border-color: unset;
             }
+
             &--has-inline-prefix {
                 padding-right: unset !important;
-            }
-            @include mobile {
-                text-align: center;
             }
         }
 
         &:hover {
             border-color: var(--border-hover);
         }
+
         &:active,
         &:focus {
             border-color: var(--border-active);
         }
 
         button.dc-input-wrapper__button {
-            position: inherit !important;
             @include mobile {
                 // In some browsers the background color for button remains set as they consider hover as focus
                 &:hover {
@@ -181,6 +196,8 @@
                     background-color: var(--state-hover) !important;
                 }
             }
+
+            position: inherit !important;
         }
 
         &--error:hover {
@@ -189,12 +206,12 @@
     }
 
     .dc-input-suffix {
+        @include mobile {
+            width: fill-available;
+        }
+
         display: flex;
         align-items: center;
-
-        @include mobile {
-            width: -webkit-fill-available;
-        }
     }
 }
 

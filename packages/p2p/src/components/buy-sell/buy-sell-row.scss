@@ -1,10 +1,10 @@
 .buy-sell-row {
     @include mobile {
-        border-bottom: 1px solid var(--general-section-1);
-        padding: 1.6rem;
-        min-height: 18.6rem;
         display: flex;
         flex-direction: column;
+        min-height: 18.6rem;
+        padding: 1.6rem;
+        border-bottom: 1px solid var(--general-section-1);
     }
 
     &__advertiser {
@@ -29,88 +29,88 @@
     }
 
     &__information {
-        align-items: center;
+        @include mobile {
+            display: grid;
+            grid-template-rows: 2fr 1fr;
+            grid-template-columns: 3fr 1.7fr;
+        }
+
         display: flex;
         flex-direction: row;
         justify-content: space-between;
-
-        @include mobile {
-            display: grid;
-            grid-template-columns: 3fr 1.7fr;
-            grid-template-rows: 2fr 1fr;
-        }
+        align-items: center;
     }
 
     &__payment-methods-list {
         @include mobile {
-            grid-column: 1 / 3;
-            grid-row: 2;
             display: flex;
+            grid-row: 2;
+            grid-column: 1 / 3;
             margin-left: 4rem;
         }
     }
 
     &__no-match {
-        align-items: center;
-        border-bottom: 1px solid var(--general-section-1);
         display: flex;
-        height: 5.6rem;
         justify-content: center;
+        align-items: center;
+        height: 5.6rem;
+        border-bottom: 1px solid var(--general-section-1);
     }
 
     &__payment-method {
+        @include mobile {
+            flex-direction: row;
+            align-items: center;
+            width: fit-content;
+            margin: 0.25rem;
+            padding: 0.8rem;
+            border: 1px solid var(--border-normal);
+            border-radius: 0.4rem;
+        }
+
         display: flex;
         flex-wrap: wrap;
 
-        &--label {
-            align-items: center;
-            border: 1px solid var(--border-normal);
-            border-radius: 0.4rem;
-            flex-direction: row;
-            padding: 0 0.8rem;
-            margin: 0.25rem;
-            width: fit-content;
-        }
-
-        @include mobile {
-            align-items: center;
-            border: 1px solid var(--border-normal);
-            border-radius: 0.4rem;
-            flex-direction: row;
-            margin: 0.25rem;
-            width: fit-content;
-            padding: 0.8rem;
-        }
-
-        @media (max-width: 320px) {
+        @media (width <= 320px) {
             padding: 0.4rem;
             font-size: 10px;
+        }
+
+        &--label {
+            flex-direction: row;
+            align-items: center;
+            width: fit-content;
+            margin: 0.25rem;
+            padding: 0 0.8rem;
+            border: 1px solid var(--border-normal);
+            border-radius: 0.4rem;
         }
     }
 
     &__button {
-        align-self: flex-start;
         display: flex;
         flex-flow: row wrap;
-        white-space: inherit;
+        align-self: flex-start;
         height: fit-content;
         max-height: 7rem;
         margin-left: auto;
         padding: 1rem 1.6rem;
+        white-space: inherit;
     }
 
     &__rate {
-        grid-column: 1;
-        grid-row: 1;
+        @include mobile {
+            margin-left: 4rem;
+        }
+
         display: flex;
         flex-direction: column;
+        grid-row: 1;
+        grid-column: 1;
 
         > :last-child {
             margin-top: 0.8rem;
-        }
-
-        @include mobile {
-            margin-left: 4rem;
         }
     }
 
@@ -128,10 +128,11 @@
 
     &__table-cell {
         &--left {
-            align-items: flex-start;
             display: flex;
             flex-direction: column;
+            align-items: flex-start;
         }
+
         &--right {
             align-items: flex-end;
         }

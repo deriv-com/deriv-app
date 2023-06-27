@@ -1,34 +1,34 @@
 .buy-sell__modal {
-    opacity: 1 !important;
-
     @include mobile {
         .dc-mobile-full-page-modal__header--border-bottom {
             border-bottom: 2px solid var(--general-section-1);
         }
     }
 
-    &-body {
-        position: relative;
-        display: block;
-        padding-top: 2.4rem;
+    opacity: 1 !important;
 
+    &-body {
         @include mobile {
             & > form {
                 height: fit-content !important;
             }
         }
+
+        position: relative;
+        display: block;
+        padding-top: 2.4rem;
     }
 
     &-danger {
-        margin-bottom: 1.6rem;
-        width: fit-content;
         align-items: flex-start;
+        width: fit-content;
+        margin-bottom: 1.6rem;
     }
 
     &-field {
-        margin-bottom: 0 !important;
         flex: 1;
         height: fit-content;
+        margin-bottom: 0 !important;
 
         .dc-input__container {
             width: 91%;
@@ -40,14 +40,15 @@
         }
 
         &--textarea {
-            border-top: 1px solid var(--general-section-5);
             margin-bottom: 3.5rem;
             padding: 1.8rem 2.4rem 0;
+            border-top: 1px solid var(--general-section-5);
 
             .dc-input {
                 &__container {
                     height: 9.7rem;
                 }
+
                 &__field {
                     height: 100% !important;
                 }
@@ -56,6 +57,16 @@
 
         &-wrapper {
             $gap: 2.4rem;
+
+            @include mobile {
+                flex-direction: column;
+
+                .dc-input__wrapper {
+                    width: 90vw;
+                    margin-top: 2.5rem;
+                }
+            }
+
             display: flex;
             margin: -#{$gap} 0 1.6rem -#{$gap};
             padding: 0 2.4rem;
@@ -63,15 +74,6 @@
 
             & > * {
                 margin: $gap 0 0 $gap;
-            }
-
-            @include mobile {
-                flex-direction: column;
-
-                .dc-input__wrapper {
-                    margin-top: 2.5rem;
-                    width: 90vw;
-                }
             }
 
             > .dc-input {
@@ -86,40 +88,43 @@
 
     &-footer {
         @include mobile {
-            border-top: 2px solid var(--general-section-1);
             display: flex;
             flex-direction: row;
             justify-content: flex-end;
             margin-top: auto;
             padding: 1.6rem;
+            border-top: 2px solid var(--general-section-1);
         }
     }
 
     &--input {
-        display: flex;
-        gap: 2rem;
-        flex-direction: column;
-        padding: 0 2.4rem 2rem;
-        margin-bottom: 2rem;
-        .dc-input__wrapper {
-            margin-right: 0.2rem;
-            margin-bottom: unset;
-        }
-
-        &-field {
-            @include desktop() {
-                display: flex;
-            }
-        }
         @include mobile {
             .dc-input {
                 &__container {
                     width: 100%;
                     padding: 0.5rem 1rem 0.5rem 1.2rem;
                 }
+
                 &__wrapper {
                     margin: 0.8rem 0.2rem 1.4rem 0;
                 }
+            }
+        }
+
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        margin-bottom: 2rem;
+        padding: 0 2.4rem 2rem;
+
+        .dc-input__wrapper {
+            margin-right: 0.2rem;
+            margin-bottom: unset;
+        }
+
+        &-field {
+            @include desktop {
+                display: flex;
             }
         }
     }
@@ -140,30 +145,31 @@
     }
 
     &-line {
-        border-top: 1px solid var(--general-section-5);
-        margin: 1.6rem 0;
         width: 100%;
+        margin: 1.6rem 0;
+        border-top: 1px solid var(--general-section-5);
     }
 
     &-payment-method {
         padding: 0 2.4rem;
+
         &--container {
-            align-self: center;
             display: flex;
             flex-direction: column;
+            align-self: center;
             margin-bottom: 1.6rem;
             padding: 0 2.4rem;
         }
 
         &--icon {
-            border-radius: 2px;
             margin-right: 0.8rem;
+            border-radius: 2px;
         }
 
         &--row {
-            align-items: center;
             display: flex;
             flex-direction: row;
+            align-items: center;
             margin-bottom: 0.8rem;
         }
 
@@ -174,8 +180,8 @@
 
     &-receive-amount {
         @include mobile {
-            border-top: 1px solid var(--general-section-2);
             padding: 0.8rem 1.6rem;
+            border-top: 1px solid var(--general-section-2);
             background-color: var(--general-main-1);
         }
     }
@@ -187,28 +193,29 @@
         margin: 1.6rem 0 2.4rem;
 
         .payment-method-card {
+            @include mobile {
+                width: 13.6rem;
+                min-width: unset;
+                min-height: 8.8rem;
+            }
+
             margin: unset;
 
-            @include mobile {
-                min-height: 8.8rem;
-                min-width: unset;
-                width: 13.6rem;
-            }
-
             &--add {
-                margin: unset;
-
                 @include mobile {
-                    min-height: 8.8rem;
                     width: 13.6rem;
+                    min-height: 8.8rem;
                 }
-            }
-            &__body {
-                margin-top: 0.8rem;
 
+                margin: unset;
+            }
+
+            &__body {
                 @include mobile {
                     margin-top: 0;
                 }
+
+                margin-top: 0.8rem;
             }
         }
 
@@ -231,6 +238,7 @@
         margin-bottom: unset;
     }
 }
+
 .dc-modal__container_buy-sell__modal {
     .dc-modal-header--buy-sell__modal {
         border-bottom: 2px solid var(--general-section-5);

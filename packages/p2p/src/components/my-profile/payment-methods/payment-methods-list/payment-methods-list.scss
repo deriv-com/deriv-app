@@ -4,10 +4,10 @@
             display: flex;
             flex-direction: column;
             grid-template-rows: 1fr 8rem;
-            height: 100%;
             overflow-x: hidden;
-            padding: 1rem 2rem;
             width: 100vw;
+            height: 100%;
+            padding: 1rem 2rem;
 
             &-add {
                 padding: 1rem 0 0;
@@ -22,35 +22,37 @@
 
         &-wrapper {
             display: flex;
-            word-break: break-all;
             padding: 1rem 2.4rem;
+            word-break: break-all;
         }
     }
-    &__button {
-        margin: 0 0 2.4rem;
 
+    &__button {
         @include mobile {
-            align-self: end;
             grid-row: 2;
+            align-self: end;
+            width: 90vw;
             height: 5rem;
             margin: 0;
-            width: 90vw;
 
             .dc-btn__text {
                 font-size: 16px;
             }
         }
+
+        margin: 0 0 2.4rem;
     }
 
     &__list {
         &-container {
+            @include mobile {
+                // grid-row: 1;
+            }
+
             max-width: 67.2rem;
 
             .dc-dropdown-container {
                 margin-left: 0;
-            }
-            @include mobile {
-                // grid-row: 1;
             }
         }
 
@@ -80,6 +82,7 @@
             & > .payment-method-card {
                 margin-left: unset;
             }
+
             & > .payment-method-card ~ .payment-method-card {
                 margin-left: 1rem;
             }

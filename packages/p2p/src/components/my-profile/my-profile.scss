@@ -1,14 +1,29 @@
 .my-profile {
-    display: flex;
-
     @include mobile {
         display: block;
     }
 
+    display: flex;
+
     &__content {
+        @include tablet-up {
+            min-width: 672px;
+            max-width: 100%;
+        }
+
+        @include mobile {
+            display: block;
+            width: 100vw;
+            padding: 0 1.6rem;
+
+            .dc-mobile-full-page-modal {
+                opacity: 1 !important;
+            }
+        }
+
         display: flex;
-        flex-direction: column;
         flex: 1;
+        flex-direction: column;
         overflow-x: hidden;
 
         &::-webkit-scrollbar {
@@ -17,20 +32,6 @@
 
         & .p2p-toggle-container {
             margin-bottom: 3.4rem;
-        }
-
-        @include tablet-up {
-            max-width: 100%;
-            min-width: 672px;
-        }
-        @include mobile {
-            display: block;
-            padding: 0 1.6rem;
-            width: 100vw;
-
-            .dc-mobile-full-page-modal {
-                opacity: 1 !important;
-            }
         }
     }
 

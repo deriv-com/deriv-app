@@ -212,7 +212,7 @@
 
             &--danger {
                 color: var(--brand-red-coral);
-                background-color: rgba(236, 63, 63, 0.16);
+                background-color: $color-status-error;
             }
             &--alert {
                 color: var(--status-warning);
@@ -220,7 +220,7 @@
             }
             &--success {
                 color: var(--text-profit-success);
-                background-color: rgba(75, 180, 179, 0.16);
+                background-color: $color-status-announcement;
             }
             &--disabled {
                 color: var(--text-less-prominent);

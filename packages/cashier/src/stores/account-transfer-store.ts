@@ -661,7 +661,7 @@ export default class AccountTransferStore {
         this.setTransferLimit();
     };
 
-    setTransferPercentageSelectorResult(amount: string) {
+    setTransferPercentageSelectorResult(amount: string, exchanged_amount: number) {
         const { crypto_fiat_converter, general_store } = this.root_store.modules.cashier;
 
         const selected_from_currency = this.selected_from.currency;
@@ -673,7 +673,8 @@ export default class AccountTransferStore {
             crypto_fiat_converter.onChangeConverterFromAmount(
                 { target: { value: amount } },
                 selected_from_currency,
-                selected_to_currency
+                selected_to_currency,
+                exchanged_amount
             );
         } else {
             crypto_fiat_converter.resetConverter();

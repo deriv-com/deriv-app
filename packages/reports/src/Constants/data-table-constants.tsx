@@ -454,9 +454,9 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
         },
     },
     {
-        title: localize('Accumulate'),
-        col_index: 'accumulator',
-        renderCellContent: ({ row_obj }: TCellContentProps) =>
+        title: localize('Growth rate'),
+        col_index: 'growth_rate',
+        renderCellContent: ({ row_obj }) =>
             row_obj.contract_info && row_obj.contract_info.growth_rate
                 ? `${getGrowthRatePercentage(row_obj.contract_info.growth_rate)}%`
                 : '',
@@ -469,7 +469,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
         ),
     },
     {
-        title: isMobile() ? localize('Total stake') : localize('Stake'),
+        title: isMobile() ? localize('Total stake') : localize('Initial stake'),
         col_index: isMobile() ? 'purchase' : 'buy_price',
         renderCellContent: ({ row_obj }: TCellContentProps) => {
             if (row_obj.contract_info) {

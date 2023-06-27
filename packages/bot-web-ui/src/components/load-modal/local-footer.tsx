@@ -1,9 +1,9 @@
+import React from 'react';
 import { Button } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/root-store';
-import React from 'react';
 
 type TLocalFooterProps = {
     is_open_button_loading: boolean;

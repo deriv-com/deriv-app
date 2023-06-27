@@ -10,6 +10,7 @@ import { init as WebsocketInit, requestWS, subscribeWS } from 'Utils/websocket';
 import { order_list } from 'Constants/order-list';
 import { buy_sell } from 'Constants/buy-sell';
 import { api_error_codes } from 'Constants/api-error-codes';
+import { my_profile_tabs } from 'Constants/my-profile-tabs';
 
 export default class GeneralStore extends BaseStore {
     active_index = 0;
@@ -176,6 +177,76 @@ export default class GeneralStore extends BaseStore {
             updateAdvertiserInfo: action.bound,
             updateP2pNotifications: action.bound,
         });
+
+        reaction(
+            () => [this.root_store.advertiser_page_store.active_index, this.block_unblock_user_error],
+            () => {
+                const { advertiser_page_store, buy_sell_store, my_profile_store } = this.root_store;
+                const { is_blocked, name } = my_profile_store.selected_trade_partner;
+                const { INVALID_ADVERTISER_ID, PERMISSION_DENIED, TEMPORARY_BAR } = api_error_codes;
+
+                const error_message = () => {
+                    return is_blocked
+                        ? localize("Unblocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
+                              name,
+                          })
+                        : localize("Blocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
+                              name,
+                          });
+                };
+                if (buy_sell_store.show_advertiser_page) advertiser_page_store.onTabChange();
+
+                if (this.block_unblock_user_error && (this.active_index === 3 || buy_sell_store.show_advertiser_page)) {
+                    if (
+                        (buy_sell_store.show_advertiser_page &&
+                            (this.error_code === TEMPORARY_BAR || this.error_code === PERMISSION_DENIED)) ||
+                        this.error_code === INVALID_ADVERTISER_ID
+                    ) {
+                        this.showModal({
+                            key: 'ErrorModal',
+                            props: {
+                                error_message:
+                                    this.error_code === INVALID_ADVERTISER_ID
+                                        ? error_message()
+                                        : this.block_unblock_user_error,
+                                error_modal_button_text: localize('Got it'),
+                                error_modal_title:
+                                    this.error_code === INVALID_ADVERTISER_ID
+                                        ? localize('{{name}} is no longer on Deriv P2P', {
+                                              name,
+                                          })
+                                        : localize('Unable to block advertiser'),
+
+                                has_close_icon: false,
+                                onClose: () => {
+                                    if (buy_sell_store.show_advertiser_page) {
+                                        buy_sell_store.hideAdvertiserPage();
+                                        if (this.active_index !== 0)
+                                            my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
+                                        advertiser_page_store.onCancel();
+                                    }
+                                    this.setBlockUnblockUserError('');
+                                    this.hideModal({ should_hide_all_modals: true });
+                                },
+                                width: isMobile() ? '90rem' : '40rem',
+                            },
+                        });
+                        this.setBlockUnblockUserError(null);
+                    }
+                }
+            },
+            { fireImmediately: true }
+        );
+
+        reaction(
+            () => this.is_barred,
+            () => {
+                const { my_profile_store } = this.root_store;
+                if (!this.is_barred) this.setBlockUnblockUserError('');
+                my_profile_store.setSearchTerm('');
+                my_profile_store.getTradePartnersList({ startIndex: 0 }, true);
+            }
+        );
     }
 
     get blocked_until_date_time() {

@@ -1,12 +1,10 @@
 import React from 'react';
 import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components';
 import { daysSince, isMobile } from '@deriv/shared';
-import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
-import { api_error_codes } from 'Constants/api-error-codes';
 import PageReturn from 'Components/page-return/page-return.jsx';
 import RecommendedBy from 'Components/recommended-by';
 import UserAvatar from 'Components/user/user-avatar/user-avatar.jsx';
@@ -23,7 +21,7 @@ import './advertiser-page.scss';
 
 const AdvertiserPage = () => {
     const { advertiser_page_store, buy_sell_store, general_store, my_profile_store } = useStores();
-    const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
+    const { showModal, useRegisterModalProps } = useModalManagerContext();
 
     const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
@@ -49,56 +47,11 @@ const AdvertiserPage = () => {
     // rating_average_decimal converts rating_average to 1 d.p number
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
     const joined_since = daysSince(created_time);
-    const error_message = () => {
-        return !!advertiser_page_store.is_counterparty_advertiser_blocked && !is_my_advert
-            ? localize("Unblocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
-                  name: advertiser_page_store.advertiser_details_name,
-              })
-            : localize("Blocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
-                  name: advertiser_page_store.advertiser_details_name,
-              });
-    };
 
     React.useEffect(() => {
         advertiser_page_store.onMount();
         advertiser_page_store.setIsDropdownMenuVisible(false);
-
-        reaction(
-            () => [advertiser_page_store.active_index, general_store.block_unblock_user_error],
-            () => {
-                advertiser_page_store.onTabChange();
-                if (general_store.block_unblock_user_error && buy_sell_store.show_advertiser_page) {
-                    showModal({
-                        key: 'ErrorModal',
-                        props: {
-                            error_message:
-                                general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID
-                                    ? error_message()
-                                    : general_store.block_unblock_user_error,
-                            error_modal_button_text: localize('Got it'),
-                            error_modal_title:
-                                general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID
-                                    ? localize('{{name}} is no longer on Deriv P2P', {
-                                          name: advertiser_page_store.advertiser_details_name,
-                                      })
-                                    : localize('Unable to block advertiser'),
-                            has_close_icon: false,
-                            onClose: () => {
-                                buy_sell_store.hideAdvertiserPage();
-                                if (general_store.active_index !== 0)
-                                    my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
-                                advertiser_page_store.onCancel();
-                                general_store.setBlockUnblockUserError('');
-                                hideModal();
-                            },
-                            width: isMobile() ? '90rem' : '40rem',
-                        },
-                    });
-                    general_store.setBlockUnblockUserError(null);
-                }
-            },
-            { fireImmediately: true }
-        );
+        advertiser_page_store.onTabChange();
 
         return () => {
             advertiser_page_store.onUnmount();

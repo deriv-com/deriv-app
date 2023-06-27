@@ -1,4 +1,4 @@
-import { observable, action, computed, when, makeObservable } from 'mobx';
+import { observable, action, computed, when, makeObservable, reaction } from 'mobx';
 import { requestWS } from 'Utils/websocket';
 import { localize } from 'Components/i18next';
 import { textValidator } from 'Utils/validations';
@@ -164,6 +164,14 @@ export default class MyProfileStore extends BaseStore {
             setTradePartnersList: action.bound,
             upgradeDailyLimit: action.bound,
         });
+
+        reaction(
+            () => this.trade_partners_list,
+            () => {
+                if (this.trade_partners_list.length > 0 && this.is_trade_partners_list_empty)
+                    this.setIsTradePartnersListEmpty(false);
+            }
+        );
     }
 
     get advertiser_has_payment_methods() {

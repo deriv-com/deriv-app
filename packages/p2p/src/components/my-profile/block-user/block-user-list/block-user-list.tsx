@@ -1,25 +1,24 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import debounce from 'lodash.debounce';
 import { Loading, SearchBox, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
+import { useStores } from 'Stores';
+import { Localize, localize } from 'Components/i18next';
+import { api_error_codes } from 'Constants/api-error-codes';
 import BlockUserDropdown from '../block-user-dropdown';
 import BlockUserTable from '../block-user-table';
 import BlockUserTableError from '../block-user-table/block-user-table-error';
-import debounce from 'lodash.debounce';
-import { localize } from 'Components/i18next';
-import { api_error_codes } from 'Constants/api-error-codes';
-import './block-user-list.scss';
 
 const BlockUserList = observer(() => {
     const { general_store, my_profile_store } = useStores();
 
-    const debouncedGetSearchedTradePartners = debounce(search => {
+    const debouncedGetSearchedTradePartners = debounce((search: string) => {
         my_profile_store.setSearchTerm(search.trim());
         my_profile_store.getSearchedTradePartners();
     }, 200);
 
-    const onSearch = search => {
+    const onSearch = (search: string) => {
         // Ensures that trade partners list is not reloaded if search term entered is the same
         if (my_profile_store.search_term !== search.trim()) {
             my_profile_store.setIsBlockUserTableLoading(true);
@@ -44,9 +43,7 @@ const BlockUserList = observer(() => {
             {!my_profile_store.should_show_block_user_list_header && (
                 <React.Fragment>
                     <Text className='block-user-list__text' size='xs'>
-                        {localize(
-                            "When you block someone, you won't see their ads, and they can't see yours. Your ads will be hidden from their search results, too."
-                        )}
+                        <Localize i18n_default_text="When you block someone, you won't see their ads, and they can't see yours. Your ads will be hidden from their search results, too." />
                     </Text>
                     <div className='block-user-list__header'>
                         <SearchBox

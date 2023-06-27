@@ -68,7 +68,7 @@ describe('<MyProfileStats />', () => {
 
     it('should allow the user to press the return button in MobileFullPageModal', () => {
         const setShouldShowStatsAndRatingsMock = jest.spyOn(React, 'useState');
-        setShouldShowStatsAndRatingsMock.mockImplementation(initialValue => [initialValue, jest.fn()]);
+        (setShouldShowStatsAndRatingsMock as jest.Mock).mockImplementation(initialValue => [initialValue, jest.fn()]);
 
         render(<MyProfileStats />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
@@ -82,7 +82,7 @@ describe('<MyProfileStats />', () => {
 
     it('should allow a user to click on each different tab, which should call setShouldShowStatsAndRatings and setActiveTab', () => {
         const setShouldShowStatsAndRatingsMock = jest.spyOn(React, 'useState');
-        setShouldShowStatsAndRatingsMock.mockImplementation(initialValue => [initialValue, jest.fn()]);
+        (setShouldShowStatsAndRatingsMock as jest.Mock).mockImplementation(initialValue => [initialValue, jest.fn()]);
 
         const setActiveTabMock = jest.fn();
         mock_store.my_profile_store.setActiveTab = setActiveTabMock;

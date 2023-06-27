@@ -1,91 +1,15 @@
 .dc-modal__container_cfd-password-modal,
 .dc-mobile-dialog__cfd-password-modal {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    max-width: 424px;
-
-    form {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: space-between;
-        padding: 0 2.4rem 1.2rem;
-
-        @include mobile {
-            padding: 0;
-        }
-    }
-    &__description {
-        @include typeface(--small-center-normal-black);
-        color: var(--text-prominent);
-        text-transform: none;
-        margin-top: 1rem;
-        top: 2rem;
-        position: relative;
-        padding: 1.3rem;
-    }
-    &__hint {
-        max-width: 40rem;
-    }
-    &__body {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
-    }
-    .dc-input {
-        &__label {
-            top: 1.2rem;
-            @include mobile {
-                top: 0.9rem;
-                background-color: var(--fill-normal);
-            }
-        }
-    }
-    .dc-password-meter {
-        &__bg {
-            background: var(--general-section-2);
-            @include mobile {
-                background: var(--fill-disabled);
-            }
-        }
-    }
-    .status-dialog {
-        margin-top: 3em;
-    }
-    .cfd-password-reset {
-        @include mobile {
-            flex: 1;
-        }
-    }
-    & .dc-password-meter__container {
-        flex-grow: 1;
-        margin: auto;
-
-        @include mobile {
-            width: calc(100vw - 4.8rem);
-            max-width: 30rem;
-        }
-    }
-    & .mt5-password-field {
-        margin-bottom: 1em;
-        width: 80%;
-    }
-    .input-element {
-        width: 100%;
-    }
     @include mobile {
         .cfd-password-modal__content {
-            overflow-y: auto;
             overflow-x: hidden;
+            overflow-y: auto;
             height: 100%;
             max-height: calc(100% - 6.4rem);
             padding: 1rem;
         }
     }
+
     @include tablet-up {
         .cfd-password-modal__content {
             display: flex;
@@ -98,27 +22,122 @@
             }
         }
     }
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 424px;
+
+    form {
+        @include mobile {
+            padding: 0;
+        }
+
+        display: flex;
+        flex-grow: 1;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 0 2.4rem 1.2rem;
+    }
+
+    &__description {
+        @include typeface(--small-center-normal-black);
+
+        position: relative;
+        top: 2rem;
+        margin-top: 1rem;
+        padding: 1.3rem;
+        color: var(--text-prominent);
+        text-transform: none;
+    }
+
+    &__hint {
+        max-width: 40rem;
+    }
+
+    &__body {
+        display: flex;
+        flex-grow: 1;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+    }
+
+    .dc-input {
+        &__label {
+            @include mobile {
+                top: 0.9rem;
+                background-color: var(--fill-normal);
+            }
+
+            top: 1.2rem;
+        }
+    }
+
+    .dc-password-meter {
+        &__bg {
+            @include mobile {
+                background: var(--fill-disabled);
+            }
+
+            background: var(--general-section-2);
+        }
+    }
+
+    .status-dialog {
+        margin-top: 3em;
+    }
+
+    .cfd-password-reset {
+        @include mobile {
+            flex: 1;
+        }
+    }
+
+    & .dc-password-meter__container {
+        @include mobile {
+            width: calc(100vw - 4.8rem);
+            max-width: 30rem;
+        }
+
+        flex-grow: 1;
+        margin: auto;
+    }
+
+    & .mt5-password-field {
+        width: 80%;
+        margin-bottom: 1em;
+    }
+
+    .input-element {
+        width: 100%;
+    }
 }
+
 .dc-mobile-dialog__mt5-email-sent {
     padding-bottom: 1rem;
 }
 
 .cfd-password-modal {
     &__warning {
-        padding: 2.5rem;
-        max-width: 50rem;
         align-self: center;
+        max-width: 50rem;
+        padding: 2.5rem;
+
         &-text {
-            border-radius: 0.8rem;
             padding: 0.8rem;
+            border-radius: 0.8rem;
             background-color: var(--status-warning);
         }
     }
+
     &__message {
         max-width: 32rem;
         margin: auto;
         line-height: 1.43;
     }
+
     &__radio {
         &.dc-radio-group {
             display: grid;
@@ -126,50 +145,56 @@
             margin-top: 0;
             padding-bottom: 2.4rem;
         }
+
         &.dc-radio-group__item {
             display: flex;
             flex-direction: row;
         }
     }
+
     &__create-password {
         padding: 0 1.2rem;
 
         &-content {
             display: flex;
             flex-direction: column;
-            width: 100%;
             align-items: center;
+            width: 100%;
             margin-top: -2.5rem;
 
             .dc-icon {
-                margin-left: 1.1rem;
                 flex: none;
+                margin-left: 1.1rem;
             }
         }
+
         &-title {
             margin-top: 2.4rem;
             margin-bottom: 0.8rem;
         }
+
         &-description {
             max-width: 30rem;
             margin-bottom: 1.6rem;
         }
     }
-    &__change-password-confirmation {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        max-width: 30rem;
 
+    &__change-password-confirmation {
         @include desktop {
             margin-top: -2.5rem;
         }
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 30rem;
 
         &-wrapper {
             display: flex;
             justify-content: center;
             width: 100%;
         }
+
         .dc-form-submit-button {
             margin-bottom: 2.2rem;
         }
@@ -177,42 +202,50 @@
 }
 
 .dc-modal__container_top-up-virtual {
-    width: 384px;
-    min-height: 367px;
     display: flex;
     flex-direction: column;
+    width: 384px;
+    min-height: 367px;
 
     &__body {
         display: flex;
-        flex-direction: column;
-        padding: 4.8rem 4.2rem;
         flex-grow: 1;
+        flex-direction: column;
         justify-content: space-around;
         align-items: center;
+        padding: 4.8rem 4.2rem;
     }
+
     &__description {
         text-transform: none;
     }
+
     &--h4 {
         @include typeface(--small-center-bold-black);
-        text-transform: none;
+
         color: var(--text-prominent);
+        text-transform: none;
     }
+
     &--balance {
         @include typeface(--title-center-bold-black);
-        line-height: 1.5;
+
         color: var(--text-profit-success);
+        line-height: 1.5;
     }
 }
 
 .cfd-success-topup {
     &__heading {
         @include typeface(--paragraph-center-bold-black);
+
         margin: 1.6rem 1.8rem;
     }
+
     &__description {
         p {
             @include typeface(--small-center-normal-black);
+
             color: var(--text-general);
             text-transform: none;
         }
@@ -235,56 +268,72 @@
 
     &__title {
         @include typeface(--title-center-bold-black);
+
         margin: 0.8rem 0;
 
         &--sub {
-            margin-bottom: 0.8rem;
             margin-top: 3rem;
+            margin-bottom: 0.8rem;
         }
     }
+
     &__resend-button {
-        display: block;
         @include typeface(--paragraph-center-bold-black);
+
+        display: block;
+        margin: 3.2rem 0 0;
         color: var(--brand-red-coral);
         text-decoration: none;
-        margin: 3.2rem 0 0;
     }
+
     & .countdown {
         margin: 0 0.4rem;
     }
 }
 
 .cfd-reset-password {
+    @include typeface(--paragraph-left-normal-black);
+
+    @include mobile {
+        & .dc-form-submit-button {
+            all: unset;
+        }
+    }
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    @include typeface(--paragraph-left-normal-black);
     color: var(--text-prominent);
 
     &__container {
-        display: grid;
-        grid-template-rows: 12rem 7rem;
-        height: 100%;
-        width: 100%;
-        justify-items: center;
-        flex-grow: 1;
-
         @include mobile {
-            min-height: 24rem;
             width: calc(100vw - 3.2rem);
+            min-height: 24rem;
         }
+
+        display: grid;
+        flex-grow: 1;
+        grid-template-rows: 12rem 7rem;
+        justify-items: center;
+        width: 100%;
+        height: 100%;
     }
+
     &__heading {
         @include typeface(--paragraph-center-bold-black);
+
         margin: 1.6rem 0 0;
     }
+
     &__hint {
         @include typeface(--small-left-normal-black);
-        color: var(--text-less-prominent);
+
         margin-left: 1.2rem;
+        color: var(--text-less-prominent);
     }
+
     &__password-field {
         margin-bottom: 0.5rem;
 
@@ -292,104 +341,112 @@
             top: 0.9rem;
         }
     }
+
     &__password-area {
         @include desktop {
             width: calc(min(33rem, 100vw));
             padding: 2.4rem;
         }
+
         @include mobile {
             width: 100%;
             max-width: calc(100% - 2.4rem);
         }
     }
+
     &__error {
         display: flex;
-        max-width: 38.4rem;
-        min-height: 28.4rem;
         flex-direction: column;
         align-items: center;
-        padding-top: 2rem;
+        max-width: 38.4rem;
+        min-height: 28.4rem;
         margin: 0 auto;
+        padding-top: 2rem;
     }
+
     &__description {
         @include typeface(--paragraph-left-normal-black);
-        color: var(--text-prominent);
+
         margin-bottom: 2.4rem;
+        color: var(--text-prominent);
 
         &--is-centered {
-            margin-bottom: 2.4rem;
             max-width: 70%;
+            margin-bottom: 2.4rem;
         }
     }
+
     &__confirm-button {
         margin-top: 2.4rem;
     }
-    &__success {
-        min-width: 38.4rem;
-        height: 28.4rem;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-around;
-        padding: 2.4rem 0 2rem;
 
+    &__success {
         @include mobile {
             width: calc(100vw - 3.2rem);
             height: 100%;
         }
-    }
-    @include mobile {
-        & .dc-form-submit-button {
-            all: unset;
-        }
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        min-width: 38.4rem;
+        height: 28.4rem;
+        padding: 2.4rem 0 2rem;
     }
 }
 
 /** @define poi-icon-row; weak */
 .poi-icon-row {
+    @include mobile {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 2.4rem;
+        margin-top: 4rem;
+    }
+
     display: flex;
     margin-bottom: 16px;
 
     &__icon-container {
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-        color: var(--text-less-prominent);
-
-        &:not(:first-child):not(:last-child) {
-            margin: 0 40px;
-        }
-        p {
-            font-size: var(--text-size-xxs);
-        }
-        p:first-of-type {
-            line-height: 1.5;
-            margin-top: 8px;
-            font-weight: bold;
-        }
         @include mobile {
-            &:not(:first-child):not(:last-child) {
+            &:not(:first-child, :last-child) {
                 margin: 0;
             }
+
             & .dc-icon {
                 width: 8.8rem;
                 height: auto;
 
                 /* iPhone SE screen width fixes due to UI space restrictions */
-                @media only screen and (max-width: 340px) {
+                @media only screen and (width <= 340px) {
                     width: 7rem;
                 }
             }
+
             p {
                 line-height: 20px;
             }
         }
-    }
-    @include mobile {
-        display: grid;
-        grid-gap: 2.4rem;
-        grid-template-columns: 1fr 1fr 1fr;
-        margin-top: 4rem;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: var(--text-less-prominent);
+
+        &:not(:first-child, :last-child) {
+            margin: 0 40px;
+        }
+
+        p {
+            font-size: var(--text-size-xxs);
+        }
+
+        p:first-of-type {
+            margin-top: 8px;
+            font-weight: bold;
+            line-height: 1.5;
+        }
     }
 }
 
@@ -407,23 +464,27 @@
 
 .poi-poa-submitted {
     &__message-content {
-        align-items: center;
         display: flex;
         flex-direction: column;
-        height: auto;
         justify-content: center;
+        align-items: center;
+        height: auto;
         padding: 10rem 3rem 7rem;
         line-height: 5rem;
+
         .dc-btn {
             margin-top: 2rem;
         }
     }
+
     &__text {
         padding-top: 1.6rem;
     }
+
     &__svg-footer {
         display: flex;
         margin: 1.6rem 0;
+
         .dc-btn {
             margin: 0.5rem;
         }

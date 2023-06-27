@@ -147,10 +147,12 @@ export default class RunPanelStore {
     }
 
     async onRunButtonClick() {
-        performance.mark('bot-start');
+        if (window.sendRequestsStatistic) {
+            performance.mark('bot-start');
 
-        window.sendRequestsStatistic(false);
-        performance.clearMeasures();
+            window.sendRequestsStatistic(false);
+            performance.clearMeasures();
+        }
         const { summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = this.core;
         const is_ios = mobileOSDetect() === 'iOS';
@@ -234,8 +236,10 @@ export default class RunPanelStore {
         if (this.error_type) {
             this.error_type = undefined;
         }
-        window.sendRequestsStatistic(true);
-        performance.clearMeasures();
+        if (window.sendRequestsStatistic) {
+            window.sendRequestsStatistic(true);
+            performance.clearMeasures();
+        }
     }
 
     onClearStatClick() {

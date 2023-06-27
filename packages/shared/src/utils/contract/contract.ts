@@ -4,30 +4,7 @@ import { TContractInfo, TLimitOrder, TDigitsInfo, TTickItem } from './contract-t
 
 export const DELAY_TIME_1S_SYMBOL = 500;
 // generation_interval will be provided via API later to help us distinguish between 1-second and 2-second symbols
-export const symbols_1s = [
-    '1HZ100V',
-    '1HZ150V',
-    '1HZ10V',
-    '1HZ200V',
-    '1HZ250V',
-    '1HZ25V',
-    '1HZ300V',
-    '1HZ50V',
-    '1HZ75V',
-    'JD10',
-    'JD100',
-    'JD25',
-    'JD50',
-    'JD75',
-    'DEX900UP',
-    'DEX900DN',
-    'BOOM300N',
-    'BOOM500',
-    'BOOM1000',
-    'CRASH300N',
-    'CRASH500',
-    'CRASH1000',
-];
+export const symbols_2s = ['R_10', 'R_25', 'R_50', 'R_75', 'R_100'];
 
 export const getContractStatus = ({ contract_type, exit_tick_time, profit, status }: TContractInfo) => {
     const closed_contract_status = profit && profit < 0 && exit_tick_time ? 'lost' : 'won';
@@ -79,7 +56,7 @@ export const isVanillaContract = (contract_type: string) => /VANILLA/i.test(cont
 export const isCryptoContract = (underlying: string) => /^cry/.test(underlying);
 
 export const getAccuBarriersDelayTimeMs = (symbol: string) => {
-    return symbols_1s.includes(symbol) ? DELAY_TIME_1S_SYMBOL : DELAY_TIME_1S_SYMBOL * 2;
+    return symbols_2s.includes(symbol) ? DELAY_TIME_1S_SYMBOL * 2 : DELAY_TIME_1S_SYMBOL;
 };
 
 export const getAccuBarriersForContractDetails = (contract_info: TContractInfo) => {

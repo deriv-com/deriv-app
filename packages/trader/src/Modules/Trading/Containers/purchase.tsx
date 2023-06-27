@@ -9,6 +9,17 @@ import { observer, useStore } from '@deriv/stores';
 import { TProposalTypeInfo } from 'Types';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 
+const getSortedIndex = (type: string, index: number) => {
+    switch (getContractTypePosition(type)) {
+        case 'top':
+            return 0;
+        case 'bottom':
+            return 1;
+        default:
+            return index;
+    }
+};
+
 // @ts-expect-error returned value should be wraped with React.Fragmant (it's an array with components), but we can't do this as it causes issues.
 const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) => {
     const {
@@ -43,16 +54,6 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
     };
     const is_proposal_empty = isEmptyObject(proposal_info);
     const components = [];
-    const getSortedIndex = (type: string, index: number) => {
-        switch (getContractTypePosition(type)) {
-            case 'top':
-                return 0;
-            case 'bottom':
-                return 1;
-            default:
-                return index;
-        }
-    };
 
     Object.keys(trade_types).forEach((type, index) => {
         const info = proposal_info?.[type] || {};
@@ -101,19 +102,9 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
             </div>
         );
 
-        if (!is_vanilla) {
-            switch (getContractTypePosition(type)) {
-                case 'top':
-                    components.unshift(purchase_fieldset);
-                    break;
-                case 'bottom':
-                    components.push(purchase_fieldset);
-                    break;
-                default:
-                    components.push(purchase_fieldset);
-                    break;
-            }
-        } else if (vanilla_trade_type === type) {
+        if (!is_vanilla && getContractTypePosition(type) === 'top') {
+            components.unshift(purchase_fieldset);
+        } else if ((!is_vanilla && getContractTypePosition(type) !== 'top') || vanilla_trade_type === type) {
             components.push(purchase_fieldset);
         }
     });

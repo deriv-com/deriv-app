@@ -113,7 +113,7 @@ type TAccountsList = {
             Derived: React.SVGAttributes<SVGElement>;
             Financial: React.SVGAttributes<SVGElement>;
             Options: React.SVGAttributes<SVGElement>;
-            CFDs: React.SVGAttributes<SVGAElement>;
+            CFDs: React.SVGAttributes<SVGElement>;
         };
         text?: JSX.Element | string;
         value?: string;
@@ -495,6 +495,10 @@ type TTradersHubStore = {
     selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
     available_dxtrade_accounts: AvailableAccount[];
+    is_wallet_upgrade_in_progress: boolean;
+    setWalletsUpgradeInProgressPopup: (value: boolean) => void;
+    is_wallet_upgrade_ready: boolean;
+    setWalletsUpgradeReadyPopup: (value: boolean) => void;
 };
 
 /**

@@ -19,6 +19,8 @@ const MainTitleBar = () => {
         toggleRegulatorsCompareModal,
         content_flag,
         setWalletsMigrationFailedPopup,
+        setWalletsUpgradeInProgressPopup,
+        setWalletsUpgradeReadyPopup,
     } = traders_hub;
     const { is_landing_company_loaded, is_switching } = client;
     const { removeAllNotificationMessages, filterNotificationMessages } = notifications;
@@ -40,6 +42,10 @@ const MainTitleBar = () => {
             <DesktopWrapper>
                 {/* TODO: This is for testing purposes only */}
                 <button onClick={() => setWalletsMigrationFailedPopup(true)}>Modal wallet migration failed</button>
+                {/* TODO: This is for testing purposes only */}
+                <button onClick={() => setWalletsUpgradeInProgressPopup(true)}>Modal wallet upgrade in progress</button>
+                {/* TODO: This is for testing purposes only */}
+                <button onClick={() => setWalletsUpgradeReadyPopup(true)}>Modal wallet upgrade is ready</button>
                 {/* TODO: Add logic to show and hide the banner here */}
                 <WalletsBanner />
                 <div className='main-title-bar'>

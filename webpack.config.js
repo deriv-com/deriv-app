@@ -70,6 +70,21 @@ module.exports = {
                 {
                     from: 'public',
                     to: path.resolve(__dirname, 'www/public'),
+                    globOptions: {
+                        ignore: ['**/*.html'],
+                    },
+                },
+                {
+                    from: 'public/index.html',
+                    to: path.resolve(__dirname, 'www'),
+                },
+                {
+                    from: 'public/beta.html',
+                    to: path.resolve(__dirname, 'www'),
+                },
+                {
+                    from: 'public/localstorage-sync.html',
+                    to: path.resolve(__dirname, 'www'),
                 },
                 {
                     from: 'translations',

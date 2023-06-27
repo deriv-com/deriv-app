@@ -119,8 +119,8 @@ const AccountTransferForm = observer(
         const [transfer_to_hint, setTransferToHint] = React.useState<string>();
 
         const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
-        const { daily_transfers } = account_limits;
 
+        const { daily_transfers } = account_limits;
         const mt5_remaining_transfers = daily_transfers?.mt5;
         const dxtrade_remaining_transfers = daily_transfers?.dxtrade;
         const derivez_remaining_transfers = daily_transfers?.derivez;

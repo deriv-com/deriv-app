@@ -23,7 +23,7 @@ jobs:
           npm install
           npm run bootstrap
           npm run build:all
-          npm run test:jest:github-wf
+          npm run test:jest
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3.1.1

@@ -19,7 +19,7 @@ jest.mock('App/Components/Elements/Modals/MarketUnavailableModal', () =>
         <div>
             <div>Market unavailable modal</div>
             <button onClick={props.onConfirm}>onConfirm market</button>
-            <button onClick={props.onCancel}>onCansel market</button>
+            <button onClick={props.onCancel}>onCancel market</button>
         </div>
     ))
 );
@@ -83,11 +83,11 @@ describe('TradeModals', () => {
         expect(mock_root_store.ui.setHasOnlyForwardingContracts).toHaveBeenCalled();
         expect(mock_root_store.modules.trade.resetPreviousSymbol).toHaveBeenCalled();
     });
-    it('should call function marketUnavailableOnCancel if button onCansel in MarketUnavailableModal component was clicked', () => {
+    it('should call function marketUnavailableOnCancel if button onCancel in MarketUnavailableModal component was clicked', () => {
         render(<TradeModals />, {
             wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
         });
-        userEvent.click(screen.getByText('onCansel market'));
+        userEvent.click(screen.getByText('onCancel market'));
 
         expect(mock_root_store.ui.setHasOnlyForwardingContracts).toHaveBeenCalled();
         expect(mock_root_store.modules.trade.resetPreviousSymbol).toHaveBeenCalled();

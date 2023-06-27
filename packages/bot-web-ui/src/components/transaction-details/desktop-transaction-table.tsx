@@ -124,10 +124,7 @@ export default function DesktopTransactionTable({
                     }
 
                     return (
-                        <div
-                            className={`${PARENT_CLASS}__table-row`}
-                            key={`transaction-row-divider-${new Date().getTime()}`}
-                        >
+                        <div className={`${PARENT_CLASS}__table-row`} key={`transaction-row-divider-${data}`}>
                             <div className={`${PARENT_CLASS}__divider`}>
                                 <div className='transactions__divider-line' />
                             </div>

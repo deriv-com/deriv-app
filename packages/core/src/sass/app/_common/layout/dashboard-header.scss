@@ -1,24 +1,24 @@
 .dashboard-header {
-    display: flex;
-    align-items: center;
-    position: fixed;
-    z-index: 99;
-    box-sizing: border-box;
-    height: $HEADER_HEIGHT;
-    width: 100%;
-    top: 0;
-    transition: opacity 0.3s;
-    backface-visibility: hidden;
-    padding: 0 4rem;
-    justify-content: space-between;
-
     @include mobile {
         padding: 0 0 0 1.6rem;
     }
 
+    position: fixed;
+    top: 0;
+    z-index: 99;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    height: $HEADER_HEIGHT;
+    padding: 0 4rem;
+    transition: opacity 0.3s;
+    backface-visibility: hidden;
+
     > * {
-        align-items: center;
         display: flex;
+        align-items: center;
     }
 
     &__left {
@@ -34,7 +34,7 @@
     &--logged-in {
         background-color: var(--general-main-1);
         color: var(--brand-dark-grey);
-        box-shadow: inset 0px -1px 0px var(--general-section-1);
+        box-shadow: inset 0 -1px 0 var(--general-section-1);
     }
 
     &__right {
@@ -42,13 +42,15 @@
             > * {
                 cursor: pointer;
             }
+
             &-icon {
                 margin-right: 0.8rem;
             }
+
             &-separator {
                 height: 48px;
-                border-right: 1px solid var(--general-section-1);
                 margin-left: 2rem;
+                border-right: 1px solid var(--general-section-1);
             }
         }
 
@@ -61,8 +63,8 @@
         &--logged-out {
             &-separator {
                 height: 48px;
-                border-right: 1px solid #{$color-black-3};
                 margin-left: 1.8rem;
+                border-right: 1px solid #{$color-black-3};
             }
         }
 
@@ -78,10 +80,14 @@
     }
 
     &__middle--logged-out {
+        @include mobile {
+            display: none;
+        }
+
         > :not(:first-child) {
             margin-left: 4.8rem;
 
-            @media (max-width: 830px) {
+            @media (width <= 830px) {
                 margin-left: 1.2rem;
             }
         }
@@ -89,27 +95,23 @@
         > * {
             cursor: pointer;
         }
-
-        @include mobile {
-            display: none;
-        }
     }
 
     &__preloader {
-        display: flex;
-        padding: 0 4rem;
-        align-items: center;
-        justify-content: flex-end;
-        position: fixed;
-        z-index: 100;
-        box-sizing: border-box;
-        height: $HEADER_HEIGHT;
-        width: 100%;
-        top: 0;
-        background-color: var(--general-main-1);
-
         @include mobile {
             padding: 0 1.6rem;
         }
+
+        position: fixed;
+        top: 0;
+        z-index: 100;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        box-sizing: border-box;
+        width: 100%;
+        height: $HEADER_HEIGHT;
+        padding: 0 4rem;
+        background-color: var(--general-main-1);
     }
 }

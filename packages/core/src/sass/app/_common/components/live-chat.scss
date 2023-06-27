@@ -1,13 +1,13 @@
 .livechat {
     display: flex;
-    width: 100%;
     align-items: center;
+    width: 100%;
     padding-right: 1.6rem;
 
     &__icon {
-        margin-right: 1.6rem;
         width: 1.6rem;
         height: 1.6rem;
+        margin-right: 1.6rem;
 
         &-wrapper {
             display: flex;

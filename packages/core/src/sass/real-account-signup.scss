@@ -10,21 +10,24 @@
     &__header {
         padding: 2.4rem 0;
     }
+
     &__container {
+        @include mobile {
+            padding: 0 1.6rem;
+        }
+
         padding: 0 2.4rem;
 
         & .dc-text {
             text-align: justify;
         }
-        @include mobile {
-            padding: 0 1.6rem;
-        }
     }
+
     &__form {
-        display: grid;
-        height: calc(100% - 57px);
         position: relative;
+        display: grid;
         width: 100%;
+        height: calc(100% - 57px);
     }
 }
 
@@ -34,60 +37,71 @@
 }
 
 // Min width of tablet to max size of the modal
-@media (min-width: 768px) and (max-width: 904px) {
+@media (width >= 768px) and (width <= 904px) {
     .dc-modal__container {
         &_real-account-signup-modal {
             width: 768px !important;
         }
+
         &--risk-message {
             width: 440px !important;
         }
     }
 }
+
 .poi-form-on-signup {
-    height: 100%;
+    @include mobile {
+        overflow: hidden;
+    }
+
     overflow: auto;
     width: 100%;
+    height: 100%;
+
     &__fields {
+        @include mobile {
+            position: relative;
+            display: unset;
+        }
+
         display: flex;
         flex-direction: column;
         align-items: center;
         height: 100%;
-
-        @include mobile {
-            display: unset;
-            position: relative;
-        }
 
         .proof-of-identity {
             &:is(span) {
                 width: unset;
                 height: unset;
             }
+
             &__container {
+                @include mobile {
+                    justify-content: unset;
+                    overflow-y: unset;
+                    width: 100%;
+                }
+
                 display: flex;
                 flex-direction: column;
+                justify-content: unset;
                 align-items: center;
                 width: 45%;
-                justify-content: unset;
-
-                @include mobile {
-                    width: 100%;
-                    overflow-y: unset;
-                    justify-content: unset;
-                }
 
                 .icon {
                     width: 12.8rem;
                     height: 12.8rem;
                     margin: 1.6rem 0 2.4rem;
                 }
+
                 .dc-input__bottom-label {
                     margin: unset;
                 }
+
                 .btm-spacer {
                     margin-bottom: 1.6rem;
                 }
+
                 .spacer {
                     margin: 1.6rem 0;
                 }
@@ -104,11 +118,12 @@
                 align-items: unset;
                 width: 100%;
             }
+
             &__image {
+                object-fit: unset;
                 width: 100%;
                 max-width: unset;
                 border-radius: unset;
-                object-fit: unset;
 
                 &-container {
                     width: unset;
@@ -118,13 +133,14 @@
                     background-color: unset;
                 }
             }
-            &__fieldset {
-                width: 100%;
-                margin-bottom: 2rem;
 
+            &__fieldset {
                 @include mobile {
                     margin: 0 0 1.8rem;
                 }
+
+                width: 100%;
+                margin-bottom: 2rem;
 
                 &-container {
                     display: unset;
@@ -132,37 +148,38 @@
                     justify-content: unset;
                     align-items: unset;
                 }
+
                 &-input {
                     width: unset;
                     margin-bottom: 1rem;
                 }
             }
+
             &__sample-container {
+                width: unset;
                 margin-top: 2.4rem;
                 margin-left: unset;
-                width: unset;
             }
 
             &__submit-button {
-                margin-left: 0.8rem;
                 @include mobile {
                     margin-right: unset;
                 }
+
+                margin-left: 0.8rem;
             }
         }
     }
-    & .details-form {
-        display: grid;
-        grid-template-rows: minmax(10rem, 1fr) 8.2rem;
-        height: 100%;
-        position: relative;
 
+    & .details-form {
         @include mobile {
             max-height: calc(100% - 5rem);
         }
-    }
-    @include mobile {
-        overflow: hidden;
+
+        position: relative;
+        display: grid;
+        grid-template-rows: minmax(10rem, 1fr) 8.2rem;
+        height: 100%;
     }
 }
 
@@ -186,26 +203,30 @@
         display: flex;
         flex-direction: column;
     }
+
     &__container {
-        overflow: auto;
-        height: 100%;
         @include desktop {
             padding: 0.8rem 15.5rem;
         }
+
         @include mobile {
             padding: 1.6rem;
         }
+
+        overflow: auto;
+        height: 100%;
     }
 
     .proof-of-identity {
         &__footer {
-            padding: 1.6rem 2.4rem;
-            justify-content: end;
-            display: flex;
-            border-top: 1px solid var(--general-section-1);
             @include mobile {
                 width: 100%;
             }
+
+            display: flex;
+            justify-content: end;
+            padding: 1.6rem 2.4rem;
+            border-top: 1px solid var(--general-section-1);
         }
 
         &__submit-button {
@@ -215,6 +236,7 @@
             }
         }
     }
+
     .account-form__footer {
         @include desktop {
             position: relative;
@@ -223,11 +245,12 @@
 }
 
 .proof-of-identity__container.mt5-layout {
-    justify-content: space-between;
-    height: 100%;
     @include mobile {
-        width: 100%;
         display: flex;
         flex-direction: column;
+        width: 100%;
     }
+
+    justify-content: space-between;
+    height: 100%;
 }

@@ -2,6 +2,7 @@
     0% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
     }
@@ -9,6 +10,7 @@
 
 @include mobile {
     /** disabling pull to refresh on iOS / Android browsers */
+
     /* postcss-bem-linter: ignore */
     body,
     .deriv-app,
@@ -18,6 +20,9 @@
         position: absolute !important;
         top: 0 !important;
 
+        /* Allow them to scroll down the document */
+        overflow-y: hidden !important;
+
         /* Give them all the available space */
         width: 100%;
         height: 100%;
@@ -25,88 +30,107 @@
         /* Remove the margins if any */
         margin: 0;
 
-        /* Allow them to scroll down the document */
-        overflow-y: hidden !important;
-
         /* -webkit-touch-callout only is supported on iOS webkit engine, thus it should apply iOS only styles */
         @supports (-webkit-touch-callout: none) {
             position: fixed !important;
         }
     }
+
     .dc-mobile-drawer__overlay {
         position: fixed !important;
+
         &.exit {
             animation-name: closeDrawerWrapper;
-            animation-delay: 1s;
             animation-duration: 0.1s;
+            animation-delay: 1s;
             animation-fill-mode: forwards;
         }
     }
+
     .body {
         /* Sending body at the bottom of the stack */
         z-index: 1;
     }
+
     .deriv-app {
+        z-index: 2;
+
         /* Making the wrapper stack above the body */
         overscroll-behavior: none;
-        z-index: 2;
     }
+
     .modal-root {
         height: 100% !important;
     }
+
     .popup-root {
         > .dc-toast {
+            position: absolute;
             top: #{$HEADER_HEIGHT};
             z-index: 3;
             margin: auto;
-            position: absolute;
         }
+
         .dc-toast-popup {
-            max-width: calc(100vw - 1.6rem);
+            position: absolute;
+            top: #{$HEADER_HEIGHT};
+            right: 1.6rem;
             left: 1.6rem;
             width: calc(100vw - 3.2rem);
-            top: #{$HEADER_HEIGHT};
-            position: absolute;
-            right: 1.6rem;
-        }
-        .dc-toast-popup-mobile {
-            display: inherit;
             max-width: calc(100vw - 1.6rem);
+        }
+
+        .dc-toast-popup-mobile {
             position: absolute;
-            width: calc(100vw - 1.2rem);
             top: 0.4rem;
-            left: 1.2rem;
             right: 1.2rem;
+            left: 1.2rem;
+            display: inherit;
+            width: calc(100vw - 1.2rem);
+            max-width: calc(100vw - 1.6rem);
         }
     }
 }
 
 /** @define landscape-blocker; weak */
 .landscape-blocker {
-    /* enable temporary landscape blocker UI in landscape */
-    display: flex;
+    @include desktop {
+        display: none;
+    }
+
+    @include mobile {
+        @media screen and (aspect-ratio <= 13/9) {
+            display: none;
+        }
+    }
+
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 9999;
+
+    /* enable temporary landscape blocker UI in landscape */
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
     width: 100%;
     height: 100%;
     background: var(--general-main-1);
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
     color: var(--text-prominent);
-    font-size: 1.6rem;
-    z-index: 9999;
     font-weight: bold;
-    gap: 2.4rem;
+    font-size: 1.6rem;
 
     &__icon {
         width: 8rem;
         height: 6.2rem;
     }
+
     &__message {
         padding: 1.6rem 11rem;
+
         &--landscape {
             @media screen and (orientation: portrait) {
                 display: none;
@@ -114,110 +138,117 @@
         }
 
         &--portrait {
-            text-align: center;
             line-height: var(--text-lh-m);
+            text-align: center;
+
             @media screen and (orientation: landscape) {
                 display: none;
             }
-        }
-    }
-
-    @include desktop {
-        display: none;
-    }
-
-    @include mobile {
-        @media screen and (max-aspect-ratio: 13/9) {
-            display: none;
         }
     }
 }
 
 /** @define app-contents; weak */
 .app-contents {
-    margin: $HEADER_HEIGHT 0 $FOOTER_HEIGHT;
-    height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
-    overflow: hidden;
-    backface-visibility: hidden;
-    background-color: var(--general-main-1);
-
-    &--is-disabled:after {
-        opacity: 1;
-        pointer-events: auto;
-    }
-    &--is-route-modal {
-        background-color: var(--overlay-outside-dialog);
-    }
-    &--is-hidden {
-        margin-top: 0;
-    }
-    &--is-onboarding {
-        padding: 0;
-        margin: 0;
-        height: inherit;
-    }
     @include mobile {
+        position: relative;
+        height: calc(100% - #{$MOBILE_HEADER_HEIGHT});
+        margin-top: $MOBILE_HEADER_HEIGHT;
+
         // no footer:
         margin-bottom: 0;
-        height: calc(100% - #{$MOBILE_HEADER_HEIGHT});
-        position: relative;
-        margin-top: $MOBILE_HEADER_HEIGHT;
 
         &--is-scrollable {
             overflow-y: auto;
         }
+
         &--is-dashboard {
             height: calc(100% - #{$MOBILE_HEADER_HEIGHT_DASHBOARD});
             margin-top: $MOBILE_HEADER_HEIGHT_DASHBOARD;
         }
+
         &--is-hidden {
             margin-top: 0;
         }
+
         .ciq-menu {
             top: 0;
-            margin: 0.8rem;
             z-index: 2;
+            margin: 0.8rem;
         }
+
         .cq-symbol-select-btn {
             padding: 0.3rem 0.9rem;
 
             .cq-symbol-dropdown {
-                transform: scale(1);
                 margin-left: auto;
+                transform: scale(1);
             }
+
             .cq-symbol {
                 font-size: 1.2rem;
             }
+
             .cq-chart-price {
                 display: none;
             }
+
             .cq-symbol-info {
                 margin: 0 0.8rem;
                 white-space: nowrap;
             }
+
             .ic-icon:not(.cq-symbol-dropdown) > svg {
                 padding: 0.4rem;
             }
         }
+
         .chart-container__loader {
+            top: 0;
+            z-index: 1;
             width: 100%;
             height: 100%;
-            z-index: 1;
-            top: 0;
         }
+
         .contract-details-wrapper {
-            height: inherit;
             position: relative;
             z-index: 1;
+            height: inherit;
         }
+
         .contract-audit-card {
-            background-color: var(--general-section-1);
             border-radius: $BORDER_RADIUS;
+            background-color: var(--general-section-1);
 
             .contract-audit__wrapper {
                 height: 100%;
             }
         }
+    }
+
+    overflow: hidden;
+    height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
+    margin: $HEADER_HEIGHT 0 $FOOTER_HEIGHT;
+    background-color: var(--general-main-1);
+    backface-visibility: hidden;
+
+    &--is-disabled:after {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    &--is-route-modal {
+        background-color: var(--overlay-outside-dialog);
+    }
+
+    &--is-hidden {
+        margin-top: 0;
+    }
+
+    &--is-onboarding {
+        height: inherit;
+        margin: 0;
+        padding: 0;
     }
 }
 
@@ -230,13 +261,14 @@
 /** @define contract */
 .contract {
     &--enter {
-        transform: translate3d(calc(100% + 1.6em), 0, 0);
         opacity: 0;
-    }
-    &--exit {
         transform: translate3d(calc(100% + 1.6em), 0, 0);
+    }
+
+    &--exit {
         opacity: 0;
         pointer-events: none;
+        transform: translate3d(calc(100% + 1.6em), 0, 0);
     }
 }
 
@@ -245,59 +277,61 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
     /* margin shorthand for values below does not work */
     width: calc(100% + 16px);
-    margin-top: 8px;
-    margin-left: -8px;
-    margin-bottom: -9px;
-    margin-right: 0;
+    margin: 8px 0 -9px -8px;
     padding: 8px 0;
+    border: 0;
     border-bottom-right-radius: $BORDER_RADIUS;
     border-bottom-left-radius: $BORDER_RADIUS;
-    border: 0;
     background: none;
     transition: background-color 0.25s linear;
 
     &__icon {
-        transition: transform 0.2s ease;
         @extend %inline-icon;
+
+        transition: transform 0.2s ease;
 
         &--active {
             transform: rotate(180deg);
         }
     }
+
     &:hover {
-        cursor: pointer;
         background-color: var(--general-hover);
+        cursor: pointer;
     }
+
     &:focus {
         outline: none;
     }
 }
 
-@mixin contract_type_icon_wrapper {
+@mixin contract-type-icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 2.4em;
     height: 2.4em;
     border-radius: $BORDER_RADIUS;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     background: var(--general-section-1);
 }
 
 /** @define category-wrapper */
 .category-wrapper {
-    @include contract_type_icon_wrapper;
+    @include contract-type-icon-wrapper;
 }
 
 /** @define type-wrapper */
 .type-wrapper {
-    @include contract_type_icon_wrapper;
+    @include contract-type-icon-wrapper;
 
     /* postcss-bem-linter: ignore */
     .color1-fill {
         fill: var(--brand-red-coral);
     }
+
     /* postcss-bem-linter: ignore */
     .color2-fill {
         fill: var(--brand-secondary);
@@ -305,6 +339,7 @@
 }
 
 // Helpers
+
 /** @define no-scroll */
 .no-scroll {
     overflow: hidden;
@@ -313,14 +348,14 @@
 
 /** @define desktop-only */
 .desktop-only {
-    @media (max-width: 768px) {
+    @media (width <= 768px) {
         display: none !important;
     }
 }
 
 /** @define mobile-only */
 .mobile-only {
-    @media (min-width: 769px) {
+    @media (width >= 769px) {
         display: none !important;
     }
 }
@@ -330,12 +365,14 @@
     &__container {
         display: flex;
         flex-direction: column;
-        align-items: center;
         justify-content: center;
+        align-items: center;
         height: calc(100vh - 9em); // TODO: replace with 100vh - header height - footer height
     }
+
     &__message {
         @include interpolate(font-size, 320px, 1440px, 14px, 20px);
+
         color: var(--text-general);
     }
 }
@@ -344,6 +381,7 @@
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }

@@ -1,23 +1,21 @@
 .modal-root {
-    width: 100vw;
-    height: 100vh;
-    align-items: center;
-    justify-content: center;
     position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
+    inset: 0;
     z-index: 9998;
     display: none;
+    justify-content: center;
+    align-items: center;
     overflow: hidden;
-    opacity: 0;
+    width: 100vw;
+    height: 100vh;
     background-color: var(--overlay-outside-dialog);
+    opacity: 0;
 
     &:not(:empty) {
         display: flex;
         opacity: 1;
     }
+
     &--absolute {
         z-index: 9999;
     }

@@ -1,14 +1,5 @@
 /* @define platform-dropdown; weak */
 .platform-dropdown {
-    z-index: 7;
-    background-color: var(--overlay-outside-dialog);
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    opacity: 0;
-    transition: opacity 0.25s ease;
-
     @include mobile {
         position: absolute;
 
@@ -16,13 +7,12 @@
             position: absolute;
             top: 0;
             left: 0;
+            flex-flow: column nowrap;
+            overflow-x: hidden;
+            overflow-y: auto;
             width: 295px;
             padding-right: 1.6rem;
             background-color: var(--general-main-2);
-            overflow-x: hidden;
-            overflow-y: auto;
-            flex-direction: column;
-            flex-wrap: nowrap;
 
             &-platform {
                 width: calc(100% - 1.6rem);
@@ -31,6 +21,15 @@
             }
         }
     }
+
+    position: fixed;
+    top: 0;
+    z-index: 7;
+    width: 100%;
+    height: 100%;
+    background-color: var(--overlay-outside-dialog);
+    opacity: 0;
+    transition: opacity 0.25s ease;
 
     &--enter-done {
         opacity: 1;
@@ -41,77 +40,79 @@
     }
 
     &__cta {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        padding: 2rem;
-        cursor: pointer;
-
-        &--link {
-            color: var(--text-loss-danger);
-        }
-
         @include mobile {
             position: relative;
             padding: 1rem 0 0 1.3rem;
             text-align: center;
         }
+
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        padding: 2rem;
+        cursor: pointer;
+        transform: translateX(-50%);
+
+        &--link {
+            color: var(--text-loss-danger);
+        }
     }
 
     &__list {
-        background-color: var(--general-main-1);
-        width: 100%;
         position: fixed;
         top: 0;
-        transform: translateY(0px);
-        transition: transform 0.25s ease;
         display: flex;
         flex-flow: wrap;
+        width: 100%;
         padding-bottom: 3rem;
+        background-color: var(--general-main-1);
+        transition: transform 0.25s ease;
+        transform: translateY(0);
 
         &-platform {
+            @include mobile {
+                width: 302px;
+            }
+
             position: relative;
             display: inline-flex;
+            width: 320px;
+            margin: 2.4rem 1.6rem;
+            padding: 2.4rem 1.6rem;
+            border-radius: 0.8rem;
             background-color: transparent;
             color: var(--text-general);
             text-decoration: none;
-            margin: 2.4rem 1.6rem;
-            padding: 2.4rem 1.6rem;
-            width: 320px;
-            border-radius: 0.8rem;
 
             &-title {
-                font-size: 1.6rem;
                 font-weight: bold;
+                font-size: 1.6rem;
                 line-height: 2.4rem;
             }
+
             &-description {
+                margin-top: 0.8rem;
                 font-size: 1.4rem;
                 line-height: 2rem;
-                margin-top: 0.8rem;
             }
+
             &-background {
-                opacity: 0;
-                transition: opacity 0.25s ease;
-                background-color: var(--general-hover);
                 position: absolute;
-                top: 0;
-                bottom: 0;
-                left: 0;
-                right: 0;
+                inset: 0;
                 z-index: -1;
                 border-radius: inherit;
+                background-color: var(--general-hover);
+                opacity: 0;
+                transition: opacity 0.25s ease;
             }
+
             /* postcss-bem-linter: ignore */
             &.active {
                 border: solid 2px var(--border-active);
             }
+
             &:not(.active):hover {
                 background: var(--state-hover);
-            }
-            @include mobile {
-                width: 302px;
             }
         }
     }

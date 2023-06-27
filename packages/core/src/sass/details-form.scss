@@ -1,85 +1,106 @@
 .details-form {
-    display: grid;
-    align-content: start;
     @include desktop {
         padding: 0 0.4rem;
     }
+
     @include mobile {
         overflow-x: hidden;
         overflow-y: auto;
     }
 
+    display: grid;
+    align-content: start;
+
     &__sub-header {
         @include desktop {
             margin: 0 4rem 4rem;
         }
+
         @include mobile {
             margin-bottom: 0.8rem;
         }
     }
 
     &__elements {
+        @include mobile {
+            overflow-y: auto;
+            width: 100%;
+            margin: 0;
+            padding: 1rem 1.6rem 6rem;
+        }
+
         flex-grow: 1;
-        margin: 1.2rem auto;
         width: 45%;
+        margin: 1.2rem auto;
 
         &--wide {
             width: 45%;
         }
-        &-container {
-            height: calc(100% - 76px);
-            overflow: hidden;
 
+        &-container {
             @include mobile {
-                height: auto;
-                width: calc(100% - 3.2rem);
                 overflow: unset;
+                width: calc(100% - 3.2rem);
+                height: auto;
                 margin: 1.6rem auto;
             }
+
+            overflow: hidden;
+            height: calc(100% - 76px);
         }
+
         .dc-autocomplete {
             margin-bottom: 3.2rem;
         }
+
         .dc-radio__input {
             margin-bottom: 2.4rem;
         }
+
         .dc-input {
-            &__label {
-                top: 1rem;
-            }
-            label {
-                top: 1rem;
-                background-color: var(--general-main-2);
-                @include mobile {
-                    background-color: var(--fill-normal);
-                }
-            }
-            .dc-field--error {
-                font-size: 1.1rem;
-            }
             @include desktop {
                 /* To get rid of ugly chrome autofill shadow dom-applied background color */
                 &__field {
                     &:-webkit-autofill {
-                        -webkit-box-shadow: 0 0 0 30px var(--fill-normal) inset !important;
+                        box-shadow: 0 0 0 30px var(--fill-normal) inset !important;
 
                         &:hover,
                         &:focus,
                         &:active {
-                            -webkit-box-shadow: 0 0 0 30px var(--fill-normal) inset !important;
+                            box-shadow: 0 0 0 30px var(--fill-normal) inset !important;
                         }
                     }
                 }
             }
+
+            &__label {
+                top: 1rem;
+            }
+
+            label {
+                @include mobile {
+                    background-color: var(--fill-normal);
+                }
+
+                top: 1rem;
+                background-color: var(--general-main-2);
+            }
+
+            .dc-field--error {
+                font-size: 1.1rem;
+            }
         }
+
         .dc-datepicker__input {
             .dc-input__field {
                 background-color: var(--fill-normal);
             }
         }
+
         .dc-select-native {
             margin-bottom: 3.2rem;
         }
+
         .dc-dropdown__display {
             background-color: var(--general-main-2);
 
@@ -87,46 +108,46 @@
                 background-color: var(--general-main-2);
             }
         }
+
         .dc-dropdown__container {
             margin-bottom: 3rem;
         }
-        @include mobile {
-            width: 100%;
-            margin: 0;
-            padding: 1rem 1.6rem 6rem;
-            overflow-y: auto;
-        }
     }
+
     &__loader {
         .barspinner {
             margin-top: 0.4rem;
             margin-bottom: 3.2rem;
         }
     }
-    &__tax {
-        position: relative;
 
+    &__tax {
         @include mobile {
             padding-right: 2rem;
         }
 
-        .dc-popover {
-            position: absolute;
-            cursor: pointer;
-            top: 10px;
-            right: -25px;
+        position: relative;
 
+        .dc-popover {
             @include mobile {
                 right: -5px;
             }
+
+            position: absolute;
+            top: 10px;
+            right: -25px;
+            cursor: pointer;
         }
     }
+
     &__tin-warn-divider {
-        height: 5rem;
         @include mobile {
             height: 6rem;
         }
+
+        height: 5rem;
     }
+
     &__tin-confirm {
         margin-left: -5px;
 
@@ -134,29 +155,34 @@
             align-self: baseline;
         }
     }
+
     .dc-page-error__container {
         height: 100%;
     }
+
     &__description {
-        margin: 1.6rem auto;
-        width: 45%;
         @include desktop {
             display: flex;
             flex-direction: column;
         }
+
         @include tablet {
             width: 70%;
         }
+
         @include mobile {
-            text-align: left;
             width: unset;
             margin: 0 2.4rem;
             line-height: 20px;
+            text-align: left;
         }
 
+        width: 45%;
+        margin: 1.6rem auto;
+
         .cfd-personal-details-modal__form & {
-            margin: 0 auto;
             width: unset;
+            margin: 0 auto;
             padding-top: 3.2rem;
         }
     }
@@ -164,6 +190,7 @@
 
 .financial-assessment {
     gap: 1.6rem;
+
     &__form {
         @include desktop {
             width: 70%;

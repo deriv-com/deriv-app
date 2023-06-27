@@ -6,23 +6,24 @@
     }
 
     &__language-container {
-        display: grid;
-        grid-template-columns: repeat(4, minmax(90px, 1fr));
-        grid-gap: 1.6rem;
-
         @include mobile {
-            grid-template-columns: repeat(2, minmax(50%, 1fr));
-            grid-gap: 0.3rem;
-            grid-template-rows: auto;
-
             @include mobile {
                 &--disabled {
                     opacity: 0.5;
                     pointer-events: none;
                 }
             }
+
+            grid-template-rows: auto;
+            grid-template-columns: repeat(2, minmax(50%, 1fr));
+            grid-gap: 0.3rem;
         }
+
+        display: grid;
+        grid-template-columns: repeat(4, minmax(90px, 1fr));
+        grid-gap: 1.6rem;
     }
+
     &__language {
         &-button_wrapper {
             display: flex;
@@ -30,13 +31,6 @@
         }
 
         &-link {
-            color: var(--text-prominent);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-            border-radius: $BORDER_RADIUS;
-            padding: 16px;
             @include mobile {
                 padding: 8px;
 
@@ -44,8 +38,16 @@
                     padding: 1.6rem;
                 }
             }
-            text-decoration: none;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-radius: $BORDER_RADIUS;
             background-color: var(--state-normal);
+            color: var(--text-prominent);
+            text-decoration: none;
             cursor: pointer;
 
             &--active {
@@ -53,39 +55,45 @@
                 color: var(--text-prominent);
             }
         }
+
         &-flag {
+            @include mobile {
+                width: 4rem;
+                height: 5rem;
+                margin-top: 1rem;
+            }
+
             width: 5rem;
             height: 4rem;
             cursor: pointer;
-
-            @include mobile {
-                margin-top: 1rem;
-                width: 4rem;
-                height: 5rem;
-            }
         }
+
         &-name {
             @include typeface(--paragraph-left-normal-black);
-            color: var(--text-prominent);
-            margin-top: 0.8rem;
-
-            &--active {
-                font-weight: bold;
-                color: var(--text-prominent);
-            }
 
             @include mobile {
                 font-size: 1.4rem;
             }
+
+            margin-top: 0.8rem;
+            color: var(--text-prominent);
+
+            &--active {
+                color: var(--text-prominent);
+                font-weight: bold;
+            }
         }
+
         &--radio-button {
             display: none;
         }
+
         &--center-label {
             text-align: center;
         }
     }
 }
+
 .account-form {
     &--language-settings {
         overflow: auto !important;

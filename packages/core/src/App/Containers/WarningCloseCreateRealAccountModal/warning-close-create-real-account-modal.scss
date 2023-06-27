@@ -1,23 +1,25 @@
 .close-real-acc-modal {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 2.4rem;
-    width: 44rem;
     @include mobile {
         width: unset;
     }
 
-    .dc-form-submit-button {
-        justify-content: flex-end;
-        padding: 1.6rem 0 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 44rem;
+    padding: 2.4rem;
 
+    .dc-form-submit-button {
         @include mobile {
             background: unset;
+
             > button {
                 padding: 0.3rem;
             }
         }
+
+        justify-content: flex-end;
+        padding: 1.6rem 0 0;
     }
 
     &__warning-message {

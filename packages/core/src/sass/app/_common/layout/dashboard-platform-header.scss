@@ -1,29 +1,29 @@
 .dashboard-platform-header {
-    position: fixed;
-    z-index: 99;
-    width: 100%;
-    height: $HEADER_HEIGHT;
-    left: 0px;
-    top: 0px;
-    box-sizing: border-box;
-    border-bottom: 1px solid var(--general-section-1);
-    background-color: var(--general-main-1);
-    backface-visibility: hidden;
-    transition: opacity 0.3s;
-    display: flex;
-
     @include mobile {
         height: 40px;
     }
 
-    &__menu-left {
-        display: inline-flex;
-        height: #{$HEADER_HEIGHT - 1px};
-        align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    height: $HEADER_HEIGHT;
+    border-bottom: 1px solid var(--general-section-1);
+    background-color: var(--general-main-1);
+    transition: opacity 0.3s;
+    backface-visibility: hidden;
 
+    &__menu-left {
         @include mobile {
             height: 39px;
         }
+
+        display: inline-flex;
+        align-items: center;
+        height: #{$HEADER_HEIGHT - 1px};
 
         &-extensions {
             display: flex;
@@ -32,9 +32,9 @@
     }
 
     &__menu-right {
-        justify-content: flex-end;
         display: inline-flex;
         flex: 1;
+        justify-content: flex-end;
         align-items: center;
     }
 
@@ -63,14 +63,14 @@
     }
 
     &__divider {
+        @include mobile {
+            height: 24px;
+        }
+
         width: 1px;
         height: 32px;
         margin-left: 8px;
         background: var(--general-section-2);
-
-        @include mobile {
-            height: 24px;
-        }
     }
 
     &__setting {
@@ -98,16 +98,16 @@
         align-items: center;
 
         &--icon {
-            margin: 0px 8px;
+            margin: 0 8px;
         }
     }
 
     &__button {
-        margin: 6px 16px;
-
         @include mobile {
             width: 5.4rem;
         }
+
+        margin: 6px 16px;
     }
 
     &__mobile-drawer-icon {

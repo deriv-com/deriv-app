@@ -51,6 +51,8 @@ module.exports = {
         'selector-id-pattern': null,
         'scss/no-global-function-names': null,
         'no-empty-source': null,
+        'selector-pseudo-element-no-unknown': null,
+        'selector-pseudo-class-no-unknown': null,
 
         // Plugins Config
 

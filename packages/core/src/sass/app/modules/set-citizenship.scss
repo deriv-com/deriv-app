@@ -4,39 +4,45 @@
 
     &__citizenship-selection {
         display: flex;
+        flex-flow: nowrap column;
         justify-content: center;
         align-items: center;
-        flex-flow: nowrap column;
     }
+
     &__heading {
+        margin-bottom: 3.3rem;
         font-weight: bold;
         text-align: center;
-        margin-bottom: 3.3rem;
     }
+
     &__text {
-        text-align: center;
         margin-bottom: 3.3rem;
+        text-align: center;
     }
+
     &__subtext {
-        margin: 0 0 2.4rem;
         max-width: 90%;
+        margin: 0 0 2.4rem;
     }
+
     &__btn {
         align-self: flex-end;
         margin: 0;
-        background-color: var(--button-primary-default);
-        font-weight: bold;
-        color: var(--text-colored-background);
         margin-bottom: -16px;
+        background-color: var(--button-primary-default);
+        color: var(--text-colored-background);
+        font-weight: bold;
 
         &:hover {
             background-color: var(--button-primary-hover);
         }
+
         &--disabled {
             opacity: 0.32;
             cursor: not-allowed;
         }
     }
+
     &__citizenship-field {
         width: 30rem;
     }

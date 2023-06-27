@@ -1,6 +1,6 @@
 @mixin link-container-gaps {
-    padding: 1rem 0.5rem;
     margin-right: 0.5rem;
+    padding: 1rem 0.5rem;
 }
 
 #warning_scam_message_modal {
@@ -8,12 +8,12 @@
 }
 
 .warning-scam-message {
-    padding: 2.4rem 0;
-
     @include mobile {
-        height: 80vh;
         overflow: auto;
+        height: 80vh;
     }
+
+    padding: 2.4rem 0;
 
     &--content {
         display: flex;
@@ -25,11 +25,11 @@
             flex-direction: column;
             margin: 2.6rem 0 2.4rem;
 
-            @media screen and (max-width: 768px) {
+            @media screen and (width <= 768px) {
                 width: 80%;
             }
 
-            @media screen and (max-width: 430px) {
+            @media screen and (width <= 430px) {
                 width: 90%;
             }
         }
@@ -38,17 +38,17 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            border: solid var(--general-hover);
-            border-radius: 0.5rem;
+            width: 90%;
             margin-top: 0.625rem;
             padding: 1.6rem;
+            border: solid var(--general-hover);
+            border-radius: 0.5rem;
             background-color: var(--general-section-1);
-            width: 90%;
 
             &--title {
-                margin-bottom: 1.6rem;
                 display: flex;
                 width: 96%;
+                margin-bottom: 1.6rem;
             }
 
             &--message {
@@ -70,7 +70,7 @@
     }
 
     &__button {
-        @media screen and (max-width: 375px) {
+        @media screen and (width <= 375px) {
             padding: 1.2rem 0;
         }
     }
@@ -79,26 +79,26 @@
         margin: 0.5rem 0.8rem 0.5rem 0.5rem;
 
         &--cross {
-            height: 2.6rem;
-            width: 2.6rem;
-            margin: 0 0.8rem 0.5rem 0.5rem;
-
             @include mobile {
-                height: 3.4rem;
                 width: 3.4rem;
+                height: 3.4rem;
                 margin: -0.3rem 0.8rem 0.5rem 0.5rem;
             }
 
-            &-content {
-                height: 2.2rem;
-                width: 2.2rem;
-                margin: 0.2rem 0.8rem 0.5rem 0.5rem;
+            width: 2.6rem;
+            height: 2.6rem;
+            margin: 0 0.8rem 0.5rem 0.5rem;
 
+            &-content {
                 @include mobile {
-                    height: 3rem;
                     width: 3rem;
+                    height: 3rem;
                     margin: -0.2rem 0.8rem 0.5rem 0.5rem;
                 }
+
+                width: 2.2rem;
+                height: 2.2rem;
+                margin: 0.2rem 0.8rem 0.5rem 0.5rem;
             }
         }
     }
@@ -118,42 +118,44 @@
 
     &__divider {
         width: 97.5%;
-        border: 1px solid var(--general-hover);
         margin-right: 0.7rem;
         margin-bottom: 1.6rem;
+        border: 1px solid var(--general-hover);
     }
 }
 
 .correct-link {
     &__container {
+        @include link-container-gaps;
+
         display: flex;
         width: 98%;
         background-color: var(--transparent-correct-message);
-        @include link-container-gaps;
     }
 
     &__message-container {
         display: flex;
-        width: 100%;
         flex-direction: column;
+        width: 100%;
     }
 
     &__link-container {
-        background-color: var(--general-main-2);
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 0.8rem 0;
         margin: 0.8rem 0.8rem 1.6rem 0;
+        padding: 0.8rem 0;
+        background-color: var(--general-main-2);
     }
 }
 
 .fake-link {
     &__container {
-        display: flex;
-        background-color: var(--transparent-fake-message);
         @include link-container-gaps;
+
+        display: flex;
         margin-top: 1.6rem;
+        background-color: var(--transparent-fake-message);
     }
 
     &__message-container {
@@ -162,11 +164,11 @@
     }
 
     &__link-container {
-        background-color: var(--general-main-2);
         display: flex;
         justify-content: center;
         align-items: center;
-        padding: 0.8rem 0;
         margin: 0.8rem 0.8rem 1.6rem 0;
+        padding: 0.8rem 0;
+        background-color: var(--general-main-2);
     }
 }

@@ -1,9 +1,9 @@
 .currency-selection-modal {
     &__header {
-        width: 100%;
         position: relative;
         display: inline-flex;
         align-items: center;
+        width: 100%;
         padding: 1.6rem 2.4rem;
         border-bottom: 2px solid var(--general-section-1);
 
@@ -12,18 +12,19 @@
             cursor: pointer;
         }
     }
+
     &__body {
         display: flex;
         flex-direction: column;
+        overflow-y: scroll;
         height: 31.2rem;
         padding: 0.8rem 0.8rem 2.8rem;
-        overflow-y: scroll;
 
         .currency-item-card {
-            width: 100%;
-            height: 5.4rem;
             display: inline-flex;
             align-items: center;
+            width: 100%;
+            height: 5.4rem;
             padding: 0.8rem 1.6rem;
             border-radius: 4px;
             cursor: pointer;
@@ -50,18 +51,19 @@
             }
         }
     }
+
     &__bottom-controls {
-        width: 100%;
-        height: 7.2rem;
         position: absolute;
         bottom: 0;
+        z-index: 4;
         display: inline-flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 7.2rem;
         padding: 1.6rem 2.4rem;
         border-top: 2px solid var(--general-section-1);
         background-color: var(--general-main-1);
-        z-index: 4;
 
         .block-button {
             width: 100%;

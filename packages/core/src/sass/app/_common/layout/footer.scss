@@ -2,19 +2,23 @@
 .footer {
     position: fixed;
     bottom: 0;
-    padding: 0 1em;
-    width: 100%;
-    height: $FOOTER_HEIGHT;
-    box-sizing: border-box;
     z-index: 3;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    transition: opacity 0.3s;
-    backface-visibility: hidden;
+    box-sizing: border-box;
+    width: 100%;
+    height: $FOOTER_HEIGHT;
+    padding: 0 1em;
+    border-top: 1px solid var(--general-section-1);
     background: var(--general-main-1);
     color: var(--text-prominent);
-    border-top: 1px solid var(--general-section-1);
+    transition: opacity 0.3s;
+    backface-visibility: hidden;
+
+    @media (width <= 768px) {
+        display: none;
+    }
 
     &--is-disabled {
         border-top: none;
@@ -24,42 +28,47 @@
             pointer-events: auto;
         }
     }
+
     &__links {
         display: flex;
+        flex-direction: row;
         justify-content: space-evenly;
         align-items: center;
-        flex-direction: row;
         height: 100%;
 
         &--left {
             margin-right: auto;
+
             &:hover {
                 cursor: pointer;
             }
         }
+
         /* fix issue with rogue tiny-popover div generated in footer links */
         div {
-            height: inherit;
+            position: relative;
             display: inline-flex;
             align-items: center;
-            position: relative;
+            height: inherit;
         }
 
         &--dark-mode {
             padding: 0.8rem;
             cursor: pointer;
+
             &:hover {
                 background: var(--general-hover);
             }
         }
     }
+
     &__link {
-        padding: 0 0.8em;
-        text-decoration: none;
-        height: 100%;
+        position: relative;
         display: inline-flex;
         align-items: center;
-        position: relative;
+        height: 100%;
+        padding: 0 0.8em;
+        text-decoration: none;
         cursor: pointer;
 
         &:hover {
@@ -70,13 +79,12 @@
             }
         }
     }
+
     &__icon {
+        @extend %inline-icon;
+
         width: 1.6em;
         height: 1.6em;
-        @extend %inline-icon;
-    }
-    @media (max-width: 768px) {
-        display: none;
     }
 }
 
@@ -84,6 +92,7 @@
     40% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
     }
@@ -92,8 +101,8 @@
 /** @define network-status  */
 .network-status {
     &__wrapper {
-        height: 1.4em;
         position: relative;
+        height: 1.4em;
 
         &--is-mobile {
             .network-status__circle {
@@ -101,42 +110,47 @@
             }
         }
     }
+
     &__tooltip {
         left: unset;
         text-decoration-line: none;
     }
+
     &__circle {
-        background: var(--general-section-1);
         width: 1em;
         height: 1em;
         margin: 0.2em 1.6em;
         border-radius: 50%;
+        background: var(--general-section-1);
 
         &--online {
             background: var(--text-profit-success);
         }
+
         &--offline {
             background: var(--text-loss-danger);
         }
+
         &--blinker {
-            animation: blinking-network-status 0.4s alternate infinite;
             background: var(--text-profit-success);
+            animation: blinking-network-status 0.4s alternate infinite;
         }
     }
 }
 
 /** @define server-time */
 .server-time {
+    @include typeface(--small-left-normal-black);
+
     display: inline-flex;
     align-self: center;
     margin-right: 1em;
     padding: 0 1em;
-    @include typeface(--small-left-normal-black);
     color: var(--text-general);
 
     &--is-mobile {
-        padding: 0 1em 0 0;
         margin-right: 0;
+        padding: 0 1em 0 0;
     }
 }
 
@@ -148,31 +162,34 @@
 
         &:after {
             content: '';
-            height: 0.2em;
-            width: 100%;
             position: absolute;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 0.2em;
             background: var(--text-prominent);
         }
+
         .ic-settings__icon {
             @extend %inline-icon.active;
+
             pointer-events: none;
         }
     }
+
     &-language__icon {
         margin-right: 0.4rem;
 
         &--disabled {
-            cursor: not-allowed;
             opacity: 0.5;
+            cursor: not-allowed;
             pointer-events: none;
         }
     }
 
     &--disabled {
-        cursor: not-allowed;
         opacity: 0.5;
+        cursor: not-allowed;
         pointer-events: none;
     }
 }
@@ -184,11 +201,14 @@
     p {
         @include typeface(--paragraph-left-normal-prominent);
     }
+
     &__link {
         @include typeface(--paragraph-left-bold-prominent);
+
         color: var(--brand-red-coral);
         text-decoration: none;
     }
+
     &__icon {
         display: flex;
         justify-content: center;
@@ -199,11 +219,11 @@
 
 /** @define footer-icon-separator */
 .footer-icon-separator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 1px;
     height: 1.6rem !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--general-section-1);
     margin: 0 0.1rem;
+    background: var(--general-section-1);
 }

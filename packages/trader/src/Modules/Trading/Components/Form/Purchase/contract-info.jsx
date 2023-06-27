@@ -92,13 +92,7 @@ const ContractInfo = ({
         if (['VANILLALONGCALL', 'VANILLALONGPUT'].includes(type)) {
             return (
                 <Localize
-                    i18n_default_text='<0>For {{title}}:</0> Your payout will grow by this amount for every {{unit}} {{trade_type}} your strike price. You will start making a profit when the payout is higher than your stake.'
-                    components={[<strong key={0} />]}
-                    values={{
-                        trade_type: type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
-                        title: type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
-                        unit: vanilla_financials.includes(symbol) ? localize('pip') : localize('point'),
-                    }}
+                    i18n_default_text='The payout at expiry is equal to the payout per point multiplied by the difference between the final price and the strike price.'
                 />
             );
         }
@@ -169,17 +163,7 @@ const ContractInfo = ({
                                         zIndex={9999}
                                         message={
                                             <Localize
-                                                i18n_default_text='<0>For {{title}}:</0> Your payout will grow by this amount for every {{unit}} {{trade_type}} your strike price. You will start making a profit when the payout is higher than your stake.'
-                                                components={[<strong key={0} />]}
-                                                values={{
-                                                    trade_type:
-                                                        type === 'VANILLALONGCALL'
-                                                            ? localize('above')
-                                                            : localize('below'),
-                                                    title:
-                                                        type === 'VANILLALONGCALL' ? localize('Call') : localize('Put'),
-                                                    unit: vanilla_financials.includes(symbol) ? localize('pip') : localize('point'),
-                                                }}
+                                                i18n_default_text='The payout at expiry is equal to the payout per point multiplied by the difference between the final price and the strike price.'
                                             />
                                         }
                                     />

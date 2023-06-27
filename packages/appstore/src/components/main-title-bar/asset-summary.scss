@@ -1,28 +1,28 @@
 .asset-summary {
-    display: flex;
-    flex-direction: column;
-    margin-left: auto;
-
     @include mobile {
         align-items: center;
     }
 
-    &__container.content-loader {
-        width: 12rem;
-        cursor: not-allowed;
-        margin-left: auto;
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
 
+    &__container.content-loader {
         @include mobile {
             width: 23rem;
         }
+
+        width: 12rem;
+        margin-left: auto;
+        cursor: not-allowed;
     }
 
     &--total {
-        display: flex;
-        border-bottom: 4px dotted var(--checkbox-disabled-grey);
-
         @include mobile {
             margin-top: 3rem;
         }
+
+        display: flex;
+        border-bottom: 4px dotted var(--checkbox-disabled-grey);
     }
 }

@@ -3,6 +3,7 @@
         .dc-dialog__dialog {
             max-width: 32rem;
         }
+
         .dc-dialog__footer {
             .dc-btn {
                 flex: 1;
@@ -11,17 +12,21 @@
 
             .dc-dialog__button {
                 max-width: fit-content;
+
                 .dc-text.dc-btn__text {
                     font-size: 1.2rem;
                 }
             }
         }
     }
+
     &__failed_list {
         padding: 1.2rem 2.4rem;
+
         &-item {
             display: list-item;
             list-style-type: disc;
+
             &:first-child {
                 margin-bottom: 0.8rem;
             }
@@ -33,6 +38,7 @@
     .dc-modal-body {
         padding: 0 2.4rem;
     }
+
     .dc-modal-footer {
         padding: 2.4rem;
     }

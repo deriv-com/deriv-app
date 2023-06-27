@@ -180,7 +180,6 @@ $side-padding: 1.2em;
     }
     &__row {
         /* icon refId currency tr_time transaction cred/debt balance */
-        /* stylelint-disable-next-line declaration-colon-space-after */
         grid-template-columns:
             minmax(120px, 0.8fr) minmax(85px, 1.4fr) minmax(110px, 1.2fr) minmax(85px, 1.2fr) minmax(85px, 1fr)
             minmax(85px, 1.2fr) minmax(85px, 1fr);
@@ -459,7 +458,6 @@ $side-padding: 1.2em;
     }
     &__row {
         /* icon refId currency buy_time buy_price sell_time sell_price profit/loss */
-        /* stylelint-disable-next-line declaration-colon-space-after */
         grid-template-columns:
             minmax(120px, 0.6fr) minmax(130px, 1fr) minmax(85px, 1fr) minmax(85px, 1.2fr) minmax(85px, 1fr)
             minmax(85px, 1.2fr) minmax(95px, 1fr) minmax(130px, 1fr);
@@ -846,7 +844,6 @@ $side-padding: 1.2em;
     }
     &__row {
         /* type refId currency buy_price payout_limit indicative_profit/loss indicative_price rem_time */
-        /* stylelint-disable-next-line declaration-colon-space-after */
         grid-template-columns:
             minmax(110px, 0.7fr) minmax(130px, 0.8fr) minmax(100px, 1.1fr) minmax(90px, 1.1fr) minmax(90px, 1.1fr)
             minmax(150px, 1.1fr) minmax(120px, 1.1fr) minmax(85px, 1.1fr);
@@ -948,7 +945,6 @@ $side-padding: 1.2em;
     .open-positions {
         &__row {
             /* icon multiplier currency stake cancellation buy_price limit_order current_stake total_profit_loss action */
-            /* stylelint-disable-next-line declaration-colon-space-after */
             grid-template-columns:
                 minmax(85px, 1fr) minmax(125px, 1fr) minmax(65px, 1fr) minmax(105px, 1fr) minmax(100px, 1fr)
                 minmax(105px, 1fr) minmax(105px, 1fr) minmax(105px, 1fr) minmax(125px, 1fr) minmax(90px, 1fr);
@@ -1013,7 +1009,6 @@ $side-padding: 1.2em;
     .open-positions {
         &__row {
             /* icon accumulator currency stake take_profit bid_price total_profit_loss action */
-            /* stylelint-disable-next-line declaration-colon-space-after */
             grid-template-columns:
                 minmax(85px, 1fr) minmax(125px, 1fr) minmax(65px, 1fr) minmax(105px, 1fr) minmax(105px, 1fr)
                 minmax(112px, 1fr) minmax(149px, 1fr) minmax(90px, 1fr);

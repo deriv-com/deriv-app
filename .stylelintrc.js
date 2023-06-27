@@ -42,6 +42,10 @@ module.exports = {
         'declaration-no-important': null,
         'no-descending-specificity': null,
         'scss/dollar-variable-pattern': null,
+        'selector-max-type': null,
+        'keyframes-name-pattern': null,
+        'no-unknown-animations': null,
+        'selector-no-qualifying-type': [true, { ignore: ["attribute", "class", "id"] }]
 
         // Plugins Config
 

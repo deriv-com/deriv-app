@@ -37,7 +37,6 @@
             cursor: initial;
             background-color: var(--state-active) !important;
 
-            // stylelint-disable-next-line
             span {
                 @include typeface(--paragraph-left-bold-active, unset);
                 color: var(--text-prominent);
@@ -70,7 +69,6 @@
             cursor: initial;
             background-color: var(--state-normal) !important;
 
-            // stylelint-disable-next-line
             span {
                 @include typeface(--paragraph-left-bold-active, unset);
                 color: var(--text-prominent);

@@ -163,7 +163,6 @@
 
         // fix for safari bug with header being truncated
         @media not all and (min-resolution: 0.001dpcm) {
-            // stylelint-disable-line
             @supports (-webkit-appearance: none) {
                 /* postcss-bem-linter: ignore */
                 min-height: 4.8rem;

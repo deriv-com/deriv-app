@@ -1,18 +1,19 @@
 .account-type-dropdown {
-    font-size: 1.4rem;
+    height: 1.8em;
+    border: 2px solid;
     font-weight: 700;
+    font-size: 1.4rem;
     line-height: 2rem;
     text-transform: capitalize;
-    border: 2px solid;
-    height: 1.8em;
 
     &--parent {
         padding: 0;
         border: none;
+
         & > div.dc-dropdown {
             &-container {
-                min-width: 7.1rem;
                 width: auto;
+                min-width: 7.1rem;
             }
         }
 
@@ -25,24 +26,28 @@
     &:hover {
         outline: none;
     }
+
     &--real,
     &--demo {
         & > .dc-text {
+            padding-left: 0.4em;
             font-weight: 700;
             line-height: 20px;
-            letter-spacing: 0em;
+            letter-spacing: 0;
             text-align: left;
-            padding-left: 0.4em;
         }
+
         & > .dc-dropdown__display-text {
             padding-right: 2.3em;
         }
     }
+
     &--real,
     &--real:focus,
     &--real:hover {
-        border: 1px solid var(--status-success);
         min-width: 87%;
+        border: 1px solid var(--status-success);
+
         & > .dc-text {
             color: var(--status-success);
         }
@@ -51,21 +56,27 @@
     &--demo,
     &--demo:focus,
     &--demo:hover {
-        border: 1px solid var(--status-info);
         width: 90%;
+        border: 1px solid var(--status-info);
+
         & > .dc-text {
-            color: var(--status-info);
             padding-left: 0.65em;
+            color: var(--status-info);
         }
     }
+
     &__icon {
         transform: none;
+
         &--real {
             --fill-color1: var(--status-success);
+
             right: 0.7rem;
         }
+
         &--demo {
             --fill-color1: var(--status-info);
+
             right: 1.4rem;
         }
     }

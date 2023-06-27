@@ -124,7 +124,6 @@
 
     // fix for safari bug with overflow-x not working in dropdown
     @media not all and (min-resolution: 0.001dpcm) {
-        // stylelint-disable-line
         @supports (-webkit-appearance: none) {
             /* postcss-bem-linter: ignore */
             & > div:nth-child(1) & > div:nth-child(1) {

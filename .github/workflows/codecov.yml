@@ -3,6 +3,8 @@ on:
   pull_request:
     branches:
       - '**'
+  env:
+    JEST_MAX_WORKERS: 4
   push:
     branches:
       - master

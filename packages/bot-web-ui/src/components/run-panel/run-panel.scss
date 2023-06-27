@@ -4,25 +4,27 @@
 // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
 .run-panel {
     height: 0;
+
     &__container {
-        height: var(--bot-content-height) !important;
         top: 10.4rem !important;
-        width: 36.6rem !important;
         right: 0;
+        width: 36.6rem !important;
+        height: var(--bot-content-height) !important;
 
         &--mobile {
-            height: 100%;
             position: absolute;
             top: 0;
             left: 0;
-            width: 100vw;
             z-index: 99;
+            width: 100vw;
+            height: 100%;
 
             &-closed {
                 position: unset;
             }
         }
     }
+
     &__tile {
         display: flex;
         flex-direction: column;
@@ -31,157 +33,178 @@
         height: 100%;
 
         &-title {
+            @include typeface(--small-center-bold-black, none);
+
             min-height: 1.8rem;
             margin-bottom: 4px;
-            @include typeface(--small-center-bold-black, none);
         }
+
         &-content {
+            @include typeface(--small-center-normal-black, none);
+
             height: 18px;
             margin-bottom: 4px;
-            @include typeface(--small-center-normal-black, none);
         }
     }
+
     &__stat {
+        @include mobile {
+            position: fixed;
+            margin: 0;
+        }
+
         display: flex;
         flex-direction: column;
         align-items: flex-end;
         width: 35rem;
         background-color: var(--general-section-2);
 
-        @include mobile {
-            margin: 0;
-            position: fixed;
-        }
         &--tour-active {
             display: none;
         }
+
         &--info {
             display: flex;
             justify-content: center;
             width: 33%;
-            padding: 16px 0px 2px 0;
-            cursor: pointer;
+            padding: 16px 0 2px;
             color: var(--text-general);
+            cursor: pointer;
 
             &-item {
                 display: inline-block;
                 border-bottom: 1px dotted var(--text-general);
             }
         }
+
         &--tiles {
-            width: 100%;
             display: grid;
             grid-template: 64px 64px / 1fr 1fr 1fr;
+            width: 100%;
         }
+
         &-amount {
             @include typeface(--small-center-normal-black, none);
 
             &--positive {
-                font-weight: bold;
                 color: var(--text-profit-success);
-            }
-            &--negative {
                 font-weight: bold;
+            }
+
+            &--negative {
                 color: var(--text-loss-danger);
+                font-weight: bold;
             }
         }
+
         &--mobile {
-            width: 100%;
             bottom: 0;
+            width: 100%;
         }
     }
+
     &__footer {
-        text-align: center;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
+        text-align: center;
 
         &-button {
             width: 318px;
+
             // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
             height: 32px !important;
             margin: 12px 24px;
         }
     }
+
     &__content {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         overflow: hidden !important;
     }
+
     &__buttons {
         display: inline-flex !important;
         justify-content: space-between;
+        align-items: center;
         width: 67%;
         margin-top: 1rem;
-        align-items: center;
     }
+
     &-tab {
         &__content {
-            height: calc(100vh - 42rem);
             overflow: hidden;
+            height: calc(100vh - 42rem);
 
             &--no-stat {
                 height: var(--drawer-content-height-no-stat);
             }
+
             &--mobile {
-                display: flex;
-                height: var(--drawer-content-height-mobile);
                 position: fixed;
                 bottom: 15.7rem;
+                display: flex;
                 width: 100vw;
+                height: var(--drawer-content-height-mobile);
                 padding: 0.4rem 0;
             }
+
             &--summary-tab {
                 padding: 0.8rem 1.6rem;
             }
         }
     }
+
     &__clear-button {
         @include mobile {
             position: absolute !important;
             top: 0.5rem;
             right: 1.6rem;
-            height: 2.6rem !important;
             min-width: 8rem;
+            height: 2.6rem !important;
         }
     }
 }
 
 .controls {
     &__section {
+        position: fixed;
+        bottom: 0;
+        z-index: 8;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
-        position: fixed;
-        bottom: 0;
         width: 100%;
-        background-color: var(--general-main-1);
         border-top: solid 2px var(--general-section-1);
-        z-index: 8;
+        background-color: var(--general-main-1);
     }
+
     &__buttons {
-        padding: 0.8rem 2.4rem;
-        height: 6rem;
         display: flex;
         width: inherit;
+        height: 6rem;
+        padding: 0.8rem 2.4rem;
         padding-right: 8px;
     }
+
     &__stop-button,
     &__run-button {
         width: 40%;
-        border-radius: 4px 0px 0px 4px !important;
+        border-radius: 4px 0 0 4px !important;
     }
+
     &__animation {
         width: 100%;
         height: 4rem;
-        border-radius: 0px 4px 4px 0px;
+        border-radius: 0 4px 4px 0;
     }
 }
 
-//animation
+// animation
 .list {
     &__animation {
         &-enter {
@@ -190,10 +213,11 @@
 
             &-active {
                 height: auto;
-                transform: translateX(0%);
                 transition: height 500ms, transform 500ms;
+                transform: translateX(0%);
             }
         }
+
         &-exit {
             opacity: 1;
 
@@ -206,38 +230,33 @@
 }
 
 .db-self-exclusion {
-    font-size: var(--text-size-xs);
-    font-weight: normal;
-    line-height: 1.43;
     color: var(--text-general);
+    font-weight: normal;
+    font-size: var(--text-size-xs);
+    line-height: 1.43;
 
     &__content {
         margin: 2.4rem;
         margin-right: 1.4rem;
         padding-right: 1rem;
     }
+
     & .dc-themed-scrollbars__track--vertical {
         right: -0.2rem;
     }
+
     // TODO: [fix-dc-bundle] Fix import issue with Deriv Component stylesheets (app should take precedence, and not repeat)
     &__dialog {
-        max-height: 500px !important;
         width: 460px;
+        max-height: 500px !important;
     }
+
     &__footer {
-        height: 72px;
-        display: block;
-        position: fixed;
-        width: 100%;
-        left: 0px;
-        bottom: 0px;
-        padding: 1.4rem;
-        border-top: 2px solid var(--general-section-2);
         @include mobile {
             position: absolute;
-            width: 100%;
             bottom: 40px;
-            left: 0px;
+            left: 0;
+            width: 100%;
 
             &--relative {
                 position: relative;
@@ -245,28 +264,42 @@
             }
         }
 
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        display: block;
+        width: 100%;
+        height: 72px;
+        padding: 1.4rem;
+        border-top: 2px solid var(--general-section-2);
+
         &-btn-group {
             display: flex;
             justify-content: flex-end;
         }
     }
+
     &__info {
         margin-bottom: 2rem;
     }
+
     &__limit-status {
         margin: 1rem 0;
 
         &--bold {
             font-weight: 700;
         }
+
         &--danger {
-            font-weight: 700;
             color: var(--status-danger);
+            font-weight: 700;
         }
     }
+
     &--danger {
         color: var(--status-danger);
     }
+
     & .dc-btn {
         margin-left: 0.8rem;
     }
@@ -275,24 +308,25 @@
 .limits__wrapper {
     @include mobile {
         position: fixed;
+        top: 0;
+        left: 0;
         z-index: 5;
         width: 100%;
-        left: 0px;
-        top: 0px;
         background: var(--general-main-1);
 
         .db-self-exclusion {
-            height: calc(100vh - 40px);
             display: flex;
-            justify-content: space-between;
             flex-direction: column;
+            justify-content: space-between;
+            height: calc(100vh - 40px);
 
             &__content {
                 margin-top: 56px;
             }
+
             &__form-group {
-                margin-bottom: 1.6rem;
                 display: flex;
+                margin-bottom: 1.6rem;
             }
         }
     }
@@ -308,23 +342,25 @@
 
 .statistics {
     &__modal {
-        height: 28.4rem !important;
         width: 44rem !important;
-        font-size: 1.6rem;
+        height: 28.4rem !important;
         padding: 2.4rem;
+        font-size: 1.6rem;
 
         &--mobile {
             font-size: 1.6rem !important;
         }
+
         &-body {
             height: calc(100vh - 40.6rem);
             min-height: 10rem;
             max-height: 45rem;
 
             &--mobile {
-                padding: 0.6rem 0 1.6rem !important;
                 height: 40.4rem;
+                padding: 0.6rem 0 1.6rem !important;
             }
+
             &--content {
                 margin-top: 1rem;
 
@@ -334,6 +370,7 @@
                 }
             }
         }
+
         &-scrollbar {
             padding-right: 1.2rem;
         }

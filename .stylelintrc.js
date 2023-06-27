@@ -34,7 +34,7 @@ module.exports = {
         'shorthand-property-no-redundant-values': true,
         'string-no-newline': true,
         'time-min-milliseconds': 100,
-        'unit-allowed-list': ['fr', 'px', 'em', 'rem', '%', 'vw', 'vh', 'deg', 'ms', 's', 'dpcm'],
+        'unit-allowed-list': ['fr', 'px', 'em', 'rem', '%', 'vw', 'vh', 'deg', 'ms', 's', 'dpcm', 'dpi'],
         'value-keyword-case': 'lower',
 
         // Temporary disabled rules because of the dirty styles
@@ -43,9 +43,13 @@ module.exports = {
         'no-descending-specificity': null,
         'scss/dollar-variable-pattern': null,
         'selector-max-type': null,
+        'selector-max-id': null,
+        'scss/at-extend-no-missing-placeholder': null,
         'keyframes-name-pattern': null,
         'no-unknown-animations': null,
-        'selector-no-qualifying-type': [true, { ignore: ["attribute", "class", "id"] }]
+        'selector-no-qualifying-type': [true, { ignore: ["attribute", "class", "id"] }],
+        'selector-id-pattern': null,
+        'scss/no-global-function-names': null,
 
         // Plugins Config
 

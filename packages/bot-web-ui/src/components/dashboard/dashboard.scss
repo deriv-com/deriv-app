@@ -1,5 +1,5 @@
-@import '../dashboard/dashboard-component/index.scss';
-@import '../dashboard/tutorial-tab/index.scss';
+@import '../dashboard/dashboard-component/index';
+@import '../dashboard/tutorial-tab/index';
 
 .position-center {
     display: flex;
@@ -8,36 +8,36 @@
 
 .dashboard {
     &__main {
-        width: 100%;
-        height: calc(100vh - 9rem);
-        padding: 1.6rem;
-        display: flex;
-        overflow: hidden;
-
         @include mobile {
             height: calc(100vh - 6rem);
             padding: 0;
         }
+
+        display: flex;
+        overflow: hidden;
+        width: 100%;
+        height: calc(100vh - 9rem);
+        padding: 1.6rem;
     }
 
     &__container {
         position: relative;
-        border: none;
-        max-width: 100%;
         width: 100%;
+        max-width: 100%;
+        border: none;
 
         &--active {
-            //css for onboard tour overlay
+            // css for onboard tour overlay
             &:before {
                 content: '';
                 position: fixed;
+                top: 0;
                 left: 0;
-                top: 0px;
+                z-index: 100;
                 width: 100%;
                 height: 100%;
-                background: rgba(0, 0, 0, 0.72);
+                background: rgb(0 0 0 / 72%);
                 opacity: 0.7;
-                z-index: 100;
             }
         }
 
@@ -52,27 +52,26 @@
             }
 
             &__list {
-                background: var(--general-section-1);
-                justify-content: start;
-
                 @include mobile {
                     overflow-x: auto;
                     overflow-y: hidden;
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
 
                     &::-webkit-scrollbar {
                         display: none;
                     }
-
-                    -ms-overflow-style: none;
-                    scrollbar-width: none;
                 }
+
+                justify-content: start;
+                background: var(--general-section-1);
 
                 &--header {
                     &--dashboard {
                         &__tabs {
                             @include mobile {
-                                width: 100%;
                                 overflow-x: auto;
+                                width: 100%;
                                 padding: 0.8rem 1.6rem 0;
                             }
                         }
@@ -88,31 +87,31 @@
 
             &__content {
                 @include mobile {
-                    width: 100%;
                     overflow-x: auto;
+                    width: 100%;
                 }
 
                 &--dashboard {
                     &__tabs {
-                        display: flex;
-                        justify-content: space-between;
-
                         @include mobile {
                             flex-direction: column;
                         }
+
+                        display: flex;
+                        justify-content: space-between;
                     }
                 }
             }
 
             &__item {
-                border-top-left-radius: 1rem;
-                border-top-right-radius: 1rem;
-                height: 4.8rem;
-                padding: 0 2.4rem;
-                width: auto;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                width: auto;
+                height: 4.8rem;
+                padding: 0 2.4rem;
+                border-top-left-radius: 1rem;
+                border-top-right-radius: 1rem;
 
                 &__loaded {
                     @include mobile {
@@ -123,36 +122,31 @@
                 }
 
                 svg {
-                    width: 1.6rem;
-                    height: 1.6rem;
-                    padding-right: 0;
-                    margin-right: 0.8rem;
-
                     @include mobile {
-                        margin-right: 0.2rem;
                         // gave this -ve margin becaues we cannot
                         // overwrite the default core padding which
                         // will make the icon bigger
                         margin-top: -0.5rem;
+                        margin-right: 0.2rem;
                     }
+
+                    width: 1.6rem;
+                    height: 1.6rem;
+                    margin-right: 0.8rem;
+                    padding-right: 0;
                 }
             }
         }
     }
 
     &__chart-wrapper {
-        position: relative;
-        height: var(--tab-content-height);
-        width: 100%;
-        transition: all 0.4s;
-
         @include mobile {
             height: var(--tab-content-height-mobile);
             background: var(--general-main-1);
 
             .smartcharts {
-                height: calc(100% - 4rem);
                 z-index: 1;
+                height: calc(100% - 4rem);
 
                 &:has(.stxMenuActive) {
                     z-index: 99;
@@ -160,6 +154,11 @@
                 }
             }
         }
+
+        position: relative;
+        width: 100%;
+        height: var(--tab-content-height);
+        transition: all 0.4s;
 
         &--expanded {
             width: calc(100vw - 39.8rem);
@@ -170,27 +169,27 @@
         position: absolute;
         top: -4rem;
         left: 0;
+        z-index: 1;
         width: 23.6rem;
         padding: 0.8rem;
         background: var(--general-main-1);
-        z-index: 1;
 
         .db-toolbox {
             &__title {
+                position: relative;
                 height: 2.6rem;
                 line-height: 2.6rem;
-                position: relative;
                 cursor: pointer;
 
                 &__chevron {
                     position: absolute;
-                    right: 0;
                     top: 0.3rem;
+                    right: 0;
                     transition: transform 0.3s ease;
 
                     &--active {
-                        transform: rotate(180deg);
                         top: -0.2rem;
+                        transform: rotate(180deg);
                     }
                 }
             }
@@ -200,13 +199,13 @@
             }
 
             &__category-menu {
-                height: calc(100vh - 33.6rem);
                 overflow-y: scroll;
+                height: calc(100vh - 33.6rem);
             }
 
             &__search {
-                padding: 1.3rem 0.8rem;
                 height: 6rem;
+                padding: 1.3rem 0.8rem;
             }
 
             &__content-wrapper {
@@ -224,8 +223,8 @@
             position: absolute;
         }
 
-        right: 1.6rem;
         top: 1.6rem;
+        right: 1.6rem;
         z-index: 2;
 
         .animation {
@@ -252,22 +251,32 @@
 }
 
 .bot-builder {
+    @include mobile {
+        top: 5.6rem;
+        left: 0;
+        width: 100vw;
+        height: var(--tab-content-height-mobile);
+    }
+
     position: absolute;
     top: 6.6rem;
     left: 1.6rem;
     z-index: -1;
-    background: var(--general-main-1);
     height: var(--tab-content-height);
+    background: var(--general-main-1);
 
     .injectionDiv {
         height: calc(100vh - 20rem);
+
         .blocklyTrash {
-            transition: all 0.4s;
             @include mobile {
                 display: none;
             }
+
+            transition: all 0.4s;
         }
     }
+
     &--tour-active {
         .blocklyTrash {
             display: none;
@@ -281,21 +290,14 @@
     &--inactive {
         display: none;
     }
-
-    @include mobile {
-        top: 5.6rem;
-        left: 0;
-        width: 100vw;
-        height: var(--tab-content-height-mobile);
-    }
 }
 
 .onboard {
     &__header {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 2.4rem;
         margin-top: -2rem;
+        margin-bottom: 2.4rem;
 
         &--close {
             cursor: pointer;
@@ -303,15 +305,15 @@
     }
 
     &__label {
-        text-align: left;
         margin-bottom: 2.4rem;
+        text-align: left;
     }
 
     &__container {
-        width: 100%;
-        height: 100%;
         display: flex;
         justify-content: center;
+        width: 100%;
+        height: 100%;
         margin-bottom: 2.4rem;
 
         img {
@@ -339,23 +341,24 @@
 @for $i from 0 through 6 {
     #react-joyride-step-#{$i} {
         .onboard__container {
-            .initial-loader {
-                width: 33rem;
-
-                @if ($i ==0 or $i ==5) {
-                    height: 18.6rem;
-                } @else if ($i ==1) {
-                    height: 18.4rem;
-                } @else if ($i ==2 or $i ==3) {
-                    height: 18.7rem;
-                } @else if ($i ==6) {
-                    height: 4.4rem;
-                }
-            }
-            @if ($i ==5) {
+            @if  $i == 5 {
                 img {
                     width: 100%;
                 }
+            }
+
+            .initial-loader {
+                @if  $i == 0 or $i == 5 {
+                    height: 18.6rem;
+                } @else if $i == 1 {
+                    height: 18.4rem;
+                } @else if $i == 2 or $i == 3 {
+                    height: 18.7rem;
+                } @else if $i == 6 {
+                    height: 4.4rem;
+                }
+
+                width: 33rem;
             }
         }
     }
@@ -375,9 +378,9 @@
     }
 
     ul {
-        list-style: disc;
-        margin-left: 4rem;
         margin-top: 1rem;
+        margin-left: 4rem;
+        list-style: disc;
 
         li {
             margin-bottom: 1rem;
@@ -398,8 +401,6 @@
         }
 
         &__left {
-            margin: 0.3rem 0 0 1.2rem;
-
             @include mobile {
                 margin: 0;
 
@@ -407,27 +408,30 @@
                     margin: 0;
                 }
             }
+
+            margin: 0.3rem 0 0 1.2rem;
         }
     }
 }
 
 .dbot-slider {
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: column;
-    align-items: center;
     position: fixed;
-    left: 0;
     bottom: 0;
+    left: 0;
     z-index: 1000;
-    background-color: var(--general-section-1);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
     width: 100%;
-    border-top: solid 1px var(--border-normal);
     height: 100vh;
     padding: 1.6rem;
+    border-top: solid 1px var(--border-normal);
+    background-color: var(--general-section-1);
 
     &--tour-position {
         top: 0;
+
         .progress-bar-circle:first-child {
             display: none;
         }
@@ -440,9 +444,9 @@
     &__navbar {
         display: flex;
         justify-content: space-between;
-        padding: 0 1.6rem;
         width: 100%;
         margin-bottom: 1.8rem;
+        padding: 0 1.6rem;
     }
 
     &__title {
@@ -450,9 +454,9 @@
     }
 
     &__content {
-        text-align: center;
-        padding: 0 1.6rem;
         margin-bottom: 1.6rem;
+        padding: 0 1.6rem;
+        text-align: center;
 
         &:last-child {
             margin-bottom: 3rem;
@@ -460,12 +464,12 @@
     }
 
     &__image {
+        width: 100%;
+        height: 50%;
+        margin-bottom: 0.8rem;
+        padding: 0.8rem;
         background: var(--general-section-1);
         text-align: center;
-        padding: 0.8rem;
-        width: 100%;
-        margin-bottom: 0.8rem;
-        height: 50%;
     }
 
     img {
@@ -486,23 +490,23 @@
         padding: 0 1.6rem;
 
         button {
-            height: 4rem;
             width: 100%;
+            height: 4rem;
+            margin-right: 0.8rem;
             border: 0.2rem solid $color-grey-1;
-            background: $color-white;
             border-radius: 0.4rem;
+            background: $color-white;
             outline: none;
             cursor: pointer;
-            margin-right: 0.8rem;
 
             &.default {
                 background: transparent;
             }
 
             &.danger {
-                background: $color-red;
-                border: none;
                 margin-right: 0;
+                border: none;
+                background: $color-red;
 
                 span {
                     color: $color-white;
@@ -513,8 +517,8 @@
 
     &__bot-builder-tour {
         height: unset;
-        background: $color-black-3;
         border-top: 0.1rem solid $color-black-5;
+        background: $color-black-3;
 
         .dbot-slider {
             width: 100%;
@@ -529,9 +533,9 @@
 
                         &-header {
                             color: $color-white;
-                            text-align: center;
                             font-weight: 700;
                             font-size: 1.4rem;
+                            text-align: center;
 
                             &-icon {
                                 filter: invert(1);
@@ -550,18 +554,20 @@
             }
 
             &__status {
-                height: 5rem;
-                display: flex;
                 @extend .position-center;
+
+                display: flex;
                 justify-content: flex-start;
+                height: 5rem;
             }
 
             &__progress-bar {
+                @extend .position-center;
+
+                justify-content: flex-start;
+                align-items: center;
                 width: 50%;
                 margin-bottom: unset;
-                @extend .position-center;
-                align-items: center;
-                justify-content: flex-start;
 
                 .progress-bar-circle {
                     opacity: 0.16;
@@ -569,8 +575,9 @@
             }
 
             &__button-group {
-                width: 50%;
                 @extend .position-center;
+
+                width: 50%;
 
                 .default {
                     background: transparent;
@@ -615,18 +622,18 @@
     }
 
     &__content {
-        background-color: $color-black-3;
         overflow: hidden;
-        transition: all 0.4s ease-in-out;
         max-height: 0;
-        opacity: 0;
-        color: $color-white;
         padding: 1rem 0;
+        background-color: $color-black-3;
+        color: $color-white;
         font-size: 1.2rem;
+        opacity: 0;
+        transition: all 0.4s ease-in-out;
 
         &--open {
-            opacity: 1;
             max-height: 50rem;
+            opacity: 1;
         }
 
         .joyride-content {
@@ -637,16 +644,16 @@
 
 .bot-notification {
     .dc-toast__message {
-        background: var(--text-prominent);
-        font-size: 1.2rem;
-        position: absolute;
-        top: -5rem;
-        left: 20rem;
-
         @include mobile {
             top: -12rem;
             left: 10rem;
         }
+
+        position: absolute;
+        top: -5rem;
+        left: 20rem;
+        background: var(--text-prominent);
+        font-size: 1.2rem;
     }
 }
 
@@ -662,20 +669,20 @@
 }
 
 .dbot-tour-blink {
-    -webkit-animation: blink 1.25s infinite;
-    -moz-animation: blink 1.25s ease-in infinite;
-    animation: blink 1.25s ease-in infinite;
-    border-radius: $BORDER-RADIUS * 12.5;
-    height: 2.5rem !important;
     width: 2.5rem !important;
+    height: 2.5rem !important;
     padding: 0.2rem 0;
+    border-radius: $BORDER-RADIUS * 12.5;
+    animation: blink 1.25s infinite;
+    animation: blink 1.25s ease-in infinite;
+    animation: blink 1.25s ease-in infinite;
 }
 
 .import-notification {
     position: fixed;
-    z-index: 1;
-    left: 0;
     bottom: 7rem;
+    left: 0;
+    z-index: 1;
 
     .dc-toast__message {
         background: var(--text-general);

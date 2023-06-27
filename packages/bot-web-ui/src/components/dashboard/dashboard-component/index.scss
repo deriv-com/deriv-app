@@ -5,29 +5,30 @@
 }
 
 .bot-dashboard {
-    position: relative;
-    height: calc(100vh - 8.4rem);
-    overflow: hidden;
-
     @include mobile {
         height: calc(100vh - 3.4rem);
     }
 
-    .toolbar__section {
-        justify-content: end;
+    position: relative;
+    overflow: hidden;
+    height: calc(100vh - 8.4rem);
 
+    .toolbar__section {
         @include mobile {
             column-gap: 1rem;
         }
+
+        justify-content: end;
     }
 
     .run-panel__container {
-        height: var(--tab-content-height) !important;
         position: sticky;
+        height: var(--tab-content-height) !important;
+        margin-top: 1rem;
+        transition: all 0.4s;
+
         // TODO: need to set global variables for translation
         transform: translateX(calc(367px));
-        transition: all 0.4s;
-        margin-top: 1rem;
 
         &--tour-active {
             transform: translateX(calc(0px)) !important;
@@ -56,9 +57,9 @@
     }
 
     &__container {
-        border: none;
-        max-width: 100%;
         width: 100%;
+        max-width: 100%;
+        border: none;
 
         .dc-tabs {
             &__active-line {
@@ -71,26 +72,25 @@
             }
 
             &__list {
-                background: var(--general-section-1);
-                justify-content: start;
-
                 @include mobile {
                     overflow-x: auto;
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
 
                     &::-webkit-scrollbar {
                         display: none;
                     }
-
-                    -ms-overflow-style: none;
-                    scrollbar-width: none;
                 }
+
+                justify-content: start;
+                background: var(--general-section-1);
 
                 &--header {
                     &--dashboard {
                         &__tabs {
                             @include mobile {
-                                width: 100%;
                                 overflow-x: auto;
+                                width: 100%;
                             }
                         }
                     }
@@ -99,39 +99,40 @@
 
             &__content {
                 @include mobile {
-                    width: 100%;
                     overflow-x: auto;
+                    width: 100%;
                 }
 
                 &--dashboard {
                     &__tabs {
-                        display: flex;
-                        justify-content: space-between;
-
                         @include mobile {
                             flex-direction: column;
                             background-color: var(--general-section-1);
                         }
+
+                        display: flex;
+                        justify-content: space-between;
                     }
                 }
             }
 
             &__item {
-                border-top-left-radius: 1rem;
-                border-top-right-radius: 1rem;
-                height: 4.8rem;
                 @include align-center;
 
+                height: 4.8rem;
+                border-top-left-radius: 1rem;
+                border-top-right-radius: 1rem;
+
                 &__loaded {
-                    text-align: left;
                     padding-left: 1.5rem;
+                    text-align: left;
                 }
 
                 svg {
                     width: 1.6rem;
                     height: 1.6rem;
-                    padding-right: 0;
                     margin-right: 0.8rem;
+                    padding-right: 0;
                 }
             }
         }
@@ -148,15 +149,14 @@
 
 .db-sidebar {
     position: relative;
-    background-color: var(--general-main-1);
-    padding: 2.4rem;
+    display: none;
     height: 100%;
+    padding: 2.4rem;
+    background-color: var(--general-main-1);
 
     &--block {
         display: block;
     }
-
-    display: none;
 
     &__images {
         background: var(--general-section-6);
@@ -166,17 +166,17 @@
 .db-info-panel {
     &__close-action {
         position: absolute;
-        right: 1.4rem;
         top: 1.4rem;
-        height: 2rem;
+        right: 1.4rem;
         width: 2rem;
+        height: 2rem;
+        border-radius: 1rem;
         line-height: 2.3rem;
         text-align: center;
-        border-radius: 1rem;
 
         &:hover {
-            cursor: pointer;
             background: var(--general-section-1);
+            cursor: pointer;
         }
     }
 
@@ -195,40 +195,40 @@
         width: 100%;
 
         &--tour-active {
-            width: calc(100% - 36rem);
-
             @include mobile {
                 width: 100%;
             }
+
+            width: calc(100% - 36rem);
         }
 
         &__content {
-            min-width: 70%;
-            display: flex;
-            justify-content: center;
-            height: var(--tab-content-height);
-            flex-grow: 1;
-            background: var(--general-main-1);
-            overflow: hidden;
-            position: relative;
-
             @include desktop {
                 align-items: center;
                 padding: 2.2rem 0;
             }
 
             @include mobile {
-                height: var(--tab-content-height-mobile);
                 align-items: flex-start;
+                height: var(--tab-content-height-mobile);
             }
+
+            position: relative;
+            display: flex;
+            flex-grow: 1;
+            justify-content: center;
+            overflow: hidden;
+            min-width: 70%;
+            height: var(--tab-content-height);
+            background: var(--general-main-1);
         }
 
         &__mobile-container {
             display: flex;
             align-items: center;
+            height: 3.2rem;
             margin: 1.6rem 1.6rem 1.4rem;
             column-gap: 1rem;
-            height: 3.2rem;
 
             &--minimized {
                 height: 3.6rem;
@@ -236,12 +236,6 @@
         }
 
         &__centered {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            width: 50%;
-
             @include tablet {
                 width: 100%;
             }
@@ -251,6 +245,12 @@
                 padding: 0 1rem;
             }
 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+
             &--not-listed {
                 @include desktop {
                     width: 50%;
@@ -258,16 +258,13 @@
             }
 
             &--listed {
-                margin-top: 10rem;
                 align-items: unset;
+                margin-top: 10rem;
                 padding: 1rem 3rem;
             }
         }
 
         &__preview {
-            width: 50%;
-            height: calc(100% + 2rem);
-
             @include mobile {
                 display: none;
             }
@@ -276,22 +273,26 @@
                 display: none;
             }
 
+            width: 50%;
+            height: calc(100% + 2rem);
+
             &__retrigger {
                 button {
-                    background: $color-grey-2;
-                    border-radius: 2.4rem;
-                    outline: none;
-                    border: none;
-                    height: 4rem;
-                    width: 12.8rem;
                     @include align-center;
-                    cursor: pointer;
 
                     @include mobile {
                         width: 3.2rem;
                         height: 3.2rem;
                         padding: 0.8rem;
                     }
+
+                    width: 12.8rem;
+                    height: 4rem;
+                    border: none;
+                    border-radius: 2.4rem;
+                    background: $color-grey-2;
+                    outline: none;
+                    cursor: pointer;
                 }
 
                 &__text {
@@ -309,13 +310,14 @@
                 padding: 2rem;
 
                 button {
-                    background: $color-grey-2;
-                    border-radius: 2.4rem;
-                    outline: none;
-                    border: none;
-                    height: 4rem;
-                    width: 12.8rem;
                     @include align-center;
+
+                    width: 12.8rem;
+                    height: 4rem;
+                    border: none;
+                    border-radius: 2.4rem;
+                    background: $color-grey-2;
+                    outline: none;
                     cursor: pointer;
                 }
 
@@ -332,35 +334,35 @@
             &--not-listed {
                 @include mobile {
                     width: 90%;
-                    text-align: end;
                     margin: 0 !important;
+                    text-align: end;
                 }
             }
         }
 
         &__description {
             @include desktop {
-                text-align: center;
                 margin-bottom: 4rem;
+                text-align: center;
             }
 
             &__loaded {
-                text-align: left;
-
                 @include desktop {
                     margin-top: 12rem;
                 }
 
+                text-align: left;
+
                 &--listed {
-                    text-align: left;
                     padding: 2rem 2rem 0 0;
+                    text-align: left;
                 }
 
                 &--not-listed {
                     @include mobile {
-                        text-align: center;
                         margin-bottom: 1.4rem;
                         padding: 0 0.6rem;
+                        text-align: center;
                     }
                 }
             }
@@ -368,12 +370,12 @@
 
         &__info-panel {
             position: relative;
-            background-color: var(--general-main-1);
-            padding: 2.4rem;
-            margin-left: 1.6rem;
             display: none;
-            height: calc(100vh - 16.7rem);
             overflow-y: auto;
+            height: calc(100vh - 16.7rem);
+            margin-left: 1.6rem;
+            padding: 2.4rem;
+            background-color: var(--general-main-1);
 
             &--active {
                 display: block;
@@ -391,44 +393,44 @@
             }
 
             &__tiles {
-                word-wrap: break-word;
-                font-size: 1.3rem;
-                text-align: center;
-                display: flex;
-                justify-content: center;
-                align-items: flex-start;
-
                 @include mobile {
                     flex-wrap: wrap;
                 }
 
-                &--minimized {
-                    align-items: flex-start;
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                font-size: 1.3rem;
+                text-align: center;
+                word-wrap: break-word;
 
+                &--minimized {
                     @include mobile-tablet-mix {
                         display: flex;
-                        justify-content: space-around;
                         flex-flow: unset;
+                        justify-content: space-around;
                     }
+
+                    align-items: flex-start;
                 }
             }
 
             &__disabled-card {
-                pointer-events: none;
-                cursor: not-allowed;
                 opacity: 0.6;
+                cursor: not-allowed;
+                pointer-events: none;
             }
 
             &__block {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: column;
-                padding-right: 2.4rem;
-
                 @include mobile {
                     padding: 1rem;
                 }
+
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding-right: 2.4rem;
 
                 &:hover {
                     cursor: pointer;
@@ -436,8 +438,8 @@
 
                 span {
                     width: 9.1rem;
-                    word-wrap: break-word;
                     text-align: center;
+                    word-wrap: break-word;
                 }
 
                 &--minimized {
@@ -451,10 +453,10 @@
             }
 
             &__images {
-                background-color: var(--general-section-1);
                 margin-bottom: 0.8rem;
-                border-radius: 0.8rem;
                 padding: 1.6rem;
+                border-radius: 0.8rem;
+                background-color: var(--general-section-1);
 
                 &--minimized {
                     @include mobile {
@@ -472,12 +474,12 @@
 
                 &__recent-item-text {
                     display: -webkit-box;
-                    max-width: 90%;
-                    -webkit-line-clamp: 1;
-                    -webkit-box-orient: vertical;
                     overflow: hidden;
+                    max-width: 90%;
                     text-overflow: ellipsis;
                     word-break: break-all;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
                 }
             }
         }

@@ -50,7 +50,6 @@
             @include typeface(--small-left-normal-active, none);
 
             content: attr(data-tooltip);
-            width: max-content;
             width: 220px;
             max-width: 280px;
             margin-bottom: 10px;

@@ -103,7 +103,6 @@ $MIN_HEIGHT_FLOATING: calc(
         & .dc-vertical-tab {
             &__title {
                 position: sticky;
-                position: sticky;
                 top: 0;
                 z-index: 2;
                 width: calc(100vw - 22.8rem);
@@ -3046,7 +3045,6 @@ $MIN_HEIGHT_FLOATING: calc(
             > * {
                 display: block;
                 margin: 2rem auto;
-                text-align: center;
                 text-align: center;
             }
         }

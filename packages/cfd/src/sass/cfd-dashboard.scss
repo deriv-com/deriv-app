@@ -714,7 +714,6 @@
         }
 
         perspective: 100rem;
-        perspective: 100rem;
     }
 
     &-container {
@@ -725,8 +724,6 @@
 
         width: 29rem;
         transition: all 0.25s ease-in;
-        transition: all 0.25s ease-in;
-        transform-style: preserve-3d;
         transform-style: preserve-3d;
 
         &.synthetic,
@@ -741,7 +738,6 @@
 
     &-flipped {
         transform: rotateY(180deg);
-        transform: rotateY(180deg);
     }
 
     &-front,
@@ -750,19 +746,15 @@
         top: 0;
         left: 0;
         backface-visibility: hidden;
-        backface-visibility: hidden;
-        transform-style: preserve-3d;
         transform-style: preserve-3d;
     }
 
     &-front {
         z-index: 2;
         transform: rotateY(0deg);
-        transform: rotateY(0deg);
     }
 
     &-back {
-        transform: rotateY(-180deg);
         transform: rotateY(-180deg);
     }
 
@@ -843,7 +835,6 @@
         }
 
         &-back-button {
-            transition: transform 0.25s linear;
             transition: transform 0.25s linear;
         }
 

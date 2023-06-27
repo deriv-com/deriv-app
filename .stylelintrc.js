@@ -29,6 +29,7 @@ module.exports = {
         'value-keyword-case': 'lower',
         'media-feature-range-notation': 'prefix',
         'color-function-notation': null,
+        'declaration-block-no-duplicate-properties': true,
 
         // Temporary disabled rules because of the dirty styles
         'selector-class-pattern': null,

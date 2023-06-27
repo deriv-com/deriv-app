@@ -219,7 +219,6 @@
 
     &--1 {
         @include mobile {
-            background: var(--purchase-section-1);
             background: linear-gradient(
                 0deg,
                 var(--purchase-section-1) 0%,
@@ -245,7 +244,6 @@
 
         &__vanilla-opts {
             @include mobile {
-                background: var(--purchase-section-1);
                 background: linear-gradient(
                     0deg,
                     var(--purchase-section-1) 0%,
@@ -259,7 +257,6 @@
 
     &--2 {
         @include mobile {
-            background: var(--purchase-section-2);
             background: linear-gradient(
                 0deg,
                 var(--purchase-section-2) 0%,
@@ -285,7 +282,6 @@
 
         &__vanilla-opts {
             @include mobile {
-                background: var(--purchase-section-1);
                 background: linear-gradient(
                     0deg,
                     var(--purchase-section-2) 0%,

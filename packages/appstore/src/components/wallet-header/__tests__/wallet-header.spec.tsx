@@ -116,6 +116,7 @@ describe('<WalletHeader />', () => {
             mocked_props.is_demo = true;
             mocked_props.currency = 'EUR';
             mocked_props.balance = 0;
+            mocked_props.is_selected = false;
             render(
                 <StoreProvider store={mockedRootStore}>
                     <WalletHeader wallet_account={mocked_props} />

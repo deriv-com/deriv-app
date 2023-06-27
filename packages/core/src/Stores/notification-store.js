@@ -228,7 +228,7 @@ export default class NotificationStore extends BaseStore {
             this.notification_messages = this.notification_messages.filter(
                 notification => notification.platform === 'Account'
             );
-        } else if (window.location.pathname !== routes.cashier_p2p) {
+        } else if (!window.location.pathname.includes(routes.cashier_p2p)) {
             this.notification_messages = this.notification_messages.filter(notification => {
                 if (notification.platform === undefined || notification.platform.includes(getPathname())) {
                     return true;

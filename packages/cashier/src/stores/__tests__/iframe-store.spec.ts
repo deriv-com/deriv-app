@@ -49,6 +49,7 @@ describe('IframeStore', () => {
     it('should clear timeout cashier url', () => {
         jest.useFakeTimers();
 
+        // @ts-expect-error since iframe store will be removed in upcoming PR we put expect error statement here
         iframe_store.timeout_session = 999;
         iframe_store.clearTimeoutCashierUrl();
 
@@ -118,14 +119,17 @@ describe('IframeStore', () => {
 
         expect(spyRemoveOnIframeLoaded).toHaveBeenCalledTimes(1);
 
+        // @ts-expect-error since iframe store will be removed in upcoming PR we put expect error statement here
         const spyOnIframeLoaded = jest.spyOn(iframe_store, 'onIframeLoaded');
 
+        // @ts-expect-error since iframe store will be removed in upcoming PR we put expect error statement here
         spyOnIframeLoaded({ origin: 'cashier' });
 
         expect(iframe_store.iframe_height).toBe(window.innerHeight - 190);
 
         iframe_store.root_store.ui.is_mobile = true;
 
+        // @ts-expect-error since iframe store will be removed in upcoming PR we put expect error statement here
         spyOnIframeLoaded({ origin: 'cashier' });
 
         expect(iframe_store.iframe_height).toBe(window.innerHeight - 100);

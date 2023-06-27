@@ -18,7 +18,7 @@ type TDropdown = {
     classNameItems?: string;
     classNameLabel?: string;
     disabled?: boolean;
-    error?: string;
+    error?: string | JSX.Element;
     handleBlur?: {
         (e: React.FocusEvent<HTMLElement>): void;
         <T = string | Event>(fieldOrEvent: T): T extends string ? (e: Event) => void : void;
@@ -35,7 +35,7 @@ type TDropdown = {
     label?: string;
     list_height?: string;
     list_portal_id?: string;
-    list: TList;
+    list: TList | Record<string, TList>;
     name?: string;
     no_border?: boolean;
     onChange?: (e: { target: { name: string; value: string } }) => void;
@@ -58,7 +58,7 @@ type TDropdownList = {
     is_alignment_top?: boolean;
     is_large?: boolean;
     is_list_visible: boolean;
-    list: TList;
+    list: TList | Record<string, TListItem[]>;
     nodes: React.RefObject<Map<string, HTMLDivElement | null>>;
     onKeyPressed: (event: KeyboardEvent, item: TListItem) => void;
     parent_ref: React.RefObject<HTMLElement>;
@@ -281,7 +281,7 @@ const Dropdown = ({
 
     useOnClickOutside(wrapper_ref, onClickOutSide, () => is_list_visible);
 
-    const isSingleOption = () => list.length < 2;
+    const isSingleOption = () => Array.isArray(list) && list.length < 2;
 
     const containerClassName = () => {
         return classNames('dc-dropdown-container', className, {
@@ -378,7 +378,8 @@ const Dropdown = ({
         // For char presses, we do a search for the item:
         if (event.key.length === 1 && list.length) {
             const char = event.key.toLowerCase();
-            const item_starting_with_char = list.find(li => li.value && li.value[0].toLowerCase() === char);
+            const item_starting_with_char =
+                Array.isArray(list) && list.find(li => li.value && li.value[0].toLowerCase() === char);
             if (!item_starting_with_char) return;
 
             const item_ref = nodes.current.get(item_starting_with_char.value);

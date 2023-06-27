@@ -264,7 +264,8 @@ export default class BaseStore {
     addRule(property: string, rules: string) {
         this.validation_rules[property as keyof typeof this.validation_rules] = rules;
 
-        // TODO: CHECK THIS TYPE ERROR
+        // @ts-expect-error since base store will be refactored in upcoming PR
+        // and this line will be removed from the file, we put expect error statement here
         intercept(this, property, change => this.validateProperty(property, change.newValue));
     }
 

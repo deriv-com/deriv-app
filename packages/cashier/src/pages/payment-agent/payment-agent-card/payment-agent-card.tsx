@@ -5,12 +5,12 @@ import PaymentAgentCardDescription from './payment-agent-card-description';
 import PaymentAgentDepositDetails from '../payment-agent-deposit-details';
 import PaymentAgentListedWithdrawForm from '../payment-agent-listed-withdraw-form';
 import './payment-agent-card.scss';
-import { TPaymentAgent } from '../../../types';
+import { TPartialPaymentAgentList } from '../../../types';
 
 type TPaymentAgentCard = {
     is_dark_mode_on?: boolean;
     is_deposit?: boolean;
-    payment_agent: TPaymentAgent;
+    payment_agent: TPartialPaymentAgentList;
 };
 
 const PaymentAgentCard = ({ is_dark_mode_on = false, is_deposit = false, payment_agent }: TPaymentAgentCard) => {

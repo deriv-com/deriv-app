@@ -65,7 +65,7 @@ const Item = ({ onKeyPressed, value, item, handleSelect, nodes, has_symbol, is_a
             id={item.value}
         >
             {!!has_symbol && item.has_tooltip && (
-                <Popover alignment='left' message={getCurrencyDisplayCode(item.text)}>
+                <Popover alignment='left' message={getCurrencyDisplayCode(item.text as string)}>
                     <Text
                         size='xs'
                         line_height='s'

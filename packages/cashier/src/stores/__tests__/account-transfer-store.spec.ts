@@ -50,7 +50,7 @@ const DXR_USD_account: TTransferAccount = {
     market_type: 'financial',
 };
 
-const DEZ_USD_account = {
+const DEZ_USD_account: TTransferAccount = {
     account_type: 'derivez',
     balance: '10.00',
     currency: 'USD',
@@ -223,10 +223,10 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set the balance by loginid', () => {
-        account_transfer_store.setAccounts([{ ...CR_USD_account, value: 'CR90000103' }]);
-        account_transfer_store.setBalanceByLoginId('CR90000103', 100);
+        account_transfer_store.setAccounts([{ ...CR_USD_account }]);
+        account_transfer_store.setBalanceByLoginId('CR90000103', '10.00');
 
-        expect(account_transfer_store.accounts_list[0].balance).toBe(100);
+        expect(account_transfer_store.accounts_list[0].balance).toBe('10.00');
     });
 
     it('should set "selected from" balance', () => {
@@ -512,12 +512,10 @@ describe('AccountTransferStore', () => {
     });
 
     it('should set accounts', () => {
-        account_transfer_store.setAccounts([
-            { account_type: 'trading', balance: '10000.00', currency: 'USD', demo_account: 0, loginid: 'MX0000000' },
-        ]);
+        account_transfer_store.setAccounts([{ balance: '10000.00', currency: 'USD', text: 'USD', value: 'MX0000000' }]);
 
         expect(account_transfer_store.accounts_list).toEqual([
-            { account_type: 'trading', balance: '10000.00', currency: 'USD', demo_account: 0, loginid: 'MX0000000' },
+            { balance: '10000.00', currency: 'USD', text: 'USD', value: 'MX0000000' },
         ]);
     });
 

@@ -1,4 +1,5 @@
 import React from 'react';
+//@ts-expect-error should be fixed in p2p package
 import P2P from '@deriv/p2p';
 import { routes, moduleLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';

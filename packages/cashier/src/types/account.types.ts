@@ -17,13 +17,17 @@ export type TAccount = {
     market_type?: string;
     nativepicker_text?: string;
     platform_icon?: TPlatformIcon;
-    status?: string;
+    status?: null | string;
     text?: JSX.Element | string;
     value?: string;
 };
 
 export type TTransferAccount = NonNullable<TransferBetweenAccountsResponse['accounts']>[number] & {
-    sub_account_type?: string;
+    currency?: string;
+    landing_company_short?: string;
+    login?: string;
+    loginid?: string;
+    sub_account_type?: 'standard' | 'financial' | 'financial_stp';
 };
 
 export type TAccountsList = {

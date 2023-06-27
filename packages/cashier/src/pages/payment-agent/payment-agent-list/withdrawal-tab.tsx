@@ -6,6 +6,7 @@ import EmailVerificationEmptyState from '../../../components/email-verification-
 import PaymentAgentContainer from '../payment-agent-container';
 import PaymentAgentWithdrawalLocked from '../payment-agent-withdrawal-locked';
 import { useCashierStore } from '../../../stores/useCashierStores';
+import { isServerError } from '../../../types';
 
 const WithdrawalTab = observer(() => {
     const verify = useVerifyEmail('paymentagent_withdraw');
@@ -27,7 +28,7 @@ const WithdrawalTab = observer(() => {
         return <Loading is_fullscreen={false} />;
     }
 
-    if (verify.error && 'code' in verify.error) return <PaymentAgentWithdrawalLocked error={verify.error} />;
+    if (isServerError(verify.error)) return <PaymentAgentWithdrawalLocked error={verify.error} />;
     if (verify.has_been_sent) return <EmailVerificationEmptyState type={'paymentagent_withdraw'} />;
     if (verification_code || payment_agent.is_withdraw) return <PaymentAgentContainer />;
 

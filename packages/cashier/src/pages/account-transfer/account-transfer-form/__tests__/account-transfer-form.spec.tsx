@@ -228,11 +228,9 @@ describe('<AccountTransferForm />', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         mockRootStore.client.account_limits = {
             daily_transfers: {
-                dxtrade: {},
-                internal: {},
-                mt5: {
-                    available: 1,
-                },
+                dxtrade: { allowed: 5, available: 5 },
+                internal: { allowed: 5, available: 5 },
+                mt5: { allowed: 5, available: 1 },
             },
         };
         mockRootStore.modules.cashier.account_transfer.selected_from.is_mt = true;
@@ -248,11 +246,9 @@ describe('<AccountTransferForm />', () => {
 
         mockRootStore.client.account_limits = {
             daily_transfers: {
-                dxtrade: {
-                    available: 1,
-                },
-                internal: {},
-                mt5: {},
+                dxtrade: { allowed: 5, available: 1 },
+                internal: { allowed: 5, available: 5 },
+                mt5: { allowed: 5, available: 5 },
             },
         };
         mockRootStore.modules.cashier.account_transfer.selected_from.is_dxtrade = true;
@@ -269,11 +265,9 @@ describe('<AccountTransferForm />', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         mockRootStore.client.account_limits = {
             daily_transfers: {
-                dxtrade: {},
-                internal: {
-                    available: 1,
-                },
-                mt5: {},
+                dxtrade: { allowed: 5, available: 5 },
+                internal: { allowed: 5, available: 1 },
+                mt5: { allowed: 5, available: 5 },
             },
         };
 

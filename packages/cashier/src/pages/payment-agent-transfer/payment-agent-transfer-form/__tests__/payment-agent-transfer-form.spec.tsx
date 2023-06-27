@@ -3,7 +3,6 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import PaymentAgentTransferForm from '../payment-agent-transfer-form';
 import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
-import { expect } from '@jest/globals';
 
 jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules', () => ({
     __esModule: true,

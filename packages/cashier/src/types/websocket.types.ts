@@ -37,8 +37,11 @@ export type TServerError = {
     code: string;
     message: string;
     details?: { [key: string]: string };
-    fields?: string[];
+    fields?: string | string[];
 };
+
+export const isServerError = (error: unknown): error is TServerError =>
+    typeof error === 'object' && error !== null && 'code' in error;
 
 type TPassthrough = {
     [k: string]: unknown;

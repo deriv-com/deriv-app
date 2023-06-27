@@ -81,7 +81,7 @@ beforeEach(() => {
 describe('GeneralStore', () => {
     it('should set function on remount', () => {
         // TODO: use the actual function smh
-        general_store.setOnRemount('function');
+        general_store.setOnRemount(jest.fn());
 
         expect(general_store.onRemount).toEqual('function');
     });

@@ -4,11 +4,11 @@ import { Icon, Text } from '@deriv/components';
 import { capitalizeFirstLetter } from '@deriv/shared';
 import { hasNormalizedPaymentMethods, getUniquePaymentAgentSupportedBanks } from './helpers';
 import PaymentAgentDetail from '../payment-agent-detail';
-import { TPaymentAgent } from '../../../types';
+import { TPartialPaymentAgentList } from '../../../types';
 
 type TPaymentAgentCardDescription = {
     is_dark_mode_on?: boolean;
-    payment_agent: TPaymentAgent;
+    payment_agent: TPartialPaymentAgentList;
 };
 
 const PaymentAgentCardDescription = ({ is_dark_mode_on, payment_agent }: TPaymentAgentCardDescription) => {

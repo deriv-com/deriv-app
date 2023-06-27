@@ -2,7 +2,7 @@ export type TListItem = {
     tooltip?: string;
     disabled?: boolean;
     has_tooltip?: boolean;
-    text: string;
+    text: string | JSX.Element;
     value: string;
 };
 
@@ -18,9 +18,9 @@ type TActiveNode = HTMLElement & {
 
 type TFocusableNode = (active_node: TActiveNode) => TActiveNode | null;
 
-export const getDisplayText = (list: TList, value: string | number) => {
+export const getDisplayText = (list: TList | Record<string, TListItem[]>, value: string | number) => {
     const findInArray = (arr_list: TList) => (arr_list.find(item => item.value === value) || {}).text;
-    let text = '';
+    let text: string | JSX.Element = '';
     if (Array.isArray(list)) {
         text = findInArray(list) || '';
     } else {

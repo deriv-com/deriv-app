@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import Error from 'Components/error';
 import './payment-agent-withdrawal-locked.scss';
 import { RouteComponentProps } from 'react-router';
-import { TServerError } from '../../../types';
+import { TError } from '../../../types';
 
 type TPaymentAgentWithdrawalLockedItemProps = {
     item: {
@@ -18,10 +18,7 @@ type TPaymentAgentWithdrawalLockedItemProps = {
 };
 
 type TPaymentAgentWithdrawalLockedProps = RouteComponentProps & {
-    error: TServerError & {
-        onClickButton?: VoidFunction;
-        setErrorMessage?: (value: string) => void;
-    };
+    error: TError;
 };
 
 const PaymentAgentWithdrawalLockedItem = ({ item }: TPaymentAgentWithdrawalLockedItemProps) => {

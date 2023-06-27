@@ -62,7 +62,7 @@ const PaymentAgentTransfer = observer(() => {
     if (is_transfer_successful) {
         return <PaymentAgentTransferReceipt />;
     }
-    return <PaymentAgentTransferForm error={error} />;
+    return <PaymentAgentTransferForm />;
 });
 
 export default PaymentAgentTransfer;

@@ -69,7 +69,7 @@ const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) 
     const [is_unlisted_withdraw, setIsUnlistedWithdraw] = React.useState(false);
 
     const list_with_default = [
-        { text: <Localize i18n_default_text='All payment methods' />, value: 0 },
+        { text: <Localize i18n_default_text='All payment methods' />, value: '0' },
         ...supported_banks,
     ];
 
@@ -122,7 +122,6 @@ const PaymentAgentContainer = observer(({ is_deposit }: TPaymentAgentContainer) 
                     <React.Fragment>
                         <DesktopWrapper>
                             <Dropdown
-                                id='payment_methods'
                                 classNameItems='cashier__drop-down-items'
                                 list={list_with_default}
                                 name='payment_methods'

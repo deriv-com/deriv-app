@@ -297,7 +297,7 @@ export default class AccountTransferStore {
             ?.trading_platform_accounts;
 
         // TODO: remove this temporary mapping when API adds market_type and sub_account_type to transfer_between_accounts
-        const accounts = transfer_between_accounts.accounts?.map(account => {
+        const accounts = transfer_between_accounts.accounts?.map((account: TTransferAccount) => {
             if (account.account_type === CFD_PLATFORMS.MT5 && Array.isArray(mt5_login_list) && mt5_login_list.length) {
                 // account_type in transfer_between_accounts (mt5|binary)
                 // gets overridden by account_type in mt5_login_list (demo|real)
@@ -368,12 +368,12 @@ export default class AccountTransferStore {
                 return a_is_mt ? -1 : 1;
             });
         }
-        const arr_accounts: TTransferAccount | TAccount[] = [];
+        const arr_accounts: TAccount[] = [];
         this.setSelectedTo({}); // set selected to empty each time so we can redetermine its value on reload
 
         const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
-        accounts?.forEach((account: TTransferAccount) => {
+        accounts?.forEach(account => {
             const cfd_platforms = {
                 mt5: { name: 'Deriv MT5', icon: 'IcMt5' },
                 dxtrade: { name: 'Deriv X', icon: 'IcRebranding' },
@@ -438,7 +438,7 @@ export default class AccountTransferStore {
                 value: account.loginid,
                 balance: account.balance,
                 currency: account.currency,
-                is_crypto: isCryptocurrency(account.currency),
+                is_crypto: isCryptocurrency(account.currency || ''),
                 is_mt: account.account_type === CFD_PLATFORMS.MT5,
                 is_dxtrade: account.account_type === CFD_PLATFORMS.DXTRADE,
                 is_derivez: account.account_type === CFD_PLATFORMS.DERIVEZ,
@@ -476,10 +476,11 @@ export default class AccountTransferStore {
 
                 //if from appstore -> set selected account as the default transfer to account
                 //if not from appstore -> set the first available account as the default transfer to account
-                if (!is_from_outside_cashier || [account_id, login].includes(account.loginid)) {
+                if (!is_from_outside_cashier || [account_id, login].includes(account.loginid || '')) {
                     this.setSelectedTo(obj_values);
                 }
             }
+
             arr_accounts.push(obj_values);
         });
         this.setAccounts(arr_accounts);
@@ -493,7 +494,7 @@ export default class AccountTransferStore {
         this.selected_to = obj_values;
     }
 
-    setAccounts(arr_accounts: TTransferAccount[]) {
+    setAccounts(arr_accounts: TAccount[]) {
         this.accounts_list = arr_accounts;
     }
 

@@ -35,8 +35,7 @@ export const getMT5Title = (account_type: string) => {
     }
     return CFD_text.financial;
 };
-
-type TPlatform = 'dxtrade' | 'mt5' | 'derivez';
+type TPlatform = 'wallet' | 'trading' | 'mt5' | 'dxtrade' | 'derivez' | 'binary' | undefined;
 type TMarketType = 'financial' | 'synthetic' | 'gaming' | 'all' | undefined;
 type TShortcode = 'svg' | 'bvi' | 'labuan' | 'vanuatu';
 type TGetAccount = {

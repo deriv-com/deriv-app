@@ -4,10 +4,10 @@ import { Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import PaymentAgentDetail from '../payment-agent-detail';
 import './payment-agent-deposit-details.scss';
-import { TPaymentAgent } from '../../../types';
+import { TPartialPaymentAgentList } from '../../../types';
 
 type TPaymentAgentDepositDetails = {
-    payment_agent: TPaymentAgent;
+    payment_agent: TPartialPaymentAgentList;
 };
 
 const PaymentAgentDepositDetails = ({ payment_agent }: TPaymentAgentDepositDetails) => {
@@ -16,7 +16,7 @@ const PaymentAgentDepositDetails = ({ payment_agent }: TPaymentAgentDepositDetai
     const PaymentAgentPhonesDetails = () => {
         return (
             <PaymentAgentDetail action='tel' icon='IcPhone' title={localize('Phone number')}>
-                {payment_agent.phone_numbers.map(phone => phone.phone_number)}
+                {payment_agent.phone_numbers?.map(phone => phone.phone_number)}
             </PaymentAgentDetail>
         );
     };

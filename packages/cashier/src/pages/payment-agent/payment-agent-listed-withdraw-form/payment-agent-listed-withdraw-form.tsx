@@ -8,7 +8,7 @@ import { observer, useStore } from '@deriv/stores';
 import ErrorDialog from 'Components/error-dialog';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './payment-agent-listed-withdraw-form.scss';
-import { TPaymentAgent } from '../../../types';
+import { TPartialPaymentAgentList } from '../../../types';
 
 type TValidateWithdrawalValueProps = {
     amount: string;
@@ -17,11 +17,11 @@ type TValidateWithdrawalValueProps = {
 type TValidateWithdrawalProps = {
     balance: string;
     currency: string;
-    payment_agent: TPaymentAgent;
+    payment_agent: TPartialPaymentAgentList;
 };
 
 type TPaymentAgentListedWithdrawForm = {
-    payment_agent: TPaymentAgent;
+    payment_agent: TPartialPaymentAgentList;
 };
 
 const validateWithdrawal = (
@@ -88,7 +88,7 @@ const PaymentAgentListedWithdrawForm = observer(({ payment_agent }: TPaymentAgen
 
     const onWithdrawalPassthrough = async (values: TValidateWithdrawalValueProps) => {
         await requestTryPaymentAgentWithdraw({
-            loginid: payment_agent.paymentagent_loginid,
+            loginid: payment_agent.paymentagent_loginid || '',
             currency,
             amount: Number(values.amount),
             verification_code,

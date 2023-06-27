@@ -8,7 +8,7 @@ export type TRoute = {
     is_invisible?: boolean;
     path?: string;
     to?: string;
-    component?: typeof React.Component;
+    component?: React.FC<any>;
     getTitle: () => string;
 };
 

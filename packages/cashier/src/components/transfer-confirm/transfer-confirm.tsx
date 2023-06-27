@@ -20,7 +20,7 @@ type WarningBulletProps = {
 
 type TTransferConfirmProps = {
     data: TRowProps[];
-    error?: TError | Record<string, never>;
+    error?: TError;
     header?: string;
     is_payment_agent_withdraw?: boolean;
     onClickBack?: VoidFunction;

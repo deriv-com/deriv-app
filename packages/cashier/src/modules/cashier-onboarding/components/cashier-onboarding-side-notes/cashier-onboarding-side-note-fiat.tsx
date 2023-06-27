@@ -31,9 +31,9 @@ const CashierOnboardingSideNoteFiat: React.FC = observer(() => {
                     components={[
                         <Text
                             key={0}
-                            color={!is_from_derivgo && 'red'}
+                            color={!is_from_derivgo ? 'red' : ''}
                             size={is_mobile ? 'xxxs' : 'xxs'}
-                            className={!is_from_derivgo && 'cashier-onboarding-side-notes__link'}
+                            className={!is_from_derivgo ? 'cashier-onboarding-side-notes__link' : ''}
                             onClick={() => (!is_from_derivgo ? window.LC_API.open_chat_window() : null)}
                         />,
                     ]}

@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Icon, ButtonLink, StaticUrl, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import ErrorStore from '../../stores/error-store';
+import type { TError } from '../../types';
 import './error.scss';
 
 type TErrorComponentProps = {
@@ -47,12 +47,7 @@ const ErrorComponent = ({ header, message, button_link, onClickButton, button_te
     </div>
 );
 
-const Error = ({
-    error,
-}: {
-    error: Pick<ErrorStore, 'code' | 'message'> &
-        Partial<Pick<ErrorStore, 'fields' | 'onClickButton' | 'setErrorMessage'>>;
-}) => {
+const Error = ({ error }: { error: TError }) => {
     const error_fields: TErrorFields = {
         address_city: localize('Town/City'),
         address_line_1: localize('First line of home address'),
@@ -71,7 +66,7 @@ const Error = ({
     };
 
     const clearErrorMessage = () => {
-        error.setErrorMessage?.({ code: '', message: '' });
+        error.setErrorMessage?.({ code: '', message: '' }, null, false);
     };
 
     let AccountError;

@@ -36,6 +36,7 @@ const RouteWithSubRoutes = (route: TRouteWithSubRoutesProps) => {
         } else {
             const default_subroute: TDefaultSubroute = route.routes?.find(r => r.default);
             const pathname = removeBranchName(location.pathname);
+
             result = (
                 <React.Fragment>
                     {!!default_subroute && pathname === route.path && <Redirect to={default_subroute.path} />}

@@ -13,7 +13,7 @@ import {
 } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
-import { TReactChangeEvent, TAccount, TAccountsList, TError, TSideNotesProps } from '../../../types';
+import { TAccount, TAccountsList, TReactChangeEvent, TServerError, TSideNotesProps } from '../../../types';
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import ErrorDialog from '../../../components/error-dialog';
 import PercentageSelector from '../../../components/percentage-selector';
@@ -25,7 +25,7 @@ import { useCashierStore } from '../../../stores/useCashierStores';
 import './account-transfer-form.scss';
 
 type TAccountTransferFormProps = {
-    error?: TError;
+    error?: TServerError;
     onClickDeposit?: () => void;
     onClickNotes?: () => void;
     onClose?: () => void;
@@ -85,7 +85,6 @@ const AccountTransferForm = observer(
 
         const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
         const { account_transfer, crypto_fiat_converter, transaction_history, general_store } = useCashierStore();
-
         const {
             account_transfer_amount,
             accounts_list,
@@ -115,13 +114,13 @@ const AccountTransferForm = observer(
         } = crypto_fiat_converter;
         const { crypto_transactions, onMount: recentTransactionOnMount } = transaction_history;
 
-        const [from_accounts, setFromAccounts] = React.useState({});
-        const [to_accounts, setToAccounts] = React.useState({});
+        const [from_accounts, setFromAccounts] = React.useState<Record<string, TAccount[]>>({});
+        const [to_accounts, setToAccounts] = React.useState<Record<string, TAccount[]>>({});
         const [transfer_to_hint, setTransferToHint] = React.useState<string>();
 
         const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
-
         const { daily_transfers } = account_limits;
+
         const mt5_remaining_transfers = daily_transfers?.mt5;
         const dxtrade_remaining_transfers = daily_transfers?.dxtrade;
         const derivez_remaining_transfers = daily_transfers?.derivez;
@@ -367,6 +366,17 @@ const AccountTransferForm = observer(
             );
         };
 
+        const transformAccounts = (accounts: Record<string, TAccount[]>) => {
+            const transformed_accounts: React.ComponentProps<typeof Dropdown>['list'] = {};
+            Object.keys(accounts).forEach(account_title => {
+                transformed_accounts[account_title] = accounts[account_title].map(el => ({
+                    text: el.text || '',
+                    value: el.value || '',
+                }));
+            });
+            return transformed_accounts;
+        };
+
         return (
             <div
                 className='cashier__wrapper account-transfer-form__wrapper'
@@ -410,20 +420,18 @@ const AccountTransferForm = observer(
                                         data-testid='dt_account_transfer_form_drop_down_wrapper'
                                     >
                                         <Dropdown
-                                            id='transfer_from'
                                             className='account-transfer-form__drop-down'
                                             classNameDisplay='cashier__drop-down-display'
-                                            classNameDisplaySpan='cashier__drop-down-display-span'
                                             classNameItems='cashier__drop-down-items'
                                             classNameLabel='cashier__drop-down-label'
                                             test_id='dt_account_transfer_form_drop_down'
                                             is_large
                                             label={localize('From')}
-                                            list={from_accounts}
+                                            list={transformAccounts(from_accounts)}
                                             list_height='404'
                                             name='transfer_from'
                                             value={selected_from.value}
-                                            onChange={(e: TReactChangeEvent) => {
+                                            onChange={(e: { target: { name: string; value: string } }) => {
                                                 onChangeTransferFrom(e);
                                                 handleChange(e);
                                                 setFieldValue('amount', '');
@@ -432,21 +440,19 @@ const AccountTransferForm = observer(
                                             error={selected_from.error}
                                         />
                                         <Dropdown
-                                            id='transfer_to'
                                             className='account-transfer-form__drop-down account-transfer-form__drop-down--to-dropdown'
                                             classNameDisplay='cashier__drop-down-display'
-                                            classNameDisplaySpan='cashier__drop-down-display-span'
                                             classNameItems='cashier__drop-down-items'
                                             classNameLabel='cashier__drop-down-label'
                                             classNameHint='account-transfer-form__hint'
                                             test_id='dt_account_transfer_form_to_dropdown'
                                             is_large
                                             label={localize('To')}
-                                            list={to_accounts}
+                                            list={transformAccounts(to_accounts)}
                                             list_height='404'
                                             name='transfer_to'
                                             value={selected_to.value}
-                                            onChange={(e: TReactChangeEvent) => {
+                                            onChange={(e: { target: { name: string; value: string } }) => {
                                                 onChangeTransferTo(e);
                                                 setFieldValue('amount', '');
                                                 setTimeout(() => setFieldError('amount', ''));

@@ -15,12 +15,12 @@ class PromiseClass {
 }
 
 // check if mlt or dxtrade for account text
-const getAccountText = (account: { is_dxtrade: boolean; is_mt: boolean; text: string }) => {
-    let account_text: string;
+const getAccountText = (account: { is_dxtrade?: boolean; is_mt?: boolean; text?: string | JSX.Element }) => {
+    let account_text: string | JSX.Element;
     if (account.is_dxtrade || account.is_mt) {
-        account_text = account.text;
+        account_text = account.text || '';
     } else {
-        account_text = getCurrencyDisplayCode(account.text);
+        account_text = getCurrencyDisplayCode(account.text as string);
     }
 
     return account_text;

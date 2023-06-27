@@ -57,6 +57,10 @@ type TActiveAccount = TAccount & {
     is_virtual: number;
 };
 
+type TPlatforms = 'ctrader' | 'derivez' | 'dxtrade' | 'internal' | 'mt5';
+
+type TDailyTransfers = Partial<Record<TPlatforms, { allowed: number; available: number }>>;
+
 type TTradingPlatformAvailableAccount = {
     market_type: 'financial' | 'gaming' | 'all';
     name: string;
@@ -135,7 +139,7 @@ type TClientStore = {
     account_limits: Partial<AccountLimitsResponse['get_limits']> & {
         is_loading?: boolean;
         api_initial_load_error?: string;
-    };
+    } & { daily_transfers?: TDailyTransfers };
     account_list: TAccountsList;
     account_settings: GetSettings;
     account_status: Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;

@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import TransferConfirm from '../transfer-confirm';
 import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
-import { TError } from 'Types';
+import { TError } from '../../../types';
 
 const mock_root_store = mockStore({
     ui: {
@@ -29,7 +29,7 @@ describe('<TransferConfirm />', () => {
             { key: '1', label: 'label 1', value: 'value 1' },
             { key: '2', label: 'label 2', value: ['value 2', 'value 3'] },
         ],
-        error: {},
+        error: {} as TError,
         onClickBack: jest.fn(),
         onClickConfirm: jest.fn(),
     };

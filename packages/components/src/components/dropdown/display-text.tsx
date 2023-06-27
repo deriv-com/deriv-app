@@ -1,12 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import { getDisplayText, TList } from './utility';
+import { getDisplayText, TList, TListItem } from './utility';
 import Text from '../text';
 
 type TDisplayText = {
     className: string;
     has_symbol?: boolean;
-    list: TList;
+    list: TList | Record<string, TListItem[]>;
     name?: string;
     placeholder?: string;
     value: string | number;

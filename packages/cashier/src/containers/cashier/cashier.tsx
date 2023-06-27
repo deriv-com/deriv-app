@@ -45,7 +45,7 @@ type TCashierOptions = {
     icon: string;
     label: string;
     path?: string;
-    value?: typeof React.Component;
+    value?: React.FC<any>;
 };
 
 const Cashier = observer(({ history, location, routes: routes_config }: TCashierProps) => {
@@ -177,6 +177,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                             vertical_tab_index={is_default_route ? 0 : tab_index}
                             is_full_width
                             is_routed
+                            //@ts-expect-error type of list property should be changed to React.FC<any>
                             list={getMenuOptions()}
                             tab_headers_note={
                                 <Button

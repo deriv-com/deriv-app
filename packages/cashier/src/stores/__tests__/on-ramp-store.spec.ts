@@ -161,7 +161,9 @@ describe('OnRampStore', () => {
 
     it('should call disposeThirdPartyJsReaction and disposeGetWidgetHtmlReaction reactions when unmount onramp', () => {
         onramp_store.onMountOnramp();
+        //@ts-expect-error disposeThirdPartyJsReaction should be a function, but we define it as null by default
         const spyDisposeThirdPartyJsReaction = jest.spyOn(onramp_store, 'disposeThirdPartyJsReaction');
+        //@ts-expect-error disposeThirdPartyJsReaction should be a function, but we define it as null by default
         const spyDisposeGetWidgetHtmlReaction = jest.spyOn(onramp_store, 'disposeGetWidgetHtmlReaction');
         onramp_store.onUnmountOnramp();
 

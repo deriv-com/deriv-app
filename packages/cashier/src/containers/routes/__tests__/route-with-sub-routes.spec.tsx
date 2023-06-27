@@ -1,5 +1,4 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import RouteWithSubRoutes from '../route-with-sub-routes';
 
@@ -22,7 +21,7 @@ afterEach(() => jest.clearAllMocks());
 
 const route = {
     getTitle: jest.fn(),
-    component: Redirect,
+    component: jest.fn(),
     is_logging_in: true,
     is_logged_in: true,
     exact: true,

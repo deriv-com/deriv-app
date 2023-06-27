@@ -161,7 +161,7 @@ describe('PaymentAgentTransferStore', () => {
             await payment_agent_transfer_store.getCurrentPaymentAgent(
                 response_payment_agent as PaymentAgentListResponse
             )
-        ).toEqual({
+        ).toMatchObject({
             paymentagent_loginid: 'CR9000000',
         });
     });

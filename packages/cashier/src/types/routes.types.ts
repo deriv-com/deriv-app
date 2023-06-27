@@ -4,7 +4,7 @@ export type TRoute = {
     default?: boolean;
     exact?: boolean;
     id?: string;
-    icon_component: string;
+    icon_component?: string;
     is_invisible?: boolean;
     path?: string;
     to?: string;

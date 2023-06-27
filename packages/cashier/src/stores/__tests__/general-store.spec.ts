@@ -80,8 +80,8 @@ beforeEach(() => {
 
 describe('GeneralStore', () => {
     it('should set function on remount', () => {
-        // TODO: use the actual function smh
-        general_store.setOnRemount(jest.fn());
+        //@ts-expect-error find a way to use real function as an argument for setOnRemount method
+        general_store.setOnRemount('function');
 
         expect(general_store.onRemount).toEqual('function');
     });

@@ -1,6 +1,5 @@
 import React from 'react';
-import { RouteComponentProps } from 'react-router';
-import { withRouter } from 'react-router-dom';
+import { useHistory } from 'react-router';
 import {
     Button,
     DesktopWrapper,
@@ -27,7 +26,7 @@ import { useCashierStore } from '../../stores/useCashierStores';
 import type { TCoreStores } from '@deriv/stores/types';
 import './cashier.scss';
 
-type TCashierProps = RouteComponentProps & {
+type TCashierProps = {
     routes: TRoute[];
     tab_index: number;
     onMount: (should_remount?: boolean) => void;
@@ -42,13 +41,14 @@ type TCashierOptions = {
     count?: number;
     default?: boolean;
     has_side_note: boolean;
-    icon: string;
+    icon?: string;
     label: string;
     path?: string;
     value?: React.FC<any>;
 };
 
-const Cashier = observer(({ history, location, routes: routes_config }: TCashierProps) => {
+const Cashier = observer(({ routes: routes_config }: TCashierProps) => {
+    const history = useHistory();
     const { common, ui, client } = useStore();
     const { withdraw, general_store, transaction_history, payment_agent } = useCashierStore();
     const { error } = withdraw;
@@ -140,13 +140,13 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         return options;
     };
 
-    const selected_route = getSelectedRoute({ routes: routes_config, pathname: location.pathname });
+    const selected_route = getSelectedRoute({ routes: routes_config, pathname: history.location.pathname });
     // const should_show_tab_headers_note =
     //     !is_virtual &&
     //     (location.pathname.startsWith(routes.cashier_deposit) ||
     //         location.pathname.startsWith(routes.cashier_withdrawal));
 
-    const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: location.pathname }).default;
+    const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: history.location.pathname }).default;
 
     // '|| !is_account_setting_loaded' condition added to make sure client_tnc_status loaded
     if (
@@ -171,7 +171,7 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
                 <PageOverlay header={getHeaderTitle()} onClickClose={onClickClose} is_from_app={is_from_derivgo}>
                     <DesktopWrapper>
                         <VerticalTab
-                            current_path={location.pathname}
+                            current_path={history.location.pathname}
                             is_floating
                             setVerticalTabIndex={setTabIndex}
                             vertical_tab_index={is_default_route ? 0 : tab_index}
@@ -225,4 +225,4 @@ const Cashier = observer(({ history, location, routes: routes_config }: TCashier
         </FadeWrapper>
     );
 });
-export default withRouter(Cashier);
+export default Cashier;

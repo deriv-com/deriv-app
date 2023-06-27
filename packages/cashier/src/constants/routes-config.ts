@@ -8,6 +8,7 @@ import { AccountTransfer, Deposit, OnRamp, PaymentAgent, PaymentAgentTransfer, W
 import { TRouteConfig, TRoute } from '../types';
 
 // Error Routes
+//@ts-expect-error moduleLoader type should be fixed in shared package
 const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ '../components/page-404')));
 export type TPage404 = typeof Page404;
 

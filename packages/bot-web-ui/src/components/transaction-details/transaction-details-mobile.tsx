@@ -33,7 +33,7 @@ const TransactionDetailsMobile = observer(() => {
                     return (
                         <div
                             className='transaction-details-modal-mobile__divider'
-                            key={`transaction-row-divider-${new Date().getTime()}`}
+                            key={`transaction-row-divider-${data}`}
                         >
                             <div className='transactions__divider-line' />
                         </div>

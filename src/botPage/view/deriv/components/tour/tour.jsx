@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Joyride, { STATUS, ACTIONS, EVENTS } from 'react-joyride';
 import { useLocation } from 'react-router-dom';
-import { set as setStorage, get as getStorage } from '../../../../../common/utils/storageManager';
+import { set as setStorage, get as getStorage } from '@storage';
 import { translate } from '../../../../../common/i18n';
 import welcome from './welcome';
 import { isMobile } from '../../../../../common/utils/tools';

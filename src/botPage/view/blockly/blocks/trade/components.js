@@ -1,9 +1,9 @@
+import { getActiveAccount } from '@storage';
 import { caution } from '../images';
 import { fieldGeneratorMapping } from '../shared';
 import { oppositesToDropdown } from '../../utils';
 import config from '../../../../common/const';
 import { translate } from '../../../../../common/i18n';
-import { getActiveAccount } from '../../../../../common/utils/storageManager';
 
 export const marketDropdown = block => {
     block

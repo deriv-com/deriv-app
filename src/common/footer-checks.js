@@ -1,6 +1,5 @@
+import { get as getStorage, getTokenList, isLoggedIn } from '@storage';
 import api from '../botPage/view/deriv/api';
-import { get as getStorage, getTokenList } from '../common/utils/storageManager';
-import { isLoggedIn } from '../botPage/view/deriv/utils';
 
 const eu_countries = [
     'it',

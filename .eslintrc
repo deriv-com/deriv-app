@@ -1,47 +1,75 @@
 {
     "root": true,
     "parser": "@babel/eslint-parser",
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        }
-    },
+    "plugins": ["prettier", "react", "react-hooks", "import", "import-helpers"],
     "env": {
         "es6": true,
         "browser": true,
         "jquery": true,
-        "jasmine": true
+        "jasmine": true,
+        "amd": true,
+        "jest": true
     },
     "globals": {
         "Blockly": false,
         "trackJs": false,
         "jest": false,
-        "dataLayer": false
+        "dataLayer": false,
+        "gapi": false,
+        "google": false
     },
-    "plugins": ["react", "prettier"],
+    "ignorePatterns": ["**/www/**/*.js", "**/temp/**/*.js", "**/translations/**/*.js"],
     "rules": {
+        "camelcase": 0,
+        "curly": 0,
+        "react/jsx-uses-react": "error",
+        "react/jsx-uses-vars": "error",
+        "import/no-extraneous-dependencies": 0,
         "linebreak-style": 0,
         "key-spacing": 0,
-        "camelcase": 0,
-        "no-param-reassign": 0,
-        "indent": 0,
-        "quotes": 0,
-        "prefer-destructuring": [
-            "error",
-            {
-                "array": false,
-                "object": false
-            },
-            {
-                "enforceForRenamedProperties": false
-            }
-        ]
+        "lines-between-class-members": 0,
+        "import/no-useless-path-segments": "error",
+        "import/prefer-default-export": 0,
+        "import/extensions": [0, { "jsx": "always", "json": "always" }],
+        "no-param-reassign": ["error", { "props": false }],
+        "import/no-named-as-default": 0,
+        "no-restricted-exports": 0,
+
+        "import/no-cycle": 0,
+        "default-param-last": 0,
+        "react-hooks/exhaustive-deps": 0
+    },
+    "extends": [
+        "prettier",
+        "airbnb-base",
+        "binary",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
+        "plugin:jest-dom/recommended"
+    ],
+    "parserOptions": {
+        "requireConfigFile": false,
+        "ecmaVersion": 8,
+        "babelOptions": {
+            "presets": ["@babel/preset-react"],
+            "plugins": [
+                ["@babel/plugin-proposal-decorators", { "legacy": true }],
+                ["@babel/plugin-proposal-class-properties", { "legacy": true }],
+                "@babel/plugin-proposal-export-default-from",
+                "@babel/plugin-proposal-object-rest-spread",
+                "@babel/plugin-proposal-export-namespace-from",
+                "@babel/plugin-syntax-dynamic-import",
+                "@babel/plugin-proposal-optional-chaining",
+                "@babel/plugin-proposal-nullish-coalescing-operator"
+            ]
+        },
+        "ecmaFeatures": {
+            "jsx": true
+        }
     },
     "settings": {
         "react": {
-            "createClass": "createReactClass", // Regex for Component Factory to use, default to "createReactClass"
-            "pragma": "React", // Pragma to use, default to "React"
-            "version": "15.0" // React version, default to the latest React stable release
+            "version": "18"
         },
         "import/resolver": {
             "webpack": {

@@ -1,3 +1,4 @@
+// eslint-disable-next-line max-classes-per-file
 import { fieldGeneratorMapping } from './blocks/shared';
 import { saveAs } from '../shared';
 import config from '../../common/const';
@@ -274,10 +275,10 @@ export const insideMainBlocks = block => {
     return parent.type && isMainBlock(parent.type);
 };
 
-export const save = (filename = 'binary-bot', collection = false, xmlDom) => {
+export const save = (filename, collection, xmlDom) => {
     xmlDom.setAttribute('collection', collection ? 'true' : 'false');
     const data = Blockly.Xml.domToPrettyText(xmlDom);
-    saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename}.xml` });
+    saveAs({ data, type: 'text/xml;charset=utf-8', filename: `${filename || 'binary-bot'}.xml` });
 };
 
 export const disable = (blockObj, message) => {
@@ -454,7 +455,7 @@ export const addLoadersFirst = (xml, header = null) =>
         }
     });
 
-const loadBlocksFromHeader = (blockStr = '', header) =>
+const loadBlocksFromHeader = (blockStr, header) =>
     new Promise((resolve, reject) => {
         let xml;
         try {
@@ -531,7 +532,7 @@ export const loadRemote = blockObj =>
                             reject(
                                 Error(
                                     translate(
-                                        "Make sure 'Access-Control-Allow-Origin' exists in the response from the server"
+                                        'Make sure \'Access-Control-Allow-Origin\' exists in the response from the server'
                                     )
                                 )
                             );
@@ -539,11 +540,15 @@ export const loadRemote = blockObj =>
                         deleteBlocksLoadedBy(blockObj.id);
                     })
                     .done(xml => {
-                        loadBlocksFromHeader(xml, blockObj).then(() => {
-                            enable(blockObj);
-                            blockObj.url = url; // eslint-disable-line no-param-reassign
-                            resolve(blockObj);
-                        }, reject);
+                        if (xml) {
+                            loadBlocksFromHeader(xml, blockObj).then(() => {
+                                enable(blockObj);
+                                blockObj.url = url; // eslint-disable-line no-param-reassign
+                                resolve(blockObj);
+                            }, reject);
+                        } else {
+                            reject();
+                        }
                     });
             }
         }

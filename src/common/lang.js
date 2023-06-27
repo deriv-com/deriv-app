@@ -1,22 +1,6 @@
-import { get as getStorage } from '../common/utils/storageManager';
-import { parseQueryString, redirectToSupportedLang, setLanguage } from '../common/utils/tools';
-import { init, supported_languages, translate } from './i18n';
-
-export const getLanguage = () => {
-    const parsed_url = parseQueryString().lang || parseQueryString().l;
-    const parsed_valid_url =
-        parsed_url?.length > 1 ? document.location.search.match(/(lang|l)=([a-z]{2})/)[2] : parsed_url;
-    const supported_storage_lang = getStorage('lang') in supported_languages ? getStorage('lang') : null;
-    const query_lang = parsed_valid_url ? parsed_valid_url || supported_storage_lang : 'en';
-    const is_query_lang_supported = query_lang in supported_languages;
-
-    if (is_query_lang_supported) {
-        return setLanguage(query_lang);
-    }
-
-    redirectToSupportedLang('en');
-    return setLanguage('en');
-};
+import { getLanguage } from '@storage';
+import { redirectToSupportedLang } from './utils/tools';
+import { init, translate } from './i18n';
 
 const addUiLang = () => {
     $('[data-i18n-text]').each(function each() {
@@ -44,11 +28,7 @@ export const load = async () => {
         redirectToSupportedLang(newLang);
     });
 
-    $('.language').text(
-        $(`.${lang}`)
-            .hide()
-            .text()
-    );
+    $('.language').text($(`.${lang}`).hide().text());
 
     if (lang === 'ach') {
         // eslint-disable-next-line no-underscore-dangle

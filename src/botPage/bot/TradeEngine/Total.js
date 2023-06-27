@@ -90,9 +90,9 @@ export default Engine =>
             const accountStat = this.getAccountStat();
             return toString && accountStat.totalProfit !== 0
                 ? roundBalance({
-                      currency,
-                      balance: +accountStat.totalProfit,
-                  })
+                    currency,
+                    balance: +accountStat.totalProfit,
+                })
                 : +accountStat.totalProfit;
         }
         /* eslint-enable */

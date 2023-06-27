@@ -1,3 +1,4 @@
+/* eslint-disable no-promise-executor-return */
 import { getLast } from '../../../common/utils/binary';
 import { translate } from '../../../common/i18n';
 import { getDirection, getLastDigit } from '../tools';

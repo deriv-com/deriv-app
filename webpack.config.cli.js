@@ -116,6 +116,9 @@ module.exports = {
         alias: {
             '@lang': path.resolve(__dirname, 'src/common/lang'),
             '@config': path.resolve(__dirname, 'src/config'),
+            '@utils': path.resolve(__dirname, 'src/utils'),
+            '@storage': path.resolve(__dirname, 'src/storage'),
+            '@constants': path.resolve(__dirname, 'src/constants'),
         },
     },
     optimization: {

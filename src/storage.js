@@ -1,4 +1,8 @@
-import { getRelatedDeriveOrigin } from '../../botPage/view/deriv/utils';
+import { getRelatedDeriveOrigin } from '@utils';
+import { AppConstants } from '@constants';
+import { supported_languages } from './common/i18n';
+import { setCookieLanguage } from './common/utils/cookieManager';
+import { parseQueryString } from './common/utils/tools';
 
 let store = {};
 let hasReadystateListener = false;
@@ -25,7 +29,7 @@ const findAccount = (accountName = '') => getTokenList().findIndex(tokenInfo => 
 
 export const findToken = (token = '') => getTokenList().findIndex(tokenInfo => tokenInfo.token === token);
 
-export const addToken = (token = '', loginInfo, hasRealityCheck = false, hasTradeLimitation = false) => {
+export const addToken = (token, loginInfo, hasRealityCheck, hasTradeLimitation) => {
     const { loginid: accountName } = loginInfo;
     const tokenList = getTokenList();
     const tokenIndex = findToken(token);
@@ -217,4 +221,37 @@ export const convertForDerivStore = tokenList => {
     });
 
     return clientAccounts;
+};
+
+export const getLanguage = () => {
+    const queryLang = parseQueryString().l ? parseQueryString().l : 'en' || get('lang');
+    const lang = queryLang in supported_languages ? queryLang : 'en';
+    set('lang', lang);
+    setCookieLanguage(lang);
+    return lang;
+};
+
+export const isLoggedIn = () => !!getTokenList()?.length;
+
+export const getActiveToken = tokenList => {
+    const active_token = get(AppConstants.STORAGE_ACTIVE_TOKEN);
+    const activeTokenObject = tokenList.filter(tokenObject => tokenObject.token === active_token);
+    return activeTokenObject.length ? activeTokenObject[0] : tokenList[0];
+};
+
+export const updateTokenList = () => {
+    const token_list = getTokenList();
+    if (token_list.length) {
+        const active_token = getActiveToken(token_list);
+        if ('loginInfo' in active_token) {
+            const current_login_id = get('active_loginid') || '';
+            token_list.forEach(token => {
+                if (current_login_id === token.loginInfo.loginid) {
+                    set('active_loginid', token.loginInfo.loginid);
+                }
+            });
+            set('client.accounts', JSON.stringify(convertForDerivStore(token_list)));
+            syncWithDerivApp();
+        }
+    }
 };

@@ -1,11 +1,11 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import config from '@config';
-import { translate } from '../../../../../../common/utils/tools';
-import { getTokenList } from '../../../../../../common/utils/storageManager';
-import { useDispatch } from 'react-redux';
-import { setAccountSwitcherToken } from '../../../store/ui-slice';
+import { getTokenList } from '@storage';
 import classNames from 'classnames';
+import { translate } from '../../../../../../common/utils/tools';
+import { setAccountSwitcherToken } from '../../../store/ui-slice';
 import { CRYPTO_CURRENCIES } from '../../../../../common/const';
 
 const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, title = 'Deriv Accounts' }) => {
@@ -54,9 +54,11 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                                 const b_is_fiat = !b_is_crypto;
                                 if (acc.is_virtual || acc1.is_virtual) {
                                     return acc.is_virtual ? 1 : -1;
-                                } else if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
+                                }
+                                if ((a_is_crypto && b_is_crypto) || (a_is_fiat && b_is_fiat)) {
                                     return a_currency < b_currency ? -1 : 1;
-                                } else if (a_is_fiat && b_is_crypto) {
+                                }
+                                if (a_is_fiat && b_is_crypto) {
                                     return -1;
                                 }
                                 return 1;
@@ -64,12 +66,11 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                             .map((account, index) => {
                                 const { demo_account, currency, balance } = account;
                                 const currency_icon = demo_account ? 'virtual' : currency?.toLowerCase() || 'unknown';
-                                const getBalance = () => {
-                                    return balance.toLocaleString(undefined, {
+                                const getBalance = () =>
+                                    balance.toLocaleString(undefined, {
                                         minimumFractionDigits:
                                             config.currency_name_map[currency]?.fractional_digits ?? 2,
                                     });
-                                };
                                 return (
                                     isReal !== Boolean(demo_account) && (
                                         <div
@@ -90,12 +91,15 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                                                 {!currency && !active_account_name?.includes('MF') && (
                                                     <span className='symbols'>{translate('No currency assigned')}</span>
                                                 )}
-                                                {demo_account
-                                                    ? translate('Demo')
-                                                    : account.account?.includes('MF') &&
-                                                      active_account_name?.includes('MF')
-                                                    ? 'Multiplers'
-                                                    : config.currency_name_map[currency]?.name || currency}
+                                                {
+                                                    // eslint-disable-next-line no-nested-ternary
+                                                    demo_account
+                                                        ? translate('Demo')
+                                                        : account.account?.includes('MF') &&
+                                                          active_account_name?.includes('MF')
+                                                            ? 'Multiplers'
+                                                            : config.currency_name_map[currency]?.name || currency
+                                                }
 
                                                 <div className='account__switcher-loginid'>{account.account}</div>
                                             </span>
@@ -114,6 +118,14 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
             </div>
         </div>
     );
+};
+
+TabContent.propTypes = {
+    accounts: PropTypes.array,
+    isActive: PropTypes.bool,
+    setIsAccDropdownOpen: PropTypes.func,
+    tab: PropTypes.string,
+    title: PropTypes.string,
 };
 
 export default TabContent;

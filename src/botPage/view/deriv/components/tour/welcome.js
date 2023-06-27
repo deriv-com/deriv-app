@@ -22,6 +22,11 @@ const CustomBeaconComponent = ({ closeTourPermanently, continueTour }) => (
     </div>
 );
 
+CustomBeaconComponent.propTypes = {
+    closeTourPermanently: () => {},
+    continueTour: () => {},
+};
+
 const SecondStep = () => <p>{translate('Drag and drop block files or make your own strategies.')}</p>;
 
 const ThirdStep = () => <p>{translate('Add more blocks from here to your bot.')}</p>;
@@ -41,7 +46,7 @@ const SixthStep = () => (
     </p>
 );
 
-function welcome(closeTourPermanently, continueTour) {
+function Welcome(closeTourPermanently, continueTour) {
     const { is_logged } = useSelector(state => state.client);
     // [TODO]: Translations are not working
     const steps = [
@@ -125,4 +130,9 @@ function welcome(closeTourPermanently, continueTour) {
     return steps;
 }
 
-export default welcome;
+Welcome.propTypes = {
+    closeTourPermanently: () => {},
+    continueTour: () => {},
+};
+
+export default Welcome;

@@ -3,9 +3,8 @@ import Helmet from 'react-helmet';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { TrackJS } from 'trackjs';
-import { addTokenIfValid, AppConstants, queryToObjectArray } from '../../../../../common/appId';
-import { getLanguage } from '../../../../../common/lang';
-import { observer as globalObserver } from '../../../../../common/utils/observer';
+import { AppConstants } from '@constants';
+import { getRelatedDeriveOrigin } from '@utils';
 import {
     convertForDerivStore,
     get as getStorage,
@@ -13,7 +12,11 @@ import {
     isDone,
     removeAllTokens,
     set as setStorage,
-} from '../../../../../common/utils/storageManager';
+    getLanguage,
+    isLoggedIn,
+} from '@storage';
+import { addTokenIfValid, queryToObjectArray } from '../../../../../common/appId';
+import { observer as globalObserver } from '../../../../../common/utils/observer';
 import { parseQueryString, translate } from '../../../../../common/utils/tools';
 import _Blockly from '../../../blockly';
 import LogTable from '../../../LogTable';
@@ -23,8 +26,7 @@ import initialize, { applyToolboxPermissions } from '../../blockly-worksace';
 import SidebarToggle from '../../components/SidebarToggle';
 import { updateActiveAccount, updateActiveToken, updateIsLogged } from '../../store/client-slice';
 import { setShouldReloadWorkspace, updateShowTour } from '../../store/ui-slice';
-import { getRelatedDeriveOrigin, isLoggedIn } from '../../utils';
-import BotUnavailableMessage from '../Error/bot-unavailable-message-page.jsx';
+import BotUnavailableMessage from '../Error/bot-unavailable-message-page';
 import ToolBox from '../ToolBox';
 
 const Main = () => {
@@ -46,6 +48,7 @@ const Main = () => {
                 .then(() => setIsWorkspaceRendered(_blockly?.is_workspace_rendered));
             dispatch(setShouldReloadWorkspace(false));
         }
+        // eslint-disable-next-line
     }, []);
 
     React.useEffect(() => {
@@ -54,6 +57,7 @@ const Main = () => {
             dispatch(setShouldReloadWorkspace(false));
             applyToolboxPermissions();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [should_reload_workspace, account_type]);
 
     const init = () => {

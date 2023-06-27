@@ -2,10 +2,12 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import config from '@config';
+import { AppConstants } from '@constants';
+import { generateDerivLink } from '@utils';
+import { getTokenList, set as setStorage, isLoggedIn } from '@storage';
 import { translate } from '../../../../../../common/utils/tools';
 import Notifications from './notifications.jsx';
 import AccountDropdown from './account-dropdown.jsx';
-import { generateDerivLink, isLoggedIn } from '../../../utils';
 import Modal from '../../../components/modal';
 import AccountSwitchModal from './account-switch-modal.jsx';
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
@@ -16,8 +18,7 @@ import {
     setShouldReloadWorkspace,
 } from '../../../store/ui-slice';
 import Tour, { TourTargets } from '../../../components/tour';
-import { addTokenIfValid, AppConstants } from '../../../../../../common/appId';
-import { getTokenList, set as setStorage } from '../../../../../../common/utils/storageManager';
+import { addTokenIfValid } from '../../../../../../common/appId';
 import { updateActiveToken } from '../../../store/client-slice';
 import Popover from '../../../components/popover';
 
@@ -80,10 +81,10 @@ const AccountActions = () => {
                 <div id='header__acc-balance' className='header__acc-balance'>
                     {currency
                         ? balance.toLocaleString(undefined, {
-                              minimumFractionDigits: currency_name_map[currency]?.fractional_digits ?? 2,
-                          })
+                            minimumFractionDigits: currency_name_map[currency]?.fractional_digits ?? 2,
+                        })
                         : ''}
-                    <span className='symbols'>&nbsp;{currency ? currency : translate('No currency assigned')}</span>
+                    <span className='symbols'>&nbsp;{currency || translate('No currency assigned')}</span>
                     {active_account_name.includes('MF') && !is_virtual && (
                         <div className='is_symbol_multiplier'>{translate('Multipliers')}</div>
                     )}

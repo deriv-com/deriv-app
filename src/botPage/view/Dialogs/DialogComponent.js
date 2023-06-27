@@ -31,3 +31,10 @@ export default class PanelComponent extends PureComponent {
         options: PropTypes.object,
     };
 }
+
+PanelComponent.propTypes = {
+    id: PropTypes.string,
+    title: PropTypes.string,
+    content: PropTypes.object,
+    options: PropTypes.object,
+};

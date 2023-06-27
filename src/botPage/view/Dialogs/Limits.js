@@ -1,10 +1,11 @@
+// eslint-disable-next-line max-classes-per-file
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { getToken } from '@storage';
 import Dialog from './Dialog';
 import { restrictInputCharacter } from '../shared';
 import * as style from '../style';
-import { getToken } from '../../../common/utils/storageManager';
 import { showSpinnerInButton, removeSpinnerInButton, createUrl, translate } from '../../../common/utils/tools';
 
 class LimitsContent extends PureComponent {
@@ -183,6 +184,11 @@ class LimitsContent extends PureComponent {
         api: PropTypes.instanceOf(DerivAPIBasic),
     };
 }
+
+LimitsContent.propTypes = {
+    onSave: PropTypes.func,
+    api: PropTypes.instanceOf(DerivAPIBasic),
+};
 
 export default class Limits extends Dialog {
     constructor(api) {

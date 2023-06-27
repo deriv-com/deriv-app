@@ -1,5 +1,5 @@
+import { generateDerivLink, getRelatedDeriveOrigin } from '@utils';
 import { translate } from './common/utils/tools';
-import { generateDerivLink, getRelatedDeriveOrigin } from './botPage/view/deriv/utils';
 import { getOAuthURL } from './common/appId';
 
 const related_deriv_origin = getRelatedDeriveOrigin();
@@ -137,7 +137,7 @@ export default {
         },
         {
             title: 'SmartTrader',
-            description: translate("Trade the world's markets with our popular user-friendly platform."),
+            description: translate('Trade the world\'s markets with our popular user-friendly platform.'),
             link: `https://${related_deriv_origin.prefix}smarttrader.deriv.${related_deriv_origin.extension}/`,
             logo: 'public/images/ic-brand-smarttrader.svg',
         },
@@ -193,7 +193,7 @@ export default {
     tradershub: {
         visible: true,
         url: generateDerivLink('appstore/traders-hub'),
-        label: translate("Trader's Hub"),
+        label: translate('Trader\'s Hub'),
     },
     deposit: {
         visible: true,

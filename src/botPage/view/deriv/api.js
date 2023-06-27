@@ -1,16 +1,6 @@
+import { getLanguage, get as getStorage } from '@storage';
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import AppIdMap from '../../../common/appIdResolver';
-import { supported_languages } from '../../../common/i18n';
-import { setCookieLanguage } from '../../../common/utils/cookieManager';
-
-// [Todo] getStorage, setStorage are duplicated here after update the structure of project we should remove them
-function getStorage(label) {
-    return window.localStorage.getItem(label);
-}
-
-function setStorage(label, data) {
-    window.localStorage.setItem(label, data);
-}
 
 export const parseQueryString = () => {
     if (typeof window === 'undefined') {
@@ -18,18 +8,10 @@ export const parseQueryString = () => {
     }
     const str = window.location.search;
     const objURL = {};
-    str.replace(new RegExp('([^?=&]+)(=([^&]*))?', 'g'), (a0, a1, a2, a3) => {
+    str.replace(/([^?=&]+)(=([^&]*))?/g, (a0, a1, a2, a3) => {
         objURL[a1] = a3;
     });
     return objURL;
-};
-
-export const getLanguage = () => {
-    const queryLang = parseQueryString().l ? parseQueryString().l : 'en' || getStorage('lang');
-    const lang = queryLang in supported_languages ? queryLang : 'en';
-    setStorage('lang', lang);
-    setCookieLanguage(lang);
-    return lang;
 };
 
 const isRealAccount = () => {
@@ -54,10 +36,10 @@ const getDomainAppId = () => {
         ? AppIdMap.production[hostname]
         : // eslint-disable-next-line no-nested-ternary
         hostname in AppIdMap.staging
-        ? AppIdMap.staging[hostname]
-        : hostname in AppIdMap.dev
-        ? AppIdMap.dev[hostname]
-        : 29864;
+            ? AppIdMap.staging[hostname]
+            : hostname in AppIdMap.dev
+                ? AppIdMap.dev[hostname]
+                : 29864;
 };
 
 export const getCustomEndpoint = () => ({

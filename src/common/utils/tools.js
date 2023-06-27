@@ -1,10 +1,9 @@
+import { set as setStorage, getLanguage } from '@storage';
 import { TrackJSError } from '../../botPage/view/logger';
-import AppIdMap from '../../common/appIdResolver';
-import { translate as i18nTranslate } from '../../common/i18n';
-import { trackJSTrack } from '../../common/integrations/trackJSTrack';
-import { getLanguage } from '../../common/lang';
+import AppIdMap from '../appIdResolver';
+import { translate as i18nTranslate } from '../i18n';
+import { trackJSTrack } from '../integrations/trackJSTrack';
 import { setCookieLanguage } from './cookieManager';
-import { set as setStorage } from './storageManager';
 
 export const MAX_MOBILE_WIDTH = 813;
 
@@ -14,7 +13,7 @@ export const parseQueryString = () => {
     }
     const str = window.location.search;
     const objURL = {};
-    str.replace(new RegExp('([^?=&]+)(=([^&]*))?', 'g'), (a0, a1, a2, a3) => {
+    str.replace(/([^?=&]+)(=([^&]*))?/g, (a0, a1, a2, a3) => {
         objURL[a1] = a3;
     });
     return objURL;
@@ -23,7 +22,7 @@ export const parseQueryString = () => {
 export const getQueryParams = (qs = '') => {
     if (!qs) return {};
     const data = {};
-    qs.replace(new RegExp('([^?=&]+)(=([^&]*))?', 'g'), (a0, a1, a2, a3) => {
+    qs.replace(/([^?=&]+)(=([^&]*))?/g, (a0, a1, a2, a3) => {
         data[a1] = a3;
     });
     return data;

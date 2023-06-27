@@ -1,6 +1,7 @@
 import React from 'react';
 import config from '@config';
-import { getLanguage } from '../../../../../../common/lang';
+import PropTypes from 'prop-types';
+import { getLanguage } from '@storage';
 import { redirectToSupportedLang, translate } from '../../../../../../common/utils/tools';
 import './language-selector.scss';
 
@@ -54,6 +55,10 @@ const LanguageItem = ({ lang }) => {
             <span>{config.supported_languages[lang]}</span>
         </div>
     );
+};
+
+LanguageItem.propTypes = {
+    lang: PropTypes.string,
 };
 
 const LanguageSelector = () => (

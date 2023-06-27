@@ -2,16 +2,18 @@ import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import classNames from 'classnames';
 import config from '@config';
-import { isMobile, isDesktop, parseQueryString } from '../../../../../common/utils/tools';
-import PlatformDropdown from './components/platform-dropdown.jsx';
-import { isLoggedIn, getActiveToken, updateTokenList } from '../../utils';
 import {
     getTokenList,
     removeAllTokens,
     syncWithDerivApp,
     set as setStorage,
     get as getStorage,
-} from '../../../../../common/utils/storageManager';
+    updateTokenList,
+    getActiveToken,
+    isLoggedIn,
+} from '@storage';
+import { isMobile, isDesktop, parseQueryString } from '../../../../../common/utils/tools';
+import PlatformDropdown from './components/platform-dropdown.jsx';
 import {
     updateIsLogged,
     resetClient,

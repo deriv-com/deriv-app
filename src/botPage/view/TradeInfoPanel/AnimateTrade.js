@@ -55,6 +55,7 @@ const AnimateTrade = () => {
             $('#stopButton').off('click');
             $('#runButton').off('click');
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const resetSummary = () => {

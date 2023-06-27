@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { translate } from '../../../common/i18n';
 import * as style from '../style';
@@ -57,6 +58,10 @@ const Summary = ({ accountID }) => {
             </tbody>
         </table>
     );
+};
+
+Summary.propTypes = {
+    accountID: PropTypes.string,
 };
 
 export default Summary;

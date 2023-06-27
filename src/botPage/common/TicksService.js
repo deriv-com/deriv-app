@@ -1,8 +1,8 @@
 import { Map } from 'immutable';
+import { isLoggedIn } from '@storage';
 import { historyToTicks, getLast } from '../../common/utils/binary';
 import { observer as globalObserver } from '../../common/utils/observer';
 import { doUntilDone, getUUID } from '../bot/tools';
-import { isLoggedIn } from '../view/deriv/utils';
 
 const parseTick = tick => ({
     epoch: +tick.epoch,

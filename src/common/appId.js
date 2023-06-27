@@ -1,25 +1,20 @@
+import { AppConstants } from '@constants';
 import {
     addToken,
     removeToken,
     getTokenList,
     removeAllTokens,
     set as setStorage,
+    get as getStorage,
     syncWithDerivApp,
-} from '../common/utils/storageManager';
-import { parseQueryString } from '../common/utils/tools';
-import { getLanguage } from './lang';
+    getLanguage,
+    updateTokenList,
+} from '@storage';
+import { getRelatedDeriveOrigin } from '@utils';
+import { parseQueryString } from './utils/tools';
 import AppIdMap from './appIdResolver';
 import GTM from './gtm';
-import { getRelatedDeriveOrigin, updateTokenList } from '../botPage/view/deriv/utils';
 import api from '../botPage/view/deriv/api';
-
-function getStorage(label) {
-    return localStorage.getItem(label);
-}
-
-export const AppConstants = Object.freeze({
-    STORAGE_ACTIVE_TOKEN: 'activeToken',
-});
 
 const hostName = document.location.hostname;
 
@@ -31,7 +26,7 @@ export const queryToObjectArray = queryStr => {
         const splited_query = /^([a-zA-Z]*)([\d]*)?/.exec(o);
         let key = splited_query[1];
         const index = splited_query[2];
-        key = key === 'acct' ? 'accountName' : key; // Make it consistent with storageManage naming
+        key = key === 'acct' ? 'accountName' : key; // Make it consistent with src/storage.js naming
         if (index) {
             if (index <= tokens.length) {
                 tokens[index - 1][key] = queryStr[o];
@@ -87,10 +82,10 @@ const getDomainAppId = () => {
         ? AppIdMap.production[hostname]
         : // eslint-disable-next-line no-nested-ternary
         hostname in AppIdMap.staging
-        ? AppIdMap.staging[hostname]
-        : hostname in AppIdMap.dev
-        ? AppIdMap.dev[hostname]
-        : 29864;
+            ? AppIdMap.staging[hostname]
+            : hostname in AppIdMap.dev
+                ? AppIdMap.dev[hostname]
+                : 29864;
 };
 
 export const getDefaultEndpoint = () => ({

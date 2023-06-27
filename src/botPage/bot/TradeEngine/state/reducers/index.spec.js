@@ -1,4 +1,4 @@
-import signal from './';
+import signal from '.';
 import * as constants from '../constants';
 
 let state;

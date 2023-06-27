@@ -29,16 +29,15 @@ export function trackJSTrack(error) {
         ({ code } = error);
     }
 
-    // Exceptions:
-    if (message === undefined || message === "Cannot read property 'open_time' of undefined") {
+    if (message === undefined || message === 'Cannot read property \'open_time\' of undefined') {
         // SmartCharts error workaround, don't log nor show.
         return undefined;
     }
 
     if (isProduction()) {
-      if (code && !default_errors_to_ignore.includes(code)){
-          TrackJS.track(code || 'Unknown');
-      }
+        if (code && !default_errors_to_ignore.includes(code)) {
+            TrackJS.track(code || 'Unknown');
+        }
     }
     return { code, message };
 }

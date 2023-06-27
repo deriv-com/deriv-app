@@ -58,7 +58,7 @@ export default class Observer {
         }
     }
     setState(state = {}) {
-        this.state = Object.assign({}, this.state, state);
+        this.state = { ...this.state, ...state };
     }
     getState(key) {
         return this.state[key];

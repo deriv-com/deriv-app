@@ -141,7 +141,16 @@ export const recoverFromError = (f, r, types, delay_index) =>
                 return;
             }
 
-            r(e.name, () => new Promise(delayPromise => setTimeout(delayPromise, getBackoffDelay(e, delay_index))));
+            // r(e.name, () => new Promise(delayPromise => setTimeout(delayPromise, getBackoffDelay(e, delay_index))));
+            r(
+                e.name,
+                () =>
+                    new Promise(_resolve => {
+                        setTimeout(() => {
+                            _resolve();
+                        }, getBackoffDelay(e, delay_index));
+                    })
+            );
         });
     });
 
@@ -215,10 +224,7 @@ export const showDialog = options =>
             modal: true,
             resizable: false,
             open() {
-                $(this)
-                    .parent()
-                    .find('.ui-dialog-buttonset > button')
-                    .removeClass('ui-button ui-corner-all ui-widget');
+                $(this).parent().find('.ui-dialog-buttonset > button').removeClass('ui-button ui-corner-all ui-widget');
             },
         };
         Object.assign(dialogOptions, { buttons: options.buttons || defaultButtons });

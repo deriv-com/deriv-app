@@ -48,7 +48,10 @@ export const isCryptoContract = (underlying = '') => underlying.startsWith('cry'
 
 export const getCurrentTick = (contract_info: TContractInfo) => {
     const tick_stream = unique(contract_info.tick_stream || [], 'epoch');
-    const current_tick = isDigitContract(contract_info.contract_type) ? tick_stream.length : tick_stream.length - 1;
+    const current_tick =
+        isDigitContract(contract_info.contract_type) || isAsiansContract(contract_info.contract_type)
+            ? tick_stream.length
+            : tick_stream.length - 1;
     return !current_tick || current_tick < 0 ? 0 : current_tick;
 };
 

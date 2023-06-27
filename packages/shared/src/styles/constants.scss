@@ -1,17 +1,17 @@
-/*------------------------------------*
+/* ------------------------------------*
  *  # Constants
- *------------------------------------*/
+ *------------------------------------ */
 
 /* COLOR PALETTE */
 
 /* colors */
 $color-black: #0e0e0e;
-$color-black-1: #333333;
+$color-black-1: #333;
 $color-black-3: #151717;
 $color-black-4: #1d1f20;
 $color-black-5: #242828;
 $color-black-6: #3e3e3e;
-$color-black-7: #000000;
+$color-black-7: #000;
 $color-black-8: #323738;
 $color-black-9: #5c5c5c;
 $color-blue: #377cfc;
@@ -30,7 +30,7 @@ $color-green-3: #00a79e;
 $color-green-4: #008079;
 $color-green-5: #4bb4b329;
 $color-grey: #c2c2c2;
-$color-grey-1: #999999;
+$color-grey-1: #999;
 $color-grey-2: #f2f3f4;
 $color-grey-3: #eaeced;
 $color-grey-4: #e6e9e9;
@@ -57,17 +57,17 @@ $color-red-8: #661b20;
 $color-red-9: #b33037;
 $color-red-10: #ff444f;
 $color-violet: #4a3871;
-$color-white: #ffffff;
+$color-white: #fff;
 $color-yellow: #ffad3a;
 $color-yellow-1: #b3760d;
 $color-yellow-2: #ffa912;
-$color-yellow-3: rgba(255, 173, 58, 0.16);
+$color-yellow-3: rgb(255 173 58 / 16%);
 
 /* status colors */
-$color-status-warning: rgba(255, 173, 58, 0.16);
-$color-status-information: rgba(55, 124, 252, 0.16);
-$color-status-announcement: rgba(75, 180, 179, 0.16);
-$color-status-error: rgba(236, 63, 63, 0.16);
+$color-status-warning: rgb(255 173 58 / 16%);
+$color-status-information: rgb(55 124 252 / 16%);
+$color-status-announcement: rgb(75 180 179 / 16%);
+$color-status-error: rgb(236 63 63 / 16%);
 
 /* alpha colors */
 $alpha-color-black-1: transparentize($color-black-7, 0.28);
@@ -98,7 +98,6 @@ $contract-gradient-color-red-1: linear-gradient(to top, $color-white 85%, transp
 $contract-gradient-color-red-2: linear-gradient(to top, $color-black 85%, transparentize($color-red, 0.84));
 $gradient-color-white: linear-gradient(to right, transparentize($color-white, 1) -5%, $color-white 71%);
 $gradient-color-black: linear-gradient(to right, transparentize($color-black, 1) -5%, $color-black 71%);
-
 $gradient-color-purple: linear-gradient(274.73deg, #5a205d 3.82%, #7f3883 88.49%);
 $gradient-color-blue: linear-gradient(274.73deg, #1a205e 3.82%, #122d96 88.49%);
 $gradient-color-orange: linear-gradient(90deg, #eb001b 0%, #f79e1b 100%);
@@ -113,15 +112,16 @@ $gradient-color-blue-4: linear-gradient(90deg, #1a8fff 0%, #0083ff 100%);
 $gradient-color-red-3: linear-gradient(90deg, #ff444f 0%, #211d1e 95.22%);
 $gradient-color-red-4: linear-gradient(90deg, #ff6444 0%, #ff444f 100%);
 $gradient-color-black-3: linear-gradient(58.51deg, #061828 28.06%, #1a3c60 93.51%);
-$gradient-color-black-4: linear-gradient(274.25deg, #333333 9.01%, #5c5b5b 103.31%);
+$gradient-color-black-4: linear-gradient(274.25deg, #333 9.01%, #5c5b5b 103.31%);
 $gradient-color-blue-5: linear-gradient(90deg, #00a8af 0%, #04cfd8 104.41%);
 $gradient-color-gold: linear-gradient(90deg, #f7931a 0%, #ffc71b 104.41%);
 $gradient-color-green-4: linear-gradient(90deg, #1db193 0%, #09da7a 104.41%);
 
 /* Preserve legacy variables */
+
 /* Primary */
 
-$COLOR_BLACK: #000000;
+$COLOR_BLACK: #000;
 $COLOR_BLACK_2: #1d1f20;
 $COLOR_BLACK_3: #0e0e0e;
 $COLOR_GREEN_1: #39b19d;
@@ -129,7 +129,7 @@ $COLOR_GREEN_2: #2d9f93;
 $COLOR_GREEN_3: #21ce99;
 $COLOR_GREEN_4: #00a79e;
 $COLOR_GREEN_5: #4bb4b3;
-$COLOR_ORANGE: #ff9933;
+$COLOR_ORANGE: #f93;
 $COLOR_DARK_ORANGE: #ff8802;
 $COLOR_PURPLE: #4f60ae;
 $COLOR_RED: #e31c4b;
@@ -137,27 +137,29 @@ $COLOR_RED_2: #cc2e3d;
 $COLOR_RED_3: #ec3f3f;
 $COLOR_CORAL_RED: #ff444f;
 $COLOR_SKY_BLUE: #2196f3;
-$COLOR_WHITE: #ffffff;
+$COLOR_WHITE: #fff;
 $COLOR_BLUE: #1c5ae3;
+
 // Light theme
-$COLOR_LIGHT_BLACK_1: rgba(0, 0, 0, 0.8);
-$COLOR_LIGHT_BLACK_2: rgba(0, 0, 0, 0.4);
-$COLOR_LIGHT_BLACK_3: rgba(0, 0, 0, 0.16);
+$COLOR_LIGHT_BLACK_1: rgb(0 0 0 / 80%);
+$COLOR_LIGHT_BLACK_2: rgb(0 0 0 / 40%);
+$COLOR_LIGHT_BLACK_3: rgb(0 0 0 / 16%);
 $COLOR_LIGHT_BLACK_3_SOLID_1: #d6d6d6;
 $COLOR_LIGHT_BLACK_3_SOLID_2: #b3b3b3;
-$COLOR_LIGHT_BLACK_4: rgba(0, 0, 0, 0.04);
+$COLOR_LIGHT_BLACK_4: rgb(0 0 0 / 4%);
 $COLOR_LIGHT_BLACK_4_SOLID: #f4f4f6;
 $COLOR_LIGHT_GRAY_1: #999cac;
-$COLOR_LIGHT_GRAY_2: rgba(153, 156, 172, 0.32);
+$COLOR_LIGHT_GRAY_2: rgb(153 156 172 / 32%);
 $COLOR_LIGHT_GRAY_3: #eaeced;
 $COLOR_LIGHT_GRAY_4: #6e6e6e;
 $COLOR_LIGHT_GRAY_5: #c2c2c2;
 $COLOR_LIGHT_GRAY_6: #f2f3f4;
-$COLOR_LIGHT_GREEN_GRADIENT: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(0, 148, 117, 0.16));
-$COLOR_LIGHT_RED_GRADIENT: linear-gradient(to top, rgba(255, 255, 255, 0), rgba(227, 28, 75, 0.16));
-$COLOR_LIGHT_WHITE_GRADIENT: linear-gradient(to right, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+$COLOR_LIGHT_GREEN_GRADIENT: linear-gradient(to top, rgb(255 255 255 / 0%), rgb(0 148 117 / 16%));
+$COLOR_LIGHT_RED_GRADIENT: linear-gradient(to top, rgb(255 255 255 / 0%), rgb(227 28 75 / 16%));
+$COLOR_LIGHT_WHITE_GRADIENT: linear-gradient(to right, rgb(255 255 255 / 100%), rgb(255 255 255 / 0%));
+
 // Dark theme
-$COLOR_DARK_BLACK_GRADIENT: linear-gradient(to right, rgba(16, 19, 32, 1), rgba(16, 19, 32, 0));
+$COLOR_DARK_BLACK_GRADIENT: linear-gradient(to right, rgb(16 19 32 / 100%), rgb(16 19 32 / 0%));
 $COLOR_DARK_BLUE_1: #0b0e18;
 $COLOR_DARK_BLUE_2: #101320;
 $COLOR_DARK_BLUE_3: #191c31;
@@ -165,34 +167,28 @@ $COLOR_DARK_BLUE_4: #202641;
 $COLOR_DARK_BLUE_5: #2a3052;
 $COLOR_DARK_BLUE_6: #555975;
 $COLOR_DARK_BLUE_7: #7f8397;
-$COLOR_DARK_BLUE_8: rgba(127, 131, 151, 0.3);
-$COLOR_DARK_GREEN_GRADIENT: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(0, 148, 117, 0.16));
-$COLOR_DARK_RED_GRADIENT: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(227, 28, 75, 0.16));
+$COLOR_DARK_BLUE_8: rgb(127 131 151 / 30%);
+$COLOR_DARK_GREEN_GRADIENT: linear-gradient(to top, rgb(16 19 32 / 0%), rgb(0 148 117 / 16%));
+$COLOR_DARK_RED_GRADIENT: linear-gradient(to top, rgb(16 19 32 / 0%), rgb(227 28 75 / 16%));
 $COLOR_DARK_GRAY_1: #282a37;
 $COLOR_DARK_GRAY_2: #303342;
 $COLOR_DARK_GRAY_3: #555975;
-$COLOR_DARK_GRAY_4: #999999;
-
+$COLOR_DARK_GRAY_4: #999;
 $BORDER_RADIUS: 4px;
-
 $MAX_CONTAINER_WIDTH: 1440px;
-
 $POSITIONS_DRAWER_WIDTH: 240px;
 $POSITIONS_DRAWER_MARGIN: 8px;
-
 $HEADER_HEIGHT: 48px;
 $FOOTER_HEIGHT: 36px;
-
 $MOBILE_HEADER_HEIGHT: 40px;
 $MOBILE_HEADER_HEIGHT_DASHBOARD: 48px;
 $MOBILE_WRAPPER_HEADER_HEIGHT: 40px;
 $MOBILE_WRAPPER_FOOTER_HEIGHT: 70px;
-
 $SIDEBAR_WIDTH: 240px;
 
 /* Wallet gradient background */
 $gradient-airtm: linear-gradient(90deg, #1a8fff 0%, #0083ff 100%);
-$gradient-banxa: linear-gradient(90deg, #000000 0%, #4ac0ba 96.35%);
+$gradient-banxa: linear-gradient(90deg, #000 0%, #4ac0ba 96.35%);
 $gradient-bitcoin: linear-gradient(90deg, #f89e32 0%, #f7931b 103.12%);
 $gradient-credit: linear-gradient(274.73deg, #464750 3.82%, #0e0f11 88.49%);
 $gradient-dp2p: linear-gradient(90deg, #ff444f 0%, #211d1e 95.22%);
@@ -210,5 +206,5 @@ $gradient-visa: linear-gradient(274.73deg, #1a205e 3.82%, #122d96 88.49%);
 $gradient-webmoney: linear-gradient(90deg, #1a77ac 0%, #0068a3 100%);
 
 /* App Cards gradient background */
-$gradient-virtual: linear-gradient(274.25deg, #333333 9.01%, #5c5b5b 103.31%);
+$gradient-virtual: linear-gradient(274.25deg, #333 9.01%, #5c5b5b 103.31%);
 $gradient-virtual-swap-free: linear-gradient(58.51deg, #061828 28.06%, #1a3c60 93.51%);

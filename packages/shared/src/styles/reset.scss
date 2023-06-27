@@ -1,8 +1,8 @@
-/*------------------------------------*
+/* ------------------------------------*
  *  # Reset SCSS
  *  - to make browsers render all elements more consistently
  *  - Reference:  https://github.com/AdamMarsden/simple-typography/blob/master/_reset.scss
- *------------------------------------*/
+ *------------------------------------ */
 
 html,
 body,
@@ -86,12 +86,13 @@ time,
 mark,
 audio,
 video {
+    vertical-align: baseline;
     margin: 0;
     padding: 0;
     border: 0;
     font: inherit;
-    vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
 article,
 aside,
@@ -113,8 +114,8 @@ html {
 }
 
 body {
-    line-height: 1;
     height: 100%;
+    line-height: 1;
 }
 
 ol,
@@ -136,8 +137,8 @@ q:after {
 }
 
 table {
-    border-collapse: collapse;
     border-spacing: 0;
+    border-collapse: collapse;
 }
 
 strong {

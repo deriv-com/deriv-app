@@ -32,9 +32,11 @@ module.exports = {
             },
             {
                 test: /\.(png|jpg|jpeg|gif|svg)$/,
+                type: 'asset/resource',
                 use: {
                     loader: 'file-loader',
                     options: {
+                        name: '[name][ext]',
                         outputPath: 'image',
                     },
                 },

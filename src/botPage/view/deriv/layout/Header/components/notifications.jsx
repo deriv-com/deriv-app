@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { translate } from '../../../../../../common/utils/tools';
 
 const NotificationsContainer = React.forwardRef(({ setIsOpen }, containerRef) => {
@@ -33,6 +34,12 @@ const NotificationsContainer = React.forwardRef(({ setIsOpen }, containerRef) =>
         </div>
     );
 });
+
+NotificationsContainer.displayName = 'NotificationsContainer';
+
+NotificationsContainer.propTypes = {
+    setIsOpen: PropTypes.func,
+};
 
 const Notifications = () => {
     const [isOpen, setIsOpen] = React.useState(false);

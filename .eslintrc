@@ -18,7 +18,7 @@
         "gapi": false,
         "google": false
     },
-    "ignorePatterns": ["**/www/**/*.js", "**/temp/**/*.js", "**/translations/**/*.js", "**/node_modules/**"],
+    "ignorePatterns": ["**/www/**/*.js", "**/temp/**/*.js", "**/translations/**/*.js", "node_modules/"],
     "rules": {
         "camelcase": 0,
         "curly": 0,

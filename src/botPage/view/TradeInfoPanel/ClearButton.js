@@ -1,20 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
 import { translate } from '../../../common/utils/tools';
 
-export default class ClearButton extends React.PureComponent {
-    constructor() {
-        super();
-        this.state = { isButtonDisabled: true };
-    }
-    componentDidMount() {
-        globalObserver.register('summary.enable_clear', () => this.setState({ isButtonDisabled: false }));
-        globalObserver.register('summary.disable_clear', () => this.setState({ isButtonDisabled: true }));
-        globalObserver.register('bot.running', () => this.setState({ isButtonDisabled: true }));
-    }
-    // eslint-disable-next-line class-methods-use-this
-    confirmClearLog() {
+const ClearButton = () => {
+    const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+    useEffect(() => {
+        const enableClear = () => setIsButtonDisabled(false);
+        const disableClear = () => setIsButtonDisabled(true);
+        const disableButtonOnBotRunning = () => setIsButtonDisabled(true);
+
+        globalObserver.register('summary.enable_clear', enableClear);
+        globalObserver.register('summary.disable_clear', disableClear);
+        globalObserver.register('bot.running', disableButtonOnBotRunning);
+
+        return () => {
+            globalObserver.unregister('summary.enable_clear', enableClear);
+            globalObserver.unregister('summary.disable_clear', disableClear);
+            globalObserver.unregister('bot.running', disableButtonOnBotRunning);
+        };
+    }, []);
+
+    const confirmClearLog = () => {
         showDialog({
             title: translate('Are you sure?'),
             text: [
@@ -25,16 +33,17 @@ export default class ClearButton extends React.PureComponent {
         })
             .then(() => globalObserver.emit('summary.clear'))
             .catch(() => {});
-    }
-    render() {
-        return (
-            <button
-                title='Clear summary log'
-                id='summaryClearButton'
-                className='toolbox-button icon-clear'
-                onClick={this.confirmClearLog}
-                disabled={this.state.isButtonDisabled}
-            />
-        );
-    }
-}
+    };
+
+    return (
+        <button
+            title='Clear summary log'
+            id='summaryClearButton'
+            className='toolbox-button icon-clear'
+            onClick={confirmClearLog}
+            disabled={isButtonDisabled}
+        />
+    );
+};
+
+export default ClearButton;

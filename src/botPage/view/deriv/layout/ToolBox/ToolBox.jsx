@@ -25,6 +25,12 @@ const ShowModal = ({ modal, onClose, class_name }) => {
     );
 };
 
+ShowModal.propTypes = {
+    class_name: PropTypes.string,
+    modal: PropTypes.object,
+    onClose: PropTypes.func,
+};
+
 const ToolboxButton = ({
     label,
     tooltip,
@@ -42,6 +48,18 @@ const ToolboxButton = ({
         </button>
     </Popover>
 );
+
+ToolboxButton.propTypes = {
+    class_container: PropTypes.string,
+    classes: PropTypes.string,
+    id: PropTypes.string,
+    id_container: PropTypes.string,
+    is_bot_running: PropTypes.bool,
+    label: PropTypes.string,
+    onClick: PropTypes.func,
+    position: PropTypes.string,
+    tooltip: PropTypes.string,
+};
 
 const ToolBox = ({ blockly, is_workspace_rendered }) => {
     const [should_show_modal, setShowModal] = React.useState(false);
@@ -121,76 +139,76 @@ const ToolBox = ({ blockly, is_workspace_rendered }) => {
     return (
         <div id='toolbox'>
             <ToolboxButton
-                id={'resetButton'}
+                id='resetButton'
                 tooltip={translate('Reset the blocks to their initial state')}
                 position='bottom'
                 onClick={() => onShowModal('reset')}
-                classes={'toolbox-button icon-reset'}
+                classes='toolbox-button icon-reset'
             />
             <ToolboxButton
-                id={'load-xml'}
+                id='load-xml'
                 tooltip={translate('Load new blocks (xml file)')}
                 position='bottom'
                 onClick={() => onShowModal('load')}
-                classes={'toolbox-button icon-browse'}
+                classes='toolbox-button icon-browse'
             />
             <ToolboxButton
-                id={'save-xml'}
+                id='save-xml'
                 tooltip={translate('Save the existing blocks (xml file)')}
                 position='bottom'
                 onClick={() => onShowModal('save')}
-                classes={'toolbox-button icon-save'}
+                classes='toolbox-button icon-save'
             />
             {is_gd_ready && (
                 <ToolboxButton
-                    id={'integrations'}
+                    id='integrations'
                     tooltip={translate('Connect Binary Bot to your Google Drive to easily save and re-use your blocks')}
                     position='bottom'
-                    classes={'toolbox-button icon-integrations'}
+                    classes='toolbox-button icon-integrations'
                 />
             )}
 
             <span className='toolbox-separator' />
             <ToolboxButton
-                id={'undo'}
+                id='undo'
                 tooltip={translate('Undo the changes (Ctrl+Z)')}
                 position='bottom'
                 onClick={() => blockly.undo()}
-                classes={'toolbox-button icon-undo'}
+                classes='toolbox-button icon-undo'
             />
             <ToolboxButton
-                id={'redo'}
+                id='redo'
                 tooltip={translate('Redo the changes (Ctrl+Shift+Z)')}
                 position='bottom'
                 onClick={() => blockly.redo()}
-                classes={'toolbox-button icon-redo'}
+                classes='toolbox-button icon-redo'
             />
             <span className='toolbox-separator' />
             <ToolboxButton
-                id={'zoomIn'}
+                id='zoomIn'
                 tooltip={translate('Zoom In (Ctrl + +)')}
                 position={isMobile() ? 'left' : 'bottom'}
                 onClick={() => blockly.zoomOnPlusMinus(true)}
-                classes={'toolbox-button icon-zoom-in'}
+                classes='toolbox-button icon-zoom-in'
             />
             <ToolboxButton
-                id={'zoomOut'}
+                id='zoomOut'
                 tooltip={translate('Zoom Out (Ctrl + -)')}
                 position={isMobile() ? 'left' : 'bottom'}
                 onClick={() => blockly.zoomOnPlusMinus(false)}
-                classes={'toolbox-button icon-zoom-out'}
+                classes='toolbox-button icon-zoom-out'
             />
             <ToolboxButton
-                id={'rearrange'}
+                id='rearrange'
                 tooltip={translate('Rearrange Vertically')}
                 position={isMobile() ? 'left' : 'bottom'}
                 onClick={() => blockly.cleanUp()}
-                classes={'toolbox-button icon-sort'}
+                classes='toolbox-button icon-sort'
             />
             {/* Needs Refactor ClientInfo Structure */}
             <span className={classNames('toolbox-separator')} />
             <ToolboxButton
-                id={'showSummary'}
+                id='showSummary'
                 tooltip={translate('Show/hide the summary pop-up')}
                 position={'bottom'}
                 onClick={() => showSummary()}
@@ -218,27 +236,27 @@ const ToolBox = ({ blockly, is_workspace_rendered }) => {
                 classes={classNames('toolbox-button icon-stop')}
             />
             <ToolboxButton
-                id={'logButton'}
+                id='logButton'
                 class_container={classNames({ 'toolbox-hide': !has_active_token })}
                 tooltip={translate('Show log')}
-                position={'bottom'}
+                position='bottom'
                 onClick={() => logButton()}
                 classes={classNames('toolbox-button icon-info', { 'toolbox-hide': !has_active_token })}
             />
             {has_active_token && <span className='toolbox-separator' />}
             {/* Needs resizeable modal */}
             <ToolboxButton
-                id={'chartButton'}
+                id='chartButton'
                 tooltip={translate('Show chart')}
-                position={'bottom'}
-                classes={'toolbox-button icon-chart-line'}
+                position='bottom'
+                classes='toolbox-button icon-chart-line'
             />
             {config.trading_view_chart.url && (
                 <ToolboxButton
-                    id={'tradingViewButton'}
+                    id='tradingViewButton'
                     tooltip={translate('Show Trading View')}
-                    position={'bottom'}
-                    classes={'toolbox-button icon-trading-view'}
+                    position='bottom'
+                    classes='toolbox-button icon-trading-view'
                 />
             )}
             {should_show_modal && (
@@ -250,6 +268,7 @@ const ToolBox = ({ blockly, is_workspace_rendered }) => {
 
 ToolBox.propTypes = {
     blockly: PropTypes.object.isRequired,
+    is_workspace_rendered: PropTypes.bool,
 };
 
 export default ToolBox;

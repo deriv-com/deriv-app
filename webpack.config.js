@@ -98,8 +98,15 @@ module.exports = {
     ],
     devServer: {
         host: 'localhost',
-        port: 8081,
+        port: 8080,
         open: true,
+        historyApiFallback: true,
+        client: {
+            logging: 'log',
+        },
+        static: {
+            directory: path.join(__dirname, 'www'),
+        },
     },
     resolve: {
         extensions: ['.js', '.jsx'],

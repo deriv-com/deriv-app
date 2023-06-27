@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React from 'react';
-import { Formik, FormikHelpers, FormikValues } from 'formik';
+import { Formik } from 'formik';
 import { useHistory, withRouter } from 'react-router';
 import {
     FormSubmitErrorMessage,
@@ -16,7 +16,7 @@ import {
 } from '@deriv/components';
 import { routes, isMobile, isDesktop, platforms, PlatformContext, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { connect } from 'Stores/connect';
 import LeaveConfirm from 'Components/leave-confirm';
 import IconMessageContent from 'Components/icon-message-content';
 import DemoMessage from 'Components/demo-message';
@@ -204,22 +204,20 @@ const SubmittedPage = ({ platform, routeBackInApp }: TSubmittedPage) => {
     );
 };
 
-const FinancialAssessment = observer(() => {
-    const { client, common, notifications } = useStore();
-    const {
-        landing_company_shortcode,
-        is_virtual,
-        is_financial_account,
-        is_trading_experience_incomplete,
-        is_svg,
-        setFinancialAndTradingAssessment,
-        updateAccountStatus,
-        is_authentication_needed,
-        is_financial_information_incomplete,
-    } = client;
-    const { platform, routeBackInApp } = common;
-    const { refreshNotifications } = notifications;
-    const is_mf = landing_company_shortcode === 'maltainvest';
+const FinancialAssessment = ({
+    is_authentication_needed,
+    is_financial_account,
+    is_mf,
+    is_svg,
+    is_trading_experience_incomplete,
+    is_financial_information_incomplete,
+    is_virtual,
+    platform,
+    refreshNotifications,
+    routeBackInApp,
+    setFinancialAndTradingAssessment,
+    updateAccountStatus,
+}: TFinancialAssessmentProps) => {
     const history = useHistory();
     const { is_appstore } = React.useContext(PlatformContext);
     const [is_loading, setIsLoading] = React.useState(true);
@@ -1072,6 +1070,19 @@ const FinancialAssessment = observer(() => {
             </Formik>
         </React.Fragment>
     );
-});
+};
 
-export default withRouter(FinancialAssessment);
+export default connect(({ client, common, notifications }) => ({
+    is_authentication_needed: client.is_authentication_needed,
+    is_financial_account: client.is_financial_account,
+    is_mf: client.landing_company_shortcode === 'maltainvest',
+    is_svg: client.is_svg,
+    is_financial_information_incomplete: client.is_financial_information_incomplete,
+    is_trading_experience_incomplete: client.is_trading_experience_incomplete,
+    is_virtual: client.is_virtual,
+    platform: common.platform,
+    refreshNotifications: notifications.refreshNotifications,
+    routeBackInApp: common.routeBackInApp,
+    setFinancialAndTradingAssessment: client.setFinancialAndTradingAssessment,
+    updateAccountStatus: client.updateAccountStatus,
+}))(withRouter(FinancialAssessment));

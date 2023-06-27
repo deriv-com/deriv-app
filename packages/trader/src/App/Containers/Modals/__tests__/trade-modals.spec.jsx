@@ -58,7 +58,7 @@ describe('TradeModals', () => {
         expect(screen.getByText('Market unavailable modal')).toBeInTheDocument();
         expect(screen.getByText('Services error modal')).toBeInTheDocument();
     });
-    it('should call function unsupportedContractOnConfirm if button onConfirm in UnsupportedContractModal component was clickicked', () => {
+    it('should call function unsupportedContractOnConfirm if button onConfirm in UnsupportedContractModal component was clicked', () => {
         render(<TradeModals />, {
             wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
         });
@@ -66,7 +66,7 @@ describe('TradeModals', () => {
 
         expect(mock_root_store.ui.toggleUnsupportedContractModal).toHaveBeenCalled();
     });
-    it('should call function unsupportedContractOnClose if button onClose in UnsupportedContractModal component was clickicked', () => {
+    it('should call function unsupportedContractOnClose if button onClose in UnsupportedContractModal component was clicked', () => {
         render(<TradeModals />, {
             wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
         });
@@ -74,7 +74,7 @@ describe('TradeModals', () => {
 
         expect(mock_root_store.ui.toggleUnsupportedContractModal).toHaveBeenCalled();
     });
-    it('should call function marketUnavailableOnConfirm if button onConfirm in MarketUnavailableModal component was clickicked', () => {
+    it('should call function marketUnavailableOnConfirm if button onConfirm in MarketUnavailableModal component was clicked', () => {
         render(<TradeModals />, {
             wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
         });
@@ -83,7 +83,7 @@ describe('TradeModals', () => {
         expect(mock_root_store.ui.setHasOnlyForwardingContracts).toHaveBeenCalled();
         expect(mock_root_store.modules.trade.resetPreviousSymbol).toHaveBeenCalled();
     });
-    it('should call function marketUnavailableOnCancel if button onCansel in MarketUnavailableModal component was clickicked', () => {
+    it('should call function marketUnavailableOnCancel if button onCansel in MarketUnavailableModal component was clicked', () => {
         render(<TradeModals />, {
             wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
         });
@@ -92,7 +92,7 @@ describe('TradeModals', () => {
         expect(mock_root_store.ui.setHasOnlyForwardingContracts).toHaveBeenCalled();
         expect(mock_root_store.modules.trade.resetPreviousSymbol).toHaveBeenCalled();
     });
-    it('should call function servicesErrorModalOnConfirm if button onConfirm in ServicesErrorModal component was clickicked', () => {
+    it('should call function servicesErrorModalOnConfirm if button onConfirm in ServicesErrorModal component was clicked', () => {
         render(<TradeModals />, {
             wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
         });
@@ -102,7 +102,7 @@ describe('TradeModals', () => {
         expect(mock_root_store.modules.trade.clearPurchaseInfo).not.toHaveBeenCalled();
         expect(mock_root_store.modules.trade.requestProposal).not.toHaveBeenCalled();
     });
-    it('should call function servicesErrorModalOnConfirm and clearPurchaseInfo and toHaveBeenCalled if button onConfirm in ServicesErrorModal component was clickicked and type of services_error is equal to buy', () => {
+    it('should call function servicesErrorModalOnConfirm and clearPurchaseInfo and requestProposal if button onConfirm in ServicesErrorModal component was clicked and type of services_error is equal to buy', () => {
         mock_root_store = mockStore({
             modules: {
                 trade: {

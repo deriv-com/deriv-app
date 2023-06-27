@@ -380,13 +380,13 @@ describe('isOpen', () => {
 });
 
 describe('getAccuBarriersDelayTimeMs', () => {
-    it('should return DELAY_TIME_1S_SYMBOL if symbols_1s array includes current symbol', () => {
-        expect(ContractUtils.getAccuBarriersDelayTimeMs(ContractUtils.symbols_1s[0])).toEqual(
-            ContractUtils.DELAY_TIME_1S_SYMBOL
+    it('should return DELAY_TIME_1S_SYMBOL * 2 if symbols_2s array includes current symbol', () => {
+        expect(ContractUtils.getAccuBarriersDelayTimeMs(ContractUtils.symbols_2s[0])).toEqual(
+            ContractUtils.DELAY_TIME_1S_SYMBOL * 2
         );
     });
-    it('should return DELAY_TIME_1S_SYMBOL * 2 if symbols_1s array does not include current symbol', () => {
-        expect(ContractUtils.getAccuBarriersDelayTimeMs('R_100')).toEqual(ContractUtils.DELAY_TIME_1S_SYMBOL * 2);
+    it('should return DELAY_TIME_1S_SYMBOL if symbols_2s array does NOT include current symbol', () => {
+        expect(ContractUtils.getAccuBarriersDelayTimeMs('1HZ10V')).toEqual(ContractUtils.DELAY_TIME_1S_SYMBOL);
     });
 });
 

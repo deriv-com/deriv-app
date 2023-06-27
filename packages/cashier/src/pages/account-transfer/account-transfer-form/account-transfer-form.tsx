@@ -405,15 +405,16 @@ const AccountTransferForm = observer(
                                 </div>
                             ) : (
                                 <>
-                                    {!Number(remaining_transfers) && (
-                                        <InlineMessage
-                                            className='account-transfer-form__inline-warning-message'
-                                            message={localize(
-                                                'You have reached the maximum daily transfers. Please try again tomorrow.'
-                                            )}
-                                            size='sm'
-                                        />
-                                    )}
+                                    <div className='account-transfer-form__inline-warning-message'>
+                                        {!Number(remaining_transfers) && (
+                                            <InlineMessage
+                                                message={localize(
+                                                    'You have reached the maximum daily transfers. Please try again tomorrow.'
+                                                )}
+                                                size='sm'
+                                            />
+                                        )}
+                                    </div>
                                     <Form noValidate>
                                         <div
                                             className='cashier__drop-down-wrapper account-transfer-form__drop-down-wrapper'

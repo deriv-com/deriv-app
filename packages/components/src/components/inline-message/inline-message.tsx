@@ -1,5 +1,4 @@
 import React from 'react';
-import classNames from 'classnames';
 import { isMobile } from '@deriv/shared';
 import Icon from '../icon/icon';
 import Text from '../text';
@@ -20,17 +19,15 @@ const size_to_font_size_mapper = {
 };
 
 type TProps = {
-    className?: string;
     type?: 'warning' | 'information' | 'announcement' | 'error';
     size?: 'xs' | 'sm' | 'md' | 'lg';
 } & RequireAtLeastOne<{ title: React.ReactNode; message: React.ReactNode; children: React.ReactNode }>;
 
 const InlineMessage: React.FC<React.PropsWithChildren<TProps>> = ({
-    className,
-    message,
+    type = 'warning',
     size = 'xs',
     title,
-    type = 'warning',
+    message,
     children,
 }) => {
     const icon = type_to_icon_mapper[type];
@@ -38,7 +35,7 @@ const InlineMessage: React.FC<React.PropsWithChildren<TProps>> = ({
     const font_size = size_to_font_size_mapper[size];
 
     return (
-        <div className={classNames(`inline-message inline-message__${type} inline-message__${size}`, className)}>
+        <div className={`inline-message inline-message__${type} inline-message__${size} `}>
             <Icon size={icon_size} icon={icon} className={`inline-message__icon__${size}`} />
             <Text size={font_size} className={`inline-message__messages inline-message__messages__${size}`}>
                 {title && <strong>{title}</strong>}

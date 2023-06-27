@@ -37,7 +37,7 @@
 }
 
 // Min width of tablet to max size of the modal
-@media (width >= 768px) and (width <= 904px) {
+@media (min-width: 768px) and (max-width: 904px) {
     .dc-modal__container {
         &_real-account-signup-modal {
             width: 768px !important;

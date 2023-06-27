@@ -123,7 +123,7 @@
         line-height: 24px;
 
         // fix for safari bug with header being truncated
-        @media not all and (resolution >= 0.001dpcm) {
+        @media not all and (min-resolution: 0.001dpcm) {
             @supports (-webkit-appearance: none) {
                 /* postcss-bem-linter: ignore */
                 min-height: 4.8rem;

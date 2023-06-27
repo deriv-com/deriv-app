@@ -285,17 +285,17 @@
     &__form-scrollbar {
         height: 600px;
 
-        @media (height >= 534px) and (height <= 767px) {
+        @media (min-height: 534px) and (max-height: 767px) {
             height: 500px;
         }
 
-        @media (height <= 533px) {
+        @media (max-height: 533px) {
             height: 500px;
         }
     }
 }
 
-@media (resolution <= 200dpi) {
+@media (max-resolution: 200dpi) {
     .quick-strategy__tab-content {
         height: 100%;
     }

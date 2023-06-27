@@ -3,8 +3,10 @@ module.exports = {
     ignoreFiles: ['packages/*/dist/**/*.css'],
     plugins: ['stylelint-no-unsupported-browser-features', 'stylelint-selector-bem-pattern'],
     rules: {
+        indentation: 4,
         'color-named': 'never',
         'color-no-invalid-hex': true,
+        'color-hex-length': 'long',
         'declaration-block-no-duplicate-properties': [true, { ignore: ['consecutive-duplicates'] }],
         'declaration-block-no-shorthand-property-overrides': true,
         'font-family-name-quotes': 'always-unless-keyword',
@@ -25,6 +27,8 @@ module.exports = {
         'time-min-milliseconds': 100,
         'unit-allowed-list': ['fr', 'px', 'em', 'rem', '%', 'vw', 'vh', 'deg', 'ms', 's', 'dpcm', 'dpi'],
         'value-keyword-case': 'lower',
+        'media-feature-range-notation': 'prefix',
+        'color-function-notation': null,
 
         // Temporary disabled rules because of the dirty styles
         'selector-class-pattern': null,

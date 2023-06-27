@@ -192,7 +192,7 @@
     }
 }
 
-@media screen and (width >= 320px) and (width <= 450px) {
+@media screen and (min-width: 320px) and (max-width: 450px) {
     .account-signup__password-selection {
         height: calc(100% + 8rem);
     }

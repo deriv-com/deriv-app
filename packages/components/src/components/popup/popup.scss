@@ -95,7 +95,7 @@
                         -ms-overflow-style: none; /* IE and Edge */
                         scrollbar-width: none; /* Firefox */
 
-                        @media (width >= 27.5rem) {
+                        @media (min-width: 27.5rem) {
                             overflow-x: hidden;
                         }
 
@@ -109,7 +109,7 @@
                     @include mobile {
                         height: 5.8rem !important;
 
-                        @media (width <= 27.5rem) {
+                        @media (max-width: 27.5rem) {
                             width: 123% !important;
                             margin-right: 4.2rem;
                         }

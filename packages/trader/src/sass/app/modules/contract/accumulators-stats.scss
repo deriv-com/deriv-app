@@ -11,7 +11,7 @@
 
     20% {
         background: center no-repeat
-            radial-gradient(50% 50% at 50% 50%, rgb(55 124 252 / 72%) 0%, rgb(55 124 252 / 0%) 100%);
+            radial-gradient(50% 50% at 50% 50%, rgba(55, 124, 252, 72%) 0%, rgba(55, 124, 252, 0%) 100%);
     }
 }
 
@@ -38,13 +38,13 @@
     background-color: var(--general-section-1);
 
     /* Screen height fixes due to UI space restrictions */
-    @media only screen and (height <= 520px) {
+    @media only screen and (max-height: 520px) {
         padding: 0 0.8rem !important;
         transform: scale(0.85);
         transform-origin: bottom;
     }
 
-    @media only screen and (height <= 480px) {
+    @media only screen and (max-height: 480px) {
         transform: scale(0.75);
     }
 

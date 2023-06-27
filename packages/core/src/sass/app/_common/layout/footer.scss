@@ -16,7 +16,7 @@
     transition: opacity 0.3s;
     backface-visibility: hidden;
 
-    @media (width <= 768px) {
+    @media (max-width: 768px) {
         display: none;
     }
 

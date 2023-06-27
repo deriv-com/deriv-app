@@ -41,7 +41,7 @@
         background-color: var(--general-main-1);
         cursor: pointer;
 
-        @media (width >= 992px) {
+        @media (min-width: 992px) {
             height: 11.2rem;
             border: 2px solid transparent;
         }
@@ -57,7 +57,7 @@
         &__icon {
             width: 7.8rem;
 
-            @media (width >= 992px) {
+            @media (min-width: 992px) {
                 position: relative;
                 top: -2px;
                 left: -2px;
@@ -83,7 +83,7 @@
             justify-content: space-between;
             padding-left: 8px;
 
-            @media (width >= 991px) {
+            @media (min-width: 991px) {
                 padding-left: 16px;
             }
         }
@@ -103,7 +103,7 @@
             border-right: 1px solid var(--general-section-1);
             line-break: anywhere;
 
-            @media (width >= 992px) {
+            @media (min-width: 992px) {
                 padding: 0 0.8rem;
             }
 
@@ -120,14 +120,14 @@
     &-item-small {
         height: 8.6rem;
 
-        @media (width >= 992px) {
+        @media (min-width: 992px) {
             height: 11.2rem;
         }
 
         &__icon {
             width: 6rem;
 
-            @media (width >= 992px) {
+            @media (min-width: 992px) {
                 width: 8.3rem;
             }
         }

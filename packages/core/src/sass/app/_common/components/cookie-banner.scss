@@ -17,7 +17,7 @@
     padding: 2.8rem 0;
     background-color: var(--general-main-2);
     color: var(--text-general);
-    box-shadow: 0 24px 24px 0 rgb(0 0 0 / 8%), 0 0 24px 0 rgb(0 0 0 / 8%);
+    box-shadow: 0 24px 24px 0 rgba(0, 0, 0, 8%), 0 0 24px 0 rgba(0, 0, 0, 8%);
     font-style: normal;
     font-stretch: normal;
     line-height: 1.5;
@@ -26,7 +26,7 @@
     transition: top 0.3s ease-in-out;
 
     &--theme-dark {
-        box-shadow: 0 24px 24px 0 rgb(0 0 0 / 64%), 0 0 24px 0 rgb(0 0 0 / 64%);
+        box-shadow: 0 24px 24px 0 rgba(0, 0, 0, 64%), 0 0 24px 0 rgba(0, 0, 0, 64%);
     }
 
     &--is-closed {

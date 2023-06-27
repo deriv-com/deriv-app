@@ -170,7 +170,7 @@
         @include mobile {
             margin: unset;
             padding: 1.6rem 0.8rem;
-            box-shadow: 0 -4px 4px rgb(0 0 0 / 8%);
+            box-shadow: 0 -4px 4px rgba(0, 0, 0, 8%);
         }
 
         display: flex;
@@ -668,7 +668,7 @@
         padding: 0 1.6rem;
 
         /* iPhone SE screen width fixes due to UI space restrictions */
-        @media only screen and (width <= 320px) {
+        @media only screen and (max-width: 320px) {
             padding: 0;
         }
 
@@ -682,7 +682,7 @@
     height: 100%;
     margin: 5.6rem auto 3.2rem;
 
-    @media only screen and (height <= 645px) {
+    @media only screen and (max-height: 645px) {
         overflow: auto;
         margin-top: 1.5rem;
     }
@@ -1499,8 +1499,8 @@
 
                     &__pre-appstore {
                         grid-template-columns: 1fr ($synthetic_accounts_count + fr) (
-                                $financial_accounts_count + fr
-                            ) 1fr;
+                            $financial_accounts_count + fr
+                        ) 1fr;
                     }
                 } @else if $synthetic_accounts_count == 0 and $financial_accounts_count == 0 {
                     grid-template-columns: 1fr;
@@ -1719,7 +1719,7 @@
                 width: 100%;
                 padding: 3px 8px;
                 border-radius: 4px;
-                background: rgb(255 68 79 / 16%);
+                background: rgba(255, 68, 79, 16%);
                 opacity: 0.32;
                 cursor: not-allowed;
 
@@ -2225,7 +2225,7 @@
                 height: auto;
 
                 /* iPhone SE screen width fixes due to UI space restrictions */
-                @media only screen and (width <= 340px) {
+                @media only screen and (max-width: 340px) {
                     width: 7rem;
                 }
             }

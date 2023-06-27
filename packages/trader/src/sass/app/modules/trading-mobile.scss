@@ -189,7 +189,7 @@
             box-shadow: 0 16px 16px 0 var(--shadow-menu-2), 0 0 16px 0 var(--shadow-menu-2);
 
             /* iPhone SE screen height fixes due to UI space restrictions */
-            @media only screen and (height <= 480px) {
+            @media only screen and (max-height: 480px) {
                 top: 0.4rem;
             }
 
@@ -201,7 +201,7 @@
                 margin-left: auto;
 
                 /* iPhone SE screen height fixes due to UI space restrictions */
-                @media only screen and (height <= 480px) {
+                @media only screen and (max-height: 480px) {
                     margin-top: -4.6rem;
                 }
             }
@@ -238,7 +238,7 @@
                 flex-direction: column;
                 min-height: 400px;
 
-                @media only screen and (height <= 480px) {
+                @media only screen and (max-height: 480px) {
                     min-height: 360px;
                 }
             }
@@ -297,7 +297,7 @@
                 padding: 2.4rem 1.6rem 1.6rem;
 
                 /* iPhone SE screen height fixes due to UI space restrictions */
-                @media only screen and (height <= 480px) {
+                @media only screen and (max-height: 480px) {
                     margin-top: -0.4rem;
                     transform: scale(1, 0.92);
                     transform-origin: top;
@@ -365,7 +365,7 @@
 
                             /* -webkit-touch-callout only is supported on iOS webkit engine, thus it should apply iOS only styles */
                             @supports (-webkit-touch-callout: none) {
-                                @media only screen and (width >= 360px) {
+                                @media only screen and (min-width: 360px) {
                                     font-size: 3rem;
                                 }
                             }

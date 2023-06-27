@@ -8,7 +8,7 @@
     margin-bottom: 1.6rem;
     padding: 1.6rem;
     border-radius: $BORDER_RADIUS * 2;
-    box-shadow: 0 0 20px rgb(0 0 0 / 5%), 0 16px 20px rgb(0 0 0 / 5%);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 5%), 0 16px 20px rgba(0, 0, 0, 5%);
 
     & .dc-expansion-panel__header-container {
         align-items: flex-start;

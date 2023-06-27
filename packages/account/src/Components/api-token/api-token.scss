@@ -72,7 +72,7 @@
         height: 2.1rem;
         padding-right: 1.3rem;
 
-        @media screen and (width <= 926px) {
+        @media screen and (max-width: 926px) {
             padding-left: 0;
         }
     }
@@ -115,7 +115,7 @@
             max-width: 22rem;
             margin-right: 1rem;
 
-            @media screen and (width <= 926px) {
+            @media screen and (max-width: 926px) {
                 margin-top: 0.4rem;
             }
         }
@@ -184,7 +184,7 @@
     &__delete-icon {
         margin: 0 1.6rem;
 
-        @media screen and (width <= 926px) {
+        @media screen and (max-width: 926px) {
             margin-top: calc(50% - 3.3rem);
         }
     }

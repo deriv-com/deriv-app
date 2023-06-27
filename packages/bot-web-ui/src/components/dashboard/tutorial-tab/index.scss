@@ -103,7 +103,7 @@
             width: 20rem;
             height: 7rem;
             border-radius: 1rem;
-            background-color: rgb(0 0 0 / 50%);
+            background-color: rgba(0, 0, 0, 50%);
             cursor: pointer;
 
             &--play {
@@ -124,7 +124,7 @@
 
             .dc-accordion__wrapper > div:last-child {
                 // iphone 14 specific
-                @media (height >= 450px) and (height <= 750px) {
+                @media (min-height: 450px) and (max-height: 750px) {
                     padding-bottom: 10rem;
                 }
             }

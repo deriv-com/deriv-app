@@ -25,11 +25,11 @@
             flex-direction: column;
             margin: 2.6rem 0 2.4rem;
 
-            @media screen and (width <= 768px) {
+            @media screen and (max-width: 768px) {
                 width: 80%;
             }
 
-            @media screen and (width <= 430px) {
+            @media screen and (max-width: 430px) {
                 width: 90%;
             }
         }
@@ -70,7 +70,7 @@
     }
 
     &__button {
-        @media screen and (width <= 375px) {
+        @media screen and (max-width: 375px) {
             padding: 1.2rem 0;
         }
     }

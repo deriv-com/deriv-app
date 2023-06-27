@@ -56,7 +56,7 @@ $CONTRACT_INFO_BOX_PADDING: 1.6em;
                     letter-spacing: normal;
 
                     /* iPhone SE screen height fixes due to UI space restrictions */
-                    @media only screen and (height <= 480px) {
+                    @media only screen and (max-height: 480px) {
                         font-size: 0.8rem;
                     }
                 }

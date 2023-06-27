@@ -70,7 +70,7 @@ $side-padding: 1.2em;
         flex-direction: column;
         width: 100%;
 
-        @media only screen and (width >= 1280px) {
+        @media only screen and (min-width: 1280px) {
             overflow: visible;
         }
     }
@@ -1191,7 +1191,7 @@ $side-padding: 1.2em;
     width: 50%;
     margin: auto;
 
-    @media only screen and (width <= 769px) {
+    @media only screen and (max-width: 769px) {
         position: static;
         width: 50%;
     }

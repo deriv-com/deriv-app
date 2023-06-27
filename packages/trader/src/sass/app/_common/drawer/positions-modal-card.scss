@@ -170,7 +170,7 @@
         margin-left: 0.5rem;
 
         /* iPhone SE screen height fixes due to UI space restrictions */
-        @media only screen and (height <= 480px) {
+        @media only screen and (max-height: 480px) {
             font-size: 0.9rem;
         }
     }
@@ -234,7 +234,7 @@
             white-space: normal;
 
             /* iPhone SE screen height fixes due to UI space restrictions */
-            @media only screen and (height <= 480px) {
+            @media only screen and (max-height: 480px) {
                 font-size: 0.8rem;
             }
         }

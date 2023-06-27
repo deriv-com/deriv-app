@@ -4,7 +4,7 @@
     margin-top: 4px;
     border-radius: 4px;
     background-color: var(--state-normal);
-    box-shadow: 0 4px 6px 0 rgb(0 0 0 / 24%);
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 24%);
     cursor: pointer;
     transition: transform 0.25s ease, opacity 0.25s linear;
     transform: scale(1, 0);

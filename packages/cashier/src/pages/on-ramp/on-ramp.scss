@@ -3,7 +3,7 @@
         margin-bottom: 1.7rem;
 
         // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-        @media (width <= 926px) {
+        @media (max-width: 926px) {
             margin: 1.7rem;
         }
     }
@@ -38,10 +38,10 @@
         box-shadow: 0 0.8rem 0.8rem 0 var(--shadow-drop), 0 0 0.8rem 0 var(--shadow-drop);
 
         // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-        @media (width <= 926px) {
+        @media (max-width: 926px) {
             grid-template-areas: (
                 'logo name name name' 'logo description description description'
-                    'logo description description description' 'payment-icons payment-icons payment-icons buy'
+                'logo description description description' 'payment-icons payment-icons payment-icons buy'
             );
         }
 
@@ -54,7 +54,7 @@
             align-self: center;
 
             // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-            @media (width <= 926px) {
+            @media (max-width: 926px) {
                 align-self: start;
             }
         }
@@ -70,7 +70,7 @@
             min-height: 60px;
 
             // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-            @media (width <= 926px) {
+            @media (max-width: 926px) {
                 width: auto;
                 height: auto;
             }

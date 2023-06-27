@@ -249,7 +249,7 @@
             grid-template-columns: 1fr 1fr 1fr;
             grid-gap: 1.6rem;
 
-            @media (width <= 1024px) {
+            @media (max-width: 1024px) {
                 grid-template-columns: 1fr;
             }
         }
@@ -300,7 +300,7 @@
         position: relative;
         margin-top: 0.8rem;
         border-radius: $BORDER_RADIUS;
-        background-color: rgb(255 173 58 / 30%);
+        background-color: rgba(255, 173, 58, 30%);
 
         &-icon {
             position: absolute;

@@ -247,12 +247,12 @@
             }
 
             &--disabled {
-                background-color: rgb(153 153 153 / 16%);
+                background-color: rgba(153, 153, 153, 16%);
                 color: var(--text-less-prominent);
             }
 
             &--info {
-                background-color: rgb(28 90 227 / 16%);
+                background-color: rgba(28, 90, 227, 16%);
                 color: var(--status-info);
             }
         }

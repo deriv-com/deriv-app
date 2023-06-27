@@ -19,11 +19,11 @@
     }
 
     &--green:before {
-        background-image: linear-gradient(to top, rgb(16 19 32 / 0%), rgb(0 148 117 / 16%));
+        background-image: linear-gradient(to top, rgba(16, 19, 32, 0%), rgba(0, 148, 117, 16%));
     }
 
     &--red:before {
-        background-image: linear-gradient(to top, rgb(16 19 32 / 0%), rgb(227 28 75 / 16%));
+        background-image: linear-gradient(to top, rgba(16, 19, 32, 0%), rgba(227, 28, 75, 16%));
     }
 
     &--loss {
@@ -168,7 +168,7 @@
             width: calc(100% + 2px);
             height: calc(100% + 2px);
             border-radius: $BORDER_RADIUS;
-            box-shadow: 0 4px 6px 0 rgb(0 0 0 / 24%);
+            box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 24%);
             pointer-events: none;
         }
 

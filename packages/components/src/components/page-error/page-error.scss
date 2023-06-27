@@ -12,7 +12,7 @@
         align-items: center;
         height: calc(100vh - 84px);
 
-        @media screen and (width <= 1024px) {
+        @media screen and (max-width: 1024px) {
             flex-wrap: wrap;
         }
     }
@@ -32,7 +32,7 @@
         border: var(--general-main-1);
         background: var(--general-main-1);
 
-        @media screen and (width >= 1008px) {
+        @media screen and (min-width: 1008px) {
             max-width: calc(100vw - 45%);
         }
 

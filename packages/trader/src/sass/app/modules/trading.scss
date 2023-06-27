@@ -10,12 +10,12 @@
 
 .loader {
     overflow: hidden;
-    background-color: rgb(var(--general-main-1) 0.16);
+    background-color: rgba(var(--general-main-1), 0.16);
 
     &--loading {
         width: inherit;
         height: inherit;
-        background-image: linear-gradient(to left, rgb(255 255 255 / 0%), $color-white 10%, rgb(255 255 255 / 0%));
+        background-image: linear-gradient(to left, rgba(255, 255, 255, 0%), $color-white 10%, rgba(255, 255, 255, 0%));
         opacity: 0.32;
         animation: slide 1s cubic-bezier(1, 0, 0.5, 0) infinite;
     }
@@ -772,7 +772,7 @@
         width: calc(100% + 2px);
         height: calc(100% + 2px);
         border-radius: $BORDER_RADIUS;
-        background: rgb(255 255 255 / 60%);
+        background: rgba(255, 255, 255, 60%);
     }
 
     .purchase-buttons-overlay {
@@ -890,7 +890,7 @@
 /** @define market-unavailable-modal */
 @include mobile {
     .market-unavailable-modal {
-        @media only screen and (height <= 600px) {
+        @media only screen and (max-height: 600px) {
             align-items: flex-start;
             padding-top: 10rem;
 

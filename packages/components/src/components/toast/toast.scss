@@ -32,7 +32,7 @@
             font-size: 1.2rem;
 
             /* iPhone SE screen height fixes due to UI space restrictions */
-            @media only screen and (height <= 580px) {
+            @media only screen and (max-height: 580px) {
                 font-size: 1rem;
             }
         }

@@ -18,7 +18,7 @@
     transition: opacity 0.3s;
     backface-visibility: hidden;
 
-    @media screen and (width <= 380px) {
+    @media screen and (max-width: 380px) {
         &__cashier-button {
             display: none;
         }
@@ -37,7 +37,7 @@
         display: block;
         cursor: pointer;
 
-        @media screen and (width <= 380px) {
+        @media screen and (max-width: 380px) {
             &--cashier {
                 display: none;
             }

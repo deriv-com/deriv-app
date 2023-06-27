@@ -37,7 +37,7 @@
             line-height: 1.43;
 
             // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-            @media (width <= 926px) {
+            @media (max-width: 926px) {
                 width: auto;
                 height: auto;
                 margin: 0 1.6rem;
@@ -96,7 +96,7 @@
             }
 
             // TODO: Replace the media query with Mobile/Tablet mixin after syncing the responsive.js and devices.scss
-            @media (width <= 926px) {
+            @media (max-width: 926px) {
                 width: 100vw;
             }
         }
@@ -379,7 +379,7 @@
 }
 
 // Able to scroll the page container (app-contents) until 926px (MobileWrapper) if it should be scrollable
-@media (width <= 926px) {
+@media (max-width: 926px) {
     .app-contents--is-mobile,
     .app-contents--is-scrollable {
         overflow-y: auto;

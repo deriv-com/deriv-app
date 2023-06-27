@@ -11,7 +11,7 @@
     $b: $min-value - $a * $min-screen;
     $sign: '+';
 
-    @if  $b < 0 {
+    @if $b < 0 {
         $sign: '-';
         $b: abs($b);
     }
@@ -170,7 +170,7 @@
     height: 1em;
     border: 0;
     border-radius: 100%;
-    box-shadow: 0 0 0 0 rgb(0 0 0 / 0%);
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0%);
     cursor: pointer;
     transition: box-shadow 0.2s;
     appearance: none;

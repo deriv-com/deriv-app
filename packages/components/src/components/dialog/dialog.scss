@@ -129,7 +129,7 @@
     }
 }
 
-@media screen and (width <= 560px) {
+@media screen and (max-width: 560px) {
     .dc-dialog {
         &__dialog {
             min-width: auto;

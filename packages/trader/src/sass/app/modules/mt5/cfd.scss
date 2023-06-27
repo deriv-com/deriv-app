@@ -418,7 +418,7 @@
                 height: auto;
 
                 /* iPhone SE screen width fixes due to UI space restrictions */
-                @media only screen and (width <= 340px) {
+                @media only screen and (max-width: 340px) {
                     width: 7rem;
                 }
             }

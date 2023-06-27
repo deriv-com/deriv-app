@@ -807,7 +807,7 @@
     &__spec-text {
         overflow: hidden;
         padding: 0.4rem;
-        font-family: "Courier", monospace;
+        font-family: 'Courier', monospace;
     }
 
     &__spec-copy {
@@ -950,7 +950,7 @@
         padding: 0 1.6rem;
 
         /* iPhone SE screen width fixes due to UI space restrictions */
-        @media only screen and (width <= 320px) {
+        @media only screen and (max-width: 320px) {
             padding: 0;
         }
 
@@ -964,7 +964,7 @@
     height: 100%;
     margin: 5.6rem auto 3.2rem;
 
-    @media only screen and (height <= 645px) {
+    @media only screen and (max-height: 645px) {
         overflow: auto;
         margin-top: 1.5rem;
     }

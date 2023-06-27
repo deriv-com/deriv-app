@@ -277,7 +277,7 @@
             display: flex;
             align-items: center;
 
-            @media (height <= 580px) {
+            @media (max-height: 580px) {
                 height: 5rem;
             }
         }
@@ -419,7 +419,7 @@
     &__data-list {
         flex: 1;
 
-        @media (height <= 580px) {
+        @media (max-height: 580px) {
             height: 11rem !important;
         }
 
@@ -448,11 +448,11 @@
         height: 100%;
         margin-top: 4rem;
 
-        @media (height <= 525px) {
+        @media (max-height: 525px) {
             height: 16rem;
         }
 
-        @media (height >= 526px) and (height <= 580px) {
+        @media (min-height: 526px) and (max-height: 580px) {
             height: 15rem;
         }
     }

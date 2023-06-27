@@ -99,7 +99,7 @@
     }
 
     @include mobile {
-        @media screen and (aspect-ratio <= 13/9) {
+        @media screen and (max-aspect-ratio: 13 / 9) {
             display: none;
         }
     }
@@ -348,14 +348,14 @@
 
 /** @define desktop-only */
 .desktop-only {
-    @media (width <= 768px) {
+    @media (max-width: 768px) {
         display: none !important;
     }
 }
 
 /** @define mobile-only */
 .mobile-only {
-    @media (width >= 769px) {
+    @media (min-width: 769px) {
         display: none !important;
     }
 }

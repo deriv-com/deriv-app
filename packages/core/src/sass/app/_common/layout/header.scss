@@ -303,7 +303,7 @@
         align-self: center;
         height: 100%;
 
-        @media (width <= 520px) {
+        @media (max-width: 520px) {
             display: none;
         }
     }

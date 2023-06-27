@@ -58,7 +58,7 @@ type TDropdownList = {
     is_alignment_top?: boolean;
     is_large?: boolean;
     is_list_visible: boolean;
-    list: TList | Record<string, TListItem[]>;
+    list: TList | Record<string, TList>;
     nodes: React.RefObject<Map<string, HTMLDivElement | null>>;
     onKeyPressed: (event: KeyboardEvent, item: TListItem) => void;
     parent_ref: React.RefObject<HTMLElement>;

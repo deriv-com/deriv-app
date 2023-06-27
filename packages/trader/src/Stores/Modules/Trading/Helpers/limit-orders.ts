@@ -2,25 +2,41 @@ import { isMultiplierContract } from '@deriv/shared';
 import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../../SmartChart/Constants/barriers';
 import { ChartBarrierStore } from '../../SmartChart/chart-barrier-store';
 import { removeBarrier } from '../../SmartChart/Helpers/barriers';
+import { useStore } from '@deriv/stores';
 
-const isLimitOrderBarrierSupported = (contract_type, contract_info) =>
-    isMultiplierContract(contract_type) && contract_info.limit_order;
+const isLimitOrderBarrierSupported = (
+    contract_type: string,
+    contract_info: ReturnType<typeof useStore>['portfolio']['all_positions'][0]['contract_info']
+) => isMultiplierContract(contract_type) && contract_info.limit_order;
 
 export const LIMIT_ORDER_TYPES = {
     STOP_OUT: 'stop_out',
     TAKE_PROFIT: 'take_profit',
     STOP_LOSS: 'stop_loss',
-};
+} as const;
 
-export const setLimitOrderBarriers = ({ barriers, contract_type, contract_info = {}, is_over }) => {
+type TSetLimitOrderBarriers = {
+    barriers: ReturnType<typeof useStore>['portfolio']['barriers'];
+    contract_type: string;
+    contract_info: Parameters<typeof isLimitOrderBarrierSupported>[1];
+    is_over: boolean;
+};
+export const setLimitOrderBarriers = ({
+    barriers,
+    contract_type,
+    contract_info = {},
+    is_over,
+}: TSetLimitOrderBarriers) => {
     if (is_over && isLimitOrderBarrierSupported(contract_type, contract_info)) {
         const limit_orders = Object.values(LIMIT_ORDER_TYPES);
-        const has_stop_loss = Object.keys(contract_info.limit_order).some(
-            k => k === LIMIT_ORDER_TYPES.STOP_LOSS && contract_info.limit_order[k].value
-        );
+        const has_stop_loss =
+            contract_info.limit_order !== undefined &&
+            Object.keys(contract_info.limit_order).some(
+                k => k === LIMIT_ORDER_TYPES.STOP_LOSS && contract_info?.limit_order?.[k]?.value
+            );
 
         limit_orders.forEach(key => {
-            const obj_limit_order = contract_info.limit_order[key];
+            const obj_limit_order = contract_info.limit_order?.[key];
 
             if (!obj_limit_order || !obj_limit_order.value) {
                 removeBarrier(barriers, key);
@@ -51,7 +67,8 @@ export const setLimitOrderBarriers = ({ barriers, contract_type, contract_info =
                     isSingleBarrier: true,
                     opacityOnOverlap: key === LIMIT_ORDER_TYPES.STOP_OUT && 0.15,
                 };
-                barrier = new ChartBarrierStore(obj_limit_order.value);
+                //@ts-expect-error until chart barrier store in modules/smartchart is migrated to TS
+                barrier = new ChartBarrierStore(obj_limit_order.value) as ReturnType<typeof useStore>['barrier'];
 
                 Object.assign(barrier, obj_barrier);
                 barriers.push(barrier);
@@ -67,7 +84,16 @@ export const setLimitOrderBarriers = ({ barriers, contract_type, contract_info =
  * Get limit_order for contract_update API
  * @param {object} contract_update - contract_update input & checkbox values
  */
-export const getLimitOrder = contract_update => {
+export const getLimitOrder = (
+    contract_update: Pick<
+        ReturnType<typeof useStore>['contract_trade'],
+        | 'has_contract_update_stop_loss'
+        | 'has_contract_update_take_profit'
+        | 'contract_update_stop_loss'
+        | 'contract_update_take_profit'
+        | 'contract_info'
+    >
+) => {
     const {
         has_contract_update_stop_loss,
         has_contract_update_take_profit,
@@ -76,11 +102,12 @@ export const getLimitOrder = contract_update => {
         contract_info,
     } = contract_update;
 
-    const limit_order = {};
+    // const limit_order = {};
+    const limit_order: { take_profit?: number | null; stop_loss?: number | null } = {};
 
     const new_take_profit = has_contract_update_take_profit ? +contract_update_take_profit : null;
     const has_take_profit_changed =
-        Math.abs(contract_info.limit_order?.take_profit?.order_amount) !== Math.abs(new_take_profit);
+        Math.abs(contract_info.limit_order?.take_profit?.order_amount ?? 0) !== Math.abs(new_take_profit ?? 0);
 
     if (has_take_profit_changed) {
         // send positive take_profit to update or null cancel
@@ -89,7 +116,7 @@ export const getLimitOrder = contract_update => {
 
     const new_stop_loss = has_contract_update_stop_loss ? +contract_update_stop_loss : null;
     const has_stop_loss_changed =
-        Math.abs(contract_info.limit_order?.stop_loss?.order_amount) !== Math.abs(new_stop_loss);
+        Math.abs(contract_info?.limit_order?.stop_loss?.order_amount ?? 0) !== Math.abs(new_stop_loss ?? 0);
 
     if (has_stop_loss_changed) {
         // send positive stop_loss to update or null to cancel

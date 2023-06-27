@@ -8,6 +8,7 @@ import type {
     LogOutResponse,
     ResidenceList,
     StatesList,
+    Proposal,
     ProposalOpenContract,
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
@@ -355,8 +356,41 @@ type TUiStore = {
     setShouldShowCooldownModal: (value: boolean) => void;
 };
 
+type TPortfolioPositionContract = {
+    buy_price?: number;
+    contract_id?: number;
+    contract_type?: string;
+    entry_spot?: number | null;
+    longcode?: string;
+    payout?: number;
+    shortcode?: string;
+    transaction_id?: number;
+    transaction_ids?: {
+        buy: number;
+        sell: number;
+    };
+    limit_order?: Proposal['limit_order'];
+    underlying?: string;
+};
+
+type TPortfolioPositions = {
+    contract_info: TPortfolioPositionContract;
+    details: string;
+    display_name: string;
+    id?: number;
+    indicative: number;
+    payout: number;
+    purchase: number;
+    reference: number;
+    type?: string;
+    is_unsupported: boolean;
+    contract_update: TPortfolioPositionContract['limit_order'];
+}[];
+
 type TPortfolioStore = {
-    active_positions: ProposalOpenContract[];
+    active_positions: TPortfolioPositions;
+    all_positions: TPortfolioPositions;
+    barriers: TBarrierStore[];
     error: TCommonStoreError;
     getPositionById: (id: number) => ProposalOpenContract;
     is_loading: boolean;
@@ -370,6 +404,21 @@ type TPortfolioStore = {
 
 type TContractStore = {
     getContractById: (id: number) => ProposalOpenContract;
+    contract_info: TPortfolioPositionContract;
+    contract_update_stop_loss: string;
+    contract_update_take_profit: string;
+    has_contract_update_stop_loss: boolean;
+    has_contract_update_take_profit: boolean;
+};
+
+type TBarrierStore = {
+    key: string;
+    draggable: boolean;
+    hideOffscreenBarrier: boolean;
+    high: string | number;
+    isSingleBarrier: boolean;
+    onChange: ({ high, low }: { high: string; low?: string }) => void;
+    updateBarrierColor: (input: boolean) => void;
 };
 
 type TMenuStore = {
@@ -435,6 +484,7 @@ export type TCoreStores = {
     ui: TUiStore;
     portfolio: TPortfolioStore;
     contract_trade: TContractStore;
+    barrier: TBarrierStore;
     // This should be `any` as this property will be handled in each package.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     modules: Record<string, any>;

@@ -1,7 +1,8 @@
 import ServerTime from '_common/base/server_time';
 import { toMoment } from '@deriv/shared';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const isBeforeDate = (compare_moment, start_moment, should_only_check_hour) => {
+const isBeforeDate = (compare_moment: moment.Moment, start_moment: moment.Moment, should_only_check_hour: boolean) => {
     const now_moment = toMoment(start_moment);
     if (should_only_check_hour) {
         now_moment.minute(0).second(0);
@@ -10,9 +11,9 @@ const isBeforeDate = (compare_moment, start_moment, should_only_check_hour) => {
 };
 
 export const isSessionAvailable = (
-    sessions = [],
-    compare_moment = toMoment(ServerTime.get()),
-    start_moment = toMoment(ServerTime.get()),
+    sessions: ReturnType<typeof useTraderStore>['sessions'] = [],
+    compare_moment: moment.Moment = toMoment(ServerTime.get()),
+    start_moment: moment.Moment = toMoment(ServerTime.get()),
     should_only_check_hour = false
 ) =>
     !isBeforeDate(compare_moment, ServerTime.get(), should_only_check_hour) &&

@@ -1,76 +1,89 @@
 /** @define dc-button-menu */
 .dc-button-menu {
+    position: relative;
     display: flex;
     justify-content: center;
     width: 100%;
-    position: relative;
 
     &__button:first-child {
         border-top-left-radius: 4px;
         border-bottom-left-radius: 4px;
     }
+
     &__button:last-child {
         border-top-right-radius: 4px;
         border-bottom-right-radius: 4px;
     }
+
     &__button {
-        margin: 0;
-        border: none;
-        border-radius: 0px;
-        width: 50%;
-        background-color: var(--state-normal);
-        /* postcss-bem-linter: ignore */
-        .dc-btn__text {
-            display: contents;
-        }
         @include desktop {
             &:hover:not(.dc-button-menu__button--active) {
                 background-color: var(--state-hover) !important;
             }
         }
+
+        width: 50%;
+        margin: 0;
+        border: none;
+        border-radius: 0;
+        background-color: var(--state-normal);
+
+        /* postcss-bem-linter: ignore */
+        .dc-btn__text {
+            display: contents;
+        }
+
         /* postcss-bem-linter: ignore */
         span {
             @include typeface(--paragraph-left-normal-black, unset);
+
             color: var(--text-general);
         }
+
         &--active {
-            cursor: initial;
             background-color: var(--state-active) !important;
+            cursor: initial;
 
             span {
                 @include typeface(--paragraph-left-bold-active, unset);
+
                 color: var(--text-prominent);
             }
         }
     }
 
     &__toggle {
+        @include desktop {
+            &:hover:not(.dc-button-menu__button--active) {
+                background-color: var(--state-hover) !important;
+            }
+        }
+
+        width: 50%;
         margin: 0;
         border: none;
         border-radius: 6px;
-        width: 50%;
         background-color: var(--general-section-1);
 
         /* postcss-bem-linter: ignore */
         .dc-btn__text {
             display: contents;
         }
-        @include desktop {
-            &:hover:not(.dc-button-menu__button--active) {
-                background-color: var(--state-hover) !important;
-            }
-        }
+
         /* postcss-bem-linter: ignore */
         span {
             @include typeface(--paragraph-left-normal-black, unset);
+
             color: var(--text-less-prominent);
         }
+
         &--active {
-            cursor: initial;
             background-color: var(--state-normal) !important;
+            cursor: initial;
 
             span {
                 @include typeface(--paragraph-left-bold-active, unset);
+
                 color: var(--text-prominent);
             }
         }
@@ -79,40 +92,43 @@
     &__counter {
         margin-left: 0.4rem;
     }
+
     &__wrapper {
         position: relative;
-        border-radius: $BORDER_RADIUS;
-        width: 100%;
-        background-color: var(--state-normal);
         display: flex;
+        width: 100%;
+        border-radius: $BORDER_RADIUS;
+        background-color: var(--state-normal);
 
         .dc-button-menu {
             &__button,
             &__button--active {
-                background-color: rgba(0, 0, 0, 0) !important;
                 z-index: 1;
                 padding: 0.8rem 0.6rem;
+                background-color: rgb(0 0 0 / 0%) !important;
                 white-space: normal;
 
                 .dc-btn__text {
                     line-height: normal;
                 }
             }
+
             &__button:nth-last-child(2) {
                 border-top-right-radius: 4px;
                 border-bottom-right-radius: 4px;
             }
         }
     }
+
     &--highlight {
-        display: block;
-        position: absolute;
         content: '';
-        height: 100%;
+        position: absolute;
         top: 0;
         left: 0;
         z-index: 0;
-        transition: transform 0.25s ease;
+        display: block;
+        height: 100%;
         pointer-events: none;
+        transition: transform 0.25s ease;
     }
 }

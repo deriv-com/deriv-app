@@ -1,74 +1,85 @@
 .dc-btn {
-    vertical-align: middle;
-    align-items: center;
-    justify-content: center;
-    touch-action: manipulation;
-    cursor: pointer;
-    white-space: nowrap;
-    padding: 0 1.6rem;
-    display: inline-flex;
-    border: 0;
-    height: 3.2rem;
-    border-radius: 4px;
-    transition: all 0.2s cubic-bezier(0.65, 0.05, 0.36, 1);
-    outline: 0;
     position: relative;
+    display: inline-flex;
+    vertical-align: middle;
+    justify-content: center;
+    align-items: center;
+    height: 3.2rem;
+    padding: 0 1.6rem;
+    border: 0;
+    border-radius: 4px;
+    outline: 0;
     text-decoration: none;
-    user-select: none;
-    -webkit-touch-callout: none;
-    -webkit-tap-highlight-color: transparent;
+
     /*
      * Text will be transformed to sentence case in JS
      * text-transform is declared in .dc-btn instead of .dc-btn__text
      * to ensure consistency (even for children) as per styleguide
      */
     text-transform: none !important;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s cubic-bezier(0.65, 0.05, 0.36, 1);
+    touch-action: manipulation;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
 
     &__toggle {
         height: auto;
         padding: 0.8rem 2.5rem;
     }
+
     &__text,
     &__icon {
         display: flex;
         pointer-events: none;
     }
+
     &__icon {
         @include typeface(--paragraph-center-bold-black, unset);
-        color: var(--text-general);
+
         padding-right: 0.8rem;
+        color: var(--text-general);
         pointer-events: none;
 
         &--circle {
             padding-right: 0;
         }
     }
+
     &:not([disabled]):hover {
         text-decoration: none;
     }
+
     &__rounded {
         border-radius: 24px;
     }
+
     &--plus {
         width: 2.4rem;
         height: 2.4rem !important;
-        border: 1px solid var(--border-hover) !important;
         padding: 0 !important;
+        border: 1px solid var(--border-hover) !important;
         background: inherit;
-        background-repeat: no-repeat;
         background-position: center;
+        background-repeat: no-repeat;
     }
+
     &--circle {
-        height: 3.2rem;
         width: 3.2rem !important;
+        height: 3.2rem;
         border-radius: 50%;
     }
+
     &--circular {
         border-radius: 100px;
     }
+
     &--transparent {
         background: transparent;
     }
+
     &--primary {
         background: var(--button-primary-default);
         color: var(--text-colored-background);
@@ -76,14 +87,17 @@
         &:hover:not([disabled]) {
             background: var(--button-primary-hover);
         }
+
         &:active:not([disabled]) {
             background: var(--button-primary-default);
         }
+
         &:disabled,
         &[disabled] {
             opacity: 0.32;
             cursor: not-allowed !important;
         }
+
         .dc-btn__text,
         .dc-btn__icon {
             color: var(--text-colored-background);
@@ -95,62 +109,74 @@
             &:hover:not([disabled]) {
                 background: var(--button-primary-light-hover);
             }
+
             &:active:not([disabled]) {
                 background: var(--button-primary-light-default);
             }
+
             &:disabled,
             &[disabled] {
                 opacity: 0.32;
                 cursor: not-allowed !important;
             }
+
             .dc-btn__text,
             .dc-btn__icon {
                 color: var(--brand-red-coral);
             }
         }
     }
+
     &--secondary {
-        background: transparent;
         border: 1px solid var(--button-secondary-default);
+        background: transparent;
 
         &:hover:not([disabled]) {
             background: var(--button-secondary-hover);
         }
+
         &:active:not([disabled]) {
             border: 1px solid var(--button-secondary-default);
         }
+
         &:disabled,
         &[disabled] {
             opacity: 0.32;
             cursor: not-allowed !important;
         }
+
         .dc-btn__text,
         .dc-btn__icon {
             color: var(--text-prominent);
         }
     }
+
     &--tertiary {
         background: var(--button-tertiary-default);
 
         &:hover:not([disabled]) {
             background: var(--button-tertiary-hover);
         }
+
         &:active:not([disabled]) {
             background: var(--button-tertiary-default);
         }
+
         .dc-btn__text,
         .dc-btn__icon {
             color: var(--brand-red-coral);
         }
+
         &:disabled,
         &[disabled] {
             opacity: 0.32;
             cursor: not-allowed !important;
         }
     }
+
     &--alternate {
-        background: var(--button-tertiary-default);
         border: 2px solid var(--button-primary-default);
+        background: var(--button-tertiary-default);
 
         &:hover:not([disabled]) {
             background: var(--button-primary-default);
@@ -165,6 +191,7 @@
             color: var(--brand-red-coral);
         }
     }
+
     /* TODO: confirm this button with designer are we still using this? */
     &--green {
         background: var(--status-success);
@@ -172,55 +199,59 @@
         &:hover:not([disabled]) {
             background: var(--transparent-success);
         }
+
         &:active:not([disabled]) {
             background: var(--status-success);
         }
+
         .dc-btn__text,
         .dc-btn__icon {
             color: var(--text-colored-background);
         }
     }
+
     &__small {
-        height: 2.4rem;
         min-width: 4.8rem;
+        height: 2.4rem;
         border-width: 1px;
 
         .dc-btn__text {
             font-size: 1.2rem;
         }
     }
+
     &__medium {
-        height: 3.2rem;
         min-width: 5.6rem;
+        height: 3.2rem;
         border-width: 1px;
 
         .dc-btn__text {
             font-size: 1.4rem;
         }
     }
+
     &__large {
-        height: 4rem;
         min-width: 6.4rem;
+        height: 4rem;
         border-width: 2px;
 
         .dc-btn__text {
             font-size: 1.4rem;
         }
     }
+
     &__effect:focus:not(:active):after {
         content: '';
         position: absolute;
-        top: -0.1em;
-        left: -0.1em;
-        bottom: -0.1em;
-        right: -0.1em;
-        border-radius: inherit;
+        inset: -0.1em;
+        display: block;
         border: 0 solid var(--brand-secondary);
+        border-radius: inherit;
         opacity: 0.4;
         animation: buttonEffect 0.4s;
         animation-fill-mode: forwards;
-        display: block;
     }
+
     &__group {
         white-space: nowrap;
 
@@ -228,10 +259,13 @@
             margin-left: 8px;
         }
     }
+
     &__button-group {
         border-radius: 0 4px 4px 0;
     }
+
     /* TODO: confirm this button with designer are we still using this? */
+
     /* postcss-bem-linter: ignore */
     .initial-loader--btn {
         background-color: unset;
@@ -240,6 +274,7 @@
         .initial-loader__barspinner--rect {
             background-color: var(--text-colored-background);
         }
+
         /* postcss-bem-linter: ignore */
         .barspinner {
             margin: 0.6rem 4px 0 -4px;
@@ -254,11 +289,8 @@
 
 @keyframes buttonEffect {
     to {
-        opacity: 0;
-        top: -0.6em;
-        left: -0.6em;
-        bottom: -0.6em;
-        right: -0.6em;
+        inset: -0.6em;
         border-width: 6px;
+        opacity: 0;
     }
 }

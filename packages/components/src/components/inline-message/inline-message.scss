@@ -1,16 +1,16 @@
 .inline-message {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
-    padding: 0.8rem;
     gap: 0.8rem;
-    border-radius: $BORDER_RADIUS;
+    align-items: flex-start;
     height: min-content;
+    padding: 0.8rem;
+    border-radius: $BORDER_RADIUS;
 
     &__lg {
         @include tablet-up {
-            padding: 1.6rem;
             gap: 1.6rem;
+            padding: 1.6rem;
             border-radius: $BORDER_RADIUS * 2;
         }
     }
@@ -33,19 +33,19 @@
 
     &__icon {
         &__sm {
-            margin-top: 0.1rem;
-
             @include mobile {
                 margin-top: 0;
             }
+
+            margin-top: 0.1rem;
         }
 
         &__md {
-            margin-top: 0.2rem;
-
             @include mobile {
                 margin-top: 0.1rem;
             }
+
+            margin-top: 0.2rem;
         }
 
         &__lg {
@@ -57,16 +57,16 @@
 
     &__messages {
         display: flex;
-        flex-direction: column;
         flex: 1;
+        flex-direction: column;
         align-self: stretch;
 
         &__xs {
-            margin-top: 0.1rem;
-
             @include mobile {
                 margin-top: 0.2rem;
             }
+
+            margin-top: 0.1rem;
         }
 
         &__sm {

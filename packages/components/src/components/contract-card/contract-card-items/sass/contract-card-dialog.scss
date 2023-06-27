@@ -1,52 +1,58 @@
 /** @define dc-contract-card-dialog; weak */
 .dc-contract-card-dialog {
     position: fixed;
+    z-index: 99;
     display: grid;
-    background: var(--general-main-2);
+    width: 240px;
+    padding: 0.8rem;
     border-radius: $BORDER_RADIUS;
+    background: var(--general-main-2);
     box-shadow: 0 4px 8px 2px var(--shadow-menu);
     transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.25s linear;
-    padding: 0.8rem;
-    width: 240px;
-    z-index: 99;
 
     &--enter-done {
         opacity: 1;
         transform: translate3d(0, 0, 0);
     }
+
     &--enter,
     &--exit {
         opacity: 0;
         transform: translate3d(-20px, 0, 0);
     }
+
     &__input {
         .dc-input-wrapper__input {
             border: 1px solid var(--border-normal);
             appearance: none;
         }
+
         &--currency {
             position: absolute;
-            height: 3.2rem;
             right: 4rem;
-            align-items: center;
-            justify-content: center;
-            display: flex;
-            background: transparent;
-            border-color: transparent;
             z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 3.2rem;
+            border-color: transparent;
+            background: transparent;
             color: inherit;
 
             &-symbol {
+                padding-bottom: 0.2rem;
                 font-size: 1.4rem;
                 line-height: 1.5;
-                padding-bottom: 0.2rem;
             }
+
             &:before {
                 @include typeface(--paragraph-center-normal-black);
+
                 color: inherit;
             }
         }
     }
+
     &__popover {
         /* postcss-bem-linter: ignore */
         .dc-checkbox {
@@ -58,6 +64,7 @@
             }
         }
     }
+
     &__button {
         margin-top: 0.8rem;
 
@@ -65,9 +72,8 @@
             width: 100%;
         }
     }
+
     &__form {
-        display: grid;
-        flex: 1;
         @include mobile {
             grid-template-rows: auto auto 1fr;
             grid-gap: 1.6rem;
@@ -77,46 +83,52 @@
                 grid-template-rows: auto 1fr;
             }
         }
+
         @include desktop {
             grid-gap: 0.8rem;
         }
+
+        display: grid;
+        flex: 1;
 
         .dc-checkbox__box {
             margin-left: 0;
         }
     }
+
     &__total-profit {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
         height: 5.2rem;
         padding: 1.6rem;
         background: var(--general-main-2);
         color: var(--text-general);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
         font-size: 1.4rem;
     }
 }
 
 /** @define dc-contract-card-dialog-toggle; */
 .dc-contract-card-dialog-toggle {
-    position: absolute;
-    width: calc(100% + 0.4rem);
-    height: calc(100% + 0.4rem);
-    right: 0.4rem;
-    top: -0.4rem;
-    border: 1px solid var(--general-section-1);
-    border-radius: 4px;
-
     @include mobile {
         width: 100%;
     }
+
+    position: absolute;
+    top: -0.4rem;
+    right: 0.4rem;
+    width: calc(100% + 0.4rem);
+    height: calc(100% + 0.4rem);
+    border: 1px solid var(--general-section-1);
+    border-radius: 4px;
 
     &__icon {
         float: right;
         margin: 3px;
     }
+
     &:hover {
-        cursor: pointer;
         border-color: var(--button-secondary-default);
+        cursor: pointer;
     }
 }

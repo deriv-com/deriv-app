@@ -5,11 +5,11 @@
 
     &-slide {
         display: flex;
+        justify-content: center;
+        align-items: center;
         width: 100%;
         height: 300px;
-        align-items: center;
-        justify-content: center;
-        background-color: aquamarine;
+        background-color: #7fffd4;
         font-size: 26px;
     }
 }

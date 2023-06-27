@@ -1,19 +1,22 @@
 .dc-field {
     position: absolute;
     top: 4.1rem;
-    text-align: left !important;
     font-size: var(--text-size-xxs);
     line-height: 1.25;
+    text-align: left !important;
 
     &--error {
-        padding-left: 1.1rem;
         @include typeface(--small-left-normal-red);
+
+        padding-left: 1.1rem;
         line-height: 1;
     }
+
     &--warn {
-        padding-left: 1.2rem;
-        padding-top: 0.4rem;
         @include typeface(--small-left-normal-black);
+
+        padding-top: 0.4rem;
+        padding-left: 1.2rem;
         color: $color-grey-1;
     }
 }

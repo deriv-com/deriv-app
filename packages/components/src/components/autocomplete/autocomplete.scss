@@ -2,15 +2,15 @@
 // TODO: use-phase-2-colors - Switch to using phase 2 colors, following the new color palette (refer Abstract)
 
 .dc-autocomplete {
-    width: 100%;
     position: relative;
+    width: 100%;
 
     &__trailing-icon {
         position: absolute;
         right: 0;
-        pointer-events: none;
         margin-right: 1.1rem;
         cursor: text;
+        pointer-events: none;
         transition: transform 0.2s ease;
         transform: rotate(0deg);
         transform-origin: 50% 45%;
@@ -18,13 +18,16 @@
         &--opened {
             transform: rotate(-180deg);
         }
+
         &--disabled {
             --fill-color1: var(--text-less-prominent) !important;
         }
+
         .color1-fill {
             fill: var(--text-less-prominent);
         }
     }
+
     .dc-input {
         margin-bottom: 0;
 
@@ -36,14 +39,17 @@
             }
         }
     }
+
     .dc-input__field {
-        white-space: nowrap;
         text-overflow: ellipsis;
+        white-space: nowrap;
     }
+
     .dc-dropdown-list {
-        box-shadow: 0 8px 16px 0 var(--shadow-menu);
         background: var(--general-main-2);
+        box-shadow: 0 8px 16px 0 var(--shadow-menu);
     }
+
     &:focus,
     &:focus-within,
     &:active {

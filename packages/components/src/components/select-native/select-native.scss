@@ -1,24 +1,26 @@
 .dc-select-native {
-    width: 100%;
     position: relative;
+    width: 100%;
 
     &--hide-selected-value {
-        margin-left: 10px;
         width: 40px;
+        margin-left: 10px;
 
         .dc-select-native__wrapper {
             width: 40px;
         }
     }
+
     &__container {
-        border: 1px solid var(--border-normal);
-        border-radius: $BORDER_RADIUS;
         display: flex;
         align-items: center;
+        border: 1px solid var(--border-normal);
+        border-radius: $BORDER_RADIUS;
 
         &:hover:not(.dc-input--disabled) {
             border-color: var(--border-hover);
         }
+
         &:focus-within {
             border-color: var(--brand-secondary);
 
@@ -26,104 +28,119 @@
                 border-color: var(--brand-secondary);
             }
         }
+
         &--error {
             border-color: var(--brand-red-coral) !important;
         }
+
         &--disabled {
             border-color: var(--general-disabled);
         }
     }
+
     &__wrapper {
         height: 38px;
 
         .dc-input {
-            margin-bottom: 0px;
+            margin-bottom: 0;
         }
     }
+
     &__arrow {
-        position: absolute;
-        right: 1.3rem;
-        top: 1.3rem;
         --fill-color1: var(--text-less-prominent);
+
+        position: absolute;
+        top: 1.3rem;
+        right: 1.3rem;
     }
+
     &__display {
-        height: 38px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
         width: 100%;
         max-width: calc(100vw - 4rem);
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
+        height: 38px;
         padding-left: 1.2rem;
 
         &-text {
-            color: var(--text-prominent);
-            font-size: 1.4rem;
-            white-space: nowrap;
+            display: block;
             overflow: hidden;
             max-width: calc(100% - 4rem);
-            text-overflow: ellipsis;
-            display: block;
             height: 100%;
+            color: var(--text-prominent);
+            font-size: 1.4rem;
             line-height: 3.8rem;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     }
+
     &__placeholder {
         position: absolute;
-        left: 1.1rem;
         top: 1.1rem;
-        pointer-events: none;
-        transition: transform 0.25s linear;
+        left: 1.1rem;
+        overflow: hidden;
+        max-width: calc(100% - 3.6rem);
         padding: 0 0.4rem;
-        font-size: 1.4rem;
-        transform: none;
         background-color: var(--fill-normal);
         color: var(--text-less-prominent);
-        transform-origin: top left;
+        font-size: 1.4rem;
         line-height: 1.43;
-        white-space: nowrap;
-        max-width: calc(100% - 3.6rem);
         text-overflow: ellipsis;
-        overflow: hidden;
+        white-space: nowrap;
+        pointer-events: none;
+        transition: transform 0.25s linear;
+        transform: none;
+        transform-origin: top left;
 
         &--has-value {
-            transform: translate(0, -1.8rem) scale(0.75);
-            color: var(--text-general);
             max-width: 100%;
+            color: var(--text-general);
+            transform: translate(0, -1.8rem) scale(0.75);
         }
+
         &--hide-top-placeholder {
-            transform: translate(0, -1.8rem) scale(0.75);
-            color: var(--text-general);
-            max-width: 100%;
             display: none;
+            max-width: 100%;
+            color: var(--text-general);
+            transform: translate(0, -1.8rem) scale(0.75);
         }
     }
+
     &__picker {
-        opacity: 0;
+        position: absolute;
+        top: 0;
+        left: 0;
         width: 100%;
         height: 38px;
-        left: 0;
-        top: 0;
-        position: absolute;
+        opacity: 0;
     }
+
     &--disabled {
         .dc-select-native__display-text {
             color: var(--text-less-prominent);
         }
+
         .dc-select-native__placeholder:not(.dc-select-native__placeholder--has-value) {
             color: var(--text-less-prominent);
         }
+
         .dc-icon {
             --fill-color1: var(--text-less-prominent);
         }
     }
+
     &--error {
         .dc-select-native__placeholder {
             color: var(--brand-red-coral);
         }
     }
+
     &__hint {
         margin-left: 1.2rem;
     }
+
     &__suffix-icon {
         position: absolute;
         left: 11px;

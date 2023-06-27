@@ -1,53 +1,59 @@
 /** @define dc-result */
 .dc-result {
     &__caption {
-        text-transform: capitalize;
-        font-size: 1.6em;
-        font-weight: bold;
+        @include mobile {
+            pointer-events: none;
+        }
+
         display: flex;
         justify-content: center;
         align-items: center;
+        font-weight: bold;
+        font-size: 1.6em;
+        text-transform: capitalize;
         transition: opacity 0.25s ease;
 
         &--won {
             color: var(--text-profit-success);
         }
+
         &--lost {
             color: var(--text-loss-danger);
         }
+
         &-wrapper {
-            cursor: pointer;
-            width: 100%;
-            height: calc(100% - 24px);
-            text-decoration: none;
             position: absolute;
             top: 24px;
             z-index: 2;
             display: flex;
             justify-content: center;
             align-items: center;
-        }
-        @include mobile {
-            pointer-events: none;
+            width: 100%;
+            height: calc(100% - 24px);
+            text-decoration: none;
+            cursor: pointer;
         }
     }
+
     &__close-btn {
         position: absolute;
         top: 2px;
         right: 8px;
-        cursor: pointer;
         visibility: visible;
+        cursor: pointer;
 
         &:after {
             content: '\0000D7';
-            font-size: 24px;
-            font-weight: 300;
             color: var(--text-general);
+            font-weight: 300;
+            font-size: 24px;
         }
     }
+
     &__icon {
         margin-left: 10px;
     }
+
     &__positions-overlay {
         max-width: 218px;
     }

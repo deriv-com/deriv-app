@@ -1,5 +1,10 @@
 /** @define send-email-template */
 .send-email-template {
+    @include mobile {
+        width: 100%;
+        margin-bottom: 1.6rem;
+    }
+
     padding: 0 16px;
 
     &__title,
@@ -10,25 +15,31 @@
             white-space: nowrap;
         }
     }
+
     &__close {
         display: flex;
         justify-content: flex-end;
         padding-bottom: 1.2rem;
         cursor: pointer;
     }
+
     &__icon {
-        margin-bottom: 2.4rem;
         @include mobile {
             margin-top: 3.2rem;
         }
+
+        margin-bottom: 2.4rem;
     }
+
     &__sent,
     &__cta {
         text-align: center;
     }
+
     &__cta-btn {
         margin: 3.2rem auto 0;
     }
+
     &__resend {
         display: grid;
         grid-template-rows: 1fr 1fr 1fr;
@@ -38,6 +49,7 @@
         color: var(--text-prominent);
         font-size: var(--text-size-xxs);
         line-height: 1.5;
+
         .sent-email__content {
             display: grid;
             grid-template-columns: 3.2rem auto;
@@ -50,18 +62,18 @@
             }
         }
     }
+
     &__btn {
         margin: 0 auto;
     }
+
     &-dashboard {
         width: calc(100vw - 33rem);
     }
-    @include mobile {
-        margin-bottom: 1.6rem;
-        width: 100%;
-    }
+
     &__footer {
         margin-top: 2.6rem;
+
         &-live-chat {
             color: var(--text-red);
             cursor: pointer;

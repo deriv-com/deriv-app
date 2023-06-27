@@ -1,13 +1,14 @@
 .multi-step-storybook {
-    font-size: 18px;
     position: relative;
+    font-size: 18px;
 
     .multi-step__header {
-        margin: 0;
         position: absolute;
         top: 15px;
         left: 15px;
+        margin: 0;
     }
+
     .multi-step__component {
         padding: 25px 0;
     }

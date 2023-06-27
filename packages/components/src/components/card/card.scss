@@ -1,7 +1,8 @@
 .dc-card {
     @include typeface(--paragraph-left-normal-black, none);
-    border: 1px solid var(--border-normal);
+
     padding: 1.6rem;
+    border: 1px solid var(--border-normal);
     border-radius: $BORDER_RADIUS;
 
     &__wrapper {

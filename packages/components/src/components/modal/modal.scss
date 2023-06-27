@@ -2,63 +2,82 @@
 .dc-modal {
     &__container {
         @include tablet {
-            width: unset !important;
             right: 0;
+            width: unset !important;
         }
+
+        @include desktop {
+            min-width: 440px !important;
+            max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT}) !important;
+        }
+
+        @include mobile {
+            max-width: calc(100vw - 3.2rem) !important;
+        }
+
+        position: relative;
         display: flex;
         flex-direction: column;
-        position: relative;
         overflow: hidden;
         border-radius: 8px;
-        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
         background-color: var(--general-main-2);
         box-shadow: 0 4px 6px 0 var(--shadow-menu);
+        transition: transform 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25), opacity 0.25s cubic-bezier(0.25, 0.1, 0.1, 0.25);
 
         &--is-vertical-centered {
+            @include mobile {
+                left: 2.4rem;
+                width: calc(100vw - 4.8rem) !important;
+            }
+
             position: absolute;
             top: 50vh;
             transform: translateY(-50%) !important;
 
             .dc-modal__container {
-                min-width: unset;
                 top: 2rem;
-            }
-            @include mobile {
-                left: 2.4rem;
-                width: calc(100vw - 4.8rem) !important;
+                min-width: unset;
             }
         }
+
         &--is-vertical-top {
-            top: $HEADER_HEIGHT;
-            position: absolute;
             @include mobile {
                 top: $MOBILE_HEADER_HEIGHT;
                 left: 1.6rem;
                 width: calc(100vw - 3.2rem) !important;
             }
-        }
-        &--is-vertical-bottom {
-            bottom: $FOOTER_HEIGHT;
+
             position: absolute;
+            top: $HEADER_HEIGHT;
+        }
+
+        &--is-vertical-bottom {
             @include mobile {
                 left: 1.6rem;
                 width: calc(100vw - 3.2rem) !important;
             }
+
+            position: absolute;
+            bottom: $FOOTER_HEIGHT;
         }
+
         &--hide {
             display: none;
         }
+
         &--enter,
         &--exit {
-            transform: translateY(50px);
             opacity: 0;
             pointer-events: none;
+            transform: translateY(50px);
         }
+
         &--enter-done {
-            transform: translateY(0);
             opacity: 1;
             pointer-events: auto;
+            transform: translateY(0);
         }
+
         &--small {
             max-width: 440px;
 
@@ -66,6 +85,7 @@
                 border-bottom: none;
             }
         }
+
         &--is-confirmation-modal {
             .dc-modal {
                 &-header {
@@ -75,122 +95,126 @@
                         padding: 2.4rem;
                     }
                 }
+
                 &-body {
                     padding: 0 2.4rem;
                 }
+
                 &-footer {
                     padding: 2.4rem;
                 }
             }
         }
-        @include desktop {
-            min-width: 440px !important;
-            max-height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT}) !important;
-        }
-        @include mobile {
-            max-width: calc(100vw - 3.2rem) !important;
-        }
     }
+
     &__container_sent-email__modal {
         @include mobile {
-            height: 42rem !important;
             overflow-y: scroll !important;
+            height: 42rem !important;
         }
     }
+
     /** @define dc-modal-header */
     &-header {
         display: flex;
         justify-content: space-between;
+        align-items: center;
         width: 100%;
         line-height: 24px;
-        align-items: center;
+
+        // fix for safari bug with header being truncated
+        @media not all and (resolution >= 0.001dpcm) {
+            @supports (-webkit-appearance: none) {
+                /* postcss-bem-linter: ignore */
+                min-height: 4.8rem;
+            }
+        }
 
         &__border-bottom {
             border-bottom: 2px solid var(--general-section-2) !important;
         }
 
         &__title {
-            padding: 1.6rem 2.4rem;
+            @include mobile {
+                padding: 1.6rem;
+                font-size: 1.4rem;
+                line-height: 1.2;
+            }
+
             display: flex;
             align-items: center;
             height: 100%;
+            padding: 1.6rem 2.4rem;
 
             &:empty {
                 padding: 0;
                 border: none;
             }
-
-            @include mobile {
-                font-size: 1.4rem;
-                padding: 1.6rem;
-                line-height: 1.2;
-            }
         }
+
         &__section {
+            display: flex;
             flex-grow: 1;
+            align-items: center;
             padding: 1.6rem;
             line-height: 24px;
-            display: flex;
-            align-items: center;
         }
-        &__close {
-            display: block;
-            cursor: pointer;
-            padding: 0.6rem 0.8rem;
-            height: 30px;
-            width: 32px;
-            margin: 1.2rem 1.6rem 1.2rem auto;
 
+        &__close {
             @include mobile {
                 margin: 0.8rem;
             }
+
+            display: block;
+            width: 32px;
+            height: 30px;
+            margin: 1.2rem 1.6rem 1.2rem auto;
+            padding: 0.6rem 0.8rem;
+            cursor: pointer;
         }
+
         &--is-title-centered {
-            justify-content: flex-end;
             position: relative;
+            justify-content: flex-end;
 
             .dc-modal-header__title {
                 @include mobile {
                     position: absolute;
                 }
+
                 justify-content: center;
                 width: 100%;
             }
+
             .dc-modal-header__close {
                 z-index: 1;
             }
         }
-
-        // fix for safari bug with header being truncated
-        @media not all and (min-resolution: 0.001dpcm) {
-            @supports (-webkit-appearance: none) {
-                /* postcss-bem-linter: ignore */
-                min-height: 4.8rem;
-            }
-        }
     }
+
     /** @define dc-modal-body */
     &-body {
-        &:first-child {
-            padding-top: 2.4rem;
+        @include mobile {
+            padding: 0.8rem 2.4rem;
+            font-size: 1.2rem;
         }
 
         padding: 2.4rem;
+        color: var(--text-prominent);
         font-size: 1.4rem;
         line-height: 1.43;
-        color: var(--text-prominent);
 
-        @include mobile {
-            font-size: 1.2rem;
-            padding: 0.8rem 2.4rem;
+        &:first-child {
+            padding-top: 2.4rem;
         }
     }
+
     /** @define dc-modal-footer; weak */
     &-footer {
         display: flex;
         justify-content: flex-end;
-        padding: 1.6rem;
         margin-top: auto;
+        padding: 1.6rem;
 
         .dc-btn {
             margin: 0 0.8rem;
@@ -199,6 +223,7 @@
                 margin: 0;
             }
         }
+
         &--separator {
             border-top: 2px solid var(--general-section-1);
         }

@@ -1,18 +1,20 @@
 /** @define barspinner */
 .barspinner {
-    margin: auto;
     width: 6rem;
     height: 2rem;
+    margin: auto;
     white-space: nowrap;
 
     &__rect {
+        @include createBarspinnerAnimation(5, 1.2s, 0.1);
+
+        display: inline-block;
+        width: 0.6rem;
+        height: 60%;
         margin: 0.4rem;
         border-radius: 20px;
-        height: 60%;
-        width: 0.6rem;
-        display: inline-block;
-        @include createBarspinnerAnimation(5, 1.2s, 0.1);
     }
+
     &--dark .barspinner__rect {
         background-color: var(--brand-secondary);
     }
@@ -24,6 +26,7 @@
     100% {
         transform: scaleY(1);
     }
+
     20% {
         transform: scaleY(2);
     }
@@ -31,25 +34,27 @@
 
 /** @define initial-loader */
 .initial-loader {
-    width: 100%;
-    height: 100%;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    display: flex;
+    width: 100%;
+    height: 100%;
     background: transparent;
 
     &--fullscreen {
-        width: 100vw;
-        height: 100vh;
-
         @include desktop {
             height: calc(100vh - #{$HEADER_HEIGHT} - #{$FOOTER_HEIGHT});
         }
+
         @include mobile {
             height: calc(100vh - #{$MOBILE_HEADER_HEIGHT});
         }
+
+        width: 100vw;
+        height: 100vh;
     }
+
     &__barspinner {
         margin: 5rem auto;
 

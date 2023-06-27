@@ -50,6 +50,7 @@ module.exports = {
         'selector-no-qualifying-type': [true, { ignore: ["attribute", "class", "id"] }],
         'selector-id-pattern': null,
         'scss/no-global-function-names': null,
+        'no-empty-source': null,
 
         // Plugins Config
 

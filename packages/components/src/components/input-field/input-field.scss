@@ -1,16 +1,18 @@
 /** @define dc-input-field; weak */
 .dc-input-field {
-    margin: 0.8rem 0 0;
     position: relative;
+    margin: 0.8rem 0 0;
 
     &__label {
         @include typeface(--paragraph-left-normal-black);
-        color: var(--text-general);
-        margin-bottom: 0.2rem;
+
         display: inline-block;
-        text-align: center;
         width: 100%;
+        margin-bottom: 0.2rem;
+        color: var(--text-general);
+        text-align: center;
     }
+
     & .inline-icon {
         position: absolute;
         top: 8px;
@@ -18,6 +20,7 @@
         z-index: 1;
         cursor: pointer;
     }
+
     &__helper {
         @include typeface(--small-left-light-grey);
     }
@@ -34,27 +37,30 @@ button.dc-input-wrapper {
             display: none;
         }
     }
+
     &__button {
         position: absolute !important;
-        z-index: 1;
         top: 2px;
-        height: 28px;
-        border: none;
-        padding: 0;
-        margin: initial;
-        min-width: 3.2rem;
-        border-radius: 3px;
-        background-color: initial;
+        z-index: 1;
         display: flex;
         justify-content: center;
         align-items: center;
+        min-width: 3.2rem;
+        height: 28px;
+        margin: initial;
+        padding: 0;
+        border: none;
+        border-radius: 3px;
+        background-color: initial;
 
         &--increment {
             right: 2px;
         }
+
         &--decrement {
             left: 2px;
         }
+
         &:hover {
             background: var(--state-hover);
             cursor: pointer;
@@ -63,18 +69,22 @@ button.dc-input-wrapper {
                 @extend .input:hover;
             }
         }
+
         &:disabled:hover {
-            cursor: not-allowed;
             background: transparent;
+            cursor: not-allowed;
         }
     }
+
     &__icon {
         @extend %inline-icon;
     }
+
     &--disabled {
-        pointer-events: none;
         color: var(--text-disabled);
+        pointer-events: none;
     }
+
     &--inline {
         display: flex;
         justify-content: space-between;
@@ -85,97 +95,114 @@ button.dc-input-wrapper {
 /** @define input */
 .input {
     @include typeface(--paragraph-center-normal-black);
-    list-style: none;
+
     position: relative;
     display: inline-block;
     width: 100%;
     height: 32px;
     padding-left: 0.8rem;
-    border-radius: $BORDER_RADIUS;
-    transition: transform 0.3s;
-    background-color: var(--fill-normal);
     border: 1px solid var(--fill-normal);
+    border-radius: $BORDER_RADIUS;
+    background-color: var(--fill-normal);
     color: var(--text-prominent);
+    list-style: none;
+    transition: transform 0.3s;
 
     &[type='checkbox'] {
-        font-size: 1.2rem;
-        cursor: pointer;
         display: inline-block;
         vertical-align: middle;
         width: 16px;
         height: 16px;
-        border-radius: 0;
         padding: 0;
-        background-color: var(--general-section-1);
         border: 1px solid var(--text-less-prominent);
+        border-radius: 0;
+        background-color: var(--general-section-1);
+        font-size: 1.2rem;
+        cursor: pointer;
 
         &:active {
+            border-color: var(--brand-red-coral);
             border-radius: 0;
             box-shadow: none;
-            border-color: var(--brand-red-coral);
         }
+
         &:hover {
             border-color: var(--border-hover);
         }
+
         &:focus {
+            border-color: var(--border-active);
             border-radius: 0;
             box-shadow: none;
-            border-color: var(--border-active);
         }
+
         &:checked {
-            background: var(--brand-red-coral);
             border-color: var(--brand-red-coral);
+            background: var(--brand-red-coral);
 
             &:after {
                 display: inline-block;
             }
+
             &:hover {
                 border-color: var(--brand-red-coral);
             }
         }
+
         &::-ms-check {
+            border-color: transparent;
+
             // IE/EDGE support
             background: transparent;
-            border-color: transparent;
             color: $COLOR_WHITE;
         }
+
         &:after {
             @include typeface(--small-left-normal-active);
+
             content: 'L';
-            transform: scaleX(-1) rotate(-40deg);
             position: absolute;
             top: -10%;
             left: 25%;
             display: none;
+            transform: scaleX(-1) rotate(-40deg);
         }
     }
+
     &:not([type='range']) {
         touch-action: manipulation;
     }
+
     &[readonly] {
         cursor: pointer;
     }
+
     &::placeholder {
         border-color: var(--border-normal);
     }
+
     &:hover {
         border-color: var(--border-hover);
     }
+
     &:active,
     &:focus {
-        outline: 0;
-        border-radius: $BORDER_RADIUS;
         border-color: var(--border-active);
+        border-radius: $BORDER_RADIUS;
         color: var(--text-prominent);
+        outline: 0;
     }
+
     &--has-inline-prefix {
         padding-right: 40px !important;
         border-radius: $BORDER_RADIUS !important;
     }
+
     &--error {
-        color: $COLOR_RED;
         border: 1px solid $COLOR_RED !important;
+        color: $COLOR_RED;
     }
+
     &:disabled {
         color: var(--text-disabled);
     }

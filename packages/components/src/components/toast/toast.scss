@@ -1,58 +1,67 @@
 /** @define dc-toast; */
 .dc-toast {
-    width: 100vw;
-    transition: transform 0.25s ease, opacity 0.25s linear;
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100vw;
     pointer-events: none;
+    transition: transform 0.25s ease, opacity 0.25s linear;
 
     &__message {
-        max-width: calc(100vw - 3.2rem);
-        padding: 0.4rem 0.8rem;
         @include typeface(--paragraph-center-normal-black);
-        color: var(--text-colored-background);
-        border-radius: $BORDER_RADIUS;
-        min-height: 34px;
+
         display: flex;
         align-items: center;
+        max-width: calc(100vw - 3.2rem);
+        min-height: 34px;
+        padding: 0.4rem 0.8rem;
+        border-radius: $BORDER_RADIUS;
+        color: var(--text-colored-background);
         pointer-events: all;
     }
+
     &__error {
         .dc-toast__message {
             background-color: var(--status-danger);
         }
     }
+
     &__info {
         .dc-toast__message {
             background: var(--status-info);
             font-size: 1.2rem;
+
             /* iPhone SE screen height fixes due to UI space restrictions */
-            @media only screen and (max-height: 580px) {
+            @media only screen and (height <= 580px) {
                 font-size: 1rem;
             }
         }
     }
+
     &__notification {
         .dc-toast__message {
-            background: var(--general-active);
             padding: 0.9rem 1.2rem;
+            background: var(--general-active);
         }
     }
+
     &--enter,
     &--exit {
-        transform: scale(1, 0);
         opacity: 0;
+        transform: scale(1, 0);
     }
+
     &--enter-done {
-        transform: scale(1, 1);
         opacity: 1;
+        transform: scale(1, 1);
     }
+
     &--blinker {
         .dc-toast__message {
             animation: toast_blinking 0.4s alternate infinite;
         }
     }
+
     &:not(:first-child) {
         margin-top: 1rem;
     }
@@ -62,6 +71,7 @@
     40% {
         opacity: 1;
     }
+
     100% {
         opacity: 0;
     }

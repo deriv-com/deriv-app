@@ -2,13 +2,13 @@ import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/he
 import PropTypes from 'prop-types';
 import React from 'react';
 import AccumulatorsProfitLossTooltip from './accumulators-profit-loss-tooltip.jsx';
-import CurrentSpotEmphasizer from './current-spot-emphasizer.jsx';
+import ChartMarker from './marker.jsx';
 
 const AccumulatorsChartElements = ({
     all_positions,
-    current_symbol_spot,
-    current_symbol_spot_time,
-    should_highlight_current_spot,
+    current_spot,
+    current_spot_time,
+    has_crossed_accu_barriers,
     symbol,
 }) => {
     const accumulators_positions = all_positions.filter(
@@ -22,10 +22,14 @@ const AccumulatorsChartElements = ({
                 accumulators_positions.map(({ contract_info }) => (
                     <AccumulatorsProfitLossTooltip key={contract_info.contract_id} {...contract_info} />
                 ))}
-            {should_highlight_current_spot && current_symbol_spot_time && (
-                <CurrentSpotEmphasizer
-                    current_spot={current_symbol_spot}
-                    current_spot_time={current_symbol_spot_time}
+            {has_crossed_accu_barriers && !!current_spot_time && (
+                <ChartMarker
+                    marker_config={{
+                        ContentComponent: 'div',
+                        x: current_spot_time,
+                        y: current_spot,
+                    }}
+                    marker_content_props={{ className: 'sc-current-spot-emphasizer' }}
                 />
             )}
         </React.Fragment>
@@ -34,9 +38,9 @@ const AccumulatorsChartElements = ({
 
 AccumulatorsChartElements.propTypes = {
     all_positions: PropTypes.array,
-    current_symbol_spot: PropTypes.number,
-    current_symbol_spot_time: PropTypes.number,
-    should_highlight_current_spot: PropTypes.bool,
+    current_spot: PropTypes.number,
+    current_spot_time: PropTypes.number,
+    has_crossed_accu_barriers: PropTypes.bool,
     symbol: PropTypes.string,
 };
 

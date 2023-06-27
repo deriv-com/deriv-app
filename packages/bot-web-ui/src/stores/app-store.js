@@ -225,7 +225,6 @@ export default class AppStore {
             run_panel,
             blockly_store,
             summary_card,
-            transactions,
         } = this.root_store;
         const { client } = this.core;
         const { handleFileChange } = load_modal;
@@ -241,7 +240,6 @@ export default class AppStore {
             dashboard,
             load_modal,
             run_panel,
-            transactions,
             setLoading,
             setContractUpdateConfig,
             loadDataStrategy,

@@ -62,33 +62,6 @@ type BrandConfig = {
     is_deriv_platform?: boolean;
 };
 
-type TAccountLimitsCollection = {
-    level?: string;
-    name: string;
-    payout_limit: number;
-    profile_name: string;
-    turnover_limit: number;
-};
-type TAccount_limits = {
-    api_initial_load_error?: string;
-    open_positions?: React.ReactNode;
-    account_balance: string | number;
-    daily_transfers?: object;
-    payout: string | number;
-    lifetime_limit?: number;
-    market_specific: {
-        commodities: TAccountLimitsCollection[];
-        cryptocurrency: TAccountLimitsCollection[];
-        forex: TAccountLimitsCollection[];
-        indices: TAccountLimitsCollection[];
-        synthetic_index: TAccountLimitsCollection[];
-    };
-    num_of_days?: number;
-    num_of_days_limit: string | number;
-    remainder: string | number;
-    withdrawal_for_x_days_monetary?: number;
-    withdrawal_since_inception_monetary: string | number;
-};
 type TAccount = NonNullable<Authorize['account_list']>[0] & {
     balance?: number;
     landing_company_shortcode?: 'svg' | 'costarica' | 'maltainvest' | 'malta' | 'iom';

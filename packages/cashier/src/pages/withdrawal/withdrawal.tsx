@@ -25,7 +25,7 @@ type TWithdrawalSideNoteProps = {
 };
 
 type TWithdrawalProps = {
-    setSideNotes: (notes: (JSX.Element | JSX.Element[])[] | null) => void;
+    setSideNotes?: (notes: (JSX.Element | JSX.Element[])[] | null) => void;
 };
 
 const WithdrawalSideNote = ({ is_mobile, currency }: TWithdrawalSideNoteProps) => {
@@ -116,7 +116,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
                 ];
                 side_notes.push(side_note);
                 setSideNotes(side_notes);
-            } else setSideNotes(null);
+            } else setSideNotes?.(null);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, tab_index, crypto_transactions]);

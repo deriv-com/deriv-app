@@ -15,7 +15,7 @@ type TRoute = {
 };
 
 type TGetSelectedRoute = {
-    routes: TRoute[];
+    routes?: TRoute[];
     pathname: string;
 };
 
@@ -23,9 +23,9 @@ export const matchRoute = (route: TRoute, pathname: string) =>
     new RegExp(`${route.path}(/$)?((?!-).)*$`).test(pathname);
 
 export const getSelectedRoute = ({ routes, pathname }: TGetSelectedRoute) => {
-    const matching_route = routes.find(route => matchRoute(route, pathname));
+    const matching_route = routes?.find(route => matchRoute(route, pathname));
     if (!matching_route) {
-        return routes.find(route => route.default) || routes[0] || null;
+        return routes?.find(route => route.default) || routes?.[0] || null;
     }
     return matching_route;
 };

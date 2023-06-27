@@ -18,7 +18,7 @@ import { CashierOnboardingSideNotes } from '../../modules/cashier-onboarding/com
 import { DepositFiatModule } from '../../modules/deposit-fiat';
 
 type TDeposit = {
-    setSideNotes: (notes: object | null) => void;
+    setSideNotes?: (notes: object | null) => void;
 };
 
 const Deposit = observer(({ setSideNotes }: TDeposit) => {

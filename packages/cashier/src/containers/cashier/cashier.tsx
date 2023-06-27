@@ -19,7 +19,7 @@ import {
 } from '@deriv/hooks';
 import { getSelectedRoute, getStaticUrl, isMobile, routes, WS } from '@deriv/shared';
 import ErrorDialog from '../../components/error-dialog';
-import { TRoute } from '../../types';
+import { TComponentRouteProps, TRoute } from '../../types';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { useCashierStore } from '../../stores/useCashierStores';
@@ -27,14 +27,14 @@ import type { TCoreStores } from '@deriv/stores/types';
 import './cashier.scss';
 
 type TCashierProps = {
-    routes: TRoute[];
-    tab_index: number;
-    onMount: (should_remount?: boolean) => void;
-    setAccountSwitchListener: () => void;
-    setTabIndex: (index: number) => void;
-    routeBackInApp: TCoreStores['common']['routeBackInApp'];
-    toggleCashier: TCoreStores['ui']['toggleCashier'];
-    resetLastLocation: () => void;
+    routes?: TRoute[];
+    tab_index?: number;
+    onMount?: (should_remount?: boolean) => void;
+    setAccountSwitchListener?: () => void;
+    setTabIndex?: (index: number) => void;
+    routeBackInApp?: TCoreStores['common']['routeBackInApp'];
+    toggleCashier?: TCoreStores['ui']['toggleCashier'];
+    resetLastLocation?: () => void;
 };
 
 type TCashierOptions = {
@@ -44,7 +44,7 @@ type TCashierOptions = {
     icon?: string;
     label: string;
     path?: string;
-    value?: React.FC;
+    value?: React.FC<TComponentRouteProps>;
 };
 
 const Cashier = observer(({ routes: routes_config }: TCashierProps) => {
@@ -116,7 +116,7 @@ const Cashier = observer(({ routes: routes_config }: TCashierProps) => {
     const onClickClose = () => history.push(routes.traders_hub);
     const getMenuOptions = () => {
         const options: TCashierOptions[] = [];
-        routes_config.forEach(route => {
+        routes_config?.forEach(route => {
             if (
                 !route.is_invisible &&
                 (route.path !== routes.cashier_pa || is_payment_agent_visible) &&
@@ -146,7 +146,8 @@ const Cashier = observer(({ routes: routes_config }: TCashierProps) => {
     //     (location.pathname.startsWith(routes.cashier_deposit) ||
     //         location.pathname.startsWith(routes.cashier_withdrawal));
 
-    const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: history.location.pathname }).default;
+    const is_default_route = !!getSelectedRoute({ routes: routes_config, pathname: history.location.pathname })
+        ?.default;
 
     // '|| !is_account_setting_loaded' condition added to make sure client_tnc_status loaded
     if (
@@ -161,7 +162,7 @@ const Cashier = observer(({ routes: routes_config }: TCashierProps) => {
     const getHeaderTitle = () => {
         if (!isMobile() || (is_default_route && (is_loading || is_cashier_onboarding))) return localize('Cashier');
 
-        return selected_route.getTitle?.();
+        return selected_route?.getTitle?.();
     };
 
     return (

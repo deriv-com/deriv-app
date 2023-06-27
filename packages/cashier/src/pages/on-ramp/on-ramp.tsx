@@ -11,7 +11,7 @@ import OnRampProviderPopup from './on-ramp-provider-popup';
 import { useCashierStore } from '../../stores/useCashierStores';
 import './on-ramp.scss';
 
-type TMenuOption = {
+export type TMenuOption = {
     count?: number;
     default?: boolean;
     icon?: string;
@@ -22,8 +22,8 @@ type TMenuOption = {
 };
 
 export type TOnRampProps = {
-    menu_options: TMenuOption[];
-    setSideNotes: (ReactComponent: React.ReactElement[]) => void;
+    menu_options?: TMenuOption[];
+    setSideNotes?: (ReactComponent: React.ReactElement[]) => void;
 };
 
 const OnRampSideNote = () => {
@@ -84,15 +84,13 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
 
     React.useEffect(() => {
         onMountOnramp();
-        if (typeof setSideNotes === 'function' && !is_switching && !is_loading) {
-            setSideNotes([<OnRampSideNote key={0} />]);
+        if (!is_switching && !is_loading) {
+            setSideNotes?.([<OnRampSideNote key={0} />]);
         }
 
         return () => {
             onUnmountOnramp();
-            if (typeof setSideNotes === 'function') {
-                setSideNotes([]);
-            }
+            setSideNotes?.([]);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [onMountOnramp, onUnmountOnramp, is_cashier_onboarding, is_switching, is_loading, cashier_route_tab_index]);

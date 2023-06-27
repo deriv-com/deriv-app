@@ -16,7 +16,7 @@ import {
 } from './components';
 
 type TProps = {
-    setSideNotes: React.Dispatch<React.SetStateAction<JSX.Element[]>>;
+    setSideNotes?: React.Dispatch<React.SetStateAction<JSX.Element[]>>;
 };
 
 const CashierOnboarding: React.FC<TProps> = observer(({ setSideNotes }) => {

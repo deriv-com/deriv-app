@@ -18,7 +18,7 @@ import { useCashierLocked } from '@deriv/hooks';
 type TAccountTransferProps = {
     onClickDeposit?: VoidFunction;
     onClickNotes?: VoidFunction;
-    onClose: VoidFunction;
+    onClose?: VoidFunction;
     openAccountSwitcherModal?: VoidFunction;
     setSideNotes?: (notes: TSideNotesProps) => void;
 };

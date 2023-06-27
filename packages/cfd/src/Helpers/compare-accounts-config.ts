@@ -133,21 +133,11 @@ const cfdConfig = {
 };
 const getJuridisctionDescription = (shortcode: string) => {
     switch (shortcode) {
-        case 'synthetic_svg':
-            return {
-                ...cfdConfig,
-                counterparty_company: 'Deriv (SVG) LLC',
-                jurisdiction: 'St. Vincent & Grenadines',
-                jurisdiction_description: 'Jurisdiction',
-                regulator: 'Financial Commission',
-                regulator_description: 'Regulator/External dispute resolution',
-            };
         case 'synthetic_bvi':
             return {
                 ...cfdConfig,
                 counterparty_company: 'Deriv (BVI) Ltd',
                 jurisdiction: 'British Virgin Islands',
-                jurisdiction_description: 'Jurisdiction',
                 regulator: 'British Virgin Islands Financial Services Commission',
                 regulator_description: '(License no. SIBA/L/18/1114) Regulator/External dispute Resolution',
             };
@@ -156,17 +146,7 @@ const getJuridisctionDescription = (shortcode: string) => {
                 ...cfdConfig,
                 counterparty_company: 'Deriv (V) Ltd',
                 jurisdiction: 'Vanuatu',
-                jurisdiction_description: 'Jurisdiction',
                 regulator: 'Vanuatu Financial Services Commission',
-                regulator_description: 'Regulator/External dispute resolution',
-            };
-        case 'financial_svg':
-            return {
-                ...cfdConfig,
-                counterparty_company: 'Deriv (SVG) LLC',
-                jurisdiction: 'St. Vincent & Grenadines',
-                jurisdiction_description: 'Jurisdiction',
-                regulator: 'Financial Commission',
                 regulator_description: 'Regulator/External dispute resolution',
             };
         case 'financial_bvi':
@@ -174,7 +154,6 @@ const getJuridisctionDescription = (shortcode: string) => {
                 ...cfdConfig,
                 counterparty_company: 'Deriv (BVI) Ltd',
                 jurisdiction: 'British Virgin Islands',
-                jurisdiction_description: 'Jurisdiction',
                 regulator: 'British Virgin Islands Financial Services Commission',
                 regulator_description: '(License no. SIBA/L/18/1114) Regulator/External Dispute Resolution',
             };
@@ -193,13 +172,14 @@ const getJuridisctionDescription = (shortcode: string) => {
                 leverage: '1:100',
                 counterparty_company: 'Deriv (FX) Ltd',
                 jurisdiction: 'Labuan',
-                jurisdiction_description: 'Jurisdiction',
                 regulator: 'Labuan Financial Services Authority',
                 regulator_description: '(licence no. MB/18/0024) Regulator/External Dispute Resolution',
             };
         // Dxtrade
         case 'all_':
         case 'all_svg':
+        case 'synthetic_svg':
+        case 'financial_svg':
             return {
                 ...cfdConfig,
                 counterparty_company: 'Deriv (SVG) LLC',
@@ -219,7 +199,7 @@ const getSortedAvailableAccounts = (available_accounts: TModifiedTradingPlatform
         .filter(item => item.market_type === 'all')
         .map(item => ({ ...item, platform: 'mt5' } as const));
     const financial_accounts = available_accounts
-        .filter(item => item.market_type === 'financial')
+        .filter(item => item.market_type === 'financial' && item.shortcode !== 'maltainvest')
         .map(item => ({ ...item, platform: 'mt5' } as const));
     const gaming_accounts = available_accounts
         .filter(item => item.market_type === 'gaming')
@@ -228,6 +208,13 @@ const getSortedAvailableAccounts = (available_accounts: TModifiedTradingPlatform
 };
 const getDxtradeAccountAvailabaility = (available_accounts: TAvailableCFDAccounts[]) => {
     return available_accounts.some(account => account.platform === 'dxtrade');
+};
+
+const getEUAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
+    const financial_accounts = available_accounts
+        .filter(item => item.market_type === 'financial' && item.shortcode === 'maltainvest')
+        .map(item => ({ ...item, platform: 'mt5' } as const));
+    return [...financial_accounts];
 };
 
 const prepareDxtradeData = (
@@ -344,6 +331,7 @@ export {
     getAccountIcon,
     getPlatformLabel,
     getSortedAvailableAccounts,
+    getEUAvailableAccounts,
     getDxtradeAccountAvailabaility,
     prepareDxtradeData,
     getHeaderColor,

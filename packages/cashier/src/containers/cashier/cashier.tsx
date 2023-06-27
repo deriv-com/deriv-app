@@ -44,7 +44,7 @@ type TCashierOptions = {
     icon?: string;
     label: string;
     path?: string;
-    value?: React.FC<any>;
+    value?: React.FC;
 };
 
 const Cashier = observer(({ routes: routes_config }: TCashierProps) => {

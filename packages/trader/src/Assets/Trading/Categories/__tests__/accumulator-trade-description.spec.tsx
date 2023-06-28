@@ -5,7 +5,7 @@ import userEvent from '@testing-library/user-event';
 
 describe('<AccumulatorTradeDescription />', () => {
     it('Ensure content of component is rendered properly', () => {
-        render(<AccumulatorTradeDescription />);
+        render(<AccumulatorTradeDescription onClick={jest.fn()} />);
         expect(
             screen.getByText(
                 /Your stake will continue to grow as long as the current spot price remains within a specified/i

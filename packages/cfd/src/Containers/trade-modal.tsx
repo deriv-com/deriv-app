@@ -26,7 +26,11 @@ type TTradeModalProps = {
     platform: TCFDsPlatformType;
 };
 
-const PlatformIconsAndDescriptions = (platform: TCFDsPlatformType, is_demo: string) => {
+const PlatformIconsAndDescriptions = (
+    platform: TCFDsPlatformType,
+    is_demo: string,
+    mt5_trade_account: Required<DetailsOfEachMT5Loginid>
+) => {
     return (
         <React.Fragment>
             <Icon icon={`IcRebranding${platform.charAt(0).toUpperCase()}${platform.slice(1)}Dashboard`} size={24} />
@@ -40,6 +44,11 @@ const PlatformIconsAndDescriptions = (platform: TCFDsPlatformType, is_demo: stri
                         }}
                     />
                 </Text>
+                {(mt5_trade_account as TTradingPlatformAccounts)?.display_login && (
+                    <Text color='less-prominent' size='xxxs' line_height='xxxs'>
+                        {(mt5_trade_account as TTradingPlatformAccounts)?.display_login}
+                    </Text>
+                )}
             </div>
         </React.Fragment>
     );
@@ -112,13 +121,13 @@ const TradeModal = ({
     };
 
     const downloadCenterAppOption = (platform_type: TCFDsPlatformType) => {
-        let appTitle = '';
+        let app_title = '';
         if (platform_type === 'dxtrade') {
-            appTitle = 'Run Deriv X on your browser';
+            app_title = localize('Run Deriv X on your browser');
         } else if (platform_type === 'derivez') {
-            appTitle = 'Run Deriv EZ on your browser';
+            app_title = localize('Run Deriv EZ on your browser');
         } else if (platform_type === 'ctrader') {
-            appTitle = 'Run Deriv cTrader on your browser';
+            app_title = localize('Run Deriv cTrader on your browser');
         } else {
             return null;
         }
@@ -127,7 +136,7 @@ const TradeModal = ({
             <React.Fragment>
                 <div className='cfd-trade-modal__download-center-app--option'>
                     <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
-                        {localize(appTitle)}
+                        {app_title}
                     </Text>
                     <PlatformsDesktopDownload
                         platform={platform}
@@ -143,7 +152,7 @@ const TradeModal = ({
     return (
         <div className='cfd-trade-modal-container'>
             <div className='cfd-trade-modal'>
-                {PlatformIconsAndDescriptions(platform, is_demo)}
+                {PlatformIconsAndDescriptions(platform, is_demo, mt5_trade_account)}
                 {mt5_trade_account?.display_balance && (
                     <Text size='xs' color='profit-success' className='cfd-trade-modal__desc-balance' weight='bold'>
                         <Money

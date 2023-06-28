@@ -5,6 +5,12 @@ import { render, screen } from '@testing-library/react';
 import { PlatformContext } from '@deriv/shared';
 import BinaryRoutes from '../binary-routes';
 
+jest.mock('Stores/connect', () => ({
+    __esModule: true,
+    default: 'mockedDefaultExport',
+    connect: () => Component => Component,
+}));
+
 jest.mock('../route-with-sub-routes', () => jest.fn(() => <div>RouteWithSubRoutes</div>));
 
 jest.mock('Constants/routes-config', () => () => [{}]);

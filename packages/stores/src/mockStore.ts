@@ -123,6 +123,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_deposit_lock: false,
             is_dxtrade_allowed: false,
             is_eu: false,
+            is_eu_country: false,
             is_financial_account: false,
             is_financial_information_incomplete: false,
             is_low_risk: false,

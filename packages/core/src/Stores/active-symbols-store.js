@@ -1,4 +1,3 @@
-import { WS } from '@deriv/shared';
 import { observable, action, runInAction, makeObservable } from 'mobx';
 import BaseStore from './base-store';
 
@@ -15,8 +14,8 @@ export default class ActiveSymbolsStore extends BaseStore {
         });
     }
 
-    async setActiveSymbols() {
-        const { active_symbols, error } = await WS.authorized.activeSymbols();
+    async setActiveSymbols(data) {
+        const { active_symbols, error } = data;
         runInAction(() => {
             if (!active_symbols.length || error) {
                 this.active_symbols = [];

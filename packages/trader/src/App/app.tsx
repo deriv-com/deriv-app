@@ -9,6 +9,7 @@ import initStore from './init-store';
 import 'Sass/app.scss';
 import type { TCoreStores } from '@deriv/stores/types';
 import TraderProviders from '../trader-providers';
+import APIProvider from '../../../api/src/APIProvider';
 
 type Apptypes = {
     passthrough: {
@@ -29,14 +30,16 @@ const App = ({ passthrough }: Apptypes) => {
     }, [root_store]);
 
     return (
-        <TraderProviders store={root_store}>
-            <Routes />
-            <TradeModals />
-            <NetworkStatusToastErrorPopup />
-            <TradeHeaderExtensions store={root_store} />
-            <TradeFooterExtensions />
-            <TradeSettingsExtensions store={root_store} />
-        </TraderProviders>
+        <APIProvider>
+            <TraderProviders store={root_store}>
+                <Routes />
+                <TradeModals />
+                <NetworkStatusToastErrorPopup />
+                <TradeHeaderExtensions store={root_store} />
+                <TradeFooterExtensions />
+                <TradeSettingsExtensions store={root_store} />
+            </TraderProviders>
+        </APIProvider>
     );
 };
 

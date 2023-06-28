@@ -59,6 +59,7 @@ export default class TradeStore extends BaseStore {
     is_market_closed = false;
     previous_symbol = '';
     active_symbols = [];
+    active_symbols_request_error = null;
 
     form_components = [];
 
@@ -313,6 +314,7 @@ export default class TradeStore extends BaseStore {
             resetPreviousSymbol: action.bound,
             resetAccumulatorData: action.bound,
             setActiveSymbols: action.bound,
+            setActiveSymbolsFromServer: action.bound,
             setAllowEqual: action.bound,
             setChartStatus: action.bound,
             setContractTypes: action.bound,
@@ -459,7 +461,10 @@ export default class TradeStore extends BaseStore {
         this.should_show_active_symbols_loading = should_show_loading;
 
         await this.setActiveSymbols();
-        await this.root_store.active_symbols.setActiveSymbols();
+        await this.root_store.active_symbols.setActiveSymbols({
+            active_symbols: this.active_symbols,
+            error: this.active_symbols_request_error,
+        });
         if (should_set_default_symbol) await this.setDefaultSymbol();
 
         const r = await WS.storage.contractsFor(this.symbol);
@@ -482,6 +487,11 @@ export default class TradeStore extends BaseStore {
         }
     }
 
+    setActiveSymbolsFromServer(active_symbols, error) {
+        this.active_symbols = active_symbols;
+        this.active_symbols_request_error = error;
+    }
+
     async setActiveSymbols() {
         const is_on_mf_account = this.root_store.client.landing_company_shortcode === 'maltainvest';
         const hide_close_mx_mlt_storage_flag = !!parseInt(
@@ -497,14 +507,12 @@ export default class TradeStore extends BaseStore {
             showUnavailableLocationError(showError, is_logged_in);
         }
 
-        const { active_symbols, error } = await WS.authorized.activeSymbols();
-
-        if (error) {
+        if (this.active_symbols_request_error) {
             showError({ message: localize('Trading is unavailable at this time.') });
             return;
         }
 
-        if (!active_symbols || !active_symbols.length) {
+        if (!this.active_symbols || !this.active_symbols.length) {
             await WS.wait('get_settings');
             /*
              * This logic is related to EU country checks
@@ -544,7 +552,7 @@ export default class TradeStore extends BaseStore {
                 return;
             }
         }
-        await this.processNewValuesAsync({ active_symbols });
+        await this.processNewValuesAsync({ active_symbols: this.active_symbols });
     }
 
     async setContractTypes() {
@@ -1523,7 +1531,11 @@ export default class TradeStore extends BaseStore {
             });
         }
         if (req.active_symbols) {
-            return WS.activeSymbols('brief');
+            return null;
+            // const res = WS.activeSymbols('brief');
+            // console.log({culprit: res})
+
+            // return res;
         }
         if (req.trading_times) {
             return WS.tradingTimes(req.trading_times);
@@ -1584,12 +1596,13 @@ export default class TradeStore extends BaseStore {
         if (this.active_symbols?.length) {
             return findFirstOpenMarket(this.active_symbols, markets_to_search);
         }
-        const { active_symbols, error } = await WS.authorized.activeSymbols();
+        // const { active_symbols, error } = await WS.authorized.activeSymbols();
+        let error;
         if (error) {
             this.root_store.common.showError({ message: localize('Trading is unavailable at this time.') });
             return undefined;
         }
-        return findFirstOpenMarket(active_symbols, markets_to_search);
+        return findFirstOpenMarket(this.active_symbols, markets_to_search);
     }
 
     setStrikeChoices(strike_prices) {

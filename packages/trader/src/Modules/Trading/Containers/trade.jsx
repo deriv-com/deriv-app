@@ -13,6 +13,7 @@ import AccumulatorsChartElements from '../../SmartChart/Components/Markers/accum
 import ToolbarWidgets from '../../SmartChart/Components/toolbar-widgets.jsx';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
+import { useActiveSymbols } from '@deriv/hooks';
 
 const BottomWidgetsMobile = ({ tick, digits, setTick, setDigits }) => {
     React.useEffect(() => {
@@ -50,6 +51,7 @@ const Trade = observer(() => {
         is_synthetics_available,
         is_synthetics_trading_market_available,
         is_vanilla,
+        setActiveSymbolsFromServer,
     } = useTraderStore();
     const {
         notification_messages_ui: NotificationMessages,
@@ -59,6 +61,8 @@ const Trade = observer(() => {
     } = ui;
     const { is_eu } = client;
     const { network_status } = common;
+
+    const { data, error } = useActiveSymbols();
 
     const [digits, setDigits] = React.useState([]);
     const [tick, setTick] = React.useState({});
@@ -77,6 +81,17 @@ const Trade = observer(() => {
         }
         return null;
     }, [try_synthetic_indices, try_open_markets, category, subcategory]);
+
+    React.useEffect(() => {
+        if (error) {
+            setActiveSymbolsFromServer([], error);
+            return;
+        }
+
+        if (data?.active_symbols && data?.active_symbols.length > 0) {
+            setActiveSymbolsFromServer(data.active_symbols, error);
+        }
+    }, [data, setActiveSymbolsFromServer, error]);
 
     React.useEffect(() => {
         onMount();

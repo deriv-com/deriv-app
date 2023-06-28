@@ -1,9 +1,10 @@
 import React from 'react';
+import P2P from '@deriv/p2p';
 import { routes, moduleLoader } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { Cashier } from '../containers';
-import { AccountTransfer, Deposit, OnRamp, P2PCashier, PaymentAgent, PaymentAgentTransfer, Withdrawal } from '../pages';
-import { TRouteConfig, TRoute } from 'Types';
+import { AccountTransfer, Deposit, OnRamp, PaymentAgent, PaymentAgentTransfer, Withdrawal } from '../pages';
+import { TRouteConfig, TRoute } from '../types';
 
 // Error Routes
 const Page404 = React.lazy(() => moduleLoader(() => import(/* webpackChunkName: "404" */ '../components/page-404')));
@@ -52,13 +53,13 @@ const initRoutesConfig = (): TRouteConfig[] => [
             },
             {
                 path: routes.cashier_p2p,
-                component: P2PCashier,
+                component: P2P,
                 getTitle: () => localize('Deriv P2P'),
                 icon_component: 'IcDp2p',
             },
             {
                 path: routes.cashier_p2p_verification,
-                component: P2PCashier,
+                component: P2P,
                 getTitle: () => localize('Deriv P2P'),
                 icon_component: 'IcDp2p',
                 is_invisible: true,

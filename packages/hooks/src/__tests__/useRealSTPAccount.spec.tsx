@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { StoreProvider } from '@deriv/stores';
-import type { TStores } from '@deriv/stores';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useRealSTPAccount from '../useRealSTPAccount';
 
 describe('useRealSTPAccount', () => {
     test('should be false if does not have an account type of real with sub account type of financial_stp', async () => {
-        const mockRootStore: DeepPartial<TStores> = {
+        const mock = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -19,10 +18,10 @@ describe('useRealSTPAccount', () => {
                     },
                 ],
             },
-        };
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useRealSTPAccount(), { wrapper });
 
@@ -30,7 +29,7 @@ describe('useRealSTPAccount', () => {
     });
 
     test('should be true if has an account type of real with sub account type of financial_stp', async () => {
-        const mockRootStore: DeepPartial<TStores> = {
+        const mock = mockStore({
             client: {
                 mt5_login_list: [
                     {
@@ -43,10 +42,10 @@ describe('useRealSTPAccount', () => {
                     },
                 ],
             },
-        };
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mockRootStore as TStores}>{children}</StoreProvider>
+            <StoreProvider store={mock}>{children}</StoreProvider>
         );
         const { result } = renderHook(() => useRealSTPAccount(), { wrapper });
 

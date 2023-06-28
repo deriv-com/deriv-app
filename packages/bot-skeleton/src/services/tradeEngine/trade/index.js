@@ -71,7 +71,6 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
         this.data = {
             contract: {},
             proposals: [],
-            forget_proposal_ids: [],
         };
         this.store = createStore(rootReducer, applyMiddleware(thunk));
     }

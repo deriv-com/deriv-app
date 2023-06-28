@@ -9,5 +9,5 @@ export * from './toggle-settings.jsx';
 export * from './toggle-language-settings';
 export * from './help-centre.jsx';
 export * from './responsible-trading.jsx';
-export * from './account-limits.jsx';
+export * from './account-limits';
 export * from './regulatory-information.jsx';

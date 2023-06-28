@@ -1,22 +1,24 @@
 .db-summary-card {
     $contract-card: &;
-
-    border: 1px solid var(--border-disabled);
-    border-radius: $BORDER_RADIUS;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     position: relative;
+    @include desktop {
+        width: 100%;
+    }
 
     &--inactive {
-        background-color: var(--general-section-2);
-        border: 1px solid var(--general-main-1);
         color: var(--text-general);
         font-size: 14px;
         justify-content: center;
         margin: auto;
         text-align: center;
-        height: 157px;
+        line-height: 2rem;
+        padding: 0 3rem;
+        & .dc-text {
+            text-align: center;
+        }
     }
     &--is-loading {
         background-color: inherit;
@@ -27,9 +29,6 @@
 
         &:hover {
             border: 1px solid var(--border-disabled);
-        }
-        &-mobile {
-            border: 1px solid var(--border-normal);
         }
     }
     .dc-contract-card {
@@ -44,7 +43,7 @@
     }
     &--mobile {
         .dc-contract-card {
-            padding: 1.6rem 0.8rem 0.8rem;
+            padding: 1.5rem 3.4rem;
         }
         .dc-contract-card__grid-underlying-trade--mobile {
             grid-template-columns: 1fr 1.25fr;

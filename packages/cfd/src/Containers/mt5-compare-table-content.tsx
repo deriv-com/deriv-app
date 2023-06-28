@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Table, Button, Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { isDesktop, WS, getAuthenticationStatusInfo, CFD_PLATFORMS, ContentFlag } from '@deriv/shared';
+import { isDesktop, WS, getAuthenticationStatusInfo, CFD_PLATFORMS, ContentFlag, Jurisdiction } from '@deriv/shared';
 import { connect } from '../Stores/connect';
 import RootStore from '../Stores/index';
 import {
@@ -14,14 +14,13 @@ import {
     TCompareAccountRowItem,
 } from './props.types';
 import {
-    eu_real_content,
-    cr_real_content,
-    cr_real_footer_buttons,
-    eu_real_footer_button,
-    preappstore_cr_demo_content,
-    preappstore_cr_demo_footer_buttons,
-    preppstore_eu_demo_content,
-    eu_demo_footer_button,
+    getEuRealContent,
+    getCrRealContent,
+    getCrRealFooterButtons,
+    getPreappstoreCrDemoContent,
+    getPreappstoreCrDemoFooterButtons,
+    getPreappstoreEuDemoContent,
+    getEuFooterButtons,
 } from '../Constants/cfd_compare_account_content';
 import { GetSettings, GetAccountSettingsResponse } from '@deriv/api-types';
 
@@ -35,6 +34,7 @@ const Row = ({
     is_pre_appstore_setting,
     content_flag,
     is_high_risk_for_mt5,
+    CFDs_restricted_countries,
     financial_restricted_countries,
     is_preappstore_restricted_cr_demo_account,
 }: TCompareAccountRowProps) => {
@@ -51,8 +51,20 @@ const Row = ({
         return null;
     }
 
-    if (is_platform_row && is_pre_appstore_setting && financial_restricted_countries) {
+    if (is_platform_row && is_pre_appstore_setting && CFDs_restricted_countries) {
         values.synthetic_bvi = { text: 'MT5' };
+    }
+    if (CFDs_restricted_countries) {
+        if (is_leverage_row) values.synthetic_bvi = { text: localize('Up to 1:1000') };
+        delete values.derivx;
+    }
+    if (is_platform_row && financial_restricted_countries) {
+        values.financial_svg = { text: localize('MT5') };
+        if ('financial_labuan' in values) values.financial_labuan = { text: localize('MT5') };
+    }
+    // As we only show one account for Demo
+    if (content_flag === ContentFlag.CR_DEMO) {
+        delete values.financial_labuan;
     }
 
     if (is_pre_appstore_setting && is_preappstore_restricted_cr_demo_account) {
@@ -179,6 +191,7 @@ const DMT5CompareModalContent = ({
     no_CR_account,
     is_eu_user,
     no_MF_account,
+    CFDs_restricted_countries,
     financial_restricted_countries,
 }: TDMT5CompareModalContentProps) => {
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
@@ -283,7 +296,13 @@ const DMT5CompareModalContent = ({
     };
 
     const getAvailableAccountsFooterButtons = (footer_button_data: TCompareAccountFooterButtonData[]) => {
-        return footer_button_data.filter(data => available_accounts_keys.includes(data.action));
+        return footer_button_data.filter(data => {
+            if (CFDs_restricted_countries) {
+                //remove derivx button if user is from restricted countries
+                if (data.action === 'derivx') return false;
+            }
+            return available_accounts_keys.includes(data.action);
+        });
     };
 
     const onSelectRealAccount = (item: TCompareAccountFooterButtonData) => {
@@ -303,13 +322,13 @@ const DMT5CompareModalContent = ({
             case 'synthetic_svg':
             case 'financial_svg':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
-                setJurisdictionSelectedShortcode('svg');
+                setJurisdictionSelectedShortcode(Jurisdiction.SVG);
                 openPasswordModal(type_of_account);
                 break;
             case 'synthetic_bvi':
             case 'financial_bvi':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
-                setJurisdictionSelectedShortcode('bvi');
+                setJurisdictionSelectedShortcode(Jurisdiction.BVI);
                 if (
                     poi_acknowledged_for_bvi_labuan &&
                     !poi_or_poa_not_submitted &&
@@ -325,7 +344,7 @@ const DMT5CompareModalContent = ({
             case 'synthetic_vanuatu':
             case 'financial_vanuatu':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
-                setJurisdictionSelectedShortcode('vanuatu');
+                setJurisdictionSelectedShortcode(Jurisdiction.VANUATU);
                 if (
                     poi_acknowledged_for_vanuatu_maltainvest &&
                     !poi_or_poa_not_submitted &&
@@ -340,7 +359,7 @@ const DMT5CompareModalContent = ({
                 break;
             case 'financial_labuan':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
-                setJurisdictionSelectedShortcode('labuan');
+                setJurisdictionSelectedShortcode(Jurisdiction.LABUAN);
                 if (poi_acknowledged_for_bvi_labuan && poa_acknowledged && has_submitted_personal_details) {
                     openPasswordModal(type_of_account);
                 } else {
@@ -349,7 +368,7 @@ const DMT5CompareModalContent = ({
                 break;
             case 'financial_maltainvest':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
-                setJurisdictionSelectedShortcode('maltainvest');
+                setJurisdictionSelectedShortcode(Jurisdiction.MALTA_INVEST);
                 if ((poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) || is_demo_tab) {
                     openPasswordModal(type_of_account);
                 } else {
@@ -412,20 +431,20 @@ const DMT5CompareModalContent = ({
 
     const getModalContent = () => {
         if (is_preappstore_cr_demo_account) {
-            return preappstore_cr_demo_content;
+            return getPreappstoreCrDemoContent();
         } else if (show_eu_related_content) {
             if (is_pre_appstore_setting && content_flag === ContentFlag.EU_DEMO) {
-                return preppstore_eu_demo_content;
+                return getPreappstoreEuDemoContent();
             }
-            return eu_real_content;
+            return getEuRealContent();
         }
-        return cr_real_content;
+        return getCrRealContent();
     };
 
     const modal_footer = () => {
-        if (is_preappstore_cr_demo_account) return preappstore_cr_demo_footer_buttons;
-        else if (is_demo_tab && show_eu_related_content) return eu_demo_footer_button;
-        return show_eu_related_content ? eu_real_footer_button : cr_real_footer_buttons;
+        if (is_preappstore_cr_demo_account) return getPreappstoreCrDemoFooterButtons();
+        else if (is_demo_tab && show_eu_related_content) return getEuFooterButtons();
+        return show_eu_related_content ? getEuFooterButtons() : getCrRealFooterButtons();
     };
 
     const shouldShowPendingStatus = (item: TCompareAccountFooterButtonData) => {
@@ -463,9 +482,9 @@ const DMT5CompareModalContent = ({
                                 classname_for_demo_and_eu ??
                                 classNames(`cfd-accounts-compare-modal__table-header${pre_appstore_class}`, {
                                     [`cfd-accounts-compare-modal__table-header-for-synthetic-${synthetic_accounts_count}-financial-${financial_accounts_count}${pre_appstore_class}`]:
-                                        available_accounts_count < 6 && !financial_restricted_countries,
+                                        available_accounts_count < 6 && !CFDs_restricted_countries,
                                     [`cfd-accounts-compare-modal__table-header-for-synthetic-${synthetic_accounts_count}${pre_appstore_class}`]:
-                                        financial_restricted_countries,
+                                        CFDs_restricted_countries,
                                 })
                             }
                         >
@@ -475,12 +494,12 @@ const DMT5CompareModalContent = ({
                                     {localize('Derived')}
                                 </Table.Head>
                             )}
-                            {!financial_restricted_countries && financial_accounts_count > 0 && (
+                            {!CFDs_restricted_countries && financial_accounts_count > 0 && (
                                 <Table.Head className='cfd-accounts-compare-modal__table-header-item'>
                                     {show_eu_related_content ? localize('CFDs') : localize('Financial')}
                                 </Table.Head>
                             )}
-                            {should_show_derivx && synthetic_accounts_count > 0 && (
+                            {!CFDs_restricted_countries && should_show_derivx && synthetic_accounts_count > 0 && (
                                 <Table.Head className='cfd-accounts-compare-modal__table-header-item'>
                                     {localize('Deriv X')}
                                 </Table.Head>
@@ -500,6 +519,7 @@ const DMT5CompareModalContent = ({
                                     is_pre_appstore_setting={is_pre_appstore_setting}
                                     content_flag={content_flag}
                                     is_high_risk_for_mt5={is_high_risk_for_mt5}
+                                    CFDs_restricted_countries={CFDs_restricted_countries}
                                     financial_restricted_countries={financial_restricted_countries}
                                     is_preappstore_restricted_cr_demo_account={
                                         is_preappstore_restricted_cr_demo_account
@@ -588,5 +608,6 @@ export default connect(({ modules, client, common, ui, traders_hub }: RootStore)
     no_CR_account: traders_hub.no_CR_account,
     is_eu_user: traders_hub.is_eu_user,
     no_MF_account: traders_hub.no_MF_account,
+    CFDs_restricted_countries: traders_hub.CFDs_restricted_countries,
     financial_restricted_countries: traders_hub.financial_restricted_countries,
 }))(DMT5CompareModalContent);

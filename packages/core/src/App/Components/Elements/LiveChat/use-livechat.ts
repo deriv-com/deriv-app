@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 import { deriv_urls } from '@deriv/shared';
 
 // Todo: Should break this into smaller hooks or utility functions.
-const useLiveChat = (has_cookie_account = false) => {
+const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
     const [isReady, setIsReady] = useState(false);
     const [reload, setReload] = useState(false);
     const history = useHistory();
@@ -42,7 +42,7 @@ const useLiveChat = (has_cookie_account = false) => {
         window.LiveChatWidget?.on('ready', () => {
             let client_first_name = '';
             let client_last_name = '';
-            const domain = /^(.)*deriv\.(com|me)$/gi.test(window.location.hostname)
+            const domain = /^(.)*deriv\.(com|me|be)$/gi.test(window.location.hostname)
                 ? deriv_urls.DERIV_HOST_NAME
                 : 'binary.sx';
             const client_information = Cookies.getJSON('client_information', {
@@ -121,7 +121,7 @@ const useLiveChat = (has_cookie_account = false) => {
         }
     }, [reload, has_cookie_account]);
 
-    useEffect(() => liveChatSetup(has_cookie_account), [has_cookie_account]);
+    useEffect(() => liveChatSetup(has_cookie_account), [has_cookie_account, active_loginid]);
 
     return {
         isReady,

@@ -1,0 +1,13 @@
+.alert-banner {
+    display: grid;
+    grid-template-columns: auto auto;
+    width: auto;
+    padding: 0.8rem;
+    margin: 2.4rem 0;
+    border-radius: $BORDER_RADIUS;
+    background-color: $alpha-color-yellow-1;
+
+    svg {
+        margin: 0.3rem 0.3rem 0 0;
+    }
+}

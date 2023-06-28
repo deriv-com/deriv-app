@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { Button, HintBox, InfiniteDataList, Loading, Table, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
+import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import Empty from 'Components/empty/empty.jsx';
 import ToggleAds from 'Components/my-ads/toggle-ads.jsx';
@@ -22,7 +22,10 @@ const getHeaders = offered_currency => [
 ];
 
 const AdSwitchHintBox = () => {
-    const { floating_rate_store, general_store } = useStores();
+    const { floating_rate_store } = useStores();
+    const {
+        client: { local_currency_config },
+    } = useStore();
 
     if (floating_rate_store.rate_type === ad_type.FLOAT) {
         return floating_rate_store.reached_target_date ? (
@@ -33,7 +36,7 @@ const AdSwitchHintBox = () => {
                     'Floating rates are enabled for {{local_currency}}. Ads with fixed rates will be deactivated. Switch to floating rates by {{end_date}}.'
                 }
                 values={{
-                    local_currency: general_store.client.local_currency_config.currency || '',
+                    local_currency: local_currency_config.currency || '',
                     end_date: floating_rate_store.fixed_rate_adverts_end_date || '',
                 }}
             />
@@ -47,6 +50,9 @@ const AdSwitchHintBox = () => {
 
 const MyAdsTable = () => {
     const { floating_rate_store, general_store, my_ads_store } = useStores();
+    const {
+        client: { currency },
+    } = useStore();
 
     React.useEffect(() => {
         my_ads_store.setAdverts([]);
@@ -105,7 +111,7 @@ const MyAdsTable = () => {
                     {isDesktop() && (
                         <Table.Header>
                             <Table.Row className='p2p-my-ads__table-row'>
-                                {getHeaders(general_store.client.currency).map(header => (
+                                {getHeaders(currency).map(header => (
                                     <Table.Head key={header.text}>{header.text}</Table.Head>
                                 ))}
                             </Table.Row>

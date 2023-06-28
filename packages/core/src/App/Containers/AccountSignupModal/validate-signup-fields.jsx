@@ -40,9 +40,7 @@ const validateSignupFields = (values, residence_list) => {
         );
 
         if (index_of_selection === -1) {
-            errors.citizenship = localize('Unfortunately, {{website_name}} is not available in your country.', {
-                website_name,
-            });
+            errors.citizenship = true;
         }
     }
 

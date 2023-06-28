@@ -4,15 +4,7 @@ import RootStore from '../Stores/index';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
-import {
-    routes,
-    validLength,
-    validPassword,
-    getErrorMessages,
-    CFD_PLATFORMS,
-    WS,
-    redirectToLogin,
-} from '@deriv/shared';
+import { validLength, validPassword, getErrorMessages, CFD_PLATFORMS, WS, redirectToLogin } from '@deriv/shared';
 import { localize, Localize, getLanguage } from '@deriv/translations';
 import { connect } from '../Stores/connect';
 import { getMtCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
@@ -61,7 +53,6 @@ const CFDResetPasswordModal = ({
     is_logged_in,
     platform,
     setCFDPasswordResetModal,
-    history,
 }: TCFDResetPasswordModal) => {
     const [state, setState] = React.useState<{
         error_code: string | number | undefined;
@@ -89,9 +80,6 @@ const CFDResetPasswordModal = ({
         localStorage.removeItem('cfd_reset_password_intent');
         localStorage.removeItem('cfd_reset_password_type');
         localStorage.removeItem('cfd_reset_password_code');
-        if (history.location.pathname !== routes.mt5) {
-            history.push(`${routes.mt5}`);
-        }
     };
     const validatePassword = (values: { new_password: string }) => {
         const errors: { new_password?: string } = {};

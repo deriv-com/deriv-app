@@ -4,7 +4,7 @@ export const takeLast = (arr, n, field) => takeField(arr.slice(n > arr.length ? 
 
 export const sum = data => data.reduce((acc, x) => acc + x);
 
-export const mean = data => data.reduce((a, b) => a + b) / data.length;
+export const mean = data => data.reduce((a, b) => a + b, 0) / data.length;
 
 export const stddev = data => {
     const data_mean = mean(data);

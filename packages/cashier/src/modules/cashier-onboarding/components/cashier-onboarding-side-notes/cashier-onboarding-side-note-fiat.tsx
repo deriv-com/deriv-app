@@ -6,9 +6,10 @@ import { Localize, localize } from '@deriv/translations';
 import { SideNoteCard } from '../../../../components/side-note-card';
 
 const CashierOnboardingSideNoteFiat: React.FC = observer(() => {
-    const { client, ui } = useStore();
+    const { client, ui, common } = useStore();
     const { currency, loginid, is_eu, is_low_risk } = client;
     const { is_mobile } = ui;
+    const { is_from_derivgo } = common;
     const currency_code = getCurrencyDisplayCode(currency);
     const regulation_text = is_eu ? 'EU' : 'non-EU';
 
@@ -30,10 +31,10 @@ const CashierOnboardingSideNoteFiat: React.FC = observer(() => {
                     components={[
                         <Text
                             key={0}
-                            color='red'
+                            color={!is_from_derivgo && 'red'}
                             size={is_mobile ? 'xxxs' : 'xxs'}
-                            className='cashier-onboarding-side-notes__link'
-                            onClick={() => window.LC_API.open_chat_window()}
+                            className={!is_from_derivgo && 'cashier-onboarding-side-notes__link'}
+                            onClick={() => (!is_from_derivgo ? window.LC_API.open_chat_window() : null)}
                         />,
                     ]}
                 />

@@ -35,6 +35,14 @@ jest.mock('App/Components/Elements/Modals/ServicesErrorModal', () =>
 window.open = jest.fn();
 
 describe('TradeModals', () => {
+    const mockOnRamp = mocked_store => {
+        return (
+            <TraderProviders store={mocked_store}>
+                <TradeModals />
+            </TraderProviders>
+        );
+    };
+
     it('should render modal', () => {
         const mock_root_store = mockStore({
             modules: {
@@ -46,9 +54,7 @@ describe('TradeModals', () => {
             },
         });
 
-        render(<TradeModals />, {
-            wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
-        });
+        render(mockOnRamp(mock_root_store));
 
         expect(screen.getByText('Unsupported contract modal')).toBeInTheDocument();
         expect(screen.getByText('Market unavailable modal')).toBeInTheDocument();
@@ -65,9 +71,7 @@ describe('TradeModals', () => {
             },
         });
 
-        render(<TradeModals />, {
-            wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
-        });
+        render(mockOnRamp(mock_root_store));
         userEvent.click(screen.getByText('onConfirm unsupported'));
 
         expect(mock_root_store.ui.toggleUnsupportedContractModal).toHaveBeenCalled();
@@ -83,9 +87,7 @@ describe('TradeModals', () => {
             },
         });
 
-        render(<TradeModals />, {
-            wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
-        });
+        render(mockOnRamp(mock_root_store));
         userEvent.click(screen.getByText('onClose unsupported'));
 
         expect(mock_root_store.ui.toggleUnsupportedContractModal).toHaveBeenCalled();
@@ -101,9 +103,7 @@ describe('TradeModals', () => {
             },
         });
 
-        render(<TradeModals />, {
-            wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
-        });
+        render(mockOnRamp(mock_root_store));
         userEvent.click(screen.getByText('onConfirm market'));
 
         expect(mock_root_store.ui.setHasOnlyForwardingContracts).toHaveBeenCalled();
@@ -120,9 +120,7 @@ describe('TradeModals', () => {
             },
         });
 
-        render(<TradeModals />, {
-            wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
-        });
+        render(mockOnRamp(mock_root_store));
         userEvent.click(screen.getByText('onCancel market'));
 
         expect(mock_root_store.ui.setHasOnlyForwardingContracts).toHaveBeenCalled();
@@ -139,9 +137,7 @@ describe('TradeModals', () => {
             },
         });
 
-        render(<TradeModals />, {
-            wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
-        });
+        render(mockOnRamp(mock_root_store));
         userEvent.click(screen.getByText('onConfirm services'));
 
         expect(mock_root_store.ui.toggleServicesErrorModal).toHaveBeenCalled();
@@ -166,9 +162,7 @@ describe('TradeModals', () => {
             },
         });
 
-        render(<TradeModals />, {
-            wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
-        });
+        render(mockOnRamp(mock_root_store));
         userEvent.click(screen.getByText('onConfirm services'));
 
         expect(mock_root_store.ui.toggleServicesErrorModal).toHaveBeenCalled();

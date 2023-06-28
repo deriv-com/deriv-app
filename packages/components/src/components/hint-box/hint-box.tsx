@@ -14,6 +14,7 @@ type THintBox = {
     message: string | React.ReactElement;
 };
 
+/** @deprecated use `InlineMessage` instead. */
 const HintBox = ({
     className,
     icon,

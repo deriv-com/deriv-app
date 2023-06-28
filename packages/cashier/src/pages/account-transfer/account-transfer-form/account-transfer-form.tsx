@@ -332,6 +332,8 @@ const AccountTransferForm = observer(
             selected_from?.status?.includes('poa_failed') &&
             authentication_status?.document_status !== 'verified';
 
+        const has_reached_maximum_daily_transfers = !Number(remaining_transfers);
+
         const poa_pending_msg = localize(
             'You will be able to transfer funds between MT5 accounts and other accounts once your address is verified.'
         );
@@ -406,7 +408,7 @@ const AccountTransferForm = observer(
                             ) : (
                                 <>
                                     <div className='account-transfer-form__inline-warning-message'>
-                                        {!Number(remaining_transfers) && (
+                                        {has_reached_maximum_daily_transfers && (
                                             <InlineMessage
                                                 message={localize(
                                                     'You have reached the maximum daily transfers. Please try again tomorrow.'
@@ -427,7 +429,6 @@ const AccountTransferForm = observer(
                                                 classNameDisplaySpan='cashier__drop-down-display-span'
                                                 classNameItems='cashier__drop-down-items'
                                                 classNameLabel='cashier__drop-down-label'
-                                                disabled={!Number(remaining_transfers)}
                                                 test_id='dt_account_transfer_form_drop_down'
                                                 is_large
                                                 label={localize('From')}
@@ -452,9 +453,8 @@ const AccountTransferForm = observer(
                                                 classNameLabel='cashier__drop-down-label'
                                                 classNameHint={classNames('account-transfer-form__hint', {
                                                     'account-transfer-form__hint__disabled':
-                                                        !Number(remaining_transfers),
+                                                        has_reached_maximum_daily_transfers,
                                                 })}
-                                                disabled={!Number(remaining_transfers)}
                                                 test_id='dt_account_transfer_form_to_dropdown'
                                                 is_large
                                                 label={localize('To')}
@@ -488,7 +488,8 @@ const AccountTransferForm = observer(
                                                         )}
                                                         classNameHint={classNames('account-transfer-form__hint', {
                                                             'account-transfer-form__hint__disabled':
-                                                                is_mt5_restricted || !Number(remaining_transfers),
+                                                                is_mt5_restricted ||
+                                                                has_reached_maximum_daily_transfers,
                                                         })}
                                                         data-testid='dt_account_transfer_form_input'
                                                         name='amount'
@@ -533,7 +534,7 @@ const AccountTransferForm = observer(
                                                                 ''
                                                             )
                                                         }
-                                                        disabled={is_mt5_restricted || !Number(remaining_transfers)}
+                                                        disabled={is_mt5_restricted}
                                                     />
                                                 )}
                                             </Field>
@@ -613,7 +614,7 @@ const AccountTransferForm = observer(
                                                 type='submit'
                                                 is_disabled={
                                                     isSubmitting ||
-                                                    (remaining_transfers && !Number(remaining_transfers)) ||
+                                                    has_reached_maximum_daily_transfers ||
                                                     !!selected_from.error ||
                                                     !!selected_to.error ||
                                                     (selected_from.balance && !Number(selected_from.balance)) ||

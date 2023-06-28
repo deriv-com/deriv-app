@@ -424,10 +424,6 @@ const ProofOfAddressForm = ({
                                             setDocumentFile({ files: df.files, error_message: df.error_message })
                                         }
                                         getSocket={WS.getSocket}
-                                        settings={{
-                                            document_issuing_country:
-                                                account_settings?.citizen ?? account_settings?.country_code,
-                                        }}
                                     />
                                 </FormBodySection>
                             </FormBody>

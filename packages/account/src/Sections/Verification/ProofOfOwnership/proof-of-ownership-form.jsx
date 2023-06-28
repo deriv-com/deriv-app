@@ -23,7 +23,6 @@ const ProofOfOwnershipForm = ({
     grouped_payment_method_data,
     refreshNotifications,
     updateAccountStatus,
-    citizen,
 }) => {
     const grouped_payment_method_data_keys = Object.keys(grouped_payment_method_data);
     const initial_values = {};
@@ -176,7 +175,6 @@ const ProofOfOwnershipForm = ({
                                 },
                                 id: payment_method_details.id,
                             },
-                            document_issuing_country: citizen,
                         });
                         processed_files.forEach(async (processed_file, sub_index) => {
                             const response = await uploader.upload(processed_file);

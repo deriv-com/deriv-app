@@ -37,7 +37,7 @@ const FileProperties = () => {
     );
 };
 
-const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFileDrop, onRef, settings }) => {
+const FileUploaderContainer = ({ is_description_enabled = true, getSocket, onFileDrop, onRef, settings = {} }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     const ref = React.useRef();
 

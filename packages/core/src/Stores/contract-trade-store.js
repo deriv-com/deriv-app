@@ -118,6 +118,7 @@ export default class ContractTradeStore extends BaseStore {
         current_symbol,
         current_spot,
         pip_size,
+        should_update_quickly: should_update_barriers_quickly,
         tick_size_barrier,
         ...passthrough_barriers_data
     }) {
@@ -149,6 +150,7 @@ export default class ContractTradeStore extends BaseStore {
                 accumulators_low_barrier,
                 barrier_spot_distance: getAccuBarrierSpotDistance(accumulators_high_barrier, current_spot, pip_size),
                 current_spot,
+                should_update_barriers_quickly,
                 ...passthrough_barriers_data,
             });
         }
@@ -187,7 +189,7 @@ export default class ContractTradeStore extends BaseStore {
         current_spot,
         current_spot_time,
         should_update_contract_barriers,
-        should_update_quickly,
+        should_update_barriers_quickly,
         symbol,
     }) {
         const barriers_data = {
@@ -221,7 +223,7 @@ export default class ContractTradeStore extends BaseStore {
                     this.setNewAccumulatorBarriersData(delayed_barriers_data, should_update_contract_barriers);
                 });
             },
-            should_update_quickly ? getAccuBarriersDelayTimeMs(symbol) / 2 : getAccuBarriersDelayTimeMs(symbol)
+            should_update_barriers_quickly ? getAccuBarriersDelayTimeMs(symbol) / 2 : getAccuBarriersDelayTimeMs(symbol)
         );
     }
 

@@ -691,7 +691,6 @@ export default class CFDStore extends BaseStore {
             const has_existing_account = this.root_store.client.dxtrade_accounts_list.some(
                 account => account.account_type === account_type
             );
-
             if (!this.dxtrade_tokens[account_type] && has_existing_account) {
                 WS.getServiceToken(CFD_PLATFORMS.DXTRADE, account_type).then(response =>
                     this.setDxtradeToken(response, account_type)

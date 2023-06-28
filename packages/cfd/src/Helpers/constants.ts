@@ -120,7 +120,7 @@ const getDerivEzWebTerminalLink = (category: string, token?: string) => {
     let url = DERIVEZ_URL;
 
     if (token) {
-        url += `?token=${token}`;
+        url += `?lang=en&token=${token}`;
     }
 
     return url;

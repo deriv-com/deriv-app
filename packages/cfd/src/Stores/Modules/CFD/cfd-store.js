@@ -126,15 +126,14 @@ export default class CFDStore extends BaseStore {
             }
         );
 
-        // todo: uncomment this once derivez tokens are ready
-        // reaction(
-        //     () => [this.root_store.client.derivez_accounts_list],
-        //     () => {
-        //         if (this.root_store.client.derivez_accounts_list.length > 0) {
-        //         this.loadDerivezTokens();
-        //         }
-        //     }
-        // );
+        reaction(
+            () => [this.root_store.client.derivez_accounts_list],
+            () => {
+                if (this.root_store.client.derivez_accounts_list.length > 0) {
+                    this.loadDerivezTokens();
+                }
+            }
+        );
     }
 
     get account_title() {

@@ -92,6 +92,10 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
                 ]);
             }
         }
+
+        return () => {
+            setSideNotes?.([]);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, tab_index, crypto_transactions, crypto_transactions?.length, is_cashier_onboarding, iframe_height]);
 

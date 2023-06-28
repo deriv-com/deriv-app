@@ -121,6 +121,10 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
                 ]);
             } else setSideNotes(null);
         }
+
+        return () => {
+            setSideNotes?.([]);
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currency, tab_index, crypto_transactions]);
 

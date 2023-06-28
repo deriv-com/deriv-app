@@ -66,7 +66,7 @@ export default class TransactionHistoryStore {
     async getCryptoTransactions() {
         await this.WS.subscribeCashierPayments?.(response => {
             if (response.cashier_payments?.crypto) {
-                this.setCryptoTransactionsHistory(response.cashier_payments.crypto);
+                this.updateCryptoTransactions(response.cashier_payments.crypto);
             }
         });
     }

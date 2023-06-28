@@ -57,7 +57,7 @@ const Trade = observer(() => {
         should_show_multipliers_onboarding,
         is_dark_mode_on: is_dark_theme,
     } = ui;
-    const { is_eu, is_virtual } = client;
+    const { is_eu } = client;
     const { network_status } = common;
 
     const [digits, setDigits] = React.useState([]);
@@ -224,11 +224,7 @@ const Trade = observer(() => {
                 <FormLayout
                     is_market_closed={is_market_closed}
                     is_trade_enabled={
-                        is_trade_enabled &&
-                        form_components.length > 0 &&
-                        network_status.class === 'online' &&
-                        // TODO: delete the below line for releasing ACCU trade for real
-                        (is_virtual || !form_components.includes('accumulator'))
+                        is_trade_enabled && form_components.length > 0 && network_status.class === 'online'
                     }
                 />
             </div>

@@ -20,7 +20,7 @@ const JurisdictionModal = ({
     const modal_title = show_eu_related_content
         ? localize('Choose a jurisdiction for your Deriv MT5 CFDs account')
         : localize('Choose a jurisdiction for your Deriv MT5 {{account_type}} account', {
-              account_type: getMT5Title(account_type.type),
+              account_type: localize(getMT5Title(account_type.type)),
           });
 
     return (

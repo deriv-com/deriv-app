@@ -3,14 +3,21 @@ import { Modal } from '@deriv/components';
 import WalletModalHeader from './wallet-modal-header';
 import WalletModalBody from './wallet-modal-body';
 import { observer, useStore } from '@deriv/stores';
+import { useWalletList } from '@deriv/hooks';
 
 const WalletModal = observer(() => {
+    const { data } = useWalletList();
     const store = useStore();
     const {
         client: { balance, currency, landing_company_shortcode: shortcode },
         ui: { is_dark_mode_on, is_wallet_modal_visible, is_mobile, setIsWalletModalVisible },
         traders_hub: { is_demo },
     } = store;
+
+    // TODO: This should be removed when we refactor how to pass data
+    const current_wallet = data?.find(wallet =>
+        is_demo ? wallet.account_type === 'virtual' : wallet.currency === currency
+    );
 
     // TODO: Temporary wallet type. Will be refactored later. Add correct type
     const wallet_type = is_demo ? 'demo' : 'real';
@@ -43,6 +50,7 @@ const WalletModal = observer(() => {
                 balance={balance}
                 closeModal={closeModal}
                 currency={currency}
+                gradient_class={current_wallet?.gradient_header_class || ''}
                 is_dark={is_dark_mode_on}
                 is_demo={is_demo}
                 is_mobile={is_mobile}

@@ -3,8 +3,9 @@ import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 
 const useWalletList = () => {
-    const { client } = useStore();
+    const { client, ui } = useStore();
     const { accounts, loginid, is_crypto } = client;
+    const { is_dark_mode_on } = ui;
     const { data, ...reset } = useFetch('authorize', {
         payload: { authorize: accounts[loginid || ''].token },
         options: { enabled: Boolean(loginid) },
@@ -20,6 +21,12 @@ const useWalletList = () => {
         const modified_wallets = wallets?.map(wallet => ({
             ...wallet,
             balance: 1000,
+            gradient_header_class: `wallet-header__${
+                wallet.is_virtual === 1 ? 'demo' : wallet.currency?.toLowerCase()
+            }-bg${is_dark_mode_on ? '--dark' : ''}`,
+            gradient_card_class: `wallet-card__${wallet.is_virtual === 1 ? 'demo' : wallet.currency?.toLowerCase()}-bg${
+                is_dark_mode_on ? '--dark' : ''
+            }`,
             landing_company_shortcode: wallet.landing_company_name,
         }));
 
@@ -33,7 +40,7 @@ const useWalletList = () => {
 
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });
-    }, [data, is_crypto]);
+    }, [data, is_crypto, is_dark_mode_on]);
 
     return {
         ...reset,

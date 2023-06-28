@@ -10,21 +10,21 @@ type TFiatTransactionListItem = Pick<TStatementTransaction, 'amount' | 'balance_
         | (TStatementTransaction['action_type'] & ('deposit' | 'withdrawal' | 'transfer'))
         | 'initial_fund'
         | 'reset_balance';
-    account_currency: string;
     account_name: string;
     currency: string;
+    gradient_class: string;
     icon: string;
     icon_type: string;
     is_deriv_apps?: boolean;
 };
 
 const FiatTransactionListItem = ({
-    account_currency,
     account_name,
     action_type,
     amount,
     balance_after,
     currency,
+    gradient_class,
     icon,
     icon_type,
     is_deriv_apps,
@@ -42,12 +42,20 @@ const FiatTransactionListItem = ({
                 {is_deriv_apps ? (
                     <AppLinkedWithWalletIcon
                         app_icon={is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight'}
-                        currency={account_currency}
+                        gradient_class={gradient_class}
                         type={icon_type}
                         wallet_icon={icon}
+                        hide_watermark
                     />
                 ) : (
-                    <WalletIcon currency={account_currency} icon={icon} type={icon_type} has_bg size='medium' />
+                    <WalletIcon
+                        gradient_class={gradient_class}
+                        icon={icon}
+                        type={icon_type}
+                        has_bg
+                        size='medium'
+                        hide_watermark
+                    />
                 )}
                 <div className='fiat-transaction-list__item__left__title'>
                     <Text

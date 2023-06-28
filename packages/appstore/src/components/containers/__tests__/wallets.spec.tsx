@@ -32,6 +32,8 @@ describe('<Wallets />', () => {
             landing_company_shortcode: 'svg',
             is_virtual: 1,
             loginid: 'CRW12345',
+            // @ts-expect-error This should be fixed when we remove the mock transactions
+            gradient_class: 'demo',
         };
     });
 

@@ -1598,9 +1598,7 @@ export default class TradeStore extends BaseStore {
         if (this.active_symbols?.length) {
             return findFirstOpenMarket(this.active_symbols, markets_to_search);
         }
-        // const { active_symbols, error } = await WS.authorized.activeSymbols();
-        let error;
-        if (error) {
+        if (this.active_symbols_request_error) {
             this.root_store.common.showError({ message: localize('Trading is unavailable at this time.') });
             return undefined;
         }

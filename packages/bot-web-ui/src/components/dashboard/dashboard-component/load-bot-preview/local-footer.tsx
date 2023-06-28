@@ -1,10 +1,10 @@
 import React from 'react';
 import { Button } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import './index.scss';
-import { isMobile } from '@deriv/shared';
 
 type Nullable<T> = T | null;
 type TLocalFooter = {

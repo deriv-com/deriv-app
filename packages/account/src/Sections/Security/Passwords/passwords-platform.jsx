@@ -46,12 +46,6 @@ const PasswordsPlatform = ({ email, has_dxtrade_accounts, has_mt5_accounts }) =>
                         <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
                             <Localize i18n_default_text='Your Deriv MT5 password is for logging in to your Deriv MT5 accounts on the desktop, web, and mobile apps.' />
                         </Text>
-                        <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
-                            <Localize
-                                i18n_default_text='Click the <0>Change password</0> button to change your Deriv MT5 password.'
-                                components={[<strong key={0} />]}
-                            />
-                        </Text>
                         <div className='passwords-platform__content'>
                             <Popover alignment='bottom' message='Deriv MT5'>
                                 <Icon icon={`${getPlatformSettings('mt5').icon}-dashboard`} size={32} />

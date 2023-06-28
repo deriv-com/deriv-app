@@ -5,7 +5,8 @@ import moment from 'moment';
 import { Text } from '@deriv/components';
 import { useIsMounted, WS, convertTimeFormat, isMarketClosed } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 // check market in coming 7 days
 const days_to_check_before_exit = 7;
@@ -43,7 +44,8 @@ const calculateTimeLeft = remaining_time_to_open => {
         : {};
 };
 
-const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading, onMarketOpen, symbol }) => {
+const MarketCountdownTimer = observer(({ is_main_page, setIsTimerLoading, onMarketOpen, symbol }) => {
+    const { active_symbols } = useTraderStore();
     const isMounted = useIsMounted();
     const [when_market_opens, setWhenMarketOpens] = React.useState({});
     const [time_left, setTimeLeft] = React.useState(calculateTimeLeft(when_market_opens?.remaining_time_to_open));
@@ -195,16 +197,13 @@ const MarketCountdownTimer = ({ active_symbols, is_main_page, setIsTimerLoading,
             <div className='market-is-closed-overlay__separator' />
         </React.Fragment>
     );
-};
+});
 
 MarketCountdownTimer.propTypes = {
-    active_symbols: PropTypes.array,
     is_main_page: PropTypes.bool,
     setIsTimerLoading: PropTypes.func,
     onMarketOpen: PropTypes.func,
     symbol: PropTypes.string.isRequired,
 };
 
-export default connect(({ modules }) => ({
-    active_symbols: modules.trade.active_symbols,
-}))(MarketCountdownTimer);
+export default MarketCountdownTimer;

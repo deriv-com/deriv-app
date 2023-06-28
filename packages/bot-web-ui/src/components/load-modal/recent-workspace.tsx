@@ -1,8 +1,8 @@
-import classnames from 'classnames';
 import React from 'react';
-import { Icon } from '@deriv/components';
+import classnames from 'classnames';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
+import { Icon } from '@deriv/components';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/root-store';
 

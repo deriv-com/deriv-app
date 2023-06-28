@@ -1,4 +1,4 @@
-import { observable, action, makeObservable } from 'mobx';
+import { action, makeObservable, observable } from 'mobx';
 
 export default class RoutePromptDialogStore {
     constructor(root_store, core) {

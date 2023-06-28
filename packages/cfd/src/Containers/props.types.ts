@@ -49,6 +49,10 @@ export type TCFDDashboardContainer = {
         demo: string;
         real: string;
     };
+    derivez_tokens: {
+        demo: string;
+        real: string;
+    };
 };
 
 export type TMT5AccountOpeningRealFinancialStpModal = {
@@ -327,6 +331,7 @@ export type TCompareAccountRowProps = TCompareAccountContentProps & {
     pre_appstore_class: string;
     is_high_risk_for_mt5: boolean;
     CFDs_restricted_countries: string[];
+    financial_restricted_countries: string[];
     is_preappstore_restricted_cr_demo_account: boolean;
 };
 
@@ -377,6 +382,7 @@ export type TDMT5CompareModalContentProps = {
     is_eu_user: boolean;
     no_MF_account: boolean;
     CFDs_restricted_countries: string[];
+    financial_restricted_countries: string[];
 };
 
 export type TCFDDbviOnboardingProps = {

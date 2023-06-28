@@ -1,9 +1,14 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import Loadable from 'react-loadable';
 import { UILoader } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect, MobxContentProvider } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
+import TraderProviders from '../../trader-providers';
+import type { TCoreStores } from '@deriv/stores/types';
+
+type TTradeSettingsExtensionsProps = {
+    store: TCoreStores;
+};
 
 const ChartSettingContainer = Loadable({
     loader: () =>
@@ -19,15 +24,17 @@ const ChartSettingContainer = Loadable({
 //     loading: UILoader,
 // });
 
-const renderItemValue = (props, store) => (
-    <MobxContentProvider store={store}>
+const renderItemValue = <T extends object>(props: T, store: TCoreStores) => (
+    <TraderProviders store={store}>
         <ChartSettingContainer {...props} />
-    </MobxContentProvider>
+    </TraderProviders>
 );
 
-const TradeSettingsExtensions = ({ populateSettingsExtensions, store }) => {
+const TradeSettingsExtensions = observer(({ store }: TTradeSettingsExtensionsProps) => {
+    const { ui } = useStore();
+    const { populateSettingsExtensions } = ui;
     const populateSettings = () => {
-        const menu_items = [
+        const menu_items: Parameters<typeof populateSettingsExtensions>[0] = [
             {
                 icon: 'IcChart',
                 label: localize('Charts'),
@@ -49,13 +56,6 @@ const TradeSettingsExtensions = ({ populateSettingsExtensions, store }) => {
     React.useEffect(() => populateSettings());
 
     return null;
-};
+});
 
-TradeSettingsExtensions.propTypes = {
-    populateSettingsExtensions: PropTypes.func,
-    store: PropTypes.object,
-};
-
-export default connect(({ ui }) => ({
-    populateSettingsExtensions: ui.populateSettingsExtensions,
-}))(TradeSettingsExtensions);
+export default TradeSettingsExtensions;

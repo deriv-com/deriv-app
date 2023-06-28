@@ -162,6 +162,7 @@ type TMt5StatusServer = Record<'demo' | 'real', TMt5StatusServerType[]>;
 
 type TClientStore = {
     accounts: { [k: string]: TActiveAccount };
+    is_eu_country: boolean;
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];

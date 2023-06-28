@@ -1,14 +1,14 @@
 import { CFD_PLATFORMS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
-    TIconData,
+    TInstrumentsIcon,
     TAvailableCFDAccounts,
     TModifiedTradingPlatformAvailableAccount,
     TDetailsOfEachMT5Loginid,
 } from '../Components/props.types';
 
 // Map the accounts according to the market type
-const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvailableAccount): TIconData[] => {
+const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvailableAccount): TInstrumentsIcon[] => {
     const market_type = getMarketType(trading_platforms);
     const jurisdiction_shortcode = market_type.concat('_', trading_platforms.shortcode);
     // Forex for these: MT5 Financial Vanuatu, MT5 Financial Labuan

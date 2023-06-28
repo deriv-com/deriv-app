@@ -1,23 +1,8 @@
 import React from 'react';
+import { TInstrumentsIcon } from 'Components/props.types';
 import TradingInstrumentsIcon from '../../Assets/svgs/trading-instruments';
 
-type TIconProps = {
-    icon:
-        | 'DerivedFX'
-        | 'Synthetics'
-        | 'Baskets'
-        | 'Stocks'
-        | 'StockIndices'
-        | 'Commodities'
-        | 'Forex'
-        | 'Cryptocurrencies'
-        | 'ETF';
-    text: string;
-    highlighted: boolean;
-    className?: string;
-};
-
-const InstumentsIconWithLabel = ({ icon, text, highlighted, className }: TIconProps) => {
+const InstumentsIconWithLabel = ({ icon, text, highlighted, className }: TInstrumentsIcon) => {
     return (
         <div
             style={{

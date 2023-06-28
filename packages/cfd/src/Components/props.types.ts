@@ -247,7 +247,7 @@ export type TTradingPlatformAccounts = {
     platform?: 'dxtrade' | string;
 };
 
-export type TIconData = {
+export type TInstrumentsIcon = {
     icon:
         | 'DerivedFX'
         | 'Synthetics'
@@ -260,6 +260,7 @@ export type TIconData = {
         | 'ETF';
     text: string;
     highlighted: boolean;
+    className?: string;
 };
 
 export type TAvailableCFDAccounts = {

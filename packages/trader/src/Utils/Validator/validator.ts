@@ -32,13 +32,13 @@ type TValidationResult = {
 };
 
 class Validator {
-    input: { [key: string]: any };
+    input: Partial<TTradeStore>;
     rules: Partial<TInitPreBuildDVRs>;
     store: TTradeStore;
     errors: Error;
     error_count: number;
 
-    constructor(input: { [key: string]: unknown }, rules: Partial<TInitPreBuildDVRs>, store: TTradeStore) {
+    constructor(input: Partial<TTradeStore>, rules: Partial<TInitPreBuildDVRs>, store: TTradeStore) {
         this.input = input;
         this.rules = rules;
         this.store = store;
@@ -61,11 +61,11 @@ class Validator {
         if (rule.name === 'length') {
             message = template(message, [
                 rule.options.min === rule.options.max
-                    ? rule.options.min!.toString()
+                    ? rule.options.min?.toString()
                     : `${rule.options.min}-${rule.options.max}`,
             ]);
         } else if (rule.name === 'min') {
-            message = template(message, [rule.options.min!.toString()]);
+            message = template(message, [rule.options.min?.toString()]);
         } else if (rule.name === 'not_equal') {
             message = template(message, [rule.options.name1, rule.options.name2]);
         }
@@ -95,14 +95,14 @@ class Validator {
                     return;
                 }
 
-                if (this.input[attribute] === '' && ruleObject.name !== 'req') {
+                if (this.input[attribute as keyof TTradeStore] === '' && ruleObject.name !== 'req') {
                     return;
                 }
 
                 let is_valid, error_message;
                 if (ruleObject.name === 'number') {
                     const { is_ok, message }: TValidationResult = ruleObject.validator(
-                        this.input[attribute],
+                        this.input[attribute as keyof TTradeStore],
                         ruleObject.options,
                         this.store,
                         this.input
@@ -110,7 +110,12 @@ class Validator {
                     is_valid = is_ok;
                     error_message = message;
                 } else {
-                    is_valid = ruleObject.validator(this.input[attribute], ruleObject.options, this.store, this.input);
+                    is_valid = ruleObject.validator(
+                        this.input[attribute as keyof TTradeStore],
+                        ruleObject.options,
+                        this.store,
+                        this.input
+                    );
                 }
 
                 if (!is_valid) {

@@ -29,11 +29,12 @@ const accounts = trading_account_names.map(
             loginid: idx.toString(),
             label: name,
             currency: 'USD',
+            gradient_class: 'wallet-card__demo-bg',
             balance: '0.00',
-            wallet_icon: 'IcCurrencyUsd',
+            wallet_icon: 'IcWalletDerivDemoLight',
             icon: 'IcDxtradeDerived',
             jurisdiction: <Badge label='Demo' type='contained' background_color='blue' />,
-            type: 'fiat',
+            type: 'demo',
         } as const)
 );
 
@@ -42,10 +43,11 @@ const wallets = [
         loginid: '18',
         label: 'Demo USD Wallet',
         currency: 'USD',
+        gradient_class: 'wallet-card__demo-bg',
         balance: '10,000.00',
-        wallet_icon: 'IcCurrencyUsd',
+        wallet_icon: 'IcWalletDerivDemoLight',
         jurisdiction: <Badge label='Demo' type='contained' background_color='blue' />,
-        type: 'fiat',
+        type: 'demo',
     } as const,
 ];
 

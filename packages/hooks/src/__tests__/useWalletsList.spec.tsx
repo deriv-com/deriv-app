@@ -44,6 +44,9 @@ describe('useWalletsList', () => {
             {
                 account_category: 'wallet',
                 currency: 'USD',
+                gradient_card_class: 'wallet-card__usd-bg',
+                gradient_header_class: 'wallet-header__usd-bg',
+                landing_company_shortcode: undefined,
                 is_virtual: 0,
                 balance: 1000,
             },

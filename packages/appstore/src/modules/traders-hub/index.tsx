@@ -1,15 +1,15 @@
 import React from 'react';
-import ModalManager from 'Components/modals/modal-manager';
-import TourGuide from 'Modules/tour-guide/tour-guide';
-import { isDesktop } from '@deriv/shared';
-import { Div100vhContainer } from '@deriv/components';
 import classNames from 'classnames';
+import { isDesktop } from '@deriv/shared';
+import { useStore, observer } from '@deriv/stores';
+import { Div100vhContainer } from '@deriv/components';
+import TourGuide from 'Modules/tour-guide/tour-guide';
+import ModalManager from 'Components/modals/modal-manager';
+import EUDisclaimer from 'Components/eu-disclaimer';
 import AccountWithWallets from './account-with-wallets';
 import AccountWithoutWallets from './account-without-wallets';
-import { useStore, observer } from '@deriv/stores';
-import EUDisclaimer from 'Components/eu-disclaimer';
-import './traders-hub.scss';
 import { useContentFlag } from '@deriv/hooks';
+import './traders-hub.scss';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStore();

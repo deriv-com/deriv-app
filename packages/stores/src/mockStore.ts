@@ -275,7 +275,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             closeModal: jest.fn(),
             combined_cfd_mt5_accounts: [],
             content_flag: '',
-            CFDs_restricted_countries: false,
             openModal: jest.fn(),
             selected_account: {
                 login: '',

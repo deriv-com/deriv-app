@@ -19,10 +19,11 @@ type TAccountTransferReceipt = RouteComponentProps & {
 };
 
 const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferReceipt) => {
-    const { common, client } = useStore();
+    const { common, client, traders_hub } = useStore();
     const { account_transfer } = useCashierStore();
     const { is_from_derivgo } = common;
     const { loginid, switchAccount } = client;
+    const { closeAccountTransferModal } = traders_hub;
     const { receipt, resetAccountTransfer, selected_from, selected_to, setShouldSwitchAccount } = account_transfer;
 
     const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
@@ -33,6 +34,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
     React.useEffect(() => {
         return () => {
             resetAccountTransfer();
+            closeAccountTransferModal();
         };
     }, [resetAccountTransfer]);
 
@@ -62,7 +64,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
         } else {
             // if the account transferred to is a Deriv MT5 account that can't be switched to, switch to from account instead
             // otherwise switch to the account transferred to
-            setShouldSwitchAccount();
+            setShouldSwitchAccount(true);
             setSwitchTo(selected_to.is_mt ? selected_from : selected_to);
             toggleSwitchAlert();
         }

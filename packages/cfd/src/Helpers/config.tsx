@@ -48,18 +48,12 @@ export const PlatformsDesktopDownload = ({
     derivez_tokens,
     is_demo,
 }: TPlatformsDesktopDownload) => {
-    const [deriv_ez_tokens, setDerivEZTokens] = React.useState(derivez_tokens);
-
-    React.useEffect(() => {
-        setDerivEZTokens(derivez_tokens);
-    }, [derivez_tokens]);
-
     const PlatformsDesktopDownloadLinks = () => {
         switch (platform) {
             case 'derivez':
                 return getDerivEzWebTerminalLink(
                     is_demo ? 'demo' : 'real',
-                    deriv_ez_tokens && deriv_ez_tokens[is_demo ? 'demo' : 'real']
+                    derivez_tokens && derivez_tokens[is_demo ? 'demo' : 'real']
                 );
             case 'dxtrade':
                 return getDXTradeWebTerminalLink(

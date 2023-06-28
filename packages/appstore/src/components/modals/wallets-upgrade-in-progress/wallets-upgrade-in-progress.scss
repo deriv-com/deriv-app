@@ -1,14 +1,14 @@
 .wallets-upgrade-in-progress {
-    padding: 2.4rem !important;
+    padding: 2.4rem;
 
-    &--mobile {
-        padding: 1.6rem !important;
+    @include mobile {
+        padding: 1.6rem;
     }
 
     &__title {
         margin-bottom: 2.4rem;
 
-        &--mobile {
+        @include mobile {
             margin-bottom: 1.6rem;
         }
     }
@@ -16,14 +16,14 @@
     &__footer {
         padding: 0 2.4rem 2.4rem;
 
-        &--mobile {
+        @include mobile {
             padding: 0 1.6rem 1.6rem;
         }
     }
 
     &__text {
-        &--mobile {
-            font-size: 1.2rem !important;
+        @include mobile {
+            font-size: 1.2rem;
         }
     }
 }

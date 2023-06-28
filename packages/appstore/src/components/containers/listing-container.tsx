@@ -22,14 +22,7 @@ const ListingContainer = ({
     const { is_landing_company_loaded } = client;
 
     const Options = () => {
-        if (is_landing_company_loaded) {
-            return (
-                <div className='listing-container__title'>
-                    {title}
-                    {description}
-                </div>
-            );
-        } else if (!is_deriv_platform) {
+        if (is_landing_company_loaded || !is_deriv_platform) {
             return (
                 <div className='listing-container__title'>
                     {title}

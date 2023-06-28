@@ -28,6 +28,7 @@ type TMT5TradeModalProps = {
     derivez_tokens: TCFDDashboardContainer['derivez_tokens'];
     is_demo: string;
     show_eu_related_content: boolean;
+    is_dark_mode_on: boolean;
 };
 const MT5TradeModal = ({
     mt5_trade_account,
@@ -40,6 +41,7 @@ const MT5TradeModal = ({
     platform,
     is_demo,
     show_eu_related_content,
+    is_dark_mode_on,
 }: TMT5TradeModalProps) => {
     const CFDTradeModal = () => {
         if (platform === 'mt5') {
@@ -51,6 +53,7 @@ const MT5TradeModal = ({
                     toggleModal={toggleModal}
                     dxtrade_tokens={dxtrade_tokens}
                     derivez_tokens={derivez_tokens}
+                    is_dark_mode_on={is_dark_mode_on}
                 />
             );
         }
@@ -98,10 +101,11 @@ const MT5TradeModal = ({
         </React.Suspense>
     );
 };
-export default connect(({ modules: { cfd }, modules, common, traders_hub }: RootStore) => ({
+export default connect(({ modules: { cfd }, modules, common, traders_hub, ui }: RootStore) => ({
     dxtrade_tokens: cfd.dxtrade_tokens,
     derivez_tokens: cfd.derivez_tokens,
     platform: common.platform,
     mt5_trade_account: modules.cfd.mt5_trade_account,
     show_eu_related_content: traders_hub.show_eu_related_content,
+    is_dark_mode_on: ui.is_dark_mode_on,
 }))(MT5TradeModal);

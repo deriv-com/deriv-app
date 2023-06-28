@@ -116,7 +116,7 @@ const DTraderHeader = ({
                         )}
                     </MobileWrapper>
                     <DesktopWrapper>
-                        <TradersHubHomeButton />
+                        <TradersHubHomeButton is_dark_mode />
                     </DesktopWrapper>
                     <MenuLinks />
                 </div>
@@ -209,6 +209,7 @@ DTraderHeader.propTypes = {
     is_switching: PropTypes.bool,
     toggleReadyToDepositModal: PropTypes.func,
     has_any_real_account: PropTypes.bool,
+    is_dark_mode: PropTypes.bool,
     setTogglePlatformType: PropTypes.func,
 };
 
@@ -246,6 +247,7 @@ export default connect(({ client, common, ui, notifications, traders_hub }) => (
     is_switching: client.is_switching,
     toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
     has_any_real_account: client.has_any_real_account,
+    is_dark_mode: ui.is_dark_mode,
     setTogglePlatformType: traders_hub.setTogglePlatformType,
     current_language: common.current_language,
 }))(withRouter(DTraderHeader));

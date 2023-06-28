@@ -29,6 +29,7 @@ type TMT5TradeModalProps = {
     toggleModal: () => void;
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     derivez_tokens: TCFDDashboardContainer['derivez_tokens'];
+    is_dark_mode_on: boolean;
 };
 
 export type TSpecBoxProps = {
@@ -95,6 +96,7 @@ const DMT5TradeModal = ({
     show_eu_related_content,
     onPasswordManager,
     toggleModal,
+    is_dark_mode_on,
 }: TMT5TradeModalProps) => {
     const getCompanyShortcode = () => {
         if (
@@ -219,7 +221,7 @@ const DMT5TradeModal = ({
                     </a>
                 </div>
                 <div className='cfd-trade-modal__download-center-app--option'>
-                    <Icon icon='IcWindowsLogo' size={32} />
+                    <Icon icon={is_dark_mode_on ? 'IcWindowsLogoDark' : 'IcWindowsLogo'} size={32} />
                     <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                         {localize('MetaTrader 5 Windows app')}
                     </Text>
@@ -236,7 +238,7 @@ const DMT5TradeModal = ({
                     </a>
                 </div>
                 <div className='cfd-trade-modal__download-center-app--option'>
-                    <Icon icon='IcMacosLogo' size={32} />
+                    <Icon icon={is_dark_mode_on ? 'IcMacosLogoDark' : 'IcMacosLogo'} size={32} />
                     <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                         {localize('MetaTrader 5 MacOS app')}
                     </Text>
@@ -253,7 +255,7 @@ const DMT5TradeModal = ({
                     </a>
                 </div>
                 <div className='cfd-trade-modal__download-center-app--option'>
-                    <Icon icon='IcLinuxLogo' size={32} />
+                    <Icon icon={is_dark_mode_on ? 'IcLinuxLogoDark' : 'IcLinuxLogo'} size={32} />
                     <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
                         {localize('MetaTrader 5 Linux app')}
                     </Text>

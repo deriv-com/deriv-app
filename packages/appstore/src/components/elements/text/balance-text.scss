@@ -15,6 +15,16 @@
         }
     }
 
+    &--amount {
+        color: var(--status-info);
+        padding-right: 0.5rem;
+    }
+
+    &--no-amount {
+        color: var(--status-success);
+        padding-right: 0.5rem;
+    }
+
     &--dotted {
         border-bottom: 4px dotted var(--border-normal-3);
     }

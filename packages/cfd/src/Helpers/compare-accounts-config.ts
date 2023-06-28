@@ -103,13 +103,13 @@ const getHighlightedIconLabel = (
 const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
     switch (shortcode) {
         case 'synthetic_svg':
-            return is_demo ? 'Derived Demo' : 'Derived - SVG';
+            return is_demo ? localize('Derived Demo') : localize('Derived - SVG');
         case 'synthetic_bvi':
             return localize('Derived - BVI');
         case 'synthetic_vanuatu':
             return localize('Derived - Vanuatu');
         case 'financial_svg':
-            return is_demo ? 'Financial Demo' : 'Financial - SVG';
+            return is_demo ? localize('Financial Demo') : localize('Financial - SVG');
         case 'financial_bvi':
             return localize('Financial - BVI');
         case 'financial_vanuatu':
@@ -117,7 +117,7 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
         case 'financial_labuan':
             return localize('Financial - Labuan');
         case 'all_svg':
-            return is_demo ? 'Swap-Free Demo' : 'Swap-Free - SVG';
+            return is_demo ? localize('Swap-Free Demo') : localize('Swap-Free - SVG');
         case 'dxtrade':
             return is_demo ? localize('Deriv X Demo') : localize('Deriv X');
         default:

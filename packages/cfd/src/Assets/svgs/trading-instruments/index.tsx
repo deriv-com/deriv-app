@@ -1,13 +1,13 @@
 import React from 'react';
-import DerivedFX from './ic-instrument-derived-fx.svg';
-import Synthetics from './ic-instrument-synthetics.svg';
-import Baskets from './ic-instrument-baskets.svg';
-import Stocks from './ic-instrument-stocks.svg';
-import StockIndices from './ic-instrument-stock-indices.svg';
-import Commodities from './ic-instrument-commodities.svg';
-import Forex from './ic-instrument-forex.svg';
-import Cryptocurrencies from './ic-instrument-cryptocurrencies.svg';
-import ETF from './ic-instrument-etf.svg';
+import DerivedFX from './ic-appstore-derived-fx.svg';
+import Synthetics from './ic-appstore-synthetics.svg';
+import Baskets from './ic-appstore-baskets.svg';
+import Stocks from './ic-appstore-stocks.svg';
+import StockIndices from './ic-appstore-stock-indices.svg';
+import Commodities from './ic-appstore-commodities.svg';
+import Forex from './ic-appstore-forex.svg';
+import Cryptocurrencies from './ic-appstore-cryptocurrencies.svg';
+import ETF from './ic-appstore-etf.svg';
 
 export type IconProps<T> = {
     icon: T;

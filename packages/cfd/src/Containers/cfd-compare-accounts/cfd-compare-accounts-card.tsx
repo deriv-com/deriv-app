@@ -26,7 +26,7 @@ const CFDCompareAccountsCard = ({ trading_platforms, is_eu_user, is_demo }: TCom
                     is_demo={is_demo}
                 />
                 <CFDCompareAccountsDescription trading_platforms={trading_platforms} is_demo={is_demo} />
-                <CFDInstrumentsLabelHighlighted trading_platforms={trading_platforms} is_demo={is_demo} />
+                <CFDInstrumentsLabelHighlighted trading_platforms={trading_platforms} />
                 {is_eu_user && (
                     <div className='compare-cfd-account-card-container__eu-clients'>
                         <Text color='red' size='xxs' weight='bold'>

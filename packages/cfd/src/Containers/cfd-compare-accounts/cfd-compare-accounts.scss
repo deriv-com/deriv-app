@@ -60,6 +60,11 @@
             top: 0.5rem;
             text-align: center;
         }
+        &__eu-clients {
+            position: relative;
+            top: 0.5rem;
+            text-align: center;
+        }
         &__banner {
             position: absolute;
             z-index: 1;
@@ -139,8 +144,5 @@
         top: 0.2rem;
         font-size: 1.6rem;
         color: var(--text-red);
-    }
-    &__text {
-        margin-left: 0.5rem;
     }
 }

@@ -1,13 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
 import { TCompareAccountsCard } from 'Components/props.types';
 import { getJuridisctionDescription, getMarketType } from '../../Helpers/compare-accounts-config';
 
-const CFDCompareAccountsDescription = observer(({ trading_platforms }: TCompareAccountsCard) => {
-    const { traders_hub } = useStore();
-    const { is_demo } = traders_hub;
+const CFDCompareAccountsDescription = ({ trading_platforms, is_demo }: TCompareAccountsCard) => {
     const market_type = getMarketType(trading_platforms);
     const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode);
     const juridisction_data = getJuridisctionDescription(market_type_shortcode);
@@ -64,6 +61,6 @@ const CFDCompareAccountsDescription = observer(({ trading_platforms }: TCompareA
             )}
         </div>
     );
-});
+};
 
 export default CFDCompareAccountsDescription;

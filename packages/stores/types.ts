@@ -251,7 +251,7 @@ type TCommonStoreError = {
 
 type TCommonStore = {
     error: TCommonStoreError;
-    services_error: { code: string; message: string; type: string };
+    services_error: { code: string; message: string; type: string } | Record<string, never>;
     has_error: boolean;
     is_from_derivgo: boolean;
     is_network_online: boolean;

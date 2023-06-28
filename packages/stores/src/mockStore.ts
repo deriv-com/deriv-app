@@ -212,11 +212,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 redirectOnClick: jest.fn(),
                 setError: jest.fn(),
             },
-            services_error: {
-                code: '',
-                message: '',
-                type: '',
-            },
+            services_error: {},
             is_from_derivgo: false,
             has_error: false,
             platform: '',

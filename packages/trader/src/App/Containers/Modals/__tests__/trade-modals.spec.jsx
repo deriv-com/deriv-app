@@ -35,10 +35,8 @@ jest.mock('App/Components/Elements/Modals/ServicesErrorModal', () =>
 window.open = jest.fn();
 
 describe('TradeModals', () => {
-    let mock_root_store = mockStore({});
-
-    beforeEach(() => {
-        mock_root_store = mockStore({
+    it('should render modal', () => {
+        const mock_root_store = mockStore({
             modules: {
                 trade: {
                     resetPreviousSymbol: jest.fn(),
@@ -47,9 +45,7 @@ describe('TradeModals', () => {
                 },
             },
         });
-    });
 
-    it('should render modal', () => {
         render(<TradeModals />, {
             wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
         });
@@ -59,6 +55,16 @@ describe('TradeModals', () => {
         expect(screen.getByText('Services error modal')).toBeInTheDocument();
     });
     it('should call function unsupportedContractOnConfirm if button onConfirm in UnsupportedContractModal component was clicked', () => {
+        const mock_root_store = mockStore({
+            modules: {
+                trade: {
+                    resetPreviousSymbol: jest.fn(),
+                    clearPurchaseInfo: jest.fn(),
+                    requestProposal: jest.fn(),
+                },
+            },
+        });
+
         render(<TradeModals />, {
             wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
         });
@@ -67,6 +73,16 @@ describe('TradeModals', () => {
         expect(mock_root_store.ui.toggleUnsupportedContractModal).toHaveBeenCalled();
     });
     it('should call function unsupportedContractOnClose if button onClose in UnsupportedContractModal component was clicked', () => {
+        const mock_root_store = mockStore({
+            modules: {
+                trade: {
+                    resetPreviousSymbol: jest.fn(),
+                    clearPurchaseInfo: jest.fn(),
+                    requestProposal: jest.fn(),
+                },
+            },
+        });
+
         render(<TradeModals />, {
             wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
         });
@@ -75,6 +91,16 @@ describe('TradeModals', () => {
         expect(mock_root_store.ui.toggleUnsupportedContractModal).toHaveBeenCalled();
     });
     it('should call function marketUnavailableOnConfirm if button onConfirm in MarketUnavailableModal component was clicked', () => {
+        const mock_root_store = mockStore({
+            modules: {
+                trade: {
+                    resetPreviousSymbol: jest.fn(),
+                    clearPurchaseInfo: jest.fn(),
+                    requestProposal: jest.fn(),
+                },
+            },
+        });
+
         render(<TradeModals />, {
             wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
         });
@@ -84,6 +110,16 @@ describe('TradeModals', () => {
         expect(mock_root_store.modules.trade.resetPreviousSymbol).toHaveBeenCalled();
     });
     it('should call function marketUnavailableOnCancel if button onCancel in MarketUnavailableModal component was clicked', () => {
+        const mock_root_store = mockStore({
+            modules: {
+                trade: {
+                    resetPreviousSymbol: jest.fn(),
+                    clearPurchaseInfo: jest.fn(),
+                    requestProposal: jest.fn(),
+                },
+            },
+        });
+
         render(<TradeModals />, {
             wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
         });
@@ -93,6 +129,16 @@ describe('TradeModals', () => {
         expect(mock_root_store.modules.trade.resetPreviousSymbol).toHaveBeenCalled();
     });
     it('should call function servicesErrorModalOnConfirm if button onConfirm in ServicesErrorModal component was clicked', () => {
+        const mock_root_store = mockStore({
+            modules: {
+                trade: {
+                    resetPreviousSymbol: jest.fn(),
+                    clearPurchaseInfo: jest.fn(),
+                    requestProposal: jest.fn(),
+                },
+            },
+        });
+
         render(<TradeModals />, {
             wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
         });
@@ -103,7 +149,7 @@ describe('TradeModals', () => {
         expect(mock_root_store.modules.trade.requestProposal).not.toHaveBeenCalled();
     });
     it('should call function servicesErrorModalOnConfirm and clearPurchaseInfo and requestProposal if button onConfirm in ServicesErrorModal component was clicked and type of services_error is equal to buy', () => {
-        mock_root_store = mockStore({
+        const mock_root_store = mockStore({
             modules: {
                 trade: {
                     resetPreviousSymbol: jest.fn(),
@@ -119,6 +165,7 @@ describe('TradeModals', () => {
                 },
             },
         });
+
         render(<TradeModals />, {
             wrapper: ({ children }) => <TraderProviders store={mock_root_store}>{children}</TraderProviders>,
         });

@@ -686,18 +686,18 @@ export default class CFDStore extends BaseStore {
         }
     }
 
-    // loadDxtradeTokens() {
-    // ['demo', 'real'].forEach(account_type => {
-    //     const has_existing_account = this.root_store.client.dxtrade_accounts_list.some(
-    //         account => account.account_type === account_type
-    //     );
-    // if (!this.dxtrade_tokens[account_type] && has_existing_account) {
-    //     WS.getServiceToken(CFD_PLATFORMS.DXTRADE, account_type).then(response =>
-    //         this.setDxtradeToken(response, account_type)
-    //     );
-    // }
-    // });
-    // }
+    loadDxtradeTokens() {
+        ['demo', 'real'].forEach(account_type => {
+            const has_existing_account = this.root_store.client.dxtrade_accounts_list.some(
+                account => account.account_type === account_type
+            );
+            if (!this.dxtrade_tokens[account_type] && has_existing_account) {
+                WS.getServiceToken(CFD_PLATFORMS.DXTRADE, account_type).then(response =>
+                    this.setDxtradeToken(response, account_type)
+                );
+            }
+        });
+    }
 
     setDerivezToken(response, server) {
         if (!response.error) {

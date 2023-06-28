@@ -19,7 +19,7 @@ import { APIProvider } from '@deriv/api';
 import { StoreProvider } from '@deriv/stores';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
-import { MockDialog } from './Components/mock-controls';
+import DevTools from './Components/dev-tools';
 import SmartTraderIFrame from 'Modules/SmartTraderIFrame';
 import BinaryBotIFrame from 'Modules/BinaryBotIFrame';
 import AppToastMessages from './Containers/app-toast-messages.jsx';
@@ -100,7 +100,7 @@ const AppWithoutTranslation = ({ root_store }) => {
                                     <BinaryBotIFrame />
                                     <AppToastMessages />
                                 </PlatformContainer>
-                                <MockDialog />
+                                <DevTools />
                             </APIProvider>
                         </StoreProvider>
                     </MobxContentProvider>

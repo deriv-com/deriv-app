@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Button, Checkbox, Dropdown, Input, Text } from '@deriv/components';
+import { Button, Dropdown, Input, Text } from '@deriv/components';
 import { useStore } from '@deriv/stores';
 import { useWS } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
@@ -33,15 +33,22 @@ const MockDialog = () => {
             generate_mock: 1,
             login: 1,
         });
-        if (response) {
-            const { active_loginid, ...accounts } = response;
-            delete accounts.req_id;
-            delete accounts.echo_req;
-            client.setLoginId(active_loginid);
-            client.setLoginInformation(accounts, active_loginid);
-            client.resetLocalStorageValues(active_loginid);
-            client.init();
-        }
+
+        delete response.echo_req;
+        delete response.req_id;
+        delete response.active_loginid;
+
+        const param_obj: Record<string, string> = {};
+        Object.keys(response).forEach((loginid, index) => {
+            const current_index = index + 1;
+            param_obj[`acct${current_index}`] = loginid;
+            param_obj[`token${current_index}`] = response[loginid].token || '';
+            param_obj[`cur${current_index}`] = response[loginid].currency || 'USD';
+        });
+
+        const params = new URLSearchParams(param_obj);
+        const new_url = new URL(`${window.location.href}?${params}`);
+        window.location.replace(new_url);
     };
 
     const handleSessionIdChange = (id: string) => {
@@ -80,11 +87,6 @@ const MockDialog = () => {
                 </Text>
             </div>
             <div className='mock-dialog__form'>
-                <Checkbox
-                    label='Enable mock server'
-                    checked={!!session_id}
-                    onChange={() => handleSessionIdChange('default')}
-                />
                 <div className='mock-dialog__form--dropdown-container'>
                     <Dropdown
                         placeholder='Available session id'

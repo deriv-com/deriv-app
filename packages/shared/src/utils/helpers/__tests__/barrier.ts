@@ -83,7 +83,7 @@ describe('getAccuBarrierSpotDistance', () => {
         expect(getAccuBarrierSpotDistance('', 9017.26, 2)).toEqual('');
         expect(getAccuBarrierSpotDistance('9017.413', undefined, 2)).toEqual('');
         expect(getAccuBarrierSpotDistance('9017.413', 9017.26)).toEqual('');
-        expect(getAccuBarrierSpotDistance('', undefined)).toEqual('');
+        expect(getAccuBarrierSpotDistance('')).toEqual('');
     });
 
     it('should return the correct barrier_spot_distance with the number of decimal place equal to pip size + 1', () => {

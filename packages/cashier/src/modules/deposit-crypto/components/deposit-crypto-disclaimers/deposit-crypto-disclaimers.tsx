@@ -10,9 +10,10 @@ const crypto_currency_to_network_mapper: Record<string, string> = {
     BTC: 'Bitcoin (BTC)',
     ETH: 'Ethereum (ETH)',
     LTC: 'Litecoin (LTC)',
-    USDC: 'Ethereum (ERC20)',
     UST: 'Omnicore',
+    USDC: 'Ethereum (ERC20)',
     eUSDT: 'Ethereum (ERC20) ',
+    tUSDT: 'Tron (TRC20) ',
 };
 
 const DepositCryptoDisclaimers: React.FC = observer(() => {

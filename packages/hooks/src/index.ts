@@ -5,6 +5,7 @@ export { default as useCFDDemoAccounts } from './useCFDDemoAccounts';
 export { default as useCFDRealAccounts } from './useCFDRealAccounts';
 export { default as useCashierLocked } from './useCashierLocked';
 export { default as useCountdown } from './useCountdown';
+export { default as useCryptoTransactions } from './useCryptoTransactions';
 export { default as useCurrencyConfig } from './useCurrencyConfig';
 export { default as useCurrentCurrencyConfig } from './useCurrentCurrencyConfig';
 export { default as useDepositCryptoAddress } from './useDepositCryptoAddress';

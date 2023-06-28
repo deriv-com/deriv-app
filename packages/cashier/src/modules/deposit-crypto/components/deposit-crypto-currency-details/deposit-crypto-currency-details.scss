@@ -1,5 +1,5 @@
 .deposit-crypto-currency-details {
-    &__icon-container {
-        align-self: center;
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
 }

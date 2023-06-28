@@ -3,12 +3,8 @@ import { observer, useStore } from '@deriv/stores';
 import { Divider } from '../../components/divider';
 import { PageContainer } from '../../components/page-container';
 import { useCashierStore } from '../../stores/useCashierStores';
-import {
-    DepositCryptoCurrencyDetails,
-    DepositCryptoSideNotes,
-    DepositCryptoTryFiatOnRamp,
-    DepositCryptoWalletAddress,
-} from './components';
+import { DepositCryptoCurrencyDetails, DepositCryptoSideNotes, DepositCryptoWalletAddress } from './components';
+import DepositCryptoSideNoteTryFiatOnRamp from './components/deposit-crypto-side-notes/deposit-crypto-side-note-try-fiat-onramp';
 
 const DepositCrypto: React.FC = observer(() => {
     const { ui } = useStore();
@@ -26,7 +22,9 @@ const DepositCrypto: React.FC = observer(() => {
 
     return (
         <PageContainer
-            // Hide the side note and render it in the page content on mobile to match the design
+            // Hide the side note and render it in the page content on mobile to match the design,
+            // Need to talk with the design team to put `DepositCryptoSideNoteTryFiatOnRamp` in the
+            // side notes for consistency and then we can remove unnecessary components from the children.
             right={is_mobile ? undefined : <DepositCryptoSideNotes />}
         >
             <DepositCryptoCurrencyDetails />
@@ -34,7 +32,10 @@ const DepositCrypto: React.FC = observer(() => {
             <Divider />
             {is_mobile && <DepositCryptoSideNotes />}
             {is_mobile && <Divider />}
-            <DepositCryptoTryFiatOnRamp />
+            {/* This should be in the side notes, Need to talk to the design team to change it */}
+            <div style={is_mobile ? {} : { alignSelf: 'center' }}>
+                <DepositCryptoSideNoteTryFiatOnRamp />
+            </div>
         </PageContainer>
     );
 });

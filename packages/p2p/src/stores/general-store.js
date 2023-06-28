@@ -136,7 +136,6 @@ export default class GeneralStore extends BaseStore {
             setAdvertiserId: action.bound,
             setAdvertiserBuyLimit: action.bound,
             setAdvertiserSellLimit: action.bound,
-            setAppProps: action.bound,
             setAdvertiserRelationsResponse: action.bound, //TODO: Remove this when backend has fixed is_blocked flag issue
             setErrorCode: action.bound,
             setExternalStores: action.bound,
@@ -296,7 +295,7 @@ export default class GeneralStore extends BaseStore {
         const { order_store } = this.root_store;
         const { is_cached, notifications } = this.getLocalStorageSettingsForLoginId();
 
-        new_orders.forEach(new_order => {
+        new_orders?.forEach(new_order => {
             const order_info = createExtendedOrderDetails(
                 new_order,
                 this.external_stores.client.loginid,
@@ -631,7 +630,7 @@ export default class GeneralStore extends BaseStore {
     setErrorCode(error_code) {
         this.error_code = error_code;
     }
-    
+
     setExternalStores(external_stores) {
         this.external_stores = external_stores;
     }
@@ -739,14 +738,14 @@ export default class GeneralStore extends BaseStore {
             return;
         }
 
-        const { p2p_order_list = [], p2p_order_info = {} } = order_response;
+        const { p2p_order_list, p2p_order_info } = order_response ?? {};
         const { order_store } = this.root_store;
 
         if (p2p_order_list) {
             const { list } = p2p_order_list;
             // it's an array of orders from p2p_order_list
             this.handleNotifications(order_store.orders, list);
-            list.forEach(order => order_store.syncOrder(order));
+            list?.forEach(order => order_store.syncOrder(order));
         } else if (p2p_order_info) {
             // it's a single order from p2p_order_info
             const idx_order_to_update = order_store.orders.findIndex(order => order.id === p2p_order_info.id);

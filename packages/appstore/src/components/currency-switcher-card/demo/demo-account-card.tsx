@@ -8,7 +8,7 @@ import { usePlatformAccounts } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 
 const DemoAccountCard = observer(() => {
-    const { client, traders_hub } = useStore();
+    const { client, traders_hub, common } = useStore();
     const { accounts, loginid, resetVirtualBalance, default_currency } = client;
     const { selected_account_type } = traders_hub;
     const { demo: platform_demo_account } = usePlatformAccounts();
@@ -16,6 +16,8 @@ const DemoAccountCard = observer(() => {
     const canResetBalance = () => {
         return loginid && (accounts[loginid]?.balance || 0) !== 10000;
     };
+
+    const { current_language } = common;
 
     return (
         <CurrencySwitcherContainer
@@ -28,7 +30,12 @@ const DemoAccountCard = observer(() => {
             }
             actions={
                 canResetBalance() && (
-                    <Button secondary onClick={resetVirtualBalance} className='currency-switcher__button'>
+                    <Button
+                        key={`currency-switcher__button--key-${current_language}`}
+                        secondary
+                        onClick={resetVirtualBalance}
+                        className='currency-switcher__button'
+                    >
                         {localize('Reset Balance')}
                     </Button>
                 )

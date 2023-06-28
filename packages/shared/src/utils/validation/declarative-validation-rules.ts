@@ -9,6 +9,7 @@ export type TOptions = {
     type?: string;
     decimals?: string | number;
     regex?: RegExp;
+    [key: string]: unknown;
     is_required?: boolean;
 };
 

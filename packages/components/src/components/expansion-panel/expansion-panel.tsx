@@ -5,7 +5,7 @@ import Icon from '../icon';
 import { TItem } from '../types/common.types';
 
 type TExpansionPanel = {
-    message: { header: React.ReactNode; content: Array<React.ReactNode> & Array<TItem> };
+    message: { header: React.ReactNode; content: (Array<React.ReactNode> & Array<TItem>) | React.ReactNode };
     onResize?: () => void;
 };
 

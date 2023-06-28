@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import Routes from '../routes';
 import { Router } from 'react-router';
 import { createBrowserHistory } from 'history';
-import { TRootStore } from 'Types';
+import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
 
 jest.mock('../binary-routes', () => jest.fn(() => 'BinaryRoutes'));
@@ -18,7 +18,7 @@ jest.mock('@deriv/components', () => {
 describe('<Routes />', () => {
     it('should show error messages when "has_error = true"', () => {
         const history = createBrowserHistory();
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mock_root_store = mockStore({
             client: {
                 is_logged_in: false,
                 is_logging_in: false,
@@ -36,16 +36,14 @@ describe('<Routes />', () => {
                     should_show_refresh: true,
                 },
             },
-        };
+        });
 
         render(
             <Router history={history}>
                 <Routes />
             </Router>,
             {
-                wrapper: ({ children }) => (
-                    <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-                ),
+                wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
             }
         );
 
@@ -54,7 +52,7 @@ describe('<Routes />', () => {
 
     it('should render <BinaryRoutes /> component when "has_error = false"', () => {
         const history = createBrowserHistory();
-        const mockRootStore: DeepPartial<TRootStore> = {
+        const mock_root_store = mockStore({
             client: {
                 is_logged_in: false,
                 is_logging_in: false,
@@ -62,16 +60,14 @@ describe('<Routes />', () => {
             common: {
                 has_error: false,
             },
-        };
+        });
 
         render(
             <Router history={history}>
                 <Routes />
             </Router>,
             {
-                wrapper: ({ children }) => (
-                    <CashierProviders store={mockRootStore as TRootStore}>{children}</CashierProviders>
-                ),
+                wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
             }
         );
 

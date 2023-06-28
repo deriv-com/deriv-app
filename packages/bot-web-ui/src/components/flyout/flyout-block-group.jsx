@@ -1,8 +1,8 @@
-import { Button, Text } from '@deriv/components';
 import React from 'react';
-import { PropTypes } from 'prop-types';
-import { Localize } from '@deriv/translations';
 import classNames from 'classnames';
+import { PropTypes } from 'prop-types';
+import { Button, Text } from '@deriv/components';
+import { Localize } from '@deriv/translations';
 import FlyoutBlock from './flyout-block.jsx';
 
 const FlyoutBlockGroup = ({ onInfoClick, block_node, is_active, should_hide_display_name }) => {

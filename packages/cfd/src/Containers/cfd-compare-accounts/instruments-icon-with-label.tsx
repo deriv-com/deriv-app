@@ -5,7 +5,7 @@ type TIconProps = {
     icon:
         | 'DerivedFX'
         | 'Synthetics'
-        | 'BasketIndices'
+        | 'Baskets'
         | 'Stocks'
         | 'StockIndices'
         | 'Commodities'

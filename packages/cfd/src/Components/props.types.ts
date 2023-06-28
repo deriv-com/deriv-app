@@ -251,7 +251,7 @@ export type TIconData = {
     icon:
         | 'DerivedFX'
         | 'Synthetics'
-        | 'BasketIndices'
+        | 'Baskets'
         | 'Stocks'
         | 'StockIndices'
         | 'Commodities'

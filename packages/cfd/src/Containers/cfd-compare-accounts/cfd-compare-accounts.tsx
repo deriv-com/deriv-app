@@ -56,7 +56,12 @@ const CompareCFDs = observer(() => {
             </div>
             <h1 className='compare-cfd-header-title'>
                 <Text size='m' weight='bold' color='prominent'>
-                    <Localize i18n_default_text='Compare CFDs accounts' />
+                    <Localize
+                        i18n_default_text='Compare CFDs {{demo_title}} accounts'
+                        values={{
+                            demo_title: is_demo ? localize('demo') : '',
+                        }}
+                    />
                 </Text>
             </h1>
         </div>

@@ -31,6 +31,16 @@ const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvai
                 { icon: 'ETF', text: localize('ETF'), highlighted: false },
             ];
         case 'financial':
+            if (trading_platforms.shortcode === 'maltainvest') {
+                return [
+                    { icon: 'Synthetics', text: localize('Synthetics'), highlighted: true, is_asterik: true },
+                    { icon: 'Forex', text: localize('Forex'), highlighted: true },
+                    { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
+                    { icon: 'StockIndices', text: localize('Stock Indices'), highlighted: true },
+                    { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
+                    { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
+                ];
+            }
             return [
                 { icon: 'Synthetics', text: localize('Synthetics'), highlighted: false },
                 { icon: 'Baskets', text: localize('Baskets'), highlighted: false },
@@ -59,7 +69,7 @@ const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvai
 };
 
 // Get the Account Title according to the market type and jurisdiction
-const getAccountCardTitle = (shortcode: string, is_demo: boolean) => {
+const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
     switch (shortcode) {
         case 'synthetic_svg':
             return is_demo ? localize('Derived Demo') : localize('Derived - SVG');
@@ -85,12 +95,11 @@ const getAccountCardTitle = (shortcode: string, is_demo: boolean) => {
 };
 
 // Get the Platform label
-const getPlatformLabel = (shortcode: string) => {
+const getPlatformLabel = (shortcode?: string) => {
     switch (shortcode) {
         case 'dxtrade':
+        case 'CFDs':
             return 'Other CFDs';
-        case 'synthetic':
-        case 'financial':
         case 'mt5':
         default:
             return 'MT5 Platform';
@@ -199,8 +208,9 @@ const getJuridisctionDescription = (shortcode: string) => {
                 leverage: '1:30',
                 counterparty_company: 'Deriv Investments (Europe) Limited',
                 jurisdiction: 'Malta',
-                regulator: localize('Malta Financial Services Authority'),
-                regulator_description: localize('(licence no. IS/70156) MFSA'),
+                regulator_description: localize(
+                    'Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)'
+                ),
             };
         // Dxtrade
         case 'all_':
@@ -273,8 +283,8 @@ const getAccountVerficationStatus = (
     poa_pending: boolean,
     should_restrict_bvi_account_creation: boolean,
     should_restrict_vanuatu_account_creation: boolean,
-    is_demo: boolean,
-    has_submitted_personal_details: boolean
+    has_submitted_personal_details: boolean,
+    is_demo?: boolean
 ) => {
     switch (jurisdiction_shortcode) {
         case 'synthetic_svg':
@@ -323,7 +333,7 @@ const getAccountVerficationStatus = (
 };
 
 // Check what MT5 accounts are added based on jurisdisction
-const isMt5AccountAdded = (current_list: Record<string, TDetailsOfEachMT5Loginid>, item: string, is_demo: boolean) =>
+const isMt5AccountAdded = (current_list: Record<string, TDetailsOfEachMT5Loginid>, item: string, is_demo?: boolean) =>
     Object.entries(current_list).some(([key, value]) => {
         const [market, type] = item.split('_');
         const current_account_type = is_demo ? 'demo' : 'real';

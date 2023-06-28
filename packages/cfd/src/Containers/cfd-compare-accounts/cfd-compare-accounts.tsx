@@ -79,6 +79,8 @@ const CompareCFDs = observer(() => {
                                     <CFDCompareAccountsCard
                                         trading_platforms={item}
                                         key={item.market_type + item.shortcode}
+                                        is_eu_user={is_eu_user}
+                                        is_demo={is_demo}
                                     />
                                 ))}
                             </CFDCompareAccountsCarousel>
@@ -99,6 +101,8 @@ const CompareCFDs = observer(() => {
                                 <CFDCompareAccountsCard
                                     trading_platforms={item}
                                     key={item.market_type + item.shortcode}
+                                    is_eu_user={is_eu_user}
+                                    is_demo={is_demo}
                                 />
                             ))}
                         </CFDCompareAccountsCarousel>

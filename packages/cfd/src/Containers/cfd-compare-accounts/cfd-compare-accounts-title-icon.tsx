@@ -1,14 +1,11 @@
 import React from 'react';
 import { Text, Popover } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
 import TradigPlatformIconProps from '../../Assets/svgs/trading-platform';
 import { TCompareAccountsCard } from 'Components/props.types';
 import { getAccountCardTitle, getMarketType, getAccountIcon } from '../../Helpers/compare-accounts-config';
 
-const CFDCompareAccountsTitleIcon = observer(({ trading_platforms }: TCompareAccountsCard) => {
-    const { traders_hub } = useStore();
-    const { is_demo, is_eu_user } = traders_hub;
+const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_eu_user, is_demo }: TCompareAccountsCard) => {
     const market_type = !is_eu_user ? getMarketType(trading_platforms) : 'CFDs';
     const jurisdiction_shortcode = market_type.concat('_', trading_platforms.shortcode);
     const jurisdiction_card_icon =
@@ -48,6 +45,6 @@ const CFDCompareAccountsTitleIcon = observer(({ trading_platforms }: TCompareAcc
             <hr className='compare-cfd-account-underline' />
         </React.Fragment>
     );
-});
+};
 
 export default CFDCompareAccountsTitleIcon;

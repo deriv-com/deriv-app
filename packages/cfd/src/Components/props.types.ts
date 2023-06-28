@@ -278,6 +278,7 @@ export type TInstrumentsIcon = {
     text: string;
     highlighted: boolean;
     className?: string;
+    is_asterik?: boolean;
 };
 
 export type TAvailableCFDAccounts = {
@@ -291,6 +292,8 @@ export type TAvailableCFDAccounts = {
 
 export type TCompareAccountsCard = {
     trading_platforms: TModifiedTradingPlatformAvailableAccount;
+    is_eu_user?: boolean;
+    is_demo?: boolean;
 };
 
 export type TJurisdictionData = Record<

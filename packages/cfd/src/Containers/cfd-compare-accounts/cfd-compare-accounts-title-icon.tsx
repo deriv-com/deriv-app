@@ -8,8 +8,8 @@ import { getAccountCardTitle, getMarketType, getAccountIcon } from '../../Helper
 
 const CFDCompareAccountsTitleIcon = observer(({ trading_platforms }: TCompareAccountsCard) => {
     const { traders_hub } = useStore();
-    const { is_demo } = traders_hub;
-    const market_type = getMarketType(trading_platforms);
+    const { is_demo, is_eu_user } = traders_hub;
+    const market_type = !is_eu_user ? getMarketType(trading_platforms) : 'CFDs';
     const jurisdiction_shortcode = market_type.concat('_', trading_platforms.shortcode);
     const jurisdiction_card_icon =
         trading_platforms.platform === 'dxtrade'

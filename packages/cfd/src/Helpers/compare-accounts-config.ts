@@ -6,6 +6,7 @@ import {
     TDetailsOfEachMT5Loginid,
 } from '../Components/props.types';
 
+// Map the accounts according to the market type
 const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvailableAccount): TIconData[] => {
     switch (trading_platforms.market_type) {
         case 'gaming':
@@ -13,10 +14,10 @@ const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvai
                 { icon: 'Synthetics', text: 'Synthetics', highlighted: true },
                 { icon: 'BasketIndices', text: 'Basket Indices', highlighted: true },
                 { icon: 'DerivedFX', text: 'Derived FX', highlighted: true },
-                { icon: 'Stocks', text: 'Stock', highlighted: false },
+                { icon: 'Stocks', text: 'Stocks', highlighted: false },
                 { icon: 'StockIndices', text: 'Stock Indices', highlighted: false },
                 { icon: 'Commodities', text: 'Commodities', highlighted: false },
-                { icon: 'Forex', text: 'Forex', highlighted: false },
+                { icon: 'Forex', text: 'Forex: standard/micro', highlighted: false },
                 { icon: 'Cryptocurrencies', text: 'Cryptocurrencies', highlighted: false },
                 { icon: 'ETF', text: 'ETF', highlighted: false },
             ];
@@ -25,10 +26,10 @@ const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvai
                 { icon: 'Synthetics', text: 'Synthetics', highlighted: false },
                 { icon: 'BasketIndices', text: 'Basket Indices', highlighted: false },
                 { icon: 'DerivedFX', text: 'Derived FX', highlighted: false },
-                { icon: 'Stocks', text: 'Stock', highlighted: true },
+                { icon: 'Stocks', text: 'Stocks', highlighted: true },
                 { icon: 'StockIndices', text: 'Stock Indices', highlighted: true },
                 { icon: 'Commodities', text: 'Commodities', highlighted: true },
-                { icon: 'Forex', text: 'Forex', highlighted: true },
+                { icon: 'Forex', text: 'Forex: standard/micro', highlighted: true },
                 { icon: 'Cryptocurrencies', text: 'Cryptocurrencies', highlighted: true },
                 { icon: 'ETF', text: 'ETF', highlighted: true },
             ];
@@ -38,15 +39,17 @@ const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvai
                 { icon: 'Synthetics', text: 'Synthetics', highlighted: true },
                 { icon: 'BasketIndices', text: 'Basket Indices', highlighted: true },
                 { icon: 'DerivedFX', text: 'Derived FX', highlighted: true },
-                { icon: 'Stocks', text: 'Stock', highlighted: true },
+                { icon: 'Stocks', text: 'Stocks', highlighted: true },
                 { icon: 'StockIndices', text: 'Stock Indices', highlighted: true },
                 { icon: 'Commodities', text: 'Commodities', highlighted: true },
-                { icon: 'Forex', text: 'Forex', highlighted: true },
+                { icon: 'Forex', text: 'Forex: standard/micro', highlighted: true },
                 { icon: 'Cryptocurrencies', text: 'Cryptocurrencies', highlighted: true },
                 { icon: 'ETF', text: 'ETF', highlighted: true },
             ];
     }
 };
+
+// Get the Account Title according to the market type and jurisdiction
 const getAccountCardTitle = (shortcode: string, is_demo: boolean) => {
     switch (shortcode) {
         case 'synthetic_svg':
@@ -72,6 +75,7 @@ const getAccountCardTitle = (shortcode: string, is_demo: boolean) => {
     }
 };
 
+// Get the Platform label
 const getPlatformLabel = (shortcode: string) => {
     switch (shortcode) {
         case 'dxtrade':
@@ -84,11 +88,13 @@ const getPlatformLabel = (shortcode: string) => {
     }
 };
 
+// Object to map the platform label
 const platfromsHeaderLabel = {
     mt5: 'MT5 Platform',
     other_cfds: 'Other CFDs',
 };
 
+// Get the Account Icons based on the market type
 const getAccountIcon = (shortcode: string) => {
     switch (shortcode) {
         case 'synthetic':
@@ -104,21 +110,23 @@ const getAccountIcon = (shortcode: string) => {
     }
 };
 
+// Convert the market type from gaming to synthethics
 const getMarketType = (trading_platforms: TModifiedTradingPlatformAvailableAccount) => {
     return trading_platforms.market_type === 'gaming' ? 'synthetic' : trading_platforms.market_type;
 };
 
+// Get the color of Header based on the platform
 const getHeaderColor = (shortcode: string) => {
     switch (shortcode) {
-        case 'MT5 Platform':
-            return 'blue';
-        case 'Other CFDs':
+        case platfromsHeaderLabel.other_cfds:
             return 'green';
+        case platfromsHeaderLabel.mt5:
         default:
             return 'blue';
     }
 };
 
+// Config for different Jurisdictions
 const cfdConfig = {
     leverage: '1:1000',
     leverage_description: 'Maximum Leverage',
@@ -131,6 +139,8 @@ const cfdConfig = {
     regulator: 'Financial Commission',
     regulator_description: 'Regulator/External dispute resolution',
 };
+
+// Map the Jurisdictions with the config
 const getJuridisctionDescription = (shortcode: string) => {
     switch (shortcode) {
         case 'synthetic_bvi':
@@ -175,6 +185,15 @@ const getJuridisctionDescription = (shortcode: string) => {
                 regulator: 'Labuan Financial Services Authority',
                 regulator_description: '(licence no. MB/18/0024) Regulator/External Dispute Resolution',
             };
+        case 'financial_maltainvest':
+            return {
+                ...cfdConfig,
+                leverage: '1:30',
+                counterparty_company: 'Deriv Investments (Europe) Limited',
+                jurisdiction: 'Malta',
+                regulator: 'Malta Financial Services Authority',
+                regulator_description: '(licence no. IS/70156) MFSA',
+            };
         // Dxtrade
         case 'all_':
         case 'all_svg':
@@ -206,10 +225,13 @@ const getSortedAvailableAccounts = (available_accounts: TModifiedTradingPlatform
         .map(item => ({ ...item, platform: 'mt5' } as const));
     return [...gaming_accounts, ...financial_accounts, ...swap_free_accounts];
 };
+
+// Check if Deriv X is available for the user
 const getDxtradeAccountAvailabaility = (available_accounts: TAvailableCFDAccounts[]) => {
     return available_accounts.some(account => account.platform === 'dxtrade');
 };
 
+// Get the maltainvest accounts for EU and DIEL clients
 const getEUAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
     const financial_accounts = available_accounts
         .filter(item => item.market_type === 'financial' && item.shortcode === 'maltainvest')
@@ -217,6 +239,7 @@ const getEUAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvai
     return [...financial_accounts];
 };
 
+// Make the Deriv X object for trading_platform_available_accounts
 const prepareDxtradeData = (
     name: string,
     market_type: TModifiedTradingPlatformAvailableAccount['market_type']
@@ -239,6 +262,8 @@ const prepareDxtradeData = (
         platform: 'dxtrade',
     };
 };
+
+// Check whether the POA POI status are completed for different jurisdictions
 const getAccountVerficationStatus = (
     jurisdiction_shortcode: string,
     poi_or_poa_not_submitted: boolean,
@@ -297,6 +322,7 @@ const getAccountVerficationStatus = (
     }
 };
 
+// Check what MT5 accounts are added based on jurisdisction
 const isMt5AccountAdded = (current_list: Record<string, TDetailsOfEachMT5Loginid>, item: string, is_demo: boolean) =>
     Object.entries(current_list).some(([key, value]) => {
         const [market, type] = item.split('_');
@@ -309,6 +335,7 @@ const isMt5AccountAdded = (current_list: Record<string, TDetailsOfEachMT5Loginid
         );
     });
 
+// Get the MT5 demo accounts of the user
 const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
     const swap_free_demo_accounts = available_accounts.filter(
         item => item.market_type === 'all' && item.shortcode === 'svg' && item.platform === CFD_PLATFORMS.MT5
@@ -324,7 +351,6 @@ const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAcc
 
 export {
     getHighlightedIconLabel,
-    cfdConfig,
     getJuridisctionDescription,
     getAccountCardTitle,
     getMarketType,

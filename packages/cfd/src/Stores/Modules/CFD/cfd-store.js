@@ -701,8 +701,8 @@ export default class CFDStore extends BaseStore {
 
     setDerivezToken(response, server) {
         if (!response.error) {
-            const { derivez } = response.service_token;
-            this.derivez_tokens[server] = derivez.token;
+            const { pandats } = response.service_token;
+            this.derivez_tokens[server] = pandats.token;
         }
     }
 

@@ -495,8 +495,8 @@ type TTradersHubStore = {
     selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
     available_dxtrade_accounts: AvailableAccount[];
-    is_wallet_upgrade_in_progress: boolean;
-    setWalletsUpgradeInProgressPopup: (value: boolean) => void;
+    is_wallet_migration_in_progress: boolean;
+    setWalletsMigrationInProgressPopup: (value: boolean) => void;
 };
 
 /**

@@ -2,30 +2,30 @@ import React from 'react';
 import { Text, Modal, Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
-import './wallets-upgrade-in-progress.scss';
+import './wallets-migration-in-progress.scss';
 
-const WalletsUpgradeInProgress = observer(() => {
+const WalletsMigrationInProgress = observer(() => {
     const { traders_hub, ui } = useStore();
-    const { is_wallet_upgrade_in_progress, setWalletsUpgradeInProgressPopup } = traders_hub;
+    const { is_wallet_migration_in_progress, setWalletsMigrationInProgressPopup } = traders_hub;
     const { is_mobile } = ui;
 
     const handleClose = () => {
-        setWalletsUpgradeInProgressPopup(false);
+        setWalletsMigrationInProgressPopup(false);
     };
     return (
         <Modal
-            is_open={is_wallet_upgrade_in_progress}
+            is_open={is_wallet_migration_in_progress}
             toggleModal={handleClose}
             width={is_mobile ? '32.4rem' : '44.6rem'}
         >
             <div>
-                <Modal.Body className='wallets-upgrade-in-progress'>
+                <Modal.Body className='wallets-migration-in-progress'>
                     <Text
                         as='h1'
                         size={is_mobile ? 'xs' : 's'}
                         color='prominent'
                         weight='bold'
-                        className='wallets-upgrade-in-progress__title'
+                        className='wallets-migration-in-progress__title'
                     >
                         {localize('Wallet upgrade in progress')}
                     </Text>
@@ -35,8 +35,8 @@ const WalletsUpgradeInProgress = observer(() => {
                         )}
                     </Text>
                 </Modal.Body>
-                <Modal.Footer className='wallets-upgrade-in-progress__footer'>
-                    <Button primary large onClick={handleClose} classNameSpan='wallets-upgrade-in-progress__text'>
+                <Modal.Footer className='wallets-migration-in-progress__footer'>
+                    <Button primary large onClick={handleClose} classNameSpan='wallets-migration-in-progress__text'>
                         {localize('Okay')}
                     </Button>
                 </Modal.Footer>
@@ -45,4 +45,4 @@ const WalletsUpgradeInProgress = observer(() => {
     );
 });
 
-export default WalletsUpgradeInProgress;
+export default WalletsMigrationInProgress;

@@ -1,3 +1,3 @@
-import WalletsUpgradeInProgress from './wallets-upgrade-in-progress';
+import WalletsMigrationInProgress from './wallets-migration-in-progress';
 
-export default WalletsUpgradeInProgress;
+export default WalletsMigrationInProgress;

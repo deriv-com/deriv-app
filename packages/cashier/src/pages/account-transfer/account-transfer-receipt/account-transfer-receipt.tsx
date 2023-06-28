@@ -15,7 +15,7 @@ type TSwitch = {
 };
 
 type TAccountTransferReceipt = RouteComponentProps & {
-    onClose?: () => void;
+    onClose: () => void;
 };
 
 const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferReceipt) => {
@@ -68,9 +68,6 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
             setSwitchTo(selected_to.is_mt ? selected_from : selected_to);
             toggleSwitchAlert();
         }
-        // close modal only when the user try to transfer money from traders-hub, not from cashier
-        // because in cashier this component is not a modal
-        if (is_from_outside_cashier) onClose?.();
     };
 
     return (
@@ -158,7 +155,16 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button has_effect text={localize('Cancel')} onClick={toggleSwitchAlert} secondary large />
+                    <Button
+                        has_effect
+                        text={localize('Cancel')}
+                        onClick={() => {
+                            setShouldSwitchAccount(false);
+                            toggleSwitchAlert();
+                        }}
+                        secondary
+                        large
+                    />
                     <Button
                         has_effect
                         text={localize(`Switch to ${switch_to.currency} account`)}

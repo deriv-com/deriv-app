@@ -37,7 +37,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
         tick_count,
         tick_passed,
         transaction_ids: { buy, sell } = {},
-        number_of_contracts,
+        display_number_of_contracts,
     } = contract_info;
 
     const is_profit = profit >= 0;
@@ -121,7 +121,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                                 id='dt_bt_label'
                                 icon={<Icon icon='IcContractPayout' size={24} />}
                                 label={localize('Payout per point')}
-                                value={`${number_of_contracts} ${getCurrencyDisplayCode(currency)}` || ' - '}
+                                value={`${display_number_of_contracts} ${getCurrencyDisplayCode(currency)}` || ' - '}
                             />
                         )}
                     </React.Fragment>

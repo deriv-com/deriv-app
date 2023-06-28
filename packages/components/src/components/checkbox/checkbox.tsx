@@ -11,7 +11,7 @@ type TCheckBoxProps = Omit<React.HTMLProps<HTMLInputElement>, 'value' | 'label'>
     greyDisabled?: boolean;
     id?: string;
     label: string | React.ReactElement;
-    onChange: (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => void;
+    onChange?: (e: React.ChangeEvent<HTMLInputElement> | React.KeyboardEvent<HTMLSpanElement>) => void;
     value?: boolean;
     withTabIndex?: number;
 };
@@ -41,13 +41,13 @@ const Checkbox = React.forwardRef<HTMLInputElement, TCheckBoxProps>(
         const onInputChange: React.ChangeEventHandler<HTMLInputElement> = e => {
             e.persist();
             setChecked(!checked);
-            onChange(e);
+            onChange?.(e);
         };
 
         const handleKeyDown: React.KeyboardEventHandler<HTMLSpanElement> = e => {
             // Enter or space
             if (!disabled && (e.key === 'Enter' || e.keyCode === 32)) {
-                onChange(e);
+                onChange?.(e);
                 setChecked(!checked);
             }
         };

@@ -1,12 +1,14 @@
 import React from 'react';
 import { Router } from 'react-router';
-import { createBrowserHistory } from 'history';
+import { BrowserHistory, createBrowserHistory } from 'history';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { routes } from '@deriv/shared';
 import WithdrawalLocked from '../withdrawal-locked';
 import CashierProviders from '../../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
+import { GetAccountStatus } from '@deriv/api-types';
 
-type TStatus = 'document' | 'none' | 'pending' | '';
+type TStatus = Pick<Required<GetAccountStatus>['authentication'], 'identity' | 'document' | 'needs_verification'>;
 
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 
@@ -33,7 +35,11 @@ const fireButtonEvent = (button: 'proof_of_identity_btn' | 'proof_of_address_btn
     }
 };
 
-const setAccountStatus = (identity_status: TStatus, document_status: TStatus, needs_verification: TStatus) => {
+const setAccountStatus = (
+    identity_status: Required<TStatus>['identity']['status'],
+    document_status: Required<TStatus>['document']['status'],
+    needs_verification: Required<TStatus>['needs_verification'][0]
+) => {
     return {
         authentication: {
             identity: {
@@ -48,12 +54,12 @@ const setAccountStatus = (identity_status: TStatus, document_status: TStatus, ne
 };
 
 describe('WithdrawalLocked', () => {
-    let history, mockRootStore;
+    let history: BrowserHistory, mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
         history = createBrowserHistory();
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
-                account_status: setAccountStatus('pending', '', ''),
+                account_status: setAccountStatus('pending', 'none', ''),
             },
             modules: {
                 cashier: {
@@ -65,7 +71,7 @@ describe('WithdrawalLocked', () => {
                     },
                 },
             },
-        };
+        });
     });
 
     const renderWithdrawalLocked = () => {
@@ -86,7 +92,7 @@ describe('WithdrawalLocked', () => {
     });
 
     it('Should show "Upload a proof of identity to verify your identity" message and redirect to account/proof-of-identity when "-->" button clicked', () => {
-        mockRootStore.client.account_status = setAccountStatus('none', '', '');
+        mockRootStore.client.account_status = setAccountStatus('none', 'none', '') as GetAccountStatus;
         renderWithdrawalLocked();
 
         fireButtonEvent('proof_of_identity_btn');
@@ -94,7 +100,7 @@ describe('WithdrawalLocked', () => {
     });
 
     it('Should show "Check proof of address document verification status" message and redirect to account/proof_of_address when "-->" button clicked', () => {
-        mockRootStore.client.account_status = setAccountStatus('', 'pending', 'document');
+        mockRootStore.client.account_status = setAccountStatus('none', 'pending', 'document') as GetAccountStatus;
         renderWithdrawalLocked();
 
         fireButtonEvent('proof_of_address_btn');
@@ -102,7 +108,7 @@ describe('WithdrawalLocked', () => {
     });
 
     it('Should show "Upload a proof of address to verify your address" message and redirect to account/proof_of_address when "-->" button clicked', () => {
-        mockRootStore.client.account_status = setAccountStatus('', 'none', 'document');
+        mockRootStore.client.account_status = setAccountStatus('none', 'none', 'document') as GetAccountStatus;
         renderWithdrawalLocked();
 
         fireButtonEvent('proof_of_address_btn');
@@ -110,7 +116,7 @@ describe('WithdrawalLocked', () => {
     });
 
     it('Should show "Complete the financial assessment form" message and redirect to account/financial_assessment when "-->" button clicked', () => {
-        mockRootStore.client.account_status = setAccountStatus('', '', '');
+        mockRootStore.client.account_status = setAccountStatus('none', 'none', '') as GetAccountStatus;
         mockRootStore.modules.cashier.withdraw.error.is_ask_financial_risk_approval = true;
         renderWithdrawalLocked();
 
@@ -119,7 +125,7 @@ describe('WithdrawalLocked', () => {
     });
 
     it('should render <CashierLocked /> component', () => {
-        mockRootStore.client.account_status = setAccountStatus('', '', '');
+        mockRootStore.client.account_status = setAccountStatus('none', 'none', '') as GetAccountStatus;
         mockRootStore.modules.cashier.withdraw.is_10k_withdrawal_limit_reached = false;
         renderWithdrawalLocked();
 

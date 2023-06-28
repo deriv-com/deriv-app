@@ -70,7 +70,7 @@ export default class AccountTransferStore {
         });
     }
 
-    accounts_list: Array<TAccount> = [];
+    accounts_list: TAccount[] = [];
     container: string = Constants.containers.account_transfer;
     error = new ErrorStore();
     has_no_account = false;
@@ -376,20 +376,24 @@ export default class AccountTransferStore {
         accounts?.forEach((account: TTransferAccount) => {
             const cfd_platforms = {
                 mt5: { name: 'Deriv MT5', icon: 'IcMt5' },
-                dxtrade: { name: 'Deriv X', icon: 'IcDxtrade' },
+                dxtrade: { name: 'Deriv X', icon: 'IcRebranding' },
                 derivez: { name: 'Deriv EZ', icon: 'IcDerivez' },
             };
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const is_cfd = Object.keys(cfd_platforms).includes(account.account_type!);
             const cfd_text_display = cfd_platforms[account.account_type as keyof typeof cfd_platforms]?.name;
-            const cfd_icon_display = `${
-                cfd_platforms[account.account_type as keyof typeof cfd_platforms]?.icon
-            }-${getCFDAccount({
-                market_type: account.market_type,
-                sub_account_type: account.sub_account_type,
-                platform: account.account_type,
-                is_eu: this.root_store.client.is_eu,
-            })}` as TPlatformIcon;
+
+            const cfd_icon_display = `${cfd_platforms[account.account_type as keyof typeof cfd_platforms]?.icon}${
+                ('-' &&
+                    getCFDAccount({
+                        market_type: account.market_type,
+                        sub_account_type: account.sub_account_type,
+                        platform: account.account_type,
+                        is_eu: this.root_store.client.is_eu,
+                    })) ||
+                ''
+            }`;
+
             const non_eu_accounts =
                 account.landing_company_short &&
                 account.landing_company_short !== 'svg' &&
@@ -442,7 +446,7 @@ export default class AccountTransferStore {
                     platform_icon:
                         account.account_type === CFD_PLATFORMS.MT5 && combined_cfd_mt5_account
                             ? combined_cfd_mt5_account.icon
-                            : cfd_icon_display,
+                            : (cfd_icon_display as TPlatformIcon),
                     status: account?.status,
                     market_type: getCFDAccount({
                         market_type: account.market_type,
@@ -657,7 +661,7 @@ export default class AccountTransferStore {
         this.setTransferLimit();
     };
 
-    setTransferPercentageSelectorResult(amount: string) {
+    setTransferPercentageSelectorResult(amount: string, exchanged_amount: number) {
         const { crypto_fiat_converter, general_store } = this.root_store.modules.cashier;
 
         const selected_from_currency = this.selected_from.currency;
@@ -669,7 +673,8 @@ export default class AccountTransferStore {
             crypto_fiat_converter.onChangeConverterFromAmount(
                 { target: { value: amount } },
                 selected_from_currency,
-                selected_to_currency
+                selected_to_currency,
+                exchanged_amount
             );
         } else {
             crypto_fiat_converter.resetConverter();
@@ -693,7 +698,7 @@ export default class AccountTransferStore {
             });
             if (!is_ok) {
                 setConverterFromError(message || '');
-            } else if (Number(this.selected_from.balance) < +converter_from_amount) {
+            } else if (Number(this.selected_from.balance) < Number(converter_from_amount)) {
                 setConverterFromError(localize('Insufficient funds'));
             } else {
                 setConverterFromError('');

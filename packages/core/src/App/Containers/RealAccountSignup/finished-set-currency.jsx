@@ -48,7 +48,6 @@ const SuccessMessage = ({ prev, current }) =>
 const FinishedSetCurrency = ({
     current,
     closeRealAccountSignup,
-    continueRoute,
     deposit_target,
     deposit_real_account_signup_target,
     history,
@@ -66,7 +65,6 @@ const FinishedSetCurrency = ({
 
     const closeModalThenOpenCashier = () => {
         closeRealAccountSignup();
-        continueRoute();
         history.push(deposit_target);
         if (deposit_target === routes.cashier_deposit) {
             setIsDeposit(true);

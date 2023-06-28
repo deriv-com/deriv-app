@@ -13,11 +13,13 @@ import AccountTransferForm from './account-transfer-form';
 import AccountTransferNoAccount from './account-transfer-no-account';
 import AccountTransferLocked from './account-transfer-locked';
 import { useCashierStore } from '../../stores/useCashierStores';
+import { useCashierLocked } from '@deriv/hooks';
 
 type TAccountTransferProps = {
-    onClickDeposit?: () => void;
-    onClickNotes?: () => void;
-    onClose: () => void;
+    onClickDeposit?: VoidFunction;
+    onClickNotes?: VoidFunction;
+    onClose: VoidFunction;
+    openAccountSwitcherModal?: VoidFunction;
     setSideNotes?: (notes: TSideNotesProps) => void;
 };
 
@@ -37,8 +39,8 @@ const AccountTransfer = observer(({ onClickDeposit, onClickNotes, onClose, setSi
         setAccountTransferAmount,
         setIsTransferConfirm,
     } = account_transfer;
-
-    const { is_cashier_locked, is_loading, setActiveTab } = general_store;
+    const { is_loading, setActiveTab } = general_store;
+    const is_cashier_locked = useCashierLocked();
 
     const { is_crypto_transactions_visible, onMount: recentTransactionOnMount } = transaction_history;
 

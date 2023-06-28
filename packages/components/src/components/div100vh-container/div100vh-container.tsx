@@ -17,8 +17,8 @@ import Div100vh from 'react-div-100vh';
 type TDiv100vhContainer = {
     id: string;
     height_offset: string;
-    is_bypassed: boolean;
-    is_disabled: boolean;
+    is_bypassed?: boolean;
+    is_disabled?: boolean;
     max_height_offset: string;
     className: string;
     max_autoheight_offset: string;

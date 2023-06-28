@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
 import TradingPlatformIcon from 'Assets/svgs/trading-platform';
-import { TAccountsList } from 'Types';
+import { TAccountsList } from '../../types';
 
 type TAccountPlatformIcon = {
     size: number;
@@ -30,6 +30,9 @@ const AccountPlatformIcon = ({
             icon={account.platform_icon || `IcCurrency-${account?.currency?.toLowerCase()}`}
             size={size}
             className={icon_class_name}
+            data_testid={`dt_account_platform_icon_${
+                account.platform_icon || `currency_${account?.currency?.toLowerCase()}`
+            }`}
         />
     );
 };

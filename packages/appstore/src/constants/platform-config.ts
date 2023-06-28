@@ -5,9 +5,9 @@ import { TAccountCategory, TRegionAvailability } from 'Types';
 
 export type AccountType = { text: 'Real' | 'Demo'; value: TAccountCategory };
 export type RegionAvailability = 'Non-EU' | 'EU' | 'All';
-export const account_types: AccountType[] = [
-    { text: 'Demo', value: 'demo' },
-    { text: 'Real', value: 'real' },
+export const getAccountTypes = (): AccountType[] => [
+    { text: localize('Demo'), value: 'demo' },
+    { text: localize('Real'), value: 'real' },
 ];
 export const region_availability: RegionAvailability[] = ['Non-EU', 'EU'];
 

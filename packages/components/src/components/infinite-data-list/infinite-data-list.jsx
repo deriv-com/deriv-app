@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import InfiniteLoader from '@enykeev/react-virtualized/dist/es/InfiniteLoader';
-import DataList from '../data-list/data-list.jsx';
+import { InfiniteLoader } from 'react-virtualized';
+import DataList from '../data-list/data-list';
 
 const InfiniteDataList = ({
     className,

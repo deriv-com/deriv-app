@@ -1,9 +1,8 @@
 import React from 'react';
 import { useStore, observer } from '@deriv/stores';
-import { useDepositLocked } from '@deriv/hooks';
+import { useCashierLocked, useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
 import EmptyState from 'Components/empty-state';
 import getMessage from './cashier-locked-provider';
-import { useCashierStore } from '../../stores/useCashierStores';
 
 const CashierLocked = observer(() => {
     const { client } = useStore();
@@ -15,8 +14,8 @@ const CashierLocked = observer(() => {
         loginid,
         is_identity_verification_needed,
     } = client;
-    const { general_store } = useCashierStore();
-    const { is_cashier_locked, is_system_maintenance } = general_store;
+    const is_cashier_locked = useCashierLocked();
+    const is_system_maintenance = useIsSystemMaintenance();
     const is_deposit_locked = useDepositLocked();
 
     const state = getMessage({

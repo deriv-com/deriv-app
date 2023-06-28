@@ -1,1 +1,1 @@
-export default from './account-limits.jsx';
+export default from './account-limits';

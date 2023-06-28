@@ -305,7 +305,7 @@ const ChartTrade = observer(props => {
         theme: is_dark_mode_on ? 'dark' : 'light',
     };
 
-    const { current_spot, current_spot_time } = accumulator_barriers_data || {};
+    const { current_spot, current_spot_time, previous_spot_time } = accumulator_barriers_data[symbol] || {};
 
     const bottomWidgets = React.useCallback(
         ({ digits, tick }) => (
@@ -396,6 +396,7 @@ const ChartTrade = observer(props => {
                     current_spot={current_spot}
                     current_spot_time={current_spot_time}
                     has_crossed_accu_barriers={has_crossed_accu_barriers}
+                    previous_spot_time={previous_spot_time}
                     symbol={symbol}
                 />
             )}

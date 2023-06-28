@@ -9,6 +9,7 @@ const AccumulatorsChartElements = ({
     current_spot,
     current_spot_time,
     has_crossed_accu_barriers,
+    previous_spot_time,
     symbol,
 }) => {
     const accumulators_positions = all_positions.filter(
@@ -20,7 +21,11 @@ const AccumulatorsChartElements = ({
         <React.Fragment>
             {!!accumulators_positions.length &&
                 accumulators_positions.map(({ contract_info }) => (
-                    <AccumulatorsProfitLossTooltip key={contract_info.contract_id} {...contract_info} />
+                    <AccumulatorsProfitLossTooltip
+                        {...contract_info}
+                        key={contract_info.contract_id}
+                        should_show_profit_text={!!previous_spot_time}
+                    />
                 ))}
             {has_crossed_accu_barriers && !!current_spot_time && (
                 <ChartMarker
@@ -41,6 +46,7 @@ AccumulatorsChartElements.propTypes = {
     current_spot: PropTypes.number,
     current_spot_time: PropTypes.number,
     has_crossed_accu_barriers: PropTypes.bool,
+    previous_spot_time: PropTypes.number,
     symbol: PropTypes.string,
 };
 

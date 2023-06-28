@@ -1,8 +1,8 @@
 .wallets-migration-failed {
-    padding: 2.4rem;
+    padding: 2.4rem !important;
 
     @include mobile {
-        padding: 1.6rem;
+        padding: 1.6rem !important;
     }
 
     &__title {

@@ -154,6 +154,8 @@ export default class ClientStore extends BaseStore {
     p2p_advertiser_info = {};
     prev_account_type = 'demo';
     external_url_params = {};
+    // TODO: delete when BE or mockServer start to work
+    wallet_migration_status = 'eligible';
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];
@@ -224,6 +226,8 @@ export default class ClientStore extends BaseStore {
             prev_real_account_loginid: observable,
             p2p_advertiser_info: observable,
             prev_account_type: observable,
+            // TODO: delete when BE or mockServer start to work
+            wallet_migration_status: observable,
             balance: computed,
             account_open_date: computed,
             is_reality_check_visible: computed,
@@ -406,6 +410,8 @@ export default class ClientStore extends BaseStore {
             setPrevRealAccountLoginid: action.bound,
             setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
+            // TODO: delete when BE or mockServer start to work
+            setWalletMigrationStatus: action.bound,
         });
 
         reaction(
@@ -2745,5 +2751,10 @@ export default class ClientStore extends BaseStore {
 
         return is_p2p_visible;
     }
+
+    // TODO: delete when BE or mockServer start to work
+    setWalletMigrationStatus = value => {
+        this.wallet_migration_status = value;
+    };
 }
 /* eslint-enable */

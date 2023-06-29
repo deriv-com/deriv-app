@@ -2,8 +2,9 @@ import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import TradeButton from 'Components/trade-button/trade-button';
 import React from 'react';
-import { observer } from 'mobx-react-lite';
+import { observer } from '@deriv/stores';
 import MultiActionButtonGroup from 'Components/multi-action-button-group';
+import { useWalletMigration } from '@deriv/hooks';
 
 export type Actions = {
     action_type: 'get' | 'none' | 'trade' | 'dxtrade' | 'multi-action'; // multi-action can be tranfer_trade or top_up_trade
@@ -28,6 +29,8 @@ const TradingAppCardActions = ({
     is_buttons_disabled,
     is_real,
 }: Actions) => {
+    const { status } = useWalletMigration();
+
     switch (action_type) {
         case 'get':
             return (
@@ -44,7 +47,7 @@ const TradingAppCardActions = ({
                 <MultiActionButtonGroup
                     link_to={link_to}
                     onAction={onAction}
-                    is_buttons_disabled={is_buttons_disabled}
+                    is_buttons_disabled={status === 'in_progress' ? true : is_buttons_disabled}
                     is_real={is_real}
                 />
             );

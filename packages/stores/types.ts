@@ -329,6 +329,8 @@ type TClientStore = {
     is_fully_authenticated: boolean;
     real_account_creation_unlock_date: number;
     setPrevAccountType: (account_type: string) => void;
+    wallet_migration_status: 'ineligible' | 'eligible' | 'in_progress' | 'done' | 'failed';
+    setWalletMigrationStatus: (value: TClientStore['wallet_migration_status']) => void;
 };
 
 type TCommonStoreError = {

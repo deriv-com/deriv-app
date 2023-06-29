@@ -3,6 +3,7 @@ import { TWalletsMigrationStatus } from 'Types';
 import WalletsBannerUpgrade from './wallets-banner-upgrade';
 import WalletsBannerUpgrading from './wallets-banner-upgrading';
 import WalletsBannerReady from './wallets-banner-ready';
+import { useStore } from '@deriv/stores';
 
 // just for testing purpose and will be deleted in the future
 type TBannerSwitcher = {
@@ -15,8 +16,14 @@ type TBannerSwitcher = {
 
 // just for testing
 const BannerSwitcher = ({ status, is_eu, onChangeStatus, onChangeEU, children }: TBannerSwitcher) => {
+    const {
+        client: { setWalletMigrationStatus },
+    } = useStore();
+
     const onStatusChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        onChangeStatus(event.target.value as TWalletsMigrationStatus);
+        const value = event.target.value as TWalletsMigrationStatus;
+        onChangeStatus(value);
+        setWalletMigrationStatus(value);
     };
 
     const onEUChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -31,7 +38,7 @@ const BannerSwitcher = ({ status, is_eu, onChangeStatus, onChangeEU, children }:
                     <option value='ineligible'>ineligible</option>
                     <option value='eligible'>eligible</option>
                     <option value='in_progress'>in_progress</option>
-                    <option value='migrated'>migrated</option>
+                    <option value='done'>migrated</option>
                     <option value='failed'>failed</option>
                 </select>
                 <select name='is_eu' onChange={onEUChangeHandler} value={is_eu ? 'EU' : 'Non-EU'}>
@@ -79,7 +86,7 @@ const WalletsBanner = () => {
                 </Wrapper>
             );
         // the wallets upgrading completed
-        case 'migrated':
+        case 'done':
             return (
                 <Wrapper>
                     <WalletsBannerReady is_eu={is_eu} />

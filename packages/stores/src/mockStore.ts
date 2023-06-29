@@ -287,6 +287,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTwoFAChangedStatus: jest.fn(),
             real_account_creation_unlock_date: 0,
             setPrevAccountType: jest.fn(),
+            wallet_migration_status: 'eligible',
+            setWalletMigrationStatus: jest.fn(),
         },
         common: {
             error: {

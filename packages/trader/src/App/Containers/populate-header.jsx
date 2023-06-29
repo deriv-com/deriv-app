@@ -3,6 +3,7 @@ import TogglePositionsMobile from 'App/Components/Elements/TogglePositions/toggl
 import { filterByContractType } from 'App/Components/Elements/PositionsDrawer/helpers';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
+import { TURBOS } from '@deriv/shared';
 
 const PopulateHeader = observer(() => {
     const { portfolio, ui, client } = useStore();
@@ -23,8 +24,8 @@ const PopulateHeader = observer(() => {
             p.contract_info &&
             symbol === p.contract_info.underlying &&
             (trade_contract_type.includes('turbos')
-                ? filterByContractType(p.contract_info, 'turbosshort') ||
-                  filterByContractType(p.contract_info, 'turboslong')
+                ? filterByContractType(p.contract_info, TURBOS.SHORT) ||
+                  filterByContractType(p.contract_info, TURBOS.LONG)
                 : filterByContractType(p.contract_info, trade_contract_type))
     );
 

@@ -27,6 +27,8 @@ import {
     formatMoney,
     getCurrencyDisplayCode,
     unsupported_contract_types_list,
+    BARRIER_COLORS,
+    BARRIER_LINE_STYLES,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getValidationRules, getMultiplierValidationRules } from 'Stores/Modules/Trading/Constants/validation-rules';
@@ -40,7 +42,6 @@ import { processTradeParams } from './Helpers/process';
 import { action, computed, makeObservable, observable, override, reaction, runInAction, toJS, when } from 'mobx';
 import { createProposalRequests, getProposalErrorField, getProposalInfo } from './Helpers/proposal';
 import { getHoveredColor } from './Helpers/barrier-utils';
-import { BARRIER_COLORS, BARRIER_LINE_STYLES } from '../SmartChart/Constants/barriers';
 import BaseStore from '../../base-store';
 import { ChartBarrierStore } from '../SmartChart/chart-barrier-store';
 import debounce from 'lodash.debounce';

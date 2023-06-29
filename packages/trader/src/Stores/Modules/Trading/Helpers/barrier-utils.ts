@@ -1,4 +1,4 @@
-import { BARRIER_COLORS } from '../../SmartChart/Constants/barriers';
+import { BARRIER_COLORS } from '@deriv/shared';
 
 export const getHoveredColor = (type: string): string => {
     switch (type) {

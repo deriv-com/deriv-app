@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { ButtonToggle } from '@deriv/components';
-import { isTurbosContract, isVanillaContract } from '@deriv/shared';
+import { isTurbosContract, isVanillaContract, TURBOS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 
@@ -17,8 +17,8 @@ const TradeTypeTabs = observer(({ className }: TTradeTypeTabs) => {
     const is_turbos = isTurbosContract(contract_type);
     const is_vanilla = isVanillaContract(contract_type);
     const tab_list = [
-        { text: localize('Long'), value: 'turboslong', is_displayed: is_turbos },
-        { text: localize('Short'), value: 'turbosshort', is_displayed: is_turbos },
+        { text: localize('Long'), value: TURBOS.LONG, is_displayed: is_turbos },
+        { text: localize('Short'), value: TURBOS.SHORT, is_displayed: is_turbos },
         { text: localize('Call'), value: 'VANILLALONGCALL', is_displayed: is_vanilla },
         { text: localize('Put'), value: 'VANILLALONGPUT', is_displayed: is_vanilla },
     ];

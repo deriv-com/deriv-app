@@ -1,6 +1,6 @@
 import React from 'react';
 import { localize, Localize } from '@deriv/translations';
-import { shouldShowCancellation, shouldShowExpiration } from '../contract';
+import { shouldShowCancellation, shouldShowExpiration, TURBOS } from '../contract';
 
 export const getLocalizedBasis = () => ({
     accumulator: localize('Accumulator'),
@@ -166,7 +166,7 @@ export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
 
 // Config for rendering trade options
 export const getContractCategoriesConfig = () => ({
-    Turbos: { name: localize('Turbos'), categories: ['turboslong', 'turbosshort'] },
+    Turbos: { name: localize('Turbos'), categories: [TURBOS.LONG, TURBOS.SHORT] },
     Multipliers: { name: localize('Multipliers'), categories: ['multiplier'] },
     'Ups & Downs': {
         name: localize('Ups & Downs'),

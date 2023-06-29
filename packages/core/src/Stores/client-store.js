@@ -155,7 +155,7 @@ export default class ClientStore extends BaseStore {
     prev_account_type = 'demo';
     external_url_params = {};
     // TODO: delete when BE or mockServer start to work
-    wallet_migration_status = 'eligible';
+    wallet_migration_status = 'in_progress';
 
     constructor(root_store) {
         const local_storage_properties = ['device_data'];

@@ -3,7 +3,7 @@ import { TWalletsMigrationStatus } from 'Types';
 import WalletsBannerUpgrade from './wallets-banner-upgrade';
 import WalletsBannerUpgrading from './wallets-banner-upgrading';
 import WalletsBannerReady from './wallets-banner-ready';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 
 // just for testing purpose and will be deleted in the future
 type TBannerSwitcher = {
@@ -16,14 +16,9 @@ type TBannerSwitcher = {
 
 // just for testing
 const BannerSwitcher = ({ status, is_eu, onChangeStatus, onChangeEU, children }: TBannerSwitcher) => {
-    const {
-        client: { setWalletMigrationStatus },
-    } = useStore();
-
     const onStatusChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const value = event.target.value as TWalletsMigrationStatus;
         onChangeStatus(value);
-        setWalletMigrationStatus(value);
     };
 
     const onEUChangeHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -51,17 +46,20 @@ const BannerSwitcher = ({ status, is_eu, onChangeStatus, onChangeEU, children }:
     );
 };
 
-const WalletsBanner = () => {
+const WalletsBanner = observer(() => {
     // just for testing purpose
-    const [migration_status, setMigrationStatus] = React.useState<TWalletsMigrationStatus>('eligible');
+    const {
+        client: { wallet_migration_status, setWalletMigrationStatus },
+    } = useStore();
+
     const [is_eu, setIsEu] = React.useState(false);
 
     // just for testing purpose too
     const Wrapper = ({ children }: { children?: React.ReactNode }) => (
         <React.Fragment>
             <BannerSwitcher
-                status={migration_status}
-                onChangeStatus={setMigrationStatus}
+                status={wallet_migration_status}
+                onChangeStatus={setWalletMigrationStatus}
                 is_eu={is_eu}
                 onChangeEU={setIsEu}
             />
@@ -69,7 +67,7 @@ const WalletsBanner = () => {
         </React.Fragment>
     );
 
-    switch (migration_status) {
+    switch (wallet_migration_status) {
         // the user can upgrade to the wallets
         case 'eligible':
         case 'failed':
@@ -96,6 +94,6 @@ const WalletsBanner = () => {
         default:
             return <Wrapper />;
     }
-};
+});
 
 export default WalletsBanner;

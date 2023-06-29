@@ -158,13 +158,13 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                                     <React.Fragment>
                                         <ContractAuditItem
                                             id='dt_bt_label'
-                                            icon={<Icon icon='IcReset' size={24} />}
+                                            icon={<Icon icon='IcContractResetBarrier' size={24} />}
                                             label={localize('Reset barrier')}
                                             value={getBarrierValue(contract_info) || ' - '}
                                         />
                                         <ContractAuditItem
                                             id='dt_start_time_label'
-                                            icon={<Icon icon='IcReset' size={24} />}
+                                            icon={<Icon icon='IcContractResetTime' size={24} />}
                                             label={localize('Reset time')}
                                             value={toGMTFormat(epochToMoment(reset_time))}
                                         />

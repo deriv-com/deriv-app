@@ -623,6 +623,8 @@ export const icons =
         'IcContractFlag',
         'IcContractId',
         'IcContractPayout',
+        'IcContractResetBarrier',
+        'IcContractResetTime',
         'IcContractSafeguard',
         'IcContractStartTimeCircle',
         'IcContractStartTime',

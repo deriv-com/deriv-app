@@ -17,6 +17,8 @@ export const CONTRACT_SHADES = {
     MULTDOWN: 'BELOW',
     VANILLALONGCALL: 'NONE_SINGLE',
     VANILLALONGPUT: 'NONE_SINGLE',
+    RESETCALL: 'ABOVE',
+    RESETPUT: 'BELOW',
 };
 
 // Default non-shade according to number of barriers

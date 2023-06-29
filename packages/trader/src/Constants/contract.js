@@ -137,14 +137,6 @@ export const getMarketNamesMap = () => ({
 });
 
 export const getUnsupportedContracts = () => ({
-    RESETCALL: {
-        name: <Localize i18n_default_text='Reset Call' />,
-        position: 'top',
-    },
-    RESETPUT: {
-        name: <Localize i18n_default_text='Reset Put' />,
-        position: 'bottom',
-    },
     TICKHIGH: {
         name: <Localize i18n_default_text='High Tick' />,
         position: 'top',
@@ -276,6 +268,14 @@ export const getSupportedContracts = is_high_low => ({
     },
     ASIAND: {
         name: <Localize i18n_default_text='Asian Down' />,
+        position: 'bottom',
+    },
+    RESETCALL: {
+        name: <Localize i18n_default_text='Reset Call' />,
+        position: 'top',
+    },
+    RESETPUT: {
+        name: <Localize i18n_default_text='Reset Put' />,
         position: 'bottom',
     },
 });

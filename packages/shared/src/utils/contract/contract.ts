@@ -40,9 +40,12 @@ export const isMultiplierContract = (contract_type = '') => /MULT/i.test(contrac
 
 export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contract_type);
 
-export const isSmartTraderContract = (contract_type = '') => /RUN|EXPIRY|RANGE|UPORDOWN|ASIAN/i.test(contract_type);
+export const isSmartTraderContract = (contract_type = '') =>
+    /RUN|EXPIRY|RANGE|UPORDOWN|ASIAN|RESET/i.test(contract_type);
 
 export const isAsiansContract = (contract_type = '') => /ASIAN/i.test(contract_type);
+
+export const isResetContract = (contract_type = '') => /RESET/i.test(contract_type);
 
 export const isCryptoContract = (underlying = '') => underlying.startsWith('cry');
 

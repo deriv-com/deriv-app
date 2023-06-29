@@ -12,6 +12,7 @@ import {
     isMultiplierContract,
     isSmartTraderContract,
     isAsiansContract,
+    isResetContract,
     isUserSold,
     isEndedBeforeCancellationExpired,
     isUserCancelled,
@@ -42,6 +43,8 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
         transaction_ids: { buy, sell } = {},
         low_barrier,
         number_of_contracts,
+        longcode,
+        reset_time,
     } = contract_info;
 
     const is_profit = profit >= 0;
@@ -97,6 +100,11 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                                 icon={<Icon icon='IcContractDuration' size={24} />}
                                 label={localize('Duration')}
                                 value={tick_count > 0 ? ticks_duration_text : `${duration} ${duration_unit}`}
+                                additional_info={
+                                    isResetContract(contract_type)
+                                        ? localize(`The reset time is ${longcode.split(/or\s+([^\n.]+)/i)[1]}`)
+                                        : ''
+                                }
                             />
                         )}
                         {show_strike_barrier && (
@@ -138,6 +146,32 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                                 ))}
                             </React.Fragment>
                         )}
+                        {isResetContract(contract_type) && (
+                            <React.Fragment>
+                                <ContractAuditItem
+                                    id='dt_bt_label'
+                                    icon={<Icon icon='IcContractStrike' size={24} />}
+                                    label={getBarrierLabel(contract_info)}
+                                    value={addCommaToNumber(entry_spot_display_value) || ' - '}
+                                />
+                                {reset_time && (
+                                    <React.Fragment>
+                                        <ContractAuditItem
+                                            id='dt_bt_label'
+                                            icon={<Icon icon='IcReset' size={24} />}
+                                            label={localize('Reset barrier')}
+                                            value={getBarrierValue(contract_info) || ' - '}
+                                        />
+                                        <ContractAuditItem
+                                            id='dt_start_time_label'
+                                            icon={<Icon icon='IcReset' size={24} />}
+                                            label={localize('Reset time')}
+                                            value={toGMTFormat(epochToMoment(reset_time))}
+                                        />
+                                    </React.Fragment>
+                                )}
+                            </React.Fragment>
+                        )}
                         {show_payout_per_point && (
                             <ContractAuditItem
                                 id='dt_bt_label'
@@ -149,7 +183,6 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
                         )}
                     </React.Fragment>
                 )}
-
                 <ContractAuditItem
                     id='dt_start_time_label'
                     icon={<Icon icon='IcContractStartTime' size={24} />}

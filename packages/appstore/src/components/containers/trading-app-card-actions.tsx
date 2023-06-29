@@ -2,7 +2,7 @@ import { Button } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import TradeButton from 'Components/trade-button/trade-button';
 import React from 'react';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import MultiActionButtonGroup from 'Components/multi-action-button-group';
 import { useWalletMigration } from '@deriv/hooks';
 
@@ -29,12 +29,26 @@ const TradingAppCardActions = ({
     is_buttons_disabled,
     is_real,
 }: Actions) => {
+    const {
+        traders_hub: { setWalletsMigrationInProgressPopup },
+    } = useStore();
     const { status } = useWalletMigration();
+    const is_wallet_migration_in_progress = status === 'in_progress';
+
+    const disabledButtonAction = () => {
+        if (is_wallet_migration_in_progress) setWalletsMigrationInProgressPopup(true);
+        else onAction?.();
+    };
 
     switch (action_type) {
         case 'get':
             return (
-                <Button disabled={is_account_being_created} primary_light onClick={() => onAction?.()}>
+                <Button
+                    disabled={is_account_being_created}
+                    primary_light
+                    onClick={disabledButtonAction}
+                    as_disabled={is_wallet_migration_in_progress}
+                >
                     {localize('Get')}
                 </Button>
             );
@@ -46,9 +60,10 @@ const TradingAppCardActions = ({
             return (
                 <MultiActionButtonGroup
                     link_to={link_to}
-                    onAction={onAction}
-                    is_buttons_disabled={status === 'in_progress' ? true : is_buttons_disabled}
+                    onAction={disabledButtonAction}
+                    is_buttons_disabled={is_buttons_disabled}
                     is_real={is_real}
+                    is_wallet_migration_in_progress={is_wallet_migration_in_progress}
                 />
             );
         case 'none':

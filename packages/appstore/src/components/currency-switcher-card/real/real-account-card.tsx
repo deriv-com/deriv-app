@@ -7,18 +7,21 @@ import BalanceText from 'Components/elements/text/balance-text';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import { useStore, observer } from '@deriv/stores';
 import { IsIconCurrency } from 'Assets/svgs/currency';
+import { useWalletMigration } from '@deriv/hooks';
 
 const default_balance = { balance: 0, currency: 'USD' };
 
 const RealAccountCard = observer(() => {
     const history = useHistory();
+    const { status } = useWalletMigration();
+    const is_wallet_migration_in_progress = status === 'in_progress';
 
     const { client, common, modules, traders_hub } = useStore();
 
     const { accounts, loginid } = client;
     const { current_language } = common;
     const { current_list } = modules.cfd;
-    const { openModal, is_eu_user } = traders_hub;
+    const { openModal, is_eu_user, setWalletsMigrationInProgressPopup } = traders_hub;
 
     const { balance, currency } = loginid ? accounts[loginid] : default_balance;
 
@@ -27,6 +30,14 @@ const RealAccountCard = observer(() => {
         .some(account => account.landing_company_short === 'maltainvest');
 
     const get_currency = (IsIconCurrency(currency?.toUpperCase()) && currency) || 'USD';
+
+    const disabledButtonAction = (e: React.MouseEvent) => {
+        if (is_wallet_migration_in_progress) setWalletsMigrationInProgressPopup(true);
+        else {
+            e.stopPropagation();
+            history.push(`${routes.cashier_deposit}#deposit`);
+        }
+    };
 
     return (
         <CurrencySwitcherContainer
@@ -45,12 +56,10 @@ const RealAccountCard = observer(() => {
             }}
             actions={
                 <Button
-                    onClick={(e: MouseEvent) => {
-                        e.stopPropagation();
-                        history.push(`${routes.cashier_deposit}#deposit`);
-                    }}
+                    onClick={disabledButtonAction}
                     secondary
                     className='currency-switcher__button'
+                    as_disabled={status === 'in_progress'}
                 >
                     <Localize key={`currency-switcher__button-text-${current_language}`} i18n_default_text='Deposit' />
                 </Button>

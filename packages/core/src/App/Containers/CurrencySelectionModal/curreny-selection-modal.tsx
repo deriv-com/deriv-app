@@ -8,7 +8,7 @@ import RootStore from 'Stores/index';
 import CurrencyIcon from './currency';
 import { AccountListDetail } from './types';
 import classNames from 'classnames';
-import { useHasSetCurrency } from '@deriv/hooks';
+import { useHasSetCurrency, useWalletMigration } from '@deriv/hooks';
 
 type CurrencySelectionModalProps = {
     //TODO: Replace the type with a proper one when ts migration cards merged
@@ -26,6 +26,7 @@ type CurrencySelectionModalProps = {
     multipliers_account_status: string | null;
     toggleSetCurrencyModal: () => void;
     has_any_real_account: boolean;
+    setWalletsMigrationInProgressPopup: (value: boolean) => void;
 };
 
 const CurrencySelectionModal = ({
@@ -41,7 +42,11 @@ const CurrencySelectionModal = ({
     multipliers_account_status,
     toggleSetCurrencyModal,
     has_any_real_account,
+    setWalletsMigrationInProgressPopup,
 }: CurrencySelectionModalProps) => {
+    const { status } = useWalletMigration();
+    const is_wallet_migration_in_progress = status === 'in_progress';
+
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         multipliers_account_status,
         openFailedVerificationModal,
@@ -50,6 +55,24 @@ const CurrencySelectionModal = ({
 
     const hasSetCurrency = useHasSetCurrency();
     let timeout: ReturnType<typeof setTimeout>;
+
+    const disabledButtonAction = () => {
+        if (is_wallet_migration_in_progress) {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                setWalletsMigrationInProgressPopup(true);
+            }, 500);
+            closeModal();
+        } else {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                if (has_any_real_account && !hasSetCurrency) {
+                    toggleSetCurrencyModal();
+                } else openRealAccountSignup('manage');
+            }, 500);
+            closeModal();
+        }
+    };
 
     return (
         <Modal is_open={is_visible} toggleModal={closeModal} width='422px' height='422px'>
@@ -110,17 +133,10 @@ const CurrencySelectionModal = ({
             <div className='currency-selection-modal__bottom-controls'>
                 <Button
                     className='block-button'
-                    onClick={() => {
-                        clearTimeout(timeout);
-                        timeout = setTimeout(() => {
-                            if (has_any_real_account && !hasSetCurrency) {
-                                toggleSetCurrencyModal();
-                            } else openRealAccountSignup('manage');
-                        }, 500);
-                        closeModal();
-                    }}
+                    onClick={disabledButtonAction}
                     secondary
                     large
+                    as_disabled={is_wallet_migration_in_progress}
                 >
                     {localize('Add or manage account')}
                 </Button>
@@ -141,4 +157,5 @@ export default connect(({ client, traders_hub, ui }: RootStore) => ({
     multipliers_account_status: traders_hub.multipliers_account_status,
     toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
     has_any_real_account: client.has_any_real_account,
+    setWalletsMigrationInProgressPopup: traders_hub.setWalletsMigrationInProgressPopup,
 }))(CurrencySelectionModal);

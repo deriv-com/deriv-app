@@ -1,10 +1,7 @@
 import BaseStore from './BaseStore';
 
 const FLAGS = {
-    foo: false,
-    bar: false,
-    baz: false,
-    // Add your flag here 🚀
+    wallet: false,
 } satisfies Record<string, boolean>;
 
 export default class FeatureFlagsStore extends BaseStore<{ [k in keyof typeof FLAGS]: boolean }> {

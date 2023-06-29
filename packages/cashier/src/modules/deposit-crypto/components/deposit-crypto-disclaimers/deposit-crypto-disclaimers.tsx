@@ -6,6 +6,7 @@ import { observer, useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import './deposit-crypto-disclaimers.scss';
 
+// Check with BE to see if we can get the network name from the API.
 const crypto_currency_to_network_mapper: Record<string, string> = {
     BTC: 'Bitcoin (BTC)',
     ETH: 'Ethereum (ETH)',

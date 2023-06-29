@@ -6,14 +6,12 @@ import { useCashierStore } from '../../../../stores/useCashierStores';
 import { CashierOnboardingCard } from '../cashier-onboarding-card';
 import { CashierOnboardingIconMarquee } from '../cashier-onboarding-icon-marquee';
 
-const icons: React.ComponentProps<typeof CashierOnboardingIconMarquee>['icons'] = [
-    { light: 'IcCashierBanxaLight', dark: 'IcCashierBanxaDark' },
-];
+const icons: React.ComponentProps<typeof CashierOnboardingIconMarquee>['icons'] = ['IcCashierBanxa'];
 
 const CashierOnboardingOnrampCard: React.FC = observer(() => {
     const { ui } = useStore();
     const { general_store } = useCashierStore();
-    const { openRealAccountSignup, shouldNavigateAfterChooseCrypto } = ui;
+    const { openRealAccountSignup, shouldNavigateAfterChooseCrypto, is_dark_mode_on } = ui;
     const { setDepositTarget } = general_store;
     const has_crypto_account = useHasCryptoCurrency();
     const currency_config = useCurrentCurrencyConfig();
@@ -38,7 +36,7 @@ const CashierOnboardingOnrampCard: React.FC = observer(() => {
             description={localize('Choose any of these exchanges to buy cryptocurrencies:')}
             onClick={onClick}
         >
-            <CashierOnboardingIconMarquee icons={icons} />
+            <CashierOnboardingIconMarquee icons={icons.map(icon => `${icon}${is_dark_mode_on ? 'Dark' : 'Light'}`)} />
         </CashierOnboardingCard>
     );
 });

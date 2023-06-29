@@ -1,9 +1,9 @@
 import React from 'react';
-import { useStore } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { PageContainer } from '../../components/page-container';
 import { DepositFiatIframe } from './components';
 
-const DepositFiat: React.FC = () => {
+const DepositFiat: React.FC = observer(() => {
     const { traders_hub, ui } = useStore();
     const { is_low_risk_cr_eu_real } = traders_hub;
     const { is_mobile } = ui;
@@ -18,6 +18,6 @@ const DepositFiat: React.FC = () => {
             <DepositFiatIframe />
         </PageContainer>
     );
-};
+});
 
 export default DepositFiat;

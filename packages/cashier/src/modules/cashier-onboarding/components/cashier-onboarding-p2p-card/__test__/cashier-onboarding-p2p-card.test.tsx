@@ -9,12 +9,6 @@ jest.mock('react-router', () => ({
     useHistory: () => ({ push: jest.fn() }),
 }));
 
-jest.mock('@deriv/hooks', () => ({
-    ...jest.requireActual('@deriv/hooks'),
-    useHasUSDCurrency: () => true,
-    useIsP2PEnabled: () => ({ data: true }),
-}));
-
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useFetch: jest.fn(() => ({
@@ -24,6 +18,7 @@ jest.mock('@deriv/api', () => ({
                     USD: { type: 'fiat', name: 'US Dollar' },
                     BTC: { type: 'crypto', name: 'Bitcoin' },
                 },
+                p2p_config: { supported_currencies: ['usd'] },
             },
         },
     })),

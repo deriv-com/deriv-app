@@ -33,7 +33,7 @@ const DepositCrypto: React.FC = observer(() => {
             {is_mobile && <DepositCryptoSideNotes />}
             {is_mobile && <Divider />}
             {/* This should be in the side notes, Need to talk to the design team to change it */}
-            <div style={is_mobile ? {} : { alignSelf: 'center' }}>
+            <div style={{ alignSelf: is_mobile ? 'unset' : 'center' }}>
                 <DepositCryptoSideNoteTryFiatOnRamp />
             </div>
         </PageContainer>

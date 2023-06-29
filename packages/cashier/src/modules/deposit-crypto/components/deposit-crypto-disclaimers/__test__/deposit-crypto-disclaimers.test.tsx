@@ -3,6 +3,24 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import DepositCryptoDisclaimers from '../deposit-crypto-disclaimers';
 
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useFetch: jest.fn(() => ({
+        data: {
+            website_status: {
+                currencies_config: {
+                    BTC: { type: 'crypto', name: 'Bitcoin' },
+                    ETH: { type: 'crypto', name: 'Ethereum' },
+                    LTC: { type: 'crypto', name: 'Litecoin' },
+                    USDC: { type: 'crypto', name: 'USDC' },
+                    UST: { type: 'crypto', name: 'UST' },
+                    eUSDT: { type: 'crypto', name: 'eUSDT' },
+                },
+            },
+        },
+    })),
+}));
+
 describe('DepositCryptoDisclaimers', () => {
     test('should show correct message for BTC', () => {
         const mock = mockStore({ client: { currency: 'BTC' } });

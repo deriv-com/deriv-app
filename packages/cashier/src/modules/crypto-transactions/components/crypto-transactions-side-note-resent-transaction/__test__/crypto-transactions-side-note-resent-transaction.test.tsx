@@ -1,16 +1,16 @@
 import React from 'react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
-import SideNoteCryptoRecentTransaction from '../side-note-crypto-resent-transaction';
+import CryptoTransactionsSideNoteResentTransaction from '../crypto-transactions-side-note-resent-transaction';
 
-describe('SideNoteCryptoRecentTransaction', () => {
+describe('CryptoTransactionsSideNoteResentTransaction', () => {
     test('should show correct message for BTC', () => {
         const mock = mockStore({ client: { currency: 'BTC' } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        render(<SideNoteCryptoRecentTransaction />, { wrapper });
+        render(<CryptoTransactionsSideNoteResentTransaction />, { wrapper });
 
         expect(screen.getByText(/Bitcoin \(BTC\)/)).toBeInTheDocument();
     });
@@ -21,7 +21,7 @@ describe('SideNoteCryptoRecentTransaction', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        render(<SideNoteCryptoRecentTransaction />, { wrapper });
+        render(<CryptoTransactionsSideNoteResentTransaction />, { wrapper });
 
         expect(screen.getByText(/Ethereum \(ETH\)/)).toBeInTheDocument();
     });
@@ -32,7 +32,7 @@ describe('SideNoteCryptoRecentTransaction', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        render(<SideNoteCryptoRecentTransaction />, { wrapper });
+        render(<CryptoTransactionsSideNoteResentTransaction />, { wrapper });
 
         expect(screen.getByText(/Litecoin \(LTC\)/)).toBeInTheDocument();
     });
@@ -43,7 +43,7 @@ describe('SideNoteCryptoRecentTransaction', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        render(<SideNoteCryptoRecentTransaction />, { wrapper });
+        render(<CryptoTransactionsSideNoteResentTransaction />, { wrapper });
 
         expect(screen.getByText(/Ethereum \(ERC20\)/)).toBeInTheDocument();
     });
@@ -54,7 +54,7 @@ describe('SideNoteCryptoRecentTransaction', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        render(<SideNoteCryptoRecentTransaction />, { wrapper });
+        render(<CryptoTransactionsSideNoteResentTransaction />, { wrapper });
 
         expect(screen.getByText(/Omnicore/)).toBeInTheDocument();
     });
@@ -65,7 +65,7 @@ describe('SideNoteCryptoRecentTransaction', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
-        render(<SideNoteCryptoRecentTransaction />, { wrapper });
+        render(<CryptoTransactionsSideNoteResentTransaction />, { wrapper });
 
         expect(screen.getByText(/Ethereum \(ERC20\)/)).toBeInTheDocument();
     });

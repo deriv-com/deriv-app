@@ -11,6 +11,7 @@ import {
     isCallPut,
     getContractTypesConfig,
     isMobile,
+    symbols_2s,
 } from '@deriv/shared';
 import ContractStore from './contract-store';
 import BaseStore from './base-store';
@@ -30,6 +31,8 @@ export default class ContractTradeStore extends BaseStore {
 
     // Accumulator barriers data:
     accu_barriers_timeout_id = null;
+    accu_current_spot = null;
+    accu_current_spot_time = null;
     accumulator_barriers_data = {};
     accumulator_contract_barriers_data = {};
 
@@ -38,6 +41,8 @@ export default class ContractTradeStore extends BaseStore {
 
         makeObservable(this, {
             accu_barriers_timeout_id: observable,
+            accu_current_spot: observable,
+            accu_current_spot_time: observable,
             accumulator_barriers_data: observable.struct,
             accumulator_contract_barriers_data: observable.struct,
             clearAccumulatorBarriersData: action.bound,
@@ -62,6 +67,7 @@ export default class ContractTradeStore extends BaseStore {
             clearError: action.bound,
             getContractById: action.bound,
             savePreviousChartMode: action.bound,
+            setAccumulatorCurrentSpot: action.bound,
             setNewAccumulatorBarriersData: action.bound,
         });
 
@@ -84,7 +90,6 @@ export default class ContractTradeStore extends BaseStore {
                 if (current_spot && current_spot_high_barrier && !is_sold) {
                     this.updateAccumulatorBarriersData({
                         barrier_spot_distance,
-                        current_spot,
                         current_spot_time,
                         accumulators_high_barrier: current_spot_high_barrier,
                         accumulators_low_barrier: current_spot_low_barrier,
@@ -110,6 +115,11 @@ export default class ContractTradeStore extends BaseStore {
         }
     }
 
+    setAccumulatorCurrentSpot({ current_spot, current_spot_time }) {
+        this.accu_current_spot = current_spot;
+        this.accu_current_spot_time = current_spot_time;
+    }
+
     setNewAccumulatorBarriersData(new_barriers_data, should_update_contract_barriers) {
         if (should_update_contract_barriers) {
             this.accumulator_contract_barriers_data = {
@@ -128,19 +138,16 @@ export default class ContractTradeStore extends BaseStore {
         accumulators_high_barrier,
         accumulators_low_barrier,
         barrier_spot_distance,
-        current_spot,
         current_spot_time,
         should_update_contract_barriers,
         underlying,
     }) {
-        const barriers_data = {
-            current_spot,
-            current_spot_time,
-        };
+        const current_update_timestamp = Date.now();
         const delayed_barriers_data = {
             accumulators_high_barrier,
             accumulators_low_barrier,
             barrier_spot_distance,
+            update_timestamp: current_update_timestamp,
             should_update_contract_barriers,
             previous_spot_time: current_spot_time,
         };
@@ -154,13 +161,24 @@ export default class ContractTradeStore extends BaseStore {
             // skip update for duplicate data
             return;
         }
+        const symbol_speed = symbols_2s.includes(underlying) ? 2000 : 1000;
+        const last_update_timestamp = should_update_contract_barriers
+            ? this.accumulator_contract_barriers_data.update_timestamp
+            : this.accumulator_barriers_data.update_timestamp;
+        const time_diff_between_responses =
+            current_update_timestamp - (last_update_timestamp ?? current_update_timestamp);
+        const timeout = Math.max(
+            symbol_speed + getAccuBarriersDelayTimeMs(underlying) - (time_diff_between_responses || symbol_speed),
+            0
+        );
+        const time =
+            timeout > getAccuBarriersDelayTimeMs(underlying) ? getAccuBarriersDelayTimeMs(underlying) : timeout;
         // update barriers in DTrader page with delay
-        this.setNewAccumulatorBarriersData(barriers_data, should_update_contract_barriers);
         this.accu_barriers_timeout_id = setTimeout(() => {
             runInAction(() => {
                 this.setNewAccumulatorBarriersData(delayed_barriers_data, should_update_contract_barriers);
             });
-        }, getAccuBarriersDelayTimeMs(underlying));
+        }, time);
     }
 
     updateChartType(type) {
@@ -224,15 +242,16 @@ export default class ContractTradeStore extends BaseStore {
 
     get has_crossed_accu_barriers() {
         const { current_spot: contract_current_spot, entry_spot } = this.last_contract?.contract_info || {};
-        const { accumulators_high_barrier, accumulators_low_barrier, current_spot } =
+        const { accumulators_high_barrier, accumulators_low_barrier } =
             (isAccumulatorContractOpen(this.last_contract.contract_info)
                 ? this.accumulator_contract_barriers_data
                 : this.accumulator_barriers_data) || {};
         return !!(
-            current_spot &&
+            this.accu_current_spot &&
             accumulators_high_barrier &&
             accumulators_low_barrier &&
-            (current_spot >= accumulators_high_barrier || current_spot <= accumulators_low_barrier) &&
+            (this.accu_current_spot >= accumulators_high_barrier ||
+                this.accu_current_spot <= accumulators_low_barrier) &&
             (!isAccumulatorContractOpen(this.last_contract.contract_info) ||
                 (entry_spot && entry_spot !== contract_current_spot))
         );

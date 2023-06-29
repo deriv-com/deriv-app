@@ -1143,7 +1143,6 @@ export default class TradeStore extends BaseStore {
                 maximum_payout,
                 high_barrier,
                 low_barrier,
-                spot,
                 spot_time,
             } = this.proposal_info.ACCU;
             this.ticks_history_stats = getUpdatedTicksHistoryStats({
@@ -1160,7 +1159,6 @@ export default class TradeStore extends BaseStore {
                     accumulators_high_barrier: high_barrier,
                     accumulators_low_barrier: low_barrier,
                     barrier_spot_distance,
-                    current_spot: spot,
                     current_spot_time: spot_time,
                     underlying: this.symbol,
                 });
@@ -1460,9 +1458,34 @@ export default class TradeStore extends BaseStore {
 
     // ---------- WS ----------
     wsSubscribe = (req, callback) => {
+        const passthrough_callback = (...args) => {
+            callback(...args);
+            if (this.is_accumulator) {
+                let current_spot_data = {};
+                if ('tick' in args[0]) {
+                    const { epoch, quote, symbol } = args[0].tick;
+                    if (this.symbol !== symbol) return;
+                    current_spot_data = {
+                        current_spot: quote,
+                        current_spot_time: epoch,
+                    };
+                } else if ('history' in args[0]) {
+                    const { prices, times } = args[0].history;
+                    const symbol = args[0].echo_req.ticks_history;
+                    if (this.symbol !== symbol) return;
+                    current_spot_data = {
+                        current_spot: prices[prices.length - 1],
+                        current_spot_time: times[times.length - 1],
+                    };
+                } else {
+                    return;
+                }
+                this.root_store.contract_trade.setAccumulatorCurrentSpot(current_spot_data);
+            }
+        };
         if (req.subscribe === 1) {
             const key = JSON.stringify(req);
-            const subscriber = WS.subscribeTicksHistory(req, callback);
+            const subscriber = WS.subscribeTicksHistory(req, passthrough_callback);
             g_subscribers_map[key] = subscriber;
         }
     };

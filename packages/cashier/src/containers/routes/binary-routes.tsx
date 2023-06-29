@@ -8,7 +8,7 @@ type TBinaryRoutesProps = {
     is_logged_in: boolean;
     is_logging_in: boolean;
     is_wallet_migration: boolean;
-    setWalletsMigrationInProgressPopup: (value: boolean) => void;
+    showPopup: (value: boolean) => void;
 };
 
 const Loading = () => {

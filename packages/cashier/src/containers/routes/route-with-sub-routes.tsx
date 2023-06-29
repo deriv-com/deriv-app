@@ -16,7 +16,7 @@ type TRouteWithSubRoutesProps = TRouteConfig & {
     is_logged_in: TRootStore['client']['is_logged_in'];
     is_logging_in: TRootStore['client']['is_logging_in'];
     is_wallet_migration: boolean;
-    setWalletsMigrationInProgressPopup: (value: boolean) => void;
+    showPopup: (value: boolean) => void;
 };
 
 type TDefaultSubroute = TRoute | undefined;
@@ -37,7 +37,7 @@ const RouteWithSubRoutes = (route: TRouteWithSubRoutesProps) => {
             redirectToLogin(route.is_logged_in, getLanguage());
             // Check wallet migration status
         } else if (route.is_wallet_migration) {
-            route.setWalletsMigrationInProgressPopup(true);
+            route.showPopup(true);
             result = <Redirect to={routes.traders_hub} />;
         } else {
             const default_subroute: TDefaultSubroute = route.routes?.find(r => r.default);

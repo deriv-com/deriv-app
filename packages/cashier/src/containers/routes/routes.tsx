@@ -17,7 +17,7 @@ const Routes = observer(() => {
             is_logged_in={is_logged_in}
             is_logging_in={is_logging_in}
             is_wallet_migration={wallet_migration_status === 'in_progress'}
-            setWalletsMigrationInProgressPopup={setWalletsMigrationInProgressPopup}
+            showPopup={setWalletsMigrationInProgressPopup}
         />
     );
 });

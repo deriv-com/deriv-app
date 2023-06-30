@@ -14,7 +14,7 @@ const SelectPaymentMethod = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (my_profile_store.payment_methods_list_items.length === 0) {
+    if (!my_profile_store.payment_methods_list_items.length) {
         return <Loading is_fullscreen={false} />;
     }
 

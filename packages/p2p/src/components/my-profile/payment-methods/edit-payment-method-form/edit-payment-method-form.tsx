@@ -5,25 +5,37 @@ import { Button, DesktopWrapper, Input, Loading, Text } from '@deriv/components'
 import { isDesktop, isEmptyObject, isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
-import { useStores } from 'Stores';
-import { TPaymentMethodFieldMapProps } from 'Types';
-import PageReturn from 'Components/page-return/page-return.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import ModalForm from 'Components/modal-manager/modal-form';
+import PageReturn from 'Components/page-return/page-return.jsx';
+import { useStores } from 'Stores';
+import { TPaymentMethodFieldMapProps } from 'Types';
 
 const EditPaymentMethodForm = () => {
     const { general_store, my_profile_store } = useStores();
     const { showModal } = useModalManagerContext();
+    const {
+        initial_values,
+        payment_method_to_edit,
+        payment_method_info,
+        setSelectedPaymentMethod,
+        setSelectedPaymentMethodDisplayName,
+        selected_payment_method_fields,
+        setPaymentMethodToEdit,
+        setShouldShowEditPaymentMethodForm,
+        updatePaymentMethod,
+        validatePaymentMethodFields,
+    } = my_profile_store;
 
     React.useEffect(() => {
         return () => {
-            my_profile_store.setSelectedPaymentMethod('');
-            my_profile_store.setSelectedPaymentMethodDisplayName('');
+            setSelectedPaymentMethod('');
+            setSelectedPaymentMethodDisplayName('');
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (isEmptyObject(my_profile_store.payment_method_info)) {
+    if (isEmptyObject(payment_method_info)) {
         return <Loading is_fullscreen={false} />;
     }
 
@@ -31,9 +43,9 @@ const EditPaymentMethodForm = () => {
         <React.Fragment>
             <ModalForm
                 enableReinitialize
-                initialValues={my_profile_store.initial_values}
-                onSubmit={my_profile_store.updatePaymentMethod}
-                validate={my_profile_store.validatePaymentMethodFields}
+                initialValues={initial_values}
+                onSubmit={updatePaymentMethod}
+                validate={validatePaymentMethodFields}
             >
                 {({ dirty, handleChange, isSubmitting, errors }: FormikValues) => {
                     return (
@@ -46,7 +58,7 @@ const EditPaymentMethodForm = () => {
                                                 key: 'CancelEditPaymentMethodModal',
                                             });
                                         } else {
-                                            my_profile_store.setShouldShowEditPaymentMethodForm(false);
+                                            setShouldShowEditPaymentMethodForm(false);
                                         }
                                     }}
                                     page_title={localize('Edit payment method')}
@@ -66,11 +78,11 @@ const EditPaymentMethodForm = () => {
                                                 }
                                                 required
                                                 type='field'
-                                                value={my_profile_store.payment_method_to_edit.display_name}
+                                                value={payment_method_to_edit.display_name}
                                             />
                                         )}
                                     </Field>
-                                    {my_profile_store?.selected_payment_method_fields?.map(
+                                    {selected_payment_method_fields?.map(
                                         (payment_method_field: TPaymentMethodFieldMapProps, key: number) => (
                                             <Field
                                                 name={payment_method_field[0]}
@@ -120,8 +132,8 @@ const EditPaymentMethodForm = () => {
                                                     key: 'CancelEditPaymentMethodModal',
                                                 });
                                             } else {
-                                                my_profile_store.setPaymentMethodToEdit(null);
-                                                my_profile_store.setShouldShowEditPaymentMethodForm(false);
+                                                setPaymentMethodToEdit(null);
+                                                setShouldShowEditPaymentMethodForm(false);
                                             }
                                         }}
                                         type='button'

@@ -4,11 +4,11 @@ import { Field, Form, FormikValues } from 'formik';
 import { Button, Icon, Input, Loading, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
+import { Localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import ModalForm from 'Components/modal-manager/modal-form';
 import { useStores } from 'Stores';
 import { TPaymentMethodFieldMapProps } from 'Types';
-import { Localize } from 'Components/i18next';
-import ModalForm from 'Components/modal-manager/modal-form';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 type TAddPaymentMethodFormProps = {
     should_show_separated_footer?: boolean;

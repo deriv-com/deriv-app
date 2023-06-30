@@ -1480,7 +1480,7 @@ export default class TradeStore extends BaseStore {
                 } else {
                     return;
                 }
-                this.root_store.contract_trade.setAccumulatorCurrentSpot(current_spot_data);
+                this.root_store.contract_trade.updateAccumulatorBarriersData(current_spot_data);
             }
         };
         if (req.subscribe === 1) {

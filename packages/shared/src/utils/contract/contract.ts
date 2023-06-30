@@ -59,6 +59,17 @@ export const getAccuBarriersDelayTimeMs = (symbol: string) => {
     return symbols_2s.includes(symbol) ? DELAY_TIME_1S_SYMBOL * 2 : DELAY_TIME_1S_SYMBOL;
 };
 
+export const getAccuBarriersDTraderDelay = (
+    underlying: string,
+    barriers_update_timestamp: number,
+    tick_update_timestamp: number | null,
+    has_default_timeout: boolean
+) => {
+    if (has_default_timeout) return getAccuBarriersDelayTimeMs(underlying);
+    const time_from_last_tick_update = barriers_update_timestamp - (tick_update_timestamp ?? barriers_update_timestamp);
+    return Math.max(getAccuBarriersDelayTimeMs(underlying) - time_from_last_tick_update, 0);
+};
+
 export const getAccuBarriersForContractDetails = (contract_info: TContractInfo) => {
     if (!isAccumulatorContract(contract_info.contract_type)) return {};
     const is_contract_open = isOpen(contract_info);

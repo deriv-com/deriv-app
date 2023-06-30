@@ -60,10 +60,11 @@ const TradingAppCardActions = ({
             return (
                 <MultiActionButtonGroup
                     link_to={link_to}
-                    onAction={disabledButtonAction}
+                    onAction={onAction}
                     is_buttons_disabled={is_buttons_disabled}
                     is_real={is_real}
                     is_wallet_migration_in_progress={is_wallet_migration_in_progress}
+                    onDisabledAction={disabledButtonAction}
                 />
             );
         case 'none':

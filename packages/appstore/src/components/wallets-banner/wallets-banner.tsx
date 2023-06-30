@@ -4,6 +4,7 @@ import WalletsBannerUpgrade from './wallets-banner-upgrade';
 import WalletsBannerUpgrading from './wallets-banner-upgrading';
 import WalletsBannerReady from './wallets-banner-ready';
 import { observer, useStore } from '@deriv/stores';
+import { useWalletMigration } from '@deriv/hooks';
 
 // just for testing purpose and will be deleted in the future
 type TBannerSwitcher = {
@@ -49,8 +50,9 @@ const BannerSwitcher = ({ status, is_eu, onChangeStatus, onChangeEU, children }:
 const WalletsBanner = observer(() => {
     // just for testing purpose
     const {
-        client: { wallet_migration_status, setWalletMigrationStatus },
+        client: { setWalletMigrationStatus },
     } = useStore();
+    const { status } = useWalletMigration();
 
     const [is_eu, setIsEu] = React.useState(false);
 
@@ -58,7 +60,7 @@ const WalletsBanner = observer(() => {
     const Wrapper = ({ children }: { children?: React.ReactNode }) => (
         <React.Fragment>
             <BannerSwitcher
-                status={wallet_migration_status}
+                status={status}
                 onChangeStatus={setWalletMigrationStatus}
                 is_eu={is_eu}
                 onChangeEU={setIsEu}
@@ -67,7 +69,7 @@ const WalletsBanner = observer(() => {
         </React.Fragment>
     );
 
-    switch (wallet_migration_status) {
+    switch (status) {
         // the user can upgrade to the wallets
         case 'eligible':
         case 'failed':

@@ -1,17 +1,30 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
-import AddPaymentMethodForm from './add-payment-method-form.jsx';
-import PageReturn from 'Components/page-return/page-return.jsx';
-import PropTypes from 'prop-types';
-import SelectPaymentMethod from './select-payment-method.jsx';
+import { observer } from '@deriv/stores';
+import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import AddPaymentMethodForm from 'Components/add-payment-method-form';
+import PageReturn from 'Components/page-return/page-return.jsx';
+import SelectPaymentMethod from './select-payment-method';
 
-const AddPaymentMethod = ({ should_show_page_return = true, should_show_separated_footer }) => {
+type TAddPaymentMethodProps = {
+    should_show_page_return?: boolean;
+    should_show_separated_footer?: boolean;
+};
+
+const AddPaymentMethod = ({
+    should_show_page_return = true,
+    should_show_separated_footer = true,
+}: TAddPaymentMethodProps) => {
     const { my_profile_store } = useStores();
     const { hideModal, showModal } = useModalManagerContext();
+
+    const payment_method_form = my_profile_store.selected_payment_method ? (
+        <AddPaymentMethodForm should_show_separated_footer={should_show_separated_footer} />
+    ) : (
+        <SelectPaymentMethod />
+    );
 
     return (
         <React.Fragment>
@@ -31,27 +44,11 @@ const AddPaymentMethod = ({ should_show_page_return = true, should_show_separate
                         page_title={localize('Add payment method')}
                     />
                 )}
-                {my_profile_store.selected_payment_method ? (
-                    <AddPaymentMethodForm should_show_separated_footer={should_show_separated_footer} />
-                ) : (
-                    <SelectPaymentMethod />
-                )}
+                {payment_method_form}
             </DesktopWrapper>
-            <MobileWrapper>
-                {my_profile_store.selected_payment_method ? (
-                    <AddPaymentMethodForm should_show_separated_footer={should_show_separated_footer} />
-                ) : (
-                    <SelectPaymentMethod />
-                )}
-            </MobileWrapper>
+            <MobileWrapper>{payment_method_form}</MobileWrapper>
         </React.Fragment>
     );
-};
-
-AddPaymentMethod.propTypes = {
-    formik_ref: PropTypes.shape({ current: PropTypes.any }),
-    should_show_page_return: PropTypes.bool,
-    should_show_separated_footer: PropTypes.bool,
 };
 
 export default observer(AddPaymentMethod);

@@ -12,7 +12,7 @@ import {
 import { Localize, localize } from 'Components/i18next';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { useStores } from 'Stores';
-import PaymentMethodCard from '../payment-method-card';
+import PaymentMethodCard from 'Components/payment-method-card';
 
 const PaymentMethodsList = () => {
     const { general_store, my_profile_store } = useStores();
@@ -63,7 +63,7 @@ const PaymentMethodsList = () => {
                                                 (each_payment_method, each_payment_method_key) => (
                                                     <PaymentMethodCard
                                                         key={each_payment_method_key}
-                                                        large={true}
+                                                        large
                                                         payment_method={each_payment_method}
                                                         show_payment_method_name={false}
                                                     />

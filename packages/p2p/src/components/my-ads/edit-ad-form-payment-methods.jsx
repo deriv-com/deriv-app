@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
-import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
+import PaymentMethodCard from 'Components/payment-method-card';
 import { localize } from 'Components/i18next';
 import BuyAdPaymentMethodsList from './buy-ad-payment-methods-list.jsx';
 import SellAdPaymentMethodsList from './sell-ad-payment-methods-list.jsx';

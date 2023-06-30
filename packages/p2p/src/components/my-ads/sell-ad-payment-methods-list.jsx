@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import PaymentMethodCard from '../my-profile/payment-methods/payment-method-card';
+import PaymentMethodCard from 'Components/payment-method-card';
 import './sell-ad-payment-methods-list.scss';
 
 const SellAdPaymentMethodsList = ({

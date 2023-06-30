@@ -8,7 +8,9 @@
     }
 
     &--icon {
-        margin: 11.2rem auto 0;
+        @include mobile {
+            margin: 11.2rem auto 0;
+        }
     }
 
     &--text {

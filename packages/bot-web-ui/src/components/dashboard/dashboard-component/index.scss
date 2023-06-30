@@ -278,12 +278,12 @@
 
             &__retrigger {
                 button {
-                    background: $color-grey-2;
+                    background: var(--general-section-1);
                     border-radius: 2.4rem;
                     outline: none;
                     border: none;
                     height: 4rem;
-                    width: 12.8rem;
+                    padding: 1rem;
                     @include align-center;
                     cursor: pointer;
 
@@ -296,7 +296,12 @@
 
                 &__text {
                     margin-left: 0.4rem;
-                    color: var(--text-less-prominent);
+                    color: var(--text-general);
+                }
+
+                &__icon {
+                    width: 2.4rem;
+                    height: 2.4rem;
                 }
             }
         }
@@ -309,19 +314,24 @@
                 padding: 2rem;
 
                 button {
-                    background: $color-grey-2;
+                    background: var(--general-section-1);
                     border-radius: 2.4rem;
                     outline: none;
                     border: none;
                     height: 4rem;
-                    width: 12.8rem;
+                    padding: 1rem;
                     @include align-center;
                     cursor: pointer;
                 }
 
                 &__text {
                     margin-left: 0.4rem;
-                    color: var(--text-less-prominent);
+                    color: var(--text-general);
+                }
+
+                &__icon {
+                    width: 2.4rem;
+                    height: 2.4rem;
                 }
             }
         }

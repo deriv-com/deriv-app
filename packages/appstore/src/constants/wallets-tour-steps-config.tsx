@@ -19,7 +19,7 @@ export const getWalletStepConfig = (): Step[] => [
                 {localize('This is your Wallet. You can see your total balance for this Wallet here.')}
             </Text>
         ),
-        target: '.wallet-header',
+        target: '#wallet-is-not-selected',
         disableBeacon: true,
         disableOverlayClose: true,
         placement: 'bottom-end',
@@ -60,7 +60,7 @@ export const getWalletStepConfig = (): Step[] => [
                 )}
             </Text>
         ),
-        target: '.wallet-header__description-buttons',
+        target: '#wallet-button-expanded',
         disableBeacon: true,
         disableOverlayClose: true,
     },

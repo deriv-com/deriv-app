@@ -272,6 +272,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setShouldShowCooldownModal: jest.fn(),
         },
         traders_hub: {
+            CFDs_restricted_countries: false,
             closeModal: jest.fn(),
             combined_cfd_mt5_accounts: [],
             content_flag: '',

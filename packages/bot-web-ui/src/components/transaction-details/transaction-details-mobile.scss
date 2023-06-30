@@ -5,7 +5,7 @@
         background: var(--general-main-2);
         &__body {
             overflow-y: scroll;
-            height: calc(100vh - 26rem);
+            height: calc(100vh - 28rem);
         }
     }
 
@@ -23,6 +23,7 @@
         flex-wrap: wrap;
         width: 100%;
         align-content: flex-start;
+        height: fit-content;
     }
     &__icon-wrapper {
         display: flex;

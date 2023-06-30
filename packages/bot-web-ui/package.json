@@ -67,6 +67,7 @@
         "webpack-cli": "^4.7.2"
     },
     "dependencies": {
+        "@datadog/browser-logs": "^4.36.0",
         "@deriv/bot-skeleton": "^1.0.0",
         "@deriv/components": "^1.0.0",
         "@deriv/deriv-charts": "1.2.2",

@@ -390,6 +390,49 @@ describe('getAccuBarriersDelayTimeMs', () => {
     });
 });
 
+describe('getAccuBarriersDTraderDelay', () => {
+    const barriers_update_timestamp = 1234567890222;
+    const underlying = 'R_100';
+    const tick_update_timestamp = 1234567890111;
+    const has_default_timeout = false;
+
+    it('should return a default delay time when has_default_timeout is true', () => {
+        expect(
+            ContractUtils.getAccuBarriersDTraderDelay(
+                underlying,
+                barriers_update_timestamp,
+                tick_update_timestamp,
+                true
+            )
+        ).toEqual(ContractUtils.getAccuBarriersDelayTimeMs(underlying));
+    });
+    it('should return a delay time equal to difference between tick update and barriers update when has_default_timeout is false', () => {
+        expect(
+            ContractUtils.getAccuBarriersDTraderDelay(
+                underlying,
+                barriers_update_timestamp,
+                tick_update_timestamp,
+                has_default_timeout
+            )
+        ).toEqual(889);
+    });
+    it('should handle null tick_update_timestamp correctly', () => {
+        expect(
+            ContractUtils.getAccuBarriersDTraderDelay(underlying, barriers_update_timestamp, null, has_default_timeout)
+        ).toEqual(ContractUtils.getAccuBarriersDelayTimeMs(underlying));
+    });
+    it('should return 0 delay time when difference between tick update and barriers update is greater than default delay time', () => {
+        expect(
+            ContractUtils.getAccuBarriersDTraderDelay(
+                underlying,
+                1234567891333,
+                tick_update_timestamp,
+                has_default_timeout
+            )
+        ).toEqual(0);
+    });
+});
+
 describe('getAccuBarriersForContractDetails', () => {
     const mocked_contract_info: TContractInfo = {
         contract_type: 'ACCU',

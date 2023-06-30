@@ -64,6 +64,7 @@ const WalletModal = observer(() => {
                     is_mobile={is_mobile}
                     shortcode={shortcode}
                     is_wallet_name_visible={is_wallet_name_visible}
+                    gradient_class={wallet?.gradient_header_class || ''}
                 />
                 <WalletModalBody
                     contentScrollHandler={contentScrollHandler}

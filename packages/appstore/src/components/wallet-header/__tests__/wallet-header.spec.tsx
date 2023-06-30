@@ -29,6 +29,8 @@ describe('<WalletHeader />', () => {
             loginid: 'CRW123123',
             is_malta_wallet: false,
             is_selected: true,
+            gradient_header_class: 'wallet-header__usd-bg',
+            gradient_card_class: 'wallet-card__usd-bg',
         };
     });
     describe('Check currency card', () => {

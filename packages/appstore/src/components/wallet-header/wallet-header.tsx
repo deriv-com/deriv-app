@@ -39,7 +39,11 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
     return (
         <div className={classNames('wallet-header', { 'wallet-header__demo': wallet_account.is_demo })}>
             <div className='wallet-header__container'>
-                <WalletCurrencyCard is_demo={wallet_account.is_demo} currency={wallet_account.currency} />
+                <WalletCurrencyCard
+                    is_demo={wallet_account.is_demo}
+                    currency={wallet_account.currency}
+                    gradient_class={wallet_account.gradient_card_class}
+                />
                 <div className='wallet-header__description'>
                     <WalletHeaderTitle
                         is_demo={wallet_account.is_demo}

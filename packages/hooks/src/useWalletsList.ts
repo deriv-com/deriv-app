@@ -3,8 +3,9 @@ import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 
 const useWalletsList = () => {
-    const { client } = useStore();
+    const { client, ui } = useStore();
     const { accounts, loginid, is_crypto } = client;
+    const { is_dark_mode_on } = ui;
     const { data, ...reset } = useFetch('authorize', {
         payload: { authorize: accounts[loginid || ''].token },
         options: { enabled: Boolean(loginid) },
@@ -29,6 +30,12 @@ const useWalletsList = () => {
             /** Landing company shortcode the account belongs to. Use this instead of landing_company_shortcode for wallets */
             landing_company_name: wallet.landing_company_name === 'maltainvest' ? 'malta' : wallet.landing_company_name,
             is_malta_wallet: wallet.landing_company_name === 'malta',
+            gradient_header_class: `wallet-header__${
+                wallet.is_virtual === 1 ? 'demo' : wallet.currency?.toLowerCase()
+            }-bg${is_dark_mode_on ? '--dark' : ''}`,
+            gradient_card_class: `wallet-card__${wallet.is_virtual === 1 ? 'demo' : wallet.currency?.toLowerCase()}-bg${
+                is_dark_mode_on ? '--dark' : ''
+            }`,
         }));
 
         // Sort the wallets alphabetically by fiat, crypto, then virtual
@@ -41,7 +48,7 @@ const useWalletsList = () => {
 
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });
-    }, [balance_data?.balance?.accounts, data?.authorize?.account_list, is_crypto, loginid]);
+    }, [balance_data?.balance?.accounts, data?.authorize?.account_list, is_crypto, loginid, is_dark_mode_on]);
 
     return {
         ...reset,

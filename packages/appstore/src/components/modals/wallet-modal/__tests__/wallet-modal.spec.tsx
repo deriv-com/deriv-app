@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletModal from '../wallet-modal';
 import { useActiveWallet } from '@deriv/hooks';
+import { APIProvider } from '@deriv/api';
 
 jest.mock('../wallet-modal-header', () => jest.fn(() => <div>WalletModalHeader</div>));
 jest.mock('../wallet-modal-body', () => jest.fn(() => <div>WalletModalBody</div>));
@@ -33,9 +34,11 @@ describe('WalletModal', () => {
         mockUseActiveWallet.mockReturnValue({ loginid: 'CRW000000', is_demo: false });
 
         render(
-            <StoreProvider store={mocked_store}>
-                <WalletModal />
-            </StoreProvider>
+            <APIProvider>
+                <StoreProvider store={mocked_store}>
+                    <WalletModal />
+                </StoreProvider>
+            </APIProvider>
         );
 
         expect(screen.getByText('WalletModalHeader')).toBeInTheDocument();

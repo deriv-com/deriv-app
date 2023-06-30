@@ -12,7 +12,7 @@ import './fiat-transaction-list.scss';
 
 const FiatTransactionList = () => {
     const {
-        client: { accounts, currency: wallet_currency, loginid, landing_company_shortcode: shortcode },
+        client: { accounts, currency: wallet_currency, is_crypto, loginid, landing_company_shortcode: shortcode },
         traders_hub: { is_demo },
         ui: { is_dark_mode_on, is_mobile },
     } = useStore();
@@ -25,6 +25,8 @@ const FiatTransactionList = () => {
         account_type: 'binary',
         balance: 0,
         currency: 'BTC',
+        // @ts-expect-error This should be fixed when we remove the mock transactions
+        gradient_class: `wallet-card__btc-bg${is_dark_mode_on ? '--dark' : ''}`,
         is_virtual: 0,
         landing_company_name: 'SVG',
         landing_company_shortcode: 'svg',
@@ -35,6 +37,8 @@ const FiatTransactionList = () => {
         account_type: 'binary',
         balance: 0,
         currency: 'BTC',
+        // @ts-expect-error This should be fixed when we remove the mock transactions
+        gradient_class: `wallet-card__btc-bg${is_dark_mode_on ? '--dark' : ''}`,
         is_virtual: 0,
         landing_company_name: 'SVG',
         landing_company_shortcode: 'svg',
@@ -45,6 +49,8 @@ const FiatTransactionList = () => {
         account_type: 'binary',
         balance: 0,
         currency: 'BTC',
+        // @ts-expect-error This should be fixed when we remove the mock transactions
+        gradient_class: `wallet-card__btc-bg${is_dark_mode_on ? '--dark' : ''}`,
         is_virtual: 0,
         landing_company_name: 'SVG',
         landing_company_shortcode: 'svg',
@@ -277,8 +283,14 @@ const FiatTransactionList = () => {
                         let account_title = wallet_title;
                         let account_currency = wallet_currency;
                         let icon = wallet_icon;
-                        let icon_type = 'fiat';
+                        let icon_type = is_crypto(wallet_currency) ? 'crypto' : 'fiat';
                         let is_deriv_apps = false;
+
+                        // TODO: use the gradient_card_class value from wallets object when we have it
+                        let gradient_class = `wallet-card__${is_demo ? 'demo' : wallet_currency.toLowerCase()}-bg${
+                            is_dark_mode_on ? '--dark' : ''
+                        }`;
+
                         if (transaction.action_type === 'transfer') {
                             const other_loginid =
                                 transaction.to?.loginid === loginid
@@ -287,6 +299,11 @@ const FiatTransactionList = () => {
                             if (!other_loginid) return null;
                             const other_account = accounts[other_loginid];
                             if (other_account) {
+                                gradient_class = `wallet-card__${
+                                    other_account.is_virtual === 1
+                                        ? 'demo'
+                                        : other_account?.currency?.toLowerCase() || wallet_currency.toLowerCase()
+                                }-bg${is_dark_mode_on ? '--dark' : ''}`;
                                 if (!other_account.currency) return null;
                                 account_currency = other_account.currency;
                                 account_title = accountName(
@@ -309,6 +326,7 @@ const FiatTransactionList = () => {
                                 is_deriv_apps = true;
                             }
                         }
+
                         return (
                             <FiatTransactionListItem
                                 key={transaction.transaction_id}
@@ -318,7 +336,7 @@ const FiatTransactionList = () => {
                                         typeof FiatTransactionListItem
                                     >['action_type']
                                 }
-                                account_currency={account_currency}
+                                gradient_class={gradient_class}
                                 account_name={account_title}
                                 amount={
                                     transaction.action_type === 'transfer' && transaction?.from?.loginid === loginid

@@ -42,6 +42,8 @@ describe('<Wallets />', () => {
             loginid: 'CR123123',
             is_malta_wallet: false,
             is_selected: false,
+            gradient_header_class: 'wallet-header__usd-bg',
+            gradient_card_class: 'wallet-card__usd-bg',
         };
     });
     it('Check class for NOT demo', () => {

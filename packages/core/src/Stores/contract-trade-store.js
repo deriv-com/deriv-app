@@ -1,16 +1,16 @@
 import { action, computed, observable, toJS, makeObservable, override, reaction, runInAction } from 'mobx';
 import {
+    getAccuBarriersDTraderTimeout,
+    getContractTypesConfig,
     isAccumulatorContract,
     isAccumulatorContractOpen,
+    isCallPut,
     isDesktop,
     isEnded,
+    isMobile,
     isMultiplierContract,
     LocalStore,
     switch_to_tick_chart,
-    isCallPut,
-    getContractTypesConfig,
-    isMobile,
-    getAccuBarriersDTraderDelay,
 } from '@deriv/shared';
 import ContractStore from './contract-store';
 import BaseStore from './base-store';
@@ -169,12 +169,13 @@ export default class ContractTradeStore extends BaseStore {
         const tick_update_timestamp = should_update_contract_barriers
             ? this.accumulator_contract_barriers_data.tick_update_timestamp
             : this.accumulator_barriers_data.tick_update_timestamp;
-        const timeout = getAccuBarriersDTraderDelay(
-            underlying,
+        const timeout = getAccuBarriersDTraderTimeout({
             barriers_update_timestamp,
+            has_default_timeout: this.accumulator_barriers_data.current_spot_time !== current_spot_time,
+            should_update_contract_barriers,
             tick_update_timestamp,
-            this.accumulator_barriers_data.current_spot_time !== current_spot_time
-        );
+            underlying,
+        });
         // update barriers in DTrader page with delay
         this.accu_barriers_timeout_id = setTimeout(() => {
             runInAction(() => {

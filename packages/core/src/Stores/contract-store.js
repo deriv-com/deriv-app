@@ -14,7 +14,7 @@ import {
     BARRIER_LINE_STYLES,
     DEFAULT_SHADES,
     isBarrierSupported,
-    getAccuBarriersDelayTimeMs,
+    getAccuBarriersDefaultTimeout,
     getAccuBarriersForContractDetails,
     getEndTime,
     isOpen,
@@ -226,7 +226,7 @@ export default class ContractStore extends BaseStore {
                             this.accumulator_previous_spot_time = current_spot_time;
                         }
                     }),
-                isOpen(contract_info) ? getAccuBarriersDelayTimeMs(underlying) : 0
+                isOpen(contract_info) ? getAccuBarriersDefaultTimeout(underlying) : 0
             );
             this.cached_barriers_data = {
                 current_spot_high_barrier,

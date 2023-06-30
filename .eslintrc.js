@@ -1,9 +1,7 @@
 module.exports = {
     extends: ['@deriv/eslint-config-deriv'],
     rules: {
-        // 'localize-usage/only-string-literal-argument': 'off',
-        // 'localize-usage/no-invalid-identifier-in-prop-value': 'off',
-        // 'import/no-unresolved': 'warn',
+        'import/no-unresolved': 'warn',
     },
     overrides: [
         {

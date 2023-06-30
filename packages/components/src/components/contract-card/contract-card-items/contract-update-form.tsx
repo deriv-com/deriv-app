@@ -25,9 +25,9 @@ export type TContractUpdateFormProps = {
     getCardLabels: TGetCardLables;
     onMouseLeave: () => void;
     removeToast: (toast_id: string) => void;
-    setCurrentFocus: (name: string) => void;
+    setCurrentFocus: (name: string | null) => void;
     status: string;
-    toggleDialog: (e: any) => void; // This function accomodates events for various HTML elements, which have no overlap, so typing it to any
+    toggleDialog: (e: React.MouseEvent<HTMLButtonElement>) => void;
     getContractById: (contract_id: number) => TContractStore;
     is_accumulator?: boolean;
 };
@@ -105,7 +105,9 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         return isDeepEqual(getStateToCompare(getContractUpdateConfig(contract_info)), getStateToCompare(props));
     };
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement> | { target: { name: string; value: boolean } }) => {
+    const onChange = (
+        e: React.ChangeEvent<HTMLInputElement> | { target: { name: string; value: number | string | boolean } }
+    ) => {
         const { name, value } = e.target;
         setContractProfitOrLoss({
             ...contract_profit_or_loss,

@@ -452,6 +452,10 @@ type TTradersHubStore = {
     available_dxtrade_accounts: AvailableAccount[];
     is_wallet_migration_in_progress: boolean;
     setWalletsMigrationInProgressPopup: (value: boolean) => void;
+    active_modal_tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions';
+    setWalletModalActiveTab: (tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions') => void;
+    active_modal_wallet_id?: string;
+    setWalletModalActiveWalletID: (wallet_id?: string) => void;
 };
 
 /**

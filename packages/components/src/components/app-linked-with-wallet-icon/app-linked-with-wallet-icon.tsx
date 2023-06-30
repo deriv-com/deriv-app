@@ -3,12 +3,13 @@ import { WalletIcon } from '../wallet-icon';
 import './app-linked-with-wallet-icon.scss';
 
 type TAppIconProps = {
-    currency: string;
-    has_bg?: boolean;
     app_icon: string;
-    wallet_icon: string;
+    gradient_class: string;
+    has_bg?: boolean;
+    hide_watermark?: boolean;
     size?: 'small' | 'medium' | 'large';
-    type: 'fiat' | 'crypto'; // Type of the wallet_icon
+    type: React.ComponentProps<typeof WalletIcon>['type'];
+    wallet_icon: string;
 };
 
 /**
@@ -27,21 +28,35 @@ const sizes = {
     },
 } as const;
 
-const AppLinkedWithWalletIcon = ({ currency, app_icon, wallet_icon, size = 'medium', type }: TAppIconProps) => {
-    if (!app_icon || !wallet_icon || !currency) {
+const AppLinkedWithWalletIcon = ({
+    app_icon,
+    gradient_class,
+    hide_watermark,
+    size = 'medium',
+    type,
+    wallet_icon,
+}: TAppIconProps) => {
+    if (!app_icon || !wallet_icon || !gradient_class) {
         return null;
     }
 
     return (
         <div className={`app-icon app-icon--${size}`}>
-            {/* Top */}
+            {/* Top Icon */}
             <div className='app-icon__top-icon'>
                 <WalletIcon icon={app_icon} size={sizes.top[size]} type='app' />
             </div>
 
-            {/* Bottom */}
+            {/* Bottom Icon */}
             <div className='app-icon__bottom-icon'>
-                <WalletIcon icon={wallet_icon} currency={currency} type={type} size={sizes.bottom[size]} has_bg />
+                <WalletIcon
+                    icon={wallet_icon}
+                    gradient_class={gradient_class}
+                    type={type}
+                    size={sizes.bottom[size]}
+                    has_bg
+                    hide_watermark={hide_watermark}
+                />
             </div>
         </div>
     );

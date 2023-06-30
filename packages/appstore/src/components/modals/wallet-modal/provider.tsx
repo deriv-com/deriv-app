@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
 import { localize } from '@deriv/translations';
+import DemoResetBalance from 'Components/demo-reset-balance';
 import FiatTransactionList from 'Components/fiat-transaction-list';
 import WalletTransfer from 'Components/wallet-transfer';
 import WalletWithdrawal from '../../wallet-withdrawal';
@@ -99,7 +100,7 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcAdd',
                     label: localize('Reset balance'),
-                    content: () => <p>Reset balance</p>,
+                    content: (props: React.ComponentProps<typeof DemoResetBalance>) => <DemoResetBalance {...props} />,
                 },
             ];
         case 'p2p':

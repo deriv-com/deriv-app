@@ -15,7 +15,7 @@ const AccountTransferModal = observer(({ is_modal_open, toggleModal }: TAccountT
     const {
         modules: {
             cashier: {
-                account_transfer: { is_transfer_confirm, should_switch_account },
+                account_transfer: { is_transfer_confirm, should_switch_account, setShouldSwitchAccount },
             },
         },
         traders_hub: { closeModal, setSelectedAccount },
@@ -25,6 +25,7 @@ const AccountTransferModal = observer(({ is_modal_open, toggleModal }: TAccountT
 
     React.useEffect(() => {
         return () => {
+            setShouldSwitchAccount(false);
             setSelectedAccount({});
             closeModal();
         };

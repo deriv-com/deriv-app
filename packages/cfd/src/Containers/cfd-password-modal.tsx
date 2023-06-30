@@ -7,9 +7,11 @@ import RootStore from '../Stores/index';
 import {
     getDxCompanies,
     getMtCompanies,
+    getDerivezCompanies,
     getFormattedJurisdictionCode,
     TMtCompanies,
     TDxCompanies,
+    TDerivezCompanies,
 } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import {
     FormSubmitButton,
@@ -839,15 +841,33 @@ const CFDPasswordModal = ({
         if (!category && !type) return '';
 
         const category_label = category === 'real' ? localize('real') : localize('demo');
-        const type_label =
-            getMtCompanies(show_eu_related_content)[category as keyof TMtCompanies][
-                type as keyof TMtCompanies['demo' | 'real']
-            ].short_title;
-        const deriv_x_type_label =
-            getDxCompanies()[category as keyof TDxCompanies][type as keyof TDxCompanies['demo' | 'real']].short_title;
+        let type_label = '';
+        switch (platform) {
+            case CFD_PLATFORMS.MT5:
+                type_label =
+                    getMtCompanies(show_eu_related_content)[category as keyof TMtCompanies][
+                        type as keyof TMtCompanies['demo' | 'real']
+                    ].short_title;
+                break;
+            case CFD_PLATFORMS.DXTRADE:
+                type_label =
+                    getDxCompanies()[category as keyof TDxCompanies][type as keyof TDxCompanies['demo' | 'real']]
+                        .short_title;
+                break;
+            case CFD_PLATFORMS.DERIVEZ:
+                type_label =
+                    getDerivezCompanies()[category as keyof TDerivezCompanies][
+                        type as keyof TDerivezCompanies['demo' | 'real']
+                    ].short_title;
+                break;
+            default:
+                type_label = '';
+                break;
+        }
+
         const jurisdiction_label =
             jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
-        const mt5_platform_label = jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'MT5' : '';
+        const mt5_platform_label = jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'Deriv MT5' : '';
 
         if (category === 'real') {
             let platformName = '';
@@ -868,19 +888,14 @@ const CFDPasswordModal = ({
                     <Localize
                         i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}} {{jurisdiction_selected_shortcode}}</1> account. '
                         values={{
-                            type:
-                                platform === CFD_PLATFORMS.DERIVEZ
-                                    ? 'CFDs'
-                                    : platform === CFD_PLATFORMS.DXTRADE
-                                    ? deriv_x_type_label
-                                    : type_label,
+                            type: type_label,
                             platform:
                                 platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : getCFDPlatformLabel(platform),
                             category: category_label,
                             jurisdiction_selected_shortcode:
                                 platform === CFD_PLATFORMS.MT5 && !show_eu_related_content ? jurisdiction_label : '',
                         }}
-                        components={[<span key={0} />, <strong key={1} className='cfd-account__platform' />]}
+                        components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}
                     />
                     {platform === CFD_PLATFORMS.DXTRADE ? (
                         <Localize i18n_default_text='To start trading, transfer funds from your Deriv account into this account.' />
@@ -897,19 +912,13 @@ const CFDPasswordModal = ({
 
         return (
             <Localize
-                i18n_default_text='Congratulations, you have successfully created your {{category}} {{deriv_keyword}} <0>{{platform}}</0> <1>{{type}}</1> account.'
+                i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account. '
                 values={{
-                    deriv_keyword: platform === CFD_PLATFORMS.MT5 ? 'Deriv' : '',
-                    type:
-                        platform === CFD_PLATFORMS.DERIVEZ
-                            ? 'CFDs'
-                            : platform === CFD_PLATFORMS.DXTRADE
-                            ? deriv_x_type_label
-                            : type_label,
-                    platform: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
+                    type: type_label,
+                    platform: getCFDPlatformLabel(platform),
                     category: category_label,
                 }}
-                components={[<span key={0} />, <strong key={1} className='cfd-account__platform' />]}
+                components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}
             />
         );
     };

@@ -3,6 +3,8 @@ on:
   pull_request:
     branches:
       - '**'
+  env:
+    JEST_MAX_WORKERS: 4
   push:
     branches:
       - master
@@ -21,7 +23,7 @@ jobs:
           npm install
           npm run bootstrap
           npm run build:all
-          npm run test:jest 4
+          npm run test:jest
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3.1.1

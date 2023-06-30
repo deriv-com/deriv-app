@@ -8,6 +8,7 @@ import ModalManager from 'Components/modals/modal-manager';
 import EUDisclaimer from 'Components/eu-disclaimer';
 import AccountWithWallets from './account-with-wallets';
 import AccountWithoutWallets from './account-without-wallets';
+import WalletTourGuide from 'Modules/tour-guide/wallet-tour-guide';
 import { useContentFlag } from '@deriv/hooks';
 import './traders-hub.scss';
 
@@ -22,7 +23,7 @@ const TradersHub = () => {
         is_account_setting_loaded,
         accounts,
     } = client;
-    const { is_tour_open, is_eu_user } = traders_hub;
+    const { is_tour_open, is_eu_user, is_wallet_tour_open, toggleIsWalletTourOpen } = traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
 
     const can_show_notify =
@@ -50,7 +51,7 @@ const TradersHub = () => {
                 setScrolled(true);
             }, 200);
         }, 100);
-    }, [is_tour_open]);
+    }, [is_tour_open, is_wallet_tour_open]);
 
     const { is_low_risk_cr_eu, is_high_risk_cr } = useContentFlag();
 
@@ -71,6 +72,8 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
+                    <button onClick={() => toggleIsWalletTourOpen()}>Open Tour</button>
+                    {is_wallet_tour_open && <WalletTourGuide />}
                     {is_high_risk_cr && <AccountWithWallets />}
                     <AccountWithoutWallets />
                     <ModalManager />

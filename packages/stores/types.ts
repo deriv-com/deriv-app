@@ -448,6 +448,8 @@ type TTradersHubStore = {
     selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
     available_dxtrade_accounts: AvailableAccount[];
+    is_wallet_tour_open: boolean;
+    toggleIsWalletTourOpen: () => void;
 };
 
 /**

@@ -30,6 +30,7 @@ export default class TradersHubStore extends BaseStore {
     selected_account = {};
     is_real_wallets_upgrade_on = false;
     is_wallet_migration_failed = false;
+    is_wallet_tour_open = false;
 
     constructor(root_store) {
         super({ root_store });
@@ -100,6 +101,8 @@ export default class TradersHubStore extends BaseStore {
             showTopUpModal: action.bound,
             toggleWalletsUpgrade: action.bound,
             setWalletsMigrationFailedPopup: action.bound,
+            is_wallet_tour_open: observable,
+            toggleIsWalletTourOpen: action.bound,
         });
 
         reaction(
@@ -781,5 +784,9 @@ export default class TradersHubStore extends BaseStore {
 
     setWalletsMigrationFailedPopup(value) {
         this.is_wallet_migration_failed = value;
+    }
+
+    toggleIsWalletTourOpen() {
+        this.is_wallet_tour_open = !this.is_wallet_tour_open;
     }
 }

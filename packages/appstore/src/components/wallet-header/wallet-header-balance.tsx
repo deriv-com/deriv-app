@@ -3,17 +3,14 @@ import { Text, StatusBadge } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { getStatusBadgeConfig } from '@deriv/account';
 import { useStore, observer } from '@deriv/stores';
-import { TWalletCurrency, TAccountStatus } from 'Types';
+import { TWalletAccount } from 'Types';
+import { formatMoney } from '@deriv/shared';
 
-type TWalletHeaderBalance = {
-    account_status: TAccountStatus;
-    balance: number;
-    currency: TWalletCurrency;
-};
+type TWalletHeaderBalance = Pick<TWalletAccount, 'balance' | 'currency'>;
 
-const WalletHeaderBalance = observer(({ account_status, balance, currency }: TWalletHeaderBalance) => {
+const WalletHeaderBalance = observer(({ balance, currency }: TWalletHeaderBalance) => {
     const {
-        traders_hub: { openFailedVerificationModal },
+        traders_hub: { openFailedVerificationModal, multipliers_account_status, is_eu_user },
     } = useStore();
 
     const balance_amount = (
@@ -21,7 +18,7 @@ const WalletHeaderBalance = observer(({ account_status, balance, currency }: TWa
             <Localize
                 i18n_default_text='{{balance}} {{currency}}'
                 values={{
-                    balance,
+                    balance: formatMoney(currency, balance, true),
                     currency,
                 }}
             />
@@ -29,17 +26,21 @@ const WalletHeaderBalance = observer(({ account_status, balance, currency }: TWa
     );
 
     // TODO: just for test use empty object. When BE will be ready it will be fixed
-    const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(account_status, openFailedVerificationModal, {
-        platform: '',
-        category: '',
-        type: '',
-        jurisdiction: '',
-    });
+    const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
+        multipliers_account_status,
+        openFailedVerificationModal,
+        {
+            platform: '',
+            category: '',
+            type: '',
+            jurisdiction: '',
+        }
+    );
 
     return (
         <div className='wallet-header__balance-title-amount'>
-            {account_status ? (
-                <StatusBadge account_status={account_status} icon={badge_icon} text={badge_text} />
+            {multipliers_account_status && is_eu_user ? (
+                <StatusBadge account_status={multipliers_account_status} icon={badge_icon} text={badge_text} />
             ) : (
                 <React.Fragment>
                     <Text

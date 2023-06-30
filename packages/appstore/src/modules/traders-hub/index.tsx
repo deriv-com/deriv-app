@@ -33,8 +33,6 @@ const TradersHub = () => {
         Notifications !== null;
 
     const [scrolled, setScrolled] = React.useState(false);
-    // TODO: delete later. Just for testing purpose
-    const [is_display_test_wallets, setIsDisplayTestWallets] = React.useState(0);
 
     const handleScroll = () => {
         const element = traders_hub_ref?.current;

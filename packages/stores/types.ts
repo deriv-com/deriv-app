@@ -450,6 +450,10 @@ type TTradersHubStore = {
     available_dxtrade_accounts: AvailableAccount[];
     is_wallet_tour_open: boolean;
     toggleIsWalletTourOpen: () => void;
+    active_modal_tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions';
+    setWalletModalActiveTab: (tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions') => void;
+    active_modal_wallet_id?: string;
+    setWalletModalActiveWalletID: (wallet_id?: string) => void;
 };
 
 /**

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router';
-import { Button, Text } from '@deriv/components';
+import { Button, Text, AsDisabledWrapper } from '@deriv/components';
 import { formatMoney, getCurrencyName, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import BalanceText from 'Components/elements/text/balance-text';
@@ -13,9 +13,7 @@ const default_balance = { balance: 0, currency: 'USD' };
 
 const RealAccountCard = observer(() => {
     const history = useHistory();
-    const { status } = useWalletMigration();
-    const is_wallet_migration_in_progress = status === 'in_progress';
-
+    const { status: wallet_migration_status } = useWalletMigration();
     const { client, common, modules, traders_hub } = useStore();
 
     const { accounts, loginid } = client;
@@ -30,14 +28,6 @@ const RealAccountCard = observer(() => {
         .some(account => account.landing_company_short === 'maltainvest');
 
     const get_currency = (IsIconCurrency(currency?.toUpperCase()) && currency) || 'USD';
-
-    const disabledButtonAction = (e: React.MouseEvent) => {
-        if (is_wallet_migration_in_progress) setWalletsMigrationInProgressPopup(true);
-        else {
-            e.stopPropagation();
-            history.push(`${routes.cashier_deposit}#deposit`);
-        }
-    };
 
     return (
         <CurrencySwitcherContainer
@@ -55,14 +45,25 @@ const RealAccountCard = observer(() => {
                 return openModal('currency_selection');
             }}
             actions={
-                <Button
-                    onClick={disabledButtonAction}
-                    secondary
+                <AsDisabledWrapper
+                    is_active={wallet_migration_status === 'in_progress'}
+                    onAction={() => setWalletsMigrationInProgressPopup(true)}
                     className='currency-switcher__button'
-                    as_disabled={status === 'in_progress'}
                 >
-                    <Localize key={`currency-switcher__button-text-${current_language}`} i18n_default_text='Deposit' />
-                </Button>
+                    <Button
+                        onClick={(e: MouseEvent) => {
+                            e.stopPropagation();
+                            history.push(`${routes.cashier_deposit}#deposit`);
+                        }}
+                        secondary
+                        className='currency-switcher__button'
+                    >
+                        <Localize
+                            key={`currency-switcher__button-text-${current_language}`}
+                            i18n_default_text='Deposit'
+                        />
+                    </Button>
+                </AsDisabledWrapper>
             }
             has_interaction
         >

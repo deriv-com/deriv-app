@@ -1,11 +1,11 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Text, Icon, Counter } from '@deriv/components';
+import { Text, Icon, Counter, AsDisabledWrapper } from '@deriv/components';
 import { BinaryLink } from '../../Routes';
 import { observer, useStore } from '@deriv/stores';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { useP2PNotificationCount, useIsRealAccountNeededForCashier } from '@deriv/hooks';
+import { useP2PNotificationCount, useIsRealAccountNeededForCashier, useWalletMigration } from '@deriv/hooks';
 import './menu-links.scss';
 import { useHistory } from 'react-router';
 
@@ -37,11 +37,13 @@ const ReportTab = () => (
 );
 
 const CashierTab = observer(() => {
-    const { client, ui } = useStore();
+    const { client, ui, traders_hub } = useStore();
     const { has_any_real_account, is_virtual } = client;
+    const { setWalletsMigrationInProgressPopup } = traders_hub;
     const { toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
     const p2p_notification_count = useP2PNotificationCount();
     const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
+    const { status: wallet_migration_status } = useWalletMigration();
 
     const history = useHistory();
 
@@ -70,20 +72,25 @@ const CashierTab = observer(() => {
         (toggle_modal_routes && !has_any_real_account && is_virtual) || real_account_needed_for_cashier;
 
     return (
-        <MenuItems
-            id={'dt_cashier_tab'}
-            icon={
-                <>
-                    <Icon icon='IcCashier' className='header__icon' />
-                    {p2p_notification_count > 0 && (
-                        <Counter className='cashier__counter' count={p2p_notification_count} />
-                    )}
-                </>
-            }
-            text={localize('Cashier')}
-            link_to={!cashier_redirect ? routes.cashier : null}
-            handleClickCashier={handleClickCashier}
-        />
+        <AsDisabledWrapper
+            is_active={wallet_migration_status === 'in_progress'}
+            onAction={() => setWalletsMigrationInProgressPopup(true)}
+        >
+            <MenuItems
+                id={'dt_cashier_tab'}
+                icon={
+                    <>
+                        <Icon icon='IcCashier' className='header__icon' />
+                        {p2p_notification_count > 0 && (
+                            <Counter className='cashier__counter' count={p2p_notification_count} />
+                        )}
+                    </>
+                }
+                text={localize('Cashier')}
+                link_to={!cashier_redirect ? routes.cashier : null}
+                handleClickCashier={handleClickCashier}
+            />
+        </AsDisabledWrapper>
     );
 });
 

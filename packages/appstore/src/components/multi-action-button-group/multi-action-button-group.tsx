@@ -1,4 +1,6 @@
-import { Button } from '@deriv/components';
+import { Button, AsDisabledWrapper } from '@deriv/components';
+import { useWalletMigration } from '@deriv/hooks';
+import { useStore, observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { Actions } from 'Components/containers/trading-app-card-actions';
 import TradeButton from 'Components/trade-button';
@@ -11,30 +13,36 @@ import React from 'react';
  * @param { boolean } // indicates whether the current account type is real or demo
  * @returns {JSX.Element}
  * */
-const MultiActionButtonGroup = ({
-    link_to,
-    onAction,
-    is_buttons_disabled,
-    is_real,
-    is_wallet_migration_in_progress,
-    onDisabledAction,
-}: Pick<Actions, 'link_to' | 'onAction' | 'is_buttons_disabled' | 'is_real'> & {
-    is_wallet_migration_in_progress?: boolean;
-    onDisabledAction: () => void;
-}) => {
-    return (
-        <div className='multi-action-button-group'>
-            <Button
-                secondary
-                name={`${is_real ? 'transfer-btn' : 'topup-btn'}`}
-                onClick={is_wallet_migration_in_progress ? onDisabledAction : onAction}
-                is_disabled={is_buttons_disabled}
-                as_disabled={is_wallet_migration_in_progress}
-            >
-                {is_real ? localize('Transfer') : localize('Top up')}
-            </Button>
-            <TradeButton link_to={link_to} onAction={onAction} is_buttons_disabled={is_buttons_disabled} />
-        </div>
-    );
-};
+const MultiActionButtonGroup = observer(
+    ({
+        link_to,
+        onAction,
+        is_buttons_disabled,
+        is_real,
+    }: Pick<Actions, 'link_to' | 'onAction' | 'is_buttons_disabled' | 'is_real'>) => {
+        const { traders_hub } = useStore();
+        const { setWalletsMigrationInProgressPopup } = traders_hub;
+        const { status: wallet_migration_status } = useWalletMigration();
+
+        return (
+            <div className='multi-action-button-group'>
+                <AsDisabledWrapper
+                    is_active={wallet_migration_status === 'in_progress'}
+                    onAction={() => setWalletsMigrationInProgressPopup(true)}
+                >
+                    <Button
+                        secondary
+                        name={`${is_real ? 'transfer-btn' : 'topup-btn'}`}
+                        onClick={onAction}
+                        is_disabled={is_buttons_disabled}
+                    >
+                        {is_real ? localize('Transfer') : localize('Top up')}
+                    </Button>
+                </AsDisabledWrapper>
+                <TradeButton link_to={link_to} onAction={onAction} is_buttons_disabled={is_buttons_disabled} />
+            </div>
+        );
+    }
+);
+
 export default MultiActionButtonGroup;

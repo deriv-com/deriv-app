@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StaticUrl } from '@deriv/components';
+import { Text, StaticUrl, AsDisabledWrapper } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import './cfds-listing.scss';
@@ -198,14 +198,19 @@ const CFDsListing = () => {
                         );
                     })}
                     {can_get_more_cfd_mt5_accounts && (
-                        <GetMoreAccounts
-                            onClick={toggleAccountTypeModalVisibility}
-                            icon='IcAppstoreGetMoreAccounts'
-                            title={localize('Get more')}
-                            description={localize('Get more Deriv MT5 account with different type and jurisdiction.')}
-                            is_disabled={wallet_migration_status === 'in_progress'}
-                            onDisabledClick={() => setWalletsMigrationInProgressPopup(true)}
-                        />
+                        <AsDisabledWrapper
+                            is_active={wallet_migration_status === 'in_progress'}
+                            onAction={() => setWalletsMigrationInProgressPopup(true)}
+                        >
+                            <GetMoreAccounts
+                                onClick={toggleAccountTypeModalVisibility}
+                                icon='IcAppstoreGetMoreAccounts'
+                                title={localize('Get more')}
+                                description={localize(
+                                    'Get more Deriv MT5 account with different type and jurisdiction.'
+                                )}
+                            />
+                        </AsDisabledWrapper>
                     )}
                 </>
             ) : (

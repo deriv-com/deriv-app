@@ -1,4 +1,4 @@
-import { Button } from '@deriv/components';
+import { Button, AsDisabledWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import TradeButton from 'Components/trade-button/trade-button';
 import React from 'react';
@@ -19,58 +19,53 @@ export type Actions = {
     is_real?: boolean;
 };
 
-const TradingAppCardActions = ({
-    action_type,
-    link_to,
-    onAction,
-    is_external,
-    new_tab,
-    is_account_being_created,
-    is_buttons_disabled,
-    is_real,
-}: Actions) => {
-    const {
-        traders_hub: { setWalletsMigrationInProgressPopup },
-    } = useStore();
-    const { status } = useWalletMigration();
-    const is_wallet_migration_in_progress = status === 'in_progress';
+const TradingAppCardActions = observer(
+    ({
+        action_type,
+        link_to,
+        onAction,
+        is_external,
+        new_tab,
+        is_account_being_created,
+        is_buttons_disabled,
+        is_real,
+    }: Actions) => {
+        const { traders_hub } = useStore();
+        const { setWalletsMigrationInProgressPopup } = traders_hub;
+        const { status: wallet_migration_status } = useWalletMigration();
 
-    const disabledButtonAction = () => {
-        if (is_wallet_migration_in_progress) setWalletsMigrationInProgressPopup(true);
-        else onAction?.();
-    };
-
-    switch (action_type) {
-        case 'get':
-            return (
-                <Button
-                    disabled={is_account_being_created}
-                    primary_light
-                    onClick={disabledButtonAction}
-                    as_disabled={is_wallet_migration_in_progress}
-                >
-                    {localize('Get')}
-                </Button>
-            );
-        case 'trade':
-            return <TradeButton link_to={link_to} onAction={onAction} is_external={is_external} new_tab={new_tab} />;
-        case 'dxtrade':
-            return <TradeButton link_to={link_to} />;
-        case 'multi-action':
-            return (
-                <MultiActionButtonGroup
-                    link_to={link_to}
-                    onAction={onAction}
-                    is_buttons_disabled={is_buttons_disabled}
-                    is_real={is_real}
-                    is_wallet_migration_in_progress={is_wallet_migration_in_progress}
-                    onDisabledAction={disabledButtonAction}
-                />
-            );
-        case 'none':
-        default:
-            return null;
+        switch (action_type) {
+            case 'get':
+                return (
+                    <AsDisabledWrapper
+                        is_active={wallet_migration_status === 'in_progress'}
+                        onAction={() => setWalletsMigrationInProgressPopup(true)}
+                    >
+                        <Button disabled={is_account_being_created} primary_light onClick={onAction}>
+                            {localize('Get')}
+                        </Button>
+                    </AsDisabledWrapper>
+                );
+            case 'trade':
+                return (
+                    <TradeButton link_to={link_to} onAction={onAction} is_external={is_external} new_tab={new_tab} />
+                );
+            case 'dxtrade':
+                return <TradeButton link_to={link_to} />;
+            case 'multi-action':
+                return (
+                    <MultiActionButtonGroup
+                        link_to={link_to}
+                        onAction={onAction}
+                        is_buttons_disabled={is_buttons_disabled}
+                        is_real={is_real}
+                    />
+                );
+            case 'none':
+            default:
+                return null;
+        }
     }
-};
+);
 
-export default observer(TradingAppCardActions);
+export default TradingAppCardActions;

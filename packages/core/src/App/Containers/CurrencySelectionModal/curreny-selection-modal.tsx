@@ -1,6 +1,6 @@
 import React from 'react';
 import { getStatusBadgeConfig } from '@deriv/account';
-import { Button, Icon, Modal, Money, StatusBadge, Text } from '@deriv/components';
+import { Button, Icon, Modal, Money, StatusBadge, Text, AsDisabledWrapper } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getCurrencyName } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -44,8 +44,7 @@ const CurrencySelectionModal = ({
     has_any_real_account,
     setWalletsMigrationInProgressPopup,
 }: CurrencySelectionModalProps) => {
-    const { status } = useWalletMigration();
-    const is_wallet_migration_in_progress = status === 'in_progress';
+    const { status: wallet_migration_status } = useWalletMigration();
 
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         multipliers_account_status,
@@ -55,24 +54,6 @@ const CurrencySelectionModal = ({
 
     const hasSetCurrency = useHasSetCurrency();
     let timeout: ReturnType<typeof setTimeout>;
-
-    const disabledButtonAction = () => {
-        if (is_wallet_migration_in_progress) {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => {
-                setWalletsMigrationInProgressPopup(true);
-            }, 500);
-            closeModal();
-        } else {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => {
-                if (has_any_real_account && !hasSetCurrency) {
-                    toggleSetCurrencyModal();
-                } else openRealAccountSignup('manage');
-            }, 500);
-            closeModal();
-        }
-    };
 
     return (
         <Modal is_open={is_visible} toggleModal={closeModal} width='422px' height='422px'>
@@ -131,15 +112,34 @@ const CurrencySelectionModal = ({
                     })}
             </div>
             <div className='currency-selection-modal__bottom-controls'>
-                <Button
-                    className='block-button'
-                    onClick={disabledButtonAction}
-                    secondary
-                    large
-                    as_disabled={is_wallet_migration_in_progress}
+                <AsDisabledWrapper
+                    is_active={wallet_migration_status === 'in_progress'}
+                    onAction={() => {
+                        clearTimeout(timeout);
+                        timeout = setTimeout(() => {
+                            setWalletsMigrationInProgressPopup(true);
+                        }, 500);
+                        closeModal();
+                    }}
+                    className='currency-selection-modal__bottom-controls'
                 >
-                    {localize('Add or manage account')}
-                </Button>
+                    <Button
+                        className='block-button'
+                        onClick={() => {
+                            clearTimeout(timeout);
+                            timeout = setTimeout(() => {
+                                if (has_any_real_account && !hasSetCurrency) {
+                                    toggleSetCurrencyModal();
+                                } else openRealAccountSignup('manage');
+                            }, 500);
+                            closeModal();
+                        }}
+                        secondary
+                        large
+                    >
+                        {localize('Add or manage account')}
+                    </Button>
+                </AsDisabledWrapper>
             </div>
         </Modal>
     );

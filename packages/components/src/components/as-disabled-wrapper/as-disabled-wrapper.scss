@@ -1,0 +1,8 @@
+.as-disabled-wrapper {
+    cursor: not-allowed !important;
+    opacity: 0.32;
+
+    &__children {
+        cursor: inherit !important;
+    }
+}

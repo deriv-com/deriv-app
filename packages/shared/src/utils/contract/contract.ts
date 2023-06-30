@@ -65,9 +65,10 @@ export const getAccuBarriersDTraderDelay = (
     tick_update_timestamp: number | null,
     has_default_timeout: boolean
 ) => {
-    if (has_default_timeout) return getAccuBarriersDelayTimeMs(underlying);
-    const time_from_last_tick_update = barriers_update_timestamp - (tick_update_timestamp ?? barriers_update_timestamp);
-    return Math.max(getAccuBarriersDelayTimeMs(underlying) - time_from_last_tick_update, 0);
+    if (has_default_timeout || !tick_update_timestamp) return getAccuBarriersDelayTimeMs(underlying);
+    const target_update_time = tick_update_timestamp + getAccuBarriersDelayTimeMs(underlying);
+    const difference = target_update_time - barriers_update_timestamp;
+    return difference < 0 ? 0 : difference;
 };
 
 export const getAccuBarriersForContractDetails = (contract_info: TContractInfo) => {

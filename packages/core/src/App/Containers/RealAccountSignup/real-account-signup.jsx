@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Button, Text, Modal, DesktopWrapper, MobileDialog, MobileWrapper } from '@deriv/components';
-import { routes } from '@deriv/shared';
+import { ContentFlag, routes } from '@deriv/shared';
 import { RiskToleranceWarningModal, TestWarningModal } from '@deriv/account';
 import { localize, Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -72,7 +72,7 @@ const WizardHeading = ({ country_standpoint, currency, is_isle_of_man_residence,
                 country_standpoint.is_other_eu ||
                 country_standpoint.is_rest_of_eu
             ) {
-                return <Localize i18n_default_text='Add a real Deriv Multipliers account' />;
+                return <Localize i18n_default_text='Setup your account' />;
             }
             return <Localize i18n_default_text='Add a Deriv Financial account' />;
         case 'samoa':
@@ -85,6 +85,7 @@ const WizardHeading = ({ country_standpoint, currency, is_isle_of_man_residence,
 const RealAccountSignup = ({
     available_crypto_currencies,
     closeRealAccountSignup,
+    content_flag,
     country_standpoint,
     currency,
     deposit_real_account_signup_target,
@@ -114,6 +115,7 @@ const RealAccountSignup = ({
     state_value,
     is_trading_experience_incomplete,
     is_trading_assessment_for_new_user_enabled,
+    toggleIsTourOpen,
 }) => {
     const [current_action, setCurrentAction] = React.useState(null);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -415,6 +417,10 @@ const RealAccountSignup = ({
 
         if (modal_content[getActiveModalIndex()].action === 'signup') {
             setIsClosingCreateRealAccountModal(true);
+            if ([ContentFlag.EU_REAL, ContentFlag.EU_DEMO].includes(content_flag)) {
+                toggleIsTourOpen(true);
+            }
+
             return;
         }
         closeRealAccountSignup();
@@ -671,6 +677,7 @@ export default connect(({ ui, client, traders_hub, modules }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     cfd_score: client.cfd_score,
     closeRealAccountSignup: ui.closeRealAccountSignup,
+    content_flag: traders_hub.content_flag,
     country_standpoint: client.country_standpoint,
     currency: client.currency,
     deposit_real_account_signup_target: ui.deposit_real_account_signup_target,
@@ -700,4 +707,5 @@ export default connect(({ ui, client, traders_hub, modules }) => ({
     state_value: ui.real_account_signup,
     show_eu_related_content: traders_hub.show_eu_related_content,
     is_trading_assessment_for_new_user_enabled: ui.is_trading_assessment_for_new_user_enabled,
+    toggleIsTourOpen: traders_hub.toggleIsTourOpen,
 }))(withRouter(RealAccountSignup));

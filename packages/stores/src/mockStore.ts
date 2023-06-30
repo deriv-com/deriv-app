@@ -5,28 +5,11 @@ const mock = (): TStores & { is_mock: boolean } => {
     return {
         is_mock: true,
         client: {
-            fetchResidenceList: jest.fn(),
-            fetchStatesList: jest.fn(),
-            getChangeableFields: jest.fn(),
-            residence_list: [
-                {
-                    text: 'Text',
-                    value: 'value',
-                },
-            ],
-            states_list: [
-                {
-                    text: 'Text',
-                    value: 'value',
-                },
-            ],
             account_settings: {},
             accounts: {},
-            is_social_signup: false,
             active_account_landing_company: '',
             trading_platform_available_accounts: [],
             account_limits: {
-                account_balance: 300000,
                 daily_transfers: {
                     dxtrade: {
                         allowed: 0,
@@ -41,68 +24,6 @@ const mock = (): TStores & { is_mock: boolean } => {
                         available: 0,
                     },
                 },
-                lifetime_limit: 13907.43,
-                market_specific: {
-                    commodities: [
-                        {
-                            name: 'Commodities',
-                            payout_limit: 5000,
-                            profile_name: 'moderate_risk',
-                            turnover_limit: 50000,
-                        },
-                    ],
-                    cryptocurrency: [
-                        {
-                            name: 'Cryptocurrencies',
-                            payout_limit: 100.0,
-                            profile_name: 'extreme_risk',
-                            turnover_limit: 1000.0,
-                        },
-                    ],
-                    forex: [
-                        {
-                            name: 'Smart FX',
-                            payout_limit: 5000,
-                            profile_name: 'moderate_risk',
-                            turnover_limit: 50000,
-                        },
-                        {
-                            name: 'Major Pairs',
-                            payout_limit: 20000,
-                            profile_name: 'medium_risk',
-                            turnover_limit: 100000,
-                        },
-                        {
-                            name: 'Minor Pairs',
-                            payout_limit: 5000,
-                            profile_name: 'moderate_risk',
-                            turnover_limit: 50000,
-                        },
-                    ],
-                    indices: [
-                        {
-                            name: 'Stock Indices',
-                            payout_limit: 20000,
-                            profile_name: 'medium_risk',
-                            turnover_limit: 100000,
-                        },
-                    ],
-                    synthetic_index: [
-                        {
-                            name: 'Synthetic Indices',
-                            payout_limit: 50000,
-                            profile_name: 'low_risk',
-                            turnover_limit: 500000,
-                        },
-                    ],
-                },
-                num_of_days: 30,
-                num_of_days_limit: 13907.43,
-                open_positions: 100,
-                payout: 50000,
-                remainder: 13907.43,
-                withdrawal_for_x_days_monetary: 0,
-                withdrawal_since_inception_monetary: 0,
             },
             account_status: {
                 authentication: {
@@ -128,7 +49,6 @@ const mock = (): TStores & { is_mock: boolean } => {
                     document: {
                         status: 'verified',
                     },
-
                     identity: {
                         services: {
                             idv: {
@@ -193,8 +113,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             current_fiat_currency: '',
             cfd_score: 0,
             setCFDScore: jest.fn(),
-            getLimits: jest.fn(() => Promise.resolve({ get_limits: {} })),
-            has_any_real_account: false,
+            getLimits: jest.fn(),
             has_active_real_account: false,
             has_logged_out: false,
             has_maltainvest_account: false,
@@ -204,10 +123,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_deposit_lock: false,
             is_dxtrade_allowed: false,
             is_eu: false,
-            is_eu_country: false,
-            is_uk: false,
-            has_residence: false,
-            is_fully_authenticated: false,
             is_financial_account: false,
             is_financial_information_incomplete: false,
             is_low_risk: false,
@@ -234,11 +149,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             responseTradingPlatformAccountsList: jest.fn(),
             standpoint: {
                 iom: '',
-                svg: '',
                 malta: '',
-                maltainvest: '',
-                gaming_company: '',
-                financial_company: '',
             },
             switchAccount: jest.fn(),
             verification_code: {
@@ -284,8 +195,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             setTwoFAStatus: jest.fn(),
             has_changed_two_fa: false,
             setTwoFAChangedStatus: jest.fn(),
+            has_any_real_account: false,
             real_account_creation_unlock_date: 0,
             setPrevAccountType: jest.fn(),
+            prev_account_type: 'demo',
         },
         common: {
             error: {
@@ -300,8 +213,6 @@ const mock = (): TStores & { is_mock: boolean } => {
                 redirectOnClick: jest.fn(),
                 setError: jest.fn(),
             },
-            current_language: 'EN',
-            isCurrentLanguage: jest.fn(),
             is_from_derivgo: false,
             has_error: false,
             platform: '',
@@ -309,6 +220,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             routeTo: jest.fn(),
             changeCurrentLanguage: jest.fn(),
             changeSelectedLanguage: jest.fn(),
+            current_language: 'EN',
             is_network_online: false,
             server_time: undefined,
             is_language_changing: false,
@@ -321,6 +233,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_cashier_visible: false,
             is_closing_create_real_account_modal: false,
             is_dark_mode_on: false,
+            is_from_signup_account: false,
             is_language_settings_modal_on: false,
             is_mobile: false,
             is_reports_visible: false,
@@ -335,6 +248,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             notification_messages_ui: null,
             openRealAccountSignup: jest.fn(),
             setIsClosingCreateRealAccountModal: jest.fn(),
+            setIsFromSignupAccount: jest.fn(),
             setRealAccountSignupEnd: jest.fn(),
             shouldNavigateAfterChooseCrypto: jest.fn(),
             toggleLanguageSettingsModal: jest.fn(),
@@ -348,9 +262,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleReports: jest.fn(),
             setSubSectionIndex: jest.fn(),
             sub_section_index: 0,
-            toggleShouldShowRealAccountsList: jest.fn(),
             toggleReadyToDepositModal: jest.fn(),
-            is_tablet: false,
             is_ready_to_deposit_modal_visible: false,
             is_real_acc_signup_on: false,
             is_need_real_account_for_cashier_modal_visible: false,
@@ -377,6 +289,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleRegulatorsCompareModal: jest.fn(),
             selected_region: '',
             is_demo: false,
+            is_demo_low_risk: false,
             financial_restricted_countries: false,
             selected_account_type: 'real',
             no_CR_account: false,
@@ -385,6 +298,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             openFailedVerificationModal: jest.fn(),
             setTogglePlatformType: jest.fn(),
             toggleAccountTransferModal: jest.fn(),
+            toggleIsTourOpen: jest.fn(),
             selectAccountType: jest.fn(),
         },
         menu: {
@@ -401,7 +315,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             setP2POrderProps: jest.fn(),
             showAccountSwitchToRealNotification: jest.fn(),
             setP2PRedirectTo: jest.fn(),
-            addNotificationMessageByKey: jest.fn(),
         },
         portfolio: {
             active_positions: [],

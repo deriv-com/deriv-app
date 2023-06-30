@@ -66,22 +66,22 @@ const StaticDashboard = ({
     const { client, traders_hub } = useStore();
     const { content_flag, CFDs_restricted_countries, financial_restricted_countries } = traders_hub;
     const { is_eu_country, is_logged_in } = client;
-
-    const [index, setIndex] = React.useState<number>(0);
-
-    const Divider = () => <div className='divider' />;
-
     const eu_user =
         content_flag === ContentFlag.LOW_RISK_CR_EU ||
         content_flag === ContentFlag.EU_REAL ||
         content_flag === ContentFlag.EU_DEMO;
-
     const is_eu_user = (is_logged_in && eu_user) || (!is_logged_in && is_eu_country);
 
+    const [index, setIndex] = React.useState<number>(is_eu_user ? 1 : 0);
+
+    const Divider = () => <div className='divider' />;
+
     const toggle_options = [
-        { text: `${is_eu_user ? 'Multipliers' : 'Options & Multipliers'}`, value: 0 },
-        { text: 'CFDs', value: 1 },
+        { text: `${is_eu_user ? localize('Multipliers') : localize('Options & Multipliers')}`, value: 0 },
+        { text: localize('CFDs'), value: 1 },
     ];
+
+    const toggle_options_eu = [...toggle_options].reverse();
 
     React.useEffect(() => {
         const change_index_interval_id = setInterval(() => {
@@ -120,7 +120,7 @@ const StaticDashboard = ({
                                 {isMobile() ? (
                                     <React.Fragment>
                                         <ButtonToggle
-                                            buttons_arr={toggle_options}
+                                            buttons_arr={is_eu_user ? toggle_options_eu : toggle_options}
                                             className='static-dashboard-wrapper__header--toggle-account'
                                             has_rounded_button
                                             is_animated
@@ -339,7 +339,7 @@ const StaticDashboard = ({
                             {isMobile() ? (
                                 <React.Fragment>
                                     <ButtonToggle
-                                        buttons_arr={toggle_options}
+                                        buttons_arr={is_eu_user ? toggle_options_eu : toggle_options}
                                         className='static-dashboard-wrapper__header--toggle-account'
                                         has_rounded_button
                                         is_animated

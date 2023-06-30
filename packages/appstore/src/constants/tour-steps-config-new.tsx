@@ -77,6 +77,7 @@ export const getTourStepConfigHighRisk = (): Step[] => [
         disableBeacon: true,
         disableOverlayClose: true,
     },
+    //TODO: Commented out this session to remove click on OnBoarding to repeat tour, will not remove it for future reference
     {
         title: (
             <React.Fragment>

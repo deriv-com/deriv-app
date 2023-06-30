@@ -13,7 +13,14 @@ import CitizenshipForm from '../CitizenshipModal/set-citizenship-form.jsx';
 import 'Sass/app/modules/account-signup.scss';
 import validateSignupFields from './validate-signup-fields.jsx';
 
-const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, residence_list }) => {
+const AccountSignup = ({
+    enableApp,
+    isModalVisible,
+    clients_country,
+    onSignup,
+    residence_list,
+    setIsFromSignupAccount,
+}) => {
     const signupInitialValues = { citizenship: '', password: '', residence: '' };
     const { is_appstore } = React.useContext(PlatformContext);
     const [api_error, setApiError] = React.useState(false);
@@ -62,6 +69,7 @@ const AccountSignup = ({ enableApp, isModalVisible, clients_country, onSignup, r
             setApiError(error);
         } else {
             isModalVisible(false);
+            setIsFromSignupAccount(true);
             enableApp();
         }
     };
@@ -157,6 +165,7 @@ AccountSignup.propTypes = {
     onSignup: PropTypes.func,
     residence_list: PropTypes.array,
     isModalVisible: PropTypes.func,
+    setIsFromSignupAccount: PropTypes.func,
 };
 
 const AccountSignupModal = ({
@@ -170,6 +179,7 @@ const AccountSignupModal = ({
     onSignup,
     residence_list,
     toggleAccountSignupModal,
+    setIsFromSignupAccount,
 }) => {
     React.useEffect(() => {
         // a logged in user should not be able to create a new account
@@ -193,6 +203,7 @@ const AccountSignupModal = ({
                 residence_list={residence_list}
                 isModalVisible={toggleAccountSignupModal}
                 enableApp={enableApp}
+                setIsFromSignupAccount={setIsFromSignupAccount}
             />
         </Dialog>
     );
@@ -209,6 +220,7 @@ AccountSignupModal.propTypes = {
     onSignup: PropTypes.func,
     residence_list: PropTypes.arrayOf(PropTypes.object),
     toggleAccountSignupModal: PropTypes.func,
+    setIsFromSignupAccount: PropTypes.func,
 };
 
 export default connect(({ ui, client }) => ({
@@ -222,4 +234,5 @@ export default connect(({ ui, client }) => ({
     residence_list: client.residence_list,
     clients_country: client.clients_country,
     logout: client.logout,
+    setIsFromSignupAccount: ui.setIsFromSignupAccount,
 }))(AccountSignupModal);

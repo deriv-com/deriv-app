@@ -10,7 +10,7 @@ import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import { localize } from '@deriv/translations';
-import { CFD_PLATFORMS, ContentFlag, getStaticUrl } from '@deriv/shared';
+import { CFD_PLATFORMS, ContentFlag, getStaticUrl, Jurisdiction } from '@deriv/shared';
 
 const TradingAppCard = ({
     availability,
@@ -118,7 +118,10 @@ const TradingAppCard = ({
                         onAction={onAction}
                         is_external={is_external}
                         new_tab={new_tab}
-                        is_buttons_disabled={!!mt5_acc_auth_status}
+                        is_buttons_disabled={
+                            //For MF, we enable the button even if account is not authenticated. Rest of jurisdictions, disable the button for pending, failed and needs verification
+                            !is_eu_user && !!mt5_acc_auth_status
+                        }
                         is_account_being_created={!!is_account_being_created}
                         is_real={is_real}
                     />

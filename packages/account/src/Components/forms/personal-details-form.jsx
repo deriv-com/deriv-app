@@ -36,7 +36,7 @@ const PersonalDetailsForm = ({
 }) => {
     const {
         is_virtual,
-        is_mf,
+        is_eu_user,
         is_svg,
         is_qualified_for_idv,
         should_hide_helper_image,
@@ -66,7 +66,7 @@ const PersonalDetailsForm = ({
     }, [should_close_tooltip, handleToolTipStatus, setShouldCloseTooltip]);
 
     const getNameAndDobLabels = () => {
-        const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_qualified_for_idv;
+        const is_asterisk_needed = is_svg || is_eu_user || is_rendered_for_onfido || is_qualified_for_idv;
         const first_name_label = is_appstore || is_asterisk_needed ? localize('First name*') : localize('First name');
         const last_name_label = is_appstore
             ? localize('Family name*')
@@ -121,7 +121,7 @@ const PersonalDetailsForm = ({
                 side_note={<PoiNameDobExampleIcon />}
             >
                 <fieldset className='account-form__fieldset'>
-                    {'salutation' in values && (
+                    {'salutation' in values && !is_eu_user && (
                         <div>
                             <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
                                 {is_virtual ? (
@@ -225,7 +225,9 @@ const PersonalDetailsForm = ({
                                             data-lpignore='true'
                                             autoComplete={autocomplete_value} // prevent chrome autocomplete
                                             type='text'
-                                            label={is_mf ? localize('Place of birth*') : localize('Place of birth')}
+                                            label={
+                                                is_eu_user ? localize('Place of birth*') : localize('Place of birth')
+                                            }
                                             error={touched.place_of_birth && errors.place_of_birth}
                                             list_items={residence_list}
                                             onItemSelection={({ value, text }) =>
@@ -240,7 +242,9 @@ const PersonalDetailsForm = ({
                                             placeholder={localize('Place of birth')}
                                             name={field.name}
                                             disabled={isFieldImmutable('place_of_birth', editable_fields)}
-                                            label={is_mf ? localize('Place of birth*') : localize('Place of birth')}
+                                            label={
+                                                is_eu_user ? localize('Place of birth*') : localize('Place of birth')
+                                            }
                                             list_items={residence_list}
                                             value={values.place_of_birth}
                                             use_text={true}
@@ -270,7 +274,7 @@ const PersonalDetailsForm = ({
                                             data-lpignore='true'
                                             autoComplete={autocomplete_value} // prevent chrome autocomplete
                                             type='text'
-                                            label={is_mf ? localize('Citizenship*') : localize('Citizenship')}
+                                            label={is_eu_user ? localize('Citizenship*') : localize('Citizenship')}
                                             error={touched.citizen && errors.citizen}
                                             disabled={
                                                 (values?.citizen && is_fully_authenticated) ||
@@ -295,7 +299,7 @@ const PersonalDetailsForm = ({
                                                 isFieldImmutable('citizen', editable_fields) ||
                                                 (values?.citizen && has_real_account)
                                             }
-                                            label={is_mf ? localize('Citizenship*') : localize('Citizenship')}
+                                            label={is_eu_user ? localize('Citizenship*') : localize('Citizenship')}
                                             list_items={residence_list}
                                             value={values.citizen}
                                             use_text={true}
@@ -318,10 +322,14 @@ const PersonalDetailsForm = ({
                         <FormInputField
                             name='phone'
                             label={
-                                is_svg || is_appstore || is_mf ? localize('Phone number*') : localize('Phone number')
+                                is_svg || is_appstore || is_eu_user
+                                    ? localize('Phone number*')
+                                    : localize('Phone number')
                             }
                             placeholder={
-                                is_svg || is_appstore || is_mf ? localize('Phone number*') : localize('Phone number')
+                                is_svg || is_appstore || is_eu_user
+                                    ? localize('Phone number*')
+                                    : localize('Phone number')
                             }
                             disabled={
                                 isFieldImmutable('phone', editable_fields) ||
@@ -349,7 +357,9 @@ const PersonalDetailsForm = ({
                                                     autoComplete={autocomplete_value} // prevent chrome autocomplete
                                                     type='text'
                                                     label={
-                                                        is_mf ? localize('Tax residence*') : localize('Tax residence')
+                                                        is_eu_user
+                                                            ? localize('Tax residence*')
+                                                            : localize('Tax residence')
                                                     }
                                                     error={touched.tax_residence && errors.tax_residence}
                                                     list_items={residence_list}
@@ -366,7 +376,9 @@ const PersonalDetailsForm = ({
                                                     placeholder={localize('Tax residence')}
                                                     name={field.name}
                                                     label={
-                                                        is_mf ? localize('Tax residence*') : localize('Tax residence')
+                                                        is_eu_user
+                                                            ? localize('Tax residence*')
+                                                            : localize('Tax residence')
                                                     }
                                                     list_items={residence_list}
                                                     value={values.tax_residence}
@@ -410,7 +422,7 @@ const PersonalDetailsForm = ({
                                     <FormInputField
                                         name='tax_identification_number'
                                         label={
-                                            is_mf
+                                            is_eu_user
                                                 ? localize('Tax Identification Number*')
                                                 : localize('Tax Identification Number')
                                         }
@@ -461,7 +473,9 @@ const PersonalDetailsForm = ({
                                     <DesktopWrapper>
                                         <Dropdown
                                             placeholder={
-                                                is_mf ? localize('Employment status*') : localize('Employment status')
+                                                is_eu_user
+                                                    ? localize('Employment status*')
+                                                    : localize('Employment status')
                                             }
                                             is_align_text_left
                                             name='employment_status'
@@ -478,7 +492,9 @@ const PersonalDetailsForm = ({
                                             placeholder={localize('Please select')}
                                             name='employment_status'
                                             label={
-                                                is_mf ? localize('Employment status*') : localize('Employment status')
+                                                is_eu_user
+                                                    ? localize('Employment status*')
+                                                    : localize('Employment status')
                                             }
                                             list_items={getEmploymentStatusList()}
                                             value={values.employment_status}
@@ -531,7 +547,7 @@ const PersonalDetailsForm = ({
                                         <DesktopWrapper>
                                             <Dropdown
                                                 placeholder={
-                                                    is_mf
+                                                    is_eu_user
                                                         ? localize('Account opening reason*')
                                                         : localize('Account opening reason')
                                                 }
@@ -553,7 +569,7 @@ const PersonalDetailsForm = ({
                                                 placeholder={localize('Please select')}
                                                 name={field.name}
                                                 label={
-                                                    is_mf
+                                                    is_eu_user
                                                         ? localize('Account opening reason*')
                                                         : localize('Account opening reason')
                                                 }

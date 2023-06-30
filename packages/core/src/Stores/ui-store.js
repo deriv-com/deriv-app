@@ -79,6 +79,7 @@ export default class UIStore extends BaseStore {
 
     // real account signup
     is_real_acc_signup_on = false;
+    is_from_signup_account = false;
     real_account_signup_target = undefined;
     deposit_real_account_signup_target = undefined;
     has_real_account_signup_ended = false;
@@ -256,6 +257,7 @@ export default class UIStore extends BaseStore {
             is_closing_create_real_account_modal: observable,
             is_dark_mode_on: observable,
             is_deriv_account_needed_modal_visible: observable,
+            is_from_signup_account: observable,
 
             is_history_tab_active: observable,
             is_landscape: observable,
@@ -343,6 +345,7 @@ export default class UIStore extends BaseStore {
             setHasOnlyForwardingContracts: action.bound,
             setIsAcuityModalOpen: action.bound,
             setIsClosingCreateRealAccountModal: action.bound,
+            setIsFromSignupAccount: action.bound,
             setIsNativepickerVisible: action.bound,
             setReportsTabIndex: action.bound,
             toggleWelcomeModal: action.bound,
@@ -523,6 +526,10 @@ export default class UIStore extends BaseStore {
         } else {
             this.account_switcher_disabled_message = '';
         }
+    }
+
+    setIsFromSignupAccount(is_from_signup_account) {
+        this.is_from_signup_account = is_from_signup_account;
     }
 
     setPurchaseState(index) {

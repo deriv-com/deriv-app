@@ -688,7 +688,7 @@ export default class NotificationStore extends BaseStore {
     resetVirtualBalanceNotification(loginid) {
         const { accounts, is_logged_in } = this.root_store.client;
         if (!is_logged_in) return;
-        if (!accounts[loginid].is_virtual) return;
+        if (!accounts[loginid]?.is_virtual) return;
         const min_reset_limit = 1000;
         const max_reset_limit = 999000;
         const balance = parseInt(accounts[loginid].balance);

@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CFDCompareAccountsDescription from '../cfd-compare-accounts-description';
 
-describe('<CFDCompareAccountsDescription', () => {
+describe('<CFDCompareAccountsDescription />', () => {
     const mocked_props = {
         trading_platforms: {
             market_type: 'gaming',

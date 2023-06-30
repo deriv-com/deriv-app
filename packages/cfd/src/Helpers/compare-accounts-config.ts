@@ -88,9 +88,9 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
         case 'all_svg':
             return is_demo ? localize('Swap-Free Demo') : localize('Swap-Free - SVG');
         case 'dxtrade':
-            return localize('Deriv X');
+            return is_demo ? localize('Deriv X Demo') : localize('Deriv X');
         default:
-            return localize('CFDs');
+            return is_demo ? localize('CFDs Demo') : localize('CFDs');
     }
 };
 

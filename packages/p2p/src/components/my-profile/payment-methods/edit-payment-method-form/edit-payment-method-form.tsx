@@ -16,12 +16,12 @@ const EditPaymentMethodForm = () => {
     const { showModal } = useModalManagerContext();
     const {
         initial_values,
-        payment_method_to_edit,
         payment_method_info,
-        setSelectedPaymentMethod,
-        setSelectedPaymentMethodDisplayName,
+        payment_method_to_edit,
         selected_payment_method_fields,
         setPaymentMethodToEdit,
+        setSelectedPaymentMethod,
+        setSelectedPaymentMethodDisplayName,
         setShouldShowEditPaymentMethodForm,
         updatePaymentMethod,
         validatePaymentMethodFields,

@@ -17,7 +17,7 @@ const AddPaymentMethod = ({
     should_show_page_return = true,
     should_show_separated_footer = true,
 }: TAddPaymentMethodProps) => {
-    const { my_profile_store } = useStores();
+    const { general_store, my_profile_store } = useStores();
     const { hideModal, showModal } = useModalManagerContext();
 
     const payment_method_form = my_profile_store.selected_payment_method ? (
@@ -32,7 +32,7 @@ const AddPaymentMethod = ({
                 {should_show_page_return && (
                     <PageReturn
                         onClick={() => {
-                            if (my_profile_store.selected_payment_method.length > 0) {
+                            if (general_store?.formik_ref?.dirty) {
                                 showModal({
                                     key: 'CancelAddPaymentMethodModal',
                                 });

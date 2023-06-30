@@ -3,10 +3,14 @@ import { screen, render } from '@testing-library/react';
 import { useStores } from 'Stores/index';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AddPaymentMethod from '../add-payment-method';
+import userEvent from '@testing-library/user-event';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     general_store: {
         active_index: 3,
+        formik_ref: {
+            dirty: false,
+        },
         setFormikRef: jest.fn(),
     },
     my_profile_store: {
@@ -38,7 +42,7 @@ jest.mock('Components/modal-manager/modal-manager-context', () => ({
 }));
 
 describe('<AddPaymentMethod />', () => {
-    it('render the AddPaymentMethod component', () => {
+    it('should render the AddPaymentMethod component', () => {
         render(<AddPaymentMethod />);
 
         expect(screen.getByTestId('dt_page_return_icon')).toBeInTheDocument();
@@ -47,5 +51,28 @@ describe('<AddPaymentMethod />', () => {
         expect(screen.getByText('Instructions')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Cancel' })).toBeInTheDocument();
         expect(screen.getByRole('button', { name: 'Add' })).toBeInTheDocument();
+    });
+
+    it('should call showModal when clicking page return icon if selected_payment_method length > 0', () => {
+        render(<AddPaymentMethod />);
+
+        const pageReturnIcon = screen.getByTestId('dt_page_return_icon');
+
+        userEvent.click(pageReturnIcon);
+
+        expect(mock_store.my_profile_store.hideAddPaymentMethodForm).toBeCalled();
+        expect(mock_modal_manager.hideModal).toBeCalled();
+    });
+
+    it('should call showModal when clicking page return icon if selected_payment_method length > 0', () => {
+        mock_store.general_store.formik_ref.dirty = true;
+
+        render(<AddPaymentMethod />);
+
+        const pageReturnIcon = screen.getByTestId('dt_page_return_icon');
+
+        userEvent.click(pageReturnIcon);
+
+        expect(mock_modal_manager.showModal).toBeCalledWith({ key: 'CancelAddPaymentMethodModal' });
     });
 });

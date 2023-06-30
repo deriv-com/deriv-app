@@ -4,7 +4,7 @@ import { Checkbox, Dropdown, Icon, Text } from '@deriv/components';
 import { isEmptyObject } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import { TPaymentMethodFieldProps } from 'Types';
+import { TPaymentMethod } from 'Types';
 
 type TPaymentMethodCardProps = {
     add_payment_method?: string;
@@ -16,17 +16,7 @@ type TPaymentMethodCardProps = {
     medium?: boolean;
     onClick?: () => void;
     onClickAdd?: () => void;
-    payment_method?: {
-        ID: string;
-        display_name: string;
-        fields: {
-            account?: TPaymentMethodFieldProps;
-            bank_name?: TPaymentMethodFieldProps;
-            name?: TPaymentMethodFieldProps;
-        };
-        is_enabled: number;
-        method: string;
-    };
+    payment_method?: TPaymentMethod;
     show_payment_method_name?: boolean;
     small?: boolean;
     style?: object;

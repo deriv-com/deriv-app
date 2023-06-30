@@ -1,16 +1,32 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Button, Dropdown, Input, Text } from '@deriv/components';
+import { useLocalStorageData } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 import { useWS } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
 import './mock-dialog.scss';
 
+type MockServerStatus = 'online' | 'connecting' | 'offline';
+
+type MockServerData = {
+    session_id: string;
+    is_mockserver_enabled: boolean;
+};
+
+const default_mock_data = {
+    session_id: '',
+    is_mockserver_enabled: false,
+};
+
 const MockDialog = () => {
     const WS = useWS();
     const { client } = useStore();
-    const [session_id, setSessionId] = React.useState(localStorage.getItem('session_id') || '');
     const [session_list, setSessionList] = React.useState<string[]>([]);
+    const [mock_server_data, setMockServerData] = useLocalStorageData<MockServerData>(
+        'mock_server_data',
+        default_mock_data
+    );
 
     React.useEffect(() => {
         getSessionList();
@@ -32,6 +48,7 @@ const MockDialog = () => {
         const response = await WS.send({
             generate_mock: 1,
             login: 1,
+            session_id: mock_server_data?.session_id,
         });
 
         delete response.echo_req;
@@ -53,22 +70,22 @@ const MockDialog = () => {
 
     const handleSessionIdChange = (id: string) => {
         window.localStorage.setItem('session_id', id);
-        if (id !== session_id) {
+        if (id !== mock_server_data.session_id) {
             WS.closeAndOpenNewConnection(getLanguage(), id);
-            setSessionId(id);
+            setMockServerData(prev => ({ ...prev, session_id: id }));
         }
     };
 
     const handleClearAll = () => {
         window.localStorage.removeItem('session_id');
-        setSessionId('');
+        setMockServerData(prev => ({ ...prev, session_id: '' }));
         WS.closeAndOpenNewConnection(getLanguage(), '');
     };
 
-    const getServerStatus = (): 'online' | 'connecting' | 'offline' => {
-        if (session_id) {
+    const getServerStatus = (): MockServerStatus => {
+        if (mock_server_data?.session_id && WS.hasReadyState(1)) {
             return 'online';
-        } else if (session_id && !client.is_logged_in && client.is_logging_in) {
+        } else if (mock_server_data?.session_id && (!client.is_logged_in || client.is_logging_in)) {
             return 'connecting';
         }
         return 'offline';
@@ -94,7 +111,8 @@ const MockDialog = () => {
                             text: s,
                             value: s,
                         }))}
-                        value={session_id}
+                        onChange={e => setMockServerData(prev => ({ ...prev, session_id: e.target.value }))}
+                        value={mock_server_data?.session_id}
                         is_align_text_left
                     />
                     <Button>
@@ -119,8 +137,8 @@ const MockDialog = () => {
                     className='mock-dialog__form--input'
                     type='text'
                     label='Session Id'
-                    value={session_id}
-                    onChange={e => setSessionId(e.target.value)}
+                    value={mock_server_data?.session_id}
+                    onChange={e => setMockServerData(prev => ({ ...prev, session_id: e.target.value }))}
                 />
                 <div className='mock-dialog__form--submit-container'>
                     <Button disabled={getServerStatus() === 'offline'} onClick={() => handleMockLogin()}>
@@ -130,7 +148,7 @@ const MockDialog = () => {
                 <div className=''>
                     <Button
                         disabled={getServerStatus() === 'offline'}
-                        onClick={() => handleSessionIdChange(session_id)}
+                        onClick={() => handleSessionIdChange(mock_server_data?.session_id)}
                     >
                         Connect
                     </Button>

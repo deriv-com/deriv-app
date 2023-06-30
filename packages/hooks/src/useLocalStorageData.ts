@@ -6,12 +6,15 @@ const getInitialData = (key: string) => {
 };
 
 /**
- * This hook will sync up any localStorage data into a react state.
+ * This hook will sync up any localStorage data into a generic typed reactive state.
  * @param key LocalStorage key
- * @returns
+ * @returns [get, set, clear]
  */
-const useLocalStorageData = <T>(key: string) => {
-    const [data, setData] = React.useState<T | null>(getInitialData(key));
+const useLocalStorageData = <T>(
+    key: string,
+    default_data: T
+): [T, React.Dispatch<React.SetStateAction<T>>, VoidFunction] => {
+    const [data, setData] = React.useState<T>(getInitialData(key) || default_data);
 
     React.useEffect(() => {
         if (data) {
@@ -19,12 +22,12 @@ const useLocalStorageData = <T>(key: string) => {
         }
     }, [key, data]);
 
-    const clear = () => {
+    const clearData = () => {
         localStorage.removeItem(key);
-        setData(null);
+        setData(default_data);
     };
 
-    return { data, setData, clear };
+    return [data, setData, clearData];
 };
 
 export default useLocalStorageData;

@@ -60,9 +60,19 @@ const BinarySocketBase = (() => {
         client_store = client;
     };
 
-    const openNewConnection = (language = getLanguage(), mock_id = '') => {
-        const parsed_session_id = localStorage.getItem('session_id') || '';
-        const session_id = mock_id || parsed_session_id;
+    const getMockServerConfig = () => {
+        const mock_server_config = localStorage.getItem('mock_server_data');
+        return mock_server_config
+            ? JSON.parse(mock_server_config)
+            : {
+                  session_id: '',
+                  is_mockserver_enabled: false,
+              };
+    };
+
+    const openNewConnection = (language = getLanguage()) => {
+        const mock_server_config = getMockServerConfig();
+        const session_id = mock_server_config?.session_id || '';
 
         if (wrong_app_id === getAppId()) return;
 

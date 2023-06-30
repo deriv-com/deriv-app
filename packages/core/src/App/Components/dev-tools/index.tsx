@@ -3,12 +3,15 @@ import MockDialog from './mock-dialog';
 import { useLocalStorageData } from '@deriv/hooks';
 
 const DevTools = () => {
-    const { data, setData } = useLocalStorageData<boolean>('is_mockserver_enabled');
+    const [show_mockserver_panel, setShowMockServerPanel] = useLocalStorageData<boolean>(
+        'show_mockserver_panel',
+        false
+    );
 
     React.useEffect(() => {
         const handleShortcutKey = (event: globalThis.KeyboardEvent) => {
-            if (event.ctrlKey && event.key === '3') {
-                setData(prev => !prev);
+            if (event.ctrlKey && event.key === '0') {
+                setShowMockServerPanel(prev => !prev);
             }
         };
 
@@ -17,9 +20,9 @@ const DevTools = () => {
         return () => {
             window.removeEventListener('keydown', handleShortcutKey);
         };
-    }, [setData]);
+    }, [setShowMockServerPanel]);
 
-    if (data) {
+    if (show_mockserver_panel) {
         return <MockDialog />;
     }
 

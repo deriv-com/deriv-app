@@ -3,6 +3,10 @@
 
     .dc-mobile-full-page-modal {
         background: var(--general-main-2);
+        &__body {
+            overflow-y: scroll;
+            height: calc(100vh - 26rem);
+        }
     }
 
     .dc-page-overlay {
@@ -18,7 +22,6 @@
         display: flex;
         flex-wrap: wrap;
         width: 100%;
-        height: calc(100vh - 25rem);
         align-content: flex-start;
     }
     &__icon-wrapper {

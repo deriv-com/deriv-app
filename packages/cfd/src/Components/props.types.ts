@@ -264,11 +264,11 @@ export type TTradingPlatformAccounts = {
     platform?: 'dxtrade' | string;
 };
 
-export type TIconData = {
+export type TInstrumentsIcon = {
     icon:
         | 'DerivedFX'
         | 'Synthetics'
-        | 'BasketIndices'
+        | 'Baskets'
         | 'Stocks'
         | 'StockIndices'
         | 'Commodities'
@@ -277,6 +277,8 @@ export type TIconData = {
         | 'ETF';
     text: string;
     highlighted: boolean;
+    className?: string;
+    is_asterik?: boolean;
 };
 
 export type TAvailableCFDAccounts = {
@@ -290,6 +292,8 @@ export type TAvailableCFDAccounts = {
 
 export type TCompareAccountsCard = {
     trading_platforms: TModifiedTradingPlatformAvailableAccount;
+    is_eu_user?: boolean;
+    is_demo?: boolean;
 };
 
 export type TJurisdictionData = Record<

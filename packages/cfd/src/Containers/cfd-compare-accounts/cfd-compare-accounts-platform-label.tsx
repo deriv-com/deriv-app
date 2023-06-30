@@ -5,7 +5,7 @@ import { TCompareAccountsCard } from 'Components/props.types';
 import { getPlatformLabel, getHeaderColor, platfromsHeaderLabel } from '../../Helpers/compare-accounts-config';
 
 const CFDCompareAccountsPlatformLabel = ({ trading_platforms }: TCompareAccountsCard) => {
-    const platform_label = getPlatformLabel(trading_platforms.platform || '');
+    const platform_label = getPlatformLabel(trading_platforms.platform);
     const header_color = getHeaderColor(platform_label);
 
     return (

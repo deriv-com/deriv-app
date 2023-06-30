@@ -125,7 +125,7 @@ export default function MobileTransactionCards({ transaction }: { transaction: T
                                 [`${PARENT_CLASS}__card__profit--loss`]: transaction?.profit < 0,
                             })}
                         >
-                            {Math.abs(transaction?.profit ?? 0)}
+                            {Math.abs(transaction?.profit ?? 0).toFixed(2)}
                         </div>
                     }
                     right_aligned

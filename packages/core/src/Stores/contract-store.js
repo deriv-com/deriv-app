@@ -204,7 +204,16 @@ export default class ContractStore extends BaseStore {
     createBarriersArray = (contract_info, is_dark_mode) => {
         let barriers = [];
         if (contract_info) {
-            const { contract_type, barrier, entry_spot, high_barrier, low_barrier, reset_time } = contract_info;
+            const {
+                contract_type,
+                barrier,
+                entry_spot,
+                high_barrier,
+                low_barrier,
+                reset_time,
+                current_spot,
+                tick_count,
+            } = contract_info;
 
             if (
                 isBarrierSupported(contract_type) &&
@@ -237,9 +246,10 @@ export default class ContractStore extends BaseStore {
                 barriers = [main_barrier];
 
                 if (reset_time) {
-                    // sometimes after reseting barrier we don't receive it from POC, but we can use previos spot value
-                    if (+barrier !== +entry_spot) {
-                        this.reset_spot = barrier;
+                    // for tick contract we should use current spot value of 1st POC with reset_time,
+                    // but for other contracts- current spot value of one POC before receiving reset_time
+                    if (tick_count) {
+                        this.reset_spot = current_spot;
                     } else {
                         this.reset_spot = this.previous_spot;
                     }

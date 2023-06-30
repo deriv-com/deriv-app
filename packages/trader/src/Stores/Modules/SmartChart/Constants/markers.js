@@ -28,6 +28,14 @@ export const MARKER_TYPES_CONFIG = {
         },
         content_config: { line_style: 'solid', label: localize('Start Time') },
     },
+    LINE_RESET: {
+        type: 'LINE_RESET',
+        marker_config: {
+            ContentComponent: MarkerLine,
+            className: 'chart-marker-line',
+        },
+        content_config: { line_style: 'dash', label: localize('Reset Time') },
+    },
     SPOT_ENTRY: {
         type: 'SPOT_ENTRY',
         marker_config: {

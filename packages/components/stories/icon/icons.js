@@ -624,6 +624,7 @@ export const icons =
         'IcContractId',
         'IcContractPayout',
         'IcContractResetBarrier',
+        'IcContractResetTimeCircle',
         'IcContractResetTime',
         'IcContractSafeguard',
         'IcContractStartTimeCircle',

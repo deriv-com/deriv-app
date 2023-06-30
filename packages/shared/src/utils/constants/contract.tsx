@@ -30,7 +30,7 @@ type TContractConfig = {
     position: string;
 };
 
-type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
+export type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
 
 export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     rise_fall: {
@@ -470,8 +470,12 @@ export const getContractConfig = (is_high_low?: boolean) => ({
 // TODO we can combine getContractTypeDisplay and getContractTypePosition functions.
 the difference between these two functions is just the property they return. (name/position)
 */
-export const getContractTypeDisplay = (type: TGetSupportedContracts, is_high_low = false, show_button_name = false) => {
-    const contract_config = getContractConfig(is_high_low)[type] as TContractConfig;
+export const getContractTypeDisplay = (
+    type: TGetSupportedContracts | string,
+    is_high_low = false,
+    show_button_name = false
+) => {
+    const contract_config = getContractConfig(is_high_low)[type as TGetSupportedContracts] as TContractConfig;
     return (show_button_name && contract_config.button_name) || contract_config.name || '';
 };
 

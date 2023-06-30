@@ -5,6 +5,7 @@ import {
     isAccumulatorContract,
     isMultiplierContract,
     isDigitContract,
+    isResetContract,
     getDigitInfo,
     getDisplayStatus,
     WS,
@@ -55,6 +56,8 @@ export default class ContractStore extends BaseStore {
             clearContractUpdateConfigValues: action.bound,
             onChange: action.bound,
             updateLimitOrder: action.bound,
+            previous_spot: observable,
+            reset_spot: observable,
         });
 
         this.root_store = root_store;
@@ -94,6 +97,10 @@ export default class ContractStore extends BaseStore {
 
     // ---- Normal properties ---
     is_ongoing_contract = false;
+
+    // Reset contract
+    reset_spot = null;
+    previous_spot = null;
 
     populateConfig(contract_info) {
         const prev_contract_info = this.contract_info;
@@ -159,12 +166,24 @@ export default class ContractStore extends BaseStore {
             this.barriers_array = this.createBarriersArray(contract_info, is_dark_mode);
             return;
         }
-
+        if (
+            this.barriers_array.length === 1 &&
+            isResetContract(contract_info.contract_type) &&
+            contract_info.reset_time
+        ) {
+            this.barriers_array = this.createBarriersArray(contract_info, is_dark_mode);
+            return;
+        }
+        this.previous_spot = contract_info.current_spot_display_value;
         const main_barrier = this.barriers_array[0];
         if (contract_info) {
             const { contract_type, barrier, high_barrier, low_barrier } = contract_info;
 
-            if (isBarrierSupported(contract_type) && (barrier || high_barrier)) {
+            if (
+                isBarrierSupported(contract_type) &&
+                (barrier || high_barrier) &&
+                !isResetContract(contract_info.contract_type)
+            ) {
                 main_barrier.updateBarriers(barrier || high_barrier, low_barrier);
                 main_barrier.updateBarrierColor(is_dark_mode);
             }
@@ -185,10 +204,11 @@ export default class ContractStore extends BaseStore {
     createBarriersArray = (contract_info, is_dark_mode) => {
         let barriers = [];
         if (contract_info) {
-            const { contract_type, barrier, entry_spot, high_barrier, low_barrier } = contract_info;
+            const { contract_type, barrier, entry_spot, high_barrier, low_barrier, reset_time } = contract_info;
 
             if (
                 isBarrierSupported(contract_type) &&
+                !isResetContract(contract_type) &&
                 (barrier || high_barrier || (entry_spot && !isAccumulatorContract(contract_type)))
             ) {
                 // create barrier only when it's available in response
@@ -201,7 +221,48 @@ export default class ContractStore extends BaseStore {
                 });
 
                 main_barrier.updateBarrierShade(true, contract_type);
+
                 barriers = [main_barrier];
+            } else if (isBarrierSupported(contract_type) && isResetContract(contract_type) && entry_spot) {
+                const main_barrier = new ChartBarrierStore(entry_spot, low_barrier, null, {
+                    color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
+                    line_style: BARRIER_LINE_STYLES.SOLID,
+                    not_draggable: true,
+                    hideBarrierLine: false,
+                    shade: DEFAULT_SHADES['2'],
+                });
+
+                main_barrier.updateBarrierShade(true, contract_type);
+
+                barriers = [main_barrier];
+
+                if (reset_time) {
+                    // sometimes after reseting barrier we don't receive it from POC, but we can use previos spot value
+                    if (+barrier !== +entry_spot) {
+                        this.reset_spot = barrier;
+                    } else {
+                        this.reset_spot = this.previous_spot;
+                    }
+
+                    const reset_barrier = new ChartBarrierStore(this.reset_spot, low_barrier, null, {
+                        color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
+                        line_style: BARRIER_LINE_STYLES.DASHED,
+                        not_draggable: true,
+                        hideBarrierLine: false,
+                        shade: DEFAULT_SHADES['2'],
+                    });
+
+                    barriers.push(reset_barrier);
+
+                    // for call gradient should be applied to the lowest barrier, for put - to the highest
+                    if (/RESETCALL/i.test(contract_type) && +this.reset_spot < +entry_spot) {
+                        reset_barrier.updateBarrierShade(true, contract_type);
+                        main_barrier.updateBarrierShade(false, contract_type);
+                    } else if (/RESETPUT/i.test(contract_type) && +this.reset_spot > +entry_spot) {
+                        reset_barrier.updateBarrierShade(true, contract_type);
+                        main_barrier.updateBarrierShade(false, contract_type);
+                    }
+                }
             }
         }
         return barriers;

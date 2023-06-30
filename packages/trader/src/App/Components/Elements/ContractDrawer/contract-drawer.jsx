@@ -35,7 +35,9 @@ const ContractDrawer = observer(
         status,
         toggleHistoryTab,
     }) => {
-        const { common, ui } = useStore();
+        const { common, ui, contract_replay } = useStore();
+        const { contract_store } = contract_replay;
+        const { reset_spot } = contract_store;
         const { server_time } = common;
         const { is_mobile } = ui;
         const { currency, exit_tick_display_value, is_sold } = contract_info;
@@ -63,6 +65,7 @@ const ContractDrawer = observer(
                     has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator || is_smarttrader_contract}
                     toggleHistoryTab={toggleHistoryTab}
                     is_vanilla={is_vanilla}
+                    reset_spot={reset_spot}
                 />
             );
 
@@ -117,6 +120,7 @@ const ContractDrawer = observer(
                 has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator || is_smarttrader_contract}
                 toggleHistoryTab={toggleHistoryTab}
                 is_vanilla={is_vanilla}
+                reset_spot={reset_spot}
             />
         );
 

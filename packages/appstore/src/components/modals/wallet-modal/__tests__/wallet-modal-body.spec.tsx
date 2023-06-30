@@ -64,6 +64,7 @@ describe('WalletModalBody', () => {
     });
 
     it('Should trigger setWalletModalActiveTab callback when the user clicked on the tab', () => {
+        mocked_props.wallet_type = 'real';
         const mocked_store = mockStore({
             traders_hub: {
                 active_modal_tab: 'Deposit',
@@ -82,6 +83,7 @@ describe('WalletModalBody', () => {
     });
 
     it('Should trigger contentScrollHandler callback when the user scrolls the content', () => {
+        mocked_props.wallet_type = 'real';
         const mocked_store = mockStore({
             traders_hub: {
                 active_modal_tab: 'Deposit',

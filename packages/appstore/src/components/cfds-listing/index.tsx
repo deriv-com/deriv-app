@@ -13,6 +13,7 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import GetMoreAccounts from 'Components/get-more-accounts';
 import { Actions } from 'Components/containers/trading-app-card-actions';
 import { getHasDivider } from 'Constants/utils';
+import { useWalletMigration } from '@deriv/hooks';
 
 type TDetailedExistingAccount = AvailableAccount &
     TDetailsOfEachMT5Loginid &
@@ -52,7 +53,9 @@ const CFDsListing = () => {
         setSelectedAccount,
         CFDs_restricted_countries,
         financial_restricted_countries,
+        setWalletsMigrationInProgressPopup,
     } = traders_hub;
+    const { status: wallet_migration_status } = useWalletMigration();
 
     const { toggleCompareAccountsModal, setAccountType } = cfd;
     const { is_landing_company_loaded, real_account_creation_unlock_date } = client;
@@ -200,6 +203,8 @@ const CFDsListing = () => {
                             icon='IcAppstoreGetMoreAccounts'
                             title={localize('Get more')}
                             description={localize('Get more Deriv MT5 account with different type and jurisdiction.')}
+                            is_disabled={wallet_migration_status === 'in_progress'}
+                            onDisabledClick={() => setWalletsMigrationInProgressPopup(true)}
                         />
                     )}
                 </>

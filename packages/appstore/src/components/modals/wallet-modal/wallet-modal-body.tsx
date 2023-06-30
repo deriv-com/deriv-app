@@ -61,6 +61,7 @@ const WalletModalBody = ({
                             <Div100vhContainer height_offset={getHeightOffset()}>
                                 <div className='dc-tabs--modal-body__tabs__content-wrapper'>
                                     {option.content({
+                                        setActiveTabIndex,
                                         is_wallet_name_visible,
                                         setIsWalletNameVisible,
                                     })}

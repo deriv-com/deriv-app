@@ -27,6 +27,7 @@ const Wallet = React.memo(({ wallet_account, active, setActive }: TWallet) => {
             <WalletHeader
                 account_type={is_demo ? 'demo' : 'real'}
                 balance={formatMoney(wallet_account.currency, wallet_account.balance, true)}
+                gradient_class={wallet_account.gradient_card_class}
                 currency={wallet_account.currency as TWalletCurrency}
                 shortcode={shortcode as TWalletShortcode}
                 is_open_wallet={active}

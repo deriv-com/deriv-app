@@ -139,7 +139,7 @@ const getMT5WebTerminalLink = ({
     const server = is_demo ? 'Deriv-Demo' : server_name;
     const login = loginid ?? '';
 
-    return `https://trade.mql5.com/trade?servers=${server}&trade_server=${server}${login && `&login=${login}`}`;
+    return `https://metatraderweb.app/trade?servers=${server}&trade_server=${server}${login && `&login=${login}`}`;
 };
 
 export {

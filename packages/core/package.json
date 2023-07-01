@@ -137,6 +137,8 @@
         "react-window": "^1.8.5",
         "web-push-notifications": "^3.33.0",
         "dotenv-webpack": "^8.0.1",
-        "@datadog/browser-rum": "^4.37.0"
+        "@datadog/browser-rum": "^4.37.0",
+        "semver": "^7.5.3",
+        "react-device-detect" : "^2.2.3"
     }
 }

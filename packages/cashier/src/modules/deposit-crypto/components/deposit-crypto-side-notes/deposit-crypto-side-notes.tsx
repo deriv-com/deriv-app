@@ -2,8 +2,8 @@ import React from 'react';
 import { useCurrentCurrencyConfig } from '@deriv/hooks';
 import { observer } from '@deriv/stores';
 import { CryptoTransactionsSideNoteResentTransaction } from '../../../crypto-transactions/components';
-import DepositCryptoSideNoteeUSDT from './deposit-crypto-side-note-eusdt';
 import DepositCryptoSideNoteUSDT from './deposit-crypto-side-note-usdt';
+import './deposit-crypto-side-notes.scss';
 
 const DepositCryptoSideNotes: React.FC = observer(() => {
     const currency_config = useCurrentCurrencyConfig();
@@ -11,8 +11,8 @@ const DepositCryptoSideNotes: React.FC = observer(() => {
     return (
         <>
             <CryptoTransactionsSideNoteResentTransaction />
-            {currency_config.is_USDT && <DepositCryptoSideNoteUSDT />}
-            {currency_config.is_eUSDT && <DepositCryptoSideNoteeUSDT />}
+            {currency_config.is_USDT && <DepositCryptoSideNoteUSDT currency='USDT' />}
+            {currency_config.is_eUSDT && <DepositCryptoSideNoteUSDT currency='eUSDT' />}
         </>
     );
 });

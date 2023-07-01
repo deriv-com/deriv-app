@@ -1,30 +1,28 @@
 import React from 'react';
-
-const getInitialData = (key: string) => {
-    const data = localStorage.getItem(key);
-    return data ? JSON.parse(data) : null;
-};
+import { getLocalStorage } from '@deriv/utils';
 
 /**
- * This hook will sync up any localStorage data into a generic typed reactive state.
- * @param key LocalStorage key
- * @returns [get, set, clear]
+ * Hook that manages a localStorage value as a React state.
+ * @template T - The generic type of the localStorage value.
+ * @param {string} key - The localStorage key.
+ * @param {T} [fallback_value] - Optional fallback value if the key does not exist or has no value.
+ * @returns - An array containing the current value, a function to update the value, and a function to clear the value.
  */
 const useLocalStorageData = <T>(
     key: string,
-    default_data: T
-): [T, React.Dispatch<React.SetStateAction<T>>, VoidFunction] => {
-    const [data, setData] = React.useState<T>(getInitialData(key) || default_data);
+    fallback_value?: T
+): [T | null, React.Dispatch<React.SetStateAction<T | null>>, VoidFunction] => {
+    const [data, setData] = React.useState<T | null>(
+        getLocalStorage(key) ?? (fallback_value !== undefined ? fallback_value : null)
+    );
 
     React.useEffect(() => {
-        if (data) {
-            localStorage.setItem(key, JSON.stringify(data));
-        }
+        localStorage.setItem(key, JSON.stringify(data));
     }, [key, data]);
 
     const clearData = () => {
         localStorage.removeItem(key);
-        setData(default_data);
+        setData(fallback_value || null);
     };
 
     return [data, setData, clearData];

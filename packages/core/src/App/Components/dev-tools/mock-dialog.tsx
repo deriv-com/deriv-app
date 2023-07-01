@@ -23,7 +23,7 @@ const MockDialog = () => {
     const WS = useWS();
     const { client } = useStore();
     const [session_list, setSessionList] = React.useState<string[]>([]);
-    const [mock_server_data, setMockServerData] = useLocalStorageData<MockServerData>(
+    const [mock_server_data, setMockServerData, clearAllData] = useLocalStorageData<MockServerData>(
         'mock_server_data',
         default_mock_data
     );
@@ -69,16 +69,13 @@ const MockDialog = () => {
     };
 
     const handleSessionIdChange = (id: string) => {
-        window.localStorage.setItem('session_id', id);
-        if (id !== mock_server_data.session_id) {
+        if (id) {
             WS.closeAndOpenNewConnection(getLanguage(), id);
-            setMockServerData(prev => ({ ...prev, session_id: id }));
         }
     };
 
     const handleClearAll = () => {
-        window.localStorage.removeItem('session_id');
-        setMockServerData(prev => ({ ...prev, session_id: '' }));
+        clearAllData();
         WS.closeAndOpenNewConnection(getLanguage(), '');
     };
 
@@ -111,7 +108,9 @@ const MockDialog = () => {
                             text: s,
                             value: s,
                         }))}
-                        onChange={e => setMockServerData(prev => ({ ...prev, session_id: e.target.value }))}
+                        onChange={e =>
+                            setMockServerData(prev => (prev !== null ? { ...prev, session_id: e.target.value } : prev))
+                        }
                         value={mock_server_data?.session_id}
                         is_align_text_left
                     />
@@ -138,7 +137,9 @@ const MockDialog = () => {
                     type='text'
                     label='Session Id'
                     value={mock_server_data?.session_id}
-                    onChange={e => setMockServerData(prev => ({ ...prev, session_id: e.target.value }))}
+                    onChange={e =>
+                        setMockServerData(prev => (prev !== null ? { ...prev, session_id: e.target.value } : prev))
+                    }
                 />
                 <div className='mock-dialog__form--submit-container'>
                     <Button disabled={getServerStatus() === 'offline'} onClick={() => handleMockLogin()}>
@@ -148,7 +149,7 @@ const MockDialog = () => {
                 <div className=''>
                     <Button
                         disabled={getServerStatus() === 'offline'}
-                        onClick={() => handleSessionIdChange(mock_server_data?.session_id)}
+                        onClick={() => handleSessionIdChange(mock_server_data?.session_id || '')}
                     >
                         Connect
                     </Button>

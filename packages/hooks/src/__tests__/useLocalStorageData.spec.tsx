@@ -1,42 +1,65 @@
-import { act, renderHook } from '@testing-library/react-hooks';
+import { renderHook, act } from '@testing-library/react-hooks';
 import useLocalStorageData from '../useLocalStorageData';
 
 describe('useLocalStorageData', () => {
-    test('should initialize with existing data from localStorage', () => {
-        const key = 'test_key';
-        const existing_data = { existing: 'data' };
-        localStorage.setItem(key, JSON.stringify(existing_data));
-        const default_data = { default: 'value' };
-
-        const { result } = renderHook(() => useLocalStorageData(key, default_data));
-
-        expect(result.current[0]).toEqual(existing_data);
+    beforeEach(() => {
+        localStorage.clear();
     });
 
-    test('should update the data when setState function is called', () => {
+    test('should get the current value from localStorage when it exists', () => {
         const key = 'test_key';
-        const default_data = { default: 'value' };
-        const updated_data = { default: 'updated' };
+        const value = 'some value';
 
-        const { result } = renderHook(() => useLocalStorageData(key, default_data));
+        localStorage.setItem(key, JSON.stringify(value));
 
-        act(() => {
-            result.current[1](updated_data);
-        });
+        const { result } = renderHook(() => useLocalStorageData(key));
+        const [data] = result.current;
 
-        expect(result.current[0]).toEqual(updated_data);
+        expect(data).toBe(value);
     });
 
-    test('should clear the data when clear function is called', () => {
-        const key = 'test_key';
-        const default_data = { default: 'value' };
-        const { result } = renderHook(() => useLocalStorageData(key, default_data));
+    test('should use the fallback value when localStorage key does not exist', () => {
+        const key = 'non_existent_key';
+        const fallbackValue = 'default value';
+
+        const { result } = renderHook(() => useLocalStorageData(key, fallbackValue));
+        const [data] = result.current;
+
+        expect(data).toBe(fallbackValue);
+    });
+
+    test('should get null when localStorage key does not exist', () => {
+        const key = 'non_existent_key';
+        const { result } = renderHook(() => useLocalStorageData(key));
+        const [, , clearData] = result.current;
 
         act(() => {
-            result.current[2]();
+            clearData();
         });
 
-        expect(result.current[0]).toEqual(default_data);
+        const [data] = result.current;
+        expect(data).toBeNull();
+    });
+
+    test('should clear the localStorage key and reset to fallback value', () => {
+        const key = 'test_key';
+        const fallbackValue = 'default value';
+
+        const { result } = renderHook(() => useLocalStorageData(key, fallbackValue));
+        const [, setData, clearData] = result.current;
+
+        act(() => {
+            clearData();
+        });
+
         expect(localStorage.getItem(key)).toBeNull();
+        expect(result.current[0]).toBe(fallbackValue);
+
+        act(() => {
+            setData('new value');
+        });
+
+        expect(localStorage.getItem(key)).toBe(JSON.stringify('new value'));
+        expect(result.current[0]).toBe('new value');
     });
 });

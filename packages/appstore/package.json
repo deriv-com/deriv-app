@@ -25,17 +25,23 @@
     "license": "Apache-2.0",
     "dependencies": {
         "@deriv/account": "^1.0.0",
+        "@deriv/api": "^1.0.0",
         "@deriv/api-types": "^1.0.94",
+        "@deriv/hooks": "^1.0.0",
         "@deriv/cashier": "^1.0.0",
         "@deriv/components": "^1.0.0",
         "@deriv/cfd": "^1.0.0",
         "@deriv/shared": "^1.0.0",
         "@deriv/stores": "^1.0.0",
+        "@testing-library/jest-dom": "^5.12.0",
+        "@deriv/hooks": "^1.0.0",
         "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
         "@deriv/hooks": "^1.0.0",
+        "@deriv/ui": "^0.8.0",
         "classnames": "^2.2.6",
         "formik": "^2.1.4",
+        "lodash.debounce": "^4.0.8",
         "mobx": "^6.6.1",
         "mobx-react-lite": "^3.4.0",
         "object.fromentries": "^2.0.0",
@@ -44,7 +50,8 @@
         "react-content-loader": "^6.2.0",
         "react-router": "^5.2.0",
         "react-joyride": "^2.5.3",
-        "react-router-dom": "^5.2.0"
+        "react-router-dom": "^5.2.0",
+        "react-transition-group": "4.4.2"
     },
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",

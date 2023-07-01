@@ -1,4 +1,5 @@
 import { isMobile } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 
 /**
  * This function checks whether the current item should have a border at the bottom 'aka "divider" '.
@@ -19,4 +20,89 @@ export const getHasDivider = (current_item_index: number, list_size: number, ava
         list_size -
             (list_size % available_grid_columns === 0 ? available_grid_columns : list_size % available_grid_columns)
     );
+};
+
+// TODO: Refactor using data transformation layer pattern when we will have API for wallets (e.g. wallet.icon)
+export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_modal = false) => {
+    switch (currency) {
+        case 'demo':
+            if (is_modal) return 'IcWalletDerivDemoLight';
+            return is_dark_mode_on ? 'IcWalletDerivDemoDark' : 'IcWalletDerivDemoLight';
+        case 'USD':
+            return 'IcWalletCurrencyUsd';
+        case 'EUR':
+            return 'IcWalletCurrencyEur';
+        case 'AUD':
+            return 'IcWalletCurrencyAud';
+        case 'GBP':
+            return 'IcWalletCurrencyGbp';
+        case 'BTC':
+            return is_dark_mode_on ? 'IcWalletBitcoinDark' : 'IcWalletBitcoinLight';
+        case 'ETH':
+            return is_dark_mode_on ? 'IcWalletEtheriumDark' : 'IcWalletEtheriumLight';
+        case 'USDT':
+        case 'eUSDT':
+        case 'tUSDT':
+        case 'UST':
+            if (is_modal) {
+                return is_dark_mode_on ? 'IcWalletModalTetherDark' : 'IcWalletModalTetherLight';
+            }
+            return is_dark_mode_on ? 'IcWalletTetherDark' : 'IcWalletTetherLight';
+        case 'LTC':
+            return is_dark_mode_on ? 'IcWalletLiteCoinDark' : 'IcWalletLiteCoinLight';
+        case 'USDC':
+            return is_dark_mode_on ? 'IcWalletUsdCoinDark' : 'IcWalletUsdCoinLight';
+        default:
+            return 'Unknown';
+    }
+};
+
+export const getWalletHeaderButtons = (is_demo: boolean, handleAction?: () => void) => {
+    return is_demo
+        ? [
+              {
+                  name: 'Transfer',
+                  text: localize('Transfer'),
+                  icon: 'IcAccountTransfer',
+                  action: () => handleAction?.(),
+              },
+              {
+                  name: 'Transactions',
+                  text: localize('Transactions'),
+                  icon: 'IcStatement',
+                  action: () => handleAction?.(),
+              },
+              {
+                  name: 'Deposit',
+                  text: localize('Reset balance'),
+                  icon: 'IcCashierAdd',
+                  action: () => handleAction?.(),
+              },
+          ]
+        : [
+              {
+                  name: 'Deposit',
+                  text: localize('Deposit'),
+                  icon: 'IcCashierAdd',
+                  action: () => handleAction?.(),
+              },
+              {
+                  name: 'Withdraw',
+                  text: localize('Withdraw'),
+                  icon: 'IcCashierMinus',
+                  action: () => handleAction?.(),
+              },
+              {
+                  name: 'Transfer',
+                  text: localize('Transfer'),
+                  icon: 'IcAccountTransfer',
+                  action: () => handleAction?.(),
+              },
+              {
+                  name: 'Transactions',
+                  text: localize('Transactions'),
+                  icon: 'IcStatement',
+                  action: () => handleAction?.(),
+              },
+          ];
 };

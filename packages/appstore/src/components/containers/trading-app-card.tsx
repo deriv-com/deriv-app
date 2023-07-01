@@ -12,6 +12,11 @@ import { observer } from 'mobx-react-lite';
 import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS, ContentFlag, getStaticUrl } from '@deriv/shared';
 
+type TWalletsProps = {
+    is_wallet?: boolean;
+    is_wallet_demo?: boolean;
+};
+
 const TradingAppCard = ({
     availability,
     name,
@@ -28,6 +33,8 @@ const TradingAppCard = ({
     mt5_acc_auth_status,
     selected_mt5_jurisdiction,
     openFailedVerificationModal,
+    is_wallet,
+    is_wallet_demo,
 }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
     const {
         common,
@@ -76,10 +83,16 @@ const TradingAppCard = ({
             <div className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}>
                 <div className='trading-app-card__details'>
                     <div>
-                        <Text className='title' size='xs' line_height='s' color='prominent'>
-                            {!is_real && sub_title ? `${sub_title} ${localize('Demo')}` : sub_title}
-                        </Text>
-                        {short_code_and_region && (
+                        {is_wallet ? (
+                            <Text className='title' size='xs' line_height='s' color='prominent'>
+                                {is_wallet_demo && sub_title ? `${sub_title} ${localize('Demo')}` : sub_title}
+                            </Text>
+                        ) : (
+                            <Text className='title' size='xs' line_height='s' color='prominent'>
+                                {!is_real && sub_title ? `${sub_title} ${localize('Demo')}` : sub_title}
+                            </Text>
+                        )}
+                        {!is_wallet && short_code_and_region && (
                             <Text
                                 weight='bolder'
                                 size='xxxs'
@@ -90,15 +103,27 @@ const TradingAppCard = ({
                             </Text>
                         )}
                     </div>
-                    <Text
-                        className='title'
-                        size='xs'
-                        line_height='s'
-                        weight='bold'
-                        color={action_type === 'trade' ? 'prominent' : 'general'}
-                    >
-                        {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
-                    </Text>
+                    {is_wallet ? (
+                        <Text
+                            className='title'
+                            size='xs'
+                            line_height='s'
+                            weight='bold'
+                            color={action_type === 'trade' ? 'prominent' : 'general'}
+                        >
+                            {is_wallet_demo && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
+                        </Text>
+                    ) : (
+                        <Text
+                            className='title'
+                            size='xs'
+                            line_height='s'
+                            weight='bold'
+                            color={action_type === 'trade' ? 'prominent' : 'general'}
+                        >
+                            {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
+                        </Text>
+                    )}
                     <Text className='description' color={'general'} size='xxs' line_height='m'>
                         {app_desc}
                     </Text>

@@ -20,6 +20,9 @@ import { TOpenAccountTransferMeta } from 'Types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import FailedVerificationModal from './failed-veriification-modal';
 import AccountTransferModal from 'Components/account-transfer-modal';
+import RealWalletsUpgrade from './real-wallets-upgrade/real-wallets-upgrade';
+import WalletsMigrationFailed from './wallets-migration-failed';
+import WalletModal from './wallet-modal';
 
 type TCurrentList = DetailsOfEachMT5Loginid & {
     enabled: number;
@@ -194,6 +197,9 @@ const ModalManager = () => {
                 toggleModal={toggleAccountTransferModal}
             />
             <FailedVerificationModal />
+            <RealWalletsUpgrade />
+            <WalletsMigrationFailed />
+            <WalletModal />
         </React.Fragment>
     );
 };

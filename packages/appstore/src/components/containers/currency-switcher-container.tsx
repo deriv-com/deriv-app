@@ -2,14 +2,16 @@ import React, { HTMLAttributes, ReactNode } from 'react';
 import classNames from 'classnames';
 import { Icon } from '@deriv/components';
 import CurrencyIcon, { Currency } from 'Assets/svgs/currency';
-import './currency-switcher-container.scss';
 import { useStore, observer } from '@deriv/stores';
+import TradingPlatformIcon from 'Assets/svgs/trading-platform';
+import './currency-switcher-container.scss';
 
 interface CurrentSwitcherContainerProps extends Omit<HTMLAttributes<HTMLDivElement>, 'title'> {
     actions?: ReactNode;
     has_interaction?: boolean;
-    icon: Currency;
+    icon: Currency | 'Options';
     title: ReactNode;
+    show_dropdown?: boolean;
 }
 
 const CurrentSwitcherContainer = observer(
@@ -20,9 +22,11 @@ const CurrentSwitcherContainer = observer(
         has_interaction = false,
         icon,
         title,
+        show_dropdown = true,
         ...props
     }: CurrentSwitcherContainerProps) => {
-        const { client, modules, traders_hub } = useStore();
+        const store = useStore();
+        const { client, modules, traders_hub } = store;
 
         const { document_status } = client.authentication_status;
         const { is_eu_user, is_demo } = traders_hub;
@@ -49,6 +53,13 @@ const CurrentSwitcherContainer = observer(
             return icon_dropdown;
         };
 
+        const CurrencyPlatformIcon = () =>
+            icon === 'Options' ? (
+                <TradingPlatformIcon icon={icon} size={32} className='currency-switcher__currency--icon' />
+            ) : (
+                <CurrencyIcon icon={icon} size={32} className='currency-switcher__currency--icon' />
+            );
+
         return (
             <div
                 className={classNames(className, 'currency-switcher-container', {
@@ -56,7 +67,7 @@ const CurrentSwitcherContainer = observer(
                 })}
             >
                 <div className='currency-switcher-container--left'>
-                    <CurrencyIcon icon={icon} size={32} className='currency-switcher__currency--icon' />
+                    <CurrencyPlatformIcon />
                     <div
                         className={classNames(
                             'currency-switcher-container__content',
@@ -78,7 +89,7 @@ const CurrentSwitcherContainer = observer(
                 </div>
                 <div className='currency-switcher-container--right'>
                     {actions}
-                    <Dropdown />
+                    {show_dropdown && <Dropdown />}
                 </div>
             </div>
         );

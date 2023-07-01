@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import Field from '../field';
 import Text from '../text/text';
 
@@ -18,6 +18,7 @@ export type TInputProps = {
     hint?: React.ReactNode;
     id?: string;
     initial_character_count?: number;
+    inputMode?: HTMLAttributes<HTMLInputElement | HTMLTextAreaElement>['inputMode'];
     input_id?: string;
     is_relative_hint?: boolean;
     label_className?: string;
@@ -26,12 +27,13 @@ export type TInputProps = {
     max_characters?: number;
     maxLength?: number;
     name?: string;
-    onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onKeyUp?: React.FormEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-    onKeyDown?: React.FormEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-    onFocus?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
-    onPaste?: (e: React.ClipboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onMouseDown?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onMouseUp?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onPaste?: React.ClipboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     placeholder?: string;
     required?: boolean;
     trailing_icon?: React.ReactElement | null;
@@ -106,7 +108,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                     })}
                 >
                     <div
-                        className={classNames('dc-input__container', {
+                        className={classNames('dc-input__container', className, {
                             'dc-input__container--disabled': disabled,
                             'dc-input__container--error': error,
                         })}
@@ -139,6 +141,9 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                                 onFocus={props.onFocus}
                                 onBlur={props.onBlur}
                                 onChange={props.onChange}
+                                onKeyDown={props.onKeyDown}
+                                onMouseDown={props.onMouseDown}
+                                onMouseUp={props.onMouseUp}
                                 onPaste={props.onPaste}
                                 disabled={disabled}
                                 data-lpignore={props.type === 'password' ? undefined : true}

@@ -1,0 +1,44 @@
+.wallet-tile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: $color-white;
+    border-radius: $BORDER_RADIUS;
+    flex-grow: 1;
+
+    @include mobile {
+        flex-direction: column;
+        align-items: flex-start;
+
+        &__icon-with-badge {
+            display: flex;
+            align-items: end;
+            margin-bottom: 0.4rem;
+        }
+    }
+
+    &--hover {
+        &:hover {
+            background-color: $color-grey-4;
+        }
+    }
+
+    &--active {
+        background-color: $color-grey-5;
+    }
+
+    &__icon {
+        margin-right: 0.8rem;
+        min-width: 4rem;
+
+        @include mobile {
+            margin-right: 0.4rem;
+        }
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+}

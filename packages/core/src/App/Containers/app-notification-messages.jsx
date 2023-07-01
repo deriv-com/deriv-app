@@ -136,7 +136,8 @@ const AppNotificationMessages = ({
                   'svg_needs_poi',
                   'svg_needs_poi_poa',
                   'svg_poi_expired',
-                  'switched_to_real',
+                  'wallets_migrated',
+                  'wallets_failed',
                   'tnc',
                   'trustpilot',
                   'unwelcome',
@@ -157,10 +158,7 @@ const AppNotificationMessages = ({
             : excluded_notifications.includes(message.key)
     );
 
-    const notifications_sublist =
-        window.location.pathname === routes.cashier_deposit
-            ? filtered_excluded_notifications.filter(message => message.key.includes('switched_to_real'))
-            : filtered_excluded_notifications.slice(0, notifications_limit);
+    const notifications_sublist = filtered_excluded_notifications.slice(0, notifications_limit);
 
     if (!should_show_popups) return null;
 

@@ -22,7 +22,8 @@
     }
 
     @media screen and (max-width: 380px) {
-        &__cashier-button {
+        &__cashier-button,
+        &__logo-wrapper {
             display: none;
         }
     }

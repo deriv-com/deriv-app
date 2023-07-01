@@ -1,0 +1,56 @@
+@mixin container-space($parent, $space) {
+    #{$parent}__top-icon {
+        top: $space * 1rem;
+        left: $space * 1rem;
+    }
+
+    #{$parent}__bottom-icon {
+        bottom: $space * 1rem;
+        right: $space * 1rem;
+    }
+}
+
+.app-icon {
+    $p-app-icon: &;
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: $BORDER_RADIUS;
+    overflow: hidden;
+
+    &__top-icon {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+
+    &__bottom-icon {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+    }
+
+    &--small {
+        width: 4rem;
+        height: 2.4rem;
+
+        @include container-space($p-app-icon, 0.1);
+    }
+
+    &--medium {
+        width: 6.4rem;
+        height: 4rem;
+
+        @include container-space($p-app-icon, 0.2);
+    }
+
+    &--large {
+        width: 12.8rem;
+        height: 8rem;
+
+        @include container-space($p-app-icon, 0.4);
+    }
+}

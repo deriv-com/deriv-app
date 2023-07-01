@@ -221,7 +221,6 @@ const TradingHubHeader = ({
             <div className='trading-hub-header__menu-left'>
                 <MobileWrapper>
                     <ToggleMenuDrawer platform_config={filterPlatformsForClients(platform_config)} />
-
                     {header_extension && is_logged_in && <div>{header_extension}</div>}
                 </MobileWrapper>
                 <div

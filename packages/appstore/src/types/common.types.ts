@@ -1,4 +1,5 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { useWalletsList } from '@deriv/hooks';
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { RegionAvailability } from 'Constants/platform-config';
 
@@ -134,6 +135,8 @@ export interface AvailableAccount {
     market_type?: 'all' | 'financial' | 'synthetic';
     icon: keyof typeof PlatformIcons;
     availability: RegionAvailability;
+    short_code_and_region?: string;
+    login?: string;
 }
 
 export type Currency =
@@ -167,3 +170,20 @@ export interface AccountListDetail {
     loginid: string;
     title: string;
 }
+
+export type TWalletsMigrationStatus = 'ineligible' | 'eligible' | 'in_progress' | 'migrated' | 'failed';
+export type TAccountStatus = 'pending' | 'failed' | 'need_verification' | '';
+export type TWalletCurrency =
+    | Extract<Currency, 'USD' | 'EUR' | 'AUD' | 'BTC' | 'ETH' | 'LTC' | 'USDC'>
+    | 'USDT'
+    | 'eUSDT'
+    | 'tUSDT';
+export type TWalletShortcode = Extract<TJurisdictionData['jurisdiction'], 'svg' | 'malta'>;
+export type TLinkedTo = {
+    loginid?: string;
+    platform?: string;
+    balance?: string;
+    currency?: string;
+};
+
+export type TWalletAccount = NonNullable<ReturnType<typeof useWalletsList>['data']>[number];

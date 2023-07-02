@@ -12,6 +12,7 @@ type TAccount = {
     balance: number;
     currency: string;
     display_balance: string;
+    gradient_class: string;
     icon: string;
     is_demo: 0 | 1 | undefined;
     jurisdiction: JSX.Element;
@@ -51,7 +52,7 @@ const WalletTile = ({
             return (
                 <AppLinkedWithWalletIcon
                     app_icon={account.icon}
-                    currency={account.currency}
+                    gradient_class={account.gradient_class}
                     size={icon_size as React.ComponentProps<typeof AppLinkedWithWalletIcon>['size']}
                     type={account.type}
                     wallet_icon={account.wallet_icon}
@@ -60,7 +61,7 @@ const WalletTile = ({
         } else if (account?.wallet_icon) {
             return (
                 <WalletIcon
-                    currency={account.currency}
+                    gradient_class={account.gradient_class}
                     icon={account.wallet_icon}
                     size={icon_size as React.ComponentProps<typeof WalletIcon>['size']}
                     type={account.type}

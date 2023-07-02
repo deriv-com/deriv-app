@@ -57,32 +57,26 @@ export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean
     }
 };
 
-export const getWalletHeaderButtons = (is_demo: boolean) => {
+export const getWalletHeaderButtons = (is_demo: boolean, handleAction?: () => void) => {
     return is_demo
         ? [
               {
                   name: 'Transfer',
                   text: localize('Transfer'),
                   icon: 'IcAccountTransfer',
-                  action: () => {
-                      //   console.log('Transfer');
-                  },
+                  action: () => handleAction?.(),
               },
               {
                   name: 'Transactions',
                   text: localize('Transactions'),
                   icon: 'IcStatement',
-                  action: () => {
-                      //   console.log('Transactions');
-                  },
+                  action: () => handleAction?.(),
               },
               {
                   name: 'Deposit',
                   text: localize('Reset balance'),
                   icon: 'IcCashierAdd',
-                  action: () => {
-                      //   console.log('Reset balance');
-                  },
+                  action: () => handleAction?.(),
               },
           ]
         : [
@@ -90,33 +84,25 @@ export const getWalletHeaderButtons = (is_demo: boolean) => {
                   name: 'Deposit',
                   text: localize('Deposit'),
                   icon: 'IcCashierAdd',
-                  action: () => {
-                      //   console.log('Deposit');
-                  },
+                  action: () => handleAction?.(),
               },
               {
                   name: 'Withdraw',
                   text: localize('Withdraw'),
                   icon: 'IcCashierMinus',
-                  action: () => {
-                      //   console.log('Withdraw');
-                  },
+                  action: () => handleAction?.(),
               },
               {
                   name: 'Transfer',
                   text: localize('Transfer'),
                   icon: 'IcAccountTransfer',
-                  action: () => {
-                      //   console.log('Transfer');
-                  },
+                  action: () => handleAction?.(),
               },
               {
                   name: 'Transactions',
                   text: localize('Transactions'),
                   icon: 'IcStatement',
-                  action: () => {
-                      //   console.log('Transactions');
-                  },
+                  action: () => handleAction?.(),
               },
           ];
 };

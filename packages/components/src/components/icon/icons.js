@@ -352,6 +352,8 @@ import './common/ic-dashboard-component-tab.svg';
 import './common/ic-dashboard-dbot-icon.svg';
 import './common/ic-dbot-user-guide.svg';
 import './common/ic-delete.svg';
+import './common/ic-demo-reset-balance-done.svg';
+import './common/ic-demo-reset-balance.svg';
 import './common/ic-demo.svg';
 import './common/ic-deriv-outline.svg';
 import './common/ic-deriv.svg';

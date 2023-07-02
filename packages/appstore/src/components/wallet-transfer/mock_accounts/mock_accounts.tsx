@@ -26,26 +26,28 @@ const trading_account_names = [
 const accounts = trading_account_names.map(
     (name, idx) =>
         ({
-            loginid: idx.toString(),
-            label: name,
+            balance: '0.00',
             currency: 'USD',
-            balance: '10.00',
-            wallet_icon: 'IcCurrencyUsd',
-            icon: 'IcDxtradeDerived',
+            gradient_class: 'wallet-card__demo-bg',
             jurisdiction: <Badge label='Demo' type='contained' background_color='blue' />,
-            type: 'fiat',
+            icon: 'IcDxtradeDerived',
+            label: name,
+            loginid: idx.toString(),
+            type: 'demo',
+            wallet_icon: 'IcWalletDerivDemoLight',
         } as const)
 );
 
 const wallets = [
     {
-        loginid: '18',
-        label: 'Demo USD Wallet',
+        balance: '10,000.00',
         currency: 'USD',
-        balance: '10000.00',
-        wallet_icon: 'IcCurrencyUsd',
+        gradient_class: 'wallet-card__demo-bg',
         jurisdiction: <Badge label='Demo' type='contained' background_color='blue' />,
-        type: 'fiat',
+        label: 'Demo USD Wallet',
+        loginid: '18',
+        type: 'demo',
+        wallet_icon: 'IcWalletDerivDemoLight',
     } as const,
 ];
 

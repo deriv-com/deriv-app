@@ -8,18 +8,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             fetchResidenceList: jest.fn(),
             fetchStatesList: jest.fn(),
             getChangeableFields: jest.fn(),
-            residence_list: [
-                {
-                    text: 'Text',
-                    value: 'value',
-                },
-            ],
-            states_list: [
-                {
-                    text: 'Text',
-                    value: 'value',
-                },
-            ],
+            residence_list: [],
+            states_list: [],
             account_settings: {},
             accounts: {},
             is_social_signup: false,

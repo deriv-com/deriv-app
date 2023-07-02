@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { useStore } from '@deriv/stores';
 import { useRequest } from '@deriv/api';
 import { Badge } from '@deriv/components';
 import { getDecimalPlaces, formatMoney } from '@deriv/shared';
@@ -32,6 +33,10 @@ const getAccountLabel = (
 };
 
 const useTransferBetweenAccounts = () => {
+    const { ui } = useStore();
+
+    const { is_dark_mode_on } = ui;
+
     const active_wallet_loginid = useActiveWallet()?.loginid;
 
     const { getConfig } = useCurrencyConfig();
@@ -47,6 +52,9 @@ const useTransferBetweenAccounts = () => {
                         parseFloat(Number(account.balance).toFixed(getDecimalPlaces(account?.currency || ''))) || 0,
                     currency: account.currency || '',
                     display_balance: formatMoney(account.currency || '', account.balance || 0, true),
+                    gradient_class: `wallet-card__${
+                        account?.demo_account ? 'demo' : account.currency?.toLowerCase()
+                    }-bg${is_dark_mode_on ? '--dark' : ''}` as string,
                     //TODO: fix icon
                     icon: (account.account_type !== 'wallet' ? 'IcDxtradeDerived' : '') as string,
                     is_demo: account?.demo_account,
@@ -60,7 +68,7 @@ const useTransferBetweenAccounts = () => {
                     //TODO: fix jurisdiction
                     type: getConfig(account.currency || '')?.is_crypto ? 'crypto' : 'fiat',
                     //TODO: replace with proper wallet icon
-                    wallet_icon: 'IcCurrencyUsd' as string,
+                    wallet_icon: 'IcWalletDerivDemoLight' as string,
                 } as const)
         );
 
@@ -71,7 +79,7 @@ const useTransferBetweenAccounts = () => {
             },
             modified_active_wallet: accounts?.find(account => account.loginid === active_wallet_loginid),
         };
-    }, [active_wallet_loginid, data?.accounts, getConfig]);
+    }, [active_wallet_loginid, data?.accounts, getConfig, is_dark_mode_on]);
 
     const [from_account, setFromAccount] = useState<typeof modified_active_wallet>();
     const [to_account, setToAccount] = useState<typeof modified_active_wallet>();

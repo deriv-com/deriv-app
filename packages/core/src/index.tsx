@@ -31,7 +31,7 @@ type TBrowsers =
 
 type TBrowserVersions = { [k in TBrowsers]: string };
 
-const available_browsers: TBrowserVersions = {
+const browsers_minimum_required_version: TBrowserVersions = {
     Chrome: '40.0.0',
     Edge: '17.0.0',
     Safari: '11.1.0',
@@ -53,8 +53,8 @@ const user_browser = {
 };
 
 const can_register_sw =
-    typeof available_browsers[user_browser.name] !== 'undefined' &&
-    semver.gt(user_browser.version, available_browsers[user_browser.name]);
+    typeof browsers_minimum_required_version[user_browser.name] !== 'undefined' &&
+    semver.gt(user_browser.version, browsers_minimum_required_version[user_browser.name]);
 
 if (
     can_register_sw &&

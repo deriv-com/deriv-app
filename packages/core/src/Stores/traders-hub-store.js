@@ -191,7 +191,9 @@ export default class TradersHubStore extends BaseStore {
         const { account_list, switchAccount, prev_real_account_loginid } = this.root_store.client;
 
         if (account_type === 'demo') {
-            await switchAccount(account_list.find(acc => acc.is_virtual && !acc.is_disabled)?.loginid);
+            await switchAccount(
+                account_list.find(acc => acc.is_virtual && !acc.is_disabled && acc.loginid.startsWith('VRW'))?.loginid
+            );
         } else if (account_type === 'real') {
             if (prev_real_account_loginid) {
                 await switchAccount(prev_real_account_loginid);

@@ -12,12 +12,19 @@
     &__tiles-container {
         display: flex;
         flex-direction: column;
-        row-gap: 3.2rem;
     }
 
     &__divider {
         border: 0.5px solid $color-grey-5;
         margin: 0.8rem 0;
+    }
+
+    &__tile:first-child {
+        margin-bottom: 3.2rem;
+
+        &-disable-margin-bottom {
+            margin-bottom: 0;
+        }
     }
 
     &__tile {

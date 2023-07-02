@@ -17,7 +17,7 @@ type TTransferAccountSelectorProps = {
     placeholder?: string;
     portal_id?: string;
     setIsWalletNameVisible?: (value: boolean) => void;
-    transfer_accounts: { [k: string]: TTransferAccount[] };
+    transfer_accounts: Record<'accounts' | 'wallets', (TTransferAccount | undefined)[]>;
     transfer_hint?: string | JSX.Element;
     value?: TTransferAccount;
     wallet_name?: string;
@@ -31,17 +31,13 @@ const TransferAccountSelector = ({
     placeholder,
     portal_id,
     setIsWalletNameVisible,
-    transfer_accounts = {},
+    transfer_accounts = { accounts: [], wallets: [] },
     transfer_hint,
     value,
     wallet_name,
 }: TTransferAccountSelectorProps) => {
     const [is_list_modal_open, setIsListModalOpen] = React.useState(false);
     const [selected_account, setSelectedAccount] = React.useState<TTransferAccount | undefined>(value);
-
-    React.useEffect(() => {
-        if (selected_account) onSelectAccount?.(selected_account);
-    }, [onSelectAccount, selected_account]);
 
     React.useEffect(() => {
         setSelectedAccount(value);
@@ -99,6 +95,7 @@ const TransferAccountSelector = ({
                     <Div100vhContainer height_offset={getHeightOffset()} is_bypassed={!is_mobile}>
                         <TransferAccountList
                             is_mobile={is_mobile}
+                            onSelectAccount={onSelectAccount}
                             selected_account={selected_account}
                             setIsListModalOpen={setIsListModalOpen}
                             setSelectedAccount={setSelectedAccount}

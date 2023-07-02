@@ -9,6 +9,12 @@
     position: relative;
     height: 2.8rem;
 
+    &--error {
+        .dc-input__field {
+            color: $color-red-1;
+        }
+    }
+
     @include mobile {
         height: 2.4rem;
     }

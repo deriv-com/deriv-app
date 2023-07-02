@@ -8,15 +8,17 @@ import { WalletIcon } from '../wallet-icon';
 import './wallet-tile.scss';
 
 type TAccount = {
-    balance?: string;
+    account_type: 'wallet' | 'trading' | 'dxtrade' | 'mt5' | 'derivez' | 'binary' | undefined;
+    balance: number;
     currency: string;
-    icon?: string;
-    jurisdiction?: JSX.Element;
-    label?: string;
+    display_balance: string;
+    icon: string;
+    is_demo: 0 | 1 | undefined;
+    jurisdiction: JSX.Element;
+    label: string;
     loginid: string;
     type: 'fiat' | 'crypto';
-    wallet_icon?: string;
-    wallet_name?: string;
+    wallet_icon: string;
 };
 
 type TIconSize =
@@ -24,7 +26,7 @@ type TIconSize =
     | React.ComponentProps<typeof WalletIcon>['size'];
 
 type TWalletTileProps = {
-    account: TAccount;
+    account?: TAccount;
     className?: string;
     has_hover?: boolean;
     icon_size?: TIconSize;
@@ -45,7 +47,7 @@ const WalletTile = ({
     onClick,
 }: TWalletTileProps) => {
     const IconComponent = () => {
-        if (account.icon && account.wallet_icon) {
+        if (account?.icon && account.wallet_icon) {
             return (
                 <AppLinkedWithWalletIcon
                     app_icon={account.icon}
@@ -55,7 +57,7 @@ const WalletTile = ({
                     wallet_icon={account.wallet_icon}
                 />
             );
-        } else if (account.wallet_icon) {
+        } else if (account?.wallet_icon) {
             return (
                 <WalletIcon
                     currency={account.currency}
@@ -70,7 +72,7 @@ const WalletTile = ({
     };
 
     const Label = () => {
-        if (account.label) {
+        if (account?.label) {
             let size;
             if (is_value) size = is_mobile ? 'xxxxs' : 'xxxs';
             else size = is_mobile ? 'xxs' : 'xs';
@@ -86,14 +88,14 @@ const WalletTile = ({
     };
 
     const Balance = () => {
-        if (account.balance) {
+        if (account?.balance) {
             let size;
             if (is_value) size = is_mobile ? 'xxxxs' : 'xxxs';
             else size = is_mobile ? 'xxxs' : 'xxs';
 
             return (
                 <Text as='div' size={size}>
-                    {localize('Balance')}: {account.balance} {getCurrencyDisplayCode(account.currency)}
+                    {localize('Balance')}: {account.display_balance} {getCurrencyDisplayCode(account.currency)}
                 </Text>
             );
         }
@@ -115,7 +117,7 @@ const WalletTile = ({
                     <IconComponent />
                 </div>
 
-                {is_value && is_mobile && account.jurisdiction}
+                {is_value && is_mobile && account?.jurisdiction}
             </div>
 
             <div className='wallet-tile__content'>
@@ -123,7 +125,7 @@ const WalletTile = ({
                 <Balance />
             </div>
 
-            {!is_value && account.jurisdiction}
+            {!is_value && account?.jurisdiction}
         </div>
     );
 };

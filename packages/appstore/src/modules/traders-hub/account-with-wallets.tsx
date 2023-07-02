@@ -1,11 +1,11 @@
 import React from 'react';
 import Wallet from 'Components/containers/wallet';
 import { observer } from '@deriv/stores';
-import { useWalletList } from '@deriv/hooks';
+import { useWalletsList } from '@deriv/hooks';
 import { Loading } from '@deriv/components';
 
 const AccountWithWallets = observer(() => {
-    const { data, isLoading } = useWalletList();
+    const { data, isLoading } = useWalletsList();
     const [selected_wallet, setSelectedWallet] = React.useState<NonNullable<typeof data>[number]['loginid']>();
 
     if (isLoading) return <Loading is_fullscreen={false} />;

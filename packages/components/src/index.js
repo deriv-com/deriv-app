@@ -108,6 +108,7 @@ export { default as Toast } from './components/toast';
 export { default as ThemedScrollbars } from './components/themed-scrollbars';
 export { default as ToggleSwitch } from './components/toggle-switch';
 export { default as TransferAccountSelector } from './components/transfer-account-selector';
+export * from './components/message-list';
 export { default as TickPicker } from './components/tick-picker';
 export { default as TickProgress } from './components/tick-progress';
 export { default as Timeline } from './components/timeline';

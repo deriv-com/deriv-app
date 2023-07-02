@@ -1,9 +1,11 @@
 export { default as useAccountTransferVisible } from './useAccountTransferVisible';
+export { default as useActiveWallet } from './useActiveWallet';
 export { default as useCashierLocked } from './useCashierLocked';
 export { default as useCFDAccounts } from './useCFDAccounts';
 export { default as useCFDAllAccounts } from './useCFDAllAccounts';
 export { default as useCFDDemoAccounts } from './useCFDDemoAccounts';
 export { default as useCFDRealAccounts } from './useCFDRealAccounts';
+export { default as useContentFlag } from './useContentFlag';
 export { default as useCountdown } from './useCountdown';
 export { default as useDepositFiatAddress } from './useDepositFiatAddress';
 export { default as useCurrencyConfig } from './useCurrencyConfig';
@@ -38,6 +40,7 @@ export { default as usePlatformDemoAccount } from './usePlatformDemoAccount';
 export { default as usePlatformRealAccounts } from './usePlatformRealAccounts';
 export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
+//TODO: check an error
+export { default as useTransferBetweenAccounts } from './useTransferBetweenAccounts.tsx';
 export { default as useVerifyEmail } from './useVerifyEmail';
-export { default as useContentFlag } from './useContentFlag';
-export { default as useWalletList } from './useWalletsList';
+export { default as useWalletsList } from './useWalletsList';

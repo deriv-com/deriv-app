@@ -25,85 +25,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_social_signup: false,
             active_account_landing_company: '',
             trading_platform_available_accounts: [],
-            account_limits: {
-                account_balance: 300000,
-                daily_transfers: {
-                    dxtrade: {
-                        allowed: 0,
-                        available: 0,
-                    },
-                    internal: {
-                        allowed: 0,
-                        available: 0,
-                    },
-                    mt5: {
-                        allowed: 0,
-                        available: 0,
-                    },
-                },
-                lifetime_limit: 13907.43,
-                market_specific: {
-                    commodities: [
-                        {
-                            name: 'Commodities',
-                            payout_limit: 5000,
-                            profile_name: 'moderate_risk',
-                            turnover_limit: 50000,
-                        },
-                    ],
-                    cryptocurrency: [
-                        {
-                            name: 'Cryptocurrencies',
-                            payout_limit: 100.0,
-                            profile_name: 'extreme_risk',
-                            turnover_limit: 1000.0,
-                        },
-                    ],
-                    forex: [
-                        {
-                            name: 'Smart FX',
-                            payout_limit: 5000,
-                            profile_name: 'moderate_risk',
-                            turnover_limit: 50000,
-                        },
-                        {
-                            name: 'Major Pairs',
-                            payout_limit: 20000,
-                            profile_name: 'medium_risk',
-                            turnover_limit: 100000,
-                        },
-                        {
-                            name: 'Minor Pairs',
-                            payout_limit: 5000,
-                            profile_name: 'moderate_risk',
-                            turnover_limit: 50000,
-                        },
-                    ],
-                    indices: [
-                        {
-                            name: 'Stock Indices',
-                            payout_limit: 20000,
-                            profile_name: 'medium_risk',
-                            turnover_limit: 100000,
-                        },
-                    ],
-                    synthetic_index: [
-                        {
-                            name: 'Synthetic Indices',
-                            payout_limit: 50000,
-                            profile_name: 'low_risk',
-                            turnover_limit: 500000,
-                        },
-                    ],
-                },
-                num_of_days: 30,
-                num_of_days_limit: 13907.43,
-                open_positions: 100,
-                payout: 50000,
-                remainder: 13907.43,
-                withdrawal_for_x_days_monetary: 0,
-                withdrawal_since_inception_monetary: 0,
-            },
+            account_limits: {},
             account_status: {
                 authentication: {
                     attempts: {
@@ -193,7 +115,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             current_fiat_currency: '',
             cfd_score: 0,
             setCFDScore: jest.fn(),
-            getLimits: jest.fn(() => Promise.resolve({ get_limits: {} })),
+            getLimits: jest.fn(),
             has_any_real_account: false,
             has_active_real_account: false,
             has_logged_out: false,
@@ -230,8 +152,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             loginid: '',
             pre_switch_broadcast: false,
             residence: '',
+            is_svg: false,
             responseMt5LoginList: jest.fn(),
             responseTradingPlatformAccountsList: jest.fn(),
+            setFinancialAndTradingAssessment: jest.fn(),
             standpoint: {
                 iom: '',
                 svg: '',

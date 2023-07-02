@@ -9,6 +9,8 @@ import type {
     ResidenceList,
     StatesList,
     ProposalOpenContract,
+    SetFinancialAssessmentRequest,
+    SetFinancialAssessmentResponse,
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';

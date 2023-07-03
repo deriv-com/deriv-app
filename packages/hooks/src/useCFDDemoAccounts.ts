@@ -1,4 +1,5 @@
 import useCFDAllAccounts from './useCFDAllAccounts';
+
 /**
  *  we can use this hook to get the CFD demo accounts.
  *  it loops through the all of user's CFD accounts, finds and returns demo accounts

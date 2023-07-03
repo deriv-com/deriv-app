@@ -1,9 +1,9 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { Formik, Field } from 'formik';
+import { Formik, Field, FormikValues } from 'formik';
 import { Autocomplete, Icon, Loading, Text } from '@deriv/components';
-import { useStores } from 'Stores';
+import { observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
+import { useStores } from 'Stores';
 
 const SelectPaymentMethod = () => {
     const { my_profile_store } = useStores();
@@ -14,16 +14,22 @@ const SelectPaymentMethod = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (!my_profile_store.payment_methods_list_items) {
+    if (!my_profile_store.payment_methods_list_items.length) {
         return <Loading is_fullscreen={false} />;
     }
 
     return (
-        <Formik enableReinitialize initialValues={{}}>
+        <Formik
+            enableReinitialize
+            initialValues={{}}
+            onSubmit={() => {
+                // do nothing
+            }}
+        >
             {() => (
-                <div className='add-payment-method-select'>
+                <div className='select-payment-method'>
                     <Field name='payment_method'>
-                        {({ field }) => (
+                        {({ field }: FormikValues) => (
                             <Autocomplete
                                 {...field}
                                 autoComplete='off' // prevent chrome autocomplete
@@ -39,7 +45,7 @@ const SelectPaymentMethod = () => {
                             />
                         )}
                     </Field>
-                    <div className='add-payment-method-hint'>
+                    <div className='select-payment-method__hint'>
                         <Localize
                             i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
                             components={[

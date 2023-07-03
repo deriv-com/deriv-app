@@ -1,28 +1,41 @@
-import classNames from 'classnames';
 import React from 'react';
-import { observer } from 'mobx-react-lite';
-import { Field, Form } from 'formik';
+import classNames from 'classnames';
+import { Field, Form, FormikValues } from 'formik';
 import { Button, DesktopWrapper, Input, Loading, Text } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { isDesktop, isEmptyObject, isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { Localize, localize } from 'Components/i18next';
-import { useStores } from 'Stores';
-import PageReturn from 'Components/page-return/page-return.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import ModalForm from 'Components/modal-manager/modal-form';
+import PageReturn from 'Components/page-return/page-return.jsx';
+import { useStores } from 'Stores';
+import { TPaymentMethodFieldMapProps } from 'Types';
 
 const EditPaymentMethodForm = () => {
     const { general_store, my_profile_store } = useStores();
     const { showModal } = useModalManagerContext();
+    const {
+        initial_values,
+        payment_method_info,
+        payment_method_to_edit,
+        selected_payment_method_fields,
+        setPaymentMethodToEdit,
+        setSelectedPaymentMethod,
+        setSelectedPaymentMethodDisplayName,
+        setShouldShowEditPaymentMethodForm,
+        updatePaymentMethod,
+        validatePaymentMethodFields,
+    } = my_profile_store;
 
     React.useEffect(() => {
         return () => {
-            my_profile_store.setSelectedPaymentMethod('');
-            my_profile_store.setSelectedPaymentMethodDisplayName('');
+            setSelectedPaymentMethod('');
+            setSelectedPaymentMethodDisplayName('');
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (!my_profile_store.payment_method_info) {
+    if (isEmptyObject(payment_method_info)) {
         return <Loading is_fullscreen={false} />;
     }
 
@@ -30,11 +43,11 @@ const EditPaymentMethodForm = () => {
         <React.Fragment>
             <ModalForm
                 enableReinitialize
-                initialValues={my_profile_store.initial_values}
-                onSubmit={my_profile_store.updatePaymentMethod}
-                validate={my_profile_store.validatePaymentMethodFields}
+                initialValues={initial_values}
+                onSubmit={updatePaymentMethod}
+                validate={validatePaymentMethodFields}
             >
-                {({ dirty, handleChange, isSubmitting, errors }) => {
+                {({ dirty, handleChange, isSubmitting, errors }: FormikValues) => {
                     return (
                         <React.Fragment>
                             <DesktopWrapper>
@@ -45,7 +58,7 @@ const EditPaymentMethodForm = () => {
                                                 key: 'CancelEditPaymentMethodModal',
                                             });
                                         } else {
-                                            my_profile_store.setShouldShowEditPaymentMethodForm(false);
+                                            setShouldShowEditPaymentMethodForm(false);
                                         }
                                     }}
                                     page_title={localize('Edit payment method')}
@@ -54,54 +67,52 @@ const EditPaymentMethodForm = () => {
                             <Form className='add-payment-method-form__form'>
                                 <div className='add-payment-method-form__form-wrapper'>
                                     <Field name='choose_payment_method'>
-                                        {({ field }) => (
+                                        {({ field }: FormikValues) => (
                                             <Input
                                                 {...field}
                                                 disabled
-                                                type='field'
                                                 label={
                                                     <Text color='prominent' size='xs'>
                                                         <Localize i18n_default_text='Choose your payment method' />
                                                     </Text>
                                                 }
-                                                value={my_profile_store.payment_method_to_edit.display_name}
                                                 required
+                                                type='field'
+                                                value={payment_method_to_edit.display_name}
                                             />
                                         )}
                                     </Field>
-                                    {Object.values(my_profile_store.selected_payment_method_fields).map(
-                                        (payment_method_field, key) => {
-                                            return (
-                                                <Field
-                                                    name={payment_method_field[0]}
-                                                    id={payment_method_field[0]}
-                                                    key={key}
-                                                >
-                                                    {({ field }) => (
-                                                        <Input
-                                                            {...field}
-                                                            data-lpignore='true'
-                                                            error={errors[payment_method_field[0]]}
-                                                            type={
-                                                                payment_method_field[0] === 'instructions'
-                                                                    ? 'textarea'
-                                                                    : payment_method_field[1].type
-                                                            }
-                                                            label={payment_method_field[1].display_name}
-                                                            className={classNames({
-                                                                'add-payment-method-form__payment-method-field':
-                                                                    !errors[payment_method_field[0]]?.length,
-                                                                'add-payment-method-form__payment-method-field--text-area':
-                                                                    payment_method_field[0] === 'instructions',
-                                                            })}
-                                                            onChange={handleChange}
-                                                            name={payment_method_field[0]}
-                                                            required={!!payment_method_field[1].required}
-                                                        />
-                                                    )}
-                                                </Field>
-                                            );
-                                        }
+                                    {selected_payment_method_fields?.map(
+                                        (payment_method_field: TPaymentMethodFieldMapProps, key: number) => (
+                                            <Field
+                                                name={payment_method_field[0]}
+                                                id={payment_method_field[0]}
+                                                key={key}
+                                            >
+                                                {({ field }: FormikValues) => (
+                                                    <Input
+                                                        {...field}
+                                                        className={classNames({
+                                                            'add-payment-method-form__payment-method-field':
+                                                                !errors[payment_method_field[0]]?.length,
+                                                            'add-payment-method-form__payment-method-field--text-area':
+                                                                payment_method_field[0] === 'instructions',
+                                                        })}
+                                                        data-lpignore='true'
+                                                        error={errors[payment_method_field[0]]}
+                                                        label={payment_method_field[1].display_name}
+                                                        name={payment_method_field[0]}
+                                                        onChange={handleChange}
+                                                        required={!!payment_method_field[1].required}
+                                                        type={
+                                                            payment_method_field[0] === 'instructions'
+                                                                ? 'textarea'
+                                                                : payment_method_field[1].type
+                                                        }
+                                                    />
+                                                )}
+                                            </Field>
+                                        )
                                     )}
                                 </div>
                                 <div
@@ -121,8 +132,8 @@ const EditPaymentMethodForm = () => {
                                                     key: 'CancelEditPaymentMethodModal',
                                                 });
                                             } else {
-                                                my_profile_store.setPaymentMethodToEdit(null);
-                                                my_profile_store.setShouldShowEditPaymentMethodForm(false);
+                                                setPaymentMethodToEdit(null);
+                                                setShouldShowEditPaymentMethodForm(false);
                                             }
                                         }}
                                         type='button'

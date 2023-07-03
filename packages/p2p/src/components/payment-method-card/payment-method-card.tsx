@@ -4,7 +4,23 @@ import { Checkbox, Dropdown, Icon, Text } from '@deriv/components';
 import { isEmptyObject } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import PropTypes from 'prop-types';
+import { TPaymentMethod } from 'Types';
+
+type TPaymentMethodCardProps = {
+    add_payment_method?: string;
+    disabled?: boolean;
+    is_add?: boolean;
+    is_vertical_ellipsis_visible?: boolean;
+    label?: string | undefined;
+    large?: boolean;
+    medium?: boolean;
+    onClick?: () => void;
+    onClickAdd?: () => void;
+    payment_method?: TPaymentMethod;
+    show_payment_method_name?: boolean;
+    small?: boolean;
+    style?: object;
+};
 
 const PaymentMethodCard = ({
     add_payment_method,
@@ -14,15 +30,19 @@ const PaymentMethodCard = ({
     label = undefined,
     large,
     medium,
-    onClick = () => {},
-    onClickAdd = () => {},
+    onClick = () => {
+        // do nothing
+    },
+    onClickAdd = () => {
+        // do nothing
+    },
     payment_method,
     show_payment_method_name = true,
     small,
     style,
-}) => {
+}: TPaymentMethodCardProps) => {
     const { general_store, my_ads_store, my_profile_store } = useStores();
-    const method = !is_add && payment_method?.display_name.replace(/\s|-/gm, '');
+    const method = !is_add && payment_method?.display_name ? payment_method?.display_name.replace(/\s|-/gm, '') : '';
     const payment_account = payment_method?.fields?.account?.value;
     const payment_account_name = payment_method?.display_name;
     const payment_bank_name = payment_method?.fields?.bank_name?.value;
@@ -48,6 +68,7 @@ const PaymentMethodCard = ({
                     icon='IcAddCircle'
                     className='payment-method-card--add-icon'
                     custom_color='var(--brand-red-coral)'
+                    data_testid='dt_payment_method_card_add_icon'
                     size={32}
                 />
                 <Text align='center' color={disabled ? 'less-prominent' : 'prominent'} size='xs'>
@@ -71,6 +92,7 @@ const PaymentMethodCard = ({
                 <Icon className='payment-method-card__icon' icon={icon_method} size={medium || small ? 16 : 24} />
                 {is_vertical_ellipsis_visible && (
                     <Dropdown
+                        is_align_text_left
                         list={[
                             {
                                 text: localize('Edit'),
@@ -83,7 +105,6 @@ const PaymentMethodCard = ({
                         ]}
                         onChange={e => my_profile_store.onEditDeletePaymentMethodCard(e, payment_method)}
                         suffix_icon='IcCashierVerticalEllipsis'
-                        is_align_text_left
                     />
                 )}
                 {(general_store.active_index === 2 || general_store.active_index === 0) && (
@@ -93,6 +114,7 @@ const PaymentMethodCard = ({
                             my_ads_store.payment_method_ids.length === 3 &&
                             !my_ads_store.payment_method_ids.includes(payment_method.ID)
                         }
+                        label=''
                         onChange={onClick}
                         value={!isEmptyObject(style)}
                     />
@@ -113,22 +135,6 @@ const PaymentMethodCard = ({
             </div>
         </div>
     );
-};
-
-PaymentMethodCard.propTypes = {
-    add_payment_method: PropTypes.string,
-    disabled: PropTypes.bool,
-    is_add: PropTypes.bool,
-    is_vertical_ellipsis_visible: PropTypes.bool,
-    label: PropTypes.string,
-    large: PropTypes.bool,
-    medium: PropTypes.bool,
-    onClick: PropTypes.func,
-    onClickAdd: PropTypes.func,
-    payment_method: PropTypes.object,
-    show_payment_method_name: PropTypes.bool,
-    small: PropTypes.bool,
-    style: PropTypes.object,
 };
 
 export default PaymentMethodCard;

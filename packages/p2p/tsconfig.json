@@ -8,6 +8,8 @@
             "Constants/*": ["src/constants/*"],
             "Stores/*": ["src/stores/*"],
             "Translations/*": ["src/translations/*"],
+            "Types": ["src/types"],
+            "Types/*": ["src/types/*"],
             "Utils/*": ["src/utils/*"],
             "@deriv/*": ["../*/src"]
         },

@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { localize, Localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
-import AddPaymentMethod from 'Components/my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
+import AddPaymentMethod from 'Components/add-payment-method';
 import SellAdPaymentMethodsList from 'Components/my-ads/sell-ad-payment-methods-list.jsx';
 import BuyAdPaymentMethodsList from 'Components/my-ads/buy-ad-payment-methods-list.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -168,7 +168,7 @@ const QuickAddModal = ({ advert }) => {
                 }
             >
                 {my_ads_store.should_show_add_payment_method ? (
-                    <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
+                    <AddPaymentMethod should_show_page_return={false} />
                 ) : (
                     <>
                         <Text color='prominent' size='xxs'>
@@ -263,7 +263,7 @@ const QuickAddModal = ({ advert }) => {
                         'p2p-my-ads__modal-body--scroll': my_profile_store.selected_payment_method,
                     })}
                 >
-                    <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
+                    <AddPaymentMethod should_show_page_return={false} />
                 </Modal.Body>
             ) : (
                 <Modal.Body className='p2p-my-ads__modal-body--horizontal'>

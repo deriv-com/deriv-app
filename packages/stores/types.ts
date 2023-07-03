@@ -434,6 +434,10 @@ type TTradersHubStore = {
     selected_region: TRegionAvailability;
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
     available_dxtrade_accounts: AvailableAccount[];
+    active_modal_tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions';
+    setWalletModalActiveTab: (tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions') => void;
+    active_modal_wallet_id?: string;
+    setWalletModalActiveWalletID: (wallet_id?: string) => void;
 };
 
 /**

@@ -108,23 +108,23 @@
     &:before {
         content: ' ';
     }
-    background: url('../../../public/images/expand_less.svg') no-repeat center;
+    background: url('/public/images/expand_less.svg') no-repeat center;
     &.enabled {
-        background: url('../../../public/images/expand_more.svg') no-repeat center;
+        background: url('/public/images/expand_more.svg') no-repeat center;
     }
 }
 .icon-clear {
     &:before {
         content: ' ';
     }
-    background: url('../../../public/images/clear.svg') no-repeat center;
+    background: url('/public/images/clear.svg') no-repeat center;
     &:disabled {
-        background: url('../../../public/images/clear-disabled.svg') no-repeat center;
+        background: url('/public/images/clear-disabled.svg') no-repeat center;
     }
 }
 .icon-integrations {
     &:before {
         content: ' ';
     }
-    background: url('../../../public/images/google_drive.svg') no-repeat center;
+    background: url('/public/images/google_drive.svg') no-repeat center;
 }

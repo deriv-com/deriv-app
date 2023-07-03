@@ -158,13 +158,16 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                     <div className='account__switcher-total-balance'>
                         <span className='account__switcher-total-balance-text'>{translate('Total assets')}</span>
                         <span className='account__switcher-total-balance-amount account__switcher-balance'>
-                            {activeTab === 'demo'
-                                ? getTotalDemo(accounts)
-                                : low_risk_without_account || high_risk_without_account
-                                ? 0
-                                : balance.toLocaleString(undefined, {
-                                      minimumFractionDigits: config.currency_name_map[currency]?.fractional_digits ?? 2,
-                                  })}
+                            {// eslint-disable-next-line no-nested-ternary
+                                activeTab === 'demo'
+                                    ? getTotalDemo(accounts)
+                                    : low_risk_without_account || high_risk_without_account
+                                        ? 0
+                                        : balance.toLocaleString(undefined, {
+                                            // eslint-disable-next-line max-len
+                                            minimumFractionDigits: config.currency_name_map[currency]?.fractional_digits ?? 2,
+                                        })
+                            }
                             <span className='symbols'>&nbsp;{activeTab === 'demo' ? 'USD' : currency}</span>
                         </span>
                     </div>
@@ -175,12 +178,12 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                     {/* only if we have real account */}
 
                     {(eu_accounts && eu_accounts.length) ||
-                    (non_eu_accounts && non_eu_accounts.length) ||
-                    activeTab === 'demo' ? (
-                        <a href={config.tradershub.url} className={'account__switcher-total--link'}>
-                            <span>{translate("Looking for CFD accounts? Go to Trader's hub")}</span>
-                        </a>
-                    ) : null}
+                        (non_eu_accounts && non_eu_accounts.length) ||
+                        activeTab === 'demo' ? (
+                            <a href={config.tradershub.url} className={'account__switcher-total--link'}>
+                                <span>{translate('Looking for CFD accounts? Go to Trader\'s hub')}</span>
+                            </a>
+                        ): null}
                     <Separator />
                     <div
                         className={classNames('account__switcher-footer', {
@@ -206,7 +209,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                             <span className='account__switcher-logout-text'>{translate('Log out')}</span>
                             <img
                                 className='account__switcher-logout-icon logout-icon'
-                                src='../public/images/ic-logout.svg'
+                                src='/public/images/ic-logout.svg'
                             />
                         </div>
                     </div>
@@ -228,5 +231,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
         </div>
     );
 });
+
+AccountDropdown.displayName = 'AccountDropdown';
 
 export default AccountDropdown;

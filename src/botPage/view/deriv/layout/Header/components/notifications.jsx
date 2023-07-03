@@ -18,13 +18,13 @@ const NotificationsContainer = React.forwardRef(({ setIsOpen }, containerRef) =>
                 <img
                     id='header__notification-close'
                     className='btn__close mobile-show'
-                    src='../public/images/ic-close.svg'
+                    src='/public/images/ic-close.svg'
                     onClick={() => setIsOpen(false)}
                 />
             </div>
             <div id='header__notification-content' className='header__notification-content'>
                 <div id='header__notification-empty' className='header__notification-empty'>
-                    <img id='header__notification-empty-img' src='../public/images/ic-box.svg' />
+                    <img id='header__notification-empty-img' src='/public/images/ic-box.svg' />
                     <div className='header__notification-empty-text'>{translate('No notifications')}</div>
                     <div className='header__notification-empty-desc'>
                         {translate('You have yet to receive any notifications')}
@@ -55,7 +55,7 @@ const Notifications = () => {
                 <img
                     id='header__notification-icon'
                     className='header__notification-icon header__icon-button'
-                    src='../public/images/ic-bell.svg'
+                    src='/public/images/ic-bell.svg'
                 />
                 <div id='header__notification-count' className='header__notification-count'></div>
             </div>

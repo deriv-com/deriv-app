@@ -203,7 +203,7 @@ const Header = () => {
                                 className={classNames('header__icon header__expand', {
                                     open: isPlatformSwitcherOpen,
                                 })}
-                                src='../public/images/ic-chevron-down-bold.svg'
+                                src='/public/images/ic-chevron-down-bold.svg'
                             />
                         </div>
                         {is_logged && <MenuLinks />}
@@ -212,7 +212,7 @@ const Header = () => {
                 {isMobile() && (
                     <img
                         className='btn__close header__hamburger'
-                        src='../public/images/ic-hamburger.svg'
+                        src='/public/images/ic-hamburger.svg'
                         onClick={() => {
                             updateShowDrawerMenu(true);
                         }}

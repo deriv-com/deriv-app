@@ -51,7 +51,7 @@ const LanguageItem = ({ lang }) => {
                 }
             }}
         >
-            <img src={`../public/images/flags/ic-flag-${lang}.svg`} />
+            <img src={`/public/images/flags/ic-flag-${lang}.svg`} />
             <span>{config.supported_languages[lang]}</span>
         </div>
     );
@@ -64,7 +64,7 @@ LanguageItem.propTypes = {
 const LanguageSelector = () => (
     <React.Fragment>
         <div id='language-select' onClick={toggleModal}>
-            <img id='language-select__logo' src={`../public/images/flags/ic-flag-${getLanguage()}.svg`} />
+            <img id='language-select__logo' src={`/public/images/flags/ic-flag-${getLanguage()}.svg`} />
         </div>
         <LanguageModal />
     </React.Fragment>

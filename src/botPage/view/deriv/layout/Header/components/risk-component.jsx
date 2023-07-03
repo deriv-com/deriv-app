@@ -76,7 +76,7 @@ const RiskComponent = ({ non_eu_accounts = [], eu_accounts = [], is_country_low_
                                     className={classNames('header__expand open', {
                                         'header__expand--close open': acc_open,
                                     })}
-                                    src='../public/images/ic-chevron-down.svg'
+                                    src='/public/images/ic-chevron-down.svg'
                                 />
                             </div>
                             <div
@@ -91,7 +91,7 @@ const RiskComponent = ({ non_eu_accounts = [], eu_accounts = [], is_country_low_
                                             high_risk_without_account || high_risk_or_eu,
                                     })}
                                 >
-                                    <img src={'../public/images/options-and-multipliers.png'} />
+                                    <img src='/public/images/options-and-multipliers.png' />
                                     <div className='account__switcher-container__content__option'>{option}</div>
                                 </div>
                                 <a href={url} rel='noopener noreferrer'>

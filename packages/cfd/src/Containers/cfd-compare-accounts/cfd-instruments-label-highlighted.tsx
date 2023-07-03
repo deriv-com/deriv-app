@@ -7,7 +7,7 @@ const CFDInstrumentsLabelHighlighted = ({ trading_platforms }: TCompareAccountsC
     const iconData: TInstrumentsIcon[] = [...getHighlightedIconLabel(trading_platforms)];
 
     return (
-        <div className={'compare-cfd-account-outline'}>
+        <div className={'compare-cfd-account-outline'} data-testid='dt_compare_cfd_account_outline__container'>
             {iconData.map(item => (
                 <InstrumentsIconWithLabel key={item.text} {...item} className='compare-cfd-account-instrument-icon' />
             ))}

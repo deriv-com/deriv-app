@@ -15,6 +15,7 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     },
     my_profile_store: {
         hideAddPaymentMethodForm: jest.fn(),
+        payment_methods_list_items: [{ text: 'Alipay', value: 'alipay' }],
         selected_payment_method: 'Alipay',
         selected_payment_method_fields: [
             { 0: 'account', 1: { display_name: 'Alipay ID', required: 1, type: 'text' } },
@@ -53,18 +54,7 @@ describe('<AddPaymentMethod />', () => {
         expect(screen.getByRole('button', { name: 'Add' })).toBeInTheDocument();
     });
 
-    it('should call showModal when clicking page return icon if selected_payment_method length > 0', () => {
-        render(<AddPaymentMethod />);
-
-        const pageReturnIcon = screen.getByTestId('dt_page_return_icon');
-
-        userEvent.click(pageReturnIcon);
-
-        expect(mock_store.my_profile_store.hideAddPaymentMethodForm).toBeCalled();
-        expect(mock_modal_manager.hideModal).toBeCalled();
-    });
-
-    it('should call showModal when clicking page return icon if selected_payment_method length > 0', () => {
+    it('should call showModal when clicking page return icon if selected_payment_method or dirty is true', () => {
         mock_store.general_store.formik_ref.dirty = true;
 
         render(<AddPaymentMethod />);
@@ -74,5 +64,19 @@ describe('<AddPaymentMethod />', () => {
         userEvent.click(pageReturnIcon);
 
         expect(mock_modal_manager.showModal).toBeCalledWith({ key: 'CancelAddPaymentMethodModal' });
+    });
+
+    it('should call hideModal, hideAddPaymentMethodForm when clicking page return icon if selected_payment_method and dirty is false', () => {
+        mock_store.general_store.formik_ref.dirty = false;
+        mock_store.my_profile_store.selected_payment_method = '';
+
+        render(<AddPaymentMethod />);
+
+        const pageReturnIcon = screen.getByTestId('dt_page_return_icon');
+
+        userEvent.click(pageReturnIcon);
+
+        expect(mock_store.my_profile_store.hideAddPaymentMethodForm).toBeCalled();
+        expect(mock_modal_manager.hideModal).toBeCalled();
     });
 });

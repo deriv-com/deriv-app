@@ -115,7 +115,7 @@ const AddPaymentMethodForm = ({ should_show_separated_footer = false }: TAddPaym
                                 <Button
                                     large
                                     onClick={() => {
-                                        if (dirty) {
+                                        if (dirty || !!my_profile_store.selected_payment_method) {
                                             showModal({
                                                 key: 'CancelAddPaymentMethodModal',
                                             });

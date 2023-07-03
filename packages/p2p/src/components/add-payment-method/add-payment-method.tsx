@@ -32,7 +32,7 @@ const AddPaymentMethod = ({
                 {should_show_page_return && (
                     <PageReturn
                         onClick={() => {
-                            if (general_store?.formik_ref?.dirty) {
+                            if (general_store?.formik_ref?.dirty || !!my_profile_store.selected_payment_method) {
                                 showModal({
                                     key: 'CancelAddPaymentMethodModal',
                                 });

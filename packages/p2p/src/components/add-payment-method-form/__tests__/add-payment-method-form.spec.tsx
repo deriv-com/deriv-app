@@ -94,6 +94,7 @@ describe('<AddPaymentMethodForm />', () => {
     });
 
     it('should call hideAddPaymentMethodForm and hideModal if fields are empty when clicking Cancel button', () => {
+        mock_store.my_profile_store.selected_payment_method = '';
         render(<AddPaymentMethodForm />);
 
         const cancelButton = screen.getByRole('button', { name: 'Cancel' });

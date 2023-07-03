@@ -68,7 +68,7 @@
         "ts-jest": "^26.4.2"
     },
     "scripts": {
-        "build:all": "nx build @deriv/components --skip-nx-cache && nx run-many --target=build",
+        "build:all": "nx build @deriv/components --skip-nx-cache && nx build @deriv/account --skip-nx-cache && nx run-many --target=build",
         "build:one": "f () { nx build @deriv/$1 $2 ;}; f",
         "build:since": "nx affected --target=build",
         "test:eslint-all": "nx run-many --target=test:eslint",
@@ -91,7 +91,7 @@
         "publish_package": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run publish_package $2 ;}; f",
         "serve": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run serve $npm_config_open;}; f",
         "start": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run start ;}; f",
-        "test": "f () { bash ./scripts/circleci-config.test.sh && npm run test:stylelint  && npm run test:eslint-all && npm run test:jest ;}; f",
+        "test": "f () { bash ./scripts/circleci-config.test.sh && npm run test:stylelint  && npm run test:eslint-all && JEST_MAX_WORKERS=6 npm run test:jest  ;}; f",
         "test:stylelint": "stylelint \"./packages/*/src/**/*.s(a|c)ss\"",
         "test:jest": "jest --all --maxWorkers=${JEST_MAX_WORKERS:-'45%'}",
         "test:e2e": "cd end-to-end-test &&  npx playwright test",

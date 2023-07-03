@@ -70,6 +70,7 @@ export default class RunPanelStore {
         this.dbot = this.root_store.dbot;
         this.core = core;
         this.disposeReactionsFn = this.registerReactions();
+        this.timer = null;
     }
 
     active_index = 0;
@@ -147,11 +148,20 @@ export default class RunPanelStore {
     }
 
     async onRunButtonClick() {
+        let timer_counter = 1;
         if (window.sendRequestsStatistic) {
+            performance.clearMeasures();
             performance.mark('bot-start');
 
-            window.sendRequestsStatistic(false);
-            performance.clearMeasures();
+            this.timer = setInterval(() => {
+                window.sendRequestsStatistic(true);
+                performance.clearMeasures();
+                if (timer_counter === 30) {
+                    clearInterval(this.timer);
+                } else {
+                    timer_counter++;
+                }
+            }, 10000);
         }
         const { summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = this.core;
@@ -235,6 +245,10 @@ export default class RunPanelStore {
 
         if (this.error_type) {
             this.error_type = undefined;
+        }
+
+        if (this.timer) {
+            clearInterval(this.timer);
         }
         if (window.sendRequestsStatistic) {
             window.sendRequestsStatistic(true);

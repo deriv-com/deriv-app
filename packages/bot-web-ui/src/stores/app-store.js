@@ -27,16 +27,21 @@ export default class AppStore {
     }
 
     onMount() {
-        const { blockly_store, run_panel } = this.root_store;
+        const { blockly_store } = this.root_store;
         const { client, common } = this.core;
+        let timer_counter = 1;
 
-        this.timer = setInterval(() => {
-            if (window.sendRequestsStatistic) {
-                window.sendRequestsStatistic(run_panel?.is_running);
+        if (window.sendRequestsStatistic) {
+            this.timer = setInterval(() => {
+                window.sendRequestsStatistic(false);
                 performance.clearMeasures();
-            }
-        }, 10000);
-
+                if (timer_counter === 6) {
+                    clearInterval(this.timer);
+                } else {
+                    timer_counter++;
+                }
+            }, 10000);
+        }
         this.showDigitalOptionsMaltainvestError(client, common);
 
         blockly_store.setLoading(true);
@@ -89,10 +94,7 @@ export default class AppStore {
         ui.setPromptHandler(false);
 
         if (this.timer) clearInterval(this.timer);
-        if (window.sendRequestsStatistic) {
-            window.sendRequestsStatistic(false);
-            performance.clearMeasures();
-        }
+        performance.clearMeasures();
     }
 
     onBeforeUnload = event => {

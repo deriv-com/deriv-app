@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
     inputs:
       release_tag_task_url:
-          description: "Release Tag task URL"
+          description: "Release Tag task URL(e.g. https://app.clickup.com/t/1**/W*-*)"
           required: true
       skip_circleci_checks:
         description: "Skip checking CircleCI workflow"

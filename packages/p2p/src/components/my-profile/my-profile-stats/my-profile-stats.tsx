@@ -54,7 +54,7 @@ const MyProfileStats = () => {
                 {tabs.map((tab, key) => {
                     return (
                         <React.Fragment key={key}>
-                            <div className='my-profile__navigation' onClick={tab.onClick}>
+                            <div className='my-profile-stats__navigation' onClick={tab.onClick}>
                                 <Text color='prominent' size='xxs'>
                                     <Localize i18n_default_text={tab.default_text} />
                                 </Text>

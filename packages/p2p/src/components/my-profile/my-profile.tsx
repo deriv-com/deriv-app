@@ -3,7 +3,7 @@ import { AutoSizer, DesktopWrapper, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { useStores } from 'Stores';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
-import MyProfileContent from './my-profile-content.jsx';
+import MyProfileContent from './my-profile-content';
 import MyProfileDetailsContainer from './my-profile-stats/my-profile-details-container';
 import MyProfileHeader from './my-profile-header';
 

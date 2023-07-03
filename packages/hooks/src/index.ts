@@ -41,4 +41,4 @@ export { default as usePlatformRealAccounts } from './usePlatformRealAccounts';
 export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useVerifyEmail } from './useVerifyEmail';
-export { default as useWalletList } from './useWalletsList';
+export { default as useWalletsList } from './useWalletsList';

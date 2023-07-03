@@ -2,7 +2,7 @@ import React from 'react';
 import classnames from 'classnames';
 import { PropTypes } from 'prop-types';
 import { CSSTransition } from 'react-transition-group';
-import { Button, DataList, Icon, Text, ThemedScrollbars } from '@deriv/components';
+import { Button, DataList, DesktopWrapper, Icon, Text, ThemedScrollbars } from '@deriv/components';
 import { isMobile, useNewRowTransition } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import Download from 'Components/download';
@@ -56,7 +56,9 @@ const Transactions = ({ contract_stage, elements, is_drawer_open, onMount, onUnm
             })}
         >
             <div className='download__container transaction-details__button-container'>
-                <Download tab='transactions' />
+                <DesktopWrapper>
+                    <Download tab='transactions' />
+                </DesktopWrapper>
                 <Button
                     id='download__container-view-detail-button'
                     className='download__container-view-detail-button'

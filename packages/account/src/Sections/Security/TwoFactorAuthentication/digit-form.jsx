@@ -2,12 +2,12 @@ import React from 'react';
 import classNames from 'classnames';
 import { Formik, Form, Field } from 'formik';
 import { Input, Button } from '@deriv/components';
-import { localize, getLanguage } from '@deriv/translations';
-import { getPropertyValue, WS, redirectToLogin } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { getPropertyValue, WS } from '@deriv/shared';
 
-const DigitForm = ({ is_enabled, setTwoFAStatus, logoutClient }) => {
+const DigitForm = ({ is_enabled, setTwoFAStatus, setTwoFAChangedStatus }) => {
     const [is_success, setSuccess] = React.useState(false);
-    const button_text = is_enabled ? localize('Disable 2FA') : localize('Enable');
+    const button_text = is_enabled ? localize('Disable') : localize('Enable');
 
     const initial_form = {
         digit_code: '',
@@ -50,7 +50,7 @@ const DigitForm = ({ is_enabled, setTwoFAStatus, logoutClient }) => {
             setSuccess(true);
             resetForm();
             setTwoFAStatus(is_enabled_response);
-            logoutClient().then(() => redirectToLogin(false, getLanguage()));
+            setTwoFAChangedStatus(true);
         }
     };
 
@@ -66,12 +66,14 @@ const DigitForm = ({ is_enabled, setTwoFAStatus, logoutClient }) => {
                                     data-lpignore='true'
                                     type='text'
                                     className='two-factor__input'
-                                    label={localize('6 digit code')}
+                                    label={localize('Authentication code')}
                                     value={values.digit_code}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     required
                                     error={touched.digit_code && errors.digit_code}
+                                    maxLength='6'
+                                    autoComplete='off'
                                 />
                             )}
                         </Field>

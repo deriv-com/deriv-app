@@ -56,7 +56,7 @@ const StaticTradingAppCard = ({
                 >
                     {name}
                 </Text>
-                <Text className='description' color={'less-prominent'} size='xxs' line_height='m'>
+                <Text className='description' color={is_item_blurry ? 'primary' : 'general'} size='xxs' line_height='m'>
                     {app_desc}
                 </Text>
             </div>
@@ -68,7 +68,7 @@ const StaticTradingAppCard = ({
                         'static-trading-app-card__button--hidden': !has_applauncher_account,
                     })}
                 >
-                    {localize('Trade')}
+                    {localize('Open')}
                 </Button>
             </div>
         </div>

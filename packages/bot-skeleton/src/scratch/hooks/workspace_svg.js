@@ -146,7 +146,7 @@ Blockly.WorkspaceSvg.prototype.cleanUp = function (x = 0, y = 0, blocks_to_clean
                 const start = (column_index - 1) * blocks_per_column;
                 const fat_neighbour_block = root_blocks
                     .slice(start, start + blocks_per_column)
-                    .reduce((a, b) => (a.getHeightWidth().width > b.getHeightWidth().width ? a : b));
+                    ?.reduce((a, b) => (a.getHeightWidth().width > b.getHeightWidth().width ? a : b));
 
                 let position_x = cursor_x + fat_neighbour_block.getHeightWidth().width + Blockly.BlockSvg.MIN_BLOCK_X;
                 if (!is_import) {
@@ -399,12 +399,12 @@ Blockly.WorkspaceSvg.prototype.dispose = function (should_show_loading = false) 
     };
 
     if (should_show_loading) {
-        const { startLoading, endLoading } = DBotStore.instance;
-        startLoading();
+        const { setLoading } = DBotStore.instance;
+        setLoading(true);
 
         setTimeout(() => {
             disposeFn();
-            endLoading();
+            setLoading(false);
         }, 50);
     } else {
         disposeFn();
@@ -415,12 +415,12 @@ Blockly.WorkspaceSvg.prototype.dispose = function (should_show_loading = false) 
  * Dispose of all blocks in workspace, with an optimization to prevent resizes.
  */
 Blockly.WorkspaceSvg.prototype.asyncClear = function () {
-    const { startLoading, endLoading } = DBotStore.instance;
-    startLoading();
+    const { setLoading } = DBotStore.instance;
+    setLoading(true);
 
     return new Promise(resolve => {
         this.clear();
-        endLoading();
+        setLoading(false);
         resolve();
     });
 };

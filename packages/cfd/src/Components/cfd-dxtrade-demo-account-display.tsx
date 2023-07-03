@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import { CFDAccountCard } from './cfd-account-card';
 import specifications from '../Constants/cfd-specifications';
 import Loading from '../templates/_common/components/loading';
-import { DetailsOfEachMT5Loginid, LandingCompany } from '@deriv/api-types';
+import { LandingCompany, DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
 import { TObjectCFDAccount } from '../Containers/cfd-dashboard';
 

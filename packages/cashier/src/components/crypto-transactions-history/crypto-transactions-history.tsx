@@ -1,5 +1,5 @@
 import React from 'react';
-import { DataList, Icon, Loading, MobileWrapper, Table, Text } from '@deriv/components';
+import { DataList, Icon, Loading, MobileWrapper, Modal, Table, Text } from '@deriv/components';
 import { isDesktop, isMobile, routes } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
@@ -29,6 +29,7 @@ const CryptoTransactionsHistory = observer(() => {
     const { crypto_transactions, is_loading, setIsCryptoTransactionsVisible } = transaction_history;
     const { setIsDeposit } = general_store;
     const { currency } = client;
+    const [is_modal_visible, setIsModalVisible] = React.useState(false);
 
     React.useEffect(() => {
         return () => setIsCryptoTransactionsVisible(false);
@@ -79,7 +80,10 @@ const CryptoTransactionsHistory = observer(() => {
                                     // TODO: CHECK THIS TYPE ERROR
                                     data_source={crypto_transactions}
                                     rowRenderer={(row_props: TCryptoTransactionDetailsRow) => (
-                                        <CryptoTransactionsRenderer {...row_props} />
+                                        <CryptoTransactionsRenderer
+                                            {...row_props}
+                                            onTooltipClick={() => setIsModalVisible(true)}
+                                        />
                                     )}
                                     keyMapper={(row: TCryptoTransactionDetails) => row.id}
                                     row_gap={isMobile() ? 8 : 0}
@@ -95,6 +99,19 @@ const CryptoTransactionsHistory = observer(() => {
                     </div>
                 )}
             </div>
+            <Modal
+                has_close_icon
+                is_open={is_modal_visible}
+                title='Note'
+                toggleModal={() => setIsModalVisible(old => !old)}
+                width='44rem'
+                height='14rem'
+                className='crypto-transactions-history__modal'
+            >
+                <Modal.Body className='crypto-transactions-history__modal-body'>
+                    {localize('The details of this transaction is available on CoinsPaid.')}
+                </Modal.Body>
+            </Modal>
         </React.Fragment>
     );
 });

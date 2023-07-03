@@ -28,32 +28,31 @@ import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import ContractDrawer from 'App/Components/Elements/ContractDrawer';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import { SmartChart } from 'Modules/SmartChart';
-import { connect } from 'Stores/connect';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
 import ChartMarker from 'Modules/SmartChart/Components/Markers/marker.jsx';
 import allMarkers from 'Modules/SmartChart/Components/all-markers.jsx';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const ContractReplay = ({
-    contract_id,
-    contract_info,
-    contract_update,
-    contract_update_history,
-    is_chart_loading,
-    is_dark_theme,
-    is_digit_contract,
-    is_forward_starting,
-    is_market_closed,
-    is_sell_requested,
-    is_valid_to_cancel,
-    onClickCancel,
-    NotificationMessages,
-    onClickSell,
-    indicative_status,
-    toggleHistoryTab,
-    routeBackInApp,
-    onMount,
-    onUnmount,
-}) => {
+const ContractReplay = observer(({ contract_id }) => {
+    const { common, contract_replay, ui } = useStore();
+    const { contract_store } = contract_replay;
+    const {
+        is_market_closed,
+        is_sell_requested,
+        is_valid_to_cancel,
+        onClickCancel,
+        onClickSell,
+        onMount,
+        onUnmount,
+        indicative_status,
+        is_chart_loading,
+        is_forward_starting,
+    } = contract_replay;
+    const { contract_info, contract_update, contract_update_history, is_digit_contract } = contract_store;
+    const { routeBackInApp } = common;
+    const { is_dark_mode_on: is_dark_theme, notification_messages_ui: NotificationMessages, toggleHistoryTab } = ui;
+
     const [is_visible, setIsVisible] = React.useState(false);
     const history = useHistory();
 
@@ -176,119 +175,112 @@ const ContractReplay = ({
             </PageOverlay>
         </FadeWrapper>
     );
-};
+});
 
 ContractReplay.propTypes = {
     contract_id: PropTypes.number,
-    contract_info: PropTypes.object,
-    contract_update: PropTypes.object,
-    contract_update_history: PropTypes.array,
-    indicative_status: PropTypes.string,
-    is_chart_loading: PropTypes.bool,
-    is_dark_theme: PropTypes.bool,
-    is_digit_contract: PropTypes.bool,
-    is_forward_starting: PropTypes.bool,
-    is_market_closed: PropTypes.bool,
-    is_sell_requested: PropTypes.bool,
-    is_valid_to_cancel: PropTypes.bool,
-    NotificationMessages: PropTypes.func,
-    onClickCancel: PropTypes.func,
-    onClickSell: PropTypes.func,
-    onMount: PropTypes.func,
-    onUnmount: PropTypes.func,
-    routeBackInApp: PropTypes.func,
-    routes: PropTypes.arrayOf(PropTypes.object),
-    toggleHistoryTab: PropTypes.func,
 };
 
-export default connect(({ common, contract_replay, ui }) => {
-    const local_contract_replay = contract_replay;
-    const contract_store = local_contract_replay.contract_store;
-    return {
-        routeBackInApp: common.routeBackInApp,
-        contract_info: contract_store.contract_info,
-        contract_update: contract_store.contract_update,
-        contract_update_history: contract_store.contract_update_history,
-        is_digit_contract: contract_store.is_digit_contract,
-        is_market_closed: local_contract_replay.is_market_closed,
-        is_sell_requested: local_contract_replay.is_sell_requested,
-        is_valid_to_cancel: local_contract_replay.is_valid_to_cancel,
-        onClickCancel: local_contract_replay.onClickCancel,
-        onClickSell: local_contract_replay.onClickSell,
-        onMount: local_contract_replay.onMount,
-        onUnmount: local_contract_replay.onUnmount,
-        indicative_status: local_contract_replay.indicative_status,
-        is_chart_loading: local_contract_replay.is_chart_loading,
-        is_forward_starting: local_contract_replay.is_forward_starting,
-        is_dark_theme: ui.is_dark_mode_on,
-        NotificationMessages: ui.notification_messages_ui,
-        toggleHistoryTab: ui.toggleHistoryTab,
-    };
-})(ContractReplay);
+export default ContractReplay;
 
 // CHART -----------------------------------------
 
-const Chart = props => {
-    const AccumulatorsShadedBarriers = allMarkers[props.accumulators_barriers_marker?.type];
+const ReplayChart = observer(({ is_accumulator_contract }) => {
+    const trade = useTraderStore();
+    const { contract_replay, common, ui } = useStore();
+    const { contract_store, chart_state, chartStateChange, margin } = contract_replay;
+    const {
+        contract_config,
+        marker: accumulators_barriers_marker,
+        is_digit_contract,
+        barriers_array,
+        markers_array,
+        contract_info,
+    } = contract_store;
+    const { underlying: symbol, audit_details } = contract_info;
+    const allow_scroll_to_epoch = chart_state === 'READY' || chart_state === 'SCROLL_TO_LEFT';
+    const { app_routing_history, current_language, is_socket_opened } = common;
+    const { is_dark_mode_on: is_dark_theme, is_chart_layout_default, is_chart_countdown_visible } = ui;
+    const { end_epoch, chart_type, start_epoch, granularity } = contract_config;
+    /**
+     * TODO: remove forcing light theme once DBot supports dark theme
+     * DBot does not support for dark theme since till now,
+     * as a result, if any user come to report detail pages
+     * from DBot, we should force it to have light theme
+     */
+    const from_platform = getPlatformRedirect(app_routing_history);
+    const should_force_light_theme = from_platform.name === 'DBot';
+    const settings = {
+        language: current_language.toLowerCase(),
+        theme: is_dark_theme && !should_force_light_theme ? 'dark' : 'light',
+        position: is_chart_layout_default ? 'bottom' : 'left',
+        countdown: is_chart_countdown_visible,
+        assetInformation: false, // ui.is_chart_asset_info_visible,
+        isHighestLowestMarkerEnabled: false, // TODO: Pending UI
+    };
+    const scroll_to_epoch = allow_scroll_to_epoch ? contract_config.scroll_to_epoch : undefined;
+    const all_ticks = audit_details ? audit_details.all_ticks : [];
+    const { wsForget, wsSubscribe, wsSendRequest, wsForgetStream } = trade;
+
+    const AccumulatorsShadedBarriers = allMarkers[accumulators_barriers_marker?.type];
 
     const isBottomWidgetVisible = () => {
-        return isDesktop() && props.is_digit_contract;
+        return isDesktop() && is_digit_contract;
     };
 
     const getChartYAxisMargin = () => {
-        const margin = {
+        const chart_margin = {
             top: isMobile() ? 96 : 148,
             bottom: isBottomWidgetVisible() ? 128 : 112,
         };
 
         if (isMobile()) {
-            margin.bottom = 48;
+            chart_margin.bottom = 48;
         }
 
-        return margin;
+        return chart_margin;
     };
-    const prev_start_epoch = usePrevious(props.start_epoch);
+    const prev_start_epoch = usePrevious(start_epoch);
 
     return (
         <SmartChart
-            barriers={props.barriers_array}
+            barriers={barriers_array}
             bottomWidgets={isBottomWidgetVisible() ? ChartBottomWidgets : null}
             chartControlsWidgets={null}
-            chartType={props.chart_type}
-            endEpoch={props.end_epoch}
-            margin={props.margin || null}
+            chartType={chart_type}
+            endEpoch={end_epoch}
+            margin={margin || null}
             isMobile={isMobile()}
             enabledNavigationWidget={isDesktop()}
             enabledChartFooter={false}
-            granularity={props.granularity}
-            requestAPI={props.wsSendRequest}
-            requestForget={props.wsForget}
-            requestForgetStream={props.wsForgetStream}
+            granularity={granularity}
+            requestAPI={wsSendRequest}
+            requestForget={wsForget}
+            requestForgetStream={wsForgetStream}
             crosshair={isMobile() ? 0 : undefined}
             maxTick={isMobile() ? 8 : undefined}
-            requestSubscribe={props.wsSubscribe}
-            settings={props.settings}
-            startEpoch={props.start_epoch}
-            scrollToEpoch={props.scroll_to_epoch}
-            stateChangeListener={props.chartStateChange}
-            symbol={props.symbol}
-            allTicks={props.all_ticks}
+            requestSubscribe={wsSubscribe}
+            settings={settings}
+            startEpoch={start_epoch}
+            scrollToEpoch={scroll_to_epoch}
+            stateChangeListener={chartStateChange}
+            symbol={symbol}
+            allTicks={all_ticks}
             topWidgets={ChartTopWidgets}
-            isConnectionOpened={props.is_socket_opened}
+            isConnectionOpened={is_socket_opened}
             isStaticChart={
                 // forcing chart reload when start_epoch changes to an earlier epoch for ACCU closed contract:
-                props.is_accumulator_contract && props.end_epoch && props.start_epoch < prev_start_epoch
+                is_accumulator_contract && end_epoch && start_epoch < prev_start_epoch
             }
-            shouldFetchTradingTimes={!props.end_epoch}
+            shouldFetchTradingTimes={!end_epoch}
             yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
             shouldFetchTickHistory={
-                getDurationUnitText(getDurationPeriod(props.contract_info)) !== 'seconds' ||
-                props.contract_info.status === 'open'
+                getDurationUnitText(getDurationPeriod(contract_info)) !== 'seconds' || contract_info.status === 'open'
             }
-            contractInfo={props.contract_info}
+            contractInfo={contract_info}
         >
-            {props.markers_array.map(marker => (
+            {markers_array.map(marker => (
                 <ChartMarker
                     key={marker.react_key}
                     marker_config={marker.marker_config}
@@ -296,98 +288,19 @@ const Chart = props => {
                     is_bottom_widget_visible={isBottomWidgetVisible()}
                 />
             ))}
-            {props.is_accumulator_contract && props.markers_array && (
+            {is_accumulator_contract && markers_array && (
                 <AccumulatorsShadedBarriers
-                    key={props.accumulators_barriers_marker.key}
-                    is_dark_theme={props.is_dark_theme}
-                    granularity={props.granularity}
+                    key={accumulators_barriers_marker.key}
+                    is_dark_theme={is_dark_theme}
+                    granularity={granularity}
                     is_in_contract_details
-                    {...props.accumulators_barriers_marker}
+                    {...accumulators_barriers_marker}
                 />
             )}
         </SmartChart>
     );
-};
+});
 
-Chart.propTypes = {
-    accumulators_barriers_marker: PropTypes.object,
-    barriers_array: PropTypes.array,
-    BottomWidgets: PropTypes.node,
-    chartStateChange: PropTypes.func,
-    chart_type: PropTypes.string,
-    end_epoch: PropTypes.number,
-    granularity: PropTypes.number,
-    InfoBox: PropTypes.node,
+ReplayChart.propTypes = {
     is_accumulator_contract: PropTypes.bool,
-    is_dark_theme: PropTypes.bool,
-    is_digit_contract: PropTypes.bool,
-    is_mobile: PropTypes.bool,
-    is_socket_opened: PropTypes.bool,
-    is_static_chart: PropTypes.bool,
-    margin: PropTypes.number,
-    markers_array: PropTypes.array,
-    replay_controls: PropTypes.object,
-    scroll_to_epoch: PropTypes.number,
-    settings: PropTypes.object,
-    start_epoch: PropTypes.number,
-    symbol: PropTypes.string,
-    contract_info: PropTypes.object,
-    all_ticks: PropTypes.array,
-    wsForget: PropTypes.func,
-    wsForgetStream: PropTypes.func,
-    wsSendRequest: PropTypes.func,
-    wsSubscribe: PropTypes.func,
-    shouldFetchTickHistory: PropTypes.bool,
 };
-
-const ReplayChart = connect(({ modules, ui, common, contract_replay }) => {
-    const trade = modules.trade;
-    const contract_store = contract_replay.contract_store;
-    const contract_config = contract_store.contract_config;
-    const allow_scroll_to_epoch =
-        contract_replay.chart_state === 'READY' || contract_replay.chart_state === 'SCROLL_TO_LEFT';
-    /**
-     * TODO: remove forcing light theme once DBot supports dark theme
-     * DBot does not support for dark theme since till now,
-     * as a result, if any user come to report detail pages
-     * from DBot, we should force it to have light theme
-     */
-    const from_platform = getPlatformRedirect(common.app_routing_history);
-    const should_force_light_theme = from_platform.name === 'DBot';
-
-    const settings = {
-        language: common.current_language.toLowerCase(),
-        theme: ui.is_dark_mode_on && !should_force_light_theme ? 'dark' : 'light',
-        position: ui.is_chart_layout_default ? 'bottom' : 'left',
-        countdown: ui.is_chart_countdown_visible,
-        assetInformation: false, // ui.is_chart_asset_info_visible,
-        isHighestLowestMarkerEnabled: false, // TODO: Pending UI
-    };
-
-    return {
-        accumulators_barriers_marker: contract_store.marker,
-        end_epoch: contract_config.end_epoch,
-        chart_type: contract_config.chart_type,
-        start_epoch: contract_config.start_epoch,
-        granularity: contract_config.granularity,
-        scroll_to_epoch: allow_scroll_to_epoch ? contract_config.scroll_to_epoch : undefined,
-        settings,
-        is_mobile: ui.is_mobile,
-        is_socket_opened: common.is_socket_opened,
-        is_digit_contract: contract_store.is_digit_contract,
-        chartStateChange: contract_replay.chartStateChange,
-        margin: contract_replay.margin,
-        is_static_chart: contract_replay.is_static_chart,
-        barriers_array: contract_store.barriers_array,
-        markers_array: contract_store.markers_array,
-        symbol: contract_store.contract_info.underlying,
-        contract_info: contract_store.contract_info,
-        all_ticks: contract_store.contract_info.audit_details
-            ? contract_store.contract_info.audit_details.all_ticks
-            : [],
-        wsForget: trade.wsForget,
-        wsSubscribe: trade.wsSubscribe,
-        wsSendRequest: trade.wsSendRequest,
-        wsForgetStream: trade.wsForgetStream,
-    };
-})(Chart);

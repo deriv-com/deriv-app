@@ -29,6 +29,8 @@ const modal_pages_indices = {
     choose_crypto_currency: 6,
     add_currency: 7,
     finished_add_currency: 8,
+    restricted_country_signup_error: 9,
+    invalid_input_error: 10,
 };
 
 const WizardHeading = ({ country_standpoint, currency, is_isle_of_man_residence, real_account_signup_target }) => {
@@ -83,11 +85,11 @@ const WizardHeading = ({ country_standpoint, currency, is_isle_of_man_residence,
 const RealAccountSignup = ({
     available_crypto_currencies,
     closeRealAccountSignup,
-    continueRoute,
     country_standpoint,
     currency,
     deposit_real_account_signup_target,
     deposit_target,
+    redirectToLegacyPlatform,
     fetchAccountSettings,
     has_fiat,
     has_real_account,
@@ -175,7 +177,6 @@ const RealAccountSignup = ({
                     deposit_real_account_signup_target={local_props.deposit_real_account_signup_target}
                     deposit_target={local_props.deposit_target}
                     closeRealAccountSignup={closeRealAccountSignup}
-                    continueRoute={continueRoute}
                     setIsDeposit={setIsDeposit}
                     history={history}
                 />
@@ -212,7 +213,7 @@ const RealAccountSignup = ({
                         local_props.state_value.error_message || local_props.state_value.error_code?.message_to_client
                     }
                     code={local_props.state_value.error_code}
-                    onConfirm={onErrorConfirm}
+                    onConfirm={() => onErrorConfirm(local_props.state_value.error_code)}
                 />
             ),
             title: () => localize('Add a real account'),
@@ -231,15 +232,40 @@ const RealAccountSignup = ({
         {
             body: local_props => (
                 <FinishedAddCurrency
+                    redirectToLegacyPlatform={redirectToLegacyPlatform}
                     prev={local_props.state_value.previous_currency}
                     current={local_props.state_value.current_currency}
                     onSubmit={closeModalThenOpenCashier}
                     deposit_real_account_signup_target={local_props.deposit_real_account_signup_target}
                     deposit_target={local_props.deposit_target}
                     closeRealAccountSignup={closeRealAccountSignup}
-                    continueRoute={continueRoute}
                     setIsDeposit={setIsDeposit}
                     history={history}
+                />
+            ),
+        },
+        {
+            body: local_props => (
+                <SignupErrorContent
+                    message={
+                        local_props.state_value.error_message || local_props.state_value.error_code?.message_to_client
+                    }
+                    code={local_props.state_value.error_code}
+                    onConfirm={closeRealAccountSignup}
+                    className='restricted-country-error'
+                />
+            ),
+        },
+        {
+            body: local_props => (
+                <SignupErrorContent
+                    message={
+                        local_props.state_value.error_message || local_props.state_value.error_code?.message_to_client
+                    }
+                    code={local_props.state_value.error_code}
+                    onConfirm={onErrorConfirm}
+                    error_field={local_props.state_value}
+                    className='invalid-input-error'
                 />
             ),
         },
@@ -248,7 +274,8 @@ const RealAccountSignup = ({
     const [assessment_decline, setAssessmentDecline] = React.useState(false);
 
     const getModalHeight = () => {
-        if (getActiveModalIndex() === modal_pages_indices.status_dialog) return 'auto';
+        if (is_from_restricted_country) return '304px';
+        else if ([invalid_input_error, status_dialog].includes(getActiveModalIndex())) return 'auto';
         if (!currency) return '688px'; // Set currency modal
         if (has_real_account && currency) {
             if (show_eu_related_content && getActiveModalIndex() === modal_pages_indices.add_or_manage_account) {
@@ -263,8 +290,12 @@ const RealAccountSignup = ({
                 return 'auto';
             }
         }
-
         return '740px'; // Account wizard modal
+    };
+    const getModalWidth = () => {
+        if (is_from_restricted_country || getActiveModalIndex() === modal_pages_indices.invalid_input_error)
+            return '440px';
+        return !has_close_icon ? 'auto' : '955px';
     };
 
     const showStatusDialog = curr => {
@@ -273,7 +304,6 @@ const RealAccountSignup = ({
             currency: curr,
         });
     };
-
     const closeModalthenOpenWelcomeModal = curr => {
         closeRealAccountSignup();
         setParams({
@@ -332,9 +362,12 @@ const RealAccountSignup = ({
     React.useEffect(() => {
         if (!error) return;
         setParams({
-            active_modal_index: modal_pages_indices.signup_error,
+            active_modal_index: ['InputValidationFailed', 'PoBoxInAddress', 'InvalidPhone'].includes(error.code)
+                ? modal_pages_indices.invalid_input_error
+                : modal_pages_indices.signup_error,
             error_message: error.message,
             error_code: error.code,
+            ...(error.code === 'InputValidationFailed' && { error_details: error.details }),
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [error]);
@@ -342,8 +375,8 @@ const RealAccountSignup = ({
     React.useEffect(() => {
         if (!is_from_restricted_country) return;
         setParams({
-            active_modal_index: modal_pages_indices.signup_error,
-            error_message: localize('Sorry, account opening is unavailable in your region.'),
+            active_modal_index: modal_pages_indices.restricted_country_signup_error,
+            error_message: localize('Adding more real accounts has been restricted for your country.'),
             error_code: 'InvalidAccount',
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -368,6 +401,7 @@ const RealAccountSignup = ({
     const closeModal = e => {
         // Do not close modal on external link and popover click event
         if (
+            !e ||
             e?.target.getAttribute('rel') === 'noopener noreferrer' ||
             e?.target.closest('.redirect-notice') ||
             e?.target.closest('.dc-popover__bubble')
@@ -384,12 +418,13 @@ const RealAccountSignup = ({
             return;
         }
         closeRealAccountSignup();
+        redirectToLegacyPlatform();
     };
 
-    const onErrorConfirm = () => {
+    const onErrorConfirm = err_code => {
         setParams({
             active_modal_index:
-                current_action === 'multi'
+                current_action === 'multi' || err_code === 'CurrencyTypeNotAllowed'
                     ? modal_pages_indices.add_or_manage_account
                     : modal_pages_indices.account_wizard,
         });
@@ -426,8 +461,16 @@ const RealAccountSignup = ({
 
     // set title and body of the modal
     const { title: Title, body: ModalContent } = modal_content[getActiveModalIndex()];
-    const { account_wizard, add_or_manage_account, finished_set_currency, status_dialog, set_currency, signup_error } =
-        modal_pages_indices;
+    const {
+        account_wizard,
+        add_or_manage_account,
+        finished_set_currency,
+        status_dialog,
+        set_currency,
+        signup_error,
+        restricted_country_signup_error,
+        invalid_input_error,
+    } = modal_pages_indices;
 
     const has_close_icon = [account_wizard, add_or_manage_account, set_currency, signup_error].includes(
         getActiveModalIndex()
@@ -537,8 +580,11 @@ const RealAccountSignup = ({
                         <Modal
                             id='real_account_signup_modal'
                             className={classNames('real-account-signup-modal', {
-                                'dc-modal__container_real-account-signup-modal--error':
-                                    getActiveModalIndex() === signup_error,
+                                'dc-modal__container_real-account-signup-modal--error': [
+                                    signup_error,
+                                    restricted_country_signup_error,
+                                    invalid_input_error,
+                                ].includes(getActiveModalIndex()),
                                 'dc-modal__container_real-account-signup-modal--success': [
                                     finished_set_currency,
                                     status_dialog,
@@ -569,7 +615,7 @@ const RealAccountSignup = ({
                             }}
                             toggleModal={closeModal}
                             height={getModalHeight()}
-                            width={!has_close_icon ? 'auto' : '955px'}
+                            width={getModalWidth()}
                             elements_to_ignore={[document.querySelector('.modal-root')]}
                         >
                             <ModalContent
@@ -625,11 +671,11 @@ export default connect(({ ui, client, traders_hub, modules }) => ({
     available_crypto_currencies: client.available_crypto_currencies,
     cfd_score: client.cfd_score,
     closeRealAccountSignup: ui.closeRealAccountSignup,
-    continueRoute: modules.cashier.general_store.continueRoute,
     country_standpoint: client.country_standpoint,
     currency: client.currency,
     deposit_real_account_signup_target: ui.deposit_real_account_signup_target,
     deposit_target: modules.cashier.general_store.deposit_target,
+    redirectToLegacyPlatform: client.redirectToLegacyPlatform,
     fetchAccountSettings: client.fetchAccountSettings,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     has_fiat: client.has_fiat,

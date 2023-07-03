@@ -6,7 +6,7 @@ export const padLeft = (txt: string, len: number, char: string) => {
     return text.length >= len ? text : `${Array(len - text.length + 1).join(char)}${text}`;
 };
 
-export const compareBigUnsignedInt = (a: number, b: number) => {
+export const compareBigUnsignedInt = (a: number, b: number | string | undefined) => {
     let first_num = numberToString(a);
     let second_num = numberToString(b);
     if (!first_num || !second_num) {
@@ -31,9 +31,9 @@ export const matchStringByChar = (s: string, p: string) => {
     return RegExp(z, 'i').test(s);
 };
 
-export const numberToString = (n: number) => (typeof n === 'number' ? String(n) : n);
+export const numberToString = (n: number | string | undefined) => (typeof n === 'number' ? String(n) : n);
 
-export const getKebabCase = (str: string) => {
+export const getKebabCase = (str?: string) => {
     if (!str) return str;
     return str
         .replace(/([a-z0-9])([A-Z])/g, '$1-$2') // get all lowercase letters that are near to uppercase ones

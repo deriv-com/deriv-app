@@ -4,28 +4,34 @@ import { DesktopWrapper, Input, Icon, MobileWrapper, Text, useInterval } from '@
 import { getCurrencyDisplayCode } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { observer } from '@deriv/stores';
-import { TReactChangeEvent, TReactChildren } from '../../types';
+import { TReactChangeEvent } from '../../types';
 import { useCashierStore } from '../../stores/useCashierStores';
+import { useExchangeRate } from '@deriv/hooks';
 import './crypto-fiat-converter.scss';
 
 type TTimerProps = {
     onComplete: VoidFunction;
 };
 
-type TInputGroupProps = {
-    children: TReactChildren;
+type TInputGroupProps = React.PropsWithChildren<{
     className: string;
-};
+}>;
 
 type TCryptoFiatConverterProps = {
     from_currency: string;
-    hint?: string | TReactChildren;
+    hint?: React.ReactNode;
     onChangeConverterFromAmount: (
         event: { target: { value: string } },
         from_currency: string,
-        to_currency: string
+        to_currency: string,
+        converted_amount?: number
     ) => void;
-    onChangeConverterToAmount: (event: TReactChangeEvent, from_currency: string, to_currency: string) => void;
+    onChangeConverterToAmount: (
+        event: TReactChangeEvent,
+        from_currency: string,
+        to_currency: string,
+        converted_amount?: number
+    ) => void;
     resetConverter: VoidFunction;
     to_currency: string;
     validateFromAmount: VoidFunction;
@@ -76,6 +82,7 @@ const CryptoFiatConverter = observer(
         validateToAmount,
     }: TCryptoFiatConverterProps) => {
         const { crypto_fiat_converter } = useCashierStore();
+        const { getRate } = useExchangeRate();
 
         const {
             converter_from_amount,
@@ -108,7 +115,10 @@ const CryptoFiatConverter = observer(
                                 setArrowIconDirection('right');
                             }}
                             onChange={(e: TReactChangeEvent) => {
-                                onChangeConverterFromAmount(e, from_currency, to_currency);
+                                const from_rate = getRate(from_currency || '');
+                                const to_rate = getRate(to_currency || '');
+                                const converted_amount = (Number(e.target.value) * to_rate) / from_rate;
+                                onChangeConverterFromAmount(e, from_currency, to_currency, converted_amount);
                                 handleChange(e);
                             }}
                             type='text'
@@ -144,7 +154,10 @@ const CryptoFiatConverter = observer(
                                     setArrowIconDirection('left');
                                 }}
                                 onChange={(e: TReactChangeEvent) => {
-                                    onChangeConverterToAmount(e, to_currency, from_currency);
+                                    const from_rate = getRate(from_currency || '');
+                                    const to_rate = getRate(to_currency || '');
+                                    const converted_amount = (Number(e.target.value) * from_rate) / to_rate;
+                                    onChangeConverterToAmount(e, to_currency, from_currency, converted_amount);
                                     handleChange(e);
                                 }}
                                 type='text'
@@ -161,10 +174,14 @@ const CryptoFiatConverter = observer(
                             {is_timer_visible && (
                                 <Timer
                                     onComplete={() => {
+                                        const from_rate = getRate(from_currency || '');
+                                        const to_rate = getRate(to_currency || '');
+                                        const converted_amount = (Number(converter_from_amount) * to_rate) / from_rate;
                                         onChangeConverterFromAmount(
                                             { target: { value: converter_from_amount } },
                                             from_currency,
-                                            to_currency
+                                            to_currency,
+                                            converted_amount
                                         );
                                     }}
                                 />

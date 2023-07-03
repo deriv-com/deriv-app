@@ -9,7 +9,7 @@ type TTooltip = {
     classNameIcon?: string;
     has_error?: boolean;
     icon?: string;
-    message?: string;
+    message?: string | null;
 };
 
 const Tooltip = ({

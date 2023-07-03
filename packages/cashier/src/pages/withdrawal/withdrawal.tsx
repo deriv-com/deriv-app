@@ -17,6 +17,7 @@ import SideNote from '../../components/side-note';
 import USDTSideNote from '../../components/usdt-side-note';
 import { Virtual } from '../../components/cashier-container';
 import { useCashierStore } from '../../stores/useCashierStores';
+import { useCashierLocked, useIsSystemMaintenance } from '@deriv/hooks';
 
 type TWithdrawalSideNoteProps = {
     currency: string;
@@ -59,13 +60,9 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         verification_code: { payment_withdraw: verification_code },
     } = client;
     const { iframe, general_store, transaction_history, withdraw } = useCashierStore();
-    const {
-        is_cashier_locked,
-        is_crypto,
-        is_system_maintenance,
-        setActiveTab,
-        cashier_route_tab_index: tab_index,
-    } = general_store;
+    const { is_crypto, setActiveTab, cashier_route_tab_index: tab_index } = general_store;
+    const is_cashier_locked = useCashierLocked();
+    const is_system_maintenance = useIsSystemMaintenance();
     const { iframe_url } = iframe;
     const {
         crypto_transactions,

@@ -29,10 +29,16 @@
         .dc-input {
             justify-content: center;
 
+            &__container {
+                border: none;
+                padding: 0;
+                height: 6rem;
+            }
             &__field {
                 flex-grow: 1;
                 height: 4rem;
                 padding-right: 3rem;
+                margin-left: 1.2rem;
                 width: unset;
 
                 @include mobile {

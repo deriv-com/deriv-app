@@ -1,12 +1,9 @@
 import useCFDAllAccounts from './useCFDAllAccounts';
-import useExchangeRate from './useExchangeRate';
-
 /**
  *  we can use this hook to get the CFD demo accounts.
  *  it loops through the all of user's CFD accounts, finds and returns demo accounts
  */
 const useCFDDemoAccounts = () => {
-    const { getRate } = useExchangeRate();
     const cfd_accounts = useCFDAllAccounts();
 
     const cfd_demo_accounts = cfd_accounts.filter(account => account.account_type === 'demo');

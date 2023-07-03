@@ -64,6 +64,7 @@ describe('useAvailableWallets', () => {
                 currency,
                 is_added: currency === 'USD',
                 landing_company_name: 'svg',
+                gradient_card_class: `wallet-card__${currency.toLowerCase()}-bg`,
             }))
         );
     });
@@ -90,6 +91,7 @@ describe('useAvailableWallets', () => {
                 currency: 'GBP',
                 is_added: false,
                 landing_company_name: 'svg',
+                gradient_card_class: 'wallet-card__gbp-bg',
             },
         ]);
     });

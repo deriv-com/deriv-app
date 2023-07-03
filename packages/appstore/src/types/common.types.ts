@@ -1,5 +1,5 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import { useWalletList, useAvailableWallets } from '@deriv/hooks';
+import { useWalletsList, useAvailableWallets } from '@deriv/hooks';
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { RegionAvailability } from 'Constants/platform-config';
 
@@ -186,5 +186,5 @@ export type TLinkedTo = {
     currency?: string;
 };
 
-export type TWalletAccount = NonNullable<ReturnType<typeof useWalletList>['data']>[number];
+export type TWalletAccount = NonNullable<ReturnType<typeof useWalletsList>['data']>[number];
 export type TWalletInfo = NonNullable<ReturnType<typeof useAvailableWallets>['data']>[number];

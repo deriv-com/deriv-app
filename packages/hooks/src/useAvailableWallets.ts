@@ -1,11 +1,12 @@
 import React from 'react';
 import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
-import useWalletList from './useWalletsList';
+import useWalletsList from './useWalletsList';
 import useAuthorize from './useAuthorize';
 
 const useAvailableWallets = () => {
-    const { client } = useStore();
+    const { client, ui } = useStore();
+    const { is_dark_mode_on } = ui;
     const { is_crypto } = client;
     const { data } = useAuthorize();
 
@@ -15,7 +16,7 @@ const useAvailableWallets = () => {
         options: { enabled: Boolean(data?.authorize?.landing_company_name) },
     });
 
-    const { data: added_wallets } = useWalletList();
+    const { data: added_wallets } = useWalletsList();
 
     const sortedWallets = React.useMemo(() => {
         if (!account_type_data) return null;
@@ -33,6 +34,7 @@ const useAvailableWallets = () => {
             currency: wallet.currency,
             landing_company_name: wallet.landing_company_name,
             is_added: wallet.is_added,
+            gradient_card_class: wallet.gradient_card_class,
         }));
 
         const available_wallets = available_currencies
@@ -41,6 +43,7 @@ const useAvailableWallets = () => {
                 currency,
                 landing_company_name: data?.authorize?.landing_company_name,
                 is_added: false,
+                gradient_card_class: `wallet-card__${currency.toLowerCase()}-bg${is_dark_mode_on ? '--dark' : ''}`,
             }));
 
         // Sort the unadded wallets alphabetically by fiat, crypto, then virtual
@@ -65,7 +68,7 @@ const useAvailableWallets = () => {
         }
 
         return [...available_wallets];
-    }, [added_wallets, account_type_data, data?.authorize?.landing_company_name, is_crypto]);
+    }, [added_wallets, account_type_data, data?.authorize?.landing_company_name, is_dark_mode_on, is_crypto]);
 
     return {
         ...rest,

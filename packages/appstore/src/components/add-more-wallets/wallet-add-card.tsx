@@ -15,7 +15,7 @@ const AddWalletCard = observer(({ wallet_info }: TAddWalletCard) => {
         ui: { is_dark_mode_on },
     } = useStore();
 
-    const { currency, landing_company_name, is_added } = wallet_info;
+    const { currency, landing_company_name, is_added, gradient_card_class } = wallet_info;
     const { getConfig } = useCurrencyConfig();
     const currency_config = getConfig(currency);
 
@@ -25,6 +25,7 @@ const AddWalletCard = observer(({ wallet_info }: TAddWalletCard) => {
         icon_type: currency_config?.type,
         jurisdiction_title: landing_company_name?.toUpperCase(),
         name: currency_config?.name,
+        gradient_class: gradient_card_class,
     };
 
     return (

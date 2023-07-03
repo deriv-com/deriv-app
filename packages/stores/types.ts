@@ -164,6 +164,7 @@ type TClientStore = {
     is_logged_in: boolean;
     is_logging_in: boolean;
     is_low_risk: boolean;
+    is_high_risk: boolean;
     is_pending_proof_of_ownership: boolean;
     is_switching: boolean;
     is_tnc_needed: boolean;
@@ -251,6 +252,8 @@ type TCommonStoreError = {
 };
 
 type TCommonStore = {
+    app_routing_history: object;
+    isCurrentLanguage(language_code: string): boolean;
     error: TCommonStoreError;
     has_error: boolean;
     is_from_derivgo: boolean;
@@ -278,6 +281,7 @@ type TUiStore = {
     is_dark_mode_on: boolean;
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
+    is_verification_modal_visible: boolean;
     is_mobile: boolean;
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
@@ -288,6 +292,7 @@ type TUiStore = {
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setIsFromSignupAccount: (value: boolean) => void;
+    setIsVerificationModalVisible: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     sub_section_index: number;
     setSubSectionIndex: (index: number) => void;

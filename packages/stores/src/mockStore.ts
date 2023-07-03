@@ -7,6 +7,7 @@ const mock = (): TStores & { is_mock: boolean } => {
         client: {
             account_settings: {},
             accounts: {},
+            is_high_risk: false,
             active_account_landing_company: '',
             trading_platform_available_accounts: [],
             account_limits: {
@@ -213,6 +214,9 @@ const mock = (): TStores & { is_mock: boolean } => {
                 redirectOnClick: jest.fn(),
                 setError: jest.fn(),
             },
+            app_routing_history: {},
+            current_language: 'EN',
+            isCurrentLanguage: jest.fn(),
             is_from_derivgo: false,
             has_error: false,
             platform: '',
@@ -220,7 +224,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             routeTo: jest.fn(),
             changeCurrentLanguage: jest.fn(),
             changeSelectedLanguage: jest.fn(),
-            current_language: 'EN',
             is_network_online: false,
             server_time: undefined,
             is_language_changing: false,
@@ -266,10 +269,12 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_ready_to_deposit_modal_visible: false,
             is_real_acc_signup_on: false,
             is_need_real_account_for_cashier_modal_visible: false,
+            is_verification_modal_visible: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
             populateHeaderExtensions: jest.fn(),
             populateSettingsExtensions: jest.fn(),
             setShouldShowCooldownModal: jest.fn(),
+            setIsVerificationModalVisible: jest.fn(),
         },
         traders_hub: {
             closeModal: jest.fn(),

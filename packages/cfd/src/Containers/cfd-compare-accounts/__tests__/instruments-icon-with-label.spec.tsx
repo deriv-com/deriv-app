@@ -28,33 +28,25 @@ describe('InstrumentsIconWithLabel', () => {
 
     it('should not apply opacity if "highlighted" prop is true', () => {
         render(<InstrumentsIconWithLabel {...mocked_props} highlighted={false} />);
-
         const containerElement = screen.getByTestId('dt_instruments_icon_container');
-
         expect(containerElement).toHaveStyle({ opacity: '0.2' });
     });
 
     it('should not apply opacity if "highlighted" prop is true', () => {
         render(<InstrumentsIconWithLabel {...mocked_props} />);
-
         const containerElement = screen.getByTestId('dt_instruments_icon_container');
-
         expect(containerElement).not.toHaveStyle({ opacity: '0.2' });
     });
 
     it('should show the asterisk span when "is_asterik" prop is true', () => {
         render(<InstrumentsIconWithLabel {...mocked_props} />);
-
         const asteriskElement = screen.queryByText('*');
-
         expect(asteriskElement).toBeInTheDocument();
     });
 
     it('should hide the asterisk span when "is_asterik" prop is false', () => {
         render(<InstrumentsIconWithLabel {...mocked_props} is_asterik={false} />);
-
         const asteriskElement = screen.queryByText('*');
-
         expect(asteriskElement).not.toBeInTheDocument();
     });
 });

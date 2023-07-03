@@ -4,7 +4,7 @@ import merge from 'lodash.merge';
 import useStore from '../useStore';
 
 const ExchangeRatesProvider = ({ children }: React.PropsWithChildren<unknown>) => {
-    const { data, subscribe } = useSubscription('exchange_rates');
+    const { is_loading, data, subscribe } = useSubscription('exchange_rates');
     const {
         exchange_rates: { update },
     } = useStore();
@@ -14,12 +14,12 @@ const ExchangeRatesProvider = ({ children }: React.PropsWithChildren<unknown>) =
     }, [subscribe]);
 
     useEffect(() => {
-        if (data) {
+        if (!is_loading && data) {
             const { exchange_rates } = data;
 
             if (exchange_rates) update(prev => merge(prev, exchange_rates));
         }
-    }, [update, data]);
+    }, [is_loading, update, data]);
 
     return <>{children}</>;
 };

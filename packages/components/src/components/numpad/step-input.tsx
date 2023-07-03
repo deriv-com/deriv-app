@@ -10,7 +10,7 @@ type TStepInput = {
     min: number;
     value: string | number;
     onChange: (increment_value: string | number, pip_size: number) => void;
-    render?: (props: { string_value: string; className: string }) => React.ReactNode;
+    render?: (props: { value: string; className: string }) => React.ReactNode;
     pip_size: number;
     currency: string;
     label?: string;
@@ -88,7 +88,7 @@ const StepInput = ({ className, max, min, value, onChange, render, pip_size = 0,
             <React.Fragment>
                 {render &&
                     render({
-                        string_value,
+                        value: string_value,
                         className: classNames('dc-numpad__input-field', className),
                     })}
             </React.Fragment>

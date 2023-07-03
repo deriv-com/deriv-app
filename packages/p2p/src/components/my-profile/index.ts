@@ -1,4 +1,4 @@
-import MyProfile from './my-profile.jsx';
+import MyProfile from './my-profile';
 import './my-profile.scss';
 
 export default MyProfile;

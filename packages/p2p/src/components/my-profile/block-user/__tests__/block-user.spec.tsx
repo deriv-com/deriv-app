@@ -60,8 +60,6 @@ const mock_modal_manager: DeepPartial<ReturnType<typeof useModalManagerContext>>
     useRegisterModalProps: jest.fn(),
 };
 
-const el_modal = document.createElement('div');
-
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
     useStores: jest.fn(() => mock_store),

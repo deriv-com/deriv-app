@@ -9,7 +9,6 @@ import { WS } from 'Services';
 const Redirect = ({
     history,
     currency,
-    setLoginId,
     setVerificationCode,
     verification_code,
     hasAnyRealAccount,
@@ -27,11 +26,9 @@ const Redirect = ({
     const { is_appstore } = React.useContext(PlatformContext);
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
-    const loginid_param = url_params.get('loginid');
 
     setVerificationCode(code_param, action_param);
     setNewEmail(url_params.get('email'), action_param);
-    if (loginid_param) setLoginId(loginid_param);
 
     switch (action_param) {
         case 'signup': {
@@ -213,7 +210,6 @@ Redirect.propTypes = {
 export default withRouter(
     connect(({ client, ui }) => ({
         currency: client.currency,
-        setLoginId: client.setLoginId,
         is_eu: client.is_eu,
         setVerificationCode: client.setVerificationCode,
         verification_code: client.verification_code,

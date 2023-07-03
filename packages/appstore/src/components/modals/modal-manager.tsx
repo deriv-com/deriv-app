@@ -11,6 +11,7 @@ import {
     CFDPasswordManagerModal,
     CompareAccountsModal,
 } from '@deriv/cfd';
+import { TTradingPlatformAvailableAccount } from './account-type-modal/types';
 import MT5AccountTypeModal from './account-type-modal';
 import RegulatorsCompareModal from './regulators-compare-modal';
 import { useStores } from 'Stores';
@@ -45,8 +46,10 @@ const ModalManager = () => {
         toggleMT5TradeModal,
         getRealSyntheticAccountsExistingData,
         getRealFinancialAccountsExistingData,
+        getRealSwapfreeAccountsExistingData,
         current_account,
         dxtrade_companies,
+        derivez_companies,
         mt5_companies,
         topUpVirtual,
     } = modules.cfd;
@@ -102,7 +105,7 @@ const ModalManager = () => {
         enableCFDPasswordModal();
     };
 
-    const existing_accounts_data = (acc_type: 'synthetic' | 'financial') => {
+    const existing_accounts_data = (acc_type: TTradingPlatformAvailableAccount['market_type'] | 'synthetic') => {
         const current_list_keys = Object.keys(current_list);
         const should_be_enabled = (list_item: TCurrentList) =>
             platform === 'dxtrade' ? list_item.enabled === 1 : true;
@@ -123,6 +126,7 @@ const ModalManager = () => {
 
     getRealSyntheticAccountsExistingData(existing_accounts_data('synthetic'));
     getRealFinancialAccountsExistingData(existing_accounts_data('financial'));
+    getRealSwapfreeAccountsExistingData(existing_accounts_data('all'));
 
     return (
         <React.Fragment>
@@ -134,6 +138,7 @@ const ModalManager = () => {
             <CFDTopUpDemoModal
                 context={store}
                 dxtrade_companies={dxtrade_companies}
+                derivez_companies={derivez_companies}
                 mt5_companies={mt5_companies}
                 current_account={current_account}
                 closeSuccessTopUpModal={closeSuccessTopUpModal}

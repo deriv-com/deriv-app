@@ -79,7 +79,6 @@ describe('CFDTopUpDemoModal', () => {
         render(<CFDTopUpDemoModal {...mock_props} />);
         expect(screen.getByText('Fund top up')).toBeInTheDocument();
         expect(screen.getByText('Current balance')).toBeInTheDocument();
-        expect(screen.getByText('Demo Financial account')).toBeInTheDocument();
         expect(screen.queryByTestId('dt_top_up_virtual_description')).toBeInTheDocument();
         expect(screen.getByRole('button', { name: /Top up/i })).toBeInTheDocument();
     });

@@ -2,7 +2,7 @@
     "name": "root",
     "private": true,
     "engines": {
-        "node": "^16.16.0"
+        "node": "18.x"
     },
     "devDependencies": {
         "@babel/core": "^7.12.10",
@@ -57,7 +57,7 @@
         "lerna": "^5.5.1",
         "lint-staged": "^10.4.0",
         "nx": "^14.5.10",
-        "postcss": "^8.3.6",
+        "postcss": "^8.4.24",
         "prettier": "^2.1.2",
         "stylelint": "^13.13.1",
         "stylelint-config-prettier": "^8.0.2",
@@ -93,8 +93,9 @@
         "start": "f () { lerna exec --scope=@deriv/${1:-'*'} -- npm run start ;}; f",
         "test": "f () { bash ./scripts/circleci-config.test.sh && npm run test:stylelint  && npm run test:eslint-all && npm run test:jest ;}; f",
         "test:stylelint": "stylelint \"./packages/*/src/**/*.s(a|c)ss\"",
-        "test:jest": "jest --all --maxWorkers=2",
+        "test:jest": "jest --all --maxWorkers=${JEST_MAX_WORKERS:-'45%'}",
         "test:e2e": "cd end-to-end-test &&  npx playwright test",
+        "test:e2e-dev": "cd end-to-end-test &&  npx playwright test --trace on && npx playwright show-report",
         "test:performance": "cd e2e_tests &&  jest -c ./jest.config.js --maxWorkers=2 --detectOpenHandles performance",
         "stylelint:fix": "stylelint \"./packages/*/src/**/*.s(a|c)ss\" --fix",
         "translate": "f () { lerna exec --scope @deriv/translations -- npm run translate ;}; f",

@@ -1,3 +1,3 @@
-import AddressDetails from './address-details.jsx';
+import AddressDetails from './address-details';
 
 export default AddressDetails;

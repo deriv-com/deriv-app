@@ -5,7 +5,7 @@ type TTransactionIds = {
     buy: number;
 };
 
-type TContractInfo = {
+export type TContractInfo = {
     accountID?: number;
     account_id: number;
     barrier: string;
@@ -65,7 +65,6 @@ export interface TSummaryCardProps {
     is_contract_completed: boolean;
     is_contract_loading: boolean;
     is_contract_inactive: boolean;
-    is_mobile: boolean;
     is_multiplier: boolean;
     onClickSell: () => void;
     is_sell_requested: boolean;

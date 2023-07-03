@@ -4,10 +4,10 @@ import React from 'react';
 import { getDisplayStatus, isCryptocurrency } from '@deriv/shared';
 import DesktopWrapper from '../../desktop-wrapper';
 import MobileWrapper from '../../mobile-wrapper';
-import ContractCardItem from './contract-card-item.jsx';
+import ContractCardItem from './contract-card-item';
 import Icon from '../../icon';
 import Money from '../../money';
-import { ResultStatusIcon } from '../result-overlay/result-overlay.jsx';
+import { ResultStatusIcon } from '../result-overlay/result-overlay';
 
 const VanillaOptionsCardBody = ({ contract_info, currency, getCardLabels, is_sold, progress_slider, status }) => {
     const { buy_price, bid_price, entry_spot_display_value, barrier, sell_price, profit } = contract_info;

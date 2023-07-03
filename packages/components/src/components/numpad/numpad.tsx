@@ -20,7 +20,7 @@ type TNumpad = {
     pip_size: number;
     onSubmit: (param: number) => void;
     v: string;
-    render?: (props: { string_value: string; className: string }) => React.ReactNode;
+    render?: (props: { value: string; className: string }) => React.ReactNode;
     submit_label: string;
     value: string;
     format: (v: string) => number;

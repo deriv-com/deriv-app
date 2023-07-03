@@ -106,7 +106,7 @@ export default function MobileTransactionCards({ transaction }: { transaction: T
                 />
             </div>
             <div className={`${PARENT_CLASS}__card__row`}>
-                <CardColumn title='Buy Price' label={transaction?.buy_price} />
+                <CardColumn title='Buy Price' label={Math.abs(transaction?.buy_price ?? 0).toFixed(2)} />
                 <CardColumn
                     title='Exit Spot'
                     label={transaction?.exit_tick}
@@ -125,7 +125,7 @@ export default function MobileTransactionCards({ transaction }: { transaction: T
                                 [`${PARENT_CLASS}__card__profit--loss`]: transaction?.profit < 0,
                             })}
                         >
-                            {Math.abs(transaction?.profit ?? 0)}
+                            {Math.abs(transaction?.profit ?? 0).toFixed(2)}
                         </div>
                     }
                     right_aligned

@@ -105,7 +105,7 @@ export default function DesktopTransactionTable({
                                 />
                                 <TableCell label={data?.entry_tick} loader={!data?.entry_tick} />
                                 <TableCell label={data?.exit_tick} loader={!data.exit_tick} />
-                                <TableCell label={data?.buy_price} />
+                                <TableCell label={Math.abs(data?.buy_price ?? 0).toFixed(2)} />
                                 <TableCell
                                     label={
                                         <div
@@ -124,10 +124,7 @@ export default function DesktopTransactionTable({
                     }
 
                     return (
-                        <div
-                            className={`${PARENT_CLASS}__table-row`}
-                            key={`transaction-row-divider-${new Date().getTime()}`}
-                        >
+                        <div className={`${PARENT_CLASS}__table-row`} key={`transaction-row-divider-${data}`}>
                             <div className={`${PARENT_CLASS}__divider`}>
                                 <div className='transactions__divider-line' />
                             </div>

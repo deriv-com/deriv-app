@@ -1,4 +1,4 @@
-const DerivAPIBasic = require('deriv-api-experiments/dist/DerivAPIBasic');
+const DerivAPIBasic = require('@deriv/deriv-api/dist/DerivAPIBasic');
 const getAppId = require('@deriv/shared').getAppId;
 const getSocketURL = require('@deriv/shared').getSocketURL;
 const cloneObject = require('@deriv/shared').cloneObject;

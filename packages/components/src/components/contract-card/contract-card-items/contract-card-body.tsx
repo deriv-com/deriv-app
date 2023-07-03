@@ -13,7 +13,7 @@ import AccumulatorCardBody from './accumulator-card-body';
 import MultiplierCardBody from './multiplier-card-body';
 import VanillaOptionsCardBody from './vanilla-options-card-body';
 import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
-import { ContractUpdate, ProposalOpenContract } from '@deriv/api-types';
+import { ContractUpdate } from '@deriv/api-types';
 import { TToastConfig } from '../../types/contract.types';
 import { TGetCardLables } from '../../types/common.types';
 
@@ -21,7 +21,7 @@ export type TGeneralContractCardBodyProps = {
     addToast: (toast_config: TToastConfig) => void;
     contract_info: TContractInfo;
     contract_update: ContractUpdate;
-    connectWithContractUpdate:
+    connectWithContractUpdate?:
         | React.ComponentProps<typeof AccumulatorCardBody>['connectWithContractUpdate']
         | React.ComponentProps<typeof MultiplierCardBody>['connectWithContractUpdate'];
     currency: string;
@@ -32,7 +32,7 @@ export type TGeneralContractCardBodyProps = {
     should_show_cancellation_warning: boolean;
     has_progress_slider: boolean;
     is_mobile: boolean;
-    is_sold: ProposalOpenContract['is_sold'];
+    is_sold: boolean;
     onMouseLeave: () => void;
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (name: string) => void;
@@ -109,7 +109,6 @@ const ContractCardBody = ({
                 has_progress_slider={has_progress_slider}
                 progress_slider={progress_slider_mobile_el}
                 is_mobile={is_mobile}
-                // @ts-expect-error Because component is jsx error is gone after ts-migration
                 is_sold={is_sold}
                 onMouseLeave={onMouseLeave}
                 status={status}
@@ -146,7 +145,6 @@ const ContractCardBody = ({
                 contract_info={contract_info}
                 currency={currency}
                 getCardLabels={getCardLabels}
-                // @ts-expect-error Because component is jsx error is gone after ts-migration
                 is_sold={is_sold}
                 progress_slider={progress_slider_mobile_el}
                 status={status}

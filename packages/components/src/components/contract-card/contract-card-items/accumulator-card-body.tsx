@@ -14,7 +14,7 @@ import { TGetCardLables } from '../../types/common.types';
 
 type TAccumulatorCardBody = {
     addToast: (toast_config: TToastConfig) => void;
-    connectWithContractUpdate: React.ComponentProps<typeof ToggleCardDialog>['connectWithContractUpdate'];
+    connectWithContractUpdate?: React.ComponentProps<typeof ToggleCardDialog>['connectWithContractUpdate'];
     contract_info: TContractInfo;
     contract_update: ContractUpdate;
     currency: Required<TContractInfo>['currency'];
@@ -23,7 +23,7 @@ type TAccumulatorCardBody = {
     getCardLabels: TGetCardLables;
     getContractById: React.ComponentProps<typeof ToggleCardDialog>['getContractById'];
     indicative?: number;
-    is_sold: TContractInfo['is_sold'];
+    is_sold: boolean;
     onMouseLeave: () => void;
     removeToast: (toast_id: string) => void;
     setCurrentFocus: (value: string) => void;

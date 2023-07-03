@@ -16,7 +16,7 @@ let ContractUpdateFormWrapper: React.ElementType;
 
 export type TToggleCardDialogProps = {
     addToast: (toast_config: TToastConfig) => void;
-    connectWithContractUpdate: (contract_update_form: React.ElementType) => React.ElementType;
+    connectWithContractUpdate?: (contract_update_form: React.ElementType) => React.ElementType;
     contract_id?: number;
     current_focus?: string;
     error_message_alignment?: string;

@@ -1,10 +1,9 @@
-/* eslint-disable */
 import React from 'react';
 import classNames from 'classnames';
 import Icon from '../icon';
 import Input from '../input';
 
-const DatePickerIcon = ({ icon, ...props }: React.ComponentProps<typeof Icon>) => (
+const DatePickerIcon = ({ icon, ...props }:  React.ComponentProps<typeof Icon>) => (
     <Icon className='dc-datepicker__icon' icon={icon} {...props} />
 );
 

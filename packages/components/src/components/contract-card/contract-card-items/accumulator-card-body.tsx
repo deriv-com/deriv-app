@@ -19,7 +19,7 @@ type TAccumulatorCardBody = {
     contract_update: ContractUpdate;
     currency: Required<TContractInfo>['currency'];
     current_focus?: string;
-    error_message_alignment: string;
+    error_message_alignment?: string;
     getCardLabels: TGetCardLables;
     getContractById: React.ComponentProps<typeof ToggleCardDialog>['getContractById'];
     indicative?: number;

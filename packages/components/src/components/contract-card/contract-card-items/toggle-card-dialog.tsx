@@ -19,7 +19,7 @@ export type TToggleCardDialogProps = {
     connectWithContractUpdate: (contract_update_form: React.ElementType) => React.ElementType;
     contract_id?: number;
     current_focus?: string;
-    error_message_alignment: string;
+    error_message_alignment?: string;
     getCardLabels: TGetCardLables;
     getContractById: (contract_id?: number) => TContractStore;
     is_valid_to_cancel?: boolean;

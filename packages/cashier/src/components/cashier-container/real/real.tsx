@@ -1,21 +1,17 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { useStore } from '@deriv/stores';
+import { useStore, observer } from '@deriv/stores';
 import CashierBreadcrumb from '../../cashier-breadcrumb';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import './real.scss';
 
-const Real = ({ is_deposit = false }: { is_deposit?: boolean }) => {
-    const {
-        traders_hub: { is_low_risk_cr_eu_real },
-    } = useStore();
-
+const Real = observer(({ is_deposit = false }: { is_deposit?: boolean }) => {
+    const { traders_hub, ui } = useStore();
+    const { is_low_risk_cr_eu_real } = traders_hub;
+    const { is_dark_mode_on } = ui;
     const { iframe, deposit, general_store } = useCashierStore();
-
-    const { clearIframe, iframe_height, iframe_url } = iframe;
-
+    const { clearIframe, iframe_height, iframe_url, checkIframeLoaded, setContainerHeight } = iframe;
     const { is_loading } = general_store;
-
     const { onMountDeposit } = deposit;
 
     const should_show_breadcrumbs = !is_low_risk_cr_eu_real && is_deposit && Boolean(iframe_height);
@@ -28,6 +24,12 @@ const Real = ({ is_deposit = false }: { is_deposit?: boolean }) => {
         };
     }, [clearIframe, onMountDeposit]);
 
+    React.useEffect(() => {
+        // To show loading state when switching theme
+        setContainerHeight(0);
+        checkIframeLoaded();
+    }, [checkIframeLoaded, is_dark_mode_on, setContainerHeight]);
+
     return (
         <div className='cashier__wrapper real'>
             {should_show_loader && <Loading className='real__loader' />}
@@ -36,7 +38,7 @@ const Real = ({ is_deposit = false }: { is_deposit?: boolean }) => {
                 <iframe
                     className='cashier__content'
                     height={iframe_height}
-                    src={iframe_url}
+                    src={`${iframe_url}&DarkMode=${is_dark_mode_on ? 'on' : 'off'}`}
                     frameBorder='0'
                     scrolling='auto'
                     data-testid='dt_doughflow_section'
@@ -44,6 +46,6 @@ const Real = ({ is_deposit = false }: { is_deposit?: boolean }) => {
             )}
         </div>
     );
-};
+});
 
 export default Real;

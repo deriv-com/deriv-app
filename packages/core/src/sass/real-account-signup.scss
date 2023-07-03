@@ -73,7 +73,6 @@
 
                 @include mobile {
                     width: 100%;
-                    padding: 0 1.2rem;
                     overflow-y: unset;
                     justify-content: unset;
                 }
@@ -91,6 +90,10 @@
                 }
                 .spacer {
                     margin: 1.6rem 0;
+                }
+
+                &--idv {
+                    width: 100%;
                 }
             }
 
@@ -160,5 +163,71 @@
     }
     @include mobile {
         overflow: hidden;
+    }
+}
+
+.idv-form {
+    display: grid;
+    grid-template-rows: unset !important;
+
+    .details-form {
+        @include mobile {
+            overflow: unset;
+        }
+
+        @include desktop {
+            padding: unset;
+        }
+    }
+}
+
+.mt5-layout {
+    @include desktop {
+        display: flex;
+        flex-direction: column;
+    }
+    &__container {
+        overflow: auto;
+        height: 100%;
+        @include desktop {
+            padding: 0.8rem 15.5rem;
+        }
+        @include mobile {
+            padding: 1.6rem;
+        }
+    }
+
+    .proof-of-identity {
+        &__footer {
+            padding: 1.6rem 2.4rem;
+            justify-content: end;
+            display: flex;
+            border-top: 1px solid var(--general-section-1);
+            @include mobile {
+                width: 100%;
+            }
+        }
+
+        &__submit-button {
+            @include mobile {
+                width: 100%;
+                margin: unset;
+            }
+        }
+    }
+    .account-form__footer {
+        @include desktop {
+            position: relative;
+        }
+    }
+}
+
+.proof-of-identity__container.mt5-layout {
+    justify-content: space-between;
+    height: 100%;
+    @include mobile {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
     }
 }

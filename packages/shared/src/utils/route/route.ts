@@ -2,7 +2,7 @@
 import React from 'react';
 // TODO: Add test cases for this
 type TRoute = {
-    component?: React.ElementType;
+    component?: React.ComponentType;
     default?: boolean;
     exact?: boolean;
     getTitle?: () => string;

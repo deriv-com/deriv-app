@@ -196,6 +196,10 @@
             margin-left: 0;
             width: 32.4rem;
 
+            @include mobile {
+                width: inherit;
+            }
+
             &--contact-details {
                 margin-bottom: 5.9rem;
 
@@ -232,6 +236,9 @@
                     &__textarea {
                         padding-top: 1rem;
                         padding-left: 0;
+                    }
+                    &__container {
+                        height: 9.6rem;
                     }
                 }
             }

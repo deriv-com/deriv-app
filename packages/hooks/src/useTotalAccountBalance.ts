@@ -15,8 +15,8 @@ const useTotalAccountBalance = (accounts: { balance?: number; currency?: string 
     if (!accounts.length) return { balance: 0, currency: total_assets_real_currency };
 
     const balance = accounts.reduce((total, account) => {
-        const base_rate = getRate(total_assets_real_currency);
-        const rate = getRate(account.currency || total_assets_real_currency);
+        const base_rate = getRate(total_assets_real_currency || '');
+        const rate = getRate(account.currency || total_assets_real_currency || '');
         const exchange_rate = base_rate / rate;
 
         return total + (account.balance || 0) * exchange_rate;

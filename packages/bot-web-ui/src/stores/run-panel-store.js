@@ -1,14 +1,14 @@
 import React from 'react';
-import { observable, action, reaction, computed, runInAction, makeObservable } from 'mobx';
-import { localize, Localize } from '@deriv/translations';
-import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
+import { action, computed, makeObservable, observable, reaction, runInAction } from 'mobx';
+import { error_types, message_types, observer, unrecoverable_errors } from '@deriv/bot-skeleton';
+import { isSafari, mobileOSDetect } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import { contract_stages } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
 import { journalError, switch_account_notification } from 'Utils/bot-notifications';
-import { isSafari, mobileOSDetect } from '@deriv/shared';
 
 export default class RunPanelStore {
-    constructor(root_store) {
+    constructor(root_store, core) {
         makeObservable(this, {
             active_index: observable,
             contract_stage: observable,
@@ -19,11 +19,12 @@ export default class RunPanelStore {
             is_drawer_open: observable,
             is_dialog_open: observable,
             is_sell_requested: observable,
+            run_id: observable,
+            error_type: observable,
             statistics: computed,
             is_stop_button_visible: computed,
             is_stop_button_disabled: computed,
             is_clear_stat_disabled: computed,
-            onRunButtonClick: action.bound,
             onStopButtonClick: action.bound,
             stopBot: action.bound,
             onClearStatClick: action.bound,
@@ -39,7 +40,6 @@ export default class RunPanelStore {
             showClearStatDialog: action.bound,
             showIncompatibleStrategyDialog: action.bound,
             showContractUpdateErrorDialog: action.bound,
-            onBotRunningEvent: action.bound,
             onBotSellEvent: action.bound,
             onBotStopEvent: action.bound,
             onBotTradeAgain: action.bound,
@@ -55,10 +55,20 @@ export default class RunPanelStore {
             onMount: action.bound,
             onUnmount: action.bound,
             handleInvalidToken: action.bound,
+            onRunButtonClick: action.bound,
+            registerBotListeners: action.bound,
+            registerReactions: action.bound,
+            onBotRunningEvent: action.bound,
+            unregisterBotListeners: action.bound,
+            clear: action.bound,
+            preloadAudio: action.bound,
+            stopMyBot: action.bound,
+            closeMultiplierContract: action.bound,
         });
 
         this.root_store = root_store;
         this.dbot = this.root_store.dbot;
+        this.core = core;
         this.disposeReactionsFn = this.registerReactions();
     }
 
@@ -137,10 +147,16 @@ export default class RunPanelStore {
     }
 
     async onRunButtonClick() {
-        const { core, summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
-        const { client, ui } = core;
-        const is_ios = mobileOSDetect() === 'iOS';
+        if (window.sendRequestsStatistic) {
+            performance.mark('bot-start');
 
+            window.sendRequestsStatistic(false);
+            performance.clearMeasures();
+        }
+        const { summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
+        const { client, ui } = this.core;
+        const is_ios = mobileOSDetect() === 'iOS';
+        this.dbot.saveRecentWorkspace();
         this.dbot.unHighlightAllBlocks();
         if (!client.is_logged_in) {
             this.showLoginDialog();
@@ -195,7 +211,7 @@ export default class RunPanelStore {
     }
 
     stopBot() {
-        const { ui } = this.root_store.core;
+        const { ui } = this.core;
 
         this.dbot.stopBot();
 
@@ -219,6 +235,10 @@ export default class RunPanelStore {
 
         if (this.error_type) {
             this.error_type = undefined;
+        }
+        if (window.sendRequestsStatistic) {
+            window.sendRequestsStatistic(true);
+            performance.clearMeasures();
         }
     }
 
@@ -258,9 +278,31 @@ export default class RunPanelStore {
         this.is_dialog_open = false;
     }
 
+    stopMyBot() {
+        const { summary_card, quick_strategy } = this.root_store;
+        const { ui } = this.core;
+        const { toggleStopBotDialog } = quick_strategy;
+
+        ui.setPromptHandler(false);
+        this.dbot.terminateBot();
+        this.onCloseDialog();
+        summary_card.clear();
+        toggleStopBotDialog();
+    }
+
+    closeMultiplierContract() {
+        const { quick_strategy } = this.root_store;
+        const { toggleStopBotDialog } = quick_strategy;
+
+        this.onClickSell();
+        this.stopBot();
+        this.onCloseDialog();
+        toggleStopBotDialog();
+    }
+
     showStopMultiplierContractDialog() {
-        const { summary_card, core } = this.root_store;
-        const { ui } = core;
+        const { summary_card } = this.root_store;
+        const { ui } = this.core;
 
         this.onOkButtonClick = () => {
             ui.setPromptHandler(false);
@@ -309,8 +351,8 @@ export default class RunPanelStore {
         this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
-            title: localize("DBot isn't quite ready for real accounts"),
-            message: localize('Please switch to your demo account to run your DBot.'),
+            title: localize("Deriv Bot isn't quite ready for real accounts"),
+            message: localize('Please switch to your demo account to run your Deriv Bot.'),
         };
         this.is_dialog_open = true;
     }
@@ -335,7 +377,7 @@ export default class RunPanelStore {
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
             title: localize('Import error'),
-            message: localize('This strategy is currently not compatible with DBot.'),
+            message: localize('This strategy is currently not compatible with Deriv Bot.'),
         };
         this.is_dialog_open = true;
     }
@@ -366,7 +408,7 @@ export default class RunPanelStore {
     }
 
     registerReactions() {
-        const { client, common, notifications } = this.root_store.core;
+        const { client, common, notifications } = this.core;
 
         const registerIsSocketOpenedListener = () => {
             if (common.is_socket_opened) {
@@ -436,7 +478,7 @@ export default class RunPanelStore {
 
     onBotStopEvent() {
         const { self_exclusion, summary_card } = this.root_store;
-        const { ui } = this.root_store.core;
+        const { ui } = this.core;
         const indicateBotStopped = () => {
             this.error_type = undefined;
             this.setIsRunning(false);
@@ -501,10 +543,10 @@ export default class RunPanelStore {
                 this.root_store.transactions.setActiveTransactionId(null);
 
                 const { buy } = contract_status;
-                const { is_virtual } = this.root_store.core.client;
+                const { is_virtual } = this.core.client;
 
                 if (!is_virtual) {
-                    this.root_store.core.gtm.pushDataLayer({ event: 'dbot_purchase', buy_price: buy.buy_price });
+                    this.core.gtm.pushDataLayer({ event: 'dbot_purchase', buy_price: buy.buy_price });
                 }
 
                 break;
@@ -555,7 +597,8 @@ export default class RunPanelStore {
     }
 
     showErrorMessage(data) {
-        const { journal, notifications } = this.root_store;
+        const { journal } = this.root_store;
+        const { notifications } = this.core;
         journal.onError(data);
         if (journal.journal_filters.some(filter => filter === message_types.ERROR)) {
             this.toggleDrawer(true);
@@ -567,7 +610,8 @@ export default class RunPanelStore {
     }
 
     switchToJournal() {
-        const { journal, notifications } = this.root_store;
+        const { journal } = this.root_store;
+        const { notifications } = this.core;
         journal.journal_filters.push(message_types.ERROR);
         this.setActiveTabIndex(run_panel.JOURNAL);
         this.toggleDrawer(true);
@@ -607,11 +651,13 @@ export default class RunPanelStore {
     onUnmount() {
         const { journal, summary_card, transactions } = this.root_store;
 
-        this.unregisterBotListeners();
-        this.disposeReactionsFn();
-        journal.disposeReactionsFn();
-        summary_card.disposeReactionsFn();
-        transactions.disposeReactionsFn();
+        if (!this.is_running) {
+            this.unregisterBotListeners();
+            this.disposeReactionsFn();
+            journal.disposeReactionsFn();
+            summary_card.disposeReactionsFn();
+            transactions.disposeReactionsFn();
+        }
 
         observer.unregisterAll('ui.log.error');
         observer.unregisterAll('ui.log.notify');
@@ -620,7 +666,7 @@ export default class RunPanelStore {
     }
 
     async handleInvalidToken() {
-        const { client } = this.root_store.core;
+        const { client } = this.core;
         await client.logout();
         this.setActiveTabIndex(run_panel.SUMMARY);
     }

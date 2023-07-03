@@ -17,11 +17,15 @@
 
     &__textarea {
         height: 9.8rem;
-        margin-bottom: 4rem;
+        margin-bottom: 1rem;
 
         .dc-input {
-            &__field[type='textarea'] {
-                height: 8.6rem;
+            &__container {
+                height: 9.6rem;
+            }
+
+            &__field {
+                height: 100% !important;
             }
         }
 
@@ -43,9 +47,6 @@
         > :nth-child(2) {
             @include mobile {
                 padding-bottom: 7.4rem;
-            }
-            @include tablet-up {
-                padding-bottom: 9.8rem;
             }
         }
 

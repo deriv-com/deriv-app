@@ -135,6 +135,7 @@ const plugins = ({ base, is_test_env }) => {
             ),
             'process.env.DATADOG_SESSION_SAMPLE_RATE': JSON.stringify(process.env.DATADOG_SESSION_SAMPLE_RATE),
             'process.env.CIRCLE_TAG': JSON.stringify(process.env.CIRCLE_TAG),
+            'process.env.CIRCLE_JOB': JSON.stringify(process.env.CIRCLE_JOB),
         }),
         new CleanWebpackPlugin(),
         new CopyPlugin(copyConfig(base)),

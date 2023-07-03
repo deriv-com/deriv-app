@@ -77,6 +77,18 @@
         &__payment-method-field {
             &--text-area {
                 height: auto;
+
+                & .dc-input {
+                    &__container {
+                        height: 9.6rem;
+                    }
+
+                    &__field {
+                        height: 100% !important;
+                        padding-left: 0;
+                        padding-right: 0;
+                    }
+                }
             }
         }
     }

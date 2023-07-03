@@ -6,13 +6,15 @@ import IdvDocumentSubmit from 'Components/poi/idv-document-submit';
 import IdvUploadComplete from 'Components/poi/idv-status/idv-submit-complete';
 import Unsupported from 'Components/poi/status/unsupported';
 import UploadComplete from 'Components/poi/status/upload-complete';
-import OnfidoUpload from './onfido-sdk-view.jsx';
+import OnfidoUpload from './onfido-sdk-view-container';
 import { identity_status_codes, submission_status_code, service_code } from './proof-of-identity-utils';
 
 const POISubmission = ({
+    account_settings,
     allow_poi_resubmission,
     has_require_submission,
     height,
+    getChangeableFields,
     identity_last_attempt,
     idv,
     is_from_external,
@@ -130,6 +132,8 @@ const POISubmission = ({
                             handleViewComplete={handleViewComplete}
                             handleBack={handleBack}
                             selected_country={selected_country}
+                            account_settings={account_settings}
+                            getChangeableFields={getChangeableFields}
                         />
                     );
                 case service_code.onfido: {
@@ -139,13 +143,12 @@ const POISubmission = ({
 
                     return (
                         <OnfidoUpload
+                            account_settings={account_settings}
                             country_code={country_code}
                             documents_supported={documents_supported}
+                            getChangeableFields={getChangeableFields}
                             handleViewComplete={handleViewComplete}
                             height={height}
-                            is_from_external={is_from_external}
-                            refreshNotifications={refreshNotifications}
-                            OnfidoUpload
                         />
                     );
                 }

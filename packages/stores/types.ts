@@ -129,6 +129,7 @@ type TNotification =
 
 type TClientStore = {
     accounts: { [k: string]: TActiveAccount };
+    is_eu_country: boolean;
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
@@ -372,6 +373,7 @@ type TTradersHubStore = {
     is_real: boolean;
     is_demo_low_risk: boolean;
     selectRegion: (region: string) => void;
+    closeAccountTransferModal: () => void;
     toggleRegulatorsCompareModal: () => void;
     toggleIsTourOpen: (is_tour_open: boolean) => void;
     selected_region: string;

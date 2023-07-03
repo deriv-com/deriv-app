@@ -149,6 +149,7 @@ type TClientStore = {
     current_currency_type?: string;
     current_fiat_currency?: string;
     getLimits: () => Promise<{ get_limits?: GetLimits }>;
+    has_deposited_for_first_time: boolean;
     has_active_real_account: boolean;
     has_logged_out: boolean;
     has_maltainvest_account: boolean;
@@ -307,6 +308,8 @@ type TUiStore = {
     is_ready_to_deposit_modal_visible: boolean;
     reports_route_tab_index: number;
     should_show_cancellation_warning: boolean;
+    should_show_deposit_or_account_success_modal: boolean;
+    should_trigger_tour_guide: boolean;
     toggleCancellationWarning: (state_change: boolean) => void;
     toggleUnsupportedContractModal: (state_change: boolean) => void;
     toggleReports: (is_visible: boolean) => void;
@@ -316,6 +319,8 @@ type TUiStore = {
     populateHeaderExtensions: (header_items: JSX.Element | null) => void;
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     setShouldShowCooldownModal: (value: boolean) => void;
+    setShouldTriggerTourGuide: (value: boolean) => void;
+    toggleDepositOrAccountSuccessModal: () => void;
 };
 
 type TPortfolioStore = {

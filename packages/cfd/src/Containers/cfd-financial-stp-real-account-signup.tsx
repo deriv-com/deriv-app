@@ -70,9 +70,12 @@ const CFDFinancialStpRealAccountSignup = (props: TCFDFinancialStpRealAccountSign
     const state_index = step;
     let is_mounted = React.useRef(true).current;
 
-    const is_authenticated_with_idv_photoid = useIsAccountStatusPresent('authenticated_with_idv_photoid');
+    const { need_poi_for_vanuatu_maltainvest, need_poi_for_bvi_labuan, poa_resubmit_for_labuan } =
+        getAuthenticationStatusInfo(account_status);
 
-    const { need_poi_for_vanuatu_maltainvest, need_poi_for_bvi_labuan } = getAuthenticationStatusInfo(account_status);
+    // [TODO] - Enable useIsAccountStatusPresent hooks once Account package uses useState hook and remove the assignment in Ln 78
+    // const is_authenticated_with_idv_photoid = useIsAccountStatusPresent('authenticated_with_idv_photoid');
+    const is_authenticated_with_idv_photoid = poa_resubmit_for_labuan;
 
     const poi_config: TItemsState = {
         body: CFDPOI,

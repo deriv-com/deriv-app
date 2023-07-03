@@ -237,7 +237,6 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
         getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_vanuatu_maltainvest: true });
 
         render(<CFDFinancialStpRealAccountSignup {...new_props} />);
-        screen.debug();
         testAllStepsFn(steps, 0);
     });
 
@@ -250,7 +249,6 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
         getAuthenticationStatusInfo.mockReturnValueOnce({ poa_resubmit_for_labuan: true });
 
         render(<CFDFinancialStpRealAccountSignup {...new_props} />);
-        screen.debug();
         testAllStepsFn(steps, 1);
     });
 
@@ -263,7 +261,6 @@ describe('<CFDFinancialStpRealAccountSignup />', () => {
         getAuthenticationStatusInfo.mockReturnValueOnce({ need_poi_for_vanuatu_maltainvest: true });
 
         render(<CFDFinancialStpRealAccountSignup {...new_props} />);
-        screen.debug();
         testAllStepsFn(steps, 0);
         useStateMock
             .mockImplementationOnce(() => [0, setStep])

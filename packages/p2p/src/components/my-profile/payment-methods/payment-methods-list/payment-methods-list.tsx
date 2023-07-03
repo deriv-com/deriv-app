@@ -1,11 +1,11 @@
 import React from 'react';
 import { Button, DesktopWrapper, MobileFullPageModal, MobileWrapper, Text, ThemedScrollbars } from '@deriv/components';
 import { observer } from '@deriv/stores';
-import { useStores } from 'Stores';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
-import { TPaymentMethod } from 'Types';
 import { Localize, localize } from 'Components/i18next';
 import PaymentMethodCard from 'Components/payment-method-card';
+import { useStores } from 'Stores';
+import { TPaymentMethod } from 'Types';
 
 type TPaymentMethodsListMethod = {
     display_name: string;

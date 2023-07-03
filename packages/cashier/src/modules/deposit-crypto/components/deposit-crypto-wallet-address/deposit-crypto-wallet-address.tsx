@@ -16,7 +16,7 @@ const DepositCryptoWalletAddress: React.FC = observer(() => {
 
     if (error) {
         return (
-            <div className='deposit-crypto-wallet-address'>
+            <>
                 <InlineMessage
                     type='warning'
                     message={localize(
@@ -24,12 +24,12 @@ const DepositCryptoWalletAddress: React.FC = observer(() => {
                     )}
                 />
                 <Button text={localize('Refresh')} onClick={() => resend()} secondary small />
-            </div>
+            </>
         );
     }
 
     return (
-        <div className='deposit-crypto-wallet-address'>
+        <>
             <QRCode
                 value={deposit_crypto_address || ''}
                 size={is_mobile ? 128 : 160}
@@ -51,7 +51,7 @@ const DepositCryptoWalletAddress: React.FC = observer(() => {
                 </div>
             </div>
             <DepositCryptoDisclaimers />
-        </div>
+        </>
     );
 });
 

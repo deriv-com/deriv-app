@@ -2,7 +2,7 @@ import { compressImg, convertToBase64, isImageType, getFormatFromMIME, TImage } 
 
 export type TFile = File & { file: Blob };
 
-type TSettings = {
+export type TSettings = {
     documentType: {
         passport: string;
         national_identity_card: string;

@@ -159,7 +159,7 @@ export const getPath = (route_path: string, parameters = {}) =>
         route_path
     );
 
-export const getContractPath = (contract_id: number) => getPath(routes.contract, { contract_id });
+export const getContractPath = (contract_id?: number) => getPath(routes.contract, { contract_id });
 
 /**
  * Filters query string. Returns filtered query (without '/?')

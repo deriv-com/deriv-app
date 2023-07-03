@@ -406,6 +406,7 @@ export default class ClientStore extends BaseStore {
             setPrevRealAccountLoginid: action.bound,
             setP2pAdvertiserInfo: action.bound,
             setPrevAccountType: action.bound,
+            getResidence: action.bound,
         });
 
         reaction(
@@ -776,6 +777,10 @@ export default class ClientStore extends BaseStore {
 
     get is_from_restricted_country() {
         return this.residence_list.find(item => item.value === this.residence)?.disabled === 'DISABLED';
+    }
+
+    getResidence() {
+        return this.residence;
     }
 
     get is_fully_authenticated() {

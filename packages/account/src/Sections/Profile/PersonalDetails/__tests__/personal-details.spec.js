@@ -1,3 +1,4 @@
+import { initFormErrorMessages } from '@deriv/shared';
 import { jest, test } from '@jest/globals';
 import React from 'react';
 import { cleanup, render, waitForElementToBeRemoved, waitFor, screen, fireEvent } from '@testing-library/react';
@@ -126,6 +127,10 @@ describe('<PersonalDetailsForm />', () => {
     });
 
     it('should have "required" validation errors on required form fields', async () => {
+        const form_error_messages = {
+            empty_address: () => 'This field is required',
+        };
+        initFormErrorMessages(form_error_messages);
         renderComponent();
         await waitFor(async () => {
             const first_name = screen.getByTestId('dt_first_name');

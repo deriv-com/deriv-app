@@ -6,10 +6,9 @@ import ErrorComponent from './error-component';
 import { useWalletMigration } from '@deriv/hooks';
 
 const Routes = observer(() => {
-    const { client, common, traders_hub } = useStore();
-    const { is_logged_in, is_logging_in } = client;
+    const { client, common } = useStore();
+    const { is_logged_in, is_logging_in, setWalletsMigrationInProgressPopup } = client;
     const { error, has_error } = common;
-    const { setWalletsMigrationInProgressPopup } = traders_hub;
     const { status } = useWalletMigration();
 
     if (has_error) return <ErrorComponent {...error} />;

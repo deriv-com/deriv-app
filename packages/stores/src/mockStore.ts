@@ -201,6 +201,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             setPrevAccountType: jest.fn(),
             wallet_migration_status: 'eligible',
             setWalletMigrationStatus: jest.fn(),
+            is_wallet_migration_in_progress: false,
+            setWalletsMigrationInProgressPopup: jest.fn(),
         },
         common: {
             error: {
@@ -310,8 +312,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             selected_region: 'All',
             getExistingAccounts: jest.fn(),
             available_dxtrade_accounts: [],
-            is_wallet_migration_in_progress: false,
-            setWalletsMigrationInProgressPopup: jest.fn(),
             active_modal_tab: 'Deposit',
             setWalletModalActiveTab: jest.fn(),
             active_modal_wallet_id: '',

@@ -53,12 +53,11 @@ const CFDsListing = () => {
         setSelectedAccount,
         CFDs_restricted_countries,
         financial_restricted_countries,
-        setWalletsMigrationInProgressPopup,
     } = traders_hub;
     const { status: wallet_migration_status } = useWalletMigration();
 
     const { toggleCompareAccountsModal, setAccountType } = cfd;
-    const { is_landing_company_loaded, real_account_creation_unlock_date } = client;
+    const { is_landing_company_loaded, real_account_creation_unlock_date, setWalletsMigrationInProgressPopup } = client;
     const { setAppstorePlatform } = common;
     const { openDerivRealAccountNeededModal, setShouldShowCooldownModal } = ui;
     const has_no_real_account = !has_any_real_account;

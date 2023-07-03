@@ -5,17 +5,17 @@ import { BinaryLink } from '../../Routes';
 import { observer, useStore } from '@deriv/stores';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { useP2PNotificationCount, useIsRealAccountNeededForCashier } from '@deriv/hooks';
+import { useP2PNotificationCount, useIsRealAccountNeededForCashier, useWalletMigration } from '@deriv/hooks';
 import './menu-links.scss';
 import { useHistory } from 'react-router';
 
-const MenuItems = ({ id, text, icon, link_to, handleClickCashier }) => {
+const MenuItems = ({ id, text, icon, link_to, handleClickCashier, className = '' }) => {
     return (
         <BinaryLink
             id={id}
             key={icon}
             to={link_to}
-            className='header__menu-link'
+            className={`header__menu-link ${className}`}
             active_class='header__menu-link--active'
             onClick={handleClickCashier}
         >
@@ -38,10 +38,12 @@ const ReportTab = () => (
 
 const CashierTab = observer(() => {
     const { client, ui } = useStore();
-    const { has_any_real_account, is_virtual } = client;
+    const { has_any_real_account, is_virtual, setWalletsMigrationInProgressPopup } = client;
     const { toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
     const p2p_notification_count = useP2PNotificationCount();
     const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
+    const { status } = useWalletMigration();
+    const is_wallet_migration_in_progress = status === 'in_progress';
 
     const history = useHistory();
 
@@ -66,6 +68,13 @@ const CashierTab = observer(() => {
         }
     };
 
+    const onDisabledClick = e => {
+        if (is_wallet_migration_in_progress) {
+            e.preventDefault();
+            setWalletsMigrationInProgressPopup(true);
+        }
+    };
+
     const cashier_redirect =
         (toggle_modal_routes && !has_any_real_account && is_virtual) || real_account_needed_for_cashier;
 
@@ -82,7 +91,8 @@ const CashierTab = observer(() => {
             }
             text={localize('Cashier')}
             link_to={!cashier_redirect ? routes.cashier : null}
-            handleClickCashier={handleClickCashier}
+            handleClickCashier={is_wallet_migration_in_progress ? onDisabledClick : handleClickCashier}
+            className={is_wallet_migration_in_progress ? 'cashier__disabled' : ''}
         />
     );
 });

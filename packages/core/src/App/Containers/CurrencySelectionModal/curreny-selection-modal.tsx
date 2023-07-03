@@ -157,5 +157,5 @@ export default connect(({ client, traders_hub, ui }: RootStore) => ({
     multipliers_account_status: traders_hub.multipliers_account_status,
     toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
     has_any_real_account: client.has_any_real_account,
-    setWalletsMigrationInProgressPopup: traders_hub.setWalletsMigrationInProgressPopup,
+    setWalletsMigrationInProgressPopup: client.setWalletsMigrationInProgressPopup,
 }))(CurrencySelectionModal);

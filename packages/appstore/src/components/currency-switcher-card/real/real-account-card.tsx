@@ -18,10 +18,10 @@ const RealAccountCard = observer(() => {
 
     const { client, common, modules, traders_hub } = useStore();
 
-    const { accounts, loginid } = client;
+    const { accounts, loginid, setWalletsMigrationInProgressPopup } = client;
     const { current_language } = common;
     const { current_list } = modules.cfd;
-    const { openModal, is_eu_user, setWalletsMigrationInProgressPopup } = traders_hub;
+    const { openModal, is_eu_user } = traders_hub;
 
     const { balance, currency } = loginid ? accounts[loginid] : default_balance;
 

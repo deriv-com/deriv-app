@@ -30,7 +30,7 @@ const TradingAppCardActions = ({
     is_real,
 }: Actions) => {
     const {
-        traders_hub: { setWalletsMigrationInProgressPopup },
+        client: { setWalletsMigrationInProgressPopup },
     } = useStore();
     const { status } = useWalletMigration();
     const is_wallet_migration_in_progress = status === 'in_progress';

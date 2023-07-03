@@ -28,10 +28,10 @@ export type TContractCardHeaderProps = {
     has_progress_slider: boolean;
     is_mobile: boolean;
     is_sell_requested: boolean;
-    is_valid_to_sell: boolean;
+    is_valid_to_sell?: boolean;
     onClickSell: (contract_id?: number) => void;
     server_time: moment.Moment;
-    id: number;
+    id?: number;
     is_sold?: boolean;
 };
 

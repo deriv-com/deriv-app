@@ -3,12 +3,12 @@
         display: flex;
         flex-direction: column;
         @include desktop {
-            overflow: scroll;
+            overflow: auto;
         }
     }
     &__scrollable-content {
         @include desktop {
-            overflow: scroll;
+            overflow: auto;
         }
     }
     &__footer-content {

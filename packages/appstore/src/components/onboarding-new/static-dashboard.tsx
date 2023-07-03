@@ -564,7 +564,7 @@ const StaticDashboard = ({
                                     is_financial_last_step={is_financial_last_step}
                                     is_eu_user={is_eu_user}
                                 />
-                                <StaticCFDAccountManager
+                                {/* <StaticCFDAccountManager
                                     type='Financial'
                                     platform='derivez'
                                     appname={localize('Deriv EZ')}
@@ -580,7 +580,7 @@ const StaticDashboard = ({
                                     is_blurry={is_blurry}
                                     is_onboarding_animated={is_onboarding_animated}
                                     is_eu_user={is_eu_user}
-                                />
+                                /> */}
                             </div>
                         )}
                     </div>

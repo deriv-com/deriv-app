@@ -369,7 +369,7 @@ const DMT5CompareModalContent = ({
             case 'financial_maltainvest':
                 setAppstorePlatform(CFD_PLATFORMS.MT5);
                 setJurisdictionSelectedShortcode(Jurisdiction.MALTA_INVEST);
-                if ((poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) || is_demo_tab) {
+                if (is_eu_user || (poi_acknowledged_for_vanuatu_maltainvest && poa_acknowledged) || is_demo_tab) {
                     openPasswordModal(type_of_account);
                 } else {
                     toggleCFDVerificationModal();

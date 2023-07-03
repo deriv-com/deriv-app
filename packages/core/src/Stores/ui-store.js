@@ -84,6 +84,9 @@ export default class UIStore extends BaseStore {
     deposit_real_account_signup_target = undefined;
     has_real_account_signup_ended = false;
 
+    // verification modal
+    is_verification_modal_visible = false;
+
     // Welcome modal
     is_welcome_modal_visible = false;
 
@@ -279,6 +282,7 @@ export default class UIStore extends BaseStore {
             is_top_up_virtual_success: observable,
             is_trading_assessment_for_existing_user_enabled: observable,
             is_trading_assessment_for_new_user_enabled: observable,
+            is_verification_modal_visible: observable,
             is_welcome_modal_visible: observable,
             manage_real_account_tab_index: observable,
             modal_index: observable,
@@ -351,6 +355,7 @@ export default class UIStore extends BaseStore {
             setIsClosingCreateRealAccountModal: action.bound,
             setIsFromSignupAccount: action.bound,
             setIsNativepickerVisible: action.bound,
+            setIsVerificationModalVisible: action.bound,
             setReportsTabIndex: action.bound,
             toggleWelcomeModal: action.bound,
             toggleReadyToDepositModal: action.bound,
@@ -933,5 +938,9 @@ export default class UIStore extends BaseStore {
 
     setShouldTriggerTourGuide(value) {
         this.should_trigger_tour_guide = value;
+    }
+
+    setIsVerificationModalVisible(value) {
+        this.is_verification_modal_visible = value;
     }
 }

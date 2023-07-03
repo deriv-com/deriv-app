@@ -18,7 +18,7 @@ type TContractCardProps = {
     is_multiplier: boolean;
     is_positions: boolean;
     is_unsupported: boolean;
-    onClickRemove: () => void;
+    onClickRemove: (contract_id?: number) => void;
     profit_loss: number;
     result: string;
     should_show_result_overlay: boolean;

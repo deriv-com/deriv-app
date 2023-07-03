@@ -284,6 +284,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             selectRegion: jest.fn(),
             setSelectedAccount: jest.fn(),
             is_low_risk_cr_eu_real: false,
+            closeAccountTransferModal: jest.fn(),
             toggleRegulatorsCompareModal: jest.fn(),
             selected_region: '',
             is_demo: false,

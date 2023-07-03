@@ -2,7 +2,12 @@ import { useRequest } from '@deriv/api';
 import { getMinWithdrawal } from '../../shared/src/utils/currency';
 import { useStore } from '@deriv/stores';
 
-const useCheck10kLimit = () => {
+type TUseCheck10kLimit = {
+    is_10k_withdrawal_limit_reached: boolean;
+    max_withdraw_amount: number | undefined;
+};
+
+const useCheck10kLimit = (): TUseCheck10kLimit => {
     const { client } = useStore();
     const { data: account_limit } = useRequest('get_limits');
     const remainder = account_limit?.get_limits?.remainder;

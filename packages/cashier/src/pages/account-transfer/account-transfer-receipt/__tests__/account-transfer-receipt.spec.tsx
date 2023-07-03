@@ -23,6 +23,9 @@ describe('<AccountTransferReceipt />', () => {
             common: {
                 is_from_derivgo: false,
             },
+            traders_hub: {
+                closeAccountTransferModal: jest.fn(),
+            },
             modules: {
                 cashier: {
                     account_transfer: {

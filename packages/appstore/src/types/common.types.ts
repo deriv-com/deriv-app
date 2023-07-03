@@ -12,7 +12,7 @@ export type RequiredAndNotNull<T> = {
 
 export type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 export type TAccountCategory = 'real' | 'demo';
-export type TPlatform = 'dxtrade' | 'mt5' | 'trader' | 'dbot' | 'smarttrader' | 'bbot' | 'go';
+export type TPlatform = 'dxtrade' | 'mt5' | 'trader' | 'dbot' | 'smarttrader' | 'bbot' | 'go' | 'derivez';
 export type TBrandData = {
     name: string;
     icon?: string;
@@ -66,7 +66,7 @@ export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
 };
 
 export type TTradingPlatformAvailableAccount = {
-    market_type: 'financial' | 'gaming';
+    market_type: 'financial' | 'gaming' | 'all';
     name: string;
     requirements: {
         after_first_deposit: {
@@ -119,7 +119,8 @@ export type TIconTypes =
     | 'Options'
     | 'SmartTrader'
     | 'SmartTraderBlue'
-    | 'CFDs';
+    | 'CFDs'
+    | 'DerivEz';
 
 export interface AvailableAccount {
     name: string;

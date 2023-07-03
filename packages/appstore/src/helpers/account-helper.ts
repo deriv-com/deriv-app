@@ -1,4 +1,6 @@
 import { isCryptocurrency } from '@deriv/shared';
+import { localize } from '@deriv/translations';
+import { TAccountType } from '../components/modals/account-type-modal/types';
 
 type TAccountProps = {
     a_currency: string;
@@ -35,3 +37,23 @@ export const getSortedAccountList = (account_list: TAccountProps, accounts: TAcc
         return 1;
     });
 };
+
+export const getDerivedAccount = (): TAccountType => ({
+    title_and_type: localize('Derived'),
+    icon: 'Derived',
+    description: localize('Trade CFDs on MT5 with Derived indices that simulate real-world market movements.'),
+});
+
+export const getFinancialAccount = (): TAccountType => ({
+    title_and_type: localize('Financial'),
+    icon: 'Financial',
+    description: localize('Trade CFDs on MT5 with forex, stock indices, commodities, and cryptocurrencies.'),
+});
+
+export const getSwapFreeAccount = (): TAccountType => ({
+    title_and_type: localize('Swap-Free'),
+    icon: 'SwapFree',
+    description: localize(
+        'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs.'
+    ),
+});

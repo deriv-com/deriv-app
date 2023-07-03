@@ -1,19 +1,21 @@
 import React from 'react';
 import { Money } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import RiskManagementDialog from 'Modules/Trading/Containers/Multiplier/risk-management-dialog.jsx';
+import { observer } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const RiskManagementInfo = ({
-    currency,
-    stop_loss,
-    take_profit,
-    has_take_profit,
-    has_stop_loss,
-    cancellation_duration,
-    cancellation_range_list,
-    has_cancellation,
-}) => {
+const RiskManagementInfo = observer(() => {
+    const {
+        currency,
+        stop_loss,
+        take_profit,
+        has_take_profit,
+        has_stop_loss,
+        cancellation_duration,
+        cancellation_range_list,
+        has_cancellation,
+    } = useTraderStore();
     const [is_dialog_open, setDialogOpen] = React.useState(false);
     const has_risk_management = has_take_profit || has_stop_loss || has_cancellation;
     const toggleDialog = () => {
@@ -63,15 +65,6 @@ const RiskManagementInfo = ({
             </div>
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ modules }) => ({
-    currency: modules.trade.currency,
-    stop_loss: modules.trade.stop_loss,
-    has_stop_loss: modules.trade.has_stop_loss,
-    take_profit: modules.trade.take_profit,
-    has_take_profit: modules.trade.has_take_profit,
-    cancellation_duration: modules.trade.cancellation_duration,
-    cancellation_range_list: modules.trade.cancellation_range_list,
-    has_cancellation: modules.trade.has_cancellation,
-}))(RiskManagementInfo);
+export default RiskManagementInfo;

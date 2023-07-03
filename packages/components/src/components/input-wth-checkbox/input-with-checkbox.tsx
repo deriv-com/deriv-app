@@ -18,14 +18,16 @@ type TInputWithCheckbox = {
     current_focus?: string;
     defaultChecked: boolean;
     error_messages?: string[];
-    is_negative_disabled: boolean | undefined | null;
+    is_negative_disabled: boolean;
     is_single_currency: boolean;
     is_input_hidden?: boolean;
     label: string;
     max_value?: number;
     name: string;
-    onChange?: (e: React.ChangeEvent<HTMLInputElement> | { target: { name: string; value: boolean } }) => void;
-    setCurrentFocus: (name: string) => void;
+    onChange: (
+        e: React.ChangeEvent<HTMLInputElement> | { target: { name: string; value: number | string | boolean } }
+    ) => void;
+    setCurrentFocus: (name: string | null) => void;
     tooltip_label?: string;
     tooltip_alignment?: TPosition;
     error_message_alignment: string;
@@ -120,14 +122,14 @@ const InputWithCheckbox = ({
             classNameInlinePrefix={classNameInlinePrefix}
             classNameInput={classNameInput}
             currency={currency}
-            current_focus={current_focus}
+            current_focus={current_focus || ''}
             error_messages={error_messages}
             error_message_alignment={error_message_alignment}
             is_error_tooltip_hidden={isMobile()}
-            is_disabled={is_disabled ? 'disabled' : undefined}
+            is_disabled={!!is_disabled}
             fractional_digits={getDecimalPlaces(currency)}
             id={`dc_${name}_input`}
-            inline_prefix={is_single_currency ? currency : null}
+            inline_prefix={is_single_currency ? currency : undefined}
             is_autocomplete_disabled
             is_float={getDecimalPlaces(currency) > 0}
             is_hj_whitelisted
@@ -139,6 +141,7 @@ const InputWithCheckbox = ({
             onChange={onChange}
             onClickInputWrapper={is_disabled ? undefined : enableInputOnClick}
             type='number'
+            ariaLabel=''
             inputmode='decimal'
             value={value}
             setCurrentFocus={setCurrentFocus}

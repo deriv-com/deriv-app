@@ -320,6 +320,13 @@ Blockly.BlockSvg.prototype.setCollapsed = function (collapsed) {
     this.setErrorHighlighted(collapsed && this.hasErrorHighlightedDescendant());
 };
 
+export const blocksCoordinate = () => {
+    const during_purchase = Blockly.derivWorkspace?.getCanvas().children[1];
+    const after_purchase = Blockly.derivWorkspace?.getCanvas().children[2];
+    during_purchase?.setAttribute('transform', 'translate(720,0)');
+    after_purchase?.setAttribute('transform', 'translate(720,248)');
+};
+
 /**
  * @deriv/bot: Add check for workspace.getCanvas() before appendChild() is called.
  */

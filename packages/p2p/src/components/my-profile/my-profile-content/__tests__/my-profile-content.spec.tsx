@@ -80,6 +80,7 @@ describe('<MyProfileContent />', () => {
     });
 
     it('should call hideAddPaymentMethodForm and setShouldShowEditPaymentMethodForm when clicking return icon', () => {
+        mock_store.my_profile_store.selected_payment_method = '';
         mock_store.my_profile_store.active_tab = my_profile_tabs.PAYMENT_METHODS;
 
         render(<MyProfileContent />);

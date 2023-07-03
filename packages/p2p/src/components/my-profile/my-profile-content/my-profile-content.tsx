@@ -41,7 +41,7 @@ const MyProfileContent = () => {
                         page_header_className='buy-sell__modal-header'
                         page_header_text={localize('Add payment method')}
                         pageHeaderReturnFn={() => {
-                            if (general_store.is_form_modified) {
+                            if (general_store.is_form_modified || !!selected_payment_method) {
                                 if (should_show_add_payment_method_form) {
                                     showModal({
                                         key: 'CancelAddPaymentMethodModal',

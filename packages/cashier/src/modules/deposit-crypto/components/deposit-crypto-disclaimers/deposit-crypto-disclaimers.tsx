@@ -1,5 +1,4 @@
 import React from 'react';
-import { useFetch } from '@deriv/api';
 import { InlineMessage, Text } from '@deriv/components';
 import { useCurrentCurrencyConfig } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
@@ -21,18 +20,19 @@ const DepositCryptoDisclaimers: React.FC = observer(() => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     const currency_config = useCurrentCurrencyConfig();
-    const { data } = useFetch('crypto_config');
-    const minimum_deposit = data?.crypto_config?.currencies_config[currency_config.code]?.minimum_deposit;
 
     return (
         <div className='deposit-crypto-disclaimers'>
             <InlineMessage title={localize('To avoid loss of funds:')}>
                 <br />
-                {minimum_deposit && (
+                {currency_config.minimum_deposit && (
                     <li>
                         <Localize
                             i18n_default_text='A minimum deposit value of <0>{{minimum_deposit}}</0> {{currency}} is required. Otherwise, the funds will be lost and cannot be recovered.'
-                            values={{ minimum_deposit, currency: currency_config.display_code }}
+                            values={{
+                                minimum_deposit: currency_config.minimum_deposit,
+                                currency: currency_config.display_code,
+                            }}
                             components={[<strong key={0} />]}
                         />
                     </li>

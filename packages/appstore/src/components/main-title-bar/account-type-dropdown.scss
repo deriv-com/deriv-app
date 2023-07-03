@@ -41,34 +41,31 @@
     &--real,
     &--real:focus,
     &--real:hover {
-        border: 1px solid var(--status-info);
+        border: 1px solid var(--status-success);
         min-width: 87%;
         & > .dc-text {
-            color: var(--status-info);
+            color: var(--status-success);
         }
     }
 
     &--demo,
     &--demo:focus,
     &--demo:hover {
-        border: 1px solid var(--status-success);
+        border: 1px solid var(--status-info);
         width: 90%;
         & > .dc-text {
-            color: var(--status-success);
+            color: var(--status-info);
             padding-left: 0.65em;
         }
     }
     &__icon {
-        &--real,
-        &--demo {
-            transform: none !important;
-        }
+        transform: none;
         &--real {
-            --fill-color1: var(--status-info) !important;
+            --fill-color1: var(--status-success);
             right: 0.7rem;
         }
         &--demo {
-            --fill-color1: var(--status-success) !important;
+            --fill-color1: var(--status-info);
             right: 1.4rem;
         }
     }

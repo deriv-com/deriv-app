@@ -98,7 +98,7 @@ const BinarySocketGeneral = (() => {
     const setResidence = residence => {
         if (residence) {
             client_store.setResidence(residence);
-            WS.landingCompany(residence);
+            WS.landingCompany(residence).then(client_store.responseLandingCompany);
         }
     };
 
@@ -204,9 +204,6 @@ const BinarySocketGeneral = (() => {
                 ) {
                     return;
                 }
-                if (!['reset_password'].includes(msg_type)) {
-                    if (window.TrackJS) window.TrackJS.track('Custom InvalidToken error');
-                }
                 // eslint-disable-next-line no-case-declarations
                 const active_platform = getActivePlatform(common_store.app_routing_history);
 
@@ -259,6 +256,7 @@ const BinarySocketGeneral = (() => {
         WS.storage.getSettings();
         WS.getAccountStatus();
         WS.storage.payoutCurrencies();
+        client_store.setIsAuthorize(true);
         if (!client_store.is_virtual) {
             WS.getSelfExclusion();
         }

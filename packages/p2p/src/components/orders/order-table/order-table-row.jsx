@@ -110,8 +110,8 @@ const OrderRow = ({ row: order }) => {
                     hideModal();
                     should_show_order_details.current = true;
                     order_store.setRatingValue(0);
-                    removeNotificationMessage({ key: `order-${id}` });
-                    removeNotificationByKey({ key: `order-${id}` });
+                    removeNotificationMessage({ key: `p2p_order_${id}` });
+                    removeNotificationByKey({ key: `p2p_order_${id}` });
                     order_store.setIsLoading(true);
                     order_store.setOrders([]);
                     order_store.loadMoreOrders({ startIndex: 0 });

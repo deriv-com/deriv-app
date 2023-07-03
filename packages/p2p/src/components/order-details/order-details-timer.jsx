@@ -22,10 +22,7 @@ const OrderDetailsTimer = observer(() => {
 
     const countDownTimer = () => {
         const time_left = getTimeLeft(order_expiry_milliseconds);
-
-        if (time_left.distance < 0) {
-            clearInterval(interval.current);
-        }
+        if (time_left.distance < 0) clearInterval(interval.current);
 
         setRemainingTime(time_left.label);
     };
@@ -35,7 +32,7 @@ const OrderDetailsTimer = observer(() => {
         interval.current = setInterval(countDownTimer, 1000);
         return () => clearInterval(interval.current);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [order_expiry_milliseconds]);
 
     if (should_show_order_timer) {
         return (

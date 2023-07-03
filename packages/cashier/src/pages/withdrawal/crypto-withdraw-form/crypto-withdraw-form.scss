@@ -3,6 +3,7 @@
     flex-direction: column;
     align-items: center;
     margin-bottom: 4rem;
+    padding-top: 2.4rem;
 
     &__submit {
         display: flex;
@@ -25,14 +26,22 @@
     &__icon {
         margin: 2.4rem 0 0.4rem;
     }
-    &__percentage-selector {
-        margin-bottom: 1.6rem;
-        width: fit-content;
-        @include mobile {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
+    &__percentage {
+        &-container {
+            margin-top: 2.4rem;
+            @include mobile {
+                margin-top: 0;
+            }
+        }
+        &-selector {
+            margin-bottom: 1.6rem;
+            width: fit-content;
+            @include mobile {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
         }
     }
 }

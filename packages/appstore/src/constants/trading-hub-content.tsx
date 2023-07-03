@@ -42,7 +42,7 @@ export const getTradingHubContents = (): TTradingHubContents => ({
                 }}
             />
         ),
-        footer_header: localize("Welcome to Trader's hub"),
+        footer_header: localize("Welcome to Trader's Hub"),
         footer_text: localize('This is your personal start page for Deriv'),
         has_next_content: false,
     },
@@ -222,7 +222,7 @@ export const getTradingHubContents = (): TTradingHubContents => ({
             />
         ),
         footer_header: localize('Start trading'),
-        footer_text: localize('Click ‘Trade’ to start trading with your account'),
+        footer_text: localize('Click ‘Open’ to start trading with your account'),
         has_next_content: true,
         next_content: localize('Start trading'),
     },

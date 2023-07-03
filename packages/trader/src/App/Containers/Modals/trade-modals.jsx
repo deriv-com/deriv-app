@@ -1,25 +1,22 @@
 import React from 'react';
 import { getUrlSmartTrader, urlFor } from '@deriv/shared';
-
-import { connect } from 'Stores/connect';
 import UnsupportedContractModal from 'App/Components/Elements/Modals/UnsupportedContractModal';
 import MarketUnavailableModal from 'App/Components/Elements/Modals/MarketUnavailableModal';
 import ServicesErrorModal from 'App/Components/Elements/Modals/ServicesErrorModal';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const TradeModals = ({
-    clearPurchaseInfo,
-    is_unsupported_contract_modal_visible,
-    is_market_unavailable_visible,
-    is_services_error_visible,
-    is_virtual,
-    is_logged_in,
-    toggleUnsupportedContractModal,
-    setHasOnlyForwardingContracts,
-    resetPreviousSymbol,
-    toggleServicesErrorModal,
-    resetPurchase,
-    services_error,
-}) => {
+const TradeModals = observer(() => {
+    const { ui, client, common } = useStore();
+    const { resetPreviousSymbol, clearPurchaseInfo, requestProposal: resetPurchase } = useTraderStore();
+    const { is_virtual, is_logged_in } = client;
+    const { services_error } = common;
+    const {
+        is_services_error_visible,
+        setHasOnlyForwardingContracts,
+        toggleServicesErrorModal,
+        toggleUnsupportedContractModal,
+    } = ui;
     const resetToPreviousMarket = () => {
         setHasOnlyForwardingContracts(false);
         resetPreviousSymbol();
@@ -54,17 +51,9 @@ const TradeModals = ({
 
     return (
         <React.Fragment>
-            <UnsupportedContractModal
-                onConfirm={unsupportedContractOnConfirm}
-                onClose={unsupportedContractOnClose}
-                is_visible={is_unsupported_contract_modal_visible}
-            />
+            <UnsupportedContractModal onConfirm={unsupportedContractOnConfirm} onClose={unsupportedContractOnClose} />
 
-            <MarketUnavailableModal
-                onConfirm={marketUnavailableOnConfirm}
-                onCancel={marketUnavailableOnCancel}
-                is_visible={is_market_unavailable_visible}
-            />
+            <MarketUnavailableModal onConfirm={marketUnavailableOnConfirm} onCancel={marketUnavailableOnCancel} />
 
             <ServicesErrorModal
                 onConfirm={servicesErrorModalOnConfirm}
@@ -75,21 +64,6 @@ const TradeModals = ({
             />
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ ui, modules, common, client }) => ({
-    is_market_unavailable_visible: ui.has_only_forward_starting_contracts,
-    is_services_error_visible: ui.is_services_error_visible,
-    is_unsupported_contract_modal_visible: ui.is_unsupported_contract_modal_visible,
-    is_virtual: client.is_virtual,
-    is_logged_in: client.is_logged_in,
-    proposal_info: modules.trade.proposal_info,
-    purchase_info: modules.trade.purchase_info,
-    resetPreviousSymbol: modules.trade.resetPreviousSymbol,
-    clearPurchaseInfo: modules.trade.clearPurchaseInfo,
-    resetPurchase: modules.trade.requestProposal,
-    services_error: common.services_error,
-    setHasOnlyForwardingContracts: ui.setHasOnlyForwardingContracts,
-    toggleServicesErrorModal: ui.toggleServicesErrorModal,
-    toggleUnsupportedContractModal: ui.toggleUnsupportedContractModal,
-}))(TradeModals);
+export default TradeModals;

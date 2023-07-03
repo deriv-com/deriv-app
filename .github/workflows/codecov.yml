@@ -3,6 +3,8 @@ on:
   pull_request:
     branches:
       - '**'
+  env:
+    JEST_MAX_WORKERS: 4
   push:
     branches:
       - master
@@ -12,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
-      - name: Use Node.js 16.x
+      - name: Use Node.js 18.x
         uses: actions/setup-node@v1
         with:
-          node-version: 16.x
+          node-version: 18.x
       - name: install, bootstrap and make test coverage
         run: |
           npm install

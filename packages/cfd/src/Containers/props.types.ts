@@ -267,6 +267,7 @@ export type TJurisdictionModalContentWrapperProps = TJurisdictionModalCommonProp
     account_status: GetAccountStatus;
     fetchAccountSettings: () => void;
     has_submitted_cfd_personal_details: boolean;
+    is_eu_user: boolean;
     is_virtual: boolean;
     jurisdiction_selected_shortcode: string;
     real_financial_accounts_existing_data: TExistingData;

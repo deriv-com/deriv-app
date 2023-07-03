@@ -142,6 +142,7 @@ export type TSelects = Omit<TSelectFieldProps, 'field_name' | 'select_value' | '
 
 export type TInputs = Omit<TInputFieldProps, 'field_name' | 'is_mobile'> & {
     is_input_field: boolean;
+    disabled?: boolean;
     field_name: TSelectsFieldNames | TInputsFieldNames;
 };
 

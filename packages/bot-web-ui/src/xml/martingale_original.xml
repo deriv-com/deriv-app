@@ -14,9 +14,6 @@
     <variable type="" id="g-j|c!)nK2VN`qwryRs]" islocal="false" iscloud="false">loss</variable>
     <variable type="" id="I--KAm(C+#{d?~ip*23e" islocal="false" iscloud="false">expected profit</variable>
     <variable type="" id="FRbI:RhI/`[lrO`o;=P," islocal="false" iscloud="false">martingale:multiplier</variable>
-    <variable type="" id="ga[S:LeLjx8Ke/V1Hh_c" islocal="false" iscloud="false">Streak</variable>
-    <variable type="" id="4vh+dtelQS#?}@cNPcN!" islocal="false" iscloud="false">Streak Limit</variable>
-    <variable type="" id="3^~61:59m?#VJ(:SG^^[" islocal="false" iscloud="false">Use Streak Limit?</variable>
   </variables>
   <block type="trade_definition" id="i]`fLRZ]?mshi{9kS+fg" x="0" y="0">
     <statement name="TRADE_OPTIONS">
@@ -52,36 +49,6 @@
         </next>
       </block>
     </statement>
-    <statement name="INITIALIZATION">
-      <block type="variables_set" id="bj0_;DJ@%pgafj1c9)r?">
-        <field name="VAR" id="ga[S:LeLjx8Ke/V1Hh_c" variabletype="">Streak</field>
-        <value name="VALUE">
-          <block type="math_number" id=")]3a1N%MPxa`fuMjJjB]">
-            <field name="NUM">0</field>
-          </block>
-        </value>
-        <next>
-          <block type="variables_set" id="qKO~.`hPZgl;YZp+5Gov">
-            <field name="VAR" id="3^~61:59m?#VJ(:SG^^[" variabletype="">Use Streak Limit?</field>
-            <value name="VALUE" strategy_value="useStreakLimit">
-              <block type="logic_boolean" id="%@4HYVeOB$jA`7.ljdbf">
-                <field name="BOOL">FALSE</field>
-              </block>
-            </value>
-            <next>
-              <block type="variables_set" id="-jDR^266z(Nid-G$WXhp">
-                <field name="VAR" id="4vh+dtelQS#?}@cNPcN!" variabletype="">Streak Limit</field>
-                <value name="VALUE" strategy_value="streakLimit">
-                  <shadow type="math_number" id="FF1sPs*ENIx4n#SmKe|9">
-                    <field name="NUM">5</field>
-                  </shadow>
-                </value>
-              </block>
-            </next>
-          </block>
-        </next>
-      </block>
-    </statement>
     <statement name="SUBMARKET">
       <block type="trade_definition_tradeoptions" id="8=uN{72G(CSbw2LN=h?0">
         <mutation has_first_barrier="false" has_second_barrier="false" has_prediction="false"></mutation>
@@ -104,7 +71,7 @@
       </block>
     </statement>
   </block>
-  <block type="after_purchase" id="cb%w4#L|)A]1F1+)uk_u" x="803" y="0">
+  <block type="after_purchase" id="cb%w4#L|)A]1F1+)uk_u" x="667" y="0">
     <statement name="AFTERPURCHASE_STACK">
       <block type="controls_if" id="Y7vVfZ`@dP+KBKXW6C|a">
         <value name="IF0">
@@ -132,14 +99,14 @@
       </block>
     </statement>
   </block>
-  <block type="before_purchase" id="Z])37`R^9KsrX4I7bAqP" x="0" y="696">
+  <block type="before_purchase" id="Z])37`R^9KsrX4I7bAqP" x="0" y="576">
     <statement name="BEFOREPURCHASE_STACK">
       <block type="purchase" id="?QH{0D:/t^fpgu}4sb`x">
         <field name="PURCHASE_LIST">CALL</field>
       </block>
     </statement>
   </block>
-  <block type="procedures_defreturn" id="x3TA)`V~gtD7?rqNj[.9" collapsed="true" x="0" y="880">
+  <block type="procedures_defreturn" id="x3TA)`V~gtD7?rqNj[.9" collapsed="true" x="0" y="760">
     <field name="NAME">Martingale Trade Amount</field>
     <statement name="STACK">
       <block type="controls_if" id="m|NvCXT=!Z{`Uz`r:m|$">
@@ -340,7 +307,7 @@
       </block>
     </value>
   </block>
-  <block type="procedures_defnoreturn" id="s`u(+vlS44fI;pul:nfW" collapsed="true" x="0" y="976">
+  <block type="procedures_defnoreturn" id="s`u(+vlS44fI;pul:nfW" collapsed="true" x="0" y="856">
     <mutation>
       <arg name="martingale:resultIsWin" varid="x]b3MHpbtR?cJQDP@,eG"></arg>
     </mutation>
@@ -361,130 +328,38 @@
                 <field name="NUM">1</field>
               </shadow>
             </value>
-            <next>
-              <block type="variables_set" id="Q9!]T_os$TP0}R=[8DZ=">
-                <field name="VAR" id="ga[S:LeLjx8Ke/V1Hh_c" variabletype="">Streak</field>
-                <value name="VALUE">
-                  <shadow type="math_number" id="3MJO`]3S-jcI7DsGeEJn">
-                    <field name="NUM">0</field>
-                  </shadow>
-                </value>
-              </block>
-            </next>
           </block>
         </statement>
         <statement name="ELSE">
-          <block type="controls_if" id="nuN:j(H7]B:nXp/6hMo)">
-            <value name="IF0">
-              <block type="variables_get" id="EQrzRX+v`@_c95r$GvR4">
-                <field name="VAR" id="3^~61:59m?#VJ(:SG^^[" variabletype="">Use Streak Limit?</field>
+          <block type="variables_set" id="ZA0SX,/mZR=Q@Qs{0-nM">
+            <field name="VAR" id="FRbI:RhI/`[lrO`o;=P," variabletype="">martingale:multiplier</field>
+            <value name="VALUE">
+              <block type="math_arithmetic" id="YzC3]lEc(!m8!NK/T/^0">
+                <field name="OP">MULTIPLY</field>
+                <value name="A">
+                  <shadow type="math_number">
+                    <field name="NUM">1</field>
+                  </shadow>
+                  <block type="variables_get" id="Wc7riq/+8b5q+,f9@uR6">
+                    <field name="VAR" id="FRbI:RhI/`[lrO`o;=P," variabletype="">martingale:multiplier</field>
+                  </block>
+                </value>
+                <value name="B">
+                  <shadow type="math_number" id="#Om$-j0C[l$EXD$2JdKl">
+                    <field name="NUM">2</field>
+                  </shadow>
+                  <block type="variables_get" id="OIfB4l~Tv5_$I;ILt79^">
+                    <field name="VAR" id="ipD5?_dQ1Zkvf%v|[?DQ" variabletype="">martingale:size</field>
+                  </block>
+                </value>
               </block>
             </value>
-            <statement name="DO0">
-              <block type="variables_set" id="N;Qw%2*bv^EbGrqOL1z*">
-                <field name="VAR" id="ga[S:LeLjx8Ke/V1Hh_c" variabletype="">Streak</field>
-                <value name="VALUE">
-                  <block type="math_arithmetic" id="RYq*ala$R{`Ed=$1/M2*">
-                    <field name="OP">ADD</field>
-                    <value name="A">
-                      <shadow type="math_number" id="u]/F^;2n)2{AMGqE8UIR">
-                        <field name="NUM">1</field>
-                      </shadow>
-                      <block type="variables_get" id="#H9bUVt9q,#8h_2^_D@z">
-                        <field name="VAR" id="ga[S:LeLjx8Ke/V1Hh_c" variabletype="">Streak</field>
-                      </block>
-                    </value>
-                    <value name="B">
-                      <shadow type="math_number" id="r1zIvmHfoZ:.jv9x$o0a">
-                        <field name="NUM">1</field>
-                      </shadow>
-                    </value>
-                  </block>
-                </value>
-              </block>
-            </statement>
-            <next>
-              <block type="controls_if" id="yq2aWWPfZo9BqwmM^gp,">
-                <mutation else="1"></mutation>
-                <value name="IF0">
-                  <block type="logic_operation" id="P:vAy5mETFAlR6416JW@">
-                    <field name="OP">AND</field>
-                    <value name="A">
-                      <block type="variables_get" id="UTgA6uy4MgDFQ[tbq=v2">
-                        <field name="VAR" id="3^~61:59m?#VJ(:SG^^[" variabletype="">Use Streak Limit?</field>
-                      </block>
-                    </value>
-                    <value name="B">
-                      <block type="logic_compare" id="WI3(qR{d}7zdoDevLGVx">
-                        <field name="OP">GTE</field>
-                        <value name="A">
-                          <block type="variables_get" id="g^P8bs^P=uWun*lhiNu:">
-                            <field name="VAR" id="ga[S:LeLjx8Ke/V1Hh_c" variabletype="">Streak</field>
-                          </block>
-                        </value>
-                        <value name="B">
-                          <block type="variables_get" id="z;Utrvg*JkBzz{cf)SYV">
-                            <field name="VAR" id="4vh+dtelQS#?}@cNPcN!" variabletype="">Streak Limit</field>
-                          </block>
-                        </value>
-                      </block>
-                    </value>
-                  </block>
-                </value>
-                <statement name="DO0">
-                  <block type="variables_set" id="ca;U5I#KW?1eJ;^[H2Ji">
-                    <field name="VAR" id="FRbI:RhI/`[lrO`o;=P," variabletype="">martingale:multiplier</field>
-                    <value name="VALUE">
-                      <shadow type="math_number" id="p1`qUx`N_;V{kY*mLXW$">
-                        <field name="NUM">1</field>
-                      </shadow>
-                    </value>
-                    <next>
-                      <block type="variables_set" id="W(`y?EZ$NT1mN8XGpET9">
-                        <field name="VAR" id="ga[S:LeLjx8Ke/V1Hh_c" variabletype="">Streak</field>
-                        <value name="VALUE">
-                          <shadow type="math_number" id="9KEC{{lzdoC:_oahtZ8r">
-                            <field name="NUM">0</field>
-                          </shadow>
-                        </value>
-                      </block>
-                    </next>
-                  </block>
-                </statement>
-                <statement name="ELSE">
-                  <block type="variables_set" id="DA78AxndLk]Q@dIBt7O|">
-                    <field name="VAR" id="FRbI:RhI/`[lrO`o;=P," variabletype="">martingale:multiplier</field>
-                    <value name="VALUE">
-                      <block type="math_arithmetic" id="YzC3]lEc(!m8!NK/T/^0">
-                        <field name="OP">MULTIPLY</field>
-                        <value name="A">
-                          <shadow type="math_number">
-                            <field name="NUM">1</field>
-                          </shadow>
-                          <block type="variables_get" id="1q-nik8DE5Q2,h$gg}f6">
-                            <field name="VAR" id="FRbI:RhI/`[lrO`o;=P," variabletype="">martingale:multiplier</field>
-                          </block>
-                        </value>
-                        <value name="B">
-                          <shadow type="math_number" id="#Om$-j0C[l$EXD$2JdKl">
-                            <field name="NUM">2</field>
-                          </shadow>
-                          <block type="variables_get" id="OIfB4l~Tv5_$I;ILt79^">
-                            <field name="VAR" id="ipD5?_dQ1Zkvf%v|[?DQ" variabletype="">martingale:size</field>
-                          </block>
-                        </value>
-                      </block>
-                    </value>
-                  </block>
-                </statement>
-              </block>
-            </next>
           </block>
         </statement>
       </block>
     </statement>
   </block>
-  <block type="procedures_defreturn" id="N,_%hZ47`]!eOyc7%u8]" collapsed="true" x="0" y="1072">
+  <block type="procedures_defreturn" id="N,_%hZ47`]!eOyc7%u8]" collapsed="true" x="0" y="952">
     <mutation>
       <arg name="martingale:profit" varid="[M$5RsD`g|8-P;C+mbf4"></arg>
       <arg name="martingale:resultIsWin" varid="x]b3MHpbtR?cJQDP@,eG"></arg>

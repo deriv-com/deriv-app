@@ -22,6 +22,7 @@ const Inputs = ({
     handleChange,
     onChangeInputValue,
     setCurrentFocus,
+    disabled,
 }: TInputs) => {
     const is_mobile = isMobile();
     return is_input_field ? (
@@ -47,6 +48,7 @@ const Inputs = ({
                 zIndex={zIndex}
                 uniq_selected_input={uniq_selected_input}
                 errors={errors}
+                disabled={disabled}
             />
         </div>
     ) : (

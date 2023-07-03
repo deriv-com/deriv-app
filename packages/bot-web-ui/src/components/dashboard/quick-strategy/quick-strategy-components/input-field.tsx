@@ -25,6 +25,7 @@ const InputField = ({
     zIndex,
     uniq_selected_input,
     errors,
+    disabled,
 }: TInputFieldProps) => {
     const dataField = () => {
         if (is_uniq_strategy_field) {
@@ -63,6 +64,7 @@ const InputField = ({
                                 e
                             );
                         }}
+                        disabled={disabled}
                         onFocus={(e: React.FocusEvent<HTMLInputElement>) => setCurrentFocus(e.currentTarget.name)}
                         onBlur={() => setCurrentFocus(null)}
                         placeholder={placeholder || new_placeholder}

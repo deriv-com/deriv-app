@@ -89,6 +89,19 @@ const data_fields: ReadonlyArray<TDataFields> = [
         trailing_icon_message: getMessage('profit'),
         ...common_inputs_properties,
     },
+    {
+        id: 'martingale-streak-limit',
+        type: 'checkbox',
+        checkbox_label: 'Allow streak limit?',
+        checkbox_field_name: 'quick-strategy__aloow_streak_limit',
+        checkbox_input_value: 'input_martingale_allow_streak_limit',
+        field_name: 'quick-strategy__streak_limit',
+        input_value: 'input_martingale_streak_limit',
+        label: 'Streak Limit',
+        placeholder: '2',
+        trailing_icon_message: 'example',
+        ...common_inputs_properties,
+    },
 ];
 
 export default data_fields;

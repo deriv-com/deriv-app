@@ -8,6 +8,7 @@ export { default as QuickStrategyFields } from './fields';
 export { default as QuickStrategyFooter } from './footer';
 export { default as QuickStrategyForm } from './form';
 export { default as InputField } from './input-field';
+export { default as InputWithCheckbox } from './input-with-checkbox';
 export { default as Inputs } from './inputs';
 export { default as MarketOption } from './market-option';
 export { default as SelectField } from './select-field';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { TDropdownItems, TDropdowns, TSelectedValuesSelect } from '../quick-strategy.types';
 import { TDropdownLists, TQuickStrategyFields, TSelectedValues } from './components.types';
-import { data_fields, data_uniq_input_obj, Description, DurationFields, Inputs, Selects } from '.';
+import { data_fields, data_uniq_input_obj, Description, DurationFields, Inputs, InputWithCheckbox, Selects } from '.';
 
 const QuickStrategyFields = React.memo(
     ({
@@ -57,6 +57,10 @@ const QuickStrategyFields = React.memo(
                         trailing_icon_message,
                         zIndex,
                         is_able_disabled,
+                        type,
+                        checkbox_label,
+                        checkbox_field_name,
+                        checkbox_input_value,
                     } = item;
 
                     const is_uniq_strategy_field = item?.is_uniq_strategy_field;
@@ -97,26 +101,49 @@ const QuickStrategyFields = React.memo(
                                     errors={errors}
                                 />
                             )}
-                            {is_input_field && (
-                                <Inputs
-                                    idx={idx}
-                                    handleChange={handleChange}
-                                    onChangeInputValue={onChangeInputValue}
-                                    setCurrentFocus={setCurrentFocus}
-                                    field_name={field_name}
-                                    id={id}
-                                    className={className}
-                                    label={label}
-                                    input_value={input_value}
-                                    placeholder={placeholder}
-                                    is_uniq_strategy_field={is_uniq_strategy_field}
-                                    trailing_icon_message={trailing_icon_message}
-                                    zIndex={zIndex}
-                                    uniq_selected_input={uniq_selected_input}
-                                    errors={errors}
-                                    is_input_field={is_input_field}
-                                />
-                            )}
+                            {is_input_field &&
+                                (type === 'checkbox' ? (
+                                    <InputWithCheckbox
+                                        idx={idx}
+                                        handleChange={handleChange}
+                                        onChangeInputValue={onChangeInputValue}
+                                        setCurrentFocus={setCurrentFocus}
+                                        field_name={field_name}
+                                        id={id}
+                                        className={className}
+                                        label={label}
+                                        checkbox_label={checkbox_label}
+                                        checkbox_field_name={checkbox_field_name}
+                                        checkbox_input_value={checkbox_input_value}
+                                        input_value={input_value}
+                                        placeholder={placeholder}
+                                        is_uniq_strategy_field={is_uniq_strategy_field}
+                                        trailing_icon_message={trailing_icon_message}
+                                        zIndex={zIndex}
+                                        uniq_selected_input={uniq_selected_input}
+                                        errors={errors}
+                                        is_input_field={is_input_field}
+                                    />
+                                ) : (
+                                    <Inputs
+                                        idx={idx}
+                                        handleChange={handleChange}
+                                        onChangeInputValue={onChangeInputValue}
+                                        setCurrentFocus={setCurrentFocus}
+                                        field_name={field_name}
+                                        id={id}
+                                        className={className}
+                                        label={label}
+                                        input_value={input_value}
+                                        placeholder={placeholder}
+                                        is_uniq_strategy_field={is_uniq_strategy_field}
+                                        trailing_icon_message={trailing_icon_message}
+                                        zIndex={zIndex}
+                                        uniq_selected_input={uniq_selected_input}
+                                        errors={errors}
+                                        is_input_field={is_input_field}
+                                    />
+                                ))}
                             {is_select_field && id !== 'duration-unit' && (
                                 <Selects
                                     field_name={field_name}

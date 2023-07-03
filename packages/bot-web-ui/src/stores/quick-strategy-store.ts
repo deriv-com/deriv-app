@@ -44,6 +44,8 @@ export default class QuickStrategyStore {
             input_stake: observable,
             input_alembert_unit: observable,
             input_martingale_size: observable,
+            input_martingale_streak_limit: observable,
+            input_martingale_allow_streak_limit: observable,
             input_oscar_unit: observable,
             input_loss: observable,
             input_profit: observable,
@@ -75,6 +77,7 @@ export default class QuickStrategyStore {
             setDurationInputValue: action.bound,
             onChangeDropdownItem: action.bound,
             onChangeInputValue: action.bound,
+            onChangeCheckedValue: action.bound,
             onHideDropdownList: action.bound,
             loadDataStrategy: action.bound,
             createStrategy: action.bound,
@@ -94,6 +97,8 @@ export default class QuickStrategyStore {
     input_duration_value: string | number = this.qs_cache.input_duration_value || '';
     input_stake: string = this.qs_cache.input_stake || '';
     input_martingale_size: string = this.qs_cache.input_martingale_size || '';
+    input_martingale_streak_limit: string = this.qs_cache.input_martingale_streak_limit || '';
+    input_martingale_allow_streak_limit: string = !!this.qs_cache.input_martingale_allow_streak_limit || false;
     input_alembert_unit: string = this.qs_cache.input_alembert_unit || '';
     input_oscar_unit: string = this.qs_cache.input_oscar_unit || '';
     input_loss: string = this.qs_cache.input_loss || '';
@@ -125,6 +130,8 @@ export default class QuickStrategyStore {
 
             'quick-strategy__loss': this.input_loss || '',
             'quick-strategy__profit': this.input_profit || '',
+
+            'quick-strategy__streak_limit': this.input_martingale_streak_limit || '2',
         };
         storeSetting('quick_strategy', this.qs_cache);
 
@@ -229,6 +236,12 @@ export default class QuickStrategyStore {
         }
     }
 
+    onChangeCheckedValue = (field: TInputCommonFields, event: React.ChangeEvent<HTMLInputElement>) => {
+        this.qs_cache[field] = event.currentTarget.checked;
+        this[field] = event.currentTarget.checked;
+        storeSetting('quick_strategy', this.qs_cache);
+    };
+
     onChangeInputValue(field: TInputCommonFields, event: React.ChangeEvent<HTMLInputElement>): void {
         this.qs_cache[field] = event.currentTarget.value;
         this[field] = event.currentTarget.value;
@@ -275,6 +288,8 @@ export default class QuickStrategyStore {
         const oscar_unit = this.input_oscar_unit;
         const loss = this.input_loss;
         const profit = this.input_profit;
+        const streakLimit = this.input_martingale_streak_limit;
+        const useStreakLimit = this.input_martingale_allow_streak_limit;
 
         const { contracts_for } = ApiHelpers.instance;
         const market = await contracts_for.getMarketBySymbol(symbol);
@@ -290,7 +305,11 @@ export default class QuickStrategyStore {
             const el_value_inputs = strategy_dom.querySelectorAll(`value[strategy_value="${key}"]`);
 
             el_value_inputs.forEach((el_value_input: HTMLElement) => {
-                el_value_input.innerHTML = `<shadow type="math_number"><field name="NUM">${value}</field></shadow>`;
+                if (key !== 'useStreakLimit')
+                    el_value_input.innerHTML = `<shadow type="math_number"><field name="NUM">${value}</field></shadow>`;
+                else if (value)
+                    el_value_input.innerHTML = `<block type="logic_boolean"><field name="BOOL">TRUE</field></block>`;
+                else el_value_input.innerHTML = `<block type="logic_boolean"><field name="BOOL">FALSE</field></block>`;
             });
         };
 
@@ -317,6 +336,8 @@ export default class QuickStrategyStore {
             oscar_unit,
             loss,
             profit,
+            streakLimit,
+            useStreakLimit,
         };
 
         Object.keys(fields_to_update).forEach(key => {

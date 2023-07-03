@@ -1,20 +1,20 @@
 type RectResult = Record<'bottom' | 'height' | 'left' | 'right' | 'top' | 'width', number>;
 
 type TGetMaxHeightByAligning = {
-    parent_rect: RectResult;
-    child_height: number;
+    parent_rect?: RectResult;
+    child_height?: number;
 };
 
-type TGetPosition = Record<'child_el' | 'parent_el', HTMLElement> & {
+type TGetPosition = Record<'child_el' | 'parent_el', HTMLElement | null> & {
     preferred_alignment: string;
-    should_consider_parent_height: boolean;
+    should_consider_parent_height?: boolean;
 };
 
-const getMaxHeightByAligningBottom = ({ parent_rect, child_height }: TGetMaxHeightByAligning) =>
-    parent_rect.top + parent_rect.height + child_height;
+const getMaxHeightByAligningBottom = ({ parent_rect, child_height = 0 }: TGetMaxHeightByAligning) =>
+    (parent_rect?.top || 0) + (parent_rect?.height || 0) + child_height;
 
-const getMinHeightByAligningTop = ({ parent_rect, child_height }: TGetMaxHeightByAligning) =>
-    parent_rect.top - child_height;
+const getMinHeightByAligningTop = ({ parent_rect, child_height = 0 }: TGetMaxHeightByAligning) =>
+    Number(parent_rect?.top) - child_height;
 
 export const getPosition = ({
     preferred_alignment = 'bottom',
@@ -22,11 +22,11 @@ export const getPosition = ({
     parent_el,
     should_consider_parent_height = true,
 }: TGetPosition) => {
-    const parent_rect = parent_el.getBoundingClientRect();
-    const child_height = child_el.clientHeight;
+    const parent_rect = parent_el?.getBoundingClientRect();
+    const child_height = child_el?.clientHeight;
     const body_rect = document.body.getBoundingClientRect();
 
-    const { top, bottom, left, width } = parent_rect;
+    const { top, bottom, left, width } = parent_rect || { top: 0, bottom: 0, left: 0, width: 0 };
     const max_height = getMaxHeightByAligningBottom({ parent_rect, child_height });
 
     const top_placement_style = {

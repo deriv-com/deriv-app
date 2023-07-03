@@ -162,7 +162,6 @@ type TMt5StatusServer = Record<'demo' | 'real', TMt5StatusServerType[]>;
 
 type TClientStore = {
     accounts: { [k: string]: TActiveAccount };
-    is_eu_country: boolean;
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
@@ -460,6 +459,7 @@ type TTradersHubStore = {
     setTogglePlatformType: (platform_type: string) => void;
     is_real: boolean;
     selectRegion: (region: string) => void;
+    closeAccountTransferModal: () => void;
     toggleRegulatorsCompareModal: () => void;
     selected_region: string;
     openFailedVerificationModal: (selected_account_type: string) => void;

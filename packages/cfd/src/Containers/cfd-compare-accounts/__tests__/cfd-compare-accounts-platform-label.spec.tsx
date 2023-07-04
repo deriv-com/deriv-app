@@ -9,12 +9,12 @@ describe('<CFDCompareAccountsPlatformLabel />', () => {
             platform: 'mt5',
         },
     };
-    test('should renders MT5 platform label', () => {
+    it('should renders MT5 platform label', () => {
         render(<CFDCompareAccountsPlatformLabel {...mocked_props} />);
         expect(screen.getByText(platfromsHeaderLabel.mt5)).toBeInTheDocument();
     });
 
-    test('should renders Deriv X platform label', () => {
+    it('should renders Deriv X platform label', () => {
         mocked_props.trading_platforms.platform = 'dxtrade';
         render(<CFDCompareAccountsPlatformLabel {...mocked_props} />);
         expect(screen.getByText(platfromsHeaderLabel.other_cfds)).toBeInTheDocument();

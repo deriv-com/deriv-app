@@ -344,7 +344,7 @@ const isMt5AccountAdded = (current_list: Record<string, TDetailsOfEachMT5Loginid
         );
     });
 
-const isDxtradeAccountAdded = (current_list: Record<string, TDetailsOfEachMT5Loginid>, is_demo: boolean) =>
+const isDxtradeAccountAdded = (current_list: Record<string, TDetailsOfEachMT5Loginid>, is_demo?: boolean) =>
     Object.entries(current_list).some(([key, value]) => {
         const current_account_type = is_demo ? 'demo' : 'real';
         return value.account_type === current_account_type && key.includes(CFD_PLATFORMS.DXTRADE);

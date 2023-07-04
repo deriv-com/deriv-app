@@ -22,6 +22,7 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
         modules: { cfd },
         common,
         client,
+        traders_hub,
     } = useStore();
 
     const {
@@ -31,7 +32,7 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
         toggleCFDVerificationModal,
         current_list,
     } = cfd;
-    const { is_demo, getAccount } = traders_hub;
+    const { getAccount } = traders_hub;
     const { setAppstorePlatform } = common;
 
     const {

@@ -12,6 +12,7 @@ const minimum_required_browsers_versions: Record<string, string> = {
     'Android Browser': '40.0.0', // check if this is correct
     'Chrome WebView': '40.0.0',
     'Samsung Browser': '4.0.0',
+    UCBrowser: '11.4.0',
 };
 
 /** Check if the browser supports service worker */

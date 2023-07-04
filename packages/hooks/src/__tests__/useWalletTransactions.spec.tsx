@@ -15,6 +15,7 @@ describe('useWalletsList', () => {
         const mock = mockStore({
             client: {
                 accounts: { CRW909900: { token: '12345' } },
+                currency: 'USD',
                 loginid: 'CRW909900',
             },
         });
@@ -106,6 +107,7 @@ describe('useWalletsList', () => {
                 action_type: 'deposit',
                 amount: 25,
                 balance_after: 25,
+                gradient_class: 'wallet-card__usd-bg',
                 transaction_id: 17494415481,
                 transaction_time: 1685942136,
                 account_category: 'wallet',
@@ -119,6 +121,7 @@ describe('useWalletsList', () => {
                 action_type: 'deposit',
                 amount: 1000,
                 balance_after: 1000,
+                gradient_class: 'wallet-card__usd-bg',
                 transaction_id: 17494117539,
                 transaction_time: 1685769338,
                 account_category: 'wallet',

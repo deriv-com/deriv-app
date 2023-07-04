@@ -16,6 +16,7 @@ describe('useWalletsList', () => {
         const mock = mockStore({
             client: {
                 accounts: { CRW909900: { token: '12345' } },
+                currency: 'USD',
                 loginid: 'CRW909900',
                 is_crypto: () => false,
             },
@@ -59,16 +60,18 @@ describe('useWalletsList', () => {
         expect(result.current.data).toEqual([
             {
                 account_category: 'wallet',
+                balance: 0,
                 currency: 'USD',
                 gradient_card_class: 'wallet-card__usd-bg',
                 gradient_header_class: 'wallet-header__usd-bg',
-                landing_company_shortcode: 'svg',
-                is_virtual: 0,
                 landing_company_name: 'svg',
+                landing_company_shortcode: 'svg',
+                icon: 'IcWalletCurrencyUsd',
                 is_demo: false,
-                is_selected: false,
                 is_malta_wallet: false,
-                balance: 0,
+                is_selected: false,
+                is_virtual: 0,
+                name: 'USD Wallet',
             },
         ]);
     });

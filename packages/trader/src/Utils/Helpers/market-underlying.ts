@@ -1,4 +1,4 @@
-import { getMarketNamesMap, getContractConfig } from 'Constants/contract';
+import { getContractConfig, getMarketNamesMap } from '@deriv/shared';
 
 type TMarketInfo = {
     category: string;

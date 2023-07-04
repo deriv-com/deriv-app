@@ -1,16 +1,23 @@
 import React from 'react';
-import { isAccumulatorContract, isEmptyObject, isMobile } from '@deriv/shared';
+import {
+    getContractTypePosition,
+    getSupportedContracts,
+    isAccumulatorContract,
+    isEmptyObject,
+    isMobile,
+} from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import PurchaseButtonsOverlay from 'Modules/Trading/Components/Elements/purchase-buttons-overlay.jsx';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset';
-import { getContractTypePosition } from 'Constants/contract';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 import { TProposalTypeInfo } from 'Types';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 
+type TGetSupportedContractsKey = keyof ReturnType<typeof getSupportedContracts>;
+
 const getSortedIndex = (type: string, index: number) => {
-    switch (getContractTypePosition(type)) {
+    switch (getContractTypePosition(type as TGetSupportedContractsKey)) {
         case 'top':
             return 0;
         case 'bottom':
@@ -102,9 +109,12 @@ const Purchase = observer(({ is_market_closed }: { is_market_closed: boolean }) 
             </div>
         );
 
-        if (!is_vanilla && getContractTypePosition(type) === 'top') {
+        if (!is_vanilla && getContractTypePosition(type as TGetSupportedContractsKey) === 'top') {
             components.unshift(purchase_fieldset);
-        } else if ((!is_vanilla && getContractTypePosition(type) !== 'top') || vanilla_trade_type === type) {
+        } else if (
+            (!is_vanilla && getContractTypePosition(type as TGetSupportedContractsKey) !== 'top') ||
+            vanilla_trade_type === type
+        ) {
             components.push(purchase_fieldset);
         }
     });

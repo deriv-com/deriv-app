@@ -1,9 +1,8 @@
 import classNames from 'classnames';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes, Text } from '@deriv/components';
-import { getContractTypeDisplay } from 'Constants/contract';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
-import { getGrowthRatePercentage } from '@deriv/shared';
+import { getContractTypeDisplay, getGrowthRatePercentage, getSupportedContracts } from '@deriv/shared';
 import { TProposalTypeInfo } from 'Types';
 
 type TPurchaseButton = {
@@ -40,7 +39,9 @@ const ButtonTextWrapper = ({ should_fade, is_loading, type, is_high_low }: TButt
     return (
         <div className='btn-purchase__text_wrapper'>
             <Text size='xs' weight='bold' color='colored-background'>
-                {!should_fade && is_loading ? '' : getContractTypeDisplay(type, is_high_low, true)}
+                {!should_fade && is_loading
+                    ? ''
+                    : getContractTypeDisplay(type as keyof ReturnType<typeof getSupportedContracts>, is_high_low, true)}
             </Text>
         </div>
     );

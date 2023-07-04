@@ -363,6 +363,9 @@ const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAcc
     );
     return [...gaming_demo_accounts, ...financial_demo_accounts, ...swap_free_demo_accounts];
 };
+const getDxtradeDemoData = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
+    return available_accounts.filter(item => item.platform === CFD_PLATFORMS.DXTRADE);
+};
 
 export {
     getHighlightedIconLabel,
@@ -381,4 +384,5 @@ export {
     isMt5AccountAdded,
     isDxtradeAccountAdded,
     getMT5DemoData,
+    getDxtradeDemoData,
 };

@@ -31,7 +31,7 @@ jobs:
         run: |
           sleep 10
       - name: Release issues in Deriv.app
-        uses: binary-com/fe-toolbox@production_V20230615_0
+        uses: binary-com/fe-toolbox@v0.0.1
         with:
           release_tag_task_url: ${{ inputs.release_tag_task_url }}
           platform: 'Deriv.app'

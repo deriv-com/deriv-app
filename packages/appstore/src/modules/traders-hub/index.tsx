@@ -23,7 +23,7 @@ const TradersHub = () => {
         is_account_setting_loaded,
         accounts,
     } = client;
-    const { is_tour_open, is_eu_user, is_wallet_tour_open, toggleIsWalletTourOpen } = traders_hub;
+    const { is_tour_open, is_eu_user, is_wallet_tour_open } = traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
 
     const can_show_notify =
@@ -63,14 +63,13 @@ const TradersHub = () => {
             <Div100vhContainer
                 className={classNames('traders-hub--mobile', {
                     'traders-hub--mobile--eu-user': is_eu_user,
-                    'traders-hub__wallets-bg': is_wallet_account || is_display_test_wallets,
+                    'traders-hub__wallets-bg': is_wallet_account,
                 })}
                 height_offset='50px'
                 is_disabled={isDesktop()}
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
-                    <button onClick={() => toggleIsWalletTourOpen()}>Open Tour</button>
                     {is_wallet_tour_open && <WalletTourGuide />}
                     {is_high_risk_cr && <AccountWithWallets />}
                     <AccountWithoutWallets />

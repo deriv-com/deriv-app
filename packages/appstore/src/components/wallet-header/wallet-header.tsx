@@ -22,7 +22,6 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
     const { multipliers_account_status } = traders_hub;
 
     const wallet_btns = getWalletHeaderButtons(wallet_account.is_demo);
-    const wallet_status = wallet_account.is_selected ? 'wallet-is-selected' : 'wallet-is-not-selected';
 
     const onArrowClickHandler = async () => {
         // setIsLoading(true);
@@ -38,10 +37,7 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
     // }, [is_authorize]);
 
     return (
-        <div
-            className={classNames('wallet-header', { 'wallet-header__demo': wallet_account.is_demo })}
-            id={wallet_status}
-        >
+        <div className={classNames('wallet-header', { 'wallet-header__demo': wallet_account.is_demo })}>
             <div className='wallet-header__container'>
                 <WalletCurrencyCard
                     is_demo={wallet_account.is_demo}

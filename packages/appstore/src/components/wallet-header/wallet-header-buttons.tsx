@@ -24,7 +24,6 @@ const WalletHeaderButtons = observer(({ is_disabled, is_open, btns, wallet_accou
     const { setIsWalletModalVisible } = ui;
     const { setWalletModalActiveWalletID, setWalletModalActiveTab } = traders_hub;
 
-    const button_is_expanded = is_open ? 'wallet-button-expanded' : 'wallet-button-collapsed';
     const handleOnClick = async (btn: TWalletButton) => {
         setWalletModalActiveTab(btn.name);
         setIsWalletModalVisible(true);
@@ -32,7 +31,7 @@ const WalletHeaderButtons = observer(({ is_disabled, is_open, btns, wallet_accou
     };
 
     return (
-        <div className='wallet-header__description-buttons' id={button_is_expanded}>
+        <div className='wallet-header__description-buttons'>
             {btns.map(btn => (
                 <div
                     key={btn.name}

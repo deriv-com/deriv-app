@@ -19,10 +19,11 @@ export const getWalletStepConfig = (): Step[] => [
                 {localize('This is your Wallet. You can see your total balance for this Wallet here.')}
             </Text>
         ),
-        target: '#wallet-is-not-selected',
+        target: '.wallet-header',
         disableBeacon: true,
         disableOverlayClose: true,
         placement: 'bottom-end',
+        hideBackButton: true,
     },
     {
         title: (
@@ -35,7 +36,7 @@ export const getWalletStepConfig = (): Step[] => [
         ),
         content: (
             <Text as='p' size='xs'>
-                <Localize i18n_default_text='Click here to open your Wallet and view the trading accounts linked to this Wallet.' />
+                <Localize i18n_default_text='Click here to expand or collapse your Wallet and view the trading accounts linked to this Wallet.' />
             </Text>
         ),
 
@@ -43,6 +44,7 @@ export const getWalletStepConfig = (): Step[] => [
         disableBeacon: true,
         disableOverlayClose: true,
         placement: 'left',
+        styles: { spotlight: { borderRadius: '50%' } },
     },
     {
         title: (
@@ -60,9 +62,10 @@ export const getWalletStepConfig = (): Step[] => [
                 )}
             </Text>
         ),
-        target: '#wallet-button-expanded',
+        target: '.wallet-header__description-buttons',
         disableBeacon: true,
         disableOverlayClose: true,
+        styles: { spotlight: { borderRadius: '4.8rem' } },
     },
 ];
 
@@ -89,11 +92,11 @@ export const wallet_tour_styles: Styles = {
         padding: '0.9rem',
         fontSize: '1.5rem',
         fontWeight: 'bold',
+        outline: 'none',
     },
 };
 
 export const getWalletStepLocale = (): Locale => ({
     back: <SpanButton has_effect text={localize('Back')} secondary medium />,
     next: localize('Next'),
-    close: localize('Done'),
 });

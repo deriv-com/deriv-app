@@ -1,12 +1,9 @@
 import React from 'react';
-import { Statement } from '@deriv/api-types';
 import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
 import { useWalletTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 
-type TStatementTransaction = DeepRequired<Statement>['transactions'][number];
-
-type TNonPendingTransaction = Pick<TStatementTransaction, 'amount' | 'balance_after'> & {
+type TNonPendingTransaction = {
     transaction: ReturnType<typeof useWalletTransactions>['transactions'][number];
 };
 

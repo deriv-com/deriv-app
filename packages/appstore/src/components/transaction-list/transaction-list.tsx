@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, Dropdown } from '@deriv/components';
-import { useWalletTransactions } from '@deriv/hooks';
+import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { groupTransactionsByDay } from '@deriv/utils';
@@ -9,17 +9,18 @@ import './transaction-list.scss';
 
 const TransactionList = () => {
     const {
-        client: { currency: wallet_currency, loginid },
-        traders_hub: { is_demo },
+        client: { loginid },
         ui: { is_mobile },
     } = useStore();
+
+    const wallet = useActiveWallet();
 
     const filter_options = [
         {
             text: localize('All'),
             value: '',
         },
-        ...(is_demo
+        ...(wallet.is_virtual
             ? ([
                   {
                       text: localize('Reset balance'),
@@ -68,14 +69,15 @@ const TransactionList = () => {
                     {day}
                 </Text>
                 {transaction_list.map(transaction => {
+                    let display_transaction = transaction;
                     if (
                         transaction?.action_type === 'transfer' &&
                         transaction?.from?.loginid === loginid &&
                         typeof transaction?.amount === 'number'
                     ) {
-                        transaction.amount *= -1;
+                        display_transaction = { ...transaction, amount: -transaction.amount };
                     }
-                    return <NonPendingTransaction key={transaction.transaction_id} transaction={transaction} />;
+                    return <NonPendingTransaction key={transaction.transaction_id} transaction={display_transaction} />;
                 })}
             </div>
         );

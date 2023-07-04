@@ -173,6 +173,7 @@ type TClientStore = {
     is_withdrawal_lock: boolean;
     landing_company_shortcode: string;
     is_populating_account_list: boolean;
+    isEuropeCountry: () => boolean;
     local_currency_config: {
         currency: string;
         decimal_places?: number;

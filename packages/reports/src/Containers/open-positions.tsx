@@ -145,12 +145,12 @@ type TOpenPositions = {
     currency: string;
     error: string;
     getPositionById: (id: number) => TFormatPortfolioPosition;
+    is_eu: boolean;
     is_loading: boolean;
     is_multiplier: boolean;
     is_accumulator: boolean;
     is_vanilla: boolean;
     is_virtual: boolean;
-    isEuropeCountry: () => boolean;
     NotificationMessages: () => JSX.Element;
     onClickCancel: () => void;
     onClickSell: () => void;
@@ -457,11 +457,11 @@ const OpenPositions = ({
     error,
     getPositionById,
     is_accumulator,
+    is_eu,
     is_loading,
     is_multiplier,
     is_vanilla,
     is_virtual,
-    isEuropeCountry,
     NotificationMessages,
     onClickCancel,
     onClickSell,
@@ -484,7 +484,7 @@ const OpenPositions = ({
     const [accumulator_rate, setAccumulatorRate] = React.useState(accumulator_rates[0]);
     const is_accumulator_selected = contract_type_value === contract_types[2].text;
     const is_multiplier_selected = contract_type_value === contract_types[1].text;
-    const show_accu_in_dropdown = !isEuropeCountry() && is_virtual;
+    const show_accu_in_dropdown = !is_eu && is_virtual;
     const contract_types_list = contract_types
         .filter(contract_type => contract_type.value !== 'Accumulators' || show_accu_in_dropdown)
         .map(({ text, value }) => ({ text, value }));
@@ -687,8 +687,8 @@ export default withRouter(
     connect(({ client, common, ui, portfolio, contract_trade }: TRootStore) => ({
         active_positions: portfolio.active_positions,
         currency: client.currency,
+        is_eu: client.is_eu,
         is_virtual: client.is_virtual,
-        isEuropeCountry: client.isEuropeCountry,
         error: portfolio.error,
         getPositionById: portfolio.getPositionById,
         is_accumulator: portfolio.is_accumulator,

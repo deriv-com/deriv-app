@@ -138,7 +138,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_virtual: false,
             is_withdrawal_lock: false,
             is_populating_account_list: false,
-            isEuropeCountry: jest.fn(),
             landing_company_shortcode: '',
             local_currency_config: {
                 currency: '',

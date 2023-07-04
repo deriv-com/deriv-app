@@ -178,6 +178,19 @@ type TNotification =
     | ((withdrawal_locked: boolean, deposit_locked: boolean) => TNotificationMessage)
     | ((excluded_until: number) => TNotificationMessage);
 
+type LoginParams = {
+    acct: string;
+    token: string;
+    curr: string;
+    lang: string;
+};
+
+type IncrementedProperties<N extends number> = {
+    [K in keyof LoginParams as `${string & K}${N}`]: string;
+};
+
+export type LoginURLParams<N extends number> = LoginParams & IncrementedProperties<N>;
+
 type TClientStore = {
     accounts: { [k: string]: TActiveAccount };
     is_eu_country: boolean;
@@ -254,6 +267,7 @@ type TClientStore = {
     setP2pAdvertiserInfo: () => void;
     setPreSwitchAccount: (status?: boolean) => void;
     switchAccount: (value?: string) => Promise<void>;
+    setLoginInformation: (client_accounts: { [k: string]: TActiveAccount }, client_id: string) => void;
     switched: boolean;
     switch_broadcast: boolean;
     switchEndSignal: () => void;
@@ -287,6 +301,9 @@ type TClientStore = {
     has_any_real_account: boolean;
     real_account_creation_unlock_date: number;
     setPrevAccountType: (account_type: string) => void;
+    init: (login_new_user?: LoginURLParams<1>) => void;
+    setLoginId: (loginid: string) => void;
+    resetLocalStorageValues: (loginid: string) => void;
 };
 
 type TCommonStoreError = {

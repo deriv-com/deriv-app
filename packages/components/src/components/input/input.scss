@@ -129,8 +129,7 @@
                 color: var(--brand-secondary);
             }
             &::placeholder {
-                opacity: 0;
-                color: transparent;
+                opacity: 0.4;
             }
         }
         &:not(.dc-input--no-placeholder):not(:focus):not([value='']) {

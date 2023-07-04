@@ -100,8 +100,8 @@ const Numpad = ({
                 if (String(default_value) === '0') {
                     updateValue(concatenate(num, ''));
                 } else {
-                    const regex = /(?:\d+\.)(\d+)$/;
-                    const matches = regex.exec(default_value.toString());
+                    const regex = /(?:^\d{0,35}\.)(\d{0,35})$/;
+                    const matches = regex.exec(String(default_value));
 
                     if (matches !== null && is_float) {
                         matches.forEach((match, groupIndex) => {

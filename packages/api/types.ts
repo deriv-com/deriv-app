@@ -228,6 +228,20 @@ import type {
 } from '@deriv/api-types';
 import type { useMutation, useQuery } from '@tanstack/react-query';
 
+/** Remove this after we have the types from BE */
+type TPrivateEndpoints = {
+    wallet_migration: {
+        request: {
+            wallet_migration: 'status' | 'start' | 'reset';
+        };
+        response: {
+            wallet_migration: {
+                status: 'ineligible' | 'eligible' | 'in_progress' | 'migrated' | 'failed';
+            };
+        };
+    };
+};
+
 type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;
@@ -681,7 +695,7 @@ type TSocketEndpoints = {
         request: ServerStatusRequest;
         response: ServerStatusResponse;
     };
-};
+} & TPrivateEndpoints;
 
 export type TSocketEndpointNames = keyof TSocketEndpoints;
 

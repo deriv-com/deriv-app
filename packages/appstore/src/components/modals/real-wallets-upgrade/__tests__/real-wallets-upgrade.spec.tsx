@@ -2,6 +2,7 @@ import React from 'react';
 import RealWalletsUpgrade from '../real-wallets-upgrade';
 import { render } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import { APIProvider } from '@deriv/api';
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -18,7 +19,9 @@ describe('<RealWalletsUpgrade />', () => {
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
         );
 
         const { container } = render(<RealWalletsUpgrade />, { wrapper });
@@ -35,7 +38,9 @@ describe('<RealWalletsUpgrade />', () => {
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
         );
 
         const { container } = render(<RealWalletsUpgrade />, { wrapper });

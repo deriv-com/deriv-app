@@ -6,7 +6,12 @@ import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import { GetSettings, GetAccountSettingsResponse } from '@deriv/api-types';
 import { TCompareAccountsCard } from 'Components/props.types';
-import { getMarketType, getAccountVerficationStatus, isMt5AccountAdded } from '../../Helpers/compare-accounts-config';
+import {
+    getMarketType,
+    getAccountVerficationStatus,
+    isMt5AccountAdded,
+    isDxtradeAccountAdded,
+} from '../../Helpers/compare-accounts-config';
 
 const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TCompareAccountsCard) => {
     const history = useHistory();
@@ -17,6 +22,7 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
         modules: { cfd },
         common,
         client,
+        traders_hub,
     } = useStore();
 
     const {
@@ -26,6 +32,7 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
         toggleCFDVerificationModal,
         current_list,
     } = cfd;
+    const { getAccount } = traders_hub;
     const { setAppstorePlatform } = common;
 
     const {
@@ -53,7 +60,13 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
     };
 
     const [has_submitted_personal_details, setHasSubmittedPersonalDetails] = React.useState(false);
-    const is_account_added = isMt5AccountAdded(current_list, jurisdiction_shortcode, is_demo);
+    let is_account_added = false;
+
+    if (trading_platforms.platform === CFD_PLATFORMS.MT5) {
+        is_account_added = isMt5AccountAdded(current_list, jurisdiction_shortcode, is_demo);
+    } else if (trading_platforms.platform === CFD_PLATFORMS.DXTRADE) {
+        is_account_added = isDxtradeAccountAdded(current_list, is_demo);
+    }
 
     React.useEffect(() => {
         if (is_logged_in && !is_virtual) {
@@ -93,26 +106,23 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
 
     const onClickAdd = () => {
         setAppstorePlatform(trading_platforms.platform);
-        setJurisdictionSelectedShortcode(trading_platforms.shortcode);
-        if (account_status_response) {
-            setAccountType(type_of_account);
-            enableCFDPasswordModal();
+        if (trading_platforms.platform === CFD_PLATFORMS.MT5) {
+            setJurisdictionSelectedShortcode(trading_platforms.shortcode);
+            if (account_status_response) {
+                setAccountType(type_of_account);
+                enableCFDPasswordModal();
+            } else {
+                toggleCFDVerificationModal();
+            }
         } else {
-            toggleCFDVerificationModal();
+            setAccountType(type_of_account);
+            getAccount();
         }
         history.push(routes.traders_hub);
     };
-    // Added this condition for time being until Deriv X code is merged
     return (
-        <Button
-            className='compare-cfd-account__button'
-            primary_light
-            onClick={onClickAdd}
-            disabled={is_account_added && trading_platforms.platform !== CFD_PLATFORMS.DXTRADE}
-        >
-            {is_account_added && trading_platforms.platform !== CFD_PLATFORMS.DXTRADE
-                ? localize('Added')
-                : localize('Add')}
+        <Button className='compare-cfd-account__button' primary_light onClick={onClickAdd} disabled={is_account_added}>
+            {is_account_added ? localize('Added') : localize('Add')}
         </Button>
     );
 });

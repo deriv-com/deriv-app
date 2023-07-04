@@ -358,6 +358,7 @@ type TNotificationStore = {
 };
 
 type TTradersHubStore = {
+    getAccount: () => void;
     closeModal: () => void;
     content_flag: 'low_risk_cr_eu' | 'low_risk_cr_non_eu' | 'high_risk_cr' | 'cr_demo' | 'eu_demo' | 'eu_real' | '';
     combined_cfd_mt5_accounts: DetailsOfEachMT5Loginid &

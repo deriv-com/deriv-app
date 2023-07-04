@@ -37,7 +37,7 @@ const WalletModal = observer(() => {
 
     const closeModal = () => {
         setIsWalletModalVisible(false);
-        setWalletModalActiveTab(undefined);
+        setWalletModalActiveTab(active_modal_tab);
     };
 
     const contentScrollHandler = React.useCallback(

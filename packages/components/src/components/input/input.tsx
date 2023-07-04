@@ -29,6 +29,8 @@ export type TInputProps = {
     name?: string;
     onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onMouseDown?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onMouseUp?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onPaste?: React.ClipboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onKeyUp?: React.FormEventHandler<HTMLInputElement | HTMLTextAreaElement>;
@@ -37,8 +39,6 @@ export type TInputProps = {
     onClick?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onMouseEnter?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onMouseLeave?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-    onMouseDown?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-    onMouseUp?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     placeholder?: string;
     ref?: RefObject<
         ComponentType extends 'textarea'

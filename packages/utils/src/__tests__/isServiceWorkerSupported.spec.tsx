@@ -23,6 +23,26 @@ describe('unFormatLocaleString', () => {
         expect(result).toBe(false);
     });
 
+    test('should return false when user browser name can not be detected so it is empty string', () => {
+        const userAgentGetter = jest.spyOn(window.navigator, 'userAgent', 'get');
+        userAgentGetter.mockReturnValue('');
+
+        const result = isServiceWorkerSupported();
+
+        expect(result).toBe(false);
+    });
+
+    test('should return false when user version name can not be detected so it is 1.0.0', () => {
+        const userAgentGetter = jest.spyOn(window.navigator, 'userAgent', 'get');
+        userAgentGetter.mockReturnValue(
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 13_1) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/x Safari/605.1.15'
+        );
+
+        const result = isServiceWorkerSupported();
+
+        expect(result).toBe(false);
+    });
+
     test('should return false when detected user browser is not in the list of browsers that supports service workers', () => {
         // the default detected browser would be webKit which is not in the supported browsers list
         const result = isServiceWorkerSupported();

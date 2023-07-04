@@ -384,7 +384,7 @@ const BinarySocketBase = (() => {
         let temp_service = platform;
         if (platform === CFD_PLATFORMS.DERIVEZ) temp_service = 'pandats';
 
-        deriv_api.send({
+        return deriv_api.send({
             service_token: 1,
             service: temp_service,
             server,

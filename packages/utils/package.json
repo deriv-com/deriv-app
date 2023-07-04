@@ -5,7 +5,7 @@
     "main": "src/index.ts",
     "dependencies": {
         "semver": "^7.5.3",
-        "react-device-detect" : "^2.2.3"
+        "ua-parser-js": "^1.0.35"
     },
     "devDependencies": {
         "typescript": "^4.6.3",

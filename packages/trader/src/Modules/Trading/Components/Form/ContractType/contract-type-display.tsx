@@ -26,7 +26,7 @@ const Display = ({ is_open, name, list, onClick, value }: TDisplay) => {
             onClick={onClick}
         >
             <IconTradeCategory category={value} className='contract-type-widget__icon-wrapper' />
-            <span name={name} value={value}>
+            <span data-name={name} data-value={value}>
                 {getDisplayText()}
             </span>
             <DesktopWrapper>

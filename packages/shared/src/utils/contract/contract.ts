@@ -6,6 +6,7 @@ type TGetAccuBarriersDTraderTimeout = (params: {
     barriers_update_timestamp: number;
     has_default_timeout: boolean;
     should_update_contract_barriers?: boolean;
+    should_update_immediately: boolean;
     tick_update_timestamp: number | null;
     underlying: string;
 }) => number;
@@ -71,6 +72,7 @@ export const getAccuBarriersDTraderTimeout: TGetAccuBarriersDTraderTimeout = ({
     barriers_update_timestamp,
     has_default_timeout,
     should_update_contract_barriers,
+    should_update_immediately,
     tick_update_timestamp,
     underlying,
 }) => {
@@ -82,7 +84,7 @@ export const getAccuBarriersDTraderTimeout: TGetAccuBarriersDTraderTimeout = ({
     const target_update_time =
         tick_update_timestamp + getAccuBarriersDefaultTimeout(underlying) + animation_correction_time;
     const difference = target_update_time - barriers_update_timestamp;
-    return difference < 0 ? 0 : difference;
+    return difference < 0 || should_update_immediately ? 0 : difference;
 };
 
 export const getAccuBarriersForContractDetails = (contract_info: TContractInfo) => {

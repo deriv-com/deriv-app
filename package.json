@@ -21,6 +21,7 @@
         "@commitlint/cli": "^17.1.2",
         "@commitlint/config-conventional": "^17.1.0",
         "@commitlint/config-nx-scopes": "^17.0.0",
+        "@deriv/eslint-plugin-localize-usage": "^1.1.1-beta",
         "@jest/globals": "^26.5.3",
         "@nrwl/nx-cloud": "latest",
         "@testing-library/jest-dom": "^5.12.0",

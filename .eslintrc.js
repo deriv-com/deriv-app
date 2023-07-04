@@ -108,6 +108,7 @@ module.exports = {
         'plugin:react/recommended',
         'plugin:react-hooks/recommended',
         'plugin:jest-dom/recommended',
+        'plugin:@deriv/localize-usage/recommended',
     ],
     parserOptions: {
         requireConfigFile: false,

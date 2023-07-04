@@ -21,8 +21,7 @@ const ResetPasswordIntent = ({ current_list, context, children, is_eu, ...props 
     let group, type, login, title, server;
     if (has_intent && current_list) {
         [server, group, type] = reset_password_intent.split('.');
-        let title_type;
-        title_type = type === 'financial_demo' ? (title_type = 'financial') : type;
+        const title_type = type === 'financial_demo' ? 'financial' : type;
         login = current_list[`mt5.${group}.${type}@${server}`].login;
         title =
             getMtCompanies(is_eu)[group as keyof TMtCompanies][title_type as keyof TMtCompanies['demo' | 'real']]

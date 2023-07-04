@@ -91,9 +91,13 @@
         "prettier-eslint-cli": "^7.1.0",
         "prop-types": "^15.8.1",
         "react": "^17.0.2",
+        "react-content-loader": "^6.2.1",
         "react-data-grid": "^3.0.11",
         "react-dom": "^17.0.2",
         "react-joyride": "^2.3.2",
+        "react-tiny-popover": "^7.2.4",
+        "react-transition-group": "^4.4.5",
+        "react-virtualized": "^9.22.5",
         "redux": "^4.1.2",
         "redux-thunk": "^2.4.1",
         "sass": "^1.63.6",
@@ -122,14 +126,10 @@
         "mobx": "^6.3.12",
         "mobx-react": "^7.2.1",
         "pako": "^1.0.11",
-        "react-content-loader": "^6.1.0",
         "react-draggable": "^4.4.4",
         "react-helmet": "^6.1.0",
         "react-i18next": "^13.0.1",
         "react-redux": "^7.2.6",
-        "react-router-dom": "^5.3.0",
-        "react-tiny-popover": "^7.0.1",
-        "react-transition-group": "^4.4.2",
-        "react-virtualized": "^9.22.3"
+        "react-router-dom": "^5.3.0"
     }
 }

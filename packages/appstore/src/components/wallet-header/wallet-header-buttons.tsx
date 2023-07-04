@@ -2,9 +2,11 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import classNames from 'classnames';
 import { CSSTransition } from 'react-transition-group';
+import { observer, useStore } from '@deriv/stores';
+import { TWalletAccount } from 'Types';
 
 type TWalletButton = {
-    name: string;
+    name: Parameters<ReturnType<typeof useStore>['traders_hub']['setWalletModalActiveTab']>[0];
     text: string;
     icon: string;
     action: () => void;
@@ -14,9 +16,20 @@ type TWalletHeaderButtons = {
     is_disabled: boolean;
     is_open: boolean;
     btns: TWalletButton[];
+    wallet_account: TWalletAccount;
 };
 
-const WalletHeaderButtons = ({ is_disabled, is_open, btns }: TWalletHeaderButtons) => {
+const WalletHeaderButtons = observer(({ is_disabled, is_open, btns, wallet_account }: TWalletHeaderButtons) => {
+    const { ui, traders_hub } = useStore();
+    const { setIsWalletModalVisible } = ui;
+    const { setWalletModalActiveWalletID, setWalletModalActiveTab } = traders_hub;
+
+    const handleOnClick = async (btn: TWalletButton) => {
+        setWalletModalActiveTab(btn.name);
+        setIsWalletModalVisible(true);
+        setWalletModalActiveWalletID(wallet_account.loginid);
+    };
+
     return (
         <div className='wallet-header__description-buttons'>
             {btns.map(btn => (
@@ -25,7 +38,7 @@ const WalletHeaderButtons = ({ is_disabled, is_open, btns }: TWalletHeaderButton
                     className={classNames('wallet-header__description-buttons-item', {
                         'wallet-header__description-buttons-item-disabled': is_disabled,
                     })}
-                    onClick={btn.action}
+                    onClick={() => handleOnClick(btn)}
                 >
                     <Icon
                         icon={btn.icon}
@@ -51,6 +64,5 @@ const WalletHeaderButtons = ({ is_disabled, is_open, btns }: TWalletHeaderButton
             ))}
         </div>
     );
-};
-WalletHeaderButtons.displayName = 'WalletHeaderButtons';
+});
 export default WalletHeaderButtons;

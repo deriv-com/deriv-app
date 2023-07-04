@@ -6,11 +6,12 @@ import './wallet-icon.scss';
 type TWalletIconSizes = keyof typeof sizes['square' | 'box'];
 
 type TWalletIconProps = {
-    currency?: string;
+    gradient_class?: string;
     icon: string;
     size?: TWalletIconSizes;
     type?: 'demo' | 'fiat' | 'crypto' | 'app';
     has_bg?: boolean;
+    hide_watermark?: boolean;
 };
 
 const sizes = {
@@ -46,7 +47,7 @@ const sizes = {
     },
 } as const;
 
-const WalletIcon = ({ currency, icon, size = 'medium', type, has_bg }: TWalletIconProps) => {
+const WalletIcon = ({ gradient_class, icon, size = 'medium', type, has_bg, hide_watermark }: TWalletIconProps) => {
     if (!icon) {
         return null;
     }
@@ -54,8 +55,9 @@ const WalletIcon = ({ currency, icon, size = 'medium', type, has_bg }: TWalletIc
     return (
         <div
             className={classNames('wallet-icon', {
-                [`wallet-icon--${size} wallet-icon__default-bg wallet-card__${currency?.toLowerCase()}-bg`]:
-                    (!!currency && type !== 'app') || has_bg,
+                [`wallet-icon--${size} wallet-icon__default-bg ${gradient_class}`]:
+                    (!!gradient_class && type !== 'app') || has_bg,
+                'wallet-card--hide-watermark': hide_watermark,
             })}
         >
             {(type === 'fiat' || type === 'app') && <Icon icon={icon} size={sizes.square[size]} />}

@@ -1,6 +1,6 @@
 /* eslint @typescript-eslint/triple-slash-reference: "off" */
 /// <reference path="../../../@types/react-div-100vh/react-div-100vh-config.d.ts" />
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import Div100vh from 'react-div-100vh';
 
 /* Div100vh is workaround for getting accurate height of 100vh from browsers on mobile,
@@ -15,14 +15,12 @@ import Div100vh from 'react-div-100vh';
 /* To bypass usage of component altogether, use is_bypassed */
 
 type TDiv100vhContainer = {
-    id: string;
     height_offset: string;
     is_bypassed?: boolean;
     is_disabled?: boolean;
-    max_height_offset: string;
-    className: string;
-    max_autoheight_offset: string;
-};
+    max_height_offset?: string;
+    max_autoheight_offset?: string;
+} & ComponentProps<'div'>;
 
 const Div100vhContainer = ({
     children,
@@ -32,7 +30,7 @@ const Div100vhContainer = ({
     id,
     height_offset,
     max_autoheight_offset,
-}: React.PropsWithChildren<Partial<TDiv100vhContainer>>) => {
+}: React.PropsWithChildren<TDiv100vhContainer>) => {
     const height_rule = height_offset ? `calc(100rvh - ${height_offset})` : 'calc(100rvh)';
     const height_style = {
         height: max_autoheight_offset ? '' : height_rule,

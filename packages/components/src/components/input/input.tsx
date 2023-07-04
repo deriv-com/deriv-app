@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { HTMLAttributes } from 'react';
+import React, { ComponentProps, ComponentType, HTMLAttributes, RefObject } from 'react';
 import Field from '../field';
 import Text from '../text/text';
 
@@ -32,15 +32,30 @@ export type TInputProps = {
     onMouseDown?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onMouseUp?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onFocus?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-    onKeyDown?: React.KeyboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onPaste?: React.ClipboardEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onKeyUp?: React.FormEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onKeyDown?: React.FormEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onInput?: React.FormEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onClick?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onMouseEnter?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+    onMouseLeave?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     placeholder?: string;
+    ref?: RefObject<
+        ComponentType extends 'textarea'
+            ? HTMLTextAreaElement
+            : ComponentType extends 'input'
+            ? HTMLInputElement
+            : never
+    >;
     required?: boolean;
     trailing_icon?: React.ReactElement | null;
-    type: string;
-    value?: string;
+    type?: string;
+    value?: string | number;
     warn?: string;
-};
+    readOnly?: boolean;
+    is_autocomplete_disabled?: string;
+    is_hj_whitelisted?: string;
+} & Omit<ComponentProps<'input'>, 'ref'>;
 
 type TInputWrapper = {
     has_footer: boolean;
@@ -85,7 +100,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
             }
         }, [initial_character_count]);
 
-        const changeHandler = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+        const changeHandler: React.ChangeEventHandler<HTMLTextAreaElement | HTMLInputElement> = e => {
             let input_value = e.target.value;
             if (max_characters && input_value.length >= max_characters) {
                 input_value = input_value.slice(0, max_characters);
@@ -121,7 +136,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                             <textarea
                                 ref={ref}
                                 data-testid={data_testId}
-                                {...props}
+                                {...(props as ComponentProps<'textarea'>)}
                                 className={classNames('dc-input__field dc-input__textarea', {
                                     'dc-input__field--placeholder-visible': !label && props.placeholder,
                                 })}

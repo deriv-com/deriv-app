@@ -12,7 +12,7 @@ import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switche
 import WalletsBanner from 'Components/wallets-banner';
 
 const MainTitleBar = () => {
-    const { traders_hub, client } = useStores();
+    const { traders_hub, client, notifications } = useStores();
     const {
         selected_region,
         handleTabItemClick,
@@ -21,10 +21,19 @@ const MainTitleBar = () => {
         setWalletsMigrationFailedPopup,
     } = traders_hub;
     const { is_landing_company_loaded, is_switching } = client;
+    const { removeAllNotificationMessages, filterNotificationMessages } = notifications;
     const is_low_risk_cr_real_account =
         content_flag === ContentFlag.LOW_RISK_CR_NON_EU || content_flag === ContentFlag.LOW_RISK_CR_EU;
 
     const [active_index, setActiveIndex] = React.useState(selected_region === 'Non-EU' ? 0 : 1);
+
+    // TODO: Remove this when we have BE API ready
+    removeAllNotificationMessages();
+
+    React.useEffect(() => {
+        filterNotificationMessages();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <React.Fragment>

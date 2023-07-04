@@ -8,24 +8,22 @@ import EUDisclaimer from 'Components/eu-disclaimer';
 import './wallet-content.scss';
 
 type TProps = {
-    is_demo: boolean;
-    is_eu: boolean;
     wallet_account: TWalletAccount;
 };
 
-const WalletContent = React.memo(({ is_demo, is_eu, wallet_account }: TProps) => {
+const WalletContent = ({ wallet_account }: TProps) => {
+    const is_malta_wallet = wallet_account.is_malta_wallet;
+
     return (
         <div
-            className={classNames('wallet-content', {
-                'wallet-content__demo': is_demo,
-            })}
+            className={classNames('wallet-content', { 'wallet-content__demo': wallet_account.is_demo })}
             data-testid='dt_wallet-content'
         >
-            <ContentDivider is_demo_divider={is_demo} />
+            <ContentDivider is_demo_divider={wallet_account.is_demo} />
             <WalletCfdsListing wallet_account={wallet_account} />
             <ContentDivider />
             <WalletOptionsAndMultipliersListing wallet_account={wallet_account} />
-            {is_eu && !is_demo && (
+            {is_malta_wallet && !wallet_account.is_demo && (
                 <EUDisclaimer
                     is_wallet={true}
                     wrapperClassName='wallet-content__disclaimer'
@@ -34,6 +32,6 @@ const WalletContent = React.memo(({ is_demo, is_eu, wallet_account }: TProps) =>
             )}
         </div>
     );
-});
-WalletContent.displayName = 'WalletContent';
+};
+
 export default WalletContent;

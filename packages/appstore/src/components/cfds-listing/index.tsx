@@ -283,7 +283,7 @@ const CFDsListing = () => {
             )}
 
             {/* TODO: remove is_real flag to unblock the flow for derivez real account creation */}
-            {is_landing_company_loaded && !is_real
+            {/* {is_landing_company_loaded && !is_real
                 ? available_derivez_accounts?.map((account: AvailableAccount) => {
                       const existing_accounts = getExistingAccounts(account.platform, account.market_type);
                       const has_existing_accounts = existing_accounts.length > 0;
@@ -342,7 +342,7 @@ const CFDsListing = () => {
                           />
                       );
                   })
-                : !is_real && <PlatformLoader />}
+                : !is_real && <PlatformLoader />} */}
         </ListingContainer>
     );
 };

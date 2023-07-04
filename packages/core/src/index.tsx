@@ -19,8 +19,6 @@ if (
         (!window.location.hostname.startsWith('localhost') && !/binary\.sx/.test(window.location.hostname)) ||
         window.location.hostname === 'deriv-app.binary.sx')
 ) {
-    // eslint-disable-next-line no-console
-    console.log('sw registered');
     registerServiceWorker();
 }
 const has_endpoint_url = checkAndSetEndpointFromUrl();

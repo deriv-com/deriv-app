@@ -103,6 +103,7 @@
         "@deriv/shared": "^1.0.0",
         "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
+        "@deriv/utils" : "^1.0.0",
         "@livechat/customer-sdk": "^2.0.4",
         "acorn": "^6.1.1",
         "babel-polyfill": "^6.26.0",
@@ -137,8 +138,6 @@
         "react-window": "^1.8.5",
         "web-push-notifications": "^3.33.0",
         "dotenv-webpack": "^8.0.1",
-        "@datadog/browser-rum": "^4.37.0",
-        "semver": "^7.5.3",
-        "react-device-detect" : "^2.2.3"
+        "@datadog/browser-rum": "^4.37.0"
     }
 }

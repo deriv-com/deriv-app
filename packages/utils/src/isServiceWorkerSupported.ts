@@ -1,19 +1,6 @@
 import semver from 'semver';
 import { UAParser } from 'ua-parser-js';
 
-type TBrowsers =
-    | 'Chrome'
-    | 'Edge'
-    | 'Firefox'
-    | 'Opera'
-    | 'Safari'
-    | 'Opera Android'
-    | 'Mobile Safari'
-    // | 'Samsung Internet'
-    | 'Android Browser';
-
-type TBrowserVersions = { [k in TBrowsers]: string };
-
 const browsers_minimum_required_version = {
     Chrome: '40.0.0',
     Edge: '17.0.0',
@@ -26,19 +13,22 @@ const browsers_minimum_required_version = {
     'Android Browser': '40.0.0',
 } as const;
 
-const parser = new UAParser();
-
-const user_browser = {
-    name: parser.getBrowser().name || '',
-    version: semver.coerce(parser.getBrowser().version || '1.0.0.')?.version || '1.0.0',
-};
-
 const isServiceWorkerSupported = () => {
-    // eslint-disable-next-line no-console
-    console.log('user_browser', user_browser);
+    const parser = new UAParser();
+
+    const user_browser = {
+        name: parser.getBrowser().name || '',
+        version: semver.coerce(parser.getBrowser().version || '1.0.0.')?.version || '1.0.0',
+    };
+
     return (
-        typeof browsers_minimum_required_version[user_browser.name as keyof TBrowserVersions] !== 'undefined' &&
-        semver.gt(user_browser.version, browsers_minimum_required_version[user_browser.name as keyof TBrowserVersions])
+        typeof browsers_minimum_required_version[
+            user_browser.name as keyof typeof browsers_minimum_required_version
+        ] !== 'undefined' &&
+        semver.gt(
+            user_browser.version,
+            browsers_minimum_required_version[user_browser.name as keyof typeof browsers_minimum_required_version]
+        )
     );
 };
 

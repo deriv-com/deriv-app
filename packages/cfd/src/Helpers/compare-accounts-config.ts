@@ -289,6 +289,7 @@ const getAccountVerficationStatus = (
     switch (jurisdiction_shortcode) {
         case 'synthetic_svg':
         case 'financial_svg':
+        case 'all_svg':
             return true;
         case 'synthetic_bvi':
         case 'financial_bvi':

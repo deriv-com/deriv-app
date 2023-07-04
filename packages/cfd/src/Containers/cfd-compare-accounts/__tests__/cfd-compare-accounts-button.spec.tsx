@@ -42,6 +42,9 @@ describe('<CFDCompareAccountsButton />', () => {
                 is_logged_in: true,
             },
             modules: { cfd: cfd_store_mock },
+            traders_hub: {
+                getAccount: jest.fn(),
+            },
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -84,6 +87,9 @@ describe('<CFDCompareAccountsButton />', () => {
                     ...cfd_store_mock,
                     current_list: {},
                 },
+            },
+            traders_hub: {
+                getAccount: jest.fn(),
             },
         });
 
@@ -135,6 +141,9 @@ describe('<CFDCompareAccountsButton />', () => {
                     current_list: {},
                 },
             },
+            traders_hub: {
+                getAccount: jest.fn(),
+            },
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -163,6 +172,66 @@ describe('<CFDCompareAccountsButton />', () => {
             expect(mock.common.setAppstorePlatform).toHaveBeenCalledWith('mt5');
             expect(mock.modules.cfd.setJurisdictionSelectedShortcode).toHaveBeenCalled();
             expect(mock.modules.cfd.toggleCFDVerificationModal).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    it('should open account creation modal for dxtrade account', async () => {
+        jest.mock('@deriv/shared', () => ({
+            getAuthenticationStatusInfo: jest.fn(() => ({
+                poi_or_poa_not_submitted: true,
+                poi_acknowledged_for_vanuatu_maltainvest: false,
+                poi_acknowledged_for_bvi_labuan: false,
+                poa_acknowledged: false,
+                poa_pending: true,
+            })),
+        }));
+
+        const mock = mockStore({
+            client: {
+                account_status: { cashier_validation: ['system_maintenance'] },
+                current_currency_type: 'crypto',
+                is_logged_in: true,
+                should_restrict_bvi_account_creation: false,
+                should_restrict_vanuatu_account_creation: false,
+            },
+            modules: {
+                cfd: {
+                    ...cfd_store_mock,
+                    current_list: {},
+                },
+            },
+            traders_hub: {
+                getAccount: jest.fn(),
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+        render(
+            <MemoryRouter>
+                <CFDCompareAccountsButton
+                    {...mocked_props}
+                    trading_platforms={{
+                        platform: 'dxtrade',
+                        shortcode: 'bvi',
+                        market_type: 'financial',
+                    }}
+                />
+            </MemoryRouter>,
+            {
+                wrapper,
+            }
+        );
+
+        const buttonElement = screen.getByRole('button', { name: /Add/i });
+
+        userEvent.click(buttonElement);
+        await waitFor(() => {
+            expect(mock.common.setAppstorePlatform).toHaveBeenCalledWith('dxtrade');
+            // expect(mock.modules.cfd.setJurisdictionSelectedShortcode).toHaveBeenCalled();
+            // expect(mock.modules.cfd.toggleCFDVerificationModal).toHaveBeenCalledTimes(1);
+            expect(mock.traders_hub.getAccount).toHaveBeenCalled();
         });
     });
 

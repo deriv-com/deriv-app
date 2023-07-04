@@ -21,7 +21,7 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
     // const [is_loading, setIsLoading] = useState(false);
     const { multipliers_account_status } = traders_hub;
 
-    const wallet_btns = getWalletHeaderButtons(wallet_account.is_virtual);
+    const wallet_buttons = getWalletHeaderButtons(wallet_account.is_virtual);
 
     const onArrowClickHandler = async () => {
         // setIsLoading(true);
@@ -55,7 +55,7 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
                     <WalletHeaderButtons
                         is_disabled={!!multipliers_account_status}
                         is_open={is_active}
-                        btns={wallet_btns}
+                        buttons={wallet_buttons}
                         wallet_account={wallet_account}
                     />
                 </div>

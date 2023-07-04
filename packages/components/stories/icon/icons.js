@@ -614,6 +614,8 @@ export const icons =
         'IcWindowsLogo',
         'IcWindows',
         'IcWip',
+        'IcWithdrawRequestVerificationSent',
+        'IcWithdrawRequestVerification',
         'IcZingpay',
         'IcZoomIn',
         'IcZoomOut'

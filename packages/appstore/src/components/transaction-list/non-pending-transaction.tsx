@@ -7,11 +7,10 @@ import { useStore } from '@deriv/stores';
 type TStatementTransaction = DeepRequired<Statement>['transactions'][number];
 
 type TNonPendingTransaction = Pick<TStatementTransaction, 'amount' | 'balance_after'> & {
-    gradient_class: string;
     transaction: ReturnType<typeof useWalletTransactions>['transactions'][number];
 };
 
-const NonPendingTransaction = ({ gradient_class, transaction }: TNonPendingTransaction) => {
+const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
     const {
         ui: { is_dark_mode_on, is_mobile },
     } = useStore();
@@ -24,6 +23,7 @@ const NonPendingTransaction = ({ gradient_class, transaction }: TNonPendingTrans
         action_type,
         amount,
         balance_after = 0,
+        gradient_class,
         icon,
         icon_type,
     } = transaction;

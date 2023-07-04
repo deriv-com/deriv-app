@@ -40,16 +40,13 @@ const useWalletTransactions = (
         account_type: 'crypto',
         balance: 0,
         currency: 'BTC',
-        icon: getWalletCurrencyIcon('BTC', is_dark_mode_on),
-        icon_type: 'crypto',
-        is_crypto: true,
-        is_disabled: false,
-        is_selected: false,
-        is_virtual: is_demo,
+        gradient_header_class: '',
+        gradient_card_class: `wallet-card__btc-bg${is_dark_mode_on ? '--dark' : ''}`,
+        is_disabled: 0,
+        is_virtual: is_demo ? 1 : 0,
         landing_company_name: 'svg',
+        landing_company_shortcode: 'SVG',
         loginid: 'CRWMOCK00042',
-        modal_icon: '',
-        name: 'BTC Wallet',
     });
     const accounts = [demo_platform_account, ...real_platform_accounts];
     const { getConfig } = useCurrencyConfig();
@@ -258,6 +255,7 @@ const useWalletTransactions = (
             let account_type = current_wallet.account_type;
             let account_name = current_wallet.name;
             let account_currency = current_wallet.currency;
+            let gradient_class = current_wallet.gradient_card_class;
             let icon = current_wallet.icon;
             let icon_type = current_wallet.icon_type;
             if (transaction.action_type === 'transfer') {
@@ -277,6 +275,9 @@ const useWalletTransactions = (
                               other_account.landing_company_shortcode as 'svg' | 'malta'
                           );
                 account_type = other_account.account_type;
+                gradient_class = `wallet-card__${
+                    other_account.is_virtual === 1 ? 'demo' : other_account?.currency?.toLowerCase()
+                }-bg${is_dark_mode_on ? '--dark' : ''}`;
                 icon = getWalletCurrencyIcon(
                     other_account.is_virtual ? 'demo' : other_account.currency || '',
                     is_dark_mode_on,
@@ -293,6 +294,7 @@ const useWalletTransactions = (
                 account_currency,
                 account_name,
                 account_type,
+                gradient_class,
                 icon,
                 icon_type,
             };

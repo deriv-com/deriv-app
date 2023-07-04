@@ -2,6 +2,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import TransactionList from 'Components/transaction-list';
+import DemoResetBalance from 'Components/demo-reset-balance';
 import WalletTransfer from 'Components/wallet-transfer';
 
 export type TWalletType = 'real' | 'demo' | 'p2p' | 'payment_agent';
@@ -98,7 +99,7 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcAdd',
                     label: localize('Reset balance'),
-                    content: () => <p>Reset balance</p>,
+                    content: (props: React.ComponentProps<typeof DemoResetBalance>) => <DemoResetBalance {...props} />,
                 },
             ];
         case 'p2p':

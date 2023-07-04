@@ -6,13 +6,12 @@ import { useStore } from '@deriv/stores';
 
 type TStatementTransaction = DeepRequired<Statement>['transactions'][number];
 
-type TFiatTransactionListItem = Pick<TStatementTransaction, 'amount'> & {
-    currency: string;
-    icon_type: string;
-    transaction: ReturnType<typeof useWalletTransactions>['transactions'][0];
+type TNonPendingTransaction = Pick<TStatementTransaction, 'amount' | 'balance_after'> & {
+    gradient_class: string;
+    transaction: ReturnType<typeof useWalletTransactions>['transactions'][number];
 };
 
-const NonPendingTransaction = ({ amount, currency, icon_type, transaction }: TFiatTransactionListItem) => {
+const NonPendingTransaction = ({ gradient_class, transaction }: TNonPendingTransaction) => {
     const {
         ui: { is_dark_mode_on, is_mobile },
     } = useStore();
@@ -23,8 +22,10 @@ const NonPendingTransaction = ({ amount, currency, icon_type, transaction }: TFi
         account_name,
         account_type,
         action_type,
+        amount,
         balance_after = 0,
         icon,
+        icon_type,
     } = transaction;
 
     const formatAmount = (value: number) => value.toLocaleString(undefined, { minimumFractionDigits: 2 });
@@ -52,12 +53,20 @@ const NonPendingTransaction = ({ amount, currency, icon_type, transaction }: TFi
                 {account_category === 'trading' ? (
                     <AppLinkedWithWalletIcon
                         app_icon={getAppIcon()}
-                        currency={account_currency}
+                        gradient_class={gradient_class}
                         type={icon_type}
                         wallet_icon={icon}
+                        hide_watermark
                     />
                 ) : (
-                    <WalletIcon currency={account_currency} icon={icon} type={icon_type} has_bg size='medium' />
+                    <WalletIcon
+                        gradient_class={gradient_class}
+                        icon={icon}
+                        type={icon_type}
+                        has_bg
+                        size='medium'
+                        hide_watermark
+                    />
                 )}
                 <div className='transaction-list__item__left__title'>
                     <Text
@@ -85,7 +94,7 @@ const NonPendingTransaction = ({ amount, currency, icon_type, transaction }: TFi
                     weight='bold'
                     line_height={is_mobile ? 's' : 'm'}
                 >
-                    {(amount > 0 ? '+' : '') + formatAmount(amount)} {currency}
+                    {(amount > 0 ? '+' : '') + formatAmount(amount)} {account_currency}
                 </Text>
                 <Text
                     size={is_mobile ? 'xxxxs' : 'xxxs'}
@@ -93,7 +102,7 @@ const NonPendingTransaction = ({ amount, currency, icon_type, transaction }: TFi
                     weight='lighter'
                     line_height={is_mobile ? 'm' : 's'}
                 >
-                    Balance: {formatAmount(balance_after)} {currency}
+                    Balance: {formatAmount(balance_after)} {account_currency}
                 </Text>
             </div>
         </div>

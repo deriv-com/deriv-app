@@ -68,18 +68,16 @@ const TransactionList = () => {
                     {day}
                 </Text>
                 {transaction_list.map(transaction => {
-                    const amount =
-                        (transaction?.action_type === 'transfer' &&
+                    if (
+                        transaction?.action_type === 'transfer' &&
                         transaction?.from?.loginid === loginid &&
                         typeof transaction?.amount === 'number'
-                            ? -transaction.amount
-                            : transaction.amount) || 0;
+                    ) {
+                        transaction.amount *= -1;
+                    }
                     return (
                         <NonPendingTransaction
                             key={transaction.transaction_id}
-                            amount={amount}
-                            currency={wallet_currency}
-                            icon_type={is_demo ? 'demo' : transaction.icon_type}
                             transaction={transaction}
                         />
                     );

@@ -1,13 +1,12 @@
 import { useMemo } from 'react';
 import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
-import { getWalletCurrencyIcon } from '@deriv/utils';
 
-const useWalletsList = () => {
+const useWalletList = () => {
     const { client, ui } = useStore();
-    const { is_dark_mode_on } = ui;
     const { accounts, loginid, is_crypto } = client;
-    const { data, ...rest } = useFetch('authorize', {
+    const { is_dark_mode_on } = ui;
+    const { data, ...reset } = useFetch('authorize', {
         payload: { authorize: accounts[loginid || ''].token },
         options: { enabled: Boolean(loginid), keepPreviousData: true },
     });
@@ -18,35 +17,19 @@ const useWalletsList = () => {
         // Filter out accounts which has account_category as wallet
         const wallets = data?.authorize?.account_list?.filter(account => account.account_category === 'wallet');
 
-        const modified_wallets =
-            wallets?.map(wallet => {
-                const currency = wallet?.currency || 'USD';
-                const is_crypto_currency = is_crypto(currency);
-                const is_fiat = !is_crypto_currency;
-                const icon = getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : currency, is_dark_mode_on);
-                const modal_icon = getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : currency, is_dark_mode_on, true);
-                const name = `${wallet.is_virtual ? 'Demo ' : ''}${currency} ${'Wallet'}`;
-
-                return {
-                    ...wallet,
-                    currency,
-                    /** Indicating whether the wallet is the currently selected wallet. */
-                    is_selected: wallet.loginid === loginid,
-                    /** Wallet balance */
-                    balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,
-                    /** Landing company shortcode the account belongs to. */
-                    landing_company_name:
-                        wallet.landing_company_name === 'maltainvest' ? 'malta' : wallet.landing_company_name,
-                    is_disabled: Boolean(wallet.is_disabled),
-                    is_virtual: Boolean(wallet.is_virtual),
-                    is_crypto: is_crypto_currency,
-                    icon,
-                    modal_icon,
-                    name,
-                    // needs for WalletIcon, maybe refactor during cleanUp
-                    icon_type: is_fiat && !wallet.is_virtual ? 'fiat' : 'crypto',
-                };
-            }) || [];
+        // Modify the wallets to include the missing balance from the API response
+        // Should remove this once the API is fixed
+        const modified_wallets = wallets?.map(wallet => ({
+            ...wallet,
+            balance: 1000,
+            gradient_header_class: `wallet-header__${
+                wallet.is_virtual === 1 ? 'demo' : wallet.currency?.toLowerCase()
+            }-bg${is_dark_mode_on ? '--dark' : ''}`,
+            gradient_card_class: `wallet-card__${wallet.is_virtual === 1 ? 'demo' : wallet.currency?.toLowerCase()}-bg${
+                is_dark_mode_on ? '--dark' : ''
+            }`,
+            landing_company_shortcode: wallet.landing_company_name,
+        }));
 
         // Sort the wallets alphabetically by fiat, crypto, then virtual
         return modified_wallets?.sort((a, b) => {
@@ -58,12 +41,12 @@ const useWalletsList = () => {
 
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });
-    }, [balance_data?.balance?.accounts, data?.authorize?.account_list, is_crypto, is_dark_mode_on, loginid]);
+    }, [data, is_crypto, is_dark_mode_on]);
 
     return {
-        ...rest,
+        ...reset,
         data: sortedWallets,
     };
 };
 
-export default useWalletsList;
+export default useWalletList;

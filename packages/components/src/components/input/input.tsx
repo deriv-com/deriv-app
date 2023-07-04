@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import React, { HTMLAttributes } from 'react';
+import React, { ComponentProps, ComponentType, HTMLAttributes, RefObject } from 'react';
 import Field from '../field';
 import Text from '../text/text';
 
@@ -40,6 +40,13 @@ export type TInputProps = {
     onMouseEnter?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     onMouseLeave?: React.MouseEventHandler<HTMLInputElement | HTMLTextAreaElement>;
     placeholder?: string;
+    ref?: RefObject<
+        ComponentType extends 'textarea'
+            ? HTMLTextAreaElement
+            : ComponentType extends 'input'
+            ? HTMLInputElement
+            : never
+    >;
     required?: boolean;
     trailing_icon?: React.ReactElement | null;
     type?: string;
@@ -48,7 +55,7 @@ export type TInputProps = {
     readOnly?: boolean;
     is_autocomplete_disabled?: string;
     is_hj_whitelisted?: string;
-};
+} & Omit<ComponentProps<'input'>, 'ref'>;
 
 type TInputWrapper = {
     has_footer: boolean;
@@ -129,7 +136,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                             <textarea
                                 ref={ref}
                                 data-testid={data_testId}
-                                {...props}
+                                {...(props as ComponentProps<'textarea'>)}
                                 className={classNames('dc-input__field dc-input__textarea', {
                                     'dc-input__field--placeholder-visible': !label && props.placeholder,
                                 })}

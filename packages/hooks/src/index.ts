@@ -5,9 +5,9 @@ export { default as useCFDAllAccounts } from './useCFDAllAccounts';
 export { default as useCFDDemoAccounts } from './useCFDDemoAccounts';
 export { default as useCFDRealAccounts } from './useCFDRealAccounts';
 export { default as useCountdown } from './useCountdown';
-export { default as useDepositFiatAddress } from './useDepositFiatAddress';
 export { default as useCurrencyConfig } from './useCurrencyConfig';
 export { default as useDepositCryptoAddress } from './useDepositCryptoAddress';
+export { default as useDepositFiatAddress } from './useDepositFiatAddress';
 export { default as useDepositLocked } from './useDepositLocked';
 export { default as useExchangeRate } from './useExchangeRate';
 export { default as useGroupedFiatTransactions } from './useGroupedFiatTransactions';
@@ -26,6 +26,7 @@ export { default as useInputDecimalFormatter } from './useInputDecimalFormatter'
 export { default as useIsP2PEnabled } from './useIsP2PEnabled';
 export { default as useIsRealAccountNeededForCashier } from './useIsRealAccountNeededForCashier';
 export { default as useIsSystemMaintenance } from './useIsSystemMaintenance';
+export { default as useLocalStorageData } from './useLocalStorageData';
 export { default as useNeedAuthentication } from './useNeedAuthentication';
 export { default as useNeedFinancialAssessment } from './useNeedFinancialAssessment';
 export { default as useNeedTNC } from './useNeedTNC';

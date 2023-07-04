@@ -1,18 +1,15 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { Modal, Text } from '@deriv/components';
+import { routes, getStaticUrl, PlatformContext } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { getStaticUrl, PlatformContext } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { TCoreStore } from 'Stores/index';
 
-type TAccountClosed = {
-    logout: () => void;
-};
-
-const AccountClosed = ({ logout }: TAccountClosed) => {
+const AccountClosed = ({ logout }) => {
     const [is_modal_open, setModalState] = React.useState(true);
     const [timer, setTimer] = React.useState(10);
     const { is_appstore } = React.useContext(PlatformContext);
+    const history = useHistory();
 
     const counter = React.useCallback(() => {
         if (timer > 0) {
@@ -23,7 +20,7 @@ const AccountClosed = ({ logout }: TAccountClosed) => {
     }, [is_appstore, timer]);
 
     React.useEffect(() => {
-        window.history.pushState(null, '', '/');
+        history.push(routes.root);
         logout();
         const handleInterval = setInterval(() => counter(), 1000);
         return () => {
@@ -45,6 +42,6 @@ const AccountClosed = ({ logout }: TAccountClosed) => {
     );
 };
 
-export default connect(({ client }: TCoreStore) => ({
+export default connect(({ client }) => ({
     logout: client.logout,
 }))(AccountClosed);

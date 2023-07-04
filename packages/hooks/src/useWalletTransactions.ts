@@ -299,7 +299,7 @@ const useWalletTransactions = (
                                   false
                               );
                           }
-                          const currency_config = getConfig(account_currency);
+                          const currency_config = getConfig(account_currency || '');
                           const is_crypto = currency_config?.is_crypto;
                           const icon_type = is_crypto || current_wallet.is_virtual ? 'crypto' : 'fiat';
 

@@ -208,7 +208,7 @@ const transformForResidence = (rules: TSchema, residence: string) => {
     return rules;
 };
 
-const transformConfig = (config: TSchema, real_account_signup_target: string) => {
+export const transformConfig = (config: TSchema, real_account_signup_target: string) => {
     // Remove required rule for svg clients and maltainvest clients
     if (
         !real_account_signup_target ||

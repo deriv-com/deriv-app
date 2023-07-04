@@ -1,5 +1,5 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
-import useWalletsList from '@deriv/hooks/src/useWalletsList';
+import { useWalletsList } from '@deriv/hooks';
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { RegionAvailability } from 'Constants/platform-config';
 
@@ -13,7 +13,7 @@ export type RequiredAndNotNull<T> = {
 
 export type TRegionAvailability = 'Non-EU' | 'EU' | 'All';
 export type TAccountCategory = 'real' | 'demo';
-export type TPlatform = 'dxtrade' | 'mt5' | 'trader' | 'dbot' | 'smarttrader' | 'bbot' | 'go';
+export type TPlatform = 'dxtrade' | 'mt5' | 'trader' | 'dbot' | 'smarttrader' | 'bbot' | 'go' | 'derivez';
 export type TBrandData = {
     name: string;
     icon?: string;
@@ -120,7 +120,8 @@ export type TIconTypes =
     | 'Options'
     | 'SmartTrader'
     | 'SmartTraderBlue'
-    | 'CFDs';
+    | 'CFDs'
+    | 'DerivEz';
 
 export interface AvailableAccount {
     name: string;

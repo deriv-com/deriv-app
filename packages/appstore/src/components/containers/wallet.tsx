@@ -11,21 +11,27 @@ type TWallet = {
 };
 
 const Wallet = ({ wallet_account }: TWallet) => {
-    const is_demo = wallet_account.is_virtual;
-    const active = wallet_account.is_selected;
+    const headerRef = React.useRef<HTMLDivElement>(null);
 
     return (
-        <div
-            className={classNames('wallet', {
-                wallet__demo: is_demo,
-            })}
-        >
+        <div ref={headerRef} className={classNames('wallet', { wallet__demo: wallet_account.is_virtual })}>
             <WalletHeader wallet_account={wallet_account} />
-            <CSSTransition appear in={active} timeout={240} classNames='wallet__content-transition' unmountOnExit>
-                <WalletContent is_demo={!!is_demo} is_eu={wallet_account.landing_company_name === 'malta'} />
+            <CSSTransition
+                appear
+                in={wallet_account.is_selected}
+                timeout={240}
+                onEntered={() => {
+                    if (headerRef?.current) {
+                        headerRef.current.style.scrollMargin = '20px';
+                        headerRef.current.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }}
+                classNames='wallet__content-transition'
+                unmountOnExit
+            >
+                <WalletContent is_demo={wallet_account.is_virtual} is_eu={wallet_account.is_malta_wallet} />
             </CSSTransition>
         </div>
     );
 };
-
 export default Wallet;

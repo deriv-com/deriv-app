@@ -16,37 +16,47 @@ type TWalletHeader = {
 
 const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
     const { client, traders_hub } = useStore();
-    const { switchAccount } = client;
+    const { switchAccount, loginid } = client;
     const is_active = wallet_account.is_selected;
+    // const [is_loading, setIsLoading] = useState(false);
     const { multipliers_account_status } = traders_hub;
 
-    const is_demo = wallet_account.is_virtual;
-
-    const wallet_buttons = getWalletHeaderButtons(is_demo);
+    const wallet_btns = getWalletHeaderButtons(wallet_account.is_virtual);
 
     const onArrowClickHandler = async () => {
-        if (!wallet_account.is_selected) await switchAccount(wallet_account.loginid);
+        // setIsLoading(true);
+        if (loginid !== wallet_account.loginid) await switchAccount(wallet_account.loginid);
+        // setIsLoading(false);
     };
 
+    /** @todo: uncomment this when we have a skeleton loader for wallet header*/
+    // useEffect(() => {
+    //     if (is_authorize) {
+    //         setIsLoading(false);
+    //     }
+    // }, [is_authorize]);
+
     return (
-        <div className={classNames('wallet-header', { 'wallet-header__demo': wallet_account.is_virtual })}>
+        <div className={classNames('wallet-header', { 'wallet-header__demo': wallet_account.is_demo })}>
             <div className='wallet-header__container'>
                 <WalletCurrencyCard
+                    is_demo={wallet_account.is_virtual}
                     currency={wallet_account.currency}
-                    is_virtual={wallet_account.is_virtual}
+                    gradient_class={wallet_account.gradient_card_class}
                     icon={wallet_account.icon}
                     icon_type={wallet_account.icon_type}
                 />
                 <div className='wallet-header__description'>
                     <WalletHeaderTitle
-                        is_virtual={wallet_account.is_virtual}
+                        is_demo={wallet_account.is_demo}
                         currency={wallet_account.currency}
                         landing_company_name={wallet_account.landing_company_name}
                     />
                     <WalletHeaderButtons
                         is_disabled={!!multipliers_account_status}
-                        is_open={!!is_active}
-                        buttons={wallet_buttons}
+                        is_open={is_active}
+                        btns={wallet_btns}
+                        wallet_account={wallet_account}
                     />
                 </div>
                 <div className='wallet-header__balance'>

@@ -1,16 +1,24 @@
 import React from 'react';
 import { WalletIcon } from '@deriv/components';
-import type { TWalletAccount } from 'Types';
+import { TWalletAccount } from 'Types';
 
-type TWalletCurrencyCard = Pick<TWalletAccount, 'is_virtual' | 'currency' | 'icon' | 'icon_type'>;
+type TWalletCurrencyCard = Pick<TWalletAccount, 'is_demo' | 'currency' | 'icon' | 'icon_type'> & {
+    gradient_class?: string;
+};
 
-const WalletCurrencyCard = ({ is_virtual, currency, icon, icon_type }: TWalletCurrencyCard) => {
-    const converted_currency = is_virtual ? 'demo' : currency.toLowerCase();
-
+const WalletCurrencyCard = ({ is_demo, currency, icon, icon_type, gradient_class }: TWalletCurrencyCard) => {
     return (
-        <div className='wallet-header__currency' data-testid={`dt_${converted_currency}`}>
-            <WalletIcon currency={converted_currency} icon={icon} size='xlarge' type={icon_type} has_bg={true} />
+        <div className='wallet-header__currency' data-testid={`dt_${is_demo ? 'demo' : currency?.toLowerCase()}`}>
+            <WalletIcon
+                gradient_class={gradient_class}
+                icon={icon}
+                size={'xlarge'}
+                type={icon_type}
+                has_bg={true}
+                hide_watermark
+            />
         </div>
     );
 };
+
 export default WalletCurrencyCard;

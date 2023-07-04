@@ -3,33 +3,16 @@ import { Text, Badge } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { TWalletAccount } from 'Types';
 
-type TWalletHeaderTitle = Pick<TWalletAccount, 'is_virtual' | 'currency' | 'landing_company_name'>;
+type TWalletHeaderTitle = Pick<TWalletAccount, 'is_demo' | 'currency' | 'landing_company_name'>;
 
-const WalletHeaderTitle = React.memo(({ is_virtual, currency, landing_company_name }: TWalletHeaderTitle) => {
-    const title = is_virtual ? (
-        <Text weight='bold' size='sm' color='prominent'>
-            <Localize
-                i18n_default_text='Demo {{currency}} Wallet'
-                values={{
-                    currency,
-                }}
-            />
-        </Text>
-    ) : (
-        <Text weight='bold' size='sm' color='prominent'>
-            <Localize
-                i18n_default_text='{{currency}} Wallet'
-                values={{
-                    currency,
-                }}
-            />
-        </Text>
-    );
-
+const WalletHeaderTitle = ({ is_demo, currency, landing_company_name }: TWalletHeaderTitle) => {
     return (
         <div className='wallet-header__description-title'>
-            {title}
-            {!is_virtual && (
+            <Text weight='bold' size='sm'>
+                {is_demo && <Localize i18n_default_text='Demo {{currency}} Wallet' values={{ currency }} />}
+                {!is_demo && <Localize i18n_default_text='{{currency}} Wallet' values={{ currency }} />}
+            </Text>
+            {!is_demo && (
                 <Badge
                     className='wallet-header__description-badge'
                     type='bordered'
@@ -38,6 +21,6 @@ const WalletHeaderTitle = React.memo(({ is_virtual, currency, landing_company_na
             )}
         </div>
     );
-});
-WalletHeaderTitle.displayName = 'WalletHeaderTitle';
+};
+
 export default WalletHeaderTitle;

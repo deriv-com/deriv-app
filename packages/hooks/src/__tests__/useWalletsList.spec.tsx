@@ -17,15 +17,16 @@ describe('useWalletsList', () => {
             client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
         });
 
+        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
                     account_list: [
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'USD',
                             is_virtual: 0,
+                            landing_company_name: 'svg',
                         },
                     ],
                 },
@@ -46,6 +47,17 @@ describe('useWalletsList', () => {
                 balance: 0,
                 currency: 'USD',
                 icon: 'IcWalletCurrencyUsd',
+                gradient_card_class: 'wallet-card__usd-bg',
+                gradient_header_class: 'wallet-header__usd-bg',
+                is_virtual: false,
+                landing_company_name: 'svg',
+                is_demo: false,
+                is_selected: false,
+                is_malta_wallet: false,
+                icon_type: 'fiat',
+                is_disabled: false,
+                modal_icon: 'IcWalletCurrencyUsd',
+                name: 'USD Wallet',
             })
         );
     });
@@ -74,30 +86,27 @@ describe('useWalletsList', () => {
             client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
         });
 
+        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
                     account_list: [
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'USD',
                             is_virtual: 0,
                         },
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'UST',
                             is_virtual: 0,
                         },
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'BTC',
                             is_virtual: 0,
                         },
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'AUD',
                             is_virtual: 0,
@@ -127,36 +136,32 @@ describe('useWalletsList', () => {
             },
         });
 
+        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
                     account_list: [
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'USD',
                             is_virtual: 0,
                         },
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'UST',
                             is_virtual: 0,
                         },
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'BTC',
                             is_virtual: 1,
                         },
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'AUD',
                             is_virtual: 0,
                         },
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'ETH',
                             is_virtual: 0,

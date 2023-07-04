@@ -14,19 +14,26 @@ jest.mock('@deriv/account', () => ({
     getStatusBadgeConfig: jest.fn(() => ({ icon: '', text: '' })),
 }));
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useWalletModalActionHandler: jest.fn(() => ({ setWalletModalActiveTabIndex: jest.fn(), handleAction: jest.fn() })),
+}));
+
 describe('<WalletHeader />', () => {
     let mocked_props: TWalletAccount;
     beforeEach(() => {
         mocked_props = {
+            is_virtual: false,
             currency: 'USD',
             landing_company_name: 'svg',
             balance: 10000,
             loginid: 'CRW123123',
-            is_virtual: false,
+            is_malta_wallet: false,
             is_selected: true,
+            gradient_header_class: 'wallet-header__usd-bg',
+            gradient_card_class: 'wallet-card__usd-bg',
         };
     });
-
     describe('Check currency card', () => {
         it('Should render right currency card for DEMO', () => {
             mocked_props.is_virtual = true;
@@ -42,40 +49,36 @@ describe('<WalletHeader />', () => {
 
         it('Should render right currency card for REAL SVG fiat', () => {
             mocked_props.currency = 'AUD';
-            const dt_currency = mocked_props.currency.toLowerCase();
             render(
                 <StoreProvider store={mockedRootStore}>
                     <WalletHeader wallet_account={mocked_props} />
                 </StoreProvider>
             );
-            const currency_card = screen.queryByTestId(`dt_${dt_currency}`);
-
+            const currency_card = screen.queryByTestId(`dt_${mocked_props.currency.toLowerCase()}`);
             expect(currency_card).toBeInTheDocument();
         });
 
         it('Should render right currency card for REAL SVG crypto', () => {
             mocked_props.currency = 'ETH';
-            const dt_currency = mocked_props.currency.toLowerCase();
             render(
                 <StoreProvider store={mockedRootStore}>
                     <WalletHeader wallet_account={mocked_props} />
                 </StoreProvider>
             );
-            const currency_card = screen.queryByTestId(`dt_${dt_currency}`);
+            const currency_card = screen.queryByTestId(`dt_${mocked_props.currency.toLowerCase()}`);
 
             expect(currency_card).toBeInTheDocument();
         });
 
         it('Should render right currency card for REAL MALTA fiat', () => {
-            mocked_props.currency = 'EUR';
-            const dt_currency = mocked_props.currency.toLowerCase();
+            mocked_props.currency = 'ETH';
             mocked_props.landing_company_name = 'malta';
             render(
                 <StoreProvider store={mockedRootStore}>
                     <WalletHeader wallet_account={mocked_props} />
                 </StoreProvider>
             );
-            const currency_card = screen.queryByTestId(`dt_${dt_currency}`);
+            const currency_card = screen.queryByTestId(`dt_${mocked_props.currency.toLowerCase()}`);
 
             expect(currency_card).toBeInTheDocument();
         });
@@ -91,7 +94,7 @@ describe('<WalletHeader />', () => {
                     <WalletHeader wallet_account={mocked_props} />
                 </StoreProvider>
             );
-            const balance_label = screen.queryByText(`2,345.56 ${mocked_props.currency}`);
+            const balance_label = screen.getByText('2,345.56 EUR');
 
             expect(balance_label).toBeInTheDocument();
         });

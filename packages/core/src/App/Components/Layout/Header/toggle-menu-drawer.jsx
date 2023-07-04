@@ -390,9 +390,12 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 submenu_toggle_class='dc-mobile-drawer__submenu-toggle--hidden'
             >
                 <div
-                    className={classNames('settings-language__language-container', {
-                        'settings-language__language-container--disabled': is_language_changing,
-                    })}
+                    className={classNames(
+                        'settings-language__language-container settings-language__language-container--has-padding',
+                        {
+                            'settings-language__language-container--disabled': is_language_changing,
+                        }
+                    )}
                 >
                     {Object.keys(getAllowedLanguages()).map(lang => (
                         <LanguageLink

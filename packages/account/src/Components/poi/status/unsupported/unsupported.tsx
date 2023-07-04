@@ -32,6 +32,7 @@ type TUnsupported = {
     redirect_button: React.ReactElement;
     needs_poa: boolean;
     handleRequireSubmission: () => void;
+    handleViewComplete: () => void;
     allow_poi_resubmission: boolean;
 };
 
@@ -43,6 +44,7 @@ const Unsupported = ({
     needs_poa,
     handleRequireSubmission,
     allow_poi_resubmission,
+    handleViewComplete,
     ...props
 }: Partial<TUnsupported>) => {
     const [detail, setDetail] = React.useState<number | null>(null);
@@ -73,6 +75,7 @@ const Unsupported = ({
                 root_class='manual-poi'
                 onClickBack={() => setDetail(null)}
                 handlePOIforMT5Complete={handlePOIforMT5Complete}
+                handleComplete={handleViewComplete}
                 {...props}
             />
         );

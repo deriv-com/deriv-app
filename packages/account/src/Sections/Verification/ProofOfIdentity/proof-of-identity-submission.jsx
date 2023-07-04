@@ -159,6 +159,7 @@ const POISubmission = ({
                             is_from_external={is_from_external}
                             setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                             allow_poi_resubmission={allow_poi_resubmission}
+                            handleViewComplete={handleViewComplete}
                         />
                     );
                 default:

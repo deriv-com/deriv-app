@@ -159,6 +159,8 @@ const DetailComponent = ({
                                 documents_supported={[document.onfido_name]}
                                 height={height ?? null}
                                 handleComplete={is_mt5 ? handlePOIforMT5Complete : handleComplete}
+                                is_disabled={false}
+                                handleViewComplete={is_mt5 ? handlePOIforMT5Complete : handleComplete}
                                 {...props}
                             />
                         </React.Fragment>

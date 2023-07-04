@@ -1573,7 +1573,7 @@ export default class ClientStore extends BaseStore {
         const redirect_url = search_params?.get('redirect_url');
         const code_param = search_params?.get('code');
         const action_param = search_params?.get('action');
-        const loginid_param = search_params.get('loginid');
+        const loginid_param = search_params?.get('loginid');
         const unused_params = [
             'type',
             'acp',

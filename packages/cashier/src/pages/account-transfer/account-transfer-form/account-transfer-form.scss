@@ -207,6 +207,7 @@
 }
 .dc-modal__container_account_transfer {
     &_switch_modal {
+        transition: none;
         .dc-modal {
             @include mobile() {
                 &-header__close {

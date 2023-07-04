@@ -23,7 +23,6 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
 
     const wallet_buttons = getWalletHeaderButtons(wallet_account.is_virtual);
 
-    // if (!wallet_account || !is_landing_company_loaded || is_switching || is_logging_in)
     const onArrowClickHandler = React.useCallback(async () => {
         // setIsLoading(true);
         if (loginid !== wallet_account.loginid && !is_switching && !is_logging_in) {

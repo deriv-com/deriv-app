@@ -90,7 +90,6 @@ describe('useWalletsList', () => {
 
         const { result } = renderHook(() => useWalletsList(), { wrapper });
 
-        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
         expect(result.current.data?.every(wallet => wallet.account_category === 'wallet')).toEqual(true);
     });
 

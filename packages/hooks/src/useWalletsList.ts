@@ -16,7 +16,6 @@ const useWalletsList = () => {
 
     const sortedWallets = useMemo(() => {
         const wallets = authorize_data?.authorize?.account_list?.filter(
-            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
             // Filter out accounts which has account_category as wallet
             account => account.account_category === 'wallet'
         );

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Helmet } from 'react-helmet';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
@@ -190,6 +191,14 @@ const App = () => {
     return (
         // TODO Wrap components with StoreProvider during routing p2p card
         <main className='p2p-cashier'>
+            <Helmet>
+                <title>Deriv P2P</title>
+                <meta name='og:description' content='deriv p2p' />
+                <meta
+                    property='og:image'
+                    content='https://play-lh.googleusercontent.com/ah8RkaAnph2gouJ48fVeybeJgw-tu2dzTDYL7miccIWxvd0ZcK5-MM20bGxjpjb2lXU'
+                />
+            </Helmet>
             <ModalManagerContextProvider>
                 <ModalManager />
                 <AppContent order_id={order_id} />

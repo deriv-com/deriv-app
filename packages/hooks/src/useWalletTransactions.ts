@@ -42,10 +42,12 @@ const useWalletTransactions = (
         currency: 'BTC',
         gradient_header_class: '',
         gradient_card_class: `wallet-card__btc-bg${is_dark_mode_on ? '--dark' : ''}`,
+        is_demo,
         is_disabled: 0,
+        is_malta_wallet: false,
+        is_selected: false,
         is_virtual: is_demo ? 1 : 0,
         landing_company_name: 'svg',
-        landing_company_shortcode: 'SVG',
         loginid: 'CRWMOCK00042',
     });
     const accounts = [demo_platform_account, ...real_platform_accounts];

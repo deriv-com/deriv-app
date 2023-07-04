@@ -605,8 +605,6 @@ import './common/ic-whats-app.svg';
 import './common/ic-windows-logo.svg';
 import './common/ic-windows.svg';
 import './common/ic-wip.svg';
-import './common/ic-withdraw-request-verification-sent.svg';
-import './common/ic-withdraw-request-verification.svg';
 import './common/ic-zingpay.svg';
 import './common/ic-zoom-in.svg';
 import './common/ic-zoom-out.svg';

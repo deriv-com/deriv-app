@@ -302,6 +302,13 @@ export default class RunPanelStore {
         this.onCloseDialog();
         summary_card.clear();
         toggleStopBotDialog();
+        if (this.timer) {
+            clearInterval(this.timer);
+        }
+        if (window.sendRequestsStatistic) {
+            window.sendRequestsStatistic(true);
+            performance.clearMeasures();
+        }
     }
 
     closeMultiplierContract() {
@@ -321,6 +328,13 @@ export default class RunPanelStore {
         this.onOkButtonClick = () => {
             ui.setPromptHandler(false);
             this.dbot.terminateBot();
+            if (this.timer) {
+                clearInterval(this.timer);
+            }
+            if (window.sendRequestsStatistic) {
+                window.sendRequestsStatistic(true);
+                performance.clearMeasures();
+            }
             this.onCloseDialog();
             summary_card.clear();
         };

@@ -1,5 +1,4 @@
 /** Add types that are shared between components */
-
 import { FormikProps, FormikValues } from 'formik';
 import { Authorize, ResidenceList } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
@@ -80,6 +79,46 @@ export type TRouteConfig = TRoute & {
 export type TBinaryRoutes = {
     is_logged_in: boolean;
     is_logging_in: boolean;
+};
+
+export type TUpgradeInfo = {
+    type: string;
+    can_upgrade: boolean;
+    can_upgrade_to: string;
+    can_open_multi: boolean;
+};
+
+type TIdentity = {
+    services: {
+        idv: {
+            documents_supported: { [key: string]: { display_name: string } } | Record<string, never>;
+            has_visual_sample: 0 | 1;
+            is_country_supported: 0 | 1;
+        };
+        onfido: {
+            documents_supported: { [key: string]: { display_name: string } };
+            is_country_supported: 0 | 1;
+        };
+    };
+};
+
+export type TResidenseList = {
+    identity: TIdentity;
+    phone_idd: string;
+    tin_format: string[];
+    disabled: string;
+    text: string;
+    value: string;
+};
+
+export type TFile = {
+    path: string;
+    lastModified: number;
+    lastModifiedDate: Date;
+    name: string;
+    size: number;
+    type: string;
+    webkitRelativePath: string;
 };
 
 export type TPOIStatus = {

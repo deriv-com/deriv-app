@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import InstrumentsIconWithLabel from '../instruments-icon-with-label';
 
-describe('InstrumentsIconWithLabel', () => {
+describe('<InstrumentsIconWithLabel />', () => {
     const mocked_props = {
         icon: 'example-icon',
         text: 'Synthethics',

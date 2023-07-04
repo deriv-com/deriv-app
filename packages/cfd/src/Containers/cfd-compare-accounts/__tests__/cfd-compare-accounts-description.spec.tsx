@@ -39,6 +39,7 @@ describe('<CFDCompareAccountsDescription />', () => {
 
     it('should render content for gaming market type with vanuatu shortcode', () => {
         mocked_props.trading_platforms.shortcode = 'vanuatu';
+
         render(<CFDCompareAccountsDescription {...mocked_props} />);
         assertContent('Maximum Leverage', '0.5 pips', 'Spread from', 'Counterparty company', 'Jurisdiction');
         expect(screen.getByText('1:1000')).toBeInTheDocument();
@@ -48,6 +49,7 @@ describe('<CFDCompareAccountsDescription />', () => {
 
     it('should render content for all market type with svg shortcode', () => {
         mocked_props.trading_platforms.market_type = 'all';
+
         render(<CFDCompareAccountsDescription {...mocked_props} />);
         assertContent('Maximum Leverage', '0.5 pips', 'Spread from', 'Counterparty company', 'Jurisdiction');
         expect(screen.getByText('1:1000')).toBeInTheDocument();
@@ -60,6 +62,7 @@ describe('<CFDCompareAccountsDescription />', () => {
     it('should render content for financial market type with svg shortcode', () => {
         mocked_props.trading_platforms.market_type = 'financial';
         mocked_props.trading_platforms.shortcode = 'svg';
+
         render(<CFDCompareAccountsDescription {...mocked_props} />);
         assertContent('Maximum Leverage', '0.5 pips', 'Spread from', 'Counterparty company', 'Jurisdiction');
         expect(screen.getByText('1:1000')).toBeInTheDocument();
@@ -68,9 +71,37 @@ describe('<CFDCompareAccountsDescription />', () => {
         expect(screen.getByText('Financial Commission')).toBeInTheDocument();
         expect(screen.getByText('Regulator/External dispute resolution')).toBeInTheDocument();
     });
+
+    it('should render content for financial market type with vanuatu shortcode', () => {
+        mocked_props.trading_platforms.market_type = 'financial';
+        mocked_props.trading_platforms.shortcode = 'vanuatu';
+
+        render(<CFDCompareAccountsDescription {...mocked_props} />);
+        assertContent('Maximum Leverage', '0.5 pips', 'Spread from', 'Counterparty company', 'Jurisdiction');
+        expect(screen.getByText('1:1000')).toBeInTheDocument();
+        expect(screen.getByText('Deriv (V) Ltd')).toBeInTheDocument();
+        expect(screen.getByText('Vanuatu')).toBeInTheDocument();
+        expect(screen.getByText('Vanuatu Financial Services Commission')).toBeInTheDocument();
+        expect(screen.getByText('Regulator/External Dispute Resolution')).toBeInTheDocument();
+    });
+
+    it('should render content for financial market type with labuan shortcode', () => {
+        mocked_props.trading_platforms.market_type = 'financial';
+        mocked_props.trading_platforms.shortcode = 'labuan';
+
+        render(<CFDCompareAccountsDescription {...mocked_props} />);
+        assertContent('Maximum Leverage', '0.5 pips', 'Spread from', 'Counterparty company', 'Jurisdiction');
+        expect(screen.getByText('1:100')).toBeInTheDocument();
+        expect(screen.getByText('Deriv (FX) Ltd')).toBeInTheDocument();
+        expect(screen.getByText('Labuan')).toBeInTheDocument();
+        expect(screen.getByText('Labuan Financial Services Authority')).toBeInTheDocument();
+        expect(screen.getByText('(licence no. MB/18/0024) Regulator/External Dispute Resolution')).toBeInTheDocument();
+    });
+
     it('should render content for financial market type with maltainvest shortcode ', () => {
         mocked_props.trading_platforms.market_type = 'financial';
         mocked_props.trading_platforms.shortcode = 'maltainvest';
+
         render(<CFDCompareAccountsDescription {...mocked_props} />);
         assertContent('Maximum Leverage', '0.5 pips', 'Spread from', 'Counterparty company', 'Jurisdiction');
         expect(screen.getByText('1:30')).toBeInTheDocument();
@@ -82,33 +113,11 @@ describe('<CFDCompareAccountsDescription />', () => {
         ).toBeInTheDocument();
     });
 
-    it('should render content for financial market type with vanuatu shortcode', () => {
-        mocked_props.trading_platforms.market_type = 'financial';
-        mocked_props.trading_platforms.shortcode = 'vanuatu';
-        render(<CFDCompareAccountsDescription {...mocked_props} />);
-        assertContent('Maximum Leverage', '0.5 pips', 'Spread from', 'Counterparty company', 'Jurisdiction');
-        expect(screen.getByText('1:1000')).toBeInTheDocument();
-        expect(screen.getByText('Deriv (V) Ltd')).toBeInTheDocument();
-        expect(screen.getByText('Vanuatu')).toBeInTheDocument();
-        expect(screen.getByText('Vanuatu Financial Services Commission')).toBeInTheDocument();
-        expect(screen.getByText('Regulator/External Dispute Resolution')).toBeInTheDocument();
-    });
-
-    it('should render content for financial market type with labuan shortcode', () => {
-        mocked_props.trading_platforms.shortcode = 'labuan';
-        render(<CFDCompareAccountsDescription {...mocked_props} />);
-        assertContent('Maximum Leverage', '0.5 pips', 'Spread from', 'Counterparty company', 'Jurisdiction');
-        expect(screen.getByText('1:100')).toBeInTheDocument();
-        expect(screen.getByText('Deriv (FX) Ltd')).toBeInTheDocument();
-        expect(screen.getByText('Labuan')).toBeInTheDocument();
-        expect(screen.getByText('Labuan Financial Services Authority')).toBeInTheDocument();
-        expect(screen.getByText('(licence no. MB/18/0024) Regulator/External Dispute Resolution')).toBeInTheDocument();
-    });
-
     it('should render demo content for gaming market type with market type svg', () => {
         mocked_props.trading_platforms.market_type = 'financial';
         mocked_props.trading_platforms.shortcode = 'svg';
         mocked_props.is_demo = true;
+
         render(<CFDCompareAccountsDescription {...mocked_props} />);
         expect(screen.getByText('1:1000')).toBeInTheDocument();
         expect(screen.getByText('Maximum Leverage')).toBeInTheDocument();

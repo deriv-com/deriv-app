@@ -4,7 +4,7 @@ import CFDInstrumentsLabelHighlighted from '../cfd-instruments-label-highlighted
 
 jest.mock('../instruments-icon-with-label', () => jest.fn(() => <div>Mocked Icon</div>));
 
-describe('CFDInstrumentsLabelHighlighted', () => {
+describe('<CFDInstrumentsLabelHighlighted />', () => {
     const mocked_props = {
         trading_platforms: {
             platform: 'mt5',

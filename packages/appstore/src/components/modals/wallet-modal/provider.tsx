@@ -4,6 +4,7 @@ import { localize } from '@deriv/translations';
 import TransactionList from 'Components/transaction-list';
 import DemoResetBalance from 'Components/demo-reset-balance';
 import WalletTransfer from 'Components/wallet-transfer';
+import WalletWithdrawal from '../../wallet-withdrawal';
 
 export type TWalletType = 'real' | 'demo' | 'p2p' | 'payment_agent';
 
@@ -14,7 +15,7 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcAdd',
                     label: localize('Deposit'),
-                    //Remove Lorem ipsum text after QA testing (testing scroll behaviour)
+                    //Remove Lorem ipsum text after QA testing (testing scroll behavior)
                     content: () => (
                         <div style={{ textAlign: 'justify' }}>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas euismod lectus odio, sed
@@ -72,7 +73,7 @@ export const getCashierOptions = (type: TWalletType) => {
                         </div>
                     ),
                 },
-                { icon: 'IcMinus', label: localize('Withdraw'), content: () => <p>Withdraw Real</p> },
+                { icon: 'IcMinus', label: localize('Withdraw'), content: () => <WalletWithdrawal /> },
                 {
                     icon: 'IcAccountTransfer',
                     label: localize('Transfer'),

@@ -75,12 +75,7 @@ const TransactionList = () => {
                     ) {
                         transaction.amount *= -1;
                     }
-                    return (
-                        <NonPendingTransaction
-                            key={transaction.transaction_id}
-                            transaction={transaction}
-                        />
-                    );
+                    return <NonPendingTransaction key={transaction.transaction_id} transaction={transaction} />;
                 })}
             </div>
         );

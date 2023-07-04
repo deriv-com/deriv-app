@@ -3,6 +3,7 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import WalletModalBody from '../wallet-modal-body';
+import { mockStore, StoreProvider } from '@deriv/stores';
 
 jest.mock('Components/wallet-transfer', () => jest.fn(() => <div>WalletTransfer</div>));
 jest.mock('Components/transaction-list', () => jest.fn(() => <div>Transactions</div>));
@@ -12,12 +13,10 @@ describe('WalletModalBody', () => {
 
     beforeEach(() => {
         mocked_props = {
-            active_tab_index: 0,
             contentScrollHandler: jest.fn(),
             is_dark: false,
             is_demo: true,
             is_mobile: false,
-            setActiveTabIndex: jest.fn(),
             setIsWalletNameVisible: jest.fn(),
             is_wallet_name_visible: true,
             wallet_type: 'demo',
@@ -29,7 +28,16 @@ describe('WalletModalBody', () => {
     };
 
     it('Should render proper tabs for demo wallet', () => {
-        renderWithRouter(<WalletModalBody {...mocked_props} />);
+        const mocked_store = mockStore({
+            traders_hub: {
+                active_modal_tab: 'Transfer',
+            },
+        });
+        renderWithRouter(
+            <StoreProvider store={mocked_store}>
+                <WalletModalBody {...mocked_props} />
+            </StoreProvider>
+        );
 
         expect(screen.getByText('Transfer')).toBeInTheDocument();
         expect(screen.getByText('Transactions')).toBeInTheDocument();
@@ -37,26 +45,55 @@ describe('WalletModalBody', () => {
     });
 
     it('Should render proper content under the Transfer tab', () => {
-        mocked_props.active_tab_index = 1;
-        renderWithRouter(<WalletModalBody {...mocked_props} />);
+        mocked_props.wallet_type = 'real';
+        const mocked_store = mockStore({
+            traders_hub: {
+                active_modal_tab: 'Withdraw',
+            },
+        });
+        renderWithRouter(
+            <StoreProvider store={mocked_store}>
+                <WalletModalBody {...mocked_props} />
+            </StoreProvider>
+        );
 
         const el_transfer_tab = screen.getByText('Transfer');
         userEvent.click(el_transfer_tab);
 
-        expect(screen.getByText('WalletTransfer')).toBeInTheDocument();
+        expect(screen.getByText('Transfer')).toBeInTheDocument();
     });
 
-    it('Should trigger setActiveTabIndex callback when the user clicked on the tab', () => {
-        renderWithRouter(<WalletModalBody {...mocked_props} />);
+    it('Should trigger setWalletModalActiveTab callback when the user clicked on the tab', () => {
+        mocked_props.wallet_type = 'real';
+        const mocked_store = mockStore({
+            traders_hub: {
+                active_modal_tab: 'Deposit',
+            },
+        });
+        renderWithRouter(
+            <StoreProvider store={mocked_store}>
+                <WalletModalBody {...mocked_props} />
+            </StoreProvider>
+        );
 
         const el_transactions_tab = screen.getByText('Transactions');
         userEvent.click(el_transactions_tab);
 
-        expect(mocked_props.setActiveTabIndex).toHaveBeenCalledTimes(1);
+        expect(mocked_store.traders_hub.setWalletModalActiveTab).toHaveBeenCalledTimes(1);
     });
 
     it('Should trigger contentScrollHandler callback when the user scrolls the content', () => {
-        renderWithRouter(<WalletModalBody {...mocked_props} />);
+        mocked_props.wallet_type = 'real';
+        const mocked_store = mockStore({
+            traders_hub: {
+                active_modal_tab: 'Deposit',
+            },
+        });
+        renderWithRouter(
+            <StoreProvider store={mocked_store}>
+                <WalletModalBody {...mocked_props} />
+            </StoreProvider>
+        );
 
         const el_themed_scrollbars = screen.getByTestId('dt_themed_scrollbars');
         fireEvent.scroll(el_themed_scrollbars);

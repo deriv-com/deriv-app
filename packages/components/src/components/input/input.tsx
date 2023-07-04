@@ -102,6 +102,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
         };
 
         const has_footer = !!has_character_counter || (!!hint && !!is_relative_hint);
+        const field_placeholder = label ? '' : placeholder;
 
         return (
             <InputWrapper has_footer={has_footer}>
@@ -135,7 +136,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                                 disabled={disabled}
                                 id={input_id}
                                 maxLength={maxLength}
-                                placeholder={label ? '' : placeholder}
+                                placeholder={field_placeholder}
                             />
                         ) : (
                             <input
@@ -154,7 +155,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                                 id={input_id}
                                 aria-label={label as string}
                                 maxLength={maxLength}
-                                placeholder={label ? '' : placeholder}
+                                placeholder={field_placeholder}
                             />
                         )}
                         {trailing_icon &&

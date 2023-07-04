@@ -10,33 +10,6 @@ jest.mock('@deriv/api', () => ({
 }));
 
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
-const default_mock_useFetch_response: ReturnType<typeof mockUseFetch> = {
-    data: {},
-    error: undefined,
-    isError: true,
-    isLoading: false,
-    isLoadingError: false,
-    isRefetchError: true,
-    isSuccess: false,
-    status: 'error',
-    dataUpdatedAt: 0,
-    errorUpdatedAt: 0,
-    failureCount: 0,
-    failureReason: undefined,
-    errorUpdateCount: 0,
-    isFetched: false,
-    isFetchedAfterMount: false,
-    isFetching: false,
-    isInitialLoading: false,
-    isPaused: false,
-    isPlaceholderData: false,
-    isPreviousData: false,
-    isRefetching: false,
-    isStale: false,
-    refetch: jest.fn(),
-    remove: jest.fn(),
-    fetchStatus: 'fetching',
-};
 
 describe('useWalletsList', () => {
     test('should return wallets list for the current loginid', () => {
@@ -44,8 +17,8 @@ describe('useWalletsList', () => {
             client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
         });
 
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
-            ...default_mock_useFetch_response,
             data: {
                 authorize: {
                     account_list: [
@@ -108,8 +81,8 @@ describe('useWalletsList', () => {
             client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
         });
 
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
-            ...default_mock_useFetch_response,
             data: {
                 authorize: {
                     account_list: [
@@ -158,8 +131,8 @@ describe('useWalletsList', () => {
             },
         });
 
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
-            ...default_mock_useFetch_response,
             data: {
                 authorize: {
                     account_list: [

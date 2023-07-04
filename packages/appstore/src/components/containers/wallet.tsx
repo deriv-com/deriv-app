@@ -34,4 +34,5 @@ const Wallet = ({ wallet_account }: TWallet) => {
         </div>
     );
 };
+
 export default Wallet;

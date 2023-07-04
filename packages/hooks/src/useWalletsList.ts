@@ -56,7 +56,6 @@ const useWalletsList = () => {
             wallets?.map(wallet => {
                 const currency = wallet?.currency || 'USD';
                 const is_crypto_currency = is_crypto(currency);
-                const is_fiat = !is_crypto_currency;
                 const icon = getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : currency, is_dark_mode_on);
                 const modal_icon = getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : currency, is_dark_mode_on, true);
                 const name = `${wallet.is_virtual ? 'Demo ' : ''}${currency} ${'Wallet'}`;
@@ -88,7 +87,7 @@ const useWalletsList = () => {
                     modal_icon,
                     name,
                     // needs for WalletIcon, maybe refactor during cleanUp
-                    icon_type: is_fiat && !wallet.is_virtual ? 'fiat' : 'crypto',
+                    icon_type: !is_crypto_currency && !wallet.is_virtual ? 'fiat' : 'crypto',
                 };
             }) || [];
 

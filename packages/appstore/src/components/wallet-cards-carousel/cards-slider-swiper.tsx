@@ -48,9 +48,13 @@ const CardsSliderSwiper = observer(({ items, setActivePage, active_page }: TProp
                 <div key={`${item.name} ${item.currency} ${item.landing_company_name}`}>
                     <WalletCard
                         wallet={{
-                            ...item,
+                            currency: item.currency,
+                            icon: item.icon,
+                            icon_type: item.icon_type,
+                            name: item.name,
                             balance: formatMoney(item.currency, item.balance, true),
                             jurisdiction_title: item.landing_company_name,
+                            gradient_class: item.gradient_card_class,
                         }}
                         size='medium'
                     />

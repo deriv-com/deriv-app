@@ -22,8 +22,12 @@ const WalletCardsCarousel = observer(({ items }: TProps) => {
     );
 
     React.useEffect(() => {
-        switchAccount(items[active_page]?.loginid);
-    }, [active_page, items, switchAccount]);
+        const switchWallet = async () => {
+            if (loginid !== items[active_page]?.loginid) await switchAccount(items[active_page]?.loginid);
+        };
+
+        switchWallet();
+    }, [active_page, items, loginid, switchAccount]);
 
     const wallet_buttons = getWalletHeaderButtons(items[active_page]?.is_virtual);
 

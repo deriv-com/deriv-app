@@ -87,6 +87,9 @@ export default class UIStore extends BaseStore {
     // verification modal
     is_verification_modal_visible = false;
 
+    //verification document submitted modal
+    is_verification_submitted = false;
+
     // Welcome modal
     is_welcome_modal_visible = false;
 
@@ -281,6 +284,7 @@ export default class UIStore extends BaseStore {
             is_trading_assessment_for_existing_user_enabled: observable,
             is_trading_assessment_for_new_user_enabled: observable,
             is_verification_modal_visible: observable,
+            is_verification_submitted: observable,
             is_welcome_modal_visible: observable,
             manage_real_account_tab_index: observable,
             modal_index: observable,
@@ -352,6 +356,7 @@ export default class UIStore extends BaseStore {
             setIsFromSignupAccount: action.bound,
             setIsNativepickerVisible: action.bound,
             setIsVerificationModalVisible: action.bound,
+            setIsVerificationSubmitted: action.bound,
             setReportsTabIndex: action.bound,
             toggleWelcomeModal: action.bound,
             toggleReadyToDepositModal: action.bound,
@@ -928,5 +933,9 @@ export default class UIStore extends BaseStore {
 
     setIsVerificationModalVisible(value) {
         this.is_verification_modal_visible = value;
+    }
+
+    setIsVerificationSubmitted(value) {
+        this.is_verification_submitted = value;
     }
 }

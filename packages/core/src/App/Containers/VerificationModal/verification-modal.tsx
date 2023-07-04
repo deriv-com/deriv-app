@@ -5,14 +5,9 @@ import { observer, useStore } from '@deriv/stores';
 import VerificationModalContent from './verification-modal-content';
 import './verification-modal.scss';
 
-type TVerificationModal = {
-    is_from_external?: boolean;
-    onStateChange?: () => void;
-};
-
-const VerificationModal = observer(({ is_from_external, onStateChange }: TVerificationModal) => {
+const VerificationModal = observer(() => {
     const { ui } = useStore();
-    const { is_verification_modal_visible, setIsVerificationModalVisible } = ui;
+    const { is_verification_modal_visible, setIsVerificationModalVisible, setIsVerificationSubmitted } = ui;
     return (
         <React.Suspense fallback={<UILoader />}>
             <DesktopWrapper>
@@ -25,7 +20,12 @@ const VerificationModal = observer(({ is_from_external, onStateChange }: TVerifi
                     width='996px'
                     exit_classname='verification-modal--custom-exit'
                 >
-                    <VerificationModalContent is_from_external={is_from_external} onStateChange={onStateChange} />
+                    <VerificationModalContent
+                        onFinish={() => {
+                            setIsVerificationModalVisible(false);
+                            setIsVerificationSubmitted(true);
+                        }}
+                    />
                 </Modal>
             </DesktopWrapper>
             <MobileWrapper>
@@ -36,7 +36,12 @@ const VerificationModal = observer(({ is_from_external, onStateChange }: TVerifi
                     visible={is_verification_modal_visible}
                     onClose={() => setIsVerificationModalVisible(false)}
                 >
-                    <VerificationModalContent is_from_external={is_from_external} onStateChange={onStateChange} />
+                    <VerificationModalContent
+                        onFinish={() => {
+                            setIsVerificationModalVisible(false);
+                            setIsVerificationSubmitted(true);
+                        }}
+                    />
                 </MobileDialog>
             </MobileWrapper>
         </React.Suspense>

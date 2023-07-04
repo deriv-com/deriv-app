@@ -200,6 +200,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             real_account_creation_unlock_date: 0,
             setPrevAccountType: jest.fn(),
             prev_account_type: 'demo',
+            fetchResidenceList: jest.fn(),
+            getChangeableFields: jest.fn(),
         },
         common: {
             error: {
@@ -240,6 +242,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_language_settings_modal_on: false,
             is_mobile: false,
             is_reports_visible: false,
+            is_verification_submitted: false,
             disableApp: jest.fn(),
             enableApp: jest.fn(),
             setCurrentFocus: jest.fn(),
@@ -275,6 +278,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             populateSettingsExtensions: jest.fn(),
             setShouldShowCooldownModal: jest.fn(),
             setIsVerificationModalVisible: jest.fn(),
+            setIsVerificationSubmitted: jest.fn(),
         },
         traders_hub: {
             closeModal: jest.fn(),

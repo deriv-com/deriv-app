@@ -12,6 +12,14 @@ const ProofOfAddress = ({
     has_restricted_mt5_account,
     refreshNotifications,
     app_routing_history,
+    account_settings,
+    addNotificationByKey,
+    is_eu,
+    fetchResidenceList,
+    fetchStatesList,
+    removeNotificationByKey,
+    removeNotificationMessage,
+    states_list,
 }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button={true} />;
@@ -23,6 +31,14 @@ const ProofOfAddress = ({
             refreshNotifications={refreshNotifications}
             has_restricted_mt5_account={has_restricted_mt5_account}
             app_routing_history={app_routing_history}
+            account_settings={account_settings}
+            addNotificationByKey={addNotificationByKey}
+            is_eu={is_eu}
+            fetchResidenceList={fetchResidenceList}
+            fetchStatesList={fetchStatesList}
+            removeNotificationByKey={removeNotificationByKey}
+            removeNotificationMessage={removeNotificationMessage}
+            states_list={states_list}
         />
     );
 };
@@ -33,6 +49,15 @@ ProofOfAddress.propTypes = {
     is_virtual: PropTypes.bool,
     refreshNotifications: PropTypes.func,
     has_restricted_mt5_account: PropTypes.bool,
+    app_routing_history: PropTypes.array,
+    account_settings: PropTypes.object,
+    addNotificationByKey: PropTypes.func,
+    removeNotificationMessage: PropTypes.func,
+    removeNotificationByKey: PropTypes.func,
+    is_eu: PropTypes.bool,
+    fetchResidenceList: PropTypes.func,
+    fetchStatesList: PropTypes.func,
+    states_list: PropTypes.array,
 };
 
 export default connect(({ client, notifications, common }) => ({
@@ -42,4 +67,12 @@ export default connect(({ client, notifications, common }) => ({
     refreshNotifications: notifications.refreshNotifications,
     has_restricted_mt5_account: client.has_restricted_mt5_account,
     app_routing_history: common.app_routing_history,
+    account_settings: client.account_settings,
+    is_eu: client.is_eu,
+    addNotificationByKey: notifications.addNotificationMessageByKey,
+    removeNotificationMessage: notifications.removeNotificationMessage,
+    removeNotificationByKey: notifications.removeNotificationByKey,
+    states_list: client.states_list,
+    fetchResidenceList: client.fetchResidenceList,
+    fetchStatesList: client.fetchStatesList,
 }))(ProofOfAddress);

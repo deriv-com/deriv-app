@@ -20,6 +20,17 @@ const ProofOfAddressContainer = ({
     has_restricted_mt5_account,
     refreshNotifications,
     app_routing_history,
+    account_settings,
+    addNotificationByKey,
+    is_eu,
+    is_verification_modal_visible,
+    fetchResidenceList,
+    fetchStatesList,
+    index,
+    onSubmit,
+    removeNotificationByKey,
+    removeNotificationMessage,
+    states_list,
 }) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const [authentication_status, setAuthenticationStatus] = useStateCallback({
@@ -78,7 +89,7 @@ const ProofOfAddressContainer = ({
         setAuthenticationStatus({ ...authentication_status, ...{ resubmit_poa: true } });
     };
 
-    const onSubmit = ({ needs_poi }) => {
+    const onSubmitValues = ({ needs_poi }) => {
         setAuthenticationStatus({ ...authentication_status, ...{ has_submitted_poa: true, needs_poi } });
     };
 
@@ -125,12 +136,43 @@ const ProofOfAddressContainer = ({
         (has_restricted_mt5_account && ['expired', 'rejected', 'suspected'].includes(document_status)) ||
         poa_address_mismatch
     ) {
-        return <ProofOfAddressForm is_resubmit onSubmit={() => onSubmit({ needs_poi })} />;
+        return (
+            <ProofOfAddressForm
+                account_settings={account_settings}
+                addNotificationByKey={addNotificationByKey}
+                index={index}
+                onSubmit={onSubmit}
+                is_eu={is_eu}
+                is_verification_modal_visible={is_verification_modal_visible}
+                fetchResidenceList={fetchResidenceList}
+                fetchStatesList={fetchStatesList}
+                removeNotificationByKey={removeNotificationByKey}
+                removeNotificationMessage={removeNotificationMessage}
+                states_list={states_list}
+                is_resubmit
+                onSubmitting={() => onSubmitValues({ needs_poi })}
+            />
+        );
     }
 
     switch (document_status) {
         case PoaStatusCodes.none:
-            return <ProofOfAddressForm onSubmit={() => onSubmit({ needs_poi })} />;
+            return (
+                <ProofOfAddressForm
+                    account_settings={account_settings}
+                    addNotificationByKey={addNotificationByKey}
+                    index={index}
+                    onSubmit={onSubmit}
+                    is_eu={is_eu}
+                    is_verification_modal_visible={is_verification_modal_visible}
+                    fetchResidenceList={fetchResidenceList}
+                    fetchStatesList={fetchStatesList}
+                    removeNotificationByKey={removeNotificationByKey}
+                    removeNotificationMessage={removeNotificationMessage}
+                    states_list={states_list}
+                    onSubmitting={() => onSubmitValues({ needs_poi })}
+                />
+            );
         case PoaStatusCodes.pending:
             return <NeedsReview needs_poi={needs_poi} redirect_button={redirect_button} />;
         case PoaStatusCodes.verified:
@@ -149,7 +191,19 @@ ProofOfAddressContainer.propTypes = {
     is_mx_mlt: PropTypes.bool,
     has_restricted_mt5_account: PropTypes.bool,
     is_switching: PropTypes.bool,
+    is_verification_modal_visible: PropTypes.bool,
+    index: PropTypes.number,
+    onSubmit: PropTypes.func,
     refreshNotifications: PropTypes.func,
+    app_routing_history: PropTypes.array,
+    account_settings: PropTypes.object,
+    addNotificationByKey: PropTypes.func,
+    is_eu: PropTypes.bool,
+    fetchResidenceList: PropTypes.func,
+    fetchStatesList: PropTypes.func,
+    removeNotificationByKey: PropTypes.func,
+    removeNotificationMessage: PropTypes.func,
+    states_list: PropTypes.array,
 };
 
 export default ProofOfAddressContainer;

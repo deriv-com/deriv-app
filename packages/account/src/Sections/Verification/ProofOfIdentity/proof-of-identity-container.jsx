@@ -24,12 +24,14 @@ const ProofOfIdentityContainer = ({
     fetchResidenceList,
     getChangeableFields,
     height,
+    index,
     is_from_external,
     is_switching,
     is_virtual,
     is_high_risk,
     is_withdrawal_lock,
-    onStateChange,
+    onSubmit,
+    onSave,
     refreshNotifications,
     routeBackInApp,
     should_allow_authentication,
@@ -37,6 +39,7 @@ const ProofOfIdentityContainer = ({
     updateAccountStatus,
 }) => {
     const history = useHistory();
+    const [poi_state, setPOIState] = React.useState(identity_status_codes.none);
     const [api_error, setAPIError] = React.useState();
     const [has_require_submission, setHasRequireSubmission] = React.useState(false);
     const [residence_list, setResidenceList] = React.useState();
@@ -111,6 +114,12 @@ const ProofOfIdentityContainer = ({
         }
     };
 
+    const onStateChange = status => {
+        setPOIState(status);
+        onSave(index, { poi_state: status });
+        onSubmit(index, { poi_state });
+    };
+
     const redirect_button = should_show_redirect_btn && (
         <Button primary className='proof-of-identity__redirect' onClick={onClickRedirectButton}>
             <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name: from_platform.name }} />
@@ -133,12 +142,14 @@ const ProofOfIdentityContainer = ({
                 getChangeableFields={getChangeableFields}
                 identity_last_attempt={identity_last_attempt}
                 idv={idv}
+                index={index}
                 is_from_external={!!is_from_external}
                 is_idv_disallowed={is_idv_disallowed || should_ignore_idv}
                 manual={manual}
                 needs_poa={needs_poa}
                 onfido={onfido}
-                onStateChange={onStateChange}
+                onStateChange={status => onStateChange(status)}
+                onSubmit={onSubmit}
                 redirect_button={redirect_button}
                 refreshNotifications={refreshNotifications}
                 residence_list={residence_list}

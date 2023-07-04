@@ -11,17 +11,29 @@ const useWalletsList = () => {
     const token = accounts[loginid || ''].token;
     const { getConfig } = useCurrencyConfig();
 
-    const { data: authorize_data, ...reset } = useFetch('authorize', { payload: { authorize: token } });
+    const { data: authorize_data, ...rest } = useFetch('authorize', { payload: { authorize: token } });
     const { data: balance_data } = useFetch('balance', { payload: { account: 'all' } });
 
-    const sortedWallets = useMemo(() => {
-        const wallets = authorize_data?.authorize?.account_list?.filter(
-            // Filter out accounts which has account_category as wallet
-            account => account.account_category === 'wallet'
-        );
+    // Filter out non-wallet accounts.
+    const wallets = useMemo(
+        () => authorize_data?.authorize?.account_list?.filter(account => account.account_category === 'wallet'),
+        [authorize_data?.authorize?.account_list]
+    );
 
-        // Modify the wallet data to include additional information.
-        const modified_wallets = wallets?.map(wallet => {
+    // Add balance to each wallet.
+    const wallets_with_balance = useMemo(
+        () =>
+            wallets?.map(wallet => ({
+                ...wallet,
+                /** Wallet balance */
+                balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,
+            })),
+        [balance_data?.balance?.accounts, wallets]
+    );
+
+    // Add additional information to each wallet.
+    const modified_wallets = useMemo(() => {
+        return wallets_with_balance?.map(wallet => {
             const currency_type = wallet.is_virtual === 1 ? 'demo' : wallet.currency?.toLowerCase();
 
             return {
@@ -30,8 +42,6 @@ const useWalletsList = () => {
                 is_selected: wallet.loginid === loginid,
                 /** Indicating whether the wallet is a virtual-money wallet. */
                 is_demo: wallet.is_virtual === 1,
-                /** Wallet balance */
-                balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,
                 /** Landing company shortcode the account belongs to. */
                 landing_company_name: wallet.landing_company_name?.replace('maltainvest', 'malta'),
                 /** Indicating whether the wallet is a maltainvest wallet. */
@@ -44,8 +54,10 @@ const useWalletsList = () => {
                 currency_config: wallet.currency ? getConfig(wallet.currency) : undefined,
             } as const;
         });
+    }, [getConfig, is_dark_mode_on, loginid, wallets_with_balance]);
 
-        // Sort the wallets alphabetically by fiat, crypto, then virtual.
+    // Sort wallets alphabetically by fiat, crypto, then virtual.
+    const sorted_wallets = useMemo(() => {
         return modified_wallets?.sort((a, b) => {
             if (a.is_virtual !== b.is_virtual) {
                 return a.is_virtual ? 1 : -1;
@@ -55,12 +67,12 @@ const useWalletsList = () => {
 
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });
-    }, [authorize_data?.authorize?.account_list, loginid, balance_data?.balance?.accounts, is_dark_mode_on, getConfig]);
+    }, [modified_wallets]);
 
     return {
         /** List of wallets for current user. */
-        data: sortedWallets,
-        ...reset,
+        data: sorted_wallets,
+        ...rest,
     };
 };
 

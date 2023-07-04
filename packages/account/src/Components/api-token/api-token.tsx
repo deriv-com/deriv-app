@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Formik, Form, Field, FormikValues, FormikErrors, FieldProps } from 'formik';
 import { Timeline, Input, Button, ThemedScrollbars, Loading } from '@deriv/components';
 import InlineNoteWithIcon from '../inline-note-with-icon';
-import { isDesktop, isMobile, getPropertyValue, useIsMounted, WS } from '@deriv/shared';
+import { isDesktop, isMobile, getPropertyValue, useIsMounted } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import LoadErrorMessage from 'Components/load-error-message';
 import ApiTokenArticle from './api-token-article';
@@ -13,7 +13,6 @@ import ApiTokenOverlay from './api-token-overlay';
 import ApiTokenTable from './api-token-table';
 import ApiTokenContext from './api-token-context';
 import { TToken } from 'Types';
-import { observer, useStore } from '@deriv/stores';
 
 const MIN_TOKEN = 2;
 const MAX_TOKEN = 32;
@@ -33,6 +32,7 @@ type AptTokenState = {
 export type TApiToken = {
     footer_ref: Element | DocumentFragment | undefined;
     is_app_settings: boolean;
+    is_switching: boolean;
     overlay_ref:
         | undefined
         | ((...args: unknown[]) => unknown)
@@ -41,11 +41,10 @@ export type TApiToken = {
           }>;
     setIsOverlayShown: (is_overlay_shown: boolean | undefined) => void;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ws: any;
 };
 
-const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown }: TApiToken) => {
-    const { client } = useStore();
-    const { is_switching } = client;
+const ApiToken = ({ footer_ref, is_app_settings, is_switching, overlay_ref, setIsOverlayShown, ws }: TApiToken) => {
     const isMounted = useIsMounted();
     const prev_is_switching = React.useRef(is_switching);
     const [state, setState] = React.useReducer(
@@ -123,8 +122,9 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
 
     const selectedTokenScope = (values: FormikValues) =>
         Object.keys(values).filter(item => item !== 'token_name' && values[item]);
+
     const handleSubmit = async (values: FormikValues, { setSubmitting, setFieldError, resetForm }: any) => {
-        const token_response = await WS.apiToken({
+        const token_response = await ws.apiToken({
             api_token: 1,
             new_token: values.token_name,
             new_token_scopes: selectedTokenScope(values),
@@ -163,14 +163,14 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
 
     const getApiTokens = async () => {
         setState({ is_loading: true });
-        const token_response = await WS.authorized.apiToken({ api_token: 1 });
+        const token_response = await ws.authorized.apiToken({ api_token: 1 });
         populateTokenResponse(token_response);
     };
 
     const deleteToken = async (token: string) => {
         setState({ is_delete_loading: true });
 
-        const token_response = await WS.authorized.apiToken({ api_token: 1, delete_token: token });
+        const token_response = await ws.authorized.apiToken({ api_token: 1, delete_token: token });
 
         populateTokenResponse(token_response);
 
@@ -356,4 +356,4 @@ const ApiToken = ({ footer_ref, is_app_settings, overlay_ref, setIsOverlayShown 
     );
 };
 
-export default observer(ApiToken);
+export default ApiToken;

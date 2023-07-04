@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, ThemedScrollbars, Carousel, ButtonToggle } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
@@ -9,15 +8,47 @@ import { getContractTypes } from '../../../../Helpers/contract-type';
 import ContractTypeGlossary from './contract-type-glossary';
 import classNames from 'classnames';
 
+export type TContractType = {
+    text?: string;
+    value: string;
+};
+
+export type TContractCategory = {
+    component?: typeof React.Component;
+    contract_types: TContractType[];
+    icon?: string;
+    key: string;
+    label?: string;
+};
+
+export type TList = {
+    component?: typeof React.Component;
+    contract_categories: TContractCategory[];
+    contract_types?: TContractType[];
+    icon: string;
+    label?: string;
+    key: string;
+};
+
+type TInfo = {
+    handleNavigationClick: (contract_type: TContractType) => void;
+    handleSelect: (type: TContractType | undefined, e: React.MouseEvent) => void;
+    initial_index?: number;
+    item: TContractType;
+    list: TList[];
+};
+
 const TABS = {
     DESCRIPTION: 'description',
     GLOSSARY: 'glossary',
 };
 
-const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }) => {
+const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }: TInfo) => {
     const [carousel_index, setCarouselIndex] = React.useState('');
     const [selected_tab, setSelectedTab] = React.useState(TABS.DESCRIPTION);
-    const contract_types = getContractTypes(list, item).filter(i => i.value !== 'rise_fall_equal');
+    const contract_types: TContractType[] = getContractTypes(list, item).filter(
+        (i: { value: TContractType['value'] }) => i.value !== 'rise_fall_equal'
+    );
     const has_toggle_buttons = /accumulator|vanilla/i.test(carousel_index);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
@@ -26,12 +57,12 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
     const selected_contract_type = contract_types.find(type => type.value === carousel_index);
 
     const onClickGlossary = () => setSelectedTab(TABS.GLOSSARY);
-    const handleItemSelect = active_index => {
+    const handleItemSelect = (active_index: number) => {
         setCarouselIndex(contract_types[active_index].value);
         handleNavigationClick(contract_types[active_index]);
     };
 
-    const cards = contract_types.map((type, idx) => {
+    const cards = contract_types.map((type: TContractType, idx) => {
         return (
             <div key={idx} className='contract-type-info__card'>
                 <ThemedScrollbars
@@ -120,14 +151,6 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
             </div>
         </React.Fragment>
     );
-};
-
-Info.propTypes = {
-    handleSelect: PropTypes.func,
-    initial_index: PropTypes.number,
-    item: PropTypes.object,
-    list: PropTypes.array,
-    handleNavigationClick: PropTypes.func,
 };
 
 export default Info;

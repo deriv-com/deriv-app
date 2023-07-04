@@ -1,13 +1,21 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Icon, DesktopWrapper } from '@deriv/components';
 import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories.jsx';
 import { findContractCategory } from '../../../Helpers/contract-type';
+import { TContractCategory, TContractType } from './ContractTypeInfo/contract-type-info';
 
-const Display = ({ is_open, list, name, onClick, value }) => {
+type TDisplay = {
+    is_open?: boolean;
+    name: string;
+    list: TContractCategory[];
+    onClick: () => void;
+    value: string;
+};
+
+const Display = ({ is_open, name, list, onClick, value }: TDisplay) => {
     const getDisplayText = () =>
-        findContractCategory(list, { value })?.contract_types?.find(item => item.value === value).text;
+        findContractCategory(list, { value })?.contract_types?.find((item: TContractType) => item.value === value).text;
 
     return (
         <div
@@ -32,15 +40,6 @@ const Display = ({ is_open, list, name, onClick, value }) => {
             </DesktopWrapper>
         </div>
     );
-};
-
-Display.propTypes = {
-    is_open: PropTypes.bool,
-    list: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-    name: PropTypes.string,
-    onChange: PropTypes.func,
-    onClick: PropTypes.func,
-    value: PropTypes.string,
 };
 
 export default Display;

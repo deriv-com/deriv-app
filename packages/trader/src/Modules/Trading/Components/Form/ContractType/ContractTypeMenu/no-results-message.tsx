@@ -1,9 +1,8 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
 
-const NoResultsMessage = ({ text }) => (
+const NoResultsMessage = ({ text }: { text: string }) => (
     <div className='no-results-found'>
         <h2 className='no-results-found__title'>
             {localize('No results for "{{text}}"', { text, interpolation: { escapeValue: false } })}
@@ -13,9 +12,5 @@ const NoResultsMessage = ({ text }) => (
         </Text>
     </div>
 );
-
-NoResultsMessage.propTypes = {
-    text: PropTypes.string,
-};
 
 export default NoResultsMessage;

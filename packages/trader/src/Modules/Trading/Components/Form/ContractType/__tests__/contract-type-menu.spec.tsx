@@ -4,7 +4,7 @@ import ContractTypeMenu from '../ContractTypeMenu';
 import ContractTypeWidget from '../contract-type-widget';
 
 describe('ContractTypeMenu', () => {
-    const categories = [
+    const categories: React.ComponentProps<typeof ContractTypeMenu>['categories'] = [
         {
             contract_categories: [
                 {
@@ -287,8 +287,8 @@ describe('ContractTypeMenu', () => {
     };
 
     it('should not show <ContractTypeMenu /> component when it is closed', () => {
-        render(<ContractTypeMenu item={item} list={list} categories={categories} />);
-        expect(screen.queryByTestId('contract_wrapper')).toBe(null);
+        render(<ContractTypeMenu item={item} categories={categories} />);
+        expect(screen.queryByTestId('contract_wrapper')).not.toBeInTheDocument();
     });
 
     it('should render <ContractTypeMenu /> component when click on ', () => {
@@ -301,16 +301,8 @@ describe('ContractTypeMenu', () => {
 
     it('should search in the input', () => {
         const searchMock = jest.fn();
-        render(
-            <ContractTypeMenu
-                item={item}
-                list={list}
-                categories={categories}
-                is_open={true}
-                onChangeInput={searchMock}
-            />
-        );
-        const input = screen.getByPlaceholderText('Search');
+        render(<ContractTypeMenu item={item} categories={categories} is_open={true} onChangeInput={searchMock} />);
+        const input = screen.getByPlaceholderText('Search') as HTMLInputElement;
         fireEvent.change(input, { target: { value: 'rise' } });
         expect(input.value).toBe('rise');
     });

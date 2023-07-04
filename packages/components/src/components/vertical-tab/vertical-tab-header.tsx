@@ -24,6 +24,7 @@ export type TItem = {
     icon: string;
     is_hidden?: boolean;
     is_disabled?: boolean;
+    key?: string;
     label?: string;
     path?: string;
     subitems?: number[];

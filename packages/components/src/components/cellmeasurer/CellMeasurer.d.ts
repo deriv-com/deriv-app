@@ -1,4 +1,4 @@
-declare module 'react-virtualized/dist/es/CellMeasurer' {
+declare module '@enykeev/react-virtualized/dist/es/CellMeasurer' {
     export type CellMeasurer = {
         hasFixedWidth?: boolean;
         hasFixedHeight?: boolean;

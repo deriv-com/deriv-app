@@ -1,0 +1,36 @@
+.share-ad-modal {
+    &__card {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 2rem;
+        margin-bottom: 3rem;
+        background-color: var(--brand-red-coral);
+
+        &--image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 2rem;
+
+            &__background {
+                background-color: #fff;
+                height: 13.5rem;
+                width: 13.5rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 1rem;
+            }
+
+            &__qr {
+                height: 12rem;
+                width: 12rem;
+            }
+        }
+
+        &-title {
+            margin-bottom: 2rem;
+        }
+    }
+}

@@ -127,4 +127,7 @@ export const modals = {
     RecommendedModal: React.lazy(() =>
         import(/* webpackChunkName: "recommended-modal" */ 'Components/modal-manager/modals/recommended-modal')
     ),
+    ShareAdModal: React.lazy(() =>
+        import(/* webpackChunkName: "share-ad-modal" */ 'Components/modal-manager/modals/share-ad-modal')
+    ),
 };

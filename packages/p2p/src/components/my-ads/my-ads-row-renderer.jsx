@@ -11,9 +11,11 @@ import AdStatus from 'Components/my-ads/ad-status.jsx';
 import { useStores } from 'Stores';
 import { generateEffectiveRate } from 'Utils/format-value';
 import AdType from './ad-type.jsx';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const MyAdsRowRenderer = observer(({ row: advert }) => {
     const { floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
+    const { showModal } = useModalManagerContext();
 
     const {
         account_currency,
@@ -337,6 +339,21 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             >
                                 <Icon
                                     icon='IcDelete'
+                                    color={(general_store.is_barred || is_activate_ad_disabled) && 'disabled'}
+                                />
+                            </Popover>
+                        </div>
+                        <div onClick={() => showModal({ key: 'ShareAdModal', props: { advert } })}>
+                            <Popover
+                                alignment='bottom'
+                                className={classNames('p2p-my-ads__table-popovers__delete', {
+                                    'p2p-my-ads__table-popovers--disable':
+                                        general_store.is_barred || is_activate_ad_disabled,
+                                })}
+                                message={localize('Share')}
+                            >
+                                <Icon
+                                    icon='IcFullStar'
                                     color={
                                         (general_store.is_barred ||
                                             (id === my_ads_store.selected_ad_id &&

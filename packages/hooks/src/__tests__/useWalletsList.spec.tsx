@@ -22,15 +22,10 @@ describe('useWalletsList', () => {
                 authorize: {
                     account_list: [
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'USD',
                             is_virtual: 0,
                             landing_company_name: 'svg',
-                            landing_company_shortcode: 'svg',
-                            is_demo: 0,
-                            is_selected: true,
-                            is_malta_wallet: false,
                         },
                     ],
                 },
@@ -51,7 +46,6 @@ describe('useWalletsList', () => {
                 currency: 'USD',
                 gradient_card_class: 'wallet-card__usd-bg',
                 gradient_header_class: 'wallet-header__usd-bg',
-                landing_company_shortcode: 'svg',
                 is_virtual: 0,
                 landing_company_name: 'svg',
                 is_demo: false,
@@ -91,25 +85,21 @@ describe('useWalletsList', () => {
                 authorize: {
                     account_list: [
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'USD',
                             is_virtual: 0,
                         },
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'UST',
                             is_virtual: 0,
                         },
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'BTC',
                             is_virtual: 0,
                         },
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'AUD',
                             is_virtual: 0,
@@ -144,31 +134,26 @@ describe('useWalletsList', () => {
                 authorize: {
                     account_list: [
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'USD',
                             is_virtual: 0,
                         },
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'UST',
                             is_virtual: 0,
                         },
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'BTC',
                             is_virtual: 1,
                         },
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'AUD',
                             is_virtual: 0,
                         },
                         {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'ETH',
                             is_virtual: 0,

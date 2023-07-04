@@ -3,8 +3,6 @@ import { APIProvider, useFetch } from '@deriv/api';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useWalletsList from '../useWalletsList';
-import { TSocketResponseData } from '@deriv/api/types';
-import { UseQueryResult } from '@tanstack/react-query';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -12,7 +10,7 @@ jest.mock('@deriv/api', () => ({
 }));
 
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
-const default_mock_useFetch_response: UseQueryResult<TSocketResponseData<'authorize'>, unknown> = {
+const default_mock_useFetch_response: ReturnType<typeof mockUseFetch> = {
     data: {},
     error: undefined,
     isError: true,

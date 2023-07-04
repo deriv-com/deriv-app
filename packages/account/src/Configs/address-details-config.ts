@@ -208,7 +208,7 @@ const transformForResidence = (rules: TSchema, residence: string) => {
     return rules;
 };
 
-const transformConfig = (config: TSchema, real_account_signup_target: string) => {
+const transformConfig = (config: TSchema, { real_account_signup_target }: { real_account_signup_target: string }) => {
     // Remove required rule for svg clients
     if (!real_account_signup_target || real_account_signup_target === 'svg') {
         config.address_state.rules?.shift();

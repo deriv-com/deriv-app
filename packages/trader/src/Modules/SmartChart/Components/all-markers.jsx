@@ -279,6 +279,7 @@ const TickContract = RawMarkerMaker(
             has_crossed_accu_barriers,
             is_accumulator_trade_without_contract,
             is_sold,
+            is_expired,
             // tick_stream,
             tick_count,
         },
@@ -286,17 +287,18 @@ const TickContract = RawMarkerMaker(
         /** @type {CanvasRenderingContext2D} */
         const ctx = context;
 
-        const contract_status = getContractStatus({ contract_type, profit, exit_tick_time, status });
         const is_accumulator_contract = isAccumulatorContract(contract_type);
-        const is_accu_contract_open = is_accumulator_contract && contract_status === 'open';
+        const contract_status = is_accumulator_contract
+            ? getContractStatus({ contract_type, profit, exit_tick_time, status })
+            : status;
+        const is_accu_contract_ended = is_accumulator_contract && contract_status !== 'open';
         const color = getColor({
             is_dark_theme,
             status: contract_status,
-            profit: is_sold || !is_accu_contract_open ? profit : null,
+            profit: is_sold || is_accu_contract_ended ? profit : null,
         });
 
         const draw_start_line = is_last_contract && start.visible && !is_sold;
-        const is_contract_ended = !!is_sold || !is_accu_contract_open;
         const scale = calc_scale(start.zoom);
         const canvas_height = canvas_fixed_height / window.devicePixelRatio;
 
@@ -337,7 +339,8 @@ const TickContract = RawMarkerMaker(
                 (!contract_type && start))
         ) {
             // draw 2 barriers with a shade between them for an ongoing ACCU contract:
-            const contract_details_start_left = is_accu_contract_open ? exit?.left : previous_tick?.left;
+            const contract_details_start_left =
+                is_accumulator_contract && contract_status === 'open' ? exit?.left : previous_tick?.left;
             draw_shaded_barriers({
                 bottom: barrier_2,
                 ctx,
@@ -393,7 +396,7 @@ const TickContract = RawMarkerMaker(
         }
 
         // barrier line
-        if ((start.visible || entry.visible || exit.visible) && (!is_accumulator_contract || is_contract_ended)) {
+        if ((start.visible || entry.visible || exit.visible) && (!is_accumulator_contract || is_accu_contract_ended)) {
             const top = is_accumulator_contract ? entry.top : barrier;
             ctx.strokeStyle = color + opacity;
             ctx.beginPath();
@@ -425,7 +428,7 @@ const TickContract = RawMarkerMaker(
         }
         // entry & expiry markers
         if (granularity === 0) {
-            [entry, is_contract_ended ? exit : null].forEach(tick => {
+            [entry, is_expired || is_accu_contract_ended ? exit : null].forEach(tick => {
                 if (tick && tick.visible) {
                     ctx.strokeStyle = color + opacity;
                     ctx.setLineDash([2, 2]);
@@ -482,7 +485,7 @@ const TickContract = RawMarkerMaker(
             });
         }
         // status marker
-        if (exit.visible && is_contract_ended) {
+        if (exit.visible && (is_sold || is_accu_contract_ended)) {
             draw_path(ctx, {
                 top: is_accumulator_contract ? entry.top - 9 * scale : barrier - 9 * scale,
                 left: exit.left + 8 * scale,

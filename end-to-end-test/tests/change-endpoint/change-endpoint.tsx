@@ -17,26 +17,25 @@ export default class ChangeEndpoint {
         await expect(this.page).toHaveTitle('Trader | Deriv');
         await this.cookieDialogHandler();
         await this.page.goto(`${process.env.APP_URL!}/endpoint`);
-
         await this.page.waitForSelector(
-            '#app_contents > .dc-themed-scrollbars > form > .dc-input:nth-child(2) > .dc-input__field'
+            '#app_contents > .dc-themed-scrollbars > form > .dc-input:nth-child(2) > .dc-input__container > .dc-input__field'
         );
         await this.page.click(
-            '#app_contents > .dc-themed-scrollbars > form > .dc-input:nth-child(2) > .dc-input__field'
+            '#app_contents > .dc-themed-scrollbars > form > .dc-input:nth-child(2) > .dc-input__container > .dc-input__field'
         );
 
         await this.page.waitForSelector(
-            '#app_contents > .dc-themed-scrollbars > form > .dc-input:nth-child(2) > .dc-input__field'
+            '#app_contents > .dc-themed-scrollbars > form > .dc-input:nth-child(2) > .dc-input__container > .dc-input__field'
         );
         await this.page.click(
-            '#app_contents > .dc-themed-scrollbars > form > .dc-input:nth-child(2) > .dc-input__field'
+            '#app_contents > .dc-themed-scrollbars > form > .dc-input:nth-child(2) > .dc-input__container > .dc-input__field'
         );
 
         await this.page.waitForSelector(
-            '#app_contents > .dc-themed-scrollbars > form > .dc-input:nth-child(2) > .dc-input__field'
+            '#app_contents > .dc-themed-scrollbars > form > .dc-input:nth-child(2) > .dc-input__container > .dc-input__field'
         );
         const first_input_selector =
-            '#app_contents > .dc-themed-scrollbars > form > .dc-input:nth-child(2) > .dc-input__field';
+            '#app_contents > .dc-themed-scrollbars > form > .dc-input:nth-child(2) > .dc-input__container > .dc-input__field';
         await this.page.click(first_input_selector, { clickCount: 3 });
         await this.page.keyboard.press('Backspace');
 
@@ -44,7 +43,7 @@ export default class ChangeEndpoint {
 
         await this.page.type(first_input_selector, process.env.ENDPOINT!);
         const second_input_selector =
-            '#app_contents > .dc-themed-scrollbars > form > .dc-input:nth-child(3) > .dc-input__field';
+            '#app_contents > .dc-themed-scrollbars > form > .dc-input:nth-child(3) > .dc-input__container > .dc-input__field';
         await this.page.click(second_input_selector, { clickCount: 3 });
         await this.page.keyboard.press('Backspace');
         await this.page.type(second_input_selector, process.env.APPID!);

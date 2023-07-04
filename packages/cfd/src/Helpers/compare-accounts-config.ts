@@ -289,7 +289,6 @@ const getAccountVerficationStatus = (
     switch (jurisdiction_shortcode) {
         case 'synthetic_svg':
         case 'financial_svg':
-        case 'all_svg':
             return true;
         case 'synthetic_bvi':
         case 'financial_bvi':
@@ -345,6 +344,12 @@ const isMt5AccountAdded = (current_list: Record<string, TDetailsOfEachMT5Loginid
         );
     });
 
+const isDxtradeAccountAdded = (current_list: Record<string, TDetailsOfEachMT5Loginid>, is_demo?: boolean) =>
+    Object.entries(current_list).some(([key, value]) => {
+        const current_account_type = is_demo ? 'demo' : 'real';
+        return value.account_type === current_account_type && key.includes(CFD_PLATFORMS.DXTRADE);
+    });
+
 // Get the MT5 demo accounts of the user
 const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
     const swap_free_demo_accounts = available_accounts.filter(
@@ -357,6 +362,9 @@ const getMT5DemoData = (available_accounts: TModifiedTradingPlatformAvailableAcc
         item => item.market_type === 'gaming' && item.shortcode === 'svg'
     );
     return [...gaming_demo_accounts, ...financial_demo_accounts, ...swap_free_demo_accounts];
+};
+const getDxtradeDemoData = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
+    return available_accounts.filter(item => item.platform === CFD_PLATFORMS.DXTRADE);
 };
 
 export {
@@ -374,5 +382,7 @@ export {
     platfromsHeaderLabel,
     getAccountVerficationStatus,
     isMt5AccountAdded,
+    isDxtradeAccountAdded,
     getMT5DemoData,
+    getDxtradeDemoData,
 };

@@ -1,5 +1,5 @@
 import { useStore } from '@deriv/stores';
-import { useFetch } from '@deriv/api';
+import { useRequest } from '@deriv/api';
 import useCheck10kLimit from './useCheck10kLimit';
 
 type TUseWithdrawalLocked = {
@@ -19,7 +19,7 @@ const useWithdrawalLocked = (): TUseWithdrawalLocked => {
         error: { is_ask_financial_risk_approval },
     } = withdraw;
 
-    const { data: account_status, isSuccess, isError } = useFetch('get_account_status');
+    const { data: account_status } = useRequest('get_account_status');
     const get_account_status = account_status?.get_account_status;
     const document = get_account_status?.authentication?.document;
     const identity = get_account_status?.authentication?.identity;

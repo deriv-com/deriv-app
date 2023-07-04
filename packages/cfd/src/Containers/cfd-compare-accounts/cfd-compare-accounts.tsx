@@ -7,6 +7,7 @@ import { observer, useStore } from '@deriv/stores';
 import CFDCompareAccountsCard from './cfd-compare-accounts-card';
 import {
     getSortedAvailableAccounts,
+    getEUAvailableAccounts,
     getDxtradeAccountAvailabaility,
     prepareDxtradeData,
     getMT5DemoData,
@@ -17,9 +18,11 @@ const CompareCFDs = observer(() => {
     const store = useStore();
     const { client, traders_hub } = store;
     const { trading_platform_available_accounts } = client;
-    const { available_cfd_accounts, is_demo } = traders_hub;
+    const { available_cfd_accounts, is_demo, is_eu_user } = traders_hub;
 
-    const sorted_available_accounts = getSortedAvailableAccounts(trading_platform_available_accounts);
+    const sorted_available_accounts = !is_eu_user
+        ? getSortedAvailableAccounts(trading_platform_available_accounts)
+        : getEUAvailableAccounts(trading_platform_available_accounts);
 
     const has_dxtrade_account_available = getDxtradeAccountAvailabaility(available_cfd_accounts);
 
@@ -27,9 +30,12 @@ const CompareCFDs = observer(() => {
     const { name, market_type } = dxtrade_data[0];
     const dxtrade_account = prepareDxtradeData(name, market_type);
 
-    const all_real_sorted_available_accounts = has_dxtrade_account_available
-        ? [...sorted_available_accounts, dxtrade_account]
-        : [...sorted_available_accounts];
+    const sorted_available_eu_accounts =
+        is_eu_user && sorted_available_accounts.length ? [...sorted_available_accounts] : [];
+    const all_real_sorted_available_accounts =
+        has_dxtrade_account_available && !is_eu_user
+            ? [...sorted_available_accounts, dxtrade_account]
+            : [...sorted_available_eu_accounts];
 
     const demo_available_accounts = getMT5DemoData(all_real_sorted_available_accounts);
     const all_available_accounts =
@@ -50,7 +56,12 @@ const CompareCFDs = observer(() => {
             </div>
             <h1 className='compare-cfd-header-title'>
                 <Text size='m' weight='bold' color='prominent'>
-                    <Localize i18n_default_text='Compare CFDs accounts' />
+                    <Localize
+                        i18n_default_text='Compare CFDs {{demo_title}} accounts'
+                        values={{
+                            demo_title: is_demo ? localize('demo') : '',
+                        }}
+                    />
                 </Text>
             </h1>
         </div>
@@ -68,6 +79,8 @@ const CompareCFDs = observer(() => {
                                     <CFDCompareAccountsCard
                                         trading_platforms={item}
                                         key={item.market_type + item.shortcode}
+                                        is_eu_user={is_eu_user}
+                                        is_demo={is_demo}
                                     />
                                 ))}
                             </CFDCompareAccountsCarousel>
@@ -88,6 +101,8 @@ const CompareCFDs = observer(() => {
                                 <CFDCompareAccountsCard
                                     trading_platforms={item}
                                     key={item.market_type + item.shortcode}
+                                    is_eu_user={is_eu_user}
+                                    is_demo={is_demo}
                                 />
                             ))}
                         </CFDCompareAccountsCarousel>

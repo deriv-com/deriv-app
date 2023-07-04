@@ -47,6 +47,11 @@
         @include mobile {
             width: 17rem;
         }
+        &__eu-clients {
+            position: relative;
+            top: 0.5rem;
+            text-align: center;
+        }
         &__banner {
             position: absolute;
             z-index: 1;
@@ -74,6 +79,9 @@
     }
     &-text-container {
         height: 25.5rem;
+        &--demo {
+            height: 13.5rem;
+        }
         &__separator {
             margin: 0.9rem;
         }
@@ -122,4 +130,13 @@
 .card-list {
     display: flex;
     gap: 2rem;
+}
+
+.trading-instruments {
+    &__span {
+        position: relative;
+        top: 0.2rem;
+        font-size: 1.6rem;
+        color: var(--text-red);
+    }
 }

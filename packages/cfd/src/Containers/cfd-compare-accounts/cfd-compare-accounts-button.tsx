@@ -13,7 +13,7 @@ import {
     isDxtradeAccountAdded,
 } from '../../Helpers/compare-accounts-config';
 
-const CFDCompareAccountsButton = observer(({ trading_platforms }: TCompareAccountsCard) => {
+const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TCompareAccountsCard) => {
     const history = useHistory();
 
     const market_type = getMarketType(trading_platforms);
@@ -22,7 +22,6 @@ const CFDCompareAccountsButton = observer(({ trading_platforms }: TCompareAccoun
         modules: { cfd },
         common,
         client,
-        traders_hub,
     } = useStore();
 
     const {
@@ -100,8 +99,8 @@ const CFDCompareAccountsButton = observer(({ trading_platforms }: TCompareAccoun
         poa_pending,
         should_restrict_bvi_account_creation,
         should_restrict_vanuatu_account_creation,
-        is_demo,
-        has_submitted_personal_details
+        has_submitted_personal_details,
+        is_demo
     );
 
     const onClickAdd = () => {

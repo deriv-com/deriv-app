@@ -1,7 +1,7 @@
 import React from 'react';
 import DerivedFX from './ic-appstore-derived-fx.svg';
 import Synthetics from './ic-appstore-synthetics.svg';
-import BasketIndices from './ic-appstore-basket-indices.svg';
+import Baskets from './ic-appstore-baskets.svg';
 import Stocks from './ic-appstore-stocks.svg';
 import StockIndices from './ic-appstore-stock-indices.svg';
 import Commodities from './ic-appstore-commodities.svg';
@@ -19,7 +19,7 @@ export type IconProps<T> = {
 export const InstrumentsIcons = {
     DerivedFX,
     Synthetics,
-    BasketIndices,
+    Baskets,
     Stocks,
     StockIndices,
     Commodities,

@@ -1,23 +1,8 @@
 import React from 'react';
+import { TInstrumentsIcon } from 'Components/props.types';
 import TradingInstrumentsIcon from '../../Assets/svgs/trading-instruments';
 
-type TIconProps = {
-    icon:
-        | 'DerivedFX'
-        | 'Synthetics'
-        | 'BasketIndices'
-        | 'Stocks'
-        | 'StockIndices'
-        | 'Commodities'
-        | 'Forex'
-        | 'Cryptocurrencies'
-        | 'ETF';
-    text: string;
-    highlighted: boolean;
-    className?: string;
-};
-
-const InstumentsIconWithLabel = ({ icon, text, highlighted, className }: TIconProps) => {
+const InstumentsIconWithLabel = ({ icon, text, highlighted, className, is_asterik }: TInstrumentsIcon) => {
     return (
         <div
             style={{
@@ -29,10 +14,16 @@ const InstumentsIconWithLabel = ({ icon, text, highlighted, className }: TIconPr
             <span
                 style={{
                     marginLeft: '0.5rem',
+                    fontWeight: 'bold',
                 }}
             >
                 {text}
             </span>
+            {is_asterik && (
+                <span className='trading-instruments__span' style={{ display: is_asterik ? 'block' : 'none' }}>
+                    *
+                </span>
+            )}
         </div>
     );
 };

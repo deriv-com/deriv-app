@@ -62,7 +62,7 @@ const Trade = observer(() => {
     const { is_eu } = client;
     const { network_status } = common;
 
-    const { data, error } = useActiveSymbols();
+    const { data: active_symbols, error } = useActiveSymbols();
 
     const [digits, setDigits] = React.useState([]);
     const [tick, setTick] = React.useState({});
@@ -88,10 +88,10 @@ const Trade = observer(() => {
             return;
         }
 
-        if (data?.active_symbols && data?.active_symbols.length > 0) {
-            setActiveSymbolsFromServer(data.active_symbols, error);
+        if (active_symbols && active_symbols.length > 0) {
+            setActiveSymbolsFromServer(active_symbols, error);
         }
-    }, [data, setActiveSymbolsFromServer, error]);
+    }, [active_symbols, setActiveSymbolsFromServer, error]);
 
     React.useEffect(() => {
         onMount();

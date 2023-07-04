@@ -1531,13 +1531,7 @@ export default class TradeStore extends BaseStore {
             });
         }
         if (req.active_symbols) {
-            /** returning null here to avoid exrtra active_symbol request
-             * from server since this is getting called in chart init and
-             * active_symbols is already being fetched in trade.jsx init
-             */
-            return null;
-            // const res = WS.activeSymbols('brief');
-            // return res;
+            return this.active_symbols;
         }
         if (req.trading_times) {
             return WS.tradingTimes(req.trading_times);

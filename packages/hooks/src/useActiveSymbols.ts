@@ -1,16 +1,24 @@
 import { useFetch } from '@deriv/api';
+import { useMemo } from 'react';
 
-const useActiveSymbols = (mode?: 'brief' | 'full') => {
-    const res = useFetch('active_symbols', {
-        payload: {
-            active_symbols: mode || 'brief',
-        },
-        options: {
-            refetchOnWindowFocus: false,
-        },
-    });
+/** A custom hook to get the list of active symbols. */
+const useActiveSymbols = () => {
+    const { data, ...rest } = useFetch('active_symbols', { payload: { active_symbols: 'brief' } });
+    const active_symbols = useMemo(
+        () =>
+            data?.active_symbols?.map(symbol => ({
+                ...symbol,
+                /** The icon name for the underlying asset. */
+                icon: `IcUnderlying${symbol.symbol}`,
+            })),
+        [data?.active_symbols]
+    );
 
-    return res;
+    return {
+        /** List of active symbols. */
+        data: active_symbols,
+        ...rest,
+    };
 };
 
 export default useActiveSymbols;

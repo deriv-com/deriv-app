@@ -9,7 +9,7 @@ import initStore from './init-store';
 import 'Sass/app.scss';
 import type { TCoreStores } from '@deriv/stores/types';
 import TraderProviders from '../trader-providers';
-import APIProvider from '../../../api/src/APIProvider';
+import { APIProvider } from '@deriv/api';
 
 type Apptypes = {
     passthrough: {

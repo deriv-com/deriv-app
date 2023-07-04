@@ -203,7 +203,6 @@ const MobileRowRenderer = ({
                 onClickSell={onClickSell}
                 server_time={server_time}
                 status={status}
-                measure={measure}
                 {...props}
             />
         );

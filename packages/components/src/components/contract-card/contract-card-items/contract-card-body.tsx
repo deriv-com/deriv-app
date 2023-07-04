@@ -25,7 +25,7 @@ export type TGeneralContractCardBodyProps = {
     connectWithContractUpdate?: (contract_update_form: React.ElementType) => React.ElementType;
     currency: string;
     current_focus?: string;
-    error_message_alignment: string;
+    error_message_alignment?: string;
     getCardLabels: TGetCardLables;
     getContractById: (contract_id?: number) => TContractStore;
     should_show_cancellation_warning: boolean;
@@ -37,7 +37,7 @@ export type TGeneralContractCardBodyProps = {
     setCurrentFocus: (name: string) => void;
     status?: string;
     toggleCancellationWarning: () => void;
-    progress_slider: React.ReactNode;
+    progress_slider?: React.ReactNode;
     is_positions?: boolean;
 };
 

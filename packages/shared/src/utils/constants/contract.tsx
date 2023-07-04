@@ -495,8 +495,12 @@ export const getContractConfig = (is_high_low?: boolean) => ({
 // TODO we can combine getContractTypeDisplay and getContractTypePosition functions.
 the difference between these two functions is just the property they return. (name/position)
 */
-export const getContractTypeDisplay = (type: TGetSupportedContracts, is_high_low = false, show_button_name = false) => {
-    const contract_config = getContractConfig(is_high_low)[type];
+export const getContractTypeDisplay = (
+    type: TGetSupportedContracts | string,
+    is_high_low = false,
+    show_button_name = false
+) => {
+    const contract_config = getContractConfig(is_high_low)[type as TGetSupportedContracts];
     if (show_button_name && 'button_name' in contract_config) return contract_config.button_name;
     return contract_config.name || '';
 };

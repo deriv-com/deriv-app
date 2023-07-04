@@ -17,6 +17,7 @@ import Money from '../../money';
 import InputWithCheckbox from '../../input-wth-checkbox';
 import { TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
 import { TGeneralContractCardBodyProps } from './contract-card-body';
+import { TGetCardLables } from '../../types';
 
 export type TContractUpdateFormProps = Pick<
     TGeneralContractCardBodyProps,
@@ -30,7 +31,15 @@ export type TContractUpdateFormProps = Pick<
     | 'status'
 > & {
     contract: TContractStore;
-    toggleDialog: React.MouseEventHandler<HTMLButtonElement>;
+    current_focus?: string;
+    error_message_alignment: string;
+    getCardLabels: TGetCardLables;
+    onMouseLeave: () => void;
+    removeToast: (toast_id: string) => void;
+    setCurrentFocus: (name: string | null) => void;
+    status: string;
+    toggleDialog: (e: React.MouseEvent<HTMLButtonElement>) => void;
+    getContractById: (contract_id: number) => TContractStore;
     is_accumulator?: boolean;
     is_turbos?: boolean;
 };
@@ -109,7 +118,9 @@ const ContractUpdateForm = (props: TContractUpdateFormProps) => {
         return isDeepEqual(getStateToCompare(getContractUpdateConfig(contract_info)), getStateToCompare(props));
     };
 
-    const onChange = (e: React.ChangeEvent<HTMLInputElement> | { target: { name: string; value: boolean } }) => {
+    const onChange = (
+        e: React.ChangeEvent<HTMLInputElement> | { target: { name: string; value: number | string | boolean } }
+    ) => {
         const { name, value } = e.target;
         setContractProfitOrLoss({
             ...contract_profit_or_loss,

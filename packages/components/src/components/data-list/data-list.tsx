@@ -10,6 +10,7 @@ import {
     type AutoSizerProps,
     ListProps,
     ListRowProps,
+    IndexRange,
 } from 'react-virtualized';
 import { isMobile, isDesktop } from '@deriv/shared';
 import DataListCell, { TColIndex, TDataListCell } from './data-list-cell';
@@ -40,7 +41,7 @@ export type TDataList = {
     getRowAction?: (row: TRow) => { component: JSX.Element } | string;
     getRowSize?: (params: { index: number }) => number;
     keyMapper?: (row: TRow) => number | string;
-    onRowsRendered?: () => void;
+    onRowsRendered?: (params: IndexRange) => void;
     onScroll?: React.UIEventHandler<HTMLDivElement>;
     passthrough?: TPassThrough;
     row_gap?: number;

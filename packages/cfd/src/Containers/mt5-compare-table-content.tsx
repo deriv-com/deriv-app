@@ -37,15 +37,12 @@ const Row = ({
     CFDs_restricted_countries,
     financial_restricted_countries,
     is_preappstore_restricted_cr_demo_account,
-    getResidence,
+    residence,
 }: TCompareAccountRowProps) => {
     const is_leverage_row = id === 'leverage';
     const is_platform_row = id === 'platform';
     const is_instruments_row = id === 'instruments';
-    const client_country = getResidence();
-    const is_af = client_country === 'af';
-    const is_mg = client_country === 'mg';
-    const is_pk = client_country === 'pk';
+    const is_other_countries = ['af', 'pk', 'mg'].includes(residence);
 
     const getContentSize = () => {
         if (id === 'counterparty' || id === 'leverage') return isDesktop() ? 'xxs' : 'xxxs';
@@ -85,18 +82,16 @@ const Row = ({
             className={
                 classname_for_demo_and_eu ??
                 classNames(`cfd-accounts-compare-modal__table-row${pre_appstore_class}`, {
-                    'cfd-accounts-compare-modal__table-row--other-country': is_af || is_mg || is_pk,
                     [`cfd-accounts-compare-modal__table-row--leverage${pre_appstore_class}`]: is_leverage_row,
-                    'cfd-accounts-compare-modal__table-row--leverage__af': is_leverage_row && is_af,
-                    'cfd-accounts-compare-modal__table-row--instruments__af': is_instruments_row && is_af,
-                    'cfd-accounts-compare-modal__table-row--leverage__pk': is_leverage_row && is_pk,
-                    'cfd-accounts-compare-modal__table-row--instruments__pk': is_instruments_row && is_pk,
-                    'cfd-accounts-compare-modal__table-row--leverage__mg': is_leverage_row && is_mg,
-                    'cfd-accounts-compare-modal__table-row--instruments__mg': is_instruments_row && is_mg,
                     [`cfd-accounts-compare-modal__row-with-columns-count-${available_accounts_count + 1}`]:
                         available_accounts_count < 6,
                     [`cfd-accounts-compare-modal__table-row--platform${pre_appstore_class}`]: is_platform_row,
                     [`cfd-accounts-compare-modal__table-row--instruments${pre_appstore_class}`]: is_instruments_row,
+                    'cfd-accounts-compare-modal__table-row--other-country': is_other_countries,
+                    [`cfd-accounts-compare-modal__table-row--leverage__${residence}`]:
+                        is_leverage_row && is_other_countries,
+                    [`cfd-accounts-compare-modal__table-row--instruments__${residence}`]:
+                        is_instruments_row && is_other_countries,
                 })
             }
         >
@@ -202,7 +197,7 @@ const DMT5CompareModalContent = ({
     updateMT5Status,
     no_CR_account,
     is_eu_user,
-    getResidence,
+    residence,
     no_MF_account,
     CFDs_restricted_countries,
     financial_restricted_countries,
@@ -238,10 +233,7 @@ const DMT5CompareModalContent = ({
         poa_pending,
     } = getAuthenticationStatusInfo(account_status);
 
-    const client_country = getResidence();
-    const is_af = client_country === 'af';
-    const is_mg = client_country === 'mg';
-    const is_pk = client_country === 'pk';
+    const is_other_countries = ['af', 'pk', 'mg'].includes(residence);
 
     React.useEffect(() => {
         if (is_logged_in && !is_virtual) {
@@ -542,7 +534,7 @@ const DMT5CompareModalContent = ({
                                     is_preappstore_restricted_cr_demo_account={
                                         is_preappstore_restricted_cr_demo_account
                                     }
-                                    getResidence={getResidence}
+                                    residence={residence}
                                 />
                             ))}
                         </Table.Body>
@@ -554,9 +546,7 @@ const DMT5CompareModalContent = ({
                                         [`cfd-accounts-compare-modal__row-with-columns-count-${
                                             available_accounts_count + 1
                                         }`]: available_accounts_count < 6,
-                                        'cfd-accounts-compare-modal__table-footer__pk': is_pk,
-                                        'cfd-accounts-compare-modal__table-footer__af': is_af,
-                                        'cfd-accounts-compare-modal__table-footer__mg': is_mg,
+                                        [`cfd-accounts-compare-modal__table-footer__${residence}`]: is_other_countries,
                                     })
                                 }
                             >
@@ -629,7 +619,7 @@ export default connect(({ modules, client, common, ui, traders_hub }: RootStore)
     setAppstorePlatform: common.setAppstorePlatform,
     no_CR_account: traders_hub.no_CR_account,
     is_eu_user: traders_hub.is_eu_user,
-    getResidence: client.getResidence,
+    residence: client.residence,
     no_MF_account: traders_hub.no_MF_account,
     CFDs_restricted_countries: traders_hub.CFDs_restricted_countries,
     financial_restricted_countries: traders_hub.financial_restricted_countries,

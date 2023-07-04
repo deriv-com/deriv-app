@@ -333,7 +333,7 @@ export type TCompareAccountRowProps = TCompareAccountContentProps & {
     CFDs_restricted_countries: string[];
     financial_restricted_countries: string[];
     is_preappstore_restricted_cr_demo_account: boolean;
-    getResidence: () => string;
+    residence: string;
 };
 
 export type TCompareAccountContentProps = {
@@ -384,7 +384,7 @@ export type TDMT5CompareModalContentProps = {
     no_MF_account: boolean;
     CFDs_restricted_countries: string[];
     financial_restricted_countries: string[];
-    getResidence: () => string;
+    residence: string;
 };
 
 export type TCFDDbviOnboardingProps = {

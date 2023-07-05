@@ -137,7 +137,7 @@ const JurisdictionModalContentWrapper = ({
             openPasswordModal(type_of_account);
         } else if (is_vanuatu_selected) {
             if (
-                poi_acknowledged_for_maltainvest &&
+                poi_acknowledged_for_bvi_labuan_vanuatu &&
                 !poi_or_poa_not_submitted &&
                 !should_restrict_vanuatu_account_creation &&
                 poa_acknowledged &&

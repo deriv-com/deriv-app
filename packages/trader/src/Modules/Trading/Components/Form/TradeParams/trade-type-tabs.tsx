@@ -3,17 +3,15 @@ import React from 'react';
 import { ButtonToggle } from '@deriv/components';
 import { isTurbosContract, isVanillaContract, TURBOS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 type TTradeTypeTabs = {
     className?: string;
 };
 
 const TradeTypeTabs = observer(({ className }: TTradeTypeTabs) => {
-    const {
-        modules: { trade },
-    } = useStore();
-    const { onChange, contract_type, vanilla_trade_type } = trade;
+    const { onChange, contract_type, vanilla_trade_type } = useTraderStore();
     const is_turbos = isTurbosContract(contract_type);
     const is_vanilla = isVanillaContract(contract_type);
     const tab_list = [

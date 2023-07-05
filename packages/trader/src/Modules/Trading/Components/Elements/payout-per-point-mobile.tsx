@@ -2,14 +2,12 @@ import React from 'react';
 import { Icon, Money, Text, Popover } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { getContractSubtype, isVanillaContract } from '@deriv/shared';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 const PayoutPerPointMobile = observer(() => {
-    const {
-        modules: { trade },
-    } = useStore();
-    const { currency, proposal_info, contract_type, vanilla_trade_type } = trade;
+    const { currency, proposal_info, contract_type, vanilla_trade_type } = useTraderStore();
     const contract_key = isVanillaContract(contract_type) ? vanilla_trade_type : contract_type?.toUpperCase();
     const { has_error, has_increased, id, message, obj_contract_basis } = proposal_info?.[contract_key] || {};
     const { text: label, value: payout_per_point } = obj_contract_basis || {};

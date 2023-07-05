@@ -2,18 +2,16 @@ import classNames from 'classnames';
 import React from 'react';
 import { Money, Text } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { isMobile, isVanillaContract } from '@deriv/shared';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 type TMinMaxStakeInfo = {
     className?: string;
 };
 
 const MinMaxStakeInfo = observer(({ className }: TMinMaxStakeInfo) => {
-    const {
-        modules: { trade },
-    } = useStore();
-    const { contract_type, currency, stake_boundary, vanilla_trade_type } = trade;
+    const { contract_type, currency, stake_boundary, vanilla_trade_type } = useTraderStore();
     const { min_stake, max_stake } =
         (isVanillaContract(contract_type)
             ? stake_boundary[vanilla_trade_type]

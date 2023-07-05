@@ -3,13 +3,11 @@ import BarriersList from '../barriers-list';
 import { DesktopWrapper, Icon, MobileDialog, MobileWrapper, Text, Popover } from '@deriv/components';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
 import { Localize, localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { observer } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
 const BarrierSelector = observer(() => {
-    const {
-        modules: { trade },
-    } = useStore();
-    const { barrier_1, onChange, setHoveredBarrier, barrier_choices } = trade;
+    const { barrier_1, onChange, setHoveredBarrier, barrier_choices } = useTraderStore();
     const [is_barriers_table_expanded, setIsBarriersTableExpanded] = React.useState(false);
     const [is_mobile_tooltip_visible, setIsMobileTooltipVisible] = React.useState(false);
     const [selected_barrier, setSelectedBarrier] = React.useState(barrier_1);

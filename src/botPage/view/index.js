@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import 'notifyjs-browser';
 import 'jquery-ui/ui/widgets/dialog';
@@ -11,9 +11,11 @@ import store from './deriv/store';
 import App from './deriv/app';
 import '../../assets/css/index.scss';
 
-ReactDOM.render(
+const container = document.getElementById('main');
+const root = createRoot(container);
+
+root.render(
     <Provider store={store}>
         <App />
-    </Provider>,
-    document.getElementById('main')
+    </Provider>
 );

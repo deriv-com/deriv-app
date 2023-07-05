@@ -194,9 +194,9 @@ const App = () => {
             <main className='p2p-cashier'>
                 <Helmet>
                     <title>Deriv P2P</title>
-                    <meta name='description' content='deriv p2p' />
+                    <meta name='og:description' content='deriv p2p' />
                     <meta
-                        name='image'
+                        name='og:image'
                         content='https://play-lh.googleusercontent.com/ah8RkaAnph2gouJ48fVeybeJgw-tu2dzTDYL7miccIWxvd0ZcK5-MM20bGxjpjb2lXU'
                     />
                 </Helmet>

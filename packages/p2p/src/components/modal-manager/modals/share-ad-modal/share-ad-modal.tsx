@@ -1,6 +1,7 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import domtoimage from 'dom-to-image';
+import { QRCodeSVG } from 'qrcode.react';
 import { WhatsappShareButton, WhatsappIcon } from 'react-share';
 import { Button, Modal, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
@@ -60,13 +61,22 @@ const ShareAdModal = ({ advert }) => {
                             <Localize i18n_default_text='Rate {{rate_display}}' values={{ rate_display }} />
                         </Text>
                         <div className='share-ad-modal__card--image'>
-                            <div className='share-ad-modal__card--image__background'>
-                                <img
-                                    className='share-ad-modal__card--image__qr'
-                                    src='https://i.ibb.co/yRKnCVt/Screenshot-2023-07-03-at-2-45-08-PM.png'
-                                    alt=''
-                                />
-                            </div>
+                            <QRCodeSVG
+                                value={window.location.href}
+                                size={128}
+                                bgColor={'#ffffff'}
+                                fgColor={'#000000'}
+                                level={'L'}
+                                includeMargin={false}
+                                imageSettings={{
+                                    src: 'https://play-lh.googleusercontent.com/ah8RkaAnph2gouJ48fVeybeJgw-tu2dzTDYL7miccIWxvd0ZcK5-MM20bGxjpjb2lXU',
+                                    x: undefined,
+                                    y: undefined,
+                                    height: 26,
+                                    width: 26,
+                                    excavate: true,
+                                }}
+                            />
                         </div>
                     </div>
                     <Button primary onClick={handleGenerateImage}>

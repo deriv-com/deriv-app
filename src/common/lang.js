@@ -9,7 +9,7 @@ export const getLanguage = () => {
         parsed_url?.length > 1 ? document.location.search.match(/(lang|l)=([a-z]{2})/)[2] : parsed_url;
     const supported_storage_lang = getStorage('lang') in supported_languages ? getStorage('lang') : null;
     const get_cookie_lang = Cookies.get('user_language');
-    const setUserLang = () => {
+    const getUserLang = () => {
         if (parsed_valid_url) {
             return parsed_valid_url;
         }
@@ -21,7 +21,7 @@ export const getLanguage = () => {
         }
         return 'en';
     };
-    const query_lang = setUserLang();
+    const query_lang = getUserLang();
     const is_query_lang_supported = query_lang in supported_languages;
 
     if (is_query_lang_supported) {

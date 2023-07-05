@@ -47,13 +47,16 @@ const useWalletTransactions = (
             gradient_card_class: `wallet-card__btc-bg${is_dark_mode_on ? '--dark' : ''}`,
             icon: getWalletCurrencyIcon('BTC', is_dark_mode_on),
             is_demo: !!current_wallet.is_virtual,
-            is_disabled: 0,
+            is_disabled: false,
             is_malta_wallet: false,
             is_selected: false,
-            is_virtual: current_wallet.is_virtual ? 1 : 0,
+            is_virtual: Boolean(current_wallet.is_virtual),
             landing_company_name: 'svg',
             loginid: 'CRWMOCK00042',
             name: `${current_wallet.is_virtual ? 'Demo ' : ''}BTC Wallet`,
+            is_crypto: true,
+            modal_icon: '',
+            icon_type: '',
         });
     const accounts = [demo_platform_account, ...real_platform_accounts];
     const { getConfig } = useCurrencyConfig();

@@ -1,11 +1,11 @@
 import React from 'react';
-import { observable, action, reaction, computed, runInAction, makeObservable } from 'mobx';
-import { localize, Localize } from '@deriv/translations';
-import { error_types, unrecoverable_errors, observer, message_types } from '@deriv/bot-skeleton';
+import { action, computed, makeObservable, observable, reaction, runInAction } from 'mobx';
+import { error_types, message_types, observer, unrecoverable_errors } from '@deriv/bot-skeleton';
+import { isSafari, mobileOSDetect } from '@deriv/shared';
+import { Localize, localize } from '@deriv/translations';
 import { contract_stages } from 'Constants/contract-stage';
 import { run_panel } from 'Constants/run-panel';
 import { journalError, switch_account_notification } from 'Utils/bot-notifications';
-import { isSafari, mobileOSDetect } from '@deriv/shared';
 
 export default class RunPanelStore {
     constructor(root_store, core) {
@@ -147,6 +147,12 @@ export default class RunPanelStore {
     }
 
     async onRunButtonClick() {
+        if (window.sendRequestsStatistic) {
+            performance.mark('bot-start');
+
+            window.sendRequestsStatistic(false);
+            performance.clearMeasures();
+        }
         const { summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = this.core;
         const is_ios = mobileOSDetect() === 'iOS';
@@ -229,6 +235,10 @@ export default class RunPanelStore {
 
         if (this.error_type) {
             this.error_type = undefined;
+        }
+        if (window.sendRequestsStatistic) {
+            window.sendRequestsStatistic(true);
+            performance.clearMeasures();
         }
     }
 
@@ -341,8 +351,8 @@ export default class RunPanelStore {
         this.onOkButtonClick = this.onCloseDialog;
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
-            title: localize("DBot isn't quite ready for real accounts"),
-            message: localize('Please switch to your demo account to run your DBot.'),
+            title: localize("Deriv Bot isn't quite ready for real accounts"),
+            message: localize('Please switch to your demo account to run your Deriv Bot.'),
         };
         this.is_dialog_open = true;
     }
@@ -367,7 +377,7 @@ export default class RunPanelStore {
         this.onCancelButtonClick = undefined;
         this.dialog_options = {
             title: localize('Import error'),
-            message: localize('This strategy is currently not compatible with DBot.'),
+            message: localize('This strategy is currently not compatible with Deriv Bot.'),
         };
         this.is_dialog_open = true;
     }

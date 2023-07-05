@@ -1,5 +1,5 @@
 import React from 'react';
-import { ToolbarWidget, ChartMode, DrawTools, Share, StudyLegend, Views } from '@deriv/deriv-charts';
+import { ChartMode, DrawTools, Share, StudyLegend, ToolbarWidget, Views } from '@deriv/deriv-charts';
 import { isDesktop, isMobile } from '@deriv/shared';
 
 type TToolbarWidgetsProps = {

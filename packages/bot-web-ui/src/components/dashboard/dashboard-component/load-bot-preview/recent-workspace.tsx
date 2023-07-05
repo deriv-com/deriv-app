@@ -1,10 +1,10 @@
+import React from 'react';
+import classnames from 'classnames';
 import { timeSince } from '@deriv/bot-skeleton';
 import { save_types } from '@deriv/bot-skeleton/src/constants/save-type';
 import { DesktopWrapper, Icon, MobileWrapper, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
-import classnames from 'classnames';
 import { DBOT_TABS } from 'Constants/bot-contents';
-import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { useComponentVisibility } from '../../hooks/useComponentVisibility';

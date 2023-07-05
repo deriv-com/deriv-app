@@ -242,17 +242,15 @@
             }
         }
     }
-}
-
-.dc-modal {
-    $strategy-modal: 'modal--strategy';
-
-    &__container {
-        &_#{$strategy-modal} {
-            .modal__content {
-                height: calc(100% - 200px);
-                max-height: 636px;
-            }
+    // this css has been added to address the height of themed scrollbars in the quick strategy form
+    // TODO: this is a temporary fix until we have a better solution
+    &__form-scrollbar {
+        height: 600px;
+        @media (min-height: 534px) and (max-height: 767px) {
+            height: 500px;
+        }
+        @media (max-height: 533px) {
+            height: 500px;
         }
     }
 }

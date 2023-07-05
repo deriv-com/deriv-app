@@ -1,8 +1,8 @@
 import React, { createContext, PropsWithChildren, useContext, useMemo } from 'react';
-import { useStore } from '@deriv/stores';
 import { DBot } from '@deriv/bot-skeleton';
-import RootStore from './root-store';
+import { useStore } from '@deriv/stores';
 import type { TWebSocket } from 'Types';
+import RootStore from './root-store';
 
 const DBotStoreContext = createContext<RootStore | null>(null);
 

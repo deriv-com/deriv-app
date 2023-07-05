@@ -52,7 +52,6 @@ export default class CommonStore extends BaseStore {
             routeTo: action.bound,
             addRouteHistoryItem: action.bound,
             changeSelectedLanguage: action.bound,
-            getExchangeRate: action.bound,
             routeBackInApp: action.bound,
         });
     }
@@ -304,12 +303,6 @@ export default class CommonStore extends BaseStore {
     }
 
     isCurrentLanguage = lang => lang === this.current_language;
-
-    getExchangeRate = async (from_currency, to_currency) => {
-        const { exchange_rates } = await BinarySocket.exchange_rates(from_currency);
-
-        return exchange_rates?.rates?.[to_currency];
-    };
 
     routeBackInApp(history, additional_platform_path = []) {
         let route_to_item_idx = -1;

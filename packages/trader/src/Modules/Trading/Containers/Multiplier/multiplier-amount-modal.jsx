@@ -2,14 +2,18 @@ import React from 'react';
 import { Div100vhContainer, Modal, Money, Popover, usePreventIOSZoom } from '@deriv/components';
 import { useIsMounted, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import { requestPreviewProposal } from 'Stores/Modules/Trading/Helpers/preview-proposal';
 import AmountMobile from 'Modules/Trading/Components/Form/TradeParams/amount-mobile.jsx';
 import MultipliersInfo from 'Modules/Trading/Components/Form/TradeParams/Multiplier/info.jsx';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const MultiplierAmountModal = ({ is_open, enableApp, disableApp, toggleModal }) => {
+const MultiplierAmountModal = observer(({ is_open, toggleModal }) => {
     // Fix to prevent iOS from zooming in erratically on quick taps
     usePreventIOSZoom();
+    const {
+        ui: { enableApp, disableApp },
+    } = useStore();
 
     return (
         <React.Fragment>
@@ -27,26 +31,18 @@ const MultiplierAmountModal = ({ is_open, enableApp, disableApp, toggleModal }) 
                 title={localize('Stake')}
             >
                 <Div100vhContainer className='mobile-widget-dialog__wrapper' max_autoheight_offset='48px'>
-                    <TradeParamsMobileWrapper toggleModal={toggleModal} />
+                    <TradeParamsMobile toggleModal={toggleModal} />
                 </Div100vhContainer>
             </Modal>
         </React.Fragment>
     );
-};
+});
 
-export default connect(({ client, modules, ui }) => ({
-    amount: modules.trade.amount,
-    form_components: modules.trade.form_components,
-    currency: client.currency,
-    duration: modules.trade.duration,
-    duration_unit: modules.trade.duration_unit,
-    duration_units_list: modules.trade.duration_units_list,
-    expiry_type: modules.trade.expiry_type,
-    enableApp: ui.enableApp,
-    disableApp: ui.disableApp,
-}))(MultiplierAmountModal);
+export default MultiplierAmountModal;
 
-const TradeParamsMobile = ({ amount, currency, toggleModal, trade_store, trade_stop_out }) => {
+const TradeParamsMobile = observer(({ toggleModal }) => {
+    const { amount, currency, trade_stop_out, trade_store } = useTraderStore();
+
     const [stake_value, setStakeValue] = React.useState(amount);
     const [commission, setCommission] = React.useState(null);
     const [stop_out, setStopOut] = React.useState(null);
@@ -119,15 +115,4 @@ const TradeParamsMobile = ({ amount, currency, toggleModal, trade_store, trade_s
             />
         </React.Fragment>
     );
-};
-
-const TradeParamsMobileWrapper = connect(({ ui, modules }) => ({
-    amount: modules.trade.amount,
-    currency: modules.trade.currency,
-    multiplier: modules.trade.multiplier,
-    multiplier_range_list: modules.trade.multiplier_range_list,
-    trade_stop_out: modules.trade.stop_out,
-    onChange: modules.trade.onChange,
-    addToast: ui.addToast,
-    trade_store: modules.trade,
-}))(TradeParamsMobile);
+});

@@ -1,5 +1,5 @@
+import { TDropdownItems, TInputBaseFields, TInputsFieldNames, TSelectsFieldNames } from '../../quick-strategy.types';
 import { common_inputs_properties } from '..';
-import { TSelectsFieldNames, TDropdownItems, TInputBaseFields, TInputsFieldNames } from '../../quick-strategy.types';
 import { TCommonInputsProperties } from './common-input-properties';
 
 const getMessage = (property: string) => `The bot will stop trading if your total ${property} exceeds this amount.`;

@@ -129,6 +129,7 @@ type TNotification =
 
 type TClientStore = {
     accounts: { [k: string]: TActiveAccount };
+    is_eu_country: boolean;
     active_accounts: TActiveAccount[];
     active_account_landing_company: string;
     trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
@@ -150,6 +151,7 @@ type TClientStore = {
     fetchResidenceList: () => void;
     getChangeableFields: () => void;
     getLimits: () => Promise<{ get_limits?: GetLimits }>;
+    has_deposited_for_first_time: boolean;
     has_active_real_account: boolean;
     has_logged_out: boolean;
     has_maltainvest_account: boolean;
@@ -310,6 +312,8 @@ type TUiStore = {
     is_ready_to_deposit_modal_visible: boolean;
     reports_route_tab_index: number;
     should_show_cancellation_warning: boolean;
+    should_show_deposit_or_account_success_modal: boolean;
+    should_trigger_tour_guide: boolean;
     toggleCancellationWarning: (state_change: boolean) => void;
     toggleUnsupportedContractModal: (state_change: boolean) => void;
     toggleReports: (is_visible: boolean) => void;
@@ -319,6 +323,8 @@ type TUiStore = {
     populateHeaderExtensions: (header_items: JSX.Element | null) => void;
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     setShouldShowCooldownModal: (value: boolean) => void;
+    setShouldTriggerTourGuide: (value: boolean) => void;
+    toggleDepositOrAccountSuccessModal: () => void;
 };
 
 type TPortfolioStore = {
@@ -376,6 +382,7 @@ type TTradersHubStore = {
     is_real: boolean;
     is_demo_low_risk: boolean;
     selectRegion: (region: string) => void;
+    closeAccountTransferModal: () => void;
     toggleRegulatorsCompareModal: () => void;
     toggleIsTourOpen: (is_tour_open: boolean) => void;
     selected_region: string;

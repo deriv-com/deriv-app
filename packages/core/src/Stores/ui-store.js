@@ -169,7 +169,9 @@ export default class UIStore extends BaseStore {
     should_show_risk_accept_modal = false;
     should_show_cooldown_modal = false;
     should_show_trading_assessment_modal = false;
+    should_show_deposit_or_account_success_modal = false;
     should_show_trade_assessment_form = false;
+    should_trigger_tour_guide = false;
     is_trading_assessment_for_existing_user_enabled = false;
     is_trading_assessment_for_new_user_enabled = false;
     should_show_assessment_complete_modal = false;
@@ -301,12 +303,14 @@ export default class UIStore extends BaseStore {
             should_show_cancel: observable,
             should_show_cancellation_warning: observable,
             should_show_cooldown_modal: observable,
+            should_show_deposit_or_account_success_modal: observable,
             should_show_multipliers_onboarding: observable,
             should_show_real_accounts_list: observable,
             should_show_risk_accept_modal: observable,
             should_show_risk_warning_modal: observable,
             should_show_trade_assessment_form: observable,
             should_show_trading_assessment_modal: observable,
+            should_trigger_tour_guide: observable,
             show_positions_toggle: observable,
             simple_duration_unit: observable,
             toasts: observable.shallow,
@@ -386,6 +390,7 @@ export default class UIStore extends BaseStore {
             setShouldShowTradeAssessmentForm: action.bound,
             setShouldShowTradingAssessmentModal: action.bound,
             setShouldShowWarningModal: action.bound,
+            setShouldTriggerTourGuide: action.bound,
             setSubSectionIndex: action.bound,
             setTopUpInProgress: action.bound,
             showCloseMxMltAccountPopup: action.bound,
@@ -408,6 +413,7 @@ export default class UIStore extends BaseStore {
             toggleLanguageSettingsModal: action.bound,
             toggleUnsupportedContractModal: action.bound,
             toggleUpdateEmailModal: action.bound,
+            toggleDepositOrAccountSuccessModal: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -938,4 +944,13 @@ export default class UIStore extends BaseStore {
     setIsVerificationSubmitted(value) {
         this.is_verification_submitted = value;
     }
+  
+    toggleDepositOrAccountSuccessModal() {
+        this.should_show_deposit_or_account_success_modal = !this.should_show_deposit_or_account_success_modal;
+    }
+
+    setShouldTriggerTourGuide(value) {
+        this.should_trigger_tour_guide = value;
+    }
+
 }

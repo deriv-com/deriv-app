@@ -7,6 +7,7 @@ import RedirectNoticeModal from 'App/Components/Elements/Modals/RedirectNotice';
 import CooldownWarningModal from './cooldown-warning-modal.jsx';
 import TradingAssessmentExistingUser from './trading-assessment-existing-user.jsx';
 import CompletedAssessmentModal from './completed-assessment-modal.jsx';
+import ReadyToVerifyModal from './ready-to-verify-modal';
 import DerivRealAccountRequiredModal from 'App/Components/Elements/Modals/deriv-real-account-required-modal.jsx';
 import ReadyToDepositModal from './ready-to-deposit-modal';
 import RiskAcceptTestWarningModal from './risk-accept-test-warning-modal';
@@ -67,6 +68,7 @@ const AppModals = ({
     is_account_needed_modal_on,
     is_acuity_modal_open,
     is_closing_create_real_account_modal,
+    is_from_eu,
     is_welcome_modal_visible,
     is_reality_check_visible,
     is_set_residence_modal_visible,
@@ -88,6 +90,7 @@ const AppModals = ({
     is_need_real_account_for_cashier_modal_visible,
     is_verification_modal_visible,
     is_verification_submitted,
+    should_show_deposit_or_account_success_modal,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
     const url_action_param = url_params.get('action');
@@ -177,6 +180,9 @@ const AppModals = ({
 
     if (is_verification_submitted) {
         ComponentToLoad = <VerificationDocumentSubmitted />;
+
+    if (should_show_deposit_or_account_success_modal) {
+        ComponentToLoad = <ReadyToVerifyModal />;
     }
 
     return (
@@ -194,6 +200,7 @@ export default connect(({ client, ui, traders_hub }) => ({
     is_closing_create_real_account_modal: ui.is_closing_create_real_account_modal,
     is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
     is_close_uk_account_modal_visible: ui.is_close_uk_account_modal_visible,
+    is_from_eu: traders_hub.is_eu_user,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     is_logged_in: client.is_logged_in,
@@ -215,4 +222,5 @@ export default connect(({ client, ui, traders_hub }) => ({
     content_flag: traders_hub.content_flag,
     is_trading_experience_incomplete: client.is_trading_experience_incomplete,
     should_show_risk_accept_modal: ui.should_show_risk_accept_modal,
+    should_show_deposit_or_account_success_modal: ui.should_show_deposit_or_account_success_modal,
 }))(AppModals);

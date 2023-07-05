@@ -8,15 +8,14 @@ export interface IGetMoreAccounts {
     title: string;
     onClick?: () => void;
     is_disabled?: boolean;
-    onDisabledClick?: () => void;
 }
-const GetMoreAccounts = ({ icon, description, title, onClick, is_disabled, onDisabledClick }: IGetMoreAccounts) => {
+const GetMoreAccounts = ({ icon, description, title, onClick, is_disabled }: IGetMoreAccounts) => {
     return (
         <div
             className={classNames('get-more-accounts', {
                 'get-more-accounts__disabled': is_disabled,
             })}
-            onClick={() => (is_disabled ? onDisabledClick?.() : onClick?.())}
+            onClick={() => onClick?.()}
         >
             <div>
                 <Icon icon={icon} size={32} className='get-more-accounts__icon' />

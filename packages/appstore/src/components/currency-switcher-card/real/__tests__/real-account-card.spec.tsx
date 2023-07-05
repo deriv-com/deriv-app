@@ -4,6 +4,14 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
+import { APIProvider, useFetch } from '@deriv/api';
+
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useFetch: jest.fn(),
+}));
+
+const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'wallet_migration'>>;
 
 describe('RealAccountCard', () => {
     it('should render the component', () => {
@@ -18,8 +26,14 @@ describe('RealAccountCard', () => {
                 },
             },
         });
+
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseFetch.mockReturnValue({ data: { wallet_migration: { status: 'eligible' } } });
+
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
         );
 
         const { container } = render(<RealAccountCard />, { wrapper });
@@ -47,8 +61,14 @@ describe('RealAccountCard', () => {
                 },
             },
         });
+
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseFetch.mockReturnValue({ data: { wallet_migration: { status: 'eligible' } } });
+
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
         );
 
         const { container } = render(<RealAccountCard />, { wrapper });
@@ -78,8 +98,14 @@ describe('RealAccountCard', () => {
                 },
             },
         });
+
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseFetch.mockReturnValue({ data: { wallet_migration: { status: 'eligible' } } });
+
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
         );
 
         const { container } = render(<RealAccountCard />, { wrapper });
@@ -88,7 +114,7 @@ describe('RealAccountCard', () => {
         expect(screen.getByText('EUR')).toBeInTheDocument();
     });
 
-    it('should redirect the user to cashier_deposit page after clicking deposit', () => {
+    it('should redirect the user to cashier_deposit page after clicking deposit', async () => {
         const history = createMemoryHistory();
         const mock = mockStore({
             client: {
@@ -110,10 +136,16 @@ describe('RealAccountCard', () => {
                 },
             },
         });
+
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseFetch.mockReturnValue({ data: { wallet_migration: { status: 'eligible' } } });
+
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <Router history={history}>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </Router>
+            <APIProvider>
+                <Router history={history}>
+                    <StoreProvider store={mock}>{children}</StoreProvider>
+                </Router>
+            </APIProvider>
         );
 
         const { container } = render(<RealAccountCard />, { wrapper });
@@ -144,8 +176,14 @@ describe('RealAccountCard', () => {
                 },
             },
         });
+
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseFetch.mockReturnValue({ data: { wallet_migration: { status: 'eligible' } } });
+
         const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
+            <APIProvider>
+                <StoreProvider store={mock}>{children}</StoreProvider>
+            </APIProvider>
         );
 
         const { container } = render(<RealAccountCard />, { wrapper });

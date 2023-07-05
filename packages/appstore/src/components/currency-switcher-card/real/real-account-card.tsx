@@ -32,8 +32,9 @@ const RealAccountCard = observer(() => {
     const get_currency = (IsIconCurrency(currency?.toUpperCase()) && currency) || 'USD';
 
     const onButtonAction = (e: React.MouseEvent) => {
-        if (is_wallet_migration_in_progress) setWalletsMigrationInProgressPopup(true);
-        else {
+        if (is_wallet_migration_in_progress) {
+            setWalletsMigrationInProgressPopup(true);
+        } else {
             e.stopPropagation();
             history.push(`${routes.cashier_deposit}#deposit`);
         }
@@ -59,7 +60,7 @@ const RealAccountCard = observer(() => {
                     onClick={onButtonAction}
                     secondary
                     className='currency-switcher__button'
-                    as_disabled={status === 'in_progress'}
+                    as_disabled={is_wallet_migration_in_progress}
                 >
                     <Localize key={`currency-switcher__button-text-${current_language}`} i18n_default_text='Deposit' />
                 </Button>

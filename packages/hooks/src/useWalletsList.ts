@@ -47,6 +47,8 @@ const useWalletsList = () => {
             landing_company_name: wallet.landing_company_name === 'maltainvest' ? 'malta' : wallet.landing_company_name,
             /** Wallet display name */
             name: `${wallet.is_virtual ? 'Demo ' : ''}${currency} ${'Wallet'}`,
+            is_disabled: Boolean(wallet.is_disabled),
+            is_virtual: Boolean(wallet.is_virtual),
         }));
 
         // Sort the wallets alphabetically by fiat, crypto, then virtual

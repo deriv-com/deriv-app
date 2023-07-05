@@ -10,6 +10,7 @@ import { localize, Localize } from '@deriv/translations';
 import './wallet-transfer.scss';
 
 type TWalletTransferProps = {
+    contentScrollHandler: React.UIEventHandler<HTMLDivElement>;
     is_wallet_name_visible: boolean;
     setIsWalletNameVisible: (value: boolean) => void;
 };

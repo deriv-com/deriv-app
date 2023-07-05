@@ -39,12 +39,12 @@ const WalletModal = observer(() => {
 
     const contentScrollHandler = React.useCallback(
         (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
-            if (is_mobile && is_wallet_modal_visible) {
+            if (is_mobile) {
                 const target = e.target as HTMLDivElement;
                 setIsWalletNameVisible(!(target.scrollTop > 0));
             }
         },
-        [is_mobile, is_wallet_modal_visible]
+        [is_mobile]
     );
 
     const should_show_loader = active_wallet?.loginid !== active_modal_wallet_id || !is_authorize || !active_wallet;

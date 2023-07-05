@@ -173,7 +173,11 @@ export const unsupported_contract_types_list = [
     // TODO: remove these once all contract types are supported
     'callputspread',
     'run_high_low',
+    'reset',
+    'asian',
     'tick_high_low',
+    'end',
+    'stay',
     'lb_call',
     'lb_put',
     'lb_high_low',

@@ -392,6 +392,7 @@ type TTradersHubStore = {
     is_demo: boolean;
     selectAccountType: (account_type: string) => void;
     available_cfd_accounts: TAvailableCFDAccounts[];
+    available_dxtrade_accounts: TAvailableCFDAccounts[];
 };
 
 /**

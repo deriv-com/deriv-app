@@ -152,8 +152,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         return <Error error={error} />;
     }
 
-    if (!is_crypto && (verification_code || LocalStore.get('fiat_iframe_url.withdraw'))) {
-        LocalStore.remove('fiat_iframe_url.withdraw');
+    if (!is_crypto && verification_code) {
         return <Withdraw />;
     }
 

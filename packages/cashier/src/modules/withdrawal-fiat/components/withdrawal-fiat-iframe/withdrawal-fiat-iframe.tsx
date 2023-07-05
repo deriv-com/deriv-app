@@ -12,12 +12,8 @@ const WithdrawalFiatIframe = observer(() => {
     const [is_loading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
-        setIsLoading(true);
-        if (typeof iframe_url === 'string') {
-            resetVerificationCode();
-            LocalStore.set('fiat_iframe_url.withdraw', iframe_url);
-        }
-    }, [iframe_url]);
+        return () => resetVerificationCode();
+    }, []);
 
     if (error) return <Error error={error as ErrorStore} />;
 

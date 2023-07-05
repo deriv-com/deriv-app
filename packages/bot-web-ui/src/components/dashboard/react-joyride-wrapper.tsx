@@ -2,6 +2,13 @@ import React from 'react';
 import ReactJoyride, { Step, Styles } from 'react-joyride';
 import { handleJoyrideCallback } from './joyride-config';
 
+const common_tour_button_properties = {
+    fontWeight: '700',
+    fontSize: '14px',
+    height: '40px',
+    padding: '10px 16px',
+};
+
 const ReactJoyrideWrapper = ({ steps, styles, ...props }: { steps: Step[]; styles: Styles }) => {
     return (
         <ReactJoyride
@@ -23,7 +30,10 @@ const ReactJoyrideWrapper = ({ steps, styles, ...props }: { steps: Step[]; style
                     marginRight: '1rem',
                     borderRadius: '0.4rem',
                     color: 'var(--text-general)',
-                    padding: '0.6rem',
+                    ...common_tour_button_properties,
+                },
+                buttonNext: {
+                    ...common_tour_button_properties,
                 },
                 overlay: {
                     height: '100%',

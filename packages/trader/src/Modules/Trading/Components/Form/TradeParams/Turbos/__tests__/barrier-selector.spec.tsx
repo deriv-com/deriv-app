@@ -3,9 +3,10 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import BarrierSelector from '../barrier-selector';
-import { useStore } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
+import TraderProviders from '../../../../../../../trader-providers';
 
-const mocked_root_store: Partial<ReturnType<typeof useStore>> = {
+const mocked_root_store = {
     modules: {
         trade: {
             barrier_1: '16',
@@ -19,13 +20,6 @@ const mocked_root_store: Partial<ReturnType<typeof useStore>> = {
         },
     },
 };
-
-jest.mock('@deriv/stores', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    observer: <T,>(Component: T) => Component,
-    useStore: () => mocked_root_store,
-}));
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -43,7 +37,11 @@ describe('<BarrierSelector/>', () => {
     const barriers_list_header = 'Barriers';
     let current_barrier: HTMLElement;
     beforeEach(() => {
-        render(<BarrierSelector />);
+        render(
+            <TraderProviders store={mockStore(mocked_root_store)}>
+                <BarrierSelector />
+            </TraderProviders>
+        );
         current_barrier = screen.getByTestId('current_barrier');
     });
     it('should render properly with Barrier inside it', () => {

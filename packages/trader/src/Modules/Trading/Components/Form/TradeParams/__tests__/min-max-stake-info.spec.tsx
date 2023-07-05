@@ -2,9 +2,10 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import MinMaxStakeInfo from '../min-max-stake-info';
-import { useStore } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
+import TraderProviders from '../../../../../../trader-providers';
 
-const mocked_root_store: Partial<ReturnType<typeof useStore>> = {
+const mocked_root_store = {
     modules: {
         trade: {
             currency: 'USD',
@@ -19,20 +20,17 @@ const mocked_root_store: Partial<ReturnType<typeof useStore>> = {
     },
 };
 
-jest.mock('@deriv/stores', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    observer: <T,>(Component: T) => Component,
-    useStore: () => mocked_root_store,
-}));
-
 describe('<MinMaxStakeInfo/>', () => {
     const mock_props = {
         className: 'trade-container__stake-field',
     };
 
     it('should be rendered correctly with both Min. stake and Max. stake', () => {
-        render(<MinMaxStakeInfo {...mock_props} />);
+        render(
+            <TraderProviders store={mockStore(mocked_root_store)}>
+                <MinMaxStakeInfo {...mock_props} />
+            </TraderProviders>
+        );
 
         [screen.getByText('Min. stake'), screen.getByText('Max. stake')].forEach(stake_text => {
             expect(stake_text).toBeInTheDocument();

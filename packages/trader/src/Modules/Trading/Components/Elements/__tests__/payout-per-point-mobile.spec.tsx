@@ -2,10 +2,11 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import PayoutPerPointMobile from '../payout-per-point-mobile';
-import { useStore } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import userEvent from '@testing-library/user-event';
+import TraderProviders from '../../../../../trader-providers';
 
-const mocked_root_store: Partial<ReturnType<typeof useStore>> = {
+const mocked_root_store = {
     modules: {
         trade: {
             currency: 'EUR',
@@ -18,16 +19,13 @@ const mocked_root_store: Partial<ReturnType<typeof useStore>> = {
     },
 };
 
-jest.mock('@deriv/stores', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    observer: <T,>(Component: T) => Component,
-    useStore: () => mocked_root_store,
-}));
-
 describe('<PayoutPerPointMobile/>', () => {
     beforeEach(() => {
-        render(<PayoutPerPointMobile />);
+        render(
+            <TraderProviders store={mockStore(mocked_root_store)}>
+                <PayoutPerPointMobile />
+            </TraderProviders>
+        );
     });
     it('should render label name correctly', () => {
         expect(screen.getByText('Payout per point')).toBeInTheDocument();

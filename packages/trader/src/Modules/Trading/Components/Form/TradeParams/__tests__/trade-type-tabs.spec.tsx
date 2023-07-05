@@ -3,10 +3,11 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import TradeTypeTabs from '../trade-type-tabs';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
+import TraderProviders from '../../../../../../trader-providers';
 
 describe('Trade Type Tabs', () => {
-    const mock_root_store = mockStore({
+    const mock_root_store = {
         modules: {
             trade: {
                 contract_type: 'turboslong',
@@ -18,14 +19,16 @@ describe('Trade Type Tabs', () => {
                 vanilla_trade_type: 'VANILLALONGCALL',
             },
         },
-    });
-
-    it('should render Long & Short tabs when contract_type = turboslong', () => {
-        render(
-            <StoreProvider store={mock_root_store}>
+    };
+    const mockTradeTypeTabs = (mocked_store: typeof mock_root_store) => {
+        return (
+            <TraderProviders store={mockStore(mocked_store)}>
                 <TradeTypeTabs />
-            </StoreProvider>
+            </TraderProviders>
         );
+    };
+    it('should render Long & Short tabs when contract_type = turboslong', () => {
+        render(mockTradeTypeTabs(mock_root_store));
         const long_tab = screen.getByText('Long');
         const short_tab = screen.getByText('Short');
         [long_tab, short_tab].forEach(tab => {
@@ -37,11 +40,7 @@ describe('Trade Type Tabs', () => {
         if (mock_root_store.modules) {
             mock_root_store.modules.trade.contract_type = 'vanilla';
         }
-        render(
-            <StoreProvider store={mock_root_store}>
-                <TradeTypeTabs />
-            </StoreProvider>
-        );
+        render(mockTradeTypeTabs(mock_root_store));
         const call_tab = screen.getByText('Call');
         const put_tab = screen.getByText('Put');
         [call_tab, put_tab].forEach(tab => {
@@ -53,11 +52,7 @@ describe('Trade Type Tabs', () => {
         if (mock_root_store.modules) {
             mock_root_store.modules.trade.contract_type = 'invalid_type';
         }
-        render(
-            <StoreProvider store={mock_root_store}>
-                <TradeTypeTabs />
-            </StoreProvider>
-        );
+        render(mockTradeTypeTabs(mock_root_store));
         const long_tab = screen.queryByText('Long');
         const short_tab = screen.queryByText('Short');
         [long_tab, short_tab].forEach(tab => {
@@ -69,11 +64,7 @@ describe('Trade Type Tabs', () => {
         if (mock_root_store.modules) {
             mock_root_store.modules.trade.contract_type = 'turboslong';
         }
-        render(
-            <StoreProvider store={mock_root_store}>
-                <TradeTypeTabs />
-            </StoreProvider>
-        );
+        render(mockTradeTypeTabs(mock_root_store));
 
         const short_tab = screen.getByText('Short');
         userEvent.click(short_tab);

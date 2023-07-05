@@ -2,14 +2,7 @@ import React from 'react';
 import { ApiHelpers, ServerTime, setColors } from '@deriv/bot-skeleton';
 import { Loading } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import {
-    Audio,
-    BotFooterExtensions,
-    BotNotificationMessages,
-    Dashboard,
-    NetworkToastPopup,
-    RoutePromptDialog,
-} from 'Components';
+import { Audio, BotNotificationMessages, Dashboard, NetworkToastPopup, RoutePromptDialog } from 'Components';
 import BotBuilder from 'Components/dashboard/bot-builder';
 import GTM from 'Utils/gtm';
 import { useDBotStore } from 'Stores/useDBotStore';
@@ -93,7 +86,6 @@ const AppContent = observer(() => {
             <BlocklyLoading />
             <div className='bot-dashboard bot'>
                 <Audio />
-                <BotFooterExtensions />
                 <BotNotificationMessages />
                 <Dashboard />
                 <NetworkToastPopup />

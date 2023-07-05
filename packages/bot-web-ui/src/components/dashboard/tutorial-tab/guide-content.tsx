@@ -100,7 +100,7 @@ const GuideContent = observer(({ guide_list }: TGuideContent) => {
                 </div>
                 {guide_list?.length > 0 && (
                     <Text align='center' weight='bold' color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
-                        Videos on DBot
+                        Videos on Deriv Bot
                     </Text>
                 )}
                 <div className='tutorials-wrap__group'>

@@ -45,6 +45,7 @@ const useWalletTransactions = (
             currency: 'BTC',
             gradient_header_class: '',
             gradient_card_class: `wallet-card__btc-bg${is_dark_mode_on ? '--dark' : ''}`,
+            is_crypto: true,
             icon: getWalletCurrencyIcon('BTC', is_dark_mode_on),
             is_demo: !!current_wallet.is_virtual,
             is_disabled: 0,

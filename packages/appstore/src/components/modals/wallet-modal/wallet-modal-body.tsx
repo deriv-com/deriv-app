@@ -1,17 +1,17 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Tabs, ThemedScrollbars, Div100vhContainer } from '@deriv/components';
-import { getCashierOptions, TWalletType } from './provider';
+import { getCashierOptions } from './provider';
 import { observer, useStore } from '@deriv/stores';
+import type { TWalletAccount } from 'Types';
 
 type TWalletModalBodyProps = {
     contentScrollHandler: React.UIEventHandler<HTMLDivElement>;
     is_dark: boolean;
-    is_demo: boolean;
     is_mobile: boolean;
     setIsWalletNameVisible: (value: boolean) => void;
     is_wallet_name_visible: boolean;
-    wallet_type: TWalletType;
+    wallet: TWalletAccount;
 };
 
 const real_tabs = {
@@ -32,13 +32,14 @@ const WalletModalBody = observer(
     ({
         contentScrollHandler,
         is_dark,
-        is_demo,
         is_mobile,
         setIsWalletNameVisible,
         is_wallet_name_visible,
-        wallet_type,
+        wallet,
     }: TWalletModalBodyProps) => {
         const store = useStore();
+
+        const { is_demo } = wallet;
 
         const {
             traders_hub: { active_modal_tab, setWalletModalActiveTab },
@@ -58,7 +59,7 @@ const WalletModalBody = observer(
                 active_icon_color={is_dark ? 'var(--badge-white)' : ''}
                 active_index={tabs[active_modal_tab || 'Deposit']}
                 className={classNames('modal-body__tabs', {
-                    is_scrolled: !is_wallet_name_visible,
+                    is_scrolled: is_mobile && !is_wallet_name_visible,
                 })}
                 has_active_line={false}
                 has_bottom_line={false}
@@ -72,7 +73,7 @@ const WalletModalBody = observer(
                     setWalletModalActiveTab(tab_name);
                 }}
             >
-                {getCashierOptions(wallet_type).map(option => {
+                {getCashierOptions(is_demo ? 'demo' : 'real').map(option => {
                     return (
                         <div key={option.label} icon={option.icon} label={option.label}>
                             <ThemedScrollbars

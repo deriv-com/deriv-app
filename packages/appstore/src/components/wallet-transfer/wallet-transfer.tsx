@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, Formik, Form, FormikHelpers } from 'formik';
 import { AmountInput, Button, Loading, MessageList, TransferAccountSelector } from '@deriv/components';
-import { useTransferBetweenAccounts } from '@deriv/hooks';
+import { useWalletTransfer } from '@deriv/hooks';
 //TODO: replace getCurrencyDisplayCode
 import { getCurrencyDisplayCode, getDecimalPlaces, validNumber } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
@@ -37,7 +37,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         transfer_accounts,
         setFromAccount,
         setToAccount,
-    } = useTransferBetweenAccounts();
+    } = useWalletTransfer();
 
     const portal_id = is_mobile ? 'mobile_list_modal_root' : 'modal_root';
 

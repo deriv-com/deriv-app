@@ -19,14 +19,6 @@
         margin: 0.8rem 0;
     }
 
-    &__tile:first-child {
-        margin-bottom: 3.2rem;
-
-        &-disable-margin-bottom {
-            margin-bottom: 0;
-        }
-    }
-
     &__tile {
         display: flex;
         border: 1px solid $color-grey-5;

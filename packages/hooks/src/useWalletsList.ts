@@ -53,13 +53,13 @@ const useWalletsList = () => {
         return modified_wallets?.sort((a, b) => {
             if (a.is_virtual !== b.is_virtual) {
                 return a.is_virtual ? 1 : -1;
-            } else if (getConfig(a.currency||'')?.is_crypto !== getConfig(b.currency||'')?.is_crypto) {
-                return getConfig(a.currency||'')?.is_crypto ? 1 : -1;
+            } else if (getConfig(a.currency || '')?.is_crypto !== getConfig(b.currency || '')?.is_crypto) {
+                return getConfig(a.currency || '')?.is_crypto ? 1 : -1;
             }
 
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });
-    }, [balance_data?.balance?.accounts, data?.authorize?.account_list, loginid, is_dark_mode_on]);
+    }, [data?.authorize?.account_list, balance_data?.balance?.accounts, is_dark_mode_on, currency, getConfig, loginid]);
 
     return {
         ...reset,

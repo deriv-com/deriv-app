@@ -26,7 +26,7 @@ type TProposalInfo = {
 const PayoutPerPointMobile = observer(() => {
     const { currency, proposal_info, contract_type, vanilla_trade_type } = useTraderStore();
     const contract_key = isVanillaContract(contract_type) ? vanilla_trade_type : contract_type?.toUpperCase();
-    // TODO (@maryia-deriv): remove assertion and local TProposalInfo type after TS migration for trade package is complete
+    // remove assertion and local TProposalInfo type after TS migration for trade package is complete
     const { has_error, has_increased, id, message, obj_contract_basis } =
         (proposal_info as TProposalInfo)?.[contract_key] || {};
     const { text: label, value: payout_per_point } = obj_contract_basis || {};

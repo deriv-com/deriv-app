@@ -12,7 +12,7 @@ const useWalletMigration = () => {
     const { data } = useFetch('wallet_migration', {
         payload: { wallet_migration: 'status' },
         options: {
-            refetchInterval: response => (response?.wallet_migration?.status === 'in_progress' ? 1000 : false),
+            refetchInterval: response => (response?.wallet_migration?.status === 'in_progress' ? 500 : false),
         },
     });
 

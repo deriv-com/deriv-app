@@ -10,12 +10,6 @@ const useWithdrawalFiatAddress = () => {
     const withdrawal_address =
         typeof data?.cashier === 'string' ? `${data?.cashier}&DarkMode=${is_dark_mode_on ? 'on' : 'off'}` : undefined;
 
-    useEffect(() => {
-        if (withdrawal_address === 'string') {
-            client.setVerificationCode('', 'withdraw');
-        }
-    }, [withdrawal_address]);
-
     const send = useCallback(() => {
         if (client.verification_code.payment_withdraw)
             mutate({
@@ -27,6 +21,10 @@ const useWithdrawalFiatAddress = () => {
             });
     }, [mutate]);
 
+    const resetVerificationCode = () => {
+        client.setVerificationCode('', 'payment_withdraw');
+    };
+
     useEffect(() => {
         send();
     }, [send]);
@@ -35,6 +33,7 @@ const useWithdrawalFiatAddress = () => {
         ...rest,
         resend: send,
         data: withdrawal_address,
+        resetVerificationCode,
     };
 };
 

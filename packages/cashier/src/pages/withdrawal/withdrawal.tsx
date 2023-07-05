@@ -1,7 +1,7 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { isCryptocurrency, isDesktop } from '@deriv/shared';
+import { LocalStore, isCryptocurrency, isDesktop } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { useCashierLocked, useCheck10kLimit, useIsSystemMaintenance } from '@deriv/hooks';
 import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
@@ -152,7 +152,8 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         return <Error error={error} />;
     }
 
-    if (!is_crypto && verification_code) {
+    if (!is_crypto && (verification_code || LocalStore.get('fiat_iframe_url.withdraw'))) {
+        LocalStore.remove('fiat_iframe_url.withdraw');
         return <Withdraw />;
     }
 

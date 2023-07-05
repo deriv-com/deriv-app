@@ -18,7 +18,7 @@ type TDialog = {
     is_open?: boolean;
     onBackButtonClick?: () => void;
     onCategoryClick?: (e: React.ComponentProps<typeof VerticalTab.Headers>['selected']) => void;
-    onChangeInput?: (e: string | '') => void;
+    onChangeInput?: (e: string) => void;
     show_loading?: boolean;
 };
 

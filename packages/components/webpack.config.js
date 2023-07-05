@@ -85,12 +85,14 @@ module.exports = function () {
                 'react-dropzone': 'react-dropzone',
                 '@deriv/shared': '@deriv/shared',
                 '@deriv/translations': '@deriv/translations',
+                '@deriv/utils': '@deriv/utils',
                 'react-router-dom': 'react-router-dom',
                 'react-swipeable': 'react-swipeable',
                 'react-tiny-popover': 'react-tiny-popover',
             },
             /^@deriv\/shared\/.+$/,
             /^@deriv\/translations\/.+$/,
+            /^@deriv\/utils\/.+$/,
         ],
     };
 };

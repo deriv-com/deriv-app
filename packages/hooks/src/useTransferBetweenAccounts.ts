@@ -24,19 +24,12 @@ const useTransferBetweenAccounts = () => {
                             Number(account.balance).toFixed(getConfig(account.currency || '')?.fractional_digits)
                         ) || 0,
                     currency: account.currency || '',
-                    //fix display balance
-                    // display_balance: '0',
                     gradient_class: `wallet-card__${
                         account?.demo_account ? 'demo' : account.currency?.toLowerCase()
                     }-bg${is_dark_mode_on ? '--dark' : ''}` as string,
-                    //TODO: fix icon
-                    // icon: (account.account_type !== 'wallet' ? 'IcDxtradeDerived' : '') as string,
-                    is_demo: account?.demo_account,
-                    //TODO: fix jurisdiction
-                    jurisdiction: account.demo_account ? 'demo' : 'svg',
-                    //fix label
-                    // label: '',
+                    is_demo: Boolean(account?.demo_account),
                     loginid: account?.loginid || '',
+                    shortcode: active_wallet?.landing_company_name,
                     type: getConfig(account.currency || '')?.is_crypto ? 'crypto' : 'fiat',
                     wallet_icon: active_wallet?.icon,
                 } as const)
@@ -49,7 +42,7 @@ const useTransferBetweenAccounts = () => {
             },
             modified_active_wallet: accounts?.find(account => account.loginid === active_wallet?.loginid),
         };
-    }, [active_wallet?.icon, active_wallet?.loginid, data?.accounts, getConfig, is_dark_mode_on]);
+    }, [active_wallet, data?.accounts, getConfig, is_dark_mode_on]);
 
     useEffect(() => {
         mutate({ payload: { accounts: 'all' } });

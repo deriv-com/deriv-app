@@ -1,6 +1,7 @@
 import React from 'react';
 import Icon from '../icon';
 import Text from '../text';
+import { WalletJurisdictionBadge } from '../wallet-jurisdiction-badge';
 import { WalletTile } from '../wallet-tile';
 import type { TTransferAccount } from './transfer-account-selector';
 
@@ -47,7 +48,10 @@ const TransferTile = ({ is_mobile, label, placeholder, selected_account }: TTran
 
             {!is_mobile && (
                 <React.Fragment>
-                    {selected_account?.jurisdiction}
+                    <WalletJurisdictionBadge
+                        is_demo={Boolean(selected_account?.is_demo)}
+                        shortcode={selected_account?.shortcode}
+                    />
                     <ChevronIcon />
                 </React.Fragment>
             )}

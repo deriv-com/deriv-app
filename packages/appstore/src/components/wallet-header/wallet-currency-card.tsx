@@ -1,9 +1,9 @@
 import React from 'react';
 import { WalletIcon } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import { getWalletCurrencyIcon } from 'Constants/utils';
+import { getWalletCurrencyIcon } from '@deriv/utils';
 import { isCryptocurrency } from '@deriv/shared';
-import { TWalletAccount } from 'Types';
+import { TWalletAccount } from '../../types';
 
 type TWalletCurrencyCard = Pick<TWalletAccount, 'is_demo' | 'currency'> & {
     gradient_class?: string;
@@ -30,4 +30,5 @@ const WalletCurrencyCard = observer(({ is_demo, currency, gradient_class }: TWal
         </div>
     );
 });
+
 export default WalletCurrencyCard;

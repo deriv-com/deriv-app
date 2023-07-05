@@ -2,11 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, Formik, Form, FormikHelpers } from 'formik';
 import { AmountInput, Button, Loading, MessageList, TransferAccountSelector } from '@deriv/components';
-import { useWalletTransfer } from '@deriv/hooks';
-//TODO: replace getCurrencyDisplayCode
-import { getCurrencyDisplayCode, getDecimalPlaces, validNumber } from '@deriv/shared';
-import { useStore, observer } from '@deriv/stores';
+import { useWalletTransfer, useCurrencyConfig } from '@deriv/hooks';
+import { validNumber } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
+import { getAccountName } from '@deriv/utils';
 import './wallet-transfer.scss';
 
 type TWalletTransferProps = {
@@ -29,6 +29,9 @@ const ERROR_CODES = {
 const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisible }: TWalletTransferProps) => {
     const { ui } = useStore();
     const { is_mobile } = ui;
+
+    const { getConfig } = useCurrencyConfig();
+
     const {
         active_wallet,
         is_loading,
@@ -44,39 +47,29 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
 
     const is_amount_to_input_disabled = !to_account;
 
+    const active_wallet_name = getAccountName(
+        active_wallet?.account_type || '',
+        Boolean(active_wallet?.is_demo),
+        getConfig(active_wallet?.currency || '')?.display_code || ''
+    );
+
     const transfer_to_hint = React.useMemo(() => {
-        return to_account?.label === active_wallet?.label ? (
+        return to_account?.loginid === active_wallet?.loginid ? (
             <Localize
                 i18n_default_text='You can only transfers funds from the {{account}} to the linked {{wallet}}.'
                 values={{
-                    account: from_account?.label,
-                    wallet: active_wallet?.label,
+                    account: getAccountName(
+                        from_account?.account_type || '',
+                        Boolean(from_account?.is_demo),
+                        getConfig(from_account?.currency || '')?.display_code || ''
+                    ),
+                    wallet: active_wallet_name,
                 }}
             />
         ) : (
             ''
         );
-    }, [active_wallet?.label, from_account?.label, to_account?.label]);
-
-    //mocked message list, remove after
-    const mocked_message_list: React.ComponentProps<typeof MessageList>['list'] = [
-        {
-            id: '1',
-            message: 'Hello world!',
-            type: 'info',
-        },
-        {
-            id: '2',
-            message: 'Hello world!',
-            type: 'error',
-            button_label: 'Button',
-        },
-        {
-            id: '3',
-            message: 'Hello world!',
-            type: 'success',
-        },
-    ];
+    }, [active_wallet?.loginid, active_wallet_name, from_account, getConfig, to_account?.loginid]);
 
     const [message_list, setMessageList] = React.useState<React.ComponentProps<typeof MessageList>['list']>([]);
 
@@ -93,8 +86,8 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         if (active_wallet?.is_demo) {
             const { is_ok, message } = validNumber(amount.toString(), {
                 type: 'float',
-                decimals: getDecimalPlaces(from_account?.currency || ''),
-                min: Number(1),
+                decimals: getConfig(from_account?.currency || '')?.fractional_digits,
+                min: 1,
                 max: from_account?.balance,
             });
 
@@ -125,7 +118,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                         ...list,
                         {
                             id: ERROR_CODES.is_demo.between_min_max,
-                            message: `${message} ${getCurrencyDisplayCode(from_account?.currency)}` || '',
+                            message: `${message} ${getConfig(from_account?.currency || '')?.display_code}` || '',
                             type: 'error',
                         },
                     ];
@@ -194,7 +187,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                             {...field}
                                             currency={from_account?.currency || ''}
                                             decimal_places={
-                                                from_account?.currency ? getDecimalPlaces(from_account?.currency) : 0
+                                                getConfig(from_account?.currency || '')?.fractional_digits || 0
                                             }
                                             disabled={false}
                                             has_error={message_list.some(el => el.type === 'error')}
@@ -219,7 +212,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                     portal_id={portal_id}
                                     setIsWalletNameVisible={setIsWalletNameVisible}
                                     transfer_accounts={transfer_accounts}
-                                    wallet_name={active_wallet?.label}
+                                    wallet_name={active_wallet_name}
                                     value={from_account}
                                 />
                             </div>
@@ -231,7 +224,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                             {...field}
                                             currency={to_account?.currency || ''}
                                             decimal_places={
-                                                to_account?.currency ? getDecimalPlaces(to_account?.currency) : 0
+                                                getConfig(to_account?.currency || '')?.fractional_digits || 0
                                             }
                                             disabled={is_amount_to_input_disabled}
                                             has_error={message_list.some(el => el.type === 'error')}
@@ -254,7 +247,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                                     setIsWalletNameVisible={setIsWalletNameVisible}
                                     transfer_accounts={to_account_list}
                                     transfer_hint={transfer_to_hint}
-                                    wallet_name={active_wallet?.label}
+                                    wallet_name={active_wallet_name}
                                     value={to_account}
                                 />
                             </div>
@@ -276,34 +269,6 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                     </Form>
                 )}
             </Formik>
-            <Button
-                onClick={() => {
-                    if (message_list.length === 0) {
-                        setMessageList(mocked_message_list);
-                    } else {
-                        setMessageList([]);
-                    }
-                }}
-            >
-                Set messages
-            </Button>
-            <Button onClick={() => setMessageList(items => items.filter(item => item.id !== '4'))}>
-                Remove message
-            </Button>
-            <Button
-                onClick={() =>
-                    setMessageList(items => [
-                        ...items,
-                        {
-                            id: '4',
-                            message: 'Hello world!',
-                            type: 'error',
-                        },
-                    ])
-                }
-            >
-                Add message
-            </Button>
         </div>
     );
 });

@@ -1,17 +1,19 @@
 import { useMemo } from 'react';
 import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
+import { getWalletCurrencyIcon } from '@deriv/utils';
 
-const useWalletList = () => {
-    const { client } = useStore();
-    const { accounts, loginid, is_crypto } = client;
+const useWalletsList = () => {
+    const { client, ui } = useStore();
+    const { accounts, currency, loginid, is_crypto } = client;
+    const { is_dark_mode_on } = ui;
     const { data, ...reset } = useFetch('authorize', {
         payload: { authorize: accounts[loginid || ''].token },
-        options: { enabled: Boolean(loginid) },
+        options: { enabled: Boolean(loginid), keepPreviousData: true },
     });
+    const { data: balance_data } = useFetch('balance', { payload: { account: 'all' } });
 
     const sortedWallets = useMemo(() => {
-        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
         // Filter out accounts which has account_category as wallet
         const wallets = data?.authorize?.account_list?.filter(account => account.account_category === 'wallet');
 
@@ -19,8 +21,23 @@ const useWalletList = () => {
         // Should remove this once the API is fixed
         const modified_wallets = wallets?.map(wallet => ({
             ...wallet,
-            balance: 1000,
-            landing_company_shortcode: wallet.landing_company_name,
+            /** Indicating whether the wallet is the currently selected wallet. */
+            is_selected: wallet.loginid === loginid,
+            /** Indicating whether the wallet is a virtual-money wallet. */
+            is_demo: wallet.is_virtual === 1,
+            /** Wallet balance */
+            balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,
+            /** Landing company shortcode the account belongs to. Use this instead of landing_company_shortcode for wallets */
+            landing_company_name: wallet.landing_company_name === 'maltainvest' ? 'malta' : wallet.landing_company_name,
+            icon: getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : currency, is_dark_mode_on),
+            is_malta_wallet: wallet.landing_company_name === 'malta',
+            gradient_header_class: `wallet-header__${
+                wallet.is_virtual === 1 ? 'demo' : wallet.currency?.toLowerCase()
+            }-bg${is_dark_mode_on ? '--dark' : ''}`,
+            gradient_card_class: `wallet-card__${wallet.is_virtual === 1 ? 'demo' : wallet.currency?.toLowerCase()}-bg${
+                is_dark_mode_on ? '--dark' : ''
+            }`,
+            name: `${wallet.is_virtual ? 'Demo ' : ''}${currency} ${'Wallet'}`,
         }));
 
         // Sort the wallets alphabetically by fiat, crypto, then virtual
@@ -33,7 +50,7 @@ const useWalletList = () => {
 
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });
-    }, [data, is_crypto]);
+    }, [balance_data?.balance?.accounts, data?.authorize?.account_list, is_crypto, loginid, is_dark_mode_on]);
 
     return {
         ...reset,
@@ -41,4 +58,4 @@ const useWalletList = () => {
     };
 };
 
-export default useWalletList;
+export default useWalletsList;

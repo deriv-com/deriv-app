@@ -1,11 +1,9 @@
 import React from 'react';
-//TODO: uncomment when backgrounds for modal will be ready
-// import { DemoLight, DemoDark } from '../../../public/images/index';
 import classNames from 'classnames';
-import { Badge, Icon, Text, Watermark } from '@deriv/components';
+import { Badge, Icon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { getWalletCurrencyIcon } from 'Constants/utils';
+import { getWalletCurrencyIcon } from '@deriv/utils';
 
 type TWalletModalHeaderProps = {
     balance?: string | number;
@@ -16,21 +14,7 @@ type TWalletModalHeaderProps = {
     shortcode: string;
     closeModal: VoidFunction;
     is_wallet_name_visible: boolean;
-};
-
-type THeaderBackground = {
-    is_dark: boolean;
-    is_demo: boolean;
-};
-
-const HeaderBackground = ({ is_demo, is_dark, children }: React.PropsWithChildren<THeaderBackground>) => {
-    return (
-        <div className='header-background'>
-            {/* TODO: uncomment when backgrounds for modal will be ready
-            {is_demo && <Watermark image={`url(${is_dark ? DemoDark : DemoLight})`} opacity={is_dark ? 0.32 : 0.24} />} */}
-            {children}
-        </div>
-    );
+    gradient_class: string;
 };
 
 const WalletModalHeader = ({
@@ -42,6 +26,7 @@ const WalletModalHeader = ({
     is_mobile,
     shortcode,
     is_wallet_name_visible,
+    gradient_class,
 }: TWalletModalHeaderProps) => {
     const header_class_name = 'modal-header';
 
@@ -109,7 +94,7 @@ const WalletModalHeader = ({
     }, [currency, getCurrencyIconSize, is_dark, is_demo]);
 
     return (
-        <HeaderBackground is_demo={is_demo} is_dark={is_dark}>
+        <div className={`header-background ${gradient_class}`}>
             <div
                 className={classNames(header_class_name, {
                     [`${header_class_name}--hidden-title`]: is_mobile && !is_wallet_name_visible,
@@ -147,7 +132,7 @@ const WalletModalHeader = ({
                     <Icon icon={getCloseIcon()} onClick={closeModal} data_testid='dt_close_icon' />
                 </div>
             </div>
-        </HeaderBackground>
+        </div>
     );
 };
 

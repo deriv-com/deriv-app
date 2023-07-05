@@ -2,77 +2,100 @@ import React from 'react';
 import classNames from 'classnames';
 import { Tabs, ThemedScrollbars, Div100vhContainer } from '@deriv/components';
 import { getCashierOptions, TWalletType } from './provider';
+import { observer, useStore } from '@deriv/stores';
 
 type TWalletModalBodyProps = {
-    active_tab_index: number;
     contentScrollHandler: React.UIEventHandler<HTMLDivElement>;
     is_dark: boolean;
     is_demo: boolean;
     is_mobile: boolean;
-    setActiveTabIndex: (index: number) => void;
     setIsWalletNameVisible: (value: boolean) => void;
     is_wallet_name_visible: boolean;
     wallet_type: TWalletType;
 };
 
-const WalletModalBody = ({
-    active_tab_index,
-    contentScrollHandler,
-    is_dark,
-    is_demo,
-    is_mobile,
-    setActiveTabIndex,
-    setIsWalletNameVisible,
-    is_wallet_name_visible,
-    wallet_type,
-}: TWalletModalBodyProps) => {
-    const getHeightOffset = React.useCallback(() => {
-        const desktop_header_height = '24.4rem';
-        const mobile_header_height = '8.2rem';
+const real_tabs = {
+    Deposit: 0,
+    Withdraw: 1,
+    Transfer: 2,
+    Transactions: 3,
+} as const;
 
-        return is_mobile ? mobile_header_height : desktop_header_height;
-    }, [is_mobile]);
+const demo_tabs = {
+    Deposit: 2,
+    Transfer: 0,
+    Transactions: 1,
+    Withdraw: undefined,
+} as const;
 
-    return (
-        <Tabs
-            active_icon_color={is_dark ? 'var(--badge-white)' : ''}
-            active_index={active_tab_index}
-            className={classNames('modal-body__tabs', {
-                is_scrolled: is_mobile && !is_wallet_name_visible,
-            })}
-            has_active_line={false}
-            has_bottom_line={false}
-            header_fit_content
-            icon_size={16}
-            icon_color={is_demo ? 'var(--demo-text-color-1)' : ''}
-            is_scrollable={false}
-            onTabItemClick={(index: number) => {
-                setActiveTabIndex(index);
-            }}
-        >
-            {getCashierOptions(wallet_type).map(option => {
-                return (
-                    <div key={option.label} icon={option.icon} label={option.label}>
-                        <ThemedScrollbars
-                            className='dc-tabs--modal-body__tabs__themed-scrollbar'
-                            is_scrollbar_hidden={is_mobile}
-                            onScroll={contentScrollHandler}
-                        >
-                            <Div100vhContainer height_offset={getHeightOffset()}>
-                                <div className='dc-tabs--modal-body__tabs__content-wrapper'>
-                                    {option.content({
-                                        contentScrollHandler,
-                                        is_wallet_name_visible,
-                                        setIsWalletNameVisible,
-                                    })}
-                                </div>
-                            </Div100vhContainer>
-                        </ThemedScrollbars>
-                    </div>
-                );
-            })}
-        </Tabs>
-    );
-};
+const WalletModalBody = observer(
+    ({
+        contentScrollHandler,
+        is_dark,
+        is_demo,
+        is_mobile,
+        setIsWalletNameVisible,
+        is_wallet_name_visible,
+        wallet_type,
+    }: TWalletModalBodyProps) => {
+        const store = useStore();
+
+        const {
+            traders_hub: { active_modal_tab, setWalletModalActiveTab },
+        } = store;
+
+        const getHeightOffset = React.useCallback(() => {
+            const desktop_header_height = '24.4rem';
+            const mobile_header_height = '8.2rem';
+
+            return is_mobile ? mobile_header_height : desktop_header_height;
+        }, [is_mobile]);
+
+        const tabs = is_demo ? demo_tabs : real_tabs;
+
+        return (
+            <Tabs
+                active_icon_color={is_dark ? 'var(--badge-white)' : ''}
+                active_index={tabs[active_modal_tab || 'Deposit']}
+                className={classNames('modal-body__tabs', {
+                    is_scrolled: !is_wallet_name_visible,
+                })}
+                has_active_line={false}
+                has_bottom_line={false}
+                header_fit_content
+                icon_size={16}
+                icon_color={is_demo ? 'var(--demo-text-color-1)' : ''}
+                is_scrollable={false}
+                onTabItemClick={(index: number) => {
+                    // @ts-expect-error the key always exist in the tabs object, So we can ignore the TS error.
+                    const tab_name = Object.keys(tabs).find(key => tabs[key] === index) as typeof active_modal_tab;
+                    setWalletModalActiveTab(tab_name);
+                }}
+            >
+                {getCashierOptions(wallet_type).map(option => {
+                    return (
+                        <div key={option.label} icon={option.icon} label={option.label}>
+                            <ThemedScrollbars
+                                className='dc-tabs--modal-body__tabs__themed-scrollbar'
+                                is_scrollbar_hidden={is_mobile}
+                                onScroll={contentScrollHandler}
+                            >
+                                <Div100vhContainer height_offset={getHeightOffset()}>
+                                    <div className='dc-tabs--modal-body__tabs__content-wrapper'>
+                                        {option.content({
+                                            is_wallet_name_visible,
+                                            contentScrollHandler,
+                                            setIsWalletNameVisible,
+                                        })}
+                                    </div>
+                                </Div100vhContainer>
+                            </ThemedScrollbars>
+                        </div>
+                    );
+                })}
+            </Tabs>
+        );
+    }
+);
 
 export default WalletModalBody;

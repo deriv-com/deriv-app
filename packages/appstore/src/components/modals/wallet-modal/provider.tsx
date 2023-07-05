@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
 import { localize } from '@deriv/translations';
-import FiatTransactionList from 'Components/fiat-transaction-list';
+import DemoResetBalance from 'Components/demo-reset-balance';
+import TransactionList from 'Components/transaction-list';
 import WalletDeposit from 'Components/wallet-deposit';
 import WalletTransfer from 'Components/wallet-transfer';
+import WalletWithdrawal from '../../wallet-withdrawal';
 
 export type TWalletType = 'real' | 'demo' | 'p2p' | 'payment_agent';
 
@@ -16,7 +18,7 @@ export const getCashierOptions = (type: TWalletType) => {
                     label: localize('Deposit'),
                     content: () => <WalletDeposit />,
                 },
-                { icon: 'IcMinus', label: localize('Withdraw'), content: () => <p>Withdraw Real</p> },
+                { icon: 'IcMinus', label: localize('Withdraw'), content: () => <WalletWithdrawal /> },
                 {
                     icon: 'IcAccountTransfer',
                     label: localize('Transfer'),
@@ -25,7 +27,7 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcStatement',
                     label: localize('Transactions'),
-                    content: () => <FiatTransactionList />,
+                    content: () => <TransactionList />,
                 },
             ];
         case 'demo':
@@ -38,12 +40,12 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcStatement',
                     label: localize('Transactions'),
-                    content: () => <FiatTransactionList />,
+                    content: () => <TransactionList />,
                 },
                 {
                     icon: 'IcAdd',
                     label: localize('Reset balance'),
-                    content: () => <p>Reset balance</p>,
+                    content: (props: React.ComponentProps<typeof DemoResetBalance>) => <DemoResetBalance {...props} />,
                 },
             ];
         case 'p2p':

@@ -57,14 +57,17 @@ export const icons =
         'IcAppstoreWalletUsdcLight',
         'IcAppstoreWalletUsdtLight',
         'IcAppstoreWalletsLink',
-        'IcAppstoreWarning',
+        'IcAppstoreWarning'
     ],
     'brand': [
+        'IcBrandDerivEzWordmark',
+        'IcBrandDerivEz',
         'IcBrandDeriv',
         'IcBrandDerivgo',
         'IcBrandDmt5FinancialStp',
         'IcBrandDmt5Financial',
         'IcBrandDmt5Synthetics',
+        'IcBrandDxtradeWordmark'
     ],
     'cashier': [
         'IcCashierAdd',
@@ -240,7 +243,7 @@ export const icons =
         'IcCashierWyreLight',
         'IcCashierZenithbankDark',
         'IcCashierZenithbankLight',
-        'IcCashier',
+        'IcCashier'
     ],
     'common': [
         'IcAccountCross',
@@ -358,6 +361,8 @@ export const icons =
         'IcDashboardDbotIcon',
         'IcDbotUserGuide',
         'IcDelete',
+        'IcDemoResetBalanceDone',
+        'IcDemoResetBalance',
         'IcDemo',
         'IcDerivOutline',
         'IcDeriv',
@@ -609,9 +614,11 @@ export const icons =
         'IcWindowsLogo',
         'IcWindows',
         'IcWip',
+        'IcWithdrawRequestVerificationSent',
+        'IcWithdrawRequestVerification',
         'IcZingpay',
         'IcZoomIn',
-        'IcZoomOut',
+        'IcZoomOut'
     ],
     'contract': [
         'IcContractBarrier',
@@ -629,7 +636,7 @@ export const icons =
         'IcContractStartTimeCircle',
         'IcContractStartTime',
         'IcContractStrike',
-        'IcContractTarget',
+        'IcContractTarget'
     ],
     'currency': [
         'IcCurrencyAud',
@@ -653,10 +660,10 @@ export const icons =
         'IcCurrencyUsdc',
         'IcCurrencyUsdk',
         'IcCurrencyUst',
-        'IcCurrencyVirtual',
+        'IcCurrencyVirtual'
     ],
     'derivez': [
-        'IcDerivez',
+        'IcDerivez'
     ],
     'dxtrade': [
         'IcDxtradeDerivX',
@@ -673,7 +680,7 @@ export const icons =
         'IcDxtradeFinancialPlatform',
         'IcDxtradeFinancial',
         'IcDxtradeOnePassword',
-        'IcDxtradeSyntheticPlatform',
+        'IcDxtradeSyntheticPlatform'
     ],
     'flag': [
         'IcFlagDe',
@@ -689,7 +696,7 @@ export const icons =
         'IcFlagUk',
         'IcFlagVi',
         'IcFlagZhCn',
-        'IcFlagZhTw',
+        'IcFlagZhTw'
     ],
     'mt5': [
         'IcMt5Acuity',
@@ -718,7 +725,7 @@ export const icons =
         'IcMt5SyntheticDashboard',
         'IcMt5SyntheticIndices',
         'IcMt5SyntheticPlatform',
-        'IcMt5TradeTypes',
+        'IcMt5TradeTypes'
     ],
     'option': [
         'IcOptionAccumulators',
@@ -736,21 +743,24 @@ export const icons =
         'IcOptionOverUnder',
         'IcOptionRaiseFall',
         'IcOptionTouchNotouch',
-        'IcOptionUpDownAsian',
+        'IcOptionUpDownAsian'
     ],
     'rebranding': [
         'IcRebrandingBinaryBot',
         'IcRebrandingDerivBotDashboard',
         'IcRebrandingDerivBot',
+        'IcRebrandingDerivEzWordmark',
+        'IcRebrandingDerivEz',
         'IcRebrandingDerivGoDashboard',
         'IcRebrandingDerivTraderDashboard',
         'IcRebrandingDerivTrader',
         'IcRebrandingDerivX',
-        'IcRebrandingDerivxWordmark',
+        'IcRebrandingDerivezDashboard',
         'IcRebrandingDerivx',
         'IcRebrandingDmt5Dashboard',
         'IcRebrandingDmt5',
         'IcRebrandingDxtradeDashboard',
+        'IcRebrandingDxtradeWordmark',
         'IcRebrandingDxtrade',
         'IcRebrandingMt5Cfds',
         'IcRebrandingMt5DerivedDashboard',
@@ -758,7 +768,7 @@ export const icons =
         'IcRebrandingMt5Logo',
         'IcRebrandingMt5SwapFree',
         'IcRebrandingSmarttraderDashboard',
-        'IcRebrandingSmarttrader',
+        'IcRebrandingSmarttrader'
     ],
     'stock': [
         'IcStockAdidasSalomon',
@@ -808,7 +818,7 @@ export const icons =
         'IcStockVisa',
         'IcStockWallMart',
         'IcStockWaltDisney',
-        'IcStockZoom',
+        'IcStockZoom'
     ],
     'tradetype': [
         'IcTradetypeAccu',
@@ -846,7 +856,7 @@ export const icons =
         'IcTradetypeTicklow',
         'IcTradetypeUpordown',
         'IcTradetypeVanillaLongCall',
-        'IcTradetypeVanillaLongPut',
+        'IcTradetypeVanillaLongPut'
     ],
     'underlying': [
         'IcUnderlying1HZ100V',
@@ -1005,7 +1015,7 @@ export const icons =
         'IcUnderlyingWLDEUR',
         'IcUnderlyingWLDGBP',
         'IcUnderlyingWLDUSD',
-        'IcUnderlyingWLDXAU',
+        'IcUnderlyingWLDXAU'
     ],
     'wallet': [
         'IcWalletBitcoinDark',
@@ -1019,8 +1029,8 @@ export const icons =
         'IcWalletDerivDemoLight',
         'IcWalletDerivP2pDark',
         'IcWalletDerivP2pLight',
-        'IcWalletEtheriumDark',
-        'IcWalletEtheriumLight',
+        'IcWalletEthereumDark',
+        'IcWalletEthereumLight',
         'IcWalletLiteCoinDark',
         'IcWalletLiteCoinLight',
         'IcWalletModalTetherDark',
@@ -1033,6 +1043,6 @@ export const icons =
         'IcWalletTetherDark',
         'IcWalletTetherLight',
         'IcWalletUsdCoinDark',
-        'IcWalletUsdCoinLight',
-    ],
+        'IcWalletUsdCoinLight'
+    ]
 }

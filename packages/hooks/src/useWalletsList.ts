@@ -19,28 +19,32 @@ const useWalletsList = () => {
 
         // Modify the wallets to include the missing balance from the API response
         // Should remove this once the API is fixed
-        const modified_wallets = wallets?.map(wallet => ({
-            ...wallet,
-            /** Indicating whether the wallet is the currently selected wallet. */
-            is_selected: wallet.loginid === loginid,
-            /** Indicating whether the wallet is a virtual-money wallet. */
-            is_demo: wallet.is_virtual === 1,
-            /** Wallet balance */
-            balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,
-            /** Landing company shortcode the account belongs to. Use this instead of landing_company_shortcode for wallets */
-            landing_company_name: wallet.landing_company_name === 'maltainvest' ? 'malta' : wallet.landing_company_name,
-            icon: getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : wallet.currency || '', is_dark_mode_on),
-            is_malta_wallet: wallet.landing_company_name === 'malta',
-            gradient_header_class: `wallet-header__${
-                wallet.is_virtual === 1 ? 'demo' : wallet.currency?.toLowerCase()
-            }-bg${is_dark_mode_on ? '--dark' : ''}`,
-            gradient_card_class: `wallet-card__${wallet.is_virtual === 1 ? 'demo' : wallet.currency?.toLowerCase()}-bg${
-                is_dark_mode_on ? '--dark' : ''
-            }`,
-            name: `${wallet.is_virtual ? 'Demo ' : ''}${wallet.currency} Wallet`,
-            is_disabled: Boolean(wallet.is_disabled),
-            is_virtual: Boolean(wallet.is_virtual),
-        }));
+        const modified_wallets = wallets?.map(wallet => {
+            const wallet_currency = wallet.currency || '';
+            return {
+                ...wallet,
+                /** Indicating whether the wallet is the currently selected wallet. */
+                is_selected: wallet.loginid === loginid,
+                /** Indicating whether the wallet is a virtual-money wallet. */
+                is_demo: wallet.is_virtual === 1,
+                /** Wallet balance */
+                balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,
+                /** Landing company shortcode the account belongs to. Use this instead of landing_company_shortcode for wallets */
+                landing_company_name:
+                    wallet.landing_company_name === 'maltainvest' ? 'malta' : wallet.landing_company_name,
+                icon: getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : wallet_currency || '', is_dark_mode_on),
+                is_malta_wallet: wallet.landing_company_name === 'malta',
+                gradient_header_class: `wallet-header__${
+                    wallet.is_virtual === 1 ? 'demo' : wallet_currency.toLowerCase()
+                }-bg${is_dark_mode_on ? '--dark' : ''}`,
+                gradient_card_class: `wallet-card__${
+                    wallet.is_virtual === 1 ? 'demo' : wallet_currency.toLowerCase()
+                }-bg${is_dark_mode_on ? '--dark' : ''}`,
+                name: `${wallet.is_virtual ? 'Demo ' : ''}${wallet_currency} Wallet`,
+                is_disabled: Boolean(wallet.is_disabled),
+                is_virtual: Boolean(wallet.is_virtual),
+            };
+        });
 
         // Sort the wallets alphabetically by fiat, crypto, then virtual
         return modified_wallets?.sort((a, b) => {

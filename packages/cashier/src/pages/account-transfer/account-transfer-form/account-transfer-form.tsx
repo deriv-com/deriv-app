@@ -250,7 +250,7 @@ const AccountTransferForm = observer(
             });
 
             setFromAccounts({
-                ...(mt_accounts_from.length && { [localize('Deriv MT5 accounts')]: mt_accounts_from }),
+                ...(mt_accounts_from.length && { [localize('DMT5 accounts')]: mt_accounts_from }),
                 ...(other_cfds_accounts_from.length && {
                     [localize('Other CFDs')]: other_cfds_accounts_from,
                 }),
@@ -258,7 +258,7 @@ const AccountTransferForm = observer(
             });
 
             setToAccounts({
-                ...(mt_accounts_to.length && { [localize('Deriv MT5 accounts')]: mt_accounts_to }),
+                ...(mt_accounts_to.length && { [localize('DMT5 accounts')]: mt_accounts_to }),
                 ...(other_cfds_accounts_to.length && {
                     [localize('Other CFDs')]: other_cfds_accounts_to,
                 }),

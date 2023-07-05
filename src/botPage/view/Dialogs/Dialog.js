@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import store from '../deriv/store';
 import DialogComponent from './DialogComponent';
@@ -8,12 +8,12 @@ import { observer as globalObserver } from '../../../common/utils/observer';
 export default class Dialog {
     constructor(id, title, content, options = {}) {
         this.componentId = `${id}-component`;
-
-        ReactDOM.render(
+        const container = document.getElementById(id);
+        const root = createRoot(container);
+        root.render(
             <Provider store={store}>
                 <DialogComponent id={this.componentId} title={title} content={content} options={options} />
-            </Provider>,
-            document.getElementById(id)
+            </Provider>
         );
     }
     open() {

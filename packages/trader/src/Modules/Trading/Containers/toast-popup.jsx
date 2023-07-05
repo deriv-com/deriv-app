@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { MobileWrapper, Toast } from '@deriv/components';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 
 export const ToastPopup = ({ portal_id = 'popup_root', children, className, ...props }) => {
     if (!document.getElementById(portal_id)) return null;
@@ -54,8 +54,15 @@ NetworkStatusToastError.propTypes = {
     message: PropTypes.string,
 };
 
-export const NetworkStatusToastErrorPopup = connect(({ common }) => ({
-    network_status: common.network_status,
-}))(({ network_status }) => (
-    <NetworkStatusToastError portal_id='popup_root' message={network_status.tooltip} status={network_status.class} />
-));
+export const NetworkStatusToastErrorPopup = observer(() => {
+    const {
+        common: { network_status },
+    } = useStore();
+    return (
+        <NetworkStatusToastError
+            portal_id='popup_root'
+            message={network_status.tooltip}
+            status={network_status.class}
+        />
+    );
+});

@@ -1,22 +1,22 @@
 import React from 'react';
 import classNames from 'classnames';
+import { Field, Form, Formik } from 'formik';
+import { config, save_types } from '@deriv/bot-skeleton';
 import {
     Button,
     Checkbox,
     Icon,
-    Modal,
-    RadioGroup,
     Input,
     MobileFullPageModal,
-    ThemedScrollbars,
+    Modal,
+    RadioGroup,
     Text,
+    ThemedScrollbars,
 } from '@deriv/components';
-import { Formik, Form, Field } from 'formik';
+import { isMobile } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { config, save_types } from '@deriv/bot-skeleton';
 import { connect } from 'Stores/connect';
 import IconRadio from './icon-radio';
-import { isMobile } from '@deriv/shared';
 
 type TSaveModalForm = {
     bot_name: string;

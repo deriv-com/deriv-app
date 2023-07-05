@@ -39,9 +39,16 @@ const createBanxaProvider = (store: OnRampStore) => ({
                     reject(response.error.message);
                 } else {
                     const { url } = response.service_token.banxa;
+                    const linkElement = document.createElement('a');
+                    linkElement.id = 'banxa_link';
+                    window.document.body.appendChild(linkElement);
 
                     if (url) {
-                        window.open(url);
+                        // window.open(url);
+                        const link = document.getElementById('banxa_link');
+                        link?.setAttribute('href', url);
+                        link?.setAttribute('target', '_blank');
+                        link?.click();
                     }
 
                     // Resolving empty will/should redirect user.

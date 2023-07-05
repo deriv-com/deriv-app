@@ -50,12 +50,10 @@ describe('ContractDetails', () => {
             <ContractDetails
                 contract_end_time={123456789}
                 contract_info={contract_info}
-                currency={'USD'}
                 duration_unit={'day'}
                 duration={1}
                 exit_spot={123}
                 is_vanilla={true}
-                display_number_of_contracts={'10'}
             />
         );
         expect(wrapper.queryAllByTestId('dt_bt_label')).toHaveLength(2);
@@ -66,12 +64,10 @@ describe('ContractDetails', () => {
             <ContractDetails
                 contract_end_time={123456789}
                 contract_info={contract_info}
-                currency={'USD'}
                 duration_unit={'day'}
                 duration={1}
                 exit_spot={123}
                 is_vanilla={true}
-                display_number_of_contracts={'10'}
             />
         );
 

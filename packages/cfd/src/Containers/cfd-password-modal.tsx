@@ -7,9 +7,11 @@ import RootStore from '../Stores/index';
 import {
     getDxCompanies,
     getMtCompanies,
+    getDerivezCompanies,
     getFormattedJurisdictionCode,
     TMtCompanies,
     TDxCompanies,
+    TDerivezCompanies,
 } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import {
     FormSubmitButton,
@@ -222,7 +224,9 @@ const ReviewMessageForMT5 = ({
 const IconType = React.memo(({ platform, type, show_eu_related_content }: TIconTypeProps) => {
     const traders_hub = window.location.pathname === routes.traders_hub;
     if (platform === CFD_PLATFORMS.DXTRADE) {
-        return <Icon icon='IcRebrandingDerivx' size={128} />;
+        return <Icon icon='IcRebrandingDxtradeDashboard' size={128} />;
+    } else if (platform === CFD_PLATFORMS.DERIVEZ) {
+        return <Icon icon='IcBrandDerivEz' size={128} />;
     } else if (traders_hub) {
         switch (type) {
             case 'synthetic':
@@ -556,7 +560,9 @@ const CFDPasswordForm = ({
                                         i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} {{jurisdiction_shortcode}} account.'
                                         values={{
                                             platform: getCFDPlatformLabel(platform),
-                                            platform_name: platform === CFD_PLATFORMS.MT5 ? 'MT5' : 'Deriv X',
+                                            // account: !show_eu_related_content ? account_title : '',
+                                            platform_name:
+                                                platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
                                             account: !show_eu_related_content
                                                 ? getAccountTitle(platform, account_type, account_title)
                                                 : '',
@@ -569,7 +575,9 @@ const CFDPasswordForm = ({
                                         i18n_default_text='Enter your {{platform}} password to add a {{platform_name}} {{account}} account.'
                                         values={{
                                             platform: getCFDPlatformLabel(platform),
-                                            platform_name: platform === CFD_PLATFORMS.MT5 ? 'MT5' : 'Deriv X',
+                                            // account: account_title,
+                                            platform_name:
+                                                platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
                                             account: getAccountTitle(platform, account_type, account_title),
                                         }}
                                     />
@@ -833,25 +841,56 @@ const CFDPasswordModal = ({
         if (!category && !type) return '';
 
         const category_label = category === 'real' ? localize('real') : localize('demo');
-        const type_label =
-            getMtCompanies(show_eu_related_content)[category as keyof TMtCompanies][
-                type as keyof TMtCompanies['demo' | 'real']
-            ].short_title;
-        const deriv_x_type_label =
-            getDxCompanies()[category as keyof TDxCompanies][type as keyof TDxCompanies['demo' | 'real']].short_title;
+        let type_label = '';
+        switch (platform) {
+            case CFD_PLATFORMS.MT5:
+                type_label =
+                    getMtCompanies(show_eu_related_content)[category as keyof TMtCompanies][
+                        type as keyof TMtCompanies['demo' | 'real']
+                    ].short_title;
+                break;
+            case CFD_PLATFORMS.DXTRADE:
+                type_label =
+                    getDxCompanies()[category as keyof TDxCompanies][type as keyof TDxCompanies['demo' | 'real']]
+                        .short_title;
+                break;
+            case CFD_PLATFORMS.DERIVEZ:
+                type_label =
+                    getDerivezCompanies()[category as keyof TDerivezCompanies][
+                        type as keyof TDerivezCompanies['demo' | 'real']
+                    ].short_title;
+                break;
+            default:
+                type_label = '';
+                break;
+        }
+
         const jurisdiction_label =
             jurisdiction_selected_shortcode && getFormattedJurisdictionCode(jurisdiction_selected_shortcode);
-        const mt5_platform_label = jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'MT5' : '';
+        const mt5_platform_label = jurisdiction_selected_shortcode !== Jurisdiction.MALTA_INVEST ? 'Deriv MT5' : '';
 
         if (category === 'real') {
+            let platformName = '';
+            switch (platform) {
+                case CFD_PLATFORMS.MT5:
+                    platformName = mt5_platform_label;
+                    break;
+                case CFD_PLATFORMS.DERIVEZ:
+                    platformName = 'Deriv Ez';
+                    break;
+                default:
+                    platformName = 'Deriv X';
+                    break;
+            }
+
             return (
                 <React.Fragment>
                     <Localize
                         i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}} {{jurisdiction_selected_shortcode}}</1> account. '
                         values={{
-                            // TODO: remove below condition once deriv x changes are completed
-                            type: platform === CFD_PLATFORMS.DXTRADE ? deriv_x_type_label : type_label,
-                            platform: platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : 'Deriv X',
+                            type: type_label,
+                            platform:
+                                platform === CFD_PLATFORMS.MT5 ? mt5_platform_label : getCFDPlatformLabel(platform),
                             category: category_label,
                             jurisdiction_selected_shortcode:
                                 platform === CFD_PLATFORMS.MT5 && !show_eu_related_content ? jurisdiction_label : '',
@@ -863,7 +902,7 @@ const CFDPasswordModal = ({
                     ) : (
                         <ReviewMessageForMT5
                             is_selected_mt5_verified={is_selected_mt5_verified}
-                            jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
+                            jurisdiction_selected_shortcode={jurisdiction_label}
                             manual_status={manual_status}
                         />
                     )}
@@ -873,11 +912,10 @@ const CFDPasswordModal = ({
 
         return (
             <Localize
-                i18n_default_text='Congratulations, you have successfully created your {{category}} {{deriv_keyword}} <0>{{platform}}</0> <1>{{type}}</1> account.'
+                i18n_default_text='Congratulations, you have successfully created your {{category}} <0>{{platform}}</0> <1>{{type}}</1> account. '
                 values={{
-                    deriv_keyword: platform === CFD_PLATFORMS.MT5 ? 'Deriv' : '',
-                    type: platform === CFD_PLATFORMS.DXTRADE ? deriv_x_type_label : type_label,
-                    platform: platform === CFD_PLATFORMS.MT5 ? 'MT5' : getCFDPlatformLabel(platform),
+                    type: type_label,
+                    platform: getCFDPlatformLabel(platform),
                     category: category_label,
                 }}
                 components={[<span key={0} className='cfd-account__platform' />, <strong key={1} />]}

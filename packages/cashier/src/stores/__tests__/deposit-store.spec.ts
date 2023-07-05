@@ -88,4 +88,22 @@ describe('DepositStore', () => {
         expect(checkIframeLoaded).not.toHaveBeenCalled();
         expect(setLoading).toHaveBeenCalledWith(false);
     });
+    it('should call cashier deposit if the active_container is deposit and not on crypto', async () => {
+        const { checkIframeLoaded } = deposit_store.root_store.modules.cashier.iframe;
+
+        deposit_store.root_store.modules.cashier.iframe.is_session_timeout = true;
+
+        await deposit_store.onMountDeposit();
+        expect(checkIframeLoaded).toHaveBeenCalled();
+        expect(deposit_store.WS.authorized.cashier).toHaveBeenCalled();
+    });
+    it('should not call cashier deposit if the active_container is not deposit and on crypto', async () => {
+        const { checkIframeLoaded } = deposit_store.root_store.modules.cashier.iframe;
+        deposit_store.root_store.modules.cashier.general_store.active_container = 'withdraw';
+        deposit_store.root_store.modules.cashier.iframe.is_session_timeout = true;
+
+        await deposit_store.onMountDeposit();
+        expect(checkIframeLoaded).not.toHaveBeenCalled();
+        expect(deposit_store.WS.authorized.cashier).not.toHaveBeenCalled();
+    });
 });

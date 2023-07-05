@@ -105,7 +105,10 @@ export class RudderStack {
     }
 
     init() {
-        const RUDDERSTACK_KEY = process.env.RUDDERSTACK_KEY;
+        const isProduction = process.env.CIRCLE_JOB === 'release_production';
+        const RUDDERSTACK_KEY = isProduction
+            ? process.env.RUDDERSTACK_PRODUCTION_KEY
+            : process.env.RUDDERSTACK_STAGING_KEY;
         const RUDDERSTACK_URL = process.env.RUDDERSTACK_URL;
         if (RUDDERSTACK_KEY && RUDDERSTACK_URL) {
             RudderAnalytics.load(RUDDERSTACK_KEY, RUDDERSTACK_URL);

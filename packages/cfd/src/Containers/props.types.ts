@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-    DetailsOfEachMT5Loginid,
-    GetAccountStatus,
-    GetSettings,
-    LandingCompany,
-    ResidenceList,
-    VerifyEmailResponse,
-} from '@deriv/api-types';
+import { DetailsOfEachMT5Loginid, GetAccountStatus, VerifyEmailResponse } from '@deriv/api-types';
 import { FormikHelpers as FormikActions } from 'formik';
 import { TCFDPasswordFormValues } from './cfd-password-modal';
 import {
@@ -21,12 +14,6 @@ import {
 import RootStore from '../Stores/index';
 
 export type TCFDPersonalDetailsContainerProps = {
-    account_settings: GetSettings;
-    getChangeableFields: () => string[];
-    context: RootStore;
-    landing_company: LandingCompany;
-    residence_list: ResidenceList;
-    setAccountSettings: (account_settings: GetSettings) => void;
     onSubmit: (index: number, value: { [key: string]: string }) => void;
 };
 
@@ -75,7 +62,7 @@ export type TChangePassword = {
 export type TPasswordResetAndTradingPasswordManager = {
     email: string;
     platform: CFD_Platform;
-    account_group: 'real' | 'demo';
+    account_group: TCFDPasswordReset['account_group'];
     toggleModal?: () => void;
 };
 
@@ -92,14 +79,7 @@ export type TError = {
 };
 
 export type TCFDResetPasswordModal = {
-    current_list: Record<string, DetailsOfEachMT5Loginid>;
-    email: string;
-    context?: RootStore;
-    is_cfd_reset_password_modal_enabled: boolean;
-    is_eu: boolean;
-    is_logged_in: boolean;
     platform: CFD_Platform;
-    setCFDPasswordResetModal: (value: boolean) => void;
 };
 
 export type TCFDPasswordSuccessMessage = {
@@ -134,9 +114,8 @@ export type TCountdownComponent = {
 export type TCFDPasswordReset = {
     sendVerifyEmail: () => Promise<VerifyEmailResponse>;
     account_type: string;
-    account_group: 'real' | 'demo';
+    account_group: 'demo' | 'real' | '';
     server: string;
-    context: RootStore;
     password_type: string;
 };
 
@@ -149,38 +128,30 @@ export type TCFDPasswordManagerTabContent = {
     toggleModal: () => void;
     selected_login: string;
     email: string;
-    context: RootStore;
     setPasswordType: (value: string) => void;
     multi_step_ref: React.MutableRefObject<TMultiStepRefProps | undefined>;
     platform: CFD_Platform;
     onChangeActiveTabIndex: (value: number) => void;
-    account_group: 'real' | 'demo';
+    account_group: TCFDPasswordReset['account_group'];
 };
 
 export type TCFDPasswordManagerModal = {
-    enableApp: () => void;
-    email: string;
-    is_eu: boolean;
-    context: RootStore;
-    disableApp: () => void;
     is_visible: boolean;
     platform: CFD_Platform;
     selected_login: string;
-    selected_account: string;
     toggleModal: () => void;
     selected_account_type: string;
-    selected_account_group: 'real' | 'demo';
+    selected_account_group: TCFDPasswordReset['account_group'];
     selected_server: string;
-    sendVerifyEmail: () => Promise<VerifyEmailResponse>;
 };
 
 export type TJurisdictionCardProps = {
+    jurisdiction_selected_shortcode: string;
+    setJurisdictionSelectedShortcode: (card_type: string) => void;
     account_status: GetAccountStatus;
     account_type: string;
     disabled: boolean;
     is_non_idv_design: boolean;
-    jurisdiction_selected_shortcode: string;
-    setJurisdictionSelectedShortcode: (card_type: string) => void;
     type_of_card: TJurisdictionCardType;
 };
 
@@ -223,12 +194,9 @@ export type TJurisdictionCardSectionProps = {
 export type TJurisdictionCardType = 'svg' | 'bvi' | 'vanuatu' | 'labuan' | 'maltainvest';
 
 export type TVerificationStatusBannerProps = {
-    account_status: GetAccountStatus;
     account_type: string;
-    context: RootStore;
     card_classname: string;
     disabled: boolean;
-    is_virtual: boolean;
     type_of_card: string;
     real_synthetic_accounts_existing_data: TExistingData;
     real_financial_accounts_existing_data: TExistingData;
@@ -239,7 +207,6 @@ export type TVerificationStatusBannerProps = {
 
 export type TJurisdictionCheckBoxProps = {
     class_name: string;
-    context: RootStore;
     is_checked: boolean;
     jurisdiction_selected_shortcode: string;
     onCheck: () => void;
@@ -251,40 +218,12 @@ type TOpenAccountTransferMeta = {
     type?: string;
 };
 
-type TJurisdictionModalCommonProps = {
-    account_type: {
-        type: string;
-        category: string;
-    };
-    context: RootStore;
-    is_jurisdiction_modal_visible: boolean;
+export type TJurisdictionModalContentWrapperProps = {
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
-    show_eu_related_content: boolean;
-    toggleJurisdictionModal: () => void;
 };
 
-export type TJurisdictionModalContentWrapperProps = TJurisdictionModalCommonProps & {
-    account_status: GetAccountStatus;
-    fetchAccountSettings: () => void;
-    has_submitted_cfd_personal_details: boolean;
-    is_virtual: boolean;
-    jurisdiction_selected_shortcode: string;
-    real_financial_accounts_existing_data: TExistingData;
-    real_swapfree_accounts_existing_data: TExistingData;
-    real_synthetic_accounts_existing_data: TExistingData;
-    residence: string;
-    residence_list: ResidenceList;
-    setJurisdictionSelectedShortcode: (shortcode: string) => void;
-    should_restrict_bvi_account_creation: boolean;
-    should_restrict_vanuatu_account_creation: boolean;
-    toggleCFDVerificationModal: () => void;
-    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
-    updateMT5Status: () => void;
-};
-
-export type TJurisdictionModalProps = TJurisdictionModalCommonProps & {
-    disableApp: () => void;
-    enableApp: () => void;
+export type TJurisdictionModalProps = {
+    openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
 };
 
 export type TJurisdictionModalContentProps = {
@@ -302,11 +241,12 @@ export type TJurisdictionModalContentProps = {
     is_virtual: boolean;
 };
 
+type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
+
 export type TJurisdictionModalFootNoteProps = {
-    account_status: GetAccountStatus;
+    account_status: TAccountStatus;
     account_type: string;
     card_classname: string;
-    context: RootStore;
     jurisdiction_selected_shortcode: string;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
@@ -330,8 +270,8 @@ export type TCompareAccountRowProps = TCompareAccountContentProps & {
     is_pre_appstore_setting: boolean;
     pre_appstore_class: string;
     is_high_risk_for_mt5: boolean;
-    CFDs_restricted_countries: string[];
-    financial_restricted_countries: string[];
+    CFDs_restricted_countries: boolean;
+    financial_restricted_countries: boolean;
     is_preappstore_restricted_cr_demo_account: boolean;
 };
 
@@ -344,45 +284,20 @@ export type TCompareAccountContentProps = {
 export type TCompareAccountFooterButtonData = { label: string; action: string };
 
 export type TDMT5CompareModalContentProps = {
-    account_settings: GetSettings;
-    account_status: GetAccountStatus;
-    account_type: TOpenAccountTransferMeta;
-    clearCFDError: () => void;
     content_flag: string;
-    context: RootStore;
-    current_list: Record<string, DetailsOfEachMT5Loginid>;
-    has_real_account: boolean;
     is_demo_tab: boolean;
     is_logged_in: boolean;
     is_pre_appstore_setting: boolean;
     is_preappstore_cr_demo_account: boolean;
     is_preappstore_restricted_cr_demo_account: boolean;
     is_real_enabled: boolean;
-    is_virtual: boolean;
     openDerivRealAccountNeededModal: () => void;
     openPasswordModal: (account_type: TOpenAccountTransferMeta) => void;
-    openSwitchToRealAccountModal: () => void;
     real_account_creation_unlock_date: string;
-    setAccountSettings: (get_settings_response: GetSettings) => void;
-    setAccountType: (account_type: TOpenAccountTransferMeta) => void;
-    setAppstorePlatform: (platform: string) => void;
-    setJurisdictionSelectedShortcode: (shortcode: string) => void;
     setShouldShowCooldownModal: (value: boolean) => void;
-    should_restrict_bvi_account_creation: boolean;
-    should_restrict_vanuatu_account_creation: boolean;
     should_show_derivx: boolean;
     show_eu_related_content: boolean;
-    toggleCFDPersonalDetailsModal: (is_from_mt5_compare_accounts?: boolean) => void;
-    toggleCFDVerificationModal: () => void;
     toggleCompareAccounts: () => void;
-    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
-    updateMT5Status: () => void;
-    upgradeable_landing_companies: unknown[];
-    no_CR_account: boolean;
-    is_eu_user: boolean;
-    no_MF_account: boolean;
-    CFDs_restricted_countries: string[];
-    financial_restricted_countries: string[];
 };
 
 export type TCFDDbviOnboardingProps = {

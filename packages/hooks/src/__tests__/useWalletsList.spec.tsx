@@ -14,7 +14,12 @@ const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'
 describe('useWalletsList', () => {
     test('should return wallets list for the current loginid', () => {
         const mock = mockStore({
-            client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
+            client: {
+                accounts: { CRW909900: { token: '12345' } },
+                currency: 'USD',
+                loginid: 'CRW909900',
+                is_crypto: () => false,
+            },
         });
 
         // @ts-expect-error Need to update @deriv/api-types to fix the TS error
@@ -52,7 +57,6 @@ describe('useWalletsList', () => {
                 is_virtual: false,
                 landing_company_name: 'svg',
                 is_demo: false,
-                is_selected: false,
                 is_malta_wallet: false,
                 icon_type: 'fiat',
                 is_disabled: false,

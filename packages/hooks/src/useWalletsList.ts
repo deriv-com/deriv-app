@@ -1,45 +1,11 @@
 import { useMemo } from 'react';
 import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
-
-// TODO: Maybe move this function to deriv/utils. But this function will be used only here, so...
-const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_modal = false) => {
-    switch (currency) {
-        case 'demo':
-            if (is_modal) return 'IcWalletDerivDemoLight';
-            return is_dark_mode_on ? 'IcWalletDerivDemoDark' : 'IcWalletDerivDemoLight';
-        case 'USD':
-            return 'IcWalletCurrencyUsd';
-        case 'EUR':
-            return 'IcWalletCurrencyEur';
-        case 'AUD':
-            return 'IcWalletCurrencyAud';
-        case 'GBP':
-            return 'IcWalletCurrencyGbp';
-        case 'BTC':
-            return is_dark_mode_on ? 'IcWalletBitcoinDark' : 'IcWalletBitcoinLight';
-        case 'ETH':
-            return is_dark_mode_on ? 'IcWalletEtheriumDark' : 'IcWalletEtheriumLight';
-        case 'USDT':
-        case 'eUSDT':
-        case 'tUSDT':
-        case 'UST':
-            if (is_modal) {
-                return is_dark_mode_on ? 'IcWalletModalTetherDark' : 'IcWalletModalTetherLight';
-            }
-            return is_dark_mode_on ? 'IcWalletTetherDark' : 'IcWalletTetherLight';
-        case 'LTC':
-            return is_dark_mode_on ? 'IcWalletLiteCoinDark' : 'IcWalletLiteCoinLight';
-        case 'USDC':
-            return is_dark_mode_on ? 'IcWalletUsdCoinDark' : 'IcWalletUsdCoinLight';
-        default:
-            return 'Unknown';
-    }
-};
+import { getWalletCurrencyIcon } from '@deriv/utils';
 
 const useWalletsList = () => {
     const { client, ui } = useStore();
-    const { accounts, loginid, is_crypto } = client;
+    const { accounts, currency, loginid, is_crypto } = client;
     const { is_dark_mode_on } = ui;
     const { data, ...rest } = useFetch('authorize', {
         payload: { authorize: accounts[loginid || ''].token },
@@ -54,15 +20,11 @@ const useWalletsList = () => {
         // Modify the wallets to include the missing balance from the API response
         const modified_wallets =
             wallets?.map(wallet => {
-                const currency = wallet?.currency || 'USD';
                 const is_crypto_currency = is_crypto(currency);
-                const icon = getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : currency, is_dark_mode_on);
-                const modal_icon = getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : currency, is_dark_mode_on, true);
-                const name = `${wallet.is_virtual ? 'Demo ' : ''}${currency} ${'Wallet'}`;
 
                 return {
                     ...wallet,
-                    currency,
+                    currency: wallet?.currency || 'USD',
                     /** Indicating whether the wallet is the currently selected wallet. */
                     is_selected: wallet.loginid === loginid,
                     /** Indicating whether the wallet is a virtual-money wallet. */
@@ -83,9 +45,9 @@ const useWalletsList = () => {
                     is_disabled: Boolean(wallet.is_disabled),
                     is_virtual: Boolean(wallet.is_virtual),
                     is_crypto: is_crypto_currency,
-                    icon,
-                    modal_icon,
-                    name,
+                    icon: getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : currency, is_dark_mode_on),
+                    modal_icon: getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : currency, is_dark_mode_on, true),
+                    name: `${wallet.is_virtual ? 'Demo ' : ''}${currency} ${'Wallet'}`,
                     // needs for WalletIcon, maybe refactor during cleanUp
                     icon_type: !is_crypto_currency && !wallet.is_virtual ? 'fiat' : 'crypto',
                 };
@@ -101,7 +63,7 @@ const useWalletsList = () => {
 
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });
-    }, [balance_data?.balance?.accounts, data?.authorize?.account_list, is_crypto, loginid, is_dark_mode_on]);
+    }, [data?.authorize?.account_list, is_crypto, currency, loginid, balance_data?.balance?.accounts, is_dark_mode_on]);
 
     return {
         ...rest,

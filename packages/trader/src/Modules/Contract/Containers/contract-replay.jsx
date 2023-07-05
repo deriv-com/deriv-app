@@ -272,7 +272,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                 // forcing chart reload when start_epoch changes to an earlier epoch for ACCU closed contract:
                 is_accumulator_contract && end_epoch && start_epoch < prev_start_epoch
             }
-            shouldFetchTradingTimes={!end_epoch}
+            shouldFetchTradingTimes={false}
             yAxisMargin={getChartYAxisMargin()}
             anchorChartToLeft={isMobile()}
             shouldFetchTickHistory={

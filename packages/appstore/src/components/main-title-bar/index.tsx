@@ -10,7 +10,6 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores/index';
 import RegulationsSwitcherLoader from 'Components/pre-loader/regulations-switcher-loader';
 import WalletsBanner from 'Components/wallets-banner';
-import { useWalletMigration } from '@deriv/hooks';
 
 const MainTitleBar = () => {
     const { traders_hub, client, notifications } = useStores();

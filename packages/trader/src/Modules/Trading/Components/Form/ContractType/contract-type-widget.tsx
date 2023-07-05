@@ -93,19 +93,19 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
     const list_with_category = () => {
         const contract_type_category_icon: { [key: string]: string } = getContractTypeCategoryIcons();
         const order_arr = ['Accumulators', 'Multipliers', 'Vanillas', 'Ups & Downs', 'Highs & Lows', 'Digits'];
-        const ordered_list = list?.sort((a, b) => order_arr.indexOf(a.key) - order_arr.indexOf(b.key));
-        const accumulators_category = ordered_list?.filter(({ label }) => label === localize('Accumulators'));
-        const multipliers_category = ordered_list?.filter(({ label }) => label === localize('Multipliers'));
-        const options_category = ordered_list?.filter(
+        list?.sort((a, b) => order_arr.indexOf(a.key) - order_arr.indexOf(b.key));
+        const accumulators_category = list?.filter(({ label }) => label === localize('Accumulators'));
+        const multipliers_category = list?.filter(({ label }) => label === localize('Multipliers'));
+        const options_category = list?.filter(
             ({ label }) => label !== localize('Multipliers') && label !== localize('Accumulators')
         );
 
         const categories: TList[] = [];
 
-        if (list && list.length > 0 && ordered_list) {
+        if (list && list.length > 0) {
             categories.push({
                 label: localize('All'),
-                contract_categories: [...ordered_list],
+                contract_categories: [...list],
                 key: 'All',
                 icon: '',
             });

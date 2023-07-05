@@ -37,22 +37,21 @@ const CreateAdSummary = ({ offer_amount, price_rate, type }) => {
             <Text key={0} weight='bold' size='xs' color='status-info-blue' />,
             <Text key={1} weight='normal' size='xs' color='status-info-blue' />,
         ];
-        const values = { target_amount: display_offer_amount, target_currency: currency };
         if (price_rate) {
-            Object.assign(values, {
-                local_amount: display_total,
-                local_currency: local_currency_config.currency,
-                price_rate: removeTrailingZeros(
-                    formatMoney(local_currency_config.currency, display_price_rate, true, 6)
-                ),
-            });
-
             if (type === buy_sell.BUY) {
                 return (
                     <Localize
                         i18n_default_text="You're creating an ad to buy <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> <1>({{ price_rate }} {{local_currency}}/{{ target_currency }})</1>"
                         components={components}
-                        values={values}
+                        values={{
+                            target_amount: display_offer_amount,
+                            target_currency: currency,
+                            local_amount: display_total,
+                            local_currency: local_currency_config.currency,
+                            price_rate: removeTrailingZeros(
+                                formatMoney(local_currency_config.currency, display_price_rate, true, 6)
+                            ),
+                        }}
                     />
                 );
             }
@@ -61,7 +60,15 @@ const CreateAdSummary = ({ offer_amount, price_rate, type }) => {
                 <Localize
                     i18n_default_text="You're creating an ad to sell <0>{{ target_amount }} {{ target_currency }}</0> for <0>{{ local_amount }} {{ local_currency }}</0> <1>({{ price_rate }} {{local_currency}}/{{ target_currency }})</1>"
                     components={components}
-                    values={values}
+                    values={{
+                        target_amount: display_offer_amount,
+                        target_currency: currency,
+                        local_amount: display_total,
+                        local_currency: local_currency_config.currency,
+                        price_rate: removeTrailingZeros(
+                            formatMoney(local_currency_config.currency, display_price_rate, true, 6)
+                        ),
+                    }}
                 />
             );
         }
@@ -71,7 +78,10 @@ const CreateAdSummary = ({ offer_amount, price_rate, type }) => {
                 <Localize
                     i18n_default_text="You're creating an ad to buy <0>{{ target_amount }} {{ target_currency }}</0>..."
                     components={components}
-                    values={values}
+                    values={{
+                        target_amount: display_offer_amount,
+                        target_currency: currency,
+                    }}
                 />
             );
         }
@@ -80,7 +90,10 @@ const CreateAdSummary = ({ offer_amount, price_rate, type }) => {
             <Localize
                 i18n_default_text="You're creating an ad to sell <0>{{ target_amount }} {{ target_currency }}</0>..."
                 components={components}
-                values={values}
+                values={{
+                    target_amount: display_offer_amount,
+                    target_currency: currency,
+                }}
             />
         );
     }

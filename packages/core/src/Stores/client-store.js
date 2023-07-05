@@ -1733,7 +1733,9 @@ export default class ClientStore extends BaseStore {
             this.root_store.notifications.addNotificationMessage({
                 key: 'maintenance',
                 header: localize('Site is being updated'),
-                message: localize(this.website_status.message),
+                message: localize('{{website_status_message}}', {
+                    website_status_message: this.website_status.message,
+                }),
                 type: 'warning',
                 is_persistent: true,
             });

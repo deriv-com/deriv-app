@@ -162,7 +162,7 @@ const StaticCFDAccountManager = ({
                                 is_blurry.item || is_last_step || is_derivx_last_step ? 'less-prominent' : 'prominent'
                             }
                         >
-                            {localize(`${loginid}`)}
+                            {localize('{{login_id}}', { login_id: loginid })}
                         </Text>
                     </React.Fragment>
                 ) : (

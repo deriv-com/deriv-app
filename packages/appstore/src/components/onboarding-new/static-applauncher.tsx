@@ -72,7 +72,9 @@ const CurrencyIcon = ({ currency, is_item_blurry, is_eu_user }: TCryptoConfig) =
     return (
         <React.Fragment>
             <Text size='xxs' weight='bold' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
-                {localize(`${currency_config[icon_selector]}`)}
+                {localize('{{icon_selector}}}', {
+                    icon_selector: currency_config[icon_selector],
+                })}
             </Text>
             <Text size='xxxxs' color={is_item_blurry ? 'less-prominent' : 'prominent'}>
                 {loginid}

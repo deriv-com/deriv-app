@@ -43,7 +43,9 @@ const FailedVerificationModalContent = ({
                 )}
             </div>
             <Text size={isMobile() ? 'xxs' : 'xs'}>
-                {localize(`If you’d like to get the ${from_account} account, resubmit these documents.`)}
+                {localize('If you’d like to get the {{from_account}} account, resubmit these documents.', {
+                    from_account,
+                })}
             </Text>
         </React.Fragment>
     );

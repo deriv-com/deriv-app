@@ -47,7 +47,9 @@ const IconRadio = ({ icon, text, google_drive_connected, onDriveConnect }: TIcon
                     className='save-type__drive-status'
                     onClick={onDriveConnect}
                 >
-                    {localize(google_drive_connected ? localize('Disconnect') : localize('Connect'))}
+                    {localize('{{connection}}', {
+                        connection: google_drive_connected ? localize('Disconnect') : localize('Connect'),
+                    })}
                 </Text>
             )}
         </div>

@@ -14,7 +14,9 @@ export const formatStatementTransaction = (transaction, currency, active_symbols
         : '';
 
     return {
-        action: localize(toTitleCase(transaction.action_type) /* localize-ignore */), // handled in static_strings_app.js: 'Buy', 'Sell', 'Deposit', 'Withdrawal'
+        action: localize('{{action_type}}', {
+            action_type: toTitleCase(transaction.action_type) /* localize-ignore */,
+        }), // handled in static_strings_app.js: 'Buy', 'Sell', 'Deposit', 'Withdrawal'
         date: transaction_time,
         display_name,
         refid: transaction.transaction_id,

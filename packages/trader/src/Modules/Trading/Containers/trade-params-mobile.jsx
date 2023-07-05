@@ -201,7 +201,10 @@ const TradeParamsMobile = observer(
         const getDurationText = () => {
             const duration = duration_units_list.find(d => d.value === duration_unit);
             return `${duration_value} ${
-                duration && (duration_value > 1 ? localize(duration.text) : localize(duration.text.slice(0, -1)))
+                duration &&
+                localize('{{duration_text}}', {
+                    duration_text: duration_value > 1 ? duration.text : duration.text.slice(0, -1),
+                })
             }`;
         };
 

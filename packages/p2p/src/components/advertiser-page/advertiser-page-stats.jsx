@@ -68,13 +68,15 @@ const AdvertiserPageStats = () => {
                                     ]}
                                 />
                             </Text>
-                            <Text align='left' color='prominent' size='xs' weight='bold'>
-                                {buy_time_avg
-                                    ? localize('{{- avg_buy_time_in_minutes}} min', {
-                                          avg_buy_time_in_minutes,
-                                      })
-                                    : '-'}
-                            </Text>
+                            <div data-testid='my-testing'>
+                                <Text align='left' color='prominent' size='xs' weight='bold'>
+                                    {buy_time_avg
+                                        ? localize('{{avg_buy_time_in_minutes}} min', {
+                                              avg_buy_time_in_minutes,
+                                          })
+                                        : '-'}
+                                </Text>
+                            </div>
                         </Table.Cell>
                     </Table.Row>
                 </Table>
@@ -115,7 +117,7 @@ const AdvertiserPageStats = () => {
                             </Text>
                             <Text align='left' color='prominent' size='xs' weight='bold'>
                                 {release_time_avg
-                                    ? localize('{{- avg_release_time_in_minutes}} min', {
+                                    ? localize('{{avg_release_time_in_minutes}} min', {
                                           avg_release_time_in_minutes,
                                       })
                                     : '-'}
@@ -254,7 +256,7 @@ const AdvertiserPageStats = () => {
                         </Text>
                         <Text color='prominent' size='m' weight='bold'>
                             {buy_time_avg
-                                ? localize('{{- avg_buy_time_in_minutes}} min', {
+                                ? localize('{{avg_buy_time_in_minutes}} min', {
                                       avg_buy_time_in_minutes,
                                   })
                                 : '-'}
@@ -277,7 +279,7 @@ const AdvertiserPageStats = () => {
                         </Text>
                         <Text color='prominent' size='m' weight='bold'>
                             {release_time_avg
-                                ? localize('{{- avg_release_time_in_minutes}} min', {
+                                ? localize('{{avg_release_time_in_minutes}} min', {
                                       avg_release_time_in_minutes,
                                   })
                                 : '-'}

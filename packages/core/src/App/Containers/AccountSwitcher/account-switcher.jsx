@@ -261,8 +261,12 @@ const AccountSwitcher = ({
                             className='acc-switcher__title'
                             header={
                                 is_low_risk
-                                    ? localize(`Non-EU Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
-                                    : localize(`Deriv ${have_more_accounts('CR') ? 'accounts' : 'account'}`)
+                                    ? localize('Non-EU Deriv {{acc}}', {
+                                          acc: have_more_accounts('CR') ? 'accounts' : 'account',
+                                      })
+                                    : localize('Deriv {{acc}}', {
+                                          acc: have_more_accounts('CR') ? 'accounts' : 'account',
+                                      })
                             }
                             is_visible={is_non_eu_regulator_visible}
                             toggleVisibility={() => {
@@ -334,8 +338,12 @@ const AccountSwitcher = ({
                     <AccountWrapper
                         header={
                             is_low_risk
-                                ? localize(`EU Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)
-                                : localize(`Deriv ${have_more_accounts('MF') ? 'accounts' : 'account'}`)
+                                ? localize('EU Deriv {acc}', {
+                                      acc: have_more_accounts('MF') ? 'accounts' : 'account',
+                                  })
+                                : localize('Deriv {{acc}}', {
+                                      acc: have_more_accounts('MF') ? 'accounts' : 'account',
+                                  })
                         }
                         is_visible={is_eu_regulator_visible}
                         toggleVisibility={() => {

@@ -166,7 +166,9 @@ const UnlinkPassword = ({
                                     </fieldset>
                                     <Text as='p' size='xs' className='unlink-password__hint'>
                                         {status.error_msg ? (
-                                            localize(status.error_msg)
+                                            localize('{{status_error_msg}}', {
+                                                status_error_msg: status.error_message,
+                                            })
                                         ) : (
                                             <Localize i18n_default_text='Strong passwords contain at least 8 characters, combine uppercase and lowercase letters, numbers, and symbols.' />
                                         )}

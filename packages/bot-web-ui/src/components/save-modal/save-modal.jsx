@@ -74,7 +74,9 @@ const SaveModalForm = ({
                                         id='local'
                                         label={
                                             <IconRadio
-                                                text={localize(is_mobile ? 'Local' : 'My computer')}
+                                                text={localize('{{radio_text}}', {
+                                                    radio_text: is_mobile ? 'Local' : 'My computer',
+                                                })}
                                                 icon={<Icon icon={is_mobile ? 'IcLocal' : 'IcMyComputer'} size={48} />}
                                             />
                                         }
@@ -222,7 +224,9 @@ const IconRadio = ({ icon, text, google_drive_connected, onDriveConnect }) => {
                     className='save-type__drive-status'
                     onClick={onDriveConnect}
                 >
-                    {localize(google_drive_connected ? localize('Disconnect') : localize('Connect'))}
+                    {localize('{{connection}}', {
+                        connection: google_drive_connected ? localize('Disconnect') : localize('Connect'),
+                    })}
                 </Text>
             )}
         </div>

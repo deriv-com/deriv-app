@@ -31,7 +31,7 @@ const SelfExclusionForm = props => {
         if (values.form_max_losses !== api_max_losses) {
             const set_losses = await updateSelfExclusion({ max_losses: values.form_max_losses });
             if (set_losses?.error) {
-                setMaxLossesError(localize(set_losses.error.message));
+                setMaxLossesError(localize('{{losses_error}}', { losses_error: set_losses.error.message }));
                 return;
             }
         }

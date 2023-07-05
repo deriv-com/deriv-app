@@ -53,7 +53,7 @@ const InputField = ({
                         className={className || new_className}
                         type='text'
                         error={errors[(field.name as keyof typeof errors) || (new_field_name as keyof typeof errors)]}
-                        label={localize(label || new_label)}
+                        label={localize('{{label}}', { label: label || new_label })}
                         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                             handleChange(e);
                             onChangeInputValue(
@@ -69,7 +69,9 @@ const InputField = ({
                         trailing_icon={
                             <Popover
                                 alignment={is_mobile ? 'top' : 'bottom'}
-                                message={localize(trailing_icon_message || new_trailing_icon_message)}
+                                message={localize('{{icon_message}}', {
+                                    icon_message: trailing_icon_message || new_trailing_icon_message,
+                                })}
                                 zIndex={zIndex || new_zIndex}
                             >
                                 <Icon icon='IcInfoOutline' />

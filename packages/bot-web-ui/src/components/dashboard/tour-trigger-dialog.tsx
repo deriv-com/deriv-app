@@ -61,7 +61,10 @@ const TourTriggrerDialog = ({
     const getTourHeaders = (tour_check: boolean, tab_id: number) => {
         let text;
         if (!tour_check) {
-            if (tab_id === 1) text = localize(is_mobile ? 'Bot Builder guide' : "Let's build a Bot!");
+            if (tab_id === 1)
+                text = localize('{{header_text}}', {
+                    header_text: is_mobile ? 'Bot Builder guide' : "Let's build a Bot!",
+                });
             else text = localize('Get started on Deriv Bot');
         } else if (tab_id === 1) text = localize('Congratulations');
         else text = localize('Want to retake the tour?');

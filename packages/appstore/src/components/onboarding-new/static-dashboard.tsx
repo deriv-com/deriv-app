@@ -212,7 +212,7 @@ const StaticDashboard = ({
                                 <StaticCurrencySwitcherContainer
                                     title={
                                         <Text size='xs' line_height='s'>
-                                            {eu_user ? localize(`EUR`) : localize(`US Dollar`)}
+                                            {localize('{{curr}}', { curr: eu_user ? 'EUR' : 'US Dollar' })}
                                         </Text>
                                     }
                                     icon={eu_user ? 'EUR' : 'USD'}

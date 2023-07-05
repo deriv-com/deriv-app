@@ -71,7 +71,7 @@ const MyProfileStatsTable = () => {
                             </Text>
                             <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
                                 {buy_time_avg
-                                    ? localize('{{- avg_buy_time_in_minutes}} min', {
+                                    ? localize('{{avg_buy_time_in_minutes}} min', {
                                           avg_buy_time_in_minutes,
                                       })
                                     : '-'}
@@ -113,7 +113,7 @@ const MyProfileStatsTable = () => {
                             </Text>
                             <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
                                 {release_time_avg
-                                    ? localize('{{- avg_release_time_in_minutes}} min', {
+                                    ? localize('{{avg_release_time_in_minutes}} min', {
                                           avg_release_time_in_minutes,
                                       })
                                     : '-'}
@@ -255,7 +255,7 @@ const MyProfileStatsTable = () => {
                         </Text>
                         <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
                             {buy_time_avg
-                                ? localize('{{- avg_buy_time_in_minutes}} min', {
+                                ? localize('{{avg_buy_time_in_minutes}} min', {
                                       avg_buy_time_in_minutes,
                                   })
                                 : '-'}
@@ -277,7 +277,7 @@ const MyProfileStatsTable = () => {
                         </Text>
                         <Text as='p' color='prominent' line_height='m' size='xs' weight='bold'>
                             {release_time_avg
-                                ? localize('{{- avg_release_time_in_minutes}} min', {
+                                ? localize('{{avg_release_time_in_minutes}} min', {
                                       avg_release_time_in_minutes,
                                   })
                                 : '-'}

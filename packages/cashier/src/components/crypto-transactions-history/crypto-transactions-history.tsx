@@ -53,7 +53,7 @@ const CryptoTransactionsHistory = observer(() => {
                     >
                         <Icon icon={isMobile() ? 'IcChevronLeftBold' : 'IcArrowLeftBold'} />
                         <Text as='p' size='xs' weight='bold'>
-                            <Localize i18n_default_text={` ${currency} recent transactions`} />
+                            <Localize i18n_default_text={' {{currency}} recent transactions'} values={{ currency }} />
                         </Text>
                     </div>
                 </div>

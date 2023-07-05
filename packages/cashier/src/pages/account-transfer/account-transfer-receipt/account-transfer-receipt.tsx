@@ -147,7 +147,9 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                 has_close_icon={isMobile()}
                 className='account_transfer_switch_modal'
                 small
-                title={localize(`Switch to ${switch_to.currency} account?`)}
+                title={localize('Switch to {{currency} account?', {
+                    currency: switch_to.currency,
+                })}
             >
                 <Modal.Body>
                     <Localize
@@ -159,7 +161,9 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                     <Button has_effect text={localize('Cancel')} onClick={toggleSwitchAlert} secondary large />
                     <Button
                         has_effect
-                        text={localize(`Switch to ${switch_to.currency} account`)}
+                        text={localize('Switch to {{currency}} account', {
+                            currency: switch_to.currency,
+                        })}
                         onClick={switchAndRedirect}
                         primary
                         large

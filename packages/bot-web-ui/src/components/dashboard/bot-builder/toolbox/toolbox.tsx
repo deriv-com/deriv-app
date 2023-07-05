@@ -115,7 +115,9 @@ const Toolbox = ({
                                                 >
                                                     <div className='db-toolbox__category-text'>
                                                         <div className='db-toolbox__label'>
-                                                            {localize(category.getAttribute('name') as string)}
+                                                            {localize('{{name_attribute}}', {
+                                                                name_attribute: category.getAttribute('name') as string,
+                                                            })}
                                                         </div>
                                                         {has_sub_category && (
                                                             <div
@@ -144,9 +146,11 @@ const Toolbox = ({
                                                                     }}
                                                                 >
                                                                     <Text size='xxs'>
-                                                                        {localize(
-                                                                            subCategory.getAttribute('name') as string
-                                                                        )}
+                                                                        {localize('{{name_attribute}}', {
+                                                                            name_attribute: subCategory.getAttribute(
+                                                                                'name'
+                                                                            ) as string,
+                                                                        })}
                                                                     </Text>
                                                                 </div>
                                                             );

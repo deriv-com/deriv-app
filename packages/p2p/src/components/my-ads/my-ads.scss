@@ -12,12 +12,13 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
 
     @include mobile {
         .page-return {
             border-bottom: 2px solid var(--general-section-1);
-            margin: 1rem 0;
-            padding: 0 1.6rem 1.6rem;
+            margin: 0;
+            padding: 1.6rem;
         }
 
         .dc-list {

@@ -123,6 +123,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_deposit_lock: false,
             is_dxtrade_allowed: false,
             is_eu: false,
+            is_eu_country: false,
             is_financial_account: false,
             is_financial_information_incomplete: false,
             is_low_risk: false,
@@ -203,6 +204,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             setWalletMigrationStatus: jest.fn(),
             is_wallet_migration_in_progress: false,
             setWalletsMigrationInProgressPopup: jest.fn(),
+            setLoginInformation: jest.fn(),
+            init: jest.fn(),
+            setLoginId: jest.fn(),
+            resetLocalStorageValues: jest.fn(),
         },
         common: {
             error: {
@@ -293,6 +298,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_low_risk_cr_eu_real: false,
             is_real_wallets_upgrade_on: false,
             toggleWalletsUpgrade: jest.fn(),
+            closeAccountTransferModal: jest.fn(),
             toggleRegulatorsCompareModal: jest.fn(),
             financial_restricted_countries: false,
             selected_account_type: 'real',

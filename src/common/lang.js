@@ -14,13 +14,13 @@ export const getLanguage = () => {
             return parsed_valid_url;
         }
         if (supported_storage_lang) {
-            return supported_storage_lang
+            return supported_storage_lang;
         }
         if (get_cookie_lang) {
-            return get_cookie_lang
+            return get_cookie_lang;
         }
         return 'en';
-    }
+    };
     const query_lang = setUserLang();
     const is_query_lang_supported = query_lang in supported_languages;
 

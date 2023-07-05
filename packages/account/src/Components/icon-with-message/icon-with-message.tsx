@@ -3,18 +3,26 @@ import classNames from 'classnames';
 import { Icon, Text, Button } from '@deriv/components';
 import { isMobile, PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { observer, useStore } from '@deriv/stores';
+import { connect } from 'Stores/connect';
+import RootStore from 'Stores/index';
 
 type TIconWithMessage = {
     icon: string;
     has_button?: boolean;
+    has_real_account?: boolean;
     message: string;
+    toggleAccountsDialog: (status?: boolean) => void;
+    toggleShouldShowRealAccountsList: (value: boolean) => void;
 };
 
-const IconWithMessage = observer(({ has_button, icon, message }: TIconWithMessage) => {
-    const { client, ui } = useStore();
-    const { has_any_real_account: has_real_account } = client;
-    const { toggleAccountsDialog, toggleShouldShowRealAccountsList } = ui;
+const IconWithMessage = ({
+    has_button,
+    has_real_account,
+    icon,
+    message,
+    toggleAccountsDialog,
+    toggleShouldShowRealAccountsList,
+}: TIconWithMessage) => {
     const { is_appstore } = React.useContext(PlatformContext);
 
     return (
@@ -45,6 +53,10 @@ const IconWithMessage = observer(({ has_button, icon, message }: TIconWithMessag
             )}
         </div>
     );
-});
+};
 
-export default IconWithMessage;
+export default connect(({ client, ui }: RootStore) => ({
+    has_real_account: client.has_any_real_account,
+    toggleAccountsDialog: ui.toggleAccountsDialog,
+    toggleShouldShowRealAccountsList: ui.toggleShouldShowRealAccountsList,
+}))(IconWithMessage);

@@ -32,7 +32,7 @@ const useWalletsList = () => {
                 /** Landing company shortcode the account belongs to. Use this instead of landing_company_shortcode for wallets */
                 landing_company_name:
                     wallet.landing_company_name === 'maltainvest' ? 'malta' : wallet.landing_company_name,
-                icon: getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : wallet_currency || '', is_dark_mode_on),
+                icon: getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : wallet_currency, is_dark_mode_on),
                 is_malta_wallet: wallet.landing_company_name === 'malta',
                 gradient_header_class: `wallet-header__${
                     wallet.is_virtual === 1 ? 'demo' : wallet_currency.toLowerCase()

@@ -1,7 +1,8 @@
 import React from 'react';
+import Cookies from 'js-cookie';
 import config from '../../../../../../app.config';
 import { getLanguage } from '../../../../../../common/lang';
-import { redirectToSupportedLang, translate } from '../../../../../../common/utils/tools';
+import { redirectToSupportedLang, setLanguage, translate } from '../../../../../../common/utils/tools';
 
 const current_language = getLanguage();
 const toggleModal = () => $('#language-menu-modal').toggleClass('invisible');
@@ -35,6 +36,8 @@ const LanguageItem = ({ lang }) => {
                 if (current_language === lang) return;
                 $('.language-menu-item__active').toggleClass('language-menu-item__active');
                 self.current.classList.add('language-menu-item__active');
+                setLanguage(lang);
+                Cookies.set('user_language', lang, null);
                 if (lang === 'en') {
                     document.location.assign(document.location.origin);
                 } else {

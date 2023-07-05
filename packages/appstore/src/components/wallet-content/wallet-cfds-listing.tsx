@@ -1,14 +1,15 @@
 import React from 'react';
-import { Text, StaticUrl, Button } from '@deriv/components';
+import { Text, StaticUrl, Button, Loading } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import { formatMoney, isCryptocurrency, routes } from '@deriv/shared';
 import TradingAppCard from 'Components/containers/trading-app-card';
-import { AvailableAccount, TDetailsOfEachMT5Loginid, TWalletAccount } from 'Types';
+import { TDetailsOfEachMT5Loginid, TWalletAccount } from 'Types';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
 import { useStore, observer } from '@deriv/stores';
 import { useHistory } from 'react-router';
+import { useActiveWalletCFDAccounts } from '@deriv/hooks';
 
 type TProps = {
     wallet_account: TWalletAccount;
@@ -27,65 +28,7 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
 
     const { currency } = wallet_account;
 
-    // TODO: delete when wallets API will work and get related accounts
-    const getFakeAccounts = () => {
-        const available_dxtrade_accounts =
-            wallet_account.landing_company_name === 'svg'
-                ? [
-                      {
-                          availability: 'Non-EU',
-                          description: 'Trade CFDs on Deriv X with financial markets and our Derived indices.',
-                          icon: 'DerivX',
-                          market_type: 'all',
-                          name: 'Deriv X',
-                          platform: 'dxtrade',
-                      },
-                  ]
-                : [];
-
-        const combined_cfd_mt5_accounts =
-            wallet_account.landing_company_name === 'svg'
-                ? [
-                      {
-                          action_type: 'get',
-                          availability: 'Non-EU',
-                          description: 'Trade CFDs on MT5 with synthetics, baskets, and derived FX.',
-                          icon: 'Derived',
-                          key: 'trading_app_card_Derived',
-                          market_type: 'synthetic',
-                          name: 'Derived',
-                          platform: 'mt5',
-                      },
-                      {
-                          action_type: 'get',
-                          availability: 'Non-EU',
-                          description:
-                              'Trade CFDs on MT5 with forex, stock indices, commodities, and cryptocurrencies.',
-                          icon: 'Financial',
-                          key: 'trading_app_card_Financial',
-                          market_type: 'financial',
-                          name: 'Financial',
-                          platform: 'mt5',
-                      },
-                  ]
-                : [
-                      {
-                          action_type: 'get',
-                          availability: 'EU',
-                          description:
-                              'Trade CFDs on MT5 with forex, stocks, stock indices, synthetics, cryptocurrencies, and commodities.',
-                          icon: 'CFDs',
-                          key: 'trading_app_card_CFDs',
-                          market_type: 'financial',
-                          name: 'CFDs',
-                          platform: 'mt5',
-                      },
-                  ];
-
-        return { available_dxtrade_accounts, combined_cfd_mt5_accounts };
-    };
-
-    const { available_dxtrade_accounts, combined_cfd_mt5_accounts } = getFakeAccounts();
+    const { data, isLoading } = useActiveWalletCFDAccounts();
 
     const { toggleCompareAccountsModal } = cfd;
     const { is_landing_company_loaded } = client;
@@ -142,33 +85,39 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
             </div>
             {is_landing_company_loaded ? (
                 <React.Fragment>
-                    {combined_cfd_mt5_accounts.map((existing_account, index) => {
-                        const list_size = combined_cfd_mt5_accounts.length;
+                    {isLoading && <Loading is_fullscreen={false} />}
+                    {data.mt5_accounts?.map((existing_account, index) => {
+                        const list_size = data.mt5_accounts?.length || 0;
                         const has_mt5_account_status = existing_account.status
                             ? getMT5AccountAuthStatus(existing_account.status)
                             : null;
                         return (
                             <TradingAppCard
-                                action_type={existing_account.action_type}
+                                // action_type={existing_account.action_type}
+                                action_type={'get'}
                                 availability={selected_region}
                                 clickable_icon
-                                icon={existing_account.icon}
-                                sub_title={existing_account?.sub_title}
-                                name={!has_mt5_account_status ? existing_account?.name : ''}
+                                // icon={existing_account.icon}
+                                icon={'CFDs'}
+                                // sub_title={existing_account?.sub_title}
+                                sub_title={'Foo'}
+                                // name={!has_mt5_account_status ? existing_account?.name : ''}
+                                name={'bar'}
                                 short_code_and_region={wallet_account.landing_company_name}
-                                platform={existing_account.platform}
-                                description={existing_account.description}
-                                key={existing_account.key}
+                                // platform={existing_account.platform}
+                                platform={'mt5'}
+                                // description={existing_account.description}
+                                description={'baz'}
+                                key={existing_account.login}
                                 has_divider={getHasDivider(index, list_size, 3)}
                                 mt5_acc_auth_status={has_mt5_account_status}
                                 selected_mt5_jurisdiction={{
-                                    platform: existing_account.platform,
+                                    // platform: existing_account.platform,
+                                    platform: 'mt5',
                                     category: selected_account_type,
                                     type: existing_account.market_type,
                                     jurisdiction: existing_account.landing_company_short,
                                 }}
-                                is_wallet={true}
-                                is_wallet_demo={!!wallet_account.is_virtual}
                             />
                         );
                     })}
@@ -176,7 +125,7 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
             ) : (
                 <PlatformLoader />
             )}
-            {available_dxtrade_accounts?.length > 0 && (
+            {(data.dxtrade_accounts?.length || 0) > 0 && (
                 <div className='cfd-full-row'>
                     <Text line_height='m' weight='bold' color='prominent'>
                         {localize('Other CFDs')}
@@ -184,7 +133,7 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
                 </div>
             )}
             {is_landing_company_loaded ? (
-                available_dxtrade_accounts?.map((account: AvailableAccount) => {
+                data.dxtrade_accounts?.map(account => {
                     const existing_accounts = getExistingAccounts(account.platform || '', account.market_type || '');
                     const has_existing_accounts = existing_accounts.length > 0;
                     return has_existing_accounts ? (

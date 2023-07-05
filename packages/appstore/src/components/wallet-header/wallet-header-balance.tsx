@@ -14,7 +14,7 @@ const WalletHeaderBalance = observer(({ balance, currency }: TWalletHeaderBalanc
     } = useStore();
 
     const balance_amount = (
-        <Text weight='bold' size='m'>
+        <Text weight='bold' size='m' color='prominent'>
             <Localize
                 i18n_default_text='{{balance}} {{currency}}'
                 values={{

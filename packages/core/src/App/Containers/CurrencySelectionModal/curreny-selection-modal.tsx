@@ -56,7 +56,7 @@ const CurrencySelectionModal = ({
     const hasSetCurrency = useHasSetCurrency();
     let timeout: ReturnType<typeof setTimeout>;
 
-    const disabledButtonAction = () => {
+    const onButtonAction = () => {
         if (is_wallet_migration_in_progress) {
             clearTimeout(timeout);
             timeout = setTimeout(() => {
@@ -133,7 +133,7 @@ const CurrencySelectionModal = ({
             <div className='currency-selection-modal__bottom-controls'>
                 <Button
                     className='block-button'
-                    onClick={disabledButtonAction}
+                    onClick={onButtonAction}
                     secondary
                     large
                     as_disabled={is_wallet_migration_in_progress}

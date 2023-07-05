@@ -31,7 +31,7 @@ const RealAccountCard = observer(() => {
 
     const get_currency = (IsIconCurrency(currency?.toUpperCase()) && currency) || 'USD';
 
-    const disabledButtonAction = (e: React.MouseEvent) => {
+    const onButtonAction = (e: React.MouseEvent) => {
         if (is_wallet_migration_in_progress) setWalletsMigrationInProgressPopup(true);
         else {
             e.stopPropagation();
@@ -56,7 +56,7 @@ const RealAccountCard = observer(() => {
             }}
             actions={
                 <Button
-                    onClick={disabledButtonAction}
+                    onClick={onButtonAction}
                     secondary
                     className='currency-switcher__button'
                     as_disabled={status === 'in_progress'}

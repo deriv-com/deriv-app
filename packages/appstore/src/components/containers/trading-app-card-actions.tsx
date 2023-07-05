@@ -17,6 +17,7 @@ export type Actions = {
     is_buttons_disabled?: boolean;
     is_account_being_created?: boolean;
     is_real?: boolean;
+    as_disabled?: boolean;
 };
 
 const TradingAppCardActions = ({
@@ -28,6 +29,7 @@ const TradingAppCardActions = ({
     is_account_being_created,
     is_buttons_disabled,
     is_real,
+    as_disabled,
 }: Actions) => {
     const {
         client: { setWalletsMigrationInProgressPopup },
@@ -35,7 +37,7 @@ const TradingAppCardActions = ({
     const { status } = useWalletMigration();
     const is_wallet_migration_in_progress = status === 'in_progress';
 
-    const disabledButtonAction = () => {
+    const onButtonAction = () => {
         if (is_wallet_migration_in_progress) setWalletsMigrationInProgressPopup(true);
         else onAction?.();
     };
@@ -46,7 +48,7 @@ const TradingAppCardActions = ({
                 <Button
                     disabled={is_account_being_created}
                     primary_light
-                    onClick={disabledButtonAction}
+                    onClick={onButtonAction}
                     as_disabled={is_wallet_migration_in_progress}
                 >
                     {localize('Get')}
@@ -64,7 +66,7 @@ const TradingAppCardActions = ({
                     is_buttons_disabled={is_buttons_disabled}
                     is_real={is_real}
                     is_wallet_migration_in_progress={is_wallet_migration_in_progress}
-                    onDisabledAction={disabledButtonAction}
+                    onDisabledAction={onButtonAction}
                 />
             );
         case 'none':

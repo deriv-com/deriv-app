@@ -11,6 +11,7 @@ import { useStores } from 'Stores/index';
 import { observer } from 'mobx-react-lite';
 import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS, ContentFlag, getStaticUrl } from '@deriv/shared';
+import { useWalletMigration } from '@deriv/hooks';
 
 type TWalletsProps = {
     is_wallet?: boolean;
@@ -35,8 +36,9 @@ const TradingAppCard = ({
     openFailedVerificationModal,
     is_wallet,
     is_wallet_demo,
-}: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
+}: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid & TWalletsProps) => {
     const {
+        client,
         common,
         traders_hub,
         modules: { cfd },
@@ -44,6 +46,9 @@ const TradingAppCard = ({
     const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
     const { current_language } = common;
     const { is_account_being_created } = cfd;
+    const { setWalletsMigrationInProgressPopup } = client;
+    const { status } = useWalletMigration();
+    const is_wallet_migration_in_progress = status === 'in_progress';
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 

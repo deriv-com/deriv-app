@@ -9,7 +9,7 @@ type TOptions = {
     decimals?: string | number;
     is_required?: boolean;
     max?: number | string;
-    min?: number;
+    min?: number | string;
     name1?: string;
     name2?: string;
     regex?: RegExp;
@@ -18,7 +18,7 @@ type TOptions = {
 
 type TInitPreBuildDVRs = ReturnType<typeof getValidationRules>;
 
-type TRuleOptions = {
+export type TRuleOptions = {
     func: (value: string | number, options?: TOptions, store?: TTradeStore, inputs?: unknown) => boolean;
     condition: (store: TTradeStore) => boolean;
     message: string;

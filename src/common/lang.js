@@ -10,15 +10,9 @@ export const getLanguage = () => {
     const supported_storage_lang = getStorage('lang') in supported_languages ? getStorage('lang') : null;
     const get_cookie_lang = Cookies.get('user_language');
     const getUserLang = () => {
-        if (parsed_valid_url) {
-            return parsed_valid_url;
-        }
-        if (supported_storage_lang) {
-            return supported_storage_lang;
-        }
-        if (get_cookie_lang) {
-            return get_cookie_lang;
-        }
+        if (parsed_valid_url) return parsed_valid_url;
+        if (supported_storage_lang) return supported_storage_lang;
+        if (get_cookie_lang) return get_cookie_lang;
         return 'en';
     };
     const query_lang = getUserLang();

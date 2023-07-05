@@ -11,50 +11,14 @@ const useWalletTransactions = (
     action_type: '' | 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer'
 ) => {
     const {
-        client: { loginid, landing_company_shortcode: shortcode },
+        client: { loginid },
         ui: { is_dark_mode_on },
     } = useStore();
     const { data: wallets } = useWalletList();
     const current_wallet = useActiveWallet();
-    let { demo: demo_platform_account } = usePlatformAccounts();
+    const { demo: demo_platform_account } = usePlatformAccounts();
     const { real: real_platform_accounts } = usePlatformAccounts();
 
-    // TODO remove these mocks when we're to switch to API data
-    demo_platform_account = {
-        account_category: 'trading',
-        account_type: 'standard',
-        currency: 'USD',
-        loginid: 'VRTCMOCK0001',
-        is_virtual: 1,
-        landing_company_shortcode: shortcode as 'svg' | 'malta',
-        token: '',
-    };
-    real_platform_accounts.push({
-        account_category: 'trading',
-        account_type: 'standard',
-        currency: 'USD',
-        loginid: 'CRMOCK0001',
-        is_virtual: 0,
-        landing_company_shortcode: shortcode as 'svg' | 'malta',
-        token: '',
-    });
-    if (wallets && current_wallet)
-        wallets.push({
-            account_type: 'crypto',
-            balance: 0,
-            currency: 'BTC',
-            gradient_header_class: '',
-            gradient_card_class: `wallet-card__btc-bg${is_dark_mode_on ? '--dark' : ''}`,
-            icon: getWalletCurrencyIcon('BTC', is_dark_mode_on),
-            is_demo: !!current_wallet.is_virtual,
-            is_disabled: 0,
-            is_malta_wallet: false,
-            is_selected: false,
-            is_virtual: current_wallet.is_virtual ? 1 : 0,
-            landing_company_name: 'svg',
-            loginid: 'CRWMOCK00042',
-            name: `${current_wallet.is_virtual ? 'Demo ' : ''}BTC Wallet`,
-        });
     const accounts = [demo_platform_account, ...real_platform_accounts];
     const { getConfig } = useCurrencyConfig();
 
@@ -80,154 +44,6 @@ const useWalletTransactions = (
         } account`;
     };
 
-    // TODO remove this mock when we're to switch to API data
-    const mock_transactions = current_wallet?.is_virtual
-        ? [
-              {
-                  action_type: 'transfer',
-                  amount: 5,
-                  from: {
-                      loginid,
-                  },
-                  to: {
-                      loginid: 'VRTCMOCK0001',
-                  },
-                  app_id: {},
-                  balance_after: 9995,
-                  transaction_id: 17494415484,
-                  transaction_time: 1685942139,
-              },
-              {
-                  action_type: 'reset_balance',
-                  amount: 350,
-                  balance_after: 10000,
-                  transaction_id: 13693003421,
-                  transaction_time: 1685942138,
-              },
-              {
-                  action_type: 'transfer',
-                  amount: 200,
-                  from: {
-                      loginid: 'VRTCMOCK0001',
-                  },
-                  to: {
-                      loginid,
-                  },
-                  balance_after: 9650,
-                  transaction_id: 17494415483,
-                  transaction_time: 1685855740,
-              },
-              {
-                  action_type: 'transfer',
-                  amount: 550,
-                  from: {
-                      loginid,
-                  },
-                  to: {
-                      loginid: 'VRTCMOCK0001',
-                  },
-                  app_id: {},
-                  balance_after: 9450,
-                  transaction_id: 17494415482,
-                  transaction_time: 1685855739,
-              },
-              {
-                  action_type: 'initial_fund',
-                  amount: 10000,
-                  balance_after: 10000,
-                  transaction_id: 13693011401,
-                  transaction_time: 1685855738,
-              },
-          ]
-        : [
-              {
-                  action_type: 'transfer',
-                  amount: 5,
-                  from: {
-                      loginid,
-                  },
-                  to: {
-                      loginid: 'CRMOCK0001',
-                  },
-                  balance_after: 0,
-                  transaction_id: 17494117541,
-                  transaction_time: 1685942138,
-              },
-              {
-                  action_type: 'transfer',
-                  amount: 20,
-                  from: {
-                      loginid,
-                  },
-                  to: {
-                      loginid: 'CRWMOCK00042',
-                  },
-                  balance_after: 5,
-                  transaction_id: 17494415489,
-                  transaction_time: 1685942137,
-              },
-              {
-                  action_type: 'deposit',
-                  amount: 25,
-                  balance_after: 25,
-                  transaction_id: 17494415481,
-                  transaction_time: 1685942136,
-              },
-              {
-                  action_type: 'withdrawal',
-                  amount: 750,
-                  balance_after: 0,
-                  transaction_id: 17494415480,
-                  transaction_time: 1685942135,
-              },
-              {
-                  action_type: 'transfer',
-                  amount: 100,
-                  from: {
-                      loginid: 'CRMOCK0001',
-                  },
-                  to: {
-                      loginid,
-                  },
-                  balance_after: 750,
-                  transaction_id: 17494415479,
-                  transaction_time: 1685855738,
-              },
-              {
-                  action_type: 'transfer',
-                  amount: 200,
-                  from: {
-                      loginid: 'CRWMOCK00042',
-                  },
-                  to: {
-                      loginid,
-                  },
-                  balance_after: 650,
-                  transaction_id: 17494117541,
-                  transaction_time: 1685855737,
-              },
-              {
-                  action_type: 'transfer',
-                  amount: 550,
-                  from: {
-                      loginid,
-                  },
-                  to: {
-                      loginid: 'CRMOCK0001',
-                  },
-                  balance_after: 450,
-                  transaction_id: 17494117540,
-                  transaction_time: 1685855736,
-              },
-              {
-                  action_type: 'deposit',
-                  amount: 1000,
-                  balance_after: 1000,
-                  transaction_id: 17494117539,
-                  transaction_time: 1685769338,
-              },
-          ];
-
     // @ts-expect-error reset_balance is not supported in the API yet
     const { data, isLoading, isSuccess } = useFetch('statement', {
         options: { keepPreviousData: true },
@@ -238,16 +54,18 @@ const useWalletTransactions = (
         }),
     });
 
-    // TODO: un-comment this code when we're to switch to API data
-    // const transactions = data?.statement?.transactions?.filter(
-    //     el =>
-    //         !!el.action_type &&
-    //         ['deposit', 'withdrawal', 'initial_fund', 'reset_balance', 'transfer'].includes(el.action_type)
-    // ) as TWalletTransaction[];
-
     const transactions = useMemo(
-        () => mock_transactions.filter(el => !action_type || el.action_type === action_type),
-        [action_type, mock_transactions]
+        () =>
+            data?.statement?.transactions && !isLoading && isSuccess
+                ? data?.statement?.transactions?.filter(
+                      el =>
+                          !!el.action_type &&
+                          ['deposit', 'withdrawal', 'initial_fund', 'reset_balance', 'transfer'].includes(
+                              el.action_type
+                          )
+                  )
+                : [],
+        [data, isLoading, isSuccess]
     );
 
     const modified_transactions = useMemo(
@@ -273,7 +91,7 @@ const useWalletTransactions = (
                                       ? transaction.from?.loginid
                                       : transaction.to?.loginid;
                               if (!other_loginid) return null;
-                              const other_account = accounts.find(el => el.loginid === other_loginid);
+                              const other_account = accounts.find(el => el?.loginid === other_loginid);
                               if (!other_account || !other_account.currency || !other_account.account_type) return null;
                               account_category = other_account.account_category || 'wallet';
                               account_currency = other_account.currency;

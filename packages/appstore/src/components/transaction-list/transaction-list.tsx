@@ -20,7 +20,7 @@ const TransactionList = () => {
             text: localize('All'),
             value: '',
         },
-        ...(wallet.is_virtual
+        ...(wallet?.is_virtual
             ? ([
                   {
                       text: localize('Reset balance'),
@@ -47,7 +47,6 @@ const TransactionList = () => {
 
     const { transactions } = useWalletTransactions(filter);
 
-    // @ts-expect-error reset_balance is not supported in the API yet
     const grouped_transactions = groupTransactionsByDay(transactions);
 
     const TransactionsForADay = ({

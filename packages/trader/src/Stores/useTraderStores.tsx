@@ -8,6 +8,24 @@ type TTextValueStrings = {
     value: string;
 };
 
+type TContractTypesList = {
+    [key: string]: {
+        name: string;
+        categories: TTextValueStrings[];
+    };
+};
+
+type TContractCategoriesList = {
+    Multipliers: TContractTypesList;
+    'Ups & Downs': TContractTypesList;
+    'Highs & Lows': TContractTypesList;
+    'Ins & Outs': TContractTypesList;
+    'Look Backs': TContractTypesList;
+    Digits: TContractTypesList;
+    Vanillas: TContractTypesList;
+    Accumulators: TContractTypesList;
+};
+
 type TToastBoxListItem = {
     contract_category: string;
     contract_types: [
@@ -26,20 +44,12 @@ type TToastBoxObject = {
     list?: TToastBoxListItem[];
 };
 
-type TContractTypesList = {
-    [key: string]: {
-        name: string;
-        categories: Array<{
-            text: string;
-            value: string;
-        }>;
-    };
-};
-
 type TOverrideTradeStore = Omit<
     TradeStore,
     | 'accumulator_range_list'
+    | 'barriers'
     | 'basis_list'
+    | 'cancellation_price'
     | 'cancellation_range_list'
     | 'clearContractPurchaseToastBox'
     | 'contract_purchase_toast_box'
@@ -53,19 +63,20 @@ type TOverrideTradeStore = Omit<
     | 'market_close_times'
     | 'market_open_times'
     | 'multiplier_range_list'
-    | 'proposal_info'
     | 'sessions'
     | 'start_dates_list'
     | 'start_time'
-    | 'ticks_history_stats'
+    | 'proposal_info'
     | 'trade_types'
+    | 'ticks_history_stats'
 > & {
-    accumulator_range_list: number[];
+    accumulator_range_list?: number[];
     basis_list: Array<TTextValueStrings>;
+    cancellation_price?: number;
     cancellation_range_list: Array<TTextValueStrings>;
     clearContractPurchaseToastBox: () => void;
     contract_purchase_toast_box: TToastBoxObject;
-    contract_types_list: TContractTypesList;
+    contract_types_list: TContractCategoriesList;
     duration_min_max: {
         [key: string]: { min: number; max: number };
     };
@@ -97,6 +108,7 @@ type TOverrideTradeStore = Omit<
     start_time: string | null;
     ticks_history_stats: {
         ticks_stayed_in?: number[];
+        last_tick_epoch?: number;
     };
     trade_types: { [key: string]: string };
 };

@@ -1,9 +1,15 @@
 import { isCryptocurrency } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
-export const buildCurrenciesList = payout_currencies => {
-    const fiat = [];
-    const crypto = [];
+type TCurrencyList = {
+    text: string;
+    value: string;
+    has_tooltip: boolean;
+}[];
+
+export const buildCurrenciesList = (payout_currencies: string[]) => {
+    const fiat: TCurrencyList = [];
+    const crypto: TCurrencyList = [];
 
     payout_currencies.forEach(cur => {
         const isCrypto = isCryptocurrency(cur);
@@ -16,7 +22,7 @@ export const buildCurrenciesList = payout_currencies => {
     };
 };
 
-export const getDefaultCurrency = (currencies_list, currency = '') => {
+export const getDefaultCurrency = (currencies_list: Record<string, TCurrencyList>, currency = '') => {
     const supported_currencies = Object.values(currencies_list).reduce((a, b) => [...a, ...b], []);
     const default_currency = supported_currencies.find(c => c.value === currency)
         ? currency

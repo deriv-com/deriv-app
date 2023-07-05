@@ -350,6 +350,11 @@ type TPortfolioStore = {
 
 type TContractStore = {
     getContractById: (id: number) => ProposalOpenContract;
+    contract_info: TPortfolioPosition['contract_info'];
+    contract_update_stop_loss: string;
+    contract_update_take_profit: string;
+    has_contract_update_stop_loss: boolean;
+    has_contract_update_take_profit: boolean;
 };
 
 type TMenuStore = {

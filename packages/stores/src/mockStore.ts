@@ -330,6 +330,11 @@ const mock = (): TStores & { is_mock: boolean } => {
             removePositionById: jest.fn(),
         },
         contract_trade: {
+            contract_info: {},
+            contract_update_stop_loss: '',
+            contract_update_take_profit: '',
+            has_contract_update_stop_loss: false,
+            has_contract_update_take_profit: false,
             getContractById: jest.fn(),
         },
         modules: {},

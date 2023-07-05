@@ -1,23 +1,23 @@
 import { useMemo } from 'react';
 import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
+import useAuthorize from './useAuthorize';
 import useCurrencyConfig from './useCurrencyConfig';
 
 /** A custom hook to get the list of wallets for the current user. */
 const useWalletsList = () => {
     const { client, ui } = useStore();
-    const { accounts, loginid } = client;
+    const { loginid } = client;
     const { is_dark_mode_on } = ui;
-    const token = accounts[loginid || ''].token;
     const { getConfig } = useCurrencyConfig();
 
-    const { data: authorize_data, ...rest } = useFetch('authorize', { payload: { authorize: token } });
+    const { data: authorize_data, ...rest } = useAuthorize();
     const { data: balance_data } = useFetch('balance', { payload: { account: 'all' } });
 
     // Filter out non-wallet accounts.
     const wallets = useMemo(
-        () => authorize_data?.authorize?.account_list?.filter(account => account.account_category === 'wallet'),
-        [authorize_data?.authorize?.account_list]
+        () => authorize_data?.account_list?.filter(account => account.account_category === 'wallet'),
+        [authorize_data?.account_list]
     );
 
     // Add balance to each wallet.

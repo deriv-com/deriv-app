@@ -55,16 +55,7 @@ const useWalletTransactions = (
     });
 
     const transactions = useMemo(
-        () =>
-            data?.statement?.transactions && !isLoading && isSuccess
-                ? data?.statement?.transactions?.filter(
-                      el =>
-                          !!el.action_type &&
-                          ['deposit', 'withdrawal', 'initial_fund', 'reset_balance', 'transfer'].includes(
-                              el.action_type
-                          )
-                  )
-                : [],
+        () => (data?.statement?.transactions && !isLoading && isSuccess ? data.statement.transactions : []),
         [data, isLoading, isSuccess]
     );
 

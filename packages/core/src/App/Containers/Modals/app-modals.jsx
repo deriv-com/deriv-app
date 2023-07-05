@@ -68,7 +68,6 @@ const AppModals = ({
     is_account_needed_modal_on,
     is_acuity_modal_open,
     is_closing_create_real_account_modal,
-    is_from_eu,
     is_welcome_modal_visible,
     is_reality_check_visible,
     is_set_residence_modal_visible,
@@ -180,6 +179,7 @@ const AppModals = ({
 
     if (is_verification_submitted) {
         ComponentToLoad = <VerificationDocumentSubmitted />;
+    }
 
     if (should_show_deposit_or_account_success_modal) {
         ComponentToLoad = <ReadyToVerifyModal />;
@@ -200,7 +200,6 @@ export default connect(({ client, ui, traders_hub }) => ({
     is_closing_create_real_account_modal: ui.is_closing_create_real_account_modal,
     is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
     is_close_uk_account_modal_visible: ui.is_close_uk_account_modal_visible,
-    is_from_eu: traders_hub.is_eu_user,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     is_logged_in: client.is_logged_in,

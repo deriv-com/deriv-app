@@ -97,6 +97,7 @@ export default class TradersHubStore extends BaseStore {
             show_eu_related_content: computed,
             startTrade: action.bound,
             toggleAccountTransferModal: action.bound,
+            closeAccountTransferModal: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
             setIsOnboardingVisited: action.bound,
             toggleFailedVerificationModalVisibility: action.bound,
@@ -747,6 +748,10 @@ export default class TradersHubStore extends BaseStore {
                 ];
             }
         });
+    }
+
+    closeAccountTransferModal() {
+        this.is_account_transfer_modal_open = false;
     }
 
     toggleAccountTransferModal() {

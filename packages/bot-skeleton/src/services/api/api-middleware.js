@@ -11,11 +11,11 @@ let dataDogEnv = '';
 
 if (isProduction) {
     dataDogVersion = `deriv-app-${process.env.CIRCLE_TAG}`;
-    dataDogSessionSampleRate = +process.env.DATADOG_SESSION_SAMPLE_RATE ?? 10;
+    dataDogSessionSampleRate = 5;
     dataDogEnv = 'production';
 } else if (isStaging) {
     dataDogVersion = `deriv-app-staging-v${formatDate(new Date(), 'YYYYMMDD')}-${formatTime(Date.now(), 'HH:mm')}`;
-    dataDogSessionSampleRate = 100;
+    dataDogSessionSampleRate = 5;
     dataDogEnv = 'staging';
 }
 
@@ -30,41 +30,15 @@ datadogLogs.init({
 });
 
 export const REQUESTS = [
+    'active_symbols',
     'authorize',
     'balance',
-    'active_symbols',
+    'buy',
+    'proposal',
+    'proposal_open_contract',
+    'run-proposal',
     'transaction',
     'ticks_history',
-    'forget',
-    'proposal_open_contract',
-    'proposal',
-    'buy',
-    'exchange_rates',
-    'trading_times',
-    'time',
-    'get_account_status',
-    'get_settings',
-    'payout_currencies',
-    'website_status',
-    'get_financial_assessment',
-    'mt5_login_list',
-    'get_self_exclusion',
-    'landing_company',
-    'get_limits',
-    'paymentagent_list',
-    'platform',
-    'trading_platform_available_accounts',
-    'trading_platform_accounts',
-    'statement',
-    'landing_company_details',
-    'contracts_for',
-    'residence_list',
-    'account_security',
-    'p2p_advertiser_info',
-    'platform',
-    'history',
-    'amount',
-    'run-proposal',
 ];
 
 class APIMiddleware {

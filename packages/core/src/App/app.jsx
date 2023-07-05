@@ -6,11 +6,13 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { withTranslation } from 'react-i18next';
 import { DesktopWrapper } from '@deriv/components';
 import {
-    setUrlLanguage,
     initFormErrorMessages,
+    isProduction,
+    moduleLoader,
     setSharedCFDText,
-    useOnLoadTranslation,
+    setUrlLanguage,
     setWebsocket,
+    useOnLoadTranslation,
 } from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
@@ -37,6 +39,13 @@ import '@deriv/deriv-charts/dist/smartcharts.css';
 // eslint-disable-next-line import/extensions
 // eslint-disable-next-line import/no-unresolved
 import 'Sass/app.scss';
+
+const DevTools =
+    window && !isProduction()
+        ? React.lazy(() =>
+              moduleLoader(() => import(/* webpackChunkName: "mock-dev-tools" */ './Components/dev-tools'))
+          )
+        : null;
 
 const AppWithoutTranslation = ({ root_store }) => {
     const l = window.location;
@@ -99,6 +108,11 @@ const AppWithoutTranslation = ({ root_store }) => {
                                     <BinaryBotIFrame />
                                     <AppToastMessages />
                                 </PlatformContainer>
+                                {DevTools && (
+                                    <React.Suspense fallback={<React.Fragment />}>
+                                        <DevTools />
+                                    </React.Suspense>
+                                )}
                             </APIProvider>
                         </StoreProvider>
                     </MobxContentProvider>

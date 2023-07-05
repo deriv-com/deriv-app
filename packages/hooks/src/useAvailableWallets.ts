@@ -27,8 +27,7 @@ const useAvailableWallets = () => {
 
         if (!crypto_currencies || !fiat_currencies) return null;
         const available_currencies = [...fiat_currencies, ...crypto_currencies];
-
-        const non_virtual_wallets = added_wallets?.filter(wallet => wallet.is_virtual !== 1);
+        const non_virtual_wallets = added_wallets?.filter(wallet => !wallet.is_virtual);
 
         const modified_wallets = non_virtual_wallets?.map(wallet => ({
             currency: wallet.currency,

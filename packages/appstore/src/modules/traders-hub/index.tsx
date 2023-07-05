@@ -10,7 +10,6 @@ import AccountWithWallets from './account-with-wallets';
 import AccountWithoutWallets from './account-without-wallets';
 import EUDisclaimer from 'Components/eu-disclaimer';
 import AddMoreWallets from 'Components/add-more-wallets';
-import { useContentFlag } from '@deriv/hooks';
 import './traders-hub.scss';
 
 const TradersHub = observer(() => {

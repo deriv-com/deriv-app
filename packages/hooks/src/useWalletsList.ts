@@ -6,7 +6,7 @@ import useAuthorize from './useAuthorize';
 
 const useWalletsList = () => {
     const { client, ui } = useStore();
-    const { loginid, is_crypto } = client;
+    const { currency, loginid, is_crypto } = client;
     const { is_dark_mode_on } = ui;
     const { data, ...rest } = useAuthorize();
 

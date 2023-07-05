@@ -362,6 +362,8 @@ type TUiStore = {
     populateHeaderExtensions: (header_items: JSX.Element | null) => void;
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
     setShouldShowCooldownModal: (value: boolean) => void;
+    is_wallet_switching: boolean;
+    setIsWalletSwitching: (value: boolean) => void;
 };
 
 type TPortfolioStore = {

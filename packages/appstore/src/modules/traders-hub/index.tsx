@@ -14,7 +14,7 @@ import './traders-hub.scss';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStore();
-    const { notification_messages_ui: Notifications } = ui;
+    const { notification_messages_ui: Notifications, is_wallet_switching } = ui;
     const {
         is_landing_company_loaded,
         is_logged_in,
@@ -34,10 +34,18 @@ const TradersHub = () => {
         Notifications !== null;
 
     const [scrolled, setScrolled] = React.useState(false);
+    const [wallets_scrolled, setWalletScrolled] = React.useState(false);
 
     const handleScroll = () => {
         const element = traders_hub_ref?.current;
         if (element && is_tour_open) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    const scrollToTopForWallets = () => {
+        const element = traders_hub_ref?.current;
+        if (element && is_wallet_tour_open) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     };
@@ -47,9 +55,18 @@ const TradersHub = () => {
             handleScroll();
             setTimeout(() => {
                 setScrolled(true);
-            }, 200);
+            }, 400);
         }, 100);
-    }, [is_tour_open, is_wallet_tour_open]);
+    }, [is_tour_open]);
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            scrollToTopForWallets();
+            setTimeout(() => {
+                setWalletScrolled(true);
+            }, 1000);
+        }, 100);
+    }, [is_wallet_tour_open]);
 
     const { is_low_risk_cr_eu, is_high_risk_cr } = useContentFlag();
 
@@ -70,11 +87,11 @@ const TradersHub = () => {
             >
                 {can_show_notify && <Notifications />}
                 <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
-                    {is_wallet_tour_open && <WalletTourGuide />}
                     {is_high_risk_cr && <AccountWithWallets />}
                     <AccountWithoutWallets />
                     <ModalManager />
                     {scrolled && <TourGuide />}
+                    {wallets_scrolled && !is_wallet_switching && <WalletTourGuide />}
                 </div>
             </Div100vhContainer>
             {is_low_risk_cr_eu && <EUDisclaimer />}

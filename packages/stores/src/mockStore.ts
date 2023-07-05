@@ -271,6 +271,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             populateHeaderExtensions: jest.fn(),
             populateSettingsExtensions: jest.fn(),
             setShouldShowCooldownModal: jest.fn(),
+            is_wallet_switching: false,
+            setIsWalletSwitching: jest.fn(),
         },
         traders_hub: {
             CFDs_restricted_countries: false,

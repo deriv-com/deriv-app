@@ -24,6 +24,14 @@ export const getWalletStepConfig = (): Step[] => [
         disableOverlayClose: true,
         placement: 'bottom-end',
         hideBackButton: true,
+        spotlightPadding: 0,
+        styles: {
+            spotlight: {
+                width: '115.2rem',
+                height: '8rem',
+                borderRadius: '1.6rem 1.6rem 0rem 0rem',
+            },
+        },
     },
     {
         title: (
@@ -65,6 +73,7 @@ export const getWalletStepConfig = (): Step[] => [
         target: '.wallet-header__description-buttons',
         disableBeacon: true,
         disableOverlayClose: true,
+        spotlightPadding: 8,
         styles: { spotlight: { borderRadius: '4.8rem' } },
     },
 ];

@@ -21,7 +21,7 @@ type TWalletHeaderButtons = {
 
 const WalletHeaderButtons = observer(({ is_disabled, is_open, btns, wallet_account }: TWalletHeaderButtons) => {
     const { ui, traders_hub } = useStore();
-    const { setIsWalletModalVisible } = ui;
+    const { setIsWalletModalVisible, setIsWalletSwitching } = ui;
     const { setWalletModalActiveWalletID, setWalletModalActiveTab } = traders_hub;
 
     const handleOnClick = async (btn: TWalletButton) => {
@@ -50,6 +50,8 @@ const WalletHeaderButtons = observer(({ is_disabled, is_open, btns, wallet_accou
                         timeout={240}
                         classNames='wallet-header__description-buttons-item-transition'
                         unmountOnExit
+                        onEntering={() => setIsWalletSwitching(true)}
+                        onEntered={() => setIsWalletSwitching(false)}
                     >
                         <Text
                             weight='bold'

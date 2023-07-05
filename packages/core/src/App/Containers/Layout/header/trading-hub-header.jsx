@@ -15,7 +15,7 @@ import RealAccountSignup from 'App/Containers/RealAccountSignup';
 import CurrencySelectionModal from '../../CurrencySelectionModal';
 import AccountInfo from 'App/Components/Layout/Header/account-info';
 import SetAccountCurrencyModal from 'App/Containers/SetAccountCurrencyModal';
-import { useIsRealAccountNeededForCashier } from '@deriv/hooks';
+import { useIsRealAccountNeededForCashier, useActiveWallet, useWalletsList } from '@deriv/hooks';
 
 const Divider = () => {
     return <div className='trading-hub-header__divider' />;
@@ -73,7 +73,18 @@ export const TradersHubHomeButton = ({ is_dark_mode }) => {
 // };
 
 // the tradershub onboarding is used wallets demo (temporary)
-const TradingHubOnboarding = ({ is_dark_mode, toggleIsWalletTourOpen }) => {
+const TradingHubOnboarding = ({ is_dark_mode, toggleIsWalletTourOpen, switchAccount }) => {
+    const { data } = useWalletsList();
+    const first_loginid = data?.[0].loginid;
+    const wallet = useActiveWallet();
+
+    const handleSwitchAndToggle = async () => {
+        if (wallet?.loginid !== first_loginid) {
+            await switchAccount(first_loginid);
+        }
+        toggleIsWalletTourOpen();
+    };
+
     return (
         <div className='trading-hub-header__tradinghub--onboarding'>
             <div className='trading-hub-header__tradinghub--onboarding--logo'>
@@ -87,7 +98,7 @@ const TradingHubOnboarding = ({ is_dark_mode, toggleIsWalletTourOpen }) => {
                     <Icon
                         icon={is_dark_mode ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
                         size={20}
-                        onClick={() => toggleIsWalletTourOpen()}
+                        onClick={handleSwitchAndToggle}
                     />
                 </Popover>
             </div>
@@ -138,6 +149,9 @@ const TradingHubHeader = ({
     toggleReadyToDepositModal,
     toggleNeedRealAccountForCashierModal,
     toggleIsWalletTourOpen,
+    setIsWalletModalVisible,
+    switchAccount,
+    is_wallet_switching,
 }) => {
     const { pathname } = useLocation();
     const cashier_routes = pathname.startsWith(routes.cashier);
@@ -200,17 +214,6 @@ const TradingHubHeader = ({
 
     const DefaultMobileLinks = () => (
         <React.Fragment>
-            {/* This is temporary disabled to show the wallets demo (below) will uncomment once the flow is completed */}
-            {/* <div className='trading-hub-header__menu-right--items--onboarding'>
-                <TradingHubOnboarding
-                    is_dark_mode={is_dark_mode}
-                    toggleIsTourOpen={toggleIsTourOpen}
-                    is_mf={is_mf}
-                    is_eu={is_eu}
-                    is_eu_country={is_eu_country}
-                    setIsOnboardingVisited={setIsOnboardingVisited}
-                />
-            </div> */}
             <div className='trading-hub-header__menu-right--items--onboarding'>
                 <TradingHubOnboarding
                     is_dark_mode={is_dark_mode}
@@ -218,7 +221,7 @@ const TradingHubHeader = ({
                     is_mf={is_mf}
                     is_eu={is_eu}
                     is_eu_country={is_eu_country}
-                    toggleIsWalletTourOpen={toggleIsWalletTourOpen}
+                    setIsOnboardingVisited={setIsOnboardingVisited}
                 />
             </div>
             <div className='trading-hub-header__menu-right--items--notifications'>
@@ -283,6 +286,8 @@ const TradingHubHeader = ({
                                 is_dark_mode={is_dark_mode}
                                 // setIsOnboardingVisited={setIsOnboardingVisited} reenabled this once the wallets onboarding is completed
                                 toggleIsWalletTourOpen={toggleIsWalletTourOpen}
+                                setIsWalletModalVisible={setIsWalletModalVisible}
+                                switchAccount={switchAccount}
                             />
                         </div>
                         <div className='trading-hub-header__menu-right--items--notifications'>
@@ -407,4 +412,6 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     content_flag: traders_hub.content_flag,
     // added for wallets onboarding demo
     toggleIsWalletTourOpen: traders_hub.toggleIsWalletTourOpen,
+    setIsWalletModalVisible: ui.setIsWalletModalVisible,
+    switchAccount: client.switchAccount,
 }))(withRouter(TradingHubHeader));

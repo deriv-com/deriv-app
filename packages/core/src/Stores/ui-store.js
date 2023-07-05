@@ -174,6 +174,7 @@ export default class UIStore extends BaseStore {
     is_switch_to_deriv_account_modal_visible = false;
     is_cfd_reset_password_modal_enabled = false;
     sub_section_index = 0;
+    is_wallet_switching = false;
 
     getDurationFromUnit = unit => this[`duration_${unit}`];
 
@@ -303,6 +304,7 @@ export default class UIStore extends BaseStore {
             simple_duration_unit: observable,
             toasts: observable.shallow,
             vanilla_trade_type: observable,
+            is_wallet_switching: observable,
             addToast: action.bound,
             closeAccountNeededModal: action.bound,
             closeRealAccountSignup: action.bound,
@@ -398,6 +400,7 @@ export default class UIStore extends BaseStore {
             toggleLanguageSettingsModal: action.bound,
             toggleUnsupportedContractModal: action.bound,
             toggleUpdateEmailModal: action.bound,
+            setIsWalletSwitching: action.bound,
         });
 
         window.addEventListener('resize', this.handleResize);
@@ -919,5 +922,9 @@ export default class UIStore extends BaseStore {
 
     setSubSectionIndex(index) {
         this.sub_section_index = index;
+    }
+
+    setIsWalletSwitching(value) {
+        this.is_wallet_switching = value;
     }
 }

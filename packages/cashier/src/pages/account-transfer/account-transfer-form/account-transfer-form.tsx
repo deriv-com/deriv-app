@@ -68,10 +68,8 @@ const AccountOption = ({ account, idx }: TAccountsList) => {
 
 let accounts_from: TAccount[] = [];
 let accounts_to: TAccount[] = [];
-let derivez_accounts_from: TAccount[] = [];
-let derivez_accounts_to: TAccount[] = [];
-let dxtrade_accounts_from: TAccount[] = [];
-let dxtrade_accounts_to: TAccount[] = [];
+let other_cfds_accounts_from: TAccount[] = [];
+let other_cfds_accounts_to: TAccount[] = [];
 let mt_accounts_from: TAccount[] = [];
 let mt_accounts_to: TAccount[] = [];
 let remaining_transfers: number | undefined;
@@ -163,14 +161,12 @@ const AccountTransferForm = observer(
         const getAccounts = (type: string, { is_mt, is_dxtrade, is_derivez }: TAccount) => {
             if (type === 'from') {
                 if (is_mt) return mt_accounts_from;
-                if (is_dxtrade) return dxtrade_accounts_from;
-                if (is_derivez) return derivez_accounts_from;
+                if (is_dxtrade || is_derivez) return other_cfds_accounts_from;
 
                 return accounts_from;
             } else if (type === 'to') {
                 if (is_mt) return mt_accounts_to;
-                if (is_dxtrade) return dxtrade_accounts_to;
-                if (is_derivez) return derivez_accounts_to;
+                if (is_dxtrade || is_derivez) return other_cfds_accounts_to;
 
                 return accounts_to;
             }
@@ -184,16 +180,29 @@ const AccountTransferForm = observer(
         React.useEffect(() => {
             accounts_from = [];
             mt_accounts_from = [];
-            dxtrade_accounts_from = [];
-            derivez_accounts_from = [];
+            other_cfds_accounts_from = [];
             accounts_to = [];
             mt_accounts_to = [];
-            dxtrade_accounts_to = [];
-            derivez_accounts_to = [];
+            other_cfds_accounts_to = [];
 
             accounts_list.forEach((account, idx) => {
                 const text = <AccountOption idx={idx} account={account} />;
                 const value = account.value;
+
+                const should_disable_other_cfds_selected_from =
+                    selected_to.is_mt && (account.is_dxtrade || account.is_derivez);
+                const should_disable_mt_selected_from =
+                    (selected_to.is_dxtrade || selected_to.is_derivez) && account.is_mt;
+                const should_disable_other_mt_accounts_selected_from = selected_from.is_mt && account.is_mt;
+                const should_disable_dxtrade_selected_from = selected_from.is_dxtrade && account.is_dxtrade;
+                const should_disable_derivez_selected_from = selected_from.is_derivez && account.is_derivez;
+
+                const selected_from_is_disabled =
+                    should_disable_other_cfds_selected_from ||
+                    should_disable_mt_selected_from ||
+                    should_disable_other_mt_accounts_selected_from ||
+                    should_disable_dxtrade_selected_from ||
+                    should_disable_derivez_selected_from;
 
                 const is_cfd_account = account.is_mt || account.is_dxtrade || account.is_derivez;
 
@@ -202,23 +211,29 @@ const AccountTransferForm = observer(
                     value,
                     is_mt: account.is_mt,
                     is_dxtrade: account.is_dxtrade,
+                    disabled: selected_from_is_disabled,
                     nativepicker_text: `${is_cfd_account ? account.market_type : getCurrencyName(account.currency)} (${
                         account.balance
                     } ${is_cfd_account ? account.currency : account.text})`,
                 });
                 const is_selected_from = account.value === selected_from.value;
 
-                if ((selected_from.is_mt && account.is_dxtrade) || (selected_from.is_dxtrade && account.is_mt)) return;
-
                 // account from and to cannot be the same
                 if (!is_selected_from) {
-                    const is_selected_from_mt = selected_from.is_mt && account.is_mt;
-                    const is_selected_from_dxtrade = selected_from.is_dxtrade && account.is_dxtrade;
+                    const should_disable_other_cfds_selected_to =
+                        selected_from.is_mt && (account.is_dxtrade || account.is_derivez);
+                    const should_disable_mt_selected_to =
+                        (selected_from.is_dxtrade || selected_from.is_derivez) && account.is_mt;
+                    const should_disable_other_mt_accounts_selected_to = selected_to.is_mt && account.is_mt;
+                    const should_disable_dxtrade_selected_to = selected_to.is_dxtrade && account.is_dxtrade;
+                    const should_disable_derivez_selected_to = selected_to.is_derivez && account.is_derivez;
 
-                    // cannot transfer to MT account from MT
-                    // cannot transfer to Dxtrade account from Dxtrade
-
-                    const is_disabled = is_selected_from_mt || is_selected_from_dxtrade;
+                    const selected_to_is_disabled =
+                        should_disable_other_cfds_selected_to ||
+                        should_disable_mt_selected_to ||
+                        should_disable_other_mt_accounts_selected_to ||
+                        should_disable_dxtrade_selected_to ||
+                        should_disable_derivez_selected_to;
 
                     getAccounts('to', account).push({
                         text,
@@ -226,7 +241,7 @@ const AccountTransferForm = observer(
                         is_mt: account.is_mt,
                         is_dxtrade: account.is_dxtrade,
                         is_derivez: account.is_derivez,
-                        disabled: is_disabled,
+                        disabled: selected_to_is_disabled,
                         nativepicker_text: `${
                             is_cfd_account ? account.market_type : getCurrencyName(account.currency)
                         } (${account.balance} ${is_cfd_account ? account.currency : account.text})`,
@@ -236,19 +251,17 @@ const AccountTransferForm = observer(
 
             setFromAccounts({
                 ...(mt_accounts_from.length && { [localize('Deriv MT5 accounts')]: mt_accounts_from }),
-                ...(dxtrade_accounts_from.length && {
-                    [localize('{{platform_name_dxtrade}} accounts', { platform_name_dxtrade })]: dxtrade_accounts_from,
+                ...(other_cfds_accounts_from.length && {
+                    [localize('Other CFDs')]: other_cfds_accounts_from,
                 }),
-                ...(derivez_accounts_from.length && { [localize('Deriv EZ accounts')]: derivez_accounts_from }),
                 ...(accounts_from.length && { [localize('Deriv accounts')]: accounts_from }),
             });
 
             setToAccounts({
                 ...(mt_accounts_to.length && { [localize('Deriv MT5 accounts')]: mt_accounts_to }),
-                ...(dxtrade_accounts_to.length && {
-                    [localize('{{platform_name_dxtrade}} accounts', { platform_name_dxtrade })]: dxtrade_accounts_to,
+                ...(other_cfds_accounts_to.length && {
+                    [localize('Other CFDs')]: other_cfds_accounts_to,
                 }),
-                ...(derivez_accounts_to.length && { [localize('Deriv EZ accounts')]: derivez_accounts_to }),
                 ...(accounts_to.length && { [localize('Deriv accounts')]: accounts_to }),
             });
         }, [accounts_list, selected_to, selected_from]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -275,7 +288,6 @@ const AccountTransferForm = observer(
                         is_dxtrade_allowed={is_dxtrade_allowed}
                         is_dxtrade_transfer={is_dxtrade_transfer}
                         is_mt_transfer={is_mt_transfer}
-                        is_from_derivgo={is_from_derivgo}
                         is_derivez_transfer={is_derivez_transfer}
                     />
                 );

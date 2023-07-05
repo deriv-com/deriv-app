@@ -127,10 +127,9 @@ export default class AccountTransferStore {
     // 2. fiat to mt & vice versa
     // 3. crypto to mt & vice versa
     async onMountAccountTransfer() {
-        const { client, common, modules } = this.root_store;
+        const { client, modules } = this.root_store;
         const { onMountCommon, setLoading, setOnRemount } = modules.cashier.general_store;
         const { active_accounts, is_logged_in } = client;
-        const { is_from_derivgo } = common;
 
         setLoading(true);
         setOnRemount(this.onMountAccountTransfer);
@@ -159,17 +158,11 @@ export default class AccountTransferStore {
                 return;
             }
 
-            if (!is_from_derivgo) {
-                transfer_between_accounts.accounts = transfer_between_accounts.accounts?.filter(
-                    account => account.account_type !== CFD_PLATFORMS.DERIVEZ
-                );
-            }
-
             if (!this.canDoAccountTransfer(transfer_between_accounts.accounts)) {
                 return;
             }
 
-            await this.sortAccountsTransfer(transfer_between_accounts, is_from_derivgo);
+            await this.sortAccountsTransfer(transfer_between_accounts);
             this.setTransferFee();
             this.setMinimumFee();
             this.setTransferLimit();
@@ -271,21 +264,12 @@ export default class AccountTransferStore {
     }
 
     // Using Partial for type to bypass 'msg_type' and 'echo_req' from response type
-    async sortAccountsTransfer(
-        response_accounts?: Partial<TransferBetweenAccountsResponse> | null,
-        is_from_derivgo?: boolean
-    ) {
+    async sortAccountsTransfer(response_accounts?: Partial<TransferBetweenAccountsResponse> | null) {
         const transfer_between_accounts = response_accounts || (await this.WS.authorized.transferBetweenAccounts());
         if (!this.accounts_list.length) {
             if (transfer_between_accounts.error) {
                 return;
             }
-        }
-
-        if (!is_from_derivgo && transfer_between_accounts && Array.isArray(transfer_between_accounts.accounts)) {
-            transfer_between_accounts.accounts = transfer_between_accounts.accounts.filter(
-                account => account.account_type !== CFD_PLATFORMS.DERIVEZ
-            );
         }
 
         const mt5_login_list = (await this.WS.storage.mt5LoginList())?.mt5_login_list;
@@ -377,7 +361,7 @@ export default class AccountTransferStore {
             const cfd_platforms = {
                 mt5: { name: 'Deriv MT5', icon: 'IcMt5' },
                 dxtrade: { name: 'Deriv X', icon: 'IcRebranding' },
-                derivez: { name: 'Deriv EZ', icon: 'IcDerivez' },
+                derivez: { name: 'Deriv EZ', icon: 'IcRebranding' },
             };
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const is_cfd = Object.keys(cfd_platforms).includes(account.account_type!);
@@ -569,9 +553,9 @@ export default class AccountTransferStore {
     }
 
     requestTransferBetweenAccounts = async ({ amount }: { amount: number }) => {
-        const { client, modules, common } = this.root_store;
+        const { client, modules } = this.root_store;
         const { setLoading } = modules.cashier.general_store;
-        const { is_from_derivgo } = common;
+
         const {
             is_logged_in,
             responseMt5LoginList,
@@ -598,12 +582,6 @@ export default class AccountTransferStore {
             currency,
             amount
         );
-
-        if (!is_from_derivgo && transfer_between_accounts && Array.isArray(transfer_between_accounts.accounts)) {
-            transfer_between_accounts.accounts = transfer_between_accounts.accounts.filter(
-                account => account.account_type !== CFD_PLATFORMS.DERIVEZ
-            );
-        }
 
         if (is_mt_transfer) this.setIsMT5TransferInProgress(false);
 

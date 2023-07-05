@@ -116,7 +116,7 @@ const Toolbox = ({
                                                     <div className='db-toolbox__category-text'>
                                                         <div className='db-toolbox__label'>
                                                             {localize('{{name_attribute}}', {
-                                                                name_attribute: category.getAttribute('name') as string,
+                                                                name_attribute: category.getAttribute('name'),
                                                             })}
                                                         </div>
                                                         {has_sub_category && (
@@ -147,9 +147,8 @@ const Toolbox = ({
                                                                 >
                                                                     <Text size='xxs'>
                                                                         {localize('{{name_attribute}}', {
-                                                                            name_attribute: subCategory.getAttribute(
-                                                                                'name'
-                                                                            ) as string,
+                                                                            name_attribute:
+                                                                                subCategory.getAttribute('name'),
                                                                         })}
                                                                     </Text>
                                                                 </div>

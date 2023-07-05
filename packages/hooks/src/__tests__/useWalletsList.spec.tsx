@@ -14,7 +14,12 @@ const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'
 describe('useWalletsList', () => {
     test('should return wallets list for the current loginid', () => {
         const mock = mockStore({
-            client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
+            client: {
+                accounts: { CRW909900: { token: '12345' } },
+                currency: 'USD',
+                loginid: 'CRW909900',
+                is_crypto: () => false,
+            },
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
@@ -44,15 +49,18 @@ describe('useWalletsList', () => {
         expect(result.current.data).toEqual([
             {
                 account_category: 'wallet',
+                balance: 0,
                 currency: 'USD',
                 gradient_card_class: 'wallet-card__usd-bg',
                 gradient_header_class: 'wallet-header__usd-bg',
-                is_virtual: 0,
                 landing_company_name: 'svg',
+                icon: 'IcWalletCurrencyUsd',
                 is_demo: false,
-                is_selected: false,
                 is_malta_wallet: false,
-                balance: 0,
+                is_selected: false,
+                is_virtual: false,
+                name: 'USD Wallet',
+                is_disabled: false,
             },
         ]);
     });
@@ -81,7 +89,7 @@ describe('useWalletsList', () => {
             client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
         });
 
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
@@ -131,7 +139,7 @@ describe('useWalletsList', () => {
             },
         });
 
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {

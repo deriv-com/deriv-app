@@ -9,7 +9,10 @@ const usePlatformRealAccounts = () => {
     const { client, traders_hub } = useStore();
     const { accounts } = client;
     const { is_eu_user } = traders_hub;
-    const account_list = Object.keys(accounts).map(loginid => accounts[loginid]);
+    const account_list = Object.keys(accounts).map(loginid => ({
+        ...accounts[loginid],
+        loginid,
+    }));
 
     const platform_real_accounts = account_list.filter(account => {
         const is_maltainvest =

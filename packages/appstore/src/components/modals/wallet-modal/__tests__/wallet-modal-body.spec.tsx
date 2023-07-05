@@ -6,7 +6,7 @@ import WalletModalBody from '../wallet-modal-body';
 import { mockStore, StoreProvider } from '@deriv/stores';
 
 jest.mock('Components/wallet-transfer', () => jest.fn(() => <div>WalletTransfer</div>));
-jest.mock('Components/fiat-transaction-list', () => jest.fn(() => <div>Transactions</div>));
+jest.mock('Components/transaction-list', () => jest.fn(() => <div>Transactions</div>));
 
 describe('WalletModalBody', () => {
     let mocked_props: React.ComponentProps<typeof WalletModalBody>;

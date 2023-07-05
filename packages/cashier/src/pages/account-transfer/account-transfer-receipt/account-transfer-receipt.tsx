@@ -146,7 +146,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                 has_close_icon={isMobile()}
                 className='account_transfer_switch_modal'
                 small
-                title={localize('Switch to {{currency} account?', {
+                title={localize('Switch to {{currency}} account?', {
                     currency: switch_to.currency,
                 })}
             >

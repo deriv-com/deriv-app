@@ -23,6 +23,8 @@
     &-container {
         margin: 1.5rem;
         @include mobile {
+            display: flex;
+            justify-content: center;
             margin: 0;
             overflow-x: auto;
             overflow-y: scroll;
@@ -144,5 +146,8 @@
         top: 0.2rem;
         font-size: 1.6rem;
         color: var(--text-red);
+    }
+    &__text {
+        margin-left: 0.5rem;
     }
 }

@@ -6,10 +6,29 @@ import { observer } from '@deriv/stores';
 import { getContractSubtype, isVanillaContract } from '@deriv/shared';
 import { useTraderStore } from 'Stores/useTraderStores';
 
+type TProposalInfo = {
+    [key: string]: {
+        has_error?: boolean;
+        id: string;
+        has_increased?: boolean;
+        message?: string;
+        cancellation?: {
+            ask_price: number;
+            date_expiry: number;
+        };
+        growth_rate?: number;
+        obj_contract_basis?: Record<'text' | 'value', string>;
+        returns?: string;
+        stake: string;
+    };
+};
+
 const PayoutPerPointMobile = observer(() => {
     const { currency, proposal_info, contract_type, vanilla_trade_type } = useTraderStore();
     const contract_key = isVanillaContract(contract_type) ? vanilla_trade_type : contract_type?.toUpperCase();
-    const { has_error, has_increased, id, message, obj_contract_basis } = proposal_info?.[contract_key] || {};
+    // TODO (@maryia-deriv): remove assertion and local TProposalInfo type after TS migration for trade package is complete
+    const { has_error, has_increased, id, message, obj_contract_basis } =
+        (proposal_info as TProposalInfo)?.[contract_key] || {};
     const { text: label, value: payout_per_point } = obj_contract_basis || {};
     const has_error_or_not_loaded = has_error || !id;
     const turbos_titles = {
@@ -28,7 +47,7 @@ const PayoutPerPointMobile = observer(() => {
             }}
         />
     );
-    if (isNaN(payout_per_point)) return <Fieldset className='payout-per-point' />;
+    if (!payout_per_point) return <Fieldset className='payout-per-point' />;
     return (
         <Fieldset className='payout-per-point'>
             <div className='payout-per-point__label-wrapper'>

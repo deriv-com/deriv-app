@@ -9,13 +9,15 @@ import { useTraderStore } from 'Stores/useTraderStores';
 type TMinMaxStakeInfo = {
     className?: string;
 };
+type TStakeBoundary = { [key: string]: { min_stake: number; max_stake: number } };
 
 const MinMaxStakeInfo = observer(({ className }: TMinMaxStakeInfo) => {
     const { contract_type, currency, stake_boundary, vanilla_trade_type } = useTraderStore();
+    // TODO (@maryia-deriv): remove assertion and local TStakeBoundary type after TS migration for trade package is complete
     const { min_stake, max_stake } =
         (isVanillaContract(contract_type)
-            ? stake_boundary[vanilla_trade_type]
-            : stake_boundary[contract_type.toUpperCase()]) || {};
+            ? (stake_boundary as TStakeBoundary)[vanilla_trade_type]
+            : (stake_boundary as TStakeBoundary)[contract_type.toUpperCase()]) || {};
 
     return (
         <section className={classNames('trade-container__stake-field', className)}>

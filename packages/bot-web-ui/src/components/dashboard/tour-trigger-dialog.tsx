@@ -4,7 +4,7 @@ import { Dialog, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
-import { useDBotStore } from 'Stores/useDBotStore';
+import { useDBotStore } from '../../stores/useDBotStore';
 import { setTourSettings, tour_status_ended, tour_type } from './joyride-config';
 
 const TourTriggrerDialog = observer(() => {
@@ -99,7 +99,7 @@ const TourTriggrerDialog = observer(() => {
                         </>
                     ) : (
                         <>
-                            <div className='dc-dialog__content__description__text'>
+                            <div className='dc-dialog__content__description__text' data-testid='tour-success-message'>
                                 <Localize
                                     key={0}
                                     i18n_default_text={

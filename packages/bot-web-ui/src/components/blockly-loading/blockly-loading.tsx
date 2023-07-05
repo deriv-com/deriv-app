@@ -1,7 +1,7 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { observer } from '@deriv/stores';
-import { useDBotStore } from 'Stores/useDBotStore';
+import { useDBotStore } from '../../stores/useDBotStore';
 
 const BlocklyLoading = observer(() => {
     const { blockly_store } = useDBotStore();
@@ -9,7 +9,7 @@ const BlocklyLoading = observer(() => {
     return (
         <>
             {is_loading && (
-                <div className='bot__loading'>
+                <div className='bot__loading' data-testid='blockly-loader'>
                     <Loading />
                 </div>
             )}

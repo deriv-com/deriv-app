@@ -68,7 +68,7 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
                             {state !== 'add' && state !== 'added' ? (
                                 <React.Fragment>
                                     <Text color='prominent' size={isMobile() ? 'xxxxs' : 'xxxs'}>
-                                        {wallet.name} {localize('Wallet')}
+                                        {wallet.name}
                                     </Text>
                                     <Text color='prominent' weight='bold' size={isMobile() ? 'xxs' : 'xs'}>
                                         {wallet.balance} {wallet.currency}

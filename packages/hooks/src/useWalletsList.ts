@@ -21,10 +21,11 @@ const useWalletsList = () => {
         const modified_wallets =
             wallets?.map(wallet => {
                 const is_crypto_currency = is_crypto(currency);
+                const wallet_currency = wallet?.currency || 'USD';
 
                 return {
                     ...wallet,
-                    currency: wallet?.currency || 'USD',
+                    currency: wallet_currency,
                     /** Indicating whether the wallet is the currently selected wallet. */
                     is_selected: wallet.loginid === loginid,
                     /** Indicating whether the wallet is a virtual-money wallet. */
@@ -45,9 +46,13 @@ const useWalletsList = () => {
                     is_disabled: Boolean(wallet.is_disabled),
                     is_virtual: Boolean(wallet.is_virtual),
                     is_crypto: is_crypto_currency,
-                    icon: getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : currency, is_dark_mode_on),
-                    modal_icon: getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : currency, is_dark_mode_on, true),
-                    name: `${wallet.is_virtual ? 'Demo ' : ''}${currency} ${'Wallet'}`,
+                    icon: getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : wallet_currency, is_dark_mode_on),
+                    modal_icon: getWalletCurrencyIcon(
+                        wallet.is_virtual ? 'demo' : wallet_currency,
+                        is_dark_mode_on,
+                        true
+                    ),
+                    name: `${wallet.is_virtual ? 'Demo ' : ''}${wallet_currency} ${'Wallet'}`,
                     // needs for WalletIcon, maybe refactor during cleanUp
                     icon_type: !is_crypto_currency && !wallet.is_virtual ? 'fiat' : 'crypto',
                 };

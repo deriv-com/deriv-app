@@ -76,6 +76,11 @@ const TradingAppCard = ({
         else;
     };
 
+    const onButtonAction = () => {
+        if (is_wallet_migration_in_progress) setWalletsMigrationInProgressPopup(true);
+        else onAction?.();
+    };
+
     return (
         <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
             <div
@@ -145,12 +150,13 @@ const TradingAppCard = ({
                     <TradingAppCardActions
                         action_type={action_type}
                         link_to={link_to}
-                        onAction={onAction}
+                        onAction={onButtonAction}
                         is_external={is_external}
                         new_tab={new_tab}
                         is_buttons_disabled={!!mt5_acc_auth_status}
                         is_account_being_created={!!is_account_being_created}
                         is_real={is_real}
+                        as_disabled={is_wallet_migration_in_progress}
                     />
                 </div>
             </div>

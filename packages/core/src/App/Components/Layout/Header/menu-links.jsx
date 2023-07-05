@@ -6,8 +6,8 @@ import { observer, useStore } from '@deriv/stores';
 import { routes } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { useP2PNotificationCount, useIsRealAccountNeededForCashier, useWalletMigration } from '@deriv/hooks';
-import './menu-links.scss';
 import { useHistory } from 'react-router';
+import './menu-links.scss';
 
 const MenuItems = ({ id, text, icon, link_to, handleClickCashier, className = '' }) => {
     return (
@@ -60,18 +60,14 @@ const CashierTab = observer(() => {
         }
     };
 
-    const handleClickCashier = () => {
-        if ((!has_any_real_account && is_virtual) || real_account_needed_for_cashier) {
-            toggleModal();
-        } else {
-            history.push(routes.cashier_deposit);
-        }
-    };
-
-    const onDisabledClick = e => {
+    const handleClickCashier = e => {
         if (is_wallet_migration_in_progress) {
             e.preventDefault();
             setWalletsMigrationInProgressPopup(true);
+        } else if ((!has_any_real_account && is_virtual) || real_account_needed_for_cashier) {
+            toggleModal();
+        } else {
+            history.push(routes.cashier_deposit);
         }
     };
 
@@ -91,7 +87,7 @@ const CashierTab = observer(() => {
             }
             text={localize('Cashier')}
             link_to={!cashier_redirect ? routes.cashier : null}
-            handleClickCashier={is_wallet_migration_in_progress ? onDisabledClick : handleClickCashier}
+            handleClickCashier={handleClickCashier}
             className={is_wallet_migration_in_progress ? 'cashier__disabled' : ''}
         />
     );

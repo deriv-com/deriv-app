@@ -301,9 +301,7 @@ type TClientStore = {
     has_any_real_account: boolean;
     real_account_creation_unlock_date: number;
     setPrevAccountType: (account_type: string) => void;
-    wallet_migration_status: 'ineligible' | 'eligible' | 'in_progress' | 'done' | 'failed';
-    setWalletMigrationStatus: (value: TClientStore['wallet_migration_status']) => void;
-    is_wallet_migration_in_progress: boolean;
+    is_wallet_migration_in_progress_popup: boolean;
     setWalletsMigrationInProgressPopup: (value: boolean) => void;
     init: (login_new_user?: LoginURLParams<1>) => void;
     setLoginId: (loginid: string) => void;

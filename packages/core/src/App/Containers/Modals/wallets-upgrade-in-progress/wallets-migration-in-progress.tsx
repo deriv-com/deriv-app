@@ -6,7 +6,7 @@ import './wallets-migration-in-progress.scss';
 
 const WalletsMigrationInProgress = observer(() => {
     const { ui, client } = useStore();
-    const { is_wallet_migration_in_progress, setWalletsMigrationInProgressPopup } = client;
+    const { is_wallet_migration_in_progress_popup, setWalletsMigrationInProgressPopup } = client;
     const { is_mobile } = ui;
 
     const handleClose = () => {
@@ -15,7 +15,7 @@ const WalletsMigrationInProgress = observer(() => {
 
     return (
         <Modal
-            is_open={is_wallet_migration_in_progress}
+            is_open={is_wallet_migration_in_progress_popup}
             toggleModal={handleClose}
             width={is_mobile ? '32.4rem' : '44.6rem'}
         >

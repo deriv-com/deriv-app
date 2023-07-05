@@ -11,7 +11,7 @@ describe('<WalletsMigrationInProgress />', () => {
     test('Should render the Modal', () => {
         const mockRootStore = mockStore({
             client: {
-                is_wallet_migration_in_progress: true,
+                is_wallet_migration_in_progress_popup: true,
             },
         });
 
@@ -24,7 +24,7 @@ describe('<WalletsMigrationInProgress />', () => {
         expect(container).toBeInTheDocument();
     });
 
-    test('Should not render the Modal if is_wallet_migration_in_progress is false', () => {
+    test('Should not render the Modal if is_wallet_migration_in_progress_popup is false', () => {
         const mockRootStore = mockStore({});
 
         const wrapper = ({ children }: { children: JSX.Element }) => (

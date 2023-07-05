@@ -1,8 +1,7 @@
-import { Button, Icon, Modal } from '@deriv/components';
+import { Button, Icon, Modal, IconWithMessage } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import React from 'react';
 import { withRouter } from 'react-router';
-import IconWithMessage from './icon-with-message';
 import { localize } from '@deriv/translations';
 import './verification-document-submitted.scss';
 

@@ -944,7 +944,7 @@ export default class UIStore extends BaseStore {
     setIsVerificationSubmitted(value) {
         this.is_verification_submitted = value;
     }
-  
+
     toggleDepositOrAccountSuccessModal() {
         this.should_show_deposit_or_account_success_modal = !this.should_show_deposit_or_account_success_modal;
     }
@@ -952,5 +952,4 @@ export default class UIStore extends BaseStore {
     setShouldTriggerTourGuide(value) {
         this.should_trigger_tour_guide = value;
     }
-
 }

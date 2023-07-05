@@ -20,17 +20,7 @@ const ProofOfAddressContainer = ({
     has_restricted_mt5_account,
     refreshNotifications,
     app_routing_history,
-    account_settings,
-    addNotificationByKey,
-    is_eu,
-    is_verification_modal_visible,
-    fetchResidenceList,
-    fetchStatesList,
-    index,
-    onSubmit,
-    removeNotificationByKey,
-    removeNotificationMessage,
-    states_list,
+    ...props
 }) => {
     const [is_loading, setIsLoading] = React.useState(true);
     const [authentication_status, setAuthenticationStatus] = useStateCallback({
@@ -136,43 +126,12 @@ const ProofOfAddressContainer = ({
         (has_restricted_mt5_account && ['expired', 'rejected', 'suspected'].includes(document_status)) ||
         poa_address_mismatch
     ) {
-        return (
-            <ProofOfAddressForm
-                account_settings={account_settings}
-                addNotificationByKey={addNotificationByKey}
-                index={index}
-                onSubmit={onSubmit}
-                is_eu={is_eu}
-                is_verification_modal_visible={is_verification_modal_visible}
-                fetchResidenceList={fetchResidenceList}
-                fetchStatesList={fetchStatesList}
-                removeNotificationByKey={removeNotificationByKey}
-                removeNotificationMessage={removeNotificationMessage}
-                states_list={states_list}
-                is_resubmit
-                onSubmitting={() => onSubmitValues({ needs_poi })}
-            />
-        );
+        return <ProofOfAddressForm is_resubmit onSubmitting={() => onSubmitValues({ needs_poi })} {...props} />;
     }
 
     switch (document_status) {
         case PoaStatusCodes.none:
-            return (
-                <ProofOfAddressForm
-                    account_settings={account_settings}
-                    addNotificationByKey={addNotificationByKey}
-                    index={index}
-                    onSubmit={onSubmit}
-                    is_eu={is_eu}
-                    is_verification_modal_visible={is_verification_modal_visible}
-                    fetchResidenceList={fetchResidenceList}
-                    fetchStatesList={fetchStatesList}
-                    removeNotificationByKey={removeNotificationByKey}
-                    removeNotificationMessage={removeNotificationMessage}
-                    states_list={states_list}
-                    onSubmitting={() => onSubmitValues({ needs_poi })}
-                />
-            );
+            return <ProofOfAddressForm onSubmitting={() => onSubmitValues({ needs_poi })} {...props} />;
         case PoaStatusCodes.pending:
             return <NeedsReview needs_poi={needs_poi} redirect_button={redirect_button} />;
         case PoaStatusCodes.verified:

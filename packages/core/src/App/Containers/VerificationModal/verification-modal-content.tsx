@@ -13,6 +13,14 @@ type TStoreProofOfAddressArgs = {
     values: { [key: string]: string };
 };
 
+type TRoutingHistory = {
+    action: string;
+    hash: string;
+    key: string;
+    pathname: string;
+    search: string;
+}[];
+
 type TRemoveNotificationMessage = {
     key: string;
     should_show_again: boolean;
@@ -51,7 +59,7 @@ type TVerificationModalContent = {
     storeProofOfAddress: TStoreProofOfAddressArgs;
     fetchStatesList: () => void;
     account_status: GetAccountStatus;
-    app_routing_history: any;
+    app_routing_history: TRoutingHistory;
     routeBackInApp: () => void;
     onFinish: () => void;
 };

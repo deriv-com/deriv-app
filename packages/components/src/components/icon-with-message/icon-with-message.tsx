@@ -1,7 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Div100vhContainer, Text } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
+import Text from '../text/text';
+import Div100vhContainer from '../div100vh-container';
 
 type TIconWithMessage = {
     className?: string;

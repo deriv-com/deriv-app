@@ -12,14 +12,7 @@ const ProofOfAddress = ({
     has_restricted_mt5_account,
     refreshNotifications,
     app_routing_history,
-    account_settings,
-    addNotificationByKey,
-    is_eu,
-    fetchResidenceList,
-    fetchStatesList,
-    removeNotificationByKey,
-    removeNotificationMessage,
-    states_list,
+    ...props
 }) => {
     const { is_appstore } = React.useContext(PlatformContext);
     if (is_virtual) return <DemoMessage has_demo_icon={is_appstore} has_button={true} />;
@@ -31,14 +24,7 @@ const ProofOfAddress = ({
             refreshNotifications={refreshNotifications}
             has_restricted_mt5_account={has_restricted_mt5_account}
             app_routing_history={app_routing_history}
-            account_settings={account_settings}
-            addNotificationByKey={addNotificationByKey}
-            is_eu={is_eu}
-            fetchResidenceList={fetchResidenceList}
-            fetchStatesList={fetchStatesList}
-            removeNotificationByKey={removeNotificationByKey}
-            removeNotificationMessage={removeNotificationMessage}
-            states_list={states_list}
+            {...props}
         />
     );
 };

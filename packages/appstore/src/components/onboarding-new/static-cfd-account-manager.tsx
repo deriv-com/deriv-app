@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Text } from '@deriv/components';
 import { formatMoney, CFD_PLATFORMS } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 import { Localize, localize } from '@deriv/translations';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { TPlatform } from 'Types';
@@ -67,6 +68,8 @@ const StaticCFDAccountManager = ({
 }: TStaticCFDAccountManager) => {
     const icon_size = 48;
     const platform_color = platform === 'options' ? 'prominent' : 'general';
+    const { traders_hub } = useStore();
+    const { is_demo } = traders_hub;
     return (
         <div
             className={classNames('static-cfd-account-manager', {
@@ -116,6 +119,17 @@ const StaticCFDAccountManager = ({
                             })}
                         />
                     ))}
+
+                {platform === CFD_PLATFORMS.DERIVEZ && (
+                    <TradigPlatformIconProps
+                        icon='DerivEz'
+                        size={icon_size}
+                        className={classNames('static-cfd-account-manager--cfds', {
+                            'static-cfd-account-manager__icon--blurry':
+                                is_blurry.icon || is_last_step || is_derivx_last_step,
+                        })}
+                    />
+                )}
 
                 {platform === CFD_PLATFORMS.DXTRADE && (
                     <TradigPlatformIconProps
@@ -175,7 +189,7 @@ const StaticCFDAccountManager = ({
                 )}
             </div>
             <div className='static-cfd-account-manager__buttons'>
-                {has_account && platform !== CFD_PLATFORMS.DXTRADE ? (
+                {has_account ? (
                     <React.Fragment>
                         <Button
                             secondary

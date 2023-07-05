@@ -20,9 +20,11 @@ const useWalletMigration = () => {
 
     const reset_migration = useCallback(() => mutate({ payload: { wallet_migration: 'reset' } }), [mutate]);
 
+    const status = data?.wallet_migration?.status;
+
     return {
         /** The status of the wallet_migration API */
-        status: data?.wallet_migration?.status,
+        status,
         /** A boolean to check if the status is not_eligible */
         is_ineligible: status === 'ineligible',
         /** A boolean to check if the status is eligible */

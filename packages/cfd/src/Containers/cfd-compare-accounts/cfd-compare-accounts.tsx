@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import classNames from 'classnames';
 import { Text, Icon, PageOverlay, DesktopWrapper, MobileWrapper, CFDCompareAccountsCarousel } from '@deriv/components';
 import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
@@ -75,7 +76,11 @@ const CompareCFDs = observer(() => {
             <DesktopWrapper>
                 <div className='compare-cfd-account'>
                     <PageOverlay header={DesktopHeader} is_from_app={routes.traders_hub} />
-                    <div className='compare-cfd-account-container'>
+                    <div
+                        className={classNames('compare-cfd-account-container', {
+                            'compare-cfd-account-container__eu': is_eu_user,
+                        })}
+                    >
                         <div className='card-list'>
                             <CFDCompareAccountsCarousel>
                                 {all_available_accounts.map(item => (
@@ -101,7 +106,14 @@ const CompareCFDs = observer(() => {
             </DesktopWrapper>
             <MobileWrapper>
                 <PageOverlay
-                    header={localize('Compare CFDs accounts')}
+                    header={
+                        <Localize
+                            i18n_default_text='Compare CFDs {{demo_title}} accounts'
+                            values={{
+                                demo_title: is_demo ? localize('demo') : '',
+                            }}
+                        />
+                    }
                     header_classname='compare-cfd-header-title'
                     is_from_app={!routes.traders_hub}
                     onClickClose={() => history.push(routes.traders_hub)}

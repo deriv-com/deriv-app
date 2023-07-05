@@ -1,5 +1,6 @@
 import React from 'react';
 import { Text, Popover } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import TradigPlatformIconProps from '../../Assets/svgs/trading-platform';
 import { TCompareAccountsCard } from 'Components/props.types';
@@ -30,7 +31,7 @@ const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_eu_user, is_demo }:
                     </Text>
                     {jurisdiction_shortcode === 'financial_labuan' && (
                         <Popover
-                            alignment='right'
+                            alignment={isMobile ? 'top' : 'right'}
                             className='cfd-compare-account-labuan-tooltip'
                             classNameBubble='cfd-compare-accounts-tooltip--msg'
                             icon='info'

@@ -103,7 +103,6 @@ describe('<CompareCFDs />', () => {
         const navigationElement = screen.getByText(/Trader's hub/i);
         navigationElement.click();
 
-        // Assert that the history.push function is called with the correct route
         expect(historyMock.push).toHaveBeenCalledWith(routes.traders_hub);
     });
 });

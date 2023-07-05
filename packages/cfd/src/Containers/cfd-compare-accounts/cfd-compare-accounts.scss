@@ -11,7 +11,7 @@
     &-title {
         flex: 1;
         @include mobile {
-            text-align: left;
+            text-align: center;
             padding: 1rem;
         }
     }
@@ -24,11 +24,19 @@
     &-container {
         margin: 1.5rem;
         @include mobile {
+            display: flex;
+            justify-content: center;
             margin: 0;
             overflow-x: auto;
             overflow-y: scroll;
             padding: 0 0 20.1rem;
-            height: 80rem;
+            height: auto;
+            width: 100%;
+        }
+        &__eu {
+            display: flex;
+            justify-content: center;
+            margin-left: 13rem;
         }
     }
     &-main-container {
@@ -138,5 +146,8 @@
         top: 0.2rem;
         font-size: 1.6rem;
         color: var(--text-red);
+    }
+    &__text {
+        margin-left: 0.5rem;
     }
 }

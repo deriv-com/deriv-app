@@ -1,4 +1,5 @@
 import React from 'react';
+import { Text } from '@deriv/components';
 import { TInstrumentsIcon } from 'Components/props.types';
 import TradingInstrumentsIcon from '../../Assets/svgs/trading-instruments';
 
@@ -12,14 +13,16 @@ const InstrumentsIconWithLabel = ({ icon, text, highlighted, className, is_aster
             className={className}
         >
             <TradingInstrumentsIcon icon={icon} size={24} className='trading-instruments__icon' />
-            <span
-                style={{
-                    marginLeft: '0.5rem',
-                    fontWeight: 'bold',
-                }}
+            <Text
+                as='p'
+                weight='bolder'
+                size='xxs'
+                align='center'
+                color='general'
+                className='trading-instruments__text'
             >
                 {text}
-            </span>
+            </Text>
             {is_asterik && (
                 <span className='trading-instruments__span' style={{ display: is_asterik ? 'block' : 'none' }}>
                     *

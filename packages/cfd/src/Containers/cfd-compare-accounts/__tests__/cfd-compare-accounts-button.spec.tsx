@@ -229,8 +229,6 @@ describe('<CFDCompareAccountsButton />', () => {
         userEvent.click(buttonElement);
         await waitFor(() => {
             expect(mock.common.setAppstorePlatform).toHaveBeenCalledWith('dxtrade');
-            // expect(mock.modules.cfd.setJurisdictionSelectedShortcode).toHaveBeenCalled();
-            // expect(mock.modules.cfd.toggleCFDVerificationModal).toHaveBeenCalledTimes(1);
             expect(mock.traders_hub.getAccount).toHaveBeenCalled();
         });
     });

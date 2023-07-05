@@ -114,6 +114,7 @@ const AppNotificationMessages = ({
                   'close_mx_mlt_account',
                   'close_uk_account',
                   'contract_sold',
+                  'financial_assessment_incomplete',
                   'has_changed_two_fa',
                   'identity',
                   'install_pwa',

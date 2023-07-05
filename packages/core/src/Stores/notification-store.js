@@ -3,6 +3,7 @@ import { action, computed, makeObservable, observable, reaction } from 'mobx';
 import React from 'react';
 import { StaticUrl } from '@deriv/components';
 import {
+    ContentFlag,
     LocalStore,
     daysSince,
     formatDate,
@@ -280,8 +281,10 @@ export default class NotificationStore extends BaseStore {
             has_malta_account,
             isAccountOfType,
             is_eu,
+            is_fully_authenticated,
             is_identity_verification_needed,
             is_logged_in,
+            is_svg,
             is_tnc_needed,
             is_uk,
             landing_company_shortcode,
@@ -291,6 +294,7 @@ export default class NotificationStore extends BaseStore {
             has_enabled_two_fa,
             has_changed_two_fa,
             is_poi_dob_mismatch,
+            is_financial_assessment_incomplete,
             is_financial_information_incomplete,
             has_restricted_mt5_account,
             has_mt5_account_with_rejected_poa,
@@ -298,6 +302,7 @@ export default class NotificationStore extends BaseStore {
             p2p_advertiser_info,
             is_p2p_enabled,
         } = this.root_store.client;
+        const { content_flag } = this.root_store.traders_hub;
         const { upgradable_daily_limits } = p2p_advertiser_info || {};
         const { max_daily_buy, max_daily_sell } = upgradable_daily_limits || {};
         const { is_10k_withdrawal_limit_reached } = this.root_store.modules.cashier.withdraw;
@@ -367,6 +372,17 @@ export default class NotificationStore extends BaseStore {
                 !hidden_close_account_notification
             ) {
                 this.addNotificationMessage(this.client_notifications.close_mx_mlt_account);
+            }
+
+            if (
+                is_financial_assessment_incomplete &&
+                is_fully_authenticated &&
+                content_flag === ContentFlag.LOW_RISK_CR_NON_EU &&
+                is_svg
+            ) {
+                this.addNotificationMessage(this.client_notifications.financial_assessment_incomplete);
+            } else {
+                this.removeNotificationByKey({ key: this.client_notifications.financial_assessment_incomplete.key });
             }
 
             // Acuity notification is available for both Demo and Real desktop clients
@@ -1491,6 +1507,17 @@ export default class NotificationStore extends BaseStore {
                     route: routes.proof_of_identity,
                     text: localize('Submit proof of identity'),
                 },
+            },
+            financial_assessment_incomplete: {
+                key: 'financial_assessment_incomplete',
+                header: localize('Pending action required'),
+                message: localize('Please complete your financial assessment.'),
+                type: 'warning',
+                action: {
+                    route: routes.financial_assessment,
+                    text: localize('Start now'),
+                },
+                should_show_again: true,
             },
         };
 

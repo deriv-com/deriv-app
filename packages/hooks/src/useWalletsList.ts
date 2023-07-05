@@ -20,8 +20,8 @@ const useWalletsList = () => {
         // Modify the wallets to include the missing balance from the API response
         const modified_wallets =
             wallets?.map(wallet => {
-                const is_crypto_currency = is_crypto(currency);
                 const wallet_currency = wallet?.currency || 'USD';
+                const is_crypto_currency = is_crypto(wallet_currency);
 
                 return {
                     ...wallet,

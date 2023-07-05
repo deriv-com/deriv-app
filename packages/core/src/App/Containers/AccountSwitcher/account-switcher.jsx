@@ -338,7 +338,7 @@ const AccountSwitcher = ({
                     <AccountWrapper
                         header={
                             is_low_risk
-                                ? localize('EU Deriv {acc}', {
+                                ? localize('EU Deriv {{acc}}', {
                                       acc: have_more_accounts('MF') ? 'accounts' : 'account',
                                   })
                                 : localize('Deriv {{acc}}', {

@@ -72,8 +72,8 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                             is_glossary_tab_selected,
                     })}
                     style={{
-                        left: `${is_description_tab_selected ? `-` : ''}${width}px`,
-                        transform: `translate3d(${is_description_tab_selected ? '' : `-`}${width}px, 0, 0)`,
+                        left: `${is_description_tab_selected ? '-' : ''}${width}px`,
+                        transform: `translate3d(${is_description_tab_selected ? '' : '-'}${width}px, 0, 0)`,
                     }}
                     height={isMobile() ? '' : scroll_bar_height}
                     autohide={false}

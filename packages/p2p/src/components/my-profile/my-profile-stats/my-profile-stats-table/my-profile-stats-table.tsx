@@ -33,8 +33,8 @@ const MyProfileStatsTable = () => {
     const [show_lifetime_turnover_value, setShowLifetimeTurnoverValue] = React.useState(false);
     const [show_lifetime_order_value, setShowLifetimeOrderValue] = React.useState(false);
 
-    const avg_buy_time_in_minutes = buy_time_avg > 60 ? Math.round(buy_time_avg / 60) : '< 1';
-    const avg_release_time_in_minutes = release_time_avg > 60 ? Math.round(release_time_avg / 60) : '< 1';
+    const avg_buy_time_in_minutes = buy_time_avg > 60 ? Math.round(buy_time_avg / 60) : '1';
+    const avg_release_time_in_minutes = release_time_avg > 60 ? Math.round(release_time_avg / 60) : '1';
 
     return (
         <div className='my-profile-stats-table'>
@@ -60,10 +60,13 @@ const MyProfileStatsTable = () => {
                 </Text>
                 <Text as='p' color='prominent' size='xs' weight='bold'>
                     {buy_time_avg ? (
-                        <Localize
-                            i18n_default_text='{{- avg_buy_time_in_minutes}} min'
-                            values={{ avg_buy_time_in_minutes }}
-                        />
+                        <span>
+                            {avg_buy_time_in_minutes === '1' && '< '}
+                            <Localize
+                                i18n_default_text='{{avg_buy_time_in_minutes}} min'
+                                values={{ avg_buy_time_in_minutes }}
+                            />
+                        </span>
                     ) : (
                         '-'
                     )}
@@ -75,10 +78,13 @@ const MyProfileStatsTable = () => {
                 </Text>
                 <Text as='p' color='prominent' size='xs' weight='bold'>
                     {release_time_avg ? (
-                        <Localize
-                            i18n_default_text='{{- avg_release_time_in_minutes}} min'
-                            values={{ avg_release_time_in_minutes }}
-                        />
+                        <span>
+                            {avg_release_time_in_minutes === '1' && '< '}
+                            <Localize
+                                i18n_default_text='{{avg_release_time_in_minutes}} min'
+                                values={{ avg_release_time_in_minutes }}
+                            />
+                        </span>
                     ) : (
                         '-'
                     )}

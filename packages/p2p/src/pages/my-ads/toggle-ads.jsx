@@ -4,7 +4,7 @@ import { Text, ToggleSwitch } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
 import { observer } from 'mobx-react-lite';
 import { requestWS } from 'Utils/websocket';
-import { localize } from 'Components/i18next';
+import { Localize } from '@deriv/translations';
 import { useStores } from 'Stores';
 import './toggle-ads.scss';
 
@@ -35,17 +35,15 @@ const ToggleAds = observer(() => {
         <div className='toggle-ads'>
             <Text
                 className='toggle-ads__message'
-                color={`${general_store.is_listed ? 'profit-success' : 'less-prominent'}`}
+                color={general_store.is_listed ? 'less-prominent' : 'profit-success'}
                 line_height='xl'
                 size='xs'
             >
-                {(my_ads_store.api_error || general_store.is_listed) && !general_store.is_barred
-                    ? localize('Your ads are running')
-                    : localize('Your ads are paused')}
+                <Localize i18n_default_text='Hide my ads' />
             </Text>
             <ToggleSwitch
                 id='toggle-my-ads'
-                is_enabled={general_store.is_listed && !general_store.is_barred}
+                is_enabled={general_store.is_barred || !general_store.is_listed}
                 handleToggle={handleToggle}
             />
         </div>

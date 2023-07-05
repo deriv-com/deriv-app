@@ -50,7 +50,9 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         market_rate: effective_rate,
     });
 
-    const ad_pause_color = general_store.is_listed && !general_store.is_barred ? 'general' : 'less-prominent';
+    const is_advert_listed = general_store.is_listed && !general_store.is_barred;
+    const ad_pause_color = is_advert_listed ? 'general' : 'less-prominent';
+
     const icon_disabled_color =
         (!general_store.is_listed || general_store.is_barred || !is_advert_active) && 'disabled';
     const is_activate_ad_disabled = floating_rate_store.reached_target_date && enable_action_point;
@@ -61,7 +63,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
         }
     };
     const onClickAdd = () => {
-        if (general_store.is_listed && !general_store.is_barred) {
+        if (is_advert_listed) {
             my_ads_store.showQuickAddModal(advert);
         }
     };
@@ -144,7 +146,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             )}
                         </div>
                         <div className='my-ads-table__row-details'>
-                            <Text color='profit-success' size='xxs'>
+                            <Text color={is_advert_listed ? 'profit-success' : 'less-prominent'} size='xxs'>
                                 {`${formatMoney(account_currency, amount_dealt, true)}`} {account_currency}&nbsp;
                                 {is_buy_advert ? localize('Bought') : localize('Sold')}
                             </Text>
@@ -172,13 +174,7 @@ const MyAdsRowRenderer = observer(({ row: advert }) => {
                             <Text color={ad_pause_color} size='xxs'>
                                 {min_order_amount_display} - {max_order_amount_display} {account_currency}
                             </Text>
-                            <Text
-                                color={
-                                    general_store.is_listed && !general_store.is_barred ? 'profit-success' : 'disabled'
-                                }
-                                size='xs'
-                                weight='bold'
-                            >
+                            <Text color={is_advert_listed ? 'profit-success' : 'disabled'} size='xs' weight='bold'>
                                 <div className='display-layout'>
                                     {display_effective_rate} {local_currency}
                                     {rate_type === ad_type.FLOAT && (

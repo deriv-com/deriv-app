@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { useHistory } from 'react-router-dom';
 import { Table, Text, Button, Icon } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { isMobile, routes } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize, localize } from 'Components/i18next';
@@ -18,6 +19,7 @@ const BuySellRow = ({ row: advert }) => {
     const {
         client: { currency },
     } = useStore();
+    const history = useHistory();
 
     if (advert.id === 'WATCH_THIS_SPACE') {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes
@@ -68,6 +70,7 @@ const BuySellRow = ({ row: advert }) => {
             buy_sell_store.setShouldShowVerification(true);
         } else if (!general_store.is_barred) {
             buy_sell_store.showAdvertiserPage(advert);
+            history.push({ pathname: routes.p2p_advertiser_page, search: `?id=${advert.advertiser_details.id}` });
         }
     };
 

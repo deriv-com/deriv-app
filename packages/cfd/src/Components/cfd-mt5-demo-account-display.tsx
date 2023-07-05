@@ -210,7 +210,7 @@ const CFDMT5DemoAccountDisplay = ({
                             }
                             platform={platform}
                             descriptor={localize(
-                                'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs.'
+                                'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies, and ETFs.'
                             )}
                             specs={specifications[platform as keyof TSpecifications].real_all_specs}
                             has_banner

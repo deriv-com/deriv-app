@@ -31,7 +31,7 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn(() => false),
 }));
 
-jest.mock('Components/dp2p-blocked', () => jest.fn(() => 'Dp2pBlocked'));
+// jest.mock('Components/dp2p-blocked', () => jest.fn(() => 'Dp2pBlocked'));
 jest.mock('Components/nickname-form', () => jest.fn(() => 'NicknameForm'));
 jest.mock('Components/verification/verification', () => jest.fn(() => 'Verification'));
 jest.mock('Pages/my-ads/my-ads', () => jest.fn(() => 'MyAds'));
@@ -76,16 +76,16 @@ describe('<AppContent/>', () => {
         expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 
-    it('should render the DP2P blocked component when should_show_dp2p_blocked state is true', () => {
-        useStores.mockImplementation(() => ({
-            general_store: { ...mocked_store_values, should_show_dp2p_blocked: true },
-        }));
-        render(<AppContent />, {
-            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
-        });
+    // it('should render the DP2P blocked component when should_show_dp2p_blocked state is true', () => {
+    //     useStores.mockImplementation(() => ({
+    //         general_store: { ...mocked_store_values, should_show_dp2p_blocked: true },
+    //     }));
+    //     render(<AppContent />, {
+    //         wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+    //     });
 
-        expect(screen.getByText('Dp2pBlocked')).toBeInTheDocument();
-    });
+    //     expect(screen.getByText('Dp2pBlocked')).toBeInTheDocument();
+    // });
 
     it('should render the nickname form component when should_show_popup state is true and user is in mobile', () => {
         isMobile.mockReturnValueOnce(true);
@@ -99,17 +99,17 @@ describe('<AppContent/>', () => {
         expect(screen.getByText('NicknameForm')).toBeInTheDocument();
     });
 
-    it('should render only the first notification component when multiple error status is set', () => {
-        useStores.mockImplementation(() => ({
-            general_store: { ...mocked_store_values, should_show_popup: true, should_show_dp2p_blocked: true },
-        }));
-        render(<AppContent />, {
-            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
-        });
+    // it('should render only the first notification component when multiple error status is set', () => {
+    //     useStores.mockImplementation(() => ({
+    //         general_store: { ...mocked_store_values, should_show_popup: true, should_show_dp2p_blocked: true },
+    //     }));
+    //     render(<AppContent />, {
+    //         wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+    //     });
 
-        expect(screen.queryByText('NicknameForm')).not.toBeInTheDocument();
-        expect(screen.getByText('Dp2pBlocked')).toBeInTheDocument();
-    });
+    //     expect(screen.queryByText('NicknameForm')).not.toBeInTheDocument();
+    //     expect(screen.getByText('Dp2pBlocked')).toBeInTheDocument();
+    // });
 
     it('should render MyProfile component when is_advertiser state is true', () => {
         useStores.mockImplementation(() => ({

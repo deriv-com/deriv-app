@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
+import Helmet, { HelmetProvider } from 'react-helmet-async';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';

@@ -1,5 +1,5 @@
 import React from 'react';
-import InstumentsIconWithLabel from './instruments-icon-with-label';
+import InstrumentsIconWithLabel from './instruments-icon-with-label';
 import { TInstrumentsIcon, TCompareAccountsCard } from 'Components/props.types';
 import { getHighlightedIconLabel } from '../../Helpers/compare-accounts-config';
 
@@ -7,9 +7,9 @@ const CFDInstrumentsLabelHighlighted = ({ trading_platforms }: TCompareAccountsC
     const iconData: TInstrumentsIcon[] = [...getHighlightedIconLabel(trading_platforms)];
 
     return (
-        <div className={'compare-cfd-account-outline'}>
+        <div className={'compare-cfd-account-outline'} data-testid='dt_compare_cfd_account_outline__container'>
             {iconData.map(item => (
-                <InstumentsIconWithLabel key={item.text} {...item} className='compare-cfd-account-instrument-icon' />
+                <InstrumentsIconWithLabel key={item.text} {...item} className='compare-cfd-account-instrument-icon' />
             ))}
         </div>
     );

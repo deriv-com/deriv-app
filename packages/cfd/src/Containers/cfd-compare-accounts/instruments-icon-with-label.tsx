@@ -2,12 +2,13 @@ import React from 'react';
 import { TInstrumentsIcon } from 'Components/props.types';
 import TradingInstrumentsIcon from '../../Assets/svgs/trading-instruments';
 
-const InstumentsIconWithLabel = ({ icon, text, highlighted, className, is_asterik }: TInstrumentsIcon) => {
+const InstrumentsIconWithLabel = ({ icon, text, highlighted, className, is_asterik }: TInstrumentsIcon) => {
     return (
         <div
             style={{
                 opacity: highlighted ? '' : '0.2',
             }}
+            data-testid='dt_instruments_icon_container'
             className={className}
         >
             <TradingInstrumentsIcon icon={icon} size={24} className='trading-instruments__icon' />
@@ -28,4 +29,4 @@ const InstumentsIconWithLabel = ({ icon, text, highlighted, className, is_asteri
     );
 };
 
-export default InstumentsIconWithLabel;
+export default InstrumentsIconWithLabel;

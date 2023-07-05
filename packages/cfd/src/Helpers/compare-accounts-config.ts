@@ -2,7 +2,6 @@ import { CFD_PLATFORMS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
     TInstrumentsIcon,
-    TAvailableCFDAccounts,
     TModifiedTradingPlatformAvailableAccount,
     TDetailsOfEachMT5Loginid,
 } from '../Components/props.types';
@@ -88,9 +87,9 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
         case 'all_svg':
             return is_demo ? localize('Swap-Free Demo') : localize('Swap-Free - SVG');
         case 'dxtrade':
-            return localize('Deriv X');
+            return is_demo ? localize('Deriv X Demo') : localize('Deriv X');
         default:
-            return localize('CFDs');
+            return is_demo ? localize('CFDs Demo') : localize('CFDs');
     }
 };
 
@@ -145,7 +144,7 @@ const getHeaderColor = (shortcode: string) => {
 };
 
 // Config for different Jurisdictions
-const cfdConfig = {
+const cfd_config = {
     leverage: '1:1000',
     leverage_description: localize('Maximum Leverage'),
     spread: '0.5 pips',
@@ -163,7 +162,7 @@ const getJuridisctionDescription = (shortcode: string) => {
     switch (shortcode) {
         case 'synthetic_bvi':
             return {
-                ...cfdConfig,
+                ...cfd_config,
                 counterparty_company: 'Deriv (BVI) Ltd',
                 jurisdiction: 'British Virgin Islands',
                 regulator: localize('British Virgin Islands Financial Services Commission'),
@@ -171,7 +170,7 @@ const getJuridisctionDescription = (shortcode: string) => {
             };
         case 'synthetic_vanuatu':
             return {
-                ...cfdConfig,
+                ...cfd_config,
                 counterparty_company: 'Deriv (V) Ltd',
                 jurisdiction: 'Vanuatu',
                 regulator: localize('Vanuatu Financial Services Commission'),
@@ -179,7 +178,7 @@ const getJuridisctionDescription = (shortcode: string) => {
             };
         case 'financial_bvi':
             return {
-                ...cfdConfig,
+                ...cfd_config,
                 counterparty_company: 'Deriv (BVI) Ltd',
                 jurisdiction: 'British Virgin Islands',
                 regulator: localize('British Virgin Islands Financial Services Commission'),
@@ -187,7 +186,7 @@ const getJuridisctionDescription = (shortcode: string) => {
             };
         case 'financial_vanuatu':
             return {
-                ...cfdConfig,
+                ...cfd_config,
                 counterparty_company: 'Deriv (V) Ltd',
                 jurisdiction: 'Vanuatu',
                 regulator: localize('Vanuatu Financial Services Commission'),
@@ -195,7 +194,7 @@ const getJuridisctionDescription = (shortcode: string) => {
             };
         case 'financial_labuan':
             return {
-                ...cfdConfig,
+                ...cfd_config,
                 leverage: '1:100',
                 counterparty_company: 'Deriv (FX) Ltd',
                 jurisdiction: 'Labuan',
@@ -204,7 +203,7 @@ const getJuridisctionDescription = (shortcode: string) => {
             };
         case 'financial_maltainvest':
             return {
-                ...cfdConfig,
+                ...cfd_config,
                 leverage: '1:30',
                 counterparty_company: 'Deriv Investments (Europe) Limited',
                 jurisdiction: 'Malta',
@@ -218,7 +217,7 @@ const getJuridisctionDescription = (shortcode: string) => {
         case 'synthetic_svg':
         case 'financial_svg':
         default:
-            return cfdConfig;
+            return cfd_config;
     }
 };
 
@@ -236,11 +235,6 @@ const getSortedAvailableAccounts = (available_accounts: TModifiedTradingPlatform
     return [...gaming_accounts, ...financial_accounts, ...swap_free_accounts];
 };
 
-// Check if Deriv X is available for the user
-const getDxtradeAccountAvailabaility = (available_accounts: TAvailableCFDAccounts[]) => {
-    return available_accounts.some(account => account.platform === 'dxtrade');
-};
-
 // Get the maltainvest accounts for EU and DIEL clients
 const getEUAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
     const financial_accounts = available_accounts
@@ -249,28 +243,23 @@ const getEUAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvai
     return [...financial_accounts];
 };
 
-// Make the Deriv X object for trading_platform_available_accounts
-const prepareDxtradeData = (
-    name: string,
-    market_type: TModifiedTradingPlatformAvailableAccount['market_type']
-): TModifiedTradingPlatformAvailableAccount => {
-    return {
-        market_type,
-        name,
-        requirements: {
-            after_first_deposit: {
-                financial_assessment: [''],
-            },
-            compliance: {
-                mt5: [''],
-                tax_information: [''],
-            },
-            signup: [''],
+// Make the Deriv X data same as trading_platform_available_accounts
+const dxtrade_data: TModifiedTradingPlatformAvailableAccount = {
+    market_type: 'all',
+    name: 'Deriv X',
+    requirements: {
+        after_first_deposit: {
+            financial_assessment: [''],
         },
-        shortcode: 'svg',
-        sub_account_type: '',
-        platform: 'dxtrade',
-    };
+        compliance: {
+            mt5: [''],
+            tax_information: [''],
+        },
+        signup: [''],
+    },
+    shortcode: 'svg',
+    sub_account_type: '',
+    platform: 'dxtrade',
 };
 
 // Check whether the POA POI status are completed for different jurisdictions
@@ -289,6 +278,7 @@ const getAccountVerficationStatus = (
     switch (jurisdiction_shortcode) {
         case 'synthetic_svg':
         case 'financial_svg':
+        case 'all_svg':
             return true;
         case 'synthetic_bvi':
         case 'financial_bvi':
@@ -376,8 +366,7 @@ export {
     getPlatformLabel,
     getSortedAvailableAccounts,
     getEUAvailableAccounts,
-    getDxtradeAccountAvailabaility,
-    prepareDxtradeData,
+    dxtrade_data,
     getHeaderColor,
     platfromsHeaderLabel,
     getAccountVerficationStatus,

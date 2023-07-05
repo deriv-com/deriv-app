@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
@@ -82,26 +81,24 @@ const AppWithoutTranslation = ({ root_store }) => {
                     <MobxContentProvider store={root_store}>
                         <StoreProvider store={root_store}>
                             <APIProvider>
-                                <HelmetProvider>
-                                    <PlatformContainer>
-                                        <Header />
-                                        <ErrorBoundary>
-                                            <AppContents>
-                                                {/* TODO: [trader-remove-client-base] */}
-                                                <Routes passthrough={platform_passthrough} />
-                                            </AppContents>
-                                        </ErrorBoundary>
-                                        <DesktopWrapper>
-                                            <Footer />
-                                        </DesktopWrapper>
-                                        <ErrorBoundary>
-                                            <AppModals />
-                                        </ErrorBoundary>
-                                        <SmartTraderIFrame />
-                                        <BinaryBotIFrame />
-                                        <AppToastMessages />
-                                    </PlatformContainer>
-                                </HelmetProvider>
+                                <PlatformContainer>
+                                    <Header />
+                                    <ErrorBoundary>
+                                        <AppContents>
+                                            {/* TODO: [trader-remove-client-base] */}
+                                            <Routes passthrough={platform_passthrough} />
+                                        </AppContents>
+                                    </ErrorBoundary>
+                                    <DesktopWrapper>
+                                        <Footer />
+                                    </DesktopWrapper>
+                                    <ErrorBoundary>
+                                        <AppModals />
+                                    </ErrorBoundary>
+                                    <SmartTraderIFrame />
+                                    <BinaryBotIFrame />
+                                    <AppToastMessages />
+                                </PlatformContainer>
                             </APIProvider>
                         </StoreProvider>
                     </MobxContentProvider>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import domtoimage from 'dom-to-image';
-import { QRCodeSVG } from 'qrcode.react';
-import { WhatsappShareButton, WhatsappIcon } from 'react-share';
+import QRCodeSVG from 'qrcode.react';
+import { WhatsappShareButton, WhatsappIcon, TwitterShareButton, TwitterIcon } from 'react-share';
 import { Button, Modal, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -86,6 +86,9 @@ const ShareAdModal = ({ advert }) => {
                         <WhatsappShareButton url={window.location.href}>
                             <WhatsappIcon size={32} round={true} />
                         </WhatsappShareButton>
+                        <TwitterShareButton url={window.location.href}>
+                            <TwitterIcon size={32} round={true} />
+                        </TwitterShareButton>
                     </div>
                 </div>
             </Modal.Body>

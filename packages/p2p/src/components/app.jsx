@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Helmet, { HelmetProvider } from 'react-helmet-async';
+import { Helmet } from 'react-helmet';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
@@ -190,22 +190,55 @@ const App = () => {
 
     return (
         // TODO Wrap components with StoreProvider during routing p2p card
-        <HelmetProvider>
-            <main className='p2p-cashier'>
-                <Helmet>
-                    <title>Deriv P2P</title>
-                    <meta name='og:description' content='deriv p2p' />
-                    <meta
-                        name='og:image'
-                        content='https://play-lh.googleusercontent.com/ah8RkaAnph2gouJ48fVeybeJgw-tu2dzTDYL7miccIWxvd0ZcK5-MM20bGxjpjb2lXU'
-                    />
-                </Helmet>
-                <ModalManagerContextProvider>
-                    <ModalManager />
-                    <AppContent order_id={order_id} />
-                </ModalManagerContextProvider>
-            </main>
-        </HelmetProvider>
+        <main className='p2p-cashier'>
+            <Helmet
+                meta={[
+                    {
+                        name: 'description',
+                        content: 'Helmet Description',
+                    },
+                    {
+                        name: 'og:title',
+                        content: 'Helmet Title',
+                    },
+                    {
+                        name: 'og:description',
+                        content: 'Helmet OG Description',
+                    },
+                    {
+                        name: 'og:image',
+                        content:
+                            'https://play-lh.googleusercontent.com/ah8RkaAnph2gouJ48fVeybeJgw-tu2dzTDYL7miccIWxvd0ZcK5-MM20bGxjpjb2lXU',
+                    },
+                    {
+                        name: 'twitter:card',
+                        content: 'Twitter Card',
+                    },
+                    {
+                        name: 'twitter:creator',
+                        content: 'Twitter Creator',
+                    },
+                    {
+                        name: 'twitter:title',
+                        content: 'Twitter Title',
+                    },
+                    {
+                        name: 'twitter:description',
+                        content: 'Twitter Description',
+                    },
+                    {
+                        name: 'referrer',
+                        content: 'origin',
+                    },
+                ]}
+            >
+                <title>Deriv P2P</title>
+            </Helmet>
+            <ModalManagerContextProvider>
+                <ModalManager />
+                <AppContent order_id={order_id} />
+            </ModalManagerContextProvider>
+        </main>
     );
 };
 

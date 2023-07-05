@@ -721,17 +721,10 @@
     .toggle-ads {
         display: flex;
         align-items: center;
-        font-size: var(--text-size-s);
         justify-items: flex-start;
 
         &__message {
             margin-right: 1.6rem;
-        }
-        &--on {
-            color: var(--text-profit-success);
-        }
-        &--off {
-            color: var(--text-less-prominent);
         }
     }
 

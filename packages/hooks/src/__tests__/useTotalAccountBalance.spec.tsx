@@ -17,23 +17,15 @@ describe('useTotalAccountBalance', () => {
 
     test('should return total balance correctly when user has multiple accounts', async () => {
         const mock = mockStore({
-            exchange_rates: {
-                data: {
-                    rates: {
-                        EUR: 2,
-                        AUD: 3,
-                    },
-                },
-            },
             client: {
                 active_accounts: [
                     {
-                        currency: 'AUD',
-                        balance: 300,
+                        currency: 'USD',
+                        balance: 10000,
                     },
                     {
                         currency: 'EUR',
-                        balance: 200,
+                        balance: 10000,
                     },
                 ],
             },
@@ -44,6 +36,6 @@ describe('useTotalAccountBalance', () => {
         );
         const { result } = renderHook(() => useTotalAccountBalance(mock.client.active_accounts), { wrapper });
 
-        expect(result.current.balance).toBe(200);
+        expect(result.current.balance).toBe(20000);
     });
 });

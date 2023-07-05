@@ -4,9 +4,9 @@ import { handleJoyrideCallback } from './joyride-config';
 
 const common_tour_button_properties = {
     fontWeight: '700',
-    fontSize: '14px',
-    height: '40px',
-    padding: '10px 16px',
+    fontSize: '1.4rem',
+    height: '4rem',
+    padding: '1rem 1.6rem',
 };
 
 const ReactJoyrideWrapper = ({ steps, styles, ...props }: { steps: Step[]; styles: Styles }) => {

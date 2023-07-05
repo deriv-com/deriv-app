@@ -1,47 +1,55 @@
 import React from 'react';
-import { Statement } from '@deriv/api-types';
-import { useStore } from '@deriv/stores';
 import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
+import { useWalletTransactions } from '@deriv/hooks';
+import { useStore } from '@deriv/stores';
 
-type TStatementTransaction = DeepRequired<Statement>['transactions'][number];
-
-type TFiatTransactionListItem = Pick<TStatementTransaction, 'amount' | 'balance_after'> & {
-    action_type:
-        | (TStatementTransaction['action_type'] & ('deposit' | 'withdrawal' | 'transfer'))
-        | 'initial_fund'
-        | 'reset_balance';
-    account_name: string;
-    currency: string;
-    gradient_class: string;
-    icon: string;
-    icon_type: string;
-    is_deriv_apps?: boolean;
+type TNonPendingTransaction = {
+    transaction: ReturnType<typeof useWalletTransactions>['transactions'][number];
 };
 
-const FiatTransactionListItem = ({
-    account_name,
-    action_type,
-    amount,
-    balance_after,
-    currency,
-    gradient_class,
-    icon,
-    icon_type,
-    is_deriv_apps,
-}: TFiatTransactionListItem) => {
+const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
     const {
         ui: { is_dark_mode_on, is_mobile },
     } = useStore();
+
+    const {
+        account_category,
+        account_currency,
+        account_name,
+        account_type,
+        action_type,
+        amount,
+        balance_after = 0,
+        gradient_class,
+        icon,
+        icon_type,
+    } = transaction;
+
     const formatAmount = (value: number) => value.toLocaleString(undefined, { minimumFractionDigits: 2 });
 
     const formatActionType = (value: string) => value[0].toUpperCase() + value.substring(1).replace(/_/, ' ');
 
+    const getAppIcon = () => {
+        switch (account_type) {
+            case 'standard':
+                return is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight';
+            //TODO: add proper icon for mt5
+            case 'mt5':
+                return 'IcMt5CfdPlatform';
+            //TODO: add proper icon for dxtrade
+            case 'dxtrade':
+                return '';
+            default:
+                return '';
+        }
+    };
+
     return (
-        <div className='fiat-transaction-list__item'>
-            <div className='fiat-transaction-list__item__left'>
-                {is_deriv_apps ? (
+        <div className='transaction-list__item'>
+            <div className='transaction-list__item__left'>
+                {account_category === 'trading' ? (
                     <AppLinkedWithWalletIcon
-                        app_icon={is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight'}
+                        app_icon={getAppIcon()}
                         gradient_class={gradient_class}
                         type={icon_type}
                         wallet_icon={icon}
@@ -57,7 +65,7 @@ const FiatTransactionListItem = ({
                         hide_watermark
                     />
                 )}
-                <div className='fiat-transaction-list__item__left__title'>
+                <div className='transaction-list__item__left__title'>
                     <Text
                         size={is_mobile ? 'xxxs' : 'xxs'}
                         color='less-prominent'
@@ -76,14 +84,14 @@ const FiatTransactionListItem = ({
                     </Text>
                 </div>
             </div>
-            <div className='fiat-transaction-list__item__right'>
+            <div className='transaction-list__item__right'>
                 <Text
                     size={is_mobile ? 'xxxs' : 'xxs'}
                     color={amount > 0 ? 'profit-success' : 'loss-danger'}
                     weight='bold'
                     line_height={is_mobile ? 's' : 'm'}
                 >
-                    {(amount > 0 ? '+' : '') + formatAmount(amount)} {currency}
+                    {(amount > 0 ? '+' : '') + formatAmount(amount)} {account_currency}
                 </Text>
                 <Text
                     size={is_mobile ? 'xxxxs' : 'xxxs'}
@@ -91,11 +99,11 @@ const FiatTransactionListItem = ({
                     weight='lighter'
                     line_height={is_mobile ? 'm' : 's'}
                 >
-                    Balance: {formatAmount(balance_after)} {currency}
+                    Balance: {formatAmount(balance_after)} {account_currency}
                 </Text>
             </div>
         </div>
     );
 };
 
-export default FiatTransactionListItem;
+export default NonPendingTransaction;

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
 import { localize } from '@deriv/translations';
+import TransactionList from 'Components/transaction-list';
 import DemoResetBalance from 'Components/demo-reset-balance';
-import FiatTransactionList from 'Components/fiat-transaction-list';
 import WalletTransfer from 'Components/wallet-transfer';
 import WalletWithdrawal from '../../wallet-withdrawal';
 
@@ -82,7 +82,7 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcStatement',
                     label: localize('Transactions'),
-                    content: () => <FiatTransactionList />,
+                    content: () => <TransactionList />,
                 },
             ];
         case 'demo':
@@ -95,7 +95,7 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcStatement',
                     label: localize('Transactions'),
-                    content: () => <FiatTransactionList />,
+                    content: () => <TransactionList />,
                 },
                 {
                     icon: 'IcAdd',

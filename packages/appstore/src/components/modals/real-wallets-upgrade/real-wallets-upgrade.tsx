@@ -31,10 +31,10 @@ const RealWalletsUpgrade = observer(() => {
 
     const handleClose = () => toggleWalletsUpgrade(false);
 
-    const { start } = useWalletMigration();
+    const { start_migration } = useWalletMigration();
 
     const upgradetoWallets = () => {
-        start();
+        start_migration();
         toggleWalletsUpgrade(false);
     };
 

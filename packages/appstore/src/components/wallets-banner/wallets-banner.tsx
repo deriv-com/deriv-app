@@ -23,7 +23,7 @@ const WalletsBanner = observer(() => {
             return <WalletsBannerReady is_eu={is_eu_user} />;
         // the user can't upgrade to the wallets
         default:
-            return <WalletsBannerUpgrade />;
+            return null;
     }
 });
 

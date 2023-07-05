@@ -36,17 +36,13 @@ const MainTitleBar = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const { status } = useWalletMigration();
-
-    const ineligible_status = status === 'ineligible';
-
     return (
         <React.Fragment>
             <DesktopWrapper>
                 {/* TODO: This is for testing purposes only */}
                 <button onClick={() => setWalletsMigrationFailedPopup(true)}>Modal wallet migration failed</button>
                 {/* TODO: Add logic to show and hide the banner here */}
-                {!ineligible_status && <WalletsBanner />}
+                <WalletsBanner />
                 <div className='main-title-bar'>
                     <div className='main-title-bar__right'>
                         <Text size='m' weight='bold' color='prominent'>
@@ -59,7 +55,7 @@ const MainTitleBar = () => {
                 </div>
             </DesktopWrapper>
             <MobileWrapper>
-                {!ineligible_status && <WalletsBanner />}
+                <WalletsBanner />
                 <Text weight='bold' className='main-title-bar__text' color='prominent'>
                     {localize("Trader's Hub")}
                 </Text>

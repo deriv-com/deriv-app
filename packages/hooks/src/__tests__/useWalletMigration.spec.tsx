@@ -33,7 +33,7 @@ describe('useWalletMigration', () => {
 
         const { result } = renderHook(() => useWalletMigration(), { wrapper });
 
-        result.current.start();
+        result.current.start_migration();
 
         expect(mockUseRequest('wallet_migration').mutate).toBeCalledWith({ payload: { wallet_migration: 'start' } });
     });
@@ -46,7 +46,7 @@ describe('useWalletMigration', () => {
 
         const { result } = renderHook(() => useWalletMigration(), { wrapper });
 
-        result.current.reset();
+        result.current.reset_migration();
 
         expect(mockUseRequest('wallet_migration').mutate).toBeCalledWith({ payload: { wallet_migration: 'reset' } });
     });

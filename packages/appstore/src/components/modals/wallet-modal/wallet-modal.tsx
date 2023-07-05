@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { Modal, Loading } from '@deriv/components';
+import { Loading, Modal } from '@deriv/components';
+import { useActiveWallet } from '@deriv/hooks';
+import { observer, useStore } from '@deriv/stores';
 import WalletModalHeader from './wallet-modal-header';
 import WalletModalBody from './wallet-modal-body';
-import { observer, useStore } from '@deriv/stores';
-import { useActiveWallet } from '@deriv/hooks';
 
 const WalletModal = observer(() => {
     const store = useStore();
@@ -39,12 +39,12 @@ const WalletModal = observer(() => {
 
     const contentScrollHandler = React.useCallback(
         (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
-            if (is_mobile) {
+            if (is_mobile && is_wallet_modal_visible) {
                 const target = e.target as HTMLDivElement;
                 setIsWalletNameVisible(!(target.scrollTop > 0));
             }
         },
-        [is_mobile]
+        [is_mobile, is_wallet_modal_visible]
     );
 
     const should_show_loader = active_wallet?.loginid !== active_modal_wallet_id || !is_authorize || !active_wallet;

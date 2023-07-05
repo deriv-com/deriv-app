@@ -7,7 +7,7 @@ import useCurrencyConfig from './useCurrencyConfig';
 const useWalletsList = () => {
     const { client, ui } = useStore();
     const { getConfig } = useCurrencyConfig();
-    const { accounts, currency, loginid } = client;
+    const { accounts, loginid } = client;
     const { is_dark_mode_on } = ui;
     const { data, ...reset } = useFetch('authorize', {
         payload: { authorize: accounts[loginid || ''].token },
@@ -21,35 +21,42 @@ const useWalletsList = () => {
 
         // Modify the wallets to include the missing balance from the API response
         // Should remove this once the API is fixed
-        const modified_wallets = wallets?.map(wallet => ({
-            ...wallet,
-            /** Wallet balance */
-            balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,
-            /** Gradient background class for cashier wallet modal header*/
-            gradient_header_class: `wallet-header__${
-                wallet.is_virtual === 1 ? 'demo' : wallet.currency?.toLowerCase()
-            }-bg${is_dark_mode_on ? '--dark' : ''}`,
-            /** Gradient background class for wallet card*/
-            gradient_card_class: `wallet-card__${wallet.is_virtual === 1 ? 'demo' : wallet.currency?.toLowerCase()}-bg${
-                is_dark_mode_on ? '--dark' : ''
-            }`,
-            /** Wallet icon */
-            icon: getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : currency, is_dark_mode_on),
-            /** Indicating whether the wallet is crypto or fiat */
-            is_crypto: getConfig(wallet.currency || '')?.is_crypto,
-            /** Indicating whether the wallet is a virtual-money wallet. */
-            is_demo: wallet.is_virtual === 1,
-            /** Indicating whether the wallet is belong to malta jurisdiction */
-            is_malta_wallet: wallet.landing_company_name === 'malta',
-            /** Indicating whether the wallet is the currently selected wallet. */
-            is_selected: wallet.loginid === loginid,
-            /** Landing company shortcode the account belongs to. Use this instead of landing_company_shortcode for wallets */
-            landing_company_name: wallet.landing_company_name === 'maltainvest' ? 'malta' : wallet.landing_company_name,
-            /** Wallet display name */
-            name: `${wallet.is_virtual ? 'Demo ' : ''}${currency} Wallet`,
-            is_disabled: Boolean(wallet.is_disabled),
-            is_virtual: Boolean(wallet.is_virtual),
-        }));
+        const modified_wallets = wallets?.map(wallet => {
+            const wallet_currency = wallet.currency || '';
+
+            return {
+                ...wallet,
+                /** Wallet balance */
+                balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,
+                /** Gradient background class for cashier wallet modal header */
+                gradient_header_class: `wallet-header__${
+                    wallet.is_virtual === 1 ? 'demo' : wallet_currency.toLowerCase()
+                }-bg${is_dark_mode_on ? '--dark' : ''}`,
+                /** Gradient background class for wallet card */
+                gradient_card_class: `wallet-card__${
+                    wallet.is_virtual === 1 ? 'demo' : wallet_currency.toLowerCase()
+                }-bg${is_dark_mode_on ? '--dark' : ''}`,
+                /** Wallet icon */
+                icon: getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : wallet_currency, is_dark_mode_on),
+                /** Indicating whether the wallet is crypto or fiat */
+                is_crypto: getConfig(wallet_currency)?.is_crypto,
+                /** Indicating whether the wallet is a virtual-money wallet */
+                is_demo: wallet.is_virtual === 1,
+                /** Indicating whether the account is marked as disabled or not */
+                is_disabled: Boolean(wallet.is_disabled),
+                /** Indicating whether the wallet is belong to malta jurisdiction */
+                is_malta_wallet: wallet.landing_company_name === 'malta',
+                /** Indicating whether the wallet is the currently selected wallet */
+                is_selected: wallet.loginid === loginid,
+                /** Indicating whether the wallet is a virtual-money wallet */
+                is_virtual: Boolean(wallet.is_virtual),
+                /** Landing company shortcode the account belongs to. Use this instead of landing_company_shortcode for wallets */
+                landing_company_name:
+                    wallet.landing_company_name === 'maltainvest' ? 'malta' : wallet.landing_company_name,
+                /** Wallet display name */
+                name: `${wallet.is_virtual ? 'Demo ' : ''}${getConfig(wallet_currency)?.display_code} Wallet`,
+            };
+        });
 
         // Sort the wallets alphabetically by fiat, crypto, then virtual
         return modified_wallets?.sort((a, b) => {
@@ -61,7 +68,7 @@ const useWalletsList = () => {
 
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });
-    }, [data?.authorize?.account_list, balance_data?.balance?.accounts, is_dark_mode_on, currency, getConfig, loginid]);
+    }, [data?.authorize?.account_list, balance_data?.balance?.accounts, is_dark_mode_on, getConfig, loginid]);
 
     return {
         ...reset,

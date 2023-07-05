@@ -52,6 +52,7 @@ const WalletTile = ({
         getCurrencyDisplayCode(account?.currency)
     );
 
+    //fix icon
     const account_icon = account?.account_type === 'wallet' ? '' : 'IcWalletOptionsLight';
 
     const IconComponent = React.useCallback(() => {

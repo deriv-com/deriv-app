@@ -31,11 +31,11 @@ const AlertMessage = ({ button_label, message, onClickHandler, type }: TAlertMes
     const color = type_mapper[type].color;
 
     return (
-        <div className='alert-message'>
+        <div className='alert-message' data-testid='dt_alert_message'>
             <div className='alert-message__icon-container'>
                 <div className='alert-message__icon-container__line' />
                 <div className='alert-message__icon-container__icon'>
-                    <Icon icon={icon} custom_color={`var(--text-${color})`} />
+                    <Icon icon={icon} custom_color={`var(--text-${color})`} data_testid={`dt_${icon}`} />
                 </div>
             </div>
             <div className='alert-message__message-container'>

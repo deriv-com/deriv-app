@@ -9,6 +9,17 @@ jest.mock('@deriv/api', () => ({
     useFetch: jest.fn(),
 }));
 
+jest.mock('../useCurrencyConfig.ts', () => () => ({
+    getConfig: (currency: string) => {
+        switch (currency) {
+            case 'USD':
+                return { display_code: 'USD', is_crypto: false };
+            default:
+                return { display_code: '', is_crypto: false };
+        }
+    },
+}));
+
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize' | 'statement'>>;
 describe('useWalletsList', () => {
     test('should return a list of transactions', () => {

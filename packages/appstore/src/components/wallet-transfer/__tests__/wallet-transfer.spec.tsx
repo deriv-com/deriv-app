@@ -1,5 +1,6 @@
 import React from 'react';
 import WalletTransfer from '../wallet-transfer';
+import { APIProvider } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 
@@ -14,9 +15,15 @@ describe('WalletTransfer', () => {
 
     it('Should render two amount inputs and two transfer account selectors', () => {
         render(
-            <StoreProvider store={mocked_store}>
-                <WalletTransfer is_wallet_name_visible={false} setIsWalletNameVisible={jest.fn()} />
-            </StoreProvider>
+            <APIProvider>
+                <StoreProvider store={mocked_store}>
+                    <WalletTransfer
+                        contentScrollHandler={jest.fn()}
+                        is_wallet_name_visible={false}
+                        setIsWalletNameVisible={jest.fn()}
+                    />
+                </StoreProvider>
+            </APIProvider>
         );
 
         expect(screen.getAllByText('AmountInput').length).toBe(2);

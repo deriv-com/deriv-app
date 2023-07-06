@@ -24,19 +24,20 @@
     &-container {
         margin: 1.5rem;
         @include mobile {
-            display: flex;
-            justify-content: center;
             margin: 0;
             overflow-x: auto;
             overflow-y: scroll;
             padding: 0 0 20.1rem;
-            height: auto;
+            height: 80rem;
             width: 100%;
         }
         &__eu {
             display: flex;
             justify-content: center;
             margin-left: 13rem;
+            &--mobile {
+                margin-left: 25%;
+            }
         }
     }
     &-main-container {

@@ -118,7 +118,11 @@ const CompareCFDs = observer(() => {
                     is_from_app={!routes.traders_hub}
                     onClickClose={() => history.push(routes.traders_hub)}
                 >
-                    <div className='compare-cfd-account-container'>
+                    <div
+                        className={classNames('compare-cfd-account-container', {
+                            'compare-cfd-account-container__eu--mobile': is_eu_user,
+                        })}
+                    >
                         <CFDCompareAccountsCarousel>
                             {all_available_accounts.map(item => (
                                 <CFDCompareAccountsCard

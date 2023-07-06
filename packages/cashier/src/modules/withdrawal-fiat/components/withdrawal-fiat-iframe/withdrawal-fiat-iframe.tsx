@@ -1,6 +1,5 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
-import { LocalStore } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { useWithdrawalFiatAddress } from '@deriv/hooks';
 import './withdrawal-fiat-iframe.scss';
@@ -15,6 +14,10 @@ const WithdrawalFiatIframe = observer(() => {
         return () => resetVerificationCode(); // redirects the user back to email verification page
     }, []);
 
+    React.useEffect(() => {
+        setIsLoading(true);
+    }, [iframe_url]);
+
     if (error) return <Error error={error as ErrorStore} />;
 
     return (
@@ -26,6 +29,7 @@ const WithdrawalFiatIframe = observer(() => {
                     onLoad={() => setIsLoading(false)}
                     src={iframe_url}
                     style={{ display: is_loading ? 'none' : 'block' }}
+                    data-testid='dt_withdrawal_fiat_iframe'
                 />
             )}
         </React.Fragment>

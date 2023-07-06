@@ -17,7 +17,7 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
     const history = useHistory();
 
     const market_type = getMarketType(trading_platforms);
-    const jurisdiction_shortcode = market_type.concat('_', trading_platforms.shortcode);
+    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode);
     const {
         modules: { cfd },
         common,
@@ -63,7 +63,7 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
     let is_account_added = false;
 
     if (trading_platforms.platform === CFD_PLATFORMS.MT5) {
-        is_account_added = isMt5AccountAdded(current_list, jurisdiction_shortcode, is_demo);
+        is_account_added = isMt5AccountAdded(current_list, market_type_shortcode, is_demo);
     } else if (trading_platforms.platform === CFD_PLATFORMS.DXTRADE) {
         is_account_added = isDxtradeAccountAdded(current_list, is_demo);
     }
@@ -91,8 +91,8 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const account_status_response = getAccountVerficationStatus(
-        jurisdiction_shortcode,
+    const is_account_status_verified = getAccountVerficationStatus(
+        market_type_shortcode,
         poi_or_poa_not_submitted,
         poi_acknowledged_for_vanuatu_maltainvest,
         poi_acknowledged_for_bvi_labuan,
@@ -108,7 +108,7 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
         setAppstorePlatform(trading_platforms.platform);
         if (trading_platforms.platform === CFD_PLATFORMS.MT5) {
             setJurisdictionSelectedShortcode(trading_platforms.shortcode);
-            if (account_status_response) {
+            if (is_account_status_verified) {
                 setAccountType(type_of_account);
                 enableCFDPasswordModal();
             } else {

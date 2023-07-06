@@ -12,10 +12,10 @@ const getHighlightedIconLabel = (
     is_demo?: boolean
 ): TInstrumentsIcon[] => {
     const market_type = getMarketType(trading_platforms);
-    const jurisdiction_shortcode = market_type.concat('_', trading_platforms.shortcode);
+    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode);
     // Forex for these: MT5 Financial Vanuatu, MT5 Financial Labuan
     const forex_label =
-        jurisdiction_shortcode === 'financial_labuan' || jurisdiction_shortcode === 'financial_vanuatu' || is_demo
+        market_type_shortcode === 'financial_labuan' || market_type_shortcode === 'financial_vanuatu' || is_demo
             ? localize('Forex')
             : localize('Forex: standard/micro');
 
@@ -225,7 +225,7 @@ const getJuridisctionDescription = (shortcode: string) => {
 };
 
 // Sort the MT5 accounts in the order of derived, financial and swap-free
-const getSortedAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
+const getSortedCFDAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
     const swap_free_accounts = available_accounts
         .filter(item => item.market_type === 'all')
         .map(item => ({ ...item, platform: 'mt5' } as const));
@@ -267,7 +267,7 @@ const dxtrade_data: TModifiedTradingPlatformAvailableAccount = {
 
 // Check whether the POA POI status are completed for different jurisdictions
 const getAccountVerficationStatus = (
-    jurisdiction_shortcode: string,
+    market_type_shortcode: string,
     poi_or_poa_not_submitted: boolean,
     poi_acknowledged_for_vanuatu_maltainvest: boolean,
     poi_acknowledged_for_bvi_labuan: boolean,
@@ -278,7 +278,7 @@ const getAccountVerficationStatus = (
     has_submitted_personal_details: boolean,
     is_demo?: boolean
 ) => {
-    switch (jurisdiction_shortcode) {
+    switch (market_type_shortcode) {
         case 'synthetic_svg':
         case 'financial_svg':
         case 'all_svg':
@@ -367,7 +367,7 @@ export {
     getMarketType,
     getAccountIcon,
     getPlatformLabel,
-    getSortedAvailableAccounts,
+    getSortedCFDAvailableAccounts,
     getEUAvailableAccounts,
     dxtrade_data,
     getHeaderColor,

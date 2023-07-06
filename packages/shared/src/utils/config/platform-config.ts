@@ -28,6 +28,7 @@ export const platforms: TPlatforms = {
         is_hard_redirect: true,
         platform_name: 'Deriv GO',
         route_to_path: '',
+        url: 'https://app.deriv.com/redirect/derivgo',
     },
 };
 

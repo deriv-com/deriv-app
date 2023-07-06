@@ -61,7 +61,7 @@ const ServicesErrorModal = ({
             if (multipliers_account_status === 'pending') {
                 return <AccountVerificationPendingdModal is_visible={is_visible} onConfirm={onConfirm} />;
             }
-            return <AccountVerificationPendingdModal is_visible={is_visible} onConfirm={onConfirm} />;
+            return <AccountVerificationRequiredModal is_visible={is_visible} onConfirm={onConfirm} />;
         default:
             return (
                 <Modal is_open={is_visible} small title={getTitle(type)} toggleModal={onConfirm}>

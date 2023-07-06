@@ -42,7 +42,7 @@ const WalletHeaderButtons = observer(({ is_disabled, is_open, btns, wallet_accou
                 >
                     <Icon
                         icon={btn.icon}
-                        custom_color={is_disabled ? 'var(--general-disabled)' : 'var(--text-general)'}
+                        custom_color={is_disabled ? 'var(--general-disabled)' : 'var(--text-prominent)'}
                     />
                     <CSSTransition
                         appear
@@ -55,7 +55,7 @@ const WalletHeaderButtons = observer(({ is_disabled, is_open, btns, wallet_accou
                     >
                         <Text
                             weight='bold'
-                            color={is_disabled ? 'disabled' : 'general'}
+                            color={is_disabled ? 'disabled' : 'prominent'}
                             size='xs'
                             className='wallet-header__description-buttons-item-text'
                         >

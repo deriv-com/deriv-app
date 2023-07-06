@@ -7,6 +7,7 @@ import { mockStore, StoreProvider } from '@deriv/stores';
 
 jest.mock('Components/wallet-transfer', () => jest.fn(() => <div>WalletTransfer</div>));
 jest.mock('Components/transaction-list', () => jest.fn(() => <div>Transactions</div>));
+jest.mock('Components/wallet-deposit', () => jest.fn(() => <div>Deposit</div>));
 
 describe('WalletModalBody', () => {
     let mocked_props: React.ComponentProps<typeof WalletModalBody>;
@@ -48,7 +49,7 @@ describe('WalletModalBody', () => {
         mocked_props.wallet_type = 'real';
         const mocked_store = mockStore({
             traders_hub: {
-                active_modal_tab: 'Withdraw',
+                active_modal_tab: 'Transfer',
             },
         });
         renderWithRouter(
@@ -60,7 +61,7 @@ describe('WalletModalBody', () => {
         const el_transfer_tab = screen.getByText('Transfer');
         userEvent.click(el_transfer_tab);
 
-        expect(screen.getByText('Transfer')).toBeInTheDocument();
+        expect(screen.getByText('Transfer Real')).toBeInTheDocument();
     });
 
     it('Should trigger setWalletModalActiveTab callback when the user clicked on the tab', () => {

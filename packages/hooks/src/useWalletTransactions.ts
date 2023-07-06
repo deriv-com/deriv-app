@@ -1,4 +1,3 @@
-import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
 import useCurrencyConfig from './useCurrencyConfig';
@@ -229,14 +228,10 @@ const useWalletTransactions = (
               },
           ];
 
-    const { isLoading, isSuccess } = useFetch('statement', {
-        options: { keepPreviousData: true },
-        ...(action_type && {
-            payload: {
-                action_type,
-            },
-        }),
-    });
+    // const { isLoading, isSuccess } = useFetch('statement', {
+    //     options: { keepPreviousData: true },
+    //     payload: { action_type: },
+    // });
 
     // TODO: un-comment this code when we're to switch to API data
     // const transactions = data?.statement?.transactions?.filter(
@@ -319,7 +314,7 @@ const useWalletTransactions = (
         [accounts, current_wallet, getConfig, getTradingAccountName, is_dark_mode_on, loginid, transactions, wallets]
     );
 
-    return { transactions: modified_transactions, isLoading, isSuccess };
+    return { transactions: modified_transactions, isLoading: false, isSuccess: true };
 };
 
 export default useWalletTransactions;

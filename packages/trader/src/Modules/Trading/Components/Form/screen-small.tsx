@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Collapsible } from '@deriv/components';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
@@ -20,13 +19,30 @@ import MobileWidget from 'Modules/Trading/Components/Elements/mobile-widget.jsx'
 import Purchase from 'Modules/Trading/Containers/purchase.jsx';
 import RiskManagementInfo from 'Modules/Trading/Components/Elements/Multiplier/risk-management-info.jsx';
 import TakeProfit from 'Modules/Trading/Components/Form/TradeParams/Multiplier/take-profit.jsx';
-import 'Sass/app/_common/mobile-widget.scss';
+import 'sass/app/_common/mobile-widget.scss';
 import classNames from 'classnames';
 import AccumulatorsStats from 'Modules/Contract/Components/AccumulatorsStats';
 import Strike from 'Modules/Trading/Components/Form/TradeParams/strike.jsx';
 import VanillaTradeTypes from 'Modules/Trading/Components/Form/TradeParams/vanilla-trade-types.jsx';
 import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
+
+type TCollapsibleTradeParams = Pick<
+    ReturnType<typeof useTraderStore>,
+    | 'form_components'
+    | 'has_take_profit'
+    | 'previous_symbol'
+    | 'is_accumulator'
+    | 'is_trade_params_expanded'
+    | 'is_multiplier'
+    | 'is_vanilla'
+    | 'onChange'
+    | 'take_profit'
+    | 'setIsTradeParamsExpanded'
+> & {
+    has_allow_equals: boolean;
+    is_allow_equal: boolean;
+};
 
 const CollapsibleTradeParams = ({
     form_components,
@@ -41,7 +57,7 @@ const CollapsibleTradeParams = ({
     onChange,
     take_profit,
     setIsTradeParamsExpanded,
-}) => {
+}: TCollapsibleTradeParams) => {
     React.useEffect(() => {
         if (previous_symbol && is_allow_equal && has_allow_equals) setIsTradeParamsExpanded(true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -49,7 +65,7 @@ const CollapsibleTradeParams = ({
 
     const is_collapsed = !is_trade_params_expanded;
 
-    const onClick = e => {
+    const onClick = (e: boolean) => {
         setIsTradeParamsExpanded(e);
     };
 
@@ -57,7 +73,7 @@ const CollapsibleTradeParams = ({
         setIsTradeParamsExpanded(true);
     };
 
-    const isVisible = component => form_components.includes(component);
+    const isVisible = (component: string) => form_components.includes(component);
 
     return (
         <Collapsible position='top' is_collapsed={is_collapsed} onClick={onClick}>
@@ -83,7 +99,8 @@ const CollapsibleTradeParams = ({
                     <Strike />
                 </div>
             )}
-
+            {/* 
+            // @ts-expect-error Observer wrapped component needs to be ts migrated before props can be detected */}
             {!is_accumulator && <MobileWidget is_collapsed={is_collapsed} toggleDigitsWidget={toggleDigitsWidget} />}
             {has_allow_equals && (
                 <div data-collapsible='true'>
@@ -103,6 +120,7 @@ const CollapsibleTradeParams = ({
                     className={classNames('take-profit', 'mobile-widget')}
                 >
                     <TakeProfit
+                        //@ts-expect-error Observer wrapped component needs to be ts migrated before props can be detected
                         take_profit={take_profit}
                         has_take_profit={has_take_profit}
                         onChange={onChange}
@@ -124,7 +142,7 @@ const CollapsibleTradeParams = ({
     );
 };
 
-const ScreenSmall = observer(({ is_trade_enabled }) => {
+const ScreenSmall = observer(({ is_trade_enabled }: { is_trade_enabled: boolean }) => {
     const trade_store = useTraderStore();
     const {
         is_accumulator,
@@ -177,9 +195,5 @@ const ScreenSmall = observer(({ is_trade_enabled }) => {
         <CollapsibleTradeParams has_allow_equals={has_allow_equals} {...collapsible_trade_params_props} />
     );
 });
-
-ScreenSmall.propTypes = {
-    is_trade_enabled: PropTypes.bool,
-};
 
 export default ScreenSmall;

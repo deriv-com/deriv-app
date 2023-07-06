@@ -962,7 +962,7 @@ export default class NotificationStore extends BaseStore {
                     text: localize('Learn more'),
                     onClick: () => {
                         window.open(
-                            'https://deriv-com-git-fork-nuzhy-deriv-nuzhy-p2p-cookie-issue.binary.sx/',
+                            'https://deriv-com-git-fork-nuzhy-deriv-nuzhy-p2p-cookie-issue.binary.sx/p2p/',
                             '_blank'
                         );
                     },

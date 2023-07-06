@@ -83,6 +83,7 @@ export const getProposalInfo = (
     const accumulators_details = {
         ...proposal.contract_details,
         growth_rate: store.growth_rate,
+        spot_time: proposal.spot_time,
     };
 
     return {

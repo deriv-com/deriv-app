@@ -11,9 +11,10 @@ type TProps = {
 };
 
 const WalletCardsCarousel = observer(({ items }: TProps) => {
-    const {
-        client: { loginid, switchAccount },
-    } = useStore();
+    const { client, ui, traders_hub } = useStore();
+    const { setIsWalletModalVisible } = ui;
+    const { setWalletModalActiveWalletID, setWalletModalActiveTab } = traders_hub;
+    const { loginid, switchAccount } = client;
 
     const [active_page, setActivePage] = React.useState(
         items.findIndex(item => item?.loginid === loginid) === -1
@@ -35,9 +36,15 @@ const WalletCardsCarousel = observer(({ items }: TProps) => {
         <div className='wallet-cards-carousel traders-hub__wallets-bg'>
             <CardsSliderSwiper items={items} setActivePage={setActivePage} active_page={active_page} />
             <div className='wallet-cards-carousel__buttons'>
-                {wallet_buttons.map(button => (
-                    <WalletButton key={button.name} button={button} />
-                ))}
+                {wallet_buttons.map(button => {
+                    button.action = async () => {
+                        setWalletModalActiveTab(button.name);
+                        setIsWalletModalVisible(true);
+                        setWalletModalActiveWalletID(items[active_page]?.loginid);
+                    };
+
+                    return <WalletButton key={button.name} button={button} />;
+                })}
             </div>
         </div>
     );

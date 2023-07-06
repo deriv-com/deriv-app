@@ -7,12 +7,15 @@ import {
 } from '../Components/props.types';
 
 // Map the accounts according to the market type
-const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvailableAccount): TInstrumentsIcon[] => {
+const getHighlightedIconLabel = (
+    trading_platforms: TModifiedTradingPlatformAvailableAccount,
+    is_demo?: boolean
+): TInstrumentsIcon[] => {
     const market_type = getMarketType(trading_platforms);
     const jurisdiction_shortcode = market_type.concat('_', trading_platforms.shortcode);
     // Forex for these: MT5 Financial Vanuatu, MT5 Financial Labuan
     const forex_label =
-        jurisdiction_shortcode === 'financial_labuan' || jurisdiction_shortcode === 'financial_vanuatu'
+        jurisdiction_shortcode === 'financial_labuan' || jurisdiction_shortcode === 'financial_vanuatu' || is_demo
             ? localize('Forex')
             : localize('Forex: standard/micro');
 
@@ -25,7 +28,7 @@ const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvai
                 { icon: 'Stocks', text: localize('Stocks'), highlighted: false },
                 { icon: 'StockIndices', text: localize('Stock Indices'), highlighted: false },
                 { icon: 'Commodities', text: localize('Commodities'), highlighted: false },
-                { icon: 'Forex', text: localize('Forex: standard/micro'), highlighted: false },
+                { icon: 'Forex', text: forex_label, highlighted: false },
                 { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: false },
                 { icon: 'ETF', text: localize('ETF'), highlighted: false },
             ];
@@ -33,7 +36,7 @@ const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvai
             if (trading_platforms.shortcode === 'maltainvest') {
                 return [
                     { icon: 'Synthetics', text: localize('Synthetics'), highlighted: true, is_asterik: true },
-                    { icon: 'Forex', text: localize('Forex'), highlighted: true },
+                    { icon: 'Forex', text: forex_label, highlighted: true },
                     { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
                     { icon: 'StockIndices', text: localize('Stock Indices'), highlighted: true },
                     { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
@@ -60,7 +63,7 @@ const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvai
                 { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
                 { icon: 'StockIndices', text: localize('Stock Indices'), highlighted: true },
                 { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
-                { icon: 'Forex', text: localize('Forex: standard/micro'), highlighted: true },
+                { icon: 'Forex', text: forex_label, highlighted: true },
                 { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
                 { icon: 'ETF', text: localize('ETF'), highlighted: true },
             ];

@@ -2,7 +2,6 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { CFD_PLATFORMS } from '@deriv/shared';
 import { StoreProvider, mockStore } from '@deriv/stores';
-// import { Localize } from '@deriv/translations';
 import CFDCompareAccountsCard from '../cfd-compare-accounts-card';
 
 jest.mock('../../../Assets/svgs/trading-platform', () => jest.fn(() => <div>Mocked Icon</div>));

@@ -70,6 +70,7 @@ export default class RunPanelStore {
         this.dbot = this.root_store.dbot;
         this.core = core;
         this.disposeReactionsFn = this.registerReactions();
+        this.timer = null;
     }
 
     active_index = 0;
@@ -147,11 +148,20 @@ export default class RunPanelStore {
     }
 
     async onRunButtonClick() {
+        let timer_counter = 1;
         if (window.sendRequestsStatistic) {
-            performance.mark('bot-start');
-
-            window.sendRequestsStatistic(false);
             performance.clearMeasures();
+            performance.mark('bot-start');
+            // Log is sent every 10 seconds for 5 minutes
+            this.timer = setInterval(() => {
+                window.sendRequestsStatistic(true);
+                performance.clearMeasures();
+                if (timer_counter === 30) {
+                    clearInterval(this.timer);
+                } else {
+                    timer_counter++;
+                }
+            }, 10000);
         }
         const { summary_card, route_prompt_dialog, self_exclusion } = this.root_store;
         const { client, ui } = this.core;
@@ -236,6 +246,10 @@ export default class RunPanelStore {
         if (this.error_type) {
             this.error_type = undefined;
         }
+
+        if (this.timer) {
+            clearInterval(this.timer);
+        }
         if (window.sendRequestsStatistic) {
             window.sendRequestsStatistic(true);
             performance.clearMeasures();
@@ -288,6 +302,13 @@ export default class RunPanelStore {
         this.onCloseDialog();
         summary_card.clear();
         toggleStopBotDialog();
+        if (this.timer) {
+            clearInterval(this.timer);
+        }
+        if (window.sendRequestsStatistic) {
+            window.sendRequestsStatistic(true);
+            performance.clearMeasures();
+        }
     }
 
     closeMultiplierContract() {
@@ -307,6 +328,13 @@ export default class RunPanelStore {
         this.onOkButtonClick = () => {
             ui.setPromptHandler(false);
             this.dbot.terminateBot();
+            if (this.timer) {
+                clearInterval(this.timer);
+            }
+            if (window.sendRequestsStatistic) {
+                window.sendRequestsStatistic(true);
+                performance.clearMeasures();
+            }
             this.onCloseDialog();
             summary_card.clear();
         };

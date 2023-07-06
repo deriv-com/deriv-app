@@ -28,6 +28,7 @@ export type TRoute = {
     to?: string;
     component?: React.FC<TComponentRouteProps>;
     getTitle: () => string;
+    routes?: TRoute[];
 };
 
 export type TRouteConfig = TRoute & {

@@ -4,36 +4,42 @@ import { Button, Modal } from '@deriv/components';
 import { getAuthenticationStatusInfo, isMobile, Jurisdiction } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TJurisdictionModalContentWrapperProps } from '../props.types';
-import { connect } from '../../Stores/connect';
-import RootStore from '../../Stores/index';
 import JurisdictionModalContent from './jurisdiction-modal-content';
 import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
+import { useStore, observer } from '@deriv/stores';
+import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
 
-const JurisdictionModalContentWrapper = ({
-    account_status,
-    account_type,
-    context,
-    fetchAccountSettings,
-    has_submitted_cfd_personal_details,
-    is_jurisdiction_modal_visible,
-    is_virtual,
-    jurisdiction_selected_shortcode,
-    openPasswordModal,
-    real_financial_accounts_existing_data,
-    real_swapfree_accounts_existing_data,
-    real_synthetic_accounts_existing_data,
-    residence,
-    residence_list,
-    setJurisdictionSelectedShortcode,
-    should_restrict_bvi_account_creation,
-    should_restrict_vanuatu_account_creation,
-    show_eu_related_content,
-    toggleCFDVerificationModal,
-    trading_platform_available_accounts,
-    toggleJurisdictionModal,
-    updateMT5Status,
-}: TJurisdictionModalContentWrapperProps) => {
+const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisdictionModalContentWrapperProps) => {
+    const { client, traders_hub } = useStore();
+
+    const { show_eu_related_content } = traders_hub;
+
+    const {
+        trading_platform_available_accounts,
+        account_status,
+        fetchAccountSettings,
+        residence,
+        residence_list,
+        is_virtual,
+        updateMT5Status,
+        should_restrict_vanuatu_account_creation,
+        should_restrict_bvi_account_creation,
+    } = client;
+
+    const {
+        is_jurisdiction_modal_visible,
+        has_submitted_cfd_personal_details,
+        jurisdiction_selected_shortcode,
+        toggleCFDVerificationModal,
+        toggleJurisdictionModal,
+        account_type,
+        real_financial_accounts_existing_data,
+        real_swapfree_accounts_existing_data,
+        real_synthetic_accounts_existing_data,
+        setJurisdictionSelectedShortcode,
+    } = useCfdStore();
+
     const [checked, setChecked] = React.useState(false);
 
     const {
@@ -202,14 +208,12 @@ const JurisdictionModalContentWrapper = ({
                             account_status={account_status}
                             account_type={account_type.type}
                             card_classname={`cfd-jurisdiction-card--${account_type.type}`}
-                            context={context}
                             jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                             should_restrict_bvi_account_creation={should_restrict_bvi_account_creation}
                             should_restrict_vanuatu_account_creation={should_restrict_vanuatu_account_creation}
                         />
                         <JurisdictionCheckBox
                             is_checked={checked}
-                            context={context}
                             onCheck={() => setChecked(!checked)}
                             class_name={`cfd-jurisdiction-card--${account_type.type}__jurisdiction-checkbox`}
                             jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
@@ -234,26 +238,6 @@ const JurisdictionModalContentWrapper = ({
             </Modal.Footer>
         </div>
     );
-};
-export default connect(({ modules: { cfd }, client, traders_hub }: RootStore) => ({
-    account_status: client.account_status,
-    account_type: cfd.account_type,
-    fetchAccountSettings: client.fetchAccountSettings,
-    has_submitted_cfd_personal_details: cfd.has_submitted_cfd_personal_details,
-    is_jurisdiction_modal_visible: cfd.is_jurisdiction_modal_visible,
-    is_virtual: client.is_virtual,
-    jurisdiction_selected_shortcode: cfd.jurisdiction_selected_shortcode,
-    real_financial_accounts_existing_data: cfd.real_financial_accounts_existing_data,
-    real_swapfree_accounts_existing_data: cfd.real_swapfree_accounts_existing_data,
-    real_synthetic_accounts_existing_data: cfd.real_synthetic_accounts_existing_data,
-    residence: client.residence,
-    residence_list: client.residence_list,
-    setJurisdictionSelectedShortcode: cfd.setJurisdictionSelectedShortcode,
-    should_restrict_bvi_account_creation: client.should_restrict_bvi_account_creation,
-    should_restrict_vanuatu_account_creation: client.should_restrict_vanuatu_account_creation,
-    show_eu_related_content: traders_hub.show_eu_related_content,
-    toggleCFDVerificationModal: cfd.toggleCFDVerificationModal,
-    trading_platform_available_accounts: client.trading_platform_available_accounts,
-    toggleJurisdictionModal: cfd.toggleJurisdictionModal,
-    updateMT5Status: client.updateMT5Status,
-}))(JurisdictionModalContentWrapper);
+});
+
+export default JurisdictionModalContentWrapper;

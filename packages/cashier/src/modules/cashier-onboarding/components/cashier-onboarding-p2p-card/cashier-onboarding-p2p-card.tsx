@@ -15,7 +15,7 @@ const CashierOnboardingP2PCard: React.FC = observer(() => {
     const { openRealAccountSignup } = ui;
     const { setDepositTarget } = general_store;
     const history = useHistory();
-    const { data: is_p2p_enabled } = useIsP2PEnabled();
+    const is_p2p_enabled = useIsP2PEnabled();
     const has_usd_currency = useHasUSDCurrency();
     const has_fiat_currency = useHasFiatCurrency();
     const should_show_p2p_card = is_p2p_enabled || has_usd_currency;

@@ -24,7 +24,7 @@ const ProofOfIdentityContainer = ({
     fetchResidenceList,
     getChangeableFields,
     height,
-    index,
+    index = null,
     is_from_external,
     is_switching,
     is_virtual,
@@ -142,14 +142,12 @@ const ProofOfIdentityContainer = ({
                 getChangeableFields={getChangeableFields}
                 identity_last_attempt={identity_last_attempt}
                 idv={idv}
-                index={index}
                 is_from_external={!!is_from_external}
                 is_idv_disallowed={is_idv_disallowed || should_ignore_idv}
                 manual={manual}
                 needs_poa={needs_poa}
                 onfido={onfido}
                 onStateChange={status => onStateChange(status)}
-                onSubmit={onSubmit}
                 redirect_button={redirect_button}
                 refreshNotifications={refreshNotifications}
                 residence_list={residence_list}

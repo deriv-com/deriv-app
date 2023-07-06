@@ -1,7 +1,6 @@
 import { Button, Icon, Modal, IconWithMessage } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import React from 'react';
-import { withRouter } from 'react-router';
 import { localize } from '@deriv/translations';
 import './verification-document-submitted.scss';
 
@@ -40,4 +39,4 @@ const VerificationDocumentSubmitted = observer(() => {
     );
 });
 
-export default withRouter(VerificationDocumentSubmitted);
+export default VerificationDocumentSubmitted;

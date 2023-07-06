@@ -1,8 +1,9 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
+import { TCFDPasswordReset } from '../Containers/props.types';
 
 export type TCFDPlatform = 'dxtrade' | 'mt5';
 
-export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'ctrader';
+export type TCFDsPlatformType = 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
 
 export type TCFDAccountCopy = {
     text: string | undefined;
@@ -27,7 +28,7 @@ export type TPasswordBoxProps = {
 };
 
 export type TType = {
-    category: string;
+    category: TCFDPasswordReset['account_group'];
     type: string;
     platform: string;
 };
@@ -157,21 +158,8 @@ export type TCFDAccountCard = {
     button_label?: string | JSX.Element;
     commission_message: string;
     descriptor: string;
-    dxtrade_tokens: {
-        demo: string;
-        real: string;
-    };
-    derivez_tokens: {
-        demo: string;
-        real: string;
-    };
+    existing_accounts_data?: TExistingData | null;
     is_hovered?: boolean;
-    isEligibleForMoreDemoMt5Svg: (
-        market_type: TTradingPlatformAvailableAccount['market_type'] | 'synthetic'
-    ) => boolean;
-    isEligibleForMoreRealMt5: (market_type: TTradingPlatformAvailableAccount['market_type'] | 'synthetic') => boolean;
-    existing_accounts_data?: TExistingData;
-    trading_platform_available_accounts: TTradingPlatformAvailableAccount[];
     has_banner?: boolean;
     has_cfd_account_error?: boolean;
     has_real_account?: boolean;
@@ -180,8 +168,6 @@ export type TCFDAccountCard = {
     is_disabled: boolean;
     is_logged_in: boolean;
     is_virtual?: boolean;
-    is_eu?: boolean;
-    onHover?: (value: string | undefined) => void;
     platform: string;
     specs?: { [key: string]: { key: () => string; value: () => string } };
     title: string;
@@ -191,23 +177,12 @@ export type TCFDAccountCard = {
     onPasswordManager: (
         arg1: string | undefined,
         arg2: string,
-        arg3: string,
+        group: TCFDPasswordReset['account_group'],
         arg4: string,
         arg5: string | undefined
     ) => void;
     toggleAccountsDialog?: (arg?: boolean) => void;
-    toggleMT5TradeModal: (arg?: boolean) => void;
     toggleShouldShowRealAccountsList?: (arg?: boolean) => void;
-    setMT5TradeAccount: (arg: any) => void;
-    toggleCFDVerificationModal: () => void;
-    setJurisdictionSelectedShortcode: (shortcode: string) => void;
-    setAccountType: (account_type: { category: string; type?: string }) => void;
-    setIsAcuityModalOpen: (value: boolean) => void;
-    updateAccountStatus: () => void;
-    real_account_creation_unlock_date: string;
-    setShouldShowCooldownModal: (value: boolean) => void;
-    setAppstorePlatform: (value: string) => void;
-    show_eu_related_content: boolean;
 };
 
 export type TTradingPlatformAccounts = {

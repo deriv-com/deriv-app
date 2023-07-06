@@ -7,9 +7,11 @@ import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 
 const TradeModals = observer(() => {
-    const { ui, client, common } = useStore();
+    const { ui, client, common, traders_hub } = useStore();
     const { resetPreviousSymbol, clearPurchaseInfo, requestProposal: resetPurchase } = useTraderStore();
     const { is_virtual, is_logged_in } = client;
+    const { multipliers_account_status } = traders_hub;
+
     const { services_error } = common;
     const {
         is_services_error_visible,
@@ -61,6 +63,7 @@ const TradeModals = observer(() => {
                 is_visible={is_services_error_visible}
                 is_virtual={is_virtual}
                 is_logged_in={is_logged_in}
+                multipliers_account_status={multipliers_account_status}
             />
         </React.Fragment>
     );

@@ -6,6 +6,7 @@ jest.mock('../authorization-required-modal.jsx', () => jest.fn(() => 'Authorizat
 jest.mock('../insufficient-balance-modal.jsx', () => jest.fn(() => 'InsufficientBalanceModal'));
 jest.mock('../company-wide-limit-exceeded-modal.jsx', () => jest.fn(() => 'CompanyWideLimitExceededModal'));
 jest.mock('../account-verification-required-modal', () => jest.fn(() => 'AccountVerificationRequiredModal'));
+jest.mock('../account-verification-pending-modal', () => jest.fn(() => 'AccountVerificationPendingModal'));
 type TModal = {
     (): JSX.Element;
     Body?: React.FC;
@@ -26,6 +27,7 @@ describe('<ServicesErrorModal />', () => {
     const modal_props = {
         is_visible: true,
         onConfirm: jest.fn(),
+        multipliers_account_status: null,
     };
     it('Should return null if code or message is missing', () => {
         const services_error_mock = {
@@ -73,6 +75,22 @@ describe('<ServicesErrorModal />', () => {
         };
         render(<ServicesErrorModal services_error={services_error_mock} {...modal_props} />);
         expect(screen.getByText('AccountVerificationRequiredModal')).toBeInTheDocument();
+    });
+
+    it('AccountVerificationPendingModal should render when code is PleaseAuthenticate', () => {
+        const services_error_mock = {
+            code: 'PleaseAuthenticate',
+            message: 'PleaseAuthenticate',
+        };
+
+        render(
+            <ServicesErrorModal
+                services_error={services_error_mock}
+                {...modal_props}
+                multipliers_account_status='pending'
+            />
+        );
+        expect(screen.getByText('AccountVerificationPendingModal')).toBeInTheDocument();
     });
 
     it('Default case should render when code is not specified in switch case', () => {

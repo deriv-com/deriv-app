@@ -869,3 +869,33 @@
         margin: 0;
     }
 }
+
+.dc-modal__container_account-verification-pending-modal {
+    .dc-modal-header__title,
+    .dc-modal-footer {
+        padding: 2.4rem;
+    }
+    .dc-modal-body {
+        padding: 0 2.4rem;
+    }
+    .account-verification-pending-modal-button {
+        height: 4rem;
+        width: 5.2rem;
+    }
+    @include mobile {
+        .dc-modal-header__title {
+            font-size: 1.4rem;
+        }
+
+        .dc-modal-header__title,
+        .dc-modal-footer {
+            padding: 1.6rem;
+        }
+        .dc-modal-body {
+            padding: 0 1.6rem;
+        }
+        .account-verification-pending-modal-button {
+            height: 4rem;
+        }
+    }
+}

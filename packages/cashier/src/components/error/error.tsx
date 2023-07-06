@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Icon, ButtonLink, StaticUrl, Text } from '@deriv/components';
-import { useVerifyEmail } from '@deriv/hooks';
 import { isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import ErrorStore from '../../stores/error-store';
+import { useStore } from '@deriv/stores';
 import './error.scss';
 
 type TErrorComponentProps = {
@@ -75,7 +75,7 @@ const Error = ({
         error.setErrorMessage?.({ code: '', message: '' });
     };
 
-    const verify = useVerifyEmail('payment_withdraw');
+    const { client } = useStore();
 
     let AccountError;
     switch (error.code) {
@@ -86,7 +86,9 @@ const Error = ({
                     message={
                         <Localize i18n_default_text='The verification link you used is invalid or expired. Please request for a new one.' />
                     }
-                    onClickButton={verify.send}
+                    onClickButton={() => {
+                        client.setVerificationCode('', 'payment_withdraw'); // redirects the user back to email verification page
+                    }}
                     button_text={localize('Resend email')}
                 />
             );

@@ -12,7 +12,7 @@ const WithdrawalFiatIframe = observer(() => {
     const [is_loading, setIsLoading] = React.useState(true);
 
     React.useEffect(() => {
-        return () => resetVerificationCode();
+        return () => resetVerificationCode(); // redirects the user back to email verification page
     }, []);
 
     if (error) return <Error error={error as ErrorStore} />;

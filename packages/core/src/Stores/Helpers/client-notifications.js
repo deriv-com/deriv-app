@@ -69,5 +69,5 @@ export const priority_toast_messages = [
     'need_fa',
     'p2p_daily_limit_increase',
     'authenticate',
-    'financial_assessment_incomplete',
+    'notify_financial_assessment',
 ];

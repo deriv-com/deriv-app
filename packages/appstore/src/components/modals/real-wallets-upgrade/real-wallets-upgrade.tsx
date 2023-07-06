@@ -33,7 +33,7 @@ const RealWalletsUpgrade = observer(() => {
 
     const { start_migration } = useWalletMigration();
 
-    const upgradetoWallets = () => {
+    const upgradeToWallets = () => {
         start_migration();
         toggleWalletsUpgrade(false);
     };
@@ -81,7 +81,7 @@ const RealWalletsUpgrade = observer(() => {
                     large
                     className='wallet-steps__footer-button'
                     disabled={!is_disabled}
-                    onClick={upgradetoWallets}
+                    onClick={upgradeToWallets}
                 >
                     {localize('Upgrade to Wallets')}
                 </Button>

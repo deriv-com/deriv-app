@@ -32,7 +32,7 @@ const useWalletMigration = () => {
         /** A boolean to check if the status is in_progress */
         is_in_progress: status === 'in_progress',
         /** A boolean to check if the status is completed */
-        is_migrated: status === 'migrated',
+        is_migrated: status === 'done',
         /** A boolean to check if the status is failed */
         is_failed: status === 'failed',
         /** Sends a request to wallet_migration API to start the migration process */

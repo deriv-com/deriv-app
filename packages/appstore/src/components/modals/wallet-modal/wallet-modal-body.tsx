@@ -84,6 +84,7 @@ const WalletModalBody = observer(
                                     <div className='dc-tabs--modal-body__tabs__content-wrapper'>
                                         {option.content({
                                             is_wallet_name_visible,
+                                            contentScrollHandler,
                                             setIsWalletNameVisible,
                                         })}
                                     </div>

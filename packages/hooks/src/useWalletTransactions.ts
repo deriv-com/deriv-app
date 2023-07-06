@@ -54,6 +54,7 @@ const useWalletTransactions = (
             landing_company_name: 'svg',
             loginid: 'CRWMOCK00042',
             name: `${current_wallet.is_virtual ? 'Demo ' : ''}BTC Wallet`,
+            is_added: true,
         });
     const accounts = [demo_platform_account, ...real_platform_accounts];
     const { getConfig } = useCurrencyConfig();
@@ -228,8 +229,7 @@ const useWalletTransactions = (
               },
           ];
 
-    // @ts-expect-error reset_balance is not supported in the API yet
-    const { data, isLoading, isSuccess } = useFetch('statement', {
+    const { isLoading, isSuccess } = useFetch('statement', {
         options: { keepPreviousData: true },
         ...(!!action_type && {
             payload: {

@@ -17,7 +17,6 @@ describe('useAuthorize', () => {
             client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
         });
 
-        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {

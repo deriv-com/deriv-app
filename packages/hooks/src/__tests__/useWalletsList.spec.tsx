@@ -22,7 +22,6 @@ describe('useWalletsList', () => {
             },
         });
 
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
@@ -93,7 +92,6 @@ describe('useWalletsList', () => {
             client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
         });
 
-        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
@@ -147,7 +145,6 @@ describe('useWalletsList', () => {
             },
         });
 
-        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {

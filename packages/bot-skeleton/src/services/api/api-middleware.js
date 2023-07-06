@@ -5,17 +5,15 @@ const DATADOG_CLIENT_TOKEN_LOGS = process.env.DATADOG_CLIENT_TOKEN_LOGS ?? '';
 const isProduction = process.env.CIRCLE_JOB === 'release_production';
 const isStaging = process.env.CIRCLE_JOB === 'release_staging';
 
-let dataDogSessionSampleRate = 0;
+const dataDogSessionSampleRate = process.env.DATADOG_SESSION_SAMPLE_RATE_LOGS ?? 1;
 let dataDogVersion = '';
 let dataDogEnv = '';
 
 if (isProduction) {
     dataDogVersion = `deriv-app-${process.env.CIRCLE_TAG}`;
-    dataDogSessionSampleRate = 5;
     dataDogEnv = 'production';
 } else if (isStaging) {
     dataDogVersion = `deriv-app-staging-v${formatDate(new Date(), 'YYYYMMDD')}-${formatTime(Date.now(), 'HH:mm')}`;
-    dataDogSessionSampleRate = 5;
     dataDogEnv = 'staging';
 }
 

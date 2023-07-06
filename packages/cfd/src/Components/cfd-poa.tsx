@@ -80,7 +80,7 @@ export type TCFDPOAProps = {
     onSubmit: (index: number, value: TFormValues) => void;
     refreshNotifications: () => void;
     form_error: string;
-    get_settings: GetSettings;
+    account_settings: GetSettings;
     height: string;
     states_list: StatesList;
     storeProofOfAddress: TStoreProofOfAddress;

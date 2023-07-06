@@ -245,7 +245,6 @@ type TPrivateSocketEndpoints = {
                 enabled: 0 | 1;
                 error: unknown;
                 login: string;
-                // type the shit here
             }[];
         };
     };

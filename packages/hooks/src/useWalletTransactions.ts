@@ -231,7 +231,7 @@ const useWalletTransactions = (
 
     const { isLoading, isSuccess } = useFetch('statement', {
         options: { keepPreviousData: true },
-        ...(!!action_type && {
+        ...(action_type && {
             payload: {
                 action_type,
             },

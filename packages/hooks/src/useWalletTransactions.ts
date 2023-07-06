@@ -1,4 +1,3 @@
-import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
 import useCurrencyConfig from './useCurrencyConfig';
@@ -55,6 +54,7 @@ const useWalletTransactions = (
             landing_company_name: 'svg',
             loginid: 'CRWMOCK00042',
             name: `${current_wallet.is_virtual ? 'Demo ' : ''}BTC Wallet`,
+            is_added: true,
         });
     const accounts = [demo_platform_account, ...real_platform_accounts];
     const { getConfig } = useCurrencyConfig();
@@ -229,15 +229,10 @@ const useWalletTransactions = (
               },
           ];
 
-    // @ts-expect-error reset_balance is not supported in the API yet
-    const { data, isLoading, isSuccess } = useFetch('statement', {
-        options: { keepPreviousData: true },
-        ...(!!action_type && {
-            payload: {
-                action_type,
-            },
-        }),
-    });
+    // const { isLoading, isSuccess } = useFetch('statement', {
+    //     options: { keepPreviousData: true },
+    //     payload: { action_type: },
+    // });
 
     // TODO: un-comment this code when we're to switch to API data
     // const transactions = data?.statement?.transactions?.filter(
@@ -320,7 +315,7 @@ const useWalletTransactions = (
         [accounts, current_wallet, getConfig, getTradingAccountName, is_dark_mode_on, loginid, transactions, wallets]
     );
 
-    return { transactions: modified_transactions, isLoading, isSuccess };
+    return { transactions: modified_transactions, isLoading: false, isSuccess: true };
 };
 
 export default useWalletTransactions;

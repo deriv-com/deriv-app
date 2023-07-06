@@ -71,6 +71,7 @@ describe('useWalletsList', () => {
                 currency: 'USD',
                 gradient_card_class: 'wallet-card__usd-bg',
                 gradient_header_class: 'wallet-header__usd-bg',
+                is_added: true,
                 landing_company_name: 'svg',
                 icon: 'IcWalletCurrencyUsd',
                 is_crypto: false,

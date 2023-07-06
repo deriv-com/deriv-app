@@ -1,6 +1,8 @@
 export { default as useAccountTransferVisible } from './useAccountTransferVisible';
 export { default as useActiveWallet } from './useActiveWallet';
 export { default as useActiveWalletCFDAccounts } from './useActiveWalletCFDAccounts';
+export { default as useAuthorize } from './useAuthorize';
+export { default as useAvailableWallets } from './useAvailableWallets';
 export { default as useCashierLocked } from './useCashierLocked';
 export { default as useCFDAccounts } from './useCFDAccounts';
 export { default as useCFDAllAccounts } from './useCFDAllAccounts';
@@ -43,6 +45,7 @@ export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useTransferBetweenAccounts } from './useTransferBetweenAccounts';
 export { default as useVerifyEmail } from './useVerifyEmail';
-export { default as useWalletTransactions } from './useWalletTransactions';
 export { default as useWalletsList } from './useWalletsList';
+export { default as useWalletTransactions } from './useWalletTransactions';
 export { default as useWalletTransfer } from './useWalletTransfer';
+export { default as useWalletsList } from './useWalletsList';

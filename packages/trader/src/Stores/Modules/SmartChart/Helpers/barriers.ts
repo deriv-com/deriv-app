@@ -8,7 +8,7 @@ export const barriersToString = (
 ): Array<string | undefined> =>
     barriers_list
         .filter(barrier => barrier !== undefined && barrier !== null)
-        .map(barrier => `${is_relative && !/^[+-]/.test(`${barrier}`) ? '+' : ''}${barrier}`);
+        .map(barrier => `${is_relative && !/^[+-]/.test(barrier?.toString() ?? '') ? '+' : ''}${barrier}`);
 
 export const removeBarrier = (barriers: TBarrier[], key: string) => {
     const index = barriers.findIndex(b => b.key === key);

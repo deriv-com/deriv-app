@@ -24,7 +24,7 @@ type TOnChangeExpiry = (store: TTradeStore) => Promise<{
 export const onChangeStartDate: TOnChangeStartDate = async store => {
     const { contract_type, duration_unit, start_date } = store;
     const server_time = store.root_store.common.server_time;
-    let { start_time, expiry_date, expiry_type } = store;
+    let { start_time, expiry_type } = store;
 
     start_time = start_time || server_time.clone().add(6, 'minute').format('HH:mm'); // when there is not a default value for start_time, it should be set more than 5 min after server_time
 
@@ -33,7 +33,6 @@ export const onChangeStartDate: TOnChangeStartDate = async store => {
     const obj_sessions = ContractType.getSessions(contract_type, start_date);
     const sessions = obj_sessions.sessions;
     const obj_start_time = ContractType.getStartTime(sessions, start_date, start_time);
-    start_time = obj_start_time.start_time;
 
     const obj_duration_units_list = ContractType.getDurationUnitsList(contract_type, contract_start_type);
     const duration_units_list = obj_duration_units_list.duration_units_list;
@@ -41,8 +40,7 @@ export const onChangeStartDate: TOnChangeStartDate = async store => {
 
     const obj_expiry_type = ContractType.getExpiryType(duration_units_list, expiry_type);
     expiry_type = obj_expiry_type.expiry_type;
-    const obj_expiry_date = ContractType.getExpiryDate(duration_units_list, expiry_date, expiry_type, start_date);
-    expiry_date = obj_expiry_date.expiry_date;
+    const obj_expiry_date = ContractType.getExpiryDate(duration_units_list, store.expiry_date, expiry_type, start_date);
 
     const obj_duration_min_max = ContractType.getDurationMinMax(contract_type, contract_start_type);
 

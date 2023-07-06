@@ -74,10 +74,10 @@ describe('getContractTypeDisplay', () => {
         expect(getContractTypeDisplay('MULTDOWN', true, true)).toEqual(localize('Down'));
     });
     it('should return an empty string if show_button_name === false and contract_config has no name field', () => {
-        expect(getContractTypeDisplay('TEST' as TGetSupportedContractsKey, true, false)).toBe('');
+        expect(getContractTypeDisplay('TEST', true, false)).toBe('');
     });
     it('should return an empty string if show_button_name === true and contract_config has no name field and no button_name', () => {
-        expect(getContractTypeDisplay('TEST' as TGetSupportedContractsKey, true, true)).toBe('');
+        expect(getContractTypeDisplay('TEST', true, true)).toBe('');
     });
 });
 

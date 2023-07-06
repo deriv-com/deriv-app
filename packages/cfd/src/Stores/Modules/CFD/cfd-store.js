@@ -11,8 +11,8 @@ export default class CFDStore extends BaseStore {
     jurisdiction_selected_shortcode = '';
 
     account_type = {
-        category: undefined,
-        type: undefined,
+        category: '',
+        type: '',
     };
 
     mt5_trade_account = {};
@@ -117,24 +117,23 @@ export default class CFDStore extends BaseStore {
             loadDerivezTokens: action.bound,
         });
 
-        reaction(
-            () => [this.root_store.client.dxtrade_accounts_list],
-            () => {
-                if (this.root_store.client.dxtrade_accounts_list.length > 0) {
-                    this.loadDxtradeTokens();
-                }
-            }
-        );
-
-        // todo: uncomment this once derivez tokens are ready
         // reaction(
-        //     () => [this.root_store.client.derivez_accounts_list],
+        //     () => [this.root_store.client.dxtrade_accounts_list],
         //     () => {
-        //         if (this.root_store.client.derivez_accounts_list.length > 0) {
-        //         this.loadDerivezTokens();
+        //         if (this.root_store.client.dxtrade_accounts_list.length > 0) {
+        //             this.loadDxtradeTokens();
         //         }
         //     }
         // );
+
+        reaction(
+            () => [this.root_store.client.derivez_accounts_list],
+            () => {
+                if (this.root_store.client.derivez_accounts_list.length > 0) {
+                    this.loadDerivezTokens();
+                }
+            }
+        );
     }
 
     get account_title() {
@@ -692,7 +691,6 @@ export default class CFDStore extends BaseStore {
             const has_existing_account = this.root_store.client.dxtrade_accounts_list.some(
                 account => account.account_type === account_type
             );
-
             if (!this.dxtrade_tokens[account_type] && has_existing_account) {
                 WS.getServiceToken(CFD_PLATFORMS.DXTRADE, account_type).then(response =>
                     this.setDxtradeToken(response, account_type)
@@ -703,8 +701,8 @@ export default class CFDStore extends BaseStore {
 
     setDerivezToken(response, server) {
         if (!response.error) {
-            const { derivez } = response.service_token;
-            this.derivez_tokens[server] = derivez.token;
+            const { pandats } = response.service_token;
+            this.derivez_tokens[server] = pandats.token;
         }
     }
 

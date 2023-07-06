@@ -26,7 +26,6 @@ const WalletTourGuide = observer(() => {
     return (
         <Joyride
             run={is_wallet_tour_open && !is_wallet_switching}
-            debug
             continuous
             hideCloseButton
             showSkipButton
@@ -34,7 +33,7 @@ const WalletTourGuide = observer(() => {
             steps={getWalletStepConfig()}
             styles={wallet_tour_styles}
             locale={wallet_tour_step_locale}
-            // floaterProps={{ disableAnimation: true }}
+            floaterProps={{ disableAnimation: true }}
             callback={handleJoyrideCallback}
         />
     );

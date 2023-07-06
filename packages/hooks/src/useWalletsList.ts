@@ -9,7 +9,7 @@ const useWalletsList = () => {
     const { getConfig } = useCurrencyConfig();
     const { accounts, loginid } = client;
     const { is_dark_mode_on } = ui;
-    const { data, ...reset } = useFetch('authorize', {
+    const { data, ...rest } = useFetch('authorize', {
         payload: { authorize: accounts[loginid || ''].token },
         options: { enabled: Boolean(loginid), keepPreviousData: true },
     });
@@ -71,7 +71,7 @@ const useWalletsList = () => {
     }, [data?.authorize?.account_list, balance_data?.balance?.accounts, is_dark_mode_on, getConfig, loginid]);
 
     return {
-        ...reset,
+        ...rest,
         data: sortedWallets,
     };
 };

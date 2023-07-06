@@ -1,5 +1,6 @@
 export { default as useAccountTransferVisible } from './useAccountTransferVisible';
 export { default as useActiveWallet } from './useActiveWallet';
+export { default as useActiveWalletCFDAccounts } from './useActiveWalletCFDAccounts';
 export { default as useCashierLocked } from './useCashierLocked';
 export { default as useCFDAccounts } from './useCFDAccounts';
 export { default as useCFDAllAccounts } from './useCFDAllAccounts';

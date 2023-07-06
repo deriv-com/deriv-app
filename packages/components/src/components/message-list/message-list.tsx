@@ -23,11 +23,11 @@ const animations = {
         opacity: 1,
         transition: {
             height: {
-                duration: 0.3,
+                duration: 0.2,
             },
             opacity: {
-                duration: 0.2,
-                delay: 0.1,
+                duration: 0.15,
+                delay: 0.05,
             },
         },
     },
@@ -36,9 +36,9 @@ const animations = {
         opacity: 0,
         transition: {
             height: {
-                duration: 0.3,
+                duration: 0.2,
             },
-            opacity: { duration: 0.2 },
+            opacity: { duration: 0.1 },
         },
     },
 };

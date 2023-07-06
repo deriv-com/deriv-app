@@ -2,11 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, Formik, Form, FormikHelpers } from 'formik';
 import { AmountInput, Button, Loading, MessageList, TransferAccountSelector } from '@deriv/components';
-import { useWalletTransfer, useCurrencyConfig } from '@deriv/hooks';
+import { useCurrencyConfig, useWalletTransfer } from '@deriv/hooks';
 import { validNumber } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
-import { getAccountName } from '@deriv/utils';
+import { getAccountName } from 'Constants/utils';
 import './wallet-transfer.scss';
 
 type TWalletTransferProps = {
@@ -47,29 +47,21 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
 
     const is_amount_to_input_disabled = !to_account;
 
-    const active_wallet_name = getAccountName(
-        active_wallet?.account_type || '',
-        Boolean(active_wallet?.is_demo),
-        getConfig(active_wallet?.currency || '')?.display_code || ''
-    );
+    const active_wallet_name = getAccountName(active_wallet);
 
     const transfer_to_hint = React.useMemo(() => {
         return to_account?.loginid === active_wallet?.loginid ? (
             <Localize
                 i18n_default_text='You can only transfers funds from the {{account}} to the linked {{wallet}}.'
                 values={{
-                    account: getAccountName(
-                        from_account?.account_type || '',
-                        Boolean(from_account?.is_demo),
-                        getConfig(from_account?.currency || '')?.display_code || ''
-                    ),
+                    account: getAccountName(from_account),
                     wallet: active_wallet_name,
                 }}
             />
         ) : (
             ''
         );
-    }, [active_wallet?.loginid, active_wallet_name, from_account, getConfig, to_account?.loginid]);
+    }, [active_wallet?.loginid, active_wallet_name, from_account, to_account?.loginid]);
 
     const [message_list, setMessageList] = React.useState<React.ComponentProps<typeof MessageList>['list']>([]);
 

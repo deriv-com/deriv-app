@@ -22,7 +22,7 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcAccountTransfer',
                     label: localize('Transfer'),
-                    content: () => <p>Transfer Real</p>,
+                    content: (props: React.ComponentProps<typeof WalletTransfer>) => <WalletTransfer {...props} />,
                 },
                 {
                     icon: 'IcStatement',

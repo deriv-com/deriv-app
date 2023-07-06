@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Text, Dropdown } from '@deriv/components';
-import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
+import { useActiveWallet, useWalletTransactions, useActiveWalletCFDAccounts } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { groupTransactionsByDay } from '@deriv/utils';

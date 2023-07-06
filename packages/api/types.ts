@@ -228,6 +228,29 @@ import type {
 } from '@deriv/api-types';
 import type { useMutation, useQuery } from '@tanstack/react-query';
 
+type TPrivateSocketEndpoints = {
+    trading_platform_accounts: {
+        request: {
+            platform: 'derivez' | 'dxtrade' | 'mt5';
+        };
+        response: {
+            trading_platform_accounts: {
+                account_id: string;
+                account_type: 'real' | 'demo';
+                balance: number;
+                country: string;
+                currency: string;
+                display_balance: string;
+                email: string;
+                enabled: 0 | 1;
+                error: unknown;
+                login: string;
+                // type the shit here
+            }[];
+        };
+    };
+};
+
 type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;
@@ -681,7 +704,7 @@ type TSocketEndpoints = {
         request: ServerStatusRequest;
         response: ServerStatusResponse;
     };
-};
+} & TPrivateSocketEndpoints;
 
 export type TSocketEndpointNames = keyof TSocketEndpoints;
 

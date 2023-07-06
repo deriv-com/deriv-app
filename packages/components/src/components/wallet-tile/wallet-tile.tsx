@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import Text from '../text';
 import { getCurrencyDisplayCode, formatMoney } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { getAccountName } from '@deriv/utils';
 import { AppLinkedWithWalletIcon } from '../app-linked-with-wallet-icon';
 import { WalletJurisdictionBadge } from '../wallet-jurisdiction-badge';
 import { WalletIcon } from '../wallet-icon';
@@ -13,9 +12,12 @@ type TAccount = {
     account_type: 'wallet' | 'trading' | 'dxtrade' | 'mt5' | 'derivez' | 'binary' | undefined;
     balance: number;
     currency: string;
+    display_currency_code: string | undefined;
     gradient_class: string;
     is_demo: boolean;
     loginid: string;
+    name: string;
+    mt5_market_type: 'all' | 'financial' | 'synthetic' | undefined;
     shortcode: string | undefined;
     type: 'fiat' | 'crypto';
     wallet_icon: string | undefined;
@@ -46,12 +48,6 @@ const WalletTile = ({
     is_value,
     onClick,
 }: TWalletTileProps) => {
-    const account_name = getAccountName(
-        account?.account_type,
-        Boolean(account?.is_demo),
-        getCurrencyDisplayCode(account?.currency)
-    );
-
     //fix icon
     const account_icon = account?.account_type === 'wallet' ? '' : 'IcWalletOptionsLight';
 
@@ -81,23 +77,23 @@ const WalletTile = ({
     }, [account?.gradient_class, account?.type, account?.wallet_icon, account_icon, icon_size]);
 
     const Label = React.useCallback(() => {
-        if (account_name) {
+        if (account?.name) {
             let size;
             if (is_value) size = is_mobile ? 'xxxxs' : 'xxxs';
             else size = is_mobile ? 'xxs' : 'xs';
 
             return (
                 <Text as='div' size={size} weight='bold'>
-                    {localize('{{ account_name }}', { account_name })}
+                    {account.name}
                 </Text>
             );
         }
 
         return null;
-    }, [account_name, is_mobile, is_value]);
+    }, [account?.name, is_mobile, is_value]);
 
     const Balance = React.useCallback(() => {
-        if (account?.balance) {
+        if (account?.balance !== undefined && account?.balance >= 0) {
             let size;
             if (is_value) size = is_mobile ? 'xxxxs' : 'xxxs';
             else size = is_mobile ? 'xxxs' : 'xxs';

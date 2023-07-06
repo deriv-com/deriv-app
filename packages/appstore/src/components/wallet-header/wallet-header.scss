@@ -17,10 +17,17 @@
         width: 100%;
         height: 100%;
         opacity: 0.1;
-        background-image: url('./../../public/images/wallet-header-demo-bg.svg');
         background-repeat: repeat;
         background-position: 3% 30%;
         border-radius: $BORDER_RADIUS * 4;
+    }
+
+    .theme--light &__demo:before {
+        background-image: url('./../../public/images/wallet-header-demo-bg.svg');
+    }
+
+    .theme--dark &__demo:before {
+        background-image: url('./../../public/images/wallet-header-demo-bg-dark.svg');
     }
 
     &__container {
@@ -64,7 +71,7 @@
                 border-radius: $BORDER_RADIUS * 4;
                 padding: 0.6rem 1.6rem;
                 margin-right: 0.8rem;
-                border: 1px solid var(--text-general);
+                border: 1px solid var(--border-hover);
                 background-color: var(--prominent);
 
                 &:hover:not(&-disabled) {

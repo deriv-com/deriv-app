@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Badge, Icon, Text } from '@deriv/components';
 import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { getWalletCurrencyIcon } from 'Constants/utils';
+import { getWalletCurrencyIcon } from '@deriv/utils';
 
 type TWalletModalHeaderProps = {
     balance?: string | number;
@@ -97,7 +97,7 @@ const WalletModalHeader = ({
         <div className={`header-background ${gradient_class}`}>
             <div
                 className={classNames(header_class_name, {
-                    [`${header_class_name}--hidden-title`]: !is_wallet_name_visible,
+                    [`${header_class_name}--hidden-title`]: is_mobile && !is_wallet_name_visible,
                 })}
             >
                 <div className={`${header_class_name}__title-wrapper`}>

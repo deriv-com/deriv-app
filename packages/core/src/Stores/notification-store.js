@@ -1498,15 +1498,15 @@ export default class NotificationStore extends BaseStore {
                 },
             },
             financial_assessment_incomplete: {
-                key: 'financial_assessment_incomplete',
-                header: localize('Pending action required'),
-                message: localize('Please complete your financial assessment.'),
-                type: 'warning',
                 action: {
                     route: routes.financial_assessment,
                     text: localize('Start now'),
                 },
+                header: localize('Pending action required'),
+                key: 'financial_assessment_incomplete',
+                message: localize('Please complete your financial assessment.'),
                 should_show_again: true,
+                type: 'warning',
             },
         };
 

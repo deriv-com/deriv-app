@@ -57,6 +57,8 @@ const useCurrencyConfig = () => {
                 is_USDK: currency === 'USDK',
                 /** Currency code */
                 code: currency,
+                /** Currency display code */
+                display_code: currency === 'UST' ? 'USDT' : currency,
                 /** Local asset name for the currency icon. ex: `IcCurrencyUsd` for `USD` */
                 icon: `IcCurrency${currency[0].toUpperCase() + currency.slice(1).toLowerCase()}`,
             };

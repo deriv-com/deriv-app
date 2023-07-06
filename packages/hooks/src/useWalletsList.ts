@@ -1,16 +1,15 @@
 import { useMemo } from 'react';
-import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
+import { useFetch } from '@deriv/api';
+import useAuthorize from './useAuthorize';
 
 const useWalletsList = () => {
     const { client, ui } = useStore();
-    const { accounts, loginid, is_crypto } = client;
+    const { loginid, is_crypto } = client;
     const { is_dark_mode_on } = ui;
-    const { data, ...reset } = useFetch('authorize', {
-        payload: { authorize: accounts[loginid || ''].token },
-        options: { enabled: Boolean(loginid), keepPreviousData: true },
-    });
+    const { data, ...rest } = useAuthorize();
+
     const { data: balance_data } = useFetch('balance', { payload: { account: 'all' } });
 
     const sortedWallets = useMemo(() => {
@@ -43,6 +42,7 @@ const useWalletsList = () => {
                 name: `${wallet.is_virtual ? 'Demo ' : ''}${wallet_currency} Wallet`,
                 is_disabled: Boolean(wallet.is_disabled),
                 is_virtual: Boolean(wallet.is_virtual),
+                is_added: true,
             };
         });
 
@@ -59,7 +59,7 @@ const useWalletsList = () => {
     }, [balance_data?.balance?.accounts, data?.authorize?.account_list, is_crypto, loginid, is_dark_mode_on]);
 
     return {
-        ...reset,
+        ...rest,
         data: sortedWallets,
     };
 };

@@ -18,6 +18,7 @@ describe('AccumulatorsProfitLossTooltip', () => {
         is_sold: 0,
         profit: +0.15,
         alignment: 'right',
+        should_show_profit_text: true,
     };
     const profit_text = 'Total profit/loss:';
 
@@ -26,7 +27,11 @@ describe('AccumulatorsProfitLossTooltip', () => {
 
         expect(screen.getByText('AccumulatorsProfitLossText')).toBeInTheDocument();
     });
+    it('should not render AccumulatorsProfitLossText if should_show_profit_text is false', () => {
+        render(<AccumulatorsProfitLossTooltip {...props} should_show_profit_text={false} />);
 
+        expect(screen.queryByText('AccumulatorsProfitLossText')).not.toBeInTheDocument();
+    });
     it('should render AccumulatorsProfitLossTooltip when contract is sold', () => {
         jest.useFakeTimers();
 

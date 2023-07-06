@@ -2,12 +2,15 @@ import React from 'react';
 import { Text } from '@deriv/components';
 import { FastMarker } from 'Modules/SmartChart';
 import classNames from 'classnames';
-import AccumulatorsProfitLossTooltip, { TRef } from './accumulators-profit-loss-tooltip';
+import { TRef } from './accumulators-profit-loss-tooltip';
+import { ProposalOpenContract } from '@deriv/api-types';
 
-type TAccumulatorsProfitLossText = Omit<
-    React.ComponentProps<typeof AccumulatorsProfitLossTooltip>,
-    'alignment' | 'exit_tick' | 'exit_tick_time' | 'high_barrier' | 'is_sold'
->;
+type TProposalOpenContractProfit = Required<Pick<ProposalOpenContract, 'profit'>>;
+
+type TAccumulatorsProfitLossText = Pick<ProposalOpenContract, 'current_spot' | 'current_spot_time' | 'currency'> &
+    TProposalOpenContractProfit & {
+        className?: string;
+    };
 
 const ACTIONS = {
     INC: 'increment',

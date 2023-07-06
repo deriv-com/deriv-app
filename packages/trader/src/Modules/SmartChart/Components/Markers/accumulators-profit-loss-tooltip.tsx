@@ -12,13 +12,13 @@ type TPickProposalOpenContract = Pick<
     'current_spot' | 'current_spot_time' | 'currency' | 'exit_tick' | 'exit_tick_time' | 'high_barrier' | 'is_sold'
 >;
 
-type TProposalOpenContractProfit = Required<Pick<ProposalOpenContract, 'profit'>>;
+type TAccumulatorsProfitLossText = React.ComponentProps<typeof AccumulatorsProfitLossText>;
 
 type TAccumulatorsProfitLossTooltip = {
     alignment?: string;
-    className?: string;
+    should_show_profit_text?: boolean;
 } & TPickProposalOpenContract &
-    TProposalOpenContractProfit;
+    TAccumulatorsProfitLossText;
 
 export type TRef = {
     setPosition: (position: { epoch: number | null; price: number | null }) => void;
@@ -35,6 +35,7 @@ const AccumulatorsProfitLossTooltip = ({
     high_barrier,
     is_sold,
     profit,
+    should_show_profit_text,
 }: TAccumulatorsProfitLossTooltip) => {
     const [is_tooltip_open, setIsTooltipOpen] = React.useState(false);
     const won = profit >= 0;
@@ -87,7 +88,7 @@ const AccumulatorsProfitLossTooltip = ({
     };
 
     if (typeof profit !== 'number') return null;
-    if (!is_sold && current_spot_time && high_barrier)
+    if (!is_sold && current_spot_time && high_barrier && should_show_profit_text)
         return (
             <AccumulatorsProfitLossText
                 currency={currency}

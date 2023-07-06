@@ -13,12 +13,12 @@ type TAccount = {
     currency?: string;
     display_currency_code: string | undefined;
     gradient_class: string;
+    icon?: string;
     is_demo: boolean;
     loginid?: string;
     mt5_market_type?: 'all' | 'financial' | 'synthetic';
     shortcode: string | undefined;
     type: 'fiat' | 'crypto';
-    icon?: string;
 };
 
 type TIconSize =

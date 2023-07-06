@@ -12,6 +12,8 @@ describe('TransferTile', () => {
             is_mobile: false,
             label: 'Transfer from',
             selected_account: {
+                active_wallet_icon: 'Icon',
+                display_currency_code: 'USD',
                 account_type: 'wallet',
                 balance: 100,
                 currency: 'USD',
@@ -20,7 +22,7 @@ describe('TransferTile', () => {
                 loginid: '12345678',
                 shortcode: 'svg',
                 type: 'fiat',
-                wallet_icon: 'Wallet Icon',
+                icon: 'Wallet Icon',
             },
             placeholder: 'Placeholder',
         };

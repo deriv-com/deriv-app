@@ -9,24 +9,30 @@ jest.mock('@deriv/api', () => ({
     useFetch: jest.fn(),
 }));
 
-jest.mock('../useCurrencyConfig.ts', () => () => ({
-    getConfig: (currency: string) => {
-        switch (currency) {
-            case 'AUD':
-                return { display_code: 'AUD', is_crypto: false };
-            case 'BTC':
-                return { display_code: 'BTC', is_crypto: true };
-            case 'ETH':
-                return { display_code: 'ETH', is_crypto: true };
-            case 'USD':
-                return { display_code: 'USD', is_crypto: false };
-            case 'UST':
-                return { display_code: 'UST', is_crypto: true };
-            default:
-                return { display_code: '', is_crypto: false };
-        }
+const website_status = {
+    currencies_config: {
+        USD: {
+            fractional_digits: 2,
+            type: 'fiat',
+        },
+        AUD: {
+            fractional_digits: 2,
+            type: 'fiat',
+        },
+        BTC: {
+            fractional_digits: 8,
+            type: 'crypto',
+        },
+        ETH: {
+            fractional_digits: 8,
+            type: 'crypto',
+        },
+        UST: {
+            fractional_digits: 2,
+            type: 'crypto',
+        },
     },
-}));
+};
 
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
 
@@ -40,12 +46,12 @@ describe('useWalletsList', () => {
             },
         });
 
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
                     account_list: [
                         {
+                            // @ts-expect-error need to come up with a way to mock the return type of useFetch
                             account_category: 'wallet',
                             currency: 'USD',
                             is_virtual: 0,
@@ -53,6 +59,7 @@ describe('useWalletsList', () => {
                         },
                     ],
                 },
+                website_status,
             },
         });
 
@@ -69,6 +76,7 @@ describe('useWalletsList', () => {
                 account_category: 'wallet',
                 balance: 0,
                 currency: 'USD',
+                display_currency_code: 'USD',
                 gradient_card_class: 'wallet-card__usd-bg',
                 gradient_header_class: 'wallet-header__usd-bg',
                 is_added: true,
@@ -91,7 +99,7 @@ describe('useWalletsList', () => {
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { authorize: { account_list: [] } } });
+        mockUseFetch.mockReturnValue({ data: { authorize: { account_list: [] }, website_status } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -158,38 +166,43 @@ describe('useWalletsList', () => {
             },
         });
 
-        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
                     account_list: [
                         {
+                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'USD',
                             is_virtual: 0,
                         },
                         {
+                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'UST',
                             is_virtual: 0,
                         },
                         {
+                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'BTC',
                             is_virtual: 1,
                         },
                         {
+                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'AUD',
                             is_virtual: 0,
                         },
                         {
+                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
                             account_category: 'wallet',
                             currency: 'ETH',
                             is_virtual: 0,
                         },
                     ],
                 },
+                website_status,
             },
         });
 

@@ -9,17 +9,6 @@ jest.mock('@deriv/api', () => ({
     useFetch: jest.fn(),
 }));
 
-jest.mock('../useCurrencyConfig.ts', () => () => ({
-    getConfig: (currency: string) => {
-        switch (currency) {
-            case 'USD':
-                return { display_code: 'USD', is_crypto: false };
-            default:
-                return { display_code: '', is_crypto: false };
-        }
-    },
-}));
-
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize' | 'statement'>>;
 describe('useWalletsList', () => {
     test('should return a list of transactions', () => {
@@ -101,6 +90,19 @@ describe('useWalletsList', () => {
                             transaction_time: 1685769338,
                         },
                     ],
+                },
+                website_status: {
+                    currencies_config: {
+                        USD: {
+                            fractional_digits: 2,
+                            is_deposit_suspended: 0,
+                            is_suspended: 0,
+                            is_withdrawal_suspended: 0,
+                            name: 'US Dollar',
+                            stake_default: 10,
+                            type: 'fiat',
+                        },
+                    },
                 },
             },
         } as unknown as ReturnType<typeof mockUseFetch>);

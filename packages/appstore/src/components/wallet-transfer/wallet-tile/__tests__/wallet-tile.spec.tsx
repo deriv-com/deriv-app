@@ -3,10 +3,11 @@ import WalletTile from '../wallet-tile';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 
-jest.mock('../../app-linked-with-wallet-icon/app-linked-with-wallet-icon', () =>
-    jest.fn(() => <div>AppLinkedWithWalletIcon</div>)
-);
-jest.mock('../../wallet-icon/wallet-icon', () => jest.fn(() => <div>WalletIcon</div>));
+jest.mock('@deriv/components', () => ({
+    ...jest.requireActual('@deriv/components'),
+    AppLinkedWithWalletIcon: jest.fn(() => <div>AppLinkedWithWalletIcon</div>),
+    WalletIcon: jest.fn(() => <div>WalletIcon</div>),
+}));
 
 describe('WalletTile', () => {
     let mocked_props: Required<React.ComponentProps<typeof WalletTile>>;
@@ -17,12 +18,14 @@ describe('WalletTile', () => {
                 account_type: 'trading',
                 balance: 100,
                 currency: 'USD',
+                display_currency_code: 'USD',
                 gradient_class: '',
+                icon: 'Icon',
                 is_demo: false,
                 shortcode: 'svg',
                 loginid: '12345678',
                 type: 'fiat',
-                wallet_icon: 'Wallet Icon',
+                active_wallet_icon: 'Wallet Icon',
             },
             className: 'classname',
             has_hover: false,

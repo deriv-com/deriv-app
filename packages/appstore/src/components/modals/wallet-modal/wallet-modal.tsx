@@ -18,13 +18,13 @@ const WalletModal = observer(() => {
 
     useEffect(() => {
         let timeout_id: NodeJS.Timeout;
-        if (active_wallet?.loginid !== active_modal_wallet_id) {
+        if (is_wallet_modal_visible && active_wallet?.loginid !== active_modal_wallet_id) {
             /** Adding a delay as per requirement because the modal must appear first, then switch the account */
             timeout_id = setTimeout(() => switchAccount(active_modal_wallet_id), 700);
         }
 
         return () => clearTimeout(timeout_id);
-    }, [active_modal_wallet_id, switchAccount, active_wallet?.loginid]);
+    }, [active_modal_wallet_id, switchAccount, active_wallet?.loginid, is_wallet_modal_visible]);
 
     const [is_wallet_name_visible, setIsWalletNameVisible] = React.useState<boolean>(true);
 

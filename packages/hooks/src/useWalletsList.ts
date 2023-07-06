@@ -8,7 +8,7 @@ import useCurrencyConfig from './useCurrencyConfig';
 const useWalletsList = () => {
     const { client, ui } = useStore();
     const { getConfig } = useCurrencyConfig();
-    const { accounts, loginid } = client;
+    const { loginid } = client;
     const { is_dark_mode_on } = ui;
     const { data, ...rest } = useAuthorize();
 

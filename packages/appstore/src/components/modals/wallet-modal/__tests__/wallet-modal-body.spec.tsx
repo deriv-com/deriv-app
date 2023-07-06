@@ -22,9 +22,11 @@ describe('WalletModalBody', () => {
             wallet: {
                 balance: 1000,
                 currency: 'USD',
+                display_currency_code: 'USD',
                 gradient_card_class: '',
                 gradient_header_class: '',
                 icon: '',
+                is_added: true,
                 is_crypto: false,
                 is_demo: true,
                 is_disabled: false,

@@ -8,13 +8,12 @@ import ModalManager from 'Components/modals/modal-manager';
 import EUDisclaimer from 'Components/eu-disclaimer';
 import AccountWithWallets from './account-with-wallets';
 import AccountWithoutWallets from './account-without-wallets';
-import WalletTourGuide from 'Modules/tour-guide/wallet-tour-guide';
 import { useContentFlag } from '@deriv/hooks';
 import './traders-hub.scss';
 
 const TradersHub = () => {
     const { traders_hub, client, ui } = useStore();
-    const { notification_messages_ui: Notifications, is_wallet_switching } = ui;
+    const { notification_messages_ui: Notifications } = ui;
     const {
         is_landing_company_loaded,
         is_logged_in,
@@ -23,7 +22,7 @@ const TradersHub = () => {
         is_account_setting_loaded,
         accounts,
     } = client;
-    const { is_tour_open, is_eu_user, is_wallet_tour_open } = traders_hub;
+    const { is_tour_open, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
 
     const can_show_notify =
@@ -34,18 +33,10 @@ const TradersHub = () => {
         Notifications !== null;
 
     const [scrolled, setScrolled] = React.useState(false);
-    const [wallets_scrolled, setWalletScrolled] = React.useState(false);
 
     const handleScroll = () => {
         const element = traders_hub_ref?.current;
         if (element && is_tour_open) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    };
-
-    const scrollToTopForWallets = () => {
-        const element = traders_hub_ref?.current;
-        if (element && is_wallet_tour_open) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     };
@@ -58,15 +49,6 @@ const TradersHub = () => {
             }, 400);
         }, 100);
     }, [is_tour_open]);
-
-    React.useEffect(() => {
-        setTimeout(() => {
-            scrollToTopForWallets();
-            setTimeout(() => {
-                setWalletScrolled(true);
-            }, 1000);
-        }, 100);
-    }, [is_wallet_tour_open]);
 
     const { is_low_risk_cr_eu, is_high_risk_cr } = useContentFlag();
 
@@ -91,7 +73,6 @@ const TradersHub = () => {
                     <AccountWithoutWallets />
                     <ModalManager />
                     {scrolled && <TourGuide />}
-                    {wallets_scrolled && !is_wallet_switching && <WalletTourGuide />}
                 </div>
             </Div100vhContainer>
             {is_low_risk_cr_eu && <EUDisclaimer />}

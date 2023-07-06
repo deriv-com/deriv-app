@@ -1,6 +1,6 @@
 import React from 'react';
 import { Step, Locale, Styles } from 'react-joyride';
-import { Text, SpanButton } from '@deriv/components';
+import { Text, SpanButton, Icon } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import 'Components/toggle-account-type/toggle-account-type.scss';
 
@@ -103,9 +103,18 @@ export const wallet_tour_styles: Styles = {
         fontWeight: 'bold',
         outline: 'none',
     },
+    buttonSkip: {
+        position: 'absolute',
+        right: '0',
+        top: '0',
+        padding: '1.6rem',
+        lineHeight: '1',
+        fontSize: '1.6rem',
+    },
 };
 
 export const getWalletStepLocale = (): Locale => ({
     back: <SpanButton has_effect text={localize('Back')} secondary medium />,
     next: localize('Next'),
+    skip: <Icon icon='IcCross' size={16} />,
 });

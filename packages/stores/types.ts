@@ -470,7 +470,7 @@ type TTradersHubStore = {
     getExistingAccounts: (platform: string, market_type: string) => AvailableAccount[];
     available_dxtrade_accounts: AvailableAccount[];
     is_wallet_tour_open: boolean;
-    toggleIsWalletTourOpen: () => void;
+    toggleIsWalletTourOpen: (value: boolean) => void;
     active_modal_tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions';
     setWalletModalActiveTab: (tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions') => void;
     active_modal_wallet_id?: string;

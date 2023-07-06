@@ -73,7 +73,7 @@ export const TradersHubHomeButton = ({ is_dark_mode }) => {
 // };
 
 // the tradershub onboarding is used wallets demo (temporary)
-const TradingHubOnboarding = ({ is_dark_mode, toggleIsWalletTourOpen, switchAccount }) => {
+const TradingHubOnboarding = ({ is_dark_mode, toggleIsWalletTourOpen, switchAccount, app_contents_scroll_ref }) => {
     const { data } = useWalletsList();
     const first_loginid = data?.[0].loginid;
     const wallet = useActiveWallet();
@@ -82,7 +82,8 @@ const TradingHubOnboarding = ({ is_dark_mode, toggleIsWalletTourOpen, switchAcco
         if (wallet?.loginid !== first_loginid) {
             await switchAccount(first_loginid);
         }
-        toggleIsWalletTourOpen();
+        app_contents_scroll_ref.current.scrollTop = 0;
+        toggleIsWalletTourOpen(true);
     };
 
     return (
@@ -152,6 +153,7 @@ const TradingHubHeader = ({
     setIsWalletModalVisible,
     switchAccount,
     is_wallet_switching,
+    app_contents_scroll_ref,
 }) => {
     const { pathname } = useLocation();
     const cashier_routes = pathname.startsWith(routes.cashier);
@@ -288,6 +290,8 @@ const TradingHubHeader = ({
                                 toggleIsWalletTourOpen={toggleIsWalletTourOpen}
                                 setIsWalletModalVisible={setIsWalletModalVisible}
                                 switchAccount={switchAccount}
+                                is_wallet_switching={is_wallet_switching}
+                                app_contents_scroll_ref={app_contents_scroll_ref}
                             />
                         </div>
                         <div className='trading-hub-header__menu-right--items--notifications'>
@@ -414,4 +418,5 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     toggleIsWalletTourOpen: traders_hub.toggleIsWalletTourOpen,
     setIsWalletModalVisible: ui.setIsWalletModalVisible,
     switchAccount: client.switchAccount,
+    app_contents_scroll_ref: ui.app_contents_scroll_ref,
 }))(withRouter(TradingHubHeader));

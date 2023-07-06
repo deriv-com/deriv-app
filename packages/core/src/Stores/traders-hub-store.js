@@ -805,7 +805,7 @@ export default class TradersHubStore extends BaseStore {
         this.is_wallet_migration_failed = value;
     }
 
-    toggleIsWalletTourOpen() {
-        this.is_wallet_tour_open = !this.is_wallet_tour_open;
+    toggleIsWalletTourOpen(value) {
+        this.is_wallet_tour_open = value;
     }
 }

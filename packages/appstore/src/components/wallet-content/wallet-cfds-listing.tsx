@@ -2,13 +2,12 @@ import React from 'react';
 import { Text, StaticUrl, Button } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
-import { formatMoney, isCryptocurrency, routes } from '@deriv/shared';
+import { formatMoney, isCryptocurrency } from '@deriv/shared';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
 import { useStore, observer } from '@deriv/stores';
-import { useHistory } from 'react-router';
 import GetMoreAccounts from 'Components/get-more-accounts';
 import { useActiveWallet } from '@deriv/hooks';
 import './wallet-content.scss';
@@ -18,7 +17,6 @@ type TProps = {
 };
 
 const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) => {
-    const history = useHistory();
     const {
         client,
         modules: { cfd },
@@ -33,11 +31,13 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
         combined_cfd_mt5_accounts,
         can_get_more_cfd_mt5_accounts,
         toggleAccountTypeModalVisibility,
+        setWalletModalActiveWalletID,
+        setWalletModalActiveTab,
     } = traders_hub;
 
     const { toggleCompareAccountsModal } = cfd;
     const { is_landing_company_loaded, is_logging_in, is_switching } = client;
-    const { is_mobile } = ui;
+    const { is_mobile, setIsWalletModalVisible } = ui;
 
     const wallet_account = useActiveWallet();
 
@@ -80,9 +80,10 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
                 />
             </Text>
             <Button
-                onClick={(e: MouseEvent) => {
-                    e.stopPropagation();
-                    history.push(routes.cashier_acc_transfer);
+                onClick={() => {
+                    setWalletModalActiveTab('Transfer');
+                    setIsWalletModalVisible(true);
+                    setWalletModalActiveWalletID(wallet_account.loginid);
                 }}
                 className='wallet-content__cfd-crypto-button'
                 primary_light

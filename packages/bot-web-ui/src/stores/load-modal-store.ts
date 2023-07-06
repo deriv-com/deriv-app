@@ -456,9 +456,8 @@ export default class LoadModalStore implements ILoadModalStore {
         const reader = new FileReader();
         reader.onload = action(e => {
             const load_options = { block_string: e.target.result, drop_event, from: save_types.LOCAL };
-            if (is_preview) {
-                const ref = document.getElementById('load-strategy__blockly-container');
-
+            const ref = document.getElementById('load-strategy__blockly-container');
+            if (is_preview && ref) {
                 this.local_workspace = Blockly.inject(ref, {
                     media: `${__webpack_public_path__}media/`, // eslint-disable-line
                     zoom: {

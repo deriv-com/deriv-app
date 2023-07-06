@@ -2,12 +2,8 @@ import React from 'react';
 import { screen, render, fireEvent, waitFor, act, cleanup } from '@testing-library/react';
 import CFDPasswordManagerModal from '../cfd-password-manager-modal';
 import { BrowserRouter } from 'react-router-dom';
-
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import CFDProviders from '../../cfd-providers';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -23,6 +19,7 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     WS: {
         verifyEmail: jest.fn(() => Promise.resolve()),
     },
+    useWS: () => undefined,
 }));
 
 jest.mock('@contentpass/zxcvbn', () => ({
@@ -67,8 +64,24 @@ jest.mock('@deriv/shared/src/utils/validation/declarative-validation-rules.ts', 
 });
 
 describe('<CFDPasswordManagerModal />', () => {
+    const mockRootStore = {
+        ui: {
+            enableApp: jest.fn(),
+            disableApp: jest.fn(),
+        },
+        client: {
+            email: 'test@domain.com',
+        },
+        modules: {
+            cfd: {
+                sendVerifyEmail: jest.fn(),
+            },
+        },
+    };
     const renderwithRouter = component => {
-        render(<BrowserRouter>{component}</BrowserRouter>);
+        render(<BrowserRouter>{component}</BrowserRouter>, {
+            wrapper: ({ children }) => <CFDProviders store={mockStore(mockRootStore)}>{children}</CFDProviders>,
+        });
     };
     let modal_root_el;
 
@@ -85,9 +98,6 @@ describe('<CFDPasswordManagerModal />', () => {
     afterEach(cleanup);
 
     const mock_props = {
-        enableApp: jest.fn(),
-        email: 'test@domain.com',
-        disableApp: jest.fn(),
         is_visible: true,
         platform: 'mt5',
         selected_login: 'MTD20103241',
@@ -96,7 +106,6 @@ describe('<CFDPasswordManagerModal />', () => {
         selected_account_type: 'financial',
         selected_account_group: 'demo',
         selected_server: 'p01_ts03',
-        sendVerifyEmail: jest.fn(),
     };
 
     it('should render the deriv mt5 password modal', () => {

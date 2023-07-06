@@ -167,15 +167,19 @@ const Numbers = observer(
         };
 
         const setExpiryDate = (epoch, duration) => {
-            let expiry_date = new Date((epoch - (trade_duration * 24 * 60 * 60)) * 1000);
+            let expiry_date = new Date((epoch - trade_duration * 24 * 60 * 60) * 1000);
 
             if (duration) {
-              expiry_date = new Date(expiry_date.getTime() + (duration) * 24 * 60 * 60 * 1000);
+                expiry_date = new Date(expiry_date.getTime() + duration * 24 * 60 * 60 * 1000);
             }
 
-            return expiry_date.toUTCString().replace('GMT', 'GMT +0').substring(5).replace(/(\d{2}) (\w{3} \d{4})/, '$1 $2,');
-        }
-        
+            return expiry_date
+                .toUTCString()
+                .replace('GMT', 'GMT +0')
+                .substring(5)
+                .replace(/(\d{2}) (\w{3} \d{4})/, '$1 $2,');
+        };
+
         const onNumberChange = num => {
             setSelectedDuration(duration_unit, num);
             validateDuration(num);
@@ -185,9 +189,11 @@ const Numbers = observer(
             <div className='trade-params__amount-keypad'>
                 {is_vanilla && (
                     <Text as='div' size='xxxs' line_height='s' className='expiry-text-container--mobile'>
-                        <Localize 
+                        <Localize
                             i18n_default_text='Expiry: {{date}}'
-                            values={{ date: !has_error ? setExpiryDate(expiry_epoch, duration_values?.d_duration) : '' }}
+                            values={{
+                                date: !has_error ? setExpiryDate(expiry_epoch, duration_values?.d_duration) : '',
+                            }}
                         />
                     </Text>
                 )}

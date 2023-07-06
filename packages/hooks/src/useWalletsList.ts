@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
+import useAuthorize from './useAuthorize';
 import useCurrencyConfig from './useCurrencyConfig';
 
 const useWalletsList = () => {
@@ -9,10 +10,8 @@ const useWalletsList = () => {
     const { getConfig } = useCurrencyConfig();
     const { accounts, loginid } = client;
     const { is_dark_mode_on } = ui;
-    const { data, ...rest } = useFetch('authorize', {
-        payload: { authorize: accounts[loginid || ''].token },
-        options: { enabled: Boolean(loginid), keepPreviousData: true },
-    });
+    const { data, ...rest } = useAuthorize();
+
     const { data: balance_data } = useFetch('balance', { payload: { account: 'all' } });
 
     const sortedWallets = useMemo(() => {
@@ -41,6 +40,7 @@ const useWalletsList = () => {
                 //TODO: move getWalletCurrencyIcon implementation into hook
                 icon: getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : wallet_currency, is_dark_mode_on),
                 /** Indicating whether the wallet is crypto or fiat */
+                is_added: true,
                 is_crypto: getConfig(wallet_currency)?.is_crypto,
                 /** Indicating whether the wallet is a virtual-money wallet */
                 is_demo: wallet.is_virtual === 1,

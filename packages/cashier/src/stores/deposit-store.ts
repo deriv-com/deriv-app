@@ -1,5 +1,5 @@
 import { action, makeObservable, observable } from 'mobx';
-import Constants from 'Constants/constants';
+import Constants from '../constants/constants';
 import ErrorStore from './error-store';
 import { TRootStore, TWebSocket } from '../types';
 
@@ -18,15 +18,7 @@ export default class DepositStore {
     async onMountDeposit(): Promise<void> {
         const { client, modules } = this.root_store;
         const { active_container, is_crypto, onMountCommon, setLoading, setOnRemount } = modules.cashier.general_store;
-        const {
-            checkIframeLoaded,
-            clearTimeoutCashierUrl,
-            is_session_timeout,
-            setContainerHeight,
-            setIframeUrl,
-            setSessionTimeout,
-            setTimeoutCashierUrl,
-        } = modules.cashier.iframe;
+
         const { account_status, is_virtual, updateAccountStatus } = client;
         const current_container = active_container;
 
@@ -34,16 +26,9 @@ export default class DepositStore {
         await onMountCommon();
 
         this.error.setErrorMessage({ code: '', message: '' }, null, false);
-        setContainerHeight(0);
         setLoading(true);
 
-        if (!is_session_timeout) {
-            checkIframeLoaded();
-            return;
-        }
-
         // if session has timed out reset everything
-        setIframeUrl('');
         if (is_virtual) {
             setLoading(false);
             // if virtual, clear everything and don't proceed further
@@ -63,13 +48,6 @@ export default class DepositStore {
             }
             if (response_cashier.error) {
                 this.error.handleCashierError(response_cashier.error);
-                setSessionTimeout(true);
-                clearTimeoutCashierUrl();
-            } else {
-                await checkIframeLoaded();
-                setIframeUrl(response_cashier.cashier);
-                setSessionTimeout(false);
-                setTimeoutCashierUrl();
             }
         }
 

@@ -31,8 +31,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
         is_virtual,
         landing_company_shortcode,
     } = client;
-    const { iframe, deposit, transaction_history, general_store } = useCashierStore();
-    const { iframe_height, iframe_url } = iframe;
+    const { deposit, transaction_history, general_store } = useCashierStore();
     const { container, error, onMountDeposit: onMount } = deposit;
     const { is_low_risk_cr_eu_real } = traders_hub;
     const {
@@ -54,7 +53,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
     const is_deposit_locked = useDepositLocked();
 
     const is_fiat_currency_banner_visible_for_MF_clients =
-        landing_company_shortcode === 'maltainvest' && !is_crypto && !can_change_fiat_currency && !!iframe_height;
+        landing_company_shortcode === 'maltainvest' && !is_crypto && !can_change_fiat_currency;
 
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {
@@ -92,9 +91,9 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
             }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currency, tab_index, crypto_transactions, crypto_transactions?.length, is_cashier_onboarding, iframe_height]);
+    }, [currency, tab_index, crypto_transactions, crypto_transactions?.length, is_cashier_onboarding]);
 
-    if (!is_cashier_onboarding && (is_switching || (is_loading && !iframe_url)) && !is_crypto_transactions_visible) {
+    if (!is_cashier_onboarding && (is_switching || is_loading) && !is_crypto_transactions_visible) {
         return <Loading is_fullscreen />;
     }
     if (is_virtual) {

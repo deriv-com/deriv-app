@@ -4,7 +4,6 @@ import DepositStore from './deposit-store';
 import ErrorDialogStore from './error-dialog-store';
 import ErrorStore from './error-store';
 import GeneralStore from './general-store';
-import IframeStore from './iframe-store';
 import OnRampStore from './on-ramp-store';
 import PaymentAgentStore from './payment-agent-store';
 import PaymentAgentTransferStore from './payment-agent-transfer-store';
@@ -19,7 +18,6 @@ export default class CashierStore {
     error_dialog: ErrorDialogStore;
     error: ErrorStore;
     general_store: GeneralStore;
-    iframe: IframeStore;
     onramp: OnRampStore;
     payment_agent_transfer: PaymentAgentTransferStore;
     payment_agent: PaymentAgentStore;
@@ -33,7 +31,6 @@ export default class CashierStore {
         this.error = new ErrorStore();
         this.error_dialog = new ErrorDialogStore();
         this.general_store = new GeneralStore(WS, root_store);
-        this.iframe = new IframeStore(root_store);
         this.onramp = new OnRampStore(WS, root_store);
         this.payment_agent = new PaymentAgentStore(WS, root_store);
         this.payment_agent_transfer = new PaymentAgentTransferStore(WS, root_store);

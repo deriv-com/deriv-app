@@ -42,6 +42,13 @@ const CardsSliderSwiper = observer(({ items, setActivePage, active_page }: TProp
         emblaApi.on('select', onSelect);
     }, [emblaApi, onSelect]);
 
+    // add this to scroll to choosed card
+    React.useEffect(() => {
+        if (emblaApi && active_page !== emblaApi.selectedScrollSnap()) {
+            emblaApi.scrollTo(active_page);
+        }
+    }, [active_page, emblaApi]);
+
     const slider = React.useMemo(
         () =>
             items?.map((item: TWalletAccount) => (

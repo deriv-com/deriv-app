@@ -6,7 +6,6 @@ export class ChartBarrierStore {
     lineStyle;
     shade;
     shadeColor;
-    start_from;
 
     high;
     low;
@@ -25,10 +24,9 @@ export class ChartBarrierStore {
         high_barrier,
         low_barrier,
         onChartBarrierChange = null,
-        { start_from, color, hideBarrierLine, line_style, not_draggable, shade } = {}
+        { color, hideBarrierLine, line_style, not_draggable, shade } = {}
     ) {
         makeObservable(this, {
-            start_from: observable,
             color: observable,
             lineStyle: observable,
             shade: observable,
@@ -49,7 +47,6 @@ export class ChartBarrierStore {
             default_shade: computed,
         });
 
-        this.start_from = start_from;
         this.color = color;
         this.hideBarrierLine = hideBarrierLine;
         this.shade = shade;

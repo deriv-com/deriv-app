@@ -110,7 +110,9 @@ export default class ContractStore extends BaseStore {
         // TODO: don't update the barriers & markers if they are not changed
         this.updateBarriersArray(contract_info, this.root_store.ui.is_dark_mode_on);
         this.markers_array = createChartMarkers(this.contract_info);
-        this.marker = calculate_marker(this.contract_info);
+        this.marker = calculate_marker(this.contract_info, {
+            reset_spot: this.reset_spot,
+        });
         this.contract_config = getChartConfig(this.contract_info);
         this.display_status = getDisplayStatus(this.contract_info);
         this.is_ended = isEnded(this.contract_info);
@@ -222,7 +224,6 @@ export default class ContractStore extends BaseStore {
             ) {
                 // create barrier only when it's available in response
                 const main_barrier = new ChartBarrierStore(barrier || high_barrier || entry_spot, low_barrier, null, {
-                    start_from: 0,
                     color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
                     line_style: !isAccumulatorContract(contract_type) && BARRIER_LINE_STYLES.SOLID,
                     not_draggable: true,
@@ -235,7 +236,6 @@ export default class ContractStore extends BaseStore {
                 barriers = [main_barrier];
             } else if (isBarrierSupported(contract_type) && isResetContract(contract_type) && entry_spot) {
                 const main_barrier = new ChartBarrierStore(entry_spot, low_barrier, null, {
-                    start_from: 0,
                     color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
                     line_style: BARRIER_LINE_STYLES.SOLID,
                     not_draggable: true,
@@ -257,12 +257,10 @@ export default class ContractStore extends BaseStore {
                     }
 
                     const reset_barrier = new ChartBarrierStore(this.reset_spot, low_barrier, null, {
-                        // start_from: this.reset_time,
-                        start_from: 390,
                         color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
                         line_style: BARRIER_LINE_STYLES.DASHED,
                         not_draggable: true,
-                        hideBarrierLine: false,
+                        hideBarrierLine: true,
                         shade: DEFAULT_SHADES['2'],
                     });
 
@@ -270,10 +268,10 @@ export default class ContractStore extends BaseStore {
 
                     // for call gradient should be applied to the lowest barrier, for put - to the highest
                     if (/RESETCALL/i.test(contract_type) && +this.reset_spot < +entry_spot) {
-                        reset_barrier.updateBarrierShade(true, contract_type);
+                        // reset_barrier.updateBarrierShade(true, contract_type);
                         main_barrier.updateBarrierShade(false, contract_type);
                     } else if (/RESETPUT/i.test(contract_type) && +this.reset_spot > +entry_spot) {
-                        reset_barrier.updateBarrierShade(true, contract_type);
+                        // reset_barrier.updateBarrierShade(true, contract_type);
                         main_barrier.updateBarrierShade(false, contract_type);
                     }
                 }
@@ -319,7 +317,7 @@ export default class ContractStore extends BaseStore {
     }
 }
 
-function calculate_marker(contract_info) {
+function calculate_marker(contract_info, reset_spot) {
     if (!contract_info || isMultiplierContract(contract_info.contract_type)) {
         return null;
     }
@@ -339,6 +337,7 @@ function calculate_marker(contract_info) {
         barrier,
         high_barrier,
         low_barrier,
+        reset_time,
     } = contract_info;
     const is_accumulator_contract = isAccumulatorContract(contract_type);
     const is_digit_contract = isDigitContract(contract_type);
@@ -384,6 +383,15 @@ function calculate_marker(contract_info) {
     if (tick_count >= 1) {
         if (!isDigitContract(contract_type)) {
             // TickContract
+            if (isResetContract(contract_type)) {
+                return {
+                    contract_info: toJS(contract_info),
+                    type: 'TickContract',
+                    key: `${contract_id}-date_start`,
+                    epoch_array: [reset_time, ...ticks_epoch_array],
+                    price_array: [reset_spot.reset_spot],
+                };
+            }
             return {
                 contract_info: toJS(contract_info),
                 type: 'TickContract',

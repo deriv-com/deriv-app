@@ -22,6 +22,7 @@ import {
     isMultiplierContract,
     isVanillaContract,
     isSmartTraderContract,
+    isResetContract,
     urlFor,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
@@ -292,6 +293,15 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                 />
             ))}
             {is_accumulator_contract && markers_array && (
+                <AccumulatorsShadedBarriers
+                    key={accumulators_barriers_marker.key}
+                    is_dark_theme={is_dark_theme}
+                    granularity={granularity}
+                    is_in_contract_details
+                    {...accumulators_barriers_marker}
+                />
+            )}
+            {isResetContract(contract_info.contract_type) && markers_array && (
                 <AccumulatorsShadedBarriers
                     key={accumulators_barriers_marker.key}
                     is_dark_theme={is_dark_theme}

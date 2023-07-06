@@ -3,7 +3,7 @@
 // 2- Please read RawMarker.jsx in https://github.com/binary-com/SmartCharts
 // 3- Please read contract-store.js & trade.jsx carefully
 import React from 'react';
-import { getDecimalPlaces, isAccumulatorContract, isVanillaContract } from '@deriv/shared';
+import { getDecimalPlaces, isAccumulatorContract, isVanillaContract, isResetContract } from '@deriv/shared';
 import { RawMarker } from 'Modules/SmartChart';
 import * as ICONS from './icons';
 
@@ -143,10 +143,14 @@ const draw_shaded_barriers = ({
     ctx,
     start_left,
     top,
-    bottom,
+    bottom = ctx.canvas.offsetHeight - ctx.canvas.parentElement.stx.xaxisHeight + 1,
     stroke_color,
     fill_color,
     has_persistent_borders,
+    has_gradient = false,
+    has_round_start = true,
+    // show_gradient_above = false,
+    // show_gradient_below = false,
     scale,
 }) => {
     const end_left = ctx.canvas.offsetWidth - ctx.canvas.parentElement.stx.panels.chart.yaxisTotalWidthRight;
@@ -158,6 +162,18 @@ const draw_shaded_barriers = ({
     const displayed_top = is_top_visible ? top : persistent_top;
     const displayed_bottom = is_bottom_visible ? bottom : end_top;
     const is_start_left_visible = start_left < end_left;
+
+    // let gradient;
+    // if (show_gradient_below) {
+    const gradient = ctx.createLinearGradient(start_left, displayed_top + 120, start_left, displayed_top);
+    gradient.addColorStop(0.98, 'rgba(75, 180, 179, 0.16)');
+    gradient.addColorStop(0.02, 'rgba(75, 180, 179, 0)');
+    //}
+    // if (show_gradient_above) {
+    //     gradient = ctx.createLinearGradient(start_left, displayed_top + 120, start_left, displayed_top);
+    //     gradient.addColorStop(0.02, 'rgba(255, 180, 179, 0.16)');
+    //     gradient.addColorStop(0.98, 'rgba(255, 180, 179, 0)');
+    // }
     if (!is_start_left_visible) return;
     ctx.lineWidth = 1;
     ctx.strokeStyle = stroke_color;
@@ -165,7 +181,9 @@ const draw_shaded_barriers = ({
     if (is_top_visible || has_persistent_borders) {
         ctx.beginPath();
         ctx.setLineDash([]);
-        ctx.arc(start_left, displayed_top, 1.5, 0, Math.PI * 2);
+        if (has_round_start) {
+            ctx.arc(start_left, displayed_top, 1.5, 0, Math.PI * 2);
+        }
         ctx.stroke();
 
         ctx.beginPath();
@@ -177,7 +195,9 @@ const draw_shaded_barriers = ({
     if (is_bottom_visible || has_persistent_borders) {
         ctx.beginPath();
         ctx.setLineDash([]);
-        ctx.arc(start_left, displayed_bottom, 1.5, 0, Math.PI * 2);
+        if (has_round_start) {
+            ctx.arc(start_left, displayed_bottom, 1.5, 0, Math.PI * 2);
+        }
         ctx.stroke();
 
         ctx.beginPath();
@@ -187,7 +207,7 @@ const draw_shaded_barriers = ({
         ctx.stroke();
     }
 
-    ctx.fillStyle = fill_color;
+    ctx.fillStyle = has_gradient ? gradient : fill_color;
     ctx.fillRect(start_left, displayed_top, end_left - start_left, Math.abs(displayed_bottom - displayed_top));
 };
 
@@ -228,6 +248,7 @@ const TickContract = RawMarkerMaker(
         granularity,
         contract_info: {
             contract_type,
+            // entry_spot,
             // exit_tick_time,
             status,
             profit,
@@ -275,6 +296,29 @@ const TickContract = RawMarkerMaker(
                 top: barrier,
                 bottom: barrier_2,
                 scale,
+            });
+            return;
+        }
+
+        if (isResetContract(contract_type)) {
+            // const should_show_gradient_above = /RESETCALL/i.test(contract_type) && +barrier < +entry_spot;
+            // const should_show_gradient_below = /RESETPUT/i.test(contract_type) && +barrier > +entry_spot;
+            // console.log('above', should_show_gradient_above);
+            // console.log('below', should_show_gradient_below);
+            // console.log('contract_type', contract_type);
+            draw_shaded_barriers({
+                ctx,
+                start_left: start.left,
+                fill_color: 'none',
+                stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
+                // has_gradient: should_show_gradient_above || should_show_gradient_below,
+                has_gradient: true,
+                top: barrier,
+                // bottom: barrier,
+                scale,
+                has_round_start: false,
+                // show_gradient_above: should_show_gradient_above,
+                // show_gradient_below: should_show_gradient_below,
             });
             return;
         }

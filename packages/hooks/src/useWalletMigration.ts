@@ -12,9 +12,7 @@ const useWalletMigration = () => {
     const { data } = useFetch('wallet_migration', {
         payload: { wallet_migration: 'status' },
         options: {
-            // TODO: uncomment this after testing
-            // commented this because too many rerenders during this refetch, maybe we need to increase interval
-            // refetchInterval: response => (response?.wallet_migration?.status === 'in_progress' ? 500 : false),
+            refetchInterval: response => (response?.wallet_migration?.status === 'in_progress' ? 500 : false),
         },
     });
 
@@ -34,7 +32,7 @@ const useWalletMigration = () => {
         /** A boolean to check if the status is in_progress */
         is_in_progress: status === 'in_progress',
         /** A boolean to check if the status is completed */
-        is_migrated: status === 'done',
+        is_migrated: status === 'migrated',
         /** A boolean to check if the status is failed */
         is_failed: status === 'failed',
         /** Sends a request to wallet_migration API to start the migration process */

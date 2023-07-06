@@ -28,9 +28,7 @@ const StoreProvider = ({ children, store }: React.PropsWithChildren<{ store: TCo
 
     return (
         <StoreContext.Provider value={memoizedValue}>
-            <WebsiteStatusProvider>
-                <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
-            </WebsiteStatusProvider>
+            <ExchangeRatesProvider>{children}</ExchangeRatesProvider>
         </StoreContext.Provider>
     );
 };

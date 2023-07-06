@@ -3,12 +3,12 @@ import { Button, Modal } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
 
-type TAccountVerificationPendingdModal = {
+type TAccountVerificationPendingModal = {
     is_visible: boolean;
     onConfirm: () => void;
 };
 
-const AccountVerificationPendingdModal = ({ is_visible, onConfirm }: TAccountVerificationPendingdModal) => {
+const AccountVerificationPendingModal = ({ is_visible, onConfirm }: TAccountVerificationPendingModal) => {
     return (
         <Modal
             small
@@ -35,4 +35,4 @@ const AccountVerificationPendingdModal = ({ is_visible, onConfirm }: TAccountVer
     );
 };
 
-export default AccountVerificationPendingdModal;
+export default AccountVerificationPendingModal;

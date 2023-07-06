@@ -40,8 +40,10 @@ describe('RealAccountSwitcher', () => {
     it('should render AccountNeedsVerification component with the correct pending status', () => {
         const mock = mockStore({
             traders_hub: {
-                multipliers_account_status: 'pending',
                 is_eu_user: true,
+            },
+            client: {
+                mf_account_status: 'pending',
             },
         });
         const wrapper = ({ children }: { children: JSX.Element }) => (

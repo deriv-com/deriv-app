@@ -1,9 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import AccountVerificationPendingdModal from '../account-verification-pending-modal';
+import AccountVerificationPendingModal from '../account-verification-pending-modal';
 
-describe('<AccountVerificationPendingdModal />', () => {
+describe('<AccountVerificationPendingModal />', () => {
     let modal_root_el: HTMLDivElement;
 
     beforeAll(() => {
@@ -25,8 +25,8 @@ describe('<AccountVerificationPendingdModal />', () => {
     const modal_desc =
         /You cannot trade as your documents are still under review. We will notify you by email once your verification is approved./i;
 
-    it('should render the component AccountVerificationPendingdModal if is_visible is true', () => {
-        render(<AccountVerificationPendingdModal {...mock_props} />);
+    it('should render the component AccountVerificationPendingModal if is_visible is true', () => {
+        render(<AccountVerificationPendingModal {...mock_props} />);
 
         expect(screen.getByRole('heading', { name: modal_heading })).toBeInTheDocument();
         expect(screen.getByText(modal_desc)).toBeInTheDocument();
@@ -37,7 +37,7 @@ describe('<AccountVerificationPendingdModal />', () => {
     });
 
     it('should call onConfirm when clicking on OK button', () => {
-        render(<AccountVerificationPendingdModal {...mock_props} />);
+        render(<AccountVerificationPendingModal {...mock_props} />);
 
         const confirm_ok_btn = screen.getByRole('button', { name: /OK/i });
         userEvent.click(confirm_ok_btn);
@@ -45,7 +45,7 @@ describe('<AccountVerificationPendingdModal />', () => {
     });
 
     it('should not render the component if is_visible is false ', () => {
-        render(<AccountVerificationPendingdModal {...mock_props} is_visible={false} />);
+        render(<AccountVerificationPendingModal {...mock_props} is_visible={false} />);
 
         expect(screen.queryByRole('heading', { name: modal_heading })).not.toBeInTheDocument();
         expect(screen.queryByText(modal_desc)).not.toBeInTheDocument();

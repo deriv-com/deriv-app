@@ -202,6 +202,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             real_account_creation_unlock_date: 0,
             setPrevAccountType: jest.fn(),
             prev_account_type: 'demo',
+            mf_account_status: '',
         },
         common: {
             error: {
@@ -306,7 +307,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             selected_account_type: 'real',
             no_CR_account: false,
             no_MF_account: false,
-            multipliers_account_status: '',
             openFailedVerificationModal: jest.fn(),
             setTogglePlatformType: jest.fn(),
             toggleAccountTransferModal: jest.fn(),

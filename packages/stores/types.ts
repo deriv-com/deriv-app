@@ -238,6 +238,7 @@ type TClientStore = {
     has_any_real_account: boolean;
     real_account_creation_unlock_date: number;
     setPrevAccountType: (account_type: string) => void;
+    mf_account_status: string;
 };
 
 type TCommonStoreError = {
@@ -383,7 +384,6 @@ type TTradersHubStore = {
     toggleIsTourOpen: (is_tour_open: boolean) => void;
     selected_region: string;
     openFailedVerificationModal: (selected_account_type: string) => void;
-    multipliers_account_status: string;
     financial_restricted_countries: boolean;
     selected_account_type: string;
     setSelectedAccount: (account: { login?: string; account_id?: string }) => void;

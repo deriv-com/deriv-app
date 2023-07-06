@@ -2,6 +2,7 @@ import * as SocketCache from '_common/base/socket_cache';
 
 import {
     CFD_PLATFORMS,
+    ContentFlag,
     LocalStore,
     State,
     deriv_urls,
@@ -26,7 +27,7 @@ import {
 } from '@deriv/shared';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
-import { getAccountTitle, getClientAccountType, getAvailableAccount } from './Helpers/client';
+import { getAccountTitle, getClientAccountType, getAvailableAccount, getMFAccountStatus } from './Helpers/client';
 import { getLanguage, localize } from '@deriv/translations';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
 
@@ -275,6 +276,7 @@ export default class ClientStore extends BaseStore {
             is_withdrawal_lock: computed,
             is_trading_experience_incomplete: computed,
             authentication_status: computed,
+            mf_account_status: computed,
             social_identity_provider: computed,
             is_from_restricted_country: computed,
             is_fully_authenticated: computed,
@@ -2636,6 +2638,17 @@ export default class ClientStore extends BaseStore {
             (this.upgradeable_landing_companies?.includes('svg') &&
                 this.upgradeable_landing_companies?.includes('maltainvest'))
         );
+    }
+
+    get mf_account_status() {
+        const { content_flag } = this.root_store?.traders_hub;
+        const mf_status = getMFAccountStatus(this.account_status?.authentication);
+        const should_show_status_for_multipliers_account =
+            [ContentFlag.EU_REAL, ContentFlag.LOW_RISK_CR_EU].includes(content_flag) &&
+            this.has_maltainvest_account &&
+            mf_status &&
+            ['pending', 'failed', 'need_verification'].includes(mf_status);
+        return should_show_status_for_multipliers_account ? mf_status : null;
     }
 
     get has_residence() {

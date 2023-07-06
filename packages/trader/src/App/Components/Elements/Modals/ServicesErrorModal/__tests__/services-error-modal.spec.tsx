@@ -27,7 +27,7 @@ describe('<ServicesErrorModal />', () => {
     const modal_props = {
         is_visible: true,
         onConfirm: jest.fn(),
-        multipliers_account_status: null,
+        mf_account_status: null,
     };
     it('Should return null if code or message is missing', () => {
         const services_error_mock = {
@@ -84,11 +84,7 @@ describe('<ServicesErrorModal />', () => {
         };
 
         render(
-            <ServicesErrorModal
-                services_error={services_error_mock}
-                {...modal_props}
-                multipliers_account_status='pending'
-            />
+            <ServicesErrorModal services_error={services_error_mock} {...modal_props} mf_account_status='pending' />
         );
         expect(screen.getByText('AccountVerificationPendingModal')).toBeInTheDocument();
     });

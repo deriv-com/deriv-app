@@ -691,7 +691,7 @@ $MIN_HEIGHT_FLOATING: calc(
             &__icons {
                 display: inline-grid;
                 grid-column-gap: 0.8rem;
-                grid-template-columns: 3.2rem 3.2rem 3.2rem 3.2rem;
+                grid-template-columns: repeat(5, 3.2rem);
                 margin-bottom: 2.4rem;
             }
 

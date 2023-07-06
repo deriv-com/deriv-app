@@ -4,8 +4,9 @@ import { formatDate, formatTime } from '@deriv/shared';
 const DATADOG_CLIENT_TOKEN_LOGS = process.env.DATADOG_CLIENT_TOKEN_LOGS ?? '';
 const isProduction = process.env.CIRCLE_JOB === 'release_production';
 const isStaging = process.env.CIRCLE_JOB === 'release_staging';
+let dataDogSessionSampleRate = 0;
 
-const dataDogSessionSampleRate = process.env.DATADOG_SESSION_SAMPLE_RATE_LOGS ?? 1;
+dataDogSessionSampleRate = +process.env.DATADOG_SESSION_SAMPLE_RATE_LOGS ?? 1;
 let dataDogVersion = '';
 let dataDogEnv = '';
 

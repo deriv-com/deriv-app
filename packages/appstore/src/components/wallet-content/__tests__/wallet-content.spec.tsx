@@ -37,7 +37,7 @@ describe('<WalletContent />', () => {
         mocked_props.landing_company_name = 'malta';
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent is_demo={false} is_eu={false} />
+                <WalletContent is_virtual={false} is_malta_wallet={false} />
             </StoreProvider>
         );
 
@@ -50,7 +50,7 @@ describe('<WalletContent />', () => {
         mocked_props.is_demo = true;
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent is_demo={true} is_eu={false} />
+                <WalletContent is_virtual={true} is_malta_wallet={false} />
             </StoreProvider>
         );
 
@@ -64,7 +64,7 @@ describe('<WalletContent />', () => {
         mocked_props.is_demo = true;
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent is_demo={true} is_eu={false} />
+                <WalletContent is_virtual={true} is_malta_wallet={false} />
             </StoreProvider>
         );
 
@@ -76,7 +76,7 @@ describe('<WalletContent />', () => {
     it('Check there is NOT disclaimer for Non-EU', () => {
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent is_demo={false} is_eu={false} />
+                <WalletContent is_virtual={false} is_malta_wallet={false} />
             </StoreProvider>
         );
 
@@ -90,7 +90,7 @@ describe('<WalletContent />', () => {
         mocked_props.is_malta_wallet = true;
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent is_demo={false} is_eu={true} />
+                <WalletContent is_virtual={false} is_malta_wallet={true} />
             </StoreProvider>
         );
 

@@ -465,8 +465,6 @@ const ProofOfAddressForm = ({
     );
 };
 
-export default ProofOfAddressForm;
-
 ProofOfAddressForm.propTypes = {
     account_settings: PropTypes.object,
     addNotificationByKey: PropTypes.func,
@@ -482,3 +480,5 @@ ProofOfAddressForm.propTypes = {
     removeNotificationMessage: PropTypes.func,
     states_list: PropTypes.array,
 };
+
+export default ProofOfAddressForm;

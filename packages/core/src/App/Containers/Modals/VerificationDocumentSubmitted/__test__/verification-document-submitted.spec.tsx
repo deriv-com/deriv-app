@@ -54,7 +54,6 @@ describe('<VerificationDocumentSubmited />', () => {
         const mock = mockStore({
             ui: {
                 is_verification_submitted: true,
-                setIsVerificationSubmitted: jest.fn(),
             },
         });
 

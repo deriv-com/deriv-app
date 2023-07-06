@@ -1,5 +1,4 @@
 import React from 'react';
-import { withRouter } from 'react-router-dom';
 import { DesktopWrapper, MobileDialog, MobileWrapper, Modal, UILoader } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import VerificationModalContent from './verification-modal-content';
@@ -48,4 +47,4 @@ const VerificationModal = observer(() => {
     );
 });
 
-export default withRouter(VerificationModal);
+export default VerificationModal;

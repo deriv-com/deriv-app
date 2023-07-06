@@ -50,7 +50,7 @@ type TVerificationModalContent = {
     context: RootStore;
     is_fully_authenticated: boolean;
     landing_company: LandingCompany;
-    has_restricted_mt5_account: () => void;
+    has_restricted_mt5_account: boolean;
     refreshNotifications: () => void;
     removeNotificationMessage: () => void;
     removeNotificationByKey: (args: TRemoveNotificationMessage) => void;

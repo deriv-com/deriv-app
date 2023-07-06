@@ -1,7 +1,5 @@
 import React from 'react';
-import Icon from '../icon';
-import Text from '../text';
-import { WalletJurisdictionBadge } from '../wallet-jurisdiction-badge';
+import { Icon, Text, WalletJurisdictionBadge } from '@deriv/components';
 import { WalletTile } from '../wallet-tile';
 import type { TTransferAccount } from './transfer-account-selector';
 

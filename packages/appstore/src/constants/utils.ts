@@ -72,26 +72,18 @@ export const getWalletHeaderButtons = (is_demo: boolean, handleAction?: () => vo
           ];
 };
 
-type TTransferAccount = {
+type TAccount = {
     account_type?: 'wallet' | 'trading' | 'dxtrade' | 'mt5' | 'derivez' | 'binary' | 'ctrader';
-    balance: number;
-    currency: string;
     display_currency_code?: string;
-    gradient_class: string;
-    is_demo: boolean;
-    loginid: string;
     mt5_market_type?: 'all' | 'financial' | 'synthetic';
-    shortcode?: string;
-    type: 'fiat' | 'crypto';
-    wallet_icon?: string;
 };
 
-export const getAccountName = (account?: TTransferAccount): string => {
-    switch (account?.account_type) {
+export const getAccountName = ({ account_type, mt5_market_type, display_currency_code }: TAccount): string => {
+    switch (account_type) {
         case 'trading':
             return localize('Deriv Apps');
         case 'mt5': {
-            switch (account.mt5_market_type) {
+            switch (mt5_market_type) {
                 case 'financial':
                     return localize('MT5 Financial');
                 case 'synthetic':
@@ -110,7 +102,7 @@ export const getAccountName = (account?: TTransferAccount): string => {
             return localize('Deriv cTrader');
         case 'wallet':
             return localize('{{display_currency_code}} Wallet', {
-                display_currency_code: account.display_currency_code?.toUpperCase(),
+                display_currency_code: display_currency_code?.toUpperCase(),
             });
         default:
             return '';

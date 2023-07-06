@@ -28,6 +28,7 @@ const useWalletsList = () => {
                 ...wallet,
                 /** Wallet balance */
                 balance: balance_data?.balance?.accounts?.[wallet.loginid || '']?.balance || 0,
+                display_currency_code: getConfig(wallet_currency)?.display_code,
                 /** Gradient background class for cashier wallet modal header */
                 gradient_header_class: `wallet-header__${
                     wallet.is_virtual === 1 ? 'demo' : wallet_currency.toLowerCase()
@@ -37,6 +38,7 @@ const useWalletsList = () => {
                     wallet.is_virtual === 1 ? 'demo' : wallet_currency.toLowerCase()
                 }-bg${is_dark_mode_on ? '--dark' : ''}`,
                 /** Wallet icon */
+                //TODO: move getWalletCurrencyIcon implementation into hook
                 icon: getWalletCurrencyIcon(wallet.is_virtual ? 'demo' : wallet_currency, is_dark_mode_on),
                 /** Indicating whether the wallet is crypto or fiat */
                 is_crypto: getConfig(wallet_currency)?.is_crypto,
@@ -54,6 +56,7 @@ const useWalletsList = () => {
                 landing_company_name:
                     wallet.landing_company_name === 'maltainvest' ? 'malta' : wallet.landing_company_name,
                 /** Wallet display name */
+                //TODO: remove this property because we can't localize it
                 name: `${wallet.is_virtual ? 'Demo ' : ''}${getConfig(wallet_currency)?.display_code} Wallet`,
             };
         });

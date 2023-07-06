@@ -1,7 +1,5 @@
 import React from 'react';
-import Modal from '../modal';
-import Div100vhContainer from '../div100vh-container';
-import ThemedScrollbars from '../themed-scrollbars';
+import { Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
 import TransferAccountList from './transfer-account-list';
 import TransferTile from './transfer-tile';
 import { WalletTile } from '../wallet-tile';

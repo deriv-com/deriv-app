@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import Text from '../text';
+import { Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { WalletTile } from '../wallet-tile';
 import type { TTransferAccount } from './transfer-account-selector';

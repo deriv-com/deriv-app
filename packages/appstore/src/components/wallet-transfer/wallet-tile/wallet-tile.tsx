@@ -1,26 +1,24 @@
 import React from 'react';
 import classNames from 'classnames';
-import Text from '../text';
-import { getCurrencyDisplayCode, formatMoney } from '@deriv/shared';
+import { Text, AppLinkedWithWalletIcon, WalletJurisdictionBadge, WalletIcon } from '@deriv/components';
+import { formatMoney } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { AppLinkedWithWalletIcon } from '../app-linked-with-wallet-icon';
-import { WalletJurisdictionBadge } from '../wallet-jurisdiction-badge';
-import { WalletIcon } from '../wallet-icon';
+import { getAccountName } from 'Constants/utils';
 import './wallet-tile.scss';
 
 type TAccount = {
-    account_type: 'wallet' | 'trading' | 'dxtrade' | 'mt5' | 'derivez' | 'binary' | undefined;
+    active_wallet_icon: string | undefined;
+    account_type?: 'wallet' | 'trading' | 'dxtrade' | 'mt5' | 'derivez' | 'binary';
     balance: number;
-    currency: string;
+    currency?: string;
     display_currency_code: string | undefined;
     gradient_class: string;
     is_demo: boolean;
-    loginid: string;
-    name: string;
-    mt5_market_type: 'all' | 'financial' | 'synthetic' | undefined;
+    loginid?: string;
+    mt5_market_type?: 'all' | 'financial' | 'synthetic';
     shortcode: string | undefined;
     type: 'fiat' | 'crypto';
-    wallet_icon: string | undefined;
+    icon?: string;
 };
 
 type TIconSize =
@@ -48,52 +46,50 @@ const WalletTile = ({
     is_value,
     onClick,
 }: TWalletTileProps) => {
-    //fix icon
-    const account_icon = account?.account_type === 'wallet' ? '' : 'IcWalletOptionsLight';
-
     const IconComponent = React.useCallback(() => {
-        if (account_icon && account?.wallet_icon) {
-            return (
-                <AppLinkedWithWalletIcon
-                    app_icon={account_icon}
-                    gradient_class={account.gradient_class}
-                    size={icon_size as React.ComponentProps<typeof AppLinkedWithWalletIcon>['size']}
-                    type={account.type}
-                    wallet_icon={account.wallet_icon}
-                />
-            );
-        } else if (account?.wallet_icon) {
-            return (
+        if (account?.account_type === 'wallet') {
+            return account?.active_wallet_icon ? (
                 <WalletIcon
-                    gradient_class={account.gradient_class}
-                    icon={account.wallet_icon}
+                    gradient_class={account?.gradient_class}
+                    icon={account?.active_wallet_icon}
                     size={icon_size as React.ComponentProps<typeof WalletIcon>['size']}
-                    type={account.type}
+                    type={account?.type}
                 />
-            );
+            ) : null;
         }
 
-        return null;
-    }, [account?.gradient_class, account?.type, account?.wallet_icon, account_icon, icon_size]);
+        return account?.icon && account?.active_wallet_icon ? (
+            <AppLinkedWithWalletIcon
+                app_icon={account?.icon}
+                gradient_class={account?.gradient_class || ''}
+                size={icon_size as React.ComponentProps<typeof AppLinkedWithWalletIcon>['size']}
+                type={account?.type}
+                wallet_icon={account?.active_wallet_icon}
+            />
+        ) : null;
+    }, [
+        account?.account_type,
+        account?.active_wallet_icon,
+        account?.gradient_class,
+        account?.icon,
+        account?.type,
+        icon_size,
+    ]);
 
     const Label = React.useCallback(() => {
-        if (account?.name) {
-            let size;
-            if (is_value) size = is_mobile ? 'xxxxs' : 'xxxs';
-            else size = is_mobile ? 'xxs' : 'xs';
+        let size;
+        if (is_value) size = is_mobile ? 'xxxxs' : 'xxxs';
+        else size = is_mobile ? 'xxs' : 'xs';
 
-            return (
-                <Text as='div' size={size} weight='bold'>
-                    {account.name}
-                </Text>
-            );
-        }
-
-        return null;
-    }, [account?.name, is_mobile, is_value]);
+        return (
+            <Text as='div' size={size} weight='bold'>
+                {getAccountName({ ...account })}
+            </Text>
+        );
+    }, [account, is_mobile, is_value]);
 
     const Balance = React.useCallback(() => {
-        if (account?.balance !== undefined && account?.balance >= 0) {
+        if (account?.balance !== undefined) {
             let size;
             if (is_value) size = is_mobile ? 'xxxxs' : 'xxxs';
             else size = is_mobile ? 'xxxs' : 'xxs';
@@ -101,13 +97,13 @@ const WalletTile = ({
             return (
                 <Text as='div' size={size}>
                     {localize('Balance')}: {formatMoney(account.currency, account.balance, true)}{' '}
-                    {getCurrencyDisplayCode(account.currency)}
+                    {account.display_currency_code}
                 </Text>
             );
         }
 
         return null;
-    }, [account?.balance, account?.currency, is_mobile, is_value]);
+    }, [account?.balance, account?.currency, account?.display_currency_code, is_mobile, is_value]);
 
     return (
         <div

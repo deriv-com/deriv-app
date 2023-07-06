@@ -1,9 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text, WalletJurisdictionBadge, WalletIcon } from '@deriv/components';
-import { useCurrencyConfig } from '@deriv/hooks';
 import { formatMoney } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { getAccountName } from 'Constants/utils';
 import type { TWalletAccount } from 'Types';
 
 type TWalletModalHeaderProps = {
@@ -29,10 +28,7 @@ const WalletModalHeader = ({
         is_demo,
         gradient_header_class: gradient_class,
         landing_company_name: shortcode,
-        name,
     } = wallet;
-
-    const { getConfig } = useCurrencyConfig();
 
     const header_class_name = 'modal-header';
 
@@ -73,7 +69,7 @@ const WalletModalHeader = ({
                             as='span'
                             className={getStylesByClassName(`${header_class_name}__title-wallet`)}
                         >
-                            {localize('{{wallet_name}}', { wallet_name: name })}
+                            {getAccountName({ ...wallet, account_type: 'wallet' })}
                         </Text>
                         <WalletJurisdictionBadge is_demo={is_demo} shortcode={shortcode} />
                     </div>
@@ -83,7 +79,7 @@ const WalletModalHeader = ({
                         weight='bold'
                         className={getStylesByClassName(`${header_class_name}__title-balance`)}
                     >
-                        {formatMoney(currency || '', balance, true)} {getConfig(currency || '')?.display_code}
+                        {formatMoney(currency || '', balance, true)} {wallet.display_currency_code}
                     </Text>
                 </div>
                 <div className={classNames(`${header_class_name}__currency-icon icon-visibility`)}>

@@ -1,5 +1,4 @@
 import React from 'react';
-import Badge from '../../badge';
 import TransferTile from '../transfer-tile';
 import { render, screen } from '@testing-library/react';
 

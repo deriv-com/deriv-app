@@ -1,5 +1,4 @@
 import React from 'react';
-import Badge from '../../badge';
 import TransferAccountList from '../transfer-account-list';
 import { render, screen } from '@testing-library/react';
 

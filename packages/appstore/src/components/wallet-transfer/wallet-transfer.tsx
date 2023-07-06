@@ -1,11 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, Formik, Form, FormikHelpers } from 'formik';
-import { AmountInput, Button, Loading, MessageList, TransferAccountSelector } from '@deriv/components';
+import { AmountInput, Button, Loading, MessageList } from '@deriv/components';
 import { useCurrencyConfig, useWalletTransfer } from '@deriv/hooks';
 import { validNumber } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
+import TransferAccountSelector from './transfer-account-selector';
 import { getAccountName } from 'Constants/utils';
 import './wallet-transfer.scss';
 
@@ -47,14 +48,14 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
 
     const is_amount_to_input_disabled = !to_account;
 
-    const active_wallet_name = getAccountName(active_wallet);
+    const active_wallet_name = getAccountName({ ...active_wallet });
 
     const transfer_to_hint = React.useMemo(() => {
         return to_account?.loginid === active_wallet?.loginid ? (
             <Localize
                 i18n_default_text='You can only transfers funds from the {{account}} to the linked {{wallet}}.'
                 values={{
-                    account: getAccountName(from_account),
+                    account: getAccountName({ ...from_account }),
                     wallet: active_wallet_name,
                 }}
             />
@@ -110,7 +111,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                         ...list,
                         {
                             id: ERROR_CODES.is_demo.between_min_max,
-                            message: `${message} ${getConfig(from_account?.currency || '')?.display_code}` || '',
+                            message: `${message} ${from_account?.display_currency_code}` || '',
                             type: 'error',
                         },
                     ];

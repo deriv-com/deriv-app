@@ -5,7 +5,7 @@ const DATADOG_CLIENT_TOKEN_LOGS = process.env.DATADOG_CLIENT_TOKEN_LOGS ?? '';
 const isProduction = process.env.CIRCLE_JOB === 'release_production';
 const isStaging = process.env.CIRCLE_JOB === 'release_staging';
 
-const dataDogSessionSampleRate = process.env.DATADOG_SESSION_SAMPLE_RATE_LOGS ?? 1;
+const dataDogSessionSampleRate = +process.env.DATADOG_SESSION_SAMPLE_RATE_LOGS ?? 1;
 let dataDogVersion = '';
 let dataDogEnv = '';
 

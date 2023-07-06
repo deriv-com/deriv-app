@@ -64,7 +64,7 @@ type BrandConfig = {
     icon: TIconTypes;
     availability: TRegionAvailability;
     is_deriv_platform?: boolean;
-}
+};
 
 type TAppRoutingHistory = {
     action: string;
@@ -327,7 +327,6 @@ type TClientStore = {
         poi_state?: string;
     };
     residence_list: ResidenceList;
-    is_high_risk: boolean;
     should_restrict_bvi_account_creation: boolean;
     should_restrict_vanuatu_account_creation: boolean;
     updateMT5Status: () => Promise<void>;

@@ -196,7 +196,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             isEligibleForMoreRealMt5: jest.fn(),
             isEligibleForMoreDemoMt5Svg: jest.fn(),
             updateMT5Status: jest.fn(),
-            is_high_risk: false,
             fetchResidenceList: jest.fn(),
             residence_list: [],
             should_restrict_bvi_account_creation: false,

@@ -513,7 +513,7 @@ const proxied_socket_base = delegateToObject(BinarySocketBase, () => BinarySocke
 const proxyForAuthorize = obj =>
     new Proxy(obj, {
         get(target, field) {
-            if (typeof target[field] !== 'function' && undefined) {
+            if (target[field] && typeof target[field] !== 'function') {
                 return proxyForAuthorize(target[field]);
             }
             return (...args) => BinarySocketBase?.wait('authorize').then(() => target[field](...args));

@@ -26,4 +26,117 @@
             position: absolute;
         }
     }
+
+    .ciq-chart {
+        .cq-top-ui-widgets,
+        & .info-box {
+            transition: transform 0.25s ease;
+
+            .cq-symbols-display {
+                z-index: 1;
+
+                &.ciq-disabled {
+                    display: none;
+                }
+                @include mobile {
+                    min-width: 17rem;
+                    max-width: 26rem;
+                    width: auto;
+
+                    .cq-menu-btn {
+                        padding: 0.2rem;
+                    }
+                    .cq-symbol-select-btn {
+                        margin: 0.2rem;
+
+                        .cq-symbol-dropdown {
+                            transform: scale(1);
+                            margin-left: auto;
+                        }
+                        .cq-symbol {
+                            font-size: 1.2rem;
+                        }
+                        .cq-chart-price {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+
+        .cq-top-ui-widgets {
+            align-items: center;
+            display: flex;
+            flex-wrap: wrap;
+            position: absolute;
+            top: 0;
+            width: 100%;
+        }
+
+        .sc-toolbar-widget {
+            transition: transform 0.25s ease;
+
+            @include mobile {
+                background: transparent;
+                border-width: 0;
+                bottom: 20.8vh;
+
+                .sc-chart-mode,
+                .sc-studies {
+                    background: var(--general-section-1);
+                    padding: 0.4rem 0.2rem;
+                    width: 4rem;
+                    height: 4rem;
+                    display: flex;
+                    border-radius: 50%;
+                    justify-content: center;
+                    align-items: center;
+                    margin: 0.8rem;
+                    opacity: 0.75;
+
+                    &__menu {
+                        &__timeperiod {
+                            top: 0.8rem;
+                            left: 0.8rem;
+                        }
+                        & > .ic-icon {
+                            top: 0.6rem;
+                        }
+                    }
+                }
+            }
+            .app-contents .ciq-menu {
+                margin: 0;
+            }
+        }
+    }
+
+    .smartcharts-mobile {
+        .cq-context {
+            z-index: 99;
+            .sc-mcd__category:last-child {
+                margin-bottom: 3rem !important;
+            }
+        }
+
+        & .cq-chart-title .cq-menu-dropdown {
+            position: fixed;
+            height: 100% !important;
+            .sc-dialog {
+                height: 100% !important;
+                &__body {
+                    height: inherit !important;
+                    .sc-mcd {
+                        height: inherit !important;
+                        min-width: auto !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.cq-modal-dropdown.stxMenuActive {
+    left: 0;
+    top: 0;
 }

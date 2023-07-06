@@ -109,9 +109,12 @@
     &__header {
         width: 100%;
         height: 7.2rem;
-        background-color: $color-black;
         display: flex;
         justify-content: center;
         align-items: center;
+
+        @include mobile {
+            height: auto;
+        }
     }
 }

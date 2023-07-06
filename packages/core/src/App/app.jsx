@@ -5,7 +5,13 @@ import { BrowserRouter as Router } from 'react-router-dom';
 // eslint-disable-next-line no-unused-vars
 import { withTranslation } from 'react-i18next';
 import { DesktopWrapper } from '@deriv/components';
-import { setUrlLanguage, initFormErrorMessages, setSharedCFDText, useOnLoadTranslation } from '@deriv/shared';
+import {
+    setUrlLanguage,
+    initFormErrorMessages,
+    setSharedCFDText,
+    useOnLoadTranslation,
+    setWebsocket,
+} from '@deriv/shared';
 import { initializeTranslations, getLanguage } from '@deriv/translations';
 import { CashierStore } from '@deriv/cashier';
 import { CFDStore } from '@deriv/cfd';
@@ -65,6 +71,8 @@ const AppWithoutTranslation = ({ root_store }) => {
         root_store,
         WS,
     };
+
+    setWebsocket(WS);
 
     return (
         <>

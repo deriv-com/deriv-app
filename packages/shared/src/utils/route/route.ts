@@ -2,7 +2,7 @@
 import React from 'react';
 // TODO: Add test cases for this
 type TRoute = {
-    component?: React.ElementType;
+    component?: React.ComponentType;
     default?: boolean;
     exact?: boolean;
     getTitle?: () => string;
@@ -20,7 +20,7 @@ type TGetSelectedRoute = {
 };
 
 export const matchRoute = (route: TRoute, pathname: string) =>
-    new RegExp(`${route.path}(/$)?((?!-).)*$`).test(pathname);
+    new RegExp(`${route.path}(/$)?([-_]|(?![-_]).)*$`).test(pathname);
 
 export const getSelectedRoute = ({ routes, pathname }: TGetSelectedRoute) => {
     const matching_route = routes.find(route => matchRoute(route, pathname));

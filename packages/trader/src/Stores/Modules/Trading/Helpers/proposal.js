@@ -29,7 +29,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
         ? { text: 'Payout', value: 'number_of_contracts' }
         : basis_list.find(o => o.value !== store.basis) || {};
 
-    const is_stake = contract_basis.text === 'Stake';
+    const is_stake = contract_basis.value === 'stake';
     const price = is_stake ? stake : proposal[contract_basis.value];
     let has_increased = price > obj_prev_contract_basis.value;
 
@@ -47,6 +47,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
     const accumulators_details = {
         ...proposal.contract_details,
         growth_rate: store.growth_rate,
+        spot_time: proposal.spot_time,
     };
 
     return {
@@ -65,6 +66,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
         profit: profit.toFixed(getDecimalPlaces(store.currency)),
         returns: `${returns.toFixed(2)}%`,
         stake,
+        spot: proposal.spot,
         ...accumulators_details,
     };
 };

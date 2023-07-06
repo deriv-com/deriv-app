@@ -10,7 +10,6 @@ export type TRoute = {
     to?: string;
     component?: typeof React.Component;
     getTitle: () => string;
-    routes?: TRoute[];
 };
 
 export type TRouteConfig = TRoute & {

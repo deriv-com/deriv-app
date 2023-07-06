@@ -3,7 +3,6 @@ import { DesktopWrapper, Loading, MobileWrapper, Text } from '@deriv/components'
 import { daysSince, isMobile } from '@deriv/shared';
 import { reaction } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { useHistory } from 'react-router-dom';
 import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
@@ -30,8 +29,6 @@ const AdvertiserPage = () => {
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
     const info = is_my_advert ? general_store.advertiser_info : advertiser_page_store.counterparty_advertiser_info;
 
-    const history = useHistory();
-
     const {
         basic_verification,
         buy_orders_count,
@@ -49,33 +46,22 @@ const AdvertiserPage = () => {
         sell_orders_count,
     } = info;
 
-    const nickname = advertiser_page_store.advertiser_details_name ?? name;
-
     // rating_average_decimal converts rating_average to 1 d.p number
     const rating_average_decimal = rating_average ? Number(rating_average).toFixed(1) : null;
     const joined_since = daysSince(created_time);
     const error_message = () => {
         return !!advertiser_page_store.is_counterparty_advertiser_blocked && !is_my_advert
             ? localize("Unblocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
-                  name: nickname,
+                  name: advertiser_page_store.advertiser_details_name,
               })
             : localize("Blocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
-                  name: nickname,
+                  name: advertiser_page_store.advertiser_details_name,
               });
     };
 
     React.useEffect(() => {
         advertiser_page_store.onMount();
         advertiser_page_store.setIsDropdownMenuVisible(false);
-
-        const disposeCounterpartyAdvertiserIdReaction = reaction(
-            () => [general_store.counterparty_advertiser_id, general_store.is_advertiser_info_subscribed],
-            () => {
-                // DO NOT REMOVE. This fixes reload on advertiser page routing issue
-                advertiser_page_store.onAdvertiserIdUpdate();
-            },
-            { fireImmediately: true }
-        );
 
         reaction(
             () => [advertiser_page_store.active_index, general_store.block_unblock_user_error],
@@ -93,13 +79,12 @@ const AdvertiserPage = () => {
                             error_modal_title:
                                 general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID
                                     ? localize('{{name}} is no longer on Deriv P2P', {
-                                          name: nickname,
+                                          name: advertiser_page_store.advertiser_details_name,
                                       })
                                     : localize('Unable to block advertiser'),
                             has_close_icon: false,
                             onClose: () => {
                                 buy_sell_store.hideAdvertiserPage();
-                                history.push(general_store.active_tab_route);
                                 if (general_store.active_index !== 0)
                                     my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
                                 advertiser_page_store.onCancel();
@@ -116,7 +101,6 @@ const AdvertiserPage = () => {
         );
 
         return () => {
-            disposeCounterpartyAdvertiserIdReaction();
             advertiser_page_store.onUnmount();
         };
 
@@ -155,7 +139,6 @@ const AdvertiserPage = () => {
                         buy_sell_store.hideAdvertiserPage();
                         if (general_store.active_index === general_store.path.my_profile)
                             my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
-                        history.push(general_store.active_tab_route);
                     }}
                     page_title={localize("Advertiser's page")}
                 />
@@ -176,14 +159,14 @@ const AdvertiserPage = () => {
                 <div className='advertiser-page-details-container'>
                     <div className='advertiser-page__header-details'>
                         <UserAvatar
-                            nickname={nickname}
+                            nickname={advertiser_page_store.advertiser_details_name}
                             size={isMobile() ? 32 : 64}
                             text_size={isMobile() ? 's' : 'sm'}
                         />
                         <div className='advertiser-page__header-name--column'>
                             <div className='advertiser-page__header-name'>
                                 <Text color='prominent' line-height='m' size='s' weight='bold'>
-                                    {nickname}
+                                    {advertiser_page_store.advertiser_details_name}
                                 </Text>
                                 {first_name && last_name && (
                                     <div className='advertiser-page__header-real-name'>

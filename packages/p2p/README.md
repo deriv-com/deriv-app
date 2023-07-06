@@ -9,7 +9,7 @@ This repository is a workspace of [deriv-app](../../README.md) monorepo and is r
 
 ```
     cashier_p2p: '/cashier/p2p',
-    p2p_verification: '/cashier/p2p/verification',
+    cashier_p2p_verification: '/cashier/p2p/verification',
 ```
 
 ## How to Install the workspace

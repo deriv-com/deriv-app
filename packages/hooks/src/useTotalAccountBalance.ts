@@ -1,22 +1,19 @@
 import useRealTotalAssetCurrency from './useTotalAssetCurrency';
 import useExchangeRate from './useExchangeRate';
-import { useStore } from '@deriv/stores';
 /**
  * we can use this hook to get the total balance of the given accounts list.
  * it loops through the accounts list and adds the balance of each account
  * to the total balance, it also converts the balance to the currency of the
  * first account in the list
  */
-const useTotalAccountBalance = (accounts: { balance?: number; currency?: string }[]) => {
-    const { traders_hub } = useStore();
-    const { is_demo } = traders_hub;
+const useTotalAccountBalance = (accounts: { balance?: number; currency?: string; account_type?: string }[]) => {
     const total_assets_real_currency = useRealTotalAssetCurrency();
     const { getRate } = useExchangeRate();
 
     if (!accounts.length) return { balance: 0, currency: total_assets_real_currency };
 
     const balance = accounts.reduce((total, account) => {
-        const base_rate = is_demo ? getRate('USD') : getRate(total_assets_real_currency || '');
+        const base_rate = account?.account_type === 'demo' ? 1 : getRate(total_assets_real_currency || '');
         const rate = getRate(total_assets_real_currency || '');
         const exchange_rate = base_rate / rate;
 

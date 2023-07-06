@@ -22,7 +22,7 @@ describe('useWalletsList', () => {
             },
         });
 
-        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
             data: {
                 authorize: {
@@ -60,8 +60,10 @@ describe('useWalletsList', () => {
                 is_malta_wallet: false,
                 icon_type: 'fiat',
                 is_disabled: false,
+                is_selected: false,
                 modal_icon: 'IcWalletCurrencyUsd',
                 name: 'USD Wallet',
+                is_added: true,
             })
         );
     });

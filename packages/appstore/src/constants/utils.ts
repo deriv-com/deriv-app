@@ -1,5 +1,6 @@
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { TWalletButton } from 'Types';
 
 /**
  * This function checks whether the current item should have a border at the bottom 'aka "divider" '.
@@ -58,7 +59,7 @@ export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean
     }
 };
 
-export const getWalletHeaderButtons = (is_demo: boolean, handleAction?: () => void) => {
+export const getWalletHeaderButtons = (is_demo: boolean, handleAction?: () => void): TWalletButton[] => {
     return is_demo
         ? [
               {

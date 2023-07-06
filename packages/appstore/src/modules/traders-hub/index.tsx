@@ -1,14 +1,15 @@
 import React from 'react';
-import ModalManager from 'Components/modals/modal-manager';
-import TourGuide from 'Modules/tour-guide/tour-guide';
+import classNames from 'classnames';
 import { isDesktop } from '@deriv/shared';
 import { Div100vhContainer } from '@deriv/components';
-import classNames from 'classnames';
+import { useStore, observer } from '@deriv/stores';
+import { useContentFlag } from '@deriv/hooks';
+import ModalManager from 'Components/modals/modal-manager';
+import TourGuide from 'Modules/tour-guide/tour-guide';
 import AccountWithWallets from './account-with-wallets';
 import AccountWithoutWallets from './account-without-wallets';
-import { useStore, observer } from '@deriv/stores';
 import EUDisclaimer from 'Components/eu-disclaimer';
-import { useContentFlag } from '@deriv/hooks';
+import AddMoreWallets from 'Components/add-more-wallets';
 import './traders-hub.scss';
 
 const TradersHub = observer(() => {
@@ -78,6 +79,7 @@ const TradersHub = observer(() => {
                     })}
                 >
                     {is_wallet_account ? <AccountWithWallets /> : <AccountWithoutWallets />}
+                    <AddMoreWallets />
                     <ModalManager />
                     {scrolled && <TourGuide />}
                 </div>

@@ -1,16 +1,15 @@
 import { useMemo } from 'react';
-import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
+import { useFetch } from '@deriv/api';
+import useAuthorize from './useAuthorize';
 
 const useWalletsList = () => {
     const { client, ui } = useStore();
-    const { accounts, currency, loginid, is_crypto } = client;
+    const { loginid, is_crypto } = client;
     const { is_dark_mode_on } = ui;
-    const { data, ...rest } = useFetch('authorize', {
-        payload: { authorize: accounts[loginid || ''].token },
-        options: { enabled: Boolean(loginid), keepPreviousData: true },
-    });
+    const { data, ...rest } = useAuthorize();
+
     const { data: balance_data } = useFetch('balance', { payload: { account: 'all' } });
 
     const sortedWallets = useMemo(() => {
@@ -20,7 +19,7 @@ const useWalletsList = () => {
         // Modify the wallets to include the missing balance from the API response
         const modified_wallets =
             wallets?.map(wallet => {
-                const wallet_currency = wallet?.currency || 'USD';
+                const wallet_currency = wallet?.currency || '';
                 const is_crypto_currency = is_crypto(wallet_currency);
 
                 return {
@@ -55,6 +54,7 @@ const useWalletsList = () => {
                     name: `${wallet.is_virtual ? 'Demo ' : ''}${wallet_currency} ${'Wallet'}`,
                     // needs for WalletIcon, maybe refactor during cleanUp
                     icon_type: !is_crypto_currency && !wallet.is_virtual ? 'fiat' : 'crypto',
+                    is_added: true,
                 };
             }) || [];
 
@@ -68,7 +68,7 @@ const useWalletsList = () => {
 
             return (a.currency || 'USD').localeCompare(b.currency || 'USD');
         });
-    }, [data?.authorize?.account_list, is_crypto, currency, loginid, balance_data?.balance?.accounts, is_dark_mode_on]);
+    }, [data?.authorize?.account_list, is_crypto, loginid, balance_data?.balance?.accounts, is_dark_mode_on]);
 
     return {
         ...rest,

@@ -1,14 +1,7 @@
 import React from 'react';
 import { observer, useStore } from '@deriv/stores';
-import { TWalletAccount } from 'Types';
+import { TWalletAccount, TWalletButton } from 'Types';
 import WalletButton from 'Components/wallet-button';
-
-type TWalletButton = {
-    name: Parameters<ReturnType<typeof useStore>['traders_hub']['setWalletModalActiveTab']>[0];
-    text: string;
-    icon: string;
-    action: () => void;
-};
 
 type TWalletHeaderButtons = {
     is_disabled: boolean;

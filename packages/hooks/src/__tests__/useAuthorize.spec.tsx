@@ -23,6 +23,7 @@ describe('useAuthorize', () => {
                 authorize: {
                     account_list: [
                         {
+                            // @ts-expect-error need to come up with a way to mock the return type of useFetch
                             account_category: 'wallet',
                             currency: 'USD',
                             is_virtual: 0,

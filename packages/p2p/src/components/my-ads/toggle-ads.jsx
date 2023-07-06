@@ -1,11 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { ToggleSwitch } from '@deriv/components';
+import { Text, ToggleSwitch } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
-import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { requestWS } from 'Utils/websocket';
-import { localize } from 'Components/i18next';
+import { Localize } from '@deriv/translations';
 import { useStores } from 'Stores';
 import './my-ads.scss';
 
@@ -33,21 +32,18 @@ const ToggleAds = observer(() => {
     };
 
     return (
-        <div
-            className={classNames('toggle-ads', {
-                'toggle-ads--on': general_store.is_listed,
-                'toggle-ads--off': !general_store.is_listed || general_store.is_barred,
-            })}
-        >
-            <div className='toggle-ads__message'>
-                {(my_ads_store.api_error || general_store.is_listed) && !general_store.is_barred
-                    ? localize('Your ads are running')
-                    : localize('Your ads are paused')}
-            </div>
-
+        <div className='toggle-ads'>
+            <Text
+                className='toggle-ads__message'
+                color={general_store.is_listed ? 'less-prominent' : 'profit-success'}
+                line_height='xl'
+                size='xs'
+            >
+                <Localize i18n_default_text='Hide my ads' />
+            </Text>
             <ToggleSwitch
                 id='toggle-my-ads'
-                is_enabled={general_store.is_listed && !general_store.is_barred}
+                is_enabled={general_store.is_barred || !general_store.is_listed}
                 handleToggle={handleToggle}
             />
         </div>

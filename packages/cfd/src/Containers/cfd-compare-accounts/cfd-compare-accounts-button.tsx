@@ -121,7 +121,13 @@ const CFDCompareAccountsButton = observer(({ trading_platforms, is_demo }: TComp
         history.push(routes.traders_hub);
     };
     return (
-        <Button className='compare-cfd-account__button' primary_light onClick={onClickAdd} disabled={is_account_added}>
+        <Button
+            className='compare-cfd-account__button'
+            primary_light
+            onClick={onClickAdd}
+            disabled={is_account_added}
+            data-testid='dt_compare_cfd_account_button'
+        >
             {is_account_added ? localize('Added') : localize('Add')}
         </Button>
     );

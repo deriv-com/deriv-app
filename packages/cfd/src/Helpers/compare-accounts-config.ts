@@ -2,18 +2,20 @@ import { CFD_PLATFORMS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import {
     TInstrumentsIcon,
-    TAvailableCFDAccounts,
     TModifiedTradingPlatformAvailableAccount,
     TDetailsOfEachMT5Loginid,
 } from '../Components/props.types';
 
 // Map the accounts according to the market type
-const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvailableAccount): TInstrumentsIcon[] => {
+const getHighlightedIconLabel = (
+    trading_platforms: TModifiedTradingPlatformAvailableAccount,
+    is_demo?: boolean
+): TInstrumentsIcon[] => {
     const market_type = getMarketType(trading_platforms);
     const jurisdiction_shortcode = market_type.concat('_', trading_platforms.shortcode);
     // Forex for these: MT5 Financial Vanuatu, MT5 Financial Labuan
     const forex_label =
-        jurisdiction_shortcode === 'financial_labuan' || jurisdiction_shortcode === 'financial_vanuatu'
+        jurisdiction_shortcode === 'financial_labuan' || jurisdiction_shortcode === 'financial_vanuatu' || is_demo
             ? localize('Forex')
             : localize('Forex: standard/micro');
 
@@ -26,7 +28,7 @@ const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvai
                 { icon: 'Stocks', text: localize('Stocks'), highlighted: false },
                 { icon: 'StockIndices', text: localize('Stock Indices'), highlighted: false },
                 { icon: 'Commodities', text: localize('Commodities'), highlighted: false },
-                { icon: 'Forex', text: localize('Forex: standard/micro'), highlighted: false },
+                { icon: 'Forex', text: forex_label, highlighted: false },
                 { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: false },
                 { icon: 'ETF', text: localize('ETF'), highlighted: false },
             ];
@@ -34,7 +36,7 @@ const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvai
             if (trading_platforms.shortcode === 'maltainvest') {
                 return [
                     { icon: 'Synthetics', text: localize('Synthetics'), highlighted: true, is_asterik: true },
-                    { icon: 'Forex', text: localize('Forex'), highlighted: true },
+                    { icon: 'Forex', text: forex_label, highlighted: true },
                     { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
                     { icon: 'StockIndices', text: localize('Stock Indices'), highlighted: true },
                     { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
@@ -61,7 +63,7 @@ const getHighlightedIconLabel = (trading_platforms: TModifiedTradingPlatformAvai
                 { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
                 { icon: 'StockIndices', text: localize('Stock Indices'), highlighted: true },
                 { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
-                { icon: 'Forex', text: localize('Forex: standard/micro'), highlighted: true },
+                { icon: 'Forex', text: forex_label, highlighted: true },
                 { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
                 { icon: 'ETF', text: localize('ETF'), highlighted: true },
             ];
@@ -88,9 +90,9 @@ const getAccountCardTitle = (shortcode: string, is_demo?: boolean) => {
         case 'all_svg':
             return is_demo ? localize('Swap-Free Demo') : localize('Swap-Free - SVG');
         case 'dxtrade':
-            return localize('Deriv X');
+            return is_demo ? localize('Deriv X Demo') : localize('Deriv X');
         default:
-            return localize('CFDs');
+            return is_demo ? localize('CFDs Demo') : localize('CFDs');
     }
 };
 
@@ -145,7 +147,7 @@ const getHeaderColor = (shortcode: string) => {
 };
 
 // Config for different Jurisdictions
-const cfdConfig = {
+const cfd_config = {
     leverage: '1:1000',
     leverage_description: localize('Maximum Leverage'),
     spread: '0.5 pips',
@@ -163,7 +165,7 @@ const getJuridisctionDescription = (shortcode: string) => {
     switch (shortcode) {
         case 'synthetic_bvi':
             return {
-                ...cfdConfig,
+                ...cfd_config,
                 counterparty_company: 'Deriv (BVI) Ltd',
                 jurisdiction: 'British Virgin Islands',
                 regulator: localize('British Virgin Islands Financial Services Commission'),
@@ -171,7 +173,7 @@ const getJuridisctionDescription = (shortcode: string) => {
             };
         case 'synthetic_vanuatu':
             return {
-                ...cfdConfig,
+                ...cfd_config,
                 counterparty_company: 'Deriv (V) Ltd',
                 jurisdiction: 'Vanuatu',
                 regulator: localize('Vanuatu Financial Services Commission'),
@@ -179,7 +181,7 @@ const getJuridisctionDescription = (shortcode: string) => {
             };
         case 'financial_bvi':
             return {
-                ...cfdConfig,
+                ...cfd_config,
                 counterparty_company: 'Deriv (BVI) Ltd',
                 jurisdiction: 'British Virgin Islands',
                 regulator: localize('British Virgin Islands Financial Services Commission'),
@@ -187,7 +189,7 @@ const getJuridisctionDescription = (shortcode: string) => {
             };
         case 'financial_vanuatu':
             return {
-                ...cfdConfig,
+                ...cfd_config,
                 counterparty_company: 'Deriv (V) Ltd',
                 jurisdiction: 'Vanuatu',
                 regulator: localize('Vanuatu Financial Services Commission'),
@@ -195,7 +197,7 @@ const getJuridisctionDescription = (shortcode: string) => {
             };
         case 'financial_labuan':
             return {
-                ...cfdConfig,
+                ...cfd_config,
                 leverage: '1:100',
                 counterparty_company: 'Deriv (FX) Ltd',
                 jurisdiction: 'Labuan',
@@ -204,7 +206,7 @@ const getJuridisctionDescription = (shortcode: string) => {
             };
         case 'financial_maltainvest':
             return {
-                ...cfdConfig,
+                ...cfd_config,
                 leverage: '1:30',
                 counterparty_company: 'Deriv Investments (Europe) Limited',
                 jurisdiction: 'Malta',
@@ -218,7 +220,7 @@ const getJuridisctionDescription = (shortcode: string) => {
         case 'synthetic_svg':
         case 'financial_svg':
         default:
-            return cfdConfig;
+            return cfd_config;
     }
 };
 
@@ -236,11 +238,6 @@ const getSortedAvailableAccounts = (available_accounts: TModifiedTradingPlatform
     return [...gaming_accounts, ...financial_accounts, ...swap_free_accounts];
 };
 
-// Check if Deriv X is available for the user
-const getDxtradeAccountAvailabaility = (available_accounts: TAvailableCFDAccounts[]) => {
-    return available_accounts.some(account => account.platform === 'dxtrade');
-};
-
 // Get the maltainvest accounts for EU and DIEL clients
 const getEUAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvailableAccount[]) => {
     const financial_accounts = available_accounts
@@ -249,28 +246,23 @@ const getEUAvailableAccounts = (available_accounts: TModifiedTradingPlatformAvai
     return [...financial_accounts];
 };
 
-// Make the Deriv X object for trading_platform_available_accounts
-const prepareDxtradeData = (
-    name: string,
-    market_type: TModifiedTradingPlatformAvailableAccount['market_type']
-): TModifiedTradingPlatformAvailableAccount => {
-    return {
-        market_type,
-        name,
-        requirements: {
-            after_first_deposit: {
-                financial_assessment: [''],
-            },
-            compliance: {
-                mt5: [''],
-                tax_information: [''],
-            },
-            signup: [''],
+// Make the Deriv X data same as trading_platform_available_accounts
+const dxtrade_data: TModifiedTradingPlatformAvailableAccount = {
+    market_type: 'all',
+    name: 'Deriv X',
+    requirements: {
+        after_first_deposit: {
+            financial_assessment: [''],
         },
-        shortcode: 'svg',
-        sub_account_type: '',
-        platform: 'dxtrade',
-    };
+        compliance: {
+            mt5: [''],
+            tax_information: [''],
+        },
+        signup: [''],
+    },
+    shortcode: 'svg',
+    sub_account_type: '',
+    platform: 'dxtrade',
 };
 
 // Check whether the POA POI status are completed for different jurisdictions
@@ -377,8 +369,7 @@ export {
     getPlatformLabel,
     getSortedAvailableAccounts,
     getEUAvailableAccounts,
-    getDxtradeAccountAvailabaility,
-    prepareDxtradeData,
+    dxtrade_data,
     getHeaderColor,
     platfromsHeaderLabel,
     getAccountVerficationStatus,

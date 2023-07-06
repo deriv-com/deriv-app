@@ -1,17 +1,17 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import classNames from 'classnames';
 import { Text, Icon, PageOverlay, DesktopWrapper, MobileWrapper, CFDCompareAccountsCarousel } from '@deriv/components';
-import { routes, CFD_PLATFORMS } from '@deriv/shared';
+import { routes } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 import CFDCompareAccountsCard from './cfd-compare-accounts-card';
 import {
     getSortedAvailableAccounts,
     getEUAvailableAccounts,
-    getDxtradeAccountAvailabaility,
-    prepareDxtradeData,
     getMT5DemoData,
     getDxtradeDemoData,
+    dxtrade_data,
 } from '../../Helpers/compare-accounts-config';
 
 const CompareCFDs = observer(() => {
@@ -19,28 +19,28 @@ const CompareCFDs = observer(() => {
     const store = useStore();
     const { client, traders_hub } = store;
     const { trading_platform_available_accounts } = client;
-    const { available_cfd_accounts, is_demo, is_eu_user } = traders_hub;
+    const { is_demo, is_eu_user, available_dxtrade_accounts } = traders_hub;
 
     const sorted_available_accounts = !is_eu_user
         ? getSortedAvailableAccounts(trading_platform_available_accounts)
         : getEUAvailableAccounts(trading_platform_available_accounts);
-
-    const has_dxtrade_account_available = getDxtradeAccountAvailabaility(available_cfd_accounts);
-
-    const dxtrade_data = available_cfd_accounts.filter(accounts => accounts.platform === CFD_PLATFORMS.DXTRADE);
-    const { name, market_type } = dxtrade_data[0];
-    const dxtrade_account = prepareDxtradeData(name, market_type);
+    // Check if dxtrade data is available
+    const has_dxtrade_account_available = available_dxtrade_accounts.length > 0;
 
     const sorted_available_eu_accounts =
         is_eu_user && sorted_available_accounts.length ? [...sorted_available_accounts] : [];
-    const all_real_sorted_available_accounts =
-        has_dxtrade_account_available && !is_eu_user
-            ? [...sorted_available_accounts, dxtrade_account]
-            : [...sorted_available_eu_accounts];
 
-    const demo_available_accounts = getMT5DemoData(all_real_sorted_available_accounts).concat(
-        getDxtradeDemoData(all_real_sorted_available_accounts)
-    );
+    // Getting real accounts data
+    const all_real_sorted_available_accounts = !is_eu_user
+        ? [...sorted_available_accounts]
+        : [...sorted_available_eu_accounts];
+
+    // Getting demo accounts data
+    const demo_available_accounts = [
+        ...getMT5DemoData(all_real_sorted_available_accounts).concat(
+            getDxtradeDemoData(all_real_sorted_available_accounts)
+        ),
+    ];
 
     const all_available_accounts =
         is_demo && demo_available_accounts.length > 0 ? demo_available_accounts : all_real_sorted_available_accounts;
@@ -76,7 +76,11 @@ const CompareCFDs = observer(() => {
             <DesktopWrapper>
                 <div className='compare-cfd-account'>
                     <PageOverlay header={DesktopHeader} is_from_app={routes.traders_hub} />
-                    <div className='compare-cfd-account-container'>
+                    <div
+                        className={classNames('compare-cfd-account-container', {
+                            'compare-cfd-account-container__eu': is_eu_user,
+                        })}
+                    >
                         <div className='card-list'>
                             <CFDCompareAccountsCarousel>
                                 {all_available_accounts.map(item => (
@@ -87,6 +91,14 @@ const CompareCFDs = observer(() => {
                                         is_demo={is_demo}
                                     />
                                 ))}
+                                {/* Renders Deriv X data */}
+                                {all_available_accounts.length > 0 && has_dxtrade_account_available && (
+                                    <CFDCompareAccountsCard
+                                        trading_platforms={dxtrade_data}
+                                        is_eu_user={is_eu_user}
+                                        is_demo={is_demo}
+                                    />
+                                )}
                             </CFDCompareAccountsCarousel>
                         </div>
                     </div>
@@ -94,12 +106,23 @@ const CompareCFDs = observer(() => {
             </DesktopWrapper>
             <MobileWrapper>
                 <PageOverlay
-                    header={localize('Compare CFDs accounts')}
+                    header={
+                        <Localize
+                            i18n_default_text='Compare CFDs {{demo_title}} accounts'
+                            values={{
+                                demo_title: is_demo ? localize('demo') : '',
+                            }}
+                        />
+                    }
                     header_classname='compare-cfd-header-title'
                     is_from_app={!routes.traders_hub}
                     onClickClose={() => history.push(routes.traders_hub)}
                 >
-                    <div className='compare-cfd-account-container'>
+                    <div
+                        className={classNames('compare-cfd-account-container', {
+                            'compare-cfd-account-container__eu--mobile': is_eu_user,
+                        })}
+                    >
                         <CFDCompareAccountsCarousel>
                             {all_available_accounts.map(item => (
                                 <CFDCompareAccountsCard
@@ -109,6 +132,14 @@ const CompareCFDs = observer(() => {
                                     is_demo={is_demo}
                                 />
                             ))}
+                            {/* Renders Deriv X data */}
+                            {all_available_accounts.length > 0 && has_dxtrade_account_available && (
+                                <CFDCompareAccountsCard
+                                    trading_platforms={dxtrade_data}
+                                    is_eu_user={is_eu_user}
+                                    is_demo={is_demo}
+                                />
+                            )}
                         </CFDCompareAccountsCarousel>
                     </div>
                 </PageOverlay>

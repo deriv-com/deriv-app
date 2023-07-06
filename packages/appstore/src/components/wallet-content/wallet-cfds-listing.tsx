@@ -10,6 +10,7 @@ import { getHasDivider } from 'Constants/utils';
 import { useStore, observer } from '@deriv/stores';
 import { useHistory } from 'react-router';
 import { useActiveWalletCFDAccounts } from '@deriv/hooks';
+import GetMoreAccounts from 'Components/get-more-accounts';
 
 type TProps = {
     wallet_account: TWalletAccount;
@@ -24,7 +25,8 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
         traders_hub,
         ui,
     } = useStore();
-    const { selected_region, getExistingAccounts, selected_account_type } = traders_hub;
+    const { selected_region, getExistingAccounts, selected_account_type, toggleAccountTypeModalVisibility } =
+        traders_hub;
 
     const { currency } = wallet_account;
 
@@ -93,21 +95,20 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
                             : null;
                         return (
                             <TradingAppCard
-                                // action_type={existing_account.action_type}
-                                action_type={'get'}
+                                action_type='multi-action'
                                 availability={selected_region}
                                 clickable_icon
-                                // icon={existing_account.icon}
-                                icon={'CFDs'}
+                                icon={existing_account.icon}
+                                // icon={'CFDs'}
                                 // sub_title={existing_account?.sub_title}
-                                sub_title={'Foo'}
-                                // name={!has_mt5_account_status ? existing_account?.name : ''}
-                                name={'bar'}
+                                sub_title={existing_account.sub_title}
+                                name={!has_mt5_account_status ? existing_account?.name : undefined}
+                                // name={existing_account.name || ''}
                                 short_code_and_region={wallet_account.landing_company_name}
                                 // platform={existing_account.platform}
-                                platform={'mt5'}
+                                platform={existing_account.platform}
                                 // description={existing_account.description}
-                                description={'baz'}
+                                description={existing_account.description}
                                 key={existing_account.login}
                                 has_divider={getHasDivider(index, list_size, 3)}
                                 mt5_acc_auth_status={has_mt5_account_status}
@@ -121,6 +122,14 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
                             />
                         );
                     })}
+                    {data?.mt5_accounts && data?.mt5_accounts?.length > 1 && (
+                        <GetMoreAccounts
+                            onClick={toggleAccountTypeModalVisibility}
+                            icon='IcAppstoreGetMoreAccounts'
+                            title={localize('Get more')}
+                            description={localize('Get more Deriv MT5 account with different type and jurisdiction.')}
+                        />
+                    )}
                 </React.Fragment>
             ) : (
                 <PlatformLoader />
@@ -142,7 +151,7 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
                                 action_type='multi-action'
                                 availability={selected_region}
                                 clickable_icon
-                                icon={account.icon}
+                                icon={'DerivX'}
                                 sub_title={account.name}
                                 name={`${formatMoney(
                                     existing_account.currency,

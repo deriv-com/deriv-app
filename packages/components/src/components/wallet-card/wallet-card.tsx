@@ -33,7 +33,6 @@ const WalletCard: React.FC<React.PropsWithChildren<TWalletCardProps>> = ({
         let icon_size: React.ComponentProps<typeof WalletIcon>['size'] = 'large';
         if (size === 'small') icon_size = 'medium';
         if (size === 'medium') icon_size = isMobile() && wallet.icon_type === 'crypto' ? 'medium' : 'large';
-
         return <WalletIcon type={wallet.icon_type} icon={wallet.icon} size={icon_size} />;
     };
 

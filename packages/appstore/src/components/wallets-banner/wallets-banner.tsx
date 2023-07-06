@@ -6,7 +6,7 @@ import { useWalletMigration } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 
 const WalletsBanner = observer(() => {
-    const { is_eligible, is_failed, is_in_progress, is_migrated, is_ineligible } = useWalletMigration();
+    const { is_eligible, is_failed, is_in_progress, is_ineligible } = useWalletMigration();
     const { traders_hub } = useStore();
     const { is_eu_user } = traders_hub;
 
@@ -15,8 +15,6 @@ const WalletsBanner = observer(() => {
     if (is_eligible || is_failed) return <WalletsBannerUpgrade />;
 
     if (is_in_progress) return <WalletsBannerUpgrading is_eu={is_eu_user} />;
-
-    if (is_migrated) return <WalletsBannerReady is_eu={is_eu_user} />;
 
     return <WalletsBannerReady is_eu={is_eu_user} />;
 });

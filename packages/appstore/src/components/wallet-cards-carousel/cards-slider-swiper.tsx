@@ -43,11 +43,12 @@ const CardsSliderSwiper = observer(({ items, setActivePage, active_page }: TProp
     }, [emblaApi, onSelect]);
 
     // add this to scroll to choosed card
-    React.useEffect(() => {
-        if (emblaApi && active_page !== emblaApi.selectedScrollSnap()) {
-            emblaApi.scrollTo(active_page);
-        }
-    }, [active_page, emblaApi]);
+    // commented it becuse cashier will be deleted later but leave it if something changes again
+    // React.useEffect(() => {
+    //     if (emblaApi && active_page !== emblaApi.selectedScrollSnap()) {
+    //         emblaApi.scrollTo(active_page);
+    //     }
+    // }, [active_page, emblaApi]);
 
     const slider = React.useMemo(
         () =>

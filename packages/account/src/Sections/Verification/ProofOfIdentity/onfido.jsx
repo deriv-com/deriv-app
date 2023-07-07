@@ -38,6 +38,7 @@ const Onfido = ({
                         setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                         country_code={country_code}
                         handleViewComplete={handleViewComplete}
+                        onfido={onfido}
                     />
                 );
             }

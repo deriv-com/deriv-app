@@ -228,6 +228,7 @@ const ProofOfIdentityContainer = ({
                     redirect_button={redirect_button}
                     handleRequireSubmission={handleRequireSubmission}
                     handleViewComplete={handleManualSubmit}
+                    onfido={onfido}
                 />
             );
         default:

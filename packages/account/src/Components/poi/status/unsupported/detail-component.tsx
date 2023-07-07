@@ -160,9 +160,7 @@ const DetailComponent = ({
                                 height={height ?? null}
                                 handleComplete={is_mt5 ? handlePOIforMT5Complete : handleComplete}
                                 is_disabled={false}
-                                handleViewComplete={
-                                    is_mt5 ? handlePOIforMT5Complete : handleComplete || setIsCfdPoiCompleted
-                                }
+                                handleViewComplete={is_mt5 ? handlePOIforMT5Complete : handleComplete}
                                 {...props}
                             />
                         </React.Fragment>

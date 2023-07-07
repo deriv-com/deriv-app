@@ -34,6 +34,9 @@ type TUnsupported = {
     handleRequireSubmission: () => void;
     handleViewComplete: () => void;
     allow_poi_resubmission: boolean;
+    onfido: {
+        submissions_left: number;
+    };
 };
 
 const Unsupported = ({
@@ -45,6 +48,7 @@ const Unsupported = ({
     handleRequireSubmission,
     allow_poi_resubmission,
     handleViewComplete,
+    onfido,
     ...props
 }: Partial<TUnsupported>) => {
     const [detail, setDetail] = React.useState<number | null>(null);
@@ -53,6 +57,12 @@ const Unsupported = ({
     const documents = getDocumentIndex({
         country_code,
     });
+
+    const is_onfido_supported =
+        country_code === 'ng' &&
+        !checkNimcStep(documents[0].details.documents) &&
+        onfido &&
+        onfido.submissions_left > 0;
 
     if (manual) {
         if (manual.status === identity_status_codes.pending)
@@ -69,7 +79,7 @@ const Unsupported = ({
     if (detail !== null) {
         return (
             <DetailComponent
-                is_onfido_supported={country_code === 'ng' && !checkNimcStep(documents[detail].details.documents)}
+                is_onfido_supported={is_onfido_supported}
                 country_code_key={country_code}
                 document={documents[detail]}
                 root_class='manual-poi'

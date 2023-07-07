@@ -160,6 +160,7 @@ const POISubmission = ({
                             setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                             allow_poi_resubmission={allow_poi_resubmission}
                             handleViewComplete={handleViewComplete}
+                            onfido={onfido}
                         />
                     );
                 default:

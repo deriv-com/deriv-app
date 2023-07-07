@@ -1,6 +1,6 @@
 import { action, computed, observable, reaction, makeObservable } from 'mobx';
 import { isCryptocurrency, routes } from '@deriv/shared';
-import Constants from 'Constants/constants';
+import Constants from '../constants/constants';
 import BaseStore from './base-store';
 import PaymentAgentStore from './payment-agent-store';
 import type { TRootStore, TWebSocket } from '../types';
@@ -200,11 +200,10 @@ export default class GeneralStore extends BaseStore {
 
     accountSwitcherListener() {
         const { client, modules } = this.root_store;
-        const { iframe, payment_agent } = modules.cashier;
+        const { payment_agent } = modules.cashier;
         const container = Constants.map_action[this.active_container as keyof typeof Constants.map_action];
 
         client.setVerificationCode('', container);
-        iframe.clearIframe();
 
         this.payment_agent = payment_agent;
         if (payment_agent.active_tab_index === 1 && window.location.pathname.endsWith(routes.cashier_pa)) {

@@ -156,7 +156,7 @@ export default class RunPanelStore {
             this.timer = setInterval(() => {
                 window.sendRequestsStatistic(true);
                 performance.clearMeasures();
-                if (timer_counter === 30) {
+                if (timer_counter === 12) {
                     clearInterval(this.timer);
                 } else {
                     timer_counter++;

@@ -58,7 +58,7 @@ const AdvertiserPageRow = ({ row: advert }) => {
                             }}
                         />
                     </Text>
-                    <Text color='profit-success' weight='bold'>
+                    <Text as='div' color='profit-success' weight='bold'>
                         {display_effective_rate} {local_currency}
                     </Text>
                     <div className='advertiser-page__cell-limit'>

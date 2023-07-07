@@ -56,6 +56,13 @@ const AppStore = React.lazy(() =>
     })
 );
 
+const P2P = React.lazy(() =>
+    moduleLoader(() => {
+        // eslint-disable-next-line import/no-unresolved
+        return import(/* webpackChunkName: "p2p" */ '@deriv/p2p');
+    })
+);
+
 const getModules = () => {
     const modules = [
         {
@@ -286,18 +293,39 @@ const getModules = () => {
                     component: Cashier,
                     getTitle: () => localize('Deriv P2P'),
                     icon_component: 'IcDp2p',
+                    routes: [
+                        {
+                            path: routes.p2p_buy_sell,
+                            component: P2P,
+                            getTitle: () => localize('Buy / Sell'),
+                            default: true,
+                        },
+                        {
+                            path: routes.p2p_advertiser_page,
+                            component: P2P,
+                            getTitle: () => localize("Advertiser's page"),
+                        },
+                        {
+                            path: routes.p2p_orders,
+                            component: P2P,
+                            getTitle: () => localize('Orders'),
+                        },
+                        {
+                            path: routes.p2p_my_ads,
+                            component: P2P,
+                            getTitle: () => localize('My ads'),
+                        },
+                        {
+                            path: routes.p2p_my_profile,
+                            component: P2P,
+                            getTitle: () => localize('My profile'),
+                        },
+                    ],
                 },
                 {
-                    path: routes.cashier_p2p_profile,
+                    path: routes.p2p_verification,
                     component: Cashier,
-                    getTitle: () => localize('Deriv P2P'),
-                    icon_component: 'IcDp2p',
-                    is_invisible: true,
-                },
-                {
-                    path: routes.cashier_p2p_verification,
-                    component: Cashier,
-                    getTitle: () => localize('Deriv P2P'),
+                    getTitle: () => localize('P2P verification'),
                     icon_component: 'IcDp2p',
                     is_invisible: true,
                 },

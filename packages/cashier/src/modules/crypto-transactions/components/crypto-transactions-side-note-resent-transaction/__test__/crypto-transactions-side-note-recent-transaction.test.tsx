@@ -2,7 +2,7 @@ import React from 'react';
 import { mockStore } from '@deriv/stores';
 import { render, screen } from '@testing-library/react';
 import CashierProviders from '../../../../../cashier-providers';
-import CryptoTransactionsSideNoteResentTransaction from '../crypto-transactions-side-note-resent-transaction';
+import CryptoTransactionsSideNoteRecentTransaction from '../crypto-transactions-side-note-recent-transaction';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
@@ -19,7 +19,7 @@ jest.mock('@deriv/api', () => ({
     })),
 }));
 
-describe('CryptoTransactionsSideNoteResentTransaction', () => {
+describe('CryptoTransactionsSideNoteRecentTransaction', () => {
     test("should show no recent transactions when user doesn't have any transactions", () => {
         const mock = mockStore({
             client: { currency: 'BTC' },
@@ -29,7 +29,7 @@ describe('CryptoTransactionsSideNoteResentTransaction', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <CashierProviders store={mock}>{children}</CashierProviders>
         );
-        render(<CryptoTransactionsSideNoteResentTransaction />, { wrapper });
+        render(<CryptoTransactionsSideNoteRecentTransaction />, { wrapper });
 
         expect(screen.getByText(/No recent transactions./)).toBeInTheDocument();
     });

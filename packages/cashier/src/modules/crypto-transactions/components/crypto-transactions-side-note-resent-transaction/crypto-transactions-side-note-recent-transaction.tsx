@@ -6,9 +6,9 @@ import { Localize, localize } from '@deriv/translations';
 import classNames from 'classnames';
 import { useCashierStore } from '../../../../stores/useCashierStores';
 import { cryptoTransactionMapper } from '../../helpers';
-import './crypto-transactions-side-note-resent-transaction.scss';
+import './crypto-transactions-side-note-recent-transaction.scss';
 
-const CryptoTransactionsSideNoteResentTransaction: React.FC = observer(() => {
+const CryptoTransactionsSideNoteRecentTransaction: React.FC = observer(() => {
     const { ui } = useStore();
     const { is_mobile } = ui;
     const { transaction_history } = useCashierStore();
@@ -32,7 +32,7 @@ const CryptoTransactionsSideNoteResentTransaction: React.FC = observer(() => {
 
         return (
             <>
-                <div className='crypto-transactions-side-note-resent-transaction__content'>
+                <div className='crypto-transactions-side-note-recent-transaction__content'>
                     <Text size={'xxs'}>
                         {is_deposit
                             ? localize('Deposit {{currency}}', { currency: currency_config.display_code })
@@ -41,7 +41,7 @@ const CryptoTransactionsSideNoteResentTransaction: React.FC = observer(() => {
                     <Text
                         size={'xxxs'}
                         color={'less-prominent'}
-                        className='crypto-transactions-side-note-resent-transaction__date'
+                        className='crypto-transactions-side-note-recent-transaction__date'
                     >
                         {localize('{{amount}} {{currency}} on {{date}}', {
                             amount,
@@ -70,23 +70,23 @@ const CryptoTransactionsSideNoteResentTransaction: React.FC = observer(() => {
                             components={[<Text key={0} size={'xxxs'} color={'red'} />]}
                         />
                     </Text>
-                    <div className='crypto-transactions-side-note-resent-transaction__status'>
+                    <div className='crypto-transactions-side-note-recent-transaction__status'>
                         <div
                             className={classNames(
-                                'crypto-transactions-side-note-resent-transaction__status-dot',
-                                `crypto-transactions-side-note-resent-transaction__status-dot-${status_color}`
+                                'crypto-transactions-side-note-recent-transaction__status-dot',
+                                `crypto-transactions-side-note-recent-transaction__status-dot-${status_color}`
                             )}
                         />
                         <Text size={'xxxs'}>{status_name}</Text>
                     </div>
                 </div>
-                <div className='crypto-transactions-side-note-resent-transaction__divider' />
+                <div className='crypto-transactions-side-note-recent-transaction__divider' />
                 <Button
                     text={localize('View more')}
                     onClick={() => setIsCryptoTransactionsVisible(true)}
                     secondary
                     small
-                    className='crypto-transactions-side-note-resent-transaction__button'
+                    className='crypto-transactions-side-note-recent-transaction__button'
                 />
             </>
         );
@@ -100,13 +100,13 @@ const CryptoTransactionsSideNoteResentTransaction: React.FC = observer(() => {
                 <Text size={is_mobile ? 'xxs' : 'xs'}>
                     {localize('Unfortunately, we cannot retrieve the information at this time. ')}
                 </Text>
-                <div className='crypto-transactions-side-note-resent-transaction__divider' />
+                <div className='crypto-transactions-side-note-recent-transaction__divider' />
                 <Button
                     text={localize('Refresh')}
                     onClick={() => refetch()}
                     secondary
                     small
-                    className='crypto-transactions-side-note-resent-transaction__button'
+                    className='crypto-transactions-side-note-recent-transaction__button'
                 />
             </>
         ),
@@ -117,7 +117,7 @@ const CryptoTransactionsSideNoteResentTransaction: React.FC = observer(() => {
         () => (
             <>
                 <Text size={is_mobile ? 'xxs' : 'xs'}>{localize('No recent transactions.')}</Text>
-                <div className='crypto-transactions-side-note-resent-transaction__divider' />
+                <div className='crypto-transactions-side-note-recent-transaction__divider' />
             </>
         ),
         [is_mobile]
@@ -125,8 +125,8 @@ const CryptoTransactionsSideNoteResentTransaction: React.FC = observer(() => {
 
     return (
         <SideNote type={error ? 'warning' : undefined} title={localize('Transaction status')}>
-            <div className='crypto-transactions-side-note-resent-transaction'>
-                <div className='crypto-transactions-side-note-resent-transaction__divider' />
+            <div className='crypto-transactions-side-note-recent-transaction'>
+                <div className='crypto-transactions-side-note-recent-transaction__divider' />
                 {isLoading && <LoadingState />}
                 {!isLoading && !error && has_transactions && <TransactionDetail />}
                 {!isLoading && !error && !has_transactions && <NoTransactionState />}
@@ -136,4 +136,4 @@ const CryptoTransactionsSideNoteResentTransaction: React.FC = observer(() => {
     );
 });
 
-export default CryptoTransactionsSideNoteResentTransaction;
+export default CryptoTransactionsSideNoteRecentTransaction;

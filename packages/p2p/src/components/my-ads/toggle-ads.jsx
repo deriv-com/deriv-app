@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Text, ToggleSwitch } from '@deriv/components';
 import { useIsMounted } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
+import { observer } from '@deriv/stores';
+import { Localize } from 'Components/i18next';
 import { requestWS } from 'Utils/websocket';
-import { Localize } from '@deriv/translations';
 import { useStores } from 'Stores';
 import './my-ads.scss';
 

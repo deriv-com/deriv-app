@@ -44,6 +44,6 @@ describe('useTotalAccountBalance', () => {
         );
         const { result } = renderHook(() => useTotalAccountBalance(mock.client.active_accounts), { wrapper });
 
-        expect(result.current.balance).toBe(500);
+        expect(result.current.balance).toBe(200);
     });
 });

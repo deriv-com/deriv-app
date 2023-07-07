@@ -2,7 +2,7 @@ import React from 'react';
 import { Loading } from '@deriv/components';
 import { useCashierLocked, useDepositLocked, useIsSystemMaintenance } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
-import { Real, Virtual } from '../../components/cashier-container';
+import { Virtual } from '../../components/cashier-container';
 import CashierLocked from '../../components/cashier-locked';
 import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
 import Error from '../../components/error';
@@ -15,6 +15,7 @@ import SideNote from '../../components/side-note';
 import { useCashierStore } from '../../stores/useCashierStores';
 import { CashierOnboardingModule } from '../../modules';
 import { CashierOnboardingSideNotes } from '../../modules/cashier-onboarding/components';
+import { DepositFiatModule } from '../../modules/deposit-fiat';
 
 type TDeposit = {
     setSideNotes: (notes: object | null) => void;
@@ -130,7 +131,7 @@ const Deposit = observer(({ setSideNotes }: TDeposit) => {
                 {is_fiat_currency_banner_visible_for_MF_clients && (
                     <CashierOnboardingSideNotes setSideNotes={setSideNotes} />
                 )}
-                <Real is_deposit />
+                <DepositFiatModule />
             </>
         );
     }

@@ -24,7 +24,7 @@ jobs:
         run: |
           npm i json-schema-to-typescript
           npm i @deriv/api-types@latest
-          echo ::set-output name=old_declarations_hash::"$(git hash-object ./node_modules/@deriv/api-types/index.d.ts)"
+          echo name=old_declarations_hash::"$(git hash-object ./node_modules/@deriv/api-types/index.d.ts)" >> $GITHUB_OUTPUT
 
       - name: Generate declarations file from upstream
         id: step3
@@ -39,7 +39,7 @@ jobs:
           if [ ${{ steps.step2.outputs.old_declarations_hash }} = $(git hash-object index.d.ts) ]
           then
             echo "Hashes are the same. Aborting."
-            echo ::set-output name=should_create_pr::false
+            echo name=should_create_pr::false >> $GITHUB_OUTPUT
           else
             echo "Hashes are different. I will publish a new version."
 
@@ -55,9 +55,9 @@ jobs:
             # Publish the package with a new version.
             npm publish
 
-            echo ::set-output name=should_create_pr::true
+            echo name=should_create_pr::true >> $GITHUB_OUTPUT
           fi
-      
+
       - name: Checkout repo
         id: step4
         uses: actions/checkout@v3

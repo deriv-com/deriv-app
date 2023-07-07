@@ -2,11 +2,11 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import AccountTransferNote, { TAccountTransferNoteProps } from '../account-transfer-form-side-note';
 
-let mockProps: TAccountTransferNoteProps;
+let mock_props: TAccountTransferNoteProps;
 
 describe('<AccountTransferNote />', () => {
     beforeEach(() => {
-        mockProps = {
+        mock_props = {
             allowed_transfers_count: {
                 internal: 10,
                 mt5: 10,
@@ -22,7 +22,7 @@ describe('<AccountTransferNote />', () => {
         };
     });
     it('should show the correct side notes if deriv x is not allowed', () => {
-        render(<AccountTransferNote {...mockProps} />);
+        render(<AccountTransferNote {...mock_props} />);
         expect(
             screen.getByText(
                 'You may transfer between your Deriv fiat, cryptocurrency, Deriv MT5, and Deriv EZ accounts.'
@@ -42,8 +42,8 @@ describe('<AccountTransferNote />', () => {
         ).toBeInTheDocument();
     });
     it('should show the correct side notes if deriv x is allowed', () => {
-        mockProps.is_dxtrade_allowed = true;
-        render(<AccountTransferNote {...mockProps} />);
+        mock_props.is_dxtrade_allowed = true;
+        render(<AccountTransferNote {...mock_props} />);
         expect(
             screen.getByText(
                 'You may transfer between your Deriv fiat, cryptocurrency, Deriv MT5, Deriv EZ and Deriv X accounts.'
@@ -56,8 +56,8 @@ describe('<AccountTransferNote />', () => {
         ).toBeInTheDocument();
     });
     it('should show transfer fee note for transfer_fee = 0', () => {
-        mockProps.transfer_fee = 0;
-        render(<AccountTransferNote {...mockProps} />);
+        mock_props.transfer_fee = 0;
+        render(<AccountTransferNote {...mock_props} />);
         expect(
             screen.getByText(
                 'We do not charge a transfer fee for transfers in the same currency between your Deriv fiat and Deriv MT5 accounts and your Deriv fiat and Deriv EZ accounts. Please bear in mind that some transfers may not be possible.'
@@ -65,9 +65,9 @@ describe('<AccountTransferNote />', () => {
         ).toBeInTheDocument();
     });
     it('should show transfer fee note for transfer_fee = 0 and dxtrade is allowed', () => {
-        mockProps.transfer_fee = 0;
-        mockProps.is_dxtrade_allowed = true;
-        render(<AccountTransferNote {...mockProps} />);
+        mock_props.transfer_fee = 0;
+        mock_props.is_dxtrade_allowed = true;
+        render(<AccountTransferNote {...mock_props} />);
         expect(
             screen.getByText(
                 'We do not charge a transfer fee for transfers in the same currency between your Deriv fiat and Deriv MT5 accounts, your Deriv fiat and Deriv EZ accounts and your Deriv fiat and Deriv X accounts. Please bear in mind that some transfers may not be possible.'
@@ -75,8 +75,8 @@ describe('<AccountTransferNote />', () => {
         ).toBeInTheDocument();
     });
     it('should show transfer fee note for transfer_fee = 1', () => {
-        mockProps.transfer_fee = 1;
-        render(<AccountTransferNote {...mockProps} />);
+        mock_props.transfer_fee = 1;
+        render(<AccountTransferNote {...mock_props} />);
         expect(
             screen.getByText(
                 'We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and Deriv MT5 accounts and your Deriv fiat and Deriv EZ accounts. Please bear in mind that some transfers may not be possible.'
@@ -84,9 +84,9 @@ describe('<AccountTransferNote />', () => {
         ).toBeInTheDocument();
     });
     it('should show transfer fee note for transfer_fee = 1 and dxtrade is allowed', () => {
-        mockProps.transfer_fee = 1;
-        mockProps.is_dxtrade_allowed = true;
-        render(<AccountTransferNote {...mockProps} />);
+        mock_props.transfer_fee = 1;
+        mock_props.is_dxtrade_allowed = true;
+        render(<AccountTransferNote {...mock_props} />);
         expect(
             screen.getByText(
                 'We’ll charge a 1% transfer fee for transfers in different currencies between your Deriv fiat and Deriv MT5 accounts, your Deriv fiat and Deriv EZ accounts, and your Deriv fiat and Deriv X accounts. Please bear in mind that some transfers may not be possible.'
@@ -94,8 +94,8 @@ describe('<AccountTransferNote />', () => {
         ).toBeInTheDocument();
     });
     it('should show transfer fee note for transfer_fee = 2', () => {
-        mockProps.transfer_fee = 2;
-        render(<AccountTransferNote {...mockProps} />);
+        mock_props.transfer_fee = 2;
+        render(<AccountTransferNote {...mock_props} />);
         expect(
             screen.getByText(
                 'We’ll charge a 2% transfer fee or 10 USD, whichever is higher, for transfers between your Deriv fiat and Deriv cryptocurrency accounts. Please bear in mind that some transfers may not be possible.'
@@ -103,9 +103,9 @@ describe('<AccountTransferNote />', () => {
         ).toBeInTheDocument();
     });
     it('should show transfer fee note for transfer_fee = 2 and crypto to crypto transfer', () => {
-        mockProps.transfer_fee = 2;
-        mockProps.is_crypto_to_crypto_transfer = true;
-        render(<AccountTransferNote {...mockProps} />);
+        mock_props.transfer_fee = 2;
+        mock_props.is_crypto_to_crypto_transfer = true;
+        render(<AccountTransferNote {...mock_props} />);
         expect(
             screen.getByText(
                 'We’ll charge a 2% transfer fee or 10 USD, whichever is higher, for transfers between your Deriv cryptocurrency accounts. Please bear in mind that some transfers may not be possible.'
@@ -113,9 +113,9 @@ describe('<AccountTransferNote />', () => {
         ).toBeInTheDocument();
     });
     it('should show transfer fee note for transfer_fee = 2 and derivez transfer', () => {
-        mockProps.transfer_fee = 2;
-        mockProps.is_derivez_transfer = true;
-        render(<AccountTransferNote {...mockProps} />);
+        mock_props.transfer_fee = 2;
+        mock_props.is_derivez_transfer = true;
+        render(<AccountTransferNote {...mock_props} />);
         expect(
             screen.getByText(
                 'We’ll charge a 2% transfer fee or 10 USD, whichever is higher, for transfers between your Deriv cryptocurrency and Deriv MT5 accounts and your Deriv cryptocurrency and Deriv EZ accounts. Please bear in mind that some transfers may not be possible.'
@@ -123,10 +123,10 @@ describe('<AccountTransferNote />', () => {
         ).toBeInTheDocument();
     });
     it('should show transfer fee note for transfer_fee = 2 and dxtrade transfer is allowed', () => {
-        mockProps.transfer_fee = 2;
-        mockProps.is_dxtrade_allowed = true;
-        mockProps.is_dxtrade_transfer = true;
-        render(<AccountTransferNote {...mockProps} />);
+        mock_props.transfer_fee = 2;
+        mock_props.is_dxtrade_allowed = true;
+        mock_props.is_dxtrade_transfer = true;
+        render(<AccountTransferNote {...mock_props} />);
         expect(
             screen.getByText(
                 'We’ll charge a 2% transfer fee or 10 USD, whichever is higher, for transfers between your Deriv cryptocurrency and Deriv MT5 accounts, your Deriv cryptocurrency and Deriv EZ accounts, and your Deriv cryptocurrency and Deriv X accounts. Please bear in mind that some transfers may not be possible.'

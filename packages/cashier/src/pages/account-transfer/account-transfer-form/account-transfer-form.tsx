@@ -188,16 +188,9 @@ const AccountTransferForm = observer(
                     selected_to.is_mt && (account.is_dxtrade || account.is_derivez);
                 const should_disable_mt_selected_from =
                     (selected_to.is_dxtrade || selected_to.is_derivez) && account.is_mt;
-                const should_disable_other_mt_accounts_selected_from = selected_from.is_mt && account.is_mt;
-                const should_disable_dxtrade_selected_from = selected_from.is_dxtrade && account.is_dxtrade;
-                const should_disable_derivez_selected_from = selected_from.is_derivez && account.is_derivez;
 
                 const selected_from_is_disabled =
-                    should_disable_other_cfds_selected_from ||
-                    should_disable_mt_selected_from ||
-                    should_disable_other_mt_accounts_selected_from ||
-                    should_disable_dxtrade_selected_from ||
-                    should_disable_derivez_selected_from;
+                    should_disable_other_cfds_selected_from || should_disable_mt_selected_from;
 
                 const is_cfd_account = account.is_mt || account.is_dxtrade || account.is_derivez;
 
@@ -219,16 +212,9 @@ const AccountTransferForm = observer(
                         selected_from.is_mt && (account.is_dxtrade || account.is_derivez);
                     const should_disable_mt_selected_to =
                         (selected_from.is_dxtrade || selected_from.is_derivez) && account.is_mt;
-                    const should_disable_other_mt_accounts_selected_to = selected_to.is_mt && account.is_mt;
-                    const should_disable_dxtrade_selected_to = selected_to.is_dxtrade && account.is_dxtrade;
-                    const should_disable_derivez_selected_to = selected_to.is_derivez && account.is_derivez;
 
                     const selected_to_is_disabled =
-                        should_disable_other_cfds_selected_to ||
-                        should_disable_mt_selected_to ||
-                        should_disable_other_mt_accounts_selected_to ||
-                        should_disable_dxtrade_selected_to ||
-                        should_disable_derivez_selected_to;
+                        should_disable_other_cfds_selected_to || should_disable_mt_selected_to;
 
                     getAccounts('to', account).push({
                         text,

@@ -2,12 +2,12 @@ import React from 'react';
 import { Dialog, UnhandledErrorModal } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 const CFDServerErrorDialog = observer(() => {
-    const { ui, modules } = useStore();
+    const { ui } = useStore();
     const { enableApp, disableApp } = ui;
-    const { cfd } = modules;
-    const { clearCFDError, error_message, error_type, has_cfd_error, is_cfd_success_dialog_enabled } = cfd;
+    const { clearCFDError, error_message, error_type, has_cfd_error, is_cfd_success_dialog_enabled } = useCfdStore();
 
     const should_show_error =
         has_cfd_error &&

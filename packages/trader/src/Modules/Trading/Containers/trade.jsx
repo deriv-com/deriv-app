@@ -57,7 +57,7 @@ const Trade = observer(() => {
         should_show_multipliers_onboarding,
         is_dark_mode_on: is_dark_theme,
     } = ui;
-    const { is_eu, is_virtual } = client;
+    const { is_eu } = client;
     const { network_status } = common;
 
     const [digits, setDigits] = React.useState([]);
@@ -224,11 +224,7 @@ const Trade = observer(() => {
                 <FormLayout
                     is_market_closed={is_market_closed}
                     is_trade_enabled={
-                        is_trade_enabled &&
-                        form_components.length > 0 &&
-                        network_status.class === 'online' &&
-                        // TODO: delete the below line for releasing ACCU trade for real
-                        (is_virtual || !form_components.includes('accumulator'))
+                        is_trade_enabled && form_components.length > 0 && network_status.class === 'online'
                     }
                 />
             </div>
@@ -271,11 +267,11 @@ const ChartTrade = observer(props => {
     const { client, ui, common, contract_trade, portfolio } = useStore();
     const {
         accumulator_barriers_data,
-        granularity,
         chart_type,
+        granularity,
+        has_crossed_accu_barriers,
         updateGranularity,
         updateChartType,
-        should_highlight_current_spot,
     } = contract_trade;
     const { all_positions } = portfolio;
     const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on } = ui;
@@ -309,7 +305,7 @@ const ChartTrade = observer(props => {
         theme: is_dark_mode_on ? 'dark' : 'light',
     };
 
-    const { current_spot, current_spot_time } = accumulator_barriers_data[symbol] || {};
+    const { accumulators_high_barrier, current_spot, current_spot_time } = accumulator_barriers_data || {};
 
     const bottomWidgets = React.useCallback(
         ({ digits, tick }) => (
@@ -397,9 +393,10 @@ const ChartTrade = observer(props => {
             {is_accumulator && (
                 <AccumulatorsChartElements
                     all_positions={all_positions}
-                    current_symbol_spot={current_spot}
-                    current_symbol_spot_time={current_spot_time}
-                    should_highlight_current_spot={should_highlight_current_spot}
+                    current_spot={current_spot}
+                    current_spot_time={current_spot_time}
+                    has_crossed_accu_barriers={has_crossed_accu_barriers}
+                    should_show_profit_text={!!accumulators_high_barrier}
                     symbol={symbol}
                 />
             )}

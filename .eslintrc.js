@@ -185,6 +185,10 @@ module.exports = {
                     version: 'detect',
                 },
                 'import/resolver': {
+                    typescript: {
+                        // use an array
+                        project: 'packages/**/tsconfig.json',
+                    },
                     node: {
                         extensions: ['.ts', '.tsx'],
                         moduleDirectory: ['src', 'node_modules'],

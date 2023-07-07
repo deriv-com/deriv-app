@@ -113,11 +113,8 @@ export default class TicksService {
         return this.requestStream({ ...options, style });
     }
     monitor(options) {
-        console.log(options, 'monitor');
         const { symbol, granularity, callback } = options;
-
         const type = getType(granularity);
-
         const key = getUUID();
 
         this.request(options).catch(e => globalObserver.emit('Error', e));
@@ -131,7 +128,6 @@ export default class TicksService {
         return key;
     }
     stopMonitor(options) {
-        console.log(options, 'stopMonitor');
         const { symbol, granularity, key } = options;
         const type = getType(granularity);
 
@@ -147,18 +143,15 @@ export default class TicksService {
     }
     unsubscribeIfEmptyListeners(options) {
         const { symbol, granularity } = options;
-
         let needToUnsubscribe = false;
-
         const tickListener = this.tickListeners.get(symbol);
+        const ohlcListener = this.ohlcListeners.getIn([symbol, Number(granularity)]);
 
         if (tickListener && !tickListener.size) {
             this.tickListeners = this.tickListeners.delete(symbol);
             this.ticks = this.ticks.delete(symbol);
             needToUnsubscribe = true;
         }
-
-        const ohlcListener = this.ohlcListeners.getIn([symbol, Number(granularity)]);
 
         if (ohlcListener && !ohlcListener.size) {
             this.ohlcListeners = this.ohlcListeners.deleteIn([symbol, Number(granularity)]);
@@ -190,9 +183,8 @@ export default class TicksService {
         if (this.ticks.get(symbol) === ticks) {
             return;
         }
-        this.ticks = this.ticks.set(symbol, ticks);
-
         const listeners = this.tickListeners.get(symbol);
+        this.ticks = this.ticks.set(symbol, ticks);
 
         if (listeners) {
             listeners.forEach(callback => callback(this.ticks.get(symbol)));
@@ -202,9 +194,8 @@ export default class TicksService {
         if (this.ticks.getIn(address) === candles) {
             return;
         }
-        this.candles = this.candles.setIn(address, candles);
-
         const listeners = this.ohlcListeners.getIn(address);
+        this.candles = this.candles.setIn(address, candles);
 
         if (listeners) {
             listeners.forEach(callback => callback(this.candles.getIn(address)));

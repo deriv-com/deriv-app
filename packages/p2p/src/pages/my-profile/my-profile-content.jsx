@@ -13,7 +13,7 @@ import { useModalManagerContext } from 'Components/modal-manager/modal-manager-c
 
 const MyProfileContent = () => {
     const { my_profile_store, general_store } = useStores();
-    const { showModal } = useModalManagerContext();
+    const { showModal } = useModalManagerContext() || {};
 
     if (my_profile_store.active_tab === my_profile_tabs.AD_TEMPLATE) {
         return <MyProfileForm />;

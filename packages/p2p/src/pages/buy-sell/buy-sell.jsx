@@ -8,7 +8,6 @@ import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import BuySellHeader from './buy-sell-header.jsx';
 import BuySellTable from './buy-sell-table.jsx';
-import './buy-sell.scss';
 
 const BuySell = () => {
     const { buy_sell_store } = useStores();

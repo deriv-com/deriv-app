@@ -24,7 +24,7 @@ const ProofOfIdentityContainer = ({
     fetchResidenceList,
     getChangeableFields,
     height,
-    index = null,
+    index = 0,
     is_from_external,
     is_switching,
     is_virtual,

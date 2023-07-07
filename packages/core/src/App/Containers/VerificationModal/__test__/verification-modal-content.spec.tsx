@@ -93,7 +93,7 @@ describe('<VerificationModalContent />', () => {
             feature_flag: {
                 wallet: 0,
             },
-            first_name: 'mahdiyeh',
+            first_name: 'mock_name',
             has_secret_answer: 1,
             immutable_fields: ['residence'],
             is_authenticated_payment_agent: 0,

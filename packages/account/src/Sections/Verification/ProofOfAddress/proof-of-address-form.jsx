@@ -55,7 +55,7 @@ const UploaderSideNote = () => (
 const ProofOfAddressForm = ({
     account_settings,
     addNotificationByKey,
-    index = null,
+    index = 0,
     onSubmit,
     is_eu,
     is_resubmit,

@@ -1,7 +1,7 @@
 import React from 'react';
-import VerificationDocumentSubmitted from '../verification-document-submitted';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { StoreProvider, mockStore } from '@deriv/stores';
+import VerificationDocumentSubmitted from '../verification-document-submitted';
 
 describe('<VerificationDocumentSubmited />', () => {
     let modal_root_el: HTMLDivElement;
@@ -14,6 +14,20 @@ describe('<VerificationDocumentSubmited />', () => {
 
     afterAll(() => {
         document.body.removeChild(modal_root_el);
+    });
+
+    it('should not render the VerificationDocumentSubmited component', async () => {
+        const mock = mockStore({
+            ui: {
+                is_verification_submitted: false,
+            },
+        });
+
+        const wrapper = ({ children }: { children: JSX.Element }) => (
+            <StoreProvider store={mock}>{children}</StoreProvider>
+        );
+        render(<VerificationDocumentSubmitted />, { wrapper });
+        expect(screen.queryByTestId('dt_div_100_vh')).not.toBeInTheDocument();
     });
 
     it('should render the VerificationDocumentSubmited component', async () => {

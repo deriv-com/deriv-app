@@ -6,7 +6,13 @@ import useExchangeRate from './useExchangeRate';
  * to the total balance, it also converts the balance to the currency of the
  * first account in the list
  */
-const useTotalAccountBalance = (accounts: { balance?: number; currency?: string; account_type?: string }[]) => {
+type TAccounts = {
+    balance?: number;
+    currency?: string;
+    account_type?: string;
+};
+
+const useTotalAccountBalance = (accounts: TAccounts[]) => {
     const total_assets_real_currency = useRealTotalAssetCurrency();
     const { getRate } = useExchangeRate();
 
@@ -14,7 +20,7 @@ const useTotalAccountBalance = (accounts: { balance?: number; currency?: string;
 
     const balance = accounts.reduce((total, account) => {
         const base_rate = account?.account_type === 'demo' ? 1 : getRate(total_assets_real_currency || '');
-        const rate = getRate(total_assets_real_currency || '');
+        const rate = getRate(account.currency || total_assets_real_currency || '');
         const exchange_rate = base_rate / rate;
 
         return total + (account.balance || 0) * exchange_rate;

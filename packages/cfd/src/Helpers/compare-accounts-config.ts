@@ -101,17 +101,17 @@ const getPlatformLabel = (shortcode?: string) => {
     switch (shortcode) {
         case 'dxtrade':
         case 'CFDs':
-            return 'Other CFDs';
+            return localize('Other CFDs');
         case 'mt5':
         default:
-            return 'MT5 Platform';
+            return localize('MT5 Platform');
     }
 };
 
 // Object to map the platform label
 const platfromsHeaderLabel = {
-    mt5: 'MT5 Platform',
-    other_cfds: 'Other CFDs',
+    mt5: localize('MT5 Platform'),
+    other_cfds: localize('Other CFDs'),
 };
 
 // Get the Account Icons based on the market type
@@ -147,7 +147,7 @@ const getHeaderColor = (shortcode: string) => {
 };
 
 // Config for different Jurisdictions
-const cfd_config = {
+const cfd_config = () => ({
     leverage: '1:1000',
     leverage_description: localize('Maximum Leverage'),
     spread: '0.5 pips',
@@ -158,69 +158,77 @@ const cfd_config = {
     jurisdiction_description: localize('Jurisdiction'),
     regulator: localize('Financial Commission'),
     regulator_description: localize('Regulator/External dispute resolution'),
-};
+});
 
 // Map the Jurisdictions with the config
 const getJuridisctionDescription = (shortcode: string) => {
+    const createDescription = (
+        counterparty_company: string,
+        jurisdiction: string,
+        regulator: string,
+        regulator_description: string,
+        leverage: string = cfd_config().leverage
+    ) => ({
+        ...cfd_config(),
+        counterparty_company,
+        jurisdiction,
+        regulator,
+        regulator_description,
+        leverage,
+    });
+
     switch (shortcode) {
         case 'synthetic_bvi':
-            return {
-                ...cfd_config,
-                counterparty_company: 'Deriv (BVI) Ltd',
-                jurisdiction: 'British Virgin Islands',
-                regulator: localize('British Virgin Islands Financial Services Commission'),
-                regulator_description: localize('(License no. SIBA/L/18/1114) Regulator/External dispute Resolution'),
-            };
+            return createDescription(
+                'Deriv (BVI) Ltd',
+                'British Virgin Islands',
+                localize('British Virgin Islands Financial Services Commission'),
+                localize('(License no. SIBA/L/18/1114) Regulator/External dispute Resolution')
+            );
         case 'synthetic_vanuatu':
-            return {
-                ...cfd_config,
-                counterparty_company: 'Deriv (V) Ltd',
-                jurisdiction: 'Vanuatu',
-                regulator: localize('Vanuatu Financial Services Commission'),
-                regulator_description: localize('Regulator/External dispute resolution'),
-            };
+            return createDescription(
+                'Deriv (V) Ltd',
+                'Vanuatu',
+                localize('Vanuatu Financial Services Commission'),
+                localize('Regulator/External dispute resolution')
+            );
         case 'financial_bvi':
-            return {
-                ...cfd_config,
-                counterparty_company: 'Deriv (BVI) Ltd',
-                jurisdiction: 'British Virgin Islands',
-                regulator: localize('British Virgin Islands Financial Services Commission'),
-                regulator_description: localize('(License no. SIBA/L/18/1114) Regulator/External Dispute Resolution'),
-            };
+            return createDescription(
+                'Deriv (BVI) Ltd',
+                'British Virgin Islands',
+                localize('British Virgin Islands Financial Services Commission'),
+                localize('(License no. SIBA/L/18/1114) Regulator/External Dispute Resolution')
+            );
         case 'financial_vanuatu':
-            return {
-                ...cfd_config,
-                counterparty_company: 'Deriv (V) Ltd',
-                jurisdiction: 'Vanuatu',
-                regulator: localize('Vanuatu Financial Services Commission'),
-                regulator_description: localize('Regulator/External Dispute Resolution'),
-            };
+            return createDescription(
+                'Deriv (V) Ltd',
+                'Vanuatu',
+                localize('Vanuatu Financial Services Commission'),
+                localize('Regulator/External Dispute Resolution')
+            );
         case 'financial_labuan':
-            return {
-                ...cfd_config,
-                leverage: '1:100',
-                counterparty_company: 'Deriv (FX) Ltd',
-                jurisdiction: 'Labuan',
-                regulator: localize('Labuan Financial Services Authority'),
-                regulator_description: localize('(licence no. MB/18/0024) Regulator/External Dispute Resolution'),
-            };
+            return createDescription(
+                'Deriv (FX) Ltd',
+                'Labuan',
+                localize('Labuan Financial Services Authority'),
+                localize('(licence no. MB/18/0024) Regulator/External Dispute Resolution'),
+                '1:100'
+            );
         case 'financial_maltainvest':
-            return {
-                ...cfd_config,
-                leverage: '1:30',
-                counterparty_company: 'Deriv Investments (Europe) Limited',
-                jurisdiction: 'Malta',
-                regulator_description: localize(
-                    'Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)'
-                ),
-            };
+            return createDescription(
+                'Deriv Investments (Europe) Limited',
+                'Malta',
+                localize('Malta Financial Services Authority'),
+                localize('Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)'),
+                '1:30'
+            );
         // Dxtrade
         case 'all_':
         case 'all_svg':
         case 'synthetic_svg':
         case 'financial_svg':
         default:
-            return cfd_config;
+            return cfd_config();
     }
 };
 

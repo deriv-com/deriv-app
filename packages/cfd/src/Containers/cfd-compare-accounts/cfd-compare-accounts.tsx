@@ -38,9 +38,8 @@ const CompareCFDs = observer(() => {
 
     // Getting demo accounts data
     const demo_cfd_available_accounts = [
-        ...getMT5DemoData(all_real_sorted_cfd_available_accounts).concat(
-            getDxtradeDemoData(all_real_sorted_cfd_available_accounts)
-        ),
+        ...getMT5DemoData(all_real_sorted_cfd_available_accounts),
+        ...getDxtradeDemoData(all_real_sorted_cfd_available_accounts),
     ];
 
     const all_cfd_available_accounts =

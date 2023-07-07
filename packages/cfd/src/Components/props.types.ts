@@ -256,25 +256,20 @@ export type TInstrumentsIcon = {
     is_asterik?: boolean;
 };
 
-export type TAvailableCFDAccounts = {
-    availability: 'Non-EU' | 'EU' | 'All';
-    description: string;
-    icon: 'Derived' | 'Financial' | 'DerivX' | 'SwapFree';
-    market_type: 'synthetic' | 'financial' | 'all' | 'gaming';
-    name: string;
-    platform: 'mt5' | 'dxtrade';
-};
-
 export type TCompareAccountsCard = {
     trading_platforms: TModifiedTradingPlatformAvailableAccount;
     is_eu_user?: boolean;
     is_demo?: boolean;
 };
 
-export type TJurisdictionData = Record<
-    'jurisdiction',
-    'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest' | 'malta' | undefined
->;
+// export type TJurisdictionData = Record<
+//     'jurisdiction',
+//     'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest' | 'malta' | undefined
+// >;
+
+export type TJurisdictionData = {
+    jurisdiction?: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest' | 'malta';
+};
 
 export type TDetailsOfEachMT5Loginid = DetailsOfEachMT5Loginid & {
     display_login?: string;

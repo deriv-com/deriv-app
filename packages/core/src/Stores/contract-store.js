@@ -128,7 +128,6 @@ export default class ContractStore extends BaseStore {
         this.marker = calculate_marker(this.contract_info, {
             accu_high_barrier,
             accu_low_barrier,
-            reset_barrier: '3181.00',
         });
         this.contract_config = getChartConfig(this.contract_info);
         this.display_status = getDisplayStatus(this.contract_info);
@@ -407,7 +406,7 @@ export default class ContractStore extends BaseStore {
     }
 }
 
-function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier, reset_barrier }) {
+function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier }) {
     if (!contract_info || isMultiplierContract(contract_info.contract_type)) {
         return null;
     }
@@ -428,6 +427,7 @@ function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier, 
         high_barrier,
         low_barrier,
         reset_time,
+        reset_barrier = '3181.00',
     } = contract_info;
     const is_accumulator_contract = isAccumulatorContract(contract_type);
     const is_digit_contract = isDigitContract(contract_type);

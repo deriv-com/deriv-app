@@ -247,7 +247,7 @@ const draw_reset_barrier = ({
     stroke_color,
     has_persistent_borders = false,
     reset_barrier,
-    // has_gradient = false,
+    has_gradient,
     scale,
 }) => {
     ctx.save();
@@ -299,6 +299,9 @@ const draw_reset_barrier = ({
         gradient.addColorStop(0.99, 'rgba(75, 180, 179, 0.25)');
         gradient.addColorStop(0.01, 'rgba(75, 180, 179, 0)');
     }
+    if (!has_gradient) {
+        gradient = 'transparent';
+    }
     ctx.fillStyle = gradient;
     ctx.fillRect(start_left, displayed_top, end_left - start_left, Math.abs(displayed_bottom - displayed_top));
     ctx.restore();
@@ -344,7 +347,7 @@ const TickContract = RawMarkerMaker(
         contract_info: {
             accu_barriers_difference,
             contract_type,
-            // entry_spot,
+            entry_spot,
             exit_tick_time,
             status,
             profit,
@@ -352,8 +355,8 @@ const TickContract = RawMarkerMaker(
             is_accumulator_trade_without_contract,
             is_sold,
             is_expired,
-            // tick_stream,
             tick_count,
+            reset_barrier = '3181.00',
         },
     }) => {
         /** @type {CanvasRenderingContext2D} */
@@ -405,45 +408,19 @@ const TickContract = RawMarkerMaker(
             return;
         }
 
-        if (isResetContract(contract_type) && /RESETCALL/i.test(contract_type)) {
-            // const should_show_gradient_above = /RESETCALL/i.test(contract_type) && +barrier < +entry_spot;
-            // const should_show_gradient_below = /RESETPUT/i.test(contract_type) && +barrier > +entry_spot;
-            // console.log('above', should_show_gradient_above);
-            // console.log('below', should_show_gradient_below);
-            // console.log('contract_type', contract_type);
+        if (isResetContract(contract_type)) {
+            const is_reset_call_contract = /RESETCALL/i.test(contract_type);
+            // for reset call we are showing gradient to the lowest barrier, for put - the highest
+            const has_gradient =
+                (is_reset_call_contract && +reset_barrier < +entry_spot) ||
+                (!is_reset_call_contract && +reset_barrier > +entry_spot);
             draw_reset_barrier({
-                // stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
-                // has_gradient: should_show_gradient_above || should_show_gradient_below,
-                // has_gradient: true,
-                // show_gradient_above: should_show_gradient_above,
-                // show_gradient_below: should_show_gradient_below,
+                has_gradient,
                 ctx,
                 stroke_color: '#999999',
                 start_left: start.left,
-                top: barrier - 120,
-                bottom: barrier,
-                reset_barrier: barrier,
-                scale,
-            });
-            return;
-        }
-        if (isResetContract(contract_type) && /RESETPUT/i.test(contract_type)) {
-            // const should_show_gradient_above = /RESETCALL/i.test(contract_type) && +barrier < +entry_spot;
-            // const should_show_gradient_below = /RESETPUT/i.test(contract_type) && +barrier > +entry_spot;
-            // console.log('above', should_show_gradient_above);
-            // console.log('below', should_show_gradient_below);
-            // console.log('contract_type', contract_type);
-            draw_reset_barrier({
-                // stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
-                // has_gradient: should_show_gradient_above || should_show_gradient_below,
-                // has_gradient: true,
-                // show_gradient_above: should_show_gradient_above,
-                // show_gradient_below: should_show_gradient_below,
-                ctx,
-                stroke_color: '#999999',
-                start_left: start.left,
-                top: barrier,
-                bottom: barrier + 120,
+                top: is_reset_call_contract ? barrier - 120 : barrier,
+                bottom: is_reset_call_contract ? barrier : barrier + 120,
                 reset_barrier: barrier,
                 scale,
             });

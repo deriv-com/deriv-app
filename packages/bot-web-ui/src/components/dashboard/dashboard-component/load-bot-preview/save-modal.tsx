@@ -2,21 +2,11 @@ import React from 'react';
 import classNames from 'classnames';
 import { Field, Form, Formik } from 'formik';
 import { config, save_types } from '@deriv/bot-skeleton';
-import {
-    Button,
-    Checkbox,
-    Icon,
-    Input,
-    MobileFullPageModal,
-    Modal,
-    RadioGroup,
-    Text,
-    ThemedScrollbars,
-} from '@deriv/components';
+import { Button, Icon, Input, MobileFullPageModal, Modal, RadioGroup, Text, ThemedScrollbars } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { Localize, localize } from '@deriv/translations';
-import { useDBotStore } from 'Stores/useDBotStore';
+import { localize } from '@deriv/translations';
+import { useDBotStore } from '../../../../stores/useDBotStore';
 import IconRadio from './icon-radio';
 
 type TSaveModalForm = {
@@ -57,12 +47,18 @@ const SaveModalForm = ({
         validate={validateBotName}
         onSubmit={onConfirmSave}
     >
-        {({ values: { is_local, save_as_collection }, setFieldValue, touched, errors }) => {
+        {({ values: { is_local }, setFieldValue, touched, errors }) => {
             const content_height = !is_mobile ? '500px' : `calc(100%)`;
             return (
                 <ThemedScrollbars height={content_height} autohide>
                     <Form className={classNames({ 'form--active-keyboard': is_onscreen_keyboard_active })}>
                         <div className='modal__content'>
+                            <Text size='xs' line_height='l'>
+                                {localize(
+                                    'Enter your bot name, choose to save on your computer or Google Drive, and hit '
+                                )}
+                                <strong>{localize('Save.')}</strong>
+                            </Text>
                             <div className='modal__content-row'>
                                 <Field name='bot_name'>
                                     {({ field }) => (
@@ -71,7 +67,7 @@ const SaveModalForm = ({
                                             type='text'
                                             placeholder={localize('Untitled Strategy')}
                                             error={touched[field.name] && errors[field.name]}
-                                            label={localize('Strategy name')}
+                                            label={localize('Bot name')}
                                             onFocus={e => setCurrentFocus(e.currentTarget.name)}
                                             onBlur={() => setCurrentFocus(null)}
                                             {...field}
@@ -117,7 +113,8 @@ const SaveModalForm = ({
                                     />
                                 </RadioGroup>
                             </div>
-                            <>
+                            {/* removed this from the save modal popup because it is not there in the design */}
+                            {/* <>
                                 <Field name='save_as_collection'>
                                     {({ field }) => (
                                         <Checkbox
@@ -138,7 +135,7 @@ const SaveModalForm = ({
                                         'Enabling this allows you to save your blocks as one collection which can be easily integrated into other bots.'
                                     )}
                                 </div>
-                            </>
+                            </> */}
                         </div>
                         <div
                             className={classNames('modal__footer', {

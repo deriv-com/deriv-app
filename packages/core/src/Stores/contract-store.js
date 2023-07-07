@@ -63,8 +63,8 @@ export default class ContractStore extends BaseStore {
             clearContractUpdateConfigValues: action.bound,
             onChange: action.bound,
             updateLimitOrder: action.bound,
-            previous_spot: observable,
-            reset_spot: observable,
+            // previous_spot: observable,
+            // reset_spot: observable,
         });
 
         this.root_store = root_store;
@@ -112,8 +112,8 @@ export default class ContractStore extends BaseStore {
     is_ongoing_contract = false;
 
     // Reset contract
-    reset_spot = null;
-    previous_spot = null;
+    // reset_spot = null;
+    // previous_spot = null;
 
     populateConfig(contract_info) {
         const prev_contract_info = this.contract_info;
@@ -128,7 +128,7 @@ export default class ContractStore extends BaseStore {
         this.marker = calculate_marker(this.contract_info, {
             accu_high_barrier,
             accu_low_barrier,
-            reset_spot: this.reset_spot,
+            reset_barrier: '3047.00',
         });
         this.contract_config = getChartConfig(this.contract_info);
         this.display_status = getDisplayStatus(this.contract_info);
@@ -191,6 +191,7 @@ export default class ContractStore extends BaseStore {
             low_barrier,
             status,
             underlying,
+            // reset_barrier,
         } = contract_info || {};
         const main_barrier = this.barriers_array?.[0];
         if (isAccumulatorContract(contract_info.contract_type)) {
@@ -295,9 +296,11 @@ export default class ContractStore extends BaseStore {
                 high_barrier: high,
                 low_barrier,
                 reset_time,
-                current_spot,
-                tick_count,
+                // current_spot,
+                // tick_count,
+                // reset_barrier,
             } = contract_info;
+            const reset_barrier = '3047.00';
             const high_barrier = this.accu_high_barrier || barrier || high;
             if (
                 isBarrierSupported(contract_type) &&
@@ -337,13 +340,13 @@ export default class ContractStore extends BaseStore {
                 if (reset_time) {
                     // for tick contract we should use current spot value of 1st POC with reset_time,
                     // but for other contracts- current spot value of one POC before receiving reset_time
-                    if (tick_count) {
-                        this.reset_spot = current_spot;
-                    } else {
-                        this.reset_spot = this.previous_spot;
-                    }
+                    // if (tick_count) {
+                    //     this.reset_spot = current_spot;
+                    // } else {
+                    //     this.reset_spot = this.previous_spot;
+                    // }
 
-                    const reset_barrier = new ChartBarrierStore(this.reset_spot, low_barrier, null, {
+                    const reset_barrier_object = new ChartBarrierStore(reset_barrier, low_barrier, null, {
                         color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
                         line_style: BARRIER_LINE_STYLES.DASHED,
                         not_draggable: true,
@@ -351,14 +354,14 @@ export default class ContractStore extends BaseStore {
                         shade: DEFAULT_SHADES['2'],
                     });
 
-                    barriers.push(reset_barrier);
+                    barriers.push(reset_barrier_object);
 
                     // for call gradient should be applied to the lowest barrier, for put - to the highest
-                    if (/RESETCALL/i.test(contract_type) && +this.reset_spot < +entry_spot) {
-                        // reset_barrier.updateBarrierShade(true, contract_type);
+                    if (/RESETCALL/i.test(contract_type) && +reset_barrier < +entry_spot) {
+                        // reset_barrier_object.updateBarrierShade(true, contract_type);
                         main_barrier.updateBarrierShade(false, contract_type);
-                    } else if (/RESETPUT/i.test(contract_type) && +this.reset_spot > +entry_spot) {
-                        // reset_barrier.updateBarrierShade(true, contract_type);
+                    } else if (/RESETPUT/i.test(contract_type) && +reset_barrier > +entry_spot) {
+                        // reset_barrier_object.updateBarrierShade(true, contract_type);
                         main_barrier.updateBarrierShade(false, contract_type);
                     }
                 }
@@ -404,7 +407,7 @@ export default class ContractStore extends BaseStore {
     }
 }
 
-function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier, reset_spot }) {
+function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier, reset_barrier }) {
     if (!contract_info || isMultiplierContract(contract_info.contract_type)) {
         return null;
     }
@@ -478,7 +481,7 @@ function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier, 
                     type: 'TickContract',
                     key: `${contract_id}-date_start`,
                     epoch_array: [reset_time, ...ticks_epoch_array],
-                    price_array: [reset_spot],
+                    price_array: [reset_barrier],
                 };
             }
             return {

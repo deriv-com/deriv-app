@@ -203,7 +203,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
         markers_array,
         contract_info,
     } = contract_store;
-    const { underlying: symbol, audit_details } = contract_info;
+    const { underlying: symbol, audit_details, reset_time } = contract_info;
     const allow_scroll_to_epoch = chart_state === 'READY' || chart_state === 'SCROLL_TO_LEFT';
     const { app_routing_history, current_language, is_socket_opened } = common;
     const { is_dark_mode_on: is_dark_theme, is_chart_layout_default, is_chart_countdown_visible } = ui;
@@ -306,7 +306,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
                     {...accumulators_barriers_marker}
                 />
             )}
-            {isResetContract(contract_info.contract_type) && markers_array && (
+            {isResetContract(contract_info.contract_type) && !!markers_array && reset_time && (
                 <DelayedAccuBarriersMarker
                     marker_component={accu_barriers_marker_component}
                     key={accumulators_barriers_marker.key}

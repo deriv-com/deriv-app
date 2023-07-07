@@ -35,12 +35,13 @@ const ContractDrawer = observer(
         status,
         toggleHistoryTab,
     }) => {
-        const { common, ui, contract_replay } = useStore();
-        const { contract_store } = contract_replay;
-        const { reset_spot } = contract_store;
+        const { common, ui } = useStore();
+        // const { common, ui, contract_replay } = useStore();
+        // const { contract_store } = contract_replay;
+        // const { reset_spot } = contract_store;
         const { server_time } = common;
         const { is_mobile } = ui;
-        const { currency, exit_tick_display_value, is_sold } = contract_info;
+        const { currency, exit_tick_display_value, is_sold, reset_barrier } = contract_info;
         const contract_drawer_ref = React.useRef();
         const contract_drawer_card_ref = React.useRef();
         const [should_show_contract_audit, setShouldShowContractAudit] = React.useState(false);
@@ -65,7 +66,7 @@ const ContractDrawer = observer(
                     has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator || is_smarttrader_contract}
                     toggleHistoryTab={toggleHistoryTab}
                     is_vanilla={is_vanilla}
-                    reset_spot={reset_spot}
+                    reset_barrier={reset_barrier}
                 />
             );
 
@@ -120,7 +121,7 @@ const ContractDrawer = observer(
                 has_result={!!is_sold || is_multiplier || is_vanilla || is_accumulator || is_smarttrader_contract}
                 toggleHistoryTab={toggleHistoryTab}
                 is_vanilla={is_vanilla}
-                reset_spot={reset_spot}
+                reset_barrier={reset_barrier}
             />
         );
 

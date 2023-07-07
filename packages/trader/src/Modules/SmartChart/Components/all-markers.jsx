@@ -362,17 +362,32 @@ const TickContract = RawMarkerMaker(
             // console.log('below', should_show_gradient_below);
             // console.log('contract_type', contract_type);
             draw_shaded_barriers({
-                ctx,
-                start_left: start.left,
-                fill_color: 'none',
-                stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
+                // ctx,
+                // start_left: start.left,
+                // fill_color: 'none',
+                // stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
                 // has_gradient: should_show_gradient_above || should_show_gradient_below,
-                has_gradient: true,
-                top: barrier,
+                // has_gradient: true,
+                // top: barrier,
                 // bottom: barrier,
-                scale,
+                // scale,
                 // show_gradient_above: should_show_gradient_above,
                 // show_gradient_below: should_show_gradient_below,
+                bottom: barrier,
+                ctx,
+                fill_color: getColor({
+                    status: 'accu_shade',
+                    is_dark_theme,
+                }),
+                labels: accu_barriers_difference,
+                previous_tick: {
+                    stroke_color: getColor({ status: 'fg', is_dark_theme }) + opacity,
+                    radius: 1.5 * scale,
+                },
+                start_left: start.left,
+                stroke_color: getColor({ status: 'open', is_dark_theme }),
+                top: barrier,
+                scale,
             });
             return;
         }

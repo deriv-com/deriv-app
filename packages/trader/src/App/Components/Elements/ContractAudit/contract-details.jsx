@@ -28,7 +28,7 @@ import ContractAuditItem from './contract-audit-item.jsx';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
 
 const ContractDetails = ({
-    reset_spot,
+    reset_barrier = '3045.00',
     contract_end_time,
     contract_info,
     duration,
@@ -168,7 +168,7 @@ const ContractDetails = ({
                                             id='dt_bt_label'
                                             icon={<Icon icon='IcContractResetBarrier' size={24} />}
                                             label={localize('Reset barrier')}
-                                            value={addCommaToNumber(reset_spot) || ' - '}
+                                            value={addCommaToNumber(reset_barrier) || ' - '}
                                         />
                                         <ContractAuditItem
                                             id='dt_start_time_label'
@@ -236,7 +236,7 @@ ContractDetails.propTypes = {
     duration_unit: PropTypes.string,
     exit_spot: PropTypes.string,
     is_vanilla: PropTypes.bool,
-    reset_spot: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    reset_barrier: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };
 
 export default ContractDetails;

@@ -128,7 +128,7 @@ export default class ContractStore extends BaseStore {
         this.marker = calculate_marker(this.contract_info, {
             accu_high_barrier,
             accu_low_barrier,
-            reset_barrier: '3047.00',
+            reset_barrier: '3181.00',
         });
         this.contract_config = getChartConfig(this.contract_info);
         this.display_status = getDisplayStatus(this.contract_info);
@@ -300,7 +300,7 @@ export default class ContractStore extends BaseStore {
                 // tick_count,
                 // reset_barrier,
             } = contract_info;
-            const reset_barrier = '3047.00';
+            const reset_barrier = '3181.00';
             const high_barrier = this.accu_high_barrier || barrier || high;
             if (
                 isBarrierSupported(contract_type) &&

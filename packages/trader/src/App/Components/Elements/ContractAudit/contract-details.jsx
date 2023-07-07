@@ -28,7 +28,7 @@ import ContractAuditItem from './contract-audit-item.jsx';
 import { isCancellationExpired } from 'Stores/Modules/Trading/Helpers/logic';
 
 const ContractDetails = ({
-    reset_barrier = '3045.00',
+    reset_barrier = '3181.00',
     contract_end_time,
     contract_info,
     duration,

@@ -192,7 +192,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const is_account_transfer_visible = useAccountTransferVisible();
     const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
-    const { data: is_p2p_enabled } = useIsP2PEnabled();
+    const is_p2p_enabled = useIsP2PEnabled();
 
     const liveChat = useLiveChat(false, loginid);
     const [is_open, setIsOpen] = React.useState(false);

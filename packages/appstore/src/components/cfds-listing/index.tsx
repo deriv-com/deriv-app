@@ -63,7 +63,7 @@ const CFDsListing = () => {
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
 
     const getMT5AccountAuthStatus = (current_acc_status: string) => {
-        if (current_acc_status === 'proof_failed') {
+        if (['proof_failed', 'poa_failed'].includes(current_acc_status)) {
             return 'failed';
         } else if (current_acc_status === 'verification_pending') {
             return 'pending';

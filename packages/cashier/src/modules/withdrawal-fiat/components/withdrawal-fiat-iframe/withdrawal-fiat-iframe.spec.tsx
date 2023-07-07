@@ -1,9 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import WithdrawalFiatIframe from './withdrawal-fiat-iframe';
 import { mockStore } from '@deriv/stores';
+import WithdrawalFiatIframe from './withdrawal-fiat-iframe';
 import CashierProviders from '../../../../cashier-providers';
-import { useWithdrawalFiatAddress } from '@deriv/hooks';
 
 let mockUseWithdrawalFiatAddress: {
     data: string | undefined;
@@ -52,6 +51,32 @@ describe('<WithdrawalFiatIframe />', () => {
         };
         render(<WithdrawalFiatIframe />, { wrapper });
         expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
+    });
+
+    it('should render the iframe with the correct url', () => {
+        mockUseWithdrawalFiatAddress = {
+            data: 'https://example.com',
+            error: null,
+            isSuccess: true,
+            resetVerificationCode: jest.fn(),
+        };
+
+        render(<WithdrawalFiatIframe />);
+
+        expect(screen.getByTestId('dt_withdrawal_fiat_iframe')).toHaveAttribute('src', 'https://example.com');
+    });
+
+    it('should check if iframe is  with the correct url', () => {
+        mockUseWithdrawalFiatAddress = {
+            data: 'https://example.com',
+            error: null,
+            isSuccess: true,
+            resetVerificationCode: jest.fn(),
+        };
+
+        render(<WithdrawalFiatIframe />);
+
+        expect(screen.getByTestId('dt_withdrawal_fiat_iframe')).toHaveAttribute('src', 'https://example.com');
     });
 
     it('should render the iframe with the correct url', () => {

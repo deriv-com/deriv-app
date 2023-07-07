@@ -1,16 +1,25 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Withdraw from '../withdraw';
-import CashierProviders from '../../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
+import CashierProviders from '../../../../cashier-providers';
+import Withdraw from '../withdraw';
 
-jest.mock('Components/cashier-container/real', () => jest.fn(() => 'mockedReal'));
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useWithdrawalFiatAddress: jest.fn(() => ({
+        data: undefined,
+        error: null,
+        isSuccess: false,
+        resetVerificationCode: jest.fn(),
+    })),
+}));
 
 describe('<Withdraw />', () => {
     let mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
         mockRootStore = mockStore({
             client: {
+                is_authorize: true,
                 verification_code: { payment_withdraw: 'code' },
             },
             ui: {
@@ -21,10 +30,6 @@ describe('<Withdraw />', () => {
                     general_store: {
                         setActiveTab: jest.fn(),
                     },
-                    iframe: {
-                        iframe_url: 'https://cashier.deriv.com',
-                        clearIframe: jest.fn(),
-                    },
                     withdraw: {
                         container: 'withdraw',
                         onMountWithdraw: jest.fn(),
@@ -34,14 +39,13 @@ describe('<Withdraw />', () => {
         });
     });
 
-    it('should render the cashier container component', () => {
+    it('should render the <WithdrawalFiatIframeModule />', () => {
         render(
             <CashierProviders store={mockRootStore}>
                 <Withdraw />
             </CashierProviders>
         );
 
-        expect(mockRootStore.modules.cashier.withdraw.onMountWithdraw).toHaveBeenCalledWith('code');
-        expect(screen.getByText('mockedReal')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_withdrawal_fiat_iframe_module')).toBeInTheDocument();
     });
 });

@@ -6,7 +6,6 @@ import AuthorizationRequiredModal from './authorization-required-modal.jsx';
 import InsufficientBalanceModal from './insufficient-balance-modal.jsx';
 import CompanyWideLimitExceededModal from './company-wide-limit-exceeded-modal.jsx';
 import AccountVerificationRequiredModal from './account-verification-required-modal';
-import AccountVerificationPendingModal from './account-verification-pending-modal';
 
 type TServicesError = {
     code: string;
@@ -20,7 +19,6 @@ type TPropServicesErrorModel = {
     is_logged_in?: boolean;
     onConfirm: () => void;
     services_error: TServicesError;
-    mf_account_status: string | null;
 };
 
 const ServicesErrorModal = ({
@@ -29,7 +27,6 @@ const ServicesErrorModal = ({
     is_logged_in,
     onConfirm,
     services_error,
-    mf_account_status,
 }: TPropServicesErrorModel) => {
     const { code, message, type } = services_error;
 
@@ -58,9 +55,6 @@ const ServicesErrorModal = ({
         case 'CompanyWideLimitExceeded':
             return <CompanyWideLimitExceededModal is_visible={is_visible} onConfirm={onConfirm} />;
         case 'PleaseAuthenticate':
-            if (mf_account_status === 'pending') {
-                return <AccountVerificationPendingModal is_visible={is_visible} onConfirm={onConfirm} />;
-            }
             return <AccountVerificationRequiredModal is_visible={is_visible} onConfirm={onConfirm} />;
         default:
             return (

@@ -27,6 +27,9 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
         is_barred: 0,
         showModal: jest.fn(),
     },
+    my_profile_store: {
+        getAdvertiserPaymentMethods: jest.fn(),
+    },
 };
 
 jest.mock('Stores', () => ({

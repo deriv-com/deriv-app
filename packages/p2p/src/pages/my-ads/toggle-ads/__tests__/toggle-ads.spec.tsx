@@ -36,13 +36,13 @@ describe('<ToggleAds/>', () => {
     it('should render the ToggleAds component', () => {
         render(<ToggleAds />);
 
-        expect(screen.getByText('Your ads are running')).toBeInTheDocument();
+        expect(screen.getByText('Hide my ads')).toBeInTheDocument();
     });
     it('should set error message when error occurs during toggling ads', async () => {
         (requestWS as jest.Mock).mockResolvedValue({ error: { message: 'Some error' } });
         render(<ToggleAds />);
 
-        expect(screen.getByText('Your ads are running')).toBeInTheDocument();
+        expect(screen.getByText('Hide my ads')).toBeInTheDocument();
 
         const toggle = screen.getByRole('checkbox');
         userEvent.click(toggle);
@@ -58,7 +58,7 @@ describe('<ToggleAds/>', () => {
         (requestWS as jest.Mock).mockResolvedValue({ p2p_advertiser_update: { is_listed: 0 } });
         render(<ToggleAds />);
 
-        expect(screen.getByText('Your ads are paused')).toBeInTheDocument();
+        expect(screen.getByText('Hide my ads')).toBeInTheDocument();
 
         const toggle = screen.getByRole('checkbox');
         userEvent.click(toggle);

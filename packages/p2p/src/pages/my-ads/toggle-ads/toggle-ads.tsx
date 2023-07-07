@@ -34,17 +34,13 @@ const ToggleAds = () => {
         <div className='toggle-ads'>
             <Text
                 className='toggle-ads__message'
-                color={`${is_listed ? 'profit-success' : 'less-prominent'}`}
+                color={is_listed ? 'profit-success' : 'less-prominent'}
                 line_height='xl'
                 size='xs'
             >
-                {(my_ads_store.api_error || is_listed) && !is_barred ? (
-                    <Localize i18n_default_text='Your ads are running' />
-                ) : (
-                    <Localize i18n_default_text='Your ads are paused' />
-                )}
+                <Localize i18n_default_text='Hide my ads' />
             </Text>
-            <ToggleSwitch id='toggle-my-ads' is_enabled={is_listed && !is_barred} handleToggle={handleToggle} />
+            <ToggleSwitch id='toggle-my-ads' is_enabled={is_barred || !is_listed} handleToggle={handleToggle} />
         </div>
     );
 };

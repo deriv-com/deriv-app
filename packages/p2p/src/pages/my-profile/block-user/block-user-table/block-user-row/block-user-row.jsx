@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
@@ -7,10 +8,12 @@ import classNames from 'classnames';
 import { Button, Table, Text } from '@deriv/components';
 import { localize } from 'Components/i18next';
 import UserAvatar from 'Components/user/user-avatar';
+import { routes } from '@deriv/shared';
 
 const BlockUserRow = ({ row: advertiser }) => {
     const { buy_sell_store, general_store, my_profile_store } = useStores();
     const { id, is_blocked, name } = advertiser;
+    const history = useHistory();
 
     return (
         <Table.Row className='block-user-row'>
@@ -24,6 +27,10 @@ const BlockUserRow = ({ row: advertiser }) => {
                             my_profile_store.getCounterpartyAdvertiserInfo(id);
                             buy_sell_store.setSelectedAdState({
                                 advertiser_details: { id, name },
+                            });
+                            history.push({
+                                pathname: routes.p2p_advertiser_page,
+                                search: `?id=${id}`,
                             });
                         }
                     }}

@@ -70,8 +70,8 @@ const MyAdsRow = observer(({ row: advert }: TAdDetails) => {
 
     const { is_listed, is_barred } = general_store;
 
-    const is_listed_not_barred = is_listed && !is_barred;
-    const ad_pause_color = is_listed_not_barred ? 'general' : 'less-prominent';
+    const is_ad_listed = is_listed && !is_barred;
+    const ad_pause_color = is_ad_listed ? 'general' : 'less-prominent';
     const icon_disabled_color = (!is_listed || is_barred || !is_advert_active) && 'disabled';
     const is_activate_ad_disabled = floating_rate_store.reached_target_date && enable_action_point;
 
@@ -81,7 +81,7 @@ const MyAdsRow = observer(({ row: advert }: TAdDetails) => {
         }
     };
     const onClickAdd = () => {
-        if (is_listed_not_barred) {
+        if (is_ad_listed) {
             showQuickAddModal(advert);
         }
     };
@@ -100,8 +100,7 @@ const MyAdsRow = observer(({ row: advert }: TAdDetails) => {
         enable_action_point && floating_rate_store.rate_type !== rate_type ? onClickSwitchAd() : onClickEdit();
 
     React.useEffect(() => {
-        // my_profile_store.getAdvertiserPaymentMethods();
-        // console.log('asdfasdfsdf');
+        my_profile_store.getAdvertiserPaymentMethods();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -290,7 +289,7 @@ const MyAdsRow = observer(({ row: advert }: TAdDetails) => {
                                 )}
                             </div>
                             <div className='ads-table__row-details'>
-                                <Text color='profit-success' size='xxs'>
+                                <Text color={is_ad_listed ? 'profit-success' : 'less-prominent'} size='xxs'>
                                     {`${formatMoney(account_currency, amount_dealt, true)}`} {account_currency}&nbsp;
                                     {is_buy_advert ? localize('Bought') : localize('Sold')}
                                 </Text>
@@ -318,11 +317,7 @@ const MyAdsRow = observer(({ row: advert }: TAdDetails) => {
                                 <Text color={ad_pause_color} size='xxs'>
                                     {min_order_amount_display} - {max_order_amount_display} {account_currency}
                                 </Text>
-                                <Text
-                                    color={is_listed_not_barred ? 'profit-success' : 'disabled'}
-                                    size='xs'
-                                    weight='bold'
-                                >
+                                <Text color={is_ad_listed ? 'profit-success' : 'disabled'} size='xs' weight='bold'>
                                     {getAdType()}
                                 </Text>
                             </div>

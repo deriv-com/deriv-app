@@ -50,9 +50,9 @@ const TradingHubOnboarding = ({
     toggleIsWalletTourOpen,
     switchAccount,
     is_wallet_switching,
-    setIsOnboardingVisited,
+    // setIsOnboardingVisited,
 }) => {
-    const history = useHistory();
+    // const history = useHistory();
 
     const { data } = useWalletsList();
     const first_loginid = data?.[0].loginid;
@@ -63,13 +63,6 @@ const TradingHubOnboarding = ({
             await switchAccount(first_loginid);
         }
         if (!is_wallet_switching) toggleIsWalletTourOpen(true);
-    };
-
-    const handleOnboardingClick = () => {
-        // history.push(routes.onboarding);
-        // setIsOnboardingVisited(false);
-        handleSwitchAndToggle();
-        }
     };
 
     return (
@@ -85,7 +78,11 @@ const TradingHubOnboarding = ({
                     <Icon
                         icon={is_dark_mode ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
                         size={20}
-                        onClick={handleSwitchAndToggle}
+                        onClick={() => {
+                            // history.push(routes.onboarding);
+                            // setIsOnboardingVisited(false);
+                            handleSwitchAndToggle();
+                        }}
                     />
                 </Popover>
             </div>
@@ -136,7 +133,6 @@ const TradingHubHeader = ({
     toggleReadyToDepositModal,
     toggleNeedRealAccountForCashierModal,
     toggleIsWalletTourOpen,
-    setIsWalletModalVisible,
     switchAccount,
     is_wallet_switching,
 }) => {
@@ -273,7 +269,6 @@ const TradingHubHeader = ({
                                 is_dark_mode={is_dark_mode}
                                 setIsOnboardingVisited={setIsOnboardingVisited}
                                 toggleIsWalletTourOpen={toggleIsWalletTourOpen}
-                                setIsWalletModalVisible={setIsWalletModalVisible}
                                 switchAccount={switchAccount}
                                 is_wallet_switching={is_wallet_switching}
                             />
@@ -400,7 +395,6 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     content_flag: traders_hub.content_flag,
     // added for wallets onboarding demo
     toggleIsWalletTourOpen: traders_hub.toggleIsWalletTourOpen,
-    setIsWalletModalVisible: ui.setIsWalletModalVisible,
     switchAccount: client.switchAccount,
     is_wallet_switching: ui.is_wallet_switching,
 }))(withRouter(TradingHubHeader));

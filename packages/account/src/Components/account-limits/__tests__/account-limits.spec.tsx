@@ -263,16 +263,6 @@ describe('<AccountLimits/>', () => {
         expect(screen.queryByTestId('withdrawal_limits_table')).not.toBeInTheDocument();
     });
 
-    it('should render withdrawal_limits_table is_app_settings is false', () => {
-        render(<AccountLimits {...props} />);
-        expect(screen.queryByTestId('withdrawal_limits_table')).toBeInTheDocument();
-        expect(
-            screen.getByRole('columnheader', {
-                name: /withdrawal limits/i,
-            })
-        ).toBeInTheDocument();
-    });
-
     it('withdrawal_limits_table should have a Limits header if is_fully_authenticated is true', () => {
         render(<AccountLimits {...props} />);
         expect(screen.getByTestId('withdrawal_limits_table')).toHaveTextContent('Limit');

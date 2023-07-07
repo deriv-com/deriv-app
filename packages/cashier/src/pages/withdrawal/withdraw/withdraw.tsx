@@ -1,5 +1,5 @@
 import React from 'react';
-import { useStore, observer } from '@deriv/stores';
+import { observer } from '@deriv/stores';
 import { useCashierStore } from '../../../stores/useCashierStores';
 import { WithdrawalFiatModule } from '../../../modules/withdrawal-fiat';
 

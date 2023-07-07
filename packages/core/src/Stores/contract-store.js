@@ -1,4 +1,4 @@
-import { action, extendObservable, observable, toJS, makeObservable } from 'mobx';
+import { action, extendObservable, observable, toJS, makeObservable, runInAction } from 'mobx';
 import {
     isEnded,
     isEqualObject,
@@ -14,7 +14,10 @@ import {
     BARRIER_LINE_STYLES,
     DEFAULT_SHADES,
     isBarrierSupported,
+    getAccuBarriersDefaultTimeout,
+    getAccuBarriersForContractDetails,
     getEndTime,
+    isOpen,
 } from '@deriv/shared';
 import { getChartConfig } from './Helpers/logic';
 import { setLimitOrderBarriers, getLimitOrder } from './Helpers/limit-orders';
@@ -30,6 +33,10 @@ export default class ContractStore extends BaseStore {
         });
 
         makeObservable(this, {
+            accu_high_barrier: observable,
+            accu_low_barrier: observable,
+            accumulator_previous_spot_time: observable,
+            cached_barriers_data: observable,
             digits_info: observable,
             sell_info: observable,
             contract_config: observable.ref,
@@ -78,6 +85,12 @@ export default class ContractStore extends BaseStore {
     is_static_chart = false;
     end_time = null;
 
+    // Accumulator contract
+    accu_high_barrier = null;
+    accu_low_barrier = null;
+    accumulator_previous_spot_time = null;
+    cached_barriers_data = {};
+
     // Multiplier contract update config
     contract_update_take_profit = '';
     contract_update_stop_loss = '';
@@ -99,11 +112,13 @@ export default class ContractStore extends BaseStore {
         const prev_contract_info = this.contract_info;
         this.contract_info = contract_info;
         this.end_time = getEndTime(this.contract_info);
-
+        const { accu_high_barrier, accu_low_barrier } = getAccuBarriersForContractDetails(contract_info);
+        this.accu_high_barrier = accu_high_barrier;
+        this.accu_low_barrier = accu_low_barrier;
         // TODO: don't update the barriers & markers if they are not changed
         this.updateBarriersArray(contract_info, this.root_store.ui.is_dark_mode_on);
         this.markers_array = createChartMarkers(this.contract_info);
-        this.marker = calculate_marker(this.contract_info);
+        this.marker = calculate_marker(this.contract_info, { accu_high_barrier, accu_low_barrier });
         this.contract_config = getChartConfig(this.contract_info);
         this.display_status = getDisplayStatus(this.contract_info);
         this.is_ended = isEnded(this.contract_info);
@@ -155,18 +170,81 @@ export default class ContractStore extends BaseStore {
     }
 
     updateBarriersArray(contract_info, is_dark_mode) {
+        const {
+            barrier,
+            contract_type,
+            current_spot_high_barrier,
+            current_spot_low_barrier,
+            current_spot_time,
+            high_barrier,
+            low_barrier,
+            status,
+            underlying,
+        } = contract_info || {};
+        const main_barrier = this.barriers_array?.[0];
+        if (isAccumulatorContract(contract_info.contract_type)) {
+            // even though updateBarriersArray is called both in DTrader & C.Details pages,
+            // the below code will delay Accumulator barriers and their labels only in Contract Details.
+            if (
+                this.cached_barriers_data.current_spot_high_barrier === current_spot_high_barrier &&
+                this.cached_barriers_data.current_spot_low_barrier === current_spot_low_barrier &&
+                this.cached_barriers_data.high_barrier === high_barrier &&
+                this.cached_barriers_data.low_barrier === low_barrier &&
+                this.cached_barriers_data.status === status
+            ) {
+                return;
+            }
+            setTimeout(
+                () =>
+                    runInAction(() => {
+                        if (!this.barriers_array.length) {
+                            this.barriers_array = this.createBarriersArray(
+                                {
+                                    ...contract_info,
+                                    high_barrier: this.accu_high_barrier,
+                                    low_barrier: this.accu_low_barrier,
+                                },
+                                is_dark_mode
+                            );
+                            return;
+                        }
+                        if (contract_info) {
+                            if (isBarrierSupported(contract_type) && this.accu_high_barrier && this.accu_low_barrier) {
+                                // updating barrier labels in C.Details page
+                                main_barrier?.updateBarriers(this.accu_high_barrier, this.accu_low_barrier);
+                            }
+                            // this.marker contains horizontal barrier lines & shade between rendered as DelayedAccuBarriersMarker in C.Details page
+                            if (!this.marker) {
+                                this.marker = calculate_marker(this.contract_info, {
+                                    accu_high_barrier: this.accu_high_barrier,
+                                    accu_low_barrier: this.accu_low_barrier,
+                                });
+                            }
+                            // this.markers_array contains tick markers & start/end vertical lines in C.Details page
+                            this.markers_array = createChartMarkers(contract_info, true);
+                            // this observable controls the update of DelayedAccuBarriersMarker in C.Details page
+                            this.accumulator_previous_spot_time = current_spot_time;
+                        }
+                    }),
+                isOpen(contract_info) ? getAccuBarriersDefaultTimeout(underlying) : 0
+            );
+            this.cached_barriers_data = {
+                current_spot_high_barrier,
+                current_spot_low_barrier,
+                high_barrier,
+                low_barrier,
+                status,
+            };
+            return;
+        }
         if (!this.barriers_array.length) {
             this.barriers_array = this.createBarriersArray(contract_info, is_dark_mode);
             return;
         }
-
-        const main_barrier = this.barriers_array[0];
         if (contract_info) {
-            const { contract_type, barrier, high_barrier, low_barrier } = contract_info;
-
             if (isBarrierSupported(contract_type) && (barrier || high_barrier)) {
-                main_barrier.updateBarriers(barrier || high_barrier, low_barrier);
-                main_barrier.updateBarrierColor(is_dark_mode);
+                main_barrier?.updateBarriers(barrier || high_barrier, low_barrier);
+                main_barrier?.updateBarrierColor(is_dark_mode);
             }
             if (
                 contract_info.contract_id &&
@@ -185,20 +263,25 @@ export default class ContractStore extends BaseStore {
     createBarriersArray = (contract_info, is_dark_mode) => {
         let barriers = [];
         if (contract_info) {
-            const { contract_type, barrier, entry_spot, high_barrier, low_barrier } = contract_info;
-
+            const { contract_type, barrier, entry_spot, high_barrier: high, low_barrier } = contract_info;
+            const high_barrier = this.accu_high_barrier || barrier || high;
             if (
                 isBarrierSupported(contract_type) &&
-                (barrier || high_barrier || (entry_spot && !isAccumulatorContract(contract_type)))
+                (high_barrier || (entry_spot && !isAccumulatorContract(contract_type)))
             ) {
                 // create barrier only when it's available in response
-                const main_barrier = new ChartBarrierStore(barrier || high_barrier || entry_spot, low_barrier, null, {
-                    color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
-                    line_style: !isAccumulatorContract(contract_type) && BARRIER_LINE_STYLES.SOLID,
-                    not_draggable: true,
-                    hideBarrierLine: isAccumulatorContract(contract_type),
-                    shade: isAccumulatorContract(contract_type) && DEFAULT_SHADES['2'],
-                });
+                const main_barrier = new ChartBarrierStore(
+                    high_barrier || entry_spot,
+                    this.accu_low_barrier || low_barrier,
+                    null,
+                    {
+                        color: is_dark_mode ? BARRIER_COLORS.DARK_GRAY : BARRIER_COLORS.GRAY,
+                        line_style: !isAccumulatorContract(contract_type) && BARRIER_LINE_STYLES.SOLID,
+                        not_draggable: true,
+                        hideBarrierLine: isAccumulatorContract(contract_type),
+                        shade: isAccumulatorContract(contract_type) && DEFAULT_SHADES['2'],
+                    }
+                );
 
                 main_barrier.updateBarrierShade(true, contract_type);
                 barriers = [main_barrier];
@@ -244,7 +327,7 @@ export default class ContractStore extends BaseStore {
     }
 }
 
-function calculate_marker(contract_info) {
+function calculate_marker(contract_info, { accu_high_barrier, accu_low_barrier }) {
     if (!contract_info || isMultiplierContract(contract_info.contract_type)) {
         return null;
     }
@@ -280,8 +363,10 @@ function calculate_marker(contract_info) {
         price_array = [];
     } else if (+barrier_count === 1 && barrier) {
         price_array = [+barrier];
-    } else if (+barrier_count === 2 && high_barrier && low_barrier) {
+    } else if (+barrier_count === 2 && high_barrier && low_barrier && !is_accumulator_contract) {
         price_array = [+high_barrier, +low_barrier];
+    } else if (is_accumulator_contract && accu_high_barrier) {
+        price_array = [+accu_high_barrier, +accu_low_barrier];
     }
 
     if (entry_tick) {

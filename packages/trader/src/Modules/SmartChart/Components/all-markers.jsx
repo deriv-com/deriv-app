@@ -245,11 +245,9 @@ const draw_reset_barrier = ({
     top,
     bottom,
     stroke_color,
-    has_persistent_borders,
+    has_persistent_borders = false,
     reset_barrier,
     // has_gradient = false,
-    // show_gradient_above = false,
-    // show_gradient_below = false,
     scale,
 }) => {
     ctx.save();
@@ -262,17 +260,7 @@ const draw_reset_barrier = ({
     const displayed_top = is_top_visible ? top : persistent_top;
     const displayed_bottom = is_bottom_visible ? bottom : end_top;
     const is_start_left_visible = start_left < end_left;
-    // let gradient;
-    // if (show_gradient_below) {
-    // const gradient = ctx.createLinearGradient(start_left, displayed_top + 120, start_left, displayed_top);
-    // gradient.addColorStop(0.98, 'rgba(75, 180, 179, 0.16)');
-    // gradient.addColorStop(0.02, 'rgba(75, 180, 179, 0)');
-    //}
-    // if (show_gradient_above) {
-    //     gradient = ctx.createLinearGradient(start_left, displayed_top + 120, start_left, displayed_top);
-    //     gradient.addColorStop(0.02, 'rgba(255, 180, 179, 0.16)');
-    //     gradient.addColorStop(0.98, 'rgba(255, 180, 179, 0)');
-    // }
+
     if (!is_start_left_visible) return;
     ctx.lineWidth = 1;
     ctx.strokeStyle = stroke_color;
@@ -298,11 +286,19 @@ const draw_reset_barrier = ({
         ctx.fill();
         ctx.stroke();
     }
-    // draw gradient area between barriers from bottom to top
-    const gradient = ctx.createLinearGradient(start_left, displayed_top, start_left, displayed_bottom);
-    gradient.addColorStop(0.99, 'rgba(75, 180, 179, 0.25)');
-    gradient.addColorStop(0.01, 'rgba(75, 180, 179, 0)');
-
+    let gradient;
+    //for reset call gradient area between barriers from bottom to top
+    if (reset_barrier === bottom) {
+        gradient = ctx.createLinearGradient(start_left, displayed_top, start_left, displayed_bottom);
+        gradient.addColorStop(0.99, 'rgba(75, 180, 179, 0.25)');
+        gradient.addColorStop(0.01, 'rgba(75, 180, 179, 0)');
+    }
+    //for reset put gradient area between barriers from top to bottom
+    if (reset_barrier === top) {
+        gradient = ctx.createLinearGradient(start_left, displayed_bottom, start_left, displayed_top);
+        gradient.addColorStop(0.99, 'rgba(75, 180, 179, 0.25)');
+        gradient.addColorStop(0.01, 'rgba(75, 180, 179, 0)');
+    }
     ctx.fillStyle = gradient;
     ctx.fillRect(start_left, displayed_top, end_left - start_left, Math.abs(displayed_bottom - displayed_top));
     ctx.restore();
@@ -409,7 +405,7 @@ const TickContract = RawMarkerMaker(
             return;
         }
 
-        if (isResetContract(contract_type)) {
+        if (isResetContract(contract_type) && /RESETCALL/i.test(contract_type)) {
             // const should_show_gradient_above = /RESETCALL/i.test(contract_type) && +barrier < +entry_spot;
             // const should_show_gradient_below = /RESETPUT/i.test(contract_type) && +barrier > +entry_spot;
             // console.log('above', should_show_gradient_above);
@@ -426,6 +422,28 @@ const TickContract = RawMarkerMaker(
                 start_left: start.left,
                 top: barrier - 120,
                 bottom: barrier,
+                reset_barrier: barrier,
+                scale,
+            });
+            return;
+        }
+        if (isResetContract(contract_type) && /RESETPUT/i.test(contract_type)) {
+            // const should_show_gradient_above = /RESETCALL/i.test(contract_type) && +barrier < +entry_spot;
+            // const should_show_gradient_below = /RESETPUT/i.test(contract_type) && +barrier > +entry_spot;
+            // console.log('above', should_show_gradient_above);
+            // console.log('below', should_show_gradient_below);
+            // console.log('contract_type', contract_type);
+            draw_reset_barrier({
+                // stroke_color: getColor({ status: 'dashed_border', is_dark_theme }),
+                // has_gradient: should_show_gradient_above || should_show_gradient_below,
+                // has_gradient: true,
+                // show_gradient_above: should_show_gradient_above,
+                // show_gradient_below: should_show_gradient_below,
+                ctx,
+                stroke_color: '#999999',
+                start_left: start.left,
+                top: barrier,
+                bottom: barrier + 120,
                 reset_barrier: barrier,
                 scale,
             });

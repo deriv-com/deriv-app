@@ -67,8 +67,8 @@ module.exports = {
         new CopyWebpackPlugin({
             patterns: [
                 {
-                    from: 'node_modules/@deriv/deriv-charts/dist/*.smartcharts.*',
-                    to: path.resolve(__dirname, 'www/js', '[name][ext]'),
+                    from: 'node_modules/@deriv/deriv-charts/dist/',
+                    to: path.resolve(__dirname, 'www/js'),
                 },
                 {
                     from: 'node_modules/binary-style/src/images/favicons',

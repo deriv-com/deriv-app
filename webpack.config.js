@@ -44,7 +44,7 @@ module.exports = {
         new CopyWebpackPlugin({
             patterns: [
                 {
-                    from: 'node_modules/@deriv/deriv-charts/dist/*.smartcharts.*',
+                    from: 'node_modules/@deriv/deriv-charts/dist/',
                     to: path.resolve(__dirname, 'www/js'),
                 },
                 {

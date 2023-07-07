@@ -1,15 +1,21 @@
 import * as React from 'react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { APIProvider, useFetch } from '@deriv/api';
 import { renderHook } from '@testing-library/react-hooks';
 import useCurrencyConfig from '../useCurrencyConfig';
 
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useFetch: jest.fn(),
+}));
+
+const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'website_status'>>;
+
 describe('useCurrencyConfig', () => {
     test("should return undefined if the currency doesn't exist in currencies_config", () => {
-        const mock = mockStore({});
+        // @ts-expect-error need to come up with a way to mock the return type of useFetch
+        mockUseFetch.mockReturnValue({});
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useCurrencyConfig(), { wrapper });
 
@@ -17,15 +23,12 @@ describe('useCurrencyConfig', () => {
     });
 
     test('should return currency config object for the given currency', () => {
-        const mock = mockStore({
-            website_status: {
-                data: { currencies_config: { USD: { type: 'fiat', name: 'US Dollar' } } },
-            },
+        mockUseFetch.mockReturnValue({
+            // @ts-expect-error need to come up with a way to mock the return type of useFetch
+            data: { website_status: { currencies_config: { USD: { type: 'fiat', name: 'US Dollar' } } } },
         });
 
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <StoreProvider store={mock}>{children}</StoreProvider>
-        );
+        const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useCurrencyConfig(), { wrapper });
 

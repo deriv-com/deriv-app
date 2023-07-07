@@ -1,16 +1,15 @@
 import { useCallback, useMemo } from 'react';
-import { useStore } from '@deriv/stores';
+import { useFetch } from '@deriv/api';
 
 /** A custom hook to get the currency config information from `website_status` endpoint */
 const useCurrencyConfig = () => {
-    const { website_status } = useStore();
-    const { data } = website_status;
+    const { data } = useFetch('website_status');
 
     const currencies_config = useMemo(() => {
-        if (!data?.currencies_config) return undefined;
+        if (!data?.website_status?.currencies_config) return undefined;
 
-        const modified_currencies_config = Object.keys(data.currencies_config).map(currency => {
-            const currency_config = data?.currencies_config[currency];
+        const modified_currencies_config = Object.keys(data.website_status.currencies_config).map(currency => {
+            const currency_config = data?.website_status?.currencies_config[currency];
 
             return {
                 ...currency_config,
@@ -69,7 +68,7 @@ const useCurrencyConfig = () => {
             (previous, current) => ({ ...previous, [current.code]: current }),
             {}
         );
-    }, [data?.currencies_config]);
+    }, [data?.website_status?.currencies_config]);
 
     const getConfig = useCallback((currency: string) => currencies_config?.[currency], [currencies_config]);
 

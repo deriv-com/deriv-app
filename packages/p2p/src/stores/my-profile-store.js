@@ -468,11 +468,11 @@ export default class MyProfileStore extends BaseStore {
 
     getSettings() {
         requestWS({ get_settings: 1 }).then(response => {
-            const { get_settings } = response;
-            if (!response.error) {
-                this.setFullName(`${get_settings.first_name} ${get_settings.last_name}`);
+            const { get_settings } = response || {};
+            if (!response?.error) {
+                this.setFullName(`${get_settings?.first_name} ${get_settings?.last_name}`);
             } else {
-                this.setFormError(response.error.message);
+                this.setFormError(response?.error?.message);
             }
         });
     }

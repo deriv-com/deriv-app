@@ -218,7 +218,7 @@ const getJuridisctionDescription = (shortcode: string) => {
             return createDescription(
                 'Deriv Investments (Europe) Limited',
                 'Malta',
-                localize('Malta Financial Services Authority'),
+                localize('Financial Commission'),
                 localize('Regulated by the Malta Financial Services Authority (MFSA) (licence no. IS/70156)'),
                 '1:30'
             );

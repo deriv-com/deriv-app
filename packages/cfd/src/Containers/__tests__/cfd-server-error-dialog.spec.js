@@ -13,9 +13,6 @@ describe('<CFDServerErrorDialog /> ', () => {
     let mockRootStore;
     beforeEach(() => {
         mockRootStore = {
-            client: {
-                is_authorize: false,
-            },
             ui: {
                 disableApp: jest.fn(),
                 enableApp: jest.fn(),
@@ -56,9 +53,6 @@ describe('<CFDServerErrorDialog /> ', () => {
 
     it('should not render the component if has_cfd_error is false', () => {
         const new_mockRootStore = {
-            client: {
-                is_authorize: false,
-            },
             ui: {
                 ...mockRootStore.ui,
             },
@@ -78,9 +72,6 @@ describe('<CFDServerErrorDialog /> ', () => {
 
     it('should not render the component if is_cfd_success_dialog_enabled', () => {
         const new_mockRootStore = {
-            client: {
-                is_authorize: false,
-            },
             ui: {
                 ...mockRootStore.ui,
             },

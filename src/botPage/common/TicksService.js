@@ -113,6 +113,7 @@ export default class TicksService {
         return this.requestStream({ ...options, style });
     }
     monitor(options) {
+        console.log(options, 'monitor');
         const { symbol, granularity, callback } = options;
 
         const type = getType(granularity);
@@ -130,6 +131,7 @@ export default class TicksService {
         return key;
     }
     stopMonitor(options) {
+        console.log(options, 'stopMonitor');
         const { symbol, granularity, key } = options;
         const type = getType(granularity);
 
@@ -171,14 +173,17 @@ export default class TicksService {
     unsubscribeAllAndSubscribeListeners(symbol) {
         const ohlcSubscriptions = this.subscriptions.getIn(['ohlc', symbol]);
         const tickSubscription = this.subscriptions.getIn(['tick', symbol]);
+        const subscription = [];
+        const ohlc = ohlcSubscriptions ? Array.from(ohlcSubscriptions.values()) : [];
 
-        const subscription = [
-            ...(ohlcSubscriptions ? Array.from(ohlcSubscriptions.values()) : []),
-            ...(tickSubscription || []),
-        ];
+        if (ohlc?.length) {
+            subscription.push(...ohlc);
+        }
 
+        if (tickSubscription) {
+            subscription.push(tickSubscription);
+        }
         Promise.all(subscription.map(id => doUntilDone(() => this.api.forget(id))));
-
         this.subscriptions = new Map();
     }
     updateTicksAndCallListeners(symbol, ticks) {

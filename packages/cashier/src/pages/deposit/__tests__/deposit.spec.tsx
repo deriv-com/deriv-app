@@ -77,9 +77,6 @@ describe('<Deposit />', () => {
             },
             modules: {
                 cashier: {
-                    iframe: {
-                        iframe_url: '',
-                    },
                     transaction_history: {
                         is_crypto_transactions_visible: false,
                         onMount: jest.fn(),
@@ -127,7 +124,6 @@ describe('<Deposit />', () => {
             },
             modules: {
                 cashier: {
-                    iframe: {},
                     transaction_history: {
                         is_crypto_transactions_visible: false,
                         onMount: jest.fn(),
@@ -171,7 +167,6 @@ describe('<Deposit />', () => {
             },
             modules: {
                 cashier: {
-                    iframe: {},
                     transaction_history: {
                         is_crypto_transactions_visible: false,
                         onMount: jest.fn(),
@@ -225,7 +220,6 @@ describe('<Deposit />', () => {
             },
             modules: {
                 cashier: {
-                    iframe: {},
                     transaction_history: {
                         is_crypto_transactions_visible: false,
                         onMount: jest.fn(),
@@ -269,7 +263,6 @@ describe('<Deposit />', () => {
             },
             modules: {
                 cashier: {
-                    iframe: {},
                     transaction_history: {
                         is_crypto_transactions_visible: false,
                         onMount: jest.fn(),
@@ -314,7 +307,6 @@ describe('<Deposit />', () => {
             },
             modules: {
                 cashier: {
-                    iframe: {},
                     transaction_history: {
                         is_crypto_transactions_visible: true,
                         onMount: jest.fn(),
@@ -358,7 +350,6 @@ describe('<Deposit />', () => {
             },
             modules: {
                 cashier: {
-                    iframe: {},
                     transaction_history: {
                         is_crypto_transactions_visible: false,
                         onMount: jest.fn(),
@@ -402,7 +393,6 @@ describe('<Deposit />', () => {
             },
             modules: {
                 cashier: {
-                    iframe: {},
                     transaction_history: {
                         is_crypto_transactions_visible: false,
                         onMount: jest.fn(),
@@ -447,7 +437,6 @@ describe('<Deposit />', () => {
             },
             modules: {
                 cashier: {
-                    iframe: {},
                     transaction_history: {
                         crypto_transactions: [{}],
                         is_crypto_transactions_visible: false,

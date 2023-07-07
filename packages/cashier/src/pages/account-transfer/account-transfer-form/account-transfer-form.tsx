@@ -76,10 +76,7 @@ let remaining_transfers: number | undefined;
 
 const AccountTransferForm = observer(
     ({ error, onClickDeposit, onClickNotes, setSideNotes }: TAccountTransferFormProps) => {
-        const {
-            client,
-            common: { is_from_derivgo },
-        } = useStore();
+        const { client } = useStore();
 
         const { account_limits, authentication_status, is_dxtrade_allowed, getLimits: onMount } = client;
         const { account_transfer, crypto_fiat_converter, transaction_history, general_store } = useCashierStore();
@@ -128,8 +125,6 @@ const AccountTransferForm = observer(
         const is_mt_transfer = selected_to.is_mt || selected_from.is_mt;
         const is_dxtrade_transfer = selected_to.is_dxtrade || selected_from.is_dxtrade;
         const is_derivez_transfer = selected_to.is_derivez || selected_from.is_derivez;
-
-        const platform_name_dxtrade = getPlatformSettings('dxtrade').name;
 
         const history = useHistory();
 
@@ -313,7 +308,6 @@ const AccountTransferForm = observer(
             derivez_remaining_transfers?.allowed,
             is_dxtrade_transfer,
             is_mt_transfer,
-            is_from_derivgo,
             is_derivez_transfer,
         ]);
 
@@ -641,7 +635,6 @@ const AccountTransferForm = observer(
                                                 is_dxtrade_allowed={is_dxtrade_allowed}
                                                 is_dxtrade_transfer={is_dxtrade_transfer}
                                                 is_mt_transfer={is_mt_transfer}
-                                                is_from_derivgo={is_from_derivgo}
                                                 is_derivez_transfer={is_derivez_transfer}
                                             />
                                         </SideNote>

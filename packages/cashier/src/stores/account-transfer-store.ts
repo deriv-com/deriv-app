@@ -614,17 +614,16 @@ export default class AccountTransferStore {
                         }
                     );
                 }
-                // if one of the accounts was dxtrade
-                if (account.account_type === CFD_PLATFORMS.DXTRADE) {
-                    Promise.all([
-                        this.WS.tradingPlatformAccountsList(CFD_PLATFORMS.DXTRADE),
-                        this.WS.balanceAll(),
-                    ]).then(([dxtrade_login_list_response, balance_response]) => {
-                        // update the balance for account switcher by renewing the dxtrade_login_list_response
-                        responseTradingPlatformAccountsList(dxtrade_login_list_response);
-                        // update total balance since Dxtrade total only comes in non-stream balance call
-                        setBalanceOtherAccounts(balance_response.balance);
-                    });
+                // if one of the accounts was dxtrade or derivez
+                if (account.account_type === CFD_PLATFORMS.DXTRADE || account.account_type === CFD_PLATFORMS.DERIVEZ) {
+                    Promise.all([this.WS.tradingPlatformAccountsList(account.account_type), this.WS.balanceAll()]).then(
+                        ([login_list_response, balance_response]) => {
+                            // update the balance for account switcher by renewing the login_list_response
+                            responseTradingPlatformAccountsList(login_list_response);
+                            // update total balance since dxtrade or derivez total only comes in non-stream balance call
+                            setBalanceOtherAccounts(balance_response.balance);
+                        }
+                    );
                 }
             });
             this.setAccountTransferAmount(null);

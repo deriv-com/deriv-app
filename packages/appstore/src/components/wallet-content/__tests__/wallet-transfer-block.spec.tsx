@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import WalletTransferBlock from '../wallet-transfer-block';
 import { TWalletAccount } from 'Types';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 const wallet_account: TWalletAccount = {
     name: 'USD',
@@ -18,9 +19,21 @@ const wallet_account: TWalletAccount = {
 
 jest.mock('./../../containers/currency-switcher-container', () => jest.fn(({ children }) => <div>{children}</div>));
 
+const mockedRootStore = mockStore({
+    modules: {
+        cfd: {
+            toggleCompareAccountsModal: jest.fn(),
+        },
+    },
+});
+
 describe('<WalletTransferBlock />', () => {
     it('Check balance', () => {
-        render(<WalletTransferBlock wallet_account={wallet_account} />);
+        render(
+            <StoreProvider store={mockedRootStore}>
+                <WalletTransferBlock wallet_account={wallet_account} />
+            </StoreProvider>
+        );
         const { currency } = wallet_account;
 
         const balance_title = screen.queryByText(`10,415.24 ${currency}`);
@@ -29,7 +42,11 @@ describe('<WalletTransferBlock />', () => {
     });
 
     it('Check loginid', () => {
-        render(<WalletTransferBlock wallet_account={wallet_account} />);
+        render(
+            <StoreProvider store={mockedRootStore}>
+                <WalletTransferBlock wallet_account={wallet_account} />
+            </StoreProvider>
+        );
         const { loginid } = wallet_account;
 
         const loginid_title = screen.queryByText(String(loginid));

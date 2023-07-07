@@ -1,4 +1,3 @@
-import { useFetch } from '@deriv/api';
 import { useStore } from '@deriv/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
 import useCurrencyConfig from './useCurrencyConfig';
@@ -128,7 +127,7 @@ const useWalletTransactions = (
         [accounts, current_wallet, getConfig, getTradingAccountName, is_dark_mode_on, loginid, transactions, wallets]
     );
 
-    return { transactions: modified_transactions, isLoading, isSuccess };
+    return { transactions: modified_transactions, isLoading: false, isSuccess: true };
 };
 
 export default useWalletTransactions;

@@ -136,6 +136,9 @@
 
     &__wallet-button {
         background: $color-white;
+        &-text {
+            color: $color-black-1;
+        }
 
         &--added {
             opacity: 0.32;

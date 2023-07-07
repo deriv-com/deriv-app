@@ -45,35 +45,15 @@ export const TradersHubHomeButton = ({ is_dark_mode }) => {
     );
 };
 
-// the tradershub onboarding is temporarily disabled for wallets demo will enabled once everthing is completed
-// const TradingHubOnboarding = ({ is_dark_mode, setIsOnboardingVisited }) => {
-//     const history = useHistory();
-//     return (
-//         <div className='trading-hub-header__tradinghub--onboarding'>
-//             <div className='trading-hub-header__tradinghub--onboarding--logo'>
-//                 <Popover
-//                     classNameBubble='account-settings-toggle__tooltip'
-//                     alignment='bottom'
-//                     message={<Localize i18n_default_text='View onboarding' />}
-//                     should_disable_pointer_events
-//                     zIndex={9999}
-//                 >
-//                     <Icon
-//                         icon={is_dark_mode ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
-//                         size={20}
-//                         onClick={() => {
-//                             history.push(routes.onboarding);
-//                             setIsOnboardingVisited(false);
-//                         }}
-//                     />
-//                 </Popover>
-//             </div>
-//         </div>
-//     );
-// };
+const TradingHubOnboarding = ({
+    is_dark_mode,
+    toggleIsWalletTourOpen,
+    switchAccount,
+    is_wallet_switching,
+    setIsOnboardingVisited,
+}) => {
+    const history = useHistory();
 
-// the tradershub onboarding is used wallets demo (temporary)
-const TradingHubOnboarding = ({ is_dark_mode, toggleIsWalletTourOpen, switchAccount, app_contents_scroll_ref }) => {
     const { data } = useWalletsList();
     const first_loginid = data?.[0].loginid;
     const wallet = useActiveWallet();
@@ -82,8 +62,14 @@ const TradingHubOnboarding = ({ is_dark_mode, toggleIsWalletTourOpen, switchAcco
         if (wallet?.loginid !== first_loginid) {
             await switchAccount(first_loginid);
         }
-        app_contents_scroll_ref.current.scrollTop = 0;
-        toggleIsWalletTourOpen(true);
+        if (!is_wallet_switching) toggleIsWalletTourOpen(true);
+    };
+
+    const handleOnboardingClick = () => {
+        // history.push(routes.onboarding);
+        // setIsOnboardingVisited(false);
+        handleSwitchAndToggle();
+        }
     };
 
     return (
@@ -153,7 +139,6 @@ const TradingHubHeader = ({
     setIsWalletModalVisible,
     switchAccount,
     is_wallet_switching,
-    app_contents_scroll_ref,
 }) => {
     const { pathname } = useLocation();
     const cashier_routes = pathname.startsWith(routes.cashier);
@@ -286,12 +271,11 @@ const TradingHubHeader = ({
                         <div className='trading-hub-header__menu-right--items--onboarding'>
                             <TradingHubOnboarding
                                 is_dark_mode={is_dark_mode}
-                                // setIsOnboardingVisited={setIsOnboardingVisited} reenabled this once the wallets onboarding is completed
+                                setIsOnboardingVisited={setIsOnboardingVisited}
                                 toggleIsWalletTourOpen={toggleIsWalletTourOpen}
                                 setIsWalletModalVisible={setIsWalletModalVisible}
                                 switchAccount={switchAccount}
                                 is_wallet_switching={is_wallet_switching}
-                                app_contents_scroll_ref={app_contents_scroll_ref}
                             />
                         </div>
                         <div className='trading-hub-header__menu-right--items--notifications'>
@@ -418,5 +402,5 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     toggleIsWalletTourOpen: traders_hub.toggleIsWalletTourOpen,
     setIsWalletModalVisible: ui.setIsWalletModalVisible,
     switchAccount: client.switchAccount,
-    app_contents_scroll_ref: ui.app_contents_scroll_ref,
+    is_wallet_switching: ui.is_wallet_switching,
 }))(withRouter(TradingHubHeader));

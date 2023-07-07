@@ -10,6 +10,7 @@ import AccountWithWallets from './account-with-wallets';
 import AccountWithoutWallets from './account-without-wallets';
 import EUDisclaimer from 'Components/eu-disclaimer';
 import AddMoreWallets from 'Components/add-more-wallets';
+import WalletTourGuide from 'Modules/tour-guide/wallet-tour-guide';
 import './traders-hub.scss';
 
 const TradersHub = observer(() => {
@@ -23,7 +24,7 @@ const TradersHub = observer(() => {
         is_account_setting_loaded,
         accounts,
     } = client;
-    const { is_tour_open, is_eu_user } = traders_hub;
+    const { is_tour_open, is_eu_user, is_wallet_tour_open } = traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
 
     const can_show_notify =
@@ -37,19 +38,22 @@ const TradersHub = observer(() => {
 
     const handleScroll = () => {
         const element = traders_hub_ref?.current;
-        if (element && is_tour_open) {
+        if (element && (is_tour_open || is_wallet_tour_open)) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     };
 
+    // TODO: replace this with something more reliable
     React.useEffect(() => {
         setTimeout(() => {
             handleScroll();
             setTimeout(() => {
                 setScrolled(true);
-            }, 400);
-        }, 100);
-    }, [is_tour_open]);
+            }, 4000);
+            setScrolled(false);
+        }, 3000);
+        if (scrolled) setScrolled(false);
+    }, [is_tour_open, is_wallet_tour_open]);
 
     const { is_low_risk_cr_eu } = useContentFlag();
 
@@ -75,6 +79,7 @@ const TradersHub = observer(() => {
                     <AddMoreWallets />
                     <AccountWithoutWallets />
                     <ModalManager />
+                    {scrolled && <WalletTourGuide />}
                     {scrolled && <TourGuide />}
                 </div>
             </Div100vhContainer>

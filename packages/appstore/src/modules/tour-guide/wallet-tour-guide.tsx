@@ -1,8 +1,8 @@
 import React from 'react';
 import Joyride, { StoreState } from 'react-joyride';
 import { Localize } from '@deriv/translations';
-import { getWalletStepConfig, getWalletStepLocale, wallet_tour_styles } from 'Constants/wallets-tour-steps-config';
 import { useStore, observer } from '@deriv/stores';
+import { getWalletStepConfig, getWalletStepLocale, wallet_tour_styles } from 'Constants/tour-steps-config-new';
 
 const WalletTourGuide = observer(() => {
     const { traders_hub, ui } = useStore();

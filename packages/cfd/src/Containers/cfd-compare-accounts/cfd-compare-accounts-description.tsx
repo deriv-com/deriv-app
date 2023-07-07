@@ -8,6 +8,7 @@ const CFDCompareAccountsDescription = ({ trading_platforms, is_demo }: TCompareA
     const market_type = getMarketType(trading_platforms);
     const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode);
     const juridisction_data = getJuridisctionDescription(market_type_shortcode);
+
     return (
         <div
             className={classNames('compare-cfd-account-text-container', {

@@ -7,8 +7,8 @@ import { localize, Localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
 import AddPaymentMethod from 'Pages/my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
-import SellAdPaymentMethodsList from 'Pages/my-ads/sell-ad-payment-methods-list.jsx';
-import BuyAdPaymentMethodsList from 'Pages/my-ads/buy-ad-payment-methods-list.jsx';
+import SellAdPaymentMethodsList from 'Pages/my-ads/sell-ad-payment-methods-list';
+import BuyAdPaymentMethodsList from 'Pages/my-ads/buy-ad-payment-methods-list';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
 const QuickAddModal = ({ advert }) => {
@@ -272,7 +272,6 @@ const QuickAddModal = ({ advert }) => {
                     </Text>
                     <SellAdPaymentMethodsList
                         is_only_horizontal
-                        is_scrollable
                         onClickPaymentMethodCard={onClickPaymentMethodCard}
                         selected_methods={selected_methods}
                         onClickAdd={() => my_ads_store.setShouldShowAddPaymentMethod(true)}

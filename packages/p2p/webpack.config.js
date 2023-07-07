@@ -32,6 +32,7 @@ module.exports = function (env) {
                 Constants: path.resolve(__dirname, 'src/constants'),
                 Pages: path.resolve(__dirname, 'src/pages'),
                 Translations: path.resolve(__dirname, 'src/translations'),
+                Types: path.resolve(__dirname, 'src/types'),
                 Utils: path.resolve(__dirname, 'src/utils'),
                 Stores: path.resolve(__dirname, 'src/stores'),
                 ...publisher_utils.getLocalDerivPackageAliases(__dirname, is_publishing),

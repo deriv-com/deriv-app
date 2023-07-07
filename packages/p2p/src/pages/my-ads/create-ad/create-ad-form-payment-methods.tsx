@@ -4,27 +4,9 @@ import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import PaymentMethodCard from 'Pages/my-profile/payment-methods/payment-method-card';
+import { TPaymentMethod } from 'Types';
 import BuyAdPaymentMethodsList from '../buy-ad-payment-methods-list';
 import SellAdPaymentMethodsList from '../sell-ad-payment-methods-list';
-
-type TPaymentMethodField = {
-    display_name: string;
-    required: number;
-    type: string;
-    value: string;
-};
-
-type TPaymentMethod = {
-    ID: string;
-    name: string;
-    is_enabled: number;
-    method: string;
-    display_name: string;
-    fields: {
-        account: TPaymentMethodField;
-        instructions: TPaymentMethodField;
-    };
-};
 
 type TCreateAdFormPaymentMethodsProps = {
     is_sell_advert: boolean;

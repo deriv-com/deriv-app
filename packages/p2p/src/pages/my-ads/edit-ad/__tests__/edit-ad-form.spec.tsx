@@ -148,7 +148,7 @@ describe('<EditAdForm/>', () => {
             </StoreProvider>
         );
 
-        expect(screen.getByText('Your DP2P balance is 100.00 USD')).toBeInTheDocument();
+        expect(screen.getByText('Your Deriv P2P balance is 100.00 USD')).toBeInTheDocument();
     });
     it('should handle onchange for editable fields', () => {
         (useStores as jest.Mock).mockReturnValue({

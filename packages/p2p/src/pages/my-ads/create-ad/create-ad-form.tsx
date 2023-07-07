@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, FieldProps, Form } from 'formik';
 import { reaction } from 'mobx';
-import { Button, Input, RadioGroup, Text, ThemedScrollbars } from '@deriv/components';
+import { Input, RadioGroup, Text, ThemedScrollbars } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import FloatingRate from 'Components/floating-rate';
@@ -14,6 +14,7 @@ import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import { getHint } from 'Utils/adverts';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods';
+import AdFormSubmit from '../ad-form-submit';
 import AdFormWrapper from '../ad-form-wrapper';
 import AdPaymentSelectionText from '../ad-payment-selection-text';
 import AdSummary from '../ad-summary';
@@ -143,7 +144,7 @@ const CreateAdForm = () => {
                     offer_amount: '',
                 }}
             >
-                {({ errors, handleChange, isSubmitting, isValid, setFieldValue, touched, values }) => {
+                {({ errors, handleChange, setFieldValue, touched, values }) => {
                     const is_sell_advert = values.type === buy_sell.SELL;
 
                     const onChangeAdTypeHandler = (user_input: string) => {
@@ -351,30 +352,12 @@ const CreateAdForm = () => {
                                                 is_sell_advert={is_sell_advert}
                                             />
                                         </div>
-                                        <div className='create-ad-form__container create-ad-form__footer'>
-                                            <Button
-                                                className='create-ad-form__button'
-                                                secondary
-                                                large
-                                                onClick={onCleanup}
-                                                type='button'
-                                            >
-                                                <Localize i18n_default_text='Cancel' />
-                                            </Button>
-                                            <Button
-                                                className='create-ad-form__button'
-                                                primary
-                                                large
-                                                is_disabled={
-                                                    isSubmitting ||
-                                                    !isValid ||
-                                                    !selected_methods.length ||
-                                                    current_method.is_deleted
-                                                }
-                                            >
-                                                <Localize i18n_default_text='Post ad' />
-                                            </Button>
-                                        </div>
+                                        <AdFormSubmit
+                                            ad_option={ads.CREATE}
+                                            current_method={current_method}
+                                            onCleanup={onCleanup}
+                                            selected_methods={selected_methods}
+                                        />
                                     </AdFormWrapper>
                                 </ThemedScrollbars>
                             </Form>

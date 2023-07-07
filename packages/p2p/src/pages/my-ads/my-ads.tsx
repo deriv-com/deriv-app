@@ -1,17 +1,19 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Loading } from '@deriv/components';
-import { observer } from 'mobx-react-lite';
+import { observer } from '@deriv/stores';
 import { localize } from 'Components/i18next';
-import { useStores } from 'Stores';
 import TableError from 'Components/section-error';
+import Verification from 'Components/verification';
+import { useStores } from 'Stores';
 import CreateAd from './create-ad';
 import EditAd from './edit-ad';
-import MyAdsTable from './my-ads-table.jsx';
-import Verification from 'Components/verification';
-import './my-ads.scss';
+import MyAdsContent from './my-ads-content';
 
-const MyAdsState = ({ message }) => (
+type TMyAdsStateProps = {
+    message: string;
+};
+
+const MyAdsState = ({ message }: TMyAdsStateProps) => (
     <div className='my-ads__state'>
         <TableError message={message} className='section-error__table' size='xs' />
     </div>
@@ -19,38 +21,49 @@ const MyAdsState = ({ message }) => (
 
 const MyAds = () => {
     const { general_store, my_ads_store } = useStores();
+    const { is_advertiser, is_restricted } = general_store;
+    const {
+        error_message,
+        getAccountStatus,
+        is_loading,
+        setIsLoading,
+        setShowAdForm,
+        setShowEditAdForm,
+        show_ad_form,
+        show_edit_ad_form,
+    } = my_ads_store;
 
     React.useEffect(() => {
-        my_ads_store.setIsLoading(true);
-        my_ads_store.setShowEditAdForm(false);
-        my_ads_store.getAccountStatus();
+        setIsLoading(true);
+        setShowEditAdForm(false);
+        getAccountStatus();
 
         return () => {
-            my_ads_store.setShowAdForm(false);
+            setShowAdForm(false);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    if (my_ads_store.is_loading) {
+    if (is_loading) {
         return <Loading is_fullscreen={false} />;
     }
 
-    if (general_store.is_restricted) {
+    if (is_restricted) {
         return <MyAdsState message={localize('Deriv P2P cashier is unavailable in your country.')} />;
     }
 
-    if (my_ads_store.error_message) {
-        return <MyAdsState message={my_ads_store.error_message} />;
+    if (error_message) {
+        return <MyAdsState message={error_message} />;
     }
 
-    if (general_store.is_advertiser) {
-        if (my_ads_store.show_ad_form) {
+    if (is_advertiser) {
+        if (show_ad_form) {
             return (
                 <div className='my-ads'>
                     <CreateAd />
                 </div>
             );
-        } else if (my_ads_store.show_edit_ad_form) {
+        } else if (show_edit_ad_form) {
             return (
                 <div className='my-ads'>
                     <EditAd />
@@ -60,22 +73,12 @@ const MyAds = () => {
 
         return (
             <div className='my-ads'>
-                <MyAdsTable />
+                <MyAdsContent />
             </div>
         );
     }
 
     return <Verification />;
-};
-
-MyAds.propTypes = {
-    error_message: PropTypes.string,
-    getAccountStatus: PropTypes.func,
-    is_advertiser: PropTypes.bool,
-    is_loading: PropTypes.bool,
-    is_restricted: PropTypes.bool,
-    setIsLoading: PropTypes.func,
-    show_ad_form: PropTypes.bool,
 };
 
 export default observer(MyAds);

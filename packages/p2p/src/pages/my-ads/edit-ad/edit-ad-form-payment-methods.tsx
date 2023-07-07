@@ -6,25 +6,7 @@ import PaymentMethodCard from 'Pages/my-profile/payment-methods/payment-method-c
 import { useStores } from 'Stores';
 import BuyAdPaymentMethodsList from '../buy-ad-payment-methods-list';
 import SellAdPaymentMethodsList from '../sell-ad-payment-methods-list';
-
-type TPaymentMethodField = {
-    display_name: string;
-    required: number;
-    type: string;
-    value: string;
-};
-
-type TPaymentMethod = {
-    ID: string;
-    name: string;
-    is_enabled: number;
-    method: string;
-    display_name: string;
-    fields: {
-        account: TPaymentMethodField;
-        instructions: TPaymentMethodField;
-    };
-};
+import { TPaymentMethod } from 'Types';
 
 type TEditAdFormPaymentMethodsProps = {
     is_sell_advert: boolean;

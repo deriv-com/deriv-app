@@ -4,7 +4,7 @@ import { Localize } from 'Components/i18next';
 
 type TAdTypeProps = {
     ad_pause_color: string;
-    float_rate: number;
+    float_rate: string;
 };
 
 const AdType = ({ ad_pause_color, float_rate }: TAdTypeProps) => {

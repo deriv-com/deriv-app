@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, Form, Formik } from 'formik';
-import { Button, Input, Loading, Text, ThemedScrollbars } from '@deriv/components';
+import { Input, Loading, Text, ThemedScrollbars } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import FloatingRate from 'Components/floating-rate';
@@ -14,6 +14,7 @@ import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
 import { getHint } from 'Utils/adverts';
 import EditAdFormPaymentMethods from './edit-ad-form-payment-methods';
+import AdFormSubmit from '../ad-form-submit';
 import AdFormWrapper from '../ad-form-wrapper';
 import AdPaymentSelectionText from '../ad-payment-selection-text';
 import AdSummary from '../ad-summary';
@@ -196,7 +197,7 @@ const EditAdForm = () => {
                         validate={my_ads_store.validateEditAdForm}
                         validateOnMount
                     >
-                        {({ dirty, errors, handleChange, isSubmitting, isValid, touched, values }) => {
+                        {({ dirty, errors, handleChange, touched, values }) => {
                             const is_sell_advert = values.type === buy_sell.SELL;
                             // Form should not be checked for value change when ad switch is triggered
                             const check_dirty =
@@ -397,33 +398,15 @@ const EditAdForm = () => {
                                                         touched={setIsPaymentMethodTouched}
                                                     />
                                                 </div>
-                                                <div className='edit-ad-form__container edit-ad-form__footer'>
-                                                    <Button
-                                                        className='edit-ad-form__button'
-                                                        secondary
-                                                        large
-                                                        onClick={() => handleEditAdFormCancel(dirty)}
-                                                        type='button'
-                                                    >
-                                                        <Localize i18n_default_text='Cancel' />
-                                                    </Button>
-                                                    <Button
-                                                        className='edit-ad-form__button'
-                                                        has_effect
-                                                        primary
-                                                        large
-                                                        is_disabled={
-                                                            isSubmitting ||
-                                                            !isValid ||
-                                                            !check_dirty ||
-                                                            selected_methods.length === 0 ||
-                                                            !(!!payment_method_names || !!payment_method_details) ||
-                                                            current_method.is_deleted
-                                                        }
-                                                    >
-                                                        <Localize i18n_default_text='Save changes' />
-                                                    </Button>
-                                                </div>
+                                                <AdFormSubmit
+                                                    ad_option={ads.EDIT}
+                                                    handleEditAdFormCancel={handleEditAdFormCancel}
+                                                    check_dirty={check_dirty}
+                                                    current_method={current_method}
+                                                    payment_method_details={payment_method_details}
+                                                    payment_method_names={payment_method_names}
+                                                    selected_methods={selected_methods}
+                                                />
                                             </AdFormWrapper>
                                         </ThemedScrollbars>
                                     </Form>

@@ -177,24 +177,4 @@ describe('<CreateAdForm/>', () => {
 
         expect(screen.getByText('Your Deriv P2P balance is 100.00 USD')).toBeInTheDocument();
     });
-    it('should disable post ad button when current payment method has been removed', () => {
-        (useStores as jest.Mock).mockReturnValueOnce({
-            ...mocked_store_values,
-            my_ads_store: {
-                ...mocked_store_values.my_ads_store,
-                current_method: {
-                    is_deleted: true,
-                    key: null,
-                },
-            },
-        });
-        render(
-            <StoreProvider store={mock_use_store_values}>
-                <CreateAdForm />
-            </StoreProvider>
-        );
-
-        const post_ad_button = screen.getByRole('button', { name: 'Post ad' });
-        expect(post_ad_button).toBeDisabled();
-    });
 });

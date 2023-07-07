@@ -2,9 +2,11 @@ import type { ElementType } from 'react';
 import type {
     AccountLimitsResponse,
     Authorize,
+    ContractUpdate,
     DetailsOfEachMT5Loginid,
     GetAccountStatus,
     GetLimits,
+    Portfolio1,
     ProposalOpenContract,
     LogOutResponse,
     ResidenceList,
@@ -358,6 +360,7 @@ type TUiStore = {
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
+    setPurchaseState: (index: number) => void;
     sub_section_index: number;
     setSubSectionIndex: (index: number) => void;
     shouldNavigateAfterChooseCrypto: (value: string) => void;
@@ -395,24 +398,51 @@ type TUiStore = {
     setResetTradingPasswordModalOpen: () => void;
     populateHeaderExtensions: (header_items: JSX.Element | null) => void;
     populateSettingsExtensions: (menu_items: Array<TPopulateSettingsExtensionsMenuItem> | null) => void;
+    purchase_states: boolean[];
     setShouldShowCooldownModal: (value: boolean) => void;
 };
 
+type TPortfolioPosition = {
+    contract_info: ProposalOpenContract &
+        Portfolio1 & {
+            contract_update?: ContractUpdate;
+        };
+    details?: string;
+    display_name: string;
+    id?: number;
+    indicative: number;
+    payout?: number;
+    purchase?: number;
+    reference: number;
+    type?: string;
+    is_unsupported: boolean;
+    contract_update: ProposalOpenContract['limit_order'];
+    is_sell_requested: boolean;
+    profit_loss: number;
+};
+
 type TPortfolioStore = {
-    active_positions: ProposalOpenContract[];
-    error: TCommonStoreError;
-    getPositionById: (id: number) => ProposalOpenContract;
+    active_positions: TPortfolioPosition[];
+    all_positions: TPortfolioPosition[];
+    error: string;
+    getPositionById: (id: number) => TPortfolioPosition;
     is_loading: boolean;
     is_multiplier: boolean;
     is_accumulator: boolean;
-    onClickCancel: (contract_id: number) => void;
-    onClickSell: (contract_id: number) => void;
+    onClickCancel: (contract_id?: number) => void;
+    onClickSell: (contract_id?: number) => void;
     onMount: () => void;
+    positions: TPortfolioPosition[];
     removePositionById: (id: number) => void;
 };
 
 type TContractStore = {
     getContractById: (id: number) => ProposalOpenContract;
+    contract_info: TPortfolioPosition['contract_info'];
+    contract_update_stop_loss: string;
+    contract_update_take_profit: string;
+    has_contract_update_stop_loss: boolean;
+    has_contract_update_take_profit: boolean;
 };
 
 type TMenuStore = {

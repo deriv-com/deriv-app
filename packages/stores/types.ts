@@ -14,7 +14,7 @@ import type {
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
-import type { ExchangeRatesStore, FeatureFlagsStore, WebsiteStatusStore } from './src/stores';
+import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
 
 type TPopulateSettingsExtensionsMenuItem = {
     icon: string;
@@ -498,6 +498,5 @@ export type TCoreStores = {
 
 export type TStores = TCoreStores & {
     exchange_rates: ExchangeRatesStore;
-    website_status: WebsiteStatusStore;
     feature_flags: FeatureFlagsStore;
 };

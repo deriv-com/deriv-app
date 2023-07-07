@@ -42,14 +42,6 @@ const CardsSliderSwiper = observer(({ items, setActivePage, active_page }: TProp
         emblaApi.on('select', onSelect);
     }, [emblaApi, onSelect]);
 
-    // add this to scroll to choosed card
-    // commented it becuse cashier will be deleted later but leave it if something changes again
-    // React.useEffect(() => {
-    //     if (emblaApi && active_page !== emblaApi.selectedScrollSnap()) {
-    //         emblaApi.scrollTo(active_page);
-    //     }
-    // }, [active_page, emblaApi]);
-
     const slider = React.useMemo(
         () =>
             items?.map((item: TWalletAccount) => (

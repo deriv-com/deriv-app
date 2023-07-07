@@ -25,13 +25,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 600
     steps:
+      - name: Checkout to repo
+        uses: actions/checkout@v3
+        with:
+          ref: master
       - name: Setup node
         uses: actions/setup-node@v2
       - name: Wait for logs to accumulate
         run: |
           sleep 10
       - name: Release issues in Deriv.app
-        uses: binary-com/fe-toolbox@v0.0.1
+        uses: binary-com/fe-toolbox@v0.0.2
         with:
           release_tag_task_url: ${{ inputs.release_tag_task_url }}
           platform: 'Deriv.app'

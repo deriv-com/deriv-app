@@ -10,6 +10,7 @@ import './transfer-account-selector.scss';
 export type TTransferAccount = React.ComponentProps<typeof WalletTile>['account'];
 
 type TTransferAccountSelectorProps = {
+    contentScrollHandler?: React.UIEventHandler<HTMLDivElement>;
     is_mobile?: boolean;
     is_wallet_name_visible?: boolean;
     label?: string;
@@ -24,6 +25,7 @@ type TTransferAccountSelectorProps = {
 };
 
 const TransferAccountSelector = ({
+    contentScrollHandler,
     is_mobile,
     is_wallet_name_visible,
     label,
@@ -50,16 +52,6 @@ const TransferAccountSelector = ({
     const openAccountsList = () => {
         setIsListModalOpen(true);
     };
-
-    const contentScrollHandler = React.useCallback(
-        (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
-            if (is_mobile && is_list_modal_open) {
-                const target = e.target as HTMLDivElement;
-                setIsWalletNameVisible?.(!(target.scrollTop > 0));
-            }
-        },
-        [is_list_modal_open, is_mobile, setIsWalletNameVisible]
-    );
 
     const getHeightOffset = React.useCallback(() => {
         const header_height = '16.2rem';

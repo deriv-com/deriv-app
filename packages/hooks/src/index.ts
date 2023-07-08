@@ -42,4 +42,6 @@ export { default as useRealSTPAccount } from './useRealSTPAccount';
 export { default as useTotalAccountBalance } from './useTotalAccountBalance';
 export { default as useVerifyEmail } from './useVerifyEmail';
 export { default as useWalletsList } from './useWalletsList';
+export { default as useAvailableWallets } from './useAvailableWallets';
+export { default as useAuthorize } from './useAuthorize';
 export { default as useWalletTransactions } from './useWalletTransactions';

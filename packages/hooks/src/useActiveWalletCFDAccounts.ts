@@ -71,7 +71,6 @@ const useActiveWalletCFDAccounts = () => {
         () =>
             mt5_accounts?.map(account => ({
                 ...account,
-                foo: 'bar',
                 icon: getAccountIcon({ cfd_type: 'mt5', ...account }),
                 loginid: account.login,
             })),
@@ -81,7 +80,6 @@ const useActiveWalletCFDAccounts = () => {
         () =>
             derivez_accounts?.map(account => ({
                 ...account,
-                foo: 'bar',
                 icon: getAccountIcon({ cfd_type: 'derivez', ...account }),
                 loginid: account.login,
             })),
@@ -91,7 +89,6 @@ const useActiveWalletCFDAccounts = () => {
         () =>
             dxtrade_accounts?.map(account => ({
                 ...account,
-                foo: 'bar',
                 icon: getAccountIcon({ cfd_type: 'dxtrade', ...account }),
                 loginid: account.account_id,
             })),

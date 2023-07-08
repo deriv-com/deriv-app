@@ -2,10 +2,8 @@ import React from 'react';
 import { Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
 import TransferAccountList from './transfer-account-list';
 import TransferTile from './transfer-tile';
-import { WalletTile } from '../wallet-tile';
+import type { TTransferAccount } from 'Types';
 import './transfer-account-selector.scss';
-
-export type TTransferAccount = React.ComponentProps<typeof WalletTile>['account'];
 
 type TTransferAccountSelectorProps = {
     contentScrollHandler?: React.UIEventHandler<HTMLDivElement>;

@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 import { WalletTile } from '../wallet-tile';
-import type { TTransferAccount } from './transfer-account-selector';
+import type { TTransferAccount } from 'Types';
 
 type TTransferAccountList = {
     is_mobile?: boolean;
@@ -76,7 +76,7 @@ const TransferAccountList = ({
                                         has_hover
                                         onClick={() => {
                                             setSelectedAccount(account);
-                                            onSelectAccount?.(account);
+                                            if (account) onSelectAccount?.(account);
                                             setIsListModalOpen(false);
                                         }}
                                     />

@@ -4,29 +4,15 @@ import { Text, AppLinkedWithWalletIcon, WalletJurisdictionBadge, WalletIcon } fr
 import { formatMoney } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getAccountName } from 'Constants/utils';
+import type { TTransferAccount } from 'Types';
 import './wallet-tile.scss';
-
-type TAccount = {
-    active_wallet_icon: string | undefined;
-    account_type?: 'wallet' | 'trading' | 'dxtrade' | 'mt5' | 'derivez' | 'binary';
-    balance: number;
-    currency?: string;
-    display_currency_code: string | undefined;
-    gradient_class: string;
-    icon?: string;
-    is_demo: boolean;
-    loginid?: string;
-    mt5_market_type?: 'all' | 'financial' | 'synthetic';
-    shortcode: string | undefined;
-    type: 'fiat' | 'crypto';
-};
 
 type TIconSize =
     | React.ComponentProps<typeof AppLinkedWithWalletIcon>['size']
     | React.ComponentProps<typeof WalletIcon>['size'];
 
 type TWalletTileProps = {
-    account?: TAccount;
+    account?: TTransferAccount;
     className?: string;
     has_hover?: boolean;
     icon_size?: TIconSize;
@@ -48,10 +34,10 @@ const WalletTile = ({
 }: TWalletTileProps) => {
     const IconComponent = React.useCallback(() => {
         if (account?.account_type === 'wallet') {
-            return account?.active_wallet_icon ? (
+            return account?.icon ? (
                 <WalletIcon
                     gradient_class={account?.gradient_class}
-                    icon={account?.active_wallet_icon}
+                    icon={account?.icon}
                     size={icon_size as React.ComponentProps<typeof WalletIcon>['size']}
                     type={account?.type}
                 />

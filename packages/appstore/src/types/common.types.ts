@@ -188,3 +188,34 @@ export type TLinkedTo = {
 
 export type TWalletAccount = NonNullable<ReturnType<typeof useWalletsList>['data']>[number];
 export type TWalletInfo = NonNullable<ReturnType<typeof useAvailableWallets>['data']>[number];
+
+export type TTransferAccount = {
+    active_wallet_icon?: string | undefined;
+    account_type?: 'wallet' | 'trading' | 'dxtrade' | 'mt5' | 'derivez' | 'binary';
+    balance?: number;
+    currency?: string;
+    display_currency_code?: string | undefined;
+    gradient_class?: string;
+    icon: string | undefined;
+    is_demo?: boolean;
+    loginid?: string;
+    mt5_market_type?: 'all' | 'financial' | 'synthetic';
+    shortcode?: string | undefined;
+    type?: 'fiat' | 'crypto';
+};
+
+export type TMessageItem =
+    | {
+          variant: 'base';
+          id: string;
+          type: 'info' | 'error' | 'success';
+          message: string | JSX.Element;
+      }
+    | {
+          variant: 'with-action-button';
+          action: VoidFunction;
+          button_label: string;
+          id: string;
+          type: 'info' | 'error' | 'success';
+          message: string | JSX.Element;
+      };

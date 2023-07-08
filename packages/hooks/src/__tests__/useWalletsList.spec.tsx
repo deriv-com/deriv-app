@@ -4,62 +4,104 @@ import { StoreProvider, mockStore } from '@deriv/stores';
 import { renderHook } from '@testing-library/react-hooks';
 import useWalletsList from '../useWalletsList';
 
-jest.mock('@deriv/api', () => ({
-    ...jest.requireActual('@deriv/api'),
-    useFetch: jest.fn(),
-}));
+const account_list = [
+    {
+        account_category: 'wallet',
+        account_type: 'doughflow',
+        created_at: 1688642811,
+        currency: 'USD',
+        is_disabled: 0,
+        is_selected: true,
+        is_virtual: 0,
+        landing_company_name: 'svg',
+        linked_to: [
+            {
+                loginid: 'MTR100967300',
+                platform: 'mt5',
+            },
+            {
+                loginid: 'MTR80057067',
+                platform: 'mt5',
+            },
+            {
+                loginid: 'DXR1646584',
+                platform: 'dxtrade',
+            },
+            {
+                loginid: 'EZR80001086',
+                platform: 'derivez',
+            },
+        ],
+        loginid: 'CRW1030',
+    },
+];
 
-const website_status = {
-    currencies_config: {
-        USD: {
-            fractional_digits: 2,
-            type: 'fiat',
-        },
-        AUD: {
-            fractional_digits: 2,
-            type: 'fiat',
-        },
-        BTC: {
-            fractional_digits: 8,
-            type: 'crypto',
-        },
-        ETH: {
-            fractional_digits: 8,
-            type: 'crypto',
-        },
-        UST: {
-            fractional_digits: 2,
-            type: 'crypto',
-        },
+const currencies_config = {
+    AUD: {
+        fractional_digits: 2,
+        name: 'Australian Dollar',
+        type: 'fiat',
+    },
+    USD: {
+        fractional_digits: 2,
+        name: 'US Dollar',
+        type: 'fiat',
+    },
+    EUR: {
+        fractional_digits: 2,
+        name: 'Euro',
+        type: 'fiat',
+    },
+    BTC: {
+        fractional_digits: 8,
+        name: 'Bitcoin',
+        type: 'crypto',
+    },
+    ETH: {
+        fractional_digits: 8,
+        name: 'Ethereum',
+        type: 'crypto',
+    },
+    UST: {
+        fractional_digits: 2,
+        name: 'Tether Omni',
+        type: 'crypto',
     },
 };
 
-const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
+jest.mock('@deriv/api', () => ({
+    ...jest.requireActual('@deriv/api'),
+    useFetch: jest.fn((name: string) => {
+        if (name === 'authorize') {
+            return {
+                data: {
+                    authorize: {
+                        account_list,
+                    },
+                },
+            };
+        }
+        if (name === 'website_status') {
+            return {
+                data: {
+                    website_status: {
+                        currencies_config,
+                    },
+                },
+            };
+        }
+
+        return { data: undefined };
+    }),
+}));
 
 describe('useWalletsList', () => {
     test('should return wallets list for the current loginid', () => {
         const mock = mockStore({
             client: {
-                accounts: { CRW909900: { token: '12345' } },
+                accounts: { CRW1030: { token: '12345' } },
                 currency: 'USD',
-                loginid: 'CRW909900',
-            },
-        });
-
-        mockUseFetch.mockReturnValue({
-            data: {
-                authorize: {
-                    account_list: [
-                        {
-                            // @ts-expect-error need to come up with a way to mock the return type of useFetch
-                            account_category: 'wallet',
-                            currency: 'USD',
-                            is_virtual: 0,
-                            landing_company_name: 'svg',
-                        },
-                    ],
-                },
-                website_status,
+                loginid: 'CRW1030',
             },
         });
 
@@ -73,6 +115,7 @@ describe('useWalletsList', () => {
 
         expect(result.current.data).toEqual([
             {
+                ...account_list[0],
                 account_category: 'wallet',
                 balance: 0,
                 currency: 'USD',
@@ -85,7 +128,7 @@ describe('useWalletsList', () => {
                 is_crypto: false,
                 is_demo: false,
                 is_malta_wallet: false,
-                is_selected: false,
+                is_selected: true,
                 is_virtual: false,
                 name: 'USD Wallet',
                 is_disabled: false,
@@ -98,8 +141,22 @@ describe('useWalletsList', () => {
             client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
         });
 
-        // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { authorize: { account_list: [] }, website_status } });
+        (useFetch as jest.Mock).mockImplementation((name: string) => {
+            if (name === 'authorize') {
+                return {
+                    data: {
+                        authorize: {
+                            account_list: [],
+                        },
+                    },
+                };
+            }
+            if (name === 'website_status') {
+                return { data: { website_status: { currencies_config } } };
+            }
+
+            return { data: undefined };
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -166,44 +223,47 @@ describe('useWalletsList', () => {
             },
         });
 
-        mockUseFetch.mockReturnValue({
-            data: {
-                authorize: {
-                    account_list: [
-                        {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
-                            account_category: 'wallet',
-                            currency: 'USD',
-                            is_virtual: 0,
+        (useFetch as jest.Mock).mockImplementation((name: string) => {
+            if (name === 'authorize') {
+                return {
+                    data: {
+                        authorize: {
+                            account_list: [
+                                {
+                                    account_category: 'wallet',
+                                    currency: 'USD',
+                                    is_virtual: 0,
+                                },
+                                {
+                                    account_category: 'wallet',
+                                    currency: 'UST',
+                                    is_virtual: 0,
+                                },
+                                {
+                                    account_category: 'wallet',
+                                    currency: 'BTC',
+                                    is_virtual: 1,
+                                },
+                                {
+                                    account_category: 'wallet',
+                                    currency: 'AUD',
+                                    is_virtual: 0,
+                                },
+                                {
+                                    account_category: 'wallet',
+                                    currency: 'ETH',
+                                    is_virtual: 0,
+                                },
+                            ],
                         },
-                        {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
-                            account_category: 'wallet',
-                            currency: 'UST',
-                            is_virtual: 0,
-                        },
-                        {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
-                            account_category: 'wallet',
-                            currency: 'BTC',
-                            is_virtual: 1,
-                        },
-                        {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
-                            account_category: 'wallet',
-                            currency: 'AUD',
-                            is_virtual: 0,
-                        },
-                        {
-                            // @ts-expect-error Need to update @deriv/api-types to fix the TS error
-                            account_category: 'wallet',
-                            currency: 'ETH',
-                            is_virtual: 0,
-                        },
-                    ],
-                },
-                website_status,
-            },
+                    },
+                };
+            }
+            if (name === 'website_status') {
+                return { data: { website_status: { currencies_config } } };
+            }
+
+            return { data: undefined };
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (

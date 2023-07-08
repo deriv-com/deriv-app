@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, Formik, Form, FormikHelpers } from 'formik';
 import { AmountInput, Button, Loading, MessageList } from '@deriv/components';
@@ -8,6 +8,7 @@ import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from '@deriv/translations';
 import TransferAccountSelector from './transfer-account-selector';
 import { getAccountName } from 'Constants/utils';
+import type { TMessageItem } from 'Types';
 import './wallet-transfer.scss';
 
 type TWalletTransferProps = {
@@ -35,7 +36,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
 
     const {
         active_wallet,
-        is_loading,
+        is_accounts_loading,
         from_account,
         to_account,
         to_account_list,
@@ -43,6 +44,24 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         setFromAccount,
         setToAccount,
     } = useWalletTransfer();
+
+    const [is_loading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        setIsLoading(true);
+        if (active_wallet.loginid) {
+            setFromAccount(active_wallet);
+            setIsLoading(false);
+        }
+    }, [active_wallet, setFromAccount]);
+
+    useEffect(() => {
+        if (from_account?.loginid === active_wallet?.loginid) {
+            setToAccount(undefined);
+        } else {
+            setToAccount(active_wallet);
+        }
+    }, [active_wallet, from_account?.loginid, setToAccount]);
 
     const portal_id = is_mobile ? 'mobile_list_modal_root' : 'modal_root';
 
@@ -64,7 +83,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         );
     }, [active_wallet?.loginid, active_wallet_name, from_account, to_account?.loginid]);
 
-    const [message_list, setMessageList] = React.useState<React.ComponentProps<typeof MessageList>['list']>([]);
+    const [message_list, setMessageList] = React.useState<TMessageItem[]>([]);
 
     const clearErrorMessages = React.useCallback(
         () => setMessageList(list => list.filter(el => el.type !== 'error')),
@@ -85,7 +104,9 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
             });
 
             const should_reset_balance =
-                amount > active_wallet?.balance && active_wallet?.balance < initial_demo_balance;
+                active_wallet?.balance !== undefined &&
+                amount > active_wallet?.balance &&
+                active_wallet?.balance < initial_demo_balance;
 
             if (from_account?.loginid === active_wallet.loginid && should_reset_balance) {
                 setMessageList(list => {
@@ -93,6 +114,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                     return [
                         ...list,
                         {
+                            variant: 'with-action-button',
                             id: ERROR_CODES.is_demo.insufficient_fund,
                             button_label: localize('Reset balance'),
                             action: () => undefined,
@@ -110,6 +132,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                     return [
                         ...list,
                         {
+                            variant: 'base',
                             id: ERROR_CODES.is_demo.between_min_max,
                             message: `${message} ${from_account?.display_currency_code}` || '',
                             type: 'error',
@@ -152,7 +175,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         [clearErrorMessages, setToAccount, to_account?.loginid]
     );
 
-    if (is_loading) {
+    if (is_accounts_loading || is_loading) {
         return <Loading is_fullscreen={false} />;
     }
 

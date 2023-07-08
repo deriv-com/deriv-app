@@ -1,16 +1,24 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import TransferInfoMessage from './alert-message';
+import AlertMessage from './alert-message';
 import './message-list.scss';
 
 type TMessageListProps = {
-    list: {
-        action?: VoidFunction;
-        button_label?: string;
-        id: string;
-        message: string | JSX.Element;
-        type: 'info' | 'error' | 'success';
-    }[];
+    list:
+        | {
+              variant: 'base';
+              id: string;
+              type: 'info' | 'error' | 'success';
+              message: string | JSX.Element;
+          }[]
+        | {
+              variant: 'with-action-button';
+              action: VoidFunction;
+              button_label: string;
+              id: string;
+              type: 'info' | 'error' | 'success';
+              message: string | JSX.Element;
+          }[];
 };
 
 const animations = {
@@ -50,13 +58,18 @@ const MessageList = ({ list }: TMessageListProps) => {
                 {list.map(item => {
                     return (
                         <motion.div {...animations} layout key={item.id}>
-                            <TransferInfoMessage
-                                key={item.id}
-                                message={item.message}
-                                type={item.type}
-                                button_label={item.button_label}
-                                onClickHandler={item.action}
-                            />
+                            {item.variant === 'base' && (
+                                <AlertMessage variant='base' message={item.message} type={item.type} />
+                            )}
+                            {item.variant === 'with-action-button' && (
+                                <AlertMessage
+                                    variant='with-action-button'
+                                    button_label={item.button_label}
+                                    message={item.message}
+                                    onClickHandler={item.action}
+                                    type={item.type}
+                                />
+                            )}
                         </motion.div>
                     );
                 })}

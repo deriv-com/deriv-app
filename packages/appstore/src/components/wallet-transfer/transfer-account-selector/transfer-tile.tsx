@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon, Text, WalletJurisdictionBadge } from '@deriv/components';
 import { WalletTile } from '../wallet-tile';
-import type { TTransferAccount } from './transfer-account-selector';
+import type { TTransferAccount } from 'Types';
 
 type TTransferTile = {
     is_mobile?: boolean;

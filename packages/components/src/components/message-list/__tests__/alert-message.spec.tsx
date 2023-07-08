@@ -4,28 +4,36 @@ import userEvent from '@testing-library/user-event';
 import AlertMessage from '../alert-message';
 
 describe('AlertMessage', () => {
-    it('Should proper icon type', () => {
-        const { rerender } = render(<AlertMessage type='error' message='' />);
+    it('Should render proper icon type', () => {
+        const { rerender } = render(<AlertMessage variant='base' type='error' message='' />);
 
         expect(screen.getByTestId('dt_IcWalletErrorMessageWithCross')).toBeInTheDocument();
 
-        rerender(<AlertMessage type='info' message='' />);
+        rerender(<AlertMessage variant='base' type='info' message='' />);
 
         expect(screen.getByTestId('dt_IcWalletInfoMessageWithThreeDots')).toBeInTheDocument();
 
-        rerender(<AlertMessage type='success' message='' />);
+        rerender(<AlertMessage variant='base' type='success' message='' />);
 
         expect(screen.getByTestId('dt_IcWalletSuccessMessage')).toBeInTheDocument();
     });
 
     it('Should render proper message', () => {
-        render(<AlertMessage type='error' message='Error message' />);
+        render(<AlertMessage variant='base' type='error' message='Error message' />);
 
         expect(screen.getByText('Error message')).toBeInTheDocument();
     });
 
     it('Should render proper button', () => {
-        render(<AlertMessage type='error' message='Error message' button_label='Error button' />);
+        render(
+            <AlertMessage
+                variant='with-action-button'
+                type='error'
+                message='Error message'
+                button_label='Error button'
+                onClickHandler={jest.fn()}
+            />
+        );
 
         expect(screen.getByRole('button', { name: 'Error button' })).toBeInTheDocument();
     });
@@ -35,6 +43,7 @@ describe('AlertMessage', () => {
 
         render(
             <AlertMessage
+                variant='with-action-button'
                 type='error'
                 message='Error message'
                 button_label='Error button'

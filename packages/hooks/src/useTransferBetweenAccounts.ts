@@ -75,9 +75,13 @@ const useTransferBetweenAccounts = () => {
                             return { ...wallet, icon: wallet_icon };
                         }) || [],
             },
-            modified_active_wallet: accounts?.find(account => account.loginid === active_wallet?.loginid),
+            modified_active_wallet: {
+                ...accounts?.find(account => account.loginid === active_wallet?.loginid),
+                icon: active_wallet?.icon,
+            },
         };
     }, [
+        active_wallet?.currency,
         active_wallet?.icon,
         active_wallet?.landing_company_name,
         active_wallet?.loginid,

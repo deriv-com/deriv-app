@@ -79,24 +79,23 @@ export default class GTMStore extends BaseStore {
      * @param {object} data
      */
     async pushDataLayer(data) {
-        try {
-            if (this.is_gtm_applicable) {
-                BinarySocket.wait('authorize')
-                    .then(() => {
-                        const gtm_object = { ...this.common_variables, ...data };
-                        if (!gtm_object.event) return;
+        // try {
+        if (this.is_gtm_applicable) {
+            BinarySocket.wait('authorize').then(() => {
+                const gtm_object = { ...this.common_variables, ...data };
+                if (!gtm_object.event) return;
 
-                        dataLayer.push(gtm_object);
-                    })
-                    .catch(() => {
-                        // eslint-disable-next-line no-console
-                        console.log('error resisted');
-                    });
-            }
-        } catch (err) {
-            // eslint-disable-next-line no-console
-            console.log('or am I here ?', { err });
+                dataLayer.push(gtm_object);
+            });
+            // .catch(() => {
+            //     // eslint-disable-next-line no-console
+            //     console.log('error resisted');
+            // });
         }
+        // } catch (err) {
+        //     // eslint-disable-next-line no-console
+        //     console.log('or am I here ?', { err });
+        // }
     }
 
     /**

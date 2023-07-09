@@ -2,14 +2,14 @@
 .cq-bottom-ui-widgets {
     bottom: 14px !important;
 }
-@keyframes blue-emphasizer {
+@keyframes spot-emphasizer {
     0%,
     100% {
         background: transparent;
     }
     20% {
         background: center no-repeat
-            radial-gradient(50% 50% at 50% 50%, rgba(55, 124, 252, 0.72) 0%, rgba(55, 124, 252, 0) 100%);
+            radial-gradient(50% 50% at 50% 50%, var(--text-loss-danger) 0%, rgba(55, 124, 252, 0) 100%);
     }
 }
 
@@ -154,7 +154,7 @@
                     top: -0.3rem;
                     left: 0.3rem;
                     border-radius: 50%;
-                    animation: blue-emphasizer 0.8s;
+                    animation: 0.5s spot-emphasizer 0.2s;
 
                     @include mobile {
                         left: 0rem;

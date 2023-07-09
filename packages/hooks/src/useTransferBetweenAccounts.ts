@@ -31,18 +31,27 @@ const useTransferBetweenAccounts = () => {
     const { modified_transfer_accounts, modified_active_wallet } = useMemo(() => {
         const all_linked_cfd_accounts = [...derivez_accounts, ...dxtrade_accounts, ...mt5_accounts];
 
-        const accounts = data?.accounts?.map(account => ({
-            ...account,
-            active_wallet_icon: active_wallet?.icon,
-            balance: parseFloat(Number(account.balance).toFixed(getConfig(account.currency || '')?.fractional_digits)),
-            display_currency_code: getConfig(account.currency || '')?.display_code,
-            gradient_class: `wallet-card__${
-                account?.demo_account ? 'demo' : active_wallet?.currency?.toLowerCase()
-            }-bg${is_dark_mode_on ? '--dark' : ''}`,
-            is_demo: Boolean(account?.demo_account),
-            shortcode: active_wallet?.landing_company_name,
-            type: (getConfig(account.currency || '')?.is_crypto ? 'crypto' : 'fiat') as 'fiat' | 'crypto',
-        }));
+        const getAccountType = (is_demo?: number, currency?: string): 'fiat' | 'crypto' | 'demo' => {
+            if (is_demo) return 'demo';
+            return getConfig(currency || '')?.is_crypto ? 'crypto' : 'fiat';
+        };
+
+        const accounts = data?.accounts?.map(account => {
+            return {
+                ...account,
+                active_wallet_icon: active_wallet?.icon,
+                balance: parseFloat(
+                    Number(account.balance).toFixed(getConfig(account.currency || '')?.fractional_digits)
+                ),
+                display_currency_code: getConfig(account.currency || '')?.display_code,
+                gradient_class: `wallet-card__${
+                    account?.demo_account ? 'demo' : active_wallet?.currency?.toLowerCase()
+                }-bg${is_dark_mode_on ? '--dark' : ''}`,
+                is_demo: Boolean(account?.demo_account),
+                shortcode: active_wallet?.landing_company_name,
+                type: getAccountType(account.demo_account, account.currency),
+            };
+        });
 
         return {
             modified_transfer_accounts: {
@@ -95,10 +104,45 @@ const useTransferBetweenAccounts = () => {
         trading_apps_icon,
     ]);
 
+    //add test accounts, remove after tsesting
+    const test_accounts = modified_transfer_accounts.accounts.concat([
+        {
+            account_type: 'dxtrade',
+            balance: 1000,
+            currency: 'USD',
+            demo_account: 1,
+            loginid: 'DXR1009',
+            market_type: 'all',
+            active_wallet_icon: 'IcWalletDerivDemoLight',
+            display_currency_code: 'USD',
+            gradient_class: 'wallet-card__demo-bg',
+            is_demo: true,
+            shortcode: 'svg',
+            type: 'demo',
+            icon: 'IcRebrandingDerivX',
+        },
+        {
+            account_type: 'derivez',
+            balance: 1000,
+            currency: 'USD',
+            demo_account: 1,
+            derivez_group: 'real\\p02_ts01\\all\\svg_ez_usd',
+            loginid: 'EZR80001086',
+            status: null,
+            active_wallet_icon: 'IcWalletDerivDemoLight',
+            display_currency_code: 'USD',
+            gradient_class: 'wallet-card__demo-bg',
+            is_demo: true,
+            shortcode: 'svg',
+            type: 'demo',
+            icon: 'IcRebrandingDerivEz',
+        },
+    ]);
+
     return {
         ...rest,
         active_wallet: modified_active_wallet,
-        transfer_accounts: modified_transfer_accounts,
+        transfer_accounts: { ...modified_transfer_accounts, accounts: test_accounts },
     };
 };
 

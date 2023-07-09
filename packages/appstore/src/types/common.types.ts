@@ -201,7 +201,7 @@ export type TTransferAccount = {
     loginid?: string;
     mt5_market_type?: 'all' | 'financial' | 'synthetic';
     shortcode?: string | undefined;
-    type?: 'fiat' | 'crypto';
+    type?: 'fiat' | 'crypto' | 'demo';
 };
 
 export type TMessageItem =

@@ -29,7 +29,8 @@ const ERROR_CODES = {
 };
 
 const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisible }: TWalletTransferProps) => {
-    const { ui } = useStore();
+    const { client, ui } = useStore();
+    const { is_switching } = client;
     const { is_mobile } = ui;
 
     const { getConfig } = useCurrencyConfig();
@@ -49,10 +50,8 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
 
     useEffect(() => {
         setIsLoading(true);
-        if (active_wallet.loginid) {
-            setFromAccount(active_wallet);
-            setIsLoading(false);
-        }
+        if (active_wallet.loginid) setFromAccount(active_wallet);
+        setIsLoading(false);
     }, [active_wallet, setFromAccount]);
 
     useEffect(() => {
@@ -175,7 +174,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         [clearErrorMessages, setToAccount, to_account?.loginid]
     );
 
-    if (is_accounts_loading || is_loading) {
+    if (is_accounts_loading || is_loading || is_switching) {
         return <Loading is_fullscreen={false} />;
     }
 

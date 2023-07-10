@@ -7,7 +7,7 @@ import BaseStore from './base-store';
 
 export default class GTMStore extends BaseStore {
     is_gtm_applicable =
-        window.location.hostname === 'deriv-app.binary.sx' || /^(16303|16929|19111|19112)$/.test(getAppId());
+        window.location.hostname === 'localhost.binary.sx' || /^(16303|16929|19111|19112)$/.test(getAppId());
 
     constructor(root_store) {
         super({ root_store });
@@ -81,11 +81,12 @@ export default class GTMStore extends BaseStore {
     async pushDataLayer(data) {
         // try {
         if (this.is_gtm_applicable) {
-            BinarySocket.wait('authorize').then(() => {
+            BinarySocket.wait('authorize').then(async () => {
                 const gtm_object = { ...this.common_variables, ...data };
                 if (!gtm_object.event) return;
 
-                dataLayer.push(gtm_object);
+                const myData = await dataLayer.push(gtm_object);
+                console.log({ myData });
             });
             // .catch(() => {
             //     // eslint-disable-next-line no-console

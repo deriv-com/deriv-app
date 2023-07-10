@@ -5,8 +5,7 @@ import { useStore, observer } from '@deriv/stores';
 import { getWalletStepConfig, getWalletStepLocale, wallet_tour_styles } from 'Constants/tour-steps-config-new';
 
 const WalletTourGuide = observer(() => {
-    const { traders_hub, ui } = useStore();
-    const { is_wallet_switching } = ui;
+    const { traders_hub } = useStore();
     const { is_wallet_tour_open, toggleIsWalletTourOpen } = traders_hub;
 
     const wallet_tour_step_locale = getWalletStepLocale();
@@ -25,7 +24,7 @@ const WalletTourGuide = observer(() => {
 
     return (
         <Joyride
-            run={is_wallet_tour_open && !is_wallet_switching}
+            run={is_wallet_tour_open}
             continuous
             hideCloseButton
             showSkipButton

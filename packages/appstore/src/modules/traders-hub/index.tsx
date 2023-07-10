@@ -35,25 +35,42 @@ const TradersHub = observer(() => {
         Notifications !== null;
 
     const [scrolled, setScrolled] = React.useState(false);
+    const [wallet_tour_scrolled, setWalletTourScrolled] = React.useState(false);
 
     const handleScroll = () => {
         const element = traders_hub_ref?.current;
-        if (element && (is_tour_open || is_wallet_tour_open)) {
+        if (element && is_tour_open) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     };
 
-    // TODO: replace this with something more reliable
+    const handleWalletTour = () => {
+        const element = traders_hub_ref?.current;
+        if (element && is_wallet_tour_open) {
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
     React.useEffect(() => {
         setTimeout(() => {
             handleScroll();
             setTimeout(() => {
                 setScrolled(true);
-            }, 4000);
-            setScrolled(false);
-        }, 3000);
-        if (scrolled) setScrolled(false);
-    }, [is_tour_open, is_wallet_tour_open]);
+            }, 200);
+        }, 100);
+    }, [is_tour_open]);
+
+    // TODO: for demo purpose only, remove this when there is a proper way to close the tour
+    React.useEffect(() => {
+        setTimeout(() => {
+            handleWalletTour();
+            setTimeout(() => {
+                setWalletTourScrolled(true);
+            }, 5000);
+            setWalletTourScrolled(false);
+        }, 2000);
+        if (scrolled) setWalletTourScrolled(false);
+    }, [is_wallet_tour_open]);
 
     const { is_low_risk_cr_eu } = useContentFlag();
 
@@ -79,7 +96,7 @@ const TradersHub = observer(() => {
                     <AddMoreWallets />
                     <AccountWithoutWallets />
                     <ModalManager />
-                    {scrolled && <WalletTourGuide />}
+                    {wallet_tour_scrolled && <WalletTourGuide />}
                     {scrolled && <TourGuide />}
                 </div>
             </Div100vhContainer>

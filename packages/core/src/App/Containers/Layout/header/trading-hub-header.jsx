@@ -50,17 +50,17 @@ const TradingHubOnboarding = ({
     toggleIsWalletTourOpen,
     switchAccount,
     is_wallet_switching,
-    // setIsOnboardingVisited,
+    setIsOnboardingVisited,
 }) => {
-    // const history = useHistory();
+    const history = useHistory();
 
     const { data } = useWalletsList();
-    const first_loginid = data?.[0].loginid;
+    const usd_loginid = data?.find(wallet => wallet.currency === 'USD' && !wallet.is_virtual)?.loginid;
     const wallet = useActiveWallet();
 
     const handleSwitchAndToggle = async () => {
-        if (wallet?.loginid !== first_loginid) {
-            await switchAccount(first_loginid);
+        if (wallet?.loginid !== usd_loginid) {
+            await switchAccount(usd_loginid);
         }
         if (!is_wallet_switching) toggleIsWalletTourOpen(true);
     };
@@ -79,9 +79,13 @@ const TradingHubOnboarding = ({
                         icon={is_dark_mode ? 'IcAppstoreTradingHubOnboardingDark' : 'IcAppstoreTradingHubOnboarding'}
                         size={20}
                         onClick={() => {
-                            // history.push(routes.onboarding);
-                            // setIsOnboardingVisited(false);
-                            handleSwitchAndToggle();
+                            // TODO: implement if else function to show traders hub onboarding
+                            if (data?.length > 0) {
+                                handleSwitchAndToggle();
+                            } else {
+                                history.push(routes.onboarding);
+                                setIsOnboardingVisited(false);
+                            }
                         }}
                     />
                 </Popover>
@@ -362,6 +366,8 @@ TradingHubHeader.propTypes = {
     toggleNeedRealAccountForCashierModal: PropTypes.func,
     // added for wallets onboarding demo
     toggleIsWalletTourOpen: PropTypes.func,
+    switchAccount: PropTypes.func,
+    is_wallet_switching: PropTypes.bool,
 };
 
 export default connect(({ client, common, notifications, ui, traders_hub }) => ({

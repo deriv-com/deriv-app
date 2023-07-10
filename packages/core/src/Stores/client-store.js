@@ -24,6 +24,7 @@ import {
     toMoment,
     urlForLanguage,
 } from '@deriv/shared';
+import { RudderStack } from '@deriv/analytics';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType, getAvailableAccount } from './Helpers/client';
@@ -730,8 +731,8 @@ export default class ClientStore extends BaseStore {
 
     get is_tnc_needed() {
         if (this.is_virtual) return false;
-        const { client_tnc_status } = this.account_settings;
-        const { terms_conditions_version } = this.website_status;
+        const { client_tnc_status } = this.account_settings || {};
+        const { terms_conditions_version } = this.website_status || {};
 
         return typeof client_tnc_status !== 'undefined' && client_tnc_status !== terms_conditions_version;
     }
@@ -1635,7 +1636,11 @@ export default class ClientStore extends BaseStore {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
 
                 // Client comes back from oauth and logs in
-                await this.root_store.rudderstack.identifyEvent();
+                RudderStack.identifyEvent(this.user_id, {
+                    language: getLanguage().toLowerCase(),
+                });
+                const current_page = window.location.hostname + window.location.pathname;
+                RudderStack.pageView(current_page);
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',
@@ -2114,7 +2119,7 @@ export default class ClientStore extends BaseStore {
         if (response?.logout === 1) {
             this.cleanUp();
 
-            this.root_store.rudderstack.reset();
+            RudderStack.reset();
             this.setLogout(true);
         }
 

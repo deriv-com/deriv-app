@@ -19,9 +19,10 @@ import TwoFactorAuthenticationArticle from './two-factor-authentication-article.
 import { observer, useStore } from '@deriv/stores';
 
 const TwoFactorAuthentication = observer(() => {
-    const { client, ui } = useStore();
+    const { client, ui, common } = useStore();
     const { email_address, getTwoFAStatus, has_enabled_two_fa, is_switching, setTwoFAStatus, setTwoFAChangedStatus } =
         client;
+    const { is_language_changing } = common;
     const { notification_messages_ui: Notifications } = ui;
     const [is_loading, setLoading] = React.useState(true);
     const [is_qr_loading, setQrLoading] = React.useState(false);
@@ -88,6 +89,7 @@ const TwoFactorAuthentication = observer(() => {
                     is_enabled={has_enabled_two_fa}
                     setTwoFAStatus={setTwoFAStatus}
                     setTwoFAChangedStatus={setTwoFAChangedStatus}
+                    is_language_changing={is_language_changing}
                 />
             </div>
         </ThemedScrollbars>
@@ -177,6 +179,7 @@ const TwoFactorAuthentication = observer(() => {
                                 is_enabled={has_enabled_two_fa}
                                 setTwoFAStatus={setTwoFAStatus}
                                 setTwoFAChangedStatus={setTwoFAChangedStatus}
+                                is_language_changing={is_language_changing}
                             />
                         </Timeline.Item>
                     </Timeline>

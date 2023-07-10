@@ -1,5 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#xkasg4
-import { translate } from '../../../../../common/i18n';
+import { translate } from '@i18n';
 import { insideAfterPurchase } from '../../relationChecker';
 
 Blockly.Blocks.trade_again = {

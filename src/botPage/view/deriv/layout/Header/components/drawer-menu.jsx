@@ -1,7 +1,8 @@
 import React from 'react';
 import classNames from 'classnames';
 import config from '@config';
-import { translate } from '../../../../../../common/utils/tools';
+import { translate } from '@i18n';
+import PropTypes from 'prop-types';
 import MenuLinks from './menu-links.jsx';
 import PlatformDropdown from './platform-dropdown.jsx';
 
@@ -62,6 +63,15 @@ const DrawerMenu = ({
             </div>
         </div>
     );
+};
+
+DrawerMenu.propTypes = {
+    hideDropdown: PropTypes.func,
+    isPlatformSwitcherOpen: PropTypes.bool,
+    is_logged: PropTypes.bool,
+    platformDropdownRef: PropTypes.object,
+    setIsPlatformSwitcherOpen: PropTypes.func,
+    updateShowDrawerMenu: PropTypes.func,
 };
 
 export default DrawerMenu;

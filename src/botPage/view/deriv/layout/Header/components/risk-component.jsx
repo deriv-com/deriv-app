@@ -2,7 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import config from '@config';
-import { translate } from '../../../../../../common/utils/tools';
+import { translate } from '@i18n';
+import PropTypes from 'prop-types';
 import { observer as globalObserver } from '../../../../../../common/utils/observer';
 
 const Separator = () => <div className='account__switcher-seperator'></div>;
@@ -102,9 +103,16 @@ const RiskComponent = ({ non_eu_accounts = [], eu_accounts = [], is_country_low_
                         </React.Fragment>
                     );
                 }
+                return null;
             })}
         </>
     );
+};
+
+RiskComponent.propTypes = {
+    non_eu_accounts: PropTypes.array,
+    eu_accounts: PropTypes.array,
+    is_country_low_risk: PropTypes.bool,
 };
 
 export default RiskComponent;

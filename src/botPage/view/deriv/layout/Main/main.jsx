@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { TrackJS } from 'trackjs';
 import { AppConstants } from '@constants';
 import { parseQueryString, getRelatedDeriveOrigin, queryToObjectArray } from '@utils';
+import { translate } from '@i18n';
 import {
     convertForDerivStore,
     get as getStorage,
@@ -17,7 +18,6 @@ import {
 } from '@storage';
 import { addTokenIfValid } from '../../../../../common/appId';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
-import { translate } from '../../../../../common/utils/tools';
 import _Blockly from '../../../blockly';
 import LogTable from '../../../LogTable';
 import TradeInfoPanel from '../../../TradeInfoPanel';

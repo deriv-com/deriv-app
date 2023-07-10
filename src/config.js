@@ -1,10 +1,10 @@
 import { generateDerivLink, getRelatedDeriveOrigin } from '@utils';
-import { translate } from './common/utils/tools';
+import { translate } from '@i18n';
 import { getOAuthURL } from './common/appId';
 
 const related_deriv_origin = getRelatedDeriveOrigin();
 
-export default {
+const getConfig = () => ({
     app_title: 'Binary Bot',
     app_logo: 'public/images/ic-brand-binarybot.svg',
     supported_languages: {
@@ -199,6 +199,8 @@ export default {
     deposit: {
         visible: true,
         url: `${related_deriv_origin.origin}/cashier/deposit`,
-        label: translate('Deposit'),
+        label: 'Deposit',
     },
-};
+});
+
+export default getConfig();

@@ -2,7 +2,7 @@ import React from 'react';
 import config from '@config';
 import PropTypes from 'prop-types';
 import { getLanguage } from '@storage';
-import { redirectToSupportedLang, translate } from '../../../../../../common/utils/tools';
+import { redirectToSupportedLang, translate } from '@i18n';
 import './language-selector.scss';
 
 const current_language = getLanguage();

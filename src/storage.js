@@ -1,6 +1,6 @@
 import { parseQueryString, getRelatedDeriveOrigin, getDomainAppId } from '@utils';
 import { AppConstants } from '@constants';
-import { supported_languages } from './common/i18n';
+import { supported_languages } from '@i18n';
 import { setCookieLanguage } from './common/utils/cookieManager';
 
 let store = {};

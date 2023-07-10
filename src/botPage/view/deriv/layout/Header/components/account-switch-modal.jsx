@@ -1,5 +1,6 @@
 import React from 'react';
-import { translate } from '../../../../../../common/i18n';
+import { translate } from '@i18n';
+import PropTypes from 'prop-types';
 
 const AccountSwitchModal = ({ is_bot_running, onClose, onAccept }) => (
     <div className='logout-dialog'>
@@ -33,5 +34,11 @@ const AccountSwitchModal = ({ is_bot_running, onClose, onAccept }) => (
         </div>
     </div>
 );
+
+AccountSwitchModal.propTypes = {
+    is_bot_running: PropTypes.bool,
+    onClose: PropTypes.func,
+    onAccept: PropTypes.func,
+};
 
 export default AccountSwitchModal;

@@ -2,9 +2,9 @@ import { TrackJS } from 'trackjs';
 import { get as getStorage, set as setStorage, getTokenList, removeAllTokens } from '@storage';
 import { isProduction } from '@utils';
 
+import { translate } from '@i18n';
 import { symbolApi } from '../../shared';
 import config from '../../../common/const';
-import { translate } from '../../../../common/i18n';
 import { observer as globalObserver } from '../../../../common/utils/observer';
 
 import api from '../../deriv/api';

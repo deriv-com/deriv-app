@@ -3,7 +3,7 @@ import Joyride, { STATUS, ACTIONS, EVENTS } from 'react-joyride';
 import { useLocation } from 'react-router-dom';
 import { set as setStorage, get as getStorage } from '@storage';
 import { isMobile } from '@utils';
-import { translate } from '../../../../../common/i18n';
+import { translate } from '@i18n';
 import welcome from './welcome';
 
 const getTourState = () => !getStorage('closedTourPopup');

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { translate } from '@i18n';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
-import { translate } from '../../../common/utils/tools';
 
 const ClearButton = () => {
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);

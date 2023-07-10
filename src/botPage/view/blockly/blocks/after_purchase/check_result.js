@@ -1,6 +1,6 @@
+import { translate } from '@i18n';
 import config from '../../../../common/const';
 import { insideAfterPurchase } from '../../relationChecker';
-import { translate } from '../../../../../common/i18n';
 
 Blockly.Blocks.contract_check_result = {
     init: function init() {

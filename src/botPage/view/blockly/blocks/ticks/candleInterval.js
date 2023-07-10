@@ -1,5 +1,5 @@
+import { translate } from '@i18n';
 import config from '../../../../common/const';
-import { translate } from '../../../../../common/i18n';
 
 export default function candleInterval(block) {
     block

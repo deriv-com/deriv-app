@@ -5,7 +5,7 @@ import config from '@config';
 import { AppConstants } from '@constants';
 import { generateDerivLink } from '@utils';
 import { getTokenList, set as setStorage, isLoggedIn } from '@storage';
-import { translate } from '../../../../../../common/utils/tools';
+import { translate } from '@i18n';
 import Notifications from './notifications.jsx';
 import AccountDropdown from './account-dropdown.jsx';
 import Modal from '../../../components/modal';
@@ -138,7 +138,7 @@ const AccountActions = () => {
 
             {visible && (
                 <a className='url-cashier-deposit btn btn--primary header__deposit mobile-hide' href={url}>
-                    {label}
+                    {translate(label)}
                 </a>
             )}
             {account_switcher_token && (

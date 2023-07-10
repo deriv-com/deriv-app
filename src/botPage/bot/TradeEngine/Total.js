@@ -1,4 +1,4 @@
-import { translate } from '../../../common/i18n';
+import { translate } from '@i18n';
 import { roundBalance } from '../../common/tools';
 import { info, notify } from '../broadcast';
 import { createError } from '../../common/error';

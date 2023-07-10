@@ -7,10 +7,10 @@ import {
     removeAllTokens,
     updateTokenList,
 } from '@storage';
+import { translate } from '@i18n';
 import config, { updateConfigCurrencies } from '../../common/const';
 import logHandler from '../logger';
 import { observer as globalObserver } from '../../../common/utils/observer';
-import { translate } from '../../../common/i18n';
 
 import { logoutAllTokens } from '../../../common/appId';
 import IntegrationsDialog from '../Dialogs/IntegrationsDialog';

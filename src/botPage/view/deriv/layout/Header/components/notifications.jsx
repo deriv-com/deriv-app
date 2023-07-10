@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { translate } from '../../../../../../common/utils/tools';
+import { translate } from '@i18n';
 
 const NotificationsContainer = React.forwardRef(({ setIsOpen }, containerRef) => {
     const hideNotifications = e => !containerRef.current.contains(e.target) && setIsOpen(false);

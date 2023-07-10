@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import config from '@config';
 import { getRelatedDeriveOrigin } from '@utils';
 import { useLocation } from 'react-router-dom';
-import { translate } from '../../../../../../common/utils/tools';
+import { translate } from '@i18n';
 
 // eslint-disable-next-line react/display-name
 const PlatformDropdown = React.forwardRef(({ hideDropdown, setIsPlatformSwitcherOpen }, platformDropdownRef) => {

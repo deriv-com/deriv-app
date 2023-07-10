@@ -4,9 +4,9 @@ import React from 'react';
 import Draggable from 'react-draggable';
 import { Table, Column } from 'react-virtualized';
 import PropTypes from 'prop-types';
+import { translate } from '@i18n';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { appendRow, updateRow, saveAs, isNumber } from '../shared';
-import { translate } from '../../../common/i18n';
 import { roundBalance } from '../../common/tools';
 import * as style from '../style';
 

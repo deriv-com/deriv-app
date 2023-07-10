@@ -1,6 +1,6 @@
 import { set as setStorage, getLanguage } from '@storage';
 import { isProduction, getExtension } from '@utils';
-import { translate as i18nTranslate } from '../i18n';
+import { translate as i18nTranslate } from '@i18n';
 import { setCookieLanguage } from './cookieManager';
 
 export const getQueryParams = (qs = '') => {
@@ -16,11 +16,6 @@ export const setLanguage = lang => {
     setStorage('lang', lang);
     setCookieLanguage(lang);
     return lang;
-};
-
-export const redirectToSupportedLang = lang => {
-    const new_search = document.location.search.replace(/(lang|l)+=[a-z]{2}/, `l=${lang}`);
-    window.history.pushState(null, '/', new_search);
 };
 
 export const getObjectValue = obj => obj[Object.keys(obj)[0]];
@@ -113,27 +108,3 @@ export const showSpinnerInButton = $buttonElement => {
 export const removeSpinnerInButton = ($buttonElement, initialText) => {
     $buttonElement.html(() => initialText).prop('disabled', false);
 };
-
-export const loadExternalScript = (src, async = true, defer = true) =>
-    new Promise((resolve, reject) => {
-        const script = document.createElement('script');
-        script.src = src;
-        script.async = async;
-        script.defer = defer;
-        script.crossorigin = 'anonymous';
-        script.onerror = reject;
-
-        function handleLoad() {
-            const load_state = this.readyState;
-            if (load_state && !/loaded|complete/.test(load_state)) return;
-
-            script.onload = null;
-            script.onreadystatechange = null;
-            resolve();
-        }
-
-        script.onload = handleLoad;
-        script.onreadystatechange = handleLoad;
-
-        document.head.appendChild(script);
-    });

@@ -1,8 +1,8 @@
 // eslint-disable-next-line max-classes-per-file
+import { translate } from '@i18n';
 import { fieldGeneratorMapping } from './blocks/shared';
 import { saveAs } from '../shared';
 import config from '../../common/const';
-import { translate } from '../../../common/i18n';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { TrackJSError } from '../logger';
 

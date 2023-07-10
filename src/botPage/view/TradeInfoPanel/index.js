@@ -1,7 +1,7 @@
 import React from 'react';
+import { translate } from '@i18n';
 import AnimateTrade from './AnimateTrade';
 import { observer as globalObserver } from '../../../common/utils/observer';
-import { translate } from '../../../common/i18n';
 import Summary from './Summary';
 import TradeTable from './TradeTable';
 import RunButton from './RunButton';

@@ -1,8 +1,8 @@
+import { translate } from '@i18n';
 import CandleInterface from './CandleInterface';
 import MiscInterface from './MiscInterface';
 import IndicatorsInterface from './IndicatorsInterface';
 import WebhookInterface from './WebhookInterface';
-import { translate } from '../../../common/i18n';
 
 // prettier-ignore
 export default Interface => class extends IndicatorsInterface(

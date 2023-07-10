@@ -1,5 +1,5 @@
+import { translate } from '@i18n';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
-import { translate } from '../../../../../common/i18n';
 import config from '../../../../common/const';
 import { setBlockTextColor, findTopParentBlock, deleteBlockIfExists } from '../../utils';
 import { defineContract } from '../images';
@@ -15,7 +15,7 @@ const bcMoveAboveInitializationsDown = block => {
     if (parent) {
         const initializations = block.getInput('INITIALIZATION').connection;
         const ancestor = findTopParentBlock(parent);
-        if(parent.nextConnection?.disconnect() !== null){
+        if (parent.nextConnection?.disconnect() !== null) {
             parent.nextConnection.disconnect();
         }
         initializations.connect((ancestor || parent).previousConnection);

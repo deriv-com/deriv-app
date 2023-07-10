@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
+import classNames from 'classnames';
 import config from '@config';
 import { getTokenList } from '@storage';
-import classNames from 'classnames';
-import { translate } from '../../../../../../common/utils/tools';
+import { translate } from '@i18n';
 import { setAccountSwitcherToken } from '../../../store/ui-slice';
 import { CRYPTO_CURRENCIES } from '../../../../../common/const';
 

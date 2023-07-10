@@ -1,6 +1,5 @@
 import { getLanguage } from '@storage';
-import { redirectToSupportedLang } from './utils/tools';
-import { init, translate } from './i18n';
+import { init, translate, redirectToSupportedLang } from '@i18n';
 
 const addUiLang = () => {
     $('[data-i18n-text]').each(function each() {

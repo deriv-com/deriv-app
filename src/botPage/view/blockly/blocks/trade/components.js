@@ -1,8 +1,8 @@
 import { getActiveAccount } from '@storage';
+import { translate } from '@i18n';
 import { caution } from '../images';
 import { fieldGeneratorMapping, oppositesToDropdown } from '../shared';
 import config from '../../../../common/const';
-import { translate } from '../../../../../common/i18n';
 
 export const marketDropdown = block => {
     block

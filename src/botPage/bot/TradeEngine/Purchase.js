@@ -1,4 +1,4 @@
-import { translate } from '../../../common/i18n';
+import { translate } from '@i18n';
 import { getUUID, recoverFromError, doUntilDone } from '../tools';
 import { contractStatus, info, notify } from '../broadcast';
 import { purchaseSuccessful } from './state/actions';

@@ -1,8 +1,8 @@
 import React from 'react';
+import { translate } from '@i18n';
 import Dialog from './Dialog';
 import GoogleDriveIntegration from '../react-components/Integrations/GoogleDriveIntegration';
 import * as style from '../style';
-import { translate } from '../../../common/i18n';
 
 const IntegrationsContent = () => (
     <div id='integrations-dialog' className='dialog-content' style={style.content}>

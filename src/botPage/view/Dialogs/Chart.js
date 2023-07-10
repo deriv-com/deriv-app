@@ -10,7 +10,7 @@ import {
     Views,
 } from '@deriv/deriv-charts';
 import { getLanguage } from '@storage';
-import { translate } from '../../../common/i18n';
+import { translate } from '@i18n';
 import Dialog from './Dialog';
 import ChartTicksService from '../../common/ChartTicksService';
 import { observer as globalObserver } from '../../../common/utils/observer';

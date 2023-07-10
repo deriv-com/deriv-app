@@ -1,12 +1,10 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#szwuog
-import { translate } from '../../../../../../common/i18n';
+import { translate } from '@i18n';
 import { expectValue } from '../../shared';
 
 Blockly.Blocks.is_candle_black = {
     init: function init() {
-        this.appendValueInput('OHLCOBJ')
-            .setCheck('Candle')
-            .appendField(translate('is candle black?'));
+        this.appendValueInput('OHLCOBJ').setCheck('Candle').appendField(translate('is candle black?'));
         this.setInputsInline(false);
         this.setOutput(true, 'Boolean');
         this.setColour('#dedede');

@@ -3,8 +3,8 @@ import React from 'react';
 import Draggable from 'react-draggable';
 import PropTypes from 'prop-types';
 import { Table, Column, CellMeasurerCache } from 'react-virtualized';
+import { translate } from '@i18n';
 import { observer as globalObserver } from '../../common/utils/observer';
-import { translate } from '../../common/i18n';
 import { appendRow, saveAs } from './shared';
 
 const Logtable = () => {

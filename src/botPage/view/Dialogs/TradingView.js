@@ -1,5 +1,6 @@
 import React from 'react';
 import config from '@config';
+import { translate } from '@i18n';
 import { iframe as iframeStyle } from '../style';
 import Dialog from './Dialog';
 
@@ -12,7 +13,7 @@ function TradingViewComponent() {
 
 export default class TradingView extends Dialog {
     constructor() {
-        super('trading-view-dialog', config.trading_view_chart.label, <TradingViewComponent />, {
+        super('trading-view-dialog', translate(config.trading_view_chart.label), <TradingViewComponent />, {
             width: chartWidth,
             height: chartHeight,
         });

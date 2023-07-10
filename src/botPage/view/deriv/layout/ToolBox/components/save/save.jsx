@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { translate } from '@i18n';
 import LoadingButton from '../loading_button';
 import SAVE_LOAD_TYPE from '../../common';
 import useIsMounted from '../../../../../../../common/hooks/isMounted';
@@ -7,7 +8,6 @@ import { cleanBeforeExport } from '../../../../../blockly/utils';
 import * as style from '../../../../../style';
 import google_drive_util from '../../../../../../../common/integrations/GoogleDrive';
 import { observer as globalObserver } from '../../../../../../../common/utils/observer';
-import { translate } from '../../../../../../../common/i18n';
 
 const Save = ({ blockly, closeDialog, is_gd_logged_in }) => {
     const [is_loading, setLoading] = React.useState(false);

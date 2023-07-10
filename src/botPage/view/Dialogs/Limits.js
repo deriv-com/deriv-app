@@ -3,10 +3,11 @@ import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { getToken } from '@storage';
+import { translate } from '@i18n';
 import Dialog from './Dialog';
 import { restrictInputCharacter } from '../shared';
 import * as style from '../style';
-import { showSpinnerInButton, removeSpinnerInButton, createUrl, translate } from '../../../common/utils/tools';
+import { showSpinnerInButton, removeSpinnerInButton, createUrl } from '../../../common/utils/tools';
 
 class LimitsContent extends PureComponent {
     constructor() {

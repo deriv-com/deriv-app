@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import config from '@config';
+import { translate } from '@i18n';
 import { saveBeforeUnload } from '../../../../blockly/utils';
 import { setIsHeaderLoaded } from '../../../store/ui-slice';
 import Tour, { TourTargets } from '../../../components/tour';
@@ -20,7 +21,7 @@ const AuthButtons = () => {
     return (
         <div className='header__btn'>
             <button id='btn__login' className='btn btn--tertiary header__btn-login' onClick={onLogin}>
-                {config.login.label}
+                {translate(config.login.label)}
             </button>
             <a
                 id='btn__signup'
@@ -29,7 +30,7 @@ const AuthButtons = () => {
                 rel='noopener noreferrer'
                 href={config.signup.url}
             >
-                {config.signup.label}
+                {translate(config.signup.label)}
             </a>
             <TourTargets />
             <Tour />

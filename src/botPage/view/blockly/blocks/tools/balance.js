@@ -1,5 +1,5 @@
 // https://blockly-demo.appspot.com/static/demos/blockfactory/index.html#kqvz7z
-import { translate } from '../../../../../common/i18n';
+import { translate } from '@i18n';
 import config from '../../../../common/const';
 
 Blockly.Blocks.balance = {

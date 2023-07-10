@@ -1,4 +1,5 @@
 import { getLanguage } from '@storage';
+import { translate } from '@i18n';
 import GD_CONFIG from '../../botPage/common/google_drive_config';
 import { load } from '../../botPage/view/blockly';
 import store from '../../botPage/view/deriv/store';
@@ -6,8 +7,31 @@ import { setGdLoggedIn } from '../../botPage/view/deriv/store/client-slice';
 import { setGdReady } from '../../botPage/view/deriv/store/ui-slice';
 import { TrackJSError } from '../../botPage/view/logger';
 import { observer as globalObserver } from '../utils/observer';
-import { loadExternalScript, translate } from '../utils/tools';
 import { trackJSTrack } from './trackJSTrack';
+
+export const loadExternalScript = (src, async = true, defer = true) =>
+    new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.async = async;
+        script.defer = defer;
+        script.crossorigin = 'anonymous';
+        script.onerror = reject;
+
+        function handleLoad() {
+            const load_state = this.readyState;
+            if (load_state && !/loaded|complete/.test(load_state)) return;
+
+            script.onload = null;
+            script.onreadystatechange = null;
+            resolve();
+        }
+
+        script.onload = handleLoad;
+        script.onreadystatechange = handleLoad;
+
+        document.head.appendChild(script);
+    });
 
 const errLogger = (err, msg) => {
     const err_str = JSON.stringify(err);

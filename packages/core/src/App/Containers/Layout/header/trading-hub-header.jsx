@@ -55,12 +55,12 @@ const TradingHubOnboarding = ({
     const history = useHistory();
 
     const { data } = useWalletsList();
-    const usd_loginid = data?.find(wallet => wallet.currency === 'USD' && !wallet.is_virtual)?.loginid;
+    const first_loginid = data?.[0].loginid;
     const wallet = useActiveWallet();
 
     const handleSwitchAndToggle = async () => {
-        if (wallet?.loginid !== usd_loginid) {
-            await switchAccount(usd_loginid);
+        if (wallet?.loginid !== first_loginid) {
+            await switchAccount(first_loginid);
         }
         if (!is_wallet_switching) toggleIsWalletTourOpen(true);
     };

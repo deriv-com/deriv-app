@@ -109,14 +109,14 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
 
             if (from_account?.loginid === active_wallet.loginid && should_reset_balance) {
                 setMessageList(list => {
-                    if (list.some(el => el.id === ERROR_CODES.is_demo.insufficient_fund)) return list;
+                    if (list.some(el => el.key === ERROR_CODES.is_demo.insufficient_fund)) return list;
                     return [
                         ...list,
                         {
                             variant: 'with-action-button',
-                            id: ERROR_CODES.is_demo.insufficient_fund,
+                            key: ERROR_CODES.is_demo.insufficient_fund,
                             button_label: localize('Reset balance'),
-                            action: () => undefined,
+                            onClickHandler: () => undefined,
                             message: localize(
                                 'You have insufficient fund in the selected wallet, please reset your virtual balance'
                             ),
@@ -127,12 +127,12 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
             } else if (!is_ok) {
                 //else if not wallet loginid and not is_ok message
                 setMessageList(list => {
-                    if (list.some(el => el.id === ERROR_CODES.is_demo.between_min_max)) return list;
+                    if (list.some(el => el.key === ERROR_CODES.is_demo.between_min_max)) return list;
                     return [
                         ...list,
                         {
                             variant: 'base',
-                            id: ERROR_CODES.is_demo.between_min_max,
+                            key: ERROR_CODES.is_demo.between_min_max,
                             message: `${message} ${from_account?.display_currency_code}` || '',
                             type: 'error',
                         },
@@ -174,7 +174,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         [clearErrorMessages, setToAccount, to_account?.loginid]
     );
 
-    if (is_accounts_loading || is_loading || is_switching) {
+    if (is_accounts_loading || is_switching || is_loading) {
         return <Loading is_fullscreen={false} />;
     }
 

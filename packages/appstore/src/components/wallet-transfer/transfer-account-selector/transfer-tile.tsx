@@ -1,5 +1,6 @@
 import React from 'react';
-import { Icon, Text, WalletJurisdictionBadge } from '@deriv/components';
+import { Icon, Text } from '@deriv/components';
+import { WalletJurisdictionBadge } from 'Components/wallet-jurisdiction-badge';
 import { WalletTile } from '../wallet-tile';
 import type { TTransferAccount } from 'Types';
 

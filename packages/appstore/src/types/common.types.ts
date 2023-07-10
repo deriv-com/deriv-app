@@ -207,15 +207,15 @@ export type TTransferAccount = {
 export type TMessageItem =
     | {
           variant: 'base';
-          id: string;
+          key: string;
           type: 'info' | 'error' | 'success';
           message: string | JSX.Element;
       }
     | {
           variant: 'with-action-button';
-          action: VoidFunction;
+          onClickHandler: VoidFunction;
           button_label: string;
-          id: string;
+          key: string;
           type: 'info' | 'error' | 'success';
           message: string | JSX.Element;
       };

@@ -28,7 +28,7 @@ const useTransferBetweenAccounts = () => {
         options: { enabled: is_cfd_accounts_loaded },
     });
 
-    const { modified_transfer_accounts, modified_active_wallet } = useMemo(() => {
+    const modified_transfer_accounts = useMemo(() => {
         const all_linked_cfd_accounts = [...derivez_accounts, ...dxtrade_accounts, ...mt5_accounts];
 
         const getAccountType = (is_demo?: number, currency?: string): 'fiat' | 'crypto' | 'demo' => {
@@ -54,46 +54,39 @@ const useTransferBetweenAccounts = () => {
         });
 
         return {
-            modified_transfer_accounts: {
-                accounts:
-                    accounts
-                        ?.filter(account => account.account_type !== 'wallet')
-                        .map(account => {
-                            const cfd_icon = all_linked_cfd_accounts.find(
-                                cfd_account => account.loginid && cfd_account.loginid?.includes(account.loginid)
-                            )?.icon;
+            accounts:
+                accounts
+                    ?.filter(account => account.account_type !== 'wallet')
+                    .map(account => {
+                        const cfd_icon = all_linked_cfd_accounts.find(
+                            cfd_account => account.loginid && cfd_account.loginid?.includes(account.loginid)
+                        )?.icon;
 
-                            return {
-                                ...account,
-                                icon: account.account_type === 'trading' ? trading_apps_icon : cfd_icon,
-                                ...(account.account_type === 'mt5' && {
-                                    mt5_market_type: mt5_accounts?.find(
-                                        mt5_account => account.loginid && mt5_account.loginid?.includes(account.loginid)
-                                    )?.market_type,
-                                }),
-                            };
-                        }) || [],
-                wallets:
-                    accounts
-                        ?.filter(account => account.account_type === 'wallet')
-                        .map(wallet => {
-                            const wallet_icon = all_wallets?.find(
-                                wallet_account => wallet_account.loginid === wallet.loginid
-                            )?.icon;
+                        return {
+                            ...account,
+                            icon: account.account_type === 'trading' ? trading_apps_icon : cfd_icon,
+                            ...(account.account_type === 'mt5' && {
+                                mt5_market_type: mt5_accounts?.find(
+                                    mt5_account => account.loginid && mt5_account.loginid?.includes(account.loginid)
+                                )?.market_type,
+                            }),
+                        };
+                    }) || [],
+            wallets:
+                accounts
+                    ?.filter(account => account.account_type === 'wallet')
+                    .map(wallet => {
+                        const wallet_icon = all_wallets?.find(
+                            wallet_account => wallet_account.loginid === wallet.loginid
+                        )?.icon;
 
-                            return { ...wallet, icon: wallet_icon };
-                        }) || [],
-            },
-            modified_active_wallet: {
-                ...accounts?.find(account => account.loginid === active_wallet?.loginid),
-                icon: active_wallet?.icon,
-            },
+                        return { ...wallet, icon: wallet_icon };
+                    }) || [],
         };
     }, [
         active_wallet?.currency,
         active_wallet?.icon,
         active_wallet?.landing_company_name,
-        active_wallet?.loginid,
         all_wallets,
         data?.accounts,
         derivez_accounts,
@@ -103,6 +96,14 @@ const useTransferBetweenAccounts = () => {
         mt5_accounts,
         trading_apps_icon,
     ]);
+
+    const modified_active_wallet = useMemo(
+        () => ({
+            ...modified_transfer_accounts.wallets?.find(wallet => wallet.loginid === active_wallet?.loginid),
+            icon: active_wallet?.icon,
+        }),
+        [active_wallet?.icon, active_wallet?.loginid, modified_transfer_accounts.wallets]
+    );
 
     //add test accounts, remove after tsesting
     const test_accounts = modified_transfer_accounts.accounts.concat([

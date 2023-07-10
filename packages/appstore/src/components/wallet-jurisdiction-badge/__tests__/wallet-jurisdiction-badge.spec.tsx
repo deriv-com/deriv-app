@@ -1,6 +1,5 @@
 import React from 'react';
 import WalletJurisdictionBadge from '../wallet-jurisdiction-badge';
-import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 
 describe('WalletJurisdictionBadge', () => {

@@ -1,5 +1,5 @@
 import React from 'react';
-import Badge from '../badge';
+import { Badge } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
 type TWalletJurisdictionBadge = {

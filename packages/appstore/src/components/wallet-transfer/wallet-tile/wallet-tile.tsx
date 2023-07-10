@@ -1,9 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Text, AppLinkedWithWalletIcon, WalletJurisdictionBadge, WalletIcon } from '@deriv/components';
+import { Text, AppLinkedWithWalletIcon, WalletIcon } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { getAccountName } from 'Constants/utils';
+import { WalletJurisdictionBadge } from 'Components/wallet-jurisdiction-badge';
 import type { TTransferAccount } from 'Types';
 import './wallet-tile.scss';
 

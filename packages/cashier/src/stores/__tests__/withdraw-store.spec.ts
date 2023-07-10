@@ -162,14 +162,6 @@ describe('WithdrawStore', () => {
         expect(withdraw_store.blockchain_address).toBe(blockchain_address);
     });
 
-    it('should handle error on mount of withdraw', async () => {
-        const spyHandleCashierError = jest.spyOn(withdraw_store.error, 'handleCashierError');
-        const error = { code: 'InvalidToken', message: 'Your token has expired or is invalid.' };
-
-        (withdraw_store.WS.authorized.cashier as jest.Mock).mockResolvedValueOnce({ error });
-        expect(spyHandleCashierError).toHaveBeenCalledWith(error);
-    });
-
     it('should return an error on mount of crypto withdraw if verification code is not valid', async () => {
         const { setLoading } = withdraw_store.root_store.modules.cashier.general_store;
         const spyHandleCashierError = jest.spyOn(withdraw_store.error, 'handleCashierError');

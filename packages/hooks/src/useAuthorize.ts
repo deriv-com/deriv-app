@@ -7,7 +7,7 @@ const useAuthorize = () => {
 
     return useFetch('authorize', {
         payload: { authorize: accounts[loginid]?.token || '' },
-        options: { enabled: !!loginid, keepPreviousData: true, refetchOnWindowFocus: false },
+        options: { enabled: !!loginid, keepPreviousData: true },
     });
 };
 

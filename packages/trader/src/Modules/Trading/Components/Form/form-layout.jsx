@@ -6,7 +6,7 @@ import { isMobile } from '@deriv/shared';
 const Screen = Loadable({
     loader: () =>
         isMobile()
-            ? import(/* webpackChunkName: "screen-small" */ './screen-small.jsx')
+            ? import(/* webpackChunkName: "screen-small" */ './screen-small')
             : import(/* webpackChunkName: "screen-large" */ './screen-large.jsx'),
     loading: () => null,
     render(loaded, props) {

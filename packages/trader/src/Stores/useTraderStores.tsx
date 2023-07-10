@@ -64,8 +64,10 @@ type TOverrideTradeStore = Omit<
     | 'market_open_times'
     | 'multiplier_range_list'
     | 'sessions'
+    | 'setIsTradeParamsExpanded'
     | 'start_dates_list'
     | 'start_time'
+    | 'take_profit'
     | 'proposal_info'
     | 'trade_types'
     | 'ticks_history_stats'
@@ -104,8 +106,10 @@ type TOverrideTradeStore = Omit<
         };
     };
     sessions: Array<{ open: moment.Moment; close: moment.Moment }>;
+    setIsTradeParamsExpanded: (value: boolean) => void;
     start_dates_list: Array<{ text: string; value: number }>;
     start_time: string | null;
+    take_profit?: string;
     ticks_history_stats: {
         ticks_stayed_in?: number[];
         last_tick_epoch?: number;

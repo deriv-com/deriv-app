@@ -8,12 +8,12 @@ const useAvailableWallets = () => {
     const { client, ui } = useStore();
     const { is_dark_mode_on } = ui;
     const { is_crypto } = client;
-    const { data } = useAuthorize();
+    const { data, isSuccess: is_authorize_success, isFetching: is_authorize_fetching } = useAuthorize();
 
     // @ts-expect-error Need to update @deriv/api-types to fix the TS error
     const { data: account_type_data, ...rest } = useFetch('get_account_types', {
         payload: { company: data?.landing_company_name },
-        options: { enabled: Boolean(data?.landing_company_name) },
+        options: { enabled: is_authorize_success && !is_authorize_fetching && Boolean(data?.landing_company_name) },
     });
 
     const { data: added_wallets } = useWalletsList();
@@ -22,8 +22,8 @@ const useAvailableWallets = () => {
         if (!account_type_data) return null;
         // @ts-expect-error Need to update @deriv/api-types to fix the TS error
         const { crypto, doughflow } = account_type_data?.get_account_types?.wallet || {};
-        const crypto_currencies = crypto.currencies;
-        const fiat_currencies = doughflow.currencies;
+        const crypto_currencies = crypto?.currencies;
+        const fiat_currencies = doughflow?.currencies;
 
         if (!crypto_currencies || !fiat_currencies) return null;
         const available_currencies = [...fiat_currencies, ...crypto_currencies];

@@ -1,0 +1,12 @@
+{
+    "name": "@deriv/analytics",
+    "private": true,
+    "version": "1.0.0",
+    "main": "src/index.ts",
+    "devDependencies": {
+        "typescript": "^4.6.3"
+    },
+    "dependencies": {
+        "rudder-sdk-js": "^2.35.0"
+    }
+}

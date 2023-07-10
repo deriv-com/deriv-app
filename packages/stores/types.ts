@@ -179,8 +179,6 @@ type TClientStore = {
     currency: string;
     current_currency_type?: string;
     current_fiat_currency?: string;
-    fetchResidenceList: () => void;
-    getChangeableFields: () => void;
     getLimits: () => Promise<{ get_limits?: GetLimits }>;
     has_deposited_for_first_time: boolean;
     has_active_real_account: boolean;

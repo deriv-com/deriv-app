@@ -27,6 +27,7 @@ export const getAllowedLanguages = () => {
         ES: 'Español',
         RU: 'Русский',
         FR: 'Français',
+        IT: 'Italiano',
         TH: 'ไทย',
         VI: 'Tiếng Việt',
     };

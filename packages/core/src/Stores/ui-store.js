@@ -1,4 +1,4 @@
-import { isMobile, isTouchDevice, LocalStore, routes, isBot } from '@deriv/shared';
+import { isMobile, isTouchDevice, LocalStore, routes } from '@deriv/shared';
 import { MAX_MOBILE_WIDTH, MAX_TABLET_WIDTH } from 'Constants/ui';
 import { action, autorun, computed, observable, makeObservable } from 'mobx';
 import BaseStore from './base-store';
@@ -581,10 +581,6 @@ export default class UIStore extends BaseStore {
             this.is_dark_mode_on = is_dark_mode_on;
             // This GTM call is here instead of the GTM store due to frequency of use
             this.root_store.gtm.pushDataLayer({ event: 'switch theme' });
-            const { is_pathname_bot } = isBot();
-            if (is_pathname_bot) {
-                location.reload();
-            }
         }
 
         return this.is_dark_mode_on;
@@ -615,11 +611,13 @@ export default class UIStore extends BaseStore {
         this.is_positions_drawer_on = true;
     }
 
-    openRealAccountSignup(target = this.root_store.client.upgradeable_landing_companies?.[0]) {
-        this.is_real_acc_signup_on = true;
-        this.real_account_signup_target = target;
-        this.is_accounts_switcher_on = false;
-        localStorage.removeItem('current_question_index');
+    openRealAccountSignup(target) {
+        if (target) {
+            this.is_real_acc_signup_on = true;
+            this.real_account_signup_target = target;
+            this.is_accounts_switcher_on = false;
+            localStorage.removeItem('current_question_index');
+        }
     }
 
     setShouldShowCancel(value) {

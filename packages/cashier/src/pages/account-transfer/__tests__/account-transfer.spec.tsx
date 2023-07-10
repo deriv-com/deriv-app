@@ -5,13 +5,13 @@ import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
 import { createBrowserHistory } from 'history';
 import AccountTransfer from '../account-transfer';
 import CashierProviders from '../../../cashier-providers';
-import { mockStore, TStores } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared/src/services/ws-methods', () => ({
     __esModule: true,
     default: 'mockedDefaultExport',
     WS: {
-        wait: (...payload) => {
+        wait: (...payload: unknown[]) => {
             return Promise.resolve([...payload]);
         },
     },
@@ -62,7 +62,7 @@ describe('<AccountTransfer />', () => {
         onClose: jest.fn(),
     };
 
-    const renderAccountTransfer = (store: TStores) => {
+    const renderAccountTransfer = (store: ReturnType<typeof mockStore>) => {
         render(<AccountTransfer {...props} />, {
             wrapper: ({ children }) => <CashierProviders store={store}>{children}</CashierProviders>,
         });

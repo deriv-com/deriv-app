@@ -1,8 +1,8 @@
 import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
-import useRequest from '../useRequest';
-import APIProvider from '../APIProvider';
 import { TSocketResponse } from '../../types';
+import APIProvider from '../APIProvider';
+import useRequest from '../useRequest';
 
 jest.mock('@deriv/shared', () => ({
     WS: {
@@ -22,10 +22,10 @@ describe('useRequest', () => {
 
         const { result, waitFor } = renderHook(() => useRequest('verify_email'), { wrapper });
 
-        result.current.mutate([{ payload: { verify_email: 'john@example.com', type: 'request_email' } }]);
+        result.current.mutate({ payload: { verify_email: 'john@example.com', type: 'request_email' } });
 
         await waitFor(() => result.current.isSuccess, { timeout: 10000 });
 
-        expect(result.current.data).toEqual(1);
+        expect(result.current.data?.verify_email).toEqual(1);
     });
 });

@@ -2,11 +2,12 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsCancelModal from '../crypto-transactions-cancel-modal';
 import CashierProviders from '../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
 
 describe('<CryptoTransactionsCancelModal />', () => {
-    let modal_root_el, mockRootStore;
+    let modal_root_el: HTMLDivElement, mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             modules: {
                 cashier: {
                     transaction_history: {
@@ -16,7 +17,7 @@ describe('<CryptoTransactionsCancelModal />', () => {
                     },
                 },
             },
-        };
+        });
     });
 
     beforeAll(() => {
@@ -61,7 +62,6 @@ describe('<CryptoTransactionsCancelModal />', () => {
 
         renderCryptoTransactionsCancelModal();
 
-        const yes_btn = screen.getByText('Yes');
         const no_btn = screen.getByText('No');
         fireEvent.click(no_btn);
 

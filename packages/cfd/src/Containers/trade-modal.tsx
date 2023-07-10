@@ -6,8 +6,9 @@ import { CFD_PLATFORMS, getCFDAccountKey, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getPlatformQRCode, PlatformsDesktopDownload } from '../Helpers/config';
 import { getTitle, platformsText, mobileDownloadLink } from '../Helpers/constants';
-import SpecBox from 'Components/specbox';
-import PasswordBox from 'Components/passwordbox';
+import SpecBox from '../Components/specbox';
+import PasswordBox from '../Components/passwordbox';
+import { TCFDPasswordReset } from './props.types';
 
 type TTradeModalProps = {
     mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
@@ -15,7 +16,7 @@ type TTradeModalProps = {
     onPasswordManager: (
         arg1: string | undefined,
         arg2: string,
-        arg3: string,
+        group: TCFDPasswordReset['account_group'],
         arg4: string,
         arg5: string | undefined
     ) => void;
@@ -121,13 +122,13 @@ const TradeModal = ({
     };
 
     const downloadCenterAppOption = (platform_type: TCFDsPlatformType) => {
-        let appTitle = '';
+        let app_title = '';
         if (platform_type === 'dxtrade') {
-            appTitle = 'Run Deriv X on your browser';
+            app_title = localize('Run Deriv X on your browser');
         } else if (platform_type === 'derivez') {
-            appTitle = 'Run Deriv EZ on your browser';
+            app_title = localize('Run Deriv EZ on your browser');
         } else if (platform_type === 'ctrader') {
-            appTitle = 'Run Deriv cTrader on your browser';
+            app_title = localize('Run Deriv cTrader on your browser');
         } else {
             return null;
         }
@@ -136,7 +137,7 @@ const TradeModal = ({
             <React.Fragment>
                 <div className='cfd-trade-modal__download-center-app--option'>
                     <Text className='cfd-trade-modal__download-center-app--option-item' size='xs'>
-                        {localize(appTitle)}
+                        {app_title}
                     </Text>
                     <PlatformsDesktopDownload
                         platform={platform}

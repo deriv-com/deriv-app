@@ -1,8 +1,15 @@
 import React from 'react';
-import Error from '../error';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
+import { StoreProvider, mockStore } from '@deriv/stores';
+import Error from '../error';
+
+const mock_store = mockStore({});
+
+const wrapper = ({ children }: { children: JSX.Element }) => {
+    return <StoreProvider store={mock_store}>{children}</StoreProvider>;
+};
 
 describe('<Error />', () => {
     it('should show the "Email verification failed" message, and "Resend email" button', () => {
@@ -13,7 +20,7 @@ describe('<Error />', () => {
             onClickButton: jest.fn(),
             setErrorMessage: jest.fn(),
         };
-        render(<Error error={error} />);
+        render(<Error error={error} />, { wrapper });
         expect(screen.getByText('Email verification failed')).toBeInTheDocument();
 
         expect(screen.getByText('Resend email')).toBeInTheDocument();
@@ -31,7 +38,8 @@ describe('<Error />', () => {
         render(
             <Router history={history}>
                 <Error error={error} />
-            </Router>
+            </Router>,
+            { wrapper }
         );
 
         expect(screen.getByText('Update your personal details')).toBeInTheDocument();
@@ -46,7 +54,7 @@ describe('<Error />', () => {
             onClickButton: jest.fn(),
             setErrorMessage: jest.fn(),
         };
-        render(<Error error={error} />);
+        render(<Error error={error} />, { wrapper });
 
         expect(screen.getByText('Oops, you have an error!')).toBeInTheDocument();
         expect(screen.getByText('Try again')).toBeInTheDocument();
@@ -60,7 +68,7 @@ describe('<Error />', () => {
             onClickButton: jest.fn(),
             setErrorMessage: jest.fn(),
         };
-        render(<Error error={error} />);
+        render(<Error error={error} />, { wrapper });
 
         expect(screen.getByText('Oops, you have an error with withdrawal!')).toBeInTheDocument();
     });
@@ -73,7 +81,7 @@ describe('<Error />', () => {
             onClickButton: jest.fn(),
             setErrorMessage: jest.fn(),
         };
-        render(<Error error={error} />);
+        render(<Error error={error} />, { wrapper });
 
         expect(screen.getByText('Default error')).toBeInTheDocument();
     });
@@ -93,7 +101,8 @@ describe('<Error />', () => {
             const { unmount } = render(
                 <Router history={history}>
                     <Error error={error} />
-                </Router>
+                </Router>,
+                { wrapper }
             );
             const error_btn = screen.getByText(btn_name);
             fireEvent.click(error_btn);

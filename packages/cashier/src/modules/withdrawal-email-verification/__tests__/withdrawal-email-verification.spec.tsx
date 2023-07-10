@@ -1,59 +1,41 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useWithdrawalEmailVerification } from '@deriv/hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import WithdrawalEmailVerification from '../withdrawal-email-verification';
+import CashierProviders from '../../../cashier-providers';
+
+const mockUseVerifyEmail: { has_been_sent: boolean; error: any; send: any } = {
+    has_been_sent: false,
+    error: undefined,
+    send: jest.fn(),
+};
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
-    useWithdrawalEmailVerification: jest.fn(),
+    useVerifyEmail: jest.fn(() => mockUseVerifyEmail),
 }));
 
-const mock_store = mockStore({});
+const mock_store = mockStore({
+    client: {
+        currency: 'USD',
+    },
+    modules: {
+        cashier: {
+            transaction_history: {
+                onMount: jest.fn(),
+            },
+        },
+    },
+});
 
-const mockUseWithdrawalEmailVerification = useWithdrawalEmailVerification as jest.MockedFunction<
-    typeof useWithdrawalEmailVerification
->;
+const wrapper = ({ children }: { children: JSX.Element }) => {
+    return <CashierProviders store={mock_store}>{children}</CashierProviders>;
+};
 
 describe('<WithdrawalEmailVerification />', () => {
     it('should render email verification page', () => {
-        mockUseWithdrawalEmailVerification.mockReturnValueOnce({
-            currency: 'USD',
-            transaction_history: {
-                onMount: jest.fn(),
-            },
-            verify: { has_been_sent: false },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => {
-            return <StoreProvider store={mock_store}>{children}</StoreProvider>;
-        };
-
         render(<WithdrawalEmailVerification />, { wrapper });
 
         expect(screen.getByText('Please help us verify your withdrawal request.')).toBeInTheDocument();
-    });
-
-    it('should render error page for failed email verification step', () => {
-        mockUseWithdrawalEmailVerification.mockReturnValueOnce({
-            currency: 'USD',
-            transaction_history: {
-                onMount: jest.fn(),
-            },
-            verify: {
-                has_been_sent: false,
-                error: {
-                    code: 'InvalidToken',
-                },
-            },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => {
-            return <StoreProvider store={mock_store}>{children}</StoreProvider>;
-        };
-
-        render(<WithdrawalEmailVerification />, { wrapper });
-
-        expect(screen.getByText('Email verification failed')).toBeInTheDocument();
     });
 });

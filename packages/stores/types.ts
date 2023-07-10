@@ -14,7 +14,6 @@ import type {
     StatesList,
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
-import type { ElementType } from 'react';
 import type { RouteComponentProps } from 'react-router';
 import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
 
@@ -422,7 +421,7 @@ type TUiStore = {
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
-    notification_messages_ui: ElementType;
+    notification_messages_ui: React.ElementType;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setReportsTabIndex: (value: number) => void;

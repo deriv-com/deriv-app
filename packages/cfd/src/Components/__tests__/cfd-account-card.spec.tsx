@@ -2,30 +2,45 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { CFDAccountCard } from '../cfd-account-card';
 import { TCFDAccountCard } from '../props.types';
+import { mockStore } from '@deriv/stores';
+import CFDProviders from '../../cfd-providers';
 
 type TMockPlatformAccounts = {
-    account_type: string;
+    account_type?: TCFDPasswordReset['account_group'];
+
     balance: number;
-    platform: string;
+    platform?: string;
     display_balance: string;
     display_login: string;
-    landing_company_short: string;
+    landing_company_short?: 'svg' | 'labuan' | 'bvi' | 'malta' | 'maltainvest' | 'vanuatu';
     login: string;
-    market_type: string;
+    market_type?: 'financial' | 'synthetic' | 'all';
 };
 
 const mock_connect_props = {
-    dxtrade_tokens: {
-        demo: '',
-        real: '',
+    modules: {
+        cfd: {
+            dxtrade_tokens: {
+                demo: '',
+                real: '',
+            },
+            setMT5TradeAccount: jest.fn(),
+        },
+    },
+    traders_hub: {
+        show_eu_related_content: false,
+    },
+    client: {
+        isEligibleForMoreDemoMt5Svg: jest.fn(() => true),
+        isEligibleForMoreRealMt5: jest.fn(() => true),
     },
 };
 
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => props => Component({ ...props, ...mock_connect_props }),
-}));
+const renderOptions = {
+    wrapper: ({ children }: { children: JSX.Element }) => (
+        <CFDProviders store={mockStore(mock_connect_props)}>{children}</CFDProviders>
+    ),
+};
 
 jest.mock('@deriv/components', () => {
     const original_module = jest.requireActual('@deriv/components');
@@ -80,22 +95,15 @@ describe('CFDAccountCard', () => {
             button_label: 'Top up',
             commission_message: 'No commission',
             descriptor: '',
-            dxtrade_tokens: {
-                demo: '',
-                real: '',
-            },
-            is_hovered: false,
             existing_accounts_data: [],
             has_banner: true,
             has_cfd_account_error: false,
-            is_eu: true,
             has_real_account: true,
             is_accounts_switcher_on: false,
             is_button_primary: true,
             is_disabled: false,
             is_logged_in: true,
             is_virtual: true,
-            onHover: jest.fn(),
             specs: {},
             type: { category: '', type: '', platform: '' },
             title: '',
@@ -105,11 +113,6 @@ describe('CFDAccountCard', () => {
             onPasswordManager: jest.fn(),
             toggleAccountsDialog: jest.fn(),
             toggleShouldShowRealAccountsList: jest.fn(),
-            isEligibleForMoreDemoMt5Svg: jest.fn(() => true),
-            isEligibleForMoreRealMt5: jest.fn(() => true),
-            setMT5TradeAccount: jest.fn(),
-            trading_platform_available_accounts: [],
-            show_eu_related_content: false,
         };
     });
 
@@ -126,7 +129,8 @@ describe('CFDAccountCard', () => {
                 descriptor={synthetic_descriptor}
                 title='Derived'
                 existing_accounts_data={[mt5_acc]}
-            />
+            />,
+            renderOptions
         );
         expect(screen.getByText(/most popular/i)).toBeInTheDocument();
         expect(screen.getByText(/demo/i)).toBeInTheDocument();
@@ -154,7 +158,8 @@ describe('CFDAccountCard', () => {
                 descriptor={financial_descriptor}
                 title='Financial'
                 existing_accounts_data={[mt5_acc]}
-            />
+            />,
+            renderOptions
         );
         expect(screen.getByText(/demo/i)).toBeInTheDocument();
         expect(screen.getByText(/IcMt5FinancialPlatform/i)).toBeInTheDocument();
@@ -183,8 +188,8 @@ describe('CFDAccountCard', () => {
                 descriptor={synthetic_descriptor}
                 title='Derived'
                 existing_accounts_data={[mt5_acc]}
-                is_eu={false}
-            />
+            />,
+            renderOptions
         );
         expect(screen.getByText(/most popular/i)).toBeInTheDocument();
         expect(screen.getByText(/IcMt5SyntheticPlatform/i)).toBeInTheDocument();
@@ -212,8 +217,8 @@ describe('CFDAccountCard', () => {
                 descriptor={financial_descriptor}
                 title='Financial'
                 existing_accounts_data={[mt5_acc]}
-                is_eu={false}
-            />
+            />,
+            renderOptions
         );
         expect(screen.getByText(/svg/i)).toBeInTheDocument();
         expect(screen.getByText(/IcMt5FinancialPlatform/i)).toBeInTheDocument();
@@ -242,7 +247,8 @@ describe('CFDAccountCard', () => {
                 descriptor={financial_descriptor}
                 title='Financial'
                 existing_accounts_data={[mt5_acc]}
-            />
+            />,
+            renderOptions
         );
         fireEvent.click(screen.getByRole('button', { name: /top up/i }));
         expect(props.onClickFund).toHaveBeenCalledWith(mt5_acc);
@@ -262,8 +268,8 @@ describe('CFDAccountCard', () => {
                 title='Derived'
                 existing_accounts_data={[]}
                 platform='mt5'
-                is_eu={false}
-            />
+            />,
+            renderOptions
         );
         expect(screen.getByText(/add account/i)).toBeInTheDocument();
     });
@@ -282,8 +288,8 @@ describe('CFDAccountCard', () => {
                 title='Derived'
                 existing_accounts_data={[]}
                 platform='mt5'
-                is_eu={false}
-            />
+            />,
+            renderOptions
         );
         expect(screen.getByText(/add account/i)).toBeInTheDocument();
     });
@@ -302,8 +308,8 @@ describe('CFDAccountCard', () => {
                 title='Derived'
                 existing_accounts_data={[]}
                 platform='mt5'
-                is_eu={false}
-            />
+            />,
+            renderOptions
         );
         fireEvent.click(screen.getByText(/add account/i));
         expect(props.onSelectAccount).toHaveBeenCalled();
@@ -324,7 +330,8 @@ describe('CFDAccountCard', () => {
                 platform='mt5'
                 button_label='Add real account'
                 existing_accounts_data={null}
-            />
+            />,
+            renderOptions
         );
         fireEvent.click(screen.getByText(/add real account/i));
         expect(props.onSelectAccount).toHaveBeenCalled();
@@ -345,7 +352,8 @@ describe('CFDAccountCard', () => {
                 platform='mt5'
                 button_label='Add demo account'
                 existing_accounts_data={null}
-            />
+            />,
+            renderOptions
         );
         fireEvent.click(screen.getByText(/add demo account/i));
         expect(props.onSelectAccount).toHaveBeenCalled();
@@ -365,7 +373,8 @@ describe('CFDAccountCard', () => {
                 title='Derived'
                 platform='mt5'
                 existing_accounts_data={[mt5_labuan_acc]}
-            />
+            />,
+            renderOptions
         );
         expect(screen.getByText(/labuan/i)).toBeInTheDocument();
     });
@@ -383,7 +392,8 @@ describe('CFDAccountCard', () => {
                 descriptor={synthetic_descriptor}
                 title='Derived'
                 platform='dxtrade'
-            />
+            />,
+            renderOptions
         );
         fireEvent.click(screen.getByText(/fund transfer/i));
         expect(props.onClickFund).toHaveBeenCalled();
@@ -403,7 +413,8 @@ describe('CFDAccountCard', () => {
                 title='Derived'
                 existing_accounts_data={[derivx_acc]}
                 platform='dxtrade'
-            />
+            />,
+            renderOptions
         );
         expect(screen.getByText(/icedit/i)).toBeInTheDocument();
         fireEvent.click(screen.getByText(/icedit/i));
@@ -424,8 +435,8 @@ describe('CFDAccountCard', () => {
                 title='Derived'
                 existing_accounts_data={[derivx_acc]}
                 platform='dxtrade'
-                is_eu={false}
-            />
+            />,
+            renderOptions
         );
         expect(screen.getByText(/most popular/i)).toBeInTheDocument();
         expect(screen.getByText(/demo/i)).toBeInTheDocument();
@@ -453,9 +464,9 @@ describe('CFDAccountCard', () => {
                 title='Derived'
                 existing_accounts_data={null}
                 platform='dxtrade'
-                is_eu={false}
                 is_logged_in={false}
-            />
+            />,
+            renderOptions
         );
         expect(screen.getByText(/most popular/i)).toBeInTheDocument();
         expect(

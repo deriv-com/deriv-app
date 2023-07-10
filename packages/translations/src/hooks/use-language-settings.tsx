@@ -1,15 +1,20 @@
-import React from 'react';
-import { changeLanguage, getLanguage } from '../utils/i18next';
+import { switchLanguage } from '../utils/i18next';
 import { Language, STORE_LANGUAGE_KEY } from '../utils/config';
+import { useTranslation } from '../context/translation-provider';
 
-const useLanguageSettings = (): [Language, (lang: Language) => void] => {
-    const [current_language, setCurrentLanguage] = React.useState<Language>(getLanguage() as Language);
+type UseLanguageSettings = {
+    onChanging?: () => void;
+    onChange?: () => void;
+};
 
-    const handleChangeLanguage = async (selected_lang: Language, onChange?: () => void, onComplete?: () => void) => {
+const useLanguageSettings = ({ onChanging, onChange }: UseLanguageSettings = {}) => {
+    const { current_language, setCurrentLanguage } = useTranslation();
+
+    const handleChangeLanguage = async (selected_lang: Language) => {
         if (selected_lang === 'EN') {
             window.localStorage.setItem(STORE_LANGUAGE_KEY, selected_lang);
         }
-        if (typeof onChange === 'function') onChange();
+        if (typeof onChanging === 'function') onChanging();
 
         const current_url = new URL(window.location.href);
         if (selected_lang === 'EN') {
@@ -19,13 +24,13 @@ const useLanguageSettings = (): [Language, (lang: Language) => void] => {
         }
 
         window.history.pushState({ path: current_url.toString() }, '', current_url.toString());
-        await changeLanguage(selected_lang, () => {
+        await switchLanguage(selected_lang, () => {
             setCurrentLanguage(selected_lang);
-            if (typeof onComplete === 'function') onComplete();
+            if (typeof onChange === 'function') onChange();
         });
     };
 
-    return [current_language, handleChangeLanguage];
+    return { current_language, handleChangeLanguage };
 };
 
 export default useLanguageSettings;

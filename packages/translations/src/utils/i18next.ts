@@ -99,7 +99,7 @@ export const initializeTranslations = async () => {
     await loadLanguageJson(getInitialLanguage());
 };
 
-export const changeLanguage = async (lang: Language, cb: (lang: Language) => void) => {
+export const switchLanguage = async (lang: Language, cb: (lang: Language) => void) => {
     if (isLanguageAvailable(lang)) {
         await loadLanguageJson(lang);
         await i18n.changeLanguage(lang, () => {

@@ -1,6 +1,6 @@
 import * as SocketCache from '_common/base/socket_cache';
 import { action, computed, makeObservable, observable } from 'mobx';
-import { changeLanguage, getAllowedLanguages } from '@deriv/translations';
+import { switchLanguage, getAllowedLanguages } from '@deriv/translations';
 import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
@@ -120,7 +120,7 @@ export default class CommonStore extends BaseStore {
                 }
                 window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
                 try {
-                    await changeLanguage(key, () => {
+                    await switchLanguage(key, () => {
                         this.changeCurrentLanguage(key);
                         BinarySocket.closeAndOpenNewConnection(key);
                         this.root_store.client.setIsAuthorize(false);

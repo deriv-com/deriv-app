@@ -4,7 +4,7 @@
     "description": "Deriv translations",
     "author": "Deriv",
     "license": "Apache-2.0",
-    "main": "src/index.js",
+    "main": "src/index.ts",
     "private": true,
     "repository": {
         "type": "git",
@@ -41,7 +41,10 @@
     "devDependencies": {
         "@babel/eslint-parser": "^7.17.0",
         "@babel/preset-react": "^7.16.7",
+        "@types/react": "^18.0.7",
+        "@types/react-dom": "^18.0.0",
+        "@xmldom/xmldom": "^0.8.4",
         "cross-env": "^5.2.0",
-        "@xmldom/xmldom": "^0.8.4"
+        "typescript": "^4.6.3"
     }
 }

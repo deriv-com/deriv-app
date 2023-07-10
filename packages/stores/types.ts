@@ -319,6 +319,11 @@ type TCommonStoreError = {
     should_show_refresh: boolean;
     type?: string;
 };
+type TCommonStoreServicesError = {
+    code: string;
+    message: string;
+    type?: string;
+};
 
 type TCommonStore = {
     error: TCommonStoreError;
@@ -333,6 +338,7 @@ type TCommonStore = {
     changeSelectedLanguage: (key: string) => void;
     current_language: string;
     is_language_changing: boolean;
+    services_error: TCommonStoreServicesError;
     setAppstorePlatform: (value: string) => void;
     app_routing_history: TAppRoutingHistory[];
     getExchangeRate: (from_currency: string, to_currency: string) => Promise<number>;
@@ -344,6 +350,7 @@ type TUiStore = {
     current_focus: string | null;
     disableApp: () => void;
     enableApp: () => void;
+    has_only_forward_starting_contracts: boolean;
     has_real_account_signup_ended: boolean;
     is_cashier_visible: boolean;
     is_closing_create_real_account_modal: boolean;
@@ -351,12 +358,15 @@ type TUiStore = {
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
+    is_services_error_visible: boolean;
+    is_unsupported_contract_modal_visible: boolean;
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
     notification_messages_ui: ElementType;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
+    setHasOnlyForwardingContracts: (has_only_forward_starting_contracts: boolean) => void;
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
@@ -368,6 +378,7 @@ type TUiStore = {
     toggleCashier: () => void;
     toggleLanguageSettingsModal: () => void;
     toggleReadyToDepositModal: () => void;
+    toggleServicesErrorModal: (is_visible: boolean) => void;
     toggleSetCurrencyModal: () => void;
     removeToast: (key: string) => void;
     is_ready_to_deposit_modal_visible: boolean;

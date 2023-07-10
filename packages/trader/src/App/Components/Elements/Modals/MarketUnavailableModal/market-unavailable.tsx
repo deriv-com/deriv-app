@@ -1,13 +1,18 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Dialog } from '@deriv/components';
 import { getPlatformSettings } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { observer, useStore } from '@deriv/stores';
 
-const MarketUnavailableModal = observer(({ onCancel, onConfirm }) => {
+type TMarketUnavailableModalProps = {
+    is_loading?: boolean;
+    onCancel: () => void;
+    onConfirm: () => void;
+};
+
+const MarketUnavailableModal = observer(({ is_loading, onCancel, onConfirm }: TMarketUnavailableModalProps) => {
     const { ui } = useStore();
-    const { disableApp, enableApp, is_loading, has_only_forward_starting_contracts: is_visible } = ui;
+    const { disableApp, enableApp, has_only_forward_starting_contracts: is_visible } = ui;
 
     return (
         <Dialog
@@ -37,10 +42,5 @@ const MarketUnavailableModal = observer(({ onCancel, onConfirm }) => {
         </Dialog>
     );
 });
-
-MarketUnavailableModal.propTypes = {
-    onCancel: PropTypes.func,
-    onConfirm: PropTypes.func,
-};
 
 export default MarketUnavailableModal;

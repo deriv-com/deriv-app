@@ -2,6 +2,19 @@ import merge from 'lodash.merge';
 import type { TStores } from '../types';
 
 const mock = (): TStores & { is_mock: boolean } => {
+    const common_store_error = {
+        app_routing_history: [],
+        header: '',
+        message: '',
+        type: '',
+        redirect_label: '',
+        redirect_to: '',
+        should_clear_error_on_click: false,
+        should_show_refresh: false,
+        redirectOnClick: jest.fn(),
+        setError: jest.fn(),
+    };
+    const services_error = { code: '', message: '', type: '' };
     return {
         is_mock: true,
         client: {
@@ -250,18 +263,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             setPrevAccountType: jest.fn(),
         },
         common: {
-            error: {
-                app_routing_history: [],
-                header: '',
-                message: '',
-                type: '',
-                redirect_label: '',
-                redirect_to: '',
-                should_clear_error_on_click: false,
-                should_show_refresh: false,
-                redirectOnClick: jest.fn(),
-                setError: jest.fn(),
-            },
+            error: common_store_error,
             is_from_derivgo: false,
             has_error: false,
             platform: '',
@@ -273,6 +275,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_network_online: false,
             server_time: undefined,
             is_language_changing: false,
+            services_error,
             setAppstorePlatform: jest.fn(),
             app_routing_history: [],
             getExchangeRate: jest.fn(),
@@ -288,6 +291,8 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_language_settings_modal_on: false,
             is_mobile: false,
             is_reports_visible: false,
+            is_services_error_visible: false,
+            is_unsupported_contract_modal_visible: false,
             disableApp: jest.fn(),
             enableApp: jest.fn(),
             setCurrentFocus: jest.fn(),
@@ -295,14 +300,17 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleCashier: jest.fn(),
             setDarkMode: jest.fn(),
             setReportsTabIndex: jest.fn(),
+            has_only_forward_starting_contracts: false,
             has_real_account_signup_ended: false,
             notification_messages_ui: jest.fn(),
             openRealAccountSignup: jest.fn(),
+            setHasOnlyForwardingContracts: jest.fn(),
             setIsClosingCreateRealAccountModal: jest.fn(),
             setRealAccountSignupEnd: jest.fn(),
             setPurchaseState: jest.fn(),
             shouldNavigateAfterChooseCrypto: jest.fn(),
             toggleLanguageSettingsModal: jest.fn(),
+            toggleServicesErrorModal: jest.fn(),
             toggleSetCurrencyModal: jest.fn(),
             addToast: jest.fn(),
             removeToast: jest.fn(),

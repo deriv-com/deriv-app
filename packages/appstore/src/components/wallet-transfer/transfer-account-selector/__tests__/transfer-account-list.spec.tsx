@@ -2,7 +2,7 @@ import React from 'react';
 import TransferAccountList from '../transfer-account-list';
 import { render, screen } from '@testing-library/react';
 
-jest.mock('../../wallet-tile/wallet-tile', () => jest.fn(() => <div>Wallet Tile</div>));
+jest.mock('../../wallet-transfer-tile/wallet-transfer-tile', () => jest.fn(() => <div>WalletTransferTile</div>));
 
 describe('TransferAccountList', () => {
     let mocked_props: React.ComponentProps<typeof TransferAccountList>;
@@ -16,6 +16,7 @@ describe('TransferAccountList', () => {
                 currency: 'USD',
                 display_currency_code: 'USD',
                 gradient_class: '',
+                icon: 'Icon',
                 is_demo: false,
                 loginid: '12345678',
                 shortcode: 'svg',
@@ -32,6 +33,7 @@ describe('TransferAccountList', () => {
                         currency: 'USD',
                         display_currency_code: 'USD',
                         gradient_class: '',
+                        icon: 'Icon',
                         is_demo: false,
                         loginid: '1',
                         shortcode: 'svg',
@@ -44,6 +46,7 @@ describe('TransferAccountList', () => {
                         currency: 'USD',
                         display_currency_code: 'USD',
                         gradient_class: '',
+                        icon: 'Icon',
                         is_demo: false,
                         loginid: '2',
                         shortcode: 'svg',
@@ -58,6 +61,7 @@ describe('TransferAccountList', () => {
                         currency: 'USD',
                         display_currency_code: 'USD',
                         gradient_class: '',
+                        icon: 'Icon',
                         is_demo: false,
                         loginid: '3',
                         shortcode: 'svg',
@@ -81,7 +85,7 @@ describe('TransferAccountList', () => {
     it('Should render proper amount of transfer accounts', () => {
         render(<TransferAccountList {...mocked_props} />);
 
-        expect(screen.getAllByText('Wallet Tile').length).toBe(3);
+        expect(screen.getAllByText('WalletTransferTile').length).toBe(3);
     });
 
     it('Should render transfer hint for Wallets account list', () => {

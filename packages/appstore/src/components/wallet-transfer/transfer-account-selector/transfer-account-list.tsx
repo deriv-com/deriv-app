@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import { Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
-import { WalletTile } from '../wallet-tile';
+import WalletTransferTile from '../wallet-transfer-tile';
 import type { TTransferAccount } from 'Types';
 
 type TTransferAccountList = {
@@ -67,7 +67,7 @@ const TransferAccountList = ({
                             </div>
                             <div className='transfer-account-selector__list-items'>
                                 {transfer_accounts[key as 'accounts' | 'wallets'].map((account, index) => (
-                                    <WalletTile
+                                    <WalletTransferTile
                                         key={index}
                                         account={account}
                                         className={classNames('transfer-account-selector__list-tile')}

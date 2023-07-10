@@ -6,7 +6,7 @@ import { localize } from '@deriv/translations';
 import { getAccountName } from 'Constants/utils';
 import { WalletJurisdictionBadge } from 'Components/wallet-jurisdiction-badge';
 import type { TTransferAccount } from 'Types';
-import './wallet-tile.scss';
+import './wallet-transfer-tile.scss';
 
 type TIconSize =
     | React.ComponentProps<typeof AppLinkedWithWalletIcon>['size']
@@ -23,7 +23,7 @@ type TWalletTileProps = {
     onClick?: () => void;
 };
 
-const WalletTile = ({
+const WalletTransferTile = ({
     account,
     className,
     has_hover,
@@ -94,15 +94,15 @@ const WalletTile = ({
 
     return (
         <div
-            className={classNames(`wallet-tile ${className}`, {
-                'wallet-tile--hover': has_hover,
-                'wallet-tile--active': is_active,
+            className={classNames(`wallet-transfer-tile ${className}`, {
+                'wallet-transfer-tile--hover': has_hover,
+                'wallet-transfer-tile--active': is_active,
             })}
-            data-testid='dt_wallet_tile'
+            data-testid='dt_wallet_transfer_tile'
             onClick={() => onClick?.()}
         >
-            <div className='wallet-tile__icon-with-badge'>
-                <div className='wallet-tile__icon'>
+            <div className='wwallet-transfer-tile__icon-with-badge'>
+                <div className='wallet-transfer-tile__icon'>
                     <IconComponent />
                 </div>
 
@@ -111,7 +111,7 @@ const WalletTile = ({
                 )}
             </div>
 
-            <div className='wallet-tile__content'>
+            <div className='wallet-transfer-tile__content'>
                 <Label />
                 <Balance />
             </div>
@@ -123,4 +123,4 @@ const WalletTile = ({
     );
 };
 
-export default React.memo(WalletTile);
+export default React.memo(WalletTransferTile);

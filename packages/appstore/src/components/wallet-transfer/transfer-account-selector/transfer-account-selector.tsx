@@ -1,7 +1,8 @@
 import React from 'react';
-import { Div100vhContainer, Modal, ThemedScrollbars } from '@deriv/components';
+import { Div100vhContainer, Icon, Modal, Text, ThemedScrollbars } from '@deriv/components';
 import TransferAccountList from './transfer-account-list';
-import TransferTile from './transfer-tile';
+import WalletTransferTile from '../wallet-transfer-tile';
+import { WalletJurisdictionBadge } from 'Components/wallet-jurisdiction-badge';
 import type { TTransferAccount } from 'Types';
 import './transfer-account-selector.scss';
 
@@ -18,6 +19,65 @@ type TTransferAccountSelectorProps = {
     transfer_hint?: string | JSX.Element;
     value?: TTransferAccount;
     wallet_name?: string;
+};
+
+type TAccountSelectorTransferTileProps = {
+    is_mobile?: boolean;
+    label?: string;
+    selected_account?: TTransferAccount;
+    placeholder?: string;
+};
+
+const ChevronIcon = () => {
+    return (
+        <div className='transfer-account-selector__chevron-icon'>
+            <Icon icon='IcChevronDown' data_testid='dt_chevron_icon' />
+        </div>
+    );
+};
+
+const AccountSelectorTransferTile = ({
+    is_mobile,
+    label,
+    placeholder,
+    selected_account,
+}: TAccountSelectorTransferTileProps) => {
+    return (
+        <React.Fragment>
+            <div className='transfer-account-selector__content'>
+                <div className='transfer-account-selector__heading-with-chevron'>
+                    <div className='transfer-account-selector__heading'>
+                        <Text size={is_mobile ? 'xxs' : 'xs'}>{label}</Text>
+                    </div>
+
+                    {is_mobile && <ChevronIcon />}
+                </div>
+
+                {selected_account ? (
+                    <WalletTransferTile
+                        account={selected_account}
+                        className='transfer-account-selector__value'
+                        is_mobile={is_mobile}
+                        is_value
+                    />
+                ) : (
+                    <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>
+                        {placeholder}
+                    </Text>
+                )}
+            </div>
+
+            {!is_mobile && (
+                <React.Fragment>
+                    <WalletJurisdictionBadge
+                        is_demo={Boolean(selected_account?.is_demo)}
+                        shortcode={selected_account?.shortcode}
+                    />
+                    <ChevronIcon />
+                </React.Fragment>
+            )}
+        </React.Fragment>
+    );
 };
 
 const TransferAccountSelector = ({
@@ -57,7 +117,7 @@ const TransferAccountSelector = ({
             data-testid='dt_transfer_account_selector'
             onClick={is_list_modal_open ? undefined : openAccountsList}
         >
-            <TransferTile
+            <AccountSelectorTransferTile
                 is_mobile={is_mobile}
                 label={label}
                 placeholder={placeholder}

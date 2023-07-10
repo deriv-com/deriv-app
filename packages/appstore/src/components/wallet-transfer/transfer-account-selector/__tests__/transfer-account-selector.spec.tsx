@@ -3,10 +3,8 @@ import TransferAccountSelector from '../transfer-account-selector';
 import userEvent from '@testing-library/user-event';
 import { render, screen } from '@testing-library/react';
 
-jest.mock('../../transfer-account-selector/transfer-tile', () => jest.fn(() => <div>Transfer Tile</div>));
-jest.mock('../../transfer-account-selector/transfer-account-list', () =>
-    jest.fn(() => <div>Transfer Account List</div>)
-);
+jest.mock('../transfer-account-list', () => jest.fn(() => <div>TransferAccountList</div>));
+jest.mock('../../wallet-transfer-tile', () => jest.fn(() => <div>WalletTransferTile</div>));
 
 describe('TransferAccountSelector', () => {
     let modal_root_el: HTMLDivElement, mocked_props: React.ComponentProps<typeof TransferAccountSelector>;
@@ -36,10 +34,41 @@ describe('TransferAccountSelector', () => {
         };
     });
 
-    it('Should render transfer tile by default', () => {
+    it('Should render placeholder, if there is no selected account', () => {
         render(<TransferAccountSelector {...mocked_props} />);
 
-        expect(screen.getByText('Transfer Tile')).toBeInTheDocument();
+        expect(screen.getByText('Transfer from')).toBeInTheDocument();
+        expect(screen.getByText('Placeholder')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_chevron_icon')).toBeInTheDocument();
+    });
+
+    it('Should render WalletTransferTile if the account was selected', () => {
+        mocked_props.value = {
+            active_wallet_icon: 'Icon',
+            display_currency_code: 'USD',
+            account_type: 'wallet',
+            balance: 100,
+            currency: 'USD',
+            gradient_class: '',
+            is_demo: false,
+            loginid: '12345678',
+            shortcode: 'svg',
+            type: 'fiat',
+            icon: 'Wallet Icon',
+        };
+        render(<TransferAccountSelector {...mocked_props} />);
+
+        expect(screen.getByText('Transfer from')).toBeInTheDocument();
+        expect(screen.getByText('WalletTransferTile')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_chevron_icon')).toBeInTheDocument();
+    });
+
+    it('Should render account selector transfer tile with default values default', () => {
+        render(<TransferAccountSelector {...mocked_props} />);
+
+        expect(screen.getByText('Transfer from')).toBeInTheDocument();
+        expect(screen.getByText('Placeholder')).toBeInTheDocument();
+        expect(screen.getByTestId('dt_chevron_icon')).toBeInTheDocument();
     });
 
     it('Should render TransferAccountList when the user is clicking on Transfer selector', () => {
@@ -48,6 +77,12 @@ describe('TransferAccountSelector', () => {
         const el_transfer_tile = screen.getByTestId('dt_transfer_account_selector');
         userEvent.click(el_transfer_tile);
 
-        expect(screen.getByText('Transfer Account List')).toBeInTheDocument();
+        expect(screen.getByText('TransferAccountList')).toBeInTheDocument();
+    });
+
+    it('Should render proper label', () => {
+        render(<TransferAccountSelector {...mocked_props} />);
+
+        expect(screen.getByText('Transfer from')).toBeInTheDocument();
     });
 });

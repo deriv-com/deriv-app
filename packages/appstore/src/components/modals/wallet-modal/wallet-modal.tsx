@@ -47,11 +47,11 @@ const WalletModal = observer(() => {
         [is_mobile, is_wallet_modal_visible]
     );
 
-    const should_show_loader = active_wallet?.loginid !== active_modal_wallet_id || !is_authorize || !active_wallet;
+    const is_loading = active_wallet?.loginid !== active_modal_wallet_id || !is_authorize || !active_wallet;
 
     return (
         <Modal is_open={is_wallet_modal_visible} className='wallet-modal' portalId='deriv_app'>
-            {should_show_loader ? (
+            {is_loading ? (
                 <Loading is_fullscreen={false} />
             ) : (
                 <React.Fragment>

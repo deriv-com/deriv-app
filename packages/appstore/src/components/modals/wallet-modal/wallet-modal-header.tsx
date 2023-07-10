@@ -21,15 +21,7 @@ const WalletModalHeader = ({
     is_wallet_name_visible,
     wallet,
 }: TWalletModalHeaderProps) => {
-    const {
-        balance,
-        currency,
-        icon,
-        is_crypto,
-        is_demo,
-        gradient_header_class: gradient_class,
-        landing_company_name: shortcode,
-    } = wallet;
+    const { balance, currency, icon, is_crypto, is_demo, gradient_header_class, landing_company_name } = wallet;
 
     const header_class_name = 'modal-header';
 
@@ -57,7 +49,7 @@ const WalletModalHeader = ({
     };
 
     return (
-        <div className={`header-background ${gradient_class}`}>
+        <div className={`header-background ${gradient_header_class}`}>
             <div
                 className={classNames(header_class_name, {
                     [`${header_class_name}--hidden-title`]: is_mobile && !is_wallet_name_visible,
@@ -72,7 +64,7 @@ const WalletModalHeader = ({
                         >
                             {getAccountName({ ...wallet, account_type: 'wallet' })}
                         </Text>
-                        <WalletJurisdictionBadge is_demo={is_demo} shortcode={shortcode} />
+                        <WalletJurisdictionBadge is_demo={is_demo} shortcode={landing_company_name} />
                     </div>
                     <Text
                         as='p'

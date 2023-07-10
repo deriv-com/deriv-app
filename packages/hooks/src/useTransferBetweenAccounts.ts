@@ -44,9 +44,6 @@ const useTransferBetweenAccounts = () => {
                     Number(account.balance).toFixed(getConfig(account.currency || '')?.fractional_digits)
                 ),
                 display_currency_code: getConfig(account.currency || '')?.display_code,
-                gradient_class: `wallet-card__${
-                    account?.demo_account ? 'demo' : active_wallet?.currency?.toLowerCase()
-                }-bg${is_dark_mode_on ? '--dark' : ''}`,
                 is_demo: Boolean(account?.demo_account),
                 shortcode: active_wallet?.landing_company_name,
                 type: getAccountType(account.demo_account, account.currency),
@@ -64,6 +61,7 @@ const useTransferBetweenAccounts = () => {
 
                         return {
                             ...account,
+                            gradient_class: active_wallet?.gradient_card_class,
                             icon: account.account_type === 'trading' ? trading_apps_icon : cfd_icon,
                             ...(account.account_type === 'mt5' && {
                                 mt5_market_type: mt5_accounts?.find(
@@ -80,11 +78,16 @@ const useTransferBetweenAccounts = () => {
                             wallet_account => wallet_account.loginid === wallet.loginid
                         )?.icon;
 
-                        return { ...wallet, icon: wallet_icon };
+                        return {
+                            ...wallet,
+                            icon: wallet_icon,
+                            gradient_class: all_wallets?.find(account => account.loginid === wallet.loginid)
+                                ?.gradient_card_class,
+                        };
                     }) || [],
         };
     }, [
-        active_wallet?.currency,
+        active_wallet?.gradient_card_class,
         active_wallet?.icon,
         active_wallet?.landing_company_name,
         all_wallets,
@@ -92,7 +95,6 @@ const useTransferBetweenAccounts = () => {
         derivez_accounts,
         dxtrade_accounts,
         getConfig,
-        is_dark_mode_on,
         mt5_accounts,
         trading_apps_icon,
     ]);

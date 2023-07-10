@@ -82,7 +82,7 @@ npm run deploy:folder "br_my_test_folder"
 127.0.0.1   localhost.binary.sx
 ```
 
--   To preview your changes locally for the first time, run `sudo npm start`:
+-   To preview your changes locally for the first time, run `npm start`:
     -   It will run all tests, compile all CSS, and JS/JSX as well as watch for further js/jsx/css changes and rebuild on every change you make.
 -   To preview your changes locally without any tests, run `npm run serve`
     -   It will watch for JS/JSX/CSS changes and rebuild on every change you make.

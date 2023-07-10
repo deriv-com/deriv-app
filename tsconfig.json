@@ -22,7 +22,8 @@
         "incremental": true, // Enable incremental compilation by reading/writing information from prior compilations to a file on disk
         "removeComments": true, // Disable emitting comments
         "skipDefaultLibCheck": true, // Skip type checking .d.ts files that are included with TypeScript
-        "downlevelIteration": true
+        "downlevelIteration": true,
+        "paths": { "@deriv/*": ["./packages/*/src"] }
     },
     "include": ["utils.d.ts"],
     "ts-node": {

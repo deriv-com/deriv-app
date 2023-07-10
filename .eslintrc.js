@@ -141,6 +141,12 @@ module.exports = {
     },
     overrides: [
         {
+            files: ['*.ts', '*.tsx'],
+            rules: {
+                'react/prop-types': 'off',
+            },
+        },
+        {
             files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
             extends: ['plugin:testing-library/react'],
         },
@@ -180,6 +186,10 @@ module.exports = {
                     version: 'detect',
                 },
                 'import/resolver': {
+                    typescript: {
+                        // use an array
+                        project: 'packages/**/tsconfig.json',
+                    },
                     node: {
                         extensions: ['.ts', '.tsx'],
                         moduleDirectory: ['src', 'node_modules'],

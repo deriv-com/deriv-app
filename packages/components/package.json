@@ -5,7 +5,7 @@
     "main": "src/index.js",
     "private": true,
     "engines": {
-        "node": "^16.16.0"
+        "node": "18.x"
     },
     "scripts": {
         "start": "rimraf lib && npm run test && npm run serve",

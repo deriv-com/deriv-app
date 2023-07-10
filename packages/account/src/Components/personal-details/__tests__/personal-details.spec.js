@@ -6,6 +6,8 @@ import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import { splitValidationResultTypes } from '../../real-account-signup/helpers/utils';
 import PersonalDetails from '../personal-details';
 
+jest.mock('Assets/ic-poi-name-dob-example.svg', () => jest.fn(() => 'PoiNameDobExampleImage'));
+
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
     Popover: jest.fn(props => props.is_open && <span>{props.message}</span>),
@@ -229,6 +231,7 @@ describe('<PersonalDetails/>', () => {
         getCurrentStep: jest.fn(() => 1),
         onSave: jest.fn(),
         onCancel: jest.fn(),
+        account_settings: {},
     };
 
     beforeAll(() => (ReactDOM.createPortal = jest.fn(component => component)));
@@ -253,6 +256,7 @@ describe('<PersonalDetails/>', () => {
 
         expect(screen.getByText(fake_alert_messaget)).toBeInTheDocument();
     });
+
     it('should not show fake_alert_message when is_appstore is false ', () => {
         renderwithRouter(
             <PlatformContext.Provider value={{ is_appstore: false }}>
@@ -298,6 +302,7 @@ describe('<PersonalDetails/>', () => {
             })
         ).toBeInTheDocument();
     });
+
     it('should show Name label when salutation is not passed', () => {
         const newprops = { ...props, value: {} };
         renderwithRouter(<PersonalDetails {...newprops} />);

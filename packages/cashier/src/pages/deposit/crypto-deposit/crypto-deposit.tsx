@@ -20,7 +20,7 @@ const CryptoDeposit = observer(() => {
     const { setIsDeposit } = general_store;
 
     const { data } = useFetch('crypto_config', { payload: { currency_code: currency } });
-    const minimum_deposit = data?.currencies_config[currency]?.minimum_deposit;
+    const minimum_deposit = data?.crypto_config?.currencies_config[currency]?.minimum_deposit;
 
     React.useEffect(() => {
         recentTransactionOnMount();

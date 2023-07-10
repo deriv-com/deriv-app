@@ -39,14 +39,14 @@ import {
     removeEmptyPropertiesFromObject,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { observer, useStore } from '@deriv/stores';
+import LeaveConfirm from 'Components/leave-confirm';
+import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
-import FormFooter from 'Components/form-footer';
 import FormSubHeader from 'Components/form-sub-header';
-import LeaveConfirm from 'Components/leave-confirm';
 import LoadErrorMessage from 'Components/load-error-message';
 import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
-import { connect } from 'Stores/connect';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 import { validateName, validate } from 'Helpers/utils';
 
@@ -96,31 +96,7 @@ const TaxResidenceSelect = ({ field, errors, setFieldValue, values, is_changeabl
     </React.Fragment>
 );
 
-export const PersonalDetailsForm = ({
-    authentication_status,
-    is_eu,
-    is_mf,
-    is_uk,
-    is_svg,
-    is_virtual,
-    residence_list,
-    states_list,
-    current_landing_company,
-    refreshNotifications,
-    showPOAAddressMismatchSuccessNotification,
-    showPOAAddressMismatchFailureNotification,
-    Notifications,
-    fetchResidenceList,
-    fetchStatesList,
-    has_residence,
-    account_settings,
-    getChangeableFields,
-    history,
-    is_social_signup,
-    updateAccountStatus,
-    has_poa_address_mismatch,
-    is_language_changing,
-}) => {
+export const PersonalDetailsForm = observer(({ history }) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
     const [is_state_loading, setIsStateLoading] = useStateCallback(false);
@@ -128,7 +104,38 @@ export const PersonalDetailsForm = ({
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
 
     const [is_submit_success, setIsSubmitSuccess] = useStateCallback(false);
+    const { client, notifications, ui, common } = useStore();
 
+    const {
+        authentication_status,
+        is_eu,
+        landing_company_shortcode,
+        is_uk,
+        is_svg,
+        is_virtual,
+        residence_list,
+        states_list,
+        current_landing_company,
+        fetchResidenceList,
+        fetchStatesList,
+        has_residence,
+        account_settings,
+        getChangeableFields,
+        updateAccountStatus,
+        is_social_signup,
+        account_status,
+    } = client;
+
+    const {
+        refreshNotifications,
+        showPOAAddressMismatchSuccessNotification,
+        showPOAAddressMismatchFailureNotification,
+    } = notifications;
+
+    const { Notifications } = ui;
+    const { is_language_changing } = common;
+    const is_mf = landing_company_shortcode === 'maltainvest';
+    const has_poa_address_mismatch = account_status.status?.includes('poa_address_mismatch');
     const [rest_state, setRestState] = React.useState({
         show_form: true,
         errors: false,
@@ -141,7 +148,6 @@ export const PersonalDetailsForm = ({
     });
 
     const { is_appstore } = React.useContext(PlatformContext);
-
     const isMounted = useIsMounted();
 
     React.useEffect(() => {
@@ -1272,55 +1278,10 @@ export const PersonalDetailsForm = ({
             )}
         </Formik>
     );
-};
+});
 
 PersonalDetailsForm.propTypes = {
-    authentication_status: PropTypes.object,
-    is_eu: PropTypes.bool,
-    is_mf: PropTypes.bool,
-    is_uk: PropTypes.bool,
-    is_svg: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    residence_list: PropTypes.arrayOf(PropTypes.object),
-    states_list: PropTypes.array,
-    refreshNotifications: PropTypes.func,
-    showPOAAddressMismatchSuccessNotification: PropTypes.func,
-    showPOAAddressMismatchFailureNotification: PropTypes.func,
-    Notifications: PropTypes.node,
-    fetchResidenceList: PropTypes.func,
-    fetchStatesList: PropTypes.func,
-    has_residence: PropTypes.bool,
-    account_settings: PropTypes.object,
-    getChangeableFields: PropTypes.func,
-    current_landing_company: PropTypes.object,
     history: PropTypes.object,
-    is_social_signup: PropTypes.bool,
-    updateAccountStatus: PropTypes.func,
-    has_poa_address_mismatch: PropTypes.bool,
-    is_language_changing: PropTypes.bool,
 };
 
-export default connect(({ client, notifications, ui, common }) => ({
-    account_settings: client.account_settings,
-    authentication_status: client.authentication_status,
-    has_residence: client.has_residence,
-    getChangeableFields: client.getChangeableFields,
-    current_landing_company: client.current_landing_company,
-    is_eu: client.is_eu,
-    is_mf: client.landing_company_shortcode === 'maltainvest',
-    is_svg: client.is_svg,
-    is_uk: client.is_uk,
-    is_virtual: client.is_virtual,
-    residence_list: client.residence_list,
-    states_list: client.states_list,
-    fetchResidenceList: client.fetchResidenceList,
-    fetchStatesList: client.fetchStatesList,
-    is_social_signup: client.is_social_signup,
-    refreshNotifications: notifications.refreshNotifications,
-    showPOAAddressMismatchSuccessNotification: notifications.showPOAAddressMismatchSuccessNotification,
-    showPOAAddressMismatchFailureNotification: notifications.showPOAAddressMismatchFailureNotification,
-    Notifications: ui.notification_messages_ui,
-    updateAccountStatus: client.updateAccountStatus,
-    has_poa_address_mismatch: client.account_status.status?.includes('poa_address_mismatch'),
-    is_language_changing: common.is_language_changing,
-}))(withRouter(PersonalDetailsForm));
+export default withRouter(PersonalDetailsForm);

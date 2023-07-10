@@ -58,12 +58,6 @@ const Unsupported = ({
         country_code,
     });
 
-    const is_onfido_supported =
-        country_code === 'ng' &&
-        !checkNimcStep(documents[0].details.documents) &&
-        onfido &&
-        onfido.submissions_left > 0;
-
     if (manual) {
         if (manual.status === identity_status_codes.pending)
             return <UploadComplete is_manual_upload needs_poa={needs_poa} redirect_button={redirect_button} />;
@@ -77,6 +71,11 @@ const Unsupported = ({
     }
 
     if (detail !== null) {
+        const is_onfido_supported =
+            country_code === 'ng' &&
+            !checkNimcStep(documents[detail ?? 0].details.documents) &&
+            onfido &&
+            onfido.submissions_left > 0;
         return (
             <DetailComponent
                 is_onfido_supported={is_onfido_supported}

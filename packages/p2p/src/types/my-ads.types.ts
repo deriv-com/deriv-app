@@ -21,11 +21,12 @@ export type TPaymentMethod = {
     };
 };
 
+type TAvailability = 0 | 1;
 type TAdvertiserDetails = {
     completed_orders_count: number;
     first_name?: string;
     id: string;
-    is_online: number;
+    is_online: TAvailability;
     last_name?: string;
     last_online_time: number | null;
     name: string;
@@ -53,8 +54,8 @@ export type TAdDetails = {
         effective_rate: null | number;
         effective_rate_display: null | string;
         id: string;
-        is_active: number;
-        is_visible: number;
+        is_active: TAvailability;
+        is_visible: TAvailability;
         local_currency: string;
         max_order_amount: number;
         max_order_amount_display: string;

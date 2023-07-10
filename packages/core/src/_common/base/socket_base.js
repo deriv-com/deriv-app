@@ -38,7 +38,7 @@ const BinarySocketBase = (() => {
     const isClose = () => !binary_socket || hasReadyState(2, 3);
 
     const close = () => {
-        binary_socket.close();
+        binary_socket?.close();
     };
 
     const closeAndOpenNewConnection = (language = getLanguage()) => {

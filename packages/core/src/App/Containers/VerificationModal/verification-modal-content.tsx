@@ -43,7 +43,7 @@ type TVerificationModalContent = {
     updateAccountStatus: () => void;
     is_eu: boolean;
     is_verification_modal_visible: boolean;
-    addNotificationByKey: (key: string) => void;
+    addNotificationMessageByKey: (key: string) => void;
     authentication_status: TAuthenticationStatus;
     account_settings: TGetSettings;
     client_email: string;
@@ -118,7 +118,7 @@ const VerificationModalContent = (props: TVerificationModalContent) => {
             'refreshNotifications',
             'app_routing_history',
             'account_settings',
-            'addNotificationByKey',
+            'addNotificationMessageByKey',
             'is_eu',
             'is_verification_modal_visible',
             'fetchResidenceList',
@@ -229,7 +229,7 @@ export default connect(({ client, notifications, common, ui }: RootStore) => ({
     is_mx_mlt: client.landing_company_shortcode === 'iom' || client.landing_company_shortcode === 'malta',
     is_eu: client.is_eu,
     is_verification_modal_visible: ui.is_verification_modal_visible,
-    addNotificationByKey: notifications.addNotificationMessageByKey,
+    addNotificationMessageByKey: notifications.addNotificationMessageByKey,
     authentication_status: client.authentication_status,
     account_settings: client.account_settings,
     client_email: client.email,

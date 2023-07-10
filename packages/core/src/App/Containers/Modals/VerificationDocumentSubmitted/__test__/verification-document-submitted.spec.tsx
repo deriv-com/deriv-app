@@ -27,7 +27,11 @@ describe('<VerificationDocumentSubmited />', () => {
             <StoreProvider store={mock}>{children}</StoreProvider>
         );
         render(<VerificationDocumentSubmitted />, { wrapper });
-        expect(screen.queryByTestId('dt_div_100_vh')).not.toBeInTheDocument();
+        expect(
+            screen.queryByText(
+                'We’ll need 1 - 3 days to review your documents and notify you by email. You can practice with demo accounts in the meantime.'
+            )
+        ).not.toBeInTheDocument();
     });
 
     it('should render the VerificationDocumentSubmited component', async () => {

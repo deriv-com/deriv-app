@@ -1,6 +1,6 @@
+import React from 'react';
 import { Button, Icon, Modal, IconWithMessage } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
-import React from 'react';
 import { localize } from '@deriv/translations';
 import './verification-document-submitted.scss';
 

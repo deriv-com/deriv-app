@@ -24,7 +24,7 @@ const TradersHub = observer(() => {
         is_account_setting_loaded,
         accounts,
     } = client;
-    const { is_tour_open, is_eu_user, is_wallet_tour_open } = traders_hub;
+    const { is_tour_open, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
 
     const can_show_notify =
@@ -33,20 +33,11 @@ const TradersHub = observer(() => {
         is_account_setting_loaded &&
         is_landing_company_loaded &&
         Notifications !== null;
-
     const [scrolled, setScrolled] = React.useState(false);
-    const [wallet_tour_scrolled, setWalletTourScrolled] = React.useState(false);
 
     const handleScroll = () => {
         const element = traders_hub_ref?.current;
         if (element && is_tour_open) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-    };
-
-    const handleWalletTour = () => {
-        const element = traders_hub_ref?.current;
-        if (element && is_wallet_tour_open) {
             element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     };
@@ -59,18 +50,6 @@ const TradersHub = observer(() => {
             }, 200);
         }, 100);
     }, [is_tour_open]);
-
-    // TODO: for demo purpose only, remove this when there is a proper way to close the tour
-    React.useEffect(() => {
-        setTimeout(() => {
-            handleWalletTour();
-            setTimeout(() => {
-                setWalletTourScrolled(true);
-            }, 5000);
-            setWalletTourScrolled(false);
-        }, 2000);
-        if (scrolled) setWalletTourScrolled(false);
-    }, [is_wallet_tour_open]);
 
     const { is_low_risk_cr_eu } = useContentFlag();
 
@@ -96,7 +75,7 @@ const TradersHub = observer(() => {
                     <AddMoreWallets />
                     <AccountWithoutWallets />
                     <ModalManager />
-                    {wallet_tour_scrolled && <WalletTourGuide />}
+                    <WalletTourGuide />
                     {scrolled && <TourGuide />}
                 </div>
             </Div100vhContainer>

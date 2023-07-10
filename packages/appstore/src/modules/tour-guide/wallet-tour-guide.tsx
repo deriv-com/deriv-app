@@ -2,7 +2,7 @@ import React from 'react';
 import Joyride, { StoreState } from 'react-joyride';
 import { Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
-import { getWalletStepConfig, getWalletStepLocale, wallet_tour_styles } from 'Constants/tour-steps-config-new';
+import { getWalletStepConfig, getWalletStepLocale, wallet_tour_styles } from 'Constants/tour-steps-config';
 
 const WalletTourGuide = observer(() => {
     const { traders_hub } = useStore();
@@ -28,12 +28,13 @@ const WalletTourGuide = observer(() => {
             continuous
             hideCloseButton
             showSkipButton
-            scrollToFirstStep
             steps={getWalletStepConfig()}
             styles={wallet_tour_styles}
             locale={wallet_tour_step_locale}
             floaterProps={{ disableAnimation: true }}
             callback={handleJoyrideCallback}
+            scrollOffset={200}
+            scrollToFirstStep
         />
     );
 });

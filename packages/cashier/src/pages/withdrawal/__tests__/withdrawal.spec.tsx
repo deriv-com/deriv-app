@@ -38,9 +38,6 @@ const cashier_mock = {
         is_crypto: false,
         setActiveTab: jest.fn(),
     },
-    iframe: {
-        iframe_url: '',
-    },
     transaction_history: {
         is_crypto_transactions_visible: false,
         onMount: jest.fn(),
@@ -232,7 +229,6 @@ describe('<Withdrawal />', () => {
         const { rerender } = render(mockWithdrawal(mock_root_store));
         expect(screen.getByText('Withdraw')).toBeInTheDocument();
 
-        mock_root_store.modules.cashier.iframe.iframe_url = 'coiframe_urlde';
         rerender(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('Withdraw')).toBeInTheDocument();

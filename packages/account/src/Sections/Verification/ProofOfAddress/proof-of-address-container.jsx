@@ -156,7 +156,7 @@ ProofOfAddressContainer.propTypes = {
     refreshNotifications: PropTypes.func,
     app_routing_history: PropTypes.array,
     account_settings: PropTypes.object,
-    addNotificationByKey: PropTypes.func,
+    addNotificationMessageByKey: PropTypes.func,
     is_eu: PropTypes.bool,
     fetchResidenceList: PropTypes.func,
     fetchStatesList: PropTypes.func,

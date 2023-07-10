@@ -54,7 +54,7 @@ const UploaderSideNote = () => (
 
 const ProofOfAddressForm = ({
     account_settings,
-    addNotificationByKey,
+    addNotificationMessageByKey,
     index = 0,
     onSubmit,
     is_eu,
@@ -221,7 +221,7 @@ const ProofOfAddressForm = ({
                                                 removeNotificationMessage({ key: 'poa_expired' });
                                                 removeNotificationByKey({ key: 'poa_expired' });
                                                 if (needs_poi) {
-                                                    addNotificationByKey('needs_poi');
+                                                    addNotificationMessageByKey('needs_poi');
                                                 }
                                             }
                                         );
@@ -467,7 +467,7 @@ const ProofOfAddressForm = ({
 
 ProofOfAddressForm.propTypes = {
     account_settings: PropTypes.object,
-    addNotificationByKey: PropTypes.func,
+    addNotificationMessageByKey: PropTypes.func,
     index: PropTypes.number,
     is_eu: PropTypes.bool,
     is_resubmit: PropTypes.bool,

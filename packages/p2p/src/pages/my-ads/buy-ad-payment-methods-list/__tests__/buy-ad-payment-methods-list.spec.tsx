@@ -138,11 +138,11 @@ describe('<BuyAdPaymentMethodsList/>', () => {
         const field = screen.getByDisplayValue('Bank Transfer');
         expect(field).toBeInTheDocument();
         await waitFor(() => field.focus());
-        const icon = screen.getAllByTestId('dt_buy-ad-payment-methods-list__icon')[0];
+        const icon = screen.getAllByTestId('dt_buy_ad_payment_methods_list_icon')[0];
         act(() => {
             userEvent.click(icon);
         });
-        const input_field = screen.getAllByTestId('dt_buy-ad-payment-methods-list__input')[0];
+        const input_field = screen.getAllByTestId('dt_buy_ad_payment_methods_list_input')[0];
         await waitFor(() => expect(input_field).toBeInTheDocument());
         await waitFor(() => userEvent.click(input_field));
         await waitFor(() => expect(input_field).toHaveValue(''));
@@ -169,7 +169,7 @@ describe('<BuyAdPaymentMethodsList/>', () => {
         });
         mock_props.selected_methods = ['bank_transfer', 'alipay'];
         render(<BuyAdPaymentMethodsList {...mock_props} />);
-        const icon = screen.getAllByTestId('dt_buy-ad-payment-methods-list__icon')[1];
+        const icon = screen.getAllByTestId('dt_buy_ad_payment_methods_list_icon')[1];
         act(() => {
             userEvent.click(icon);
         });
@@ -185,7 +185,7 @@ describe('<BuyAdPaymentMethodsList/>', () => {
         });
         mock_props.selected_methods = ['bank_transfer', 'alipay'];
         render(<BuyAdPaymentMethodsList {...mock_props} />);
-        const icon = screen.getAllByTestId('dt_buy-ad-payment-methods-list__icon')[1];
+        const icon = screen.getAllByTestId('dt_buy_ad_payment_methods_list_icon')[1];
         act(() => {
             userEvent.click(icon);
         });

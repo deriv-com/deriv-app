@@ -9,7 +9,7 @@ describe('<AdStatus/>', () => {
         expect(screen.getByText('Inactive')).toBeInTheDocument();
     });
     it('should render component as active when ad is active', () => {
-        render(<AdStatus is_active={true} />);
+        render(<AdStatus is_active />);
 
         expect(screen.getByText('Active')).toBeInTheDocument();
     });

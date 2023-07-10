@@ -120,7 +120,7 @@ const MyAdsRow = observer(({ row: advert }: TAdDetails) => {
                 className={classNames('ads-table__add', {
                     'ads-table__add--disabled': !is_listed,
                 })}
-                onClick={() => onClickAdd()}
+                onClick={onClickAdd}
             >
                 <Icon color={icon_disabled_color} icon='IcAdd' />
                 <Text color={ad_pause_color} size='xxs' weight='bold'>

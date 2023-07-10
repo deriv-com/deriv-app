@@ -1,11 +1,11 @@
 import React from 'react';
 import classNames from 'classnames';
-import { useStores } from 'Stores';
 import { ThemedScrollbars } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import PaymentMethodCard from 'Pages/my-profile/payment-methods/payment-method-card';
+import { useStores } from 'Stores';
 import { TPaymentMethod, TPaymentMethodOrder } from 'Types';
 import { available_payment_methods } from '../__mocks__/mock-data';
 

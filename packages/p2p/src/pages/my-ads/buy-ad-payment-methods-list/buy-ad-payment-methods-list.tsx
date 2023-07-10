@@ -146,7 +146,7 @@ const BuyAdPaymentMethodsList = ({
         }
     };
 
-    const getComponent = () => (
+    const getPaymentHint = () => (
         <Localize
             i18n_default_text='<0>Don’t see your payment method?</0> <1>Add new.</1>'
             components={[
@@ -182,7 +182,7 @@ const BuyAdPaymentMethodsList = ({
                                                     autoComplete='off' // prevent chrome autocomplete
                                                     className='buy-ad-payment-methods-list__input'
                                                     data-lpignore='true'
-                                                    data-testid='dt_buy-ad-payment-methods-list__input'
+                                                    data-testid='dt_buy_ad_payment_methods_list_input'
                                                     hide_list={hide_list}
                                                     is_alignment_top={is_alignment_top}
                                                     leading_icon={<Icon icon='IcAddOutline' size={14} />}
@@ -202,7 +202,7 @@ const BuyAdPaymentMethodsList = ({
                                                         field.value ? (
                                                             <Icon
                                                                 className='buy-ad-payment-methods-list__icon'
-                                                                data_testid='dt_buy-ad-payment-methods-list__icon'
+                                                                data_testid='dt_buy_ad_payment_methods_list_icon'
                                                                 color='secondary'
                                                                 icon='IcCloseCircle'
                                                                 onClick={() => {
@@ -223,7 +223,7 @@ const BuyAdPaymentMethodsList = ({
                                                     autoComplete='off' // prevent chrome autocomplete
                                                     className='buy-ad-payment-methods-list__input'
                                                     data-lpignore='true'
-                                                    data-testid='dt_buy-ad-payment-methods-list__input'
+                                                    data-testid='dt_buy_ad_payment_methods_list_input'
                                                     hide_list={hide_list}
                                                     is_alignment_top={is_alignment_top}
                                                     leading_icon={
@@ -273,7 +273,7 @@ const BuyAdPaymentMethodsList = ({
                                                     trailing_icon={
                                                         <Icon
                                                             className='buy-ad-payment-methods-list__icon'
-                                                            data_testid='dt_buy-ad-payment-methods-list__icon'
+                                                            data_testid='dt_buy_ad_payment_methods_list_icon'
                                                             color={
                                                                 close_icon && current_method.key === key
                                                                     ? 'secondary'
@@ -328,7 +328,7 @@ const BuyAdPaymentMethodsList = ({
                                                 autoComplete='off' // prevent chrome autocomplete
                                                 className='buy-ad-payment-methods-list__input'
                                                 data-lpignore='true'
-                                                data-testid='dt_buy-ad-payment-methods-list__input'
+                                                data-testid='dt_buy_ad_payment_methods_list_input'
                                                 is_alignment_top={is_alignment_top}
                                                 leading_icon={<Icon icon='IcAddOutline' size={14} />}
                                                 list_items={payment_methods_list}
@@ -354,7 +354,7 @@ const BuyAdPaymentMethodsList = ({
                 {should_show_hint &&
                     !selected_methods.includes('other') &&
                     selected_methods.length < MAX_PAYMENT_METHOD_SELECTION &&
-                    getComponent()}
+                    getPaymentHint()}
             </div>
         );
     }
@@ -377,7 +377,7 @@ const BuyAdPaymentMethodsList = ({
                                     autoComplete='off' // prevent chrome autocomplete
                                     className='buy-ad-payment-methods-list__input'
                                     data-lpignore='true'
-                                    data-testid='dt_buy-ad-payment-methods-list__input'
+                                    data-testid='dt_buy_ad_payment_methods_list_input'
                                     is_alignment_top={is_alignment_top}
                                     leading_icon={<Icon icon='IcAddOutline' size={14} />}
                                     list_items={payment_methods_list}
@@ -396,7 +396,7 @@ const BuyAdPaymentMethodsList = ({
                     </Field>
                 )}
             </Formik>
-            {should_show_hint && getComponent()}
+            {should_show_hint && getPaymentHint()}
         </div>
     );
 };

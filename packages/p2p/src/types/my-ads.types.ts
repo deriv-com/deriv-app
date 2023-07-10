@@ -1,11 +1,6 @@
-export type TPaymentMethodOrder = {
-    bank_transfer?: number;
-    other?: number;
-    wechat_pay?: number;
-    alipay?: number;
-    skrill?: number;
-    paypal?: number;
-};
+export type TPaymentMethodOrder = Partial<
+    Record<'bank_transfer' | 'other' | 'wechat_pay' | 'alipay' | 'skrill' | 'paypal', number>
+>;
 
 export type TPaymentMethodField = {
     display_name: string;

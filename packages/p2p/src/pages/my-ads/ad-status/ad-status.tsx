@@ -3,10 +3,10 @@ import { Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
 
 type TAdStatusProps = {
-    is_active: boolean;
+    is_active?: boolean;
 };
 
-const AdStatus = ({ is_active }: TAdStatusProps) => {
+const AdStatus = ({ is_active = false }: TAdStatusProps) => {
     return (
         <Text
             align='center'

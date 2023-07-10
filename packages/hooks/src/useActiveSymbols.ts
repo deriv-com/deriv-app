@@ -3,7 +3,10 @@ import { useMemo } from 'react';
 
 /** A custom hook to get the list of active symbols. */
 const useActiveSymbols = () => {
-    const { data, ...rest } = useFetch('active_symbols', { payload: { active_symbols: 'brief' } });
+    const { data, ...rest } = useFetch('active_symbols', {
+        payload: { active_symbols: 'brief' },
+        options: { refetchOnWindowFocus: false },
+    });
     const active_symbols = useMemo(
         () =>
             data?.active_symbols?.map(symbol => ({

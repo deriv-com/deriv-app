@@ -1,5 +1,5 @@
-import useRealTotalAssetCurrency from "./useTotalAssetCurrency";
-import useExchangeRate from "./useExchangeRate";
+import useRealTotalAssetCurrency from './useTotalAssetCurrency';
+import useExchangeRate from './useExchangeRate';
 /**
  * we can use this hook to get the total balance of the given accounts list.
  * it loops through the accounts list and adds the balance of each account
@@ -7,33 +7,29 @@ import useExchangeRate from "./useExchangeRate";
  * first account in the list
  */
 type TUseTotalAccountBalance = {
-  balance?: number;
-  currency?: string;
-  account_type?: string;
+    balance?: number;
+    currency?: string;
+    account_type?: string;
 };
 
 const useTotalAccountBalance = (accounts: TUseTotalAccountBalance[]) => {
-  const total_assets_real_currency = useRealTotalAssetCurrency();
-  const { getRate } = useExchangeRate();
+    const total_assets_real_currency = useRealTotalAssetCurrency();
+    const { getRate } = useExchangeRate();
 
-  if (!accounts.length)
-    return { balance: 0, currency: total_assets_real_currency };
+    if (!accounts.length) return { balance: 0, currency: total_assets_real_currency };
 
-  const balance = accounts.reduce((total, account) => {
-    const base_rate =
-      account?.account_type === "demo"
-        ? 1
-        : getRate(total_assets_real_currency || "");
-    const rate = getRate(account.currency || total_assets_real_currency || "");
-    const exchange_rate = base_rate / rate;
+    const balance = accounts.reduce((total, account) => {
+        const base_rate = account?.account_type === 'demo' ? 1 : getRate(total_assets_real_currency || '');
+        const rate = getRate(account.currency || total_assets_real_currency || '');
+        const exchange_rate = base_rate / rate;
 
-    return total + (account.balance || 0) * exchange_rate;
-  }, 0);
+        return total + (account.balance || 0) * exchange_rate;
+    }, 0);
 
-  return {
-    balance,
-    currency: total_assets_real_currency,
-  };
+    return {
+        balance,
+        currency: total_assets_real_currency,
+    };
 };
 
 export default useTotalAccountBalance;

@@ -54,3 +54,9 @@ $desktop-width: 1024px;
         @content;
     }
 }
+
+@mixin mobile-tablet-mix {
+    @media (min-width: #{$mobile-width}) and (max-width: #{$desktop-width - 1px}) {
+        @content;
+    }
+}

@@ -67,6 +67,12 @@
         height: 4rem;
         margin-bottom: unset;
 
+        @include mobile {
+            .dc-input__container {
+                width: inherit;
+            }
+        }
+
         &:not(:first-child) {
             margin-left: 2.4rem;
         }

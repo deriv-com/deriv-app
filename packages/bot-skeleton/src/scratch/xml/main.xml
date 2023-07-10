@@ -1,4 +1,4 @@
-﻿<xml xmlns="http://www.w3.org/1999/xhtml" collection="false">
+﻿<xml xmlns="http://www.w3.org/1999/xhtml" collection="false" is_dbot="true">
   <variables></variables>
   <block type="trade_definition" x="0" y="0">
     <statement name="TRADE_OPTIONS">
@@ -53,7 +53,7 @@
       </block>
     </statement>
   </block>
-  <block type="during_purchase" x="770" y="0">
+  <block type="during_purchase" x="720" y="0">
     <statement name="DURING_PURCHASE_STACK">
       <block type="controls_if">
         <value name="IF0">
@@ -62,7 +62,7 @@
       </block>
     </statement>
   </block>
-  <block type="after_purchase" x="770" y="248">
+  <block type="after_purchase" x="720" y="248">
     <statement name="AFTERPURCHASE_STACK">
       <block type="trade_again"></block>
     </statement>

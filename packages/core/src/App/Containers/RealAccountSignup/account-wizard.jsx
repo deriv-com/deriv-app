@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
-import { WS, getLocation, makeCancellablePromise, toMoment } from '@deriv/shared';
+import { WS, getLocation, makeCancellablePromise, toMoment, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AcceptRiskForm from './accept-risk-form.jsx';
@@ -277,7 +277,7 @@ const AccountWizard = props => {
                     props.onFinishSuccess(response.new_account_real.currency.toLowerCase());
                 }
                 const { document_type, document_number, document_additional } = { ...form_values() };
-                if (document_type && document_number) {
+                if (document_type && document_type.id !== IDV_NOT_APPLICABLE_OPTION.id && document_number) {
                     const country_code = props.account_settings.citizen || props.residence;
                     submitIDVData(document_type, document_number, document_additional, country_code);
                 }

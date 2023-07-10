@@ -33,7 +33,7 @@ type TOnfidoSdkViewContainer = {
     getChangeableFields: () => string[];
     handleViewComplete: () => void;
     height?: number | string;
-    is_disabled?: boolean;
+    is_default_enabled?: boolean;
 };
 
 const OnfidoSdkViewContainer = ({
@@ -43,7 +43,7 @@ const OnfidoSdkViewContainer = ({
     getChangeableFields,
     handleViewComplete,
     height,
-    is_disabled = true,
+    is_default_enabled,
 }: TOnfidoSdkViewContainer) => {
     const [api_error, setAPIError] = React.useState<TAPIError>();
     const [missing_personal_details, setMissingPersonalDetails] = React.useState('');
@@ -71,10 +71,10 @@ const OnfidoSdkViewContainer = ({
     const onfido_init = React.useRef<SdkHandle>();
 
     React.useEffect(() => {
-        if (!is_disabled) {
+        if (is_default_enabled) {
             setIsOnfidoDisabled(false);
         }
-    }, [is_disabled]);
+    }, [is_default_enabled]);
 
     const onComplete = React.useCallback(
         (data: Omit<SdkResponse, 'data'> & { data?: { id?: string } }) => {

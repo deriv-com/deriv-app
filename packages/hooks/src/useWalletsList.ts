@@ -13,6 +13,7 @@ const useWalletsList = () => {
     const { data: balance_data } = useFetch('balance', { payload: { account: 'all' } });
 
     const sortedWallets = useMemo(() => {
+        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
         // Filter out accounts which has account_category as wallet
         const wallets = data?.authorize?.account_list?.filter(account => account.account_category === 'wallet');
 

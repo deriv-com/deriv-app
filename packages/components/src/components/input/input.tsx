@@ -78,6 +78,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
             warn,
             data_testId,
             maxLength,
+            placeholder,
             ...props
         },
         ref?
@@ -101,6 +102,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
         };
 
         const has_footer = !!has_character_counter || (!!hint && !!is_relative_hint);
+        const field_placeholder = label ? '' : placeholder;
 
         return (
             <InputWrapper has_footer={has_footer}>
@@ -128,12 +130,13 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                                 data-testid={data_testId}
                                 {...props}
                                 className={classNames('dc-input__field dc-input__textarea', {
-                                    'dc-input__field--placeholder-visible': !label && props.placeholder,
+                                    'dc-input__field--placeholder-visible': !label && placeholder,
                                 })}
                                 onChange={changeHandler}
                                 disabled={disabled}
                                 id={input_id}
                                 maxLength={maxLength}
+                                placeholder={field_placeholder}
                             />
                         ) : (
                             <input
@@ -141,7 +144,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                                 data-testid={data_testId}
                                 {...props}
                                 className={classNames('dc-input__field', field_className, {
-                                    'dc-input__field--placeholder-visible': !label && props.placeholder,
+                                    'dc-input__field--placeholder-visible': !label && placeholder,
                                 })}
                                 onFocus={props.onFocus}
                                 onBlur={props.onBlur}
@@ -152,6 +155,7 @@ const Input = React.forwardRef<HTMLInputElement & HTMLTextAreaElement, TInputPro
                                 id={input_id}
                                 aria-label={label as string}
                                 maxLength={maxLength}
+                                placeholder={field_placeholder}
                             />
                         )}
                         {trailing_icon &&

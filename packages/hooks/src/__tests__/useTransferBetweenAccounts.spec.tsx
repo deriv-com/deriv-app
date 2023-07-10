@@ -247,7 +247,7 @@ describe('useTransferBetweenAccounts', () => {
             },
         } = renderHook(() => useTransferBetweenAccounts(), { wrapper });
 
-        expect(transfer_accounts.accounts.length).toBe(4);
+        expect(transfer_accounts.accounts.length).toBe(6);
         expect(transfer_accounts.wallets.length).toBe(1);
     });
 

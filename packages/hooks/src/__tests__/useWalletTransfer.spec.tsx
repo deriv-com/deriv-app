@@ -240,7 +240,7 @@ describe('useWalletTransfer', () => {
         );
     });
 
-    it('from_account should be as active wallet by default', () => {
+    it('from_account should be active wallet by default', () => {
         const {
             result: {
                 current: { active_wallet, from_account },
@@ -258,6 +258,6 @@ describe('useWalletTransfer', () => {
         } = renderHook(() => useWalletTransfer(), { wrapper });
 
         expect(to_account_list.wallets.length).toBe(0);
-        expect(to_account_list.accounts.length).toBe(4);
+        expect(to_account_list.accounts.length).toBe(6);
     });
 });

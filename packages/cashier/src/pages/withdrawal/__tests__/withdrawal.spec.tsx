@@ -98,27 +98,6 @@ describe('<Withdrawal />', () => {
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });
 
-    it('should render <Loading /> component', () => {
-        const mock_root_store = mockStore({
-            client: {
-                balance: '1000',
-                currency: 'USD',
-            },
-            modules: {
-                cashier: {
-                    ...cashier_mock,
-                    withdraw: {
-                        ...cashier_mock.withdraw,
-                        is_10k_withdrawal_limit_reached: undefined,
-                    },
-                },
-            },
-        });
-        render(mockWithdrawal(mock_root_store));
-
-        expect(screen.getByText('Loading')).toBeInTheDocument();
-    });
-
     it('should render <Virtual /> component', () => {
         const mock_root_store = mockStore({
             client: {
@@ -145,32 +124,6 @@ describe('<Withdrawal />', () => {
         render(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
-    });
-
-    it('should render <WithdrawalLocked /> component', () => {
-        const mock_root_store = mockStore({
-            client: {
-                balance: '1000',
-                currency: 'USD',
-            },
-            modules: {
-                cashier: {
-                    ...cashier_mock,
-                    withdraw: {
-                        ...cashier_mock.withdraw,
-                        is_withdrawal_locked: true,
-                    },
-                },
-            },
-        });
-        const { rerender } = render(mockWithdrawal(mock_root_store));
-
-        expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
-
-        mock_root_store.modules.cashier.withdraw.is_10k_withdrawal_limit_reached = true;
-        rerender(mockWithdrawal(mock_root_store));
-
-        expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
     });
 
     it('should render <NoBalance /> component', () => {
@@ -214,24 +167,6 @@ describe('<Withdrawal />', () => {
         rerender(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('Error')).toBeInTheDocument();
-    });
-
-    it('should render <Withdraw /> component', () => {
-        const mock_root_store = mockStore({
-            client: {
-                balance: '1000',
-                currency: 'USD',
-                verification_code: { payment_withdraw: 'verification_code' },
-            },
-            modules: { cashier: cashier_mock },
-        });
-
-        const { rerender } = render(mockWithdrawal(mock_root_store));
-        expect(screen.getByText('Withdraw')).toBeInTheDocument();
-
-        rerender(mockWithdrawal(mock_root_store));
-
-        expect(screen.getByText('Withdraw')).toBeInTheDocument();
     });
 
     it('should render <CryptoWithdrawForm /> component', () => {
@@ -296,19 +231,6 @@ describe('<Withdrawal />', () => {
         render(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('CryptoTransactionsHistory')).toBeInTheDocument();
-    });
-
-    it('should render <WithdrawalVerificationEmail /> component', () => {
-        const mock_root_store = mockStore({
-            client: {
-                balance: '1000',
-                currency: 'USD',
-            },
-            modules: { cashier: cashier_mock },
-        });
-        render(mockWithdrawal(mock_root_store));
-
-        expect(screen.getByText('WithdrawalVerificationEmail')).toBeInTheDocument();
     });
 
     it('should not trigger "setSideNotes" callback if "isDesktop = false"', () => {

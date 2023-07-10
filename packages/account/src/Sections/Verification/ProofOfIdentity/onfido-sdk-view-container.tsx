@@ -70,6 +70,8 @@ const OnfidoSdkViewContainer = ({
 
     const onfido_init = React.useRef<SdkHandle>();
 
+    // pass is_default_enabled to enable onfido immediately if personal detail component is not required
+    // so no user prompt will be there so submit the details in i.e. in case of flow for nigerian clients ATM
     React.useEffect(() => {
         if (is_default_enabled) {
             setIsOnfidoDisabled(false);

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 import config from '@config';
+import { isMobile } from '@utils';
 import Load from './components/load';
 import Save from './components/save';
 import Reset from './components/reset';
@@ -10,14 +11,12 @@ import Modal from '../../components/modal';
 import { translate } from '../../../../../common/i18n';
 import { setIsBotRunning } from '../../store/ui-slice';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
-import { isMobile } from '../../../../../common/utils/tools';
 import Popover from '../../components/popover/index';
 import { showSummary, logButton } from '../../blockly-worksace';
 
 const ShowModal = ({ modal, onClose, class_name }) => {
-    if (!modal) return;
+    if (!modal) return null;
     const { component: Component, props, title } = modal;
-    // eslint-disable-next-line consistent-return
     return (
         <Modal onClose={onClose} title={title} class_name={class_name}>
             <Component {...props} />

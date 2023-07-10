@@ -29,14 +29,17 @@ class PullBlocklyTranslationsPlugin {
 
                         fs.writeFile(file_path, content, err => {
                             if (err) {
+                                // eslint-disable-next-line no-console
                                 console.log('something went wrong:', err);
                             }
                         });
                     });
+                    // eslint-disable-next-line no-console
                     console.log('\x1b[32m%s\x1b[0m', 'Blockly translations pulled successfully \u{1F44D}');
                     callback();
                 })
                 .catch(error => {
+                    // eslint-disable-next-line no-console
                     console.error('Error fetching Blockly translations:', error);
                     callback();
                 });

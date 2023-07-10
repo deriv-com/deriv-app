@@ -1,8 +1,8 @@
 import React from 'react';
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
-import { get as getStorage, set as setStorage, getLanguage, isLoggedIn } from '@storage';
+import { get as getStorage, set as setStorage, getLanguage, isLoggedIn, getAppIdFallback } from '@storage';
 import { translate } from '../../../../../common/utils/tools';
-import { getDefaultEndpoint, getServerAddressFallback, getAppIdFallback } from '../../api';
+import { getDefaultEndpoint, getServerAddressFallback } from '../../api';
 import useLogout from '../../../../../common/hooks/useLogout';
 import './endpoint.scss';
 
@@ -128,7 +128,7 @@ const Endpoint = () => {
                                     <p>
                                         You have to register and get App ID before you can use different OAuth server
                                         for authentication. For more information refer to OAuth details on{' '}
-                                        <a href='https://developers.binary.com/' target='_blank' rel="noreferrer">
+                                        <a href='https://developers.binary.com/' target='_blank' rel='noreferrer'>
                                             https://developers.binary.com
                                         </a>
                                     </p>

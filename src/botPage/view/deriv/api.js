@@ -1,18 +1,6 @@
-import { getLanguage, get as getStorage } from '@storage';
+import { getLanguage, get as getStorage, getAppIdFallback } from '@storage';
+import { getDomainAppId } from '@utils';
 import DerivAPIBasic from '@deriv/deriv-api/dist/DerivAPIBasic';
-import AppIdMap from '../../../common/appIdResolver';
-
-export const parseQueryString = () => {
-    if (typeof window === 'undefined') {
-        return {};
-    }
-    const str = window.location.search;
-    const objURL = {};
-    str.replace(/([^?=&]+)(=([^&]*))?/g, (a0, a1, a2, a3) => {
-        objURL[a1] = a3;
-    });
-    return objURL;
-};
 
 const isRealAccount = () => {
     const accountList = JSON.parse(getStorage('tokenList') || '{}');
@@ -24,22 +12,6 @@ const isRealAccount = () => {
         isReal = !activeAccount[0].accountName.startsWith('VRT');
     } catch (e) {} // eslint-disable-line no-empty
     return isReal;
-};
-
-const hostName = document.location.hostname;
-
-const getDomainAppId = () => {
-    const hostname = hostName.replace(/^www./, '');
-
-    // eslint-disable-next-line no-nested-ternary
-    return hostname in AppIdMap.production
-        ? AppIdMap.production[hostname]
-        : // eslint-disable-next-line no-nested-ternary
-        hostname in AppIdMap.staging
-            ? AppIdMap.staging[hostname]
-            : hostname in AppIdMap.dev
-                ? AppIdMap.dev[hostname]
-                : 29864;
 };
 
 export const getCustomEndpoint = () => ({
@@ -54,8 +26,6 @@ export const getDefaultEndpoint = () => ({
 
 export const getServerAddressFallback = () => getCustomEndpoint().url || getDefaultEndpoint().url;
 export const getWebSocketURL = () => `wss://${getServerAddressFallback()}`;
-
-export const getAppIdFallback = () => getCustomEndpoint().appId || getDefaultEndpoint().appId;
 
 const socket_url = `wss://${getServerAddressFallback()}/websockets/v3?app_id=${getAppIdFallback()}&l=${getLanguage().toUpperCase()}&brand=deriv`;
 

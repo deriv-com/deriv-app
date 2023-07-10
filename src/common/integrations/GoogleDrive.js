@@ -6,7 +6,16 @@ import { setGdLoggedIn } from '../../botPage/view/deriv/store/client-slice';
 import { setGdReady } from '../../botPage/view/deriv/store/ui-slice';
 import { TrackJSError } from '../../botPage/view/logger';
 import { observer as globalObserver } from '../utils/observer';
-import { errLogger, loadExternalScript, translate } from '../utils/tools';
+import { loadExternalScript, translate } from '../utils/tools';
+import { trackJSTrack } from './trackJSTrack';
+
+const errLogger = (err, msg) => {
+    const err_str = JSON.stringify(err);
+    const err_msg = `${msg} - Error: ${err_str}`;
+    // eslint-disable-next-line no-console
+    console.warn(err_msg);
+    trackJSTrack(new TrackJSError(translate(err_msg), err_str));
+};
 
 export const removeGdBackground = () => {
     const picker_background = document.getElementsByClassName('picker-dialog-bg');

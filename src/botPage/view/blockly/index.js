@@ -1,4 +1,4 @@
-import { getRelatedDeriveOrigin } from '@utils';
+import { parseQueryString, getRelatedDeriveOrigin } from '@utils';
 import { getActiveAccount, getLanguage } from '@storage';
 import './customBlockly';
 import blocks from './blocks';
@@ -27,7 +27,6 @@ import { translate, xml as translateXml } from '../../../common/i18n';
 import { observer as globalObserver } from '../../../common/utils/observer';
 import { showDialog } from '../../bot/tools';
 import GTM from '../../../common/gtm';
-import { parseQueryString } from '../../../common/utils/tools';
 import { TrackJSError } from '../logger';
 import { createDataStore } from '../../bot/data-collection';
 import config from '../../common/const';

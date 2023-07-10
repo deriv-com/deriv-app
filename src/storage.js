@@ -1,8 +1,7 @@
-import { getRelatedDeriveOrigin } from '@utils';
+import { parseQueryString, getRelatedDeriveOrigin, getDomainAppId } from '@utils';
 import { AppConstants } from '@constants';
 import { supported_languages } from './common/i18n';
 import { setCookieLanguage } from './common/utils/cookieManager';
-import { parseQueryString } from './common/utils/tools';
 
 let store = {};
 let hasReadystateListener = false;
@@ -255,3 +254,27 @@ export const updateTokenList = () => {
         }
     }
 };
+
+const isRealAccount = () => {
+    const accountList = JSON.parse(get('tokenList') || '{}');
+    const activeToken = get(AppConstants.STORAGE_ACTIVE_TOKEN) || [];
+    let activeAccount = null;
+    let isReal = false;
+    try {
+        activeAccount = accountList.filter(account => account.token === activeToken);
+        isReal = !activeAccount[0].accountName.startsWith('VRT');
+    } catch (e) {} // eslint-disable-line no-empty
+    return isReal;
+};
+
+export const getDefaultEndpoint = () => ({
+    url: isRealAccount() ? 'green.binaryws.com' : 'blue.binaryws.com',
+    appId: get('config.default_app_id') || getDomainAppId(),
+});
+
+export const getAppIdFallback = () => getCustomEndpoint().appId || getDefaultEndpoint().appId;
+
+export const getCustomEndpoint = () => ({
+    url: get('config.server_url'),
+    appId: get('config.app_id'),
+});

@@ -1,23 +1,7 @@
 import { set as setStorage, getLanguage } from '@storage';
-import { TrackJSError } from '../../botPage/view/logger';
-import AppIdMap from '../appIdResolver';
+import { isProduction, getExtension } from '@utils';
 import { translate as i18nTranslate } from '../i18n';
-import { trackJSTrack } from '../integrations/trackJSTrack';
 import { setCookieLanguage } from './cookieManager';
-
-export const MAX_MOBILE_WIDTH = 813;
-
-export const parseQueryString = () => {
-    if (typeof window === 'undefined') {
-        return {};
-    }
-    const str = window.location.search;
-    const objURL = {};
-    str.replace(/([^?=&]+)(=([^&]*))?/g, (a0, a1, a2, a3) => {
-        objURL[a1] = a3;
-    });
-    return objURL;
-};
 
 export const getQueryParams = (qs = '') => {
     if (!qs) return {};
@@ -73,8 +57,6 @@ export const durationToSecond = duration => {
     return 0;
 };
 
-export const isProduction = () => document.location.hostname.replace(/^www./, '') in AppIdMap.production;
-
 export const createUrl = options => {
     const getOption = property => Object.prototype.hasOwnProperty.call(options, property) && options[property];
     const language = getOption('addLanguage') ? `/${getLanguage()}` : '';
@@ -115,12 +97,6 @@ export const translate = (input, params = []) => {
     return translatedString;
 };
 
-export const getExtension = () => {
-    const host = document.location.hostname;
-    const extension = host.split('.').slice(-1)[0];
-    return host !== extension ? extension : '';
-};
-
 export const showSpinnerInButton = $buttonElement => {
     $buttonElement
         .html(() => {
@@ -137,10 +113,6 @@ export const showSpinnerInButton = $buttonElement => {
 export const removeSpinnerInButton = ($buttonElement, initialText) => {
     $buttonElement.html(() => initialText).prop('disabled', false);
 };
-
-export const isMobile = () => window.innerWidth <= MAX_MOBILE_WIDTH;
-
-export const isDesktop = () => window.innerWidth > MAX_MOBILE_WIDTH;
 
 export const loadExternalScript = (src, async = true, defer = true) =>
     new Promise((resolve, reject) => {
@@ -165,11 +137,3 @@ export const loadExternalScript = (src, async = true, defer = true) =>
 
         document.head.appendChild(script);
     });
-
-export const errLogger = (err, msg) => {
-    const err_str = JSON.stringify(err);
-    const err_msg = `${msg} - Error: ${err_str}`;
-    // eslint-disable-next-line no-console
-    console.warn(err_msg);
-    trackJSTrack(new TrackJSError(translate(err_msg), err_str));
-};

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { createInterpreter } from '../CliTools';
+import { createInterpreter } from '../Interpreter';
 import { parts } from './tools';
 
 describe('Run Interpreter over bot', () => {

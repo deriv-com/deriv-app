@@ -9,16 +9,17 @@ export default {
     app_logo: 'public/images/ic-brand-binarybot.svg',
     supported_languages: {
         en: 'English',
-        // fr: 'Français',
+        fr: 'Français',
+        ru: 'Русский',
+        es: 'Español',
+        vi: 'Tiếng Việt',
+        th: 'ไทย',
         // id: 'Indonesia',
         // pl: 'Polish',
         // pt: 'Português',
-        // ru: 'Русский',
         // zh_cn: '简体中文',
         // zh_tw: '繁體中文',
-        es: 'Español',
         // it: 'Italiano',
-        // vi: 'Tiếng Việt',
     },
     currency_name_map: {
         USD: {

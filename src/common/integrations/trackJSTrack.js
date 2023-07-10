@@ -1,5 +1,5 @@
 import { TrackJS } from 'trackjs';
-import { isProduction } from '../utils/tools';
+import { isProduction } from '@utils';
 
 export const default_errors_to_ignore = [
     'CallError',

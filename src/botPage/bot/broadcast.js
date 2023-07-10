@@ -1,5 +1,5 @@
+import { isMobile } from '@utils';
 import { observer as globalObserver } from '../../common/utils/observer';
-import { isMobile } from '../../common/utils/tools';
 
 export const contract = c => globalObserver.emit('bot.contract', c);
 

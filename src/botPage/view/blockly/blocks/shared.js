@@ -1,14 +1,17 @@
 import { TrackJS } from 'trackjs';
 import { get as getStorage, set as setStorage, getTokenList, removeAllTokens } from '@storage';
-import { oppositesToDropdown } from '../utils';
+import { isProduction } from '@utils';
+
 import { symbolApi } from '../../shared';
 import config from '../../../common/const';
 import { translate } from '../../../../common/i18n';
 import { observer as globalObserver } from '../../../../common/utils/observer';
-import { isProduction } from '../../../../common/utils/tools';
+
 import api from '../../deriv/api';
 
 let purchaseChoices = [[translate('Click to select'), '']];
+
+export const oppositesToDropdown = op => op.map(k => Object.entries(k)[0].reverse());
 
 export const getPurchaseChoices = () => purchaseChoices;
 

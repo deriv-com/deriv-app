@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { TrackJS } from 'trackjs';
 import { AppConstants } from '@constants';
-import { getRelatedDeriveOrigin } from '@utils';
+import { parseQueryString, getRelatedDeriveOrigin, queryToObjectArray } from '@utils';
 import {
     convertForDerivStore,
     get as getStorage,
@@ -15,9 +15,9 @@ import {
     getLanguage,
     isLoggedIn,
 } from '@storage';
-import { addTokenIfValid, queryToObjectArray } from '../../../../../common/appId';
+import { addTokenIfValid } from '../../../../../common/appId';
 import { observer as globalObserver } from '../../../../../common/utils/observer';
-import { parseQueryString, translate } from '../../../../../common/utils/tools';
+import { translate } from '../../../../../common/utils/tools';
 import _Blockly from '../../../blockly';
 import LogTable from '../../../LogTable';
 import TradeInfoPanel from '../../../TradeInfoPanel';

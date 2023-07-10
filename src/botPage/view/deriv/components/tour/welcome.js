@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { isMobile } from '@utils';
 import { translate } from '../../../../../common/i18n';
-import { isMobile } from '../../../../../common/utils/tools';
 
 // [TODO]: Refactor direct DOM calls
 const CustomBeaconComponent = ({ closeTourPermanently, continueTour }) => (

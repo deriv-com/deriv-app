@@ -4,7 +4,7 @@ import { GetLimits } from '@deriv/api-types';
 import { Text } from '@deriv/components';
 import { getCurrencyDisplayCode, getPlatformSettings } from '@deriv/shared';
 
-export type TAccountTransferNoteProps = {
+type TAccountTransferNoteProps = {
     allowed_transfers_count: GetLimits['daily_transfers'];
     currency: string;
     is_crypto_to_crypto_transfer?: boolean;

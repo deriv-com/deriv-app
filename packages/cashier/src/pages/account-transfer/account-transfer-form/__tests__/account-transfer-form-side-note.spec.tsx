@@ -1,8 +1,8 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import AccountTransferNote, { TAccountTransferNoteProps } from '../account-transfer-form-side-note';
+import AccountTransferNote from '../account-transfer-form-side-note';
 
-let mock_props: TAccountTransferNoteProps;
+let mock_props: React.ComponentProps<typeof AccountTransferNote>;
 
 describe('<AccountTransferNote />', () => {
     beforeEach(() => {

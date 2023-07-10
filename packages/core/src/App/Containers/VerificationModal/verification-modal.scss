@@ -123,8 +123,6 @@
                 }
             }
             &__header {
-                font-size: var(--text-size-xs);
-                font-weight: bold;
                 margin-bottom: 1.6rem;
                 position: relative;
                 height: 1.6rem;
@@ -142,6 +140,14 @@
                 }
                 &-content {
                     grid-area: section-content;
+                }
+
+                @include mobile {
+                    grid-template-columns: none;
+                    grid-gap: 0;
+                    grid-template-areas:
+                        'section-side-note'
+                        'section-content';
                 }
             }
             &__footer {

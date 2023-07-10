@@ -14,15 +14,15 @@ const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'wallet_mig
 const mockUseRequest = useRequest as jest.MockedFunction<typeof useRequest<'wallet_migration'>>;
 
 describe('useWalletMigration', () => {
-    test('should return wallet migration status', () => {
+    test('should return wallet migration state', () => {
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { wallet_migration: { status: 'eligible' } } });
+        mockUseFetch.mockReturnValue({ data: { wallet_migration: { state: 'eligible' } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => <APIProvider>{children}</APIProvider>;
 
         const { result } = renderHook(() => useWalletMigration(), { wrapper });
 
-        expect(result.current.status).toBe('eligible');
+        expect(result.current.state).toBe('eligible');
     });
 
     test('should send start wallet migration request', () => {

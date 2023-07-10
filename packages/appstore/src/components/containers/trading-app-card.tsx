@@ -47,8 +47,7 @@ const TradingAppCard = ({
     const { current_language } = common;
     const { is_account_being_created } = cfd;
     const { setWalletsMigrationInProgressPopup } = client;
-    const { status } = useWalletMigration();
-    const is_wallet_migration_in_progress = status === 'in_progress';
+    const { is_in_progress } = useWalletMigration();
 
     const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
@@ -77,7 +76,7 @@ const TradingAppCard = ({
     };
 
     const onButtonAction = () => {
-        if (is_wallet_migration_in_progress) setWalletsMigrationInProgressPopup(true);
+        if (is_in_progress) setWalletsMigrationInProgressPopup(true);
         else onAction?.();
     };
 
@@ -156,7 +155,7 @@ const TradingAppCard = ({
                         is_buttons_disabled={!!mt5_acc_auth_status}
                         is_account_being_created={!!is_account_being_created}
                         is_real={is_real}
-                        as_disabled={is_wallet_migration_in_progress}
+                        as_disabled={is_in_progress}
                     />
                 </div>
             </div>

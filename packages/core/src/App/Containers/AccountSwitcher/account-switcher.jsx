@@ -76,8 +76,7 @@ const AccountSwitcher = ({
     const wrapper_ref = React.useRef();
     const scroll_ref = React.useRef(null);
 
-    const { status } = useWalletMigration();
-    const is_wallet_migration_in_progress = status === 'in_progress';
+    const { is_in_progress } = useWalletMigration();
 
     const account_total_balance_currency = obj_total_balance.currency;
 
@@ -514,12 +513,12 @@ const AccountSwitcher = ({
                         className='acc-switcher__btn--traders_hub'
                         secondary
                         onClick={() => {
-                            if (is_wallet_migration_in_progress) {
+                            if (is_in_progress) {
                                 setWalletsMigrationInProgressPopup(true);
                             } else if (has_any_real_account && !hasSetCurrency) setAccountCurrency();
                             else openRealAccountSignup('manage');
                         }}
-                        as_disabled={is_wallet_migration_in_progress}
+                        as_disabled={is_in_progress}
                     >
                         {localize('Manage accounts')}
                     </Button>

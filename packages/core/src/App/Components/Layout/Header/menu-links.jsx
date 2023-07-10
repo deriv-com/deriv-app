@@ -42,8 +42,7 @@ const CashierTab = observer(() => {
     const { toggleReadyToDepositModal, toggleNeedRealAccountForCashierModal } = ui;
     const p2p_notification_count = useP2PNotificationCount();
     const real_account_needed_for_cashier = useIsRealAccountNeededForCashier();
-    const { status } = useWalletMigration();
-    const is_wallet_migration_in_progress = status === 'in_progress';
+    const { is_in_progress } = useWalletMigration();
 
     const history = useHistory();
 
@@ -61,7 +60,7 @@ const CashierTab = observer(() => {
     };
 
     const handleClickCashier = e => {
-        if (is_wallet_migration_in_progress) {
+        if (is_in_progress) {
             e.preventDefault();
             setWalletsMigrationInProgressPopup(true);
         } else if ((!has_any_real_account && is_virtual) || real_account_needed_for_cashier) {
@@ -88,7 +87,7 @@ const CashierTab = observer(() => {
             text={localize('Cashier')}
             link_to={!cashier_redirect ? routes.cashier : null}
             handleClickCashier={handleClickCashier}
-            className={is_wallet_migration_in_progress ? 'cashier__disabled' : ''}
+            className={is_in_progress ? 'cashier__disabled' : ''}
         />
     );
 });

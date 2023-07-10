@@ -54,8 +54,7 @@ const CFDsListing = () => {
         CFDs_restricted_countries,
         financial_restricted_countries,
     } = traders_hub;
-    const { status } = useWalletMigration();
-    const is_wallet_migration_in_progress = status === 'in_progress';
+    const { is_in_progress } = useWalletMigration();
 
     const { toggleCompareAccountsModal, setAccountType } = cfd;
     const { is_landing_company_loaded, real_account_creation_unlock_date, setWalletsMigrationInProgressPopup } = client;
@@ -200,14 +199,14 @@ const CFDsListing = () => {
                     {can_get_more_cfd_mt5_accounts && (
                         <GetMoreAccounts
                             onClick={
-                                is_wallet_migration_in_progress
+                                is_in_progress
                                     ? () => setWalletsMigrationInProgressPopup(true)
                                     : toggleAccountTypeModalVisibility
                             }
                             icon='IcAppstoreGetMoreAccounts'
                             title={localize('Get more')}
                             description={localize('Get more Deriv MT5 account with different type and jurisdiction.')}
-                            is_disabled={is_wallet_migration_in_progress}
+                            is_disabled={is_in_progress}
                         />
                     )}
                 </>

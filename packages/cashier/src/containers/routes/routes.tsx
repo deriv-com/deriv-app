@@ -9,7 +9,7 @@ const Routes = observer(() => {
     const { client, common } = useStore();
     const { is_logged_in, is_logging_in, setWalletsMigrationInProgressPopup } = client;
     const { error, has_error } = common;
-    const { status } = useWalletMigration();
+    const { is_in_progress } = useWalletMigration();
 
     if (has_error) return <ErrorComponent {...error} />;
 
@@ -17,7 +17,7 @@ const Routes = observer(() => {
         <BinaryRoutes
             is_logged_in={is_logged_in}
             is_logging_in={is_logging_in}
-            is_wallet_migration={status === 'in_progress'}
+            is_wallet_migration={is_in_progress}
             showPopup={setWalletsMigrationInProgressPopup}
         />
     );

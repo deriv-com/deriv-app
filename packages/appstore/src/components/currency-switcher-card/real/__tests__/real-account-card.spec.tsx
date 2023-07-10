@@ -28,7 +28,7 @@ describe('RealAccountCard', () => {
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { wallet_migration: { status: 'eligible' } } });
+        mockUseFetch.mockReturnValue({ data: { wallet_migration: { state: 'eligible' } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -63,7 +63,7 @@ describe('RealAccountCard', () => {
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { wallet_migration: { status: 'eligible' } } });
+        mockUseFetch.mockReturnValue({ data: { wallet_migration: { state: 'eligible' } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -100,7 +100,7 @@ describe('RealAccountCard', () => {
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { wallet_migration: { status: 'eligible' } } });
+        mockUseFetch.mockReturnValue({ data: { wallet_migration: { state: 'eligible' } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -138,7 +138,7 @@ describe('RealAccountCard', () => {
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { wallet_migration: { status: 'eligible' } } });
+        mockUseFetch.mockReturnValue({ data: { wallet_migration: { state: 'eligible' } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -178,7 +178,7 @@ describe('RealAccountCard', () => {
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { wallet_migration: { status: 'eligible' } } });
+        mockUseFetch.mockReturnValue({ data: { wallet_migration: { state: 'eligible' } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>

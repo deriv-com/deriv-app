@@ -14,7 +14,6 @@ type CurrencySelectionModalProps = {
     //TODO: Replace the type with a proper one when ts migration cards merged
     account_list: object[];
     //TODO: Replace the type with a proper one when ts migration cards merged
-    //TODO: Replace the type with a proper one when ts migration cards merged
     accounts: any;
     closeModal: () => void;
     is_visible: boolean;
@@ -44,8 +43,7 @@ const CurrencySelectionModal = ({
     has_any_real_account,
     setWalletsMigrationInProgressPopup,
 }: CurrencySelectionModalProps) => {
-    const { status } = useWalletMigration();
-    const is_wallet_migration_in_progress = status === 'in_progress';
+    const { is_in_progress } = useWalletMigration();
 
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
         multipliers_account_status,
@@ -57,7 +55,7 @@ const CurrencySelectionModal = ({
     let timeout: ReturnType<typeof setTimeout>;
 
     const onButtonAction = () => {
-        if (is_wallet_migration_in_progress) {
+        if (is_in_progress) {
             clearTimeout(timeout);
             timeout = setTimeout(() => {
                 setWalletsMigrationInProgressPopup(true);
@@ -131,13 +129,7 @@ const CurrencySelectionModal = ({
                     })}
             </div>
             <div className='currency-selection-modal__bottom-controls'>
-                <Button
-                    className='block-button'
-                    onClick={onButtonAction}
-                    secondary
-                    large
-                    as_disabled={is_wallet_migration_in_progress}
-                >
+                <Button className='block-button' onClick={onButtonAction} secondary large as_disabled={is_in_progress}>
                     {localize('Add or manage account')}
                 </Button>
             </div>

@@ -456,11 +456,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             update: jest.fn(),
             unmount: jest.fn(),
         },
-        website_status: {
-            data: undefined,
-            update: jest.fn(),
-            unmount: jest.fn(),
-        },
         feature_flags: {
             data: undefined,
             update: jest.fn(),

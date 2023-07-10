@@ -40,6 +40,7 @@ const MainTitleBar = () => {
             <DesktopWrapper>
                 {/* TODO: This is for testing purposes only */}
                 <button onClick={() => setWalletsMigrationFailedPopup(true)}>Modal wallet migration failed</button>
+                {/* TODO: Add logic to show and hide the banner here */}
                 <WalletsBanner />
                 <div className='main-title-bar'>
                     <div className='main-title-bar__right'>

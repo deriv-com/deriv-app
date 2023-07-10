@@ -4,7 +4,7 @@ import { Icon, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { useDBotStore } from 'Stores/useDBotStore';
+import { useDBotStore } from '../../../../stores/useDBotStore';
 import ToolbarButton from '../toolbar/toolbar-button';
 import SearchBox from './search-box';
 import { ToolboxItems } from './toolbox-items';
@@ -23,7 +23,6 @@ const Toolbox = observer(() => {
         onToolboxItemExpand,
         onUnmount,
         sub_category_index,
-        toggleDrawer,
         toolbox_dom,
     } = toolbox;
 

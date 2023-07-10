@@ -13,7 +13,7 @@ const getConfig = () => ({
         ru: 'Русский',
         es: 'Español',
         vi: 'Tiếng Việt',
-        th: 'ไทย',
+        // th: 'ไทย',
         // id: 'Indonesia',
         // pl: 'Polish',
         // pt: 'Português',

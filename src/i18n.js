@@ -4,7 +4,7 @@ import en from './common/translations/en/i10n.json';
 import fr from './common/translations/fr_FR/i10n.json';
 import ru from './common/translations/ru_RU/i10n.json';
 import vi from './common/translations/vi_VN/i10n.json';
-import th from './common/translations/th_TH/i10n.json';
+// import th from './common/translations/th_TH/i10n.json';
 
 export const supported_languages = {
     es,
@@ -12,7 +12,7 @@ export const supported_languages = {
     fr,
     ru,
     vi,
-    th,
+    // th,
 };
 
 const fallbackLang = en;

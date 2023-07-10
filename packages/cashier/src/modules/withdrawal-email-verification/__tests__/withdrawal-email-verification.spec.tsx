@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { StoreProvider, mockStore } from '@deriv/stores';
+import { mockStore } from '@deriv/stores';
 import WithdrawalEmailVerification from '../withdrawal-email-verification';
 import CashierProviders from '../../../cashier-providers';
 

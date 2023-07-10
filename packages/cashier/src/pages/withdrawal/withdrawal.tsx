@@ -1,7 +1,7 @@
 import React from 'react';
 import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { LocalStore, isCryptocurrency, isDesktop } from '@deriv/shared';
+import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
 import { useCashierLocked, useCheck10kLimit, useIsSystemMaintenance } from '@deriv/hooks';
 import CryptoTransactionsHistory from '../../components/crypto-transactions-history';

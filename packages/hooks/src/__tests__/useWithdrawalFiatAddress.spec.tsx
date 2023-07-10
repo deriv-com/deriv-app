@@ -9,25 +9,25 @@ jest.mock('@deriv/api', () => ({
     useRequest: jest.fn(() => ({ data: { cashier: 'https://example.com' }, mutate: jest.fn })),
 }));
 
+const mock = mockStore({
+    client: {
+        verification_code: {
+            payment_withdraw: 'abcd1234',
+        },
+    },
+    ui: {
+        is_dark_mode_on: true,
+    },
+});
+
+const wrapper = ({ children }: { children: JSX.Element }) => (
+    <APIProvider>
+        <StoreProvider store={mock}>{children}</StoreProvider>
+    </APIProvider>
+);
+
 describe('useWithdrawalFiatAddress', () => {
     it('should get the iframe url when cashier API is called', () => {
-        const mock = mockStore({
-            client: {
-                verification_code: {
-                    payment_withdraw: 'abcd1234',
-                },
-            },
-            ui: {
-                is_dark_mode_on: true,
-            },
-        });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
-
         const { result } = renderHook(() => useWithdrawalFiatAddress(), { wrapper });
 
         result.current.resend();
@@ -36,29 +36,17 @@ describe('useWithdrawalFiatAddress', () => {
     });
 
     it('should get the iframe url for dark mode', () => {
-        const mock = mockStore({ ui: { is_dark_mode_on: false } });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
+        mock.ui.is_dark_mode_on = true;
 
         const { result } = renderHook(() => useWithdrawalFiatAddress(), { wrapper });
 
         result.current.resend();
 
-        expect(result.current.data).toBe('https://example.com&DarkMode=off');
+        expect(result.current.data).toBe('https://example.com&DarkMode=on');
     });
 
     it('should get the iframe url for light mode', () => {
-        const mock = mockStore({ ui: { is_dark_mode_on: false } });
-
-        const wrapper = ({ children }: { children: JSX.Element }) => (
-            <APIProvider>
-                <StoreProvider store={mock}>{children}</StoreProvider>
-            </APIProvider>
-        );
+        mock.ui.is_dark_mode_on = false;
 
         const { result } = renderHook(() => useWithdrawalFiatAddress(), { wrapper });
 

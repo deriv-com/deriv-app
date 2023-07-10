@@ -9,6 +9,7 @@ import { general_messages } from '../Constants/cfd-shared-strings';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { TTradingPlatformAccounts, TCFDPlatform } from './props.types';
 import { TObjectCFDAccount } from '../Containers/cfd-dashboard';
+import { TCFDPasswordReset } from '../Containers/props.types';
 
 type TStandPoint = {
     financial_company: string;
@@ -54,15 +55,19 @@ type TCFDRealAccountDisplayProps = {
     ) => boolean;
     // TODO: update this type (DetailsOfEachMT5Loginid) when BE changed the schema
     current_list: Record<string, TCurrentList>;
-    openPasswordManager: (login?: string, title?: string, group?: string, type?: string, server?: string) => void;
+    openPasswordManager: (
+        login?: string,
+        title?: string,
+        group?: TCFDPasswordReset['account_group'],
+        type?: string,
+        server?: string
+    ) => void;
     toggleAccountsDialog: (is_accounts_switcher_on?: boolean) => void;
-    toggleMT5TradeModal: (is_accounts_switcher_on?: boolean) => void;
     toggleShouldShowRealAccountsList: (is_should_show_real_acc_list?: boolean) => void;
     residence: string;
     account_status?: object;
     openDerivRealAccountNeededModal: () => void;
     should_enable_add_button?: boolean;
-    setIsAcuityModalOpen: (value: boolean) => void;
     real_account_creation_unlock_date: string;
     setShouldShowCooldownModal: (value: boolean) => void;
     show_eu_related_content: boolean;
@@ -89,18 +94,12 @@ const CFDRealAccountDisplay = ({
     standpoint,
     is_logged_in,
     toggleAccountsDialog,
-    toggleMT5TradeModal,
     toggleShouldShowRealAccountsList,
     residence,
     openDerivRealAccountNeededModal,
     should_enable_add_button,
-    setIsAcuityModalOpen,
-    real_account_creation_unlock_date,
-    setShouldShowCooldownModal,
     show_eu_related_content,
 }: TCFDRealAccountDisplayProps) => {
-    const is_eu_user = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
-
     const financial_specs = React.useMemo(() => {
         const should_show_eu = (is_logged_in && is_eu) || (!is_logged_in && is_eu_country);
         const is_australian = residence === 'au';
@@ -213,7 +212,6 @@ const CFDRealAccountDisplay = ({
             is_virtual={is_virtual}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
             toggleAccountsDialog={toggleAccountsDialog}
-            toggleMT5TradeModal={toggleMT5TradeModal}
         />
     );
 
@@ -237,15 +235,10 @@ const CFDRealAccountDisplay = ({
             descriptor={general_messages.getFinancialAccountDescriptor(platform, show_eu_related_content)}
             specs={financial_specs}
             is_accounts_switcher_on={is_accounts_switcher_on}
-            is_eu={is_eu_user}
             is_logged_in={is_logged_in}
             is_virtual={is_virtual}
             toggleShouldShowRealAccountsList={toggleShouldShowRealAccountsList}
             toggleAccountsDialog={toggleAccountsDialog}
-            toggleMT5TradeModal={toggleMT5TradeModal}
-            setIsAcuityModalOpen={setIsAcuityModalOpen}
-            real_account_creation_unlock_date={real_account_creation_unlock_date}
-            setShouldShowCooldownModal={setShouldShowCooldownModal}
         />
     );
 
@@ -259,7 +252,6 @@ const CFDRealAccountDisplay = ({
             has_real_account={has_real_account}
             is_accounts_switcher_on={is_accounts_switcher_on}
             is_disabled={has_cfd_account_error || standpoint.malta}
-            is_eu={is_eu_user}
             is_logged_in={is_logged_in}
             is_virtual={is_virtual}
             key='cfd'

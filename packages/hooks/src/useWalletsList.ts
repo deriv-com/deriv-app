@@ -58,7 +58,9 @@ const useWalletsList = () => {
 
     // Sort wallets alphabetically by fiat, crypto, then virtual.
     const sorted_wallets = useMemo(() => {
-        return modified_wallets?.sort((a, b) => {
+        if (!modified_wallets) return undefined;
+
+        return [...modified_wallets].sort((a, b) => {
             if (a.is_virtual !== b.is_virtual) {
                 return a.is_virtual ? 1 : -1;
             } else if (a.currency_config?.is_crypto !== b.currency_config?.is_crypto) {

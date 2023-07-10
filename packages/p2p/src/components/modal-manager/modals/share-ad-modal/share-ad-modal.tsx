@@ -1,9 +1,10 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import domtoimage from 'dom-to-image';
-import QRCodeSVG from 'qrcode.react';
+import { Helmet } from 'react-helmet';
+import { QRCode } from 'react-qrcode-logo';
 import { WhatsappShareButton, WhatsappIcon, TwitterShareButton, TwitterIcon } from 'react-share';
 import { Button, Modal, Text } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 
@@ -13,11 +14,26 @@ const ShareAdModal = ({ advert }) => {
         advert;
 
     const divRef = React.useRef(null);
+
+    const options = {
+        ecLevel: 'M',
+        enableCORS: true,
+        size: 250,
+        quietZone: 10,
+        bgColor: '#FFFFFF',
+        fgColor: '#ebb434',
+        logoImage:
+            'https://play-lh.googleusercontent.com/ah8RkaAnph2gouJ48fVeybeJgw-tu2dzTDYL7miccIWxvd0ZcK5-MM20bGxjpjb2lXU',
+        logoWidth: 80,
+        logoHeight: 80,
+        logoOpacity: 1,
+        qrStyle: 'squares',
+    };
+
     const handleGenerateImage = () => {
         if (divRef.current) {
-            const options = {};
             domtoimage
-                .toPng(divRef.current, options)
+                .toPng(divRef.current)
                 .then(dataUrl => {
                     const link = document.createElement('a');
                     link.download = 'test.png';
@@ -61,22 +77,7 @@ const ShareAdModal = ({ advert }) => {
                             <Localize i18n_default_text='Rate {{rate_display}}' values={{ rate_display }} />
                         </Text>
                         <div className='share-ad-modal__card--image'>
-                            <QRCodeSVG
-                                value={window.location.href}
-                                size={128}
-                                bgColor={'#ffffff'}
-                                fgColor={'#000000'}
-                                level={'L'}
-                                includeMargin={false}
-                                imageSettings={{
-                                    src: 'https://play-lh.googleusercontent.com/ah8RkaAnph2gouJ48fVeybeJgw-tu2dzTDYL7miccIWxvd0ZcK5-MM20bGxjpjb2lXU',
-                                    x: undefined,
-                                    y: undefined,
-                                    height: 26,
-                                    width: 26,
-                                    excavate: true,
-                                }}
-                            />
+                            <QRCode value={window.location.href} {...options} />;
                         </div>
                     </div>
                     <Button primary onClick={handleGenerateImage}>

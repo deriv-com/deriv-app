@@ -103,7 +103,7 @@ const PlatformSwitcher = ({
 PlatformSwitcher.propTypes = {
     platform_config: PropTypes.array,
     toggleDrawer: PropTypes.func,
-    current_language: PropTypes.func,
+    current_language: PropTypes.string,
     app_routing_history: PropTypes.array,
     is_landing_company_loaded: PropTypes.bool,
     is_logged_in: PropTypes.bool,

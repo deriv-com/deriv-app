@@ -282,6 +282,7 @@ export type TCompareAccountRowProps = TCompareAccountContentProps & {
     CFDs_restricted_countries: boolean;
     financial_restricted_countries: boolean;
     is_preappstore_restricted_cr_demo_account: boolean;
+    residence: string;
 };
 
 export type TCompareAccountContentProps = {

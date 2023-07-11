@@ -336,7 +336,8 @@ export default class SendbirdStore extends BaseStore {
                 } else {
                     this.terminateChatWsConnection();
                 }
-            }
+            },
+            { fireImmediately: true }
         );
 
         this.disposeActiveChatChannelReaction = reaction(

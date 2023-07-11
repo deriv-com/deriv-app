@@ -7,9 +7,9 @@ import { observer } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { useIsMounted, WS } from '@deriv/shared';
 
-const MultiplierOptions = observer(() => {
-    const { amount, multiplier, multiplier_range_list, onChange, toggleModal, trade_store } = useTraderStore();
-
+const MultiplierOptions = observer(({ toggleModal }) => {
+    const trade_store = useTraderStore();
+    const { amount, multiplier, multiplier_range_list, onChange } = trade_store;
     const [commission, setCommission] = React.useState(null);
     const [stop_out, setStopOut] = React.useState(null);
     const isMounted = useIsMounted();

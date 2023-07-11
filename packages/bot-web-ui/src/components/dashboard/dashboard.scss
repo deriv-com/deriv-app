@@ -513,8 +513,7 @@
 
     &__bot-builder-tour {
         height: unset;
-        background: $color-black-3;
-        border-top: 0.1rem solid $color-black-5;
+        background: var(--general-section-1);
 
         .dbot-slider {
             width: 100%;
@@ -525,10 +524,10 @@
                 .dc-accordion {
                     &__item {
                         border: none;
-                        border-bottom: 0.1rem solid $color-black-5;
+                        border-bottom: 0.1rem solid;
 
                         &-header {
-                            color: $color-white;
+                            color: var(--text-prominent);
                             text-align: center;
                             font-weight: 700;
                             font-size: 1.4rem;
@@ -539,7 +538,7 @@
                         }
 
                         &-content {
-                            color: $color-white;
+                            color: var(--text-prominent);
                         }
                     }
                 }
@@ -576,7 +575,7 @@
                     background: transparent;
 
                     span {
-                        color: $color-white;
+                        color: var(--text-prominent);
                     }
                 }
             }
@@ -591,7 +590,6 @@
         display: flex;
         width: 100%;
         padding: 0.6rem 1.6rem;
-        border-bottom: solid 0.1rem $color-black-5;
         cursor: pointer;
     }
 
@@ -600,7 +598,7 @@
         text-align: center;
 
         span {
-            color: $color-white;
+            color: var(--text-prominent);
         }
     }
 
@@ -615,12 +613,12 @@
     }
 
     &__content {
-        background-color: $color-black-3;
+        background-color: var(--general-section-1);
         overflow: hidden;
         transition: all 0.4s ease-in-out;
         max-height: 0;
         opacity: 0;
-        color: $color-white;
+        color: var(--text-prominent);
         padding: 1rem 0;
         font-size: 1.2rem;
 

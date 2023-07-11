@@ -2,7 +2,7 @@ export const takeField = (arr, field) => arr.map(x => (field ? x[field] : x));
 
 export const takeLast = (arr, n, field) => takeField(arr.slice(n > arr.length ? 0 : arr.length - n, arr.length), field);
 
-export const sum = data => data.reduce((acc, x) => acc + x);
+export const sum = data => data.reduce((acc, x) => acc + x, 0);
 
 export const mean = data => data.reduce((a, b) => a + b, 0) / data.length;
 

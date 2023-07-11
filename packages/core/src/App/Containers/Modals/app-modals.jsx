@@ -60,11 +60,14 @@ const WarningCloseCreateRealAccountModal = React.lazy(() =>
 
 const VerificationModal = React.lazy(() => import(/* webpackChunkName: "verification-modal" */ '../VerificationModal'));
 
+const VerificationDocumentSubmitted = React.lazy(() =>
+    import(/* webpackChunkName: "verification-document-submitted-modal" */ './VerificationDocumentSubmitted')
+);
+
 const AppModals = ({
     is_account_needed_modal_on,
     is_acuity_modal_open,
     is_closing_create_real_account_modal,
-    is_from_eu,
     is_welcome_modal_visible,
     is_reality_check_visible,
     is_set_residence_modal_visible,
@@ -84,6 +87,8 @@ const AppModals = ({
     is_trading_experience_incomplete,
     should_show_risk_accept_modal,
     is_need_real_account_for_cashier_modal_visible,
+    is_verification_modal_visible,
+    is_verification_submitted,
     should_show_deposit_or_account_success_modal,
 }) => {
     const url_params = new URLSearchParams(useLocation().search);
@@ -168,8 +173,12 @@ const AppModals = ({
         ComponentToLoad = <NeedRealAccountForCashierModal />;
     }
     //TODO: Have to update this when cashier pop-up is done,this is just temporary
-    if (is_from_eu) {
+    if (is_verification_modal_visible) {
         ComponentToLoad = <VerificationModal />;
+    }
+
+    if (is_verification_submitted) {
+        ComponentToLoad = <VerificationDocumentSubmitted />;
     }
 
     if (should_show_deposit_or_account_success_modal) {
@@ -191,11 +200,12 @@ export default connect(({ client, ui, traders_hub }) => ({
     is_closing_create_real_account_modal: ui.is_closing_create_real_account_modal,
     is_close_mx_mlt_account_modal_visible: ui.is_close_mx_mlt_account_modal_visible,
     is_close_uk_account_modal_visible: ui.is_close_uk_account_modal_visible,
-    is_from_eu: traders_hub.is_eu_user,
     is_set_residence_modal_visible: ui.is_set_residence_modal_visible,
     is_real_acc_signup_on: ui.is_real_acc_signup_on,
     is_logged_in: client.is_logged_in,
     is_reality_check_visible: client.is_reality_check_visible,
+    is_verification_modal_visible: ui.is_verification_modal_visible,
+    is_verification_submitted: ui.is_verification_submitted,
     has_maltainvest_account: client.has_maltainvest_account,
     fetchFinancialAssessment: client.fetchFinancialAssessment,
     setCFDScore: client.setCFDScore,

@@ -342,7 +342,7 @@
         &-modal {
             @include mobile {
                 &--vanilla {
-                    max-width: 33rem;
+                    max-width: calc(min(33rem, 85vw));
                 }
             }
         }
@@ -778,6 +778,16 @@
     /* postcss-bem-linter: ignore */
     .dropdown-container {
         margin-top: 0.8em;
+    }
+}
+
+.expiry-text-container {
+    margin-top: 0.4rem;
+
+    &--mobile {
+        margin: 0 0 0.8rem;
+        position: relative;
+        top: -0.8rem;
     }
 }
 

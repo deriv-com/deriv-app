@@ -256,7 +256,7 @@ const AccountTransferForm = observer(
         React.useEffect(() => {
             if (Object.keys(from_accounts).length && typeof setSideNotes === 'function') {
                 const side_notes = [];
-                if (is_crypto && crypto_transactions?.length) {
+                if (is_crypto) {
                     side_notes.push(<RecentTransaction key={2} />);
                 }
                 side_notes.push(

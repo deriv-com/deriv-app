@@ -96,34 +96,7 @@ const TaxResidenceSelect = ({ field, errors, setFieldValue, values, is_changeabl
     </React.Fragment>
 );
 
-<<<<<<< HEAD
-export const PersonalDetailsForm = ({
-    authentication_status,
-    is_eu,
-    is_mf,
-    is_uk,
-    is_svg,
-    is_virtual,
-    residence_list,
-    states_list,
-    current_landing_company,
-    refreshNotifications,
-    showPOAAddressMismatchSuccessNotification,
-    showPOAAddressMismatchFailureNotification,
-    Notifications,
-    fetchResidenceList,
-    fetchStatesList,
-    has_residence,
-    account_settings,
-    getChangeableFields,
-    history,
-    is_social_signup,
-    updateAccountStatus,
-    has_poa_address_mismatch,
-}) => {
-=======
 export const PersonalDetailsForm = observer(({ history }) => {
->>>>>>> f6c8fb469a1a24926023a4d01651c0e052277042
     const [is_loading, setIsLoading] = React.useState(true);
 
     const [is_state_loading, setIsStateLoading] = useStateCallback(false);
@@ -160,7 +133,6 @@ export const PersonalDetailsForm = observer(({ history }) => {
     } = notifications;
 
     const { Notifications } = ui;
-    const { is_language_changing } = common;
     const is_mf = landing_company_shortcode === 'maltainvest';
     const has_poa_address_mismatch = account_status.status?.includes('poa_address_mismatch');
     const [rest_state, setRestState] = React.useState({
@@ -1315,37 +1287,6 @@ export const PersonalDetailsForm = observer(({ history }) => {
 
 PersonalDetailsForm.propTypes = {
     history: PropTypes.object,
-<<<<<<< HEAD
-    is_social_signup: PropTypes.bool,
-    updateAccountStatus: PropTypes.func,
-    has_poa_address_mismatch: PropTypes.bool,
-};
-
-export default connect(({ client, notifications, ui }) => ({
-    account_settings: client.account_settings,
-    authentication_status: client.authentication_status,
-    has_residence: client.has_residence,
-    getChangeableFields: client.getChangeableFields,
-    current_landing_company: client.current_landing_company,
-    is_eu: client.is_eu,
-    is_mf: client.landing_company_shortcode === 'maltainvest',
-    is_svg: client.is_svg,
-    is_uk: client.is_uk,
-    is_virtual: client.is_virtual,
-    residence_list: client.residence_list,
-    states_list: client.states_list,
-    fetchResidenceList: client.fetchResidenceList,
-    fetchStatesList: client.fetchStatesList,
-    is_social_signup: client.is_social_signup,
-    refreshNotifications: notifications.refreshNotifications,
-    showPOAAddressMismatchSuccessNotification: notifications.showPOAAddressMismatchSuccessNotification,
-    showPOAAddressMismatchFailureNotification: notifications.showPOAAddressMismatchFailureNotification,
-    Notifications: ui.notification_messages_ui,
-    updateAccountStatus: client.updateAccountStatus,
-    has_poa_address_mismatch: client.account_status.status?.includes('poa_address_mismatch'),
-}))(withRouter(PersonalDetailsForm));
-=======
 };
 
 export default withRouter(PersonalDetailsForm);
->>>>>>> f6c8fb469a1a24926023a4d01651c0e052277042

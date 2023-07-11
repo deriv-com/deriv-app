@@ -228,6 +228,129 @@ import type {
 } from '@deriv/api-types';
 import type { useMutation, useQuery } from '@tanstack/react-query';
 
+type TPrivateSocketEndpoints = {
+    cashier_payments: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            cashier_payments: 1;
+            /**
+             * [Optional] Cashier provider. `crypto` will be default option for crypto currency accounts.
+             */
+            provider?: 'crypto';
+            /**
+             * [Optional] If set to 1, will send updates whenever there is update to crypto payments.
+             */
+            subscribe?: 0 | 1;
+            /**
+             * [Optional] Type of transactions to receive.
+             */
+            transaction_type?: 'all' | 'deposit' | 'withdrawal';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            cashier_payments?: {
+                /**
+                 * Response for provider `crypto'.
+                 */
+                crypto: {
+                    /**
+                     * The destination crypto address.
+                     */
+                    address_hash: string;
+                    /**
+                     * The URL of the address on blockchain.
+                     */
+                    address_url: string;
+                    /**
+                     * [Optional] The transaction amount. Not present when deposit transaction still unconfirmed.
+                     */
+                    amount?: number;
+                    /**
+                     * [Optional] The number of confirmations for pending deposits or withdrawals.
+                     */
+                    confirmations?: number;
+                    /**
+                     * The unique identifier for the transaction.
+                     */
+                    id: string;
+                    /**
+                     * [Optional] Boolean value: 1 or 0, indicating whether the transaction can be cancelled. Only applicable for `withdrawal` transactions.
+                     */
+                    is_valid_to_cancel?: 1 | 0;
+                    /**
+                     * The status code of the transaction.
+                     * Possible values for **deposit:** `PENDING|CONFIRMED|ERROR`,
+                     * possible values for **withdrawal:** `LOCKED|VERIFIED|REJECTED|PERFORMING_BLOCKCHAIN_TXN|PROCESSING|SENT|ERROR|CANCELLED`.
+                     */
+                    status_code:
+                        | 'CANCELLED'
+                        | 'CONFIRMED'
+                        | 'ERROR'
+                        | 'LOCKED'
+                        | 'PENDING'
+                        | 'PERFORMING_BLOCKCHAIN_TXN'
+                        | 'PROCESSING'
+                        | 'REJECTED'
+                        | 'SENT'
+                        | 'VERIFIED';
+                    /**
+                     * The status message of the transaction
+                     */
+                    status_message: string;
+                    /**
+                     * The epoch of the transaction date
+                     */
+                    submit_date: number;
+                    /**
+                     * [Optional] The transaction hash when available.
+                     */
+                    transaction_hash?: string;
+                    /**
+                     * The type of the transaction.
+                     */
+                    transaction_type: 'deposit' | 'withdrawal';
+                    /**
+                     * [Optional] The URL of the transaction on blockchain if `transaction_hash` is available.
+                     */
+                    transaction_url?: string;
+                }[];
+            };
+            subscription?: {
+                /**
+                 * A per-connection unique identifier. Can be passed to the `forget` API call to unsubscribe.
+                 */
+                id: string;
+            };
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'cashier_payments';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
+};
+
 type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;
@@ -681,7 +804,7 @@ type TSocketEndpoints = {
         request: ServerStatusRequest;
         response: ServerStatusResponse;
     };
-};
+} & TPrivateSocketEndpoints;
 
 export type TSocketEndpointNames = keyof TSocketEndpoints;
 

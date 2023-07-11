@@ -40,6 +40,7 @@ export { default as Dialog } from './components/dialog';
 export { default as Div100vhContainer } from './components/div100vh-container';
 export { default as Drawer } from './components/drawer';
 export { default as Dropdown } from './components/dropdown';
+export * from './components/empty-state';
 export { default as ExpansionPanel } from './components/expansion-panel';
 export { default as FadeWrapper } from './components/fade-wrapper';
 export { default as Field } from './components/field';

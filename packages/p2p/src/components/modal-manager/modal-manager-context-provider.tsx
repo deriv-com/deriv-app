@@ -113,9 +113,8 @@ const ModalManagerContextProvider = (props: React.PropsWithChildren<{ mock?: TMo
      * - **should_save_form_history**: `false` by default. If set to `true`, form values in modals that has a form with `ModalForm` component
      * will be saved when the modal is hidden and restored when modal is shown again.
      */
-    const hideModal = (options?: THideModalOptions) => {
-        // eslint-disable-next-line no-param-reassign
-        if (!options) options = { should_save_form_history: false, should_hide_all_modals: false };
+    const hideModal = (opts?: THideModalOptions) => {
+        let options = opts ?? { should_save_form_history: false, should_hide_all_modals: false };;
 
         const { should_save_form_history, should_hide_all_modals } = options;
 
@@ -139,7 +138,7 @@ const ModalManagerContextProvider = (props: React.PropsWithChildren<{ mock?: TMo
                 });
                 setIsModalOpen(false);
             }
-        } else if (modal.stacked_modal && Object.keys(modal.stacked_modal).length !== 0) {
+        } else if (modal.stacked_modal) {
             setModalState({
                 active_modal: should_hide_all_modals ? null : modal.active_modal,
                 stacked_modal: null,
@@ -171,7 +170,7 @@ const ModalManagerContextProvider = (props: React.PropsWithChildren<{ mock?: TMo
     };
 
     return (
-        <ModalManagerContext.Provider value={props.mock ? props.mock : state}>
+        <ModalManagerContext.Provider value={props.mock ?? state}>
             {props.children}
         </ModalManagerContext.Provider>
     );

@@ -23,9 +23,13 @@ const initRoutesConfig = () => {
             getTitle: () => localize('MT5'),
             is_authenticated: false,
         },
+        // This is placed here to avoid conflict with other routes
+        // TODO: [refactoring] - Remove this route once we do refactoring
         {
             path: routes.compare_cfds,
-            component: CFDCompareAccounts,
+            component: props => <CFDCompareAccounts {...props} />,
+            getTitle: () => localize('Compare CFD accounts'),
+            is_authenticated: false,
         },
     ];
 };

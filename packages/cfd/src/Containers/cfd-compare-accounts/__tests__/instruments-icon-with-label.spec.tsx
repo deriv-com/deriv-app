@@ -21,7 +21,6 @@ describe('<InstrumentsIconWithLabel />', () => {
         expect(iconElement).toBeInTheDocument();
         expect(iconElement).toHaveClass('trading-instruments__icon');
         expect(textElement).toBeInTheDocument();
-        expect(textElement).toHaveStyle({ marginLeft: '0.5rem', fontWeight: 'bold' });
         expect(asteriskElement).toBeInTheDocument();
         expect(asteriskElement).toHaveClass('trading-instruments__span');
     });

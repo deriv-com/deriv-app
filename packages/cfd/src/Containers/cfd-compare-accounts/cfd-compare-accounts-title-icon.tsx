@@ -8,7 +8,7 @@ import { getAccountCardTitle, getMarketType, getAccountIcon } from '../../Helper
 
 const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_eu_user, is_demo }: TCompareAccountsCard) => {
     const market_type = !is_eu_user ? getMarketType(trading_platforms) : 'CFDs';
-    const jurisdiction_shortcode = market_type.concat('_', trading_platforms.shortcode);
+    const market_type_shortcode = market_type.concat('_', trading_platforms.shortcode);
     const jurisdiction_card_icon =
         trading_platforms.platform === 'dxtrade'
             ? getAccountIcon(trading_platforms.platform)
@@ -16,7 +16,7 @@ const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_eu_user, is_demo }:
     const jurisdiction_card_title =
         trading_platforms.platform === 'dxtrade'
             ? getAccountCardTitle(trading_platforms.platform, is_demo)
-            : getAccountCardTitle(jurisdiction_shortcode, is_demo);
+            : getAccountCardTitle(market_type_shortcode, is_demo);
     const labuan_jurisdiction_message = localize(
         'Choosing this jurisdiction will give you a Financial STP account. Your trades will go directly to the market and have tighter spreads.'
     );
@@ -29,7 +29,7 @@ const CFDCompareAccountsTitleIcon = ({ trading_platforms, is_eu_user, is_demo }:
                     <Text as='h1' weight='bold' size='xs' align='center'>
                         {jurisdiction_card_title}
                     </Text>
-                    {jurisdiction_shortcode === 'financial_labuan' && (
+                    {market_type_shortcode === 'financial_labuan' && (
                         <Popover
                             alignment={isMobile ? 'top' : 'right'}
                             className='cfd-compare-account-labuan-tooltip'

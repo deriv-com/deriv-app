@@ -16,6 +16,7 @@ const InstrumentsIconWithLabel = ({ icon, text, highlighted, className, is_aster
             <Text
                 as='p'
                 weight='bolder'
+                line_height='xs'
                 size='xxs'
                 align='center'
                 color='general'

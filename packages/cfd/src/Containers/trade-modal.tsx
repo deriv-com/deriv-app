@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Icon, Money } from '@deriv/components';
-import { TTradingPlatformAccounts, TCFDDashboardContainer, TCFDsPlatformType } from 'Components/props.types';
+import { TTradingPlatformAccounts, TCFDDashboardContainer, TCFDPlatform } from 'Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { CFD_PLATFORMS, getCFDAccountKey, isMobile } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
@@ -24,11 +24,11 @@ type TTradeModalProps = {
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     derivez_tokens: TCFDDashboardContainer['derivez_tokens'];
     is_demo: string;
-    platform: TCFDsPlatformType;
+    platform: TCFDPlatform;
 };
 
 const PlatformIconsAndDescriptions = (
-    platform: TCFDsPlatformType,
+    platform: TCFDPlatform,
     is_demo: string,
     mt5_trade_account: Required<DetailsOfEachMT5Loginid>
 ) => {
@@ -121,7 +121,7 @@ const TradeModal = ({
         }
     };
 
-    const downloadCenterAppOption = (platform_type: TCFDsPlatformType) => {
+    const downloadCenterAppOption = (platform_type: TCFDPlatform) => {
         let app_title = '';
         if (platform_type === 'dxtrade') {
             app_title = localize('Run Deriv X on your browser');

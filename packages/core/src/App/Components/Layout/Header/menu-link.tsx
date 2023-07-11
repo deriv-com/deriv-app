@@ -41,7 +41,7 @@ const MenuLink = observer(
         const deriv_static_url = getStaticUrl(link_to);
         const traders_hub_path = window.location.pathname === routes.traders_hub;
         const is_languages_link_on_mobile = isMobile() && link_to === routes.languages;
-        const is_exetrnal_link_to = deriv_static_url && isExternalLink(link_to);
+        const is_external_link = deriv_static_url && isExternalLink(link_to);
         const is_cashier_link = [
             routes.cashier_deposit,
             routes.cashier_withdrawal,
@@ -122,7 +122,7 @@ const MenuLink = observer(
                     {suffix_icon && <Icon className='header__menu-mobile-link-suffix-icon' icon={suffix_icon} />}
                 </div>
             );
-        } else if (is_exetrnal_link_to) {
+        } else if (is_external_link) {
             return (
                 <a
                     className={classNames('header__menu-mobile-link', {

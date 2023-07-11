@@ -368,6 +368,7 @@ type TCommonStore = {
     setAppstorePlatform: (value: string) => void;
     app_routing_history: TAppRoutingHistory[];
     getExchangeRate: (from_currency: string, to_currency: string) => Promise<number>;
+    setMobileLanguageMenuOpen: (is_mobile_language_menu_open: boolean) => void;
 };
 
 type TUiStore = {

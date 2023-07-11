@@ -23,11 +23,9 @@ import {
     CFD_PLATFORMS,
 } from '@deriv/shared';
 import { FormikErrors } from 'formik';
-import { connect } from '../Stores/connect';
 import CFDStore from '../Stores/Modules/CFD/cfd-store';
 import TradingPasswordManager from './trading-password-manager';
 import InvestorPasswordManager from './investor-password-manager';
-import RootStore from '../Stores/index';
 import {
     TCountdownComponent,
     TCFDPasswordReset,
@@ -37,6 +35,8 @@ import {
     TFormValues,
     TPasswordManagerModalFormValues,
 } from './props.types';
+import { observer, useStore } from '@deriv/stores';
+import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 
 const CountdownComponent = ({ count_from = 60, onTimeout }: TCountdownComponent) => {
     const [count, setCount] = React.useState<number>(count_from);
@@ -66,7 +66,6 @@ const CFDPasswordReset = ({
     account_type,
     account_group,
     server,
-    context,
     password_type,
 }: TCFDPasswordReset) => {
     const [is_resend_verification_requested, setResendVerification] = React.useState<boolean>(false);
@@ -156,7 +155,6 @@ const CFDPasswordManagerTabContent = ({
     setPasswordType,
     multi_step_ref,
     platform,
-    context,
     onChangeActiveTabIndex,
     account_group,
 }: TCFDPasswordManagerTabContent) => {
@@ -291,111 +289,107 @@ const CFDPasswordManagerTabContent = ({
     );
 };
 
-const CFDPasswordManagerModal = ({
-    enableApp,
-    email,
-    disableApp,
-    is_visible,
-    platform,
-    context,
-    selected_login,
-    toggleModal,
-    selected_account_type,
-    selected_account_group,
-    selected_server,
-    sendVerifyEmail,
-}: TCFDPasswordManagerModal) => {
-    const multi_step_ref: React.MutableRefObject<undefined> = React.useRef();
-    const [index, setIndex] = React.useState<number>(0);
+const CFDPasswordManagerModal = observer(
+    ({
+        is_visible,
+        platform,
+        selected_login,
+        toggleModal,
+        selected_account_type,
+        selected_account_group,
+        selected_server,
+    }: TCFDPasswordManagerModal) => {
+        const { client, ui } = useStore();
 
-    const [password_type, setPasswordType] = React.useState('main');
+        const { email } = client;
+        const { enableApp, disableApp } = ui;
 
-    if (!selected_login) return null;
+        const { sendVerifyEmail } = useCfdStore();
 
-    const getTitle = () => {
-        return localize('Manage {{platform}} password', {
-            platform: getCFDPlatformLabel(platform),
-        });
-    };
+        const multi_step_ref: React.MutableRefObject<undefined> = React.useRef();
+        const [index, setIndex] = React.useState<number>(0);
 
-    const getHeader = (i: number) => {
-        if (i === 0) {
+        const [password_type, setPasswordType] = React.useState('main');
+
+        if (!selected_login) return null;
+
+        const getTitle = () => {
             return localize('Manage {{platform}} password', {
                 platform: getCFDPlatformLabel(platform),
             });
-        }
-        return localize('Manage password');
-    };
+        };
 
-    const onChangeActiveTabIndex = (i: number) => {
-        setIndex(i);
-    };
+        const getHeader = (i: number) => {
+            if (i === 0) {
+                return localize('Manage {{platform}} password', {
+                    platform: getCFDPlatformLabel(platform),
+                });
+            }
+            return localize('Manage password');
+        };
 
-    const steps = [
-        {
-            component: (
-                <CFDPasswordManagerTabContent
-                    email={email}
-                    selected_login={selected_login}
-                    toggleModal={toggleModal}
-                    setPasswordType={setPasswordType}
-                    multi_step_ref={multi_step_ref}
-                    platform={platform}
-                    context={context}
-                    onChangeActiveTabIndex={onChangeActiveTabIndex}
-                    account_group={selected_account_group}
-                />
-            ),
-        },
-        {
-            component: (
-                <CFDPasswordReset
-                    server={selected_server}
-                    context={context}
-                    sendVerifyEmail={sendVerifyEmail}
-                    account_type={selected_account_type}
-                    account_group={selected_account_group}
-                    password_type={password_type}
-                />
-            ),
-        },
-    ];
+        const onChangeActiveTabIndex = (i: number) => {
+            setIndex(i);
+        };
 
-    return (
-        <React.Suspense fallback={<UILoader />}>
-            <DesktopWrapper>
-                <Modal
-                    className='cfd-password-manager__modal'
-                    disableApp={disableApp}
-                    enableApp={enableApp}
-                    is_open={is_visible}
-                    title={getTitle()}
-                    toggleModal={toggleModal}
-                    height='688px'
-                    width='904px'
-                    should_header_stick_body={false}
-                >
-                    <CFDPasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
-                </Modal>
-            </DesktopWrapper>
-            <MobileWrapper>
-                <PageOverlay
-                    is_open={is_visible}
-                    portal_id='deriv_app'
-                    header={getHeader(index)}
-                    onClickClose={toggleModal}
-                >
-                    <CFDPasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
-                </PageOverlay>
-            </MobileWrapper>
-        </React.Suspense>
-    );
-};
+        const steps = [
+            {
+                component: (
+                    <CFDPasswordManagerTabContent
+                        email={email}
+                        selected_login={selected_login}
+                        toggleModal={toggleModal}
+                        setPasswordType={setPasswordType}
+                        multi_step_ref={multi_step_ref}
+                        platform={platform}
+                        onChangeActiveTabIndex={onChangeActiveTabIndex}
+                        account_group={selected_account_group}
+                    />
+                ),
+            },
+            {
+                component: (
+                    <CFDPasswordReset
+                        server={selected_server}
+                        sendVerifyEmail={sendVerifyEmail}
+                        account_type={selected_account_type}
+                        account_group={selected_account_group}
+                        password_type={password_type}
+                    />
+                ),
+            },
+        ];
 
-export default connect(({ modules: { cfd }, client, ui }: RootStore) => ({
-    email: client.email,
-    enableApp: ui.enableApp,
-    disableApp: ui.disableApp,
-    is_eu: client.is_eu,
-    sendVerifyEmail: cfd.sendVerifyEmail,
-}))(CFDPasswordManagerModal);
+        return (
+            <React.Suspense fallback={<UILoader />}>
+                <DesktopWrapper>
+                    <Modal
+                        className='cfd-password-manager__modal'
+                        disableApp={disableApp}
+                        enableApp={enableApp}
+                        is_open={is_visible}
+                        title={getTitle()}
+                        toggleModal={toggleModal}
+                        height='688px'
+                        width='904px'
+                        should_header_stick_body={false}
+                    >
+                        <CFDPasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
+                    </Modal>
+                </DesktopWrapper>
+                <MobileWrapper>
+                    <PageOverlay
+                        is_open={is_visible}
+                        portal_id='deriv_app'
+                        header={getHeader(index)}
+                        onClickClose={toggleModal}
+                    >
+                        <CFDPasswordManagerTabContentWrapper steps={steps} multi_step_ref={multi_step_ref} />
+                    </PageOverlay>
+                </MobileWrapper>
+            </React.Suspense>
+        );
+    }
+);
+
+export default CFDPasswordManagerModal;

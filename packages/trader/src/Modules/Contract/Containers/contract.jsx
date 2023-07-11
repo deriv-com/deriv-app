@@ -5,12 +5,21 @@ import { CSSTransition } from 'react-transition-group';
 import { routes } from '@deriv/shared';
 import ErrorComponent from 'App/Components/Elements/Errors';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import ContractReplay from './contract-replay.jsx';
+import { observer, useStore } from '@deriv/stores';
 
 const dialog_errors = ['GetProposalFailure', 'ContractValidationError'];
 
-const Contract = ({ error_code, error_message, match, history, has_error, onMount, onUnmount, removeErrorMessage }) => {
+const Contract = observer(({ match, history }) => {
+    const { contract_replay } = useStore();
+    const {
+        removeErrorMessage,
+        error_message,
+        error_code,
+        has_error,
+        removeAccountSwitcherListener: onUnmount,
+        setAccountSwitcherListener: onMount,
+    } = contract_replay;
     React.useEffect(() => {
         onMount(+match.params.contract_id, history);
 
@@ -52,30 +61,11 @@ const Contract = ({ error_code, error_message, match, history, has_error, onMoun
             )}
         </React.Fragment>
     );
-};
+});
 
 Contract.propTypes = {
-    error_message: PropTypes.string,
-    error_code: PropTypes.string,
-    has_error: PropTypes.bool,
     history: PropTypes.object,
-    is_mobile: PropTypes.bool,
     match: PropTypes.object,
-    onMount: PropTypes.func,
-    onUnmount: PropTypes.func,
-    removeErrorMessage: PropTypes.func,
-    symbol: PropTypes.string,
 };
 
-export default withRouter(
-    connect(({ ui, contract_replay }) => ({
-        error_message: contract_replay.error_message,
-        error_code: contract_replay.error_code,
-        has_error: contract_replay.has_error,
-        onMount: contract_replay.setAccountSwitcherListener,
-        onUnmount: contract_replay.removeAccountSwitcherListener,
-        removeErrorMessage: contract_replay.removeErrorMessage,
-        symbol: contract_replay.contract_info.underlying,
-        is_mobile: ui.is_mobile,
-    }))(Contract)
-);
+export default withRouter(Contract);

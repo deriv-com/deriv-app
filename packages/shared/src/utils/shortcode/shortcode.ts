@@ -92,6 +92,6 @@ export const isHighLow = ({ shortcode = '', shortcode_info }: TIsHighLow) => {
 export const isForwardStarting = (shortcode: string, purchase_time?: number) => {
     const shortcode_info = extractInfoFromShortcode(shortcode);
     if (shortcode_info?.multiplier) return false;
-    const start_time = shortcode_info?.start_time;
+    const start_time: string = shortcode_info?.start_time || '';
     return start_time && purchase_time && /f$/gi.test(start_time);
 };

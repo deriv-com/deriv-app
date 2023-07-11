@@ -1,3 +1,3 @@
-import ConnectedApps from './connected-apps.jsx';
+import ConnectedApps from './connected-apps';
 
 export default ConnectedApps;

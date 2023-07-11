@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, Button, Icon, Money, Popover } from '@deriv/components';
-import { TPasswordBoxProps, TTradingPlatformAccounts, TCFDDashboardContainer } from '../Components/props.types';
+import { TPasswordBoxProps, TTradingPlatformAccounts } from '../Components/props.types';
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import {
     CFD_PLATFORMS,
@@ -15,19 +15,19 @@ import { Localize, localize } from '@deriv/translations';
 import { CFDAccountCopy } from '../Components/cfd-account-copy';
 import { getPlatformMt5DownloadLink, getMT5WebTerminalLink } from '../Helpers/constants';
 import TradingPlatformIcon from '../Assets/svgs/trading-platform';
+import { TCFDPasswordReset } from './props.types';
 
 type TMT5TradeModalProps = {
-    mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
+    mt5_trade_account: DetailsOfEachMT5Loginid;
     show_eu_related_content: boolean;
     onPasswordManager: (
         arg1: string | undefined,
         arg2: string,
-        arg3: string,
+        group: TCFDPasswordReset['account_group'],
         arg4: string,
         arg5: string | undefined
     ) => void;
     toggleModal: () => void;
-    dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
 };
 
 export type TSpecBoxProps = {
@@ -119,6 +119,7 @@ const DMT5TradeModal = ({
     const getAccountTitle = () => {
         if (show_eu_related_content) return 'CFDs';
         else if (mt5_trade_account.market_type === 'synthetic') return 'Derived';
+        else if (mt5_trade_account.market_type === 'all') return 'SwapFree';
         return 'Financial';
     };
     return (
@@ -173,8 +174,8 @@ const DMT5TradeModal = ({
                                 });
                                 onPasswordManager(
                                     mt5_trade_account?.login,
-                                    getTitle(mt5_trade_account.market_type, show_eu_related_content),
-                                    mt5_trade_account.account_type,
+                                    getTitle(mt5_trade_account.market_type || '', show_eu_related_content),
+                                    mt5_trade_account.account_type || '',
                                     account_type,
                                     (mt5_trade_account as DetailsOfEachMT5Loginid)?.server
                                 );

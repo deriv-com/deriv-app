@@ -68,11 +68,8 @@ const PersonalDetailsForm = ({
     const getNameAndDobLabels = () => {
         const is_asterisk_needed = is_svg || is_mf || is_rendered_for_onfido || is_qualified_for_idv;
         const first_name_label = is_appstore || is_asterisk_needed ? localize('First name*') : localize('First name');
-        const last_name_label = is_appstore
-            ? localize('Family name*')
-            : is_asterisk_needed
-            ? localize('Last name*')
-            : localize('Last name');
+        const last_name_text = is_asterisk_needed ? localize('Last name*') : localize('Last name');
+        const last_name_label = is_appstore ? localize('Family name*') : last_name_text;
         const dob_label = is_appstore || is_asterisk_needed ? localize('Date of birth*') : localize('Date of birth');
 
         return {
@@ -82,18 +79,18 @@ const PersonalDetailsForm = ({
         };
     };
 
-    const getFieldHint = field_name => {
-        return (
+    const getFieldHint = field_name =>
+        is_qualified_for_idv || is_rendered_for_onfido ? (
             <Localize
-                i18n_default_text={
-                    is_qualified_for_idv || is_rendered_for_onfido
-                        ? 'Your {{ field_name }} as in your identity document'
-                        : 'Please enter your {{ field_name }} as in your official identity documents.'
-                }
+                i18n_default_text={'Your {{ field_name }} as in your identity document'}
+                values={{ field_name }}
+            />
+        ) : (
+            <Localize
+                i18n_default_text={'Please enter your {{ field_name }} as in your official identity documents.'}
                 values={{ field_name }}
             />
         );
-    };
 
     const handleToolTipStatus = React.useCallback(() => {
         if (is_tax_residence_popover_open) {

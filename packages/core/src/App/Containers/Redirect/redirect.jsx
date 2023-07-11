@@ -180,7 +180,7 @@ const Redirect = ({
             break;
     }
 
-    if (!redirected_to_route) {
+    if (!redirected_to_route && history.location.pathname !== routes.root) {
         history.push({
             pathname: routes.root,
             search: url_query_string,
@@ -210,7 +210,6 @@ Redirect.propTypes = {
 export default withRouter(
     connect(({ client, ui }) => ({
         currency: client.currency,
-        loginid: client.loginid,
         is_eu: client.is_eu,
         setVerificationCode: client.setVerificationCode,
         verification_code: client.verification_code,

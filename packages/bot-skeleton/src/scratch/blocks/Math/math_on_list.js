@@ -79,9 +79,9 @@ Blockly.JavaScript.math_on_list = block => {
         const functionName = Blockly.JavaScript.provideFunction_('mathMean', [
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
                 var final_list = [];
-                return recursiveList(myList, final_list).reduce(function(x, y) { 
-                    return x + y; 
-                });
+                return recursiveList(myList, final_list).reduce(function(x, y) {
+                    return x + y;
+                },0);
             }`,
         ]);
         list = Blockly.JavaScript.valueToCode(block, 'LIST', Blockly.JavaScript.ORDER_NONE) || '[]';
@@ -108,9 +108,9 @@ Blockly.JavaScript.math_on_list = block => {
         const functionName = Blockly.JavaScript.provideFunction_('mathMean', [
             `function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
                 var final_list = [];
-                return recursiveList(myList, final_list).reduce(function(x, y) { 
-                    return x + y; 
-                }) / myList.length;
+                return recursiveList(myList, final_list).reduce(function(x, y) {
+                    return x + y;
+                }, 0) / myList.length;
             }`,
         ]);
 
@@ -128,7 +128,7 @@ Blockly.JavaScript.math_on_list = block => {
 
             function partition(arr, start, end){
                 var pivotValue = arr[end];
-                var pivotIndex = start; 
+                var pivotIndex = start;
                 for (var i = start; i < end; i++) {
                     if (arr[i] < pivotValue) {
                     arr.swap(pivotIndex, i);
@@ -138,12 +138,12 @@ Blockly.JavaScript.math_on_list = block => {
                 arr.swap(end, pivotIndex);
                 return pivotIndex;
             };
-      
+
             function quickSort(arr) {
                 var stack = [];
                 stack.push(0);
                 stack.push(arr.length - 1);
-                
+
                 while(stack[stack.length - 1] >= 0){
                     end = stack.pop();
                     start = stack.pop();
@@ -165,13 +165,13 @@ Blockly.JavaScript.math_on_list = block => {
 
                 if (final_list.length % 2 == 0) {
                     return (final_list[final_list.length / 2 - 1] + final_list[final_list.length / 2]) / 2;
-                } 
+                }
                 return final_list[(final_list.length - 1) / 2];
             }
 
             function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(myList) {
                 var final_list = [];
-                return calculateMedian(recursiveList(myList, final_list));  
+                return calculateMedian(recursiveList(myList, final_list));
             }`,
         ]);
 
@@ -204,7 +204,7 @@ Blockly.JavaScript.math_on_list = block => {
                     }
                     maxCount = Math.max(thisCount, maxCount);
                 }
-                
+
                 for (var j = 0; j < counts.length; j++) {
                     if (counts[j][1] == maxCount) {
                         modes.push(counts[j][0]);
@@ -230,7 +230,7 @@ Blockly.JavaScript.math_on_list = block => {
                 var counts = [];
                 var minCount = 1;
                 var countArray = [];
-    
+
                 for (var i = 0; i < values.length; i++) {
                     var value = values[i];
                     var found = false;
@@ -241,9 +241,9 @@ Blockly.JavaScript.math_on_list = block => {
                             thisCount = ++counts[j][1];
                             found = true;
                             break;
-                        }	
+                        }
                     }
-                    
+
                     if (!found) {
                         counts.push([value, 1]);
                         thisCount = 1;
@@ -262,7 +262,7 @@ Blockly.JavaScript.math_on_list = block => {
 
                 return antiMode;
             }
-            
+
             function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(list) {
                 var final_list = [];
                 return calculateMathAntiMode(recursiveList(list, final_list));
@@ -282,7 +282,7 @@ Blockly.JavaScript.math_on_list = block => {
 
                 var mean = numbers.reduce(function(x, y) {
                     return x + y;
-                }) / n;
+                }, 0) / n;
 
                 var variance = 0;
                 for (var j = 0; j < n; j++) {
@@ -294,7 +294,7 @@ Blockly.JavaScript.math_on_list = block => {
 
             function ${Blockly.JavaScript.FUNCTION_NAME_PLACEHOLDER_}(list) {
                 var final_list = [];
-                return calculateMathStandardDeviation(recursiveList(list, final_list));              
+                return calculateMathStandardDeviation(recursiveList(list, final_list));
             }`,
         ]);
 

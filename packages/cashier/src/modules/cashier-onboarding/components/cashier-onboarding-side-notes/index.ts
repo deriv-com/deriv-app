@@ -1,3 +1,1 @@
-import CashierOnboardingSideNotes from './cashier-onboarding-side-notes';
-
-export { CashierOnboardingSideNotes };
+export { default as CashierOnboardingSideNotes } from './cashier-onboarding-side-notes';

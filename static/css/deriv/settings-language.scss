@@ -45,11 +45,10 @@
             cursor: pointer;
         }
         &-list {
+            grid-gap: 1.6rem;
             display: grid;
-            grid-template-columns: repeat(5,80px);
-            grid-template-rows: repeat(2,84px);
-            grid-gap: 40px;
-            padding: 40px;
+            grid-template-columns: repeat(4,minmax(122px,1fr));
+            padding: 1.6rem;
         }
         &-item {
             display: -webkit-box;
@@ -61,7 +60,7 @@
             flex-direction: column;
             border: 1px solid transparent;
             border-radius: 4px;
-            padding: 16px 5px;
+            padding: 10px 28px;
             -webkit-box-align: center;
             -ms-flex-align: center;
             align-items: center;
@@ -76,8 +75,8 @@
                 border: 1px solid var(--border-hover);
             }
             img {
-                width: 36px;
-                height: 24px;
+                width: 50px;
+                height: 33.33px;
             }
             span {
                 font-size: .9rem;

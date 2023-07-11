@@ -10,7 +10,7 @@ const LanguageModal = () => (
     <div id='language-menu-modal' className='invisible' onClick={toggleModal}>
         <div className='language-menu' onClick={e => e.stopPropagation()}>
             <div className='language-menu-header'>
-                <span>{translate('Language settings')}</span>
+                <span>{translate('Select Language')}</span>
                 <span className='language-menu-close_btn' onClick={toggleModal} />
             </div>
             <div className='language-menu-container'>

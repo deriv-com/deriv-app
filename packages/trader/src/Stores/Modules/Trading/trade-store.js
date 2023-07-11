@@ -1165,7 +1165,8 @@ export default class TradeStore extends BaseStore {
                 this.root_store.contract_trade || {};
             if (
                 (!should_calculate_accu_barriers ||
-                    !accumulator_barriers_data[this.symbol]?.accumulators_high_barrier) &&
+                    (!accumulator_barriers_data[this.symbol]?.accumulators_high_barrier &&
+                        spot_time === accumulator_barriers_data[this.symbol]?.current_spot_time)) &&
                 updateAccumulatorBarriersData
             ) {
                 updateAccumulatorBarriersData({
@@ -1478,7 +1479,7 @@ export default class TradeStore extends BaseStore {
                 const { should_calculate_accu_barriers, calculateAccumulatorBarriers, updateAccumulatorBarriersData } =
                     this.root_store.contract_trade ?? {};
                 let accumulator_barriers_data = {
-                    current_symbol: this.symbol,
+                    underlying: this.symbol,
                     tick_size_barrier: this.tick_size_barrier,
                     should_update_quickly:
                         !!this.prev_tick_size_barrier && this.prev_tick_size_barrier !== this.tick_size_barrier,
@@ -1490,7 +1491,6 @@ export default class TradeStore extends BaseStore {
                     accumulator_barriers_data = {
                         ...accumulator_barriers_data,
                         pip_size,
-                        symbol,
                     };
                     current_spot_data = {
                         current_spot: quote,
@@ -1503,7 +1503,6 @@ export default class TradeStore extends BaseStore {
                     accumulator_barriers_data = {
                         ...accumulator_barriers_data,
                         pip_size: args[0].pip_size,
-                        symbol,
                     };
                     current_spot_data = {
                         current_spot: prices[prices.length - 1],

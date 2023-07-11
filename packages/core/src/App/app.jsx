@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter as Router } from 'react-router-dom';
 // Initialize i18n by importing it here
 // eslint-disable-next-line no-unused-vars
@@ -78,61 +77,32 @@ const AppWithoutTranslation = ({ root_store }) => {
     return (
         <>
             {is_translation_loaded ? (
-                <HelmetProvider>
-                    <Router basename={has_base ? `/${base}` : null}>
-                        <MobxContentProvider store={root_store}>
-                            <StoreProvider store={root_store}>
-                                <APIProvider>
-                                    <PlatformContainer>
-                                        <Helmet
-                                            meta={[
-                                                {
-                                                    name: 'description',
-                                                    content: 'Helmet Description Deriv',
-                                                },
-                                                {
-                                                    name: 'og:title',
-                                                    content: 'Helmet Title Deriv',
-                                                },
-                                                {
-                                                    name: 'og:description',
-                                                    content: 'Helmet OG Description Deriv',
-                                                },
-                                                {
-                                                    name: 'og:image',
-                                                    content:
-                                                        'https://play-lh.googleusercontent.com/ah8RkaAnph2gouJ48fVeybeJgw-tu2dzTDYL7miccIWxvd0ZcK5-MM20bGxjpjb2lXU',
-                                                },
-                                                {
-                                                    name: 'referrer',
-                                                    content: 'origin',
-                                                },
-                                            ]}
-                                        >
-                                            <title>Deriv App</title>
-                                        </Helmet>
-                                        <Header />
-                                        <ErrorBoundary>
-                                            <AppContents>
-                                                {/* TODO: [trader-remove-client-base] */}
-                                                <Routes passthrough={platform_passthrough} />
-                                            </AppContents>
-                                        </ErrorBoundary>
-                                        <DesktopWrapper>
-                                            <Footer />
-                                        </DesktopWrapper>
-                                        <ErrorBoundary>
-                                            <AppModals />
-                                        </ErrorBoundary>
-                                        <SmartTraderIFrame />
-                                        <BinaryBotIFrame />
-                                        <AppToastMessages />
-                                    </PlatformContainer>
-                                </APIProvider>
-                            </StoreProvider>
-                        </MobxContentProvider>
-                    </Router>
-                </HelmetProvider>
+                <Router basename={has_base ? `/${base}` : null}>
+                    <MobxContentProvider store={root_store}>
+                        <StoreProvider store={root_store}>
+                            <APIProvider>
+                                <PlatformContainer>
+                                    <Header />
+                                    <ErrorBoundary>
+                                        <AppContents>
+                                            {/* TODO: [trader-remove-client-base] */}
+                                            <Routes passthrough={platform_passthrough} />
+                                        </AppContents>
+                                    </ErrorBoundary>
+                                    <DesktopWrapper>
+                                        <Footer />
+                                    </DesktopWrapper>
+                                    <ErrorBoundary>
+                                        <AppModals />
+                                    </ErrorBoundary>
+                                    <SmartTraderIFrame />
+                                    <BinaryBotIFrame />
+                                    <AppToastMessages />
+                                </PlatformContainer>
+                            </APIProvider>
+                        </StoreProvider>
+                    </MobxContentProvider>
+                </Router>
             ) : (
                 <></>
             )}

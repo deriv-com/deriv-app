@@ -27,14 +27,16 @@ const ShareAdModal = ({ advert }) => {
     const options = {
         ecLevel: 'M',
         enableCORS: true,
-        size: 250,
+        size: 200,
         quietZone: 10,
         bgColor: '#FFFFFF',
-        fgColor: '#ebb434',
+        fgColor: '#000',
+        logoPadding: 5,
+        removeQrCodeBehindLogo: true,
         logoImage:
             'https://play-lh.googleusercontent.com/ah8RkaAnph2gouJ48fVeybeJgw-tu2dzTDYL7miccIWxvd0ZcK5-MM20bGxjpjb2lXU',
-        logoWidth: 80,
-        logoHeight: 80,
+        logoWidth: 50,
+        logoHeight: 50,
         logoOpacity: 1,
         qrStyle: 'squares',
     };

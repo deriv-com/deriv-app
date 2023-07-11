@@ -21,7 +21,6 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
 }));
 
 describe('<PersonalDetailsForm />', () => {
-    // let store = mockStore();
     const history = createBrowserHistory();
     const mock_props = {
         authentication_status: {},

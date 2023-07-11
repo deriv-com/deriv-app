@@ -1,74 +1,33 @@
-import { Formik, Field } from 'formik';
 import React from 'react';
+import classNames from 'classnames';
+import { Formik, Form } from 'formik';
 import {
     Modal,
-    Autocomplete,
     AutoHeightWrapper,
-    Checkbox,
-    Dropdown,
-    DesktopWrapper,
-    MobileWrapper,
-    DateOfBirthPicker,
     Div100vhContainer,
     FormSubmitButton,
-    Input,
-    Popover,
-    RadioGroup,
-    SelectNative,
     ThemedScrollbars,
     Text,
 } from '@deriv/components';
-import { Link } from 'react-router-dom';
+import {
+    isDesktop,
+    isMobile,
+    PlatformContext,
+    IDV_NOT_APPLICABLE_OPTION,
+    removeEmptyPropertiesFromObject,
+} from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { getLegalEntityName, isDesktop, isMobile, routes, toMoment, PlatformContext, validPhone } from '@deriv/shared';
-import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
+import {
+    shouldShowIdentityInformation,
+    isDocumentTypeValid,
+    isAdditionalDocumentValid,
+    isDocumentNumberValid,
+    shouldHideHelperImage,
+} from 'Helpers/utils';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
+import IDVForm from '../forms/idv-form';
+import PersonalDetailsForm from '../forms/personal-details-form';
 import FormSubHeader from '../form-sub-header';
-import classNames from 'classnames';
-
-const DateOfBirthField = props => (
-    <Field name={props.name}>
-        {({ field: { value }, form: { setFieldValue, errors, touched, setTouched } }) => (
-            <DateOfBirthPicker
-                error={touched.date_of_birth && errors.date_of_birth}
-                onBlur={() =>
-                    setTouched({
-                        ...touched,
-                        date_of_birth: true,
-                    })
-                }
-                onChange={({ target }) =>
-                    setFieldValue(
-                        'date_of_birth',
-                        target?.value ? toMoment(target.value).format('YYYY-MM-DD') : '',
-                        true
-                    )
-                }
-                value={value}
-                portal_id={props.portal_id}
-                {...props}
-            />
-        )}
-    </Field>
-);
-
-const FormInputField = ({ name, optional = false, warn, ...props }) => (
-    <Field name={name}>
-        {({ field, form: { errors, touched } }) => (
-            <Input
-                type='text'
-                required={!optional}
-                name={name}
-                autoComplete='off'
-                maxLength={props.maxLength || 30}
-                error={touched[field.name] && errors[field.name]}
-                warn={warn}
-                {...field}
-                {...props}
-            />
-        )}
-    </Field>
-);
 
 const PersonalDetails = ({
     getCurrentStep,
@@ -92,9 +51,9 @@ const PersonalDetails = ({
     has_real_account,
     ...props
 }) => {
+    const { account_status, account_settings, residence, real_account_signup_target } = props;
     const { is_appstore } = React.useContext(PlatformContext);
-    const [is_tax_residence_popover_open, setIsTaxResidencePopoverOpen] = React.useState(false);
-    const [is_tin_popover_open, setIsTinPopoverOpen] = React.useState(false);
+    const [should_close_tooltip, setShouldCloseTooltip] = React.useState(false);
     const [warning_items, setWarningItems] = React.useState({});
     const is_submit_disabled_ref = React.useRef(true);
 
@@ -117,50 +76,55 @@ const PersonalDetails = ({
         onCancel(current_step, goToPreviousStep);
     };
 
+    const is_qualified_for_idv = shouldShowIdentityInformation({
+        account_status,
+        account_settings,
+        residence,
+        residence_list,
+        real_account_signup_target,
+    });
+
+    const validateIDV = values => {
+        const errors = {};
+        const { document_type, document_number, document_additional } = values;
+        if (document_type.id === IDV_NOT_APPLICABLE_OPTION.id) return errors;
+
+        errors.document_type = isDocumentTypeValid(document_type);
+
+        const needs_additional_document = !!document_type.additional;
+
+        if (needs_additional_document) {
+            errors.document_additional = isAdditionalDocumentValid(document_type, document_additional);
+        }
+
+        errors.document_number = isDocumentNumberValid(document_number, document_type);
+        return removeEmptyPropertiesFromObject(errors);
+    };
+
     const handleValidate = values => {
+        let idv_error = {};
+        if (is_qualified_for_idv) {
+            idv_error = validateIDV(values);
+        }
         const { errors, warnings } = splitValidationResultTypes(validate(values));
+        const error_data = { ...idv_error, ...errors };
         setWarningItems(warnings);
-        checkSubmitStatus(errors);
-        return errors;
+        checkSubmitStatus(error_data);
+        return error_data;
     };
 
-    const closeTooltipOnScroll = () => {
-        // Close any open tooltip
-        if (!is_tax_residence_popover_open || !is_tin_popover_open) {
-            setIsTaxResidencePopoverOpen(false);
-            setIsTinPopoverOpen(false);
-        }
-    };
-
-    const handleClickOutside = () => {
-        if (is_tax_residence_popover_open) {
-            setIsTaxResidencePopoverOpen(false);
-        }
-        if (is_tin_popover_open) {
-            setIsTinPopoverOpen(false);
-        }
-    };
-
-    const getLastNameLabel = () => {
-        if (is_appstore) return localize('Family name*');
-        return is_svg || is_mf ? localize('Last name*') : localize('Last name');
-    };
-
-    const getFieldHint = field_name => {
-        return (
-            <Localize
-                i18n_default_text='Please enter your {{ field_name }} as in your official identity documents.'
-                values={{ field_name }}
-            />
-        );
-    };
+    const closeToolTip = () => setShouldCloseTooltip(true);
 
     /*
     In most modern browsers, setting autocomplete to "off" will not prevent a password manager from asking the user if they would like to save username and password information, or from automatically filling in those values in a site's login form.
     check this link https://developer.mozilla.org/en-US/docs/Web/Security/Securing_your_site/Turning_off_form_autocompletion#the_autocomplete_attribute_and_login_fields
     */
     // for dropdowns use 'none'
-    const autocomplete_value = 'none';
+
+    const citizen = account_settings?.citizen || residence;
+    const selected_country = residence_list.find(residence_data => residence_data.value === citizen) || {};
+
+    const editable_fields = Object.keys(props.value).filter(field => !disabled_items.includes(field)) || [];
 
     return (
         <Formik
@@ -175,27 +139,29 @@ const PersonalDetails = ({
             {({ handleSubmit, errors, setFieldValue, setFieldTouched, touched, values, handleChange, handleBlur }) => (
                 <AutoHeightWrapper default_height={380} height_offset={isDesktop() ? 81 : null}>
                     {({ setRef, height }) => (
-                        <form
+                        <Form
                             ref={setRef}
                             onSubmit={handleSubmit}
                             autoComplete='off'
-                            onClick={handleClickOutside}
+                            onClick={closeToolTip}
                             data-testid='personal_details_form'
                         >
-                            <Div100vhContainer className='details-form' height_offset='90px' is_disabled={isDesktop()}>
-                                <Text as='p' size='xxxs' align='center' className='details-form__description'>
-                                    <Localize
-                                        i18n_default_text={
-                                            'Any information you provide is confidential and will be used for verification purposes only.'
-                                        }
-                                    />
-                                </Text>
+                            <Div100vhContainer className='details-form' height_offset='100px' is_disabled={isDesktop()}>
+                                {!is_qualified_for_idv && (
+                                    <Text as='p' size='xxxs' align='center' className='details-form__description'>
+                                        <Localize
+                                            i18n_default_text={
+                                                'Any information you provide is confidential and will be used for verification purposes only.'
+                                            }
+                                        />
+                                    </Text>
+                                )}
                                 <ThemedScrollbars
                                     height={height}
-                                    onScroll={closeTooltipOnScroll}
+                                    onScroll={closeToolTip}
                                     testId='dt_personal_details_container'
                                 >
-                                    {is_appstore && (
+                                    {!is_qualified_for_idv && is_appstore && (
                                         <div className='details-form__sub-header'>
                                             <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
                                                 {localize(
@@ -206,564 +172,63 @@ const PersonalDetails = ({
                                     )}
 
                                     <div
-                                        className='details-form__elements'
+                                        className={classNames('details-form__elements', 'personal-details-form')}
                                         style={{ paddingBottom: isDesktop() ? 'unset' : null }}
                                     >
-                                        {'salutation' in props.value && (
-                                            <div>
-                                                <Text size={isMobile() ? 'xs' : 'xxs'} align={isMobile() && 'center'}>
-                                                    {is_virtual ? (
-                                                        localize(
-                                                            'Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your account settings.'
-                                                        )
-                                                    ) : (
-                                                        <Localize
-                                                            i18n_default_text='Please remember that it is your responsibility to keep your answers accurate and up to date. You can update your personal details at any time in your <0>account settings</0>.'
-                                                            components={[
-                                                                <Link
-                                                                    to={routes.personal_details}
-                                                                    key={0}
-                                                                    className='link'
-                                                                    onClick={closeRealAccountSignup}
-                                                                />,
-                                                            ]}
-                                                        />
-                                                    )}
-                                                </Text>
-                                            </div>
+                                        {is_qualified_for_idv && (
+                                            <React.Fragment>
+                                                <FormSubHeader title={localize('Identity verification')} />
+                                                <IDVForm
+                                                    selected_country={selected_country}
+                                                    errors={errors}
+                                                    touched={touched}
+                                                    values={values}
+                                                    handleChange={handleChange}
+                                                    handleBlur={handleBlur}
+                                                    setFieldValue={setFieldValue}
+                                                    hide_hint={true}
+                                                    can_skip_document_verification={true}
+                                                />
+                                                <FormSubHeader title={localize('Details')} />
+                                            </React.Fragment>
                                         )}
-                                        {!is_appstore && (
-                                            <FormSubHeader
-                                                title={
-                                                    'salutation' in props.value
-                                                        ? localize('Title and name')
-                                                        : localize('Name')
-                                                }
-                                            />
-                                        )}
-                                        {'salutation' in props.value && ( // TODO: [deriv-eu] Remove salutation once api is optional
-                                            <RadioGroup
-                                                className='dc-radio__input'
-                                                name='salutation'
-                                                selected={values.salutation}
-                                                onToggle={e => {
-                                                    e.persist();
-                                                    setFieldValue('salutation', e.target.value);
-                                                }}
-                                                required
+                                        <React.Fragment>
+                                            <div
+                                                className={classNames({
+                                                    'account-form__poi-confirm-example_container':
+                                                        is_qualified_for_idv &&
+                                                        !shouldHideHelperImage(values?.document_type?.id),
+                                                })}
                                             >
-                                                {salutation_list.map(item => (
-                                                    <RadioGroup.Item
-                                                        key={item.value}
-                                                        label={item.label}
-                                                        value={item.value}
-                                                        disabled={
-                                                            !!values.salutation && disabled_items.includes('salutation')
-                                                        }
-                                                    />
-                                                ))}
-                                            </RadioGroup>
-                                        )}
-                                        {'first_name' in props.value && (
-                                            <FormInputField
-                                                name='first_name'
-                                                required={is_svg || is_appstore}
-                                                label={
-                                                    is_svg || is_appstore || is_mf
-                                                        ? localize('First name*')
-                                                        : localize('First name')
-                                                }
-                                                hint={getFieldHint(localize('first name'))}
-                                                disabled={
-                                                    disabled_items.includes('first_name') ||
-                                                    (props.value?.first_name && has_real_account)
-                                                }
-                                                placeholder={localize('John')}
-                                                data-testid='first_name'
-                                            />
-                                        )}
-                                        {'last_name' in props.value && (
-                                            <FormInputField
-                                                name='last_name'
-                                                required={is_svg || is_appstore}
-                                                label={getLastNameLabel()}
-                                                hint={getFieldHint(localize('last name'))}
-                                                disabled={
-                                                    disabled_items.includes('last_name') ||
-                                                    (props.value?.last_name && has_real_account)
-                                                }
-                                                placeholder={localize('Doe')}
-                                                data-testid='last_name'
-                                            />
-                                        )}
-                                        {!is_appstore && <FormSubHeader title={localize('Other details')} />}
-                                        {'date_of_birth' in props.value && (
-                                            <DateOfBirthField
-                                                name='date_of_birth'
-                                                required={is_svg || is_appstore}
-                                                label={
-                                                    is_svg || is_appstore || is_mf
-                                                        ? localize('Date of birth*')
-                                                        : localize('Date of birth')
-                                                }
-                                                hint={getFieldHint(localize('date of birth'))}
-                                                disabled={
-                                                    disabled_items.includes('date_of_birth') ||
-                                                    (props.value?.date_of_birth && has_real_account)
-                                                }
-                                                placeholder={localize('01-07-1999')}
-                                                portal_id={is_appstore ? '' : 'modal_root'}
-                                                data_testid='date_of_birth'
-                                            />
-                                        )}
-                                        {'place_of_birth' in props.value && (
-                                            <Field name='place_of_birth'>
-                                                {({ field }) => (
-                                                    <React.Fragment>
-                                                        <DesktopWrapper>
-                                                            <Autocomplete
-                                                                {...field}
-                                                                disabled={
-                                                                    disabled_items.includes('place_of_birth') ||
-                                                                    (props.value?.place_of_birth && has_real_account)
-                                                                }
-                                                                data-lpignore='true'
-                                                                autoComplete={autocomplete_value} // prevent chrome autocomplete
-                                                                type='text'
-                                                                label={
-                                                                    is_mf
-                                                                        ? localize('Place of birth*')
-                                                                        : localize('Place of birth')
-                                                                }
-                                                                error={touched.place_of_birth && errors.place_of_birth}
-                                                                list_items={residence_list}
-                                                                onItemSelection={({ value, text }) =>
-                                                                    setFieldValue(
-                                                                        'place_of_birth',
-                                                                        value ? text : '',
-                                                                        true
-                                                                    )
-                                                                }
-                                                                required
-                                                                data-testid='place_of_birth'
-                                                            />
-                                                        </DesktopWrapper>
-                                                        <MobileWrapper>
-                                                            <SelectNative
-                                                                placeholder={localize('Place of birth')}
-                                                                name={field.name}
-                                                                disabled={
-                                                                    disabled_items.includes('place_of_birth') ||
-                                                                    (props.value?.place_of_birth && has_real_account)
-                                                                }
-                                                                label={
-                                                                    is_mf
-                                                                        ? localize('Place of birth*')
-                                                                        : localize('Place of birth')
-                                                                }
-                                                                list_items={residence_list}
-                                                                value={values.place_of_birth}
-                                                                use_text={true}
-                                                                error={touched.place_of_birth && errors.place_of_birth}
-                                                                onChange={e => {
-                                                                    handleChange(e);
-                                                                    setFieldValue(
-                                                                        'place_of_birth',
-                                                                        e.target.value,
-                                                                        true
-                                                                    );
-                                                                }}
-                                                                {...field}
-                                                                list_portal_id='modal_root'
-                                                                required
-                                                                should_hide_disabled_options={false}
-                                                                data_testid='place_of_birth_mobile'
-                                                            />
-                                                        </MobileWrapper>
-                                                    </React.Fragment>
-                                                )}
-                                            </Field>
-                                        )}
-                                        {'citizen' in props.value && (
-                                            <Field name='citizen'>
-                                                {({ field }) => (
-                                                    <React.Fragment>
-                                                        <DesktopWrapper>
-                                                            <Autocomplete
-                                                                {...field}
-                                                                data-lpignore='true'
-                                                                autoComplete={autocomplete_value} // prevent chrome autocomplete
-                                                                type='text'
-                                                                label={
-                                                                    is_mf
-                                                                        ? localize('Citizenship*')
-                                                                        : localize('Citizenship')
-                                                                }
-                                                                error={touched.citizen && errors.citizen}
-                                                                disabled={
-                                                                    (props.value?.citizen && is_fully_authenticated) ||
-                                                                    disabled_items.includes('citizen') ||
-                                                                    (props.value?.citizen && has_real_account)
-                                                                }
-                                                                list_items={residence_list}
-                                                                onItemSelection={({ value, text }) =>
-                                                                    setFieldValue('citizen', value ? text : '', true)
-                                                                }
-                                                                list_portal_id='modal_root'
-                                                                required
-                                                                data-testid='citizenship'
-                                                            />
-                                                        </DesktopWrapper>
-                                                        <MobileWrapper>
-                                                            <SelectNative
-                                                                placeholder={localize('Citizenship')}
-                                                                name={field.name}
-                                                                disabled={
-                                                                    (props.value?.citizen && is_fully_authenticated) ||
-                                                                    disabled_items.includes('citizen') ||
-                                                                    (props.value?.citizen && has_real_account)
-                                                                }
-                                                                label={
-                                                                    is_mf
-                                                                        ? localize('Citizenship*')
-                                                                        : localize('Citizenship')
-                                                                }
-                                                                list_items={residence_list}
-                                                                value={values.citizen}
-                                                                use_text={true}
-                                                                error={touched.citizen && errors.citizen}
-                                                                onChange={e => {
-                                                                    handleChange(e);
-                                                                    setFieldValue('citizen', e.target.value, true);
-                                                                }}
-                                                                {...field}
-                                                                required
-                                                                should_hide_disabled_options={false}
-                                                                data_testid='citizenship_mobile'
-                                                            />
-                                                        </MobileWrapper>
-                                                    </React.Fragment>
-                                                )}
-                                            </Field>
-                                        )}
-                                        {'phone' in props.value && (
-                                            <FormInputField
-                                                name='phone'
-                                                label={
-                                                    is_svg || is_appstore || is_mf
-                                                        ? localize('Phone number*')
-                                                        : localize('Phone number')
-                                                }
-                                                placeholder={
-                                                    is_svg || is_appstore || is_mf
-                                                        ? localize('Phone number*')
-                                                        : localize('Phone number')
-                                                }
-                                                disabled={
-                                                    disabled_items.includes('phone') ||
-                                                    (props.value?.phone &&
-                                                        has_real_account &&
-                                                        validPhone(props.value?.phone) &&
-                                                        props.value?.phone?.length >= 9 &&
-                                                        props.value?.phone?.length <= 35)
-                                                }
-                                                maxLength={50}
-                                                data-testid='phone'
-                                            />
-                                        )}
-                                        {('tax_residence' in props.value ||
-                                            'tax_identification_number' in props.value) && (
-                                            <React.Fragment>
-                                                <FormSubHeader title={localize('Tax information')} />
-                                                {'tax_residence' in props.value && (
-                                                    <Field name='tax_residence'>
-                                                        {({ field }) => (
-                                                            <div className='details-form__tax'>
-                                                                <DesktopWrapper>
-                                                                    <Autocomplete
-                                                                        {...field}
-                                                                        data-lpignore='true'
-                                                                        autoComplete={autocomplete_value} // prevent chrome autocomplete
-                                                                        type='text'
-                                                                        label={
-                                                                            is_mf
-                                                                                ? localize('Tax residence*')
-                                                                                : localize('Tax residence')
-                                                                        }
-                                                                        error={
-                                                                            touched.tax_residence &&
-                                                                            errors.tax_residence
-                                                                        }
-                                                                        list_items={residence_list}
-                                                                        onItemSelection={({ value, text }) =>
-                                                                            setFieldValue(
-                                                                                'tax_residence',
-                                                                                value ? text : '',
-                                                                                true
-                                                                            )
-                                                                        }
-                                                                        list_portal_id='modal_root'
-                                                                        data-testid='tax_residence'
-                                                                        disabled={disabled_items.includes(
-                                                                            'tax_residence'
-                                                                        )}
-                                                                    />
-                                                                </DesktopWrapper>
-                                                                <MobileWrapper>
-                                                                    <SelectNative
-                                                                        placeholder={localize('Tax residence')}
-                                                                        name={field.name}
-                                                                        label={
-                                                                            is_mf
-                                                                                ? localize('Tax residence*')
-                                                                                : localize('Tax residence')
-                                                                        }
-                                                                        list_items={residence_list}
-                                                                        value={values.tax_residence}
-                                                                        use_text={true}
-                                                                        error={
-                                                                            touched.tax_residence &&
-                                                                            errors.tax_residence
-                                                                        }
-                                                                        onChange={e => {
-                                                                            handleChange(e);
-                                                                            setFieldValue(
-                                                                                'tax_residence',
-                                                                                e.target.value,
-                                                                                true
-                                                                            );
-                                                                        }}
-                                                                        {...field}
-                                                                        required
-                                                                        data_testid='tax_residence_mobile'
-                                                                        disabled={disabled_items.includes(
-                                                                            'tax_residence'
-                                                                        )}
-                                                                    />
-                                                                </MobileWrapper>
-                                                                <div
-                                                                    data-testid='tax_residence_pop_over'
-                                                                    onClick={e => {
-                                                                        setIsTaxResidencePopoverOpen(true);
-                                                                        setIsTinPopoverOpen(false);
-                                                                        e.stopPropagation();
-                                                                    }}
-                                                                >
-                                                                    <Popover
-                                                                        alignment={isDesktop() ? 'right' : 'left'}
-                                                                        icon='info'
-                                                                        message={localize(
-                                                                            'The country in which you meet the criteria for paying taxes. Usually the country in which you physically reside.'
-                                                                        )}
-                                                                        zIndex={9998}
-                                                                        disable_message_icon
-                                                                        is_open={is_tax_residence_popover_open}
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        )}
-                                                    </Field>
-                                                )}
-                                                {'tax_identification_number' in props.value && (
-                                                    <div className='details-form__tax'>
-                                                        <FormInputField
-                                                            name='tax_identification_number'
-                                                            label={
-                                                                is_mf
-                                                                    ? localize('Tax Identification Number*')
-                                                                    : localize('Tax Identification Number')
-                                                            }
-                                                            placeholder={localize('Tax Identification Number')}
-                                                            warn={warning_items?.tax_identification_number}
-                                                            data-testid='tax_identification_number'
-                                                            disabled={
-                                                                disabled_items.includes('tax_identification_number') ||
-                                                                (props.value?.tax_identification_number &&
-                                                                    has_real_account)
-                                                            }
-                                                        />
-                                                        <div
-                                                            data-testid='tax_identification_number_pop_over'
-                                                            onClick={e => {
-                                                                setIsTaxResidencePopoverOpen(false);
-                                                                setIsTinPopoverOpen(true);
-                                                                e.stopPropagation();
-                                                            }}
-                                                        >
-                                                            <Popover
-                                                                alignment={isDesktop() ? 'right' : 'left'}
-                                                                icon='info'
-                                                                is_open={is_tin_popover_open}
-                                                                message={
-                                                                    <Localize
-                                                                        i18n_default_text={
-                                                                            "Don't know your tax identification number? Click <0>here</0> to learn more."
-                                                                        }
-                                                                        components={[
-                                                                            <a
-                                                                                key={0}
-                                                                                className='link link--red'
-                                                                                rel='noopener noreferrer'
-                                                                                target='_blank'
-                                                                                href='https://www.oecd.org/tax/automatic-exchange/crs-implementation-and-assistance/tax-identification-numbers/'
-                                                                            />,
-                                                                        ]}
-                                                                    />
-                                                                }
-                                                                zIndex={9998}
-                                                                disable_message_icon
-                                                            />
-                                                        </div>
-                                                    </div>
-                                                )}
-                                                {warning_items?.tax_identification_number && (
-                                                    <div className='details-form__tin-warn-divider' />
-                                                )}
-                                                {'employment_status' in props.value && (
-                                                    <fieldset
-                                                        className={classNames('account-form__fieldset', 'emp-status')}
-                                                    >
-                                                        <DesktopWrapper>
-                                                            <Dropdown
-                                                                placeholder={
-                                                                    is_mf
-                                                                        ? localize('Employment status*')
-                                                                        : localize('Employment status')
-                                                                }
-                                                                is_align_text_left
-                                                                name='employment_status'
-                                                                list={getEmploymentStatusList()}
-                                                                value={values.employment_status}
-                                                                onChange={handleChange}
-                                                                handleBlur={handleBlur}
-                                                                error={
-                                                                    touched.employment_status &&
-                                                                    errors.employment_status
-                                                                }
-                                                                disabled={disabled_items.includes('employment_status')}
-                                                            />
-                                                        </DesktopWrapper>
-                                                        <MobileWrapper>
-                                                            <SelectNative
-                                                                placeholder={localize('Please select')}
-                                                                name='employment_status'
-                                                                label={
-                                                                    is_mf
-                                                                        ? localize('Employment status*')
-                                                                        : localize('Employment status')
-                                                                }
-                                                                list_items={getEmploymentStatusList()}
-                                                                value={values.employment_status}
-                                                                error={
-                                                                    touched.employment_status &&
-                                                                    errors.employment_status
-                                                                }
-                                                                onChange={e => {
-                                                                    setFieldTouched('employment_status', true);
-                                                                    handleChange(e);
-                                                                }}
-                                                                disabled={disabled_items.includes('employment_status')}
-                                                            />
-                                                        </MobileWrapper>
-                                                    </fieldset>
-                                                )}
-                                                {'tax_identification_confirm' in props.value && (
-                                                    <Checkbox
-                                                        name='tax_identification_confirm'
-                                                        className='details-form__tin-confirm'
-                                                        data-lpignore
-                                                        onChange={() =>
-                                                            setFieldValue(
-                                                                'tax_identification_confirm',
-                                                                !values.tax_identification_confirm,
-                                                                true
-                                                            )
-                                                        }
-                                                        value={values.tax_identification_confirm}
-                                                        label={localize(
-                                                            'I hereby confirm that the tax information I provided is true and complete. I will also inform {{legal_entity_name}} about any changes to this information.',
-                                                            {
-                                                                legal_entity_name: getLegalEntityName('maltainvest'),
-                                                            }
-                                                        )}
-                                                        renderlabel={title => (
-                                                            <Text size='xs' line_height='s'>
-                                                                {title}
-                                                            </Text>
-                                                        )}
-                                                        withTabIndex={0}
-                                                        data-testid='tax_identification_confirm'
-                                                    />
-                                                )}
-                                            </React.Fragment>
-                                        )}
-                                        {'account_opening_reason' in props.value && ( // TODO: [deriv-eu] Remove account opening reason once api is optional
-                                            <React.Fragment>
-                                                <FormSubHeader title={localize('Account opening reason')} />
-                                                <Field name='account_opening_reason'>
-                                                    {({ field }) => (
-                                                        <React.Fragment>
-                                                            <DesktopWrapper>
-                                                                <Dropdown
-                                                                    placeholder={
-                                                                        is_mf
-                                                                            ? localize('Account opening reason*')
-                                                                            : localize('Account opening reason')
-                                                                    }
-                                                                    name={field.name}
-                                                                    disabled={disabled_items.includes(
-                                                                        'account_opening_reason'
-                                                                    )}
-                                                                    is_align_text_left
-                                                                    list={account_opening_reason_list}
-                                                                    value={values.account_opening_reason}
-                                                                    onChange={handleChange}
-                                                                    handleBlur={handleBlur}
-                                                                    error={
-                                                                        touched.account_opening_reason &&
-                                                                        errors.account_opening_reason
-                                                                    }
-                                                                    {...field}
-                                                                    list_portal_id='modal_root'
-                                                                    required
-                                                                />
-                                                            </DesktopWrapper>
-                                                            <MobileWrapper>
-                                                                <SelectNative
-                                                                    placeholder={localize('Please select')}
-                                                                    name={field.name}
-                                                                    label={
-                                                                        is_mf
-                                                                            ? localize('Account opening reason*')
-                                                                            : localize('Account opening reason')
-                                                                    }
-                                                                    list_items={account_opening_reason_list}
-                                                                    value={values.account_opening_reason}
-                                                                    error={
-                                                                        touched.account_opening_reason &&
-                                                                        errors.account_opening_reason
-                                                                    }
-                                                                    onChange={e => {
-                                                                        handleChange(e);
-                                                                        setFieldValue(
-                                                                            'account_opening_reason',
-                                                                            e.target.value,
-                                                                            true
-                                                                        );
-                                                                    }}
-                                                                    {...field}
-                                                                    required
-                                                                    data_testid='account_opening_reason_mobile'
-                                                                    disabled={disabled_items.includes(
-                                                                        'account_opening_reason'
-                                                                    )}
-                                                                />
-                                                            </MobileWrapper>
-                                                        </React.Fragment>
+                                                <PersonalDetailsForm
+                                                    errors={errors}
+                                                    touched={touched}
+                                                    values={values}
+                                                    handleChange={handleChange}
+                                                    handleBlur={handleBlur}
+                                                    setFieldValue={setFieldValue}
+                                                    setFieldTouched={setFieldTouched}
+                                                    is_virtual={is_virtual}
+                                                    is_svg={is_svg}
+                                                    is_mf={is_mf}
+                                                    is_qualified_for_idv={is_qualified_for_idv}
+                                                    is_appstore={is_appstore}
+                                                    editable_fields={editable_fields}
+                                                    residence_list={residence_list}
+                                                    has_real_account={has_real_account}
+                                                    is_fully_authenticated={is_fully_authenticated}
+                                                    closeRealAccountSignup={closeRealAccountSignup}
+                                                    salutation_list={salutation_list}
+                                                    warning_items={warning_items}
+                                                    account_opening_reason_list={account_opening_reason_list}
+                                                    should_close_tooltip={should_close_tooltip}
+                                                    setShouldCloseTooltip={setShouldCloseTooltip}
+                                                    should_hide_helper_image={shouldHideHelperImage(
+                                                        values?.document_type?.id
                                                     )}
-                                                </Field>
-                                            </React.Fragment>
-                                        )}
+                                                />
+                                            </div>
+                                        </React.Fragment>
                                     </div>
                                 </ThemedScrollbars>
                             </Div100vhContainer>
@@ -777,7 +242,7 @@ const PersonalDetails = ({
                                     onCancel={() => handleCancel(values)}
                                 />
                             </Modal.Footer>
-                        </form>
+                        </Form>
                     )}
                 </AutoHeightWrapper>
             )}

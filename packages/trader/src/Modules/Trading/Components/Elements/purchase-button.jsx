@@ -27,6 +27,7 @@ const PurchaseButton = ({
     buy_info,
     basis, // mobile-only
     currency,
+    growth_rate,
     has_deal_cancellation,
     index,
     info,
@@ -127,6 +128,7 @@ const PurchaseButton = ({
                         <ContractInfo
                             basis={basis}
                             currency={currency}
+                            growth_rate={growth_rate}
                             has_increased={has_increased}
                             is_accumulator={is_accumulator}
                             is_loading={is_loading}
@@ -146,6 +148,7 @@ PurchaseButton.propTypes = {
     basis: PropTypes.string,
     buy_info: PropTypes.object,
     currency: PropTypes.string,
+    growth_rate: PropTypes.number,
     has_deal_cancellation: PropTypes.bool,
     index: PropTypes.number,
     info: PropTypes.object,

@@ -14,7 +14,7 @@ import {
     useFormikContext,
 } from 'formik';
 import SelfExclusionContext from './self-exclusion-context';
-import SelfExclusionFooter from './self-exclusion-footer.jsx';
+import SelfExclusionFooter from './self-exclusion-footer';
 
 type TSectionTitle = {
     title: React.ReactElement;

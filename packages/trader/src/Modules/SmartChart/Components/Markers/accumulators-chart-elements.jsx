@@ -9,7 +9,7 @@ const AccumulatorsChartElements = ({
     current_spot,
     current_spot_time,
     has_crossed_accu_barriers,
-    previous_spot_time,
+    should_show_profit_text,
     symbol,
 }) => {
     const accumulators_positions = all_positions.filter(
@@ -22,9 +22,9 @@ const AccumulatorsChartElements = ({
             {!!accumulators_positions.length &&
                 accumulators_positions.map(({ contract_info }) => (
                     <AccumulatorsProfitLossTooltip
-                        {...contract_info}
                         key={contract_info.contract_id}
-                        should_show_profit_text={!!previous_spot_time}
+                        {...contract_info}
+                        should_show_profit_text={should_show_profit_text}
                     />
                 ))}
             {has_crossed_accu_barriers && !!current_spot_time && (
@@ -46,7 +46,7 @@ AccumulatorsChartElements.propTypes = {
     current_spot: PropTypes.number,
     current_spot_time: PropTypes.number,
     has_crossed_accu_barriers: PropTypes.bool,
-    previous_spot_time: PropTypes.number,
+    should_show_profit_text: PropTypes.bool,
     symbol: PropTypes.string,
 };
 

@@ -270,6 +270,7 @@ const ChartTrade = observer(props => {
         chart_type,
         granularity,
         has_crossed_accu_barriers,
+        should_calculate_accu_barriers,
         updateGranularity,
         updateChartType,
     } = contract_trade;
@@ -305,7 +306,7 @@ const ChartTrade = observer(props => {
         theme: is_dark_mode_on ? 'dark' : 'light',
     };
 
-    const { current_spot, current_spot_time, previous_spot_time } = accumulator_barriers_data[symbol] || {};
+    const { accumulators_high_barrier, current_spot, current_spot_time } = (should_calculate_accu_barriers ? accumulator_barriers_data[symbol] : accumulator_barriers_data) || {};
 
     const bottomWidgets = React.useCallback(
         ({ digits, tick }) => (
@@ -396,7 +397,7 @@ const ChartTrade = observer(props => {
                     current_spot={current_spot}
                     current_spot_time={current_spot_time}
                     has_crossed_accu_barriers={has_crossed_accu_barriers}
-                    previous_spot_time={previous_spot_time}
+                    should_show_profit_text={!!accumulators_high_barrier}
                     symbol={symbol}
                 />
             )}

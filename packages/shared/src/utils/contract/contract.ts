@@ -2,6 +2,14 @@ import moment from 'moment';
 import { unique } from '../object';
 import { TContractInfo, TLimitOrder, TDigitsInfo, TTickItem } from './contract-types';
 
+type TGetAccuBarriersDTraderTimeout = (params: {
+    barriers_update_timestamp: number;
+    has_default_timeout: boolean;
+    should_update_contract_barriers?: boolean;
+    tick_update_timestamp: number | null;
+    underlying: string;
+}) => number;
+
 export const DELAY_TIME_1S_SYMBOL = 500;
 // generation_interval will be provided via API later to help us distinguish between 1-second and 2-second symbols
 export const symbols_2s = ['R_10', 'R_25', 'R_50', 'R_75', 'R_100'];
@@ -55,8 +63,26 @@ export const isVanillaContract = (contract_type: string) => /VANILLA/i.test(cont
 
 export const isCryptoContract = (underlying: string) => /^cry/.test(underlying);
 
-export const getAccuBarriersDelayTimeMs = (symbol: string) => {
+export const getAccuBarriersDefaultTimeout = (symbol: string) => {
     return symbols_2s.includes(symbol) ? DELAY_TIME_1S_SYMBOL * 2 : DELAY_TIME_1S_SYMBOL;
+};
+
+export const getAccuBarriersDTraderTimeout: TGetAccuBarriersDTraderTimeout = ({
+    barriers_update_timestamp,
+    has_default_timeout,
+    should_update_contract_barriers,
+    tick_update_timestamp,
+    underlying,
+}) => {
+    if (has_default_timeout || !tick_update_timestamp) return getAccuBarriersDefaultTimeout(underlying);
+    const animation_correction_time =
+        (should_update_contract_barriers
+            ? getAccuBarriersDefaultTimeout(underlying) / -4
+            : getAccuBarriersDefaultTimeout(underlying) / 4) || 0;
+    const target_update_time =
+        tick_update_timestamp + getAccuBarriersDefaultTimeout(underlying) + animation_correction_time;
+    const difference = target_update_time - barriers_update_timestamp;
+    return difference < 0 ? 0 : difference;
 };
 
 export const getAccuBarriersForContractDetails = (contract_info: TContractInfo) => {

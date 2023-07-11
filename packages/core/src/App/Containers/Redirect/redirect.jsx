@@ -153,7 +153,7 @@ const Redirect = ({
         }
         case 'verification': {
             // Removing this will break mobile DP2P app. Do not remove.
-            sessionStorage.setItem('redirect_url', routes.cashier_p2p_verification);
+            sessionStorage.setItem('redirect_url', routes.p2p_verification);
             const new_href = loginUrl({
                 language: getLanguage(),
             });

@@ -1395,10 +1395,24 @@
         &__pre-appstore {
             grid-template-columns: 11rem 13.4rem 12.6rem 10rem 13.4rem 12.6rem 10rem 10rem 13.5rem;
         }
+        // af, mg, pk
+        &--other-country {
+            grid-template-columns: 11rem 23.4rem 12.6rem 20rem 13.4rem 12.6rem 13.4rem 20rem 17.5rem;
+        }
+
         &--leverage {
             grid-template-columns: 11rem 38rem 36rem 10rem;
             &__pre-appstore {
                 grid-template-columns: 11rem 36rem 36rem 10rem 13.5rem;
+            }
+            &__af {
+                grid-template-columns: 11rem 36rem 33.4rem 12.6rem 13.5rem;
+            }
+            &__pk {
+                grid-template-columns: 11rem 36rem 46rem 13.4rem 17.5rem;
+            }
+            &__mg {
+                grid-template-columns: 11rem 36rem 33.4rem 12.6rem 13.4rem;
             }
         }
 
@@ -1417,6 +1431,15 @@
             &__pre-appstore {
                 grid-template-columns: 11rem 36rem 26rem 10rem 10rem 13.5rem;
             }
+            &__af {
+                grid-template-columns: 11rem 36rem 20rem 13.4rem 12.6rem 13.5rem;
+            }
+            &__pk {
+                grid-template-columns: 11rem 36rem 33rem 13rem 13.4rem;
+            }
+            &__mg {
+                grid-template-columns: 11rem 36rem 20rem 13.4rem 12.6rem 13.4rem;
+            }
         }
     }
 
@@ -1432,6 +1455,15 @@
         height: 4.8rem;
         &__pre-appstore {
             grid-template-columns: 11rem 13.4rem 12.6rem 10rem 13.4rem 12.6rem 10rem 10rem 13.5rem;
+        }
+        &__pk {
+            grid-template-columns: 11rem 23.2rem 12.8rem 17.62rem 15.4rem 13rem 13.4rem 20rem 17.5rem;
+        }
+        &__af {
+            grid-template-columns: 11rem 23.2rem 12.8rem 20rem 13.4rem 12.6rem 13.5rem 20rem 17.5rem;
+        }
+        &__mg {
+            grid-template-columns: 11rem 23.4rem 12.6rem 20rem 13.4rem 12.6rem 13.4rem 10rem 13.5rem;
         }
         &__item {
             height: 4.8rem;

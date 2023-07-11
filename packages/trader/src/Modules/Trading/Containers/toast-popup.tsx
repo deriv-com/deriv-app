@@ -1,27 +1,44 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { MobileWrapper, Toast } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 
-export const ToastPopup = ({ portal_id = 'popup_root', children, className, ...props }) => {
-    if (!document.getElementById(portal_id)) return null;
+type TToastPopUp = {
+    portal_id?: string;
+    className: string;
+} & React.ComponentProps<typeof Toast>;
+
+type TNetworkStatusToastError = {
+    status: string;
+    portal_id: string;
+    message: string;
+};
+
+export const ToastPopup = ({
+    portal_id = 'popup_root',
+    children,
+    className,
+    ...props
+}: React.PropsWithChildren<TToastPopUp>) => {
+    const new_portal_id = document.getElementById(portal_id);
+    if (!new_portal_id) return null;
     return ReactDOM.createPortal(
         <Toast className={classNames('dc-toast-popup', className)} {...props}>
             {children}
         </Toast>,
-        document.getElementById(portal_id)
+        new_portal_id
     );
 };
 
 /**
  * Network status Toast components
  */
-const NetworkStatusToastError = ({ status, portal_id, message }) => {
+const NetworkStatusToastError = ({ status, portal_id, message }: TNetworkStatusToastError) => {
     const [is_open, setIsOpen] = React.useState(false);
+    const new_portal_id = document.getElementById(portal_id);
 
-    if (!document.getElementById(portal_id) || !message) return null;
+    if (!new_portal_id || !message) return null;
 
     if (!is_open && status !== 'online') {
         setIsOpen(true); // open if status === 'blinker' or 'offline'
@@ -44,14 +61,8 @@ const NetworkStatusToastError = ({ status, portal_id, message }) => {
                 {message}
             </Toast>
         </MobileWrapper>,
-        document.getElementById(portal_id)
+        new_portal_id
     );
-};
-
-NetworkStatusToastError.propTypes = {
-    portal_id: PropTypes.string,
-    status: PropTypes.string,
-    message: PropTypes.string,
 };
 
 export const NetworkStatusToastErrorPopup = observer(() => {

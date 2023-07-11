@@ -1,16 +1,24 @@
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer } from '@deriv/stores';
 import React from 'react';
 import { Checkbox, Text } from '@deriv/components';
 import { Localize, localize } from '@deriv/translations';
 
-const AllowEquals = ({ onChange, is_allow_equal, has_equals_only, className }) => {
-    const handleOnChange = e => {
+type TAllowEquals = {
+    onChange: (e: { target: { name: string; value: number } }) => Promise<void>;
+    is_allow_equal: boolean;
+    has_equals_only: boolean;
+    className?: string;
+};
+
+const AllowEquals = ({ onChange, is_allow_equal, has_equals_only, className }: TAllowEquals) => {
+    const handleOnChange: React.ComponentProps<typeof Checkbox>['onChange'] = e => {
         e.persist();
-        const { name, checked } = e.target;
-        onChange({ target: { name, value: Number(checked) } });
+        if ('checked' in e.target) {
+            const { name, checked } = e.target;
+            onChange({ target: { name, value: Number(checked) } });
+        }
     };
 
     return (
@@ -27,13 +35,6 @@ const AllowEquals = ({ onChange, is_allow_equal, has_equals_only, className }) =
             </Text>
         </div>
     );
-};
-
-AllowEquals.propTypes = {
-    className: PropTypes.string,
-    is_allow_equal: PropTypes.bool,
-    has_equals_only: PropTypes.bool,
-    onChange: PropTypes.func,
 };
 
 export default observer(() => {

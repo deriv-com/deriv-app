@@ -256,6 +256,10 @@ const mock = (): TStores & { is_mock: boolean } => {
             isCurrentLanguage: jest.fn(),
             is_from_derivgo: false,
             has_error: false,
+            network_status: {
+                class: '',
+                tooltip: '',
+            },
             platform: '',
             routeBackInApp: jest.fn(),
             routeTo: jest.fn(),

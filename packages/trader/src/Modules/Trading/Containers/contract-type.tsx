@@ -21,13 +21,12 @@ const Contract = observer(() => {
     } = useTraderStore();
     const {
         common: { current_language },
-        client: { is_virtual },
     } = useStore();
 
     const list = getAvailableContractTypes(contract_types_list, unsupported_contract_types_list);
 
     const digits_message = localize('Last digit stats for latest 1000 ticks for {{ underlying_name }}', {
-        underlying_name: getMarketNamesMap()[symbol.toUpperCase()],
+        underlying_name: getMarketNamesMap()[symbol.toUpperCase() as keyof ReturnType<typeof getMarketNamesMap>],
     });
     const prev_lang = usePrevious(current_language);
     return (
@@ -41,12 +40,11 @@ const Contract = observer(() => {
             </MobileWrapper>
             <ContractTypeWidget
                 is_equal={is_equal}
-                is_virtual={is_virtual}
                 list={list}
                 name='contract_type'
                 onChange={onChange}
                 value={contract_type}
-                languageChanged={prev_lang && prev_lang !== current_language}
+                languageChanged={(prev_lang && prev_lang !== current_language) || false}
             />
         </React.Fragment>
     );

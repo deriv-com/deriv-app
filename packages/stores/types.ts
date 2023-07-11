@@ -357,6 +357,10 @@ type TCommonStore = {
     has_error: boolean;
     is_from_derivgo: boolean;
     is_network_online: boolean;
+    network_status: {
+        class: string;
+        tooltip: string;
+    };
     platform: 'dxtrade' | 'derivez' | 'mt5' | 'ctrader' | '';
     routeBackInApp: (history: Pick<RouteComponentProps, 'history'>, additional_platform_path?: string[]) => void;
     routeTo: (pathname: string) => void;

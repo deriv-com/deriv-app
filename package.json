@@ -18,17 +18,17 @@
         ]
     },
     "scripts": {
-        "bootstrap": "npm install && npm run fetch-translations",
+        "bootstrap": "npm install && npm run fetch-blockly-translations",
         "test": "eslint src/",
         "build:1": "webpack --config webpack.config.cli.js",
         "build-min": "webpack --config webpack.config.cli.js",
         "prepare": "husky install",
         "prettify": "npx prettier --write **/{src}/**/*.{js,jsx,ts,tsx,md,html,mustache,css,scss,}",
-        "fetch-translations": "node customPlugins/fetch-blockly-translations.js",
+        "fetch-blockly-translations": "node customPlugins/fetch-blockly-translations.js",
         "start": "webpack serve --open",
         "build": "webpack --config webpack.config.cli.js --mode production",
-        "clean": "rm -rf node_modules www temp translations",
-        "clean-cache": "rm -rf www temp translations"
+        "clean": "rm -rf node_modules www temp blockly-translations",
+        "clean-cache": "rm -rf www temp blockly-translations"
     },
     "husky": {
         "hooks": {

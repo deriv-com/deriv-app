@@ -13,5 +13,5 @@ old/
 CNAME
 *.env
 .env
-translations
+blockly-translations
 temp

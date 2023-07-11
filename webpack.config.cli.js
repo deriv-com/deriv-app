@@ -53,7 +53,7 @@ module.exports = {
             ],
         }),
         new BlocklyTranslationsPlugin({
-            outputPath: path.resolve(__dirname, 'www/translations'),
+            outputPath: path.resolve(__dirname, 'www/blockly-translations'),
         }),
         new webpack.ProvidePlugin({
             $: 'jquery',

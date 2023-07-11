@@ -97,7 +97,7 @@ const addBlocklyTranslation = () => {
         lang = 'zh-hant';
     }
     return new Promise(resolve => {
-        $.getScript(`translations/${lang}.js`, resolve);
+        $.getScript(`blockly-translations/${lang}.js`, resolve);
     });
 };
 

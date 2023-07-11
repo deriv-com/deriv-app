@@ -71,8 +71,8 @@ module.exports = {
                     to: path.resolve(__dirname, 'www'),
                 },
                 {
-                    from: 'translations',
-                    to: path.resolve(__dirname, 'www/translations'),
+                    from: 'blockly-translations',
+                    to: path.resolve(__dirname, 'www/blockly-translations'),
                 },
                 {
                     from: 'temp/blockly.js',

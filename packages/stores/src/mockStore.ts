@@ -250,6 +250,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             has_any_real_account: false,
             setPrevAccountType: jest.fn(),
             prev_account_type: 'demo',
+            mf_account_status: '',
         },
         common: {
             error: {
@@ -326,6 +327,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_real_acc_signup_on: false,
             is_need_real_account_for_cashier_modal_visible: false,
             is_verification_modal_visible: false,
+            is_mf_verification_pending_modal_visible: false,
             toggleNeedRealAccountForCashierModal: jest.fn(),
             setIsAcuityModalOpen: jest.fn(),
             is_switch_to_deriv_account_modal_visible: false,
@@ -350,6 +352,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             toggleShouldShowRealAccountsList: jest.fn(),
             is_reset_trading_password_modal_visible: false,
             setResetTradingPasswordModalOpen: jest.fn(),
+            setIsMFVericationPendingModal: jest.fn(),
         },
         traders_hub: {
             closeModal: jest.fn(),
@@ -392,7 +395,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             selected_account_type: 'real',
             no_CR_account: false,
             no_MF_account: false,
-            multipliers_account_status: '',
             openFailedVerificationModal: jest.fn(),
             setTogglePlatformType: jest.fn(),
             toggleAccountTransferModal: jest.fn(),

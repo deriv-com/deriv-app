@@ -23,7 +23,7 @@ type CurrencySelectionModalProps = {
     openFailedVerificationModal: (from_account: string) => void;
     selected_region: string;
     switchAccount: (loginid: string) => void;
-    multipliers_account_status: string | null;
+    mf_account_status: string | null;
     toggleSetCurrencyModal: () => void;
     has_any_real_account: boolean;
 };
@@ -38,12 +38,12 @@ const CurrencySelectionModal = ({
     openFailedVerificationModal,
     selected_region,
     switchAccount,
-    multipliers_account_status,
+    mf_account_status,
     toggleSetCurrencyModal,
     has_any_real_account,
 }: CurrencySelectionModalProps) => {
     const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
-        multipliers_account_status,
+        mf_account_status,
         openFailedVerificationModal,
         'multipliers'
     );
@@ -91,9 +91,9 @@ const CurrencySelectionModal = ({
                                     </Text>
                                 </div>
                                 <div className='currency-item-card__balance'>
-                                    {multipliers_account_status ? (
+                                    {mf_account_status ? (
                                         <StatusBadge
-                                            account_status={multipliers_account_status}
+                                            account_status={mf_account_status}
                                             icon={badge_icon}
                                             text={badge_text}
                                         />
@@ -138,7 +138,7 @@ export default connect(({ client, traders_hub, ui }: RootStore) => ({
     selected_region: traders_hub.selected_region,
     switchAccount: client.switchAccount,
     openFailedVerificationModal: traders_hub.openFailedVerificationModal,
-    multipliers_account_status: traders_hub.multipliers_account_status,
+    mf_account_status: client.mf_account_status,
     toggleSetCurrencyModal: ui.toggleSetCurrencyModal,
     has_any_real_account: client.has_any_real_account,
 }))(CurrencySelectionModal);

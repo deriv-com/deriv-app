@@ -42,6 +42,7 @@ export default class UIStore extends BaseStore {
     is_reset_email_modal_visible = false;
     is_update_email_modal_visible = false;
     is_reset_trading_password_modal_visible = false;
+    is_mf_verification_pending_modal_visible = false;
     // @observable is_purchase_lock_on       = false;
 
     // SmartCharts Controls
@@ -270,6 +271,7 @@ export default class UIStore extends BaseStore {
             is_history_tab_active: observable,
             is_landscape: observable,
             is_language_settings_modal_on: observable,
+            is_mf_verification_pending_modal_visible: observable,
             is_nativepicker_visible: observable,
 
             is_positions_drawer_on: observable,
@@ -393,6 +395,7 @@ export default class UIStore extends BaseStore {
             setShouldTriggerTourGuide: action.bound,
             setSubSectionIndex: action.bound,
             setTopUpInProgress: action.bound,
+            setIsMFVericationPendingModal: action.bound,
             showCloseMxMltAccountPopup: action.bound,
             showCloseUKAccountPopup: action.bound,
             toggleAccountsDialog: action.bound,
@@ -951,5 +954,9 @@ export default class UIStore extends BaseStore {
 
     setShouldTriggerTourGuide(value) {
         this.should_trigger_tour_guide = value;
+    }
+
+    setIsMFVericationPendingModal(value) {
+        this.is_mf_verification_pending_modal_visible = value;
     }
 }

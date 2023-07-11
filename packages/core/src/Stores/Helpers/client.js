@@ -63,7 +63,7 @@ export const getLandingCompanyValue = ({ loginid, landing_company, isAccountOfTy
     return (landing_company_object || {})[key];
 };
 
-export const getMultipliersAccountStatus = authentication => {
+export const getMFAccountStatus = authentication => {
     const onfido_status = authentication?.identity?.services?.onfido?.status;
     const manual_status = authentication?.identity?.services?.manual?.status;
     const poa_status = authentication?.document?.status;

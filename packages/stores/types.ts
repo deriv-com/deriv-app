@@ -305,6 +305,7 @@ type TClientStore = {
     real_account_creation_unlock_date: string;
     has_any_real_account: boolean;
     setPrevAccountType: (account_type: string) => void;
+    mf_account_status: string;
 };
 
 type TCommonStoreError = {
@@ -386,6 +387,7 @@ type TUiStore = {
     toggleReports: (is_visible: boolean) => void;
     is_real_acc_signup_on: boolean;
     is_need_real_account_for_cashier_modal_visible: boolean;
+    is_mf_verification_pending_modal_visible: boolean;
     toggleNeedRealAccountForCashierModal: () => void;
     setIsAcuityModalOpen: (value: boolean) => void;
     is_switch_to_deriv_account_modal_visible: boolean;
@@ -409,6 +411,7 @@ type TUiStore = {
     setShouldShowCooldownModal: (value: boolean) => void;
     setShouldTriggerTourGuide: (value: boolean) => void;
     toggleDepositOrAccountSuccessModal: () => void;
+    setIsMFVericationPendingModal: (value: boolean) => void;
 };
 
 type TPortfolioStore = {
@@ -478,7 +481,6 @@ type TTradersHubStore = {
     toggleIsTourOpen: (is_tour_open: boolean) => void;
     selected_region: string;
     openFailedVerificationModal: (selected_account_type: string) => void;
-    multipliers_account_status: string;
     financial_restricted_countries: boolean;
     selected_account_type: string;
     setSelectedAccount: (account: { login?: string; account_id?: string }) => void;

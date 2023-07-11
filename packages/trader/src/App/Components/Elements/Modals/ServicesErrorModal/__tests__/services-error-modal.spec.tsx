@@ -6,6 +6,7 @@ jest.mock('../authorization-required-modal.jsx', () => jest.fn(() => 'Authorizat
 jest.mock('../insufficient-balance-modal.jsx', () => jest.fn(() => 'InsufficientBalanceModal'));
 jest.mock('../company-wide-limit-exceeded-modal.jsx', () => jest.fn(() => 'CompanyWideLimitExceededModal'));
 jest.mock('../account-verification-required-modal', () => jest.fn(() => 'AccountVerificationRequiredModal'));
+
 type TModal = {
     (): JSX.Element;
     Body?: React.FC;
@@ -26,6 +27,7 @@ describe('<ServicesErrorModal />', () => {
     const modal_props = {
         is_visible: true,
         onConfirm: jest.fn(),
+        mf_account_status: null,
     };
     it('Should return null if code or message is missing', () => {
         const services_error_mock = {

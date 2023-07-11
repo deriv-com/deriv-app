@@ -5,6 +5,7 @@ import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes, Text } from '@der
 import { getContractTypeDisplay } from 'Constants/contract';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
 import { getGrowthRatePercentage } from '@deriv/shared';
+import { useStore } from '@deriv/stores';
 
 // TODO [lazy-loading-required] Responsive related components
 const ButtonTextWrapper = ({ should_fade, is_loading, type, is_high_low }) => {
@@ -44,6 +45,10 @@ const PurchaseButton = ({
     onClickPurchase,
     type,
 }) => {
+    const {
+        client: { mf_account_status },
+        ui: { setIsMFVericationPendingModal },
+    } = useStore();
     const getIconType = () => {
         if (!should_fade && is_loading) return '';
         return is_high_low ? `${type.toLowerCase()}_barrier` : type.toLowerCase();
@@ -86,8 +91,12 @@ const PurchaseButton = ({
                 'btn-purchase--2__vanilla-opts': index === 1 && is_vanilla,
             })}
             onClick={() => {
-                setPurchaseState(index);
-                onClickPurchase(info.id, info.stake, type);
+                if (is_multiplier && mf_account_status === 'pending') {
+                    setIsMFVericationPendingModal(true);
+                } else {
+                    setPurchaseState(index);
+                    onClickPurchase(info.id, info.stake, type);
+                }
             }}
         >
             <DesktopWrapper>

@@ -10,7 +10,7 @@ jest.mock('@deriv/hooks', () => ({
 }));
 
 describe('CashierOnboardingPaymentAgentCard', () => {
-    test('should call the onClick callback when clicked', async () => {
+    test('should call the onClick callback when clicked', () => {
         const mock = mockStore({
             modules: {
                 cashier: {

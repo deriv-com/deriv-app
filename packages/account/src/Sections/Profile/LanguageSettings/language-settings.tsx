@@ -22,6 +22,7 @@ const LanguageSettings = () => {
     });
     const allowed_language_keys: string[] = Object.keys(getAllowedLanguages());
     const initial_values = { language_code: current_language };
+
     return (
         <Formik initialValues={initial_values} onSubmit={values => handleChangeLanguage(values.language_code)}>
             {({ handleSubmit, setFieldValue, values }: FormikHandlers & FormikHelpers<FormikValues> & FormikValues) => {

@@ -39,14 +39,14 @@ import {
     removeEmptyPropertiesFromObject,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
+import { observer, useStore } from '@deriv/stores';
+import LeaveConfirm from 'Components/leave-confirm';
+import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
-import FormFooter from 'Components/form-footer';
 import FormSubHeader from 'Components/form-sub-header';
-import LeaveConfirm from 'Components/leave-confirm';
 import LoadErrorMessage from 'Components/load-error-message';
 import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
-import { connect } from 'Stores/connect';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
 import { validateName, validate } from 'Helpers/utils';
 
@@ -96,6 +96,7 @@ const TaxResidenceSelect = ({ field, errors, setFieldValue, values, is_changeabl
     </React.Fragment>
 );
 
+<<<<<<< HEAD
 export const PersonalDetailsForm = ({
     authentication_status,
     is_eu,
@@ -120,6 +121,9 @@ export const PersonalDetailsForm = ({
     updateAccountStatus,
     has_poa_address_mismatch,
 }) => {
+=======
+export const PersonalDetailsForm = observer(({ history }) => {
+>>>>>>> f6c8fb469a1a24926023a4d01651c0e052277042
     const [is_loading, setIsLoading] = React.useState(true);
 
     const [is_state_loading, setIsStateLoading] = useStateCallback(false);
@@ -127,7 +131,38 @@ export const PersonalDetailsForm = ({
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
 
     const [is_submit_success, setIsSubmitSuccess] = useStateCallback(false);
+    const { client, notifications, ui, common } = useStore();
 
+    const {
+        authentication_status,
+        is_eu,
+        landing_company_shortcode,
+        is_uk,
+        is_svg,
+        is_virtual,
+        residence_list,
+        states_list,
+        current_landing_company,
+        fetchResidenceList,
+        fetchStatesList,
+        has_residence,
+        account_settings,
+        getChangeableFields,
+        updateAccountStatus,
+        is_social_signup,
+        account_status,
+    } = client;
+
+    const {
+        refreshNotifications,
+        showPOAAddressMismatchSuccessNotification,
+        showPOAAddressMismatchFailureNotification,
+    } = notifications;
+
+    const { Notifications } = ui;
+    const { is_language_changing } = common;
+    const is_mf = landing_company_shortcode === 'maltainvest';
+    const has_poa_address_mismatch = account_status.status?.includes('poa_address_mismatch');
     const [rest_state, setRestState] = React.useState({
         show_form: true,
         errors: false,
@@ -140,7 +175,6 @@ export const PersonalDetailsForm = ({
     });
 
     const { is_appstore } = React.useContext(PlatformContext);
-
     const isMounted = useIsMounted();
 
     React.useEffect(() => {
@@ -426,7 +460,7 @@ export const PersonalDetailsForm = ({
     const showForm = show_form => setRestState({ show_form });
 
     const isChangeableField = name => {
-        return rest_state.changeable_fields.some(field => field === name);
+        return rest_state.changeable_fields?.some(field => field === name);
     };
 
     const initializeFormValues = () => {
@@ -561,6 +595,7 @@ export const PersonalDetailsForm = ({
                                 'account-form account-form__personal-details--dashboard': is_appstore,
                             })}
                             onSubmit={handleSubmit}
+                            data-testid='dt_account_personal_details_section'
                         >
                             <FormBody scroll_offset={isMobile() ? '199px' : '80px'}>
                                 <FormSubHeader title={localize('Details')} />
@@ -629,6 +664,7 @@ export const PersonalDetailsForm = ({
                                                         disabled={!isChangeableField('first_name')}
                                                         error={errors.first_name}
                                                         id='first_name'
+                                                        data-testid='dt_first_name'
                                                     />
                                                     <Input
                                                         id='last_name'
@@ -642,6 +678,7 @@ export const PersonalDetailsForm = ({
                                                         required
                                                         disabled={!isChangeableField('last_name')}
                                                         error={errors.last_name}
+                                                        data-testid='dt_last_name'
                                                     />
                                                 </InputGroup>
                                             </DesktopWrapper>
@@ -659,6 +696,7 @@ export const PersonalDetailsForm = ({
                                                         required
                                                         disabled={!isChangeableField('first_name')}
                                                         error={errors.first_name}
+                                                        data-testid='dt_first_name'
                                                     />
                                                 </fieldset>
                                                 <fieldset className='account-form__fieldset'>
@@ -674,6 +712,7 @@ export const PersonalDetailsForm = ({
                                                         required
                                                         disabled={!isChangeableField('last_name')}
                                                         error={errors.last_name}
+                                                        data-testid='dt_last_name'
                                                     />
                                                 </fieldset>
                                             </MobileWrapper>
@@ -849,6 +888,7 @@ export const PersonalDetailsForm = ({
                                                     onBlur={handleBlur}
                                                     required
                                                     error={errors.phone}
+                                                    data-testid='dt_phone'
                                                 />
                                             </fieldset>
                                         </FormBodySection>
@@ -984,6 +1024,7 @@ export const PersonalDetailsForm = ({
                                                             error={errors.address_line_1}
                                                             required
                                                             disabled={!isChangeableField('address_line_1')}
+                                                            data-testid='dt_address_line_1'
                                                         />
                                                     </fieldset>
                                                     <fieldset className='account-form__fieldset'>
@@ -1017,6 +1058,7 @@ export const PersonalDetailsForm = ({
                                                             onBlur={handleBlur}
                                                             required
                                                             disabled={!isChangeableField('address_city')}
+                                                            data-testid='dt_address_city'
                                                         />
                                                     </fieldset>
                                                     <fieldset className='account-form__fieldset'>
@@ -1269,28 +1311,11 @@ export const PersonalDetailsForm = ({
             )}
         </Formik>
     );
-};
+});
 
 PersonalDetailsForm.propTypes = {
-    authentication_status: PropTypes.object,
-    is_eu: PropTypes.bool,
-    is_mf: PropTypes.bool,
-    is_uk: PropTypes.bool,
-    is_svg: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    residence_list: PropTypes.arrayOf(PropTypes.object),
-    states_list: PropTypes.array,
-    refreshNotifications: PropTypes.func,
-    showPOAAddressMismatchSuccessNotification: PropTypes.func,
-    showPOAAddressMismatchFailureNotification: PropTypes.func,
-    Notifications: PropTypes.node,
-    fetchResidenceList: PropTypes.func,
-    fetchStatesList: PropTypes.func,
-    has_residence: PropTypes.bool,
-    account_settings: PropTypes.object,
-    getChangeableFields: PropTypes.func,
-    current_landing_company: PropTypes.object,
     history: PropTypes.object,
+<<<<<<< HEAD
     is_social_signup: PropTypes.bool,
     updateAccountStatus: PropTypes.func,
     has_poa_address_mismatch: PropTypes.bool,
@@ -1319,3 +1344,8 @@ export default connect(({ client, notifications, ui }) => ({
     updateAccountStatus: client.updateAccountStatus,
     has_poa_address_mismatch: client.account_status.status?.includes('poa_address_mismatch'),
 }))(withRouter(PersonalDetailsForm));
+=======
+};
+
+export default withRouter(PersonalDetailsForm);
+>>>>>>> f6c8fb469a1a24926023a4d01651c0e052277042

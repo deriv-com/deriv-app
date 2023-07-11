@@ -42,7 +42,7 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
         window.LiveChatWidget?.on('ready', () => {
             // Open and close the chat window to trigger the widget to listen for new events.
             window.LC_API?.open_chat_window();
-            window.LC_API.hide_chat_window();
+            window.LC_API?.hide_chat_window();
 
             let client_first_name = '';
             let client_last_name = '';

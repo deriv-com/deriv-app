@@ -24,9 +24,11 @@ const DemoAccountCard = observer(() => {
             className='demo-account-card'
             icon='VIRTUAL'
             title={
-                <Text className='demo-account-card__title' size='xs' line_height='s'>
-                    {localize(selected_account_type)}
-                </Text>
+                <BalanceText
+                    currency={platform_demo_account?.currency || default_currency}
+                    balance={platform_demo_account?.balance || 0}
+                    size='xs'
+                />
             }
             actions={
                 canResetBalance() && (
@@ -41,11 +43,9 @@ const DemoAccountCard = observer(() => {
                 )
             }
         >
-            <BalanceText
-                currency={platform_demo_account?.currency || default_currency}
-                balance={platform_demo_account?.balance || 0}
-                size='xs'
-            />
+            <Text className='demo-account-card__type' color='primary' size='xs' line_height='s'>
+                {localize(selected_account_type)}
+            </Text>
         </CurrencySwitcherContainer>
     );
 });

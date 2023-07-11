@@ -31,11 +31,7 @@ const RealAccountCard = observer(() => {
     return (
         <CurrencySwitcherContainer
             className='demo-account-card'
-            title={
-                <Text size='xs' line_height='s'>
-                    {getCurrencyName(currency)}
-                </Text>
-            }
+            title={<BalanceText currency={get_currency} balance={formatMoney(currency, balance, true)} size='xs' />}
             icon={get_currency}
             onClick={() => {
                 if (!is_eu_user && !has_mf_mt5_account) {
@@ -57,7 +53,9 @@ const RealAccountCard = observer(() => {
             }
             has_interaction
         >
-            <BalanceText currency={get_currency} balance={formatMoney(currency, balance, true)} size='xs' />
+            <Text color='primary' size='xs' line_height='s'>
+                {getCurrencyName(currency)}
+            </Text>
         </CurrencySwitcherContainer>
     );
 });

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { routes, PlatformContext, WS } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { FormSubmitButton, Modal, Icon, Loading, Text, Button } from '@deriv/components';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 import AccountHasPendingConditions from './account-has-balance.jsx';
 import ClosingAccountReasonFrom from './closing-account-reason-form.jsx';
 
@@ -73,7 +73,9 @@ const GeneralErrorContent = ({ message, onClick }) => (
 const character_limit_no = 110;
 const max_allowed_reasons = 3;
 
-const ClosingAccountReason = ({ onBackClick, mt5_login_list, client_accounts, dxtrade_accounts_list }) => {
+const ClosingAccountReason = observer(({ onBackClick }) => {
+    const { client } = useStore();
+    const { dxtrade_accounts_list, mt5_login_list, account_list } = client;
     const { is_appstore } = React.useContext(PlatformContext);
     const [is_account_closed, setIsAccountClosed] = React.useState(false);
     const [is_loading, setIsLoading] = React.useState(false);
@@ -228,7 +230,7 @@ const ClosingAccountReason = ({ onBackClick, mt5_login_list, client_accounts, dx
                     <AccountHasPendingConditions
                         details={details}
                         mt5_login_list={mt5_login_list}
-                        client_accounts={client_accounts}
+                        client_accounts={account_list}
                         dxtrade_accounts_list={dxtrade_accounts_list}
                         onBackClick={onBackClick}
                     />
@@ -239,10 +241,6 @@ const ClosingAccountReason = ({ onBackClick, mt5_login_list, client_accounts, dx
             </Modal>
         </div>
     );
-};
+});
 
-export default connect(({ client }) => ({
-    client_accounts: client.account_list,
-    mt5_login_list: client.mt5_login_list,
-    dxtrade_accounts_list: client.dxtrade_accounts_list,
-}))(ClosingAccountReason);
+export default ClosingAccountReason;

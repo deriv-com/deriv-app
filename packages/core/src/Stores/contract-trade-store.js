@@ -201,81 +201,91 @@ export default class ContractTradeStore extends BaseStore {
         should_update_barriers_quickly,
         underlying,
     }) {
-        const current_spot_data = {
-            current_spot,
-            current_spot_time,
-            underlying: this.should_calculate_accu_barriers && underlying,
-        };
-        if (current_spot && !this.should_calculate_accu_barriers) {
-            // update current tick coming from ticks_history while skipping an update for duplicate data
-            if (current_spot_time === this.accumulator_barriers_data.current_spot_time) return;
-            current_spot_data.tick_update_timestamp = Date.now();
-            this.setNewAccumulatorBarriersData(current_spot_data, true);
-            this.setNewAccumulatorBarriersData(current_spot_data);
-            return;
-        }
-        const delayed_barriers_data = {
-            accumulators_high_barrier,
-            accumulators_low_barrier,
-            barrier_spot_distance,
-            should_update_contract_barriers,
-            previous_spot_time: current_spot_time,
-            underlying: this.should_calculate_accu_barriers && underlying,
-        };
-        const data =
-            (this.should_calculate_accu_barriers
-                ? this.accumulator_barriers_data?.[underlying]
-                : this.accumulator_barriers_data) || {};
-        if (
-            (data.current_spot_time &&
-                data.current_spot_time !== current_spot_time &&
-                !data.accumulators_high_barrier) ||
-            Object.keys(delayed_barriers_data).every(key => {
-                const is_duplicate = this.should_calculate_accu_barriers
-                    ? this.accumulator_barriers_data[underlying]?.[key] === delayed_barriers_data[key]
-                    : this.accumulator_barriers_data[key] === delayed_barriers_data[key];
-                return should_update_contract_barriers
-                    ? this.accumulator_contract_barriers_data[key] === delayed_barriers_data[key]
-                    : is_duplicate;
-            })
-        ) {
-            // skip an update for duplicate data, or when a tick, which current barriers are related to, was not returned from ticks_history
-            return;
-        }
-        if (this.should_calculate_accu_barriers) {
-            this.setNewAccumulatorBarriersData(current_spot_data, should_update_contract_barriers);
-            // update barriers in DTrader page with an animation delay
-        }
-        // update barriers, which are returned from proposal/proposal_open_contract, after timeout on DTrader page
-        const tick_update_timestamp = should_update_contract_barriers
-            ? this.accumulator_contract_barriers_data.tick_update_timestamp
-            : this.accumulator_barriers_data.tick_update_timestamp;
-        const timeout_for_calculated_barriers = should_update_barriers_quickly
-            ? getAccuBarriersDefaultTimeout(underlying) / 2
-            : getAccuBarriersDefaultTimeout(underlying);
-        document.addEventListener('visibilitychange', () => {
-            if (document.hidden) {
-                // tab is now inactive
+        // using closure to cache delayed_barriers_data:
+        let delayed_barriers_data = {};
+        return (() => {
+            const current_spot_data = {
+                current_spot,
+                current_spot_time,
+                underlying: this.should_calculate_accu_barriers && underlying,
+            };
+            if (current_spot && !this.should_calculate_accu_barriers) {
+                // update current tick coming from ticks_history while skipping an update for duplicate data
+                if (current_spot_time === this.accumulator_barriers_data.current_spot_time) return;
+                current_spot_data.tick_update_timestamp = Date.now();
+                this.setNewAccumulatorBarriersData(current_spot_data, true);
+                this.setNewAccumulatorBarriersData(current_spot_data);
+                return;
+            }
+            if (
+                this.should_calculate_accu_barriers &&
+                this.accumulator_barriers_data[underlying]?.previous_spot_time &&
+                this.accumulator_barriers_data[underlying]?.previous_spot_time !==
+                    this.accumulator_barriers_data[underlying]?.current_spot_time
+            ) {
                 if (this.accu_barriers_timeout_id) clearTimeout(this.accu_barriers_timeout_id);
                 this.setNewAccumulatorBarriersData(delayed_barriers_data, should_update_contract_barriers);
             }
-        });
-        this.accu_barriers_timeout_id = setTimeout(
-            () => {
-                runInAction(() => {
+            delayed_barriers_data = {
+                accumulators_high_barrier,
+                accumulators_low_barrier,
+                barrier_spot_distance,
+                should_update_contract_barriers,
+                previous_spot_time: current_spot_time,
+                underlying: this.should_calculate_accu_barriers && underlying,
+            };
+            if (
+                (!this.should_calculate_accu_barriers &&
+                    this.accumulator_barriers_data.current_spot_time &&
+                    this.accumulator_barriers_data.current_spot_time !== current_spot_time &&
+                    !this.accumulator_barriers_data.accumulators_high_barrier) ||
+                Object.keys(delayed_barriers_data).every(key => {
+                    const is_duplicate_non_contract_data = this.should_calculate_accu_barriers
+                        ? this.accumulator_barriers_data[underlying]?.[key] === delayed_barriers_data[key]
+                        : this.accumulator_barriers_data[key] === delayed_barriers_data[key];
+                    return should_update_contract_barriers
+                        ? this.accumulator_contract_barriers_data[key] === delayed_barriers_data[key]
+                        : is_duplicate_non_contract_data;
+                })
+            ) {
+                // skip an update for duplicate data, or when a tick, which current barriers are related to, was not returned from ticks_history
+                return;
+            }
+            // update barriers, which are returned from proposal/proposal_open_contract, after timeout on DTrader page
+            const tick_update_timestamp = should_update_contract_barriers
+                ? this.accumulator_contract_barriers_data.tick_update_timestamp
+                : this.accumulator_barriers_data.tick_update_timestamp;
+            const timeout_for_calculated_barriers = should_update_barriers_quickly
+                ? 150
+                : getAccuBarriersDefaultTimeout(underlying);
+            if (this.should_calculate_accu_barriers) {
+                this.setNewAccumulatorBarriersData(current_spot_data, should_update_contract_barriers);
+                // update barriers in DTrader page with an animation delay
+            }
+            this.accu_barriers_timeout_id = setTimeout(
+                () => {
+                    runInAction(() => {
+                        this.setNewAccumulatorBarriersData(delayed_barriers_data, should_update_contract_barriers);
+                    });
+                },
+                this.should_calculate_accu_barriers
+                    ? timeout_for_calculated_barriers
+                    : getAccuBarriersDTraderTimeout({
+                          barriers_update_timestamp: Date.now(),
+                          has_default_timeout: this.accumulator_barriers_data.current_spot_time !== current_spot_time,
+                          should_update_contract_barriers,
+                          tick_update_timestamp,
+                          underlying,
+                      })
+            );
+            document.addEventListener('visibilitychange', () => {
+                if (document.hidden) {
+                    // tab is now inactive
+                    if (this.accu_barriers_timeout_id) clearTimeout(this.accu_barriers_timeout_id);
                     this.setNewAccumulatorBarriersData(delayed_barriers_data, should_update_contract_barriers);
-                });
-            },
-            this.should_calculate_accu_barriers
-                ? timeout_for_calculated_barriers
-                : getAccuBarriersDTraderTimeout({
-                      barriers_update_timestamp: Date.now(),
-                      has_default_timeout: this.accumulator_barriers_data.current_spot_time !== current_spot_time,
-                      should_update_contract_barriers,
-                      tick_update_timestamp,
-                      underlying,
-                  })
-        );
+                }
+            });
+        })();
     }
 
     updateChartType(type) {

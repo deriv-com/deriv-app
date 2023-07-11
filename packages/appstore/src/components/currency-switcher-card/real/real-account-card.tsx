@@ -26,8 +26,8 @@ const RealAccountCard = observer(() => {
         .map(key => current_list[key])
         .some(account => account.landing_company_short === 'maltainvest');
 
-    const uppercaseCurrency = currency?.toUpperCase();
-    const get_currency = IsIconCurrency(uppercaseCurrency) ? uppercaseCurrency : 'USD';
+    const uppercase_currency = currency?.toUpperCase();
+    const get_currency = IsIconCurrency(uppercase_currency) ? uppercase_currency : 'USD';
 
     return (
         <CurrencySwitcherContainer

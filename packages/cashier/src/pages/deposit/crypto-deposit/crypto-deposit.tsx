@@ -20,7 +20,7 @@ const CryptoDeposit = observer(() => {
     const { setIsDeposit } = general_store;
 
     const { data } = useFetch('crypto_config', { payload: { currency_code: currency } });
-    const minimum_deposit = data?.currencies_config[currency]?.minimum_deposit;
+    const minimum_deposit = data?.crypto_config?.currencies_config[currency]?.minimum_deposit;
 
     React.useEffect(() => {
         recentTransactionOnMount();
@@ -36,11 +36,11 @@ const CryptoDeposit = observer(() => {
     }, [pollApiForDepositAddress]);
 
     const option_list = [
-        { text: <Localize i18n_default_text='Binance Smart Chain' />, value: 1 },
-        { text: <Localize i18n_default_text='Polygon (Matic)' />, value: 2 },
-        { text: <Localize i18n_default_text='Tron' />, value: 3 },
-        { text: <Localize i18n_default_text='Ethereum (ERC20)' />, value: 4 },
-        { text: <Localize i18n_default_text='Ethereum (ETH)' />, value: 5 },
+        { text: localize('Binance Smart Chain'), value: '1' },
+        { text: localize('Polygon (Matic)'), value: '2' },
+        { text: localize('Tron'), value: '3' },
+        { text: localize('Ethereum (ERC20)'), value: '4' },
+        { text: localize('Ethereum (ETH)'), value: '5' },
     ];
 
     const [option_message, setOptionMessage] = useState<JSX.Element | string>('');

@@ -6,7 +6,7 @@ import { createBrowserHistory } from 'history';
 
 describe('<ErrorComponent/>', () => {
     let history;
-    const renderWithRouter = component => {
+    const renderWithRouter = (component: React.ReactNode) => {
         history = createBrowserHistory();
         return render(<Router history={history}>{component}</Router>);
     };

@@ -1,9 +1,12 @@
-import type { useMutation, useQuery } from '@tanstack/react-query';
 import type {
-    ActiveSymbolsResponse,
-    ActiveSymbolsRequest,
     APITokenRequest,
     APITokenResponse,
+    AccountLimitsRequest,
+    AccountLimitsResponse,
+    AccountStatusRequest,
+    AccountStatusResponse,
+    ActiveSymbolsRequest,
+    ActiveSymbolsResponse,
     ApplicationDeleteRequest,
     ApplicationDeleteResponse,
     ApplicationGetDetailsRequest,
@@ -32,20 +35,18 @@ import type {
     CancelAContractResponse,
     CashierInformationRequest,
     CashierInformationResponse,
-    UpdateContractHistoryRequest,
-    UpdateContractHistoryResponse,
-    UpdateContractRequest,
-    UpdateContractResponse,
     ContractsForSymbolRequest,
     ContractsForSymbolResponse,
-    CopyTradingStartRequest,
-    CopyTradingStartResponse,
-    CopyTradingStopRequest,
-    CopyTradingStopResponse,
     CopyTradingListRequest,
     CopyTradingListResponse,
+    CopyTradingStartRequest,
+    CopyTradingStartResponse,
     CopyTradingStatisticsRequest,
     CopyTradingStatisticsResponse,
+    CopyTradingStopRequest,
+    CopyTradingStopResponse,
+    CountriesListRequest,
+    CountriesListResponse,
     CryptocurrencyConfigurationsRequest,
     CryptocurrencyConfigurationsResponse,
     DocumentUploadRequest,
@@ -58,32 +59,28 @@ import type {
     ForgetAllResponse,
     ForgetRequest,
     ForgetResponse,
-    AccountStatusRequest,
-    AccountStatusResponse,
-    GetFinancialAssessmentRequest,
-    GetFinancialAssessmentResponse,
-    AccountLimitsRequest,
-    AccountLimitsResponse,
-    GetSelfExclusionRequest,
-    GetSelfExclusionResponse,
     GetAccountSettingsRequest,
     GetAccountSettingsResponse,
+    GetFinancialAssessmentRequest,
+    GetFinancialAssessmentResponse,
+    GetSelfExclusionRequest,
+    GetSelfExclusionResponse,
     IdentityVerificationAddDocumentRequest,
     IdentityVerificationAddDocumentResponse,
     LandingCompanyDetailsRequest,
     LandingCompanyDetailsResponse,
     LandingCompanyRequest,
     LandingCompanyResponse,
-    LoginHistoryRequest,
-    LoginHistoryResponse,
     LogOutRequest,
     LogOutResponse,
+    LoginHistoryRequest,
+    LoginHistoryResponse,
+    MT5AccountsListRequest,
+    MT5AccountsListResponse,
     MT5DepositRequest,
     MT5DepositResponse,
     MT5GetSettingRequest,
     MT5GetSettingResponse,
-    MT5AccountsListRequest,
-    MT5AccountsListResponse,
     MT5NewAccountRequest,
     MT5NewAccountResponse,
     MT5PasswordChangeRequest,
@@ -94,10 +91,10 @@ import type {
     MT5PasswordResetResponse,
     MT5WithdrawalRequest,
     MT5WithdrawalResponse,
-    NewRealMoneyAccountDerivInvestmentEuropeLtdRequest,
-    NewRealMoneyAccountDerivInvestmentEuropeLtdResponse,
     NewRealMoneyAccountDefaultLandingCompanyRequest,
     NewRealMoneyAccountDefaultLandingCompanyResponse,
+    NewRealMoneyAccountDerivInvestmentEuropeLtdRequest,
+    NewRealMoneyAccountDerivInvestmentEuropeLtdResponse,
     NewVirtualMoneyAccountRequest,
     NewVirtualMoneyAccountResponse,
     OAuthApplicationsRequest,
@@ -144,8 +141,6 @@ import type {
     P2PPaymentMethodsResponse,
     P2PPingRequest,
     P2PPingResponse,
-    PaymentMethodsRequest,
-    PaymentMethodsResponse,
     PaymentAgentCreateRequest,
     PaymentAgentCreateResponse,
     PaymentAgentDetailsRequest,
@@ -154,54 +149,58 @@ import type {
     PaymentAgentListResponse,
     PaymentAgentTransferRequest,
     PaymentAgentTransferResponse,
-    PaymentAgentWithdrawRequest,
-    PaymentAgentWithdrawResponse,
     PaymentAgentWithdrawJustificationRequest,
     PaymentAgentWithdrawJustificationResponse,
+    PaymentAgentWithdrawRequest,
+    PaymentAgentWithdrawResponse,
+    PaymentMethodsRequest,
+    PaymentMethodsResponse,
     PayoutCurrenciesRequest,
     PayoutCurrenciesResponse,
     PingRequest,
     PingResponse,
     PortfolioRequest,
     PortfolioResponse,
-    ProfitTableRequest,
-    ProfitTableResponse,
     PriceProposalOpenContractsRequest,
     PriceProposalOpenContractsResponse,
     PriceProposalRequest,
     PriceProposalResponse,
+    ProfitTableRequest,
+    ProfitTableResponse,
     RealityCheckRequest,
     RealityCheckResponse,
-    CountriesListResponse,
-    CountriesListRequest,
     RevokeOauthApplicationRequest,
     RevokeOauthApplicationResponse,
+    SellContractRequest,
+    SellContractResponse,
     SellContractsMultipleAccountsRequest,
     SellContractsMultipleAccountsResponse,
     SellExpiredContractsRequest,
     SellExpiredContractsResponse,
-    SellContractRequest,
-    SellContractResponse,
+    ServerListRequest,
+    ServerListResponse,
+    ServerStatusRequest,
+    ServerStatusResponse,
+    ServerTimeRequest,
+    ServerTimeResponse,
     SetAccountCurrencyRequest,
     SetAccountCurrencyResponse,
+    SetAccountSettingsRequest,
+    SetAccountSettingsResponse,
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
     SetSelfExclusionRequest,
     SetSelfExclusionResponse,
-    SetAccountSettingsRequest,
-    SetAccountSettingsResponse,
     StatementRequest,
     StatementResponse,
     StatesListRequest,
     StatesListResponse,
+    TermsAndConditionsApprovalRequest,
+    TermsAndConditionsApprovalResponse,
     TicksHistoryRequest,
     TicksHistoryResponse,
     TicksStreamRequest,
     TicksStreamResponse,
-    ServerTimeRequest,
-    ServerTimeResponse,
-    TermsAndConditionsApprovalRequest,
-    TermsAndConditionsApprovalResponse,
     TopUpVirtualMoneyAccountRequest,
     TopUpVirtualMoneyAccountResponse,
     TradingDurationsRequest,
@@ -210,23 +209,24 @@ import type {
     TradingPlatformInvestorPasswordResetResponse,
     TradingPlatformPasswordResetRequest,
     TradingPlatformPasswordResetResponse,
-    ServerListRequest,
-    ServerListResponse,
     TradingTimesRequest,
     TradingTimesResponse,
     TransactionsStreamRequest,
     TransactionsStreamResponse,
     TransferBetweenAccountsRequest,
     TransferBetweenAccountsResponse,
-    UnsubscribeEmailResponse,
     UnsubscribeEmailRequest,
+    UnsubscribeEmailResponse,
+    UpdateContractHistoryRequest,
+    UpdateContractHistoryResponse,
+    UpdateContractRequest,
+    UpdateContractResponse,
     VerifyEmailCellxpertRequest,
     VerifyEmailCellxpertResponse,
     VerifyEmailRequest,
     VerifyEmailResponse,
-    ServerStatusResponse,
-    ServerStatusRequest,
 } from '@deriv/api-types';
+import type { useMutation, useQuery } from '@tanstack/react-query';
 
 type TSocketEndpoints = {
     active_symbols: {
@@ -691,15 +691,25 @@ export type TSocketSubscribableEndpointNames =
 
 export type TSocketResponse<T extends TSocketEndpointNames> = TSocketEndpoints[T]['response'];
 
-export type TSocketResponseData<T extends TSocketEndpointNames> = TSocketResponse<T>[T extends 'ticks' ? 'tick' : T];
+export type TSocketResponseData<T extends TSocketEndpointNames> = Omit<
+    NoStringIndex<TSocketResponse<T>>,
+    'req_id' | 'msg_type' | 'echo_req' | 'subscription'
+>;
 
 type TSocketRequest<T extends TSocketEndpointNames> = TSocketEndpoints[T]['request'];
 
 type TRemovableEndpointName<T extends TSocketEndpointNames> = T extends KeysMatching<TSocketRequest<T>, 1> ? T : never;
 
-export type TSocketRequestCleaned<T extends TSocketEndpointNames> = {
-    payload: Omit<TSocketRequest<T>, TRemovableEndpointName<T> | 'passthrough' | 'req_id' | 'subscribe'>;
-};
+type TSocketRequestCleaned<T extends TSocketEndpointNames> = Omit<
+    TSocketRequest<T>,
+    TRemovableEndpointName<T> | 'passthrough' | 'req_id' | 'subscribe'
+>;
+
+export type TSocketRequestPayload<T extends TSocketEndpointNames> = Partial<
+    TSocketRequestCleaned<T>
+> extends TSocketRequestCleaned<T>
+    ? { payload?: TSocketRequestCleaned<T> }
+    : { payload: TSocketRequestCleaned<T> };
 
 export type TSocketRequestQueryOptions<T extends TSocketEndpointNames> = Parameters<
     typeof useQuery<TSocketResponseData<T>, unknown>
@@ -710,8 +720,9 @@ export type TSocketRequestMutationOptions<T extends TSocketEndpointNames> = Para
 >[2];
 
 type TSocketRequestWithOptions<T extends TSocketEndpointNames, O extends boolean = false> = Omit<
-    TSocketRequestCleaned<T> & { options?: TSocketRequestQueryOptions<T> },
-    | (TSocketRequestCleaned<T>['payload'] extends Record<string, never> ? 'payload' : never)
+    TSocketRequestPayload<T> & { options?: TSocketRequestQueryOptions<T> },
+    | (TSocketRequestPayload<T>['payload'] extends Record<string, never> ? 'payload' : never)
+    | (TNever<TSocketRequestPayload<T>['payload']> extends undefined ? 'payload' : never)
     | (O extends true ? never : 'options')
 >;
 

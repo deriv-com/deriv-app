@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { Button, Text } from '@deriv/components';
-import { formatMoney, getCurrencyName, routes } from '@deriv/shared';
+import { getCurrencyName, routes } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import BalanceText from 'Components/elements/text/balance-text';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
@@ -26,12 +26,13 @@ const RealAccountCard = observer(() => {
         .map(key => current_list[key])
         .some(account => account.landing_company_short === 'maltainvest');
 
-    const get_currency = (IsIconCurrency(currency?.toUpperCase()) && currency) || 'USD';
+    const uppercaseCurrency = currency?.toUpperCase();
+    const get_currency = IsIconCurrency(uppercaseCurrency) ? uppercaseCurrency : 'USD';
 
     return (
         <CurrencySwitcherContainer
             className='demo-account-card'
-            title={<BalanceText currency={get_currency} balance={formatMoney(currency, balance, true)} size='xs' />}
+            title={<BalanceText currency={get_currency} balance={Number(balance)} size='xs' />}
             icon={get_currency}
             onClick={() => {
                 if (!is_eu_user && !has_mf_mt5_account) {

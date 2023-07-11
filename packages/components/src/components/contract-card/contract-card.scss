@@ -306,6 +306,13 @@
     }
     &--turbos {
         .dc-contract-card {
+            &-item {
+                &__body {
+                    @include mobile {
+                        padding-left: 0;
+                    }
+                }
+            }
             &__buy-price {
                 grid-column: 1/1;
                 grid-row: 1/1;

@@ -73,8 +73,9 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
 
 export const createProposalRequests = store => {
     const requests = {};
+    const trade_types = store.trade_types || {};
 
-    Object.keys(store.trade_types).forEach(type => {
+    Object.keys(trade_types).forEach(type => {
         const new_req = createProposalRequestForContract(store, type);
         requests[type] = new_req;
     });

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import QRCode from 'qrcode.react';
@@ -14,20 +13,16 @@ import {
 } from '@deriv/components';
 import { getPropertyValue, isMobile, PlatformContext, WS } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import LoadErrorMessage from 'Components/load-error-message';
 import DigitForm from './digit-form.jsx';
 import TwoFactorAuthenticationArticle from './two-factor-authentication-article.jsx';
+import { observer, useStore } from '@deriv/stores';
 
-const TwoFactorAuthentication = ({
-    email_address,
-    getTwoFAStatus,
-    has_enabled_two_fa,
-    is_language_changing,
-    is_switching,
-    setTwoFAChangedStatus,
-    setTwoFAStatus,
-}) => {
+const TwoFactorAuthentication = observer(() => {
+    const { client, common } = useStore();
+    const { email_address, getTwoFAStatus, has_enabled_two_fa, is_switching, setTwoFAStatus, setTwoFAChangedStatus } =
+        client;
+    const { is_language_changing } = common;
     const [is_loading, setLoading] = React.useState(true);
     const [is_qr_loading, setQrLoading] = React.useState(false);
     const [error_message, setErrorMessage] = React.useState('');
@@ -206,24 +201,6 @@ const TwoFactorAuthentication = ({
             </div>
         </section>
     );
-};
+});
 
-TwoFactorAuthentication.propTypes = {
-    email_address: PropTypes.string,
-    getTwoFAStatus: PropTypes.func,
-    has_enabled_two_fa: PropTypes.bool,
-    is_language_changing: PropTypes.bool,
-    is_switching: PropTypes.bool,
-    setTwoFAChangedStatus: PropTypes.func,
-    setTwoFAStatus: PropTypes.func,
-};
-
-export default connect(({ client, common }) => ({
-    email_address: client.email_address,
-    getTwoFAStatus: client.getTwoFAStatus,
-    has_enabled_two_fa: client.has_enabled_two_fa,
-    is_language_changing: common.is_language_changing,
-    is_switching: client.is_switching,
-    setTwoFAChangedStatus: client.setTwoFAChangedStatus,
-    setTwoFAStatus: client.setTwoFAStatus,
-}))(TwoFactorAuthentication);
+export default TwoFactorAuthentication;

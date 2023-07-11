@@ -93,7 +93,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
     };
 
     const getHeightOffset = React.useCallback(() => {
-        const header_height = '16.2rem';
+        const header_height = is_mobile ? '16.2rem' : '24.4rem';
         const collapsed_header_height = '12.2rem';
         return is_wallet_name_visible ? header_height : collapsed_header_height;
     }, [is_wallet_name_visible]);

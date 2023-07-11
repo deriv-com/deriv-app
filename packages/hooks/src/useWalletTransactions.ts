@@ -23,7 +23,7 @@ const useWalletTransactions = (
     const accounts = [demo_platform_account, ...real_platform_accounts];
     const { getConfig } = useCurrencyConfig();
 
-    const transactions_per_page = 5;
+    const transactions_per_page = 10;
 
     const trading_accounts_display_prefixes = {
         standard: 'Deriv Apps',
@@ -73,6 +73,7 @@ const useWalletTransactions = (
     }, [data?.statement, isLoading, isSuccess]);
 
     useEffect(() => {
+        setIsCompleteList(false);
         setTransactions([]);
     }, [action_type]);
 

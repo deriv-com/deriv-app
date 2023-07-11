@@ -1,9 +1,17 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { observer } from 'mobx-react-lite';
 import { Button, Modal } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+
+type TErrorModalProps = {
+    error_message: string;
+    error_modal_button_text?: string;
+    error_modal_title?: string;
+    has_close_icon?: boolean;
+    onClose?: () => void;
+    width?: string;
+};
 
 const ErrorModal = ({
     error_message,
@@ -12,7 +20,7 @@ const ErrorModal = ({
     has_close_icon,
     onClose,
     width,
-}) => {
+}: TErrorModalProps) => {
     const { hideModal, is_modal_open } = useModalManagerContext();
 
     return (
@@ -31,15 +39,6 @@ const ErrorModal = ({
             </Modal.Footer>
         </Modal>
     );
-};
-
-ErrorModal.propTypes = {
-    error_message: PropTypes.string,
-    error_modal_button_text: PropTypes.string,
-    error_modal_title: PropTypes.string,
-    has_close_icon: PropTypes.bool,
-    onClose: PropTypes.func,
-    width: PropTypes.string,
 };
 
 export default observer(ErrorModal);

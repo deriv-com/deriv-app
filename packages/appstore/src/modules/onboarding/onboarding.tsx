@@ -1,7 +1,7 @@
 import React from 'react';
 import { localize } from '@deriv/translations';
 import { isMobile, isDesktop, routes, ContentFlag } from '@deriv/shared';
-import { Button, Text, Icon, ProgressBarOnboarding } from '@deriv/components';
+import { Button, Text, Icon, ProgressBarTracker } from '@deriv/components';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getTradingHubContents } from 'Constants/trading-hub-content';
 import { useHistory } from 'react-router-dom';
@@ -105,7 +105,7 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
                             <Button secondary onClick={prevStep} style={step === 1 ? { visibility: 'hidden' } : {}}>
                                 {localize('Back')}
                             </Button>
-                            <ProgressBarOnboarding step={step} amount_of_steps={number_of_steps} setStep={setStep} />
+                            <ProgressBarTracker step={step} number_of_steps={number_of_steps} setStep={setStep} />
                             <Button primary onClick={nextStep} className='onboarding-footer-buttons--full-size'>
                                 {contents[onboarding_step]?.has_next_content
                                     ? contents[onboarding_step]?.next_content
@@ -116,11 +116,7 @@ const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) =>
                     {isMobile() && (
                         <React.Fragment>
                             <div className='onboarding-footer__progress-bar'>
-                                <ProgressBarOnboarding
-                                    step={step}
-                                    amount_of_steps={number_of_steps}
-                                    setStep={setStep}
-                                />
+                                <ProgressBarTracker step={step} number_of_steps={number_of_steps} setStep={setStep} />
                             </div>
                             <div
                                 className='onboarding-footer-buttons'

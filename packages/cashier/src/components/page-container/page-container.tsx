@@ -19,12 +19,12 @@ const PageContainer: React.FC<React.PropsWithChildren<TProps>> = observer(
         const is_loading = !is_authorize;
 
         const LeftSideContent = useCallback(
-            () => (left ? <div className='page-container__left'>{left}</div> : <></>),
+            () => (left ? <div className='page-container__sidebar--left'>{left}</div> : <></>),
             [left]
         );
 
         const RightSideContent = useCallback(
-            () => (right ? <div className='page-container__right'>{right}</div> : <></>),
+            () => (right ? <div className='page-container__sidebar--right'>{right}</div> : <></>),
             [right]
         );
 

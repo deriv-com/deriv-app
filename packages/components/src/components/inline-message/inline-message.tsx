@@ -19,7 +19,7 @@ const size_to_font_size_mapper = {
 };
 
 type TProps = {
-    type?: 'warning' | 'information' | 'announcement' | 'error';
+    type?: keyof typeof type_to_icon_mapper;
     size?: 'xs' | 'sm' | 'md' | 'lg';
 } & RequireAtLeastOne<{ title: React.ReactNode; message: React.ReactNode; children: React.ReactNode }>;
 

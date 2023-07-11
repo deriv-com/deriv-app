@@ -12,7 +12,7 @@ const type_to_icon_mapper = {
 };
 
 type TProps = {
-    type?: 'warning' | 'information' | 'announcement' | 'error';
+    type?: keyof typeof type_to_icon_mapper;
     action?: { onClick: VoidFunction; label: React.ReactNode };
 } & RequireAtLeastOne<{ title: React.ReactNode; description: React.ReactNode; children: React.ReactNode }>;
 

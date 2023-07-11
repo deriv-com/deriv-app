@@ -28,9 +28,7 @@ const RecentTransaction = observer(() => {
                 <Text weight='bold' as='p' line_height='s' size='xs'>
                     <Localize i18n_default_text='Recent transactions' />
                 </Text>
-                <div className='cashier-recent-transaction__data-wrapper'>
-                    <div>{children}</div>
-                </div>
+                <div className='cashier-recent-transaction__data-wrapper'>{children}</div>
                 <ButtonLink
                     to='#'
                     className='dc-btn--secondary cashier-recent-transaction__view-all-button'

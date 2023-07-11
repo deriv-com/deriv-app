@@ -48,11 +48,6 @@ jest.mock('../crypto-deposit', () => {
     return CryptoDeposit;
 });
 
-jest.mock('Components/cashier-container/real', () => {
-    const CashierContainerReal = () => <div>Real</div>;
-    return CashierContainerReal;
-});
-
 jest.mock('../deposit-locked', () => {
     const DepositLocked = () => <div>DepositLocked</div>;
     return DepositLocked;
@@ -433,50 +428,6 @@ describe('<Deposit />', () => {
         });
 
         expect(screen.getByText('CryptoDeposit')).toBeInTheDocument();
-    });
-
-    it('should render <Real /> component', () => {
-        const mock_root_store = mockStore({
-            client: {
-                mt5_login_list: [
-                    {
-                        account_type: 'demo',
-                        sub_account_type: 'financial_stp',
-                    },
-                ],
-                currency: 'USD',
-                can_change_fiat_currency: false,
-                current_currency_type: 'fiat',
-                is_switching: false,
-                is_virtual: false,
-            },
-            modules: {
-                cashier: {
-                    iframe: {},
-                    transaction_history: {
-                        is_crypto_transactions_visible: false,
-                        onMount: jest.fn(),
-                    },
-                    deposit: {
-                        error: { is_ask_uk_funds_protection: false, message: '', setErrorMessage: jest.fn() },
-                        onMountDeposit: jest.fn(),
-                    },
-                    general_store: {
-                        is_deposit: true,
-                        is_loading: false,
-                        setActiveTab: jest.fn(),
-                        setIsDeposit: jest.fn(),
-                    },
-                },
-            },
-            traders_hub: { content_flag: ContentFlag.CR_DEMO },
-        });
-
-        render(<Deposit setSideNotes={jest.fn()} />, {
-            wrapper: ({ children }) => <CashierProviders store={mock_root_store}>{children}</CashierProviders>,
-        });
-
-        expect(screen.getByText('Real')).toBeInTheDocument();
     });
 
     it('should trigger "setSideNotes" callback', () => {

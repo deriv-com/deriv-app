@@ -44,7 +44,7 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
             let client_last_name = '';
             const domain = /^(.)*deriv\.(com|me|be)$/gi.test(window.location.hostname)
                 ? deriv_urls.DERIV_HOST_NAME
-                : deriv_urls.DERIV_TEST_LINK_DOMAIN;
+                : 'binary.sx';
             const client_information = Cookies.getJSON('client_information', {
                 domain,
             });

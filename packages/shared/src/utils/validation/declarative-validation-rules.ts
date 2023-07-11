@@ -26,17 +26,17 @@ export const validAddress = (value: string, options?: TOptions) => {
     if (options?.is_required && (!value || value.match(/^\s*$/))) {
         return {
             is_ok: false,
-            message: form_error_messages.empty_address(),
+            message: form_error_messages?.empty_address(),
         };
     } else if (!validLength(value, { min: 0, max: 70 })) {
         return {
             is_ok: false,
-            message: form_error_messages.maxNumber(70),
+            message: form_error_messages?.maxNumber(70),
         };
     } else if (!/^[\p{L}\p{Nd}\s'.,:;()\u00b0@#/-]{0,70}$/u.test(value)) {
         return {
             is_ok: false,
-            message: form_error_messages.address(),
+            message: form_error_messages?.address(),
         };
     }
     return { is_ok: true };

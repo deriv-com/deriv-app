@@ -51,15 +51,14 @@ const Dialog = ({
         setInputValue('');
         onChangeInput('');
     };
+
     const renderChildren = () => {
         if (!is_info_dialog_open) {
             return <ThemedScrollbars height='calc(100vh - 172px)'>{children}</ThemedScrollbars>;
         }
         return children;
     };
-    const action_bar_items = is_info_dialog_open ? (
-        <Header title={item.text} onClickGoBack={onBackButtonClick} />
-    ) : (
+    const action_bar_item = (
         <SearchInput
             ref={input_ref}
             onChange={onChangeInputValue}
@@ -84,23 +83,34 @@ const Dialog = ({
                     {show_loading ? (
                         <Loading is_fullscreen={false} />
                     ) : (
-                        <VerticalTab.Layout>
-                            <VerticalTab.Headers
-                                header_title={localize('Trade types')}
-                                items={categories}
-                                selected={selected_item}
-                                onChange={onChange}
-                                selectedKey='key'
-                            />
+                        <React.Fragment>
+                            {!is_info_dialog_open ? (
+                                <VerticalTab.Layout>
+                                    <VerticalTab.Headers
+                                        header_title={localize('Trade types')}
+                                        items={categories}
+                                        selected={selected_item}
+                                        onChange={onChange}
+                                        selectedKey='key'
+                                    />
 
-                            <div className='dc-vertical-tab__content'>
-                                <div className='dc-vertical-tab__action-bar'>{action_bar_items}</div>
-                                <div className='dc-vertical-tab__content-container'>
-                                    {selected_category_contract && <NoResultsMessage text={input_value} />}
+                                    <div className='dc-vertical-tab__content'>
+                                        <div className='dc-vertical-tab__action-bar'>{action_bar_item}</div>
+                                        <div className='dc-vertical-tab__content-container'>
+                                            {selected_category_contract && <NoResultsMessage text={input_value} />}
+                                            {renderChildren()}
+                                        </div>
+                                    </div>
+                                </VerticalTab.Layout>
+                            ) : (
+                                <React.Fragment>
+                                    <div className='dc-vertical-tab__action-bar dc-vertical-tab__action-bar--contract-type-info-header'>
+                                        <Header title={item.text} onClickGoBack={onBackButtonClick} />
+                                    </div>
                                     {renderChildren()}
-                                </div>
-                            </div>
-                        </VerticalTab.Layout>
+                                </React.Fragment>
+                            )}
+                        </React.Fragment>
                     )}
                 </div>
             </div>

@@ -1,8 +1,18 @@
 import React from 'react';
 import domtoimage from 'dom-to-image';
 import { QRCode } from 'react-qrcode-logo';
-import { WhatsappShareButton, WhatsappIcon, TwitterShareButton, TwitterIcon } from 'react-share';
-import { Button, Modal, Text } from '@deriv/components';
+import {
+    EmailIcon,
+    FacebookShareButton,
+    FacebookIcon,
+    TelegramShareButton,
+    TelegramIcon,
+    TwitterShareButton,
+    TwitterIcon,
+    WhatsappShareButton,
+    WhatsappIcon,
+} from 'react-share';
+import { Button, Icon, Modal, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -86,9 +96,22 @@ const ShareAdModal = ({ advert }) => {
                         <WhatsappShareButton url={window.location.href}>
                             <WhatsappIcon size={32} round={true} />
                         </WhatsappShareButton>
+                        <FacebookShareButton url={window.location.href}>
+                            <FacebookIcon size={32} round={true} />
+                        </FacebookShareButton>
                         <TwitterShareButton url={window.location.href}>
                             <TwitterIcon size={32} round={true} />
                         </TwitterShareButton>
+                        <TelegramShareButton url={window.location.href}>
+                            <TelegramIcon size={30} round={true} />
+                        </TelegramShareButton>
+                        <a
+                            href={`https://mail.google.com/mail/?view=cm&fs=1&body=${window.location.href}`}
+                            target='_blank'
+                            rel='noreferrer'
+                        >
+                            <Icon icon='IcStockGoogle' size={32} />
+                        </a>
                     </div>
                 </div>
             </Modal.Body>

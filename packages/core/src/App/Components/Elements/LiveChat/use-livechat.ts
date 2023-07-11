@@ -71,7 +71,7 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
                 currency: currency ?? ' ',
                 residence: residence ?? ' ',
                 email: email ?? ' ',
-                is_dp2p: window.location.pathname === routes.cashier_p2p ? 1 : 0,
+                is_dp2p: window.location.pathname.includes(routes.cashier_p2p) ? 1 : 0,
                 utm_source: utm_source ?? ' ',
                 utm_medium: utm_medium ?? ' ',
                 utm_campaign: utm_campaign ?? ' ',

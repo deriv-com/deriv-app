@@ -27,7 +27,7 @@ export const getCashierOptions = (type: TWalletType) => {
                 {
                     icon: 'IcStatement',
                     label: localize('Transactions'),
-                    content: () => <TransactionList />,
+                    content: (props: React.ComponentProps<typeof TransactionList>) => <TransactionList {...props} />,
                 },
             ];
         case 'demo':

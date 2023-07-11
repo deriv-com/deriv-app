@@ -1,3 +1,4 @@
+import { useEffect, useMemo, useState } from 'react';
 import { useStore } from '@deriv/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
 import { useFetch } from '@deriv/api';
@@ -5,10 +6,10 @@ import useCurrencyConfig from './useCurrencyConfig';
 import usePlatformAccounts from './usePlatformAccounts';
 import useWalletList from './useWalletsList';
 import useActiveWallet from './useActiveWallet';
-import { useMemo } from 'react';
 
 const useWalletTransactions = (
-    action_type: '' | 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer'
+    action_type: '' | 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer',
+    page_count?: number
 ) => {
     const {
         client: { loginid },
@@ -21,6 +22,8 @@ const useWalletTransactions = (
 
     const accounts = [demo_platform_account, ...real_platform_accounts];
     const { getConfig } = useCurrencyConfig();
+
+    const transactions_per_page = 5;
 
     const trading_accounts_display_prefixes = {
         standard: 'Deriv Apps',
@@ -44,20 +47,34 @@ const useWalletTransactions = (
         } account`;
     };
 
-    // @ts-expect-error reset_balance is not supported in the API yet
     const { data, isLoading, isSuccess } = useFetch('statement', {
         options: { keepPreviousData: true },
-        ...(!!action_type && {
-            payload: {
-                action_type,
-            },
-        }),
+        payload: {
+            // @ts-expect-error reset_balance is not supported in the API yet
+            action_type: action_type || undefined,
+            limit: page_count ? transactions_per_page : undefined,
+            offset: page_count ? transactions_per_page * (page_count - 1) : 0,
+        },
     });
 
-    const transactions = useMemo(
-        () => (data?.statement?.transactions && !isLoading && isSuccess ? data.statement.transactions : []),
-        [data, isLoading, isSuccess]
-    );
+    const [is_complete_list, setIsCompleteList] = useState(false);
+
+    const [transactions, setTransactions] = useState<
+        Required<Required<NonNullable<typeof data>>['statement']>['transactions']
+    >([]);
+
+    useEffect(() => {
+        if (is_complete_list) return;
+        if (data?.statement?.count === 0) setIsCompleteList(true);
+        const new_transactions = data?.statement?.transactions;
+        if (new_transactions && !isLoading && isSuccess) {
+            setTransactions(prev => [...prev, ...new_transactions]);
+        }
+    }, [data?.statement, isLoading, isSuccess]);
+
+    useEffect(() => {
+        setTransactions([]);
+    }, [action_type]);
 
     const modified_transactions = useMemo(
         () =>
@@ -128,7 +145,7 @@ const useWalletTransactions = (
         [accounts, current_wallet, getConfig, getTradingAccountName, is_dark_mode_on, loginid, transactions, wallets]
     );
 
-    return { transactions: modified_transactions, isLoading, isSuccess };
+    return { transactions: modified_transactions, isLoading, isSuccess, isComplete: is_complete_list };
 };
 
 export default useWalletTransactions;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, Dropdown, Div100vhContainer, ThemedScrollbars } from '@deriv/components';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
@@ -49,8 +49,13 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
     ] as const;
 
     const [filter, setFilter] = useState<typeof filter_options[number]['value']>('');
+    const [page_count, setPageCount] = useState(1);
 
-    const { transactions } = useWalletTransactions(filter);
+    useEffect(() => {
+        setPageCount(1);
+    }, [filter]);
+
+    const { transactions, isLoading, isComplete } = useWalletTransactions(filter, page_count);
 
     const grouped_transactions = groupTransactionsByDay(transactions);
 
@@ -95,6 +100,9 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
 
     const onScrollHandler: React.UIEventHandler<HTMLDivElement> = e => {
         if (is_mobile) contentScrollHandler?.(e);
+        if (e.currentTarget.scrollHeight - e.currentTarget.scrollTop - e.currentTarget.clientHeight <= 0) {
+            if (!isComplete) setPageCount(page_count + 1);
+        }
     };
 
     return (

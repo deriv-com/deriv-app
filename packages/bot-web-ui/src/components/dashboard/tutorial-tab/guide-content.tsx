@@ -1,9 +1,9 @@
+import React from 'react';
+import classNames from 'classnames';
 import { Dialog, Icon, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import classNames from 'classnames';
 import { DBOT_TABS } from 'Constants/bot-contents';
-import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { removeKeyValue } from '../../../utils/settings';
@@ -108,7 +108,7 @@ const GuideContent = ({
                 </div>
                 {guide_list?.length > 0 && (
                     <Text align='center' weight='bold' color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
-                        Videos on DBot
+                        Videos on Deriv Bot
                     </Text>
                 )}
                 <div className='tutorials-wrap__group'>

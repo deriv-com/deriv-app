@@ -16,7 +16,7 @@ describe('useIsP2PEnabled', () => {
         const mock = mockStore({ client: { currency: 'AUD' } });
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { p2p_config: { supported_currencies: ['usd'] } } });
+        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -38,7 +38,7 @@ describe('useIsP2PEnabled', () => {
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { p2p_config: { supported_currencies: ['usd'] } } });
+        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -59,7 +59,7 @@ describe('useIsP2PEnabled', () => {
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { p2p_config: { supported_currencies: ['usd'] } } });
+        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -83,7 +83,7 @@ describe('useIsP2PEnabled', () => {
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
-        mockUseFetch.mockReturnValue({ data: { p2p_config: { supported_currencies: ['usd'] } } });
+        mockUseFetch.mockReturnValue({ data: { website_status: { p2p_config: { supported_currencies: ['usd'] } } } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>

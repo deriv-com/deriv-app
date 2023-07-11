@@ -1,7 +1,7 @@
-import { action, reaction, makeObservable } from 'mobx';
-import { isEuResidenceWithOnlyVRTC, showDigitalOptionsUnavailableError, routes } from '@deriv/shared';
+import { action, makeObservable, reaction } from 'mobx';
+import { ApiHelpers, DBot, runIrreversibleEvents } from '@deriv/bot-skeleton';
+import { isEuResidenceWithOnlyVRTC, routes, showDigitalOptionsUnavailableError } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { runIrreversibleEvents, ApiHelpers, DBot } from '@deriv/bot-skeleton';
 
 export default class AppStore {
     constructor(root_store, core) {
@@ -23,11 +23,25 @@ export default class AppStore {
         this.core = core;
         this.dbot_store = null;
         this.api_helpers_store = null;
+        this.timer = null;
     }
 
     onMount() {
-        const { blockly_store } = this.root_store;
+        const { blockly_store, run_panel } = this.root_store;
         const { client, common } = this.core;
+        let timer_counter = 1;
+
+        this.timer = setInterval(() => {
+            if (window.sendRequestsStatistic) {
+                window.sendRequestsStatistic(false);
+                performance.clearMeasures();
+                if (timer_counter === 6 || run_panel?.is_running) {
+                    clearInterval(this.timer);
+                } else {
+                    timer_counter++;
+                }
+            }
+        }, 10000);
         this.showDigitalOptionsMaltainvestError(client, common);
 
         blockly_store.setLoading(true);
@@ -78,6 +92,9 @@ export default class AppStore {
 
         ui.setAccountSwitcherDisabledMessage(false);
         ui.setPromptHandler(false);
+
+        if (this.timer) clearInterval(this.timer);
+        performance.clearMeasures();
     }
 
     onBeforeUnload = event => {
@@ -166,7 +183,7 @@ export default class AppStore {
                         text: localize(
                             'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a Deriv MT5 Financial.'
                         ),
-                        title: localize('DBot is not available for this account'),
+                        title: localize('Deriv Bot is not available for this account'),
                         link: localize('Go to Deriv MT5 dashboard'),
                     });
                 }
@@ -190,7 +207,7 @@ export default class AppStore {
                         text: localize(
                             'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a Deriv MT5 Financial.'
                         ),
-                        title: localize('DBot is not available for this account'),
+                        title: localize('Deriv Bot is not available for this account'),
                         link: localize('Go to Deriv MT5 dashboard'),
                     });
                 }
@@ -249,7 +266,7 @@ export default class AppStore {
                 text: localize(
                     'We’re working to have this available for you soon. If you have another account, switch to that account to continue trading. You may add a Deriv MT5 Financial.'
                 ),
-                title: localize('DBot is not available for this account'),
+                title: localize('Deriv Bot is not available for this account'),
                 link: localize('Go to Deriv MT5 dashboard'),
             });
         } else if (common.has_error) {

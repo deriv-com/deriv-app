@@ -77,7 +77,7 @@ const useTransferBetweenAccounts = () => {
                         const wallet = all_wallets?.find(acc => acc.loginid === wallet_account.loginid);
 
                         return {
-                            ...wallet,
+                            ...wallet_account,
                             icon: wallet?.icon,
                             gradient_class: wallet?.gradient_card_class,
                         };

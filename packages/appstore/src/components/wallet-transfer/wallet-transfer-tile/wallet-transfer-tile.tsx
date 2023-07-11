@@ -101,7 +101,7 @@ const WalletTransferTile = ({
             data-testid='dt_wallet_transfer_tile'
             onClick={() => onClick?.()}
         >
-            <div className='wwallet-transfer-tile__icon-with-badge'>
+            <div className='wallet-transfer-tile__icon-with-badge'>
                 <div className='wallet-transfer-tile__icon'>
                     <IconComponent />
                 </div>

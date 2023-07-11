@@ -28,7 +28,8 @@
         "start": "webpack serve --open",
         "build": "webpack --config webpack.config.cli.js --mode production",
         "clean": "rm -rf node_modules www temp blockly-translations",
-        "clean-cache": "rm -rf www temp blockly-translations"
+        "clean-cache": "rm -rf www temp blockly-translations",
+        "extract-translations": "i18next-scanner && node scripts/combine-translation.js && rm -rf src/translations/i18n"
     },
     "husky": {
         "hooks": {
@@ -76,6 +77,7 @@
         "eslint-plugin-react-hooks": "^4.6.0",
         "file-saver": "^2.0.5",
         "husky": "^8.0.3",
+        "i18next-scanner": "^4.3.0",
         "immutable": "^4.0.0",
         "jest": "^27.4.7",
         "jquery": "^3.6.0",

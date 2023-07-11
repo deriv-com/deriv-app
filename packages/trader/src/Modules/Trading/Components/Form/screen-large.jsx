@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import ContractType from '../../Containers/contract-type.jsx';
+import ContractType from '../../Containers/contract-type';
 import Purchase from '../../Containers/purchase.jsx';
 import TradeParams from '../../Containers/trade-params.jsx';
 

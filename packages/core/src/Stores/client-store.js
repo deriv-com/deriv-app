@@ -1574,6 +1574,7 @@ export default class ClientStore extends BaseStore {
         const redirect_url = search_params?.get('redirect_url');
         const code_param = search_params?.get('code');
         const action_param = search_params?.get('action');
+        const loginid_param = search_params?.get('loginid');
         const unused_params = [
             'type',
             'acp',
@@ -1625,7 +1626,8 @@ export default class ClientStore extends BaseStore {
             return false;
         }
 
-        this.setLoginId(LocalStore.get('active_loginid'));
+        if (action_param === 'payment_withdraw' && loginid_param) this.setLoginId(loginid_param);
+        else this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
         const client = this.accounts[this.loginid];

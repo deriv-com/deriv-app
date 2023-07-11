@@ -7,7 +7,7 @@ import BaseStore from './base-store';
 
 export default class GTMStore extends BaseStore {
     is_gtm_applicable =
-        window.location.hostname === 'localhost.binary.sx' || /^(16303|16929|19111|19112)$/.test(getAppId());
+        window.location.hostname === 'deriv-app.binary.sx' || /^(16303|16929|19111|19112)$/.test(getAppId());
 
     constructor(root_store) {
         super({ root_store });

@@ -8,8 +8,8 @@ import ErrorComponent from 'Components/error-component';
 const Routes = observer(props => {
     const { client, common } = useStore();
     const { is_logged_in, is_logging_in } = client;
-    const { error } = common;
-    if (props.has_error) {
+    const { error, has_error } = common;
+    if (has_error) {
         return <ErrorComponent {...error} />;
     }
 

@@ -30,6 +30,9 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useCashierLocked: jest.fn(() => false),
+    useCheck10kLimit: jest.fn(() => ({
+        is_10k_withdrawal_limit_reached: undefined,
+    })),
 }));
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
@@ -96,6 +99,19 @@ describe('<Withdrawal />', () => {
         render(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
+    });
+
+    it('should render <Loading /> component', () => {
+        const mock_root_store = mockStore({
+            client: {
+                is_switching: true,
+            },
+            modules: { cashier: cashier_mock },
+        });
+
+        render(mockWithdrawal(mock_root_store));
+
+        expect(screen.getByText('Loading')).toBeInTheDocument();
     });
 
     it('should render <Virtual /> component', () => {

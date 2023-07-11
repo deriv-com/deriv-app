@@ -353,6 +353,7 @@ type TUiStore = {
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_verification_modal_visible: boolean;
+    is_verification_submitted: boolean;
     is_mobile: boolean;
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
@@ -364,6 +365,7 @@ type TUiStore = {
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setIsFromSignupAccount: (value: boolean) => void;
     setIsVerificationModalVisible: (value: boolean) => void;
+    setIsVerificationSubmitted: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     sub_section_index: number;
     setSubSectionIndex: (index: number) => void;

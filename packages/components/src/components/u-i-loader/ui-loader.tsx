@@ -5,7 +5,7 @@ import Loadable from 'react-loadable';
 type TUILoader = {
     className?: string;
     classNameBlock?: string;
-} & Loadable.LoadingComponentProps;
+} & Partial<Loadable.LoadingComponentProps>;
 
 const UILoader = ({ className, classNameBlock }: TUILoader) => {
     const block_class = classNames(classNameBlock, 'block-ui');

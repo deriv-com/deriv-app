@@ -24,7 +24,6 @@ import {
     getLocation,
     WS,
 } from '@deriv/shared';
-import { connect } from 'Stores/connect';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
 import FormBodySection from 'Components/form-body-section';
@@ -55,12 +54,15 @@ const UploaderSideNote = () => (
 
 const ProofOfAddressForm = ({
     account_settings,
-    addNotificationByKey,
+    addNotificationMessageByKey,
+    index = 0,
+    onSubmit,
     is_eu,
     is_resubmit,
+    is_verification_modal_visible,
     fetchResidenceList,
     fetchStatesList,
-    onSubmit,
+    onSubmitting,
     removeNotificationByKey,
     removeNotificationMessage,
     states_list,
@@ -211,7 +213,7 @@ const ProofOfAddressForm = ({
                                                 const needs_poi =
                                                     needs_verification.length &&
                                                     needs_verification.includes('identity');
-                                                onSubmit({ has_poi });
+                                                onSubmitting({ has_poi });
                                                 removeNotificationMessage({ key: 'authenticate' });
                                                 removeNotificationByKey({ key: 'authenticate' });
                                                 removeNotificationMessage({ key: 'needs_poa' });
@@ -219,7 +221,7 @@ const ProofOfAddressForm = ({
                                                 removeNotificationMessage({ key: 'poa_expired' });
                                                 removeNotificationByKey({ key: 'poa_expired' });
                                                 if (needs_poi) {
-                                                    addNotificationByKey('needs_poi');
+                                                    addNotificationMessageByKey('needs_poi');
                                                 }
                                             }
                                         );
@@ -232,6 +234,7 @@ const ProofOfAddressForm = ({
                             })
                             .then(() => {
                                 setSubmitting(false);
+                                onSubmit(index, values);
                                 setFormState({ ...form_state, ...{ is_btn_loading: false } });
                             });
                     });
@@ -448,7 +451,9 @@ const ProofOfAddressForm = ({
                                     has_effect
                                     is_loading={form_state.is_btn_loading}
                                     is_submit_success={form_state.is_submit_success}
-                                    text={localize('Save and submit')}
+                                    text={
+                                        is_verification_modal_visible ? localize('Submit') : localize('Save and submit')
+                                    }
                                     primary
                                 />
                             </FormFooter>
@@ -462,24 +467,18 @@ const ProofOfAddressForm = ({
 
 ProofOfAddressForm.propTypes = {
     account_settings: PropTypes.object,
-    addNotificationByKey: PropTypes.func,
+    addNotificationMessageByKey: PropTypes.func,
+    index: PropTypes.number,
     is_eu: PropTypes.bool,
     is_resubmit: PropTypes.bool,
     fetchResidenceList: PropTypes.func,
     fetchStatesList: PropTypes.func,
     onSubmit: PropTypes.func,
+    is_verification_modal_visible: PropTypes.bool,
+    onSubmitting: PropTypes.func,
     removeNotificationByKey: PropTypes.func,
     removeNotificationMessage: PropTypes.func,
     states_list: PropTypes.array,
 };
 
-export default connect(({ client, notifications }) => ({
-    account_settings: client.account_settings,
-    is_eu: client.is_eu,
-    addNotificationByKey: notifications.addNotificationMessageByKey,
-    removeNotificationMessage: notifications.removeNotificationMessage,
-    removeNotificationByKey: notifications.removeNotificationByKey,
-    states_list: client.states_list,
-    fetchResidenceList: client.fetchResidenceList,
-    fetchStatesList: client.fetchStatesList,
-}))(ProofOfAddressForm);
+export default ProofOfAddressForm;

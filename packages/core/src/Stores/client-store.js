@@ -1048,10 +1048,13 @@ export default class ClientStore extends BaseStore {
                     account.shortcode !== 'maltainvest'
             )
             .map(account => account.shortcode);
-
-        const has_no_matching_accounts = available_real_accounts_shortcodes.every(shortcode =>
-            existing_real_accounts.some(account => account.landing_company_short !== shortcode)
-        );
+        const has_no_matching_accounts = available_real_accounts_shortcodes.every(shortcode => {
+            if (market_type === 'all') {
+                // as Swapfree only have SVG account for now we need to check if there is any real svg account available
+                return existing_real_accounts.some(account => account.landing_company_short === shortcode);
+            }
+            return existing_real_accounts.some(account => account.landing_company_short !== shortcode);
+        });
 
         return !has_no_matching_accounts;
     }

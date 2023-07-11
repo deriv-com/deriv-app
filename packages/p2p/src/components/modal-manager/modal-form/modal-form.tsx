@@ -1,7 +1,7 @@
 import React from 'react';
-import { Formik } from 'formik';
+import { Formik, FormikConfig, FormikProps, FormikValues } from 'formik';
 import { observer } from 'mobx-react-lite';
-import { useStores } from 'Stores';
+import { useStores } from 'Stores/index';
 
 /**
  * Formik wrapper that automatically handles saving and restoring form state and values when a modal is unmounted
@@ -10,13 +10,13 @@ import { useStores } from 'Stores';
  *
  * Usage: Replace the Formik component with ModalForm, and pass Formik props to it
  */
-const ModalForm = props => {
+const ModalForm = (props: FormikConfig<FormikValues>) => {
     const { general_store } = useStores();
 
     // using a callback ref instead of useRef() since useRef does not automatically update when content changes
-    const formik_ref = React.useCallback(node => {
+    const formik_ref: React.Ref<FormikProps<FormikValues>> = React.useCallback((node: FormikProps<FormikValues>) => {
         if (node) general_store.setFormikRef(node);
-    });
+    }, []);
 
     React.useEffect(() => {
         if (general_store.saved_form_state && general_store.formik_ref) {

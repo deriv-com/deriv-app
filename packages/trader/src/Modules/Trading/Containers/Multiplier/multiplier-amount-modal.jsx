@@ -41,7 +41,8 @@ const MultiplierAmountModal = observer(({ is_open, toggleModal }) => {
 export default MultiplierAmountModal;
 
 const TradeParamsMobile = observer(({ toggleModal }) => {
-    const { amount, currency, trade_stop_out, trade_store } = useTraderStore();
+    const trade_store = useTraderStore();
+    const { amount, currency, trade_stop_out } = trade_store;
 
     const [stake_value, setStakeValue] = React.useState(amount);
     const [commission, setCommission] = React.useState(null);

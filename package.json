@@ -36,7 +36,6 @@
         "@types/react-virtualized": "^9.21.21",
         "babel-polyfill": "^6.26.0",
         "dotenv-webpack": "^8.0.1",
-        "eslint-plugin-localize-usage": "^1.0.6",
         "husky": "^7.0.0",
         "jest": "^26.4.2",
         "jest-chain": "^1.1.5",

@@ -1,6 +1,6 @@
 import React from 'react';
 import domtoimage from 'dom-to-image';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { QRCode } from 'react-qrcode-logo';
 import { WhatsappShareButton, WhatsappIcon, TwitterShareButton, TwitterIcon } from 'react-share';
 import { Button, Modal, Text } from '@deriv/components';

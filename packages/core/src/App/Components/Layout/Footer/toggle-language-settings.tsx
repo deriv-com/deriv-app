@@ -2,26 +2,25 @@ import React from 'react';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import { Icon, Modal, Popover, Text } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
-import 'Sass/app/modules/settings.scss';
+import { Localize, localize, useLanguageSettings } from '@deriv/translations';
 import LanguageSettings from '../../../Containers/SettingsModal/settings-language';
+import 'sass/app/modules/settings.scss';
 
 const ToggleLanguageSettings = observer(() => {
-    const { common, ui } = useStore();
+    const { ui } = useStore();
     const { is_language_settings_modal_on, toggleLanguageSettingsModal } = ui;
-    const { current_language, is_language_changing } = common;
+    const { current_language } = useLanguageSettings();
 
-    const toggle_settings_class = classNames('ic-language', 'footer__link', {
-        'ic-settings--active': is_language_settings_modal_on,
-        'ic-settings--disabled': is_language_changing,
-    });
     return (
         <React.Fragment>
             <a
                 id='dt_language_settings_toggle'
                 data-testid='dt_toggle_language_settings'
                 onClick={toggleLanguageSettingsModal}
-                className={toggle_settings_class}
+                className={classNames('ic-language', 'footer__link', {
+                    'ic-settings--active': is_language_settings_modal_on,
+                    'ic-settings--disabled': false,
+                })}
             >
                 <Popover alignment='top' message={localize('Language')} zIndex='9999'>
                     <Icon

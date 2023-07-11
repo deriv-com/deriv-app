@@ -3,18 +3,19 @@ import { Language, STORE_LANGUAGE_KEY } from '../utils/config';
 import { useTranslation } from '../context/translation-provider';
 
 type UseLanguageSettings = {
-    onChanging?: () => void;
-    onChange?: () => void;
+    onChange?: (lang: Language) => void;
+    onComplete?: (lang: Language) => void;
 };
 
-const useLanguageSettings = ({ onChanging, onChange }: UseLanguageSettings = {}) => {
+const useLanguageSettings = ({ onChange, onComplete }: UseLanguageSettings = {}) => {
     const { current_language, setCurrentLanguage } = useTranslation();
 
     const handleChangeLanguage = async (selected_lang: Language) => {
         if (selected_lang === 'EN') {
             window.localStorage.setItem(STORE_LANGUAGE_KEY, selected_lang);
         }
-        if (typeof onChanging === 'function') onChanging();
+
+        if (typeof onChange === 'function') onChange(selected_lang);
 
         const current_url = new URL(window.location.href);
         if (selected_lang === 'EN') {
@@ -26,7 +27,8 @@ const useLanguageSettings = ({ onChanging, onChange }: UseLanguageSettings = {})
         window.history.pushState({ path: current_url.toString() }, '', current_url.toString());
         await switchLanguage(selected_lang, () => {
             setCurrentLanguage(selected_lang);
-            if (typeof onChange === 'function') onChange();
+
+            if (typeof onComplete === 'function') onComplete(selected_lang);
         });
     };
 

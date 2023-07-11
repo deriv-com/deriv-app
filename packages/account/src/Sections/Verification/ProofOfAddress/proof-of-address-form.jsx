@@ -54,18 +54,18 @@ const UploaderSideNote = () => (
 
 const ProofOfAddressForm = ({
     account_settings,
-    addNotificationMessageByKey,
     index = 0,
-    onSubmit,
     is_eu,
     is_resubmit,
     is_verification_modal_visible,
     fetchResidenceList,
     fetchStatesList,
+    onSubmit,
     onSubmitting,
+    states_list,
+    addNotificationMessageByKey,
     removeNotificationByKey,
     removeNotificationMessage,
-    states_list,
 }) => {
     const [document_file, setDocumentFile] = React.useState({ files: [], error_message: null });
     const [is_loading, setIsLoading] = React.useState(true);
@@ -468,11 +468,11 @@ const ProofOfAddressForm = ({
 ProofOfAddressForm.propTypes = {
     account_settings: PropTypes.object,
     addNotificationMessageByKey: PropTypes.func,
+    fetchResidenceList: PropTypes.func,
+    fetchStatesList: PropTypes.func,
     index: PropTypes.number,
     is_eu: PropTypes.bool,
     is_resubmit: PropTypes.bool,
-    fetchResidenceList: PropTypes.func,
-    fetchStatesList: PropTypes.func,
     onSubmit: PropTypes.func,
     is_verification_modal_visible: PropTypes.bool,
     onSubmitting: PropTypes.func,

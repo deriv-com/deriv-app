@@ -45,4 +45,6 @@ export { default as useAvailableWallets } from './useAvailableWallets';
 export { default as useAuthorize } from './useAuthorize';
 export { default as useWalletTransactions } from './useWalletTransactions';
 export { default as useActiveWallet } from './useActiveWallet';
-export { default as useActiveWalletCFDAccounts } from './useActiveWalletCFDAccounts';
+export { default as useExistingCFDAccounts } from './useExistingCFDAccounts';
+export { default as useAvailableMT5Accounts } from './useAvailableMT5Accounts';
+export { default as useFilteredCFDAccounts } from './useFilteredCFDAccounts';

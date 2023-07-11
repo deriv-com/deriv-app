@@ -245,7 +245,20 @@ type TPrivateSocketEndpoints = {
                 enabled: 0 | 1;
                 error: unknown;
                 login: string;
-                // type the shit here
+            }[];
+        };
+    };
+    trading_platform_available_accounts: {
+        request: {
+            platform: 'derivez' | 'dxtrade' | 'mt5';
+        };
+        response: {
+            trading_platform_available_accounts: {
+                name: string;
+                shortcode: string;
+                sub_account_type: 'standard' | 'swap_free';
+                login: string;
+                market_type: 'gaming' | 'financial' | 'all';
             }[];
         };
     };

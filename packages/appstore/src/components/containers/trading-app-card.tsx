@@ -35,7 +35,7 @@ const TradingAppCard = ({
     openFailedVerificationModal,
     is_wallet,
     is_wallet_demo,
-}: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid) => {
+}: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid & TWalletsProps) => {
     const {
         common,
         traders_hub,

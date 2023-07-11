@@ -57,3 +57,20 @@ export const getSwapFreeAccount = (): TAccountType => ({
         'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies, and ETFs.'
     ),
 });
+
+export const mt5_details_mapper = {
+    gaming: {
+        name: localize('Derived'),
+        description: localize('Trade CFDs on MT5 with synthetics, baskets, and derived FX.'),
+    },
+    financial: {
+        name: localize('Financial'),
+        description: localize('Trade CFDs on MT5 with forex, stock indices, commodities, and cryptocurrencies.'),
+    },
+    all: {
+        name: localize('Swap-Free'),
+        description: localize(
+            'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies, and ETFs.'
+        ),
+    },
+};

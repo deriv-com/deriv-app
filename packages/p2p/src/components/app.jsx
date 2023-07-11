@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useHistory, useLocation } from 'react-router-dom';
 import { reaction } from 'mobx';
 import { useStore, observer } from '@deriv/stores';
@@ -242,7 +242,7 @@ const App = () => {
     }
 
     return (
-        <>
+        <HelmetProvider>
             <Helmet
                 meta={[
                     {
@@ -293,7 +293,7 @@ const App = () => {
                     <Routes />
                 </ModalManagerContextProvider>
             </main>
-        </>
+        </HelmetProvider>
     );
 };
 

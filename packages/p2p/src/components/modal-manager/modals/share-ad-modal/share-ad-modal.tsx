@@ -1,6 +1,5 @@
 import React from 'react';
 import domtoimage from 'dom-to-image';
-import { Helmet } from 'react-helmet-async';
 import { QRCode } from 'react-qrcode-logo';
 import { WhatsappShareButton, WhatsappIcon, TwitterShareButton, TwitterIcon } from 'react-share';
 import { Button, Modal, Text } from '@deriv/components';
@@ -47,103 +46,53 @@ const ShareAdModal = ({ advert }) => {
     };
 
     return (
-        <>
-            <Helmet
-                meta={[
-                    {
-                        name: 'description',
-                        content: 'Helmet Description',
-                    },
-                    {
-                        name: 'og:title',
-                        content: 'Helmet Title',
-                    },
-                    {
-                        name: 'og:description',
-                        content: 'Helmet OG Description',
-                    },
-                    {
-                        name: 'og:image',
-                        content:
-                            'https://play-lh.googleusercontent.com/ah8RkaAnph2gouJ48fVeybeJgw-tu2dzTDYL7miccIWxvd0ZcK5-MM20bGxjpjb2lXU',
-                    },
-                    {
-                        name: 'twitter:card',
-                        content: 'Twitter Card',
-                    },
-                    {
-                        name: 'twitter:creator',
-                        content: 'Twitter Creator',
-                    },
-                    {
-                        name: 'twitter:title',
-                        content: 'Twitter Title',
-                    },
-                    {
-                        name: 'twitter:description',
-                        content: 'Twitter Description',
-                    },
-                    {
-                        name: 'referrer',
-                        content: 'origin',
-                    },
-                ]}
-            >
-                <title>Deriv P2P</title>
-            </Helmet>
-            <Modal has_close_icon is_open={is_modal_open} title='Share this ad' toggleModal={hideModal}>
-                <Modal.Body>
-                    <div className='share-ad-modal'>
-                        <div className='share-ad-modal__card' ref={divRef}>
-                            <Text
-                                className='share-ad-modal__card-title'
-                                color='colored-background'
-                                weight='bold'
-                                size='m'
-                            >
-                                <Localize i18n_default_text='deriv P2P' />
-                            </Text>
-                            <Text className='share-ad-modal__card-title' weight='bold' size='m'>
-                                <Localize
-                                    i18n_default_text='{{type}} {{account_currency}}'
-                                    values={{ type, account_currency }}
-                                />
-                            </Text>
-                            <Text color='colored-background'>
-                                <Localize i18n_default_text='ID number {{id}}' values={{ id }} />
-                            </Text>
-                            <Text color='colored-background'>
-                                <Localize
-                                    i18n_default_text='Limit {{min_order_amount_limit_display}} - {{max_order_amount_limit_display}} {{account_currency}}'
-                                    values={{
-                                        min_order_amount_limit_display,
-                                        max_order_amount_limit_display,
-                                        account_currency,
-                                    }}
-                                />
-                            </Text>
-                            <Text color='colored-background'>
-                                <Localize i18n_default_text='Rate {{rate_display}}' values={{ rate_display }} />
-                            </Text>
-                            <div className='share-ad-modal__card--image'>
-                                <QRCode value={window.location.href} {...options} />;
-                            </div>
-                        </div>
-                        <Button primary onClick={handleGenerateImage}>
-                            <Localize i18n_default_text='Share advert' />
-                        </Button>
-                        <div>
-                            <WhatsappShareButton url={window.location.href}>
-                                <WhatsappIcon size={32} round={true} />
-                            </WhatsappShareButton>
-                            <TwitterShareButton url={window.location.href}>
-                                <TwitterIcon size={32} round={true} />
-                            </TwitterShareButton>
+        <Modal has_close_icon is_open={is_modal_open} title='Share this ad' toggleModal={hideModal}>
+            <Modal.Body>
+                <div className='share-ad-modal'>
+                    <div className='share-ad-modal__card' ref={divRef}>
+                        <Text className='share-ad-modal__card-title' color='colored-background' weight='bold' size='m'>
+                            <Localize i18n_default_text='deriv P2P' />
+                        </Text>
+                        <Text className='share-ad-modal__card-title' weight='bold' size='m'>
+                            <Localize
+                                i18n_default_text='{{type}} {{account_currency}}'
+                                values={{ type, account_currency }}
+                            />
+                        </Text>
+                        <Text color='colored-background'>
+                            <Localize i18n_default_text='ID number {{id}}' values={{ id }} />
+                        </Text>
+                        <Text color='colored-background'>
+                            <Localize
+                                i18n_default_text='Limit {{min_order_amount_limit_display}} - {{max_order_amount_limit_display}} {{account_currency}}'
+                                values={{
+                                    min_order_amount_limit_display,
+                                    max_order_amount_limit_display,
+                                    account_currency,
+                                }}
+                            />
+                        </Text>
+                        <Text color='colored-background'>
+                            <Localize i18n_default_text='Rate {{rate_display}}' values={{ rate_display }} />
+                        </Text>
+                        <div className='share-ad-modal__card--image'>
+                            <QRCode value={window.location.href} {...options} />;
                         </div>
                     </div>
-                </Modal.Body>
-            </Modal>
-        </>
+                    <Button primary onClick={handleGenerateImage}>
+                        <Localize i18n_default_text='Share advert' />
+                    </Button>
+                    <div>
+                        <WhatsappShareButton url={window.location.href}>
+                            <WhatsappIcon size={32} round={true} />
+                        </WhatsappShareButton>
+                        <TwitterShareButton url={window.location.href}>
+                            <TwitterIcon size={32} round={true} />
+                        </TwitterShareButton>
+                    </div>
+                </div>
+            </Modal.Body>
+        </Modal>
     );
 };
 

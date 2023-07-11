@@ -73,16 +73,13 @@ const useTransferBetweenAccounts = () => {
             wallets:
                 accounts
                     ?.filter(account => account.account_type === 'wallet')
-                    .map(wallet => {
-                        const wallet_icon = all_wallets?.find(
-                            wallet_account => wallet_account.loginid === wallet.loginid
-                        )?.icon;
+                    .map(wallet_account => {
+                        const wallet = all_wallets?.find(acc => acc.loginid === wallet_account.loginid);
 
                         return {
                             ...wallet,
-                            icon: wallet_icon,
-                            gradient_class: all_wallets?.find(account => account.loginid === wallet.loginid)
-                                ?.gradient_card_class,
+                            icon: wallet?.icon,
+                            gradient_class: wallet?.gradient_card_class,
                         };
                     }) || [],
         };

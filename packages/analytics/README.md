@@ -32,7 +32,7 @@ To start tracking with Rudderstack, first add it as a dependency in `package.jso
 }
 ```
 
-Then run `npm run bootstrap` as well as `npm run build:all` to install the dependencies and build it.
+Then run `npm run bootstrap:dev` as well as `npm run build:all` to install the dependencies and build it.
 If there are issues with importing the package and your project has an `externals` field in the Webpack config file, within the project's `webpack.config.js` file, add the following fields:
 
 ```json

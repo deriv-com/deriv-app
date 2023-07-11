@@ -18,9 +18,9 @@ type TNumpad = {
     max: number;
     min: number;
     pip_size: number;
-    onSubmit: (param: number) => void;
+    onSubmit: (param: number | string) => void;
     v: string;
-    render?: (props: { string_value: string; className: string }) => React.ReactNode;
+    render?: (props: { value: string; className: string }) => React.ReactNode;
     submit_label: string;
     value: string;
     format: (v: string) => number;
@@ -28,7 +28,8 @@ type TNumpad = {
     onValidate: (default_value: number | string) => string | undefined;
 };
 
-const concatenate = (number: string, default_value: number) => default_value.toString().concat(number);
+const concatenate = (number: string | number, default_value: string | number) =>
+    default_value.toString().concat(number.toString());
 const Numpad = ({
     className,
     currency,
@@ -49,15 +50,15 @@ const Numpad = ({
     onValueChange,
     onValidate,
 }: TNumpad) => {
-    const formatNumber = (v: string) => (typeof format === 'function' ? format(v) : Number(v));
-    const isFloat = (v: string) => new RegExp(/\./).test(String(v));
+    const formatNumber = (v: string | number) => (typeof format === 'function' ? format(v.toString()) : v);
+    const isFloat = (v: string | number) => new RegExp(/\./).test(String(v));
     const formatted_value = formatNumber(value);
-    const [is_float, setFloat] = React.useState(isFloat(String(formatted_value)));
+    const [is_float, setFloat] = React.useState(isFloat(formatted_value));
     const [default_value, setValue] = React.useState(formatted_value);
     const [has_error, setHasError] = React.useState(false);
 
     React.useEffect(() => {
-        if (formatted_value !== formatNumber(String(default_value))) {
+        if (formatted_value !== formatNumber(default_value)) {
             updateValue(value);
             setFloat(isFloat(value));
         }
@@ -71,7 +72,7 @@ const Numpad = ({
     }, [default_value, value]);
 
     const updateValue = (val: string) => {
-        setValue(Number(val));
+        setValue(val);
         if (onValueChange) onValueChange(val);
     };
 
@@ -89,7 +90,7 @@ const Numpad = ({
                 }
                 setFloat(true);
                 if (default_value.toString().length === 0) {
-                    updateValue(concatenate(num, 0));
+                    updateValue(concatenate(num, '0'));
                 } else {
                     updateValue(concatenate(num, default_value));
                 }
@@ -97,7 +98,7 @@ const Numpad = ({
                 break;
             default:
                 if (String(default_value) === '0') {
-                    updateValue(concatenate(String(num), 0));
+                    updateValue(concatenate(num, ''));
                 } else {
                     const regex = /(?:^\d{0,35}\.)(\d{0,35})$/;
                     const matches = regex.exec(String(default_value));
@@ -106,11 +107,11 @@ const Numpad = ({
                         matches.forEach((match, groupIndex) => {
                             const pip_size_allowed = groupIndex === 1 && match.length < pip_size && is_float;
                             if (pip_size_allowed) {
-                                updateValue(concatenate(String(num), default_value));
+                                updateValue(concatenate(num, default_value));
                             }
                         });
-                    } else if (Number(concatenate(String(num), default_value)) <= max) {
-                        updateValue(concatenate(String(num), default_value));
+                    } else if (+concatenate(num, default_value) <= max) {
+                        updateValue(concatenate(num, default_value));
                     }
                 }
         }
@@ -147,11 +148,9 @@ const Numpad = ({
     };
     const backspaceLongPress = useLongPress(clearValue, reset_press_interval);
 
-    const is_button_disabled = !!(
-        is_submit_disabled ||
-        !default_value.toString().length ||
-        (min && formatNumber(String(default_value)) < min)
-    );
+    const is_button_disabled =
+        is_submit_disabled || !default_value.toString().length || Boolean(min && +formatNumber(default_value) < min);
+
     return (
         <div
             className={classNames('dc-numpad', className, {
@@ -216,12 +215,12 @@ const Numpad = ({
                         'dc-numpad__number--is-disabled':
                             is_submit_disabled ||
                             !default_value.toString().length ||
-                            (min && formatNumber(String(default_value)) < min),
+                            (min && +formatNumber(default_value) < min),
                     })}
                     onClick={() => {
                         if (!default_value.toString().length) return;
-                        if (min && formatNumber(String(default_value)) < min) return;
-                        onSubmit(formatNumber(String(default_value)));
+                        if (min && +formatNumber(default_value) < min) return;
+                        onSubmit(formatNumber(default_value));
                     }}
                     is_disabled={is_button_disabled}
                     text={submit_label}

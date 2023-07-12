@@ -5,7 +5,12 @@ import ModalManagerContextProvider from '../modal-manager-context-provider';
 import ModalManager from '../modal-manager';
 import { isDesktop } from '@deriv/shared';
 import { useStores } from 'Stores/index';
-import { MockBuySellModal, MockMyAdsDeleteModal, MockEditAdCancelModal, MockPage } from '../__mocks__/mock-modal-manager-context-provider';
+import {
+    MockBuySellModal,
+    MockMyAdsDeleteModal,
+    MockEditAdCancelModal,
+    MockPage,
+} from '../__mocks__/mock-modal-manager-context-provider';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -53,11 +58,11 @@ describe('<ModalManagerContextProvider />', () => {
             </React.Fragment>
         );
 
-        const showBtn = screen.getByRole('button', {
+        const show_btn = screen.getByRole('button', {
             name: /Show BuySellModal/,
         });
 
-        userEvent.click(showBtn);
+        userEvent.click(show_btn);
 
         const text = screen.getByText('BuySellModal');
         expect(text).toBeInTheDocument();
@@ -74,17 +79,15 @@ describe('<ModalManagerContextProvider />', () => {
             </React.Fragment>
         );
 
-        const showBuySellModalBtn = screen.getByRole('button', {
+        const buy_sell_modal_btn = screen.getByRole('button', {
             name: /Show BuySellModal/,
         });
-
-        const showMyAdsDeleteModalBtn = screen.getByRole('button', {
+        const my_ads_delete_modal_btn = screen.getByRole('button', {
             name: /Show MyAdsDeleteModal/,
         });
 
-        userEvent.click(showBuySellModalBtn);
-        userEvent.click(showMyAdsDeleteModalBtn);
-
+        userEvent.click(buy_sell_modal_btn);
+        userEvent.click(my_ads_delete_modal_btn);
         expect(screen.getByText('MyAdsDeleteModal')).toBeInTheDocument();
         expect(screen.queryByText('BuySellModal')).not.toBeInTheDocument();
     });
@@ -101,11 +104,11 @@ describe('<ModalManagerContextProvider />', () => {
             </React.Fragment>
         );
 
-        const showBuySellModalBtn = screen.getByRole('button', {
+        const buy_sell_modal_btn = screen.getByRole('button', {
             name: /Show BuySellModal/,
         });
 
-        userEvent.click(showBuySellModalBtn);
+        userEvent.click(buy_sell_modal_btn);
         expect(screen.queryByText('BuySellModal')).toBeInTheDocument();
     });
 
@@ -121,25 +124,25 @@ describe('<ModalManagerContextProvider />', () => {
             </React.Fragment>
         );
 
-        const showBuySellModalBtn = screen.getByRole('button', {
+        const buy_sell_modal_btn = screen.getByRole('button', {
             name: /Show BuySellModal/,
         });
-        const showMyAdsDeleteModalBtn = screen.getByRole('button', {
+        const my_ads_delete_modal_btn = screen.getByRole('button', {
             name: /Show MyAdsDeleteModal/,
         });
-        const hideModalBtn = screen.getByRole('button', {
+        const hide_modal_btn = screen.getByRole('button', {
             name: /Hide Modal/,
         });
 
-        userEvent.click(showBuySellModalBtn);
-        userEvent.click(showMyAdsDeleteModalBtn);
+        userEvent.click(buy_sell_modal_btn);
+        userEvent.click(my_ads_delete_modal_btn);
         expect(screen.queryByText('MyAdsDeleteModal')).toBeInTheDocument();
 
-        userEvent.click(hideModalBtn);
+        userEvent.click(hide_modal_btn);
         expect(screen.queryByText('MyAdsDeleteModal')).not.toBeInTheDocument();
         expect(screen.queryByText('BuySellModal')).toBeInTheDocument();
 
-        userEvent.click(hideModalBtn);
+        userEvent.click(hide_modal_btn);
         expect(screen.queryByText('MyAdsDeleteModal')).not.toBeInTheDocument();
         expect(screen.queryByText('BuySellModal')).not.toBeInTheDocument();
     });
@@ -155,11 +158,11 @@ describe('<ModalManagerContextProvider />', () => {
             </React.Fragment>
         );
 
-        const showMyAdsDeleteModalBtn = screen.getByRole('button', {
+        const my_ads_delete_modal_btn = screen.getByRole('button', {
             name: /Show MyAdsDeleteModal/,
         });
 
-        userEvent.click(showMyAdsDeleteModalBtn);
+        userEvent.click(my_ads_delete_modal_btn);
         expect(screen.getByText('Delete Ads')).toBeInTheDocument();
     });
 
@@ -175,23 +178,23 @@ describe('<ModalManagerContextProvider />', () => {
             </React.Fragment>
         );
 
-        const showBuySellModalBtn = screen.getByRole('button', {
+        const buy_sell_modal_btn = screen.getByRole('button', {
             name: /Show BuySellModal/,
         });
-        const showMyAdsDeleteModalBtn = screen.getByRole('button', {
+        const my_ads_delete_modal_btn = screen.getByRole('button', {
             name: /Show MyAdsDeleteModal/,
         });
-        const hideModalBtn = screen.getByRole('button', {
+        const hide_modal_btn = screen.getByRole('button', {
             name: /Hide Modal/,
         });
 
-        userEvent.click(showMyAdsDeleteModalBtn);
-        userEvent.click(hideModalBtn);
+        userEvent.click(my_ads_delete_modal_btn);
+        userEvent.click(hide_modal_btn);
         expect(screen.queryByText('MyAdsDeleteModal')).not.toBeInTheDocument();
 
-        userEvent.click(showBuySellModalBtn);
-        userEvent.click(showMyAdsDeleteModalBtn);
-        userEvent.click(hideModalBtn);
+        userEvent.click(buy_sell_modal_btn);
+        userEvent.click(my_ads_delete_modal_btn);
+        userEvent.click(hide_modal_btn);
         expect(screen.getByText('BuySellModal')).toBeInTheDocument();
     });
 
@@ -207,23 +210,23 @@ describe('<ModalManagerContextProvider />', () => {
             </React.Fragment>
         );
 
-        const showBuySellModalBtn = screen.getByRole('button', {
+        const buy_sell_modal_btn = screen.getByRole('button', {
             name: /Show BuySellModal/,
         });
-        const showMyAdsDeleteModalBtn = screen.getByRole('button', {
+        const my_ads_delete_modal_btn = screen.getByRole('button', {
             name: /Show MyAdsDeleteModal/,
         });
-        const hideModalBtn = screen.getByRole('button', {
+        const hide_modal_btn = screen.getByRole('button', {
             name: /Hide Modal/,
         });
 
-        userEvent.click(showBuySellModalBtn);
-        userEvent.click(showMyAdsDeleteModalBtn);
-        userEvent.click(hideModalBtn);
+        userEvent.click(buy_sell_modal_btn);
+        userEvent.click(my_ads_delete_modal_btn);
+        userEvent.click(hide_modal_btn);
         expect(screen.queryByText('MyAdsDeleteModal')).not.toBeInTheDocument();
         expect(screen.queryByText('BuySellModal')).toBeInTheDocument();
 
-        userEvent.click(hideModalBtn);
+        userEvent.click(hide_modal_btn);
         expect(screen.queryByText('BuySellModal')).not.toBeInTheDocument();
     });
 
@@ -239,21 +242,19 @@ describe('<ModalManagerContextProvider />', () => {
             </React.Fragment>
         );
 
-        const showBuySellModalBtn = screen.getByRole('button', {
+        const buy_sell_modal_btn = screen.getByRole('button', {
             name: /Show BuySellModal/,
         });
-
-        const showMyAdsDeleteModalBtn = screen.getByRole('button', {
+        const my_ads_delete_modal_btn = screen.getByRole('button', {
             name: /Show MyAdsDeleteModal/,
         });
-
-        const hideAllModalsBtn = screen.getByRole('button', {
+        const hide_modal_btn = screen.getByRole('button', {
             name: /Hide All Modals/,
         });
 
-        userEvent.click(showBuySellModalBtn);
-        userEvent.click(showMyAdsDeleteModalBtn);
-        userEvent.click(hideAllModalsBtn);
+        userEvent.click(buy_sell_modal_btn);
+        userEvent.click(my_ads_delete_modal_btn);
+        userEvent.click(hide_modal_btn);
 
         expect(screen.queryByText('MyAdsDeleteModal')).not.toBeInTheDocument();
         expect(screen.queryByText('BuySellModal')).not.toBeInTheDocument();
@@ -271,22 +272,19 @@ describe('<ModalManagerContextProvider />', () => {
             </React.Fragment>
         );
 
-        const showBuySellModalBtn = screen.getByRole('button', {
+        const buy_sell_modal_btn = screen.getByRole('button', {
             name: /Show BuySellModal/,
         });
-
-        const showMyAdsDeleteModalBtn = screen.getByRole('button', {
+        const my_ads_delete_modal_btn = screen.getByRole('button', {
             name: /Show MyAdsDeleteModal/,
         });
-
-        const hideAllModalsBtn = screen.getByRole('button', {
+        const hide_all_modals_btn = screen.getByRole('button', {
             name: /Hide All Modals/,
         });
 
-        userEvent.click(showBuySellModalBtn);
-        userEvent.click(showMyAdsDeleteModalBtn);
-        userEvent.click(hideAllModalsBtn);
-
+        userEvent.click(buy_sell_modal_btn);
+        userEvent.click(my_ads_delete_modal_btn);
+        userEvent.click(hide_all_modals_btn);
         expect(screen.queryByText('MyAdsDeleteModal')).not.toBeInTheDocument();
         expect(screen.queryByText('BuySellModal')).not.toBeInTheDocument();
     });
@@ -302,15 +300,15 @@ describe('<ModalManagerContextProvider />', () => {
             </React.Fragment>
         );
 
-        const showBuySellModalBtn = screen.getByRole('button', {
+        const buy_sell_modal_btn = screen.getByRole('button', {
             name: /Show BuySellModal/,
         });
-        userEvent.click(showBuySellModalBtn);
+        userEvent.click(buy_sell_modal_btn);
 
-        const applyBtn = screen.getByRole('button', {
+        const apply_btn = screen.getByRole('button', {
             name: /Apply/,
         });
-        userEvent.click(applyBtn);
+        userEvent.click(apply_btn);
         expect(screen.getByText('Title from BuySellModal')).toBeInTheDocument();
     });
 
@@ -325,15 +323,15 @@ describe('<ModalManagerContextProvider />', () => {
             </React.Fragment>
         );
 
-        const showEditAdCancelModal = screen.getByRole('button', {
+        const edit_ad_cancel_modal_btn = screen.getByRole('button', {
             name: /Show EditAdCancelModal/,
         });
-        userEvent.click(showEditAdCancelModal);
+        userEvent.click(edit_ad_cancel_modal_btn);
 
-        const showBuySellModalBtn = screen.getByRole('button', {
+        const buy_sell_modal_btn = screen.getByRole('button', {
             name: /Go to BuySellModal/,
         });
-        userEvent.click(showBuySellModalBtn);
+        userEvent.click(buy_sell_modal_btn);
         expect(screen.getByText('BuySellModal with my title and my subtitle')).toBeInTheDocument();
     });
 
@@ -348,15 +346,15 @@ describe('<ModalManagerContextProvider />', () => {
             </React.Fragment>
         );
 
-        const showEditAdCancelModal = screen.getByRole('button', {
+        const edit_ad_cancel_modal_btn = screen.getByRole('button', {
             name: /Show EditAdCancelModal/,
         });
-        userEvent.click(showEditAdCancelModal);
+        userEvent.click(edit_ad_cancel_modal_btn);
 
-        const submitBtn = screen.getByRole('button', {
+        const submit_btn = screen.getByRole('button', {
             name: /Submit/,
         });
-        userEvent.click(submitBtn);
+        userEvent.click(submit_btn);
         expect(mock_store.general_store.saveFormState).toBeCalled();
     });
 });

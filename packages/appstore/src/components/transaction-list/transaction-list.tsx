@@ -126,7 +126,10 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
                         <>
                             {Object.entries(grouped_transactions).map(([day, transaction_list]) => (
                                 <TransactionsForADay
-                                    key={day + transaction_list.length.toString()}
+                                    key={
+                                        // eslint-disable-next-line react/prop-types
+                                        day + transaction_list.length.toString()
+                                    }
                                     day={day}
                                     transaction_list={
                                         transaction_list as React.ComponentProps<

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames';
 import { Field, FieldProps, Formik, Form, FormikHelpers } from 'formik';
 import { AmountInput, Button, Loading, MessageList } from '@deriv/components';

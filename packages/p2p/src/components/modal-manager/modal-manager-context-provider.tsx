@@ -82,9 +82,8 @@ const ModalManagerContextProvider = (props: React.PropsWithChildren<{ mock?: TMo
     const isCurrentModal = (...keys: TModalKeys[]) =>
         modal.active_modal ? keys.includes(modal.active_modal.key) : false;
 
-    const showModal = <T extends TModalKeys>(modal_to_show: TModal<T>, options?: TShowModalOptions) => {
-        // eslint-disable-next-line no-param-reassign
-        if (!options) options = { should_stack_modal: false };
+    const showModal = <T extends TModalKeys>(modal_to_show: TModal<T>, opts?: TShowModalOptions) => {
+        const options = opts ?? { should_stack_modal: false };
 
         if (isDesktop() || options.should_stack_modal) {
             setModalState({
@@ -114,7 +113,7 @@ const ModalManagerContextProvider = (props: React.PropsWithChildren<{ mock?: TMo
      * will be saved when the modal is hidden and restored when modal is shown again.
      */
     const hideModal = (opts?: THideModalOptions) => {
-        let options = opts ?? { should_save_form_history: false, should_hide_all_modals: false };;
+        const options = opts ?? { should_save_form_history: false, should_hide_all_modals: false };
 
         const { should_save_form_history, should_hide_all_modals } = options;
 
@@ -169,11 +168,7 @@ const ModalManagerContextProvider = (props: React.PropsWithChildren<{ mock?: TMo
         useRegisterModalProps,
     };
 
-    return (
-        <ModalManagerContext.Provider value={props.mock ?? state}>
-            {props.children}
-        </ModalManagerContext.Provider>
-    );
+    return <ModalManagerContext.Provider value={props.mock ?? state}>{props.children}</ModalManagerContext.Provider>;
 };
 
 export default ModalManagerContextProvider;

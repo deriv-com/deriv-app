@@ -12,6 +12,9 @@ const mock_root_store = mockStore({
                     is_ask_financial_risk_approval: false,
                 },
             },
+            error: {
+                is_ask_authentication: false,
+            },
         },
     },
 });
@@ -27,6 +30,7 @@ const mock_get_account_status = {
             },
             needs_verification: [''],
         },
+        status: [],
     },
 };
 
@@ -127,5 +131,35 @@ describe('useWithdrawalLocked', () => {
         const { result } = renderHook(useWithdrawalLocked, { wrapper });
 
         expect(result.current.is_ask_financial_risk_approval_needed).toBe(true);
+    });
+
+    it('should check if withdrawal is locked', () => {
+        mock_get_account_status.get_account_status.status = ['withdrawal_locked'];
+
+        const { result: result_1 } = renderHook(useWithdrawalLocked, { wrapper });
+        expect(result_1.current.is_withdrawal_locked).toBe(true);
+
+        mock_get_account_status.get_account_status.status = [];
+        mock_get_account_status.get_account_status.authentication.needs_verification = ['identity'];
+        mock_root_store.modules.cashier.error.is_ask_authentication = true;
+
+        const { result: result_2 } = renderHook(useWithdrawalLocked, { wrapper });
+        expect(result_2.current.is_withdrawal_locked).toBe(true);
+
+        mock_get_account_status.get_account_status.authentication.needs_verification = [];
+        mock_root_store.modules.cashier.error.is_ask_authentication = false;
+        mock_root_store.modules.cashier.withdraw.error.is_ask_financial_risk_approval = true;
+
+        const { result: result_3 } = renderHook(useWithdrawalLocked, { wrapper });
+        expect(result_3.current.is_withdrawal_locked).toBe(true);
+
+        mock_root_store.modules.cashier.withdraw.error.is_ask_financial_risk_approval = false;
+    });
+
+    it('should check if withdrawal is not locked', () => {
+        mock_root_store.modules.cashier.error.is_ask_authentication = true;
+
+        const { result } = renderHook(useWithdrawalLocked, { wrapper });
+        expect(result.current.is_withdrawal_locked).toBe(false);
     });
 });

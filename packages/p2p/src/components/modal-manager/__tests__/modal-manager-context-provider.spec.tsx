@@ -3,10 +3,9 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import ModalManagerContextProvider from '../modal-manager-context-provider';
 import ModalManager from '../modal-manager';
-import { useModalManagerContext } from '../modal-manager-context';
 import { isDesktop } from '@deriv/shared';
-import { Modal } from '@deriv/components';
 import { useStores } from 'Stores/index';
+import { MockBuySellModal, MockMyAdsDeleteModal, MockEditAdCancelModal, MockPage } from '../__mocks__/mock-modal-manager-context-provider';
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -26,128 +25,13 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => mock_store),
 }));
 
-function MockBuySellModal({ title, subtitle }: { title?: string; subtitle?: string }) {
-    const { is_modal_open, hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
-
-    useRegisterModalProps({
-        key: 'MyAdsDeleteModal',
-        props: {
-            title: 'Title from BuySellModal',
-        } as unknown as Record<string, never>,
-    });
-
-    const showMyAdsDeleteModal = () => {
-        showModal({
-            key: 'MyAdsDeleteModal',
-            props: {},
-        });
-    };
-
-    return (
-        <Modal is_open={is_modal_open}>
-            {title && <div>BuySellModal with {title}</div>}
-            {title && subtitle && (
-                <div>
-                    BuySellModal with {title} and {subtitle}
-                </div>
-            )}
-            {!title && !subtitle && <div>BuySellModal</div>}
-            <button onClick={() => hideModal()}>Cancel</button>
-            <button onClick={showMyAdsDeleteModal}>Apply</button>
-        </Modal>
-    );
-}
-
-function MockMyAdsDeleteModal({ title }: { title?: string }) {
-    const { is_modal_open, hideModal } = useModalManagerContext();
-    return (
-        <Modal is_open={is_modal_open}>
-            {title && <h1>{title}</h1>}
-            <h1>MyAdsDeleteModal</h1>
-            <button onClick={() => hideModal()}>Cancel</button>
-        </Modal>
-    );
-}
-
-function MockEditAdCancelModal() {
-    const { hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
-
-    const showBuySellModal = () =>
-        showModal({
-            key: 'BuySellModal',
-            props: {},
-        });
-
-    const onSubmit = () => {
-        hideModal({
-            should_save_form_history: true,
-        });
-    };
-
-    useRegisterModalProps([
-        {
-            key: 'BuySellModal',
-            props: {
-                title: 'my title',
-                subtitle: 'my subtitle',
-            },
-        },
-    ]);
-
-    return (
-        <div>
-            <button onClick={showBuySellModal}>Go to BuySellModal</button>
-            <button onClick={onSubmit}>Submit</button>
-        </div>
-    );
-}
-
 jest.mock('Constants/modals', () => ({
     Modals: {
-        BuySellModal: MockBuySellModal,
-        MyAdsDeleteModal: MockMyAdsDeleteModal,
-        EditAdCancelModal: MockEditAdCancelModal,
+        BuySellModal: (props: any) => <MockBuySellModal {...props} />,
+        MyAdsDeleteModal: (props: any) => <MockMyAdsDeleteModal {...props} />,
+        EditAdCancelModal: (props: any) => <MockEditAdCancelModal {...props} />,
     },
 }));
-
-function MockPage() {
-    const { isCurrentModal, showModal, hideModal } = useModalManagerContext();
-
-    const showBuySellModal = () =>
-        showModal({
-            key: 'BuySellModal',
-            props: {},
-        });
-
-    const showMyAdsDeleteModal = () => {
-        showModal({
-            key: 'MyAdsDeleteModal',
-            props: {},
-        });
-    };
-
-    const showEditAdCancelModal = () => {
-        showModal({
-            key: 'EditAdCancelModal',
-            props: {},
-        });
-    };
-
-    const hideModals = () => {
-        hideModal({ should_hide_all_modals: true });
-    };
-
-    return (
-        <div>
-            {isCurrentModal('MyAdsDeleteModal') && <h1>Delete Ads</h1>}
-            <button onClick={showBuySellModal}>Show BuySellModal</button>
-            <button onClick={showMyAdsDeleteModal}>Show MyAdsDeleteModal</button>
-            <button onClick={showEditAdCancelModal}>Show EditAdCancelModal</button>
-            <button onClick={() => hideModal()}>Hide Modal</button>
-            <button onClick={hideModals}>Hide All Modals</button>
-        </div>
-    );
-}
 
 describe('<ModalManagerContextProvider />', () => {
     beforeEach(() => {

@@ -3,25 +3,14 @@ import { screen, render } from '@testing-library/react';
 import ModalManagerContextProvider from '../modal-manager-context-provider';
 import ModalManager from '../modal-manager';
 import { TModalManagerContext } from 'Types';
+import { MockModal } from '../__mocks__/mock-modal-manager';
 
 let mock_modal_manager_state: TModalManagerContext;
 
-function MockModal({ title, subtitle }: { title?: string; subtitle?: string }) {
-    if (title && subtitle) {
-        return (
-            <div>
-                BuySellModal with {title} and {subtitle}
-            </div>
-        );
-    } else if (title) {
-        return <div>BuySellModal with {title}</div>;
-    }
-    return <div>BuySellModal</div>;
-}
 
 jest.mock('Constants/modals', () => ({
     Modals: {
-        BuySellModal: MockModal,
+        BuySellModal: (props: any) => <MockModal {...props} />,
     },
 }));
 

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useStore } from '@deriv/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
 import { useFetch } from '@deriv/api';
@@ -20,7 +20,10 @@ const useWalletTransactions = (
     const { demo: demo_platform_account } = usePlatformAccounts();
     const { real: real_platform_accounts } = usePlatformAccounts();
 
-    const accounts = [demo_platform_account, ...real_platform_accounts];
+    const accounts = useMemo(
+        () => [demo_platform_account, ...real_platform_accounts],
+        [demo_platform_account, real_platform_accounts]
+    );
     const { getConfig } = useCurrencyConfig();
 
     const transactions_per_page = 10;
@@ -37,20 +40,22 @@ const useWalletTransactions = (
         malta: 'Malta',
     } as const;
 
-    const getTradingAccountName = (
-        account_type: 'standard' | 'mt5' | 'dxtrade' | 'binary',
-        is_virtual: boolean,
-        landing_company_shortcode: 'svg' | 'malta'
-    ) => {
-        return `${trading_accounts_display_prefixes[account_type]} ${
-            is_virtual ? 'Demo' : `(${landing_company_display_shortcodes[landing_company_shortcode]})`
-        } account`;
-    };
+    const getTradingAccountName = useCallback(
+        (
+            account_type: 'standard' | 'mt5' | 'dxtrade' | 'binary',
+            is_virtual: boolean,
+            landing_company_shortcode: 'svg' | 'malta'
+        ) => {
+            return `${trading_accounts_display_prefixes[account_type]} ${
+                is_virtual ? 'Demo' : `(${landing_company_display_shortcodes[landing_company_shortcode]})`
+            } account`;
+        },
+        [landing_company_display_shortcodes, trading_accounts_display_prefixes]
+    );
 
     const { data, isLoading, isSuccess } = useFetch('statement', {
         options: { keepPreviousData: true },
         payload: {
-            // @ts-expect-error reset_balance is not supported in the API yet
             action_type: action_type || undefined,
             limit: page_count ? transactions_per_page : undefined,
             offset: page_count ? transactions_per_page * (page_count - 1) : 0,
@@ -68,7 +73,7 @@ const useWalletTransactions = (
         if (is_resetting || is_complete_list || isLoading || !isSuccess) return;
         if (data?.statement?.count === 0) setIsCompleteList(true);
         const new_transactions = data?.statement?.transactions;
-        if (new_transactions) setTransactions(prev => [...prev, ...new_transactions]);
+        if (new_transactions) setTransactions((prev: typeof transactions) => [...prev, ...new_transactions]);
     }, [is_resetting, is_complete_list, data?.statement, isLoading, isSuccess]);
 
     useEffect(() => {
@@ -96,7 +101,7 @@ const useWalletTransactions = (
         () =>
             wallets && current_wallet
                 ? transactions
-                      .map(transaction => {
+                      .map((transaction: typeof transactions[number]) => {
                           if (
                               transaction.amount === undefined ||
                               transaction.balance_after === undefined ||

@@ -77,7 +77,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
                 >
                     {day}
                 </Text>
-                {transaction_list.map(transaction => {
+                {transaction_list.map((transaction: typeof transaction_list[number]) => {
                     let display_transaction = transaction;
                     if (
                         transaction?.action_type === 'transfer' &&
@@ -96,7 +96,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
         const header_height = is_mobile ? '16.2rem' : '24.4rem';
         const collapsed_header_height = '12.2rem';
         return is_wallet_name_visible ? header_height : collapsed_header_height;
-    }, [is_wallet_name_visible]);
+    }, [is_mobile, is_wallet_name_visible]);
 
     const onScrollHandler: React.UIEventHandler<HTMLDivElement> = e => {
         if (is_mobile) contentScrollHandler?.(e);

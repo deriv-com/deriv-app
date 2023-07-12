@@ -9,7 +9,7 @@ type TProps = {
 const DepositCryptoSideNoteUSDT: React.FC<TProps> = ({ currency }) => {
     const [is_modal_open, setModalOpen] = React.useState(false);
 
-    const currency_to_content_mapper = useMemo(
+    const currency_content_mapper = useMemo(
         () => ({
             eUSDT: {
                 side_note_title: localize('About Tether (Ethereum)'),
@@ -49,7 +49,7 @@ const DepositCryptoSideNoteUSDT: React.FC<TProps> = ({ currency }) => {
         []
     );
 
-    const content = currency_to_content_mapper[currency];
+    const content = currency_content_mapper[currency];
 
     return (
         <SideNote title={content.side_note_title} description={content.side_note_description}>

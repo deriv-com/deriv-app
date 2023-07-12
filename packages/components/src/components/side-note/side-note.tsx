@@ -4,7 +4,7 @@ import Icon from '../icon/icon';
 import Text from '../text';
 import './side-note.scss';
 
-const type_to_icon_mapper = {
+const type_icon_mapper = {
     warning: 'IcAlertWarning',
     information: 'IcAlertInfo',
     announcement: 'IcAlertAnnounce',
@@ -12,7 +12,7 @@ const type_to_icon_mapper = {
 };
 
 type TProps = {
-    type?: keyof typeof type_to_icon_mapper;
+    type?: keyof typeof type_icon_mapper;
     action?: { onClick: VoidFunction; label: React.ReactNode };
 } & RequireAtLeastOne<{ title: React.ReactNode; description: React.ReactNode; children: React.ReactNode }>;
 
@@ -28,7 +28,7 @@ const SideNote: React.FC<React.PropsWithChildren<TProps>> = ({ title, descriptio
                         <Text weight='bold' size={title_font_size}>
                             {title}
                         </Text>
-                        {type && <Icon icon={type_to_icon_mapper[type]} />}
+                        {type && <Icon icon={type_icon_mapper[type]} />}
                     </div>
                 )}
                 {(description || children) && (

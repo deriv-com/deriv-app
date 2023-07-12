@@ -67,7 +67,7 @@ const Trade = observer(() => {
     const [category, setCategory] = React.useState(null);
     const [subcategory, setSubcategory] = React.useState(null);
     const [is_digits_widget_active, setIsDigitsWidgetActive] = React.useState(false);
-    const charts_ref = React.useRef();
+    const charts_ref = React.useRef({});
 
     const open_market = React.useMemo(() => {
         if (try_synthetic_indices) {

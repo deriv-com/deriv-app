@@ -48,7 +48,7 @@ const useWalletTransactions = (
     };
 
     const { data, isLoading, isSuccess } = useFetch('statement', {
-        options: { keepPreviousData: false },
+        options: { keepPreviousData: true },
         payload: {
             // @ts-expect-error reset_balance is not supported in the API yet
             action_type: action_type || undefined,

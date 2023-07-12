@@ -78,10 +78,11 @@ export default class TradeStore extends BaseStore {
 
     // Duration
     duration = 5;
+    duration_min_max = {};
     duration_unit = '';
     duration_units_list = [];
-    duration_min_max = {};
     expiry_date = '';
+    expiry_epoch = '';
     expiry_time = '';
     expiry_type = 'duration';
 
@@ -223,6 +224,7 @@ export default class TradeStore extends BaseStore {
             duration: observable,
             expiration: observable,
             expiry_date: observable,
+            expiry_epoch: observable,
             expiry_time: observable,
             expiry_type: observable,
             form_components: observable,
@@ -265,8 +267,8 @@ export default class TradeStore extends BaseStore {
             strike_price_choices: observable,
             symbol: observable,
             take_profit: observable,
-            ticks_history_stats: observable,
             tick_size_barrier: observable,
+            ticks_history_stats: observable,
             trade_types: observable,
             accountSwitcherListener: action.bound,
             barrier_pipsize: computed,
@@ -307,9 +309,9 @@ export default class TradeStore extends BaseStore {
             pushPurchaseDataToGtm: action.bound,
             refresh: action.bound,
             requestProposal: action.bound,
+            resetAccumulatorData: action.bound,
             resetErrorServices: action.bound,
             resetPreviousSymbol: action.bound,
-            resetAccumulatorData: action.bound,
             setActiveSymbols: action.bound,
             setAllowEqual: action.bound,
             setChartStatus: action.bound,
@@ -415,7 +417,6 @@ export default class TradeStore extends BaseStore {
     }
 
     resetAccumulatorData() {
-        if (this.tick_size_barrier) this.tick_size_barrier = 0;
         if (!isEmptyObject(this.root_store.contract_trade.accumulator_barriers_data)) {
             this.root_store.contract_trade.clearAccumulatorBarriersData();
         }
@@ -550,23 +551,10 @@ export default class TradeStore extends BaseStore {
             await Symbol.onChangeSymbolAsync(this.symbol);
             runInAction(() => {
                 const contract_categories = ContractType.getContractCategories();
-                //TODO yauheni, maryia - delete this 'if' statement when accumulators are allowed for real account, should leave 'else' box
-                if (
-                    this.is_accumulator &&
-                    !this.root_store.client.is_virtual &&
-                    contract_categories.contract_types_list.Accumulators
-                ) {
-                    delete contract_categories.contract_types_list.Accumulators;
-                    this.processNewValuesAsync({
-                        ...contract_categories,
-                        ...ContractType.getContractType(contract_categories.contract_types_list),
-                    });
-                } else {
-                    this.processNewValuesAsync({
-                        ...contract_categories,
-                        ...ContractType.getContractType(contract_categories.contract_types_list, this.contract_type),
-                    });
-                }
+                this.processNewValuesAsync({
+                    ...contract_categories,
+                    ...ContractType.getContractType(contract_categories.contract_types_list, this.contract_type),
+                });
                 this.processNewValuesAsync(ContractType.getContractValues(this));
             });
         }
@@ -933,7 +921,6 @@ export default class TradeStore extends BaseStore {
         // when accumulator is selected, we need to change chart type to mountain and granularity to 0
         // and we need to restore previous chart type and granularity when accumulator is unselected
         const {
-            clearAccumulatorBarriersData,
             prev_chart_type,
             prev_granularity,
             chart_type,
@@ -943,7 +930,6 @@ export default class TradeStore extends BaseStore {
             updateGranularity,
         } = this.root_store.contract_trade || {};
         if (obj_new_values.contract_type === 'accumulator') {
-            clearAccumulatorBarriersData();
             savePreviousChartMode(chart_type, granularity);
             updateGranularity(0);
             updateChartType('mountain');
@@ -1030,11 +1016,6 @@ export default class TradeStore extends BaseStore {
                 this.validateAllProperties();
             }
             this.debouncedProposal();
-        }
-
-        //TODO yauheni, maryia - delete this 'if' statement when accumulators are allowed for real account
-        if (!this.root_store.client.is_virtual) {
-            delete this.contract_types_list.Accumulators;
         }
     }
 
@@ -1130,6 +1111,7 @@ export default class TradeStore extends BaseStore {
 
         // add/update expiration or date_expiry for crypto indices from proposal
         const date_expiry = response.proposal?.date_expiry;
+        this.expiry_epoch = date_expiry || this.expiry_epoch;
 
         if (!response.error && !!date_expiry && this.is_crypto_multiplier) {
             this.expiration = date_expiry;
@@ -1151,9 +1133,18 @@ export default class TradeStore extends BaseStore {
             }
             this.stop_out = limit_order?.stop_out?.order_amount;
         }
-        if (this.is_accumulator && this.proposal_info && this.proposal_info.ACCU) {
-            const { maximum_ticks, ticks_stayed_in, tick_size_barrier, last_tick_epoch, maximum_payout } =
-                this.proposal_info.ACCU;
+        if (this.is_accumulator && this.proposal_info?.ACCU) {
+            const {
+                barrier_spot_distance,
+                maximum_ticks,
+                ticks_stayed_in,
+                tick_size_barrier,
+                last_tick_epoch,
+                maximum_payout,
+                high_barrier,
+                low_barrier,
+                spot_time,
+            } = this.proposal_info.ACCU;
             this.ticks_history_stats = getUpdatedTicksHistoryStats({
                 previous_ticks_history_stats: this.ticks_history_stats,
                 new_ticks_history_stats: ticks_stayed_in,
@@ -1162,15 +1153,14 @@ export default class TradeStore extends BaseStore {
             this.maximum_ticks = maximum_ticks;
             this.maximum_payout = maximum_payout;
             this.tick_size_barrier = tick_size_barrier;
-            const accumulator_barriers_data =
-                this.root_store.contract_trade.accumulator_barriers_data[this.symbol] || {};
-            if (!accumulator_barriers_data.accumulators_high_barrier) {
-                this.root_store.contract_trade.updateAccumulatorBarriersAndSpots({
-                    ...accumulator_barriers_data,
-                    pip_size: this.pip_size,
-                    symbol: this.symbol,
-                    current_symbol: this.symbol,
-                    tick_size_barrier,
+            const { updateAccumulatorBarriersData } = this.root_store.contract_trade || {};
+            if (updateAccumulatorBarriersData) {
+                updateAccumulatorBarriersData({
+                    accumulators_high_barrier: high_barrier,
+                    accumulators_low_barrier: low_barrier,
+                    barrier_spot_distance,
+                    current_spot_time: spot_time,
+                    underlying: this.symbol,
                 });
             }
         }
@@ -1440,6 +1430,7 @@ export default class TradeStore extends BaseStore {
         if (this.prev_chart_layout) {
             this.prev_chart_layout.is_used = false;
         }
+        this.resetAccumulatorData();
     }
 
     prev_chart_layout = null;
@@ -1470,39 +1461,26 @@ export default class TradeStore extends BaseStore {
         const passthrough_callback = (...args) => {
             callback(...args);
             if (this.is_accumulator) {
-                let accumulator_barriers_data = {
-                    current_symbol: this.symbol,
-                    tick_size_barrier: this.tick_size_barrier,
-                };
+                let current_spot_data = {};
                 if ('tick' in args[0]) {
-                    const { current_spot, current_spot_time } =
-                        this.root_store.contract_trade.accumulator_barriers_data[this.symbol] || {};
-                    const { epoch, pip_size, quote, symbol } = args[0].tick;
-                    accumulator_barriers_data = {
-                        ...accumulator_barriers_data,
-                        previous_spot: current_spot,
-                        previous_spot_time: current_spot_time,
+                    const { epoch, quote, symbol } = args[0].tick;
+                    if (this.symbol !== symbol) return;
+                    current_spot_data = {
                         current_spot: quote,
                         current_spot_time: epoch,
-                        pip_size,
-                        symbol,
                     };
                 } else if ('history' in args[0]) {
                     const { prices, times } = args[0].history;
                     const symbol = args[0].echo_req.ticks_history;
-                    accumulator_barriers_data = {
-                        ...accumulator_barriers_data,
-                        previous_spot: prices[prices.length - 2],
-                        previous_spot_time: times[times.length - 2],
+                    if (this.symbol !== symbol) return;
+                    current_spot_data = {
                         current_spot: prices[prices.length - 1],
                         current_spot_time: times[times.length - 1],
-                        pip_size: args[0].pip_size,
-                        symbol,
                     };
                 } else {
                     return;
                 }
-                this.root_store.contract_trade.updateAccumulatorBarriersAndSpots(accumulator_barriers_data);
+                this.root_store.contract_trade.updateAccumulatorBarriersData(current_spot_data);
             }
         };
         if (req.subscribe === 1) {

@@ -18,9 +18,11 @@ module.exports = function (env) {
             CFDServerErrorDialog: 'Containers/cfd-server-error-dialog.tsx',
             CFDTopUpDemoModal: 'Containers/cfd-top-up-demo-modal.tsx',
             MT5TradeModal: 'Containers/mt5-trade-modal.tsx',
+            TradeModal: 'Containers/trade-modal.tsx',
             CFDPasswordManagerModal: 'Containers/cfd-password-manager-modal.tsx',
             CFDFinancialStpRealAccountSignup: 'Containers/cfd-financial-stp-real-account-signup.tsx',
             getDXTradeWebTerminalLink: 'Helpers/constants.ts',
+            getDerivEzWebTerminalLink: 'Helpers/constants.ts',
         },
         mode: IS_RELEASE ? 'production' : 'development',
         module: {

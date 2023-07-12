@@ -30,10 +30,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
     const [show_logout_modal, updaetShowLogoutModal] = React.useState(false);
     const { accounts, balance, currency, account_type } = useSelector(state => state.client);
 
-    const {
-        low_risk_without_account = false,
-        high_risk_without_account = false,
-    } = account_type;
+    const { low_risk_without_account = false, high_risk_without_account = false } = account_type;
     const is_country_low_risk = low_risk_countries.includes(localStorage.getItem('client.country'));
     const { is_bot_running, show_bot_unavailable_page } = useSelector(state => state.ui);
     const { url } = config.add_account;
@@ -49,7 +46,7 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
         if (account.startsWith('VR')) virtual_accounts.push({ ...accounts[account], account });
         if (account.startsWith('MF')) eu_accounts.push({ ...accounts[account], account });
         if (account.startsWith('CR')) non_eu_accounts.push({ ...accounts[account], account });
-    });    
+    });
     let real_account = [...non_eu_accounts, ...eu_accounts];
 
     const is_real = activeTab === 'real';
@@ -163,10 +160,11 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                         <span className='account__switcher-total-balance-amount account__switcher-balance'>
                             {activeTab === 'demo'
                                 ? getTotalDemo(accounts)
-                                : low_risk_without_account || high_risk_without_account ? 0 : balance.toLocaleString(undefined, {
-                                    minimumFractionDigits: config.currency_name_map[currency]?.fractional_digits ?? 2,
-                                })
-                            }
+                                : low_risk_without_account || high_risk_without_account
+                                ? 0
+                                : balance.toLocaleString(undefined, {
+                                      minimumFractionDigits: config.currency_name_map[currency]?.fractional_digits ?? 2,
+                                  })}
                             <span className='symbols'>&nbsp;{activeTab === 'demo' ? 'USD' : currency}</span>
                         </span>
                     </div>
@@ -177,8 +175,8 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                     {/* only if we have real account */}
 
                     {(eu_accounts && eu_accounts.length) ||
-                        (non_eu_accounts && non_eu_accounts.length) ||
-                        activeTab === 'demo' ? (
+                    (non_eu_accounts && non_eu_accounts.length) ||
+                    activeTab === 'demo' ? (
                         <a href={config.tradershub.url} className={'account__switcher-total--link'}>
                             <span>{translate("Looking for CFD accounts? Go to Trader's hub")}</span>
                         </a>
@@ -193,7 +191,9 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                         {activeTab === 'real' && Object.keys(accounts).length > 1 && (
                             <a href={url} rel='noopener noreferrer'>
                                 <div>
-                                    <button className='account__switcher-footer__manage'>Manage accounts</button>
+                                    <button className='account__switcher-footer__manage'>
+                                        {translate('Manage accounts')}
+                                    </button>
                                 </div>
                             </a>
                         )}

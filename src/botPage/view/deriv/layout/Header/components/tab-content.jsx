@@ -33,7 +33,9 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                         onClick={() => setIsAccordionOpen(!isAccordionOpen)}
                     >
                         <div className='account__switcher-accordion-header-text'>
-                            <span>{is_country_low_risk && isReal ? title : translate('Deriv Accounts')}</span>
+                            <span>
+                                {is_country_low_risk && isReal ? translate(title) : translate('Deriv Accounts')}
+                            </span>
                             <img
                                 className={`header__expand ${isAccordionOpen ? 'open' : ''}`}
                                 src='image/deriv/ic-chevron-down.svg'
@@ -93,9 +95,9 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                                                 {demo_account
                                                     ? translate('Demo')
                                                     : account.account?.includes('MF') &&
-                                                        (active_account_name?.includes('MF'))
-                                                        ? 'Multiplers'
-                                                        : config.currency_name_map[currency]?.name || currency}
+                                                      active_account_name?.includes('MF')
+                                                    ? 'Multiplers'
+                                                    : config.currency_name_map[currency]?.name || currency}
 
                                                 <div className='account__switcher-loginid'>{account.account}</div>
                                             </span>

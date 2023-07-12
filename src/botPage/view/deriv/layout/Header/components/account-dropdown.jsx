@@ -195,7 +195,9 @@ const AccountDropdown = React.forwardRef((props, dropdownRef) => {
                         {activeTab === 'real' && Object.keys(accounts).length > 1 && (
                             <a href={url} rel='noopener noreferrer'>
                                 <div>
-                                    <button className='account__switcher-footer__manage'>Manage accounts</button>
+                                    <button className='account__switcher-footer__manage'>
+                                        {translate('Manage accounts')}
+                                    </button>
                                 </div>
                             </a>
                         )}

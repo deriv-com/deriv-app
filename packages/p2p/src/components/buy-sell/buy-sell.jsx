@@ -1,4 +1,5 @@
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import PropTypes from 'prop-types';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -47,6 +48,49 @@ const BuySell = () => {
 
     return (
         <div className='buy-sell'>
+            <Helmet
+                meta={[
+                    {
+                        name: 'description',
+                        content: 'Helmet Description',
+                    },
+                    {
+                        name: 'og:title',
+                        content: 'Helmet Title',
+                    },
+                    {
+                        name: 'og:description',
+                        content: 'Helmet OG Description',
+                    },
+                    {
+                        name: 'og:image',
+                        content:
+                            'https://play-lh.googleusercontent.com/ah8RkaAnph2gouJ48fVeybeJgw-tu2dzTDYL7miccIWxvd0ZcK5-MM20bGxjpjb2lXU',
+                    },
+                    {
+                        name: 'twitter:card',
+                        content: 'Twitter Card',
+                    },
+                    {
+                        name: 'twitter:creator',
+                        content: 'Twitter Creator',
+                    },
+                    {
+                        name: 'twitter:title',
+                        content: 'Twitter Title',
+                    },
+                    {
+                        name: 'twitter:description',
+                        content: 'Twitter Description',
+                    },
+                    {
+                        name: 'referrer',
+                        content: 'origin',
+                    },
+                ]}
+            >
+                <title>Deriv P2P</title>
+            </Helmet>
             <BuySellHeader table_type={buy_sell_store.table_type} />
             <BuySellTable
                 key={buy_sell_store.table_type}

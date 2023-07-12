@@ -1,4 +1,5 @@
 import React from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 import { useHistory, useLocation } from 'react-router-dom';
 import { reaction } from 'mobx';
 import { useStore, observer } from '@deriv/stores';
@@ -251,11 +252,13 @@ const App = () => {
     return (
         <>
             <main className='p2p-cashier'>
-                <ModalManagerContextProvider>
-                    <ModalManager />
-                    <AppContent order_id={order_id} />
-                    <Routes />
-                </ModalManagerContextProvider>
+                <HelmetProvider>
+                    <ModalManagerContextProvider>
+                        <ModalManager />
+                        <AppContent order_id={order_id} />
+                        <Routes />
+                    </ModalManagerContextProvider>
+                </HelmetProvider>
             </main>
         </>
     );

@@ -34,7 +34,11 @@ const CurrentSwitcherContainer = observer(
 
         const Dropdown = () => {
             const icon_dropdown = (
-                <div className='currency-switcher-container__arrow' {...props}>
+                <div
+                    data-testid='dt_currency-switcher__arrow'
+                    className='currency-switcher-container__arrow'
+                    {...props}
+                >
                     <Icon icon='IcChevronDownBold' />
                 </div>
             );

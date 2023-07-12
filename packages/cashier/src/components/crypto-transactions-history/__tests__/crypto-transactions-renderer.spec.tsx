@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { isMobile } from '@deriv/shared';
 import CryptoTransactionsRenderer from '../crypto-transactions-renderer';
 import CashierProviders from '../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
     ...jest.requireActual('@deriv/shared/src/utils/screen/responsive'),
@@ -11,9 +12,9 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 }));
 
 describe('<CryptoTransactionsRenderer />', () => {
-    let mockRootStore;
+    let mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             modules: {
                 cashier: {
                     transaction_history: {
@@ -26,7 +27,7 @@ describe('<CryptoTransactionsRenderer />', () => {
             client: {
                 currency: 'BTC',
             },
-        };
+        });
     });
     const props = {
         row: {
@@ -39,9 +40,12 @@ describe('<CryptoTransactionsRenderer />', () => {
             status_message:
                 "We're reviewing your withdrawal request. You may still cancel this transaction if you wish. Once we start processing, you won't be able to cancel.",
             submit_date: 1640603927,
+            transaction_hash: '',
             transaction_type: 'withdrawal',
+            transaction_url:
+                'https://etherscan.io/tx/0x2aede798a325c96784c62073a5bd5e104a983fb47291a2d45992b40da636051e',
         },
-    };
+    } as const;
 
     const renderCryptoTransactionsRenderer = () =>
         render(<CryptoTransactionsRenderer {...props} />, {

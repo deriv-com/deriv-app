@@ -16,10 +16,14 @@
         }
         &__message {
             margin: 0 auto;
+            & .dc-text {
+                line-height: var(--text-lh-xxl);
+            }
         }
         &__list {
-            list-style-type: circle;
+            list-style-type: disc;
             margin-left: 20px;
+            line-height: var(--text-lh-xl);
 
             li::marker {
                 color: var(--text-less-prominent);
@@ -30,7 +34,7 @@
         padding: 16px;
 
         &-list {
-            height: calc(100% - 4.2rem);
+            height: calc(100% - 7.2rem);
         }
         &-content {
             > * {

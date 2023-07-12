@@ -21,6 +21,7 @@ import BaseStore from './base-store';
 
 export default class ContractTradeStore extends BaseStore {
     // --- Observable properties ---
+    is_browser_tab_active = true;
     contracts = [];
     contracts_map = {};
     has_error = false;
@@ -36,6 +37,7 @@ export default class ContractTradeStore extends BaseStore {
     accu_barriers_timeout_id = null;
     accumulator_barriers_data = {};
     accumulator_contract_barriers_data = {};
+    cached_barriers_data = {};
     should_calculate_accu_barriers = true;
 
     constructor(root_store) {
@@ -45,6 +47,7 @@ export default class ContractTradeStore extends BaseStore {
             accu_barriers_timeout_id: observable,
             accumulator_barriers_data: observable.struct,
             accumulator_contract_barriers_data: observable.struct,
+            cached_barriers_data: observable.struct,
             calculateAccumulatorBarriers: action.bound,
             clearAccumulatorBarriersData: action.bound,
             contracts: observable.shallow,
@@ -53,6 +56,7 @@ export default class ContractTradeStore extends BaseStore {
             error_message: observable,
             granularity: observable,
             chart_type: observable,
+            is_browser_tab_active: observable,
             updateAccumulatorBarriersData: action.bound,
             updateChartType: action.bound,
             updateGranularity: action.bound,
@@ -201,67 +205,72 @@ export default class ContractTradeStore extends BaseStore {
         should_update_barriers_quickly,
         underlying,
     }) {
-        // using closure to cache delayed_barriers_data:
-        let delayed_barriers_data = {};
-        return (() => {
-            const current_spot_data = {
-                current_spot,
-                current_spot_time,
-                underlying: this.should_calculate_accu_barriers && underlying,
-            };
-            if (current_spot && !this.should_calculate_accu_barriers) {
-                // update current tick coming from ticks_history while skipping an update for duplicate data
-                if (current_spot_time === this.accumulator_barriers_data.current_spot_time) return;
-                current_spot_data.tick_update_timestamp = Date.now();
-                this.setNewAccumulatorBarriersData(current_spot_data, true);
-                this.setNewAccumulatorBarriersData(current_spot_data);
-                return;
-            }
+        const current_spot_data = {
+            current_spot,
+            current_spot_time,
+            underlying: this.should_calculate_accu_barriers && underlying,
+        };
+        if (current_spot && !this.should_calculate_accu_barriers) {
+            // update current tick coming from ticks_history while skipping an update for duplicate data
+            if (current_spot_time === this.accumulator_barriers_data.current_spot_time) return;
+            current_spot_data.tick_update_timestamp = Date.now();
+            this.setNewAccumulatorBarriersData(current_spot_data, true);
+            this.setNewAccumulatorBarriersData(current_spot_data);
+            return;
+        }
+        const delayed_barriers_data = {
+            accumulators_high_barrier,
+            accumulators_low_barrier,
+            barrier_spot_distance,
+            should_update_contract_barriers,
+            previous_spot_time: current_spot_time,
+            underlying: this.should_calculate_accu_barriers && underlying,
+        };
+        if (
+            (!this.should_calculate_accu_barriers &&
+                this.accumulator_barriers_data.current_spot_time &&
+                this.accumulator_barriers_data.current_spot_time !== current_spot_time &&
+                !this.accumulator_barriers_data.accumulators_high_barrier) ||
+            Object.keys(delayed_barriers_data).every(key => {
+                const is_duplicate_non_contract_data = this.should_calculate_accu_barriers
+                    ? this.accumulator_barriers_data[underlying]?.[key] === delayed_barriers_data[key]
+                    : this.accumulator_barriers_data[key] === delayed_barriers_data[key];
+                return should_update_contract_barriers
+                    ? this.accumulator_contract_barriers_data[key] === delayed_barriers_data[key]
+                    : is_duplicate_non_contract_data;
+            })
+        ) {
+            // skip an update for duplicate data, or when a tick, which current barriers are related to, was not returned from ticks_history
+            return;
+        }
+        if (this.should_calculate_accu_barriers) {
             if (
-                this.should_calculate_accu_barriers &&
                 this.accumulator_barriers_data[underlying]?.previous_spot_time &&
                 this.accumulator_barriers_data[underlying]?.previous_spot_time !==
                     this.accumulator_barriers_data[underlying]?.current_spot_time
             ) {
                 if (this.accu_barriers_timeout_id) clearTimeout(this.accu_barriers_timeout_id);
-                this.setNewAccumulatorBarriersData(delayed_barriers_data, should_update_contract_barriers);
+                this.setNewAccumulatorBarriersData(this.cached_barriers_data, should_update_contract_barriers);
             }
-            delayed_barriers_data = {
-                accumulators_high_barrier,
-                accumulators_low_barrier,
-                barrier_spot_distance,
-                should_update_contract_barriers,
-                previous_spot_time: current_spot_time,
-                underlying: this.should_calculate_accu_barriers && underlying,
-            };
-            if (
-                (!this.should_calculate_accu_barriers &&
-                    this.accumulator_barriers_data.current_spot_time &&
-                    this.accumulator_barriers_data.current_spot_time !== current_spot_time &&
-                    !this.accumulator_barriers_data.accumulators_high_barrier) ||
-                Object.keys(delayed_barriers_data).every(key => {
-                    const is_duplicate_non_contract_data = this.should_calculate_accu_barriers
-                        ? this.accumulator_barriers_data[underlying]?.[key] === delayed_barriers_data[key]
-                        : this.accumulator_barriers_data[key] === delayed_barriers_data[key];
-                    return should_update_contract_barriers
-                        ? this.accumulator_contract_barriers_data[key] === delayed_barriers_data[key]
-                        : is_duplicate_non_contract_data;
-                })
-            ) {
-                // skip an update for duplicate data, or when a tick, which current barriers are related to, was not returned from ticks_history
-                return;
+            this.setNewAccumulatorBarriersData(current_spot_data, should_update_contract_barriers);
+        }
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                // when tab is now inactive, we need to update barriers data immediately to timers' accumulation
+                // more about Chrome policy for running timers in the background: https://developer.chrome.com/blog/timer-throttling-in-chrome-88/
+                this.is_browser_tab_active = false;
+            } else {
+                this.is_browser_tab_active = true;
             }
-            // update barriers, which are returned from proposal/proposal_open_contract, after timeout on DTrader page
+        });
+        if (this.is_browser_tab_active) {
+            // update barriers in DTrader page after animation timeout
             const tick_update_timestamp = should_update_contract_barriers
                 ? this.accumulator_contract_barriers_data.tick_update_timestamp
                 : this.accumulator_barriers_data.tick_update_timestamp;
             const timeout_for_calculated_barriers = should_update_barriers_quickly
                 ? 150
                 : getAccuBarriersDefaultTimeout(underlying);
-            if (this.should_calculate_accu_barriers) {
-                this.setNewAccumulatorBarriersData(current_spot_data, should_update_contract_barriers);
-                // update barriers in DTrader page with an animation delay
-            }
             this.accu_barriers_timeout_id = setTimeout(
                 () => {
                     runInAction(() => {
@@ -278,14 +287,11 @@ export default class ContractTradeStore extends BaseStore {
                           underlying,
                       })
             );
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) {
-                    // tab is now inactive
-                    if (this.accu_barriers_timeout_id) clearTimeout(this.accu_barriers_timeout_id);
-                    this.setNewAccumulatorBarriersData(delayed_barriers_data, should_update_contract_barriers);
-                }
-            });
-        })();
+        } else {
+            // update barriers in DTrader page immediately
+            this.setNewAccumulatorBarriersData(delayed_barriers_data, should_update_contract_barriers);
+        }
+        this.cached_barriers_data = { ...delayed_barriers_data };
     }
 
     updateChartType(type) {

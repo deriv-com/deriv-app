@@ -34,7 +34,7 @@ describe('<CFDCompareAccountsButton />', () => {
         is_demo: false,
     };
 
-    it('should renders the component with correct mocked_props', () => {
+    it('should render the component with correct mocked_props', () => {
         const mock = mockStore({
             client: {
                 account_status: { cashier_validation: ['system_maintenance'] },
@@ -233,7 +233,7 @@ describe('<CFDCompareAccountsButton />', () => {
         });
     });
 
-    it('should disable the button and displays "Added" text when account is already added', () => {
+    it('should disable the button and display "Added" text when account is already added', () => {
         const mock = mockStore({
             client: {
                 account_status: { cashier_validation: ['system_maintenance'] },

@@ -1,14 +1,13 @@
 import 'Styles/account.scss';
-
-import { FadeWrapper, Icon, Loading, PageOverlay, Text, VerticalTab } from '@deriv/components';
 import { PlatformContext, getSelectedRoute, isMobile, matchRoute, routes as shared_routes } from '@deriv/shared';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'Stores/connect';
+import { withRouter } from 'react-router-dom';
+import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text, Icon } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
 import { flatten } from '../Helpers/flatten';
 import { localize } from '@deriv/translations';
 import { useHistory } from 'react-router';
-import { withRouter } from 'react-router-dom';
 
 const AccountLogout = ({ logout, history }) => {
     return (
@@ -104,23 +103,20 @@ const PageOverlayWrapper = ({
     );
 };
 
-const Account = ({
-    active_account_landing_company,
-    history,
-    is_from_derivgo,
-    is_logged_in,
-    is_logging_in,
-    is_pending_proof_of_ownership,
-    is_virtual,
-    is_visible,
-    location,
-    logout,
-    platform,
-    routeBackInApp,
-    routes,
-    should_allow_authentication,
-    toggleAccount,
-}) => {
+const Account = observer(({ history, location, routes }) => {
+    const { client, common, ui } = useStore();
+    const {
+        is_virtual,
+        is_logged_in,
+        is_logging_in,
+        is_risky_client,
+        is_pending_proof_of_ownership,
+        landing_company_shortcode,
+        should_allow_authentication,
+        logout,
+    } = client;
+    const { is_from_derivgo, routeBackInApp, platform } = common;
+    const { toggleAccountSettings, is_account_settings_visible } = ui;
     const { is_appstore } = React.useContext(PlatformContext);
     const subroutes = flatten(routes.map(i => i.subroutes));
     let list_groups = [...routes];
@@ -133,17 +129,17 @@ const Account = ({
     const onClickClose = React.useCallback(() => routeBackInApp(history), [routeBackInApp, history]);
 
     React.useEffect(() => {
-        toggleAccount(true);
-    }, [toggleAccount]);
+        toggleAccountSettings(true);
+    }, [toggleAccountSettings]);
 
     routes.forEach(menu_item => {
         menu_item.subroutes.forEach(route => {
             if (route.path === shared_routes.financial_assessment) {
-                route.is_disabled = is_virtual;
+                route.is_disabled = is_virtual || (landing_company_shortcode === 'maltainvest' && !is_risky_client);
             }
 
             if (route.path === shared_routes.trading_assessment) {
-                route.is_disabled = is_virtual || active_account_landing_company !== 'maltainvest';
+                route.is_disabled = is_virtual || landing_company_shortcode !== 'maltainvest';
             }
 
             if (route.path === shared_routes.proof_of_identity || route.path === shared_routes.proof_of_address) {
@@ -169,7 +165,11 @@ const Account = ({
     const selected_route = getSelectedRoute({ routes: subroutes, pathname: location.pathname });
 
     return (
-        <FadeWrapper is_visible={is_visible} className='account-page-wrapper' keyname='account-page-wrapper'>
+        <FadeWrapper
+            is_visible={is_account_settings_visible}
+            className='account-page-wrapper'
+            keyname='account-page-wrapper'
+        >
             <div className='account'>
                 <PageOverlayWrapper
                     is_from_derivgo={is_from_derivgo}
@@ -185,37 +185,13 @@ const Account = ({
             </div>
         </FadeWrapper>
     );
-};
+});
 
 Account.propTypes = {
     active_account_landing_company: PropTypes.string,
     history: PropTypes.object,
-    is_from_derivgo: PropTypes.bool,
-    is_logged_in: PropTypes.bool,
-    is_logging_in: PropTypes.bool,
-    is_pending_proof_of_ownership: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    is_visible: PropTypes.bool,
     location: PropTypes.object,
-    logout: PropTypes.func,
-    platform: PropTypes.string,
-    routeBackInApp: PropTypes.func,
     routes: PropTypes.arrayOf(PropTypes.object),
-    should_allow_authentication: PropTypes.bool,
-    toggleAccount: PropTypes.func,
 };
 
-export default connect(({ client, common, ui }) => ({
-    active_account_landing_company: client.landing_company_shortcode,
-    is_from_derivgo: common.is_from_derivgo,
-    is_logged_in: client.is_logged_in,
-    is_logging_in: client.is_logging_in,
-    is_pending_proof_of_ownership: client.is_pending_proof_of_ownership,
-    is_virtual: client.is_virtual,
-    is_visible: ui.is_account_settings_visible,
-    logout: client.logout,
-    platform: common.platform,
-    routeBackInApp: common.routeBackInApp,
-    should_allow_authentication: client.should_allow_authentication,
-    toggleAccount: ui.toggleAccountSettings,
-}))(withRouter(Account));
+export default withRouter(Account);

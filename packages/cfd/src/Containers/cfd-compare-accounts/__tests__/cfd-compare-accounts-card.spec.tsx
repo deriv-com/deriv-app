@@ -38,7 +38,7 @@ describe('<CFDCompareAccountsCard />', () => {
         is_eu_user: false,
     };
 
-    it('should renders the component and not render the "New!" banner for MT5', () => {
+    it('should render the component and not render the "New!" banner for MT5', () => {
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
         );

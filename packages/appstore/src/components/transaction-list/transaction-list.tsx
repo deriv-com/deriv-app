@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, Dropdown, Div100vhContainer, ThemedScrollbars } from '@deriv/components';
+import { Div100vhContainer, Dropdown, Loading, Text, ThemedScrollbars } from '@deriv/components';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
@@ -100,7 +100,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
 
     const onScrollHandler: React.UIEventHandler<HTMLDivElement> = e => {
         if (is_mobile) contentScrollHandler?.(e);
-        if (e.currentTarget.scrollHeight - e.currentTarget.scrollTop - e.currentTarget.clientHeight <= 0) {
+        if (e.currentTarget.scrollHeight - e.currentTarget.scrollTop - e.currentTarget.clientHeight <= 100) {
             if (!isComplete) setPageCount(page_count + 1);
         }
     };
@@ -122,15 +122,24 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
                         suffix_icon='IcFilter'
                         value={filter}
                     />
-                    {Object.entries(grouped_transactions).map(([day, transaction_list]) => (
-                        <TransactionsForADay
-                            key={day + transaction_list.length.toString()}
-                            day={day}
-                            transaction_list={
-                                transaction_list as React.ComponentProps<typeof TransactionsForADay>['transaction_list']
-                            }
-                        />
-                    ))}
+                    {!isLoading || page_count >= 1 ? (
+                        <>
+                            {Object.entries(grouped_transactions).map(([day, transaction_list]) => (
+                                <TransactionsForADay
+                                    key={day + transaction_list.length.toString()}
+                                    day={day}
+                                    transaction_list={
+                                        transaction_list as React.ComponentProps<
+                                            typeof TransactionsForADay
+                                        >['transaction_list']
+                                    }
+                                />
+                            ))}
+                            {!isComplete && <Loading is_fullscreen={false} className='transaction-list__loader' />}
+                        </>
+                    ) : (
+                        <Loading is_fullscreen={false} />
+                    )}
                 </div>
             </Div100vhContainer>
         </ThemedScrollbars>

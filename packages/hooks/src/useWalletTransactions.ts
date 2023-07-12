@@ -75,6 +75,15 @@ const useWalletTransactions = (
         setIsResetting(true);
     }, [action_type]);
 
+    // TODO remove
+    const [is_fetching, setIsFetching] = useState(false);
+    useEffect(() => {
+        setIsFetching(true);
+    }, [isLoading]);
+    useEffect(() => {
+        if (is_fetching) setTimeout(() => setIsFetching(false), 1000);
+    }, [is_fetching]);
+
     useEffect(() => {
         if (is_resetting) {
             setIsCompleteList(false);
@@ -152,7 +161,12 @@ const useWalletTransactions = (
         [accounts, current_wallet, getConfig, getTradingAccountName, is_dark_mode_on, loginid, transactions, wallets]
     );
 
-    return { transactions: modified_transactions, isLoading, isSuccess, isComplete: is_complete_list };
+    return {
+        transactions: modified_transactions,
+        isLoading: isLoading || is_resetting || is_fetching,
+        isSuccess,
+        isComplete: is_complete_list,
+    };
 };
 
 export default useWalletTransactions;

@@ -1,11 +1,10 @@
 import React from 'react';
-import { HelmetProvider } from 'react-helmet-async';
 import { useHistory, useLocation } from 'react-router-dom';
 import { reaction } from 'mobx';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Loading } from '@deriv/components';
-import { changeMetaTagWithOG, routes, WS } from '@deriv/shared';
+import { routes, WS } from '@deriv/shared';
 import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
@@ -38,12 +37,6 @@ const App = () => {
         general_store.setExternalStores({ client, common, modules, notifications, ui });
         general_store.setWebsocketInit(WS);
         general_store.getWebsiteStatus();
-
-        const description_content = 'P2P Description';
-        const title_content = 'Deriv P2P';
-
-        const restoreMetaTagWithOGDescription = changeMetaTagWithOG('description', description_content);
-        const restoreMetaTagWithOGTitle = changeMetaTagWithOG('title', title_content);
 
         setP2PRedirectTo({
             routeToMyProfile: () => {
@@ -120,8 +113,6 @@ const App = () => {
         }
 
         return () => {
-            restoreMetaTagWithOGDescription();
-            restoreMetaTagWithOGTitle();
             general_store.onUnmount();
             disposeAdvertiserInfoSubscribedReaction();
         };
@@ -252,13 +243,11 @@ const App = () => {
     return (
         <>
             <main className='p2p-cashier'>
-                <HelmetProvider>
-                    <ModalManagerContextProvider>
-                        <ModalManager />
-                        <AppContent order_id={order_id} />
-                        <Routes />
-                    </ModalManagerContextProvider>
-                </HelmetProvider>
+                <ModalManagerContextProvider>
+                    <ModalManager />
+                    <AppContent order_id={order_id} />
+                    <Routes />
+                </ModalManagerContextProvider>
             </main>
         </>
     );

@@ -51,6 +51,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
         const { key } = findContractCategory(categories, clicked_item);
         if (e.target.id !== 'info-icon') {
             const is_from_info_dialog = /_btn$/.test(e.target.id);
+            const subform_name = is_from_info_dialog ? 'info_new' : 'trade_type';
 
             setDialogVisibility(false);
             setInfoDialogVisibility(false);
@@ -60,7 +61,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
 
             RudderStack.track('ce_trade_types_form', {
                 action: 'choose_trade_type',
-                subform_name: is_from_info_dialog ? 'info_new' : 'trade_type',
+                subform_name: subform_name,
                 ...(subform_name === 'trade_type' && { tab_name: selected_category }),
                 trade_type_name: clicked_item?.text,
                 form_name: 'default',

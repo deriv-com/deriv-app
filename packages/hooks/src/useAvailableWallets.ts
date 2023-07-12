@@ -22,8 +22,8 @@ const useAvailableWallets = () => {
         if (!account_type_data) return null;
         // @ts-expect-error Need to update @deriv/api-types to fix the TS error
         const { crypto, doughflow } = account_type_data?.get_account_types?.wallet || {};
-        const crypto_currencies = crypto.currencies;
-        const fiat_currencies = doughflow.currencies;
+        const crypto_currencies = crypto?.currencies;
+        const fiat_currencies = doughflow?.currencies;
 
         if (!crypto_currencies || !fiat_currencies) return null;
         const available_currencies = [...fiat_currencies, ...crypto_currencies];

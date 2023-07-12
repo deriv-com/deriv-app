@@ -3,7 +3,7 @@ import { useStore, observer } from '@deriv/stores';
 import { Real } from '../../../components/cashier-container';
 import { useCashierStore } from '../../../stores/useCashierStores';
 
-const Withdraw = observer(() => {
+const Withdraw = observer(({ is_appstore }: { is_appstore?: boolean }) => {
     const { client } = useStore();
     const {
         verification_code: { payment_withdraw: verification_code },
@@ -18,7 +18,7 @@ const Withdraw = observer(() => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return <Real />;
+    return <Real is_appstore={is_appstore} />;
 });
 
 export default Withdraw;

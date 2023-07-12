@@ -26,6 +26,7 @@ const Redirect = ({
     const { is_appstore } = React.useContext(PlatformContext);
     const action_param = url_params.get('action');
     const code_param = url_params.get('code') || verification_code[action_param];
+    const loginid = url_params.get('loginid');
 
     setVerificationCode(code_param, action_param);
     setNewEmail(url_params.get('email'), action_param);
@@ -117,7 +118,14 @@ const Redirect = ({
             break;
         }
         case 'payment_withdraw': {
-            history.push(routes.cashier_withdrawal);
+            if (loginid.toLowerCase().includes('w')) {
+                history.push({
+                    pathname: routes.traders_hub,
+                    search: url_query_string,
+                });
+            } else {
+                history.push(routes.cashier_withdrawal);
+            }
             redirected_to_route = true;
             break;
         }

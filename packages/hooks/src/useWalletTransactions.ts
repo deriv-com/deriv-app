@@ -70,7 +70,7 @@ const useWalletTransactions = (
         if (new_transactions && !isLoading && isSuccess) {
             setTransactions(prev => [...prev, ...new_transactions]);
         }
-    }, [data?.statement, isLoading, isSuccess]);
+    }, [is_complete_list, data?.statement, isLoading, isSuccess]);
 
     useEffect(() => {
         setIsCompleteList(false);

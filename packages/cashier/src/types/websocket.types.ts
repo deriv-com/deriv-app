@@ -7,6 +7,8 @@ import type {
     GetAccountSettingsResponse,
     DetailsOfEachMT5Loginid,
     P2PAdvertInfo,
+    P2PAdvertiserInformationRequest,
+    P2PAdvertiserInformationResponse,
     PaymentAgentTransferRequest,
     PaymentAgentTransferResponse,
     TransferBetweenAccountsResponse,
@@ -88,6 +90,7 @@ type TWebSocketCall = {
     paymentAgentDetails: (passthrough?: TPassthrough, req_id?: number) => Promise<PaymentAgentDetailsResponse>;
     paymentAgentList: (residence: string, currency: string) => Promise<PaymentAgentListResponse>;
     paymentAgentWithdraw: (request: TPaymentAgentWithdrawRequest) => Promise<PaymentAgentWithdrawResponse>;
+    p2pAdvertiserInfo: (request: P2PAdvertiserInformationRequest) => Promise<P2PAdvertiserInformationResponse>;
 };
 
 export type TWebSocket = {

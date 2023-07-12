@@ -119,7 +119,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
                         </SideNote>
                     )),
                 ]);
-            } else setSideNotes(null);
+            } else setSideNotes?.(null);
         }
 
         return () => {

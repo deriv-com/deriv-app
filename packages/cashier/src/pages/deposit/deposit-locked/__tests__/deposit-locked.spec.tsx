@@ -118,7 +118,7 @@ describe('<DepositLocked />', () => {
                     cashier_validation: [],
                     authentication: {},
                 },
-                standpoint: { iom: 'true' },
+                standpoint: { iom: true },
                 is_tnc_needed: false,
                 is_financial_information_incomplete: true,
                 is_trading_experience_incomplete: false,

@@ -31,6 +31,7 @@ beforeEach(() => {
             paymentAgentList: jest.fn(),
             paymentAgentWithdraw: jest.fn(),
             transferBetweenAccounts: jest.fn(),
+            p2pAdvertiserInfo: jest.fn(),
         },
     };
     root_store = mockStore({

@@ -28,7 +28,7 @@ describe('<ErrorComponent/>', () => {
         should_clear_error_on_click: true,
         setError: jest.fn(),
         should_show_refresh: true,
-        app_routing_history: [{ pathname: '/cashier' }],
+        app_routing_history: [{ action: '', key: 'key', hash: '', pathname: '/cashier', search: '', state: undefined }],
     };
 
     it('should show the actual error message when header and message is passed', () => {

@@ -118,6 +118,7 @@ const AnimateTrade = () => {
 
     if (is_contract_closed) {
         dispatch(setIsBotRunning(false));
+        globalObserver.setState({ isRunning: false });
     }
 
     return (

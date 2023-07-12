@@ -27,7 +27,7 @@ export type TTransferAccount = NonNullable<TransferBetweenAccountsResponse['acco
     landing_company_short?: string;
     login?: string;
     loginid?: string;
-    sub_account_type?: 'standard' | 'financial' | 'financial_stp';
+    sub_account_type?: string;
 };
 
 export type TAccountsList = {

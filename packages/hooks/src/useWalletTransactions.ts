@@ -4,7 +4,7 @@ import { getWalletCurrencyIcon } from '@deriv/utils';
 import { useFetch } from '@deriv/api';
 import useCurrencyConfig from './useCurrencyConfig';
 import usePlatformAccounts from './usePlatformAccounts';
-import useWalletList from './useWalletsList';
+import useWalletsList from './useWalletsList';
 import useActiveWallet from './useActiveWallet';
 
 const useWalletTransactions = (
@@ -15,7 +15,7 @@ const useWalletTransactions = (
         client: { loginid },
         ui: { is_dark_mode_on },
     } = useStore();
-    const { data: wallets } = useWalletList();
+    const { data: wallets } = useWalletsList();
     const current_wallet = useActiveWallet();
     const { demo: demo_platform_account } = usePlatformAccounts();
     const { real: real_platform_accounts } = usePlatformAccounts();
@@ -103,12 +103,18 @@ const useWalletTransactions = (
                               transaction.action_type === undefined
                           )
                               return null;
+
                           let account_category = 'wallet';
                           let account_type = current_wallet.account_type;
-                          let account_name = current_wallet.name;
+                          let account_name = `${current_wallet.is_virtual ? 'Demo ' : ''}${
+                              current_wallet.currency
+                          } ${'Wallet'}`;
                           let account_currency = current_wallet.currency;
                           let gradient_class = current_wallet.gradient_card_class;
-                          let icon = current_wallet.icon;
+                          let icon = getWalletCurrencyIcon(
+                              current_wallet.is_virtual ? 'demo' : current_wallet.currency || 'USD',
+                              is_dark_mode_on
+                          );
                           if (transaction.action_type === 'transfer') {
                               const other_loginid =
                                   transaction.to?.loginid === loginid
@@ -121,11 +127,21 @@ const useWalletTransactions = (
                               account_currency = other_account.currency;
                               account_name =
                                   other_account.account_category === 'wallet'
-                                      ? (
-                                            wallets.find(
-                                                el => el.loginid === other_account.loginid
-                                            ) as typeof wallets[number]
-                                        ).name
+                                      ? `${
+                                            (
+                                                wallets.find(
+                                                    el => el.loginid === other_account.loginid
+                                                ) as typeof wallets[number]
+                                            ).is_virtual
+                                                ? 'Demo '
+                                                : ''
+                                        }${
+                                            (
+                                                wallets.find(
+                                                    el => el.loginid === other_account.loginid
+                                                ) as typeof wallets[number]
+                                            ).currency
+                                        } ${'Wallet'}`
                                       : getTradingAccountName(
                                             other_account.account_type as 'standard' | 'mt5' | 'dxtrade' | 'binary',
                                             !!other_account.is_virtual,

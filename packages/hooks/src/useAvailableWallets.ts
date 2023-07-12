@@ -12,8 +12,8 @@ const useAvailableWallets = () => {
 
     // @ts-expect-error Need to update @deriv/api-types to fix the TS error
     const { data: account_type_data, ...rest } = useFetch('get_account_types', {
-        payload: { company: data?.authorize?.landing_company_name },
-        options: { enabled: Boolean(data?.authorize?.landing_company_name) },
+        payload: { company: data?.landing_company_name },
+        options: { enabled: Boolean(data?.landing_company_name) },
     });
 
     const { data: added_wallets } = useWalletsList();
@@ -32,7 +32,7 @@ const useAvailableWallets = () => {
         const modified_wallets = non_virtual_wallets?.map(wallet => ({
             currency: wallet.currency,
             landing_company_name: wallet.landing_company_name,
-            is_added: wallet.is_added,
+            is_added: true,
             gradient_card_class: wallet.gradient_card_class,
         }));
 
@@ -40,7 +40,7 @@ const useAvailableWallets = () => {
             .filter(currency => !modified_wallets?.some(wallet => wallet.currency === currency))
             .map(currency => ({
                 currency,
-                landing_company_name: data?.authorize?.landing_company_name,
+                landing_company_name: data?.landing_company_name,
                 is_added: false,
                 gradient_card_class: `wallet-card__${currency.toLowerCase()}-bg${is_dark_mode_on ? '--dark' : ''}`,
             }));
@@ -67,7 +67,7 @@ const useAvailableWallets = () => {
         }
 
         return [...available_wallets];
-    }, [added_wallets, account_type_data, data?.authorize?.landing_company_name, is_dark_mode_on, is_crypto]);
+    }, [added_wallets, account_type_data, data?.landing_company_name, is_dark_mode_on, is_crypto]);
 
     return {
         ...rest,

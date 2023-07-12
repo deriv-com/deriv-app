@@ -5,7 +5,7 @@ import { routes, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 
 type TInsufficientBalanceModal = RouteComponentProps & {
-    is_virtual: boolean;
+    is_virtual?: boolean;
     is_visible: boolean;
     message: string;
     toggleModal: () => void;

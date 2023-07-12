@@ -1,12 +1,13 @@
 import { action, makeObservable } from 'mobx';
-import { localize } from '@deriv/translations';
 import { log_types } from '@deriv/bot-skeleton';
+import { localize } from '@deriv/translations';
 
 export default class DownloadStore {
     constructor(root_store) {
         makeObservable(this, {
             onClickDownloadTransaction: action.bound,
             onClickDownloadJournal: action.bound,
+            getSuccessJournalMessage: action.bound,
         });
 
         this.root_store = root_store;

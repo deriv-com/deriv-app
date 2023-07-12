@@ -1,4 +1,4 @@
-import type { TStores } from '@deriv/stores';
+import type { TStores } from '@deriv/stores/types';
 import type CashierStore from '../stores/cashier-store';
 
 /**

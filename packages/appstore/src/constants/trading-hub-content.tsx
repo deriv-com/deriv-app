@@ -222,7 +222,7 @@ export const getTradingHubContents = (): TTradingHubContents => ({
             />
         ),
         footer_header: localize('Start trading'),
-        footer_text: localize('Click ‘Trade’ to start trading with your account'),
+        footer_text: localize('Click ‘Open’ to start trading with your account'),
         has_next_content: true,
         next_content: localize('Start trading'),
     },

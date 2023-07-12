@@ -91,6 +91,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
 
     const onSearchBlur = () => {
         RudderStack.track('ce_trade_types_form', {
+            action: 'search',
             search_string: search_query,
         });
     };

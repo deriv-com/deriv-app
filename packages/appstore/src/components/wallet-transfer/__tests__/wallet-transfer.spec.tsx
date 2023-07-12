@@ -227,12 +227,21 @@ jest.mock('@deriv/api', () => ({
 }));
 
 describe('WalletTransfer', () => {
-    const mocked_store = mockStore({});
+    const mock = mockStore({
+        client: {
+            loginid: 'CRW1030',
+            accounts: {
+                CRW1030: {
+                    token: 'token',
+                },
+            },
+        },
+    });
 
     it('Should render two amount inputs and two transfer account selectors', () => {
         render(
             <APIProvider>
-                <StoreProvider store={mocked_store}>
+                <StoreProvider store={mock}>
                     <WalletTransfer
                         contentScrollHandler={jest.fn()}
                         is_wallet_name_visible={false}

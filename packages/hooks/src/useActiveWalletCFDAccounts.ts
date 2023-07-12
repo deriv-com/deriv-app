@@ -51,7 +51,6 @@ const useActiveWalletCFDAccounts = () => {
         payload: { platform: 'dxtrade' },
     });
 
-    // @ts-expect-error Need to update @deriv/api-types to fix the TS error
     const ids = useMemo(() => wallet?.linked_to?.map(linked => linked.loginid), [wallet?.linked_to]);
 
     const mt5_accounts = useMemo(

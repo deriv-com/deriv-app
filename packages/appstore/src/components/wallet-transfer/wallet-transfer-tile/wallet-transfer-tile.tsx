@@ -83,7 +83,7 @@ const WalletTransferTile = ({
 
             return (
                 <Text as='div' size={size}>
-                    {localize('Balance')}: {formatMoney(account.currency, account.balance, true)}{' '}
+                    {localize('Balance')}: {formatMoney(account?.currency || '', account.balance, true)}{' '}
                     {account.display_currency_code}
                 </Text>
             );

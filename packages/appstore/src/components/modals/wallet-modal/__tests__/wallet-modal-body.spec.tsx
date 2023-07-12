@@ -22,19 +22,20 @@ describe('WalletModalBody', () => {
             wallet: {
                 balance: 1000,
                 currency: 'USD',
-                display_currency_code: 'USD',
-                gradient_card_class: '',
-                gradient_header_class: '',
+                currency_config: {
+                    display_code: 'USD',
+                    is_crypto: false,
+                } as typeof mocked_props['wallet']['currency_config'],
+                gradient_card_class: 'wallet-card__usd',
+                gradient_header_class: 'wallet-header__usd',
                 icon: '',
-                is_added: true,
-                is_crypto: false,
                 is_demo: true,
-                is_disabled: false,
+                is_disabled: 0,
                 is_malta_wallet: false,
                 is_selected: true,
-                is_virtual: true,
+                is_virtual: 1,
                 landing_company_name: 'svg',
-                name: 'Demo USD Wallet',
+                wallet_currency_type: 'Demo',
             },
         };
     });

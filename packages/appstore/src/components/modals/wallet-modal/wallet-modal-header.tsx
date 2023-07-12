@@ -21,7 +21,9 @@ const WalletModalHeader = ({
     is_wallet_name_visible,
     wallet,
 }: TWalletModalHeaderProps) => {
-    const { balance, currency, icon, is_crypto, is_demo, gradient_header_class, landing_company_name } = wallet;
+    const { balance, currency, icon, currency_config, is_demo, gradient_header_class, landing_company_name } = wallet;
+    const is_crypto = currency_config?.is_crypto;
+    const display_currency_code = currency_config?.display_code;
 
     const header_class_name = 'modal-header';
 
@@ -31,6 +33,13 @@ const WalletModalHeader = ({
         if (is_dark) return 'IcAppstoreCloseDark';
         return 'IcAppstoreCloseLight';
     }, [is_dark, is_demo]);
+
+    const getWalletIcon = React.useCallback(() => {
+        if (currency && ['USDT', 'eUSDT', 'tUSDT', 'UST'].includes(currency)) {
+            return is_dark ? 'IcWalletModalTetherDark' : 'IcWalletModalTetherLight';
+        }
+        return icon;
+    }, [currency, icon, is_dark]);
 
     const getStylesByClassName = (class_name: string) => {
         return classNames(class_name, {
@@ -62,7 +71,10 @@ const WalletModalHeader = ({
                             as='span'
                             className={getStylesByClassName(`${header_class_name}__title-wallet`)}
                         >
-                            {getAccountName({ ...wallet, account_type: 'wallet' })}
+                            {getAccountName({
+                                display_currency_code: wallet.currency_config?.display_code,
+                                account_type: 'wallet',
+                            })}
                         </Text>
                         <WalletJurisdictionBadge is_demo={is_demo} shortcode={landing_company_name} />
                     </div>
@@ -72,11 +84,11 @@ const WalletModalHeader = ({
                         weight='bold'
                         className={getStylesByClassName(`${header_class_name}__title-balance`)}
                     >
-                        {formatMoney(currency || '', balance, true)} {wallet.display_currency_code}
+                        {formatMoney(currency || '', balance, true)} {display_currency_code}
                     </Text>
                 </div>
                 <div className={classNames(`${header_class_name}__currency-icon icon-visibility`)}>
-                    <WalletIcon icon={icon} type={getWalletIconType()} size={getWalletIconSize()} />
+                    <WalletIcon icon={getWalletIcon()} type={getWalletIconType()} size={getWalletIconSize()} />
                 </div>
                 <div className={classNames(`${header_class_name}__close-icon`)}>
                     <Icon icon={getCloseIcon()} onClick={closeModal} data_testid='dt_close_icon' />

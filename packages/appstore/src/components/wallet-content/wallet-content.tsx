@@ -7,21 +7,21 @@ import EUDisclaimer from 'Components/eu-disclaimer';
 import './wallet-content.scss';
 
 type TProps = {
-    is_virtual: boolean;
+    is_demo: boolean;
     is_malta_wallet: boolean;
 };
 
-const WalletContent = ({ is_virtual, is_malta_wallet }: TProps) => {
+const WalletContent = ({ is_demo, is_malta_wallet }: TProps) => {
     return (
         <div
-            className={classNames('wallet-content', { 'wallet-content__demo': is_virtual })}
+            className={classNames('wallet-content', { 'wallet-content__demo': is_demo })}
             data-testid='dt_wallet-content'
         >
-            <ContentDivider is_demo_divider={is_virtual} />
+            <ContentDivider is_demo_divider={is_demo} />
             <WalletCfdsListing />
             <ContentDivider />
             <WalletOptionsAndMultipliersListing />
-            {is_malta_wallet && !is_virtual && (
+            {is_malta_wallet && !is_demo && (
                 <EUDisclaimer
                     is_wallet={true}
                     wrapperClassName='wallet-content__disclaimer'

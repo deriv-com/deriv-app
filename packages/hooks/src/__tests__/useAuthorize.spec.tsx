@@ -1,36 +1,30 @@
 import React from 'react';
-import { APIProvider, useFetch } from '@deriv/api';
+import { APIProvider } from '@deriv/api';
 import { renderHook } from '@testing-library/react-hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import useAuthorize from '../useAuthorize';
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useFetch: jest.fn(),
+    useFetch: jest.fn((_, options: Record<'payload', Record<'authorize', string>>) => ({
+        data: {
+            authorize: {
+                loginid: options.payload.authorize === '12345' ? 'CRW909900' : 'CRW909901',
+                account_list: [
+                    {
+                        account_category: 'wallet',
+                        currency: 'USD',
+                        is_virtual: 0,
+                    },
+                ],
+            },
+        },
+    })),
 }));
 
-const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'authorize'>>;
-
 describe('useAuthorize', () => {
-    test('should return wallets list for the current loginid', () => {
-        const mock = mockStore({
-            client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
-        });
-
-        mockUseFetch.mockReturnValue({
-            data: {
-                authorize: {
-                    account_list: [
-                        {
-                            // @ts-expect-error need to come up with a way to mock the return type of useFetch
-                            account_category: 'wallet',
-                            currency: 'USD',
-                            is_virtual: 0,
-                        },
-                    ],
-                },
-            },
-        });
+    test('should return correct data for the given token', () => {
+        const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <APIProvider>
@@ -40,8 +34,7 @@ describe('useAuthorize', () => {
 
         const { result } = renderHook(() => useAuthorize(), { wrapper });
 
-        expect(result.current.data).toEqual({
-            authorize: { account_list: [{ account_category: 'wallet', currency: 'USD', is_virtual: 0 }] },
-        });
+        expect(result.current.data.loginid).toBe('CRW909900');
+        expect(result.current.data.loginid).not.toBe('CRW909901');
     });
 });

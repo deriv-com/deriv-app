@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import WalletContent from '../wallet-content';
-import { TWalletAccount } from 'Types';
 
 const mockedRootStore = mockStore({
     modules: {
@@ -21,23 +20,10 @@ jest.mock('@deriv/hooks', () => ({
 }));
 
 describe('<WalletContent />', () => {
-    let mocked_props: TWalletAccount;
-    beforeEach(() => {
-        mocked_props = {
-            is_demo: false,
-            currency: 'USD',
-            landing_company_name: 'svg',
-            balance: 10000,
-            loginid: 'CR123123',
-            is_malta_wallet: false,
-            is_selected: false,
-        };
-    });
     it('Check class', () => {
-        mocked_props.landing_company_name = 'malta';
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent is_virtual={false} is_malta_wallet={false} />
+                <WalletContent is_demo={false} is_malta_wallet={false} />
             </StoreProvider>
         );
 
@@ -47,10 +33,9 @@ describe('<WalletContent />', () => {
     });
 
     it('Check class for demo', () => {
-        mocked_props.is_demo = true;
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent is_virtual={true} is_malta_wallet={false} />
+                <WalletContent is_demo={true} is_malta_wallet={false} />
             </StoreProvider>
         );
 
@@ -61,10 +46,9 @@ describe('<WalletContent />', () => {
 
     // data-testid='dt_disclaimer_wrapper'
     it('Check there is NOT disclaimer for demo', () => {
-        mocked_props.is_demo = true;
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent is_virtual={true} is_malta_wallet={false} />
+                <WalletContent is_demo={true} is_malta_wallet={false} />
             </StoreProvider>
         );
 
@@ -76,7 +60,7 @@ describe('<WalletContent />', () => {
     it('Check there is NOT disclaimer for Non-EU', () => {
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent is_virtual={false} is_malta_wallet={false} />
+                <WalletContent is_demo={false} is_malta_wallet={false} />
             </StoreProvider>
         );
 
@@ -86,11 +70,9 @@ describe('<WalletContent />', () => {
     });
 
     it('Check there is disclaimer for EU and not demo', () => {
-        mocked_props.landing_company_name = 'malta';
-        mocked_props.is_malta_wallet = true;
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent is_virtual={false} is_malta_wallet={true} />
+                <WalletContent is_demo={false} is_malta_wallet={true} />
             </StoreProvider>
         );
 

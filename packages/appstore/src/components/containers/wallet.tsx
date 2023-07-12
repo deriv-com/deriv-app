@@ -29,10 +29,7 @@ const Wallet = ({ wallet_account }: TWallet) => {
                 classNames='wallet__content-transition'
                 unmountOnExit
             >
-                <WalletContent
-                    is_virtual={wallet_account.is_virtual}
-                    is_malta_wallet={wallet_account.is_malta_wallet}
-                />
+                <WalletContent is_demo={wallet_account.is_demo} is_malta_wallet={wallet_account.is_malta_wallet} />
             </CSSTransition>
         </div>
     );

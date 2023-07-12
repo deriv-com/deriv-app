@@ -195,9 +195,7 @@ const CryptoWithdrawForm = observer(() => {
                     </form>
                 )}
             </Formik>
-            <MobileWrapper>
-                {isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
-            </MobileWrapper>
+            <MobileWrapper>{isCryptocurrency(currency) ? <RecentTransaction /> : null}</MobileWrapper>
         </div>
     );
 });

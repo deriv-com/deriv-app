@@ -2,9 +2,9 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import ServicesErrorModal from '../services-error-modal';
 
-jest.mock('../authorization-required-modal.jsx', () => jest.fn(() => 'AuthorizationRequiredModal'));
-jest.mock('../insufficient-balance-modal.jsx', () => jest.fn(() => 'InsufficientBalanceModal'));
-jest.mock('../company-wide-limit-exceeded-modal.jsx', () => jest.fn(() => 'CompanyWideLimitExceededModal'));
+jest.mock('../authorization-required-modal', () => jest.fn(() => 'AuthorizationRequiredModal'));
+jest.mock('../insufficient-balance-modal', () => jest.fn(() => 'InsufficientBalanceModal'));
+jest.mock('../company-wide-limit-exceeded-modal', () => jest.fn(() => 'CompanyWideLimitExceededModal'));
 jest.mock('../account-verification-required-modal', () => jest.fn(() => 'AccountVerificationRequiredModal'));
 type TModal = {
     (): JSX.Element;

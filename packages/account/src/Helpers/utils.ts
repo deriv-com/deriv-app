@@ -4,11 +4,11 @@ import {
     toMoment,
     validLength,
     validName,
-    IDV_NOT_APPLICABLE_OPTION,
+    getIDVNotApplicableOption,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { ResidenceList, GetSettings, GetAccountStatus } from '@deriv/api-types';
-import { FormikErrors, FormikValues } from 'formik';
+import { FormikValues } from 'formik';
 
 const getImageLocation = (image_name: string) => getUrlBase(`/public/images/common/${image_name}`);
 
@@ -34,6 +34,8 @@ const regex = [
         flags: 'i',
     },
 ];
+
+const IDV_NOT_APPLICABLE_OPTION = getIDVNotApplicableOption();
 
 // Note: Ensure that the object keys matches BE API's keys. This is simply a mapping for FE templates
 const idv_document_data = Object.freeze({

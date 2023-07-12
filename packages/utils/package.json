@@ -4,7 +4,7 @@
     "version": "1.0.0",
     "main": "src/index.ts",
     "dependencies": {
-        "@deriv/api-types": "^1.0.94",
+        "@deriv/api-types": "^1.0.112",
         "lodash.groupby": "^4.6.0",
         "lodash.pickby": "^4.6.0",
         "moment": "^2.29.2"

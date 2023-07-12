@@ -2,7 +2,7 @@ import { useStore } from '@deriv/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
 import useCurrencyConfig from './useCurrencyConfig';
 import usePlatformAccounts from './usePlatformAccounts';
-import useWalletList from './useWalletsList';
+import useWalletsList from './useWalletsList';
 import useActiveWallet from './useActiveWallet';
 import { useMemo } from 'react';
 
@@ -13,7 +13,7 @@ const useWalletTransactions = (
         client: { loginid, landing_company_shortcode: shortcode },
         ui: { is_dark_mode_on },
     } = useStore();
-    const { data: wallets } = useWalletList();
+    const { data: wallets } = useWalletsList();
     const current_wallet = useActiveWallet();
     let { demo: demo_platform_account } = usePlatformAccounts();
     const { real: real_platform_accounts } = usePlatformAccounts();
@@ -42,18 +42,18 @@ const useWalletTransactions = (
             account_type: 'crypto',
             balance: 0,
             currency: 'BTC',
-            gradient_header_class: '',
+            gradient_header_class: 'wallet-header__btc-bg',
             gradient_card_class: `wallet-card__btc-bg${is_dark_mode_on ? '--dark' : ''}`,
-            icon: getWalletCurrencyIcon('BTC', is_dark_mode_on),
             is_demo: !!current_wallet.is_virtual,
-            is_disabled: false,
+            is_disabled: 0,
             is_malta_wallet: false,
             is_selected: false,
-            is_virtual: Boolean(current_wallet.is_virtual),
+            is_virtual: current_wallet.is_virtual,
             landing_company_name: 'svg',
             loginid: 'CRWMOCK00042',
-            name: `${current_wallet.is_virtual ? 'Demo ' : ''}BTC Wallet`,
-            is_added: true,
+            currency_config: undefined,
+            icon: 'IcWalletCurrencyBtc',
+            wallet_currency_type: 'BTC',
         });
     const accounts = [demo_platform_account, ...real_platform_accounts];
     const { getConfig } = useCurrencyConfig();
@@ -256,12 +256,18 @@ const useWalletTransactions = (
                               transaction.action_type === undefined
                           )
                               return null;
+
                           let account_category = 'wallet';
                           let account_type = current_wallet.account_type;
-                          let account_name = current_wallet.name;
+                          let account_name = `${current_wallet.is_virtual ? 'Demo ' : ''}${
+                              current_wallet.currency
+                          } ${'Wallet'}`;
                           let account_currency = current_wallet.currency;
                           let gradient_class = current_wallet.gradient_card_class;
-                          let icon = current_wallet.icon;
+                          let icon = getWalletCurrencyIcon(
+                              current_wallet.is_virtual ? 'demo' : current_wallet.currency || 'USD',
+                              is_dark_mode_on
+                          );
                           if (transaction.action_type === 'transfer') {
                               const other_loginid =
                                   transaction.to?.loginid === loginid
@@ -274,11 +280,21 @@ const useWalletTransactions = (
                               account_currency = other_account.currency;
                               account_name =
                                   other_account.account_category === 'wallet'
-                                      ? (
-                                            wallets.find(
-                                                el => el.loginid === other_account.loginid
-                                            ) as typeof wallets[number]
-                                        ).name
+                                      ? `${
+                                            (
+                                                wallets.find(
+                                                    el => el.loginid === other_account.loginid
+                                                ) as typeof wallets[number]
+                                            ).is_virtual
+                                                ? 'Demo '
+                                                : ''
+                                        }${
+                                            (
+                                                wallets.find(
+                                                    el => el.loginid === other_account.loginid
+                                                ) as typeof wallets[number]
+                                            ).currency
+                                        } ${'Wallet'}`
                                       : getTradingAccountName(
                                             other_account.account_type as 'standard' | 'mt5' | 'dxtrade' | 'binary',
                                             !!other_account.is_virtual,

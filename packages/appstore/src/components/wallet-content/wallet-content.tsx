@@ -12,8 +12,6 @@ type TProps = {
 };
 
 const WalletContent = ({ wallet_account }: TProps) => {
-    const is_malta_wallet = wallet_account.is_malta_wallet;
-
     return (
         <div
             className={classNames('wallet-content', { 'wallet-content__demo': wallet_account.is_demo })}
@@ -23,7 +21,7 @@ const WalletContent = ({ wallet_account }: TProps) => {
             <WalletCfdsListing wallet_account={wallet_account} />
             <ContentDivider />
             <WalletOptionsAndMultipliersListing wallet_account={wallet_account} />
-            {is_malta_wallet && !wallet_account.is_demo && (
+            {wallet_account.is_malta_wallet && !wallet_account.is_demo && (
                 <EUDisclaimer
                     is_wallet={true}
                     wrapperClassName='wallet-content__disclaimer'

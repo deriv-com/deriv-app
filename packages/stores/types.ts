@@ -198,15 +198,6 @@ type TTradingPlatformAvailableAccount = {
 
 type TAuthenticationStatus = { document_status: string; identity_status: string };
 
-type TMenuItem = {
-    icon: JSX.Element;
-    id: string;
-    link_to: string | boolean;
-    login_only: boolean;
-    onClick: boolean | (() => void);
-    text: () => string;
-};
-
 type TAddToastProps = {
     key: string;
     content: string;
@@ -552,11 +543,6 @@ type TContractStore = {
     getContractById: (id: number) => ProposalOpenContract;
 };
 
-type TMenuStore = {
-    attach: (item: TMenuItem) => void;
-    update: (menu: TMenuItem, index: number) => void;
-};
-
 type TNotificationStore = {
     addNotificationMessage: (message: TNotification) => void;
     addNotificationMessageByKey: (key: string) => void;
@@ -644,7 +630,6 @@ type TTradersHubStore = {
 export type TCoreStores = {
     client: TClientStore;
     common: TCommonStore;
-    menu: TMenuStore;
     ui: TUiStore;
     portfolio: TPortfolioStore;
     contract_trade: TContractStore;

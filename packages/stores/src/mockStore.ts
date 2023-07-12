@@ -396,10 +396,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             active_modal_wallet_id: '',
             setWalletModalActiveWalletID: jest.fn(),
         },
-        menu: {
-            attach: jest.fn(),
-            update: jest.fn(),
-        },
         notifications: {
             addNotificationMessage: jest.fn(),
             addNotificationMessageByKey: jest.fn(),

@@ -281,18 +281,6 @@ const CryptoTransactionsRenderer = observer(({ row: crypto, onTooltipClick }: TC
                             </Text>
                         ))}
                 </Table.Cell>
-                <Table.Cell>
-                    <Text as='p' size='xs' color='red'>
-                        {crypto.confirmations ?? 0}/12
-                    </Text>
-                </Table.Cell>
-                {!is_transaction_clicked && (
-                    <Table.Cell className='crypto-transactions-history__table-confirmations'>
-                        <Text as='p' size='xs' color='red'>
-                            {status?.confirmation_label}
-                        </Text>
-                    </Table.Cell>
-                )}
                 {!is_transaction_clicked && (
                     <Table.Cell className='crypto-transactions-history__table-confirmations'>
                         <Text as='p' size='xs' color='red'>

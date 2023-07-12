@@ -149,11 +149,7 @@ describe('<TradeCategores />', () => {
     });
     it('Ensure trade category "vanilla" description is rendered properly', () => {
         render(<TradeCategories category='vanilla' onClick={jest.fn()} />);
-        expect(
-            screen.getByText(
-                /Predict the market direction and movement size, and select either “Call” or “Put” to open a position./i
-            )
-        ).toBeInTheDocument();
+        expect(screen.getByText(/Vanilla options allow you to predict an upward (bullish)/i)).toBeInTheDocument();
     });
     it('Ensure description is not found is rendered when trade category doesnt exist', () => {
         render(<TradeCategories category='some_trade_type' onClick={jest.fn()} />);

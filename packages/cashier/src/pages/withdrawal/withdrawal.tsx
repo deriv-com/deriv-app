@@ -7,7 +7,7 @@ import { useCashierLocked, useCheck10kLimit, useIsSystemMaintenance, useWithdraw
 import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
 import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
-import WithdrawalLocked from '../../modules/withdrawal-locked/withdrawal-locked';
+import { WithdrawalLockedModule } from '../../modules/withdrawal-locked';
 import CashierLocked from '../../components/cashier-locked';
 import Error from '../../components/error';
 import NoBalance from '../../components/no-balance';
@@ -143,7 +143,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
     }
 
     if (is_withdrawal_locked || is_10k_withdrawal_limit_reached) {
-        return <WithdrawalLocked />;
+        return <WithdrawalLockedModule />;
     }
 
     if (!Number(balance)) {

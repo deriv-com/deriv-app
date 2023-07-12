@@ -1,4 +1,3 @@
-import type { ElementType } from 'react';
 import type {
     AccountLimitsResponse,
     Authorize,
@@ -6,17 +5,75 @@ import type {
     GetAccountStatus,
     GetLimits,
     GetSettings,
-    LogOutResponse,
     LandingCompany,
-    ResidenceList,
-    StatesList,
+    LogOutResponse,
     ProposalOpenContract,
+    ResidenceList,
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
+    StatesList,
 } from '@deriv/api-types';
 import type { Moment } from 'moment';
 import type { RouteComponentProps } from 'react-router';
 import type { ExchangeRatesStore, FeatureFlagsStore } from './src/stores';
+
+type TRoutes =
+    | '/404'
+    | '/account'
+    | '/account/trading-assessment'
+    | '/account/languages'
+    | '/account/financial-assessment'
+    | '/account/personal-details'
+    | '/account/proof-of-identity'
+    | '/account/proof-of-address'
+    | '/account/proof-of-ownership'
+    | '/account/passwords'
+    | '/account/closing-account'
+    | '/account/deactivate-account'
+    | '/account-closed'
+    | '/account/account-limits'
+    | '/account/connected-apps'
+    | '/account/api-token'
+    | '/account/login-history'
+    | '/account/two-factor-authentication'
+    | '/account/self-exclusion'
+    | '/settings/account_password'
+    | '/settings/apps'
+    | '/settings/cashier_password'
+    | '/contract/:contract_id'
+    | '/settings/exclusion'
+    | '/settings/financial'
+    | '/settings/history'
+    | '/index'
+    | '/settings/limits'
+    | '/mt5'
+    | '/derivx'
+    | '/settings/personal'
+    | '/reports/positions'
+    | '/reports/profit'
+    | '/reports'
+    | '/'
+    | '/redirect'
+    | '/settings'
+    | '/reports/statement'
+    | '/settings/token'
+    | '/bot'
+    | '/cashier'
+    | '/cashier/deposit'
+    | '/cashier/withdrawal'
+    | '/cashier/payment-agent'
+    | '/cashier/account-transfer'
+    | '/cashier/crypto-transactions'
+    | '/cashier/on-ramp'
+    | '/cashier/p2p'
+    | '/cashier/p2p/profile'
+    | '/cashier/p2p/verification'
+    | '/cashier/payment-agent-transfer'
+    | '/endpoint'
+    | '/complaints-policy'
+    | '/appstore'
+    | '/appstore/traders-hub'
+    | '/appstore/onboarding';
 
 type TPopulateSettingsExtensionsMenuItem = {
     icon: string;
@@ -24,33 +81,6 @@ type TPopulateSettingsExtensionsMenuItem = {
     value: <T extends object>(props: T) => JSX.Element;
 };
 
-type TAccountLimitsCollection = {
-    level?: string;
-    name: string;
-    payout_limit: number;
-    profile_name: string;
-    turnover_limit: number;
-};
-type TAccount_limits = {
-    api_initial_load_error?: string;
-    open_positions?: React.ReactNode;
-    account_balance: string | number;
-    daily_transfers?: object;
-    payout: string | number;
-    lifetime_limit?: number;
-    market_specific: {
-        commodities: TAccountLimitsCollection[];
-        cryptocurrency: TAccountLimitsCollection[];
-        forex: TAccountLimitsCollection[];
-        indices: TAccountLimitsCollection[];
-        synthetic_index: TAccountLimitsCollection[];
-    };
-    num_of_days?: number;
-    num_of_days_limit: string | number;
-    remainder: string | number;
-    withdrawal_for_x_days_monetary?: number;
-    withdrawal_since_inception_monetary: string | number;
-};
 type TAppRoutingHistory = {
     action: string;
     hash: string;
@@ -323,6 +353,7 @@ type TClientStore = {
     has_account_error_in_dxtrade_demo_list: boolean;
     is_fully_authenticated: boolean;
     states_list: StatesList;
+    /** @deprecated Use `useCurrencyConfig` or `useCurrentCurrencyConfig` from `@deriv/hooks` package instead. */
     is_crypto: (currency?: string) => boolean;
     dxtrade_accounts_list: DetailsOfEachMT5Loginid[];
     derivez_accounts_list: DetailsOfEachMT5Loginid[];
@@ -335,7 +366,9 @@ type TClientStore = {
     is_svg: boolean;
     real_account_creation_unlock_date: string;
     setPrevAccountType: (account_type: string) => void;
-    setFinancialAndTradingAssessment: (payload: SetFinancialAssessmentRequest) => SetFinancialAssessmentResponse;
+    setFinancialAndTradingAssessment: (
+        payload: SetFinancialAssessmentRequest
+    ) => Promise<SetFinancialAssessmentResponse>;
 };
 
 type TCommonStoreError = {
@@ -388,14 +421,14 @@ type TUiStore = {
     openRealAccountSignup: (
         value: 'maltainvest' | 'svg' | 'add_crypto' | 'choose' | 'add_fiat' | 'set_currency' | 'manage'
     ) => void;
-    notification_messages_ui: ElementType;
+    notification_messages_ui: React.ElementType;
     setCurrentFocus: (value: string) => void;
     setDarkMode: (is_dark_mode_on: boolean) => boolean;
     setReportsTabIndex: (value: number) => void;
     setIsClosingCreateRealAccountModal: (value: boolean) => void;
     setRealAccountSignupEnd: (status: boolean) => void;
     setSubSectionIndex: (index: number) => void;
-    shouldNavigateAfterChooseCrypto: (value: string) => void;
+    shouldNavigateAfterChooseCrypto: (value: Omit<string, TRoutes> | TRoutes) => void;
     toggleAccountsDialog: () => void;
     toggleCashier: () => void;
     toggleLanguageSettingsModal: () => void;

@@ -19,7 +19,7 @@ const mock_root_store = mockStore({
     },
 });
 
-const mock_get_account_status = {
+const mock_get_account_status: any = {
     get_account_status: {
         authentication: {
             document: {

@@ -84,7 +84,7 @@ const AccountActions = () => {
                         : ''}
                     <span className='symbols'>&nbsp;{currency ? currency : translate('No currency assigned')}</span>
                     {active_account_name.includes('MF') && !is_virtual && (
-                        <div className='is_symbol_multiplier'>{translate('Multipliers')}</div>
+                        <div className='is_symbol_multiplier'>{translate('Multiplers')}</div>
                     )}
                 </div>
                 <img

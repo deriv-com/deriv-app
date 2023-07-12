@@ -1,5 +1,6 @@
 import React from 'react';
 import config from '../../../../../../app.config';
+import { translate } from '../../../../../../common/i18n';
 
 const MenuLinks = () => (
     <div className='header__menu-item header__menu-links client_logged_in'>
@@ -10,7 +11,7 @@ const MenuLinks = () => (
                         <img className='header__icon-text reports-icon' src='image/traders_hub.png' />
                     </div>
                     <div>
-                        <p className='header__menu-item_label'>{config.tradershub.label}</p>
+                        <p className='header__menu-item_label'>{translate(config.tradershub.label)}</p>
                     </div>
                 </a>
             </div>
@@ -22,7 +23,7 @@ const MenuLinks = () => (
                         <img className='header__icon-text reports-icon' src='image/deriv/ic-reports.svg' />
                     </div>
                     <div>
-                        <p className='header__menu-item_label'>{config.reports.label}</p>
+                        <p className='header__menu-item_label'>{translate(config.reports.label)}</p>
                     </div>
                 </a>
             </div>
@@ -33,7 +34,7 @@ const MenuLinks = () => (
                     <div className='header__icon-container'>
                         <img id='cashier_icon' className='header__icon-text' src='image/deriv/ic-cashier.svg' />
                     </div>
-                    <p className='header__menu-item_label'>{config.cashier.label}</p>
+                    <p className='header__menu-item_label'>{translate(config.cashier.label)}</p>
                 </a>
             </div>
         )}

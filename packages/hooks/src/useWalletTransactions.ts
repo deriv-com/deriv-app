@@ -48,7 +48,7 @@ const useWalletTransactions = (
     };
 
     const { data, isLoading, isSuccess } = useFetch('statement', {
-        options: { keepPreviousData: true },
+        options: { keepPreviousData: false },
         payload: {
             // @ts-expect-error reset_balance is not supported in the API yet
             action_type: action_type || undefined,
@@ -57,6 +57,7 @@ const useWalletTransactions = (
         },
     });
 
+    const [is_resetting, setIsResetting] = useState(false);
     const [is_complete_list, setIsCompleteList] = useState(false);
 
     const [transactions, setTransactions] = useState<
@@ -64,18 +65,23 @@ const useWalletTransactions = (
     >([]);
 
     useEffect(() => {
-        if (is_complete_list) return;
+        if (is_resetting || is_complete_list || isLoading || !isSuccess) return;
         if (data?.statement?.count === 0) setIsCompleteList(true);
         const new_transactions = data?.statement?.transactions;
-        if (new_transactions && !isLoading && isSuccess) {
-            setTransactions(prev => [...prev, ...new_transactions]);
-        }
-    }, [is_complete_list, data?.statement, isLoading, isSuccess]);
+        if (new_transactions) setTransactions(prev => [...prev, ...new_transactions]);
+    }, [is_resetting, is_complete_list, data?.statement, isLoading, isSuccess]);
 
     useEffect(() => {
-        setIsCompleteList(false);
-        setTransactions([]);
+        setIsResetting(true);
     }, [action_type]);
+
+    useEffect(() => {
+        if (is_resetting) {
+            setIsCompleteList(false);
+            setTransactions([]);
+            setIsResetting(false);
+        }
+    }, [is_resetting]);
 
     const modified_transactions = useMemo(
         () =>

@@ -7,6 +7,7 @@ import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
 import { useCashierLocked } from '@deriv/hooks';
+import { WithdrawalEmailVerificationModule } from '../../../modules/withdrawal-email-verification';
 
 let mock_is_withdrawal_locked = false;
 let mock_is_10k_withdrawal_limit_reached = true;
@@ -20,7 +21,9 @@ jest.mock('../withdraw/withdraw', () => jest.fn(() => 'Withdraw'));
 jest.mock('../crypto-withdraw-form', () => jest.fn(() => 'CryptoWithdrawForm'));
 jest.mock('../crypto-withdraw-receipt', () => jest.fn(() => 'CryptoWithdrawReceipt'));
 jest.mock('Components/crypto-transactions-history', () => jest.fn(() => 'CryptoTransactionsHistory'));
-jest.mock('../withdrawal-verification-email', () => jest.fn(() => 'WithdrawalVerificationEmail'));
+jest.mock('../../../../src/modules/withdrawal-email-verification/withdrawal-email-verification', () =>
+    jest.fn(() => 'WithdrawalEmailVerificationModule')
+);
 jest.mock('Components/recent-transaction', () => jest.fn(() => 'RecentTransaction'));
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -55,8 +58,6 @@ const cashier_mock = {
         onMount: jest.fn(),
     },
     withdraw: {
-        check10kLimit: jest.fn(),
-        is_10k_withdrawal_limit_reached: false,
         is_withdraw_confirmed: false,
         error: {
             setErrorMessage: jest.fn(),
@@ -156,6 +157,26 @@ describe('<Withdrawal />', () => {
         expect(screen.getByText('CashierLocked')).toBeInTheDocument();
     });
 
+    it('should render <WithdrawalLocked /> component', () => {
+        mock_is_withdrawal_locked = true;
+        const mock_root_store = mockStore({
+            client: {
+                balance: '1000',
+                currency: 'USD',
+            },
+            modules: {
+                cashier: cashier_mock,
+            },
+        });
+        const { rerender } = render(mockWithdrawal(mock_root_store));
+        expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
+
+        mock_is_10k_withdrawal_limit_reached = true;
+
+        rerender(mockWithdrawal(mock_root_store));
+        expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
+    });
+
     it('should render <NoBalance /> component', () => {
         mock_is_10k_withdrawal_limit_reached = false;
         mock_is_withdrawal_locked = false;
@@ -215,12 +236,8 @@ describe('<Withdrawal />', () => {
             modules: { cashier: cashier_mock },
         });
 
-        const { rerender } = render(mockWithdrawal(mock_root_store));
+        render(mockWithdrawal(mock_root_store));
         expect(screen.getByText('Withdraw')).toBeInTheDocument();
-
-        // rerender(mockWithdrawal(mock_root_store));
-
-        // expect(screen.getByText('Withdraw')).toBeInTheDocument();
     });
 
     it('should render <CryptoWithdrawForm /> component', () => {
@@ -291,6 +308,21 @@ describe('<Withdrawal />', () => {
         render(mockWithdrawal(mock_root_store));
 
         expect(screen.getByText('CryptoTransactionsHistory')).toBeInTheDocument();
+    });
+
+    it('should render <WithdrawalEmailVerificationModule />', () => {
+        mock_is_10k_withdrawal_limit_reached = false;
+        mock_is_withdrawal_locked = false;
+        const mock_root_store = mockStore({
+            client: {
+                balance: '1000',
+                currency: 'USD',
+            },
+            modules: { cashier: cashier_mock },
+        });
+
+        render(mockWithdrawal(mock_root_store));
+        expect(screen.getByText('WithdrawalEmailVerificationModule')).toBeInTheDocument();
     });
 
     it('should not trigger "setSideNotes" callback if "isDesktop = false"', () => {

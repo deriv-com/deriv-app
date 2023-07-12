@@ -8,12 +8,15 @@ import CashierProviders from '../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
 import { useCashierLocked } from '@deriv/hooks';
 
+let mock_is_withdrawal_locked = false;
+let mock_is_10k_withdrawal_limit_reached = true;
+
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 jest.mock('Components/cashier-container/virtual', () => jest.fn(() => 'Virtual'));
-jest.mock('../withdrawal-locked', () => jest.fn(() => 'WithdrawalLocked'));
+jest.mock('../../../../src/modules/withdrawal-locked/withdrawal-locked', () => jest.fn(() => 'WithdrawalLocked'));
 jest.mock('Components/no-balance', () => jest.fn(() => 'NoBalance'));
 jest.mock('Components/error', () => jest.fn(() => 'Error'));
-jest.mock('../withdraw', () => jest.fn(() => 'Withdraw'));
+jest.mock('../withdraw/withdraw', () => jest.fn(() => 'Withdraw'));
 jest.mock('../crypto-withdraw-form', () => jest.fn(() => 'CryptoWithdrawForm'));
 jest.mock('../crypto-withdraw-receipt', () => jest.fn(() => 'CryptoWithdrawReceipt'));
 jest.mock('Components/crypto-transactions-history', () => jest.fn(() => 'CryptoTransactionsHistory'));
@@ -31,12 +34,18 @@ jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useCashierLocked: jest.fn(() => false),
     useCheck10kLimit: jest.fn(() => ({
-        is_10k_withdrawal_limit_reached: undefined,
+        is_10k_withdrawal_limit_reached: mock_is_10k_withdrawal_limit_reached,
+    })),
+    useWithdrawalLocked: jest.fn(() => ({
+        is_withdrawal_locked: mock_is_withdrawal_locked,
     })),
 }));
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
 
 const cashier_mock = {
+    error: {
+        is_ask_authentication: false,
+    },
     general_store: {
         is_crypto: false,
         setActiveTab: jest.fn(),
@@ -49,7 +58,6 @@ const cashier_mock = {
         check10kLimit: jest.fn(),
         is_10k_withdrawal_limit_reached: false,
         is_withdraw_confirmed: false,
-        is_withdrawal_locked: false,
         error: {
             setErrorMessage: jest.fn(),
         },
@@ -66,6 +74,8 @@ describe('<Withdrawal />', () => {
     beforeEach(() => {
         setSideNotes = jest.fn();
         mockUseCashierLocked.mockReturnValue(false);
+        mock_is_10k_withdrawal_limit_reached = false;
+        mock_is_withdrawal_locked = false;
     });
 
     const mockWithdrawal = (mock_root_store: ReturnType<typeof mockStore>, is_rerender = false) => {
@@ -79,6 +89,7 @@ describe('<Withdrawal />', () => {
     };
 
     it('should render <CashierLocked /> component', () => {
+        mock_is_withdrawal_locked = true;
         const mock_root_store = mockStore({
             client: {
                 account_status: { cashier_validation: ['system_maintenance'] },
@@ -92,6 +103,9 @@ describe('<Withdrawal />', () => {
                     withdraw: {
                         ...cashier_mock.withdraw,
                         is_withdrawal_locked: true,
+                    },
+                    error: {
+                        is_ask_authentication: false,
                     },
                 },
             },
@@ -143,6 +157,8 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <NoBalance /> component', () => {
+        mock_is_10k_withdrawal_limit_reached = false;
+        mock_is_withdrawal_locked = false;
         const mock_root_store = mockStore({
             client: {
                 balance: '0',
@@ -156,6 +172,8 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <Error /> component', () => {
+        mock_is_10k_withdrawal_limit_reached = false;
+        mock_is_withdrawal_locked = false;
         const mock_root_store = mockStore({
             client: {
                 balance: '1000',
@@ -185,7 +203,29 @@ describe('<Withdrawal />', () => {
         expect(screen.getByText('Error')).toBeInTheDocument();
     });
 
+    it('should render <Withdraw /> component', () => {
+        mock_is_10k_withdrawal_limit_reached = false;
+        mock_is_withdrawal_locked = false;
+        const mock_root_store = mockStore({
+            client: {
+                balance: '1000',
+                currency: 'USD',
+                verification_code: { payment_withdraw: 'verification_code' },
+            },
+            modules: { cashier: cashier_mock },
+        });
+
+        const { rerender } = render(mockWithdrawal(mock_root_store));
+        expect(screen.getByText('Withdraw')).toBeInTheDocument();
+
+        // rerender(mockWithdrawal(mock_root_store));
+
+        // expect(screen.getByText('Withdraw')).toBeInTheDocument();
+    });
+
     it('should render <CryptoWithdrawForm /> component', () => {
+        mock_is_10k_withdrawal_limit_reached = false;
+        mock_is_withdrawal_locked = false;
         const mock_root_store = mockStore({
             client: {
                 balance: '1000',
@@ -208,6 +248,8 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <CryptoWithdrawReceipt /> component', () => {
+        mock_is_10k_withdrawal_limit_reached = false;
+        mock_is_withdrawal_locked = false;
         const mock_root_store = mockStore({
             client: {
                 balance: '1000',
@@ -229,6 +271,8 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <CryptoTransactionsHistory /> component', () => {
+        mock_is_10k_withdrawal_limit_reached = false;
+        mock_is_withdrawal_locked = false;
         const mock_root_store = mockStore({
             client: {
                 balance: '1000',
@@ -250,6 +294,8 @@ describe('<Withdrawal />', () => {
     });
 
     it('should not trigger "setSideNotes" callback if "isDesktop = false"', () => {
+        mock_is_10k_withdrawal_limit_reached = false;
+        mock_is_withdrawal_locked = false;
         const mock_root_store = mockStore({
             client: {
                 account_status: { cashier_validation: ['system_maintenance'] },
@@ -275,6 +321,8 @@ describe('<Withdrawal />', () => {
     });
 
     it('should trigger "setSideNotes" callback in Desktop mode', () => {
+        mock_is_10k_withdrawal_limit_reached = false;
+        mock_is_withdrawal_locked = false;
         const mock_root_store = mockStore({
             client: {
                 balance: '1000',

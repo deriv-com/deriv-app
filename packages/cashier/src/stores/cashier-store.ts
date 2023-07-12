@@ -1,5 +1,6 @@
 import AccountTransferStore from './account-transfer-store';
 import CryptoFiatConverterStore from './crypto-fiat-converter-store';
+import DepositStore from './deposit-store';
 import ErrorDialogStore from './error-dialog-store';
 import ErrorStore from './error-store';
 import GeneralStore from './general-store';
@@ -13,6 +14,7 @@ import type { TRootStore, TWebSocket } from '../types';
 export default class CashierStore {
     account_transfer: AccountTransferStore;
     crypto_fiat_converter: CryptoFiatConverterStore;
+    deposit: DepositStore;
     error_dialog: ErrorDialogStore;
     error: ErrorStore;
     general_store: GeneralStore;
@@ -25,6 +27,7 @@ export default class CashierStore {
     constructor(public root_store: TRootStore, public WS: TWebSocket) {
         this.account_transfer = new AccountTransferStore(WS, root_store);
         this.crypto_fiat_converter = new CryptoFiatConverterStore(root_store);
+        this.deposit = new DepositStore(WS, root_store);
         this.error = new ErrorStore();
         this.error_dialog = new ErrorDialogStore();
         this.general_store = new GeneralStore(WS, root_store);

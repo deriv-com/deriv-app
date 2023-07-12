@@ -95,9 +95,9 @@ const TabContent = ({ tab = 'real', isActive, setIsAccDropdownOpen, accounts, ti
                                                 {demo_account
                                                     ? translate('Demo')
                                                     : account.account?.includes('MF') &&
-                                                      active_account_name?.includes('MF')
-                                                    ? 'Multiplers'
-                                                    : config.currency_name_map[currency]?.name || currency}
+                                                        active_account_name?.includes('MF')
+                                                        ? translate('Multiplers')
+                                                        : config.currency_name_map[currency]?.name || currency}
 
                                                 <div className='account__switcher-loginid'>{account.account}</div>
                                             </span>

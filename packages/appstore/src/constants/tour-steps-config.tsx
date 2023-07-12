@@ -108,7 +108,7 @@ export const getWalletStepConfig = (): Step[] => [
                 {localize('This is your Wallet. You can see your total balance for this Wallet here.')}
             </Text>
         ),
-        // The 'target' refers to the element where the spotlight will be positioned. If there are multiple elements with the same class name, the 'target' will select the first matching element.
+        // The 'target' refers to the element where the spotlight will be positioned. If there are multiple elements with the same class name, the 'target' will select the first element.
         target: '.wallet-header',
         disableBeacon: true,
         disableOverlayClose: true,
@@ -165,6 +165,118 @@ export const getWalletStepConfig = (): Step[] => [
         disableOverlayClose: true,
         spotlightPadding: 8,
         styles: { spotlight: { borderRadius: '4.8rem' } },
+    },
+    {
+        title: (
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize('CFDs trading accounts')}
+                </Text>
+                <div className='toggle-account-type__divider' />
+            </React.Fragment>
+        ),
+        content: (
+            // TODO: update this component if there's a cfd account
+            <Text as='p' size='xs'>
+                {localize(
+                    'This is your CFDs trading account. Click Get to create the trading account you desire for trading.'
+                )}
+            </Text>
+        ),
+        target: '#trading-app-card__derived',
+        disableBeacon: true,
+        disableOverlayClose: true,
+        spotlightPadding: 3,
+        placement: 'right',
+        styles: { spotlight: { borderRadius: '0.6rem', height: '100px' } },
+    },
+    {
+        title: (
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize('Deriv Apps trading account')}
+                </Text>
+                <div className='toggle-account-type__divider' />
+            </React.Fragment>
+        ),
+        content: (
+            <Text as='p' size='xs'>
+                {localize(
+                    'This is your Deriv Apps trading account balance. Click Transfer to move funds between your Wallet and Deriv Apps trading account.'
+                )}
+            </Text>
+        ),
+        target: '.currency-switcher-container',
+        disableBeacon: true,
+        disableOverlayClose: true,
+        placement: 'left',
+        spotlightPadding: 0,
+        styles: {
+            spotlight: { borderRadius: '0.6rem' },
+        },
+    },
+    {
+        title: (
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize('Deriv apps')}
+                </Text>
+                <div className='toggle-account-type__divider' />
+            </React.Fragment>
+        ),
+        content: (
+            <Text as='p' size='xs'>
+                {localize('Choose a Deriv app to trade options or multipliers.')}
+            </Text>
+        ),
+        target: '#trading-app-card__dtrader',
+        disableBeacon: true,
+        disableOverlayClose: true,
+        spotlightPadding: 3,
+        placement: 'right',
+        styles: { spotlight: { borderRadius: '0.6rem', height: '100px' } },
+    },
+    {
+        title: (
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize('Explore more Wallets')}
+                </Text>
+                <div className='toggle-account-type__divider' />
+            </React.Fragment>
+        ),
+        content: (
+            <Text as='p' size='xs'>
+                {localize('Click Add on each card for more Wallets.')}
+            </Text>
+        ),
+        target: '.add-wallets__card',
+        disableBeacon: true,
+        disableOverlayClose: true,
+        spotlightPadding: 0,
+        placement: 'right',
+        styles: { spotlight: { borderRadius: '1.7rem' } },
+    },
+    {
+        title: (
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize("Trader's Hub tour")}
+                </Text>
+                <div className='toggle-account-type__divider' />
+            </React.Fragment>
+        ),
+        content: (
+            <Text as='p' size='xs'>
+                {localize('Click here to repeat this tour.')}
+            </Text>
+        ),
+        target: '.trading-hub-header__tradinghub--onboarding',
+        disableBeacon: true,
+        disableOverlayClose: true,
+        spotlightPadding: 12,
+        placement: 'right',
+        styles: { spotlight: { borderRadius: '0.4rem' } },
     },
 ];
 
@@ -267,6 +379,7 @@ export const getHighRiskTourStepLocale = (): Locale => ({
 
 export const getWalletStepLocale = (): Locale => ({
     back: <SpanButton has_effect text={localize('Back')} secondary medium />,
+    last: localize('Close'),
     next: localize('Next'),
     skip: <Icon icon='IcCross' size={16} />,
 });

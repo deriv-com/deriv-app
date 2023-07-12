@@ -1,40 +1,44 @@
 import React from 'react';
-import Joyride, { StoreState } from 'react-joyride';
-import { Localize } from '@deriv/translations';
+import Joyride, { EVENTS, StoreState } from 'react-joyride';
 import { useStore, observer } from '@deriv/stores';
 import { getWalletStepConfig, getWalletStepLocale, wallet_tour_styles } from 'Constants/tour-steps-config';
 
 const WalletTourGuide = observer(() => {
     const { traders_hub } = useStore();
     const { is_wallet_tour_open, toggleIsWalletTourOpen } = traders_hub;
+    const [scroll_offset, setScrollOffset] = React.useState<number>(200);
 
     const wallet_tour_step_locale = getWalletStepLocale();
 
     const handleJoyrideCallback = (data: StoreState) => {
-        const { action } = data;
-        if (action === 'skip') toggleIsWalletTourOpen(false);
-    };
+        const { index, type } = data;
 
-    // this will be replaced later with Done once pt.2 is started
-    wallet_tour_step_locale.last = (
-        <div onClick={() => toggleIsWalletTourOpen(false)}>
-            <Localize i18n_default_text='Next' />
-        </div>
-    );
+        // adding scroll offset for certain steps to make it more visible
+        if (index === 5) {
+            setScrollOffset(80);
+        } else {
+            setScrollOffset(200);
+        }
+
+        if ([EVENTS.TOUR_END || EVENTS.TOOLTIP_CLOSE].includes(type)) {
+            toggleIsWalletTourOpen(false);
+        }
+    };
 
     return (
         <Joyride
-            run={is_wallet_tour_open}
+            callback={handleJoyrideCallback}
             continuous
+            disableCloseOnEsc
+            floaterProps={{ disableAnimation: true }}
             hideCloseButton
+            locale={wallet_tour_step_locale}
+            run={is_wallet_tour_open}
+            scrollOffset={scroll_offset}
+            scrollToFirstStep
             showSkipButton
             steps={getWalletStepConfig()}
             styles={wallet_tour_styles}
-            locale={wallet_tour_step_locale}
-            floaterProps={{ disableAnimation: true }}
-            callback={handleJoyrideCallback}
-            scrollOffset={200}
-            scrollToFirstStep
         />
     );
 });

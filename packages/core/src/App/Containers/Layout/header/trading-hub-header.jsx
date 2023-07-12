@@ -62,7 +62,12 @@ const TradingHubOnboarding = ({
         if (wallet?.loginid !== first_loginid) {
             await switchAccount(first_loginid);
         }
-        if (!is_wallet_switching) toggleIsWalletTourOpen(true);
+        if (!is_wallet_switching) {
+            // adding a delay to allow the account switcher to close before opening the tour
+            setTimeout(() => {
+                toggleIsWalletTourOpen(true);
+            }, 500);
+        }
     };
 
     return (

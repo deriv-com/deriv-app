@@ -47,6 +47,7 @@
                 }
             })();
         </script>
+
         <script type="text/javascript">
             var ui_store = localStorage.getItem('ui_store');
             var l = window.location;
@@ -332,5 +333,40 @@
             })(window, document, [].slice);
         </script>
         <!-- End LiveChat script -->
+
+        <!-- Setting up P2P meta tags -->
+        <script type="text/javascript">
+            const current_url = window.location.href;
+            const is_p2p = current_url.includes('p2p');
+            console.log(is_p2p);
+
+            if (is_p2p) {
+                const meta_tags = {
+                    'og:description': 'P2P description',
+                    'og:title': 'P2P title',
+                    'og:image':
+                        'https://play-lh.googleusercontent.com/ah8RkaAnph2gouJ48fVeybeJgw-tu2dzTDYL7miccIWxvd0ZcK5-MM20bGxjpjb2lXU',
+                };
+
+                // loop over meta tags and add them to the head
+                for (const [key, value] of Object.entries(meta_tags)) {
+                    // Get an element if it exists already
+                    let element = document.querySelector(`meta[property~='${key}']`);
+
+                    // Check if the element exists
+                    if (element) {
+                        // If it does just change the content of the element
+                        element.setAttribute('content', value);
+                    } else {
+                        // It doesn't exist so lets make a HTML element string with the info we want
+                        element = `<meta property=${key} content="${value}" />`;
+
+                        // And insert it into the head
+                        document.head.insertAdjacentHTML('beforeend', element);
+                    }
+                }
+            }
+        </script>
+        <!-- End P2P meta tags -->
     </body>
 </html>

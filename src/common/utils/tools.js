@@ -1,7 +1,6 @@
-import { set as setStorage, getLanguage } from '@storage';
+import { getLanguage } from '@storage';
 import { isProduction, getExtension } from '@utils';
 import { translate as i18nTranslate } from '@i18n';
-import { setCookieLanguage } from './cookieManager';
 
 export const getQueryParams = (qs = '') => {
     if (!qs) return {};
@@ -10,12 +9,6 @@ export const getQueryParams = (qs = '') => {
         data[a1] = a3;
     });
     return data;
-};
-
-export const setLanguage = lang => {
-    setStorage('lang', lang);
-    setCookieLanguage(lang);
-    return lang;
 };
 
 export const getObjectValue = obj => obj[Object.keys(obj)[0]];

@@ -1,7 +1,8 @@
 import React from 'react';
-import config from '@config';
+import Cookies from 'js-cookie';
 import PropTypes from 'prop-types';
-import { getLanguage } from '@storage';
+import config from '@config';
+import { getLanguage, setLanguage } from '@storage';
 import { redirectToSupportedLang, translate } from '@i18n';
 import './language-selector.scss';
 
@@ -12,7 +13,7 @@ const LanguageModal = () => (
     <div id='language-menu-modal' className='invisible' onClick={toggleModal}>
         <div className='language-menu' onClick={e => e.stopPropagation()}>
             <div className='language-menu-header'>
-                <span>{translate('Language settings')}</span>
+                <span>{translate('Select Language')}</span>
                 <span className='language-menu-close_btn' onClick={toggleModal} />
             </div>
             <div className='language-menu-container'>
@@ -37,6 +38,8 @@ const LanguageItem = ({ lang }) => {
                 if (current_language === lang) return;
                 $('.language-menu-item__active').toggleClass('language-menu-item__active');
                 self.current.classList.add('language-menu-item__active');
+                setLanguage(lang);
+                Cookies.set('user_language', lang, null);
                 if (lang === 'en') {
                     document.location.assign(document.location.origin);
                 } else {

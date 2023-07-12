@@ -1,6 +1,7 @@
+import Cookies from 'js-cookie';
 import { parseQueryString, getRelatedDeriveOrigin, getDomainAppId } from '@utils';
 import { AppConstants } from '@constants';
-import { supported_languages } from '@i18n';
+import { supported_languages, redirectToSupportedLang } from '@i18n';
 import { setCookieLanguage } from './common/utils/cookieManager';
 
 let store = {};
@@ -223,8 +224,29 @@ export const convertForDerivStore = tokenList => {
 };
 
 export const getLanguage = () => {
-    const queryLang = parseQueryString().l ? parseQueryString().l : 'en' || get('lang');
-    const lang = queryLang in supported_languages ? queryLang : 'en';
+    const parsed_url = parseQueryString().lang || parseQueryString().l;
+    const parsed_valid_url =
+        parsed_url?.length > 1 ? document.location.search.match(/(lang|l)=([a-z]{2})/)[2] : parsed_url;
+    const supported_storage_lang = get('lang') in supported_languages ? get('lang') : null;
+    const get_cookie_lang = Cookies.get('user_language');
+    const getUserLang = () => {
+        if (parsed_valid_url) return parsed_valid_url;
+        if (supported_storage_lang) return supported_storage_lang;
+        if (get_cookie_lang) return get_cookie_lang;
+        return 'en';
+    };
+    const query_lang = getUserLang();
+    const is_query_lang_supported = query_lang in supported_languages;
+
+    if (is_query_lang_supported) {
+        return setLanguage(query_lang);
+    }
+
+    redirectToSupportedLang('en');
+    return setLanguage('en');
+};
+
+export const setLanguage = lang => {
     set('lang', lang);
     setCookieLanguage(lang);
     return lang;

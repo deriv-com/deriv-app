@@ -4,6 +4,15 @@ import { useStores } from 'Stores/index';
 import MyProfile from '../my-profile';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
+    general_store: {
+        advertiser_info: {
+            buy_completion_rate: 100,
+            buy_orders_amount: 1,
+            buy_orders_count: 1,
+            buy_time_avg: 80,
+            partner_count: 1,
+        },
+    },
     my_profile_store: {
         error_message: '',
         getSettings: jest.fn(),

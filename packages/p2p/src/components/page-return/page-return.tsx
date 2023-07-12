@@ -12,7 +12,7 @@ const PageReturn = ({ className = '', onClick, page_title }: TPageReturnProps) =
     return (
         <div className={classNames('page-return', className)} data-testid='dt_page_return'>
             <div onClick={onClick} className='page-return__button'>
-                <Icon icon='IcArrowLeftBold' size={16} />
+                <Icon icon='IcArrowLeftBold' size={16} data_testid='dt_page_return_icon' />
             </div>
             <Text line_height='l' weight='bold'>
                 {page_title}

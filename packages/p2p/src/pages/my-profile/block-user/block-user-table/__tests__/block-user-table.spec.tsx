@@ -15,9 +15,7 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => mock_store),
 }));
 
-jest.mock('Components/my-profile/block-user/block-user-table/block-user-row', () =>
-    jest.fn((list: { name: string }) => <div>{list.name}</div>)
-);
+jest.mock('../block-user-row', () => jest.fn((list: { name: string }) => <div>{list.name}</div>));
 
 describe('<BlockUserTable />', () => {
     beforeEach(() => {

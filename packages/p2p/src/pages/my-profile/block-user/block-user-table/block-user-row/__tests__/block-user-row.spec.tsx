@@ -1,6 +1,8 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { Router } from 'react-router';
+import { createMemoryHistory } from 'history';
 import { useStores } from 'Stores/index';
 import BlockUserRow from '../block-user-row';
 
@@ -25,6 +27,8 @@ const block_user_row_props = {
     },
 };
 
+const history = createMemoryHistory();
+
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
     useStores: jest.fn(() => mock_store),
@@ -41,7 +45,11 @@ describe('<BlockUserRow/>', () => {
     it('should allow user to click on advertiser name if the user is not barred', () => {
         const { id, name } = block_user_row_props.row;
 
-        render(<BlockUserRow {...block_user_row_props} />);
+        render(
+            <Router history={history}>
+                <BlockUserRow {...block_user_row_props} />
+            </Router>
+        );
 
         const advertiserName = screen.getByText('test');
 

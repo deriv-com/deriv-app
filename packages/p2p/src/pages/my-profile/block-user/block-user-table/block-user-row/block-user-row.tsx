@@ -2,11 +2,11 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import classNames from 'classnames';
 import { Button, Table, Text } from '@deriv/components';
+import { routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
-import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import UserAvatar from 'Components/user/user-avatar';
-import { routes } from '@deriv/shared';
+import { useStores } from 'Stores';
 
 type TBlockUserRowProps = {
     row: {

@@ -37,10 +37,12 @@ const Row = ({
     CFDs_restricted_countries,
     financial_restricted_countries,
     is_preappstore_restricted_cr_demo_account,
+    residence,
 }: TCompareAccountRowProps) => {
     const is_leverage_row = id === 'leverage';
     const is_platform_row = id === 'platform';
     const is_instruments_row = id === 'instruments';
+    const is_other_countries = ['af', 'pk', 'mg'].includes(residence);
 
     const getContentSize = () => {
         if (id === 'counterparty' || id === 'leverage') return isDesktop() ? 'xxs' : 'xxxs';
@@ -85,6 +87,11 @@ const Row = ({
                         available_accounts_count < 6,
                     [`cfd-accounts-compare-modal__table-row--platform${pre_appstore_class}`]: is_platform_row,
                     [`cfd-accounts-compare-modal__table-row--instruments${pre_appstore_class}`]: is_instruments_row,
+                    'cfd-accounts-compare-modal__table-row--other-country': is_other_countries,
+                    [`cfd-accounts-compare-modal__table-row--leverage__${residence}`]:
+                        is_leverage_row && is_other_countries,
+                    [`cfd-accounts-compare-modal__table-row--instruments__${residence}`]:
+                        is_instruments_row && is_other_countries,
                 })
             }
         >
@@ -186,6 +193,7 @@ const DMT5CompareModalContent = observer(
             trading_platform_available_accounts,
             updateMT5Status,
             upgradeable_landing_companies,
+            residence,
         } = client;
         const { openSwitchToRealAccountModal } = ui;
         const { setAppstorePlatform } = common;
@@ -230,6 +238,8 @@ const DMT5CompareModalContent = observer(
             poa_acknowledged,
             poa_pending,
         } = getAuthenticationStatusInfo(account_status);
+
+        const is_other_countries = ['af', 'pk', 'mg'].includes(residence);
 
         React.useEffect(() => {
             if (is_logged_in && !is_virtual) {
@@ -530,6 +540,7 @@ const DMT5CompareModalContent = observer(
                                         is_preappstore_restricted_cr_demo_account={
                                             is_preappstore_restricted_cr_demo_account
                                         }
+                                        residence={residence}
                                     />
                                 ))}
                             </Table.Body>
@@ -541,6 +552,8 @@ const DMT5CompareModalContent = observer(
                                             [`cfd-accounts-compare-modal__row-with-columns-count-${
                                                 available_accounts_count + 1
                                             }`]: available_accounts_count < 6,
+                                            [`cfd-accounts-compare-modal__table-footer__${residence}`]:
+                                                is_other_countries,
                                         })
                                     }
                                 >

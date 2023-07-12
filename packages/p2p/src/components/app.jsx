@@ -1,6 +1,5 @@
 import React from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
 import { reaction } from 'mobx';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
@@ -243,61 +242,6 @@ const App = () => {
 
     return (
         <>
-            <Helmet
-                title='Deriv P2P'
-                defer={false}
-                meta={[
-                    {
-                        name: 'description',
-                        content: 'Deriv P2P',
-                    },
-                    {
-                        name: 'google',
-                        content: 'notranslate',
-                    },
-                    {
-                        property: 'og:title',
-                        content: 'Deriv P2P',
-                    },
-                    {
-                        property: 'og:site_name',
-                        content: 'Deriv App',
-                    },
-                    {
-                        property: 'og:description',
-                        content: 'Deriv P2P',
-                    },
-                    {
-                        property: 'og:type',
-                        content: 'website',
-                    },
-                    {
-                        property: 'og:image',
-                        content:
-                            'https://play-lh.googleusercontent.com/ah8RkaAnph2gouJ48fVeybeJgw-tu2dzTDYL7miccIWxvd0ZcK5-MM20bGxjpjb2lXU',
-                    },
-                    {
-                        property: 'og:image:width',
-                        content: '300',
-                    },
-                    {
-                        property: 'og:image:height',
-                        content: '300',
-                    },
-                    {
-                        name: 'twitter:card',
-                        content: 'summary',
-                    },
-                    {
-                        name: 'format-detection',
-                        content: 'telephone=no',
-                    },
-                    {
-                        name: 'referrer',
-                        content: 'origin',
-                    },
-                ]}
-            />
             <main className='p2p-cashier'>
                 <ModalManagerContextProvider>
                     <ModalManager />

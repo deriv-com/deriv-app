@@ -1,22 +1,34 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import CashierLocked from '../cashier-locked';
-import { useCashierLocked, useDepositLocked } from '@deriv/hooks';
+import { useCashierLocked, useDepositLocked, useWithdrawalLocked } from '@deriv/hooks';
 import { mockStore } from '@deriv/stores';
 import CashierProviders from '../../../cashier-providers';
+
+const mock_use_withdrawal_locked_data = {
+    is_poi_needed: false,
+    is_poa_needed: false,
+    is_ask_financial_risk_approval_needed: false,
+    has_poi_submitted: false,
+    has_poa_submitted: false,
+    is_withdrawal_locked: false,
+};
 
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useDepositLocked: jest.fn(() => false),
     useCashierLocked: jest.fn(() => false),
+    useWithdrawalLocked: jest.fn(() => mockUseWithdrawalLocked),
 }));
 const mockUseDepositLocked = useDepositLocked as jest.MockedFunction<typeof useDepositLocked>;
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
+const mockUseWithdrawalLocked = useWithdrawalLocked as jest.MockedFunction<typeof useWithdrawalLocked>;
 
 describe('<CashierLocked />', () => {
     beforeEach(() => {
         mockUseDepositLocked.mockReturnValue(false);
         mockUseCashierLocked.mockReturnValue(false);
+        mockUseWithdrawalLocked.mockReturnValue(mock_use_withdrawal_locked_data);
     });
 
     it('should show the proper message if there is a crypto cashier maintenance', () => {
@@ -49,7 +61,6 @@ describe('<CashierLocked />', () => {
             client: {
                 account_status: { cashier_validation: ['system_maintenance'] },
                 current_currency_type: 'crypto',
-                is_withdrawal_lock: true,
                 mt5_login_list: [
                     {
                         account_type: 'demo',
@@ -57,6 +68,11 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
+        });
+
+        mockUseWithdrawalLocked.mockReturnValue({
+            ...mock_use_withdrawal_locked_data,
+            is_withdrawal_locked: true,
         });
 
         render(<CashierLocked />, {
@@ -467,7 +483,6 @@ describe('<CashierLocked />', () => {
             client: {
                 account_status: { cashier_validation: ['no_withdrawal_or_trading_status'] },
                 current_currency_type: 'fiat',
-                is_withdrawal_lock: true,
                 mt5_login_list: [
                     {
                         account_type: 'demo',
@@ -475,6 +490,11 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
+        });
+
+        mockUseWithdrawalLocked.mockReturnValue({
+            ...mock_use_withdrawal_locked_data,
+            is_withdrawal_locked: true,
         });
 
         const { container } = render(<CashierLocked />, {
@@ -491,7 +511,6 @@ describe('<CashierLocked />', () => {
             client: {
                 account_status: { cashier_validation: ['withdrawal_locked_status'] },
                 current_currency_type: 'fiat',
-                is_withdrawal_lock: true,
                 mt5_login_list: [
                     {
                         account_type: 'demo',
@@ -499,6 +518,11 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
+        });
+
+        mockUseWithdrawalLocked.mockReturnValue({
+            ...mock_use_withdrawal_locked_data,
+            is_withdrawal_locked: true,
         });
 
         const { container } = render(<CashierLocked />, {
@@ -515,7 +539,6 @@ describe('<CashierLocked />', () => {
             client: {
                 account_status: { cashier_validation: ['only_pa_withdrawals_allowed_status'] },
                 current_currency_type: 'fiat',
-                is_withdrawal_lock: true,
                 mt5_login_list: [
                     {
                         account_type: 'demo',
@@ -523,6 +546,11 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
+        });
+
+        mockUseWithdrawalLocked.mockReturnValue({
+            ...mock_use_withdrawal_locked_data,
+            is_withdrawal_locked: true,
         });
 
         const { container } = render(<CashierLocked />, {
@@ -585,7 +613,6 @@ describe('<CashierLocked />', () => {
             client: {
                 account_status: { cashier_validation: ['PACommisionWithdrawalLimit'] },
                 current_currency_type: 'fiat',
-                is_withdrawal_lock: true,
                 mt5_login_list: [
                     {
                         account_type: 'demo',
@@ -593,6 +620,11 @@ describe('<CashierLocked />', () => {
                     },
                 ],
             },
+        });
+
+        mockUseWithdrawalLocked.mockReturnValue({
+            ...mock_use_withdrawal_locked_data,
+            is_withdrawal_locked: true,
         });
 
         render(<CashierLocked />, {

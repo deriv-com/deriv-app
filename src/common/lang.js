@@ -1,3 +1,4 @@
+import Cookies from 'js-cookie';
 import { get as getStorage } from '../common/utils/storageManager';
 import { parseQueryString, redirectToSupportedLang, setLanguage } from '../common/utils/tools';
 import { init, supported_languages, translate } from './i18n';
@@ -7,7 +8,14 @@ export const getLanguage = () => {
     const parsed_valid_url =
         parsed_url?.length > 1 ? document.location.search.match(/(lang|l)=([a-z]{2})/)[2] : parsed_url;
     const supported_storage_lang = getStorage('lang') in supported_languages ? getStorage('lang') : null;
-    const query_lang = parsed_valid_url ? parsed_valid_url || supported_storage_lang : 'en';
+    const get_cookie_lang = Cookies.get('user_language');
+    const getUserLang = () => {
+        if (parsed_valid_url) return parsed_valid_url;
+        if (supported_storage_lang) return supported_storage_lang;
+        if (get_cookie_lang) return get_cookie_lang;
+        return 'en';
+    };
+    const query_lang = getUserLang();
     const is_query_lang_supported = query_lang in supported_languages;
 
     if (is_query_lang_supported) {

@@ -137,7 +137,7 @@ const AccountActions = () => {
 
             {visible && (
                 <a className='url-cashier-deposit btn btn--primary header__deposit mobile-hide' href={url}>
-                    {label}
+                    {translate(label)}
                 </a>
             )}
             {account_switcher_token && (

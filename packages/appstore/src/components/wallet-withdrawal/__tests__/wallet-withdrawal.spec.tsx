@@ -106,6 +106,12 @@ describe('WalletWithdrawal', () => {
     test('should render Send Email component', () => {
         const mock_store = mockStore({
             client: {
+                loginid: 'CRW000000',
+                accounts: {
+                    CRW000000: {
+                        token: 'token',
+                    },
+                },
                 email: 'john@company.com',
                 verification_code: {
                     payment_withdraw: '',

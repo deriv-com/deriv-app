@@ -262,15 +262,15 @@ describe('<TradeCategoriesGIF />', () => {
     });
     it('expect ImageAccumulator to be rendered when trade category is accumulator', async () => {
         jest.isolateModules(() => {
-            jest.doMock('Assets/SvgComponents/trade_explanations/img-accumulator.svg', () => ({
+            jest.doMock('../contract-type-description-video', () => ({
                 __esModule: true,
-                default: jest.fn(() => 'ImageAccumulator'),
+                default: jest.fn(() => 'VideoAccumulator'),
             }));
 
             import('../trade-categories-gif')
                 .then(moduleName => {
                     render(<moduleName.default category='accumulator' />);
-                    expect(screen.getByText(/imageaccumulator/i)).toBeInTheDocument();
+                    expect(screen.getByText(/videoaccumulator/i)).toBeInTheDocument();
                 })
                 .catch(error => {
                     throw new Error(error);

@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { changeMetaTagWithOG } from '@deriv/shared';
 import { Loading } from '@deriv/components';
 import { observer } from 'mobx-react-lite';
 import { localize } from 'Components/i18next';
@@ -25,7 +26,19 @@ const MyAds = () => {
         my_ads_store.setShowEditAdForm(false);
         my_ads_store.getAccountStatus();
 
+        const description_content = 'P2P Description';
+        const title_content = 'Deriv P2P';
+        const image =
+            'https://play-lh.googleusercontent.com/ah8RkaAnph2gouJ48fVeybeJgw-tu2dzTDYL7miccIWxvd0ZcK5-MM20bGxjpjb2lXU';
+
+        const restoreMetaTagWithOGDescription = changeMetaTagWithOG('description', description_content);
+        const restoreMetaTagWithOGTitle = changeMetaTagWithOG('title', title_content);
+        const restoreMetaTagWithOGImage = changeMetaTagWithOG('image', image);
+
         return () => {
+            restoreMetaTagWithOGDescription();
+            restoreMetaTagWithOGTitle();
+            restoreMetaTagWithOGImage();
             my_ads_store.setShowAdForm(false);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

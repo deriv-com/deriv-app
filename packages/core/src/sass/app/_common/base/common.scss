@@ -183,14 +183,12 @@ html,
 }
 
 #chat-widget-container {
-    @include desktop {
-        width: 352px !important;
-        height: 652px !important;
-    }
-
     @include mobile {
         width: 100% !important;
         height: 100% !important;
         bottom: 0 !important;
+        right: 0 !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
     }
 }

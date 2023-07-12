@@ -1,11 +1,10 @@
 import React from 'react';
-import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { useHistory, useLocation } from 'react-router-dom';
 import { reaction } from 'mobx';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Loading } from '@deriv/components';
-import { routes, WS } from '@deriv/shared';
+import { changeMetaTagWithOG, routes, WS } from '@deriv/shared';
 import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
@@ -38,6 +37,12 @@ const App = () => {
         general_store.setExternalStores({ client, common, modules, notifications, ui });
         general_store.setWebsocketInit(WS);
         general_store.getWebsiteStatus();
+
+        const description_content = 'P2P Description';
+        const title_content = 'Deriv P2P';
+
+        const restoreMetaTagWithOGDescription = changeMetaTagWithOG('description', description_content);
+        const restoreMetaTagWithOGTitle = changeMetaTagWithOG('title', title_content);
 
         setP2PRedirectTo({
             routeToMyProfile: () => {
@@ -114,6 +119,8 @@ const App = () => {
         }
 
         return () => {
+            restoreMetaTagWithOGDescription();
+            restoreMetaTagWithOGTitle();
             general_store.onUnmount();
             disposeAdvertiserInfoSubscribedReaction();
         };
@@ -242,50 +249,7 @@ const App = () => {
     }
 
     return (
-        <HelmetProvider>
-            <Helmet
-                meta={[
-                    {
-                        name: 'description',
-                        content: 'Helmet Description',
-                    },
-                    {
-                        name: 'og:title',
-                        content: 'Helmet Title',
-                    },
-                    {
-                        name: 'og:description',
-                        content: 'Helmet OG Description',
-                    },
-                    {
-                        name: 'og:image',
-                        content:
-                            'https://play-lh.googleusercontent.com/ah8RkaAnph2gouJ48fVeybeJgw-tu2dzTDYL7miccIWxvd0ZcK5-MM20bGxjpjb2lXU',
-                    },
-                    {
-                        name: 'twitter:card',
-                        content: 'Twitter Card',
-                    },
-                    {
-                        name: 'twitter:creator',
-                        content: 'Twitter Creator',
-                    },
-                    {
-                        name: 'twitter:title',
-                        content: 'Twitter Title',
-                    },
-                    {
-                        name: 'twitter:description',
-                        content: 'Twitter Description',
-                    },
-                    {
-                        name: 'referrer',
-                        content: 'origin',
-                    },
-                ]}
-            >
-                <title>Deriv P2P</title>
-            </Helmet>
+        <>
             <main className='p2p-cashier'>
                 <ModalManagerContextProvider>
                     <ModalManager />
@@ -293,7 +257,7 @@ const App = () => {
                     <Routes />
                 </ModalManagerContextProvider>
             </main>
-        </HelmetProvider>
+        </>
     );
 };
 

@@ -4,7 +4,7 @@ import useTransferBetweenAccounts from './useTransferBetweenAccounts';
 const useWalletTransfer = () => {
     const { active_wallet, transfer_accounts, isSuccess: is_accounts_loaded } = useTransferBetweenAccounts();
 
-    const [from_account, setFromAccount] = useState<typeof active_wallet>(active_wallet);
+    const [from_account, setFromAccount] = useState<typeof active_wallet>();
     const [to_account, setToAccount] = useState<typeof active_wallet>();
 
     const to_account_list = useMemo(() => {

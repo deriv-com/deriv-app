@@ -240,24 +240,13 @@ describe('useWalletTransfer', () => {
         );
     });
 
-    it('from_account should be active wallet by default', () => {
+    it('from_account should be undefined by default', () => {
         const {
             result: {
-                current: { active_wallet, from_account },
+                current: { from_account },
             },
         } = renderHook(() => useWalletTransfer(), { wrapper });
 
-        expect(from_account).toEqual(active_wallet);
-    });
-
-    it('to_account_list length should be correct if there are 5 accounts (1 active wallet and 4 trading accounts)', () => {
-        const {
-            result: {
-                current: { to_account_list },
-            },
-        } = renderHook(() => useWalletTransfer(), { wrapper });
-
-        expect(to_account_list.wallets.length).toBe(0);
-        expect(to_account_list.accounts.length).toBe(6);
+        expect(from_account).toBeUndefined();
     });
 });

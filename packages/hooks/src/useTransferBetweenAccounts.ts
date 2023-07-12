@@ -99,9 +99,8 @@ const useTransferBetweenAccounts = () => {
     const modified_active_wallet = useMemo(
         () => ({
             ...modified_transfer_accounts.wallets?.find(wallet => wallet.loginid === active_wallet?.loginid),
-            icon: active_wallet?.icon,
         }),
-        [active_wallet?.icon, active_wallet?.loginid, modified_transfer_accounts.wallets]
+        [active_wallet?.loginid, modified_transfer_accounts.wallets]
     );
 
     //add test accounts, remove after tsesting

@@ -46,21 +46,11 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         setToAccount,
     } = useWalletTransfer();
 
-    const [is_loading, setIsLoading] = useState(false);
-
     useEffect(() => {
-        setIsLoading(true);
-        if (active_wallet.loginid) setFromAccount(active_wallet);
-        setIsLoading(false);
-    }, [active_wallet, setFromAccount]);
-
-    useEffect(() => {
-        if (from_account?.loginid === active_wallet?.loginid) {
-            setToAccount(undefined);
-        } else {
-            setToAccount(active_wallet);
+        if (!from_account?.loginid) {
+            setFromAccount(active_wallet);
         }
-    }, [active_wallet, from_account?.loginid, setToAccount]);
+    }, [active_wallet, from_account, setFromAccount]);
 
     const portal_id = is_mobile ? 'mobile_list_modal_root' : 'modal_root';
 
@@ -152,10 +142,15 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         ) => {
             if (account?.loginid === from_account?.loginid) return;
             setFromAccount(account);
+            if (account?.loginid === active_wallet?.loginid) {
+                setToAccount(undefined);
+            } else {
+                setToAccount(active_wallet);
+            }
             clearErrorMessages();
             resetForm();
         },
-        [clearErrorMessages, from_account?.loginid, setFromAccount]
+        [active_wallet, clearErrorMessages, from_account?.loginid, setFromAccount, setToAccount]
     );
 
     const onSelectToAccount = React.useCallback(
@@ -174,7 +169,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
         [clearErrorMessages, setToAccount, to_account?.loginid]
     );
 
-    if (is_accounts_loading || is_switching || is_loading) {
+    if (is_accounts_loading || is_switching) {
         return <Loading is_fullscreen={false} />;
     }
 

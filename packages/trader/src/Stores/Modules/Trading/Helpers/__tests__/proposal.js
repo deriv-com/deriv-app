@@ -185,5 +185,15 @@ describe('Proposal', () => {
             };
             expect(createProposalRequests(fake_store)).toEqual({});
         });
+
+        it('should not throw any error if trade_types is undefined', () => {
+            const fake_store = {
+                trade_types: undefined,
+                proposal_requests: {},
+            };
+
+            expect(createProposalRequests(fake_store)).toEqual({});
+            expect(() => createProposalRequests(fake_store)).not.toThrow();
+        });
     });
 });

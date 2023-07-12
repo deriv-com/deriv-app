@@ -3,7 +3,7 @@ import React from 'react';
 import { Icon, Input } from '@deriv/components';
 import { localize } from '@deriv/translations';
 
-const SearchInput = React.forwardRef(({ onChange, onClickClearInput, value }, ref) => (
+const SearchInput = React.forwardRef(({ onChange, onClickClearInput, onBlur, value }, ref) => (
     <Input
         ref={ref}
         autoFocus
@@ -13,6 +13,7 @@ const SearchInput = React.forwardRef(({ onChange, onClickClearInput, value }, re
         placeholder={localize('Search')}
         type='text'
         onChange={onChange}
+        onBlur={onBlur}
         value={value}
     />
 ));

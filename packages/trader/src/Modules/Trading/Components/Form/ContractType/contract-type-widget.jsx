@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { RudderStack } from '@deriv/analytics';
 import ContractType from './contract-type.jsx';
 import { getContractTypeCategoryIcons, findContractCategory } from '../../../Helpers/contract-type';
 
@@ -9,7 +10,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
     const wrapper_ref = React.useRef(null);
     const [is_dialog_open, setDialogVisibility] = React.useState(false);
     const [is_info_dialog_open, setInfoDialogVisibility] = React.useState(false);
-    const [selected_category, setSelectedCategory] = React.useState(null);
+    const [selected_category, setSelectedCategory] = React.useState('All');
     const [search_query, setSearchQuery] = React.useState('');
     const [item, setItem] = React.useState(null);
     const [selected_item, setSelectedItem] = React.useState(null);
@@ -33,6 +34,14 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
         };
     }, [handleClickOutside]);
 
+    React.useEffect(() => {
+        RudderStack.track('ce_trade_types_form', {
+            action: is_dialog_open ? 'open' : 'close',
+            form_source: 'contract_set_up_form',
+            form_name: 'default',
+        });
+    }, [is_dialog_open]);
+
     const handleCategoryClick = ({ key }) => {
         setSelectedCategory(key);
     };
@@ -41,11 +50,21 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
         const categories = list_with_category();
         const { key } = findContractCategory(categories, clicked_item);
         if (e.target.id !== 'info-icon') {
+            const is_from_info_dialog = /_btn$/.test(e.target.id);
+
             setDialogVisibility(false);
             setInfoDialogVisibility(false);
             setItem(clicked_item);
             setSelectedItem(clicked_item);
             setSelectedCategory(key);
+
+            RudderStack.track('ce_trade_types_form', {
+                action: 'choose_trade_type',
+                subform_name: is_from_info_dialog ? 'info_new' : 'trade_type',
+                ...(subform_name === 'trade_type' && { tab_name: selected_category }),
+                trade_type_name: clicked_item?.text,
+                form_name: 'default',
+            });
         }
     };
 
@@ -67,6 +86,12 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
 
     const handleVisibility = () => {
         setDialogVisibility(!is_dialog_open);
+    };
+
+    const onSearchBlur = () => {
+        RudderStack.track('ce_trade_types_form', {
+            search_string: search_query,
+        });
     };
 
     const onWidgetClick = () => {
@@ -193,6 +218,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
                 list={list}
                 selected={selected_category || list_with_category()[0]?.key}
                 onBackButtonClick={onBackButtonClick}
+                onSearchBlur={onSearchBlur}
                 onClose={handleVisibility}
                 onChangeInput={onChangeInput}
                 onCategoryClick={handleCategoryClick}
@@ -205,6 +231,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
                         handleSelect={handleSelect}
                         item={item || { value }}
                         list={list_with_category()}
+                        selected_category={selected_category}
                     />
                 ) : (
                     <ContractType.List

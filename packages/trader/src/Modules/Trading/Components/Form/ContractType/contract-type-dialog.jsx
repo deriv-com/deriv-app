@@ -6,17 +6,18 @@ import { localize } from '@deriv/translations';
 import ContractTypeMenu from './ContractTypeMenu';
 
 const ContractTypeDialog = ({
+    categories,
     children,
     is_info_dialog_open,
-    onClose,
     is_open,
     item,
     list,
-    selected,
-    categories,
     onBackButtonClick,
-    onChangeInput,
     onCategoryClick,
+    onChangeInput,
+    onClose,
+    onSearchBlur,
+    selected,
     show_loading,
 }) => {
     const current_mobile_title = is_info_dialog_open ? (
@@ -48,6 +49,7 @@ const ContractTypeDialog = ({
                     list={list}
                     selected={selected}
                     categories={categories}
+                    onSearchBlur={onSearchBlur}
                     onBackButtonClick={onBackButtonClick}
                     onChangeInput={onChangeInput}
                     onCategoryClick={onCategoryClick}
@@ -71,6 +73,7 @@ ContractTypeDialog.propTypes = {
     onCategoryClick: PropTypes.func,
     onChangeInput: PropTypes.func,
     onClose: PropTypes.func,
+    onSearchBlur: PropTypes.func,
     selected: PropTypes.string,
     show_loading: PropTypes.bool,
 };

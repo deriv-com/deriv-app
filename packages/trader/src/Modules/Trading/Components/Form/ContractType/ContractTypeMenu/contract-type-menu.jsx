@@ -10,14 +10,15 @@ import { getContractCategoryKey } from '../../../../Helpers/contract-type';
 
 const Dialog = ({
     categories,
-    item,
-    selected,
     children,
     is_info_dialog_open,
     is_open,
+    item,
     onBackButtonClick,
     onCategoryClick,
     onChangeInput,
+    onSearchBlur,
+    selected,
     show_loading,
 }) => {
     const input_ref = React.useRef(null);
@@ -63,6 +64,7 @@ const Dialog = ({
             ref={input_ref}
             onChange={onChangeInputValue}
             onClickClearInput={onClickClearInput}
+            onBlur={onSearchBlur}
             value={input_value}
         />
     );

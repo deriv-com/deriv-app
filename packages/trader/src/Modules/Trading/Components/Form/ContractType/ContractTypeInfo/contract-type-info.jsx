@@ -3,6 +3,7 @@ import React from 'react';
 import { Button, ThemedScrollbars, Carousel, ButtonToggle } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
+import { RudderStack } from '@deriv/analytics';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories.jsx';
 import TradeCategoriesGIF from 'Assets/Trading/Categories/trade-categories-gif.jsx';
 import { getContractTypes } from '../../../../Helpers/contract-type';
@@ -14,7 +15,7 @@ const TABS = {
     GLOSSARY: 'glossary',
 };
 
-const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }) => {
+const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list, selected_category }) => {
     const [carousel_index, setCarouselIndex] = React.useState('');
     const [selected_tab, setSelectedTab] = React.useState(TABS.DESCRIPTION);
     const contract_types = getContractTypes(list, item).filter(i => i.value !== 'rise_fall_equal');
@@ -29,7 +30,31 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
     const handleItemSelect = active_index => {
         setCarouselIndex(contract_types[active_index].value);
         handleNavigationClick(contract_types[active_index]);
+
+        RudderStack.track('ce_trade_types_form', {
+            action: 'info_open',
+            tab_name: selected_category,
+            trade_type_name: contract_types[active_index]?.text,
+        });
     };
+
+    React.useEffect(() => {
+        return () => {
+          RudderStack.track('ce_trade_types_form', {
+              action: 'info_close',
+          });
+        };
+    }, []);
+
+    React.useEffect(() => {
+        if (has_toggle_buttons) {
+            RudderStack.track('ce_trade_types_form', {
+                action: 'info_switcher',
+                info_switcher_mode: selected_tab,
+                trade_type_name: selected_contract_type?.text,
+            });
+        }
+    }, [selected_tab]);
 
     const cards = contract_types.map((type, idx) => {
         return (

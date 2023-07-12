@@ -1,5 +1,4 @@
-import React, { MouseEventHandler } from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import classNames from 'classnames';
 import { Button } from '@deriv/components';
 import { Formik } from 'formik';
@@ -24,7 +23,7 @@ import { TIDVVerificationResponse, TDocumentList, TInputFieldValues } from 'Type
 type TIdvDocumentSubmit = {
     account_settings: GetSettings;
     getChangeableFields: () => Array<string>;
-    handleBack: MouseEventHandler;
+    handleBack: React.MouseEventHandler;
     handleViewComplete: () => void;
     is_from_external: boolean;
     selected_country: ResidenceList[0];

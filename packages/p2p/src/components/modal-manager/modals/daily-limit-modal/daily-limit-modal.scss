@@ -1,0 +1,19 @@
+.daily-limit-modal {
+    &__body {
+        padding: 0.8rem 2.4rem;
+    }
+
+    &__loader {
+        .barspinner {
+            margin: 0.8rem auto -2.4rem;
+
+            @include mobile {
+                margin: 0 auto -2rem;
+            }
+        }
+    }
+
+    &__upgrading {
+        padding: 2.4rem;
+    }
+}

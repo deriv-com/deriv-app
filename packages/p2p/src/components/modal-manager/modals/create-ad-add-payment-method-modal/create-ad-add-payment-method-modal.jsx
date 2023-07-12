@@ -1,12 +1,12 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import { observer } from 'mobx-react-lite';
 import { Button, Icon, MobileFullPageModal, Modal } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { useStores } from 'Stores';
 import { localize, Localize } from 'Components/i18next';
-import AddPaymentMethod from 'Pages/my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import AddPaymentMethod from 'Components/add-payment-method';
 
 const CreateAdAddPaymentMethodModal = () => {
     const { general_store, my_profile_store } = useStores();
@@ -40,7 +40,7 @@ const CreateAdAddPaymentMethodModal = () => {
                 page_header_text={localize('Add payment method')}
                 pageHeaderReturnFn={onCancel}
             >
-                <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
+                <AddPaymentMethod should_show_page_return={false} />
             </MobileFullPageModal>
         );
     }
@@ -70,7 +70,7 @@ const CreateAdAddPaymentMethodModal = () => {
                     'create-ad-add-payment-method-modal__body--scroll': my_profile_store.selected_payment_method,
                 })}
             >
-                <AddPaymentMethod should_show_page_return={false} should_show_separated_footer={true} />
+                <AddPaymentMethod should_show_page_return={false} />
             </Modal.Body>
             {!my_profile_store.selected_payment_method && (
                 <Modal.Footer has_separator>

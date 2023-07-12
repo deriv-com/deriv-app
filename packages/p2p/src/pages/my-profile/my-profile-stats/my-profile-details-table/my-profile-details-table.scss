@@ -1,7 +1,6 @@
 .my-profile-details-table {
     display: flex;
     flex-direction: row;
-    border-bottom: 1px solid var(--general-section-2);
     padding-bottom: 1.6rem;
     margin-bottom: 1.1rem;
 
@@ -54,5 +53,9 @@
         & span {
             flex: 1;
         }
+    }
+
+    &__upgradable {
+        border-bottom: 1px solid var(--general-section-2);
     }
 }

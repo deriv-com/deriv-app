@@ -20,7 +20,7 @@ const TransactionList = () => {
             text: localize('All'),
             value: '',
         },
-        ...(wallet.is_virtual
+        ...(wallet?.is_virtual
             ? ([
                   {
                       text: localize('Reset balance'),

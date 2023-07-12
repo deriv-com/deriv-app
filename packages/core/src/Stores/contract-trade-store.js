@@ -247,17 +247,17 @@ export default class ContractTradeStore extends BaseStore {
             if (
                 this.accumulator_barriers_data[underlying]?.previous_spot_time &&
                 this.accumulator_barriers_data[underlying]?.previous_spot_time !==
+                    this.accumulator_barriers_data[underlying]?.current_spot_time &&
+                this.cached_barriers_data.previous_spot_time ===
                     this.accumulator_barriers_data[underlying]?.current_spot_time
             ) {
-                if (this.accu_barriers_timeout_id) clearTimeout(this.accu_barriers_timeout_id);
+                // update barriers in DTrader page immediately when a new tick is received and prev barriers haven't been updated yet
                 this.setNewAccumulatorBarriersData(this.cached_barriers_data, should_update_contract_barriers);
             }
             this.setNewAccumulatorBarriersData(current_spot_data, should_update_contract_barriers);
         }
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
-                // when tab is now inactive, we need to update barriers data immediately to timers' accumulation
-                // more about Chrome policy for running timers in the background: https://developer.chrome.com/blog/timer-throttling-in-chrome-88/
                 this.is_browser_tab_active = false;
             } else {
                 this.is_browser_tab_active = true;
@@ -288,7 +288,8 @@ export default class ContractTradeStore extends BaseStore {
                       })
             );
         } else {
-            // update barriers in DTrader page immediately
+            // when browser_tab is not active, we need to update barriers data immediately to avoid timers' accumulation
+            // more about Chrome policy for running timers in the background: https://developer.chrome.com/blog/timer-throttling-in-chrome-88/
             this.setNewAccumulatorBarriersData(delayed_barriers_data, should_update_contract_barriers);
         }
         this.cached_barriers_data = { ...delayed_barriers_data };

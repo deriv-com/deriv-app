@@ -4,7 +4,7 @@ import { reaction } from 'mobx';
 import { useStore, observer } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 import { Loading } from '@deriv/components';
-import { routes, WS } from '@deriv/shared';
+import { changeMetaTagWithOG, routes, WS } from '@deriv/shared';
 import ServerTime from 'Utils/server-time';
 import { waitWS } from 'Utils/websocket';
 import { useStores } from 'Stores';
@@ -37,6 +37,12 @@ const App = () => {
         general_store.setExternalStores({ client, common, modules, notifications, ui });
         general_store.setWebsocketInit(WS);
         general_store.getWebsiteStatus();
+
+        const description_content = 'P2P Description';
+        const title_content = 'Deriv P2P';
+
+        const restoreMetaTagWithOGDescription = changeMetaTagWithOG('description', description_content);
+        const restoreMetaTagWithOGTitle = changeMetaTagWithOG('title', title_content);
 
         setP2PRedirectTo({
             routeToMyProfile: () => {
@@ -113,6 +119,8 @@ const App = () => {
         }
 
         return () => {
+            restoreMetaTagWithOGDescription();
+            restoreMetaTagWithOGTitle();
             general_store.onUnmount();
             disposeAdvertiserInfoSubscribedReaction();
         };

@@ -403,6 +403,12 @@ const mock = (): TStores & { is_mock: boolean } => {
             setWalletModalActiveTab: jest.fn(),
             active_modal_wallet_id: '',
             setWalletModalActiveWalletID: jest.fn(),
+            toggleAccountTypeModalVisibility: jest.fn(),
+            getAccount: jest.fn(),
+            showTopUpModal: jest.fn(),
+            startTrade: jest.fn(),
+            can_get_more_cfd_mt5_accounts: false,
+            has_any_real_account: false,
         },
         menu: {
             attach: jest.fn(),

@@ -74,11 +74,3 @@ export const mt5_details_mapper = {
         ),
     },
 } as const;
-
-export const derivx_details_mapper = {
-    all: {
-        name: localize('Deriv X'),
-        description: localize('Trade CFDs on Deriv X with financial markets and our Derived indices.'),
-        icon: 'DerivX',
-    },
-} as const;

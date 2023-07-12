@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { initTrashCan } from '@deriv/bot-skeleton/src/scratch/hooks/trashcan';
 import { DesktopWrapper, Dialog, MobileWrapper, Tabs } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { observer } from '@deriv/stores';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import Chart from 'Components/chart';
 import { DBOT_TABS, TAB_IDS } from 'Constants/bot-contents';
@@ -48,13 +48,44 @@ const Dashboard = observer(() => {
         run_panel;
     const { is_strategy_modal_open } = quick_strategy;
 
-    const { DASHBOARD, BOT_BUILDER, CHART } = DBOT_TABS;
+    const { DASHBOARD, BOT_BUILDER, CHART, TUTORIAL } = DBOT_TABS;
     const is_tour_complete = React.useRef(true);
     let bot_tour_token: string | number = '';
     let onboard_tour_token: string | number = '';
     let storage = '';
     let tour_status: { [key: string]: string };
     const is_mobile = isMobile();
+    const init_render = React.useRef(true);
+    const { ui } = useStore();
+    const { url_hashed_values } = ui;
+
+    let tab_value = active_tab;
+    const GetHashedValue = (tab: number) => {
+        tab_value = url_hashed_values?.split('#')[1];
+        if (tab_value === 'dashboard') return DASHBOARD;
+        if (tab_value === 'bot_builder') return BOT_BUILDER;
+        if (tab_value === 'chart') return CHART;
+        if (tab_value === 'tutorial') return TUTORIAL;
+        if (isNaN(tab_value) || isNaN(tab)) return active_tab;
+        if (tab_value > 4 || tab > 4) return active_tab;
+        return tab_value;
+    };
+    const active_hash_tab = GetHashedValue(active_tab);
+
+    React.useEffect(() => {
+        if (init_render.current) {
+            setActiveTab(Number(active_hash_tab));
+            if (is_mobile) handleTabChange(Number(active_hash_tab));
+            init_render.current = false;
+        } else {
+            let active_tab_name = 'dashboard';
+            if (active_tab === 0) active_tab_name = 'dashboard';
+            if (active_tab === 1) active_tab_name = 'bot_builder';
+            if (active_tab === 2) active_tab_name = 'chart';
+            if (active_tab === 3) active_tab_name = 'tutorial';
+            window.location.hash = active_tab_name;
+        }
+    }, [active_tab]);
 
     const setTourStatus = (status: { [key: string]: string }) => {
         if (status) {
@@ -177,7 +208,8 @@ const Dashboard = observer(() => {
                         'dashboard__container--active': has_tour_started && active_tab === DASHBOARD && is_mobile,
                     })}
                 >
-                    <TourTriggrerDialog />
+                    {(active_tab === DASHBOARD || active_tab === BOT_BUILDER) && <TourTriggrerDialog />}
+
                     {has_tour_started &&
                         active_tab === DASHBOARD &&
                         (is_mobile ? (

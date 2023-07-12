@@ -61,7 +61,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
 
             RudderStack.track('ce_trade_types_form', {
                 action: 'choose_trade_type',
-                subform_name: subform_name,
+                subform_name,
                 ...(subform_name === 'trade_type' && { tab_name: selected_category }),
                 trade_type_name: clicked_item?.text,
                 form_name: 'default',

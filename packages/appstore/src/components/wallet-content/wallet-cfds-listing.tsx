@@ -9,9 +9,9 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
 import { useStore, observer } from '@deriv/stores';
 import { useHistory } from 'react-router';
-import { useActiveWallet, useFilteredCFDAccounts } from '@deriv/hooks';
+import { useActiveWallet, useExistingCFDAccounts, useFilteredCFDAccounts } from '@deriv/hooks';
 import GetMoreAccounts from 'Components/get-more-accounts';
-import { mt5_details_mapper } from '../../helpers/account-helper';
+import { mt5_details_mapper, derivx_details_mapper } from '../../helpers/account-helper';
 
 type TProps = {
     wallet_account: TWalletAccount;
@@ -52,6 +52,8 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
     const wallet = useActiveWallet();
 
     const { data: filtered_cfd_accounts } = useFilteredCFDAccounts();
+
+    const { data: dxtrade_accounts } = useExistingCFDAccounts();
 
     const { toggleCompareAccountsModal, setAccountType } = cfd;
     const { setAppstorePlatform } = common;
@@ -118,52 +120,61 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
                         const has_mt5_account_status = existing_account.status
                             ? getMT5AccountAuthStatus(existing_account.status)
                             : null;
-                        const is_added = existing_account.is_added;
-                        return is_added ? (
-                            <TradingAppCard
-                                action_type='multi-action'
-                                availability={selected_region}
-                                clickable_icon
-                                icon={existing_account.icon}
-                                sub_title={existing_account?.sub_title}
-                                name={!has_mt5_account_status ? existing_account?.name : ''}
-                                short_code_and_region={existing_account?.short_code_and_region}
-                                platform={existing_account.platform}
-                                description={existing_account.description}
-                                key={existing_account.login}
-                                has_divider={(!is_eu_user || is_demo) && getHasDivider(index, list_size, 3)}
-                                onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
-                                    const button_name = e?.currentTarget?.name;
-                                    if (button_name === 'transfer-btn') {
-                                        toggleAccountTransferModal();
-                                        setSelectedAccount(existing_account);
-                                    } else if (button_name === 'topup-btn') {
-                                        showTopUpModal(existing_account);
-                                        setAppstorePlatform(existing_account.platform);
-                                    } else {
-                                        startTrade(existing_account.platform, existing_account);
-                                    }
-                                }}
-                                mt5_acc_auth_status={has_mt5_account_status}
-                                selected_mt5_jurisdiction={{
-                                    platform: existing_account.platform,
-                                    category: selected_account_type,
-                                    type: existing_account.market_type,
-                                    jurisdiction: existing_account.landing_company_short,
-                                }}
-                                openFailedVerificationModal={openFailedVerificationModal}
-                                is_wallet={wallet?.is_selected}
-                                is_wallet_demo={wallet?.is_demo}
-                            />
-                        ) : (
+
+                        if (existing_account.is_added) {
+                            return (
+                                <TradingAppCard
+                                    action_type='multi-action'
+                                    availability={selected_region}
+                                    clickable_icon
+                                    icon={existing_account.icon}
+                                    sub_title={existing_account?.sub_title}
+                                    name={!has_mt5_account_status ? existing_account?.name : ''}
+                                    short_code_and_region={existing_account?.short_code_and_region}
+                                    platform={existing_account.platform}
+                                    description={existing_account.description}
+                                    key={existing_account.login}
+                                    has_divider={(!is_eu_user || is_demo) && getHasDivider(index, list_size, 3)}
+                                    onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
+                                        const button_name = e?.currentTarget?.name;
+                                        if (button_name === 'transfer-btn') {
+                                            toggleAccountTransferModal();
+                                            setSelectedAccount(existing_account);
+                                        } else if (button_name === 'topup-btn') {
+                                            showTopUpModal(existing_account);
+                                            setAppstorePlatform(existing_account.platform);
+                                        } else {
+                                            startTrade(existing_account.platform, existing_account);
+                                        }
+                                    }}
+                                    mt5_acc_auth_status={has_mt5_account_status}
+                                    selected_mt5_jurisdiction={{
+                                        platform: existing_account.platform,
+                                        category: selected_account_type,
+                                        type: existing_account.market_type,
+                                        jurisdiction: existing_account.landing_company_short,
+                                    }}
+                                    openFailedVerificationModal={openFailedVerificationModal}
+                                    is_wallet={wallet?.is_selected}
+                                    is_wallet_demo={!!wallet?.is_demo}
+                                />
+                            );
+                        }
+                        const { market_type } = existing_account;
+                        const mt5_market_type = 'gaming' || 'financial' || 'all';
+                        const content =
+                            market_type && market_type === mt5_market_type && mt5_details_mapper[market_type];
+
+                        if (!content) return <></>;
+                        return (
                             <TradingAppCard
                                 action_type='get'
                                 availability={selected_region}
                                 clickable_icon
                                 icon={existing_account.icon}
-                                name={mt5_details_mapper[existing_account.market_type]?.name}
+                                name={content.name}
                                 platform={existing_account.platform}
-                                description={mt5_details_mapper[existing_account.market_type]?.description}
+                                description={content.description}
                                 key={`trading_app_card_${existing_account.login}`}
                                 is_wallet={true}
                                 is_wallet_demo={wallet?.is_demo}
@@ -204,39 +215,54 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
                 </div>
             )}
             {is_landing_company_loaded ? (
-                available_dxtrade_accounts?.map(account => {
+                dxtrade_accounts.dxtrade_accounts?.map(account => {
                     const existing_accounts = getExistingAccounts(account.platform || '', account.market_type || '');
                     const has_existing_accounts = existing_accounts.length > 0;
-                    return has_existing_accounts ? (
-                        existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => (
-                            <TradingAppCard
-                                action_type='multi-action'
-                                availability={selected_region}
-                                clickable_icon
-                                icon={'DerivX'}
-                                sub_title={account.name}
-                                name={`${formatMoney(
-                                    existing_account.currency,
-                                    existing_account.display_balance,
-                                    true
-                                )} ${existing_account.currency}`}
-                                description={existing_account.login}
-                                platform={account.platform}
-                                key={`trading_app_card_${existing_account.login}`}
-                                is_wallet={true}
-                                is_wallet_demo={!!wallet_account.is_virtual}
-                            />
-                        ))
-                    ) : (
+
+                    if (has_existing_accounts) {
+                        return existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => {
+                            const { market_type } = existing_account;
+                            const content = market_type && market_type === 'all' && derivx_details_mapper[market_type];
+
+                            if (!content) return <></>;
+
+                            return (
+                                <TradingAppCard
+                                    action_type='multi-action'
+                                    availability={selected_region}
+                                    clickable_icon
+                                    icon={content.icon}
+                                    sub_title={content.name}
+                                    name={`${formatMoney(
+                                        existing_account.currency,
+                                        existing_account.display_balance,
+                                        true
+                                    )} ${existing_account.currency}`}
+                                    description={existing_account.login}
+                                    platform={account.platform}
+                                    key={`trading_app_card_${existing_account.login}`}
+                                    is_wallet={true}
+                                    is_wallet_demo={!!wallet?.is_demo}
+                                />
+                            );
+                        });
+                    }
+
+                    const { market_type } = account;
+                    const content = market_type && market_type === 'all' && derivx_details_mapper[market_type];
+
+                    if (!content) return <></>;
+
+                    return (
                         <TradingAppCard
                             action_type='get'
                             availability={selected_region}
                             clickable_icon
-                            icon={account.icon}
-                            name={account.name}
+                            icon={content.icon}
+                            name={content.name}
                             platform={account.platform}
-                            description={account.description}
-                            key={`trading_app_card_${account.name}`}
+                            description={content.description}
+                            key={`trading_app_card_${account.login}`}
                             is_wallet={true}
                             is_wallet_demo={!!wallet_account.is_virtual}
                         />

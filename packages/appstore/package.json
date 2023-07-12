@@ -26,7 +26,7 @@
     "dependencies": {
         "@deriv/account": "^1.0.0",
         "@deriv/api": "^1.0.0",
-        "@deriv/api-types": "^1.0.94",
+        "@deriv/api-types": "^1.0.112",
         "@deriv/cashier": "^1.0.0",
         "@deriv/components": "^1.0.0",
         "@deriv/cfd": "^1.0.0",
@@ -36,7 +36,6 @@
         "@deriv/hooks": "^1.0.0",
         "@deriv/trader": "^3.8.0",
         "@deriv/translations": "^1.0.0",
-        "@deriv/hooks": "^1.0.0",
         "@deriv/ui": "^0.8.0",
         "@deriv/utils": "^1.0.0",
         "classnames": "^2.2.6",

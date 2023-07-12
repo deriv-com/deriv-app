@@ -245,6 +245,8 @@ type TPrivateSocketEndpoints = {
                 enabled: 0 | 1;
                 error: unknown;
                 login: string;
+                platform: 'derivez' | 'dxtrade' | 'mt5';
+                market_type: 'gaming' | 'financial' | 'all';
             }[];
         };
     };

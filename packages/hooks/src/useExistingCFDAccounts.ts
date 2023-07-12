@@ -43,22 +43,24 @@ const useExistingCFDAccounts = () => {
         }));
     }, [mt5.data?.mt5_login_list, wallet?.linked_to, combined_cfd_mt5_accounts]);
 
-    // const modified_derivez_accounts = useMemo(
-    //     () => derivez.data?.trading_platform_accounts?.map(account => ({ ...account,  })),
-    //     [derivez.data?.trading_platform_accounts]
-    // );
-    // const modified_dxtrade_accounts = useMemo(
-    //     () => dxtrade.data?.trading_platform_accounts?.map(account => ({ ...account, })),
-    //     [dxtrade.data?.trading_platform_accounts]
-    // );
-
+    const modified_derivez_accounts = useMemo(
+        () => derivez.data?.trading_platform_accounts?.map(account => ({ ...account })),
+        [derivez.data?.trading_platform_accounts]
+    );
+    const modified_dxtrade_accounts = useMemo(
+        () =>
+            dxtrade.data?.trading_platform_accounts?.map(account => ({
+                ...account,
+            })),
+        [dxtrade.data?.trading_platform_accounts]
+    );
     const data = useMemo(
         () => ({
             mt5_accounts: modified_mt5_accounts,
-            // derivez_accounts: modified_derivez_accounts,
-            // dxtrade_accounts: modified_dxtrade_accounts,
+            dxtrade_accounts: modified_dxtrade_accounts,
+            derivez_accounts: modified_derivez_accounts,
         }),
-        [modified_mt5_accounts]
+        [modified_mt5_accounts, modified_dxtrade_accounts, modified_derivez_accounts]
     );
 
     return {

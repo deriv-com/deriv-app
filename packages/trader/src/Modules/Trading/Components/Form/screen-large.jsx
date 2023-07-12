@@ -2,10 +2,10 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { TradeParamsLoader } from 'App/Components/Elements/ContentLoader';
-import Fieldset from 'App/Components/Form/fieldset';
+import Fieldset from 'App/Components/Form/fieldset.jsx';
 import ContractType from '../../Containers/contract-type';
-import Purchase from '../../Containers/purchase';
-import TradeParams from '../../Containers/trade-params';
+import Purchase from '../../Containers/purchase.jsx';
+import TradeParams from '../../Containers/trade-params.jsx';
 
 const ScreenLarge = ({ is_market_closed, is_trade_enabled }) => (
     <div

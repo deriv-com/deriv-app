@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Field, FormikProps, FormikHandlers, FieldProps } from 'formik';
-import { ResidenceList } from '@deriv/api-types';
+import { Field, FieldProps } from 'formik';
 import { localize } from '@deriv/translations';
 import { formatInput, getIDVNotApplicableOption } from '@deriv/shared';
 import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative, Text } from '@deriv/components';

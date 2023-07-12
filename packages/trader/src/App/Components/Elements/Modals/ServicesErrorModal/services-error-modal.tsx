@@ -2,9 +2,9 @@ import React from 'react';
 import { Button, Modal } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { getTitle } from './constants';
-import AuthorizationRequiredModal from './authorization-required-modal.jsx';
-import InsufficientBalanceModal from './insufficient-balance-modal.jsx';
-import CompanyWideLimitExceededModal from './company-wide-limit-exceeded-modal.jsx';
+import AuthorizationRequiredModal from './authorization-required-modal';
+import InsufficientBalanceModal from './insufficient-balance-modal';
+import CompanyWideLimitExceededModal from './company-wide-limit-exceeded-modal';
 import AccountVerificationRequiredModal from './account-verification-required-modal';
 
 type TServicesError = {

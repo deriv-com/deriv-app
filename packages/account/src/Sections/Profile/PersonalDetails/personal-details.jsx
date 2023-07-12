@@ -104,7 +104,7 @@ export const PersonalDetailsForm = observer(({ history }) => {
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
 
     const [is_submit_success, setIsSubmitSuccess] = useStateCallback(false);
-    const { client, notifications, ui, common } = useStore();
+    const { client, notifications, ui } = useStore();
 
     const {
         authentication_status,

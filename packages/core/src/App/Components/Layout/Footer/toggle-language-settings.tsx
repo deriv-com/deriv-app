@@ -4,7 +4,8 @@ import { observer, useStore } from '@deriv/stores';
 import { Icon, Modal, Popover, Text } from '@deriv/components';
 import { Localize, localize, useLanguageSettings } from '@deriv/translations';
 import LanguageSettings from '../../../Containers/SettingsModal/settings-language';
-import 'sass/app/modules/settings.scss';
+// eslint-disable-next-line import/no-unresolved
+import 'Sass/app/modules/settings.scss';
 
 const ToggleLanguageSettings = observer(() => {
     const { ui } = useStore();

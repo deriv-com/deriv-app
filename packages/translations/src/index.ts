@@ -4,7 +4,6 @@ import useLanguageSettings from './hooks/use-language-settings';
 import { localize } from './utils/localize';
 import {
     switchLanguage,
-    getAllLanguages,
     getAllowedLanguages,
     getInitialLanguage,
     getLanguage,
@@ -13,7 +12,6 @@ import {
 import type { Language } from './utils/config';
 
 export {
-    getAllLanguages,
     getAllowedLanguages,
     getInitialLanguage,
     getLanguage,

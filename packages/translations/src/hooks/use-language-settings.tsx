@@ -1,6 +1,6 @@
 import { switchLanguage } from '../utils/i18next';
 import { Language, STORE_LANGUAGE_KEY } from '../utils/config';
-import { useTranslation } from '../context/translation-provider';
+import { useTranslationContext } from '../context/translation-provider';
 
 type UseLanguageSettings = {
     onChange?: (lang: Language) => void;
@@ -8,7 +8,7 @@ type UseLanguageSettings = {
 };
 
 const useLanguageSettings = ({ onChange, onComplete }: UseLanguageSettings = {}) => {
-    const { current_language, setCurrentLanguage } = useTranslation();
+    const { current_language, setCurrentLanguage } = useTranslationContext();
 
     const handleChangeLanguage = async (selected_lang: Language) => {
         if (selected_lang === 'EN') {

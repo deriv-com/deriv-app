@@ -3,32 +3,25 @@ import { initReactI18next } from 'react-i18next';
 import { str as crc32 } from 'crc-32';
 import { isLocal, isProduction } from '../../../shared/src/utils/config/config';
 import { isStaging } from '../../../shared/src/utils/url/helpers';
-import { ALL_LANGUAGES, DEFAULT_LANGUAGE, Language, STORE_LANGUAGE_KEY } from './config';
-
-export const getAllLanguages = () => ALL_LANGUAGES;
+import {
+    ALL_LANGUAGES,
+    ALLOWED_LANGUAGES,
+    EXCLUDED_LANGUAGE_KEYS,
+    DEFAULT_LANGUAGE,
+    Language,
+    LanguageKey,
+    STORE_LANGUAGE_KEY,
+} from './config';
 
 export const getAllowedLanguages = () => {
-    const allowed_languages = {
-        EN: 'English',
-        ES: 'Español',
-        RU: 'Русский',
-        FR: 'Français',
-        IT: 'Italiano',
-        TH: 'ไทย',
-        VI: 'Tiếng Việt',
-    };
-    const exclude_languages = ['ACH'];
-    // TODO Change language_list to const when languages are available in prod.
-    type Key = keyof typeof ALL_LANGUAGES;
-    let language_list = Object.keys(getAllLanguages())
-        .filter(key => !exclude_languages.includes(key))
+    let language_list = Object.keys(ALL_LANGUAGES)
+        .filter(key => !EXCLUDED_LANGUAGE_KEYS.includes(key as LanguageKey))
         .reduce((obj: { [key: string]: string }, key) => {
-            obj[key] = getAllLanguages()[key as Key];
+            obj[key] = ALL_LANGUAGES[key as LanguageKey];
             return obj;
         }, {});
 
-    // TODO Remove production check when all languages are available in prod.
-    if (isProduction()) language_list = allowed_languages;
+    if (isProduction()) language_list = ALLOWED_LANGUAGES;
 
     return language_list;
 };

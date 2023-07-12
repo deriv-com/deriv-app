@@ -1,8 +1,17 @@
-import React from 'react'
+import React from 'react';
 import { useModalManagerContext } from '../modal-manager-context';
 import { Modal } from '@deriv/components';
 
-export function MockBuySellModal({ title, subtitle }: { title?: string; subtitle?: string }) {
+type TMockBuySellModalProps = {
+    title?: string;
+    subtitle?: string;
+};
+
+type TMockMyAdsDeleteModalProps = {
+    title?: string;
+};
+
+export function MockBuySellModal({ title, subtitle }: TMockBuySellModalProps) {
     const { is_modal_open, hideModal, showModal, useRegisterModalProps } = useModalManagerContext();
 
     useRegisterModalProps({
@@ -34,7 +43,7 @@ export function MockBuySellModal({ title, subtitle }: { title?: string; subtitle
     );
 }
 
-export function MockMyAdsDeleteModal({ title }: { title?: string }) {
+export function MockMyAdsDeleteModal({ title }: TMockMyAdsDeleteModalProps) {
     const { is_modal_open, hideModal } = useModalManagerContext();
     return (
         <Modal is_open={is_modal_open}>

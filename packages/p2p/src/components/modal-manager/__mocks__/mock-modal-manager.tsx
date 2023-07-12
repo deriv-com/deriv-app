@@ -1,6 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-export function MockModal({ title, subtitle }: { title?: string; subtitle?: string }) {
+type TMockBuySellModalProps = {
+    title?: string;
+    subtitle?: string;
+};
+
+export function MockModal({ title, subtitle }: TMockBuySellModalProps) {
     if (title && subtitle) {
         return (
             <div>

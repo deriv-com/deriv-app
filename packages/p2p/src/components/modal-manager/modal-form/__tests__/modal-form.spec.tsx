@@ -2,6 +2,7 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import { useStores } from 'Stores/index';
 import ModalForm from '../modal-form';
+import { FormikProps, FormikValues } from 'formik';
 
 const modal_form_props = {
     initialValues: {
@@ -26,7 +27,7 @@ describe('<ModalForm />', () => {
             },
         };
 
-        mock_store.general_store.setFormikRef = (formik_ref: any) => {
+        mock_store.general_store.setFormikRef = (formik_ref: React.MutableRefObject<FormikProps<FormikValues>>) => {
             mock_store.general_store.formik_ref = formik_ref;
         };
     });

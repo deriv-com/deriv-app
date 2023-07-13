@@ -30,6 +30,7 @@ import UnsupportedContractModal from 'App/Components/Elements/Modals/Unsupported
 import { SmartChart } from 'Modules/SmartChart';
 import { ChartBottomWidgets, ChartTopWidgets, DigitsWidget, InfoBoxWidget } from './contract-replay-widget.jsx';
 import ChartMarker from 'Modules/SmartChart/Components/Markers/marker.jsx';
+import DelayedAccuBarriersMarker from 'Modules/SmartChart/Components/Markers/delayed-accu-barriers-marker';
 import allMarkers from 'Modules/SmartChart/Components/all-markers.jsx';
 import { observer, useStore } from '@deriv/stores';
 import { useTraderStore } from 'Stores/useTraderStores';
@@ -190,6 +191,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const { contract_replay, common, ui } = useStore();
     const { contract_store, chart_state, chartStateChange, margin } = contract_replay;
     const {
+        accumulator_previous_spot_time,
         contract_config,
         marker: accumulators_barriers_marker,
         is_digit_contract,
@@ -222,7 +224,7 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
     const all_ticks = audit_details ? audit_details.all_ticks : [];
     const { wsForget, wsSubscribe, wsSendRequest, wsForgetStream } = trade;
 
-    const AccumulatorsShadedBarriers = allMarkers[accumulators_barriers_marker?.type];
+    const accu_barriers_marker_component = allMarkers[accumulators_barriers_marker?.type];
 
     const isBottomWidgetVisible = () => {
         return isDesktop() && is_digit_contract;
@@ -278,22 +280,25 @@ const ReplayChart = observer(({ is_accumulator_contract }) => {
             shouldFetchTickHistory={
                 getDurationUnitText(getDurationPeriod(contract_info)) !== 'seconds' || contract_info.status === 'open'
             }
+            shouldDrawTicksFromContractInfo={is_accumulator_contract}
             contractInfo={contract_info}
         >
-            {markers_array.map(marker => (
+            {markers_array.map(({ content_config, marker_config, react_key }) => (
                 <ChartMarker
-                    key={marker.react_key}
-                    marker_config={marker.marker_config}
-                    marker_content_props={marker.content_config}
+                    key={react_key}
+                    marker_config={marker_config}
+                    marker_content_props={content_config}
                     is_bottom_widget_visible={isBottomWidgetVisible()}
                 />
             ))}
-            {is_accumulator_contract && markers_array && (
-                <AccumulatorsShadedBarriers
+            {is_accumulator_contract && !!markers_array && (
+                <DelayedAccuBarriersMarker
+                    marker_component={accu_barriers_marker_component}
                     key={accumulators_barriers_marker.key}
                     is_dark_theme={is_dark_theme}
                     granularity={granularity}
                     is_in_contract_details
+                    previous_spot_time={accumulator_previous_spot_time}
                     {...accumulators_barriers_marker}
                 />
             )}

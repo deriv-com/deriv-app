@@ -53,6 +53,16 @@ export const modals = {
     EditAdCancelModal: React.lazy(() =>
         import(/* webpackChunkName: "edit-ad-cancel-modal" */ 'Components/modal-manager/modals/edit-ad-cancel-modal')
     ),
+    EmailLinkBlockedModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "edit-ad-cancel-modal" */ 'Components/modal-manager/modals/email-link-blocked-modal'
+        )
+    ),
+    EmailLinkExpiredModal: React.lazy(() =>
+        import(
+            /* webpackChunkName: "email-link-expired-modal" */ 'Components/modal-manager/modals/email-link-expired-modal'
+        )
+    ),
     EmailLinkVerifiedModal: React.lazy(() =>
         import(
             /* webpackChunkName: "email-link-verified-modal" */ 'Components/modal-manager/modals/email-link-verified-modal'

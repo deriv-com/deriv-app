@@ -1,6 +1,6 @@
 import React, { RefObject } from 'react';
 
-export const useBlockScroll = (target_ref: RefObject<HTMLElement>) => {
+export const useBlockScroll = (target_ref?: RefObject<HTMLElement>) => {
     React.useEffect(() => {
         if (!target_ref) return undefined;
 

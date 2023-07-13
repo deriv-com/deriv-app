@@ -33,4 +33,5 @@ export type TIconProps = {
     size?: number | string;
     width?: number | string;
     id?: string;
+    description?: string;
 };

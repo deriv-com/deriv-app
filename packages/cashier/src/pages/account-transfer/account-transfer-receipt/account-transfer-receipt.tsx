@@ -14,20 +14,19 @@ type TSwitch = {
     currency?: string;
 };
 
-type TAccountTransferReceipt = {
+type TAccountTransferReceipt = RouteComponentProps & {
     onClose: () => void;
-    history: RouteComponentProps;
 };
 
 const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferReceipt) => {
-    const { ui, common, client } = useStore();
+    const { common, client, traders_hub } = useStore();
     const { account_transfer } = useCashierStore();
-    const { disableApp, enableApp } = ui;
     const { is_from_derivgo } = common;
-    const { is_pre_appstore, loginid, switchAccount } = client;
+    const { loginid, switchAccount } = client;
+    const { closeAccountTransferModal } = traders_hub;
     const { receipt, resetAccountTransfer, selected_from, selected_to, setShouldSwitchAccount } = account_transfer;
 
-    const is_from_pre_appstore = is_pre_appstore && !location.pathname.startsWith(routes.cashier);
+    const is_from_outside_cashier = !location.pathname.startsWith(routes.cashier);
 
     const [is_switch_visible, setIsSwitchVisible] = React.useState(false);
     const [switch_to, setSwitchTo] = React.useState<TSwitch>({});
@@ -35,6 +34,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
     React.useEffect(() => {
         return () => {
             resetAccountTransfer();
+            closeAccountTransferModal();
         };
     }, [resetAccountTransfer]);
 
@@ -64,20 +64,17 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
         } else {
             // if the account transferred to is a Deriv MT5 account that can't be switched to, switch to from account instead
             // otherwise switch to the account transferred to
-            setShouldSwitchAccount();
+            setShouldSwitchAccount(true);
             setSwitchTo(selected_to.is_mt ? selected_from : selected_to);
             toggleSwitchAlert();
         }
-        // close modal only when the user try to transfer money from traders-hub, not from cashier
-        // because in cashier this component is not a modal
-        if (is_from_pre_appstore) onClose?.();
     };
 
     return (
         <div
             className={classNames(
                 'account-transfer-receipt__crypto',
-                !is_from_pre_appstore && 'account-transfer-receipt__crypto-padding'
+                !is_from_outside_cashier && 'account-transfer-receipt__crypto-padding'
             )}
         >
             <Text as='h2' color='prominent' align='center' weight='bold' className='cashier__header'>
@@ -97,7 +94,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
             <div className='account-transfer-receipt__crypto--details-wrapper'>
                 <div className='crypto-transfer-from'>
                     <div className='crypto-transfer-from-details'>
-                        <AccountPlatformIcon account={selected_from} is_pre_appstore={is_pre_appstore} size={32} />
+                        <AccountPlatformIcon account={selected_from} size={32} />
                         <Text as='p' size='s' weight='bold'>
                             <Localize i18n_default_text={selected_from.text} />
                         </Text>
@@ -111,7 +108,7 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                 <Icon className='crypto-transferred-icon' icon='IcArrowDownBold' />
                 <div className='crypto-transfer-to'>
                     <div className='crypto-transfer-to-details'>
-                        <AccountPlatformIcon account={selected_to} is_pre_appstore={is_pre_appstore} size={32} />
+                        <AccountPlatformIcon account={selected_to} size={32} />
                         <Text as='p' size='s' weight='bold'>
                             <Localize i18n_default_text={selected_to.text} />
                         </Text>
@@ -137,8 +134,8 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                 <Button
                     className='account-transfer-receipt__button'
                     has_effect
-                    text={is_from_pre_appstore ? localize('Close') : localize('Make a new transfer')}
-                    onClick={is_from_pre_appstore ? onClose : resetAccountTransfer}
+                    text={is_from_outside_cashier ? localize('Close') : localize('Make a new transfer')}
+                    onClick={is_from_outside_cashier ? onClose : resetAccountTransfer}
                     primary
                     large
                 />
@@ -146,8 +143,6 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
             <Modal
                 is_open={is_switch_visible}
                 toggleModal={toggleSwitchAlert}
-                enableApp={enableApp}
-                disableApp={disableApp}
                 has_close_icon={isMobile()}
                 className='account_transfer_switch_modal'
                 small
@@ -160,7 +155,16 @@ const AccountTransferReceipt = observer(({ onClose, history }: TAccountTransferR
                     />
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button has_effect text={localize('Cancel')} onClick={toggleSwitchAlert} secondary large />
+                    <Button
+                        has_effect
+                        text={localize('Cancel')}
+                        onClick={() => {
+                            setShouldSwitchAccount(false);
+                            toggleSwitchAlert();
+                        }}
+                        secondary
+                        large
+                    />
                     <Button
                         has_effect
                         text={localize(`Switch to ${switch_to.currency} account`)}

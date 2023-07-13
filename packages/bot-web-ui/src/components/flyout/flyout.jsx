@@ -1,9 +1,9 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { localize } from '@deriv/translations';
+import { Icon, Input, Text, ThemedScrollbars } from '@deriv/components';
 import { getPlatformSettings } from '@deriv/shared';
-import { Icon, ThemedScrollbars, Input, Text } from '@deriv/components';
+import { localize } from '@deriv/translations';
 import { help_content_config } from 'Utils/help-content/help-content.config';
 import { connect } from 'Stores/connect';
 import FlyoutBlockGroup from './flyout-block-group.jsx';
@@ -35,20 +35,6 @@ const FlyoutContent = props => {
         selected_category,
         first_get_variable_block_index,
     } = props;
-
-    React.useEffect(() => {
-        flyout_ref.current.scrollTop = 0;
-    }, [selected_category]);
-
-    React.useEffect(() => {
-        const view = flyout_ref.current.querySelector('.flyout__item--active');
-        if (view) {
-            view.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start',
-            });
-        }
-    }, [active_helper]);
 
     return (
         <div
@@ -202,7 +188,6 @@ const Flyout = props => {
         is_visible && (
             <div
                 id='gtm-search-results'
-                gtm-search-term={search_term}
                 className={classNames('flyout', {
                     flyout__search: is_search_flyout,
                     flyout__help: is_help_content,

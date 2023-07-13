@@ -1,3 +1,3 @@
-import CountrySelector from './poi-country-selector.jsx';
+import CountrySelector from './poi-country-selector';
 
 export default CountrySelector;

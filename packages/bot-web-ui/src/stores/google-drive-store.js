@@ -1,6 +1,6 @@
-import { observable, action, makeObservable } from 'mobx';
-import { localize, getLanguage } from '@deriv/translations';
-import { importExternal, config } from '@deriv/bot-skeleton';
+import { action, makeObservable, observable } from 'mobx';
+import { config, importExternal } from '@deriv/bot-skeleton';
+import { getLanguage, localize } from '@deriv/translations';
 import { button_status } from 'Constants/button-status';
 
 export default class GoogleDriveStore {
@@ -10,6 +10,15 @@ export default class GoogleDriveStore {
             updateSigninStatus: action.bound,
             saveFile: action.bound,
             loadFile: action.bound,
+            setKey: action.bound,
+            initialise: action.bound,
+            signIn: action.bound,
+            signOut: action.bound,
+            getPickerLanguage: action.bound,
+            checkFolderExists: action.bound,
+            createSaveFilePicker: action.bound,
+            createLoadFilePicker: action.bound,
+            showGoogleDriveFilePicker: action.bound,
         });
 
         this.root_store = root_store;
@@ -25,10 +34,10 @@ export default class GoogleDriveStore {
     is_authorised = !!localStorage.getItem('google_access_token');
 
     setKey = () => {
-        const { aid, cid, api, scope, discovery_docs } = config.gd;
-        this.client_id = cid;
-        this.app_id = aid;
-        this.api_key = api;
+        const { scope, discovery_docs } = config.gd;
+        this.client_id = process.env.GD_CLIENT_ID;
+        this.app_id = process.env.GD_APP_ID;
+        this.api_key = process.env.GD_API_KEY;
         this.scope = scope;
         this.discovery_docs = discovery_docs;
     };

@@ -9,8 +9,8 @@ import {
     isValidToSell,
     shouldShowCancellation,
 } from '@deriv/shared';
-import ContractCardItem from './contract-card-item.jsx';
-import ToggleCardDialog from './toggle-card-dialog.jsx';
+import ContractCardItem from './contract-card-item';
+import ToggleCardDialog from './toggle-card-dialog';
 import Icon from '../../icon';
 import Money from '../../money';
 

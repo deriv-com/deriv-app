@@ -9,7 +9,7 @@ import OrderStore from './order-store';
 import OrderDetailsStore from './order-details-store';
 import SendbirdStore from './sendbird-store';
 
-class RootStore {
+export default class RootStore {
     constructor() {
         this.general_store = new GeneralStore(this); // Leave at the top!
         this.advertiser_page_store = new AdvertiserPageStore(this);

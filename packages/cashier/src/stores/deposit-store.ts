@@ -12,7 +12,7 @@ export default class DepositStore {
         });
     }
 
-    container = Constants.containers.deposit;
+    container: string = Constants.containers.deposit;
     error = new ErrorStore();
 
     async onMountDeposit(): Promise<void> {
@@ -35,6 +35,7 @@ export default class DepositStore {
 
         this.error.setErrorMessage({ code: '', message: '' }, null, false);
         setContainerHeight(0);
+        setLoading(true);
 
         if (!is_session_timeout) {
             checkIframeLoaded();
@@ -50,7 +51,7 @@ export default class DepositStore {
             return;
         }
 
-        if (!is_crypto) {
+        if (!is_crypto && active_container === 'deposit') {
             const response_cashier = await this.WS.authorized.cashier(active_container, {
                 verification_code: 'undefined',
             });

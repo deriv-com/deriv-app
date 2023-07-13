@@ -1,8 +1,12 @@
 import type {
-    ActiveSymbolsResponse,
-    ActiveSymbolsRequest,
     APITokenRequest,
     APITokenResponse,
+    AccountLimitsRequest,
+    AccountLimitsResponse,
+    AccountStatusRequest,
+    AccountStatusResponse,
+    ActiveSymbolsRequest,
+    ActiveSymbolsResponse,
     ApplicationDeleteRequest,
     ApplicationDeleteResponse,
     ApplicationGetDetailsRequest,
@@ -31,20 +35,18 @@ import type {
     CancelAContractResponse,
     CashierInformationRequest,
     CashierInformationResponse,
-    UpdateContractHistoryRequest,
-    UpdateContractHistoryResponse,
-    UpdateContractRequest,
-    UpdateContractResponse,
     ContractsForSymbolRequest,
     ContractsForSymbolResponse,
-    CopyTradingStartRequest,
-    CopyTradingStartResponse,
-    CopyTradingStopRequest,
-    CopyTradingStopResponse,
     CopyTradingListRequest,
     CopyTradingListResponse,
+    CopyTradingStartRequest,
+    CopyTradingStartResponse,
     CopyTradingStatisticsRequest,
     CopyTradingStatisticsResponse,
+    CopyTradingStopRequest,
+    CopyTradingStopResponse,
+    CountriesListRequest,
+    CountriesListResponse,
     CryptocurrencyConfigurationsRequest,
     CryptocurrencyConfigurationsResponse,
     DocumentUploadRequest,
@@ -57,32 +59,28 @@ import type {
     ForgetAllResponse,
     ForgetRequest,
     ForgetResponse,
-    AccountStatusRequest,
-    AccountStatusResponse,
-    GetFinancialAssessmentRequest,
-    GetFinancialAssessmentResponse,
-    AccountLimitsRequest,
-    AccountLimitsResponse,
-    GetSelfExclusionRequest,
-    GetSelfExclusionResponse,
     GetAccountSettingsRequest,
     GetAccountSettingsResponse,
+    GetFinancialAssessmentRequest,
+    GetFinancialAssessmentResponse,
+    GetSelfExclusionRequest,
+    GetSelfExclusionResponse,
     IdentityVerificationAddDocumentRequest,
     IdentityVerificationAddDocumentResponse,
     LandingCompanyDetailsRequest,
     LandingCompanyDetailsResponse,
     LandingCompanyRequest,
     LandingCompanyResponse,
-    LoginHistoryRequest,
-    LoginHistoryResponse,
     LogOutRequest,
     LogOutResponse,
+    LoginHistoryRequest,
+    LoginHistoryResponse,
+    MT5AccountsListRequest,
+    MT5AccountsListResponse,
     MT5DepositRequest,
     MT5DepositResponse,
     MT5GetSettingRequest,
     MT5GetSettingResponse,
-    MT5AccountsListRequest,
-    MT5AccountsListResponse,
     MT5NewAccountRequest,
     MT5NewAccountResponse,
     MT5PasswordChangeRequest,
@@ -93,10 +91,10 @@ import type {
     MT5PasswordResetResponse,
     MT5WithdrawalRequest,
     MT5WithdrawalResponse,
-    NewRealMoneyAccountDerivInvestmentEuropeLtdRequest,
-    NewRealMoneyAccountDerivInvestmentEuropeLtdResponse,
     NewRealMoneyAccountDefaultLandingCompanyRequest,
     NewRealMoneyAccountDefaultLandingCompanyResponse,
+    NewRealMoneyAccountDerivInvestmentEuropeLtdRequest,
+    NewRealMoneyAccountDerivInvestmentEuropeLtdResponse,
     NewVirtualMoneyAccountRequest,
     NewVirtualMoneyAccountResponse,
     OAuthApplicationsRequest,
@@ -143,8 +141,6 @@ import type {
     P2PPaymentMethodsResponse,
     P2PPingRequest,
     P2PPingResponse,
-    PaymentMethodsRequest,
-    PaymentMethodsResponse,
     PaymentAgentCreateRequest,
     PaymentAgentCreateResponse,
     PaymentAgentDetailsRequest,
@@ -153,52 +149,58 @@ import type {
     PaymentAgentListResponse,
     PaymentAgentTransferRequest,
     PaymentAgentTransferResponse,
+    PaymentAgentWithdrawJustificationRequest,
+    PaymentAgentWithdrawJustificationResponse,
     PaymentAgentWithdrawRequest,
     PaymentAgentWithdrawResponse,
+    PaymentMethodsRequest,
+    PaymentMethodsResponse,
     PayoutCurrenciesRequest,
     PayoutCurrenciesResponse,
     PingRequest,
     PingResponse,
     PortfolioRequest,
     PortfolioResponse,
-    ProfitTableRequest,
-    ProfitTableResponse,
     PriceProposalOpenContractsRequest,
     PriceProposalOpenContractsResponse,
     PriceProposalRequest,
     PriceProposalResponse,
+    ProfitTableRequest,
+    ProfitTableResponse,
     RealityCheckRequest,
     RealityCheckResponse,
-    CountriesListResponse,
-    CountriesListRequest,
     RevokeOauthApplicationRequest,
     RevokeOauthApplicationResponse,
+    SellContractRequest,
+    SellContractResponse,
     SellContractsMultipleAccountsRequest,
     SellContractsMultipleAccountsResponse,
     SellExpiredContractsRequest,
     SellExpiredContractsResponse,
-    SellContractRequest,
-    SellContractResponse,
+    ServerListRequest,
+    ServerListResponse,
+    ServerStatusRequest,
+    ServerStatusResponse,
+    ServerTimeRequest,
+    ServerTimeResponse,
     SetAccountCurrencyRequest,
     SetAccountCurrencyResponse,
+    SetAccountSettingsRequest,
+    SetAccountSettingsResponse,
     SetFinancialAssessmentRequest,
     SetFinancialAssessmentResponse,
     SetSelfExclusionRequest,
     SetSelfExclusionResponse,
-    SetAccountSettingsRequest,
-    SetAccountSettingsResponse,
     StatementRequest,
     StatementResponse,
     StatesListRequest,
     StatesListResponse,
+    TermsAndConditionsApprovalRequest,
+    TermsAndConditionsApprovalResponse,
     TicksHistoryRequest,
     TicksHistoryResponse,
     TicksStreamRequest,
     TicksStreamResponse,
-    ServerTimeRequest,
-    ServerTimeResponse,
-    TermsAndConditionsApprovalRequest,
-    TermsAndConditionsApprovalResponse,
     TopUpVirtualMoneyAccountRequest,
     TopUpVirtualMoneyAccountResponse,
     TradingDurationsRequest,
@@ -207,25 +209,149 @@ import type {
     TradingPlatformInvestorPasswordResetResponse,
     TradingPlatformPasswordResetRequest,
     TradingPlatformPasswordResetResponse,
-    ServerListRequest,
-    ServerListResponse,
     TradingTimesRequest,
     TradingTimesResponse,
     TransactionsStreamRequest,
     TransactionsStreamResponse,
     TransferBetweenAccountsRequest,
     TransferBetweenAccountsResponse,
-    UnsubscribeEmailResponse,
     UnsubscribeEmailRequest,
+    UnsubscribeEmailResponse,
+    UpdateContractHistoryRequest,
+    UpdateContractHistoryResponse,
+    UpdateContractRequest,
+    UpdateContractResponse,
     VerifyEmailCellxpertRequest,
     VerifyEmailCellxpertResponse,
     VerifyEmailRequest,
     VerifyEmailResponse,
-    ServerStatusResponse,
-    ServerStatusRequest,
 } from '@deriv/api-types';
+import type { useMutation, useQuery } from '@tanstack/react-query';
 
-export type TSocketEndpoints = {
+type TPrivateSocketEndpoints = {
+    cashier_payments: {
+        request: {
+            /**
+             * Must be `1`
+             */
+            cashier_payments: 1;
+            /**
+             * [Optional] Cashier provider. `crypto` will be default option for crypto currency accounts.
+             */
+            provider?: 'crypto';
+            /**
+             * [Optional] If set to 1, will send updates whenever there is update to crypto payments.
+             */
+            subscribe?: 0 | 1;
+            /**
+             * [Optional] Type of transactions to receive.
+             */
+            transaction_type?: 'all' | 'deposit' | 'withdrawal';
+            /**
+             * [Optional] Used to pass data through the websocket, which may be retrieved via the `echo_req` output field.
+             */
+            passthrough?: {
+                [k: string]: unknown;
+            };
+            /**
+             * [Optional] Used to map request to response.
+             */
+            req_id?: number;
+        };
+        response: {
+            cashier_payments?: {
+                /**
+                 * Response for provider `crypto'.
+                 */
+                crypto: {
+                    /**
+                     * The destination crypto address.
+                     */
+                    address_hash: string;
+                    /**
+                     * The URL of the address on blockchain.
+                     */
+                    address_url: string;
+                    /**
+                     * [Optional] The transaction amount. Not present when deposit transaction still unconfirmed.
+                     */
+                    amount?: number;
+                    /**
+                     * [Optional] The number of confirmations for pending deposits or withdrawals.
+                     */
+                    confirmations?: number;
+                    /**
+                     * The unique identifier for the transaction.
+                     */
+                    id: string;
+                    /**
+                     * [Optional] Boolean value: 1 or 0, indicating whether the transaction can be cancelled. Only applicable for `withdrawal` transactions.
+                     */
+                    is_valid_to_cancel?: 1 | 0;
+                    /**
+                     * The status code of the transaction.
+                     * Possible values for **deposit:** `PENDING|CONFIRMED|ERROR`,
+                     * possible values for **withdrawal:** `LOCKED|VERIFIED|REJECTED|PERFORMING_BLOCKCHAIN_TXN|PROCESSING|SENT|ERROR|CANCELLED`.
+                     */
+                    status_code:
+                        | 'CANCELLED'
+                        | 'CONFIRMED'
+                        | 'ERROR'
+                        | 'LOCKED'
+                        | 'PENDING'
+                        | 'PERFORMING_BLOCKCHAIN_TXN'
+                        | 'PROCESSING'
+                        | 'REJECTED'
+                        | 'SENT'
+                        | 'VERIFIED';
+                    /**
+                     * The status message of the transaction
+                     */
+                    status_message: string;
+                    /**
+                     * The epoch of the transaction date
+                     */
+                    submit_date: number;
+                    /**
+                     * [Optional] The transaction hash when available.
+                     */
+                    transaction_hash?: string;
+                    /**
+                     * The type of the transaction.
+                     */
+                    transaction_type: 'deposit' | 'withdrawal';
+                    /**
+                     * [Optional] The URL of the transaction on blockchain if `transaction_hash` is available.
+                     */
+                    transaction_url?: string;
+                }[];
+            };
+            subscription?: {
+                /**
+                 * A per-connection unique identifier. Can be passed to the `forget` API call to unsubscribe.
+                 */
+                id: string;
+            };
+            /**
+             * Echo of the request made.
+             */
+            echo_req: {
+                [k: string]: unknown;
+            };
+            /**
+             * Action name of the request made.
+             */
+            msg_type: 'cashier_payments';
+            /**
+             * Optional field sent in request to map to response, present only when request contains `req_id`.
+             */
+            req_id?: number;
+            [k: string]: unknown;
+        };
+    };
+};
+
+type TSocketEndpoints = {
     active_symbols: {
         request: ActiveSymbolsRequest;
         response: ActiveSymbolsResponse;
@@ -538,6 +664,10 @@ export type TSocketEndpoints = {
         request: PaymentAgentWithdrawRequest;
         response: PaymentAgentWithdrawResponse;
     };
+    paymentagent_withdraw_justification: {
+        request: PaymentAgentWithdrawJustificationRequest;
+        response: PaymentAgentWithdrawJustificationResponse;
+    };
     payout_currencies: {
         request: PayoutCurrenciesRequest;
         response: PayoutCurrenciesResponse;
@@ -674,7 +804,7 @@ export type TSocketEndpoints = {
         request: ServerStatusRequest;
         response: ServerStatusResponse;
     };
-};
+} & TPrivateSocketEndpoints;
 
 export type TSocketEndpointNames = keyof TSocketEndpoints;
 
@@ -684,21 +814,52 @@ export type TSocketSubscribableEndpointNames =
 
 export type TSocketResponse<T extends TSocketEndpointNames> = TSocketEndpoints[T]['response'];
 
-export type TSocketResponseData<T extends TSocketEndpointNames> = TSocketResponse<T>[T extends 'ticks' ? 'tick' : T];
+export type TSocketResponseData<T extends TSocketEndpointNames> = Omit<
+    NoStringIndex<TSocketResponse<T>>,
+    'req_id' | 'msg_type' | 'echo_req' | 'subscription'
+>;
 
-export type TSocketRequest<T extends TSocketEndpointNames> = TSocketEndpoints[T]['request'];
+type TSocketRequest<T extends TSocketEndpointNames> = TSocketEndpoints[T]['request'];
+
+type TRemovableEndpointName<T extends TSocketEndpointNames> = T extends KeysMatching<TSocketRequest<T>, 1> ? T : never;
 
 type TSocketRequestCleaned<T extends TSocketEndpointNames> = Omit<
     TSocketRequest<T>,
-    (T extends KeysMatching<TSocketRequest<T>, 1> ? T : never) | 'passthrough' | 'req_id' | 'subscribe'
+    TRemovableEndpointName<T> | 'passthrough' | 'req_id' | 'subscribe'
 >;
 
-type TSocketRequestProps<T extends TSocketEndpointNames> = TSocketRequestCleaned<T> extends Record<string, never>
-    ? never
-    : TSocketRequestCleaned<T>;
+export type TSocketRequestPayload<T extends TSocketEndpointNames> = Partial<
+    TSocketRequestCleaned<T>
+> extends TSocketRequestCleaned<T>
+    ? { payload?: TSocketRequestCleaned<T> }
+    : { payload: TSocketRequestCleaned<T> };
 
-export type TSocketAcceptableProps<T extends TSocketEndpointNames> = TSocketRequestProps<T> extends never
+export type TSocketRequestQueryOptions<T extends TSocketEndpointNames> = Parameters<
+    typeof useQuery<TSocketResponseData<T>, unknown>
+>[2];
+
+export type TSocketRequestMutationOptions<T extends TSocketEndpointNames> = Parameters<
+    typeof useMutation<TSocketResponseData<T>, unknown, TSocketAcceptableProps<T>>
+>[2];
+
+type TSocketRequestWithOptions<T extends TSocketEndpointNames, O extends boolean = false> = Omit<
+    TSocketRequestPayload<T> & { options?: TSocketRequestQueryOptions<T> },
+    | (TSocketRequestPayload<T>['payload'] extends Record<string, never> ? 'payload' : never)
+    | (TNever<TSocketRequestPayload<T>['payload']> extends undefined ? 'payload' : never)
+    | (O extends true ? never : 'options')
+>;
+
+type TNever<T> = T extends Record<string, never> ? never : T;
+
+type TSocketRequestProps<T extends TSocketEndpointNames, O extends boolean = false> = TNever<
+    TSocketRequestWithOptions<T, O>
+>;
+
+export type TSocketAcceptableProps<T extends TSocketEndpointNames, O extends boolean = false> = TSocketRequestProps<
+    T,
+    O
+> extends never
     ? [undefined?]
-    : Partial<TSocketRequestProps<T>> extends TSocketRequestProps<T>
-    ? [TSocketRequestProps<T>?]
-    : [TSocketRequestProps<T>];
+    : Partial<TSocketRequestProps<T, O>> extends TSocketRequestProps<T, O>
+    ? [TSocketRequestProps<T, O>?]
+    : [TSocketRequestProps<T, O>];

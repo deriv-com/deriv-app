@@ -5,16 +5,17 @@ import ProgressTicks from './progress-ticks';
 import RemainingTime from '../remaining-time';
 import Text from '../text';
 import moment from 'moment';
+import { TGetCardLables } from '../types';
 
 type TProgressSliderProps = {
     className?: string;
-    current_tick: number;
-    expiry_time: number & string;
-    getCardLabels: () => { [key: string]: string }; // TODO Use the one from shared workspace after migration
+    current_tick: number | null;
+    expiry_time?: number;
+    getCardLabels: TGetCardLables;
     is_loading: boolean;
     server_time: moment.Moment;
-    start_time: number & string;
-    ticks_count: number;
+    start_time?: number;
+    ticks_count?: number;
 };
 
 const ProgressSlider = ({
@@ -27,7 +28,7 @@ const ProgressSlider = ({
     start_time,
     ticks_count,
 }: TProgressSliderProps) => {
-    const percentage = getTimePercentage(server_time, start_time, expiry_time);
+    const percentage = getTimePercentage(server_time, Number(start_time), Number(expiry_time));
     return (
         <div className={classNames('dc-progress-slider', className)}>
             {ticks_count ? (

@@ -1,15 +1,17 @@
 // Checks if pathname matches route. (Works even with query string /?)
+import React from 'react';
 // TODO: Add test cases for this
 type TRoute = {
+    component?: React.ComponentType;
     default?: boolean;
     exact?: boolean;
-    id?: string;
+    getTitle?: () => string;
     icon_component?: string;
+    id?: string;
+    is_authenticated?: boolean;
     is_invisible?: boolean;
     path?: string;
     to?: string;
-    getTitle?: () => string;
-    is_authenticated?: boolean;
 };
 
 type TGetSelectedRoute = {
@@ -17,8 +19,7 @@ type TGetSelectedRoute = {
     pathname: string;
 };
 
-export const matchRoute = (route: TRoute, pathname: string) =>
-    new RegExp(`${route.path}(/$)?((?!-).)*$`).test(pathname);
+export const matchRoute = (route: TRoute, pathname: string) => new RegExp(`^${route.path}(/.*)?$`).test(pathname);
 
 export const getSelectedRoute = ({ routes, pathname }: TGetSelectedRoute) => {
     const matching_route = routes.find(route => matchRoute(route, pathname));

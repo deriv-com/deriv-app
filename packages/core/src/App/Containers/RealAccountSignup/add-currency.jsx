@@ -2,7 +2,8 @@ import { Field, Formik } from 'formik';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { FormSubmitButton, Icon, Text, ThemedScrollbars } from '@deriv/components';
+import { usePaymentAgentList } from '@deriv/hooks';
+import { FormSubmitButton, Icon, Loading, Text, ThemedScrollbars } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile, reorderCurrencies, routes } from '@deriv/shared';
 import { connect } from 'Stores/connect';
@@ -15,7 +16,6 @@ const CRYPTO_CURRENCY_TYPE = 'crypto';
 const FIAT_CURRENCY_TYPE = 'fiat';
 
 const AddCurrency = ({
-    all_payment_agent_list,
     available_crypto_currencies,
     has_fiat,
     legal_allowed_currencies,
@@ -29,14 +29,15 @@ const AddCurrency = ({
 }) => {
     const [form_error] = React.useState('');
     const [form_value] = React.useState({ crypto: '', fiat: '' });
+    const { data: all_payment_agent_list, isLoading: is_loading } = usePaymentAgentList();
 
-    const allowed_currencies_payment_agent_availability = CurrencyProvider.currenciesPaymentAgentAvailability(
-        legal_allowed_currencies,
-        all_payment_agent_list
-    );
+    const getReorderedCurrencies = React.useMemo(() => {
+        const allowed_currencies_payment_agent_availability = CurrencyProvider.currenciesPaymentAgentAvailability(
+            legal_allowed_currencies,
+            all_payment_agent_list
+        );
 
-    const getReorderedCryptoCurrencies = () => {
-        const reorderCryptoCurrencies = reorderCurrencies(
+        const crypto = reorderCurrencies(
             allowed_currencies_payment_agent_availability?.filter(
                 currency =>
                     currency.type === CRYPTO_CURRENCY_TYPE &&
@@ -45,17 +46,19 @@ const AddCurrency = ({
             CRYPTO_CURRENCY_TYPE
         );
 
-        return reorderCryptoCurrencies;
-    };
-
-    const getReorderedFiatCurrencies = () =>
-        reorderCurrencies(
+        const fiat = reorderCurrencies(
             allowed_currencies_payment_agent_availability?.filter(
                 currency =>
                     currency.type === FIAT_CURRENCY_TYPE &&
                     !available_crypto_currencies.some(x => x.value === currency.value)
             )
         );
+
+        return {
+            crypto,
+            fiat,
+        };
+    }, [all_payment_agent_list, available_crypto_currencies, legal_allowed_currencies]);
 
     const onClickBack = () => {
         openRealAccountSignup('choose');
@@ -75,25 +78,29 @@ const AddCurrency = ({
                         {localize('You are limited to one fiat account only.')}
                     </Text>
                 )}
-                <CurrencyRadioButtonGroup
-                    id='crypto_currency'
-                    className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                    item_count={getReorderedFiatCurrencies().length}
-                >
-                    {getReorderedFiatCurrencies().map(currency => (
-                        <Field
-                            key={currency.value}
-                            component={CurrencyRadioButton}
-                            name='currency'
-                            id={currency.value}
-                            label={currency.name}
-                            icon={currency.icon}
-                            second_line_label={currency.second_line_label}
-                            onClick={currency.onClick}
-                            selected={has_fiat}
-                        />
-                    ))}
-                </CurrencyRadioButtonGroup>
+                {is_loading ? (
+                    <Loading is_fullscreen={false} />
+                ) : (
+                    <CurrencyRadioButtonGroup
+                        id='crypto_currency'
+                        className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                        item_count={getReorderedCurrencies.fiat.length}
+                    >
+                        {getReorderedCurrencies.fiat.map(currency => (
+                            <Field
+                                key={currency.value}
+                                component={CurrencyRadioButton}
+                                name='currency'
+                                id={currency.value}
+                                label={currency.name}
+                                icon={currency.icon}
+                                second_line_label={currency.second_line_label}
+                                onClick={currency.onClick}
+                                selected={has_fiat}
+                            />
+                        ))}
+                    </CurrencyRadioButtonGroup>
+                )}
             </div>
         );
     };
@@ -107,25 +114,29 @@ const AddCurrency = ({
                 <Text as='p' color='prominent' align='center' size='xxs' className='add-currency__sub-title'>
                     {localize('You can open an account for each cryptocurrency.')}
                 </Text>
-                <CurrencyRadioButtonGroup
-                    id='crypto_currency'
-                    className='currency-selector__radio-group currency-selector__radio-group--with-margin'
-                    item_count={getReorderedCryptoCurrencies().length}
-                >
-                    {getReorderedCryptoCurrencies().map(currency => (
-                        <Field
-                            key={currency.value}
-                            component={CurrencyRadioButton}
-                            name='currency'
-                            id={currency.value}
-                            label={currency.name}
-                            icon={currency.icon}
-                            second_line_label={currency.second_line_label}
-                            onClick={currency.onClick}
-                            selected={deposit_target === routes.cashier_pa ? !currency.has_payment_agent : false}
-                        />
-                    ))}
-                </CurrencyRadioButtonGroup>
+                {is_loading ? (
+                    <Loading is_fullscreen={false} />
+                ) : (
+                    <CurrencyRadioButtonGroup
+                        id='crypto_currency'
+                        className='currency-selector__radio-group currency-selector__radio-group--with-margin'
+                        item_count={getReorderedCurrencies.crypto.length}
+                    >
+                        {getReorderedCurrencies.crypto.map(currency => (
+                            <Field
+                                key={currency.value}
+                                component={CurrencyRadioButton}
+                                name='currency'
+                                id={currency.value}
+                                label={currency.name}
+                                icon={currency.icon}
+                                second_line_label={currency.second_line_label}
+                                onClick={currency.onClick}
+                                selected={deposit_target === routes.cashier_pa ? !currency.has_payment_agent : false}
+                            />
+                        ))}
+                    </CurrencyRadioButtonGroup>
+                )}
             </div>
         );
     };
@@ -220,7 +231,6 @@ const AddCurrency = ({
 };
 
 AddCurrency.propTypes = {
-    all_payment_agent_list: PropTypes.array,
     available_crypto_currencies: PropTypes.array,
     has_fiat: PropTypes.bool,
     legal_allowed_currencies: PropTypes.array,
@@ -234,7 +244,6 @@ AddCurrency.propTypes = {
 };
 
 export default connect(({ client, modules, ui }) => ({
-    all_payment_agent_list: modules.cashier.payment_agent.all_payment_agent_list,
     available_crypto_currencies: client.available_crypto_currencies,
     has_fiat: client.has_fiat,
     legal_allowed_currencies: client.upgradeable_currencies,

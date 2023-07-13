@@ -3,9 +3,11 @@ import React from 'react';
 import { Money } from '@deriv/components';
 import { isDesktop, isMobile, getDecimalPlaces } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const CancelDealInfo = ({ currency, has_cancellation, proposal_info }) => {
+const CancelDealInfo = observer(({ proposal_info }) => {
+    const { currency, has_cancellation } = useTraderStore();
     const { id, cancellation, has_error } = proposal_info;
     const error = has_error || !id;
     const [is_row_layout, setIsRowLayout] = React.useState(false);
@@ -50,9 +52,6 @@ const CancelDealInfo = ({ currency, has_cancellation, proposal_info }) => {
             )}
         </div>
     );
-};
+});
 
-export default connect(({ modules }) => ({
-    has_cancellation: modules.trade.has_cancellation,
-    currency: modules.trade.currency,
-}))(CancelDealInfo);
+export default CancelDealInfo;

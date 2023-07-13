@@ -30,7 +30,7 @@ type TContractConfig = {
     position: string;
 };
 
-type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
+export type TGetSupportedContracts = keyof ReturnType<typeof getSupportedContracts>;
 
 export const getContractTypesConfig: TGetContractTypesConfig = symbol => ({
     rise_fall: {
@@ -209,6 +209,7 @@ export const getCardLabels = () => ({
     PROFIT_LOSS: localize('Profit/Loss:'),
     POTENTIAL_PROFIT_LOSS: localize('Potential profit/loss:'),
     INDICATIVE_PRICE: localize('Indicative price:'),
+    INITIAL_STAKE: localize('Initial stake:'),
     LOST: localize('Lost'),
     PAYOUT: localize('Sell price:'),
     PURCHASE_PRICE: localize('Buy price:'),
@@ -319,71 +320,71 @@ export const getMarketNamesMap = () => ({
 
 export const getUnsupportedContracts = () => ({
     EXPIRYMISS: {
-        name: <Localize i18n_default_text='Ends Outside' />,
+        name: localize('Ends Outside'),
         position: 'top',
     },
     EXPIRYRANGE: {
-        name: <Localize i18n_default_text='Ends Between' />,
+        name: localize('Ends Between'),
         position: 'bottom',
     },
     RANGE: {
-        name: <Localize i18n_default_text='Stays Between' />,
+        name: localize('Stays Between'),
         position: 'top',
     },
     UPORDOWN: {
-        name: <Localize i18n_default_text='Goes Outside' />,
+        name: localize('Goes Outside'),
         position: 'bottom',
     },
     RESETCALL: {
-        name: <Localize i18n_default_text='Reset Call' />,
+        name: localize('Reset Call'),
         position: 'top',
     },
     RESETPUT: {
-        name: <Localize i18n_default_text='Reset Put' />,
+        name: localize('Reset Put'),
         position: 'bottom',
     },
     TICKHIGH: {
-        name: <Localize i18n_default_text='High Tick' />,
+        name: localize('High Tick'),
         position: 'top',
     },
     TICKLOW: {
-        name: <Localize i18n_default_text='Low Tick' />,
+        name: localize('Low Tick'),
         position: 'bottom',
     },
     ASIANU: {
-        name: <Localize i18n_default_text='Asian Up' />,
+        name: localize('Asian Up'),
         position: 'top',
     },
     ASIAND: {
-        name: <Localize i18n_default_text='Asian Down' />,
+        name: localize('Asian Down'),
         position: 'bottom',
     },
     LBFLOATCALL: {
-        name: <Localize i18n_default_text='Close-to-Low' />,
+        name: localize('Close-to-Low'),
         position: 'top',
     },
     LBFLOATPUT: {
-        name: <Localize i18n_default_text='High-to-Close' />,
+        name: localize('High-to-Close'),
         position: 'top',
     },
     LBHIGHLOW: {
-        name: <Localize i18n_default_text='High-to-Low' />,
+        name: localize('High-to-Low'),
         position: 'top',
     },
     CALLSPREAD: {
-        name: <Localize i18n_default_text='Spread Up' />,
+        name: localize('Spread Up'),
         position: 'top',
     },
     PUTSPREAD: {
-        name: <Localize i18n_default_text='Spread Down' />,
+        name: localize('Spread Down'),
         position: 'bottom',
     },
     RUNHIGH: {
-        name: <Localize i18n_default_text='Only Ups' />,
+        name: localize('Only Ups'),
         position: 'top',
     },
     RUNLOW: {
-        name: <Localize i18n_default_text='Only Downs' />,
+        name: localize('Only Downs'),
         position: 'bottom',
     },
 });
@@ -469,8 +470,12 @@ export const getContractConfig = (is_high_low?: boolean) => ({
 // TODO we can combine getContractTypeDisplay and getContractTypePosition functions.
 the difference between these two functions is just the property they return. (name/position)
 */
-export const getContractTypeDisplay = (type: TGetSupportedContracts, is_high_low = false, show_button_name = false) => {
-    const contract_config = getContractConfig(is_high_low)[type] as TContractConfig;
+export const getContractTypeDisplay = (
+    type: TGetSupportedContracts | string,
+    is_high_low = false,
+    show_button_name = false
+) => {
+    const contract_config = getContractConfig(is_high_low)[type as TGetSupportedContracts] as TContractConfig;
     return (show_button_name && contract_config.button_name) || contract_config.name || '';
 };
 

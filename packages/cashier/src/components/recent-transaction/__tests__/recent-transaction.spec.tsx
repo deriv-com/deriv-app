@@ -1,15 +1,16 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import RecentTransaction from '../recent-transaction';
-import { createBrowserHistory } from 'history';
+import { BrowserHistory, createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import CashierProviders from '../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
 
 describe('<RecentTransaction />', () => {
-    let history, mockRootStore;
+    let history: BrowserHistory, mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
         history = createBrowserHistory();
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 currency: 'BTC',
             },
@@ -36,7 +37,7 @@ describe('<RecentTransaction />', () => {
                     },
                 },
             },
-        };
+        });
     });
 
     const renderRecentTransaction = () => {
@@ -72,31 +73,5 @@ describe('<RecentTransaction />', () => {
         expect(mockRootStore.modules.cashier.transaction_history.setIsCryptoTransactionsVisible).toHaveBeenCalledTimes(
             1
         );
-    });
-
-    it('should show the proper icon when transaction_type is equal to "withdrawal"', () => {
-        renderRecentTransaction();
-
-        expect(screen.getByTestId('dti_icon_cashier_minus')).toBeInTheDocument();
-    });
-
-    it('should show the proper icon when transaction_type is equal to "deposit"', () => {
-        mockRootStore.modules.cashier.transaction_history.crypto_transactions = [
-            {
-                ...mockRootStore.modules.cashier.transaction_history.crypto_transactions[0],
-                transaction_type: 'deposit',
-                status_code: 'PENDING',
-            },
-        ];
-        renderRecentTransaction();
-
-        expect(screen.getByTestId('dti_icon_cashier_add')).toBeInTheDocument();
-    });
-
-    it('should not show "Recent transactions" title if crypto_transactions is an empty array', () => {
-        mockRootStore.modules.cashier.transaction_history.crypto_transactions = [];
-        renderRecentTransaction();
-
-        expect(screen.queryByText('Recent transactions')).not.toBeInTheDocument();
     });
 });

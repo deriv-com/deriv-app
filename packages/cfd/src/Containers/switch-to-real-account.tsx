@@ -2,17 +2,18 @@ import React from 'react';
 import { Dialog, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isMobile } from '@deriv/shared';
-import RootStore from '../Stores/index';
-import { connect } from '../Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 
-type TSwitchToRealAccountModal = {
-    is_open: boolean;
-    onClose: () => void;
-    disableApp: () => void;
-    enableApp: () => void;
-};
+const SwitchToRealAccountModal = observer(() => {
+    const { ui } = useStore();
 
-const SwitchToRealAccountModal = ({ is_open, onClose, disableApp, enableApp }: TSwitchToRealAccountModal) => {
+    const {
+        is_switch_to_deriv_account_modal_visible: is_open,
+        openSwitchToRealAccountModal: onClose,
+        disableApp,
+        enableApp,
+    } = ui;
+
     return (
         <Dialog
             className='switch-to-real-account-modal'
@@ -36,11 +37,6 @@ const SwitchToRealAccountModal = ({ is_open, onClose, disableApp, enableApp }: T
             </Text>
         </Dialog>
     );
-};
+});
 
-export default connect(({ ui }: RootStore) => ({
-    is_open: ui.is_switch_to_deriv_account_modal_visible,
-    onClose: ui.openSwitchToRealAccountModal,
-    disableApp: ui.disableApp,
-    enableApp: ui.enableApp,
-}))(SwitchToRealAccountModal);
+export default SwitchToRealAccountModal;

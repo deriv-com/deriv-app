@@ -115,8 +115,6 @@ const useWalletsList = () => {
                 currency_config: wallet.currency ? getConfig(wallet.currency) : undefined,
                 /** Local asset name for the wallet icon. ex: `IcWalletCurrencyUsd` for `USD`  */
                 icon: is_dark_mode_on ? wallet_icon.dark : wallet_icon.light,
-                /** Mark this wallet as added */
-                is_added: true,
             } as const;
         });
     }, [getConfig, is_dark_mode_on, loginid, wallets_with_balance]);

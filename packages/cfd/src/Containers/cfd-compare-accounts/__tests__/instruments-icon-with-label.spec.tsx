@@ -8,7 +8,7 @@ describe('<InstrumentsIconWithLabel />', () => {
         text: 'Synthethics',
         highlighted: true,
         className: 'trading-instruments__icon',
-        is_asterik: true,
+        is_asterisk: true,
     };
 
     it('should renders the component with correct props', () => {
@@ -37,14 +37,14 @@ describe('<InstrumentsIconWithLabel />', () => {
         expect(containerElement).not.toHaveStyle({ opacity: '0.2' });
     });
 
-    it('should show the asterisk span when "is_asterik" prop is true', () => {
+    it('should show the asterisk span when "is_asterisk" prop is true', () => {
         render(<InstrumentsIconWithLabel {...mocked_props} />);
         const asteriskElement = screen.queryByText('*');
         expect(asteriskElement).toBeInTheDocument();
     });
 
-    it('should hide the asterisk span when "is_asterik" prop is false', () => {
-        render(<InstrumentsIconWithLabel {...mocked_props} is_asterik={false} />);
+    it('should hide the asterisk span when "is_asterisk" prop is false', () => {
+        render(<InstrumentsIconWithLabel {...mocked_props} is_asterisk={false} />);
         const asteriskElement = screen.queryByText('*');
         expect(asteriskElement).not.toBeInTheDocument();
     });

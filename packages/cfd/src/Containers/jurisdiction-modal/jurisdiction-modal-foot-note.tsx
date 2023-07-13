@@ -19,7 +19,7 @@ const FooterNote = ({
     if (jurisdiction_selected_shortcode === Jurisdiction.SVG) {
         return (
             <Localize
-                i18n_default_text='Add your Deriv MT5 <0>{{account_type_name}}</0> account under Deriv (SVG) LLC (company no. 273 LLC 2020).'
+                i18n_default_text='Add your Deriv MT5 {{account_type_name}} account under Deriv (SVG) LLC (company no. 273 LLC 2020).'
                 values={{ account_type_name }}
             />
         );
@@ -38,21 +38,21 @@ const FooterNote = ({
     } else if (jurisdiction_selected_shortcode === Jurisdiction.BVI) {
         return (
             <Localize
-                i18n_default_text='Add your Deriv MT5 <0>{{account_type_name}}</0>  account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114).'
+                i18n_default_text='Add your Deriv MT5 {{account_type_name}}  account under Deriv (BVI) Ltd, regulated by the British Virgin Islands Financial Services Commission (License no. SIBA/L/18/1114).'
                 values={{ account_type_name }}
             />
         );
     } else if (jurisdiction_selected_shortcode === Jurisdiction.VANUATU) {
         return (
             <Localize
-                i18n_default_text='Add Your Deriv MT5 <0>{{account_type_name}}</0>  account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.'
+                i18n_default_text='Add Your Deriv MT5 {{account_type_name}}  account under Deriv (V) Ltd, regulated by the Vanuatu Financial Services Commission.'
                 values={{ account_type_name }}
             />
         );
     } else if (jurisdiction_selected_shortcode === Jurisdiction.LABUAN) {
         return (
             <Localize
-                i18n_default_text='Add your Deriv MT5 <0>{{account_type_name}}</0>  STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).'
+                i18n_default_text='Add your Deriv MT5 {{account_type_name}}  STP account under Deriv (FX) Ltd regulated by Labuan Financial Services Authority (Licence no. MB/18/0024).'
                 values={{ account_type_name }}
             />
         );

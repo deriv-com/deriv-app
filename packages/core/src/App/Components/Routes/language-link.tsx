@@ -1,25 +1,26 @@
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
-import { observer, useStore } from '@deriv/stores';
-import { useTranslation } from 'react-i18next';
 import { Icon } from '@deriv/components';
-import { getAllowedLanguages } from '@deriv/translations';
+import { Language, getAllowedLanguages } from '@deriv/translations';
 
 export type TLanguageLink = {
+    is_active?: boolean;
     icon_classname?: string;
-    is_clickable?: boolean;
-    lang: string;
-    toggleModal?: () => void;
-};
+    lang: Language;
+} & ComponentProps<'div'>;
 
-const LanguageLink = observer(({ icon_classname, is_clickable = false, lang, toggleModal }: TLanguageLink) => {
-    const { i18n } = useTranslation();
-    const { common } = useStore();
-    const { changeSelectedLanguage, current_language } = common;
-    const is_active = current_language === lang;
+const LanguageLink = ({ icon_classname, lang, is_active = false, ...props }: TLanguageLink) => {
+    const language_text = getAllowedLanguages()[lang];
 
-    const link: React.ReactNode = (
-        <React.Fragment>
+    return (
+        <div
+            data-testid={`dt_settings_${lang}_button`}
+            id={`dt_settings_${lang}_button`}
+            className={classNames('settings-language__language-link', {
+                'settings-language__language-link--active': is_active,
+            })}
+            {...props}
+        >
             <Icon
                 icon={`IcFlag${lang.replace('_', '-')}`}
                 className={classNames(
@@ -33,40 +34,10 @@ const LanguageLink = observer(({ icon_classname, is_clickable = false, lang, tog
                     'settings-language__language-name--active': is_active,
                 })}
             >
-                {getAllowedLanguages()[lang]}
+                {language_text}
             </span>
-        </React.Fragment>
+        </div>
     );
-    return (
-        <React.Fragment>
-            {!is_clickable ? (
-                <div
-                    id={`dt_settings_${lang}_button`}
-                    className={classNames('settings-language__language-link', {
-                        'settings-language__language-link--active': is_active,
-                    })}
-                >
-                    {link}
-                </div>
-            ) : (
-                <span
-                    data-testid='dt_settings_language_button'
-                    id={`dt_settings_${lang}_button`}
-                    key={lang}
-                    onClick={async () => {
-                        await changeSelectedLanguage(lang);
-                        await i18n.changeLanguage?.(lang);
-                        toggleModal?.();
-                    }}
-                    className={classNames('settings-language__language-link', {
-                        'settings-language__language-link--active': is_active,
-                    })}
-                >
-                    {link}
-                </span>
-            )}
-        </React.Fragment>
-    );
-});
+};
 
 export default LanguageLink;

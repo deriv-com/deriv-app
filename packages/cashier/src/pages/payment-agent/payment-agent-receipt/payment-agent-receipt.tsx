@@ -110,7 +110,7 @@ const PaymentAgentReceipt = observer(({ history }: TPaymentAgentReceipt) => {
                             i18n_default_text="<0>{{payment_agent}}</0><1>'s</1> contact details"
                             components={[<span key={0} />, <span key={1} />]}
                             values={{ payment_agent: receipt.payment_agent_name }}
-                            options={{ interpolation: { escapeValue: false } }}
+                            tOptions={{ interpolation: { escapeValue: false } }}
                         />
                     </Text>
                     {receipt.payment_agent_email && receipt.payment_agent_phone && receipt.payment_agent_url && (

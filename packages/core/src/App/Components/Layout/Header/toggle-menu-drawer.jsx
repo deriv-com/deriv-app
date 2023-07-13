@@ -403,7 +403,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                             icon_classname='settings-language__language-flag'
                             is_clickable
                             lang={lang}
-                            toggleModal={() => {
+                            onClick={() => {
                                 toggleDrawer();
                                 setIsLanguageChange(is_changing => !is_changing);
                             }}

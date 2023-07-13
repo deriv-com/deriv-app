@@ -23,7 +23,7 @@ const JurisdictionCardFront = ({
         })}
     >
         <div className={`${card_classname}__card-content-container`}>
-            {card_values.is_over_header_available ? (
+            {card_values.over_header ? (
                 <Text
                     as='div'
                     weight='bold'

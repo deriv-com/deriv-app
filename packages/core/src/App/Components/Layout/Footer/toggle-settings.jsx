@@ -1,17 +1,9 @@
+import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { Icon, Modal, Popover, VerticalTab } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import 'Sass/app/modules/settings.scss';
-
-const ModalContent = ({ settings_extension }) => {
-    const content = [];
-
-    content.push(...(settings_extension || []));
-
-    return <VerticalTab list={content} />;
-};
 
 const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSettings, settings_extension }) => {
     const toggle_settings_class = classNames('ic-settings', 'footer__link', {
@@ -40,7 +32,7 @@ const ToggleSettings = ({ enableApp, is_settings_visible, disableApp, toggleSett
                 height='616px'
                 width='736px'
             >
-                <ModalContent settings_extension={settings_extension} />
+                <VerticalTab list={settings_extension || []} />
             </Modal>
         </React.Fragment>
     );

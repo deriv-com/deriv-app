@@ -1,28 +1,30 @@
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { Button, DesktopWrapper } from '@deriv/components';
-import { localize, getAllowedLanguages } from '@deriv/translations';
-import FormSubHeader from 'Components/form-sub-header';
 import { Formik, FormikHandlers, FormikHelpers, FormikValues } from 'formik';
+import { Button, DesktopWrapper } from '@deriv/components';
+import { WS } from '@deriv/shared';
+import { localize, getAllowedLanguages, useLanguageSettings } from '@deriv/translations';
+import FormSubHeader from 'Components/form-sub-header';
 import FormFooter from 'Components/form-footer';
 import LanguageRadioButton from 'Components/language-settings';
-import { observer, useStore } from '@deriv/stores';
 
-const LanguageSettings = observer(() => {
-    const { common } = useStore();
-    const { changeSelectedLanguage, current_language, isCurrentLanguage } = common;
-    const { i18n } = useTranslation();
+const LanguageSettings = () => {
+    const { current_language, handleChangeLanguage } = useLanguageSettings({
+        onChange: async selected_lang => {
+            await WS.wait('authorize');
+            await WS.setSettings({
+                set_settings: 1,
+                preferred_language: selected_lang,
+            });
+        },
+        onComplete: async selected_lang => {
+            WS.closeAndOpenNewConnection(selected_lang);
+        },
+    });
     const allowed_language_keys: string[] = Object.keys(getAllowedLanguages());
     const initial_values = { language_code: current_language };
+
     return (
-        <Formik
-            initialValues={initial_values}
-            onSubmit={async values => {
-                const { language_code } = values;
-                await changeSelectedLanguage(language_code);
-                await i18n.changeLanguage?.(language_code);
-            }}
-        >
+        <Formik initialValues={initial_values} onSubmit={values => handleChangeLanguage(values.language_code)}>
             {({ handleSubmit, setFieldValue, values }: FormikHandlers & FormikHelpers<FormikValues> & FormikValues) => {
                 return (
                     <form onSubmit={handleSubmit} className='account-form account-form--language-settings'>
@@ -56,7 +58,7 @@ const LanguageSettings = observer(() => {
                                 text={localize('Submit')}
                                 large
                                 primary
-                                is_disabled={isCurrentLanguage(values.language_code)}
+                                is_disabled={current_language === values.language_code}
                             />
                         </FormFooter>
                     </form>
@@ -64,6 +66,6 @@ const LanguageSettings = observer(() => {
             }}
         </Formik>
     );
-});
+};
 
 export default LanguageSettings;

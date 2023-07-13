@@ -1,6 +1,6 @@
 import * as SocketCache from '_common/base/socket_cache';
 import { action, computed, makeObservable, observable } from 'mobx';
-import { changeLanguage, getAllowedLanguages } from '@deriv/translations';
+import { switchLanguage, getAllowedLanguages } from '@deriv/translations';
 import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
@@ -15,7 +15,6 @@ export default class CommonStore extends BaseStore {
         makeObservable(this, {
             server_time: observable,
             current_language: observable,
-            is_language_changing: observable,
             allowed_languages: observable,
             has_error: observable,
             error: observable,
@@ -31,7 +30,6 @@ export default class CommonStore extends BaseStore {
             app_id: observable,
             platform: observable,
             selected_contract_type: observable,
-            changing_language_timer_id: observable,
             setSelectedContractType: action.bound,
             init: action.bound,
             checkAppId: action.bound,
@@ -58,7 +56,6 @@ export default class CommonStore extends BaseStore {
 
     server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js
     current_language = currentLanguage;
-    is_language_changing = false;
     allowed_languages = Object.keys(getAllowedLanguages());
     has_error = false;
 
@@ -83,8 +80,6 @@ export default class CommonStore extends BaseStore {
     platform = '';
     selected_contract_type = '';
 
-    changing_language_timer_id = '';
-
     setSelectedContractType(contract_type) {
         this.selected_contract_type = contract_type;
     }
@@ -102,12 +97,7 @@ export default class CommonStore extends BaseStore {
 
     changeCurrentLanguage(new_language) {
         if (this.current_language !== new_language) {
-            if (this.changing_language_timer_id) clearTimeout(this.changing_language_timer_id);
             this.current_language = new_language;
-            this.is_language_changing = true;
-            this.changing_language_timer_id = setTimeout(() => {
-                this.is_language_changing = false;
-            }, 2500);
         }
     }
 
@@ -130,7 +120,7 @@ export default class CommonStore extends BaseStore {
                 }
                 window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
                 try {
-                    await changeLanguage(key, () => {
+                    await switchLanguage(key, () => {
                         this.changeCurrentLanguage(key);
                         BinarySocket.closeAndOpenNewConnection(key);
                         this.root_store.client.setIsAuthorize(false);

@@ -45,7 +45,6 @@ describe('JurisdictionCardFront', () => {
             ],
             header: 'Test Header',
             over_header: 'Test Over Header',
-            is_over_header_available: false,
         },
         card_data: [
             {
@@ -73,7 +72,13 @@ describe('JurisdictionCardFront', () => {
         verification_docs: [],
     };
 
+    it('should render JurisdictionCardFront with over header', () => {
+        render(<JurisdictionCardFront {...mock_props} />);
+        expect(screen.getByText('Test Over Header')).toBeInTheDocument();
+    });
+
     it('should render JurisdictionCardFront without over header', () => {
+        mock_props.card_values.over_header = '';
         render(<JurisdictionCardFront {...mock_props} />);
         expect(screen.getByText('Test Header')).toBeInTheDocument();
         expect(screen.getByText('Test Title 1')).toBeInTheDocument();
@@ -83,11 +88,5 @@ describe('JurisdictionCardFront', () => {
         expect(screen.getByText('Test 2')).toBeInTheDocument();
         expect(screen.getByText('Test Description 2')).toBeInTheDocument();
         expect(screen.queryByText('Test Over Header')).not.toBeInTheDocument();
-    });
-
-    it('should render JurisdictionCardFront with over header', () => {
-        mock_props.card_values.is_over_header_available = true;
-        render(<JurisdictionCardFront {...mock_props} />);
-        expect(screen.getByText('Test Over Header')).toBeInTheDocument();
     });
 });

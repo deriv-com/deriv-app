@@ -6,7 +6,7 @@ export const liveChatInitialization = () =>
         window.__lc = window.__lc || {}; // eslint-disable-line no-underscore-dangle
         window.__lc.license = livechat_license_id; // eslint-disable-line no-underscore-dangle
         (function (n, t, c) {
-            // eslint-disable-next-line no-shadow
+            // eslint-disable-next-line @typescript-eslint/no-shadow
             function i(n) {
                 // eslint-disable-next-line no-underscore-dangle
                 return e._h ? e._h.apply(null, n) : e._q.push(n);

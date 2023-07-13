@@ -19,7 +19,7 @@ describe('WalletTransferTile', () => {
                 balance: 100,
                 currency: 'USD',
                 display_currency_code: 'USD',
-                gradient_class: '',
+                gradient_class: 'wallet-card__usd-bg',
                 icon: 'Icon',
                 is_demo: false,
                 shortcode: 'svg',
@@ -32,6 +32,7 @@ describe('WalletTransferTile', () => {
             icon_size: 'small',
             is_active: false,
             is_mobile: false,
+            is_modal: true,
             is_value: false,
             onClick: jest.fn(),
         };

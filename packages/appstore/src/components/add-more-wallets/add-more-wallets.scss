@@ -1,0 +1,94 @@
+.add-wallets {
+    padding: 2rem 0rem 4rem;
+    margin-top: 2.4rem;
+    &__title {
+        @include mobile {
+            font-size: var(--text-size-m);
+        }
+    }
+    &__content {
+        background-color: var(--general-main-1);
+        height: 35.2rem;
+        margin-top: 1.6rem;
+        border-radius: $BORDER_RADIUS;
+        position: relative;
+    }
+    &__card {
+        width: 23rem;
+        height: 29rem;
+        padding: 1.6rem;
+        border-radius: 1.6rem;
+        border: 0.1rem solid var(--general-active);
+        background-color: var(--general-main-1);
+        box-shadow: $wallet-card-shadow;
+        cursor: pointer;
+        &-description,
+        &-wrapper {
+            display: flex;
+            flex-direction: column;
+        }
+        &-description {
+            align-items: flex-start;
+            gap: 0.8rem;
+            &__header {
+                @include mobile {
+                    font-size: var(--text-size-xs);
+                }
+            }
+            &__text {
+                @include mobile {
+                    line-height: var(--text-lh-s);
+                }
+            }
+        }
+        &-wrapper {
+            align-items: center;
+            gap: 2.4rem;
+            @include mobile {
+                gap: 1.6rem;
+            }
+        }
+    }
+}
+
+.carousel {
+    overflow: hidden;
+    padding: 3.2rem 1.6rem;
+    &__wrapper {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 2.4rem;
+    }
+    &__btn {
+        background-color: var(--general-main-1);
+        z-index: 1;
+        color: var(--text-general);
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        top: 45%;
+        cursor: pointer;
+        width: 4rem;
+        height: 4rem;
+        border: 1px solid var(--general-background-main);
+        border-radius: 50%;
+        box-shadow: $btn-shadow;
+        &-prev {
+            left: 1.6rem;
+        }
+        &-next {
+            right: 1.6rem;
+        }
+        &-icon {
+            width: 50%;
+            height: 35%;
+        }
+        &:disabled {
+            opacity: 0.3;
+            display: none;
+        }
+    }
+}

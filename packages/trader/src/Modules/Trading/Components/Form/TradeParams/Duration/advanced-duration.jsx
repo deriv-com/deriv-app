@@ -128,9 +128,7 @@ const AdvancedDuration = observer(
                                 is_24_hours_contract && <TradingTimePicker />
                                 // validation_errors={validation_errors.end_time} TODO: add validation_errors for end time
                             }
-                            {!is_24_hours_contract && is_vanilla && (
-                                <ExpiryText expiry_epoch={expiry_epoch} />
-                            )}
+                            {!is_24_hours_contract && is_vanilla && <ExpiryText expiry_epoch={expiry_epoch} />}
                         </div>
                     </>
                 )}

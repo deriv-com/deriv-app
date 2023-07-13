@@ -175,7 +175,7 @@ const StaticDashboard = observer(
                                                 />
                                             ) : (
                                                 <Localize
-                                                    i18n_default_text='Earn a range of payouts by correctly predicting market price movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
+                                                    i18n_default_text='Earn a range of payouts by correctly predicting market movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
                                                     components={[
                                                         <Text
                                                             key={0}
@@ -373,6 +373,68 @@ const StaticDashboard = observer(
                                         />
                                     </Text>
                                 )}
+                                <div className='static-dashboard-wrapper__description'>
+                                    <Text
+                                        as='p'
+                                        size='xxs'
+                                        color={
+                                            is_blurry.options_text || is_blurry.options_description
+                                                ? 'less-prominent'
+                                                : 'general'
+                                        }
+                                    >
+                                        {eu_user ? (
+                                            <Localize
+                                                i18n_default_text='Get the upside of CFDs without risking more than your initial stake with <0>Multipliers</0>.'
+                                                components={[
+                                                    <Text
+                                                        key={0}
+                                                        size='xs'
+                                                        color='red'
+                                                        className={classNames(
+                                                            'static-dashboard-wrapper__header--underlined',
+                                                            {
+                                                                'static-dashboard-wrapper__header--underlined--blurry':
+                                                                    is_blurry.options_description,
+                                                            }
+                                                        )}
+                                                    />,
+                                                ]}
+                                            />
+                                        ) : (
+                                            <Localize
+                                                i18n_default_text='Earn a range of payouts by correctly predicting market movements with <0>options</0>, or get the upside of CFDs without risking more than your initial stake with <1>multipliers</1>.'
+                                                components={[
+                                                    <Text
+                                                        key={0}
+                                                        size='xs'
+                                                        line_height='xl'
+                                                        color='red'
+                                                        className={classNames(
+                                                            'static-dashboard-wrapper__header--underlined',
+                                                            {
+                                                                'static-dashboard-wrapper__header--underlined--blurry':
+                                                                    is_blurry.options_description,
+                                                            }
+                                                        )}
+                                                    />,
+                                                    <Text
+                                                        key={1}
+                                                        size='xs'
+                                                        color='red'
+                                                        className={classNames(
+                                                            'static-dashboard-wrapper__header--underlined',
+                                                            {
+                                                                'static-dashboard-wrapper__header--underlined--blurry':
+                                                                    is_blurry.options_description,
+                                                            }
+                                                        )}
+                                                    />,
+                                                ]}
+                                            />
+                                        )}
+                                    </Text>
+                                </div>
                             </div>
                             <div className='static-dashboard-wrapper__description'>
                                 <Text

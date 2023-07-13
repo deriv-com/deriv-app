@@ -452,88 +452,90 @@ export default class GeneralStore extends BaseStore {
         );
 
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
-            const hasStatuses = statuses => statuses.every(status => get_account_status.status.includes(status));
+            if (!isEmptyObject(get_account_status)) {
+                const hasStatuses = statuses => statuses.every(status => get_account_status.status.includes(status));
 
-            const is_authenticated = hasStatuses(['authenticated']);
-            const is_blocked_for_pa = hasStatuses(['p2p_blocked_for_pa']);
-            const is_fa_not_complete = hasStatuses(['financial_assessment_not_complete']);
+                const is_authenticated = hasStatuses(['authenticated']);
+                const is_blocked_for_pa = hasStatuses(['p2p_blocked_for_pa']);
+                const is_fa_not_complete = hasStatuses(['financial_assessment_not_complete']);
 
-            if (error) {
-                this.setIsHighRisk(false);
-                this.setIsBlocked(false);
-                this.setIsP2pBlockedForPa(false);
-            } else if (get_account_status.p2p_status === 'perm_ban') {
-                this.setIsBlocked(true);
-            } else if (get_account_status.risk_classification === 'high') {
-                const is_cashier_locked = hasStatuses(['cashier_locked']);
-                const is_not_fully_authenticated = !hasStatuses(['age_verification', 'authenticated']);
-                const is_fully_authed_but_poi_expired = hasStatuses(['authenticated', 'document_expired']);
-                const is_not_fully_authenticated_and_fa_not_completed =
-                    is_not_fully_authenticated && is_fa_not_complete;
-
-                if (
-                    is_authenticated &&
-                    (is_cashier_locked ||
-                        is_not_fully_authenticated ||
-                        is_fully_authed_but_poi_expired ||
-                        is_not_fully_authenticated_and_fa_not_completed)
-                ) {
+                if (error) {
+                    this.setIsHighRisk(false);
+                    this.setIsBlocked(false);
+                    this.setIsP2pBlockedForPa(false);
+                } else if (get_account_status.p2p_status === 'perm_ban') {
                     this.setIsBlocked(true);
+                } else if (get_account_status.risk_classification === 'high') {
+                    const is_cashier_locked = hasStatuses(['cashier_locked']);
+                    const is_not_fully_authenticated = !hasStatuses(['age_verification', 'authenticated']);
+                    const is_fully_authed_but_poi_expired = hasStatuses(['authenticated', 'document_expired']);
+                    const is_not_fully_authenticated_and_fa_not_completed =
+                        is_not_fully_authenticated && is_fa_not_complete;
+
+                    if (
+                        is_authenticated &&
+                        (is_cashier_locked ||
+                            is_not_fully_authenticated ||
+                            is_fully_authed_but_poi_expired ||
+                            is_not_fully_authenticated_and_fa_not_completed)
+                    ) {
+                        this.setIsBlocked(true);
+                    }
+
+                    if (!is_authenticated && !is_fa_not_complete) this.setIsBlocked(true);
+
+                    if (is_fa_not_complete) this.setIsHighRisk(true);
                 }
 
-                if (!is_authenticated && !is_fa_not_complete) this.setIsBlocked(true);
-
-                if (is_fa_not_complete) this.setIsHighRisk(true);
-            }
-
-            if (is_blocked_for_pa) {
-                this.setIsP2pBlockedForPa(true);
-            }
-
-            this.setIsLoading(false);
-
-            const { sendbird_store } = this.root_store;
-
-            this.setP2PConfig();
-            this.ws_subscriptions = {
-                advertiser_subscription: subscribeWS(
-                    {
-                        p2p_advertiser_info: 1,
-                        subscribe: 1,
-                    },
-                    [this.updateAdvertiserInfo, response => sendbird_store.handleP2pAdvertiserInfo(response)]
-                ),
-                order_list_subscription: subscribeWS(
-                    {
-                        p2p_order_list: 1,
-                        subscribe: 1,
-                        offset: 0,
-                        limit: this.list_item_limit,
-                    },
-                    [this.setP2pOrderList]
-                ),
-                exchange_rate_subscription: subscribeWS(
-                    {
-                        exchange_rates: 1,
-                        base_currency: this.external_stores.client.currency,
-                        subscribe: 1,
-                        target_currency:
-                            this.root_store.buy_sell_store.selected_local_currency ??
-                            this.external_stores.client.local_currency_config?.currency,
-                    },
-                    [this.root_store.floating_rate_store.fetchExchangeRate]
-                ),
-            };
-
-            this.disposeLocalCurrencyReaction = reaction(
-                () => [this.root_store.buy_sell_store.local_currency, this.active_index],
-                () => {
-                    this.subscribeToLocalCurrency();
+                if (is_blocked_for_pa) {
+                    this.setIsP2pBlockedForPa(true);
                 }
-            );
 
-            if (this.ws_subscriptions) {
                 this.setIsLoading(false);
+
+                const { sendbird_store } = this.root_store;
+
+                this.setP2PConfig();
+                this.ws_subscriptions = {
+                    advertiser_subscription: subscribeWS(
+                        {
+                            p2p_advertiser_info: 1,
+                            subscribe: 1,
+                        },
+                        [this.updateAdvertiserInfo, response => sendbird_store.handleP2pAdvertiserInfo(response)]
+                    ),
+                    order_list_subscription: subscribeWS(
+                        {
+                            p2p_order_list: 1,
+                            subscribe: 1,
+                            offset: 0,
+                            limit: this.list_item_limit,
+                        },
+                        [this.setP2pOrderList]
+                    ),
+                    exchange_rate_subscription: subscribeWS(
+                        {
+                            exchange_rates: 1,
+                            base_currency: this.external_stores.client.currency,
+                            subscribe: 1,
+                            target_currency:
+                                this.root_store.buy_sell_store.selected_local_currency ??
+                                this.external_stores.client.local_currency_config?.currency,
+                        },
+                        [this.root_store.floating_rate_store.fetchExchangeRate]
+                    ),
+                };
+
+                this.disposeLocalCurrencyReaction = reaction(
+                    () => [this.root_store.buy_sell_store.local_currency, this.active_index],
+                    () => {
+                        this.subscribeToLocalCurrency();
+                    }
+                );
+
+                if (this.ws_subscriptions) {
+                    this.setIsLoading(false);
+                }
             }
         });
     }

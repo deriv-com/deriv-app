@@ -514,6 +514,7 @@ const AccountSwitcher = ({
                         secondary
                         onClick={() => {
                             if (is_in_progress) {
+                                closeAccountsDialog();
                                 setWalletsMigrationInProgressPopup(true);
                             } else if (has_any_real_account && !hasSetCurrency) setAccountCurrency();
                             else openRealAccountSignup('manage');

@@ -279,6 +279,7 @@ export default class GeneralStore extends BaseStore {
                 sendbird_store.handleP2pAdvertiserInfo(response);
                 this.toggleNicknamePopup();
                 buy_sell_store.hideVerification();
+                this.hideModal();
             }
         });
     }

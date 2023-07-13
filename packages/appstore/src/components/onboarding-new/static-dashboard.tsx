@@ -76,11 +76,12 @@ const StaticDashboard = ({
 
     const Divider = () => <div className='divider' />;
 
-    const toggle_options = [
+    const getToggleOptions = () => [
         { text: `${is_eu_user ? localize('Multipliers') : localize('Options & Multipliers')}`, value: 0 },
         { text: localize('CFDs'), value: 1 },
     ];
-    const toggle_options_eu = [...toggle_options].reverse();
+    const toggle_options = getToggleOptions();
+    const toggle_options_eu = getToggleOptions().reverse();
 
     React.useEffect(() => {
         const change_index_interval_id = setInterval(() => {

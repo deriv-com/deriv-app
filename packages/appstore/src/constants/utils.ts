@@ -102,7 +102,7 @@ export const getAccountName = ({
             return localize('Deriv cTrader');
         case 'wallet':
             return localize('{{display_currency_code}} Wallet', {
-                display_currency_code: display_currency_code?.toUpperCase(),
+                display_currency_code,
             });
         default:
             return '';

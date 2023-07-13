@@ -2,7 +2,6 @@ import { localize } from '@deriv/translations';
 import { TJurisdictionCardItems } from 'Components/props.types';
 
 export const getJurisdictionVanuatuContents = (): TJurisdictionCardItems => ({
-    is_over_header_available: false,
     header: localize('Vanuatu'),
     synthetic_contents: [
         {

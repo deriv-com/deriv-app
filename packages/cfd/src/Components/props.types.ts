@@ -126,7 +126,6 @@ export type TJurisdictionCardItems = {
     synthetic_contents: TJurisdictionCardSection[];
     financial_contents: TJurisdictionCardSection[];
     swapfree_contents?: TJurisdictionCardSection[];
-    is_over_header_available: boolean;
     synthetic_verification_docs?: TJurisdictionCardItemVerification;
     financial_verification_docs?: TJurisdictionCardItemVerification;
 };

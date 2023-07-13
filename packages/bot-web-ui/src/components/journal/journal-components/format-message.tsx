@@ -22,7 +22,7 @@ const FormatMessage = ({ logType, className, extra }: TFormatMessageProps) => {
                         i18n_default_text='<0>Bought</0>: {{longcode}} (ID: {{transaction_id}})'
                         values={{ longcode, transaction_id }}
                         components={[<Text key={0} size='xxs' styles={{ color: 'var(--status-info)' }} />]}
-                        options={{ interpolation: { escapeValue: false } }}
+                        tOptions={{ interpolation: { escapeValue: false } }}
                     />
                 );
             }

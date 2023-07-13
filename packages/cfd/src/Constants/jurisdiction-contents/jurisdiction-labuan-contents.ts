@@ -3,7 +3,6 @@ import { TJurisdictionCardItems } from 'Components/props.types';
 
 export const getJurisdictionLabuanContents = (): TJurisdictionCardItems => ({
     over_header: localize('Straight-through processing'),
-    is_over_header_available: true,
     header: localize('Labuan'),
     synthetic_contents: [
         { key: 'assets', title: localize('Assets'), description: localize('Forex and Cryptocurrencies') },

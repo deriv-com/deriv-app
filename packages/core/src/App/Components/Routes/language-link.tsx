@@ -4,16 +4,17 @@ import { Icon } from '@deriv/components';
 import { Language, getAllowedLanguages } from '@deriv/translations';
 
 export type TLanguageLink = {
-    is_active: boolean;
+    is_active?: boolean;
     icon_classname?: string;
     lang: Language;
 } & ComponentProps<'div'>;
 
-const LanguageLink = ({ icon_classname, is_active, lang, ...props }: TLanguageLink) => {
+const LanguageLink = ({ icon_classname, lang, is_active = false, ...props }: TLanguageLink) => {
     const language_text = getAllowedLanguages()[lang];
 
     return (
         <div
+            data-testid={`dt_settings_${lang}_button`}
             id={`dt_settings_${lang}_button`}
             className={classNames('settings-language__language-link', {
                 'settings-language__language-link--active': is_active,

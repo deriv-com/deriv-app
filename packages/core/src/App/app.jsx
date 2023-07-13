@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { DesktopWrapper } from '@deriv/components';
 import { APIProvider } from '@deriv/api';
-import { setUrlLanguage, initFormErrorMessages, setSharedCFDText, setWebsocket } from '@deriv/shared';
-import { initializeTranslations, getLanguage, TranslationProvider } from '@deriv/translations';
+import { setUrlLanguage, initFormErrorMessages, setSharedCFDText, setWebsocket, initMoment } from '@deriv/shared';
+import { getLanguage, TranslationProvider } from '@deriv/translations';
 import { StoreProvider } from '@deriv/stores';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
@@ -29,14 +29,9 @@ const App = ({ root_store }) => {
     const has_base = /^\/(br_)/.test(l.pathname);
 
     React.useEffect(() => {
-        initializeTranslations();
-
-        // TODO: [translation-to-shared]: add translation implemnentation in shared
         setUrlLanguage(getLanguage());
         initFormErrorMessages(FORM_ERROR_MESSAGES);
         setSharedCFDText(CFD_TEXT);
-        root_store.common.setPlatform();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const platform_passthrough = {
@@ -47,7 +42,7 @@ const App = ({ root_store }) => {
     setWebsocket(WS);
 
     return (
-        <TranslationProvider>
+        <TranslationProvider onInit={lang => initMoment(lang)}>
             <Router basename={has_base ? `/${base}` : null}>
                 <MobxContentProvider store={root_store}>
                     <StoreProvider store={root_store}>

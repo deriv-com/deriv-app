@@ -62,18 +62,21 @@ export const getInitialLanguage = () => {
 export const getLanguage = () => i18n.language || getInitialLanguage();
 
 const loadIncontextTranslation = () => {
+    const in_context_loaded = document.getElementById('in_context_crowdin');
     const is_ach = getLanguage().toUpperCase() === 'ACH';
-    if (is_ach) {
-        const jipt = document.createElement('script');
-        jipt.type = 'text/javascript';
-        jipt.text = `
+
+    if (!is_ach || in_context_loaded) return;
+
+    const jipt = document.createElement('script');
+    jipt.id = 'in_context_crowdin';
+    jipt.type = 'text/javascript';
+    jipt.text = `
             var _jipt = []; _jipt.push(['project', 'deriv-app']);
             var crowdin = document.createElement("script");
             crowdin.setAttribute('src', '//cdn.crowdin.com/jipt/jipt.js');
             document.head.appendChild(crowdin);
         `;
-        document.head.appendChild(jipt);
-    }
+    document.head.appendChild(jipt);
 };
 
 const loadLanguageJson = async (lang: string) => {

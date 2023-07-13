@@ -4,7 +4,6 @@ import useActiveWallet from './useActiveWallet';
 import { useStore } from '@deriv/stores';
 
 /**
- *
  * @description This hook is used to get the created CFD accounts of the user.
  */
 const useExistingCFDAccounts = () => {

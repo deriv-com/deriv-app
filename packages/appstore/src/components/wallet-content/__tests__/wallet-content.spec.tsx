@@ -15,8 +15,15 @@ const mockedRootStore = mockStore({
 
 jest.mock('./../../containers/currency-switcher-container', () => jest.fn(({ children }) => <div>{children}</div>));
 
+jest.mock('@deriv/hooks', () => ({
+    ...jest.requireActual('@deriv/hooks'),
+    useWalletsList: jest.fn(),
+}));
+
+jest.mock('../wallet-cfds-listing', () => jest.fn(() => <div> WalletCFDListing</div>));
+
 describe('<WalletContent />', () => {
-    let mocked_props: TWalletAccount;
+    let mocked_props: Writeable<DeepPartial<TWalletAccount>>;
     beforeEach(() => {
         mocked_props = {
             is_demo: false,
@@ -26,13 +33,17 @@ describe('<WalletContent />', () => {
             loginid: 'CR123123',
             is_malta_wallet: false,
             is_selected: false,
+            icon: 'USD',
+            gradient_header_class: 'wallet-header__usd-bg',
+            gradient_card_class: 'wallet-card__usd-bg',
+            wallet_currency_type: 'USD',
         };
     });
     it('Check class', () => {
         mocked_props.landing_company_name = 'malta';
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent wallet_account={mocked_props} />
+                <WalletContent wallet_account={mocked_props as TWalletAccount} />
             </StoreProvider>
         );
 
@@ -45,7 +56,7 @@ describe('<WalletContent />', () => {
         mocked_props.is_demo = true;
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent wallet_account={mocked_props} />
+                <WalletContent wallet_account={mocked_props as TWalletAccount} />
             </StoreProvider>
         );
 
@@ -54,12 +65,11 @@ describe('<WalletContent />', () => {
         expect(wrapper).toHaveClass('wallet-content__demo');
     });
 
-    // data-testid='dt_disclaimer_wrapper'
     it('Check there is NOT disclaimer for demo', () => {
         mocked_props.is_demo = true;
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent wallet_account={mocked_props} />
+                <WalletContent wallet_account={mocked_props as TWalletAccount} />
             </StoreProvider>
         );
 
@@ -71,7 +81,7 @@ describe('<WalletContent />', () => {
     it('Check there is NOT disclaimer for Non-EU', () => {
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent wallet_account={mocked_props} />
+                <WalletContent wallet_account={mocked_props as TWalletAccount} />
             </StoreProvider>
         );
 
@@ -85,7 +95,7 @@ describe('<WalletContent />', () => {
         mocked_props.is_malta_wallet = true;
         render(
             <StoreProvider store={mockedRootStore}>
-                <WalletContent wallet_account={mocked_props} />
+                <WalletContent wallet_account={mocked_props as TWalletAccount} />
             </StoreProvider>
         );
 

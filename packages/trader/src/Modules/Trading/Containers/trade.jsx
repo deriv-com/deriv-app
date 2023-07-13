@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, Div100vhContainer, MobileWrapper, SwipeableWrapper } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared';
+import { getDecimalPlaces, isDesktop, isMobile } from '@deriv/shared';
 import ChartLoader from 'App/Components/Elements/chart-loader.jsx';
 import PositionsDrawer from 'App/Components/Elements/PositionsDrawer';
 import MarketIsClosedOverlay from 'App/Components/Elements/market-is-closed-overlay.jsx';
@@ -276,7 +276,7 @@ const ChartTrade = observer(props => {
     const { all_positions } = portfolio;
     const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on } = ui;
     const { is_socket_opened, current_language } = common;
-    const { should_show_eu_content } = client;
+    const { currency, should_show_eu_content } = client;
     const {
         chartStateChange,
         is_trade_enabled,
@@ -396,7 +396,7 @@ const ChartTrade = observer(props => {
                     current_spot={current_spot}
                     current_spot_time={current_spot_time}
                     has_crossed_accu_barriers={has_crossed_accu_barriers}
-                    should_show_profit_text={!!accumulators_high_barrier}
+                    should_show_profit_text={!!accumulators_high_barrier && getDecimalPlaces(currency) <= 2}
                     symbol={symbol}
                 />
             )}

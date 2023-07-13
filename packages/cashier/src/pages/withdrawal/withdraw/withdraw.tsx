@@ -3,7 +3,7 @@ import { useStore, observer } from '@deriv/stores';
 import { Real } from '../../../components/cashier-container';
 import { useCashierStore } from '../../../stores/useCashierStores';
 
-const Withdraw = observer(({ is_appstore }: { is_appstore?: boolean }) => {
+const Withdraw = observer(({ is_appstore = false }: { is_appstore?: boolean }) => {
     const { client } = useStore();
     const {
         verification_code: { payment_withdraw: verification_code },

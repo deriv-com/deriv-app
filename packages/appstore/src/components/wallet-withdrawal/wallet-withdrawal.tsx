@@ -1,6 +1,6 @@
 import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
-import { useActiveWallet, useCurrencyConfig } from '@deriv/hooks';
+import { useActiveWallet } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 import Withdraw from '@deriv/cashier/src/pages/withdrawal/withdraw';
 import WithdrawalVerificationEmail from '@deriv/cashier/src/pages/withdrawal/withdrawal-verification-email';
@@ -16,11 +16,7 @@ const WalletWithdrawal = observer(() => {
         verification_code: { payment_withdraw: verification_code },
     } = client;
 
-    const { getConfig } = useCurrencyConfig();
-    const currency_config = getConfig(active_wallet?.currency || '');
-    const is_crypto = currency_config?.is_crypto;
-
-    if (!is_crypto && (verification_code || iframe_url)) {
+    if (!active_wallet?.currency_config?.is_crypto && (verification_code || iframe_url)) {
         return (
             <Div100vhContainer
                 height_offset={is_mobile ? '14rem' : '26.8rem'}

@@ -2,8 +2,9 @@ import React from 'react';
 import { WalletIcon } from '@deriv/components';
 import { TWalletAccount } from 'Types';
 
-type TWalletCurrencyCard = Pick<TWalletAccount, 'is_demo' | 'currency' | 'icon' | 'icon_type'> & {
+type TWalletCurrencyCard = Pick<TWalletAccount, 'is_demo' | 'currency' | 'icon'> & {
     gradient_class?: string;
+    icon_type?: string;
 };
 
 const WalletCurrencyCard = ({ is_demo, currency, icon, icon_type, gradient_class }: TWalletCurrencyCard) => {

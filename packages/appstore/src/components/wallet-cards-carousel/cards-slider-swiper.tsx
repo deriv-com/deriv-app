@@ -3,7 +3,6 @@ import { TWalletAccount } from 'Types';
 import { WalletCard, ProgressBarOnboarding } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
 import useEmblaCarousel, { EmblaOptionsType } from 'embla-carousel-react';
-import { useStore, observer } from '@deriv/stores';
 import { getAccountName } from 'Constants/utils';
 import './wallet-cards-carousel.scss';
 
@@ -13,12 +12,8 @@ type TProps = {
     active_page: number;
 };
 
-const CardsSliderSwiper = observer(({ items, setActivePage, active_page }: TProps) => {
-    const {
-        ui: { is_dark_mode_on },
-    } = useStore();
-
-    const OPTIONS: EmblaOptionsType = { skipSnaps: true };
+const CardsSliderSwiper = ({ items, setActivePage, active_page }: TProps) => {
+    const OPTIONS: EmblaOptionsType = { skipSnaps: true, containScroll: false };
     const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
 
     const steps = items.map((_, idx) => idx.toString());
@@ -51,7 +46,7 @@ const CardsSliderSwiper = observer(({ items, setActivePage, active_page }: TProp
                         wallet={{
                             currency: item.currency_config?.display_code,
                             icon: item.icon,
-                            icon_type: item.wallet_currency_type,
+                            icon_type: item.currency_config?.type,
                             name: getAccountName({
                                 account_type: 'wallet',
                                 display_currency_code: item.currency_config?.display_code,
@@ -64,7 +59,7 @@ const CardsSliderSwiper = observer(({ items, setActivePage, active_page }: TProp
                     />
                 </div>
             )),
-        [items.length, is_dark_mode_on]
+        [items.length]
     );
 
     return (
@@ -82,6 +77,6 @@ const CardsSliderSwiper = observer(({ items, setActivePage, active_page }: TProp
             </div>
         </React.Fragment>
     );
-});
+};
 
 export default CardsSliderSwiper;

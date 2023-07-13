@@ -21,7 +21,7 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
     // const [is_loading, setIsLoading] = useState(false);
     const { multipliers_account_status } = traders_hub;
 
-    const wallet_buttons = getWalletHeaderButtons(wallet_account.is_virtual);
+    const wallet_buttons = getWalletHeaderButtons(wallet_account.is_demo);
 
     const onArrowClickHandler = async () => {
         // setIsLoading(true);
@@ -40,11 +40,11 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
         <div className={classNames('wallet-header', { 'wallet-header__demo': wallet_account.is_demo })}>
             <div className='wallet-header__container'>
                 <WalletCurrencyCard
-                    is_demo={wallet_account.is_virtual}
+                    is_demo={wallet_account.is_demo}
                     currency={wallet_account.currency}
                     gradient_class={wallet_account.gradient_card_class}
                     icon={wallet_account.icon}
-                    icon_type={wallet_account.icon_type}
+                    icon_type={wallet_account.currency_config?.type}
                 />
                 <div className='wallet-header__description'>
                     <WalletHeaderTitle

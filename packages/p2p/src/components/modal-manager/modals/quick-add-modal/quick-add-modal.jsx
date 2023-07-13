@@ -215,7 +215,7 @@ const QuickAddModal = ({ advert }) => {
                 has_close_icon
                 height='452px'
                 is_open={is_modal_open}
-                title={localize('Add payment method')}
+                title={localize('Add payment methods')}
                 toggleModal={() => setShouldCloseAllModals(true)}
             >
                 <Modal.Body>

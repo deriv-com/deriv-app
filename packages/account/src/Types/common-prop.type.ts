@@ -158,7 +158,10 @@ export type TDocumentList = {
     value?: string;
     sample_image?: string;
     example_format?: string;
-    additional?: any;
+    additional?: {
+        display_name?: string;
+        example_format?: string;
+    };
 };
 
 type TFormProps = {

@@ -63,7 +63,7 @@ export const shouldShowIdentityInformation = ({
 
 export const getDocumentData = (country_code: string, document_type: string) => {
     // Note: Ensure that the object keys matches BE API's keys. This is simply a mapping for FE templates
-    const idv_document_data = Object.freeze({
+    const IDV_DOCUMENT_DATA = {
         ke: {
             alien_card: {
                 new_display_name: '',
@@ -183,11 +183,11 @@ export const getDocumentData = (country_code: string, document_type: string) => 
                 sample_image: getImageLocation('zw_national_identity_card.png'),
             },
         },
-    });
+    };
 
     return (
-        (Object.keys(idv_document_data).includes(country_code) &&
-            (idv_document_data as any)[country_code][document_type]) || {
+        (Object.keys(IDV_DOCUMENT_DATA).includes(country_code) &&
+            (IDV_DOCUMENT_DATA as any)[country_code][document_type]) || {
             new_display_name: '',
             example_format: '',
             sample_image: '',
@@ -263,7 +263,7 @@ export const validateName = (name: string) => {
     return '';
 };
 
-export const getExampleFormat = (example_format: string) =>
+export const getExampleFormat = (example_format: string | undefined) =>
     example_format ? localize('Example: ') + example_format : '';
 
 export const isDocumentTypeValid = (document_type: FormikValues) => {

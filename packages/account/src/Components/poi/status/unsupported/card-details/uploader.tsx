@@ -21,7 +21,7 @@ type TUploader = {
     has_frame: boolean;
     onChange: (e: unknown) => void;
     setFieldValue: FormikProps<FormikValues>['setFieldValue'];
-    handleChange: (file: object | null, setFieldValue?: FormikProps<FormikValues>['setFieldValue']) => void;
+    handleChange: (file: object | null, setFieldValue: FormikProps<FormikValues>['setFieldValue']) => void;
 };
 
 type TMessage = {
@@ -101,7 +101,7 @@ const Uploader = ({ data, value, is_full, onChange, has_frame }: Partial<TUpload
         setImage(value);
     }, [value]);
 
-    const handleChange = (file: object | null, setFieldValue?: FormikProps<FormikValues>['setFieldValue']) => {
+    const handleChange = (file: object | null, setFieldValue: FormikProps<FormikValues>['setFieldValue']) => {
         onChange?.(file);
         setFieldValue?.(data?.name, file);
     };

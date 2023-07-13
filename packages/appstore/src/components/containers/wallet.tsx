@@ -14,7 +14,7 @@ const Wallet = ({ wallet_account }: TWallet) => {
     const headerRef = React.useRef<HTMLDivElement>(null);
 
     return (
-        <div ref={headerRef} className={classNames('wallet', { wallet__demo: wallet_account.is_virtual })}>
+        <div ref={headerRef} className={classNames('wallet', { wallet__demo: wallet_account.is_demo })}>
             <WalletHeader wallet_account={wallet_account} />
             <CSSTransition
                 appear

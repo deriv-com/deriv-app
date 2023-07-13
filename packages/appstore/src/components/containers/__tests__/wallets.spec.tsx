@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-// import userEvent from '@testing-library/user-event';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import Wallet from '../wallet';
 import { TWalletAccount } from 'Types';
@@ -33,7 +32,6 @@ describe('<Wallets />', () => {
             landing_company_name: 'svg',
             balance: 10000,
             loginid: 'CRW123123',
-            is_virtual: true,
             is_selected: false,
             is_demo: true,
             is_malta_wallet: false,
@@ -42,7 +40,7 @@ describe('<Wallets />', () => {
         };
     });
     it('Check class for NOT demo', () => {
-        mocked_props.is_virtual = false;
+        mocked_props.is_demo = false;
 
         const { container } = render(
             <StoreProvider store={mockedRootStore}>
@@ -54,7 +52,7 @@ describe('<Wallets />', () => {
     });
 
     it('Check class for demo', () => {
-        mocked_props.is_virtual = true;
+        mocked_props.is_demo = true;
 
         const { container } = render(
             <StoreProvider store={mockedRootStore}>
@@ -66,37 +64,8 @@ describe('<Wallets />', () => {
         expect(container.childNodes[0]).toHaveClass('wallet__demo');
     });
 
-    // it('Check content appears after arrow button click', async () => {
-    //     mockedRootStore.client.loginid = 'CRW2';
-    //     mocked_props.is_selected = false;
-
-    //     render(
-    //         <StoreProvider store={mockedRootStore}>
-    //             <Wallet wallet_account={mocked_props} />
-    //         </StoreProvider>
-    //     );
-
-    //     const arrow_icon = screen.getByTestId('dt_arrow');
-    //     expect(screen.queryByText('wallet test content')).not.toBeInTheDocument();
-    //     userEvent.click(arrow_icon);
-
-    //     expect(mockedRootStore.client.switchAccount).toBeCalledTimes(1);
-    //     mockedRootStore.client.loginid = 'CRW123123';
-    //     mocked_props.is_selected = true;
-
-    //     // rerender component because props are changed
-    //     render(
-    //         <StoreProvider store={mockedRootStore}>
-    //             <Wallet wallet_account={mocked_props} />
-    //         </StoreProvider>
-    //     );
-
-    //     const content = screen.queryByText('wallet test content');
-    //     expect(content).toBeInTheDocument();
-    // });
-
     it('Check for demo wallet header', () => {
-        mocked_props.is_virtual = true;
+        mocked_props.is_demo = true;
 
         render(
             <StoreProvider store={mockedRootStore}>

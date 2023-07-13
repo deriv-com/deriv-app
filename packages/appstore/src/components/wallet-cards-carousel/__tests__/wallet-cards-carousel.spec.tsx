@@ -18,8 +18,8 @@ describe('<WalletCardsCarousel />', () => {
             balance: 10784,
             icon_type: 'fiat',
             landing_company_name: 'svg',
-            is_disabled: false,
-            is_virtual: false,
+            is_disabled: 0,
+            is_demo: false,
             loginid: 'CRW10001',
         },
         {
@@ -29,8 +29,8 @@ describe('<WalletCardsCarousel />', () => {
             balance: 100000,
             icon_type: 'fiat',
             landing_company_name: 'svg',
-            is_disabled: false,
-            is_virtual: true,
+            is_disabled: 0,
+            is_demo: true,
             loginid: 'CRW10002',
         },
     ];

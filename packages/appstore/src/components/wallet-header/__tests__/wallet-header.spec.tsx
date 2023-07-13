@@ -23,7 +23,7 @@ describe('<WalletHeader />', () => {
     let mocked_props: TWalletAccount;
     beforeEach(() => {
         mocked_props = {
-            is_virtual: false,
+            is_demo: false,
             currency: 'USD',
             landing_company_name: 'svg',
             balance: 10000,
@@ -36,7 +36,7 @@ describe('<WalletHeader />', () => {
     });
     describe('Check currency card', () => {
         it('Should render right currency card for DEMO', () => {
-            mocked_props.is_virtual = true;
+            mocked_props.is_demo = true;
             render(
                 <StoreProvider store={mockedRootStore}>
                     <WalletHeader wallet_account={mocked_props} />
@@ -258,7 +258,7 @@ describe('<WalletHeader />', () => {
         });
 
         it('Check buttons for demo', () => {
-            mocked_props.is_virtual = true;
+            mocked_props.is_demo = true;
             mocked_props.currency = 'EUR';
             mocked_props.balance = 0;
             mocked_props.loginid = 'VRW123123';

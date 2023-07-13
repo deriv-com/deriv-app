@@ -1,7 +1,7 @@
 /* eslint-disable */
 // Copied from github.com/pvorb/clone to fix an inheritance issue.
 // Line 156-158 was added to address https://github.com/pvorb/clone/issues/58
-export const clone = (function() {
+export const clone = (function () {
     function _instanceof(obj, type) {
         return type != null && obj instanceof type;
     }
@@ -12,21 +12,21 @@ export const clone = (function() {
     } catch (_) {
         // maybe a reference error because no `Map`. Give it a dummy value that no
         // value will ever be an instanceof.
-        nativeMap = function() {};
+        nativeMap = function () {};
     }
 
     let nativeSet;
     try {
         nativeSet = Set;
     } catch (_) {
-        nativeSet = function() {};
+        nativeSet = function () {};
     }
 
     let nativePromise;
     try {
         nativePromise = Promise;
     } catch (_) {
-        nativePromise = function() {};
+        nativePromise = function () {};
     }
 
     /**
@@ -85,12 +85,12 @@ export const clone = (function() {
             } else if (_instanceof(parent, nativeSet)) {
                 child = new nativeSet();
             } else if (_instanceof(parent, nativePromise)) {
-                child = new nativePromise(function(resolve, reject) {
+                child = new nativePromise(function (resolve, reject) {
                     parent.then(
-                        function(value) {
+                        function (value) {
                             resolve(_clone(value, depth - 1));
                         },
-                        function(err) {
+                        function (err) {
                             reject(_clone(err, depth - 1));
                         }
                     );
@@ -133,14 +133,14 @@ export const clone = (function() {
             }
 
             if (_instanceof(parent, nativeMap)) {
-                parent.forEach(function(value, key) {
+                parent.forEach(function (value, key) {
                     const keyChild = _clone(key, depth - 1);
                     const valueChild = _clone(value, depth - 1);
                     child.set(keyChild, valueChild);
                 });
             }
             if (_instanceof(parent, nativeSet)) {
-                parent.forEach(function(value) {
+                parent.forEach(function (value) {
                     const entryChild = _clone(value, depth - 1);
                     child.add(entryChild);
                 });
@@ -220,7 +220,7 @@ export const clone = (function() {
     clone.clonePrototype = function clonePrototype(parent) {
         if (parent === null) return null;
 
-        const c = function() {};
+        const c = function () {};
         c.prototype = parent;
         return new c();
     };

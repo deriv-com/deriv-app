@@ -23,7 +23,7 @@
         "build:1": "webpack --config webpack.config.cli.js",
         "build-min": "webpack --config webpack.config.cli.js",
         "prepare": "husky install",
-        "prettify": "npx prettier --write **/{src}/**/*.{js,jsx,ts,tsx,md,html,mustache,css,scss,}",
+        "prettify": "npx prettier --write **/src/**/*.{js,jsx,scss}",
         "fetch-blockly-translations": "node customPlugins/fetch-blockly-translations.js",
         "start": "webpack serve --open",
         "build": "webpack --config webpack.config.cli.js --mode production",

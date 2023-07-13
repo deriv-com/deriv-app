@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 
-export const CookieStorage = function(cookieName, cookieDomain) {
+export const CookieStorage = function (cookieName, cookieDomain) {
     this.initialized = false;
     this.cookieName = cookieName;
     this.domain = cookieDomain;

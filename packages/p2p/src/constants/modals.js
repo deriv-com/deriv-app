@@ -4,6 +4,9 @@ export const modals = {
     AdCreatedModal: React.lazy(() =>
         import(/* webpackChunkName: "ad-created-modal" */ 'Components/modal-manager/modals/ad-created-modal')
     ),
+    AdEditErrorModal: React.lazy(() =>
+        import(/* webpackChunkName: "ad-edit-error-modal" */ 'Components/modal-manager/modals/ad-edit-error-modal')
+    ),
     AdErrorTooltipModal: React.lazy(() =>
         import(
             /* webpackChunkName: "ad-error-tooltip-modal" */ 'Components/modal-manager/modals/ad-error-tooltip-modal'

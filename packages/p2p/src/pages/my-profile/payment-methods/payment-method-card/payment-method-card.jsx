@@ -64,6 +64,7 @@ const PaymentMethodCard = ({
                 'payment-method-card--medium': medium,
                 'payment-method-card--small': small,
             })}
+            data-testid='dt_payment_method_card_container'
             onClick={onClick}
             style={style}
         >

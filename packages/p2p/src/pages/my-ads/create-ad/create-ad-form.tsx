@@ -2,8 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 import { Formik, Field, FieldProps, Form } from 'formik';
 import { reaction } from 'mobx';
-import { Button, Input, RadioGroup, Text, ThemedScrollbars } from '@deriv/components';
-import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
+import { Input, RadioGroup, Text, ThemedScrollbars } from '@deriv/components';
+import { isDesktop, isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import FloatingRate from 'Components/floating-rate';
 import { Localize, localize } from 'Components/i18next';
@@ -12,8 +12,11 @@ import { ads } from 'Constants/ads';
 import { buy_sell } from 'Constants/buy-sell';
 import { ad_type } from 'Constants/floating-rate';
 import { useStores } from 'Stores';
+import { getHint } from 'Utils/adverts';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods';
+import AdFormSubmit from '../ad-form-submit';
 import AdFormWrapper from '../ad-form-wrapper';
+import AdPaymentSelectionText from '../ad-payment-selection-text';
 import AdSummary from '../ad-summary';
 import './create-ad-form.scss';
 
@@ -120,15 +123,6 @@ const CreateAdForm = () => {
         );
     };
 
-    const getHint = (is_sell_advert: boolean) =>
-        // Using two "==" is intentional as we're checking for nullish
-        // rather than falsy values.
-        !is_sell_advert || balance_available == null
-            ? undefined
-            : localize('Your Deriv P2P balance is {{ dp2p_balance }}', {
-                  dp2p_balance: `${formatMoney(currency, balance_available, true)} ${currency}`,
-              });
-
     return (
         <React.Fragment>
             <Formik
@@ -150,7 +144,7 @@ const CreateAdForm = () => {
                     offer_amount: '',
                 }}
             >
-                {({ errors, handleChange, isSubmitting, isValid, setFieldValue, touched, values }) => {
+                {({ errors, handleChange, setFieldValue, touched, values }) => {
                     const is_sell_advert = values.type === buy_sell.SELL;
 
                     const onChangeAdTypeHandler = (user_input: string) => {
@@ -220,7 +214,7 @@ const CreateAdForm = () => {
                                                             data_testId='dt_offer_amount'
                                                             data-lpignore='true'
                                                             error={getErrorMessages('offer_amount')}
-                                                            hint={getHint(is_sell_advert)}
+                                                            hint={getHint(is_sell_advert, balance_available, currency)}
                                                             is_relative_hint
                                                             label={localize('Total amount')}
                                                             onChange={onChangeInput}
@@ -352,47 +346,18 @@ const CreateAdForm = () => {
                                                     />
                                                 )}
                                             </Field>
-                                            <div className='create-ad-form__payment-methods--text'>
-                                                <Text color='prominent'>
-                                                    <Localize i18n_default_text='Payment methods' />
-                                                </Text>
-                                                <Text color='less-prominent'>
-                                                    {is_sell_advert ? (
-                                                        <Localize i18n_default_text='You may tap and choose up to 3.' />
-                                                    ) : (
-                                                        <Localize i18n_default_text='You may choose up to 3.' />
-                                                    )}
-                                                </Text>
-                                            </div>
+                                            <AdPaymentSelectionText is_sell_advert={is_sell_advert} />
                                             <CreateAdFormPaymentMethods
                                                 onSelectPaymentMethods={handleSelectPaymentMethods}
                                                 is_sell_advert={is_sell_advert}
                                             />
                                         </div>
-                                        <div className='create-ad-form__container create-ad-form__footer'>
-                                            <Button
-                                                className='create-ad-form__button'
-                                                secondary
-                                                large
-                                                onClick={onCleanup}
-                                                type='button'
-                                            >
-                                                <Localize i18n_default_text='Cancel' />
-                                            </Button>
-                                            <Button
-                                                className='create-ad-form__button'
-                                                primary
-                                                large
-                                                is_disabled={
-                                                    isSubmitting ||
-                                                    !isValid ||
-                                                    !selected_methods.length ||
-                                                    current_method.is_deleted
-                                                }
-                                            >
-                                                <Localize i18n_default_text='Post ad' />
-                                            </Button>
-                                        </div>
+                                        <AdFormSubmit
+                                            ad_option={ads.CREATE}
+                                            current_method={current_method}
+                                            onCleanup={onCleanup}
+                                            selected_methods={selected_methods}
+                                        />
                                     </AdFormWrapper>
                                 </ThemedScrollbars>
                             </Form>

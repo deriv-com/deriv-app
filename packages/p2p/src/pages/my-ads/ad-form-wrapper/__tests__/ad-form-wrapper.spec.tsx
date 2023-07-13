@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import AdFormWrapper from '../ad-form-wrapper';
 
 describe('<AdFormWrapper/>', () => {
-    it('renders component with passed title and children', () => {
+    it('should render children', () => {
         render(
             <AdFormWrapper>
                 <div>Testing Form Wrapper</div>

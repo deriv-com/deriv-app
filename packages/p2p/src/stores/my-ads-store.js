@@ -26,7 +26,6 @@ export default class MyAdsStore extends BaseStore {
     has_more_items_to_load = false;
     is_ad_created_modal_visible = false;
     is_api_error_modal_visible = false;
-    is_edit_ad_error_modal_visible = false;
     is_form_loading = false;
     is_table_loading = false;
     is_loading = false;
@@ -64,7 +63,6 @@ export default class MyAdsStore extends BaseStore {
             has_more_items_to_load: observable,
             is_ad_created_modal_visible: observable,
             is_api_error_modal_visible: observable,
-            is_edit_ad_error_modal_visible: observable,
             is_form_loading: observable,
             is_table_loading: observable,
             is_loading: observable,
@@ -112,7 +110,6 @@ export default class MyAdsStore extends BaseStore {
             setHasMoreItemsToLoad: action.bound,
             setIsAdCreatedModalVisible: action.bound,
             setIsApiErrorModalVisible: action.bound,
-            setIsEditAdErrorModalVisible: action.bound,
             setIsFormLoading: action.bound,
             setIsLoading: action.bound,
             setIsTableLoading: action.bound,
@@ -357,6 +354,7 @@ export default class MyAdsStore extends BaseStore {
     }
 
     onClickSaveEditAd(values, { setSubmitting }) {
+        const { general_store } = this.root_store;
         const is_sell_ad = values.type === buy_sell.SELL;
         const update_advert = {
             p2p_advert_update: 1,
@@ -391,7 +389,9 @@ export default class MyAdsStore extends BaseStore {
                     setSubmitting(false);
                     this.setApiErrorCode(response.error.code);
                     this.setEditAdFormError(response.error.message);
-                    this.setIsEditAdErrorModalVisible(true);
+                    general_store.showModal({
+                        key: 'AdEditErrorModal',
+                    });
                 } else {
                     this.setShowEditAdForm(false);
                 }
@@ -561,10 +561,6 @@ export default class MyAdsStore extends BaseStore {
 
     setIsApiErrorModalVisible(is_api_error_modal_visible) {
         this.is_api_error_modal_visible = is_api_error_modal_visible;
-    }
-
-    setIsEditAdErrorModalVisible(is_edit_ad_error_modal_visible) {
-        this.is_edit_ad_error_modal_visible = is_edit_ad_error_modal_visible;
     }
 
     setIsFormLoading(is_form_loading) {

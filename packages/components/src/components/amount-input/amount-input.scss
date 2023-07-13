@@ -9,9 +9,19 @@
     position: relative;
     height: 2.8rem;
 
+    .dc-input__field {
+        color: var(--text-general);
+    }
+
     &--error {
         .dc-input__field {
-            color: $color-red-1;
+            color: var(--text-loss-danger);
+        }
+    }
+
+    &--disabled {
+        .dc-input__field {
+            color: var(--text-disabled-1);
         }
     }
 

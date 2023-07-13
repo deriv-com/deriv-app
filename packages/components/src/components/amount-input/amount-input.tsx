@@ -116,6 +116,7 @@ const AmountInput = ({
             <div
                 className={classNames('amount-input-container', {
                     'amount-input-container--error': has_error,
+                    'amount-input-container--disabled': disabled,
                 })}
             >
                 <Input

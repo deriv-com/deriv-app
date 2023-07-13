@@ -17,14 +17,18 @@
         }
     }
 
+    &--is-modal {
+        background-color: var(--general-main-2);
+    }
+
     &--hover {
         &:hover {
-            background-color: $color-grey-4;
+            background-color: var(--general-hover);
         }
     }
 
     &--active {
-        background-color: $color-grey-5;
+        background-color: var(--state-active);
     }
 
     &__icon {

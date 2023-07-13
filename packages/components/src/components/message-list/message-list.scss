@@ -20,7 +20,7 @@
 
             .icon-container {
                 &__line {
-                    border: 1px solid $color-grey-5;
+                    border: 1px solid var(--border-normal);
                     position: absolute;
                     height: 100%;
                     top: 50%;

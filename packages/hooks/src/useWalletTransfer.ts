@@ -1,8 +1,8 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useTransferBetweenAccounts from './useTransferBetweenAccounts';
 
 const useWalletTransfer = () => {
-    const { active_wallet, transfer_accounts, isSuccess: is_accounts_loaded } = useTransferBetweenAccounts();
+    const { active_wallet, transfer_accounts, isLoading: is_accounts_loading } = useTransferBetweenAccounts();
 
     const [from_account, setFromAccount] = useState<typeof active_wallet>();
     const [to_account, setToAccount] = useState<typeof active_wallet>();
@@ -17,9 +17,25 @@ const useWalletTransfer = () => {
         return { accounts: [], wallets: [active_wallet] };
     }, [active_wallet, from_account?.loginid, transfer_accounts]);
 
+    //this useEffect updates transfer accounts visibility in light/dark
+    useEffect(() => {
+        if (from_account?.loginid)
+            setFromAccount(
+                [...transfer_accounts.accounts, ...transfer_accounts.wallets].find(
+                    account => account.loginid === from_account.loginid
+                )
+            );
+        if (to_account?.loginid)
+            setToAccount(
+                [...transfer_accounts.accounts, ...transfer_accounts.wallets].find(
+                    account => account.loginid === to_account.loginid
+                )
+            );
+    }, [from_account?.loginid, setFromAccount, setToAccount, to_account?.loginid, transfer_accounts]);
+
     return {
         active_wallet,
-        is_accounts_loading: !is_accounts_loaded,
+        is_accounts_loading,
         from_account,
         to_account,
         to_account_list,

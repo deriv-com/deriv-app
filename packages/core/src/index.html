@@ -355,15 +355,15 @@
 
                     // Check if the element exists
                     if (element) {
-                        // If it does just change the content of the element
-                        element.setAttribute('content', value);
-                    } else {
-                        // It doesn't exist so lets make a HTML element string with the info we want
-                        element = `<meta property=${key} content="${value}" />`;
-
-                        // And insert it into the head
-                        document.head.insertAdjacentHTML('beforeend', element);
+                        // If it does, delete the element
+                        element.parentNode.removeChild(element);
                     }
+                    meta = document.createElement('meta');
+                    meta.setAttribute('property', key);
+                    meta.content = value;
+
+                    // And insert it into the head
+                    document.head.appendChild(meta);
                 }
             }
         </script>

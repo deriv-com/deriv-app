@@ -16,6 +16,8 @@ class DBot {
         this.interpreter = null;
         this.workspace = null;
         this.before_run_funcs = [];
+        this.symbol = null;
+        this.is_bot_running = false;
     }
 
     /**
@@ -23,6 +25,60 @@ class DBot {
      */
     async initWorkspace(public_path, store, api_helpers_store, is_mobile) {
         const recent_files = await getSavedWorkspaces();
+
+        api_base.init();
+        this.interpreter = Interpreter();
+        const that = this;
+        Blockly.Blocks.trade_definition_tradetype.onchange = async function (event) {
+            if (!this.workspace || this.isInFlyout || this.workspace.isDragging()) {
+                return;
+            }
+
+            this.enforceLimitations();
+
+            if (event.type === Blockly.Events.BLOCK_CHANGE) {
+                if (event.name === 'SYMBOL_LIST' || event.name === 'TRADETYPECAT_LIST') {
+                    const { contracts_for } = ApiHelpers.instance;
+                    const top_parent_block = this.getTopParent();
+                    const market_block = top_parent_block.getChildByType('trade_definition_market');
+                    const market = market_block.getFieldValue('MARKET_LIST');
+                    const submarket = market_block.getFieldValue('SUBMARKET_LIST');
+                    const symbol = market_block.getFieldValue('SYMBOL_LIST');
+                    const trade_type_cat = this.getFieldValue('TRADETYPECAT_LIST');
+                    const trade_type = this.getFieldValue('TRADETYPE_LIST');
+
+                    if (event.name === 'SYMBOL_LIST') {
+                        contracts_for.getTradeTypeCategories(market, submarket, symbol).then(categories => {
+                            const trade_type_cat_field = this.getField('TRADETYPECAT_LIST');
+                            // this.interpreter.bot.tradeEngine.watchTicks(symbol);
+                            if (trade_type_cat_field) {
+                                trade_type_cat_field.updateOptions(categories, {
+                                    default_value: trade_type_cat,
+                                    should_pretend_empty: true,
+                                    event_group: event.group,
+                                });
+                            }
+                        });
+                        that.symbol = symbol;
+                        if (!this.is_bot_running && that.interpreter) {
+                            that.interpreter.unsubscribeFromTicksService().then(() => {
+                                that.interpreter.bot.tradeEngine.watchTicks(symbol);
+                            });
+                        }
+                    } else if (event.name === 'TRADETYPECAT_LIST' && event.blockId === this.id) {
+                        contracts_for.getTradeTypes(market, submarket, symbol, trade_type_cat).then(trade_types => {
+                            const trade_type_field = this.getField('TRADETYPE_LIST');
+
+                            trade_type_field.updateOptions(trade_types, {
+                                default_value: trade_type,
+                                should_pretend_empty: true,
+                                event_group: event.group,
+                            });
+                        });
+                    }
+                }
+            }
+        };
 
         return new Promise((resolve, reject) => {
             __webpack_public_path__ = public_path; // eslint-disable-line no-global-assign
@@ -95,7 +151,6 @@ class DBot {
                 window.dispatchEvent(new Event('resize'));
                 window.addEventListener('dragover', DBot.handleDragOver);
                 window.addEventListener('drop', e => DBot.handleDropOver(e, handleFileChange));
-                api_base.init();
                 // disable overflow
                 el_scratch_div.parentNode.style.overflow = 'hidden';
                 resolve();
@@ -131,11 +186,8 @@ class DBot {
     runBot() {
         try {
             const code = this.generateCode();
-            if (this.interpreter !== null) {
-                this.interpreter = null;
-            }
+            this.is_bot_running = true;
 
-            this.interpreter = Interpreter();
             api_base.setIsRunning(true);
             this.interpreter.run(code).catch(error => {
                 globalObserver.emit('Error', error);
@@ -227,20 +279,25 @@ class DBot {
      * Instructs the interpreter to stop the bot. If there is an active trade
      * that trade will be completed first to reflect correct contract status in UI.
      */
-    stopBot() {
+    async stopBot() {
         api_base.setIsRunning(false);
-        if (this.interpreter) {
-            this.interpreter.stop();
-        }
+
+        await this.interpreter.stop();
+        this.is_bot_running = false;
+        this.interpreter = Interpreter();
+
+        this.interpreter.bot.tradeEngine.watchTicks(this.symbol);
     }
 
     /**
      * Immediately instructs the interpreter to terminate the WS connection and bot.
      */
-    terminateBot() {
+    async terminateBot() {
         if (this.interpreter) {
-            this.interpreter.terminateSession();
+            await this.interpreter.terminateSession();
             this.interpreter = null;
+            this.interpreter = Interpreter();
+            this.interpreter.bot.tradeEngine.watchTicks(this.symbol);
         }
     }
 

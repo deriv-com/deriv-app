@@ -77,13 +77,10 @@ export default class TradeEngine extends Balance(Purchase(Sell(OpenContract(Prop
 
     init(...args) {
         const [token, options] = expectInitArg(args);
-        const { symbol } = options;
 
         this.initArgs = args;
         this.options = options;
         this.startPromise = this.loginAndGetBalance(token);
-
-        this.watchTicks(symbol);
     }
 
     start(tradeOptions) {

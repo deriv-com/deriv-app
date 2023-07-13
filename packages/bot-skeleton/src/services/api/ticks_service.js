@@ -67,7 +67,7 @@ export default class TicksService {
         return this.active_symbols_promise;
     }
 
-    request(options) {
+    async request(options) {
         const { symbol, granularity } = options;
 
         const style = getType(granularity);
@@ -82,14 +82,14 @@ export default class TicksService {
         return this.requestStream({ ...options, style });
     }
 
-    monitor(options) {
+    async monitor(options) {
         const { symbol, granularity, callback } = options;
 
         const type = getType(granularity);
 
         const key = getUUID();
 
-        this.request(options).catch(e => {
+        await this.request(options).catch(e => {
             globalObserver.emit('Error', e);
         });
 
@@ -102,7 +102,7 @@ export default class TicksService {
         return key;
     }
 
-    stopMonitor(options) {
+    async stopMonitor(options) {
         const { symbol, granularity, key } = options;
         const type = getType(granularity);
 
@@ -114,10 +114,10 @@ export default class TicksService {
             this.ohlcListeners = this.ohlcListeners.deleteIn([symbol, Number(granularity), key]);
         }
 
-        this.unsubscribeIfEmptyListeners(options);
+        await this.unsubscribeIfEmptyListeners(options);
     }
 
-    unsubscribeIfEmptyListeners(options) {
+    async unsubscribeIfEmptyListeners(options) {
         const { symbol, granularity } = options;
 
         let needToUnsubscribe = false;
@@ -139,7 +139,7 @@ export default class TicksService {
         }
 
         if (needToUnsubscribe) {
-            this.unsubscribeAllAndSubscribeListeners(symbol);
+            await this.unsubscribeAllAndSubscribeListeners(symbol);
         }
     }
 
@@ -276,19 +276,37 @@ export default class TicksService {
     };
 
     unsubscribeFromTicksService() {
-        if (this.ticks_history_promise) {
-            const { stringified_options } = this.ticks_history_promise;
-            const { symbol = '' } = JSON.parse(stringified_options);
-            if (symbol) {
-                this.forget(this.subscriptions.getIn(['tick', symbol]));
+        return new Promise((resolve, reject) => {
+            if (this.ticks_history_promise) {
+                const { stringified_options } = this.ticks_history_promise;
+                const { symbol = '' } = JSON.parse(stringified_options);
+                if (symbol) {
+                    this.forget(this.subscriptions.getIn(['tick', symbol]))
+                        .then(res => {
+                            resolve(res);
+                        })
+                        .catch(reject);
+                } else {
+                    resolve();
+                }
             }
-        }
-        if (this.candles_promise) {
-            const { stringified_options } = this.candles_promise;
-            const { symbol = '' } = JSON.parse(stringified_options);
-            if (symbol) {
-                this.forget(this.subscriptions.getIn(['candle', symbol]));
+            if (this.candles_promise) {
+                const { stringified_options } = this.candles_promise;
+                const { symbol = '' } = JSON.parse(stringified_options);
+                if (symbol) {
+                    this.forget(this.subscriptions.getIn(['candle', symbol]))
+                        .then(res => {
+                            resolve(res);
+                        })
+                        .catch(reject);
+                } else {
+                    resolve();
+                }
             }
-        }
+
+            if (!this.ticks_history_promise && !this.candles_promise) {
+                resolve();
+            }
+        });
     }
 }

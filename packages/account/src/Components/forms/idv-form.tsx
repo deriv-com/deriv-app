@@ -45,10 +45,8 @@ const IDVForm = ({
 
             const new_document_list = filtered_documents.map(key => {
                 const { display_name, format } = document_data[key];
-                const { new_display_name, example_format, sample_image } = getDocumentData(
-                    selected_country.value ?? '',
-                    key
-                );
+                const { new_display_name, example_format, sample_image, additional_document_example_format } =
+                    getDocumentData(selected_country.value ?? '', key);
                 const needs_additional_document = !!document_data[key].additional;
 
                 if (needs_additional_document) {
@@ -58,6 +56,7 @@ const IDVForm = ({
                         additional: {
                             display_name: document_data[key].additional?.display_name,
                             format: document_data[key].additional?.format,
+                            example_format: additional_document_example_format,
                         },
                         value: format,
                         sample_image,
@@ -252,6 +251,7 @@ const IDVForm = ({
                                                             onKeyUp={(e: { target: HTMLInputElement }) =>
                                                                 onKeyUp(e, 'document_additional')
                                                             }
+                                                            className='additional-field'
                                                             required
                                                         />
                                                     )}

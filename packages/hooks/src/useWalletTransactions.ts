@@ -7,6 +7,18 @@ import usePlatformAccounts from './usePlatformAccounts';
 import useWalletsList from './useWalletsList';
 import useActiveWallet from './useActiveWallet';
 
+const trading_accounts_display_prefixes = {
+    standard: 'Deriv Apps',
+    mt5: 'MT5',
+    dxtrade: 'Deriv X',
+    binary: 'Binary',
+} as const;
+
+const landing_company_display_shortcodes = {
+    svg: 'SVG',
+    malta: 'Malta',
+} as const;
+
 const useWalletTransactions = (
     action_type: '' | 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer',
     page_count?: number
@@ -28,18 +40,6 @@ const useWalletTransactions = (
 
     const transactions_per_page = 10;
 
-    const trading_accounts_display_prefixes = {
-        standard: 'Deriv Apps',
-        mt5: 'MT5',
-        dxtrade: 'Deriv X',
-        binary: 'Binary',
-    } as const;
-
-    const landing_company_display_shortcodes = {
-        svg: 'SVG',
-        malta: 'Malta',
-    } as const;
-
     const getTradingAccountName = useCallback(
         (
             account_type: 'standard' | 'mt5' | 'dxtrade' | 'binary',
@@ -50,7 +50,7 @@ const useWalletTransactions = (
                 is_virtual ? 'Demo' : `(${landing_company_display_shortcodes[landing_company_shortcode]})`
             } account`;
         },
-        [landing_company_display_shortcodes, trading_accounts_display_prefixes]
+        []
     );
 
     const { data, isLoading, isSuccess } = useFetch('statement', {
@@ -114,7 +114,7 @@ const useWalletTransactions = (
                           let account_type = current_wallet.account_type;
                           let account_name = `${current_wallet.is_virtual ? 'Demo ' : ''}${
                               current_wallet.currency
-                          } ${'Wallet'}`;
+                          } Wallet`;
                           let account_currency = current_wallet.currency;
                           let gradient_class = current_wallet.gradient_card_class;
                           let icon = getWalletCurrencyIcon(
@@ -147,7 +147,7 @@ const useWalletTransactions = (
                                                     el => el.loginid === other_account.loginid
                                                 ) as typeof wallets[number]
                                             ).currency
-                                        } ${'Wallet'}`
+                                        } Wallet`
                                       : getTradingAccountName(
                                             other_account.account_type as 'standard' | 'mt5' | 'dxtrade' | 'binary',
                                             !!other_account.is_virtual,

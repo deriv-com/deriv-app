@@ -1,16 +1,16 @@
+import React from 'react';
 import classNames from 'classnames';
-import * as React from 'react';
 import { Button, Icon, MobileFullPageModal, Modal, Text } from '@deriv/components';
-import { isDesktop, isMobile } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
+import { isMobile } from '@deriv/shared';
+import { observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import AddPaymentMethod from 'Components/my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
+import BuyAdPaymentMethodsList from 'Components/my-ads/buy-ad-payment-methods-list.jsx';
+import FilterPaymentMethods from 'Components/my-ads/filter-payment-methods';
+import SellAdPaymentMethodsList from 'Components/my-ads/sell-ad-payment-methods-list.jsx';
 import { buy_sell } from 'Constants/buy-sell';
 import { useStores } from 'Stores';
-import AddPaymentMethod from 'Components/my-profile/payment-methods/add-payment-method/add-payment-method.jsx';
-import SellAdPaymentMethodsList from 'Components/my-ads/sell-ad-payment-methods-list.jsx';
-import BuyAdPaymentMethodsList from 'Components/my-ads/buy-ad-payment-methods-list.jsx';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import FilterPaymentMethods from 'Components/my-ads/filter-payment-methods';
 
 const QuickAddModal = ({ advert }) => {
     const { my_ads_store, my_profile_store } = useStores();
@@ -114,8 +114,7 @@ const QuickAddModal = ({ advert }) => {
                                     className='quick-add-modal--button'
                                     has_effect
                                     is_disabled={
-                                        selected_methods.length === 0 ||
-                                        (my_ads_store.payment_method_names.length === 0 && isDesktop())
+                                        selected_methods.length === 0 || my_ads_store.payment_method_names.length === 0
                                     }
                                     large
                                     onClick={() => my_ads_store.onClickUpdatePaymentMethods(advert?.id, is_buy_advert)}
@@ -241,7 +240,6 @@ const QuickAddModal = ({ advert }) => {
                         secondary
                         text={localize('Cancel')}
                     />
-
                     <Button
                         has_effect
                         is_disabled={selected_methods.length === 0 || my_ads_store.payment_method_names.length === 0}
@@ -305,7 +303,6 @@ const QuickAddModal = ({ advert }) => {
             {!my_ads_store.should_show_add_payment_method && (
                 <Modal.Footer has_separator>
                     <Button has_effect large onClick={setShouldCloseAllModals} secondary text={localize('Cancel')} />
-
                     <Button
                         has_effect
                         is_disabled={selected_methods.length === 0 || my_ads_store.payment_method_ids.length === 0}

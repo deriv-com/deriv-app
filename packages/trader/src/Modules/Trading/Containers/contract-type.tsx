@@ -44,7 +44,7 @@ const Contract = observer(() => {
                 name='contract_type'
                 onChange={onChange}
                 value={contract_type}
-                languageChanged={(prev_lang && prev_lang !== current_language) || false}
+                languageChanged={!!(prev_lang && prev_lang !== current_language)}
             />
         </React.Fragment>
     );

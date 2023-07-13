@@ -60,19 +60,6 @@ const TradersHub = () => {
     };
     if (!is_logged_in) return null;
 
-    const EUDisclamer = () => {
-        return (
-            <div className='disclamer'>
-                <Text align='left' className='disclamer-text' size={isMobile() ? 'xxxs' : 'xs'}>
-                    <Localize
-                        i18n_default_text='<0>EU statutory disclaimer</0>: CFDs are complex instruments and come with a high risk of losing money rapidly due to leverage. <0>73% of retail investor accounts lose money when trading CFDs with this provider</0>. You should consider whether you understand how CFDs work and whether you can afford to take the high risk of losing your money.'
-                        components={[<strong key={0} />]}
-                    />
-                </Text>
-            </div>
-        );
-    };
-
     return (
         <React.Fragment>
             <Div100vhContainer

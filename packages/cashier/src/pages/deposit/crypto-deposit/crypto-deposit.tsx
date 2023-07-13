@@ -134,7 +134,7 @@ const CryptoDeposit = observer(() => {
 
     return (
         <div className='cashier__wrapper crypto-deposit__wrapper'>
-            <CashierBreadcrumb is_crypto_deposit />
+            <CashierBreadcrumb />
             <div className='crypto-deposit__transaction-wrapper'>
                 <Icon icon={`IcCurrency-${currency?.toLowerCase()}`} size={64} />
                 <Text
@@ -261,7 +261,7 @@ const CryptoDeposit = observer(() => {
                     </Text>
                 </ButtonLink>
             </div>
-            {isMobile() && isCryptocurrency(currency) && crypto_transactions?.length ? <RecentTransaction /> : null}
+            {isMobile() && isCryptocurrency(currency) ? <RecentTransaction /> : null}
         </div>
     );
 });

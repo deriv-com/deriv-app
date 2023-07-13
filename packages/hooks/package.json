@@ -5,11 +5,9 @@
     "main": "src/index.ts",
     "dependencies": {
         "@deriv/api": "^1.0.0",
-        "@deriv/api-types": "^1.0.94",
         "@deriv/stores": "^1.0.0",
         "@deriv/utils": "^1.0.0",
-        "react": "^17.0.2",
-        "moment": "^2.29.2"
+        "react": "^17.0.2"
     },
     "devDependencies": {
         "typescript": "^4.6.3",

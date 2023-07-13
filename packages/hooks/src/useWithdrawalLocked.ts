@@ -1,7 +1,6 @@
 import { useStore } from '@deriv/stores';
-import { useRequest } from '@deriv/api';
+import { useFetch } from '@deriv/api';
 import useCheck10kLimit from './useCheck10kLimit';
-import React from 'react';
 
 type TUseWithdrawalLocked = {
     is_withdrawal_locked: boolean;
@@ -10,6 +9,8 @@ type TUseWithdrawalLocked = {
     is_poa_needed: boolean;
     has_poa_submitted: boolean;
     is_ask_financial_risk_approval_needed: boolean;
+    isLoading: boolean;
+    isSuccess: boolean;
 };
 
 const useWithdrawalLocked = (): TUseWithdrawalLocked => {
@@ -18,14 +19,9 @@ const useWithdrawalLocked = (): TUseWithdrawalLocked => {
 
     const { is_10k_withdrawal_limit_reached: is_10K_limit } = useCheck10kLimit();
 
-    const {
-        error: { is_ask_financial_risk_approval },
-    } = withdraw;
+    const { is_ask_authentication, is_ask_financial_risk_approval } = modules?.cashier.error;
 
-    const { is_ask_authentication } = modules?.cashier.error;
-
-    const { data: account_status, mutate } = useRequest('get_account_status');
-    React.useEffect(() => mutate(), []);
+    const { data: account_status, isLoading, isSuccess } = useFetch('get_account_status');
 
     const get_account_status = account_status?.get_account_status;
     const status = get_account_status?.status;
@@ -53,6 +49,8 @@ const useWithdrawalLocked = (): TUseWithdrawalLocked => {
         is_poa_needed,
         has_poa_submitted,
         is_ask_financial_risk_approval_needed,
+        isLoading,
+        isSuccess,
     };
 };
 

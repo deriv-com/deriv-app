@@ -77,7 +77,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
     } = withdraw;
 
     const { is_10k_withdrawal_limit_reached } = useCheck10kLimit();
-    const { is_withdrawal_locked } = useWithdrawalLocked();
+    const { is_withdrawal_locked, isLoading } = useWithdrawalLocked();
 
     React.useEffect(() => {
         if (!is_crypto_transactions_visible) {
@@ -130,7 +130,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         }
     }
 
-    if (is_switching || is_10k_withdrawal_limit_reached === undefined) {
+    if (isLoading || is_switching || is_10k_withdrawal_limit_reached === undefined) {
         return <Loading is_fullscreen={false} />;
     }
 
@@ -138,7 +138,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         return <Virtual />;
     }
 
-    if (is_cashier_locked) {
+    if (is_cashier_locked && current_currency_type === 'crypto') {
         return <CashierLocked />;
     }
 

@@ -1,5 +1,12 @@
 import 'Styles/account.scss';
-import { PlatformContext, getSelectedRoute, isMobile, matchRoute, routes as shared_routes } from '@deriv/shared';
+import {
+    PlatformContext,
+    getSelectedRoute,
+    getStaticUrl,
+    isMobile,
+    matchRoute,
+    routes as shared_routes,
+} from '@deriv/shared';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
@@ -7,7 +14,6 @@ import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text, Icon } from '@der
 import { observer, useStore } from '@deriv/stores';
 import { flatten } from '../Helpers/flatten';
 import { localize } from '@deriv/translations';
-
 
 const onClickLogout = (logout, history) => {
     history.push(shared_routes.index);

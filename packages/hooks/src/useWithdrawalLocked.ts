@@ -1,6 +1,7 @@
 import { useStore } from '@deriv/stores';
 import { useRequest } from '@deriv/api';
 import useCheck10kLimit from './useCheck10kLimit';
+import React from 'react';
 
 type TUseWithdrawalLocked = {
     is_withdrawal_locked: boolean;
@@ -23,7 +24,9 @@ const useWithdrawalLocked = (): TUseWithdrawalLocked => {
 
     const { is_ask_authentication } = modules?.cashier.error;
 
-    const { data: account_status } = useRequest('get_account_status');
+    const { data: account_status, mutate } = useRequest('get_account_status');
+    React.useEffect(() => mutate(), []);
+
     const get_account_status = account_status?.get_account_status;
     const status = get_account_status?.status;
     const authentication = get_account_status?.authentication;

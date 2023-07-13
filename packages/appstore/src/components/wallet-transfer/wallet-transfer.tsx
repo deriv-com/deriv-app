@@ -29,7 +29,8 @@ const ERROR_CODES = {
 };
 
 const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisible }: TWalletTransferProps) => {
-    const { client, ui } = useStore();
+    const { client, ui, traders_hub } = useStore();
+    const { setWalletModalActiveTab } = traders_hub;
     const { is_switching } = client;
     const { is_mobile } = ui;
 
@@ -106,7 +107,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
                             variant: 'with-action-button',
                             key: ERROR_CODES.is_demo.insufficient_fund,
                             button_label: localize('Reset balance'),
-                            onClickHandler: () => undefined,
+                            onClickHandler: () => setWalletModalActiveTab('Deposit'),
                             message: localize(
                                 'You have insufficient fund in the selected wallet, please reset your virtual balance'
                             ),

@@ -196,7 +196,7 @@ export type TTransferAccount = {
     currency?: string;
     display_currency_code?: string;
     gradient_class?: `wallet-card__${string}`;
-    icon: string | undefined;
+    icon?: string | undefined;
     is_demo?: boolean;
     loginid?: string;
     mt5_market_type?: 'all' | 'financial' | 'synthetic';

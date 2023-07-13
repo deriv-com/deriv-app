@@ -60,7 +60,7 @@ export const routes = {
     p2p_my_ads: '/cashier/p2p/my-ads',
     p2p_my_profile: '/cashier/p2p/my-profile',
     p2p_advertiser_page: '/cashier/p2p/advertiser',
-    //
+
     cashier_pa_transfer: '/cashier/payment-agent-transfer',
     smarttrader: getUrlSmartTrader(),
     binarybot: getUrlBinaryBot(),

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Field, FormikProps, FormikValues } from 'formik';
+import { Field, FieldProps, FormikProps, FormikValues } from 'formik';
 import { localize } from '@deriv/translations';
 import { isMobile, supported_filetypes, max_document_size } from '@deriv/shared';
 import { Button, Icon, Text, FileDropzone } from '@deriv/components';
@@ -139,7 +139,7 @@ const Uploader = ({ data, value, is_full, onChange, has_frame }: Partial<TUpload
 
     return (
         <Field name={data?.name}>
-            {({ form: { setFieldValue } }: FormikValues) => (
+            {({ form: { setFieldValue } }: FieldProps) => (
                 <div
                     className={classNames(`${ROOT_CLASS}__uploader`, {
                         [`${ROOT_CLASS}__uploader--full`]: is_full,

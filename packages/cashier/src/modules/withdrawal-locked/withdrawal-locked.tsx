@@ -20,6 +20,8 @@ const WithdrawalLocked = observer(() => {
         is_poa_needed,
         has_poa_submitted,
         is_ask_financial_risk_approval_needed,
+        isLoading,
+        isSuccess,
     } = useWithdrawalLocked();
 
     const history = useHistory();
@@ -58,22 +60,23 @@ const WithdrawalLocked = observer(() => {
     ];
     return (
         <React.Fragment>
-            {items.length ? (
-                <div className='cashier-locked'>
-                    <Icon icon='IcCashierWithdrawalLock' className='cashier-locked__icon' />
-                    <Text as='h2' weight='bold' align='center' className='cashier-locked__title'>
-                        <Localize
-                            i18n_default_text='You have reached the withdrawal limit.<0/>Please upload your proof of identity and address to lift the limit to continue your withdrawal.'
-                            components={[<br key={0} />]}
-                        />
-                    </Text>
-                    <React.Fragment>
-                        <Checklist className='cashier-locked__checklist' items={items} />
-                    </React.Fragment>
-                </div>
-            ) : (
-                <CashierLocked />
-            )}
+            {isSuccess &&
+                (items.length ? (
+                    <div className='cashier-locked'>
+                        <Icon icon='IcCashierWithdrawalLock' className='cashier-locked__icon' />
+                        <Text as='h2' weight='bold' align='center' className='cashier-locked__title'>
+                            <Localize
+                                i18n_default_text='You have reached the withdrawal limit.<0/>Please upload your proof of identity and address to lift the limit to continue your withdrawal.'
+                                components={[<br key={0} />]}
+                            />
+                        </Text>
+                        <React.Fragment>
+                            <Checklist className='cashier-locked__checklist' items={items} />
+                        </React.Fragment>
+                    </div>
+                ) : (
+                    <CashierLocked />
+                ))}
         </React.Fragment>
     );
 });

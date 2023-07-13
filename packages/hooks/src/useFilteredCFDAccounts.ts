@@ -8,22 +8,27 @@ import useExistingCFDAccounts from './useExistingCFDAccounts';
  *
  */
 const useFilteredCFDAccounts = () => {
-    const { data } = useAvailableMT5Accounts();
-    const { data: existing_cfd_accounts } = useExistingCFDAccounts();
+    const { data, isLoading } = useAvailableMT5Accounts();
+    const { data: existing_cfd_accounts, isLoading: existing_cfd_accounts_loading } = useExistingCFDAccounts();
 
     const filtered_mt5_accounts = useMemo(() => {
         if (!data) return undefined;
 
         return Object.keys(data)
             .map(key => {
+                const first_account = data[key][0];
                 const added_account = existing_cfd_accounts?.mt5_accounts?.find(
-                    cfd => cfd.market_type === data[key][0].market_type
+                    cfd => cfd.market_type === first_account.market_type
                 );
+                const is_added = !!added_account;
 
                 return {
-                    ...data[key][0],
+                    ...first_account,
                     ...added_account,
-                    is_added: !!added_account,
+                    is_added,
+                    market_type: is_added
+                        ? first_account.market_type
+                        : first_account.market_type.replace('gaming', 'synthetic'),
                 };
             })
             .sort((a, b) => {
@@ -35,6 +40,7 @@ const useFilteredCFDAccounts = () => {
 
     return {
         data: filtered_mt5_accounts,
+        isLoading: isLoading || existing_cfd_accounts_loading,
     };
 };
 

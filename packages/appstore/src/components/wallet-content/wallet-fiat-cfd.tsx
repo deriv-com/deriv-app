@@ -4,7 +4,7 @@ import { useStore, observer } from '@deriv/stores';
 import { TWalletAccount } from 'Types';
 import { localize } from '@deriv/translations';
 import WalletFiatMT5Content from './wallet-fiat-mt5-content';
-import WalletOtherCFDContent from './wallet-other-cfd-content';
+import WalletOtherCFDContent from './wallet-other-cfds/wallet-other-cfd-content';
 
 type TWalletFiatMT5 = {
     wallet_account: TWalletAccount;

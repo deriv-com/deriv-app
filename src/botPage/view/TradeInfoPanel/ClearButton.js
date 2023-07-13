@@ -8,6 +8,8 @@ const ClearButton = () => {
     const { is_bot_running } = useSelector(state => state.ui);
     const [is_button_disabled, setIsButtonDisabled] = React.useState(true);
 
+    const isRunning = globalObserver.getState('isRunning');
+
     React.useEffect(() => {
         globalObserver.register('summary.enable_clear', () => setIsButtonDisabled(false));
         globalObserver.register('summary.disable_clear', () => setIsButtonDisabled(true));
@@ -15,10 +17,10 @@ const ClearButton = () => {
     }, []);
 
     React.useEffect(() => {
-        if (!is_bot_running) {
+        if (!is_bot_running && !isRunning) {
             setIsButtonDisabled(false);
         }
-    }, [is_bot_running]);
+    }, [is_bot_running, isRunning]);
 
     globalObserver.register('bot.stop', () => setIsButtonDisabled(false));
 

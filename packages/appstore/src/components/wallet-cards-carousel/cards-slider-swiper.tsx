@@ -4,6 +4,7 @@ import { WalletCard, ProgressBarOnboarding } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
 import useEmblaCarousel, { EmblaOptionsType } from 'embla-carousel-react';
 import { useStore, observer } from '@deriv/stores';
+import { getAccountName } from 'Constants/utils';
 import './wallet-cards-carousel.scss';
 
 type TProps = {
@@ -45,13 +46,16 @@ const CardsSliderSwiper = observer(({ items, setActivePage, active_page }: TProp
     const slider = React.useMemo(
         () =>
             items?.map((item: TWalletAccount) => (
-                <div key={`${item.name} ${item.currency} ${item.landing_company_name}`}>
+                <div key={`${item.loginid}`}>
                     <WalletCard
                         wallet={{
-                            currency: item.currency,
+                            currency: item.currency_config?.display_code,
                             icon: item.icon,
-                            icon_type: item.icon_type,
-                            name: item.name,
+                            icon_type: item.wallet_currency_type,
+                            name: getAccountName({
+                                account_type: 'wallet',
+                                display_currency_code: item.currency_config?.display_code,
+                            }),
                             balance: formatMoney(item.currency, item.balance, true),
                             jurisdiction_title: item.landing_company_name,
                             gradient_class: item.gradient_card_class,

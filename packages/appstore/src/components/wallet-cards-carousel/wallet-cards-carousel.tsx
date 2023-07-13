@@ -30,7 +30,7 @@ const WalletCardsCarousel = observer(({ items }: TProps) => {
         switchWallet();
     }, [active_page, items, loginid, switchAccount]);
 
-    const wallet_buttons = getWalletHeaderButtons(items[active_page]?.is_virtual);
+    const wallet_buttons = getWalletHeaderButtons(items[active_page]?.is_demo);
 
     return (
         <div className='wallet-cards-carousel traders-hub__wallets-bg'>

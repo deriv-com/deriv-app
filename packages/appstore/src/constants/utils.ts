@@ -1,6 +1,6 @@
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { TWalletButton } from 'Types';
+import { TTransferAccount, TWalletButton } from 'Types';
 
 /**
  * This function checks whether the current item should have a border at the bottom 'aka "divider" '.
@@ -107,4 +107,40 @@ export const getWalletHeaderButtons = (is_demo: boolean, handleAction?: () => vo
                   action: () => handleAction?.(),
               },
           ];
+};
+
+export const getAccountName = ({
+    account_type,
+    mt5_market_type,
+    display_currency_code,
+}: Partial<Pick<TTransferAccount, 'account_type' | 'display_currency_code' | 'mt5_market_type'>>): string => {
+    switch (account_type) {
+        case 'trading':
+            return localize('Deriv Apps');
+        case 'mt5': {
+            switch (mt5_market_type) {
+                case 'financial':
+                    return localize('MT5 Financial');
+                case 'synthetic':
+                    return localize('MT5 Derived');
+                case 'all':
+                    return localize('MT5 Swap-free');
+                default:
+                    return '';
+            }
+        }
+        case 'derivez':
+            return localize('Deriv EZ');
+        case 'dxtrade':
+            return localize('Deriv X');
+        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
+        case 'ctrader':
+            return localize('Deriv cTrader');
+        case 'wallet':
+            return localize('{{display_currency_code}} Wallet', {
+                display_currency_code,
+            });
+        default:
+            return '';
+    }
 };

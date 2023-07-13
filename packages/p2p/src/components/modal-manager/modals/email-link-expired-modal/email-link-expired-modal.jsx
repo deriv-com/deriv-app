@@ -23,13 +23,13 @@ const EmailLinkExpiredModal = () => {
             toggleModal={() => hideModal({ should_hide_all_modals: true })}
             width='440px'
         >
-            <Modal.Body className='email-link-expired-modal--body'>
+            <Modal.Body className='email-link-expired-modal__body'>
                 <Icon icon='IcEmailSentExpired' size='128' />
-                <Text align='center' className='email-link-expired-modal--text' color='prominent' weight='bold'>
+                <Text align='center' className='email-link-expired-modal__text' color='prominent' weight='bold'>
                     <Localize i18n_default_text='The verification link appears to be invalid. Hit the button below to request for a new one' />
                 </Text>
             </Modal.Body>
-            <Modal.Footer className='email-link-expired-modal--footer'>
+            <Modal.Footer className='email-link-expired-modal__footer'>
                 <Button large primary onClick={onClickHandler}>
                     <Localize i18n_default_text='Get new link' />
                 </Button>

@@ -25,12 +25,12 @@ const RatingModal = ({ is_buy_order_for_user, is_user_recommended_previously, on
             toggleModal={onClickSkip}
             width={isMobile() && '90vw'}
         >
-            <Modal.Body className='rating-modal--body'>
-                <div className='rating-modal--body__star'>
+            <Modal.Body className='rating-modal__body'>
+                <div className='rating-modal__body__star'>
                     <StarRating
-                        empty_star_className='rating-modal--star'
+                        empty_star_className='rating-modal__star'
                         empty_star_icon='IcEmptyStar'
-                        full_star_className='rating-modal--star'
+                        full_star_className='rating-modal__star'
                         full_star_icon='IcFullStar'
                         initial_value={0}
                         number_of_stars={5}
@@ -50,7 +50,7 @@ const RatingModal = ({ is_buy_order_for_user, is_user_recommended_previously, on
                     />
                 )}
             </Modal.Body>
-            <Modal.Footer className='rating-modal--footer'>
+            <Modal.Footer className='rating-modal__footer'>
                 {order_store.rating_value > 0 ? (
                     <Button primary large onClick={onClickDone}>
                         <Localize i18n_default_text='Done' />

@@ -75,13 +75,13 @@ const Strike = observer(() => {
                     header={localize('Strike price')}
                     header_tooltip={
                         <Localize
-                            i18n_default_text='<0>{{trade_type}}:</0> You will get a payout if the market price is {{payout_status}} this price <0>at the expiry time.</0> Otherwise, your payout will be zero.'
+                            i18n_default_text='If you buy a "<0>{{trade_type}}</0>" option, you receive a payout at expiry if the final price is {{payout_status}} the strike price. Otherwise, your “<0>{{trade_type}}</0>” option will expire worthless.'
                             components={[<strong key={0} />]}
                             values={{
                                 trade_type:
                                     vanilla_trade_type === 'VANILLALONGCALL'
-                                        ? localize('For Call')
-                                        : localize('For Put'),
+                                        ? localize('Call')
+                                        : localize('Put'),
                                 payout_status:
                                     vanilla_trade_type === 'VANILLALONGCALL' ? localize('above') : localize('below'),
                             }}

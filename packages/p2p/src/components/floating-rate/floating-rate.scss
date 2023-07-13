@@ -218,3 +218,9 @@ button.dc-input-wrapper__button {
     display: flex;
     flex-direction: column;
 }
+
+.my-ads__form-field {
+    @include mobile {
+        height: auto !important;
+    }
+}

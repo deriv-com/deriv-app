@@ -17,7 +17,7 @@ const MyAdsDeleteErrorModal = () => {
                 has_close_icon={false}
                 is_open={is_modal_open}
                 renderTitle={() => (
-                    <Text color='prominent' line-height='m' size={isDesktop() ? 's' : 'xs'} weight='bold'>
+                    <Text color='prominent' size={isDesktop() ? 's' : 'xs'} weight='bold'>
                         <Localize i18n_default_text='Do you want to delete this ad?' />
                     </Text>
                 )}

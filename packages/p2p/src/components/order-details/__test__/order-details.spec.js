@@ -1,6 +1,7 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { StoreProvider, mockStore } from '@deriv/stores';
 import { useStores } from 'Stores';
+import { render, screen } from '@testing-library/react';
 import OrderDetails from '../order-details.jsx';
 
 const mock_order_info = {
@@ -12,7 +13,7 @@ const mock_order_info = {
     has_timer_expired: false,
     id: 123,
     is_active_order: false,
-    is_buy_order: false,
+    is_buy_order_for_user: false,
     is_buyer_confirmed_order: false,
     is_my_ad: false,
     is_pending_order: false,
@@ -45,13 +46,34 @@ const mock_order_store = {
     has_order_payment_method_details: false,
     order_payment_method_details: [],
     setOrderPaymentMethodDetails: jest.fn(),
+    getSettings: jest.fn(),
+    getWebsiteStatus: jest.fn(),
+    setRatingValue: jest.fn(),
+    setIsRecommended: jest.fn(),
+    setOrderId: jest.fn(),
+    setActiveOrder: jest.fn(),
 };
 const mock_sendbird_store = {
     should_show_chat_on_orders: false,
     setChatChannelUrl: jest.fn(),
+    setHasChatError: jest.fn(),
     createChatForNewOrder: jest.fn(),
     registerEventListeners: jest.fn().mockReturnValue(jest.fn()),
     registerMobXReactions: jest.fn().mockReturnValue(jest.fn()),
+};
+
+const mock_my_profile_store = {
+    getPaymentMethodsList: jest.fn(),
+};
+
+const mock_buy_sell_store = {
+    is_create_order_subscribed: true,
+    setIsCreateOrderSubscribed: jest.fn(),
+    unsubscribeCreateOrder: jest.fn(),
+};
+
+const mock_general_store = {
+    redirectToOrderDetails: jest.fn(),
 };
 
 jest.mock('Stores', () => ({
@@ -59,6 +81,19 @@ jest.mock('Stores', () => ({
     useStores: jest.fn(() => ({
         order_store: { ...mock_order_store },
         sendbird_store: { ...mock_sendbird_store },
+        my_profile_store: { ...mock_my_profile_store },
+        buy_sell_store: { ...mock_buy_sell_store },
+        general_store: { ...mock_general_store },
+    })),
+}));
+
+jest.mock('Components/modal-manager/modal-manager-context', () => ({
+    ...jest.requireActual('Components/modal-manager/modal-manager-context'),
+    useModalManagerContext: jest.fn(() => ({
+        isCurrentModal: false,
+        showModal: () => {},
+        hideModal: () => {},
+        useRegisterModalProps: () => {},
     })),
 }));
 
@@ -71,7 +106,7 @@ jest.mock('Components/order-details/order-details-footer.jsx', () => jest.fn(() 
 
 jest.mock('Components/order-details/order-info-block.jsx', () => jest.fn(() => <div>Order Info Block</div>));
 
-jest.mock('Components/orders/chat/chat.jsx', () => jest.fn(() => <div>Chat section</div>));
+jest.mock('Pages/orders/chat/chat.jsx', () => jest.fn(() => <div>Chat section</div>));
 
 jest.mock('Components/p2p-accordion/p2p-accordion.jsx', () => jest.fn(() => <div>Payment methods listed</div>));
 
@@ -80,11 +115,20 @@ describe('<OrderDetails/>', () => {
         useStores.mockReturnValue({
             order_store: {
                 ...mock_order_store,
-                order_information: { ...mock_order_info, should_show_lost_funds_banner: true, chat_channel_url: null },
+                order_information: {
+                    ...mock_order_info,
+                    should_show_lost_funds_banner: true,
+                    chat_channel_url: null,
+                },
             },
             sendbird_store: { ...mock_sendbird_store },
+            my_profile_store: { ...mock_my_profile_store },
+            buy_sell_store: { ...mock_buy_sell_store },
+            general_store: { ...mock_general_store },
         });
-        render(<OrderDetails onPageReturn={jest.fn()} />);
+        render(<OrderDetails onPageReturn={jest.fn()} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
         expect(
             screen.getByText("Don't risk your funds with cash transactions. Use bank transfers or e-wallets instead.")
         ).toBeInTheDocument();
@@ -96,8 +140,13 @@ describe('<OrderDetails/>', () => {
                 order_information: { ...mock_order_info, should_highlight_success: true },
             },
             sendbird_store: { ...mock_sendbird_store },
+            my_profile_store: { ...mock_my_profile_store },
+            buy_sell_store: { ...mock_buy_sell_store },
+            general_store: { ...mock_general_store },
         });
-        render(<OrderDetails onPageReturn={jest.fn()} />);
+        render(<OrderDetails onPageReturn={jest.fn()} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
         expect(screen.getByText('Result str')).toBeInTheDocument();
     });
     it('should display footer info when show_order_footer is set', () => {
@@ -107,8 +156,13 @@ describe('<OrderDetails/>', () => {
                 order_information: { ...mock_order_info, should_show_order_footer: true },
             },
             sendbird_store: { ...mock_sendbird_store },
+            my_profile_store: { ...mock_my_profile_store },
+            buy_sell_store: { ...mock_buy_sell_store },
+            general_store: { ...mock_general_store },
         });
-        render(<OrderDetails onPageReturn={jest.fn()} />);
+        render(<OrderDetails onPageReturn={jest.fn()} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
         expect(screen.getByText('Order details footer')).toBeInTheDocument();
     });
     it('should display formatted currency when the order is pending', () => {
@@ -118,8 +172,13 @@ describe('<OrderDetails/>', () => {
                 order_information: { ...mock_order_info, is_pending_order: true },
             },
             sendbird_store: { ...mock_sendbird_store },
+            my_profile_store: { ...mock_my_profile_store },
+            buy_sell_store: { ...mock_buy_sell_store },
+            general_store: { ...mock_general_store },
         });
-        render(<OrderDetails onPageReturn={jest.fn()} />);
+        render(<OrderDetails onPageReturn={jest.fn()} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
         expect(screen.getByText('40.00 AED')).toBeInTheDocument();
     });
     it('should display payment details when Order is active', () => {
@@ -130,40 +189,44 @@ describe('<OrderDetails/>', () => {
                 has_order_payment_method_details: true,
             },
             sendbird_store: { ...mock_sendbird_store },
+            my_profile_store: { ...mock_my_profile_store },
+            buy_sell_store: { ...mock_buy_sell_store },
+            general_store: { ...mock_general_store },
         });
-        render(<OrderDetails onPageReturn={jest.fn()} />);
+        render(<OrderDetails onPageReturn={jest.fn()} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
         expect(screen.getByText('Payment details')).toBeInTheDocument();
     });
-    it('should render Chat component if show_chaton_orders is enabled', () => {
+    it('should render Chat component if should_show_chat_on_orders is enabled', () => {
         useStores.mockReturnValue({
             order_store: {
                 ...mock_order_store,
             },
             sendbird_store: { ...mock_sendbird_store, should_show_chat_on_orders: true },
+            my_profile_store: { ...mock_my_profile_store },
+            buy_sell_store: { ...mock_buy_sell_store },
+            general_store: { ...mock_general_store },
         });
-        render(<OrderDetails onPageReturn={jest.fn()} />);
+        render(<OrderDetails onPageReturn={jest.fn()} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
         expect(screen.getByText('Chat section')).toBeInTheDocument();
     });
-    it('should display Buy section when is_buy_order flag is enabled', () => {
+    it('should display Buy section when is_buy_order_for_user flag is enabled', () => {
         useStores.mockReturnValue({
             order_store: {
                 ...mock_order_store,
-                order_information: { ...mock_order_info, is_buy_order: true },
+                order_information: { ...mock_order_info, is_buy_order_for_user: true },
             },
             sendbird_store: { ...mock_sendbird_store },
+            my_profile_store: { ...mock_my_profile_store },
+            buy_sell_store: { ...mock_buy_sell_store },
+            general_store: { ...mock_general_store },
         });
-        render(<OrderDetails onPageReturn={jest.fn()} />);
-        expect(screen.getByText('Buy USD order')).toBeInTheDocument();
-    });
-    it('should display Buy section when is_sell_order as well as is_my_ad flag is enabled', () => {
-        useStores.mockReturnValue({
-            order_store: {
-                ...mock_order_store,
-                order_information: { ...mock_order_info, is_sell_order: true, is_my_ad: true },
-            },
-            sendbird_store: { ...mock_sendbird_store },
+        render(<OrderDetails onPageReturn={jest.fn()} />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
         });
-        render(<OrderDetails onPageReturn={jest.fn()} />);
         expect(screen.getByText('Buy USD order')).toBeInTheDocument();
     });
 });

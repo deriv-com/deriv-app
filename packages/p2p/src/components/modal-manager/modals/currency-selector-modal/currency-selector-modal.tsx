@@ -1,10 +1,10 @@
 import React from 'react';
 import { MobileFullPageModal } from '@deriv/components';
-import { useStores } from 'Stores';
-import { observer } from 'mobx-react-lite';
+import { observer } from '@deriv/stores';
 import { localize } from 'Components/i18next';
-import CurrencySelector from 'Pages/buy-sell/currency-selector/currency-selector';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import CurrencySelector from 'Pages/buy-sell/currency-selector/currency-selector';
+import { useStores } from 'Stores';
 
 const CurrencySelectorModal = () => {
     const { buy_sell_store } = useStores();
@@ -15,6 +15,7 @@ const CurrencySelectorModal = () => {
         <MobileFullPageModal
             is_flex
             is_modal_open={is_modal_open}
+            onClickClose={hideModal}
             page_header_text={localize('Preferred currency')}
             pageHeaderReturnFn={hideModal}
         >

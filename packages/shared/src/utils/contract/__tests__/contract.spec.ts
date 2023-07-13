@@ -393,36 +393,58 @@ describe('getAccuBarriersDefaultTimeout', () => {
 describe('getAccuBarriersDTraderTimeout', () => {
     const barriers_update_timestamp = 1688134166649;
     const has_default_timeout = false;
+    const should_update_contract_barriers = false;
     const tick_update_timestamp = 1688134166574;
     const underlying = 'R_100';
 
-    it(`should return a timeout equal to a difference between target time
+    it(`should return a timeout equal to a difference between target time + 100ms (or -100ms for contract barriers)
         and current barriers update time for 2-second symbol`, () => {
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
                 barriers_update_timestamp,
                 has_default_timeout,
+                should_update_contract_barriers,
                 tick_update_timestamp,
                 underlying,
             })
-        ).toEqual(925);
+        ).toEqual(1175);
+        expect(
+            ContractUtils.getAccuBarriersDTraderTimeout({
+                barriers_update_timestamp,
+                has_default_timeout,
+                should_update_contract_barriers: true,
+                tick_update_timestamp,
+                underlying,
+            })
+        ).toEqual(675);
     });
-    it(`should return a timeout equal to a difference between target time
+    it(`should return a timeout equal to a difference between target time + 100ms (or -100ms for contract barriers)
         and current barriers update time for 1-second symbol`, () => {
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
                 barriers_update_timestamp: 1688134341324,
                 has_default_timeout,
+                should_update_contract_barriers,
                 tick_update_timestamp: 1688134341301,
                 underlying: '1HZ10V',
             })
-        ).toEqual(477);
+        ).toEqual(602);
+        expect(
+            ContractUtils.getAccuBarriersDTraderTimeout({
+                barriers_update_timestamp: 1688134341324,
+                has_default_timeout,
+                should_update_contract_barriers: true,
+                tick_update_timestamp: 1688134341301,
+                underlying: '1HZ10V',
+            })
+        ).toEqual(352);
     });
     it('should return a default timeout when has_default_timeout is true, or when tick_update_timestamp is null', () => {
         expect(
             ContractUtils.getAccuBarriersDTraderTimeout({
                 barriers_update_timestamp,
                 has_default_timeout: true,
+                should_update_contract_barriers,
                 tick_update_timestamp,
                 underlying,
             })
@@ -431,6 +453,7 @@ describe('getAccuBarriersDTraderTimeout', () => {
             ContractUtils.getAccuBarriersDTraderTimeout({
                 barriers_update_timestamp,
                 has_default_timeout,
+                should_update_contract_barriers,
                 tick_update_timestamp: null,
                 underlying,
             })
@@ -441,6 +464,7 @@ describe('getAccuBarriersDTraderTimeout', () => {
             ContractUtils.getAccuBarriersDTraderTimeout({
                 barriers_update_timestamp: 1688134167999,
                 has_default_timeout,
+                should_update_contract_barriers,
                 tick_update_timestamp,
                 underlying,
             })

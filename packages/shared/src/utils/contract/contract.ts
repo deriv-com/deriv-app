@@ -70,11 +70,17 @@ export const getAccuBarriersDefaultTimeout = (symbol: string) => {
 export const getAccuBarriersDTraderTimeout: TGetAccuBarriersDTraderTimeout = ({
     barriers_update_timestamp,
     has_default_timeout,
+    should_update_contract_barriers,
     tick_update_timestamp,
     underlying,
 }) => {
     if (has_default_timeout || !tick_update_timestamp) return getAccuBarriersDefaultTimeout(underlying);
-    const target_update_time = tick_update_timestamp + getAccuBarriersDefaultTimeout(underlying);
+    const animation_correction_time =
+        (should_update_contract_barriers
+            ? getAccuBarriersDefaultTimeout(underlying) / -4
+            : getAccuBarriersDefaultTimeout(underlying) / 4) || 0;
+    const target_update_time =
+        tick_update_timestamp + getAccuBarriersDefaultTimeout(underlying) + animation_correction_time;
     const difference = target_update_time - barriers_update_timestamp;
     return difference < 0 ? 0 : difference;
 };

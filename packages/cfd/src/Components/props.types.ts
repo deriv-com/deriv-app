@@ -253,7 +253,7 @@ export type TInstrumentsIcon = {
     text: string;
     highlighted: boolean;
     className?: string;
-    is_asterik?: boolean;
+    is_asterisk?: boolean;
 };
 
 export type TCompareAccountsCard = {
@@ -261,11 +261,6 @@ export type TCompareAccountsCard = {
     is_eu_user?: boolean;
     is_demo?: boolean;
 };
-
-// export type TJurisdictionData = Record<
-//     'jurisdiction',
-//     'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest' | 'malta' | undefined
-// >;
 
 export type TJurisdictionData = {
     jurisdiction?: 'bvi' | 'labuan' | 'svg' | 'vanuatu' | 'maltainvest' | 'malta';

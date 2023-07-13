@@ -459,9 +459,7 @@ const AccountSwitcher = ({
                         into a single reusable AccountListItem component */}
                         <div label={localize('Real')} id='real_account_tab'>
                             <DesktopWrapper>
-                                <ThemedScrollbars height='354px'>
-                                    {is_landing_company_loaded ? real_accounts : <Loading is_fullscreen={false} />}
-                                </ThemedScrollbars>
+                                <ThemedScrollbars height='354px'>{real_accounts}</ThemedScrollbars>
                             </DesktopWrapper>
                             <MobileWrapper>
                                 <Div100vhContainer

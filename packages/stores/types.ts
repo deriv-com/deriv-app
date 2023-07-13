@@ -6,7 +6,6 @@ import type {
     GetAccountStatus,
     GetLimits,
     Portfolio1,
-    ProposalOpenContract,
     GetSettings,
     LandingCompany,
     LogOutResponse,

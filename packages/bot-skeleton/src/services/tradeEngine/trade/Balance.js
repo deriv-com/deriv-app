@@ -16,7 +16,7 @@ export default Engine =>
 
                     balance_string = getFormattedText(b, currency);
 
-                    info({ accountID: this.accountInfo.loginid, balance: balance_string });
+                    if (this.accountInfo) info({ accountID: this.accountInfo.loginid, balance: balance_string });
                 }
             });
             api_base.pushSubscription(subscription);

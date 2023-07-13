@@ -20,15 +20,15 @@ const useWalletTransfer = () => {
     //this useEffect updates transfer accounts visibility in light/dark
     useEffect(() => {
         if (from_account?.loginid)
-            setFromAccount(
+            setFromAccount(acc =>
                 [...transfer_accounts.accounts, ...transfer_accounts.wallets].find(
-                    account => account.loginid === from_account.loginid
+                    account => account.loginid === acc?.loginid
                 )
             );
         if (to_account?.loginid)
-            setToAccount(
+            setToAccount(acc =>
                 [...transfer_accounts.accounts, ...transfer_accounts.wallets].find(
-                    account => account.loginid === to_account.loginid
+                    account => account.loginid === acc?.loginid
                 )
             );
     }, [from_account?.loginid, setFromAccount, setToAccount, to_account?.loginid, transfer_accounts]);

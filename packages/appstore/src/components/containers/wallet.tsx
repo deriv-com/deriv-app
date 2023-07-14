@@ -3,7 +3,6 @@ import classNames from 'classnames';
 import WalletHeader from 'Components/wallet-header';
 import WalletContent from 'Components/wallet-content';
 import { CSSTransition } from 'react-transition-group';
-import { observer } from '@deriv/stores';
 import { TWalletAccount } from 'Types';
 import './wallet.scss';
 
@@ -11,7 +10,7 @@ type TWallet = {
     wallet_account: TWalletAccount;
 };
 
-const Wallet = observer(({ wallet_account }: TWallet) => {
+const Wallet = ({ wallet_account }: TWallet) => {
     const headerRef = React.useRef<HTMLDivElement>(null);
 
     return (
@@ -30,9 +29,10 @@ const Wallet = observer(({ wallet_account }: TWallet) => {
                 classNames='wallet__content-transition'
                 unmountOnExit
             >
-                <WalletContent wallet_account={wallet_account} />
+                <WalletContent is_demo={wallet_account.is_demo} is_malta_wallet={wallet_account.is_malta_wallet} />
             </CSSTransition>
         </div>
     );
-});
+};
+
 export default Wallet;

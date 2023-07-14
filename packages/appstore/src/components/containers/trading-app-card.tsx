@@ -4,7 +4,6 @@ import { getStatusBadgeConfig } from '@deriv/account';
 import { Text, StatusBadge } from '@deriv/components';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
 import { getAppstorePlatforms, getMFAppstorePlatforms, BrandConfig } from 'Constants/platform-config';
-import './trading-app-card.scss';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import { useStores } from 'Stores/index';
@@ -12,6 +11,7 @@ import { observer } from 'mobx-react-lite';
 import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS, ContentFlag, getStaticUrl } from '@deriv/shared';
 import { useWalletMigration } from '@deriv/hooks';
+import './trading-app-card.scss';
 
 type TWalletsProps = {
     is_wallet?: boolean;

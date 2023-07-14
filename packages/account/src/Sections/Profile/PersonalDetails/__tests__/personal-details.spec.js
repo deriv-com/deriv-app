@@ -1,7 +1,7 @@
 import { initFormErrorMessages } from '@deriv/shared';
 import { jest, test } from '@jest/globals';
 import React from 'react';
-import { cleanup, render, waitForElementToBeRemoved, waitFor, screen, fireEvent } from '@testing-library/react';
+import { cleanup, render, waitForElementToBeRemoved, waitFor, screen, fireEvent, act } from '@testing-library/react';
 import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { PersonalDetailsForm } from '../personal-details.jsx';
@@ -21,7 +21,6 @@ jest.mock('@deriv/shared/src/services/ws-methods', () => ({
 }));
 
 describe('<PersonalDetailsForm />', () => {
-    let store = mockStore();
     const history = createBrowserHistory();
     const mock_props = {
         authentication_status: {},
@@ -51,62 +50,44 @@ describe('<PersonalDetailsForm />', () => {
         is_language_changing: false,
     };
 
-    const renderComponent = (modified_props = {}) => {
-        const updated_props = {
-            ...mock_props,
-            ...modified_props,
-        };
-        render(
+    const promise = Promise.resolve();
+    const fetchResidenceList = jest.fn(() => promise);
+    const fetchStatesList = jest.fn(() => promise);
+    const residence_list = [
+        {
+            text: 'Text',
+            value: 'value',
+        },
+    ];
+    let store = mockStore({
+        client: {
+            account_settings: {
+                email_consent: 1,
+            },
+            is_virtual: false,
+            states_list: residence_list,
+            residence_list: residence_list,
+            has_residence: true,
+            getChangeableFields: () => [],
+            fetchResidenceList: fetchResidenceList,
+            fetchStatesList: fetchStatesList,
+        },
+    });
+
+    const renderComponent = (modified_store = store) => {
+        return render(
             <Router history={history}>
-                <PersonalDetailsForm {...updated_props} />
+                <StoreProvider store={modified_store}>
+                    <PersonalDetailsForm />
+                </StoreProvider>
             </Router>
         );
     };
 
     it('should_render_successfully', async () => {
         window.HTMLElement.prototype.scrollIntoView = jest.fn();
+        const screen = renderComponent();
 
-        const promise = Promise.resolve();
-        const fetchResidenceList = jest.fn(() => promise);
-        const fetchStatesList = jest.fn(() => promise);
-        const residence_list = [
-            {
-                text: 'Text',
-                value: 'value',
-            },
-        ];
-        store = mockStore({
-            client: {
-                account_settings: {
-                    email_consent: 1,
-                },
-                is_virtual: false,
-                states_list: residence_list,
-                residence_list: residence_list,
-                has_residence: true,
-                getChangeableFields: () => [],
-                fetchResidenceList: fetchResidenceList,
-                fetchStatesList: fetchStatesList,
-            },
-        });
-
-        // store.client.fetchResidenceList = fetchResidenceList;
-        // store.client.fetchStatesList = fetchStatesList;
-        // store.client.residence_list = residence_list;
-        // store.client.account_settings = {
-        //     email_consent: 1,
-        // };
-        // store.client.is_virtual = false;
-        // store.client.states_list = residence_list;
-        // store.client.getChangeableFields = () => [];
-        // store.client.has_residence = true;
-        const screen = render(
-            <Router history={history}>
-                <StoreProvider store={store}>
-                    <PersonalDetailsForm />
-                </StoreProvider>
-            </Router>
-        );
         await waitForElementToBeRemoved(() => screen.container.querySelector('.account__initial-loader'));
         await waitFor(() =>
             screen.getByText(/Please make sure your information is correct or it may affect your trading experience./i)
@@ -114,7 +95,15 @@ describe('<PersonalDetailsForm />', () => {
     });
 
     it('should render all the personal details fields', async () => {
-        renderComponent();
+        const new_store = {
+            ...store,
+            client: {
+                ...store.client,
+                is_eu: true,
+            },
+        };
+        renderComponent(new_store);
+
         await waitFor(() => {
             expect(screen.queryByText('First name*')).toBeInTheDocument();
             expect(screen.queryByText('Last name*')).toBeInTheDocument();
@@ -132,14 +121,29 @@ describe('<PersonalDetailsForm />', () => {
     });
 
     it('should display label "Place of birth" without asterisk if is_svg is true', async () => {
-        renderComponent({ is_svg: true });
+        const new_store = {
+            ...store,
+            client: {
+                ...store.client,
+                is_svg: true,
+            },
+        };
+        renderComponent(new_store);
+
         await waitFor(() => {
             expect(screen.queryByText('Place of birth')).toBeInTheDocument();
         });
     });
 
     it('should display label "Citizenship" without asterisk if is_eu is false', async () => {
-        renderComponent({ is_eu: false });
+        const new_store = {
+            ...store,
+            client: {
+                ...store.client,
+                is_eu: false,
+            },
+        };
+        renderComponent(new_store);
         await waitFor(() => {
             expect(screen.queryByText('Citizenship')).toBeInTheDocument();
         });
@@ -151,6 +155,7 @@ describe('<PersonalDetailsForm />', () => {
         };
         initFormErrorMessages(form_error_messages);
         renderComponent();
+
         await waitFor(async () => {
             const first_name = screen.getByTestId('dt_first_name');
             const last_name = screen.getByTestId('dt_last_name');
@@ -174,6 +179,7 @@ describe('<PersonalDetailsForm />', () => {
             fireEvent.input(first_name, { target: { value: 'a' } });
             fireEvent.input(last_name, { target: { value: 'b' } });
         });
+
         expect(screen.getAllByText('You should enter 2-50 characters.')).toHaveLength(2);
     });
 
@@ -190,6 +196,7 @@ describe('<PersonalDetailsForm />', () => {
 
     it('should display error for the regex validation, for First and Last name when unacceptable characters are entered', async () => {
         renderComponent();
+
         await waitFor(async () => {
             const first_name = screen.getByTestId('dt_first_name');
             const last_name = screen.getByTestId('dt_last_name');

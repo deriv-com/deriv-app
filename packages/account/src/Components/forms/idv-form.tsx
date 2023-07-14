@@ -5,7 +5,7 @@ import { localize } from '@deriv/translations';
 import { formatInput, getIDVNotApplicableOption } from '@deriv/shared';
 import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative, Text } from '@deriv/components';
 import { getDocumentData, preventEmptyClipboardPaste, generatePlaceholderText, getExampleFormat } from 'Helpers/utils';
-import { TDocumentList, TIDVForm } from 'Types';
+import { TDocument, TIDVForm } from 'Types';
 
 const IDVForm = ({
     errors,
@@ -19,7 +19,7 @@ const IDVForm = ({
     hide_hint,
     can_skip_document_verification = false,
 }: TIDVForm) => {
-    const [document_list, setDocumentList] = React.useState<TDocumentList[]>([]);
+    const [document_list, setDocumentList] = React.useState<TDocument[]>([]);
     const [document_image, setDocumentImage] = React.useState<string | null>(null);
     const [selected_doc, setSelectedDoc] = React.useState('');
 
@@ -97,7 +97,7 @@ const IDVForm = ({
         setFieldValue(document_name, current_input, true);
     };
 
-    const bindDocumentData = (item: TDocumentList) => {
+    const bindDocumentData = (item: TDocument) => {
         setFieldValue('document_type', item, true);
         setSelectedDoc(item?.id);
         if (item?.id === IDV_NOT_APPLICABLE_OPTION.id) {

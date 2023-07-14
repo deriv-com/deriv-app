@@ -133,7 +133,7 @@ export const validateName = (name: string) => {
     return '';
 };
 
-export const getExampleFormat = (example_format: string | undefined) =>
+export const getExampleFormat = (example_format?: string) =>
     example_format ? localize('Example: ') + example_format : '';
 
 export const isDocumentTypeValid = (document_type: FormikValues) => {

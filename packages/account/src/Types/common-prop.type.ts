@@ -152,7 +152,7 @@ export type TInputFieldValues = Record<string, string>;
 
 export type TIDVVerificationResponse = IdentityVerificationAddDocumentResponse & { error: { message: string } };
 
-export type TDocumentList = {
+export type TDocument = {
     id: string;
     text: string;
     value?: string;
@@ -165,7 +165,7 @@ export type TDocumentList = {
 };
 
 type TFormProps = {
-    document_type: TDocumentList;
+    document_type: TDocument;
     document_number: string;
     document_additional?: string;
     error_message?: string;

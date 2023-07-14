@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, ThemedScrollbars, Carousel, ButtonToggle } from '@deriv/components';
+import { Button, ThemedScrollbars, ButtonToggle } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import TradeCategories from 'Assets/Trading/Categories/trade-categories.jsx';

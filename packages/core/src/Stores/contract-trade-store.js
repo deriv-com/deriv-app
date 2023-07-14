@@ -29,17 +29,21 @@ export default class ContractTradeStore extends BaseStore {
     prev_granularity = null;
 
     // Accumulator barriers data:
-    accu_barriers_timeout_id = null;
+    accu_barriers_timeout_ids = [];
     accumulator_barriers_data = {};
     accumulator_contract_barriers_data = {};
+    cached_barriers_data = [];
+    cached_contract_barriers_data = [];
 
     constructor(root_store) {
         super({ root_store });
 
         makeObservable(this, {
-            accu_barriers_timeout_id: observable,
+            accu_barriers_timeout_ids: observable,
             accumulator_barriers_data: observable.struct,
             accumulator_contract_barriers_data: observable.struct,
+            cached_barriers_data: observable,
+            cached_contract_barriers_data: observable,
             clearAccumulatorBarriersData: action.bound,
             contracts: observable.shallow,
             has_crossed_accu_barriers: computed,
@@ -102,7 +106,10 @@ export default class ContractTradeStore extends BaseStore {
     // -------------------
 
     clearAccumulatorBarriersData(should_clear_contract_data_only, should_clear_timeout = true) {
-        if (this.accu_barriers_timeout_id && should_clear_timeout) clearTimeout(this.accu_barriers_timeout_id);
+        if (this.accu_barriers_timeout_ids.length && should_clear_timeout) {
+            this.accu_barriers_timeout_ids.forEach(id => clearTimeout(id));
+            this.accu_barriers_timeout_ids = [];
+        }
         this.accumulator_contract_barriers_data = {};
         if (!should_clear_contract_data_only) {
             this.accumulator_barriers_data = {};
@@ -135,6 +142,46 @@ export default class ContractTradeStore extends BaseStore {
         if (current_spot) {
             // update current tick coming from ticks_history while skipping an update for duplicate data
             if (current_spot_time === this.accumulator_barriers_data.current_spot_time) return;
+            const updated_data = isAccumulatorContractOpen(this.last_contract.contract_info)
+                ? this.accumulator_contract_barriers_data
+                : this.accumulator_barriers_data;
+            const cached_data = isAccumulatorContractOpen(this.last_contract.contract_info)
+                ? this.cached_contract_barriers_data.filter(
+                      e =>
+                          e.previous_spot_time !== updated_data.previous_spot_time &&
+                          e.previous_spot_time !== current_spot_time
+                  )
+                : this.cached_barriers_data.filter(
+                      e =>
+                          e.previous_spot_time !== updated_data.previous_spot_time &&
+                          e.previous_spot_time !== current_spot_time
+                  );
+            if (this.accu_barriers_timeout_ids.length && cached_data.length) {
+                this.accu_barriers_timeout_ids.forEach(id => clearTimeout(id));
+                this.accu_barriers_timeout_ids = [];
+            }
+            cached_data.forEach(el => {
+                this.accu_barriers_timeout_ids.push(
+                    setTimeout(() => {
+                        runInAction(() => {
+                            this.setNewAccumulatorBarriersData(
+                                el,
+                                isAccumulatorContractOpen(el.should_update_contract_barriers)
+                            );
+                            this.accu_barriers_timeout_ids = this.accu_barriers_timeout_ids.slice(1);
+                        });
+                    }, 0)
+                );
+                if (el.should_update_contract_barriers) {
+                    this.cached_contract_barriers_data = this.cached_contract_barriers_data.filter(
+                        e => e.previous_spot_time !== el.previous_spot_time
+                    );
+                } else {
+                    this.cached_barriers_data = this.cached_barriers_data.filter(
+                        e => e.previous_spot_time !== el.previous_spot_time
+                    );
+                }
+            });
             const current_spot_data = {
                 current_spot,
                 current_spot_time,
@@ -168,19 +215,34 @@ export default class ContractTradeStore extends BaseStore {
         const tick_update_timestamp = should_update_contract_barriers
             ? this.accumulator_contract_barriers_data.tick_update_timestamp
             : this.accumulator_barriers_data.tick_update_timestamp;
-        this.accu_barriers_timeout_id = setTimeout(
-            () => {
-                runInAction(() => {
-                    this.setNewAccumulatorBarriersData(delayed_barriers_data, should_update_contract_barriers);
-                });
-            },
-            getAccuBarriersDTraderTimeout({
-                barriers_update_timestamp: Date.now(),
-                has_default_timeout: this.accumulator_barriers_data.current_spot_time !== current_spot_time,
-                tick_update_timestamp,
-                underlying,
-            })
+        this.accu_barriers_timeout_ids.push(
+            setTimeout(
+                () => {
+                    runInAction(() => {
+                        this.setNewAccumulatorBarriersData(delayed_barriers_data, should_update_contract_barriers);
+                        if (should_update_contract_barriers) {
+                            this.cached_contract_barriers_data = this.cached_contract_barriers_data.filter(
+                                e => e.previous_spot_time !== delayed_barriers_data.previous_spot_time
+                            );
+                        } else {
+                            this.cached_barriers_data = this.cached_barriers_data.filter(
+                                e => e.previous_spot_time !== delayed_barriers_data.previous_spot_time
+                            );
+                        }
+                        this.accu_barriers_timeout_ids = this.accu_barriers_timeout_ids.slice(1);
+                    });
+                },
+                getAccuBarriersDTraderTimeout({
+                    barriers_update_timestamp: Date.now(),
+                    has_default_timeout: this.accumulator_barriers_data.current_spot_time !== current_spot_time,
+                    tick_update_timestamp,
+                    underlying,
+                })
+            )
         );
+        if (should_update_contract_barriers) {
+            this.cached_contract_barriers_data.push({ ...delayed_barriers_data });
+        } else this.cached_barriers_data.push({ ...delayed_barriers_data });
     }
 
     updateChartType(type) {

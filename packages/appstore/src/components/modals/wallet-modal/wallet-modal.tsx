@@ -7,8 +7,6 @@ import WalletModalHeader from './wallet-modal-header';
 import WalletModalBody from './wallet-modal-body';
 
 const WalletModal = observer(() => {
-    const store = useStore();
-    const wallet = useActiveWallet();
     const {
         client: { balance, currency, landing_company_shortcode: shortcode, is_authorize, switchAccount },
         ui: { is_dark_mode_on, is_wallet_modal_visible, is_mobile, setIsWalletModalVisible },
@@ -18,7 +16,8 @@ const WalletModal = observer(() => {
             setWalletModalActiveTab,
             setWalletModalActiveWalletID,
         },
-    } = store;
+    } = useStore();
+    const wallet = useActiveWallet();
 
     const url_query_string = window.location.search;
 

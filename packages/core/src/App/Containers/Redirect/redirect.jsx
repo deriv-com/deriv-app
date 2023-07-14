@@ -118,7 +118,9 @@ const Redirect = ({
             break;
         }
         case 'payment_withdraw': {
-            if (loginid.toLowerCase().includes('w')) {
+            const is_wallet_account = loginid.toLowerCase().includes('w');
+
+            if (is_wallet_account) {
                 history.push({
                     pathname: routes.traders_hub,
                     search: url_query_string,

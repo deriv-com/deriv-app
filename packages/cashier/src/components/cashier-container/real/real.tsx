@@ -31,7 +31,21 @@ const Real = observer(
             checkIframeLoaded();
         }, [checkIframeLoaded, is_dark_mode_on, setContainerHeight]);
 
-        return !is_appstore ? (
+        return is_appstore ? (
+            <React.Fragment>
+                {should_show_loader && <Loading is_fullscreen={false} />}
+                {iframe_url && (
+                    <iframe
+                        className='cashier__content'
+                        src={`${iframe_url}&DarkMode=${is_dark_mode_on ? 'on' : 'off'}`}
+                        frameBorder='0'
+                        scrolling='auto'
+                        style={{ display: should_show_loader ? 'none' : 'block' }}
+                        data-testid='dt_doughflow_section'
+                    />
+                )}
+            </React.Fragment>
+        ) : (
             <div className='cashier__wrapper real'>
                 {should_show_loader && <Loading className='real__loader' />}
                 {should_show_breadcrumbs && <CashierBreadcrumb />}
@@ -46,20 +60,6 @@ const Real = observer(
                     />
                 )}
             </div>
-        ) : (
-            <>
-                {should_show_loader && <Loading is_fullscreen={false} />}
-                {iframe_url && (
-                    <iframe
-                        className='cashier__content'
-                        src={`${iframe_url}&DarkMode=${is_dark_mode_on ? 'on' : 'off'}`}
-                        frameBorder='0'
-                        scrolling='auto'
-                        style={{ display: should_show_loader ? 'none' : 'block' }}
-                        data-testid='dt_doughflow_section'
-                    />
-                )}
-            </>
         );
     }
 );

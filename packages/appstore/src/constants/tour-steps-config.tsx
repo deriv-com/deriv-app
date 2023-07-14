@@ -111,7 +111,6 @@ export const getWalletStepConfig = (): Step[] => [
         // The 'target' refers to the element where the spotlight will be positioned. If there are multiple elements with the same class name, the 'target' will select the first matching element.
         target: '.wallet-header',
         disableBeacon: true,
-        disableOverlayClose: true,
         placement: 'bottom-end',
         hideBackButton: true,
         spotlightPadding: 0,
@@ -140,7 +139,6 @@ export const getWalletStepConfig = (): Step[] => [
 
         target: '.wallet-header__balance-arrow-icon',
         disableBeacon: true,
-        disableOverlayClose: true,
         placement: 'left',
         styles: { spotlight: { borderRadius: '50%' } },
     },
@@ -162,7 +160,6 @@ export const getWalletStepConfig = (): Step[] => [
         ),
         target: '.wallet-header__description-buttons',
         disableBeacon: true,
-        disableOverlayClose: true,
         spotlightPadding: 8,
         styles: { spotlight: { borderRadius: '4.8rem' } },
     },
@@ -267,6 +264,7 @@ export const getHighRiskTourStepLocale = (): Locale => ({
 
 export const getWalletStepLocale = (): Locale => ({
     back: <SpanButton has_effect text={localize('Back')} secondary medium />,
+    close: <Icon icon='IcCross' size={16} />,
+    last: localize('Next'), // TODO: Removed in onboarding v2
     next: localize('Next'),
-    skip: <Icon icon='IcCross' size={16} />,
 });

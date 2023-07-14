@@ -11,7 +11,7 @@ const WalletModal = observer(() => {
     const {
         client: { balance, currency, landing_company_shortcode: shortcode, is_authorize, switchAccount },
         ui: { is_dark_mode_on, is_wallet_modal_visible, is_mobile, setIsWalletModalVisible },
-        traders_hub: { active_modal_tab, active_modal_wallet_id, setWalletModalActiveTab },
+        traders_hub: { active_modal_tab, active_modal_wallet_id, setWalletModalActiveTab, is_wallet_tour_open },
     } = store;
 
     const wallet = useActiveWallet();
@@ -20,11 +20,11 @@ const WalletModal = observer(() => {
         let timeout_id: NodeJS.Timeout;
         if (wallet?.loginid !== active_modal_wallet_id) {
             /** Adding a delay as per requirement because the modal must appear first, then switch the account */
-            timeout_id = setTimeout(() => switchAccount(active_modal_wallet_id), 700);
+            timeout_id = setTimeout(() => is_wallet_modal_visible && switchAccount(active_modal_wallet_id), 700);
         }
 
         return () => clearTimeout(timeout_id);
-    }, [active_modal_wallet_id, switchAccount, wallet?.loginid]);
+    }, [active_modal_wallet_id, switchAccount, wallet?.loginid, is_wallet_tour_open]);
 
     const is_demo = wallet?.is_demo || false;
     const wallet_type = is_demo ? 'demo' : 'real';

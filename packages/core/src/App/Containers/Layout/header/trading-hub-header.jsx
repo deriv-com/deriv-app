@@ -47,10 +47,12 @@ export const TradersHubHomeButton = ({ is_dark_mode }) => {
 
 const TradingHubOnboarding = ({
     is_dark_mode,
-    toggleIsWalletTourOpen,
-    switchAccount,
+    is_wallet_modal_visible,
     is_wallet_switching,
     setIsOnboardingVisited,
+    setIsWalletModalVisible,
+    switchAccount,
+    toggleIsWalletTourOpen,
 }) => {
     const history = useHistory();
 
@@ -59,10 +61,19 @@ const TradingHubOnboarding = ({
     const wallet = useActiveWallet();
 
     const handleSwitchAndToggle = async () => {
+        // First scenario: if the modal is open from first wallet, then close it and open the tour
+        if (is_wallet_modal_visible) await setIsWalletModalVisible(false);
+        // Second scenario: if the modal is open from first wallet, then close the modal and switch to first wallet
         if (wallet?.loginid !== first_loginid) {
+            if (is_wallet_modal_visible) await setIsWalletModalVisible(false);
             await switchAccount(first_loginid);
         }
-        if (!is_wallet_switching) toggleIsWalletTourOpen(true);
+        if (!is_wallet_switching) {
+            // adding a delay to allow the account switcher to close before opening the tour
+            setTimeout(() => {
+                toggleIsWalletTourOpen(true);
+            }, 700);
+        }
     };
 
     return (
@@ -139,6 +150,8 @@ const TradingHubHeader = ({
     toggleIsWalletTourOpen,
     switchAccount,
     is_wallet_switching,
+    is_wallet_modal_visible,
+    setIsWalletModalVisible,
 }) => {
     const { pathname } = useLocation();
     const cashier_routes = pathname.startsWith(routes.cashier);
@@ -271,10 +284,12 @@ const TradingHubHeader = ({
                         <div className='trading-hub-header__menu-right--items--onboarding'>
                             <TradingHubOnboarding
                                 is_dark_mode={is_dark_mode}
-                                setIsOnboardingVisited={setIsOnboardingVisited}
-                                toggleIsWalletTourOpen={toggleIsWalletTourOpen}
-                                switchAccount={switchAccount}
+                                is_wallet_modal_visible={is_wallet_modal_visible}
                                 is_wallet_switching={is_wallet_switching}
+                                setIsOnboardingVisited={setIsOnboardingVisited}
+                                setIsWalletModalVisible={setIsWalletModalVisible}
+                                switchAccount={switchAccount}
+                                toggleIsWalletTourOpen={toggleIsWalletTourOpen}
                             />
                         </div>
                         <div className='trading-hub-header__menu-right--items--notifications'>
@@ -364,10 +379,11 @@ TradingHubHeader.propTypes = {
     has_any_real_account: PropTypes.bool,
     toggleReadyToDepositModal: PropTypes.func,
     toggleNeedRealAccountForCashierModal: PropTypes.func,
-    // added for wallets onboarding demo
-    toggleIsWalletTourOpen: PropTypes.func,
-    switchAccount: PropTypes.func,
+    is_wallet_modal_visible: PropTypes.bool,
     is_wallet_switching: PropTypes.bool,
+    setIsWalletModalVisible: PropTypes.func,
+    switchAccount: PropTypes.func,
+    toggleIsWalletTourOpen: PropTypes.func,
 };
 
 export default connect(({ client, common, notifications, ui, traders_hub }) => ({
@@ -399,8 +415,9 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
     toggleNeedRealAccountForCashierModal: ui.toggleNeedRealAccountForCashierModal,
     content_flag: traders_hub.content_flag,
-    // added for wallets onboarding demo
-    toggleIsWalletTourOpen: traders_hub.toggleIsWalletTourOpen,
-    switchAccount: client.switchAccount,
+    is_wallet_modal_visible: ui.is_wallet_modal_visible,
     is_wallet_switching: ui.is_wallet_switching,
+    setIsWalletModalVisible: ui.setIsWalletModalVisible,
+    switchAccount: client.switchAccount,
+    toggleIsWalletTourOpen: traders_hub.toggleIsWalletTourOpen,
 }))(withRouter(TradingHubHeader));

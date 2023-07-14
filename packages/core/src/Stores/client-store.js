@@ -1539,6 +1539,7 @@ export default class ClientStore extends BaseStore {
      * @param {string} loginid
      */
     async switchAccount(loginid) {
+        console.log("loginid",loginid)
         if (!loginid) return;
 
         this.setPreSwitchAccount(true);
@@ -1718,6 +1719,7 @@ export default class ClientStore extends BaseStore {
                 this.root_store.ui.toggleSetResidenceModal(true);
             }
             if (this.residence) {
+                console.log('landing_company called:', this.residence )
                 await WS.authorized.cache.landingCompany(this.residence).then(this.responseLandingCompany);
             }
             if (!this.is_virtual) await this.getLimits();

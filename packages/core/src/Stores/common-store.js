@@ -224,6 +224,7 @@ export default class CommonStore extends BaseStore {
                 should_show_refresh: error.should_show_refresh,
                 redirect_to: error.redirect_to,
                 should_clear_error_on_click: error.should_clear_error_on_click,
+                should_redirect: error.should_redirect,
                 setError: this.setError,
             }),
         };
@@ -237,6 +238,7 @@ export default class CommonStore extends BaseStore {
         should_show_refresh,
         redirect_to,
         should_clear_error_on_click,
+        should_redirect,
     }) {
         this.setError(true, {
             header,
@@ -247,6 +249,7 @@ export default class CommonStore extends BaseStore {
             redirect_to,
             should_clear_error_on_click,
             type: 'error',
+            should_redirect,
         });
     }
 

@@ -77,21 +77,6 @@ class APIBase {
             } catch (e) {
                 globalObserver.emit('Error', e);
             }
-            // this.api
-            //     .authorize(this.token)
-            //     .then(({ authorize }) => {
-            //         if (this.has_activeSymbols) {
-            //             this.toggleRunButton(false);
-            //         } else {
-            //             this.getActiveSymbols();
-            //         }
-            //         console.log("Resp: ",authorize)
-            //         this.subscribe();
-            //         this.account_info = authorize;
-            //     })
-            //     .catch(e => {
-            //         globalObserver.emit('Error', e);
-            //     });
         }
     }
 

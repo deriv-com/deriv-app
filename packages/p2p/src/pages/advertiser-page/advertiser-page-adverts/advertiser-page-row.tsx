@@ -73,10 +73,11 @@ const AdvertiserPageRow = ({ row: advert }: TAdvertiserPageRow) => {
         rate,
     } = advert;
     const { advertiser_details_id, counterparty_type } = advertiser_page_store;
+    const { advertiser_id, is_barred } = general_store;
     const { showModal } = useModalManagerContext();
 
     const is_buy_advert = counterparty_type === buy_sell.BUY;
-    const is_my_advert = advertiser_details_id === general_store.advertiser_id;
+    const is_my_advert = advertiser_details_id === advertiser_id;
 
     const { display_effective_rate } = generateEffectiveRate({
         price: price_display,
@@ -101,13 +102,7 @@ const AdvertiserPageRow = ({ row: advert }: TAdvertiserPageRow) => {
             <Table.Cell />
         ) : (
             <Table.Cell className='advertiser-page-adverts__button'>
-                <Button
-                    is_disabled={general_store.is_barred}
-                    onClick={showAdForm}
-                    primary
-                    small={isDesktop()}
-                    large={isMobile()}
-                >
+                <Button is_disabled={is_barred} onClick={showAdForm} primary small={isDesktop()} large={isMobile()}>
                     {getButtonLabel()}
                 </Button>
             </Table.Cell>

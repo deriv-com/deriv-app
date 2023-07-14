@@ -27,8 +27,11 @@ const AdvertiserPageProfile = () => {
         is_online,
         last_online_time,
         last_name,
+        name,
         sell_orders_count,
     } = info;
+
+    const nickname = advertiser_page_store.advertiser_details_name ?? name;
 
     const joined_since = daysSince(created_time);
 
@@ -47,15 +50,11 @@ const AdvertiserPageProfile = () => {
     return (
         <div className='advertiser-page-details-container'>
             <div className='advertiser-page__header-details'>
-                <UserAvatar
-                    nickname={advertiser_page_store.advertiser_details_name ?? ''}
-                    size={isMobile() ? 32 : 64}
-                    text_size={isMobile() ? 's' : 'sm'}
-                />
+                <UserAvatar nickname={nickname} size={isMobile() ? 32 : 64} text_size={isMobile() ? 's' : 'sm'} />
                 <div className='advertiser-page__header-name--column'>
                     <div className='advertiser-page__header-name'>
                         <Text color='prominent' weight='bold'>
-                            {advertiser_page_store.advertiser_details_name}
+                            {nickname}
                         </Text>
                         {first_name && last_name && (
                             <div className='advertiser-page__header-real-name'>

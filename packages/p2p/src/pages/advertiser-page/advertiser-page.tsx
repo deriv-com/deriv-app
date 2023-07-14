@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 import { reaction } from 'mobx';
+import { useHistory } from 'react-router-dom';
 import { Loading } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
@@ -22,15 +23,19 @@ const AdvertiserPage = () => {
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
     const info = is_my_advert ? general_store.advertiser_info : advertiser_page_store.counterparty_advertiser_info;
 
+    const history = useHistory();
+
     const { name } = info;
+
+    const nickname = advertiser_page_store.advertiser_details_name ?? name;
 
     const error_message = () => {
         return !!advertiser_page_store.is_counterparty_advertiser_blocked && !is_my_advert
             ? localize("Unblocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
-                  name: advertiser_page_store.advertiser_details_name,
+                  name: nickname,
               })
             : localize("Blocking wasn't possible as {{name}} is not using Deriv P2P anymore.", {
-                  name: advertiser_page_store.advertiser_details_name,
+                  name: nickname,
               });
     };
 
@@ -46,12 +51,13 @@ const AdvertiserPage = () => {
                 error_modal_title:
                     general_store.error_code === api_error_codes.INVALID_ADVERTISER_ID
                         ? localize('{{name}} is no longer on Deriv P2P', {
-                              name: advertiser_page_store.advertiser_details_name,
+                              name: nickname,
                           })
                         : localize('Unable to block advertiser'),
                 has_close_icon: false,
                 onClose: () => {
                     buy_sell_store.hideAdvertiserPage();
+                    history.push(general_store.active_tab_route);
                     if (general_store.active_index !== 0)
                         my_profile_store.setActiveTab(my_profile_tabs.MY_COUNTERPARTIES);
                     advertiser_page_store.onCancel();
@@ -67,6 +73,14 @@ const AdvertiserPage = () => {
     React.useEffect(() => {
         advertiser_page_store.onMount();
         advertiser_page_store.setIsDropdownMenuVisible(false);
+        const disposeCounterpartyAdvertiserIdReaction = reaction(
+            () => [general_store.counterparty_advertiser_id, general_store.is_advertiser_info_subscribed],
+            () => {
+                // DO NOT REMOVE. This fixes reload on advertiser page routing issue
+                advertiser_page_store.onAdvertiserIdUpdate();
+            },
+            { fireImmediately: true }
+        );
 
         reaction(
             () => [advertiser_page_store.active_index, general_store.block_unblock_user_error],
@@ -80,6 +94,7 @@ const AdvertiserPage = () => {
         );
 
         return () => {
+            disposeCounterpartyAdvertiserIdReaction();
             advertiser_page_store.onUnmount();
         };
 

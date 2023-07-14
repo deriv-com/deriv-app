@@ -69,10 +69,6 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
         setItem(clicked_item);
     };
 
-    const handleNavigationClick = (nav_clicked_item: TContractType) => {
-        setItem(nav_clicked_item);
-    };
-
     const handleVisibility = () => {
         setDialogVisibility(!is_dialog_open);
     };
@@ -185,13 +181,6 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
         return (selected_list_category || list_with_category()[0]).contract_categories;
     };
 
-    const selected_contract_index = () => {
-        const contract_types_arr = list_with_category()?.flatMap(category => category.contract_types);
-        return contract_types_arr
-            .filter(type => type?.value !== 'rise_fall_equal')
-            .findIndex(type => type?.value === item?.value);
-    };
-
     return (
         <div
             data-testid='dt_contract_widget'
@@ -221,8 +210,6 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
             >
                 {is_info_dialog_open ? (
                     <ContractType.Info
-                        handleNavigationClick={handleNavigationClick}
-                        initial_index={selected_contract_index()}
                         handleSelect={handleSelect}
                         item={item || { value }}
                         list={list_with_category()}

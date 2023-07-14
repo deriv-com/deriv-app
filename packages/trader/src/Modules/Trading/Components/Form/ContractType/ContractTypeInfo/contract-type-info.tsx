@@ -31,9 +31,7 @@ export type TList = {
 };
 
 type TInfo = {
-    handleNavigationClick: (contract_type: TContractType) => void;
     handleSelect: (type: TContractType | undefined, e: React.MouseEvent) => void;
-    initial_index?: number;
     item: TContractType;
     list: TList[];
 };
@@ -43,26 +41,20 @@ const TABS = {
     GLOSSARY: 'glossary',
 };
 
-const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }: TInfo) => {
-    const [carousel_index, setCarouselIndex] = React.useState('');
+const Info = ({ handleSelect, item, list }: TInfo) => {
     const [selected_tab, setSelectedTab] = React.useState(TABS.DESCRIPTION);
     const contract_types: TContractType[] = getContractTypes(list, item).filter(
         (i: { value: TContractType['value'] }) => i.value !== 'rise_fall_equal'
     );
-    const has_toggle_buttons = /accumulator|vanilla/i.test(carousel_index);
+    const has_toggle_buttons = /accumulator|vanilla/i.test(item.value);
     const is_description_tab_selected = selected_tab === TABS.DESCRIPTION;
     const is_glossary_tab_selected = selected_tab === TABS.GLOSSARY;
     const width = isMobile() ? '328' : '528';
     const scroll_bar_height = has_toggle_buttons ? '464px' : '560px';
-    const selected_contract_type = contract_types.find(type => type.value === carousel_index);
-
     const onClickGlossary = () => setSelectedTab(TABS.GLOSSARY);
-    const handleItemSelect = (active_index: number) => {
-        setCarouselIndex(contract_types[active_index].value);
-        handleNavigationClick(contract_types[active_index]);
-    };
 
     const cards = contract_types.map((type: TContractType, idx) => {
+        if (type.value !== item.value) return null;
         return (
             <div key={idx} className='contract-type-info__card'>
                 <ThemedScrollbars
@@ -84,14 +76,11 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                             'contract-type-info__content': is_glossary_tab_selected,
                             'contract-type-info__gif': is_description_tab_selected,
                             'contract-type-info__gif--has-video':
-                                carousel_index === 'accumulator' && is_description_tab_selected,
+                                item.value === 'accumulator' && is_description_tab_selected,
                         })}
                     >
                         {is_description_tab_selected ? (
-                            <TradeCategoriesGIF
-                                category={type.value}
-                                selected_contract_type={selected_contract_type?.value}
-                            />
+                            <TradeCategoriesGIF category={type.value} selected_contract_type={item?.value} />
                         ) : (
                             <ContractTypeGlossary category={type.value} />
                         )}
@@ -125,25 +114,23 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list }
                     />
                 </div>
             )}
-            <Carousel
+            <div
                 className={classNames('contract-type-info', {
                     'contract-type-info--has-toggle-buttons': has_toggle_buttons,
                 })}
-                disable_swipe={isMobile()}
-                onItemSelect={handleItemSelect}
-                initial_index={initial_index}
-                list={cards}
-                width={isMobile() ? 328 : 528}
-                show_bullet={false}
-                show_nav={false}
-            />
+                style={{
+                    width: isMobile() ? '328px' : '528px',
+                }}
+            >
+                {cards}
+            </div>
             <div className='contract-type-info__trade-type-btn-wrapper'>
                 <Button
-                    id={`dt_contract_info_${selected_contract_type?.value}_btn`}
+                    id={`dt_contract_info_${item?.value}_btn`}
                     className='contract-type-info__button'
-                    onClick={e => handleSelect(selected_contract_type, e)}
+                    onClick={e => handleSelect(item, e)}
                     text={localize('Choose {{contract_type}}', {
-                        contract_type: selected_contract_type?.text,
+                        contract_type: item?.text,
                         interpolation: { escapeValue: false },
                     })}
                     secondary

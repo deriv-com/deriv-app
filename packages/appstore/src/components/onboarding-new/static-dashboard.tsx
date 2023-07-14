@@ -77,7 +77,7 @@ const StaticDashboard = ({
     const Divider = () => <div className='divider' />;
 
     const getToggleOptions = () => [
-        { text: `${is_eu_user ? localize('Multipliers') : localize('Options & Multipliers')}`, value: 0 },
+        { text: is_eu_user ? localize('Multipliers') : localize('Options & Multipliers'), value: 0 },
         { text: localize('CFDs'), value: 1 },
     ];
     const toggle_options = getToggleOptions();

@@ -47,7 +47,7 @@ const TradersHub = () => {
     const is_eu_low_risk = content_flag === ContentFlag.LOW_RISK_CR_EU;
 
     const getPlatformToggleOptions = () => [
-        { text: `${eu_title ? localize('Multipliers') : localize('Options & Multipliers')}`, value: 'options' },
+        { text: eu_title ? localize('Multipliers') : localize('Options & Multipliers'), value: 'options' },
         { text: localize('CFDs'), value: 'cfd' },
     ];
     const platform_toggle_options = getPlatformToggleOptions();

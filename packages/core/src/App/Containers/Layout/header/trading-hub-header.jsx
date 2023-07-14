@@ -61,11 +61,10 @@ const TradingHubOnboarding = ({
     const wallet = useActiveWallet();
 
     const handleSwitchAndToggle = async () => {
-        // First scenario: if the modal is open from first wallet, then close it and open the tour
+        // if the modal is open, then close it and open the tour
         if (is_wallet_modal_visible) await setIsWalletModalVisible(false);
-        // Second scenario: if the modal is open from first wallet, then close the modal and switch to first wallet
+        // switch to the first account when the tour is opened
         if (wallet?.loginid !== first_loginid) {
-            if (is_wallet_modal_visible) await setIsWalletModalVisible(false);
             await switchAccount(first_loginid);
         }
         if (!is_wallet_switching) {

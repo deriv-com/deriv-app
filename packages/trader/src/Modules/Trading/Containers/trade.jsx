@@ -253,7 +253,7 @@ const ChartTrade = observer(props => {
         updateChartType,
     } = contract_trade;
     const { all_positions } = portfolio;
-    const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on } = ui;
+    const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on, is_positions_drawer_on } = ui;
     const { is_socket_opened, current_language } = common;
     const { should_show_eu_content } = client;
     const {
@@ -273,8 +273,6 @@ const ChartTrade = observer(props => {
         active_symbols,
         has_alternative_source,
         refToAddTick,
-
-        is_positions_drawer_on,
     } = useTraderStore();
 
     const settings = {

@@ -1,17 +1,20 @@
 import React from 'react';
-import { useHistory } from 'react-router';
 import CurrencySwitcherContainer from 'Components/containers/currency-switcher-container';
 import { Button, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { routes, formatMoney } from '@deriv/shared';
-import { TCoreStores } from '@deriv/stores/types';
+import { formatMoney } from '@deriv/shared';
+import { TWalletAccount } from 'Types';
+import { observer, useStore } from '@deriv/stores';
 
 type TProps = {
-    wallet_account: TCoreStores['client']['accounts'][0];
+    wallet_account: TWalletAccount;
 };
 
-const WalletTransferBlock = ({ wallet_account }: TProps) => {
-    const history = useHistory();
+const WalletTransferBlock = observer(({ wallet_account }: TProps) => {
+    const { traders_hub, ui } = useStore();
+    const { setIsWalletModalVisible } = ui;
+    const { setWalletModalActiveWalletID, setWalletModalActiveTab } = traders_hub;
+
     const { currency, balance, loginid } = wallet_account;
 
     return (
@@ -20,9 +23,10 @@ const WalletTransferBlock = ({ wallet_account }: TProps) => {
             icon={'Options'}
             actions={
                 <Button
-                    onClick={(e: MouseEvent) => {
-                        e.stopPropagation();
-                        history.push(routes.cashier_acc_transfer);
+                    onClick={() => {
+                        setWalletModalActiveTab('Transfer');
+                        setIsWalletModalVisible(true);
+                        setWalletModalActiveWalletID(wallet_account.loginid);
                     }}
                     secondary
                     className='currency-switcher__button'
@@ -43,5 +47,5 @@ const WalletTransferBlock = ({ wallet_account }: TProps) => {
             </React.Fragment>
         </CurrencySwitcherContainer>
     );
-};
+});
 export default WalletTransferBlock;

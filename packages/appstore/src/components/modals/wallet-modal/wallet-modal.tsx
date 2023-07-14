@@ -18,13 +18,13 @@ const WalletModal = observer(() => {
 
     useEffect(() => {
         let timeout_id: NodeJS.Timeout;
-        if (wallet?.loginid !== active_modal_wallet_id) {
+        if (is_wallet_modal_visible && wallet?.loginid !== active_modal_wallet_id) {
             /** Adding a delay as per requirement because the modal must appear first, then switch the account */
             timeout_id = setTimeout(() => is_wallet_modal_visible && switchAccount(active_modal_wallet_id), 700);
         }
 
         return () => clearTimeout(timeout_id);
-    }, [active_modal_wallet_id, switchAccount, wallet?.loginid, is_wallet_tour_open]);
+    }, [active_modal_wallet_id, is_wallet_modal_visible, switchAccount, wallet?.loginid, is_wallet_tour_open]);
 
     const is_demo = wallet?.is_demo || false;
     const wallet_type = is_demo ? 'demo' : 'real';

@@ -33,9 +33,10 @@ const Wallet = observer(({ wallet_account }: TWallet) => {
                 classNames='wallet__content-transition'
                 unmountOnExit
             >
-                <WalletContent wallet_account={wallet_account} />
+                <WalletContent is_demo={wallet_account.is_demo} is_malta_wallet={wallet_account.is_malta_wallet} />
             </CSSTransition>
         </div>
     );
 });
+
 export default Wallet;

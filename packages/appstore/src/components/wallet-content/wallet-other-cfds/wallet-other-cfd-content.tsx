@@ -51,6 +51,7 @@ const WalletOtherCFDContent = observer(({ wallet_account }: TWalletOtherCFDConte
                             availability={selected_region}
                             clickable_icon
                             icon='DerivX'
+                            sub_title={localize('Deriv X')}
                             name={`${formatMoney(existing_account.currency, existing_account.display_balance, true)} ${
                                 existing_account.currency
                             }`}

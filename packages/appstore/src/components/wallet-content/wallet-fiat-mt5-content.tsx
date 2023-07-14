@@ -7,13 +7,14 @@ import PlatformLoader from 'Components/pre-loader/platform-loader';
 import WalletMT5CardList from './wallet-mt5/wallet-mt5-card-list';
 
 const WalletFiatMT5Content = observer(() => {
-    const { traders_hub } = useStore();
+    const { traders_hub, client } = useStore();
+    const { is_authorize } = client;
     const { toggleAccountTypeModalVisibility, can_get_more_cfd_mt5_accounts } = traders_hub;
     const { isLoading } = useFilteredCFDAccounts();
 
     return (
         <React.Fragment>
-            {isLoading && <PlatformLoader />}
+            {isLoading && is_authorize && <PlatformLoader />}
             {!isLoading && <WalletMT5CardList />}
             {can_get_more_cfd_mt5_accounts && (
                 <GetMoreAccounts

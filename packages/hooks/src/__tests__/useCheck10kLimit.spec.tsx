@@ -14,7 +14,7 @@ let mock_remainder: string;
 
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
-    useRequest: jest.fn(() => ({ data: { get_limits: { remainder: mock_remainder } } })),
+    useFetch: jest.fn(() => ({ data: { get_limits: { remainder: mock_remainder } } })),
 }));
 
 const wrapper = ({ children }: { children: JSX.Element }) => (

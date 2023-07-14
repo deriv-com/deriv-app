@@ -15,12 +15,7 @@ jest.mock('@deriv/api', () => ({
                             {
                                 account_category: 'wallet',
                                 currency: 'USD',
-                                is_virtual: 0,
-                            },
-                            {
-                                account_category: 'trading',
-                                currency: 'USD',
-                                is_virtual: 0,
+                                is_virtual: 1,
                             },
                             {
                                 account_category: 'wallet',
@@ -30,7 +25,7 @@ jest.mock('@deriv/api', () => ({
                             {
                                 account_category: 'wallet',
                                 currency: 'BTC',
-                                is_virtual: 1,
+                                is_virtual: 0,
                             },
                             {
                                 account_category: 'wallet',
@@ -89,7 +84,7 @@ describe('useWalletsList', () => {
         );
 
         const { result } = renderHook(() => useWalletsList(), { wrapper });
-        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
+
         expect(result.current.data?.every(wallet => wallet.account_category === 'wallet')).toEqual(true);
     });
 
@@ -104,6 +99,6 @@ describe('useWalletsList', () => {
 
         const { result } = renderHook(() => useWalletsList(), { wrapper });
 
-        expect(result.current.data?.map(wallet => wallet.currency)).toEqual(['AUD', 'USD', 'ETH', 'UST', 'BTC']);
+        expect(result.current.data?.map(wallet => wallet.currency)).toEqual(['AUD', 'BTC', 'ETH', 'UST', 'USD']);
     });
 });

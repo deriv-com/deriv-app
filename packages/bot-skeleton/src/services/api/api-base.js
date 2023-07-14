@@ -73,6 +73,7 @@ class APIBase {
                 }
                 await WS.wait('authorize');
                 this.subscribe();
+                this.account_info = auth_response.authorize;
             } catch (e) {
                 globalObserver.emit('Error', e);
             }

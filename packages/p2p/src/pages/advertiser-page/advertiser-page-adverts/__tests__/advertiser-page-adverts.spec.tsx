@@ -1,9 +1,9 @@
 import React from 'react';
-import { mockStore, StoreProvider } from '@deriv/stores';
+import { BrowserRouter } from 'react-router-dom';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { BrowserRouter } from 'react-router-dom';
-import { useStores } from 'Stores/index';
+import { mockStore, StoreProvider } from '@deriv/stores';
+import { useStores } from 'Stores';
 import AdvertiserPageAdverts from '../advertiser-page-adverts';
 import { adverts } from '../../__mocks__/mock-data';
 

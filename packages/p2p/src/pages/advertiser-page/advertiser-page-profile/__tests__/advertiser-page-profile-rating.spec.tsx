@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { useStores } from 'Stores/index';
+import { useStores } from 'Stores';
 import AdvertiserPageProfileRating from '../advertiser-page-profile-rating';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {

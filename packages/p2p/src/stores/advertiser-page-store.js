@@ -107,10 +107,10 @@ export default class AdvertiserPageStore extends BaseStore {
                     ? { local_currency: buy_sell_store.selected_local_currency }
                     : {}),
             }).then(response => {
-                if (response.error) {
+                if (response?.error) {
                     this.setErrorMessage(response.error);
                 } else {
-                    const { list } = response.p2p_advert_list;
+                    const { list = [] } = response?.p2p_advert_list ?? {};
 
                     this.setAdverts(list);
                     this.setHasMoreAdvertsToLoad(list.length >= general_store.list_item_limit);

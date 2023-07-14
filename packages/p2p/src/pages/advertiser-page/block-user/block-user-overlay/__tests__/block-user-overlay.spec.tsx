@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import BlockUserOverlay from '../block-user-overlay';
-import { useStores } from 'Stores/index';
+import { useStores } from 'Stores';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
     advertiser_page_store: {

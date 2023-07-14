@@ -3,7 +3,7 @@ import { Icon, Popover, Text } from '@deriv/components';
 import { isDesktop, isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { useStores } from 'Stores/index';
+import { useStores } from 'Stores';
 import { getMessage } from 'Utils/advertiser';
 
 const BlockUserCount = () => {

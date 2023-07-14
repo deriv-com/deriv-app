@@ -101,10 +101,6 @@
         overflow-x: auto;
     }
 
-    &__italic {
-        font-style: italic;
-    }
-
     &__modal {
         @include mobile {
             max-width: 100vw;

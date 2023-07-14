@@ -3,11 +3,11 @@ import { Money, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
-import { useStores } from 'Stores/index';
+import { useStores } from 'Stores';
 import './advertiser-page-stats.scss';
 
 const ItalicText = (
-    <Text key={0} className='advertiser-page__italic' color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'} />
+    <Text key={0} className='advertiser-page-stats__italic' color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'} />
 );
 
 const AdvertiserPageStats = () => {
@@ -41,7 +41,7 @@ const AdvertiserPageStats = () => {
     return (
         <React.Fragment>
             <div className='advertiser-page-stats'>
-                <div className='advertiser-page-stats-cell'>
+                <div className='advertiser-page-stats__cell'>
                     <Text as='p' color='less-prominent' size={getLabelSize()}>
                         <Localize i18n_default_text='Buy completion  <0>30d</0>' components={[ItalicText]} />
                     </Text>
@@ -49,7 +49,7 @@ const AdvertiserPageStats = () => {
                         {buy_completion_rate ? `${buy_completion_rate}% (${buy_orders_count})` : '-'}
                     </Text>
                 </div>
-                <div className='advertiser-page-stats-cell'>
+                <div className='advertiser-page-stats__cell'>
                     <Text as='p' color='less-prominent' size={getLabelSize()}>
                         <Localize i18n_default_text='Sell completion  <0>30d</0>' components={[ItalicText]} />
                     </Text>
@@ -57,7 +57,7 @@ const AdvertiserPageStats = () => {
                         {sell_completion_rate ? `${sell_completion_rate}% (${sell_orders_count})` : '-'}
                     </Text>
                 </div>
-                <div className='advertiser-page-stats-cell'>
+                <div className='advertiser-page-stats__cell'>
                     <Text as='p' color='less-prominent' size={getLabelSize()}>
                         <Localize i18n_default_text='Trade volume  <0>30d</0>' components={[ItalicText]} />
                     </Text>
@@ -73,7 +73,7 @@ const AdvertiserPageStats = () => {
                         )}
                     </Text>
                 </div>
-                <div className='advertiser-page-stats-cell'>
+                <div className='advertiser-page-stats__cell'>
                     <Text as='p' color='less-prominent' size={getLabelSize()}>
                         <Localize i18n_default_text='Avg. pay time  <0>30d</0>' components={[ItalicText]} />
                     </Text>
@@ -85,7 +85,7 @@ const AdvertiserPageStats = () => {
                             : '-'}
                     </Text>
                 </div>
-                <div className='advertiser-page-stats-cell'>
+                <div className='advertiser-page-stats__cell'>
                     <Text as='p' color='less-prominent' size={getLabelSize()}>
                         <Localize i18n_default_text='Avg. release time  <0>30d</0>' components={[ItalicText]} />
                     </Text>
@@ -97,7 +97,7 @@ const AdvertiserPageStats = () => {
                             : '-'}
                     </Text>
                 </div>
-                <div className='advertiser-page-stats-cell'>
+                <div className='advertiser-page-stats__cell'>
                     <Text as='p' color='less-prominent' size={getLabelSize()}>
                         <Localize i18n_default_text='Trade partners' />
                     </Text>

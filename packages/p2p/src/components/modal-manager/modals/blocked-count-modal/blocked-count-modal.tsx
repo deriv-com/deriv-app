@@ -4,7 +4,7 @@ import { observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
-import { useStores } from 'Stores/index';
+import { useStores } from 'Stores';
 import { getMessage } from 'Utils/advertiser';
 
 const BlockedCountModal = () => {
@@ -20,7 +20,7 @@ const BlockedCountModal = () => {
                 </Text>
             </Modal.Body>
             <Modal.Footer>
-                <Button has_effect onClick={() => hideModal()} primary large>
+                <Button has_effect onClick={hideModal} primary large>
                     <Localize i18n_default_text={localize('Ok')} />
                 </Button>
             </Modal.Footer>

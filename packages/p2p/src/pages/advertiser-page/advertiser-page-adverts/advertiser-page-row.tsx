@@ -9,12 +9,13 @@ import { useStores } from 'Stores/index';
 import { generateEffectiveRate } from 'Utils/format-value';
 import './advertiser-page-row.scss';
 
+type TAvailabilityStatus = 0 | 1;
 type TAdvertiserDetails = {
     id: string;
     completed_orders_count: number;
-    is_blocked: number;
-    is_favourite: number;
-    is_online: number;
+    is_blocked: TAvailabilityStatus;
+    is_favourite: TAvailabilityStatus;
+    is_online: TAvailabilityStatus;
     is_recommended: null | number;
     last_online_time: number | null;
     name: string;
@@ -35,8 +36,8 @@ type TAdvertiserPageDetails = {
     effective_rate: null | number;
     effective_rate_display: string;
     id: string;
-    is_active: number;
-    is_visible: number;
+    is_active: TAvailabilityStatus;
+    is_visible: TAvailabilityStatus;
     local_currency: string;
     max_order_amount_limit: number;
     max_order_amount_limit_display: string;
@@ -71,10 +72,11 @@ const AdvertiserPageRow = ({ row: advert }: TAdvertiserPageRow) => {
         rate_type,
         rate,
     } = advert;
+    const { advertiser_details_id, counterparty_type } = advertiser_page_store;
     const { showModal } = useModalManagerContext();
 
-    const is_buy_advert = advertiser_page_store.counterparty_type === buy_sell.BUY;
-    const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
+    const is_buy_advert = counterparty_type === buy_sell.BUY;
+    const is_my_advert = advertiser_details_id === general_store.advertiser_id;
 
     const { display_effective_rate } = generateEffectiveRate({
         price: price_display,

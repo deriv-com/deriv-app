@@ -6,7 +6,7 @@ import { Localize } from 'Components/i18next';
 import { OnlineStatusIcon, OnlineStatusLabel } from 'Components/online-status';
 import TradeBadge from 'Components/trade-badge';
 import UserAvatar from 'Components/user/user-avatar';
-import { useStores } from 'Stores/index';
+import { useStores } from 'Stores';
 import AdvertiserPageDropdownMenu from '../advertiser-page-dropdown-menu';
 import AdvertiserPageProfileRating from './advertiser-page-profile-rating';
 import AdvertiserPageStats from './advertiser-page-stats';

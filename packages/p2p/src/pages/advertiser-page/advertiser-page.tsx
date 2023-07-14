@@ -8,7 +8,7 @@ import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { api_error_codes } from 'Constants/api-error-codes';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
-import { useStores } from 'Stores/index';
+import { useStores } from 'Stores';
 import AdvertiserPageAdverts from './advertiser-page-adverts';
 import AdvertiserPageHeader from './advertiser-page-header';
 import AdvertiserPageProfile from './advertiser-page-profile';

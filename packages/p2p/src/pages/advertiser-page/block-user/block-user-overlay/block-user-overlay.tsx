@@ -1,8 +1,8 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
+import { observer } from '@deriv/stores';
 import { Button, Icon, Text } from '@deriv/components';
 import { Localize } from 'Components/i18next';
-import { useStores } from 'Stores/index';
+import { useStores } from 'Stores';
 
 type TBlockUserOverlayProps = {
     is_visible: boolean;

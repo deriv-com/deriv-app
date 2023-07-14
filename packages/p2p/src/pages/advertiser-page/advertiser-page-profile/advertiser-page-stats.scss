@@ -1,31 +1,45 @@
 .advertiser-page-stats {
-    &__row {
-        border-bottom: none;
-        display: flex;
-        grid-template-columns: repeat(3, 1fr);
-        height: 5rem;
-        justify-content: space-between;
-        margin: 2rem 0;
-        width: 100%;
+    border-bottom: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 2rem;
+    width: 100%;
 
-        @include mobile {
-            grid-template-columns: repeat(2, 1fr);
-            margin: 0.6rem;
-            width: 90vw;
-        }
+    @include mobile {
+        border-bottom: none;
+        grid-template-columns: repeat(2, 1fr);
+        margin: 0.5rem 0;
+        width: 100vw;
+    }
+
+    &__italic {
+        font-style: italic;
     }
 
     &__cell {
-        display: grid;
         min-width: 20rem;
-        text-align: center;
-        margin-right: 10rem;
+        border-right: 1px solid var(--checkbox-disabled-grey);
+        margin-bottom: 2.4rem;
+        padding-left: 2.4rem;
+
+        @include desktop {
+            &:first-child,
+            &:nth-child(4) {
+                padding-left: 0;
+            }
+
+            &:nth-child(3),
+            &:last-child {
+                border-right: none;
+            }
+        }
 
         @include mobile {
             min-width: 12rem;
+            margin-right: 1.5rem;
 
-            &:nth-child(5) {
-                min-width: 16rem;
+            &:nth-child(odd) {
+                padding-left: 0;
             }
         }
 
@@ -43,20 +57,12 @@
                 padding-left: 0.5rem;
             }
         }
-
-        &-separator {
-            border-right: 1px solid #ededed;
-            margin-right: 2rem;
-
-            @include mobile {
-                margin: 0px 3rem 0 -4rem;
-            }
-        }
     }
 
-    &__wrapper {
+    &--wrapper {
         align-items: center;
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
 
         @media (max-height: 580px) {
             height: 5rem;
@@ -70,83 +76,6 @@
             z-index: 1;
             transition: transform 0.25s linear, opacity 0.25s ease;
             transform-origin: top;
-        }
-    }
-    &-stats {
-        border-bottom: none;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        margin-top: 2rem;
-        width: 100%;
-
-        @include mobile {
-            border-bottom: none;
-            grid-template-columns: repeat(2, 1fr);
-            margin: 0.5rem 0;
-            width: 100vw;
-        }
-
-        &-cell {
-            min-width: 20rem;
-            border-right: 1px solid var(--checkbox-disabled-grey);
-            margin-bottom: 2.4rem;
-            padding-left: 2.4rem;
-
-            @include desktop {
-                &:first-child,
-                &:nth-child(4) {
-                    padding-left: 0;
-                }
-
-                &:nth-child(3),
-                &:last-child {
-                    border-right: none;
-                }
-            }
-
-            @include mobile {
-                min-width: 12rem;
-                margin-right: 1.5rem;
-
-                &:nth-child(odd) {
-                    padding-left: 0;
-                }
-            }
-
-            &-buy {
-                margin-left: 0.5rem;
-                margin-top: 0.14rem;
-            }
-
-            &-completion {
-                display: flex;
-
-                @include mobile {
-                    flex-direction: row;
-                    justify-content: center;
-                    padding-left: 0.5rem;
-                }
-            }
-        }
-
-        &--wrapper {
-            align-items: center;
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-
-            @media (max-height: 580px) {
-                height: 5rem;
-            }
-            @include mobile {
-                display: flex;
-                justify-content: center;
-                flex: none;
-
-                background-color: var(--general-main-1);
-                z-index: 1;
-                transition: transform 0.25s linear, opacity 0.25s ease;
-                transform-origin: top;
-            }
         }
     }
 }

@@ -5,14 +5,16 @@ import { observer } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import RecommendedBy from 'Components/recommended-by';
 import StarRating from 'Components/star-rating';
-import { useStores } from 'Stores/index';
+import { useStores } from 'Stores';
 
 const AdvertiserPageProfileRating = () => {
     const { advertiser_page_store, general_store } = useStores();
 
-    const is_my_advert = advertiser_page_store.advertiser_details_id === general_store.advertiser_id;
+    const { advertiser_details_id, counterparty_advertiser_info } = advertiser_page_store;
+    const { advertiser_id, advertiser_info } = general_store;
+    const is_my_advert = advertiser_details_id === advertiser_id;
     // Use general_store.advertiser_info since resubscribing to the same id from advertiser page returns error
-    const info = is_my_advert ? general_store.advertiser_info : advertiser_page_store.counterparty_advertiser_info;
+    const info = is_my_advert ? advertiser_info : counterparty_advertiser_info;
 
     const { rating_average, rating_count, recommended_average, recommended_count } = info;
 
@@ -36,6 +38,7 @@ const AdvertiserPageProfileRating = () => {
         );
     };
 
+    const getTextSize = () => (isMobile() ? 'xxxs' : 'xs');
     return (
         <React.Fragment>
             {rating_average ? (
@@ -53,10 +56,10 @@ const AdvertiserPageProfileRating = () => {
                             star_size={isMobile() ? 17 : 20}
                         />
                         <div className='advertiser-page__rating--text'>
-                            <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                            <Text color='prominent' size={getTextSize()}>
                                 {rating_average_decimal}
                             </Text>
-                            <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                            <Text color='less-prominent' size={getTextSize()}>
                                 {getRatingLabel()}
                             </Text>
                         </div>
@@ -70,7 +73,7 @@ const AdvertiserPageProfileRating = () => {
                 </React.Fragment>
             ) : (
                 <div className='advertiser-page__rating--row'>
-                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                    <Text color='less-prominent' size={getTextSize()}>
                         <Localize i18n_default_text='Not rated yet' />
                     </Text>
                 </div>

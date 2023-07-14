@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
-import { WS, getLocation, makeCancellablePromise, toMoment, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
+import { WS, getLocation, makeCancellablePromise, toMoment, getIDVNotApplicableOption } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AcceptRiskForm from './accept-risk-form.jsx';
@@ -58,6 +58,8 @@ const AccountWizard = props => {
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState([]);
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
+
+    const IDV_NOT_APPLICABLE_OPTION = React.useMemo(() => getIDVNotApplicableOption(), []);
 
     React.useEffect(() => {
         props.setIsTradingAssessmentForNewUserEnabled(true);

@@ -1,5 +1,6 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { useWalletsList, useAvailableWallets } from '@deriv/hooks';
+import { useStore } from '@deriv/stores';
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { RegionAvailability } from 'Constants/platform-config';
 
@@ -188,3 +189,24 @@ export type TLinkedTo = {
 
 export type TWalletAccount = NonNullable<ReturnType<typeof useWalletsList>['data']>[number];
 export type TWalletInfo = NonNullable<ReturnType<typeof useAvailableWallets>['data']>[number];
+export type TWalletButton = {
+    name: Parameters<ReturnType<typeof useStore>['traders_hub']['setWalletModalActiveTab']>[0];
+    text: string;
+    icon: string;
+    action: () => void;
+};
+
+export type TTransferAccount = {
+    active_wallet_icon?: string;
+    account_type?: 'wallet' | 'trading' | 'dxtrade' | 'mt5' | 'derivez' | 'binary';
+    balance?: number;
+    currency?: string;
+    display_currency_code?: string;
+    gradient_class?: `wallet-card__${string}`;
+    icon?: string | undefined;
+    is_demo?: boolean;
+    loginid?: string;
+    mt5_market_type?: 'all' | 'financial' | 'synthetic';
+    shortcode?: string;
+    type?: 'fiat' | 'crypto' | 'demo';
+};

@@ -1,7 +1,6 @@
 import { observer as globalObserver } from '../../utils/observer';
 import { doUntilDone } from '../tradeEngine/utils/helpers';
 import { generateDerivApiInstance, getLoginId, getToken } from './appId';
-import { WS } from '@deriv/shared';
 
 class APIBase {
     api;
@@ -56,27 +55,26 @@ class APIBase {
         }
     };
 
-    async authorizeAndSubscribe() {
+    authorizeAndSubscribe() {
         const { token, account_id } = getToken();
         if (token) {
             this.token = token;
             this.account_id = account_id;
-            try {
-                const auth_response = await this.api.authorize(this.token);
-                if (auth_response.error) {
-                    throw new Error(auth_response.error);
-                }
-                if (this.has_activeSymbols) {
-                    this.toggleRunButton(false);
-                } else {
-                    this.getActiveSymbols();
-                }
-                await WS.wait('authorize');
-                this.subscribe();
-                this.account_info = auth_response.authorize;
-            } catch (e) {
-                globalObserver.emit('Error', e);
-            }
+            this.api.authorize(this.token);
+            this.api
+                .expectResponse('authorize')
+                .then(({ authorize }) => {
+                    if (this.has_activeSymbols) {
+                        this.toggleRunButton(false);
+                    } else {
+                        this.getActiveSymbols();
+                    }
+                    this.subscribe();
+                    this.account_info = authorize;
+                })
+                .catch(e => {
+                    globalObserver.emit('Error', e);
+                });
         }
     }
 

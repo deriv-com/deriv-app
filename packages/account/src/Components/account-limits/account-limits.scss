@@ -82,17 +82,17 @@
         margin-left: 0.8rem;
     }
 
-    &--app-settings {
-        @include tablet-up {
-            padding: 2.4rem;
-        }
+    // &--app-settings {
+    //     @include tablet-up {
+    //         padding: 2.4rem;
+    //     }
 
-        @include mobile {
-            padding: 1.6rem 0 0;
-        }
+    //     @include mobile {
+    //         padding: 1.6rem 0 0;
+    //     }
 
-        #{$this}__table {
-            width: 100%;
-        }
-    }
+    //     #{$this}__table {
+    //         width: 100%;
+    //     }
+    // }
 }

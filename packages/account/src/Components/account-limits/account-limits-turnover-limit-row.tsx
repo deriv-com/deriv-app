@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { formatMoney } from '@deriv/shared';
 import AccountLimitsTableCell from './account-limits-table-cell';
-import AccountLimitsContext, { TAccountLimitsContext } from './account-limits-context';
 
 export type TAccountLimitsCollection = {
     level?: string;
@@ -14,11 +13,10 @@ export type TAccountLimitsCollection = {
 type TAccountLimitsTurnoverLimitRow = {
     collection: TAccountLimitsCollection[];
     title?: string;
+    currency: string;
 };
 
-const AccountLimitsTurnoverLimitRow = ({ collection, title }: TAccountLimitsTurnoverLimitRow) => {
-    const { currency } = React.useContext<TAccountLimitsContext>(AccountLimitsContext);
-
+const AccountLimitsTurnoverLimitRow = ({ collection, title, currency }: TAccountLimitsTurnoverLimitRow) => {
     return (
         <React.Fragment>
             {collection?.map(({ name, turnover_limit, level }) => (

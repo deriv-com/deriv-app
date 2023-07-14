@@ -278,6 +278,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             is_dark_mode_on: false,
             is_language_settings_modal_on: false,
             is_mobile: false,
+            is_desktop: false,
             is_reports_visible: false,
             disableApp: jest.fn(),
             enableApp: jest.fn(),

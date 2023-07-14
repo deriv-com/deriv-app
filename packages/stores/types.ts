@@ -416,6 +416,7 @@ type TUiStore = {
     is_reports_visible: boolean;
     is_language_settings_modal_on: boolean;
     is_mobile: boolean;
+    is_desktop: boolean;
     sub_section_index: number;
     toggleShouldShowRealAccountsList: (value: boolean) => void;
     openRealAccountSignup: (

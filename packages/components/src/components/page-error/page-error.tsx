@@ -5,6 +5,7 @@ import DesktopWrapper from '../desktop-wrapper';
 import MobileWrapper from '../mobile-wrapper';
 import ButtonLink from '../button-link/button-link';
 import Text from '../text/text';
+import Button from '../button';
 
 type TMessageObject = { message: string; has_html?: boolean };
 
@@ -20,6 +21,7 @@ type TPageErrorProps = {
     setError?: (has_error: boolean, error: React.ReactNode) => void;
     should_clear_error_on_click?: boolean;
     has_malta_account?: boolean;
+    should_redirect?: boolean;
 };
 
 const PageError = ({
@@ -34,6 +36,7 @@ const PageError = ({
     redirect_urls,
     should_clear_error_on_click,
     setError,
+    should_redirect = true,
 }: TPageErrorProps) => {
     const onClickHandler = () => {
         if (should_clear_error_on_click) {
@@ -117,8 +120,9 @@ const PageError = ({
                     </Text>
                 </div>
                 <div className='dc-page-error__btn-wrapper'>
-                    {redirect_urls?.map?.((url, index) => {
-                        return (
+                    {should_redirect &&
+                        redirect_labels.length !== 0 &&
+                        redirect_urls?.map?.((url, index) => (
                             <ButtonLink
                                 className='dc-page-error__btn'
                                 to={url}
@@ -130,8 +134,20 @@ const PageError = ({
                                     {redirect_labels[index]}
                                 </Text>
                             </ButtonLink>
-                        );
-                    })}
+                        ))}
+                    {!should_redirect && (
+                        <Button
+                            type='button'
+                            className='dc-page-error__btn--no-redirect'
+                            onClick={onClickHandler}
+                            large
+                            primary
+                        >
+                            <Text weight='bold' className='dc-page-error__btn-text dc-btn__text'>
+                                {redirect_labels[0]}
+                            </Text>
+                        </Button>
+                    )}
                 </div>
             </div>
         </div>

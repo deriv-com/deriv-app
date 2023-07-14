@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import useTransferBetweenAccounts from './useTransferBetweenAccounts';
 
 const useWalletTransfer = () => {
@@ -8,30 +8,35 @@ const useWalletTransfer = () => {
     const [to_account, setToAccount] = useState<typeof active_wallet>();
 
     const to_account_list = useMemo(() => {
+        if (!from_account?.loginid) return { accounts: {}, wallets: {} };
+        if (!active_wallet?.loginid) return { accounts: {}, wallets: {} };
+
         if (from_account?.loginid === active_wallet?.loginid) {
             return {
                 accounts: transfer_accounts.accounts,
-                wallets: transfer_accounts.wallets?.filter(account => account.loginid !== active_wallet?.loginid),
+                wallets: Object.fromEntries(
+                    Object.entries(transfer_accounts.wallets).filter(
+                        ([key]) => active_wallet?.loginid && !key.includes(active_wallet?.loginid)
+                    )
+                ),
             };
         }
-        return { accounts: [], wallets: [active_wallet] };
+        return { accounts: {}, wallets: { [active_wallet?.loginid]: active_wallet } };
     }, [active_wallet, from_account?.loginid, transfer_accounts]);
 
-    //this useEffect updates transfer accounts visibility in light/dark
+    //this useEffect populates from/to accounts with updated values, if they were updated in the background
     useEffect(() => {
-        if (from_account?.loginid)
-            setFromAccount(acc =>
-                [...transfer_accounts.accounts, ...transfer_accounts.wallets].find(
-                    account => account.loginid === acc?.loginid
-                )
-            );
-        if (to_account?.loginid)
-            setToAccount(acc =>
-                [...transfer_accounts.accounts, ...transfer_accounts.wallets].find(
-                    account => account.loginid === acc?.loginid
-                )
-            );
-    }, [from_account?.loginid, setFromAccount, setToAccount, to_account?.loginid, transfer_accounts]);
+        setFromAccount(acc => {
+            return acc?.loginid
+                ? { ...transfer_accounts.accounts, ...transfer_accounts.wallets }[acc?.loginid]
+                : undefined;
+        });
+        setToAccount(acc => {
+            return acc?.loginid
+                ? { ...transfer_accounts.accounts, ...transfer_accounts.wallets }[acc?.loginid]
+                : undefined;
+        });
+    }, [transfer_accounts, setFromAccount, setToAccount]);
 
     return {
         active_wallet,

@@ -190,18 +190,18 @@ export type TWalletAccount = NonNullable<ReturnType<typeof useWalletsList>['data
 export type TWalletInfo = NonNullable<ReturnType<typeof useAvailableWallets>['data']>[number];
 
 export type TTransferAccount = {
-    active_wallet_icon?: string;
+    active_wallet_icon: string | undefined;
     account_type?: 'wallet' | 'trading' | 'dxtrade' | 'mt5' | 'derivez' | 'binary';
-    balance?: number;
+    balance: number;
     currency?: string;
-    display_currency_code?: string;
+    display_currency_code: string | undefined;
     gradient_class?: `wallet-card__${string}`;
     icon?: string | undefined;
-    is_demo?: boolean;
+    is_demo: boolean;
     loginid?: string;
     mt5_market_type?: 'all' | 'financial' | 'synthetic';
-    shortcode?: string;
-    type?: 'fiat' | 'crypto' | 'demo';
+    shortcode: string | undefined;
+    type: 'fiat' | 'crypto' | 'demo';
 };
 
 export type TMessageItem =

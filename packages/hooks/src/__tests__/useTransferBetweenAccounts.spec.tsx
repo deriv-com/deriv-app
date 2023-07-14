@@ -247,8 +247,8 @@ describe('useTransferBetweenAccounts', () => {
             },
         } = renderHook(() => useTransferBetweenAccounts(), { wrapper });
 
-        expect(transfer_accounts.accounts.length).toBe(6);
-        expect(transfer_accounts.wallets.length).toBe(1);
+        expect(Object.keys(transfer_accounts.accounts).length).toBe(4);
+        expect(Object.keys(transfer_accounts.wallets).length).toBe(1);
     });
 
     it('all transfer accounts should have extended properties', () => {
@@ -259,7 +259,7 @@ describe('useTransferBetweenAccounts', () => {
         } = renderHook(() => useTransferBetweenAccounts(), { wrapper });
 
         Object.keys(transfer_accounts).forEach(key =>
-            transfer_accounts[key as 'accounts' | 'wallets'].forEach(account => {
+            Object.values(transfer_accounts[key as 'accounts' | 'wallets']).forEach(account => {
                 expect(account).toHaveProperty('active_wallet_icon');
                 expect(account).toHaveProperty('display_currency_code');
                 expect(account).toHaveProperty('gradient_class');

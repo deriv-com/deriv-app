@@ -10,18 +10,18 @@ const useTransferBetweenAccounts = () => {
     const { ui } = useStore();
     const { is_dark_mode_on } = ui;
 
+    const active_wallet = useActiveWallet();
+
+    const { data: wallets } = useWalletsList();
+
+    const { getConfig } = useCurrencyConfig();
+
     const trading_apps_icon = is_dark_mode_on ? 'IcWalletOptionsDark' : 'IcWalletOptionsLight';
 
     const {
         data: { derivez_accounts, dxtrade_accounts, mt5_accounts },
         is_success: is_cfd_accounts_loaded,
     } = useActiveWalletCFDAccounts();
-
-    const active_wallet = useActiveWallet();
-
-    const { data: all_wallets } = useWalletsList();
-
-    const { getConfig } = useCurrencyConfig();
 
     const { data, ...rest } = useFetch('transfer_between_accounts', {
         payload: { accounts: 'all' },
@@ -52,14 +52,16 @@ const useTransferBetweenAccounts = () => {
 
         return {
             accounts:
-                accounts
-                    ?.filter(account => account.account_type !== 'wallet')
-                    .map(account => {
+                accounts?.reduce(
+                    (all_accounts, account) => {
+                        if (account.account_type === 'wallet') return all_accounts;
+                        if (!account.loginid) return all_accounts;
+
                         const cfd_icon = all_linked_cfd_accounts.find(
                             cfd_account => account.loginid && cfd_account.loginid?.includes(account.loginid)
                         )?.icon;
 
-                        return {
+                        all_accounts[account.loginid] = {
                             ...account,
                             gradient_class: active_wallet?.gradient_card_class,
                             icon: account.account_type === 'trading' ? trading_apps_icon : cfd_icon,
@@ -69,79 +71,72 @@ const useTransferBetweenAccounts = () => {
                                 )?.market_type,
                             }),
                         };
-                    }) || [],
-            wallets:
-                accounts
-                    ?.filter(account => account.account_type === 'wallet')
-                    .map(wallet_account => {
-                        const wallet = all_wallets?.find(acc => acc.loginid === wallet_account.loginid);
 
-                        return {
-                            ...wallet_account,
-                            icon: wallet?.icon,
-                            gradient_class: wallet?.gradient_card_class,
+                        return all_accounts;
+                    },
+                    {} as Record<
+                        string,
+                        NonNullable<
+                            typeof accounts[number] & {
+                                gradient_class?: `wallet-card__${string}`;
+                                icon?: string;
+                                mt5_market_type?: 'all' | 'financial' | 'synthetic';
+                            }
+                        >
+                    >
+                ) || {},
+            wallets:
+                accounts?.reduce(
+                    (all_wallets, wallet) => {
+                        if (wallet.account_type !== 'wallet') return all_wallets;
+                        if (!wallet.loginid) return all_wallets;
+
+                        const available_wallet = wallets?.find(acc => acc.loginid === wallet.loginid);
+
+                        all_wallets[wallet.loginid] = {
+                            ...wallet,
+                            icon: available_wallet?.icon,
+                            gradient_class: available_wallet?.gradient_card_class,
                         };
-                    }) || [],
+
+                        return all_wallets;
+                    },
+                    {} as Record<
+                        string,
+                        NonNullable<
+                            typeof accounts[number] & {
+                                gradient_class?: `wallet-card__${string}`;
+                                icon?: string;
+                            }
+                        >
+                    >
+                ) || {},
         };
     }, [
         active_wallet?.gradient_card_class,
         active_wallet?.icon,
         active_wallet?.landing_company_name,
-        all_wallets,
         data?.accounts,
         derivez_accounts,
         dxtrade_accounts,
         getConfig,
         mt5_accounts,
         trading_apps_icon,
+        wallets,
     ]);
 
-    const modified_active_wallet = useMemo(
-        () => ({
-            ...modified_transfer_accounts.wallets?.find(wallet => wallet.loginid === active_wallet?.loginid),
-        }),
-        [active_wallet?.loginid, modified_transfer_accounts.wallets]
-    );
-
-    //add test accounts, remove after tsesting
-    const test_accounts = modified_transfer_accounts.accounts.concat([
-        {
-            account_type: 'dxtrade',
-            balance: 1000,
-            currency: 'USD',
-            demo_account: 1,
-            loginid: 'DXR1009',
-            market_type: 'all',
-            active_wallet_icon: is_dark_mode_on ? 'IcWalletDerivDemoDark' : 'IcWalletDerivDemoLight',
-            display_currency_code: 'USD',
-            gradient_class: `wallet-card__demo-bg${is_dark_mode_on ? '--dark' : ''}`,
-            is_demo: true,
-            shortcode: 'svg',
-            type: 'demo',
-            icon: 'IcRebrandingDerivX',
-        },
-        {
-            account_type: 'derivez',
-            balance: 1000,
-            currency: 'USD',
-            demo_account: 1,
-            derivez_group: 'real\\p02_ts01\\all\\svg_ez_usd',
-            loginid: 'EZR80001086',
-            status: null,
-            active_wallet_icon: is_dark_mode_on ? 'IcWalletDerivDemoDark' : 'IcWalletDerivDemoLight',
-            display_currency_code: 'USD',
-            gradient_class: `wallet-card__demo-bg${is_dark_mode_on ? '--dark' : ''}`,
-            is_demo: true,
-            shortcode: 'svg',
-            type: 'demo',
-            icon: 'IcRebrandingDerivEz',
-        },
-    ]);
+    const modified_active_wallet = useMemo(() => {
+        return active_wallet?.loginid
+            ? {
+                  ...modified_transfer_accounts.wallets[active_wallet?.loginid],
+              }
+            : undefined;
+    }, [active_wallet?.loginid, modified_transfer_accounts.wallets]);
 
     return {
         ...rest,
         active_wallet: modified_active_wallet,
-        transfer_accounts: { ...modified_transfer_accounts, accounts: test_accounts },
+        transfer_accounts: modified_transfer_accounts,
     };
 };
 

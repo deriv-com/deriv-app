@@ -23,6 +23,7 @@ export default class AppStore {
         this.core = core;
         this.dbot_store = null;
         this.api_helpers_store = null;
+        this.timer = null;
     }
 
     getErrorForNonEuClients = () => ({
@@ -101,9 +102,23 @@ export default class AppStore {
     };
 
     onMount() {
-        const { blockly_store } = this.root_store;
+        const { blockly_store, run_panel } = this.root_store;
         const { client, ui, traders_hub } = this.core;
         this.showDigitalOptionsMaltainvestError();
+
+        let timer_counter = 1;
+
+        this.timer = setInterval(() => {
+            if (window.sendRequestsStatistic) {
+                window.sendRequestsStatistic(false);
+                performance.clearMeasures();
+                if (timer_counter === 6 || run_panel?.is_running) {
+                    clearInterval(this.timer);
+                } else {
+                    timer_counter++;
+                }
+            }
+        }, 10000);
 
         blockly_store.setLoading(true);
         DBot.initWorkspace(__webpack_public_path__, this.dbot_store, this.api_helpers_store, ui.is_mobile).then(() => {
@@ -163,6 +178,9 @@ export default class AppStore {
 
         ui.setAccountSwitcherDisabledMessage(false);
         ui.setPromptHandler(false);
+
+        if (this.timer) clearInterval(this.timer);
+        performance.clearMeasures();
     }
 
     onBeforeUnload = event => {

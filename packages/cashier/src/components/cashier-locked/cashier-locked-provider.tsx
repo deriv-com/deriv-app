@@ -6,7 +6,6 @@ import { TEmptyStateProps } from '../empty-state/empty-state';
 type TProps = {
     cashier_validation: string[] | undefined;
     is_crypto: boolean;
-    is_system_maintenance: boolean;
     is_cashier_locked: boolean;
     is_deposit_locked: boolean;
     is_withdrawal_locked: boolean;
@@ -17,7 +16,6 @@ type TProps = {
 const getMessage = ({
     cashier_validation,
     is_crypto,
-    is_system_maintenance,
     is_cashier_locked,
     is_deposit_locked,
     is_withdrawal_locked,
@@ -43,6 +41,7 @@ const getMessage = ({
     const ask_fix_details = cashier_validation?.includes('ASK_FIX_DETAILS');
     const ask_uk_funds_protection = cashier_validation?.includes('ASK_UK_FUNDS_PROTECTION');
     const pa_commision_withdrawal_limit = cashier_validation?.includes('PACommisionWithdrawalLimit');
+    const is_system_maintenance = cashier_validation?.includes('system_maintenance');
 
     if (is_system_maintenance) {
         if (is_crypto && is_withdrawal_locked)

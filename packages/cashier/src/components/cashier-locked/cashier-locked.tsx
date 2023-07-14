@@ -1,21 +1,23 @@
 import React from 'react';
 import { useStore, observer } from '@deriv/stores';
-import { useCashierLocked, useDepositLocked, useIsSystemMaintenance, useWithdrawalLocked } from '@deriv/hooks';
+import { useAccountStatus, useDepositLocked, useWithdrawalLocked } from '@deriv/hooks';
 import EmptyState from 'Components/empty-state';
 import getMessage from './cashier-locked-provider';
 
 const CashierLocked = observer(() => {
     const { client } = useStore();
-    const { account_status, accounts, current_currency_type, loginid, is_identity_verification_needed } = client;
-    const is_cashier_locked = useCashierLocked();
-    const is_system_maintenance = useIsSystemMaintenance();
+    const { accounts, current_currency_type, loginid, is_identity_verification_needed } = client;
+
+    const { data: get_account_status, statuses } = useAccountStatus();
+    const { is_system_maintenance } = statuses?.cashier_validation;
+    const { is_cashier_locked } = statuses?.status;
+
     const is_deposit_locked = useDepositLocked();
     const { is_withdrawal_locked } = useWithdrawalLocked();
 
     const state = getMessage({
-        cashier_validation: account_status.cashier_validation,
+        cashier_validation: get_account_status?.cashier_validation,
         is_crypto: current_currency_type === 'crypto',
-        is_system_maintenance,
         is_cashier_locked,
         is_deposit_locked,
         is_withdrawal_locked,

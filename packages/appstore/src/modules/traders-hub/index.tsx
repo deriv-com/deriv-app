@@ -22,6 +22,7 @@ const TradersHub = observer(() => {
         is_logging_in,
         is_account_setting_loaded,
         accounts,
+        loginid,
     } = client;
     const { is_tour_open, is_eu_user } = traders_hub;
     const traders_hub_ref = React.useRef() as React.MutableRefObject<HTMLDivElement>;
@@ -69,11 +70,16 @@ const TradersHub = observer(() => {
                 is_disabled={isDesktop()}
             >
                 {can_show_notify && <Notifications />}
-                <div id='traders-hub' className='traders-hub' ref={traders_hub_ref}>
-                    {is_wallet_account && <AccountWithWallets />}
-                    {/* TODO: Visibility of this section is depending whether the user is eligible to have wallets. */}
+                <div
+                    id='traders-hub'
+                    ref={traders_hub_ref}
+                    className={classNames('traders-hub', {
+                        'traders-hub__wallets': is_wallet_account,
+                        'traders-hub__wallets-demo-bg': is_wallet_account && loginid && accounts?.[loginid]?.is_virtual,
+                    })}
+                >
+                    {is_wallet_account ? <AccountWithWallets /> : <AccountWithoutWallets />}
                     <AddMoreWallets />
-                    <AccountWithoutWallets />
                     <ModalManager />
                     {scrolled && <TourGuide />}
                 </div>

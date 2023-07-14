@@ -1,5 +1,6 @@
 import { DetailsOfEachMT5Loginid } from '@deriv/api-types';
 import { useWalletsList, useAvailableWallets } from '@deriv/hooks';
+import { useStore } from '@deriv/stores';
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { RegionAvailability } from 'Constants/platform-config';
 
@@ -219,3 +220,10 @@ export type TMessageItem =
           type: 'info' | 'error' | 'success';
           message: string | JSX.Element;
       };
+
+export type TWalletButton = {
+    name: Parameters<ReturnType<typeof useStore>['traders_hub']['setWalletModalActiveTab']>[0];
+    text: string;
+    icon: string;
+    action: () => void;
+};

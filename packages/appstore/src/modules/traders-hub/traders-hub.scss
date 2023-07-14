@@ -8,8 +8,21 @@
         width: 100%;
     }
 
-    &__wallets-bg {
-        background-color: var(--general-section-1);
+    &__wallets {
+        @include mobile {
+            padding: 1.6rem;
+            background-color: var(--general-main-1);
+        }
+
+        &-bg {
+            background-color: var(--general-section-1);
+        }
+
+        &-demo-bg {
+            @include mobile {
+                background-color: var(--wallet-demo-bg-color);
+            }
+        }
     }
 
     &__main-container {

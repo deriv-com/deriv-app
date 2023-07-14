@@ -1,6 +1,6 @@
 import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import type { TTransferAccount } from 'Types';
+import { TTransferAccount, TWalletButton } from 'Types';
 
 /**
  * This function checks whether the current item should have a border at the bottom 'aka "divider" '.
@@ -23,7 +23,43 @@ export const getHasDivider = (current_item_index: number, list_size: number, ava
     );
 };
 
-export const getWalletHeaderButtons = (is_demo: boolean, handleAction?: () => void) => {
+// TODO: Moved to shared package! Delete it later, right now it uses for cashier wallet modals
+// TODO: Refactor using data transformation layer pattern when we will have API for wallets (e.g. wallet.icon)
+export const getWalletCurrencyIcon = (currency: string, is_dark_mode_on: boolean, is_modal = false) => {
+    switch (currency) {
+        case 'demo':
+            if (is_modal) return 'IcWalletDerivDemoLight';
+            return is_dark_mode_on ? 'IcWalletDerivDemoDark' : 'IcWalletDerivDemoLight';
+        case 'USD':
+            return 'IcWalletCurrencyUsd';
+        case 'EUR':
+            return 'IcWalletCurrencyEur';
+        case 'AUD':
+            return 'IcWalletCurrencyAud';
+        case 'GBP':
+            return 'IcWalletCurrencyGbp';
+        case 'BTC':
+            return is_dark_mode_on ? 'IcWalletBitcoinDark' : 'IcWalletBitcoinLight';
+        case 'ETH':
+            return is_dark_mode_on ? 'IcWalletEtheriumDark' : 'IcWalletEtheriumLight';
+        case 'USDT':
+        case 'eUSDT':
+        case 'tUSDT':
+        case 'UST':
+            if (is_modal) {
+                return is_dark_mode_on ? 'IcWalletModalTetherDark' : 'IcWalletModalTetherLight';
+            }
+            return is_dark_mode_on ? 'IcWalletTetherDark' : 'IcWalletTetherLight';
+        case 'LTC':
+            return is_dark_mode_on ? 'IcWalletLiteCoinDark' : 'IcWalletLiteCoinLight';
+        case 'USDC':
+            return is_dark_mode_on ? 'IcWalletUsdCoinDark' : 'IcWalletUsdCoinLight';
+        default:
+            return 'Unknown';
+    }
+};
+
+export const getWalletHeaderButtons = (is_demo: boolean, handleAction?: () => void): TWalletButton[] => {
     return is_demo
         ? [
               {

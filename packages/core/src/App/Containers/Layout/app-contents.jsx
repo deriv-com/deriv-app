@@ -4,14 +4,16 @@ import React from 'react';
 import { useLocation, withRouter } from 'react-router';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
 import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, platforms, routes, WS } from '@deriv/shared';
+import { RudderStack } from '@deriv/analytics';
 import { connect } from 'Stores/connect';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
+import { useStore } from '@deriv/stores';
+import { getLanguage } from '@deriv/translations';
 
 const tracking_status_cookie = new CookieStorage(TRACKING_STATUS_KEY);
 
 const AppContents = ({
     children,
-    identifyEvent,
     is_app_disabled,
     is_cashier_visible,
     is_dark_mode,
@@ -23,13 +25,15 @@ const AppContents = ({
     is_route_modal_on,
     notifyAppInstall,
     platform,
-    pageView,
     pushDataLayer,
     setAppContentsScrollRef,
 }) => {
     const [show_cookie_banner, setShowCookieBanner] = React.useState(false);
     const [is_gtm_tracking, setIsGtmTracking] = React.useState(false);
     const { is_appstore } = React.useContext(PlatformContext);
+    const {
+        client: { user_id },
+    } = useStore();
 
     const tracking_status = tracking_status_cookie.get(TRACKING_STATUS_KEY);
 
@@ -39,6 +43,15 @@ const AppContents = ({
     const location = useLocation();
 
     React.useEffect(() => {
+        // rudderstack page view trigger
+        WS.wait('authorize').then(() => {
+            RudderStack.identifyEvent(user_id, {
+                language: getLanguage().toLowerCase() || 'en',
+            });
+            const current_page = window.location.hostname + window.location.pathname;
+            RudderStack.pageView(current_page);
+        });
+
         if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -65,10 +78,6 @@ const AppContents = ({
             child_ref.current.scrollTop = 0;
         }
     }, [location?.pathname]);
-
-    // rudderstack page view trigger
-    identifyEvent();
-    pageView();
 
     React.useEffect(() => {
         const handleInstallPrompt = e => {
@@ -156,14 +165,12 @@ AppContents.propTypes = {
 };
 
 export default withRouter(
-    connect(({ client, common, gtm, rudderstack, ui }) => ({
+    connect(({ client, common, gtm, ui }) => ({
         is_eu_country: client.is_eu_country,
         is_eu: client.is_eu,
         is_logged_in: client.is_logged_in,
         is_logging_in: client.is_logging_in,
         pushDataLayer: gtm.pushDataLayer,
-        identifyEvent: rudderstack.identifyEvent,
-        pageView: rudderstack.pageView,
         is_app_disabled: ui.is_app_disabled,
         is_cashier_visible: ui.is_cashier_visible,
         is_dark_mode: ui.is_dark_mode_on,

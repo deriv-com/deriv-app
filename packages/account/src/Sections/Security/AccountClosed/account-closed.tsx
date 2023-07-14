@@ -1,15 +1,15 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
 import { Modal, Text } from '@deriv/components';
-import { routes, getStaticUrl, PlatformContext } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
+import { getStaticUrl, PlatformContext } from '@deriv/shared';
 
-const AccountClosed = ({ logout }) => {
+const AccountClosed = observer(() => {
+    const { client } = useStore();
+    const { logout } = client;
     const [is_modal_open, setModalState] = React.useState(true);
     const [timer, setTimer] = React.useState(10);
     const { is_appstore } = React.useContext(PlatformContext);
-    const history = useHistory();
 
     const counter = React.useCallback(() => {
         if (timer > 0) {
@@ -20,7 +20,7 @@ const AccountClosed = ({ logout }) => {
     }, [is_appstore, timer]);
 
     React.useEffect(() => {
-        history.push(routes.root);
+        window.history.pushState(null, '', '/');
         logout();
         const handleInterval = setInterval(() => counter(), 1000);
         return () => {
@@ -40,8 +40,6 @@ const AccountClosed = ({ logout }) => {
             </Text>
         </Modal>
     );
-};
+});
 
-export default connect(({ client }) => ({
-    logout: client.logout,
-}))(AccountClosed);
+export default AccountClosed;

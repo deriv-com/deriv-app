@@ -41,8 +41,7 @@
         "airbnb-base",
         "binary",
         "plugin:react/recommended",
-        "plugin:react-hooks/recommended",
-        "plugin:jest-dom/recommended"
+        "plugin:react-hooks/recommended"
     ],
     "parserOptions": {
         "requireConfigFile": false,

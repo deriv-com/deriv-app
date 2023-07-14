@@ -244,6 +244,9 @@ export const wallet_tour_styles: Styles = {
         lineHeight: '1',
         fontSize: '1.6rem',
     },
+    tooltipFooter: {
+        marginTop: 'unset',
+    },
 };
 
 export const getTourStepLocale = (): Locale => ({
@@ -264,7 +267,7 @@ export const getHighRiskTourStepLocale = (): Locale => ({
 
 export const getWalletStepLocale = (): Locale => ({
     back: <SpanButton has_effect text={localize('Back')} secondary medium />,
-    close: <Icon icon='IcCross' size={16} />,
+    close: <Icon icon='IcAppstoreCloseLight' size={16} />,
     last: localize('Next'), // TODO: Removed in onboarding v2
     next: localize('Next'),
 });

@@ -9,7 +9,7 @@
         background-color: var(--general-main-1);
 
         border: 1px solid var(--wallets-banner-border-color);
-        box-shadow: $wallet-card-shadow;
+        box-shadow: var(--wallet-box-shadow);
         border-radius: $BORDER_RADIUS * 4;
 
         @include mobile {

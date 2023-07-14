@@ -16,6 +16,7 @@
     &--error {
         .dc-input__field {
             color: var(--text-loss-danger);
+            -webkit-text-fill-color: var(--text-loss-danger);
         }
     }
 

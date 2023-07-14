@@ -110,7 +110,7 @@ class APIMiddleware {
         REQUESTS.forEach(req_type => {
             const measure = performance.getEntriesByName(req_type);
             if (measure && measure.length) {
-                if (DATADOG_CLIENT_TOKEN_LOGS) {
+                if (process.env.DATADOG_CLIENT_TOKEN_LOGS) {
                     this.log(measure, is_bot_running, req_type);
                 }
             }

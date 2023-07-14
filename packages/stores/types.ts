@@ -377,7 +377,7 @@ type TCommonStoreError = {
     message: string | JSX.Element;
     redirect_label: string;
     redirect_to: string;
-    redirectOnClick: () => void;
+    redirectOnClick: (() => void) | null;
     setError: (has_error: boolean, error: React.ReactNode | null) => void;
     should_clear_error_on_click: boolean;
     should_show_refresh: boolean;

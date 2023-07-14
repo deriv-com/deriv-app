@@ -54,6 +54,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
 
     const { is_appstore } = React.useContext(PlatformContext);
     const timeout = React.useRef();
+    const history = useHistory();
 
     React.useEffect(() => {
         const processRoutes = () => {
@@ -382,12 +383,15 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 {is_logged_in && (
                                     <MobileDrawer.Item
                                         onClick={() => {
-                                            logoutClient();
                                             toggleDrawer();
+                                            history.push(routes.index);
+                                            logoutClient().then(() => {
+                                                window.location.href = getStaticUrl('/');
+                                            });
                                         }}
                                         className='dc-mobile-drawer__item'
                                     >
-                                        <MenuLink link_to={routes.index} icon='IcLogout' text={localize('Log out')} />
+                                        <MenuLink icon='IcLogout' text={localize('Log out')} />
                                     </MobileDrawer.Item>
                                 )}
                             </MobileDrawer.Body>

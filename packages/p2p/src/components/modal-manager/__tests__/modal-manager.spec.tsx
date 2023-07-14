@@ -7,7 +7,6 @@ import { MockModal } from '../__mocks__/mock-modal-manager';
 
 let mock_modal_manager_state: TModalManagerContext;
 
-
 jest.mock('Constants/modals', () => ({
     Modals: {
         BuySellModal: (props: any) => <MockModal {...props} />,

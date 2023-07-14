@@ -17,7 +17,7 @@
         "deploy:production": "echo \"No deploy:production specified\""
     },
     "engines": {
-        "node": "^16.16.0"
+        "node": "18.x"
     },
     "repository": {
         "type": "git",

@@ -1,6 +1,6 @@
+import React from 'react';
 import classNames from 'classnames';
 import { DBOT_TABS } from 'Constants/bot-contents';
-import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 

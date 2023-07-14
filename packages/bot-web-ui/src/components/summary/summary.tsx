@@ -1,11 +1,11 @@
-import classnames from 'classnames';
 import React from 'react';
+import classnames from 'classnames';
 import { ThemedScrollbars } from '@deriv/components';
-import SummaryCard from './summary-card';
 import { isMobile } from '@deriv/shared';
 import { connect } from 'Stores/connect';
-import { TContractInfo } from './summary-card.types';
 import RootStore from 'Stores/index';
+import SummaryCard from './summary-card';
+import { TContractInfo } from './summary-card.types';
 
 type TSummary = {
     is_drawer_open: boolean;

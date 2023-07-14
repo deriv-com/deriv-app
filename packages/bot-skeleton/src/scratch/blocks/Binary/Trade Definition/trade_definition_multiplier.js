@@ -85,9 +85,15 @@ Blockly.Blocks.trade_definition_multiplier = {
                 if (block_multiplier_take_profit <= 0 || block_multiplier_stop_loss <= 0) {
                     block.setDisabled(true);
                 }
-                if (block_multiplier_take_profit > 0 || block_multiplier_stop_loss > 0) {
+
+                if (block.type === 'multiplier_stop_loss' && block_multiplier_stop_loss > 0) {
                     block.setDisabled(false);
                 }
+
+                if (block.type === 'multiplier_take_profit' && block_multiplier_take_profit > 0) {
+                    block.setDisabled(false);
+                }
+
                 if (
                     !/^multiplier_.+$/.test(block.type) ||
                     new Set(block_types_in_multiplier).size !== block_types_in_multiplier.length

@@ -7,8 +7,7 @@ import { getAppstorePlatforms, getMFAppstorePlatforms, BrandConfig } from 'Const
 import './trading-app-card.scss';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
-import { useStores } from 'Stores/index';
-import { observer } from 'mobx-react-lite';
+import { useStore, observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { CFD_PLATFORMS, ContentFlag, getStaticUrl } from '@deriv/shared';
 
@@ -17,140 +16,150 @@ type TWalletsProps = {
     is_wallet_demo?: boolean;
 };
 
-const TradingAppCard = ({
-    availability,
-    name,
-    icon,
-    action_type,
-    clickable_icon = false,
-    description,
-    is_deriv_platform = false,
-    onAction,
-    sub_title,
-    has_divider,
-    platform,
-    short_code_and_region,
-    mt5_acc_auth_status,
-    selected_mt5_jurisdiction,
-    openFailedVerificationModal,
-    is_wallet,
-    is_wallet_demo,
-}: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid & TWalletsProps) => {
-    const {
-        common,
-        traders_hub,
-        modules: { cfd },
-    } = useStores();
-    const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
-    const { current_language } = common;
-    const { is_account_being_created } = cfd;
-
-    const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
-
-    const app_platform =
-        !is_eu_user || low_risk_cr_non_eu || is_demo_low_risk ? getAppstorePlatforms() : getMFAppstorePlatforms();
-
-    const { app_desc, link_to, is_external, new_tab } = app_platform.find(config => config.name === name) || {
-        app_desc: description,
-        link_to: '',
-    };
-
-    const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
+const TradingAppCard = observer(
+    ({
+        availability,
+        name,
+        icon,
+        action_type,
+        clickable_icon = false,
+        description,
+        is_deriv_platform = false,
+        onAction,
+        sub_title,
+        has_divider,
+        platform,
+        short_code_and_region,
         mt5_acc_auth_status,
+        selected_mt5_jurisdiction,
         openFailedVerificationModal,
-        selected_mt5_jurisdiction
-    );
+        is_wallet,
+        is_wallet_demo,
+    }: Actions & BrandConfig & AvailableAccount & TDetailsOfEachMT5Loginid & TWalletsProps) => {
+        const {
+            common,
+            traders_hub,
+            modules: { cfd },
+        } = useStore();
+        const { is_eu_user, is_demo_low_risk, content_flag, is_real } = traders_hub;
+        const { current_language } = common;
+        const { is_account_being_created } = cfd;
 
-    const openStaticPage = () => {
-        if (platform === CFD_PLATFORMS.MT5 && availability === 'EU')
-            window.open(getStaticUrl(`/dmt5`, {}, false, true));
-        else if (platform === CFD_PLATFORMS.MT5 && availability !== 'EU') window.open(getStaticUrl(`/dmt5`));
-        else if (platform === CFD_PLATFORMS.DXTRADE) window.open(getStaticUrl(`/derivx`));
-        else if (platform === CFD_PLATFORMS.DERIVEZ) window.open(getStaticUrl(`/derivez`));
-        else if (icon === 'Options' && !is_eu_user) window.open(getStaticUrl(`/trade-types/options/`));
-        else;
-    };
+        const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
-    return (
-        <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
-            <div
-                className={classNames('trading-app-card__icon--container', {
-                    'trading-app-card__icon--container__clickable': clickable_icon,
-                })}
-            >
-                <TradigPlatformIconProps icon={icon} onClick={clickable_icon ? openStaticPage : undefined} size={48} />
-            </div>
-            <div className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}>
-                <div className='trading-app-card__details'>
-                    <div>
-                        {is_wallet ? (
-                            <Text className='title' size='xs' line_height='s' color='prominent'>
-                                {is_wallet_demo && sub_title ? `${sub_title} ${localize('Demo')}` : sub_title}
-                            </Text>
-                        ) : (
-                            <Text className='title' size='xs' line_height='s' color='prominent'>
-                                {!is_real && sub_title ? `${sub_title} ${localize('Demo')}` : sub_title}
-                            </Text>
-                        )}
-                        {!is_wallet && short_code_and_region && (
-                            <Text
-                                weight='bolder'
-                                size='xxxs'
-                                line_height='s'
-                                className='trading-app-card__details__short-code'
-                            >
-                                {short_code_and_region}
-                            </Text>
-                        )}
-                    </div>
-                    {is_wallet ? (
-                        <Text
-                            className='title'
-                            size='xs'
-                            line_height='s'
-                            weight='bold'
-                            color={action_type === 'trade' ? 'prominent' : 'general'}
-                        >
-                            {is_wallet_demo && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
-                        </Text>
-                    ) : (
-                        <Text
-                            className='title'
-                            size='xs'
-                            line_height='s'
-                            weight='bold'
-                            color={action_type === 'trade' ? 'prominent' : 'general'}
-                        >
-                            {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
-                        </Text>
-                    )}
-                    <Text className='description' color={'general'} size='xxs' line_height='m'>
-                        {app_desc}
-                    </Text>
-                    {mt5_acc_auth_status && (
-                        <StatusBadge
-                            className='trading-app-card__acc_status_badge'
-                            account_status={mt5_acc_auth_status}
-                            icon={badge_icon}
-                            text={badge_text}
-                        />
-                    )}
-                </div>
-                <div className='trading-app-card__actions'>
-                    <TradingAppCardActions
-                        action_type={action_type}
-                        link_to={link_to}
-                        onAction={onAction}
-                        is_external={is_external}
-                        new_tab={new_tab}
-                        is_buttons_disabled={!!mt5_acc_auth_status}
-                        is_account_being_created={!!is_account_being_created}
-                        is_real={is_real}
+        const app_platform =
+            !is_eu_user || low_risk_cr_non_eu || is_demo_low_risk ? getAppstorePlatforms() : getMFAppstorePlatforms();
+
+        const { app_desc, link_to, is_external, new_tab } = app_platform.find(config => config.name === name) || {
+            app_desc: description,
+            link_to: '',
+        };
+
+        const { text: badge_text, icon: badge_icon } = getStatusBadgeConfig(
+            mt5_acc_auth_status,
+            openFailedVerificationModal,
+            selected_mt5_jurisdiction
+        );
+
+        const openStaticPage = () => {
+            if (platform === CFD_PLATFORMS.MT5 && availability === 'EU')
+                window.open(getStaticUrl(`/dmt5`, {}, false, true));
+            else if (platform === CFD_PLATFORMS.MT5 && availability !== 'EU') window.open(getStaticUrl(`/dmt5`));
+            else if (platform === CFD_PLATFORMS.DXTRADE) window.open(getStaticUrl(`/derivx`));
+            else if (platform === CFD_PLATFORMS.DERIVEZ) window.open(getStaticUrl(`/derivez`));
+            else if (icon === 'Options' && !is_eu_user) window.open(getStaticUrl(`/trade-types/options/`));
+            else;
+        };
+
+        return (
+            <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
+                <div
+                    className={classNames('trading-app-card__icon--container', {
+                        'trading-app-card__icon--container__clickable': clickable_icon,
+                    })}
+                >
+                    <TradigPlatformIconProps
+                        icon={icon}
+                        onClick={clickable_icon ? openStaticPage : undefined}
+                        size={48}
                     />
                 </div>
+                <div
+                    className={classNames('trading-app-card__container', { 'trading-app-card--divider': has_divider })}
+                >
+                    <div className='trading-app-card__details'>
+                        <div>
+                            {is_wallet ? (
+                                <Text className='title' size='xs' line_height='s' color='prominent'>
+                                    {is_wallet_demo && sub_title ? `${sub_title} ${localize('Demo')}` : sub_title}
+                                </Text>
+                            ) : (
+                                <Text className='title' size='xs' line_height='s' color='prominent'>
+                                    {!is_real && sub_title ? `${sub_title} ${localize('Demo')}` : sub_title}
+                                </Text>
+                            )}
+                            {!is_wallet && short_code_and_region && (
+                                <Text
+                                    weight='bolder'
+                                    size='xxxs'
+                                    line_height='s'
+                                    className='trading-app-card__details__short-code'
+                                >
+                                    {short_code_and_region}
+                                </Text>
+                            )}
+                        </div>
+                        {is_wallet ? (
+                            <Text
+                                className='title'
+                                size='xs'
+                                line_height='s'
+                                weight='bold'
+                                color={action_type === 'trade' ? 'prominent' : 'general'}
+                            >
+                                {is_wallet_demo && !sub_title && !is_deriv_platform
+                                    ? `${name} ${localize('Demo')}`
+                                    : name}
+                            </Text>
+                        ) : (
+                            <Text
+                                className='title'
+                                size='xs'
+                                line_height='s'
+                                weight='bold'
+                                color={action_type === 'trade' ? 'prominent' : 'general'}
+                            >
+                                {!is_real && !sub_title && !is_deriv_platform ? `${name} ${localize('Demo')}` : name}
+                            </Text>
+                        )}
+                        <Text className='description' color={'general'} size='xxs' line_height='m'>
+                            {app_desc}
+                        </Text>
+                        {mt5_acc_auth_status && (
+                            <StatusBadge
+                                className='trading-app-card__acc_status_badge'
+                                account_status={mt5_acc_auth_status}
+                                icon={badge_icon}
+                                text={badge_text}
+                            />
+                        )}
+                    </div>
+                    <div className='trading-app-card__actions'>
+                        <TradingAppCardActions
+                            action_type={action_type}
+                            link_to={link_to}
+                            onAction={onAction}
+                            is_external={is_external}
+                            new_tab={new_tab}
+                            is_buttons_disabled={!!mt5_acc_auth_status}
+                            is_account_being_created={!!is_account_being_created}
+                            is_real={is_real}
+                        />
+                    </div>
+                </div>
             </div>
-        </div>
-    );
-};
+        );
+    }
+);
 
-export default observer(TradingAppCard);
+export default TradingAppCard;

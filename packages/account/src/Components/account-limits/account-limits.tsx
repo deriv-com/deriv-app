@@ -39,7 +39,7 @@ const AccountLimits = observer(
         const { account_limits, currency, getLimits, is_fully_authenticated, is_virtual, is_switching } = client;
         const { is_from_derivgo } = common;
         const isMounted = useIsMounted();
-        const [is_loading, setLoading] = React.useState(false);
+        const [is_loading, setLoading] = React.useState(true);
         const [is_overlay_shown, setIsOverlayShown] = React.useState(false);
         const { is_appstore } = React.useContext(PlatformContext);
 
@@ -55,10 +55,10 @@ const AccountLimits = observer(
         }, []);
 
         React.useEffect(() => {
-            if (!is_virtual && account_limits && is_loading) {
+            if (!is_virtual && account_limits && is_loading && typeof is_fully_authenticated !== 'undefined') {
                 setLoading(false);
             }
-        }, [account_limits, is_virtual, is_loading]);
+        }, [account_limits, is_virtual, is_loading, is_fully_authenticated]);
 
         React.useEffect(() => {
             if (typeof setIsPopupOverlayShown === 'function') {
@@ -68,7 +68,7 @@ const AccountLimits = observer(
 
         const toggleOverlay = () => setIsOverlayShown(!is_overlay_shown);
 
-        if (is_switching) {
+        if (is_switching || is_loading) {
             return <Loading is_fullscreen={false} />;
         }
 
@@ -98,10 +98,6 @@ const AccountLimits = observer(
 
         if (api_initial_load_error) {
             return <LoadErrorMessage error_message={api_initial_load_error} />;
-        }
-
-        if (is_switching || is_loading) {
-            return <Loading is_fullscreen={false} />;
         }
 
         const { commodities, forex, indices, synthetic_index } = { ...market_specific };
@@ -251,20 +247,7 @@ const AccountLimits = observer(
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {is_fully_authenticated ? (
-                                                    <tr>
-                                                        <AccountLimitsTableCell>
-                                                            <React.Fragment>
-                                                                <Text size='xxs' color='prominent'>
-                                                                    {localize(
-                                                                        'Your account is fully authenticated and your withdrawal limits have been lifted.'
-                                                                    )}
-                                                                </Text>
-                                                            </React.Fragment>
-                                                        </AccountLimitsTableCell>
-                                                        <AccountLimitsTableCell />
-                                                    </tr>
-                                                ) : (
+                                                {!is_fully_authenticated && (
                                                     <React.Fragment>
                                                         <tr>
                                                             <AccountLimitsTableCell>
@@ -327,19 +310,28 @@ const AccountLimits = observer(
                                                         </tr>
                                                     </React.Fragment>
                                                 )}
+                                                {!is_appstore && (
+                                                    <tr>
+                                                        <AccountLimitsTableCell align='right'>
+                                                            <div>
+                                                                <Text
+                                                                    as='p'
+                                                                    size='xxs'
+                                                                    color='less-prominent'
+                                                                    line_height='xs'
+                                                                >
+                                                                    {is_fully_authenticated ? (
+                                                                        <Localize i18n_default_text='Your account is fully authenticated and your withdrawal limits have been lifted.' />
+                                                                    ) : (
+                                                                        <Localize i18n_default_text='Stated limits are subject to change without prior notice.' />
+                                                                    )}
+                                                                </Text>
+                                                            </div>
+                                                        </AccountLimitsTableCell>
+                                                    </tr>
+                                                )}
                                             </tbody>
                                         </table>
-                                        {(!is_appstore || isMobile()) && (
-                                            <div className='da-account-limits__text-container'>
-                                                <Text as='p' size='xxs' color='less-prominent' line_height='xs'>
-                                                    {is_fully_authenticated ? (
-                                                        <Localize i18n_default_text='Your account is fully authenticated and your withdrawal limits have been lifted.' />
-                                                    ) : (
-                                                        <Localize i18n_default_text='Stated limits are subject to change without prior notice.' />
-                                                    )}
-                                                </Text>
-                                            </div>
-                                        )}
                                     </React.Fragment>
                                 )}
                             </ThemedScrollbars>

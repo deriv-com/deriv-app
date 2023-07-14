@@ -85,7 +85,7 @@ const WalletTransfer = observer(({ is_wallet_name_visible, setIsWalletNameVisibl
 
         if (!amount || is_amount_to_input_disabled) return;
 
-        if (true) {
+        if (active_wallet?.is_demo) {
             const { is_ok, message } = validNumber(amount.toString(), {
                 type: 'float',
                 decimals: getConfig(from_account?.currency || '')?.fractional_digits,

@@ -93,7 +93,7 @@ export const getTourStepConfigHighRisk = (): Step[] => [
     },
 ];
 
-export const getWalletStepConfig = (): Step[] => [
+export const getWalletStepConfig = (is_all_wallets_added: boolean): Step[] => [
     {
         title: (
             <React.Fragment>
@@ -111,14 +111,13 @@ export const getWalletStepConfig = (): Step[] => [
         // The 'target' refers to the element where the spotlight will be positioned. If there are multiple elements with the same class name, the 'target' will select the first element.
         target: '.wallet-header',
         disableBeacon: true,
-        disableOverlayClose: true,
         placement: 'bottom-end',
         hideBackButton: true,
         spotlightPadding: 0,
         styles: {
             spotlight: {
-                width: '115.2rem',
-                height: '8rem',
+                height: 80,
+                width: 1152,
                 borderRadius: '1.6rem 1.6rem 0rem 0rem',
             },
         },
@@ -140,9 +139,9 @@ export const getWalletStepConfig = (): Step[] => [
 
         target: '.wallet-header__balance-arrow-icon',
         disableBeacon: true,
-        disableOverlayClose: true,
         placement: 'left',
-        styles: { spotlight: { borderRadius: '50%' } },
+        spotlightPadding: 8,
+        styles: { spotlight: { height: 32, width: 32, borderRadius: '50%' } },
     },
     {
         title: (
@@ -162,9 +161,8 @@ export const getWalletStepConfig = (): Step[] => [
         ),
         target: '.wallet-header__description-buttons',
         disableBeacon: true,
-        disableOverlayClose: true,
         spotlightPadding: 8,
-        styles: { spotlight: { borderRadius: '4.8rem' } },
+        styles: { spotlight: { height: 32, width: 504, borderRadius: '4.8rem' } },
     },
     {
         title: (
@@ -185,10 +183,9 @@ export const getWalletStepConfig = (): Step[] => [
         ),
         target: '#trading-app-card__derived',
         disableBeacon: true,
-        disableOverlayClose: true,
         spotlightPadding: 3,
         placement: 'right',
-        styles: { spotlight: { borderRadius: '0.6rem', height: '100px' } },
+        styles: { spotlight: { height: 88, width: 352, borderRadius: '0.6rem' } },
     },
     {
         title: (
@@ -208,11 +205,10 @@ export const getWalletStepConfig = (): Step[] => [
         ),
         target: '.currency-switcher-container',
         disableBeacon: true,
-        disableOverlayClose: true,
         placement: 'left',
         spotlightPadding: 0,
         styles: {
-            spotlight: { borderRadius: '0.6rem' },
+            spotlight: { height: 40, width: 242, borderRadius: '0.6rem' },
         },
     },
     {
@@ -231,10 +227,11 @@ export const getWalletStepConfig = (): Step[] => [
         ),
         target: '#trading-app-card__dtrader',
         disableBeacon: true,
-        disableOverlayClose: true,
-        spotlightPadding: 3,
         placement: 'right',
-        styles: { spotlight: { borderRadius: '0.6rem', height: '100px' } },
+        spotlightPadding: 3,
+        styles: {
+            spotlight: { height: 88, width: 350, borderRadius: '0.6rem' },
+        },
     },
     {
         title: (
@@ -250,12 +247,13 @@ export const getWalletStepConfig = (): Step[] => [
                 {localize('Click Add on each card for more Wallets.')}
             </Text>
         ),
-        target: '.add-wallets__card',
+        target: is_all_wallets_added ? 'null' : '.add-wallets__card', // Reason for this is that the target accepts string in a form of class names. If the target is an empty string, it will throw an error [trust me, I tried]. So if the user added all the wallets, the target will be null and the tour will skip this step because null is a not a legitimate class name.
         disableBeacon: true,
-        disableOverlayClose: true,
         spotlightPadding: 0,
         placement: 'right',
-        styles: { spotlight: { borderRadius: '1.7rem' } },
+        styles: {
+            spotlight: { height: 288, width: 232, borderRadius: '1.7rem' },
+        },
     },
     {
         title: (
@@ -273,10 +271,9 @@ export const getWalletStepConfig = (): Step[] => [
         ),
         target: '.trading-hub-header__tradinghub--onboarding',
         disableBeacon: true,
-        disableOverlayClose: true,
         spotlightPadding: 12,
         placement: 'right',
-        styles: { spotlight: { borderRadius: '0.4rem' } },
+        styles: { spotlight: { height: 24, width: 48, borderRadius: '0.4rem' } },
     },
 ];
 
@@ -351,14 +348,6 @@ export const wallet_tour_styles: Styles = {
         fontWeight: 'bold',
         outline: 'none',
     },
-    buttonSkip: {
-        position: 'absolute',
-        right: '0',
-        top: '0',
-        padding: '1.6rem',
-        lineHeight: '1',
-        fontSize: '1.6rem',
-    },
 };
 
 export const getTourStepLocale = (): Locale => ({
@@ -379,7 +368,7 @@ export const getHighRiskTourStepLocale = (): Locale => ({
 
 export const getWalletStepLocale = (): Locale => ({
     back: <SpanButton has_effect text={localize('Back')} secondary medium />,
+    close: <Icon icon='IcCross' size={16} />,
     last: localize('Close'),
     next: localize('Next'),
-    skip: <Icon icon='IcCross' size={16} />,
 });

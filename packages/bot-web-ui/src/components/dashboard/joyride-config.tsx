@@ -114,7 +114,6 @@ export const DBOT_ONBOARDING = [
             />
         ),
         ...joyride_props,
-        locale: { next: localize('Next') },
         disableOverlay: false,
     },
     {
@@ -129,7 +128,6 @@ export const DBOT_ONBOARDING = [
             />
         ),
         ...joyride_props,
-        locale: { next: localize('Next') },
         disableOverlay: false,
     },
     {
@@ -144,7 +142,6 @@ export const DBOT_ONBOARDING = [
             />
         ),
         ...joyride_props,
-        locale: { next: localize('Next') },
         disableOverlay: false,
     },
     {
@@ -158,7 +155,6 @@ export const DBOT_ONBOARDING = [
             />
         ),
         placement: 'right',
-        locale: { next: localize('Next') },
         ...joyride_props,
         disableOverlay: false,
     },
@@ -174,7 +170,6 @@ export const DBOT_ONBOARDING = [
             />
         ),
         placement: 'left',
-        locale: { next: localize('Next') },
         ...joyride_props,
         disableOverlay: false,
     },
@@ -189,7 +184,6 @@ export const DBOT_ONBOARDING = [
                 step_index={6}
             />
         ),
-        locale: { last: localize('Next') },
         ...joyride_props,
         disableOverlay: false,
     },
@@ -426,49 +420,42 @@ export const BOT_BUILDER_TOUR = [
     {
         target: '.animation__wrapper',
         content: <Step1 show_label />,
-        locale: { next: localize('Next') },
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '.animation__wrapper',
         content: <Step1A />,
-        locale: { next: localize('Next') },
         placement: 'bottom',
         ...joyride_props,
     },
     {
         target: '.animation__wrapper',
         content: <Step2 show_label />,
-        locale: { next: localize('Next') },
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '.animation__wrapper',
         content: <Step3 show_label />,
-        locale: { next: localize('Next') },
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '.animation__wrapper',
         content: <Step4 show_label />,
-        locale: { next: localize('Next') },
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '.animation__wrapper',
         content: <Step5 show_label />,
-        locale: { next: localize('Next') },
         placement: 'right',
         ...joyride_props,
     },
     {
         target: '.animation__wrapper',
         content: <Step6 show_label />,
-        locale: { last: localize('Next') },
         ...joyride_props,
     },
 ];

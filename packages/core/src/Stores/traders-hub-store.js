@@ -86,6 +86,7 @@ export default class TradersHubStore extends BaseStore {
             show_eu_related_content: computed,
             startTrade: action.bound,
             toggleAccountTransferModal: action.bound,
+            closeAccountTransferModal: action.bound,
             toggleAccountTypeModalVisibility: action.bound,
             setIsOnboardingVisited: action.bound,
             toggleFailedVerificationModalVisibility: action.bound,
@@ -356,7 +357,7 @@ export default class TradersHubStore extends BaseStore {
         };
         const getSwapFreeAccountDesc = () => {
             return localize(
-                'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies and ETFs.'
+                'Trade swap-free CFDs on MT5 with synthetics, forex, stocks, stock indices, cryptocurrencies, and ETFs.'
             );
         };
 
@@ -725,6 +726,10 @@ export default class TradersHubStore extends BaseStore {
                 ];
             }
         });
+    }
+
+    closeAccountTransferModal() {
+        this.is_account_transfer_modal_open = false;
     }
 
     toggleAccountTransferModal() {

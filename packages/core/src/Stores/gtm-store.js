@@ -79,13 +79,25 @@ export default class GTMStore extends BaseStore {
      * @param {object} data
      */
     async pushDataLayer(data) {
-        if (this.is_gtm_applicable) {
-            BinarySocket.wait('authorize').then(() => {
-                const gtm_object = { ...this.common_variables, ...data };
-                if (!gtm_object.event) return;
+        try {
+            if (this.is_gtm_applicable) {
+                BinarySocket.wait('authorize')
+                    .then(async () => {
+                        const gtm_object = { ...this.common_variables, ...data };
+                        if (!gtm_object.event) return;
 
-                dataLayer.push(gtm_object);
-            });
+                        const dataLayerRes = await dataLayer.push(gtm_object);
+                        // eslint-disable-next-line no-console
+                        console.log({ dataLayerRes });
+                    })
+                    .catch(err => {
+                        // eslint-disable-next-line no-console
+                        console.log('Resisting the error ==========> ', err);
+                    });
+            }
+        } catch (err) {
+            // eslint-disable-next-line no-console
+            console.log('Outer catch block ==========> ', { err });
         }
     }
 

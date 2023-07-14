@@ -4,7 +4,7 @@ import { Icon, Checklist, Text } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import { routes } from '@deriv/shared';
 import { observer } from '@deriv/stores';
-import { useWithdrawalLocked } from '@deriv/hooks';
+import { useAccountStatus, useWithdrawalLocked } from '@deriv/hooks';
 import CashierLocked from '../../components/cashier-locked';
 
 type TItem = {
@@ -14,15 +14,12 @@ type TItem = {
 };
 
 const WithdrawalLocked = observer(() => {
-    const {
-        is_poi_needed,
-        has_poi_submitted,
-        is_poa_needed,
-        has_poa_submitted,
-        is_ask_financial_risk_approval_needed,
-        isLoading,
-        isSuccess,
-    } = useWithdrawalLocked();
+    const { is_ask_financial_risk_approval_needed, isSuccess } = useWithdrawalLocked();
+
+    const { statuses } = useAccountStatus();
+    const { is_poi_needed, is_poa_needed } = statuses.needs_verification;
+
+    const { has_poi_submitted, has_poa_submitted } = statuses.document;
 
     const history = useHistory();
     const items: TItem[] = [

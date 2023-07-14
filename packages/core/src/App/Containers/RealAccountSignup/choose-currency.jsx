@@ -136,7 +136,7 @@ const ChooseCurrency = ({
                     </Text>
                     <ThemedScrollbars>
                         {is_loading ? (
-                            <Loading is_fullscreen={false} />
+                            <Loading is_fullscreen={false} className='currency-list__loading-wrapper' />
                         ) : (
                             <CurrencyRadioButtonGroup
                                 id='crypto_currency'

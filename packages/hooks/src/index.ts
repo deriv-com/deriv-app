@@ -8,6 +8,7 @@ export { default as useCashierLocked } from './useCashierLocked';
 export { default as useContentFlag } from './useContentFlag';
 export { default as useCountdown } from './useCountdown';
 export { default as useCurrencyConfig } from './useCurrencyConfig';
+export { default as useCurrentCurrencyConfig } from './useCurrentCurrencyConfig';
 export { default as useDepositCryptoAddress } from './useDepositCryptoAddress';
 export { default as useDepositFiatAddress } from './useDepositFiatAddress';
 export { default as useDepositLocked } from './useDepositLocked';

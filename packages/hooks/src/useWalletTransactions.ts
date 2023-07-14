@@ -29,6 +29,7 @@ const useWalletTransactions = (
     } = useStore();
     const { data: wallets } = useWalletsList();
     const current_wallet = useActiveWallet();
+    const { getConfig } = useCurrencyConfig();
     const { demo: demo_platform_account } = usePlatformAccounts();
     const { real: real_platform_accounts } = usePlatformAccounts();
 
@@ -36,9 +37,45 @@ const useWalletTransactions = (
         () => [demo_platform_account, ...real_platform_accounts],
         [demo_platform_account, real_platform_accounts]
     );
-    const { getConfig } = useCurrencyConfig();
+
+    const [is_complete_list, setIsCompleteList] = useState(false);
+    const [transactions, setTransactions] = useState<
+        Required<Required<NonNullable<typeof data>>['statement']>['transactions']
+    >([]);
 
     const transactions_per_page = 10;
+
+    const { data, isLoading, isSuccess } = useFetch('statement', {
+        options: { keepPreviousData: true },
+        payload: {
+            // @ts-expect-error reset_balance is not supported in the API yet
+            action_type: action_type || undefined,
+            limit: page_count ? transactions_per_page : undefined,
+            offset: page_count ? transactions_per_page * (page_count - 1) : 0,
+        },
+    });
+
+    useEffect(() => setTransactions([]), [action_type]);
+
+    useEffect(() => {
+        if (data?.statement?.count !== 0) setIsCompleteList(false);
+    }, [data?.statement]);
+
+    useEffect(() => {
+        if (is_complete_list || isLoading || !isSuccess) return;
+        if (data?.statement?.count === 0) setIsCompleteList(true);
+        const new_transactions = data?.statement?.transactions;
+        if (new_transactions) setTransactions((prev: typeof transactions) => [...prev, ...new_transactions]);
+    }, [is_complete_list, data?.statement, isLoading, isSuccess]);
+
+    // This is for seeing the loader; TODO remove
+    const [is_fetching, setIsFetching] = useState(false);
+    useEffect(() => {
+        setIsFetching(true);
+    }, [action_type, page_count]);
+    useEffect(() => {
+        if (is_fetching) setTimeout(() => setIsFetching(false), 1000);
+    }, [is_fetching]);
 
     const getTradingAccountName = useCallback(
         (
@@ -52,51 +89,6 @@ const useWalletTransactions = (
         },
         []
     );
-
-    const { data, isLoading, isSuccess } = useFetch('statement', {
-        options: { keepPreviousData: true },
-        payload: {
-            // @ts-expect-error reset_balance is not supported in the API yet
-            action_type: action_type || undefined,
-            limit: page_count ? transactions_per_page : undefined,
-            offset: page_count ? transactions_per_page * (page_count - 1) : 0,
-        },
-    });
-
-    const [is_resetting, setIsResetting] = useState(false);
-    const [is_complete_list, setIsCompleteList] = useState(false);
-
-    const [transactions, setTransactions] = useState<
-        Required<Required<NonNullable<typeof data>>['statement']>['transactions']
-    >([]);
-
-    useEffect(() => {
-        if (is_resetting || is_complete_list || isLoading || !isSuccess) return;
-        if (data?.statement?.count === 0) setIsCompleteList(true);
-        const new_transactions = data?.statement?.transactions;
-        if (new_transactions) setTransactions((prev: typeof transactions) => [...prev, ...new_transactions]);
-    }, [is_resetting, is_complete_list, data?.statement, isLoading, isSuccess]);
-
-    useEffect(() => {
-        setIsResetting(true);
-    }, [action_type]);
-
-    // TODO remove
-    const [is_fetching, setIsFetching] = useState(false);
-    useEffect(() => {
-        setIsFetching(true);
-    }, [isLoading]);
-    useEffect(() => {
-        if (is_fetching) setTimeout(() => setIsFetching(false), 1000);
-    }, [is_fetching]);
-
-    useEffect(() => {
-        if (is_resetting) {
-            setIsCompleteList(false);
-            setTransactions([]);
-            setIsResetting(false);
-        }
-    }, [is_resetting]);
 
     const modified_transactions = useMemo(
         () =>
@@ -185,9 +177,9 @@ const useWalletTransactions = (
 
     return {
         transactions: modified_transactions,
-        isLoading: isLoading || is_resetting || is_fetching,
+        isLoading: isLoading || is_fetching,
         isSuccess,
-        isComplete: is_complete_list,
+        isComplete: is_complete_list && !is_fetching,
     };
 };
 

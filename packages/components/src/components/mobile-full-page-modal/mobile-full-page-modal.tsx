@@ -8,7 +8,7 @@ import Icon from '../icon/icon';
 
 type TMobileFullPageModal = {
     className?: string;
-    container_children: React.ReactNode;
+    container_children?: React.ReactNode;
     header?: string;
     header_background_color?: string;
     height_offset?: string;
@@ -26,7 +26,7 @@ type TMobileFullPageModal = {
     body_className?: string;
     is_popup?: boolean;
     page_footer_parent?: React.ReactNode;
-    renderPageHeader: () => React.ReactNode;
+    renderPageHeader?: () => React.ReactNode;
     page_footer_parent_className?: string;
 };
 

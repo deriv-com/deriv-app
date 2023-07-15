@@ -9,7 +9,7 @@ jest.mock('@deriv/shared', () => ({
     isMobile: jest.fn().mockReturnValue(false),
 }));
 
-jest.mock('../../real-account-signup/helpers/utils.js', () => ({
+jest.mock('../../real-account-signup/helpers/utils.ts', () => ({
     splitValidationResultTypes: jest.fn(() => ({
         warnings: {},
         errors: {},
@@ -26,8 +26,8 @@ describe('<CurrencySelector/>', () => {
                 is_virtual: 1,
                 landing_company_shortcode: 'virtual',
                 trading: {},
-                token: 'a1-sLGGrhfYPkeEprxEop2T591cLKbuN',
-                email: 'test+qw@deriv.com',
+                token: '',
+                email: '',
                 session_start: 1651059038,
                 excluded_until: '',
                 landing_company_name: 'virtual',
@@ -273,8 +273,8 @@ describe('<CurrencySelector/>', () => {
                     is_virtual: 1,
                     landing_company_shortcode: 'svg',
                     trading: {},
-                    token: 'a1-sLGGrhfYPkeEprxEop2T591cLKbuN',
-                    email: 'test+qw@deriv.com',
+                    token: '',
+                    email: '',
                     session_start: 1651059038,
                     excluded_until: '',
                     landing_company_name: 'svg',

@@ -14,7 +14,7 @@ import {
     Text,
     useOnClickOutside,
 } from '@deriv/components';
-import { routes, formatMoney, ContentFlag } from '@deriv/shared';
+import { routes, formatMoney, ContentFlag, getStaticUrl } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { getAccountTitle } from 'App/Containers/RealAccountSignup/helpers/constants';
 import { connect } from 'Stores/connect';
@@ -52,7 +52,6 @@ const AccountSwitcher = ({
     mt5_login_list,
     obj_total_balance,
     openRealAccountSignup,
-    routeBackInApp,
     should_show_real_accounts_list,
     show_eu_related_content,
     switchAccount,
@@ -101,8 +100,8 @@ const AccountSwitcher = ({
         if (is_positions_drawer_on) {
             togglePositionsDrawer(); // TODO: hide drawer inside logout, once it is a mobx action
         }
-        routeBackInApp(history);
-        await logoutClient();
+        history.push(routes.index);
+        await logoutClient().then(() => (window.location.href = getStaticUrl('/')));
     };
 
     const closeAccountsDialog = () => {
@@ -317,7 +316,7 @@ const AccountSwitcher = ({
                                                     if (real_account_creation_unlock_date && is_eu_user) {
                                                         closeAccountsDialog();
                                                         setShouldShowCooldownModal(true);
-                                                    } else openRealAccountSignup(account);
+                                                    } else openRealAccountSignup('svg');
                                                 }}
                                                 className='acc-switcher__new-account-btn'
                                                 secondary
@@ -391,7 +390,7 @@ const AccountSwitcher = ({
                                                     closeAccountsDialog();
                                                     setShouldShowCooldownModal(true);
                                                 } else {
-                                                    openRealAccountSignup(account);
+                                                    openRealAccountSignup('maltainvest');
                                                 }
                                             }}
                                             className='acc-switcher__new-account-btn'
@@ -559,7 +558,6 @@ AccountSwitcher.propTypes = {
     obj_total_balance: PropTypes.object,
     openAccountNeededModal: PropTypes.func,
     openRealAccountSignup: PropTypes.func,
-    routeBackInApp: PropTypes.func,
     should_show_real_accounts_list: PropTypes.bool,
     show_eu_related_content: PropTypes.bool,
     switchAccount: PropTypes.func,
@@ -576,7 +574,7 @@ AccountSwitcher.propTypes = {
 };
 
 const account_switcher = withRouter(
-    connect(({ client, common, ui, traders_hub }) => ({
+    connect(({ client, ui, traders_hub }) => ({
         available_crypto_currencies: client.available_crypto_currencies,
         account_loginid: client.loginid,
         accounts: client.accounts,
@@ -601,7 +599,6 @@ const account_switcher = withRouter(
         has_active_real_account: client.has_active_real_account,
         logoutClient: client.logout,
         upgradeable_landing_companies: client.upgradeable_landing_companies,
-        routeBackInApp: common.routeBackInApp,
         is_positions_drawer_on: ui.is_positions_drawer_on,
         openRealAccountSignup: ui.openRealAccountSignup,
         toggleAccountsDialog: ui.toggleAccountsDialog,

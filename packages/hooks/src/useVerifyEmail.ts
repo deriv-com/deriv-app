@@ -6,7 +6,7 @@ import useCountdown from './useCountdown';
 const RESEND_COUNTDOWN = 60;
 
 const useVerifyEmail = (
-    type: Parameters<ReturnType<typeof useRequest<'verify_email'>>['mutate']>[0][0]['payload']['type']
+    type: Parameters<ReturnType<typeof useRequest<'verify_email'>>['mutate']>[0]['payload']['type']
 ) => {
     const WS = useRequest('verify_email');
     const counter = useCountdown({ from: RESEND_COUNTDOWN });
@@ -22,7 +22,7 @@ const useVerifyEmail = (
 
         setSentCount(old => old + 1);
 
-        WS.mutate([{ payload: { verify_email: client.email, type } }]);
+        WS.mutate({ payload: { verify_email: client.email, type } });
     };
 
     return {

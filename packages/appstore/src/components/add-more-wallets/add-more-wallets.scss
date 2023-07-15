@@ -24,7 +24,7 @@
         border-radius: 1.6rem;
         border: 0.1rem solid var(--general-active);
         background-color: var(--general-main-1);
-        box-shadow: $wallet-card-shadow;
+        box-shadow: $wallet-box-shadow;
         cursor: pointer;
         &-description,
         &-wrapper {

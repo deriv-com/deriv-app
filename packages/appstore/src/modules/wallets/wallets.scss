@@ -3,7 +3,12 @@
     min-height: 92.8vh;
     background-color: var(--general-section-1);
 
+    @include mobile {
+        min-height: 100vh;
+    }
+
     &__content {
+        width: 100%;
         max-width: 131.2rem;
         margin: auto;
         display: flex;
@@ -12,5 +17,9 @@
         align-items: center;
         gap: 2.4rem;
         align-self: stretch;
+
+        @include mobile {
+            padding: 2.4rem 0;
+        }
     }
 }

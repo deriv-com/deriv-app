@@ -6,22 +6,29 @@ import TradingAppCard from 'Components/containers/trading-app-card';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
 import { getHasDivider } from 'Constants/utils';
 import { useStore, observer } from '@deriv/stores';
-import { TWalletAccount } from 'Types';
+import { useActiveWallet } from '@deriv/hooks';
+import './wallet-content.scss';
 
-type TProps = {
-    wallet_account: TWalletAccount;
-};
-
-const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps) => {
+const WalletOptionsAndMultipliersListing = observer(() => {
     const { traders_hub, client, ui } = useStore();
     const { is_mobile, setShouldShowCooldownModal, openRealAccountSignup } = ui;
-    const { is_landing_company_loaded, has_maltainvest_account, real_account_creation_unlock_date } = client;
+    const {
+        is_landing_company_loaded,
+        has_maltainvest_account,
+        real_account_creation_unlock_date,
+        is_logging_in,
+        is_switching,
+    } = client;
     const { available_platforms, is_eu_user, is_real, no_MF_account, no_CR_account, is_demo } = traders_hub;
 
-    const filtered_available_platforms =
-        wallet_account.landing_company_name === 'svg'
-            ? available_platforms.filter(pl => pl.availability === 'All' || pl.availability === 'Non-EU')
-            : available_platforms.filter(pl => pl.availability === 'All' || pl.availability === 'EU');
+    const wallet_account = useActiveWallet();
+
+    if (!wallet_account || is_switching || is_logging_in || !is_landing_company_loaded)
+        return (
+            <div className='wallet-content__loader'>
+                <PlatformLoader />
+            </div>
+        );
 
     const OptionsTitle = () => {
         if (wallet_account.landing_company_name === 'svg' && !is_mobile) {
@@ -91,24 +98,19 @@ const WalletOptionsAndMultipliersListing = observer(({ wallet_account }: TProps)
                     />
                 </div>
             )}
-
-            {is_landing_company_loaded ? (
-                filtered_available_platforms.map((available_platform, index) => (
-                    <TradingAppCard
-                        key={`trading_app_card_${available_platform.name}`}
-                        {...available_platform}
-                        action_type={
-                            is_demo || (!no_CR_account && !is_eu_user) || (has_maltainvest_account && is_eu_user)
-                                ? 'trade'
-                                : 'none'
-                        }
-                        is_deriv_platform
-                        has_divider={getHasDivider(index, filtered_available_platforms.length, 3)}
-                    />
-                ))
-            ) : (
-                <PlatformLoader />
-            )}
+            {available_platforms.map((available_platform, index) => (
+                <TradingAppCard
+                    key={`trading_app_card_${available_platform.name}`}
+                    {...available_platform}
+                    action_type={
+                        is_demo || (!no_CR_account && !is_eu_user) || (has_maltainvest_account && is_eu_user)
+                            ? 'trade'
+                            : 'none'
+                    }
+                    is_deriv_platform
+                    has_divider={getHasDivider(index, available_platforms.length, 3)}
+                />
+            ))}
         </ListingContainer>
     );
 });

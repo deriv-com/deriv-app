@@ -71,23 +71,20 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
                     autohide={false}
                 >
                     <div
-                        className={classNames({
-                            'contract-type-info__gif--has-toggle-buttons': has_toggle_buttons,
-                            'contract-type-info__content': is_glossary_tab_selected,
+                        className={classNames('contract-type-info__content', {
                             'contract-type-info__gif': is_description_tab_selected,
+                            'contract-type-info__gif--has-toggle-buttons': has_toggle_buttons,
                             'contract-type-info__gif--has-video':
                                 item.value === 'accumulator' && is_description_tab_selected,
                         })}
                     >
                         {is_description_tab_selected ? (
-                            <TradeCategoriesGIF category={type.value} selected_contract_type={item?.value} />
+                            <React.Fragment>
+                                <TradeCategoriesGIF category={type.value} selected_contract_type={item?.value} />
+                                <TradeCategories category={type.value} onClick={onClickGlossary} />
+                            </React.Fragment>
                         ) : (
                             <ContractTypeGlossary category={type.value} />
-                        )}
-                    </div>
-                    <div className='contract-type-info__content'>
-                        {is_description_tab_selected && (
-                            <TradeCategories category={type.value} onClick={onClickGlossary} />
                         )}
                     </div>
                 </ThemedScrollbars>

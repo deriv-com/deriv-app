@@ -7,7 +7,6 @@ import {
     isCallPut,
     isDesktop,
     isEnded,
-    isMobile,
     isMultiplierContract,
     LocalStore,
     switch_to_tick_chart,
@@ -52,6 +51,7 @@ export default class ContractTradeStore extends BaseStore {
             updateChartType: action.bound,
             updateGranularity: action.bound,
             markers_array: computed,
+            filtered_contracts: computed,
             addContract: action.bound,
             removeContract: action.bound,
             accountSwitchListener: action.bound,
@@ -268,6 +268,10 @@ export default class ContractTradeStore extends BaseStore {
         );
     }
 
+    get filtered_contracts() {
+        return this.applicable_contracts();
+    }
+
     get markers_array() {
         let markers = [];
         const { contract_type: trade_type, symbol } = JSON.parse(localStorage.getItem('trade_store')) || {};
@@ -299,7 +303,7 @@ export default class ContractTradeStore extends BaseStore {
                 getAccumulatorMarkers({
                     high_barrier: accumulators_high_barrier,
                     low_barrier: accumulators_low_barrier,
-                    barrier_spot_distance: barrier_spot_distance,
+                    barrier_spot_distance,
                     epoch: previous_spot_time,
                     has_crossed_accu_barriers: this.has_crossed_accu_barriers,
                     is_dark_theme: this.root_store.ui.is_dark_mode_on,

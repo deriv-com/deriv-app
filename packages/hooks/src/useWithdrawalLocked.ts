@@ -23,7 +23,7 @@ const useWithdrawalLocked = (): TUseWithdrawalLocked => {
     const is_withdrawal_lock_status = statuses?.status.is_withdrawal_locked;
 
     const is_withdrawal_locked =
-        status && (is_withdrawal_lock_status || need_authentication || is_ask_financial_risk_approval);
+        (status && (is_withdrawal_lock_status || need_authentication || is_ask_financial_risk_approval)) || false;
 
     const is_ask_financial_risk_approval_needed = is_10K_limit && is_ask_financial_risk_approval;
 

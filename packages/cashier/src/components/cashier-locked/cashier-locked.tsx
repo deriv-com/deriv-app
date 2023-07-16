@@ -9,7 +9,6 @@ const CashierLocked = observer(() => {
     const { accounts, current_currency_type, loginid, is_identity_verification_needed } = client;
 
     const { data: get_account_status, statuses } = useAccountStatus();
-    const { is_system_maintenance } = statuses?.cashier_validation;
     const { is_cashier_locked } = statuses?.status;
 
     const is_deposit_locked = useDepositLocked();

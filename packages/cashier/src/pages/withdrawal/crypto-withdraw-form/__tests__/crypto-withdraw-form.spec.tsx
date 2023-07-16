@@ -24,7 +24,9 @@ describe('<CryptoWithdrawForm />', () => {
                         resetConverter: jest.fn(),
                     },
                     transaction_history: {
+                        crypto_transactions: [],
                         onMount: jest.fn(),
+                        setIsCryptoTransactionsVisible: jest.fn(),
                     },
                     withdraw: {
                         account_platform_icon: 'icon',

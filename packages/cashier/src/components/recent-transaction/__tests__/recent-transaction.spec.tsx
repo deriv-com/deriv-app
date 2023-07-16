@@ -53,7 +53,7 @@ describe('<RecentTransaction />', () => {
     it('should show proper messages', () => {
         renderRecentTransaction();
 
-        expect(screen.getByText('Recent transactions')).toBeInTheDocument();
+        expect(screen.getByText('Transaction status')).toBeInTheDocument();
         expect(screen.getByText('Withdrawal BTC')).toBeInTheDocument();
         expect(screen.getByText('In review')).toBeInTheDocument();
         expect(screen.getByText('0.01 BTC on Feb 9, 2022')).toBeInTheDocument();

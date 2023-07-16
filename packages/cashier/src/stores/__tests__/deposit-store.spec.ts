@@ -67,7 +67,7 @@ describe('DepositStore', () => {
         await deposit_store.onMountDeposit();
         expect(deposit_store.WS.authorized.cashier).toHaveBeenCalled();
     });
-    fit('should not call cashier deposit if the active_container is not deposit and on crypto', async () => {
+    it('should not call cashier deposit if the active_container is not deposit and on crypto', async () => {
         deposit_store.root_store.modules.cashier.general_store.active_container = 'withdraw';
 
         await deposit_store.onMountDeposit();

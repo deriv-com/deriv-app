@@ -1,13 +1,12 @@
 import React from 'react';
 import classNames from 'classnames';
-import { observer } from 'mobx-react-lite';
 import { Dropdown } from '@deriv/components';
 import { getAccountTypes } from 'Constants/platform-config';
-import { useStores } from 'Stores';
+import { useStore, observer } from '@deriv/stores';
 import './account-type-dropdown.scss';
 
-const AccountTypeDropdown = () => {
-    const { traders_hub, client, common } = useStores();
+const AccountTypeDropdown = observer(() => {
+    const { traders_hub, client, common } = useStore();
     const { selected_account_type, selectAccountType } = traders_hub;
     const { setPrevAccountType } = client;
     const { current_language } = common;
@@ -30,6 +29,6 @@ const AccountTypeDropdown = () => {
             />
         </div>
     );
-};
+});
 
-export default observer(AccountTypeDropdown);
+export default AccountTypeDropdown;

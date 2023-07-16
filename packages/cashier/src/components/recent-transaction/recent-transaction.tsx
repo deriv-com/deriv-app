@@ -9,7 +9,8 @@ import { useCashierStore } from '../../stores/useCashierStores';
 import './recent-transaction.scss';
 
 const RecentTransaction = observer(() => {
-    const { client } = useStore();
+    const { client, ui } = useStore();
+    const { is_mobile } = ui;
     const { currency } = client;
     const { transaction_history } = useCashierStore();
     const { crypto_transactions, onMount, setIsCryptoTransactionsVisible } = transaction_history;
@@ -25,21 +26,12 @@ const RecentTransaction = observer(() => {
     const SideNoteContainer = ({ children }: React.PropsWithChildren<unknown>) => (
         <div className='recent-transaction__wrapper'>
             <div className='cashier-recent-transaction'>
-                <Text weight='bold' as='p' line_height='s' size='xs'>
-                    <Localize i18n_default_text='Recent transactions' />
+                <Text weight='bold' as='p' line_height='s' size={is_mobile ? 'xxs' : 'xs'}>
+                    <Localize i18n_default_text='Transaction status' />
                 </Text>
                 <div className='cashier-recent-transaction__data-wrapper'>
                     <div>{children}</div>
                 </div>
-                <ButtonLink
-                    to='#'
-                    className='dc-btn--secondary cashier-recent-transaction__view-all-button'
-                    onClick={onClickViewAll}
-                >
-                    <Text weight='bold' as='p' size='xxs'>
-                        <Localize i18n_default_text='View all' />
-                    </Text>
-                </ButtonLink>
             </div>
         </div>
     );
@@ -47,7 +39,7 @@ const RecentTransaction = observer(() => {
     if (!crypto_transactions.length) {
         return (
             <SideNoteContainer>
-                <Text as='p' line_height='s' size='xs'>
+                <Text as='p' line_height='s' size={is_mobile ? 'xxs' : 'xs'}>
                     <Localize i18n_default_text='No recent transactions.' />
                 </Text>
             </SideNoteContainer>
@@ -135,6 +127,15 @@ const RecentTransaction = observer(() => {
                     </div>
                 )}
             </div>
+            <ButtonLink
+                to='#'
+                className='dc-btn--secondary cashier-recent-transaction__view-all-button'
+                onClick={onClickViewAll}
+            >
+                <Text weight='bold' as='p' size='xxs'>
+                    <Localize i18n_default_text='View all' />
+                </Text>
+            </ButtonLink>
         </SideNoteContainer>
     );
 });

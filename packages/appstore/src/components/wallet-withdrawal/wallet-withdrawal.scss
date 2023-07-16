@@ -1,0 +1,17 @@
+.wallet-withdrawal {
+    display: flex;
+    gap: 2.4rem;
+
+    &__sidebar {
+        max-width: 288px;
+        width: 100%;
+
+        @include mobile {
+            display: none;
+        }
+    }
+
+    &__content {
+        flex: 1;
+    }
+}

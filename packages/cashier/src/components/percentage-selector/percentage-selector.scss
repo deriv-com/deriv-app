@@ -1,7 +1,9 @@
 .percentage-selector {
     display: flex;
     justify-content: space-around;
-    width: 36rem;
+    width: 100%;
+    gap: 4px;
+
     @include mobile {
         width: 100%;
     }
@@ -10,7 +12,8 @@
         cursor: pointer;
         background-color: var(--general-section-1);
         height: 2.4rem;
-        width: 8.7rem;
+        width: 100%;
+
         @include mobile {
             width: 95%;
         }
@@ -20,6 +23,8 @@
         align-items: center;
         display: flex;
         flex-direction: column;
+        flex: 1;
+
         @include mobile {
             flex: 1;
         }

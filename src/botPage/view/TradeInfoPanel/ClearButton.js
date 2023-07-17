@@ -22,8 +22,6 @@ const ClearButton = () => {
         }
     }, [is_bot_running, isRunning]);
 
-    globalObserver.register('bot.stop', () => setIsButtonDisabled(false));
-
     const confirmClearLog = () => {
         showDialog({
             title: translate('Are you sure?'),
@@ -38,7 +36,7 @@ const ClearButton = () => {
     };
     return (
         <button
-            title='Clear summary log'
+            title={translate('Clear summary log')}
             id='summaryClearButton'
             className='toolbox-button icon-clear'
             onClick={confirmClearLog}

@@ -96,10 +96,10 @@ const useAuthenticationStatusInfo = () => {
     return {
         // flags and statuses related to POA
         poa: {
+            status: poa_status,
             verified: poa_verified,
             pending: poa_pending,
             not_submitted: poa_not_submitted,
-            status: poa_status,
             need_submission: need_poa_submission,
             need_resubmission: need_poa_resubmission,
             acknowledged: poa_acknowledged,
@@ -116,23 +116,22 @@ const useAuthenticationStatusInfo = () => {
             maltainvest: {
                 verified: poi_verified_for_maltainvest,
                 pending: poi_pending_for_maltainvest,
+                not_submitted: poi_not_submitted_for_maltainvest,
                 need_submission: need_poi_for_maltainvest,
                 need_resubmission: poi_resubmit_for_maltainvest,
                 acknowledged: poi_acknowledged_for_maltainvest,
-                not_submitted: poi_not_submitted_for_maltainvest,
             },
             bvi_labuan_vanuatu: {
                 verified: poi_verified_for_bvi_labuan_vanuatu,
                 pending: poi_pending_for_bvi_labuan_vanuatu,
+                not_submitted: poi_not_submitted_for_bvi_labuan_vanuatu,
                 need_submission: need_poi_for_bvi_labuan_vanuatu,
                 need_resubmission: poi_resubmit_for_bvi_labuan_vanuatu,
                 acknowledged: poi_acknowledged_for_bvi_labuan_vanuatu,
-                not_submitted: poi_not_submitted_for_bvi_labuan_vanuatu,
             },
         },
 
         poi_poa: {
-            verified: poi_poa_verified_for_maltainvest || poi_poa_verified_for_bvi_labuan_vanuatu,
             verified_for_maltainvest: poi_poa_verified_for_maltainvest,
             verified_for_bvi_labuan_vanuatu: poi_poa_verified_for_bvi_labuan_vanuatu,
         },

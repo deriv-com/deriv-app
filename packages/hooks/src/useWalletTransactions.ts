@@ -62,8 +62,8 @@ const useWalletTransactions = (
     }, [data?.statement]);
 
     useEffect(() => {
-        if (is_complete_list || isLoading || !isSuccess) return;
-        if (data?.statement?.count === 0) setIsCompleteList(true);
+        if (is_complete_list || isLoading || !isSuccess || data.statement?.count === undefined) return;
+        if (data.statement.count < transactions_per_page) setIsCompleteList(true);
         const new_transactions = data?.statement?.transactions;
         if (new_transactions) setTransactions((prev: typeof transactions) => [...prev, ...new_transactions]);
     }, [is_complete_list, data?.statement, isLoading, isSuccess]);

@@ -24,6 +24,10 @@
 
     &__form {
         flex: 1;
+
+        &--cashier {
+            width: 36rem;
+        }
     }
 
     .withdraw__input {

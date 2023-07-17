@@ -117,7 +117,11 @@ const Redirect = ({
             break;
         }
         case 'payment_withdraw': {
-            history.push(routes.cashier_withdrawal);
+            if (localStorage.getItem('active_loginid').startsWith('CRW')) {
+                history.push(routes.traders_hub);
+            } else {
+                history.push(routes.cashier_withdrawal);
+            }
             redirected_to_route = true;
             break;
         }

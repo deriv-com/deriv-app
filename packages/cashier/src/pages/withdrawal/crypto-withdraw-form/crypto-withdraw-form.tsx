@@ -28,7 +28,7 @@ const Header = ({ currency }: THeaderProps) => {
     const currency_display_code = CryptoConfig.get()[currency].display_code;
 
     return (
-        <Text as='h2' color='prominent' weight='bold' align='left' className='cashier__header cashier__content-header'>
+        <Text as='h2' color='prominent' weight='bold' align='left'>
             <Localize
                 i18n_default_text='Withdraw {{currency}} ({{currency_symbol}}) to your wallet'
                 values={{
@@ -40,7 +40,7 @@ const Header = ({ currency }: THeaderProps) => {
     );
 };
 
-const CryptoWithdrawForm = observer(() => {
+const CryptoWithdrawForm = observer(({ is_wallet }: { is_wallet?: boolean }) => {
     const { client } = useStore();
     const {
         balance,
@@ -111,7 +111,7 @@ const CryptoWithdrawForm = observer(() => {
 
     return (
         <div className='cashier__wrapper crypto-withdraw-form__container' data-testid='dt_crypto_withdraw_form'>
-            <div className='crypto-withdraw-form__form'>
+            <div className={`crypto-withdraw-form__form ${!is_wallet ? 'crypto-withdraw-form__form--cashier' : ''}`}>
                 <Header currency={currency} />
                 <div className='crypto-withdraw-form__messages'>
                     <InlineMessage message={<Messages />} type='warning' />
@@ -180,7 +180,6 @@ const CryptoWithdrawForm = observer(() => {
                                 />
                                 <div className='crypto-withdraw-form__submit'>
                                     <Button
-                                        className='cashier__form-submit-button'
                                         is_disabled={
                                             !!validateAddress(values.address) ||
                                             !!converter_from_error ||
@@ -201,7 +200,7 @@ const CryptoWithdrawForm = observer(() => {
                 </Formik>
             </div>
 
-            {isCryptocurrency(currency) && <RecentTransaction />}
+            {is_wallet && isCryptocurrency(currency) && <RecentTransaction is_wallet={is_wallet} />}
         </div>
     );
 });

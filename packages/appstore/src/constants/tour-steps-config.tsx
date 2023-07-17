@@ -177,31 +177,6 @@ export const getWalletStepConfig = (): Step[] => [
             },
         },
     },
-    {
-        title: (
-            <React.Fragment>
-                <Text as='p' weight='bold' color='brand-red-coral'>
-                    {localize('Deriv Apps trading account')}
-                </Text>
-                <div className='toggle-account-type__divider' />
-            </React.Fragment>
-        ),
-        content: (
-            <Text as='p' size='xs'>
-                {localize(
-                    'This is your Deriv Apps trading account balance. Click Transfer to move funds between your Wallet and Deriv Apps trading account.'
-                )}
-            </Text>
-        ),
-        target: '.currency-switcher-container',
-        disableBeacon: true,
-        disableOverlayClose: true,
-        placement: 'left',
-        spotlightPadding: 0,
-        styles: {
-            spotlight: { borderRadius: '0.6rem' },
-        },
-    },
 ];
 
 export const tour_styles: Styles = {

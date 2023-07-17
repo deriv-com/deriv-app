@@ -243,32 +243,30 @@ describe('useTransferBetweenAccounts', () => {
     it('should be correct amount of transfer accounts', () => {
         const {
             result: {
-                current: { transfer_accounts },
+                current: { transfer_trading_accounts, transfer_wallets },
             },
         } = renderHook(() => useTransferBetweenAccounts(), { wrapper });
 
-        expect(Object.keys(transfer_accounts.accounts).length).toBe(4);
-        expect(Object.keys(transfer_accounts.wallets).length).toBe(1);
+        expect(Object.keys(transfer_trading_accounts).length).toBe(4);
+        expect(Object.keys(transfer_wallets).length).toBe(1);
     });
 
     it('all transfer accounts should have extended properties', () => {
         const {
             result: {
-                current: { transfer_accounts },
+                current: { transfer_trading_accounts, transfer_wallets },
             },
         } = renderHook(() => useTransferBetweenAccounts(), { wrapper });
 
-        Object.keys(transfer_accounts).forEach(key =>
-            Object.values(transfer_accounts[key as 'accounts' | 'wallets']).forEach(account => {
-                expect(account).toHaveProperty('active_wallet_icon');
-                expect(account).toHaveProperty('display_currency_code');
-                expect(account).toHaveProperty('gradient_class');
-                expect(account).toHaveProperty('icon');
-                expect(account).toHaveProperty('is_demo');
-                expect(account).toHaveProperty('shortcode');
-                expect(account).toHaveProperty('type');
-            })
-        );
+        Object.values({ ...transfer_trading_accounts, ...transfer_wallets }).forEach(account => {
+            expect(account).toHaveProperty('active_wallet_icon');
+            expect(account).toHaveProperty('display_currency_code');
+            expect(account).toHaveProperty('gradient_class');
+            expect(account).toHaveProperty('icon');
+            expect(account).toHaveProperty('is_demo');
+            expect(account).toHaveProperty('shortcode');
+            expect(account).toHaveProperty('type');
+        });
     });
 
     it('should return proper active account with extended properties', () => {

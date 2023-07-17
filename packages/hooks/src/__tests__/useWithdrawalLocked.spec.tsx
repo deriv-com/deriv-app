@@ -55,7 +55,7 @@ describe('useWithdrawalLocked', () => {
             },
             isLoading: false,
             isSuccess: true,
-        });
+        } as ReturnType<typeof mockUseAccountStatus>);
 
         const { result } = renderHook(useWithdrawalLocked, { wrapper });
 
@@ -76,7 +76,7 @@ describe('useWithdrawalLocked', () => {
             },
             isLoading: false,
             isSuccess: true,
-        });
+        } as ReturnType<typeof mockUseAccountStatus>);
 
         const { result: result_1 } = renderHook(useWithdrawalLocked, { wrapper });
 
@@ -94,7 +94,7 @@ describe('useWithdrawalLocked', () => {
             },
             isLoading: false,
             isSuccess: true,
-        });
+        } as ReturnType<typeof mockUseAccountStatus>);
 
         const { result: result_2 } = renderHook(useWithdrawalLocked, { wrapper });
 

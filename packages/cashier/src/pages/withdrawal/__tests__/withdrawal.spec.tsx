@@ -7,7 +7,6 @@ import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
 import { useCashierLocked, useCheck10kLimit, useWithdrawalLocked } from '@deriv/hooks';
-import { WithdrawalEmailVerificationModule } from '../../../modules/withdrawal-email-verification';
 
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 jest.mock('Components/cashier-container/virtual', () => jest.fn(() => 'Virtual'));

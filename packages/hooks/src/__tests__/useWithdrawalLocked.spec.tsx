@@ -36,6 +36,7 @@ describe('useWithdrawalLocked', () => {
         mockUseCheck10kLimit.mockReturnValue({
             is_10k_withdrawal_limit_reached: true,
             max_withdraw_amount: 10,
+            isSuccess: true,
         });
     });
 

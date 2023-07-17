@@ -3,18 +3,6 @@ import useAccountStatus from '../useAccountStatus';
 import useCheck10kLimit from '../useCheck10kLimit';
 import { useFetch } from '@deriv/api';
 
-const mock_get_account_status = {
-    get_account_status: {
-        authentication: {
-            identity: {
-                status: 'none',
-            },
-        },
-        cashier_validation: [],
-        status: [],
-    },
-};
-
 jest.mock('@deriv/api', () => ({
     ...jest.requireActual('@deriv/api'),
     useFetch: jest.fn(),

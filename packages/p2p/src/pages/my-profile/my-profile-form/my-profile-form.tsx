@@ -4,10 +4,10 @@ import { Field, Form, Formik } from 'formik';
 import { Observer } from 'mobx-react-lite';
 import { Button, DesktopWrapper, Input, Loading, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
-import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 import FormError from 'Components/section-error';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import { useStores } from 'Stores';
 
 const MyProfileForm = () => {
     const { general_store, my_profile_store } = useStores();

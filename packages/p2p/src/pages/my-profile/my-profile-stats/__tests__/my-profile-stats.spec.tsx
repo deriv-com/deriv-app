@@ -3,8 +3,8 @@ import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { isMobile } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { useStores } from 'Stores/index';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import { useStores } from 'Stores/index';
 import MyProfileStats from '../my-profile-stats';
 
 let mock_store: DeepPartial<ReturnType<typeof useStores>>;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useStores } from 'Stores/index';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores/index';
 import { payment_method_info_alipay } from '../../../__mocks__/mock-payment-method-data';
 import EditPaymentMethodForm from '../edit-payment-method-form';
 

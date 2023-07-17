@@ -1,8 +1,8 @@
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
-import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores';
 
 const ConfirmDeletePaymentMethodModal = () => {
     const { my_profile_store } = useStores();

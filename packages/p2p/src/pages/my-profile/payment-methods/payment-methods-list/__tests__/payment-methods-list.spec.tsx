@@ -1,8 +1,8 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useStores } from 'Stores/index';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import { useStores } from 'Stores/index';
 import {
     payment_method_info_alipay,
     payment_method_info_bank,

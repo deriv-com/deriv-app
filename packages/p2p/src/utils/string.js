@@ -1,3 +1,5 @@
+import { isMobile } from '@deriv/shared';
+
 export const toSentenceCase = string => {
     if (!string) {
         return '';
@@ -49,3 +51,5 @@ export const generateHexColourFromNickname = nickname => {
 };
 
 export const getShortNickname = nickname => nickname && nickname.substr(0, 2).toUpperCase();
+
+export const getTextSize = () => (isMobile() ? 'xxxs' : 'xs');

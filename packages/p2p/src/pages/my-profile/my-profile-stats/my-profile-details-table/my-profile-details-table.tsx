@@ -3,9 +3,9 @@ import classNames from 'classnames';
 import { Button, Money, Table, Text } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useStores } from 'Stores';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { Localize } from 'Components/i18next';
+import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores';
 
 const MyProfileDetailsTable = () => {
     const { general_store } = useStores();

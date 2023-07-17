@@ -3,9 +3,9 @@ import classNames from 'classnames';
 import { Button, Loading, Modal, Text } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores';
 
 const DailyLimitModal = () => {
     const { my_profile_store, general_store } = useStores();

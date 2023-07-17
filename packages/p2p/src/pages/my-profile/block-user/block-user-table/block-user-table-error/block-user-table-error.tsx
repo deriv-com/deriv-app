@@ -1,9 +1,9 @@
 import React from 'react';
 import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
-import { useStores } from 'Stores';
-import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { Localize, localize } from 'Components/i18next';
+import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import { useStores } from 'Stores';
 
 type TBlockUserTableErrorProps = {
     error_message: string;

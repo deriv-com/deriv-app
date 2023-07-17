@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
-import { useStores } from 'Stores/index';
 import { localize } from 'Components/i18next';
+import { useStores } from 'Stores/index';
 import BlockUserFilterModal from '../block-user-filter-modal';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {

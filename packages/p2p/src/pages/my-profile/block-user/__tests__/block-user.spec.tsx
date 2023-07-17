@@ -1,10 +1,10 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useStores } from 'Stores/index';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import { useStores } from 'Stores';
 import BlockUser from '../block-user';
 
 const mock_trade_partners_list = [

@@ -1,10 +1,10 @@
 import React from 'react';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper } from '@deriv/components';
 import { observer } from '@deriv/stores';
-import { useStores } from 'Stores';
-import { my_profile_tabs } from 'Constants/my-profile-tabs';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import { useStores } from 'Stores';
 import BlockUserList from './block-user-list';
 
 const BlockUser = () => {
@@ -34,6 +34,9 @@ const BlockUser = () => {
                     height_offset='80px'
                     is_flex
                     is_modal_open={my_profile_store.active_tab === my_profile_tabs.MY_COUNTERPARTIES}
+                    onClickClose={() => {
+                        // do nothing
+                    }}
                     page_header_className='buy-sell__modal-header'
                     page_header_text={localize('My counterparties')}
                     pageHeaderReturnFn={() => my_profile_store.setActiveTab(my_profile_tabs.MY_STATS)}

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Modal, RadioGroup, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
-import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores';
 
 const BlockUserFilterModal = () => {
     const { my_profile_store } = useStores();

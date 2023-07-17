@@ -1,8 +1,8 @@
 import React from 'react';
 import { screen, render, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useStores } from 'Stores/index';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores/index';
 import AddPaymentMethodForm from '../add-payment-method-form';
 
 let mock_store: DeepPartial<ReturnType<typeof useStores>>;

@@ -2,10 +2,10 @@ import React from 'react';
 import classNames from 'classnames';
 import { DesktopWrapper, MobileFullPageModal, MobileWrapper } from '@deriv/components';
 import { observer } from '@deriv/stores';
-import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import { useStores } from 'Stores';
 import BlockUser from '../block-user';
 import MyProfileForm from '../my-profile-form';
 import MyProfileStats from '../my-profile-stats';
@@ -38,6 +38,9 @@ const MyProfileContent = () => {
                         height_offset='80px'
                         is_modal_open
                         is_flex
+                        onClickClose={() => {
+                            // do nothing
+                        }}
                         page_header_className='buy-sell__modal-header'
                         page_header_text={localize('Add payment method')}
                         pageHeaderReturnFn={() => {

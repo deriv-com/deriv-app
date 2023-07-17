@@ -2,13 +2,14 @@ import React from 'react';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
 import { daysSince, isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
-import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import BlockUserCount from 'Pages/advertiser-page/block-user/block-user-count';
 import RecommendedBy from 'Components/recommended-by';
 import StarRating from 'Components/star-rating';
 import TradeBadge from 'Components/trade-badge';
 import UserAvatar from 'Components/user/user-avatar';
+import { useStores } from 'Stores';
+import { getTextSize } from 'Utils/string';
 import MyProfilePrivacy from '../my-profile-privacy';
 
 const MyProfileName = () => {
@@ -50,7 +51,7 @@ const MyProfileName = () => {
                                 <Text
                                     className='my-profile-name__rating__row'
                                     color='less-prominent'
-                                    size={isMobile() ? 'xxxs' : 'xs'}
+                                    size={getTextSize()}
                                 >
                                     {joined_since ? (
                                         <Localize
@@ -68,7 +69,7 @@ const MyProfileName = () => {
                                 <Text
                                     className='my-profile-name__rating__row'
                                     color='less-prominent'
-                                    size={isMobile() ? 'xxxs' : 'xs'}
+                                    size={getTextSize()}
                                 >
                                     {joined_since ? (
                                         <Localize
@@ -93,10 +94,10 @@ const MyProfileName = () => {
                                             star_size={isMobile() ? 17 : 20}
                                         />
                                         <div className='my-profile-name__rating__text'>
-                                            <Text color='prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                            <Text color='prominent' size={getTextSize()}>
                                                 {rating_average_decimal}
                                             </Text>
-                                            <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                            <Text color='less-prominent' size={getTextSize()}>
                                                 {rating_count === 1 ? (
                                                     <Localize
                                                         i18n_default_text='({{number_of_ratings}} rating)'
@@ -120,7 +121,7 @@ const MyProfileName = () => {
                                 </React.Fragment>
                             ) : (
                                 <div className='my-profile-name__rating__row'>
-                                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+                                    <Text color='less-prominent' size={getTextSize()}>
                                         <Localize i18n_default_text='Not rated yet' />
                                     </Text>
                                 </div>

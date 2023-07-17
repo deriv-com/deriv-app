@@ -2,9 +2,10 @@ import React from 'react';
 import { Icon, Money, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores';
+import { getTextSize } from 'Utils/string';
 
 const MyProfileBalance = () => {
     const { general_store } = useStores();
@@ -15,13 +16,13 @@ const MyProfileBalance = () => {
 
     return (
         <div className='my-profile-balance'>
-            <div className='my-profile-balance--column'>
-                <div className='my-profile-balance--row'>
-                    <Text color='less-prominent' size={isMobile() ? 'xxxs' : 'xs'}>
+            <div className='my-profile-balance__column'>
+                <div className='my-profile-balance__row'>
+                    <Text color='less-prominent' size={getTextSize()}>
                         <Localize i18n_default_text='Available Deriv P2P balance' />
                     </Text>
                     <Icon
-                        className='my-profile-balance--icon'
+                        className='my-profile-balance__icon'
                         color='disabled'
                         data_testid='dt_my_profile_balance_icon'
                         icon='IcInfoOutline'

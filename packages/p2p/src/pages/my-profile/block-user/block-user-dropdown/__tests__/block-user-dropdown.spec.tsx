@@ -1,8 +1,8 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useStores } from 'Stores';
 import { localize } from 'Components/i18next';
+import { useStores } from 'Stores';
 import BlockUserDropdown from '../block-user-dropdown';
 
 const mock_store: DeepPartial<ReturnType<typeof useStores>> = {

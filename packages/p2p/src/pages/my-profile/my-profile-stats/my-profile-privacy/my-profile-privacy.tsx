@@ -2,8 +2,8 @@ import React from 'react';
 import { Text, ToggleSwitch } from '@deriv/components';
 import { isDesktop } from '@deriv/shared';
 import { observer } from '@deriv/stores';
-import { useStores } from 'Stores';
 import { Localize } from 'Components/i18next';
+import { useStores } from 'Stores';
 
 const MyProfilePrivacy = () => {
     const { general_store, my_profile_store } = useStores();

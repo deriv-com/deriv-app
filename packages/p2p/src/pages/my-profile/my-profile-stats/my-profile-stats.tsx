@@ -1,10 +1,10 @@
 import React from 'react';
 import { DesktopWrapper, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { observer } from '@deriv/stores';
-import { useStores } from 'Stores';
 import { Localize, localize } from 'Components/i18next';
 import SeparatorContainerLine from 'Components/separator-container-line';
 import { my_profile_tabs } from 'Constants/my-profile-tabs';
+import { useStores } from 'Stores';
 import MyProfileStatsTable from './my-profile-stats-table';
 import MyProfilePrivacy from './my-profile-privacy';
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { screen, render, act, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useStores } from 'Stores/index';
 import { localize } from 'Components/i18next';
+import { useStores } from 'Stores/index';
 import BlockUserList from '../block-user-list';
 
 const mock_trade_partners_list = [

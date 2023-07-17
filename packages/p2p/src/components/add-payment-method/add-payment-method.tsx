@@ -2,10 +2,10 @@ import React from 'react';
 import { localize } from 'Components/i18next';
 import { DesktopWrapper, MobileWrapper } from '@deriv/components';
 import { observer } from '@deriv/stores';
-import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import AddPaymentMethodForm from 'Components/add-payment-method-form';
 import PageReturn from 'Components/page-return';
+import { useStores } from 'Stores';
 import SelectPaymentMethod from './select-payment-method';
 
 type TAddPaymentMethodProps = {

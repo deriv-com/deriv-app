@@ -22,7 +22,7 @@ import AccountList from './account-switcher-account-list.jsx';
 import AccountWrapper from './account-switcher-account-wrapper.jsx';
 import { getSortedAccountList, getSortedCFDList, isDemo } from './helpers';
 import { BinaryLink } from 'App/Components/Routes';
-import { useHasSetCurrency } from '@deriv/hooks';
+import { useHasSetCurrency, useLandingCompany } from '@deriv/hooks';
 
 const AccountSwitcher = ({
     available_crypto_currencies,
@@ -71,6 +71,9 @@ const AccountSwitcher = ({
     const [is_deriv_real_visible, setDerivRealVisible] = React.useState(true);
     const [is_non_eu_regulator_visible, setNonEuRegulatorVisible] = React.useState(true);
     const [is_eu_regulator_visible, setEuRegulatorVisible] = React.useState(true);
+
+    // const landing_comp  = useLandingCompany();
+    // console.log("landing_company data:", landing_comp);
 
     const wrapper_ref = React.useRef();
     const scroll_ref = React.useRef(null);

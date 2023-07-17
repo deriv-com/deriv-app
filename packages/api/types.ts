@@ -497,7 +497,12 @@ type TSocketEndpoints = {
         response: LandingCompanyDetailsResponse;
     };
     landing_company: {
-        request: LandingCompanyRequest;
+        request: Omit<LandingCompanyRequest, 'landing_company'> & {
+            /**
+             * Client's 2-letter country code (obtained from `residence_list` call).
+             */
+            landing_company: string;
+        };
         response: LandingCompanyResponse;
     };
     login_history: {

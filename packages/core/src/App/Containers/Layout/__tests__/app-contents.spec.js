@@ -1,26 +1,20 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { render, screen, waitFor } from '@testing-library/react';
-import { mockStore } from '@deriv/stores';
+import { mockStore, StoreProvider } from '@deriv/stores';
 import { ThemedScrollbars } from '@deriv/components';
 import AppContents from '../app-contents';
 
 let child_ref;
 
-const MockComp = ({ children }, ...props) => {
+const MockComp = props => {
     child_ref = React.useRef();
     return (
         <div {...props} ref={child_ref}>
-            {children}
+            {props.children}
         </div>
     );
 };
-
-jest.mock('Stores/connect.js', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
 
 jest.mock('@deriv/shared', () => ({
     ...jest.requireActual('@deriv/shared'),
@@ -32,29 +26,8 @@ jest.mock('@deriv/shared', () => ({
 
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
-    ThemedScrollbars: props => <MockComp {...props} />,
+    ThemedScrollbars: props => <MockComp {...props}>{props.children}</MockComp>,
 }));
-
-const { client, ui, common } = mockStore({});
-
-const mock_props = {
-    is_eu_country: client.is_eu_country,
-    is_eu: client.is_eu,
-    is_logged_in: client.is_logged_in,
-    is_logging_in: client.is_logging_in,
-    is_app_disabled: ui.is_app_disabled,
-    is_cashier_visible: ui.is_cashier_visible,
-    is_dark_mode: ui.is_dark_mode_on,
-    is_cfd_page: false,
-    is_positions_drawer_on: false,
-    is_route_modal_on: false,
-    notifyAppInstall: jest.fn(),
-    platform: common.platform,
-    setAppContentsScrollRef: jest.fn(),
-    pushDataLayer: jest.fn(),
-    identifyEvent: jest.fn(),
-    pageView: jest.fn(),
-};
 
 describe('<AppContents/>', () => {
     beforeEach(() => {
@@ -64,9 +37,40 @@ describe('<AppContents/>', () => {
         jest.restoreAllMocks();
     });
 
+    const mock = {
+        common: {
+            platform: 'dtrader',
+        },
+        gtm: {
+            pushDataLayer: jest.fn(),
+        },
+    };
+
+    const store = mockStore(mock);
+
+    const renderComponent = (store_config = store) => {
+        const new_store = {
+            ...store_config,
+        };
+        return render(
+            <BrowserRouter>
+                <StoreProvider store={new_store}>
+                    <AppContents />
+                </StoreProvider>
+            </BrowserRouter>
+        );
+    };
+
     it('should render the Cookie banner with Accept reject button', () => {
-        const new_props = { ...mock_props, is_eu_country: true };
-        render(<AppContents {...new_props} />, { wrapper: BrowserRouter });
+        const new_store = {
+            ...store,
+            client: {
+                ...store.client,
+                is_eu_country: true,
+            },
+        };
+
+        renderComponent(new_store);
 
         waitFor(async () => {
             expect(await screen.findByText('Don’t accept')).toBeInTheDocument();
@@ -75,8 +79,7 @@ describe('<AppContents/>', () => {
     });
 
     it('should not render the cookie banner when it is not a eu country', () => {
-        const new_props = { ...mock_props, is_eu_country: false };
-        render(<AppContents {...new_props} />, { wrapper: BrowserRouter });
+        renderComponent();
 
         waitFor(() => {
             expect(screen.queryByText('Don’t accept')).not.toBeInTheDocument();
@@ -85,8 +88,7 @@ describe('<AppContents/>', () => {
     });
 
     it('should move scroll to top', async () => {
-        const new_props = { ...mock_props, is_eu_country: false };
-        render(<AppContents {...new_props} />, { wrapper: BrowserRouter });
+        renderComponent();
 
         await waitFor(() => {
             expect(child_ref.current.scrollTop).toBe(0);

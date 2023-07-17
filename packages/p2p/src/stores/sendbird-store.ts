@@ -160,7 +160,7 @@ export default class SendbirdStore extends BaseStore {
                         onUnreadMemberStatusUpdated: this.onReadReceiptUpdated.bind(this),
                     })
                 );
-                this.initialiseOrderChannel();
+                await this.initialiseOrderChannel();
             }
         } catch (error) {
             this.setChatError();
@@ -185,10 +185,10 @@ export default class SendbirdStore extends BaseStore {
         }
     }
 
-    initialiseOrderMessages() {
+    async initialiseOrderMessages() {
         this.setHasChatError(false);
         try {
-            const chat_messages = this.getPreviousMessages();
+            const chat_messages = await this.getPreviousMessages();
             if (chat_messages && chat_messages.length > 0) {
                 this.setChannelMessages(chat_messages.map(msg => convertFromChannelMessage(msg)));
             }
@@ -199,8 +199,8 @@ export default class SendbirdStore extends BaseStore {
         }
     }
 
-    getPreviousMessages(timestamp: number | null = null) {
-        if (!this.active_chat_channel) return;
+    async getPreviousMessages(timestamp: number | null = null) {
+        if (!this.active_chat_channel) return null;
         const chat_messages: Array<UserMessage | FileMessage> = [];
 
         const is_inclusive_of_timestamp = false;
@@ -210,26 +210,21 @@ export default class SendbirdStore extends BaseStore {
 
         const messages_timestamp =
             timestamp || toMoment(this.root_store.general_store.server_time.get()).utc().valueOf();
-        this.active_chat_channel
-            ?.getMessagesByTimestamp(messages_timestamp, {
-                isInclusive: is_inclusive_of_timestamp,
-                prevResultSize: result_size,
-                nextResultSize: result_size,
-                reverse: reverse_results,
-                messageTypeFilter: MessageTypeFilter.ALL,
-                customTypesFilter: custom_type,
-            })
-            .then(messages => {
-                messages.forEach(message => {
-                    if (message.isUserMessage() || message.isFileMessage()) {
-                        chat_messages.push(message);
-                    }
-                });
-                return chat_messages;
-            })
-            .catch(() => {
-                this.setHasChatError(true);
-            });
+
+        const retrieved_messages = await this.active_chat_channel?.getMessagesByTimestamp(messages_timestamp, {
+            isInclusive: is_inclusive_of_timestamp,
+            prevResultSize: result_size,
+            nextResultSize: result_size,
+            reverse: reverse_results,
+            messageTypeFilter: MessageTypeFilter.ALL,
+            customTypesFilter: custom_type,
+        });
+        retrieved_messages?.forEach(message => {
+            if (message.isUserMessage() || message.isFileMessage()) {
+                chat_messages.push(message);
+            }
+        });
+        return chat_messages;
     }
 
     handleP2pAdvertiserInfo(response: Record<string, P2PAdvertiserCreate | P2PAdvertiserInfo>) {
@@ -311,20 +306,23 @@ export default class SendbirdStore extends BaseStore {
                         chat_message.created_at < prev_created_at ? chat_message.created_at : prev_created_at,
                     Infinity
                 );
-                try {
-                    const chat_messages = this.getPreviousMessages(oldest_message_timestamp);
-                    if (chat_messages && chat_messages.length > 0) {
-                        const previous_messages = chat_messages.map(chat_message =>
-                            convertFromChannelMessage(chat_message)
-                        );
+                this.getPreviousMessages(oldest_message_timestamp)
+                    .then(chat_messages => {
+                        if (chat_messages && chat_messages.length > 0) {
+                            const previous_messages = chat_messages.map(chat_message =>
+                                convertFromChannelMessage(chat_message)
+                            );
 
-                        this.replaceChannelMessage(0, 0, previous_messages[0]);
-                    }
-                } catch (error) {
-                    this.setHasChatError(true);
-                }
+                            this.replaceChannelMessage(0, 0, previous_messages[0]);
+                        }
+                    })
+                    .catch(() => {
+                        this.setHasChatError(true);
+                    });
             } else {
-                this.markMessagesAsRead(true);
+                (async () => {
+                    await this.markMessagesAsRead(true);
+                })();
             }
         }, 1000);
     }
@@ -337,7 +335,11 @@ export default class SendbirdStore extends BaseStore {
     }
 
     registerEventListeners() {
-        const markMessagesAsReadCheckScroll = () => this.markMessagesAsRead(true);
+        const markMessagesAsReadCheckScroll = () => {
+            (async () => {
+                await this.markMessagesAsRead(true);
+            })();
+        };
         window.addEventListener('focus', markMessagesAsReadCheckScroll);
         return () => window.removeEventListener('focus', markMessagesAsReadCheckScroll);
     }

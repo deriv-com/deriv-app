@@ -651,11 +651,9 @@ type TTradersHubStore = {
     setWalletModalActiveTab: (tab?: 'Deposit' | 'Withdraw' | 'Transfer' | 'Transactions') => void;
     active_modal_wallet_id?: string;
     setWalletModalActiveWalletID: (wallet_id?: string) => void;
-    toggleAccountTypeModalVisibility: () => void;
     getAccount: () => void;
     showTopUpModal: (existing_account: Partial<ExistingMT5Account>) => void;
     startTrade: (platform: string, account: Partial<ExistingMT5Account>) => void;
-    can_get_more_cfd_mt5_accounts: boolean;
     has_any_real_account: boolean;
 };
 

@@ -3,7 +3,7 @@ import useCheck10kLimit from './useCheck10kLimit';
 
 const useIsAskFinancialRiskApprovalNeeded = () => {
     const { modules } = useStore();
-    const { is_ask_financial_risk_approval } = modules?.cashier.error;
+    const { is_ask_financial_risk_approval } = modules?.cashier.error || false;
 
     const { is_10k_withdrawal_limit_reached: is_10K_limit, isSuccess } = useCheck10kLimit();
 

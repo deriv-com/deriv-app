@@ -9,7 +9,7 @@ type TUseWithdrawalLocked = {
 
 const useWithdrawalLocked = (): TUseWithdrawalLocked => {
     const { modules } = useStore();
-    const { is_ask_authentication, is_ask_financial_risk_approval } = modules?.cashier.error;
+    const { is_ask_authentication, is_ask_financial_risk_approval } = modules?.cashier.error || false;
 
     const { data: get_account_status, statuses, isLoading, isSuccess } = useAccountStatus();
 

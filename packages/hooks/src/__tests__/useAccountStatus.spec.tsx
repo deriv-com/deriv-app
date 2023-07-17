@@ -32,6 +32,7 @@ describe('useAccountStatus', () => {
         mockUseCheck10kLimit.mockReturnValue({
             is_10k_withdrawal_limit_reached: false,
             max_withdraw_amount: 10,
+            isSuccess: true,
         });
     });
 
@@ -52,6 +53,7 @@ describe('useAccountStatus', () => {
         mockUseCheck10kLimit.mockReturnValue({
             is_10k_withdrawal_limit_reached: true,
             max_withdraw_amount: 10,
+            isSuccess: true,
         });
         const { result } = renderHook(useAccountStatus);
         const { statuses } = result.current;
@@ -63,6 +65,7 @@ describe('useAccountStatus', () => {
         mockUseCheck10kLimit.mockReturnValue({
             is_10k_withdrawal_limit_reached: true,
             max_withdraw_amount: 10,
+            isSuccess: true,
         });
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
@@ -84,6 +87,7 @@ describe('useAccountStatus', () => {
         mockUseCheck10kLimit.mockReturnValue({
             is_10k_withdrawal_limit_reached: false,
             max_withdraw_amount: 10,
+            isSuccess: true,
         });
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
@@ -161,6 +165,7 @@ describe('useAccountStatus', () => {
         mockUseCheck10kLimit.mockReturnValue({
             is_10k_withdrawal_limit_reached: true,
             max_withdraw_amount: 10,
+            isSuccess: true,
         });
 
         const { result: result_1 } = renderHook(useAccountStatus);
@@ -184,6 +189,7 @@ describe('useAccountStatus', () => {
         mockUseCheck10kLimit.mockReturnValue({
             is_10k_withdrawal_limit_reached: false,
             max_withdraw_amount: 10,
+            isSuccess: true,
         });
 
         const { result: result_2 } = renderHook(useAccountStatus);
@@ -208,6 +214,7 @@ describe('useAccountStatus', () => {
         mockUseCheck10kLimit.mockReturnValue({
             is_10k_withdrawal_limit_reached: true,
             max_withdraw_amount: 10,
+            isSuccess: true,
         });
 
         const { result: result_1 } = renderHook(useAccountStatus);

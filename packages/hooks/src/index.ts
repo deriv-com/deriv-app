@@ -1,6 +1,5 @@
 export { default as useAccountTransferVisible } from './useAccountTransferVisible';
 export { default as useActiveWallet } from './useActiveWallet';
-export { default as useActiveWalletCFDAccounts } from './useActiveWalletCFDAccounts';
 export { default as useAuthorize } from './useAuthorize';
 export { default as useAvailableWallets } from './useAvailableWallets';
 export { default as useCFDAccounts } from './useCFDAccounts';
@@ -16,6 +15,7 @@ export { default as useDepositCryptoAddress } from './useDepositCryptoAddress';
 export { default as useDepositFiatAddress } from './useDepositFiatAddress';
 export { default as useDepositLocked } from './useDepositLocked';
 export { default as useExchangeRate } from './useExchangeRate';
+export { default as useExistingCFDAccounts } from './useExistingCFDAccounts';
 export { default as useFeatureFlags } from './useFeatureFlags';
 export { default as useFiatAccountList } from './useFiatAccountList';
 export { default as useHasActiveRealAccount } from './useHasActiveRealAccount';

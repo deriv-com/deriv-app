@@ -2,8 +2,8 @@ import { useMemo } from 'react';
 import { useStore } from '@deriv/stores';
 import { useFetch } from '@deriv/api';
 import useActiveWallet from './useActiveWallet';
-import useActiveWalletCFDAccounts from './useActiveWalletCFDAccounts';
 import useCurrencyConfig from './useCurrencyConfig';
+import useExistingCFDAccounts from './useExistingCFDAccounts';
 import useWalletsList from './useWalletsList';
 
 const useTransferBetweenAccounts = () => {
@@ -20,8 +20,8 @@ const useTransferBetweenAccounts = () => {
 
     const {
         data: { derivez_accounts, dxtrade_accounts, mt5_accounts },
-        is_success: is_cfd_accounts_loaded,
-    } = useActiveWalletCFDAccounts();
+        isSuccess: is_cfd_accounts_loaded,
+    } = useExistingCFDAccounts();
 
     const { data, ...rest } = useFetch('transfer_between_accounts', {
         payload: { accounts: 'all' },
@@ -59,7 +59,7 @@ const useTransferBetweenAccounts = () => {
 
                         const cfd_icon = all_linked_cfd_accounts.find(
                             cfd_account => account.loginid && cfd_account.loginid?.includes(account.loginid)
-                        )?.icon;
+                        )?.transfer_icon;
 
                         trading_accounts[account.loginid] = {
                             ...account,

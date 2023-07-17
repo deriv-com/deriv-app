@@ -54,7 +54,7 @@ const TransferAccountList = ({
                         >
                             <div className='transfer-account-selector__list-header'>
                                 <Text as='div' size={is_mobile ? 'xxxs' : 'xs'} weight='bold'>
-                                    {key === 'accounts' ? (
+                                    {key === 'trading_accounts' ? (
                                         <Localize
                                             i18n_default_text='Trading accounts linked with {{wallet}}'
                                             values={{

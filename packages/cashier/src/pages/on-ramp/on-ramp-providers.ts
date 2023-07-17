@@ -41,7 +41,11 @@ const createBanxaProvider = (store: OnRampStore) => ({
                     const { url } = response.service_token.banxa;
 
                     if (url) {
-                        window.open(url);
+                        // Don't remove this as we can't use window.open here since it will not work on safari.
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.target = '_blank';
+                        link.click();
                     }
 
                     // Resolving empty will/should redirect user.

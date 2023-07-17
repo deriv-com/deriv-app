@@ -1,14 +1,10 @@
 import React from 'react';
 import { act, render, screen, waitFor, fireEvent, userEvent } from '@testing-library/react';
 import ClosingAccountReason from '../closing-account-reason';
-
-jest.mock('Stores/connect', () => ({
-    __esModule: true,
-    default: 'mockedDefaultExport',
-    connect: () => Component => Component,
-}));
+import { mockStore, StoreProvider } from '@deriv/stores';
 
 describe('<ClosingAccountReason />', () => {
+    let store = mockStore();
     beforeAll(() => {
         const modal_root_el = document.createElement('div');
         modal_root_el.setAttribute('id', 'modal_root');
@@ -21,14 +17,22 @@ describe('<ClosingAccountReason />', () => {
     });
 
     test('Should render properly', async () => {
-        render(<ClosingAccountReason />);
+        render(
+            <StoreProvider store={store}>
+                <ClosingAccountReason />
+            </StoreProvider>
+        );
         await waitFor(() => {
             screen.getAllByText(/Please tell us why you’re leaving/i);
         });
     });
 
     test('Should be disabled when no reason has been selected', async () => {
-        render(<ClosingAccountReason />);
+        render(
+            <StoreProvider store={store}>
+                <ClosingAccountReason />
+            </StoreProvider>
+        );
 
         // clicking the checkbox twice to select and unselect
         fireEvent.click(screen.getByRole('checkbox', { name: /I have other financial priorities./i }));
@@ -43,7 +47,11 @@ describe('<ClosingAccountReason />', () => {
     });
 
     test('should reduce remaining chars', async () => {
-        render(<ClosingAccountReason />);
+        render(
+            <StoreProvider store={store}>
+                <ClosingAccountReason />
+            </StoreProvider>
+        );
 
         expect(screen.getByText(/Remaining characters: 110/i)).toBeInTheDocument();
 

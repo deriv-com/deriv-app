@@ -11,7 +11,7 @@ type TTransferAccountList = {
     selected_account?: TTransferAccount;
     setIsListModalOpen: (value: boolean) => void;
     setSelectedAccount: React.Dispatch<React.SetStateAction<TTransferAccount | undefined>>;
-    transfer_accounts: Record<'accounts' | 'wallets', Record<string, TTransferAccount>>;
+    transfer_accounts: Record<'trading_accounts' | 'wallets', Record<string, TTransferAccount>>;
     transfer_hint?: string | JSX.Element;
     wallet_name?: string;
 };
@@ -31,7 +31,7 @@ const TransferAccountList = ({
     const is_single_list = React.useMemo(
         () =>
             Object.keys(transfer_accounts).filter(
-                key => Object.keys(transfer_accounts[key as 'accounts' | 'wallets']).length > 0
+                key => Object.keys(transfer_accounts[key as 'trading_accounts' | 'wallets']).length > 0
             ).length === 1,
         [transfer_accounts]
     );
@@ -39,7 +39,7 @@ const TransferAccountList = ({
     return (
         <div className='transfer-account-selector__list__container'>
             {Object.keys(transfer_accounts).map((key, idx) => {
-                if (Object.values(transfer_accounts[key as 'accounts' | 'wallets']).length === 0) return null;
+                if (Object.values(transfer_accounts[key as 'trading_accounts' | 'wallets']).length === 0) return null;
 
                 return (
                     <React.Fragment key={idx}>
@@ -67,7 +67,7 @@ const TransferAccountList = ({
                                 <TitleLine />
                             </div>
                             <div className='transfer-account-selector__list-items'>
-                                {Object.values(transfer_accounts[key as 'accounts' | 'wallets']).map(
+                                {Object.values(transfer_accounts[key as 'trading_accounts' | 'wallets']).map(
                                     (account, index) => (
                                         <WalletTransferTile
                                             key={index}

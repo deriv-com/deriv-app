@@ -51,17 +51,17 @@ const useTransferBetweenAccounts = () => {
         });
 
         return {
-            accounts:
+            trading:
                 accounts?.reduce(
-                    (all_accounts, account) => {
-                        if (account.account_type === 'wallet') return all_accounts;
-                        if (!account.loginid) return all_accounts;
+                    (all_trading_accounts, account) => {
+                        if (account.account_type === 'wallet') return all_trading_accounts;
+                        if (!account.loginid) return all_trading_accounts;
 
                         const cfd_icon = all_linked_cfd_accounts.find(
                             cfd_account => account.loginid && cfd_account.loginid?.includes(account.loginid)
                         )?.icon;
 
-                        all_accounts[account.loginid] = {
+                        all_trading_accounts[account.loginid] = {
                             ...account,
                             gradient_class: active_wallet?.gradient_card_class,
                             icon: account.account_type === 'trading' ? trading_apps_icon : cfd_icon,
@@ -72,7 +72,7 @@ const useTransferBetweenAccounts = () => {
                             }),
                         };
 
-                        return all_accounts;
+                        return all_trading_accounts;
                     },
                     {} as Record<
                         string,
@@ -136,7 +136,8 @@ const useTransferBetweenAccounts = () => {
     return {
         ...rest,
         active_wallet: modified_active_wallet,
-        transfer_accounts: modified_transfer_accounts,
+        transfer_trading_accounts: modified_transfer_accounts.trading,
+        transfer_wallets: modified_transfer_accounts.wallets,
     };
 };
 

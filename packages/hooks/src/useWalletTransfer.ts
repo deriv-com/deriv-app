@@ -19,14 +19,14 @@ const useWalletTransfer = () => {
         if (from_account?.loginid === active_wallet?.loginid) {
             return {
                 trading_accounts,
-                wallets: Object.fromEntries(
+                wallet_accounts: Object.fromEntries(
                     Object.entries(wallet_accounts).filter(
                         ([key]) => active_wallet?.loginid && !key.includes(active_wallet?.loginid)
                     )
                 ),
             };
         }
-        return { trading_accounts: {}, wallets: { [active_wallet?.loginid]: active_wallet } };
+        return { trading_accounts: {}, wallet_accounts: { [active_wallet?.loginid]: active_wallet } };
     }, [active_wallet, from_account?.loginid, trading_accounts, wallet_accounts]);
 
     //this useEffect populates from/to accounts with updated values, if they were updated in the background

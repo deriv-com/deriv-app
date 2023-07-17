@@ -2,45 +2,65 @@ import React from 'react';
 import { Text, StaticUrl, Button } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
-import { isCryptocurrency, routes } from '@deriv/shared';
-import { TWalletAccount } from 'Types';
+import { isCryptocurrency } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { useHistory } from 'react-router';
 import WalletFiatCFD from './wallet-fiat-cfd';
+import { useActiveWallet } from '@deriv/hooks';
+import PlatformLoader from 'Components/pre-loader/platform-loader';
 
 type TProps = {
-    wallet_account: TWalletAccount;
     fiat_wallet_currency?: string;
 };
 
-const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'USD' }: TProps) => {
-    const history = useHistory();
+const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) => {
     const {
         modules: { cfd },
         ui,
+        client,
+        traders_hub,
     } = useStore();
+    const wallet_account = useActiveWallet();
 
-    const { currency } = wallet_account;
+    const currency = wallet_account?.currency;
 
     const { toggleCompareAccountsModal } = cfd;
-    const { is_mobile } = ui;
+    const { is_mobile, setIsWalletModalVisible } = ui;
+    const { setWalletModalActiveWalletID, setWalletModalActiveTab } = traders_hub;
+    const { is_landing_company_loaded, is_logging_in, is_switching } = client;
+
+    if (!wallet_account || !is_landing_company_loaded || is_switching || is_logging_in)
+        return (
+            <div className='wallet-content__loader'>
+                <PlatformLoader />
+            </div>
+        );
+
     const accounts_sub_text =
-        wallet_account.landing_company_name === 'svg' ? localize('Compare accounts') : localize('Account information');
+        wallet_account.landing_company_name === 'svg' || wallet_account.is_virtual
+            ? localize('Compare accounts')
+            : localize('Account information');
 
     const is_fiat = !isCryptocurrency(currency) && currency !== 'USDT';
 
     const CryptoCFDs = () => (
         <div className='wallet-content__cfd-crypto'>
-            <Text size='s' weight='bold' line_height='xxl' as='p' className='wallet-content__cfd-crypto-title'>
+            <Text
+                size={is_mobile ? 'xs' : 's'}
+                weight='bold'
+                line_height={is_mobile ? 'xl' : 'xxl'}
+                as='p'
+                className='wallet-content__cfd-crypto-title'
+            >
                 <Localize
                     i18n_default_text='To trade CFDs, you’ll need to use your {{fiat_wallet_currency}} Wallet. Click Transfer to move your {{currency}} to your {{fiat_wallet_currency}} Wallet.'
                     values={{ fiat_wallet_currency, currency }}
                 />
             </Text>
             <Button
-                onClick={(e: MouseEvent) => {
-                    e.stopPropagation();
-                    history.push(routes.cashier_acc_transfer);
+                onClick={() => {
+                    setWalletModalActiveTab('Transfer');
+                    setIsWalletModalVisible(true);
+                    setWalletModalActiveWalletID(wallet_account.loginid);
                 }}
                 className='wallet-content__cfd-crypto-button'
                 primary_light
@@ -52,7 +72,7 @@ const WalletCFDsListing = observer(({ wallet_account, fiat_wallet_currency = 'US
 
     return (
         <ListingContainer
-            className='wallet-content__border-reset'
+            className='wallet-content__border-reset wallet-content__cfd'
             title={
                 !is_mobile && (
                     <div className='cfd-accounts__title'>

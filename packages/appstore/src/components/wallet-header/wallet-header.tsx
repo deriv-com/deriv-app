@@ -1,6 +1,5 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
-import { observer, useStore } from '@deriv/stores';
 import classNames from 'classnames';
 import WalletCurrencyCard from './wallet-currency-card';
 import WalletHeaderButtons from './wallet-header-buttons';
@@ -8,6 +7,7 @@ import WalletHeaderTitle from './wallet-header-title';
 import WalletHeaderBalance from './wallet-header-balance';
 import { TWalletAccount } from 'Types';
 import { getWalletHeaderButtons } from 'Constants/utils';
+import { observer, useStore } from '@deriv/stores';
 import './wallet-header.scss';
 
 type TWalletHeader = {
@@ -21,7 +21,7 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
     // const [is_loading, setIsLoading] = useState(false);
     const { multipliers_account_status } = traders_hub;
 
-    const wallet_btns = getWalletHeaderButtons(wallet_account.is_demo);
+    const wallet_buttons = getWalletHeaderButtons(wallet_account.is_demo);
 
     const onArrowClickHandler = async () => {
         // setIsLoading(true);
@@ -43,6 +43,8 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
                     is_demo={wallet_account.is_demo}
                     currency={wallet_account.currency}
                     gradient_class={wallet_account.gradient_card_class}
+                    icon={wallet_account.icon}
+                    icon_type={wallet_account.currency_config?.type}
                 />
                 <div className='wallet-header__description'>
                     <WalletHeaderTitle
@@ -53,7 +55,7 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
                     <WalletHeaderButtons
                         is_disabled={!!multipliers_account_status}
                         is_open={is_active}
-                        btns={wallet_btns}
+                        buttons={wallet_buttons}
                         wallet_account={wallet_account}
                     />
                 </div>
@@ -72,4 +74,5 @@ const WalletHeader = observer(({ wallet_account }: TWalletHeader) => {
         </div>
     );
 });
+
 export default WalletHeader;

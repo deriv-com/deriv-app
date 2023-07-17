@@ -36,7 +36,15 @@ const AccountLimits = observer(
         should_show_article = true,
     }: TAccountLimits) => {
         const { client, common } = useStore();
-        const { account_limits, currency, getLimits, is_fully_authenticated, is_virtual, is_switching } = client;
+        const {
+            account_limits,
+            account_status,
+            currency,
+            getLimits,
+            is_fully_authenticated,
+            is_virtual,
+            is_switching,
+        } = client;
         const { is_from_derivgo } = common;
         const isMounted = useIsMounted();
         const [is_loading, setLoading] = React.useState(true);
@@ -55,10 +63,10 @@ const AccountLimits = observer(
         }, []);
 
         React.useEffect(() => {
-            if (!is_virtual && account_limits && is_loading && typeof is_fully_authenticated !== 'undefined') {
+            if (!is_virtual && account_limits && is_loading && Object.keys(account_status).length > 0) {
                 setLoading(false);
             }
-        }, [account_limits, is_virtual, is_loading, is_fully_authenticated]);
+        }, [account_limits, is_virtual, is_loading, account_status]);
 
         React.useEffect(() => {
             if (typeof setIsPopupOverlayShown === 'function') {
@@ -313,20 +321,18 @@ const AccountLimits = observer(
                                                 {!is_appstore && (
                                                     <tr>
                                                         <AccountLimitsTableCell align='right'>
-                                                            <div>
-                                                                <Text
-                                                                    as='p'
-                                                                    size='xxs'
-                                                                    color='less-prominent'
-                                                                    line_height='xs'
-                                                                >
-                                                                    {is_fully_authenticated ? (
-                                                                        <Localize i18n_default_text='Your account is fully authenticated and your withdrawal limits have been lifted.' />
-                                                                    ) : (
-                                                                        <Localize i18n_default_text='Stated limits are subject to change without prior notice.' />
-                                                                    )}
-                                                                </Text>
-                                                            </div>
+                                                            <Text
+                                                                as='span'
+                                                                size='xxs'
+                                                                color='less-prominent'
+                                                                line_height='xs'
+                                                            >
+                                                                {is_fully_authenticated ? (
+                                                                    <Localize i18n_default_text='Your account is fully authenticated and your withdrawal limits have been lifted.' />
+                                                                ) : (
+                                                                    <Localize i18n_default_text='Stated limits are subject to change without prior notice.' />
+                                                                )}
+                                                            </Text>
                                                         </AccountLimitsTableCell>
                                                     </tr>
                                                 )}

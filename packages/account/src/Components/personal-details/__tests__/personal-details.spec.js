@@ -72,17 +72,14 @@ const runCommonFormfieldsTests = () => {
     expect(screen.queryByTestId('tax_residence')).toBeInTheDocument();
     expect(screen.queryByTestId('tax_residence_mobile')).not.toBeInTheDocument();
 
-    expect(screen.getByPlaceholderText(/john/i)).toBeInTheDocument();
     expect(
         screen.getByText(/Please enter your first name as in your official identity documents./i)
     ).toBeInTheDocument();
 
-    expect(screen.getByPlaceholderText('Doe')).toBeInTheDocument();
     expect(
         screen.getByText(/Please enter your last name as in your official identity documents./i)
     ).toBeInTheDocument();
 
-    expect(screen.getByPlaceholderText(/01-07-1999/i)).toBeInTheDocument();
     expect(
         screen.getByText(/Please enter your date of birth as in your official identity documents./i)
     ).toBeInTheDocument();
@@ -98,7 +95,7 @@ const runCommonFormfieldsTests = () => {
 
     expect(screen.getByText(tax_residence_pop_over_text)).toBeInTheDocument();
 
-    expect(screen.getByPlaceholderText(/tax identification number/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/tax identification number/i)).toBeInTheDocument();
     const tax_identification_number_pop_over = screen.queryByTestId('tax_identification_number_pop_over');
     expect(tax_identification_number_pop_over).toBeInTheDocument();
 
@@ -347,7 +344,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(/family name\*/i)).toBeInTheDocument();
         expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/phone number\*/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/phone number\*/i)).toBeInTheDocument();
 
         runCommonFormfieldsTests();
     });
@@ -365,7 +362,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText(/last name\*/i)).toBeInTheDocument();
         expect(screen.getByText(/date of birth\*/i)).toBeInTheDocument();
         expect(screen.getByText(/phone number\*/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/phone number\*/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/phone number\*/i)).toBeInTheDocument();
 
         runCommonFormfieldsTests();
     });
@@ -384,7 +381,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.getByText('Last name')).toBeInTheDocument();
         expect(screen.getByText('Date of birth')).toBeInTheDocument();
         expect(screen.getByText('Phone number')).toBeInTheDocument();
-        expect(screen.getByPlaceholderText('Phone number')).toBeInTheDocument();
+        expect(screen.getByLabelText('Phone number')).toBeInTheDocument();
 
         runCommonFormfieldsTests();
     });
@@ -453,7 +450,7 @@ describe('<PersonalDetails/>', () => {
         expect(screen.queryByTestId('tax_residence_mobile')).toBeInTheDocument();
         expect(screen.queryByTestId('tax_residence')).not.toBeInTheDocument();
         expect(screen.getByText(/tax identification number/i)).toBeInTheDocument();
-        expect(screen.getByPlaceholderText(/tax identification number/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/tax identification number/i)).toBeInTheDocument();
         expect(screen.getByRole('heading', { name: /account opening reason/i })).toBeInTheDocument();
         expect(screen.queryByTestId('dti_dropdown_display')).not.toBeInTheDocument();
         expect(screen.queryByTestId('account_opening_reason_mobile')).toBeInTheDocument();

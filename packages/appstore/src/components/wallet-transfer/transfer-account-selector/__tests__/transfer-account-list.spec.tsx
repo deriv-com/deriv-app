@@ -15,10 +15,10 @@ describe('TransferAccountList', () => {
                 balance: 100,
                 currency: 'USD',
                 display_currency_code: 'USD',
-                gradient_class: '',
+                gradient_class: 'wallet-card__usd-bg',
                 icon: 'Icon',
                 is_demo: false,
-                loginid: '12345678',
+                loginid: 'CRW1000',
                 shortcode: 'svg',
                 type: 'fiat',
                 active_wallet_icon: 'Wallet Icon',
@@ -26,13 +26,13 @@ describe('TransferAccountList', () => {
             setIsListModalOpen: jest.fn(),
             setSelectedAccount: jest.fn(),
             transfer_accounts: {
-                accounts: [
-                    {
+                trading_accounts: {
+                    CR1000: {
                         account_type: 'trading',
                         balance: 10,
                         currency: 'USD',
                         display_currency_code: 'USD',
-                        gradient_class: '',
+                        gradient_class: 'wallet-card__usd-bg',
                         icon: 'Icon',
                         is_demo: false,
                         loginid: '1',
@@ -40,12 +40,12 @@ describe('TransferAccountList', () => {
                         type: 'fiat',
                         active_wallet_icon: 'IcCurrencyUsd',
                     },
-                    {
+                    MTR2000: {
                         account_type: 'mt5',
                         balance: 10,
                         currency: 'USD',
                         display_currency_code: 'USD',
-                        gradient_class: '',
+                        gradient_class: 'wallet-card__usd-bg',
                         icon: 'Icon',
                         is_demo: false,
                         loginid: '2',
@@ -53,14 +53,15 @@ describe('TransferAccountList', () => {
                         type: 'fiat',
                         active_wallet_icon: 'IcCurrencyUsd',
                     },
-                ],
-                wallets: [
-                    {
+                },
+
+                wallet_accounts: {
+                    CRW1000: {
                         account_type: 'wallet',
                         balance: 10000,
                         currency: 'USD',
                         display_currency_code: 'USD',
-                        gradient_class: '',
+                        gradient_class: 'wallet-card__usd-bg',
                         icon: 'Icon',
                         is_demo: false,
                         loginid: '3',
@@ -68,7 +69,7 @@ describe('TransferAccountList', () => {
                         type: 'fiat',
                         active_wallet_icon: 'IcCurrencyUsd',
                     },
-                ],
+                },
             },
             transfer_hint: 'Transfer hint',
             wallet_name: 'USD Wallet',
@@ -89,7 +90,7 @@ describe('TransferAccountList', () => {
     });
 
     it('Should render transfer hint for Wallets account list', () => {
-        mocked_props.transfer_accounts = { ...mocked_props.transfer_accounts, accounts: [] };
+        mocked_props.transfer_accounts = { ...mocked_props.transfer_accounts, trading_accounts: {} };
         render(<TransferAccountList {...mocked_props} />);
 
         expect(screen.getByText('Transfer hint')).toBeInTheDocument();

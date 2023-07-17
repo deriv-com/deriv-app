@@ -93,8 +93,8 @@ const ResetPasswordModal = ({
                     <div className='reset-password'>
                         <Form>
                             {status.reset_complete ? (
-                                <div className='reset-password__password-selection'>
-                                    <Text as='p' weight='bold' className='reset-password__heading'>
+                                <div className='reset-password__password-set'>
+                                    <Text align='center' as='p' weight='bold' className='reset-password__heading'>
                                         <Localize i18n_default_text='Your password has been changed' />
                                     </Text>
                                     <Text align='center' as='p' size='xxs' className='reset-password__subtext'>

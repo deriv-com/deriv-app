@@ -105,19 +105,21 @@ export const getWalletStepConfig = (): Step[] => [
         ),
         content: (
             <Text as='p' size='xs'>
-                {localize('This is your Wallet. You can see your total balance for this Wallet here.')}
+                {localize(
+                    'This is your Wallet. These are the functions that you can perform within this Wallet and you can conveniently view your total balance here.'
+                )}
             </Text>
         ),
         // The 'target' refers to the element where the spotlight will be positioned. If there are multiple elements with the same class name, the 'target' will select the first matching element.
         target: '.wallet-header',
         disableBeacon: true,
-        placement: 'bottom-end',
+        placement: 'bottom',
         hideBackButton: true,
         spotlightPadding: 0,
         styles: {
             spotlight: {
-                width: '115.2rem',
-                height: '8rem',
+                width: 1152,
+                height: 80,
                 borderRadius: '1.6rem 1.6rem 0rem 0rem',
             },
         },
@@ -140,7 +142,13 @@ export const getWalletStepConfig = (): Step[] => [
         target: '.wallet-header__balance-arrow-icon',
         disableBeacon: true,
         placement: 'left',
-        styles: { spotlight: { borderRadius: '50%' } },
+        styles: {
+            spotlight: {
+                width: 32,
+                height: 32,
+                borderRadius: '50%',
+            },
+        },
     },
     {
         title: (
@@ -161,7 +169,38 @@ export const getWalletStepConfig = (): Step[] => [
         target: '.wallet-header__description-buttons',
         disableBeacon: true,
         spotlightPadding: 8,
-        styles: { spotlight: { borderRadius: '4.8rem' } },
+        styles: {
+            spotlight: {
+                width: 504,
+                height: 32,
+                borderRadius: '4.8rem',
+            },
+        },
+    },
+    {
+        title: (
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize('Deriv Apps trading account')}
+                </Text>
+                <div className='toggle-account-type__divider' />
+            </React.Fragment>
+        ),
+        content: (
+            <Text as='p' size='xs'>
+                {localize(
+                    'This is your Deriv Apps trading account balance. Click Transfer to move funds between your Wallet and Deriv Apps trading account.'
+                )}
+            </Text>
+        ),
+        target: '.currency-switcher-container',
+        disableBeacon: true,
+        disableOverlayClose: true,
+        placement: 'left',
+        spotlightPadding: 0,
+        styles: {
+            spotlight: { borderRadius: '0.6rem' },
+        },
     },
 ];
 

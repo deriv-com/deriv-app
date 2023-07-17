@@ -57,7 +57,7 @@ const TradingHubOnboarding = ({
     const history = useHistory();
 
     const { data } = useWalletsList();
-    const first_loginid = data?.[0].loginid;
+    const first_loginid = data?.[0]?.loginid;
     const wallet = useActiveWallet();
 
     const handleSwitchAndToggle = async () => {

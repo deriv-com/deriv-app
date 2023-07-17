@@ -6,7 +6,7 @@ import { createBrowserHistory } from 'history';
 
 describe('<ErrorComponent/>', () => {
     let history;
-    const renderWithRouter = (component: React.ReactNode) => {
+    const renderWithRouter = (component: React.ReactElement) => {
         history = createBrowserHistory();
         return render(<Router history={history}>{component}</Router>);
     };
@@ -19,16 +19,17 @@ describe('<ErrorComponent/>', () => {
             value: { reload: jest.fn() },
         });
     });
+
     const mock_props = {
-        redirect_to: '/testurl',
-        redirect_label: 'testlabel',
         header: 'This is the error header',
         message: 'This is the error message',
-        redirectOnClick: jest.fn(),
+        redirect_to: '/test_url',
+        redirect_label: 'test_label',
         should_clear_error_on_click: true,
-        setError: jest.fn(),
         should_show_refresh: true,
         app_routing_history: [{ pathname: '/cashier' }],
+        redirectOnClick: jest.fn(),
+        setError: jest.fn(),
     };
 
     it('should show the actual error message when header and message is passed', () => {
@@ -47,37 +48,53 @@ describe('<ErrorComponent/>', () => {
         expect(refreshRequestText).not.toBeInTheDocument();
     });
 
+    it('should show actual message when header message is passed', () => {
+        renderWithRouter(<ErrorComponent {...mock_props} header={mock_props.header} />);
+        expect(screen.getByText(mock_props.header)).toBeInTheDocument();
+    });
+
+    it('should refresh the page when redirectOnClick is not passed', () => {
+        const redirectOnClick = null;
+        renderWithRouter(<ErrorComponent {...mock_props} redirectOnClick={redirectOnClick} />);
+        reloadFn();
+    });
+
     it('should refresh the page when redirectOnClick is not passed or empty', () => {
         const redirectOnClick = jest.fn();
         renderWithRouter(<ErrorComponent {...mock_props} redirectOnClick={redirectOnClick} />);
-        reloadFn(); // as defined above..
+        reloadFn();
         expect(window.location.reload).toHaveBeenCalled();
     });
 
     it('should show the redirect button label as refresh when there is no redirect_label', () => {
-        const redirectOnClick = jest.fn();
-        const redirect_to = '/testurl';
-
+        const redirectOnClick = null;
+        const redirect_to = '/test_url';
         renderWithRouter(
             <ErrorComponent
                 {...mock_props}
+                redirect_label={''}
                 redirect_to={redirect_to}
                 redirectOnClick={redirectOnClick}
-                redirect_label=''
                 should_show_refresh
             />
         );
+        reloadFn();
         expect(screen.getByText('Refresh')).toBeInTheDocument();
     });
 
     it('should trigger the history.listen and call the setError function when redirect button get clicked', () => {
         const redirectOnClick = jest.fn();
         const setError = jest.fn();
-        renderWithRouter(<ErrorComponent {...mock_props} redirectOnClick={redirectOnClick} setError={setError} />);
+        renderWithRouter(
+            <ErrorComponent
+                {...mock_props}
+                should_show_refresh={false}
+                redirectOnClick={redirectOnClick}
+                setError={setError}
+            />
+        );
 
-        fireEvent.click(screen.getByText('testlabel'));
-        if (typeof setError === 'function') {
-            expect(setError).toHaveBeenCalled();
-        }
+        fireEvent.click(screen.getByText('test_label'));
+        expect(setError).toHaveBeenCalled();
     });
 });

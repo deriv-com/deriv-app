@@ -67,7 +67,7 @@ export const buildDurationConfig = (
 
     const duration_maps = getDurationMaps();
 
-    if (/^tick|daily$/.test(contract.expiry_type)) {
+    if (/^(?:tick|daily)$/.test(contract.expiry_type)) {
         if (arr_units.indexOf(obj_min.unit) === -1) {
             arr_units.push(obj_min.unit);
         }

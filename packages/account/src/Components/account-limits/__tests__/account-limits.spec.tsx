@@ -380,9 +380,7 @@ describe('<AccountLimits/>', () => {
         );
 
         expect(
-            screen.getByRole('cell', {
-                name: /your account is fully authenticated and your withdrawal limits have been lifted\./i,
-            })
+            screen.getByText(/your account is fully authenticated and your withdrawal limits have been lifted\./i)
         ).toBeInTheDocument();
     });
 
@@ -473,7 +471,7 @@ describe('<AccountLimits/>', () => {
         expect(formatMoney).toHaveBeenCalledWith(store.client.currency, remainder, true);
     });
 
-    it('should show limit_notice message when is_appstore is true and is_fully_authenticated is false in mobile mode', () => {
+    it('should show limit_notice message when is_appstore is false and is_fully_authenticated is false in mobile mode', () => {
         store = mockStore({
             client: {
                 ...mock.client,
@@ -483,7 +481,7 @@ describe('<AccountLimits/>', () => {
         (isMobile as jest.Mock).mockReturnValue(true);
         (isDesktop as jest.Mock).mockReturnValue(false);
         render(
-            <PlatformContext.Provider value={{ is_appstore: true, is_deriv_crypto: false, is_pre_appstore: false }}>
+            <PlatformContext.Provider value={{ is_appstore: false, is_deriv_crypto: false, is_pre_appstore: false }}>
                 <BrowserRouter>
                     <StoreProvider store={store}>
                         <AccountLimits {...props} />

@@ -320,12 +320,12 @@ const AccountLimits = observer(
                                                 )}
                                                 {!is_appstore && (
                                                     <tr>
-                                                        <AccountLimitsTableCell align='right'>
+                                                        <div className='da-account-limits__text-container'>
                                                             <Text
-                                                                as='span'
-                                                                size='xxs'
+                                                                as='p'
+                                                                size={isMobile() ? 'xxxs' : 'xxs'}
                                                                 color='less-prominent'
-                                                                line_height='xs'
+                                                                line_height='s'
                                                             >
                                                                 {is_fully_authenticated ? (
                                                                     <Localize i18n_default_text='Your account is fully authenticated and your withdrawal limits have been lifted.' />
@@ -333,7 +333,7 @@ const AccountLimits = observer(
                                                                     <Localize i18n_default_text='Stated limits are subject to change without prior notice.' />
                                                                 )}
                                                             </Text>
-                                                        </AccountLimitsTableCell>
+                                                        </div>
                                                     </tr>
                                                 )}
                                             </tbody>

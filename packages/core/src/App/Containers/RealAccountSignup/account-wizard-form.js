@@ -19,7 +19,8 @@ const shouldShowPersonalAndAddressDetailsAndCurrency = ({ real_account_signup_ta
     real_account_signup_target !== 'samoa';
 
 export const getItems = props => {
-    console.log('getItems', props, shouldShowPersonalAndAddressDetailsAndCurrency);
+    console.log('getItems', props, shouldShowPersonalAndAddressDetailsAndCurrency(props));
+    console.log(currencySelectorConfig(props, CurrencySelector));
     return [
         ...(shouldShowPersonalAndAddressDetailsAndCurrency(props)
             ? [currencySelectorConfig(props, CurrencySelector)]

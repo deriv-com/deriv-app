@@ -359,7 +359,9 @@ export default class SendbirdStore extends BaseStore {
             () => this.chat_channel_url && this.has_chat_info,
             is_ready_to_intialise => {
                 if (is_ready_to_intialise) {
-                    this.initialiseChatWsConnection();
+                    (async () => {
+                        this.initialiseChatWsConnection();
+                    })();
                 } else {
                     this.terminateChatWsConnection();
                 }

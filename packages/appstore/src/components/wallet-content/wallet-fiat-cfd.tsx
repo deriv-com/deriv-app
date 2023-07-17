@@ -17,8 +17,8 @@ const WalletFiatCFD = observer(({ wallet_account }: TWalletFiatMT5) => {
         ui,
     } = useStore();
     const { available_dxtrade_accounts } = traders_hub;
-    const { toggleCompareAccountsModal } = cfd;
     const { is_mobile } = ui;
+    const { toggleCompareAccountsModal } = cfd;
     const accounts_sub_text =
         wallet_account.landing_company_name === 'svg' ? localize('Compare accounts') : localize('Account information');
 
@@ -37,7 +37,7 @@ const WalletFiatCFD = observer(({ wallet_account }: TWalletFiatMT5) => {
                 </Text>
             </div>
             <WalletFiatMT5Content />
-            {(available_dxtrade_accounts?.length || 0) > 0 && (
+            {available_dxtrade_accounts?.length > 0 && (
                 <div className='cfd-full-row'>
                     <Text line_height='m' weight='bold' color='prominent'>
                         {localize('Other CFDs')}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StaticUrl, Button } from '@deriv/components';
+import { Text, StaticUrl } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import { isCryptocurrency } from '@deriv/shared';
@@ -7,6 +7,7 @@ import { useStore, observer } from '@deriv/stores';
 import WalletFiatCFD from './wallet-fiat-cfd';
 import { useActiveWallet } from '@deriv/hooks';
 import PlatformLoader from 'Components/pre-loader/platform-loader';
+import WalletCryptoCFD from './wallet-crypto-cfd';
 
 type TProps = {
     fiat_wallet_currency?: string;
@@ -17,15 +18,13 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
         modules: { cfd },
         ui,
         client,
-        traders_hub,
     } = useStore();
     const wallet_account = useActiveWallet();
 
     const currency = wallet_account?.currency;
 
     const { toggleCompareAccountsModal } = cfd;
-    const { is_mobile, setIsWalletModalVisible } = ui;
-    const { setWalletModalActiveWalletID, setWalletModalActiveTab } = traders_hub;
+    const { is_mobile } = ui;
     const { is_landing_company_loaded, is_logging_in, is_switching } = client;
 
     if (!wallet_account || !is_landing_company_loaded || is_switching || is_logging_in)
@@ -41,34 +40,6 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
             : localize('Account information');
 
     const is_fiat = !isCryptocurrency(currency) && currency !== 'USDT';
-
-    const CryptoCFDs = () => (
-        <div className='wallet-content__cfd-crypto'>
-            <Text
-                size={is_mobile ? 'xs' : 's'}
-                weight='bold'
-                line_height={is_mobile ? 'xl' : 'xxl'}
-                as='p'
-                className='wallet-content__cfd-crypto-title'
-            >
-                <Localize
-                    i18n_default_text='To trade CFDs, you’ll need to use your {{fiat_wallet_currency}} Wallet. Click Transfer to move your {{currency}} to your {{fiat_wallet_currency}} Wallet.'
-                    values={{ fiat_wallet_currency, currency }}
-                />
-            </Text>
-            <Button
-                onClick={() => {
-                    setWalletModalActiveTab('Transfer');
-                    setIsWalletModalVisible(true);
-                    setWalletModalActiveWalletID(wallet_account.loginid);
-                }}
-                className='wallet-content__cfd-crypto-button'
-                primary_light
-            >
-                {localize('Transfer')}
-            </Button>
-        </div>
-    );
 
     return (
         <ListingContainer
@@ -99,7 +70,11 @@ const WalletCFDsListing = observer(({ fiat_wallet_currency = 'USD' }: TProps) =>
             }
             is_outside_grid_container={!is_fiat}
         >
-            {is_fiat ? <WalletFiatCFD wallet_account={wallet_account} /> : <CryptoCFDs />}
+            {is_fiat ? (
+                <WalletFiatCFD wallet_account={wallet_account} />
+            ) : (
+                <WalletCryptoCFD fiat_wallet_currency={fiat_wallet_currency} />
+            )}
         </ListingContainer>
     );
 });

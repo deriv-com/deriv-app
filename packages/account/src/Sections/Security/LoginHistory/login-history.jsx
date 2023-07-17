@@ -1,11 +1,10 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import { Loading, Table, Text, ThemedScrollbars } from '@deriv/components';
 import Bowser from 'bowser';
 import { convertDateFormat, isMobile, isDesktop, PlatformContext, WS } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { connect } from 'Stores/connect';
 import LoadErrorMessage from 'Components/load-error-message';
 
 const API_FETCH_LIMIT = 50;
@@ -168,7 +167,9 @@ const ListCell = ({ title, text, className, right }) => (
     </React.Fragment>
 );
 
-const LoginHistory = ({ is_switching }) => {
+const LoginHistory = observer(() => {
+    const { client } = useStore();
+    const { is_switching } = client;
     const [is_loading, setLoading] = React.useState(true);
     const [error, setError] = React.useState('');
     const [data, setData] = React.useState([]);
@@ -197,12 +198,6 @@ const LoginHistory = ({ is_switching }) => {
             {data.length ? <LoginHistoryContent data={data} /> : null}
         </ThemedScrollbars>
     );
-};
+});
 
-LoginHistory.propTypes = {
-    is_switching: PropTypes.bool,
-};
-
-export default connect(({ client }) => ({
-    is_switching: client.is_switching,
-}))(LoginHistory);
+export default LoginHistory;

@@ -26,6 +26,7 @@ export { default as useHasUSDCurrency } from './useHasUSDCurrency';
 export { default as useIsAskFinancialRiskApprovalNeeded } from './useIsAskFinancialRiskApprovalNeeded';
 export { default as useInputATMFormatter } from './useInputATMFormatter';
 export { default as useInputDecimalFormatter } from './useInputDecimalFormatter';
+export { default as useHasP2PSupportedCurrencies } from './useHasP2PSupportedCurrencies';
 export { default as useIsP2PEnabled } from './useIsP2PEnabled';
 export { default as useIsRealAccountNeededForCashier } from './useIsRealAccountNeededForCashier';
 export { default as useIsSystemMaintenance } from './useIsSystemMaintenance';

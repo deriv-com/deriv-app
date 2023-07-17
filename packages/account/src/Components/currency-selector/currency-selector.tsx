@@ -121,6 +121,7 @@ const CurrencySelector = ({
 
     // In case of form error bypass to update personal data
     React.useEffect(() => {
+        console.log('here in currecny');
         if (real_account_signup?.error_code) {
             setIsBypassStep(true);
         }

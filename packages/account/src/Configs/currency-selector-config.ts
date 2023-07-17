@@ -15,7 +15,6 @@ const currencySelectorConfig = (
     CurrencySelector: React.Component,
     is_appstore: boolean
 ) => {
-    console.log('here', currencySelector);
     return {
         header: {
             active_title: is_appstore ? localize('Select wallet currency') : localize('Please choose your currency'),

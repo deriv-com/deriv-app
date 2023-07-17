@@ -102,7 +102,7 @@ const StaticDashboard = ({
     const compare_accounts_title = eu_user ? localize('Account Information') : localize('Compare accounts');
 
     return (
-        <ThemedScrollbars height={'calc(100% - 20rem)'} is_bypassed={isMobile()}>
+        <ThemedScrollbars height={'calc(100% - 25rem)'} is_bypassed={isMobile()}>
             <div
                 className={classNames('static-dashboard', {
                     'static-dashboard--eu': eu_user,

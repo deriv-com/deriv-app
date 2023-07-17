@@ -17,7 +17,7 @@ const useFilteredCFDAccounts = () => {
         return Object.keys(data)
             .map(key => {
                 const first_account = data[key][0];
-                // Why? Because the API returns 'gaming' instead of 'synthetic' for the market_type.
+                // Why? Because we are expecting the market_type to be 'synthetic' but the API returns 'gaming'
                 const modified_market_type = first_account.market_type.replace('gaming', 'synthetic');
                 const added_account = existing_cfd_accounts?.mt5_accounts?.find(
                     cfd => cfd.market_type === modified_market_type

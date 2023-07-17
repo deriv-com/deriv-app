@@ -51,17 +51,17 @@ const useTransferBetweenAccounts = () => {
         });
 
         return {
-            trading:
+            trading_accounts:
                 accounts?.reduce(
-                    (all_trading_accounts, account) => {
-                        if (account.account_type === 'wallet') return all_trading_accounts;
-                        if (!account.loginid) return all_trading_accounts;
+                    (trading_accounts, account) => {
+                        if (account.account_type === 'wallet') return trading_accounts;
+                        if (!account.loginid) return trading_accounts;
 
                         const cfd_icon = all_linked_cfd_accounts.find(
                             cfd_account => account.loginid && cfd_account.loginid?.includes(account.loginid)
                         )?.icon;
 
-                        all_trading_accounts[account.loginid] = {
+                        trading_accounts[account.loginid] = {
                             ...account,
                             gradient_class: active_wallet?.gradient_card_class,
                             icon: account.account_type === 'trading' ? trading_apps_icon : cfd_icon,
@@ -72,7 +72,7 @@ const useTransferBetweenAccounts = () => {
                             }),
                         };
 
-                        return all_trading_accounts;
+                        return trading_accounts;
                     },
                     {} as Record<
                         string,
@@ -85,21 +85,21 @@ const useTransferBetweenAccounts = () => {
                         >
                     >
                 ) || {},
-            wallets:
+            wallet_accounts:
                 accounts?.reduce(
-                    (all_wallets, wallet) => {
-                        if (wallet.account_type !== 'wallet') return all_wallets;
-                        if (!wallet.loginid) return all_wallets;
+                    (wallet_accounts, wallet) => {
+                        if (wallet.account_type !== 'wallet') return wallet_accounts;
+                        if (!wallet.loginid) return wallet_accounts;
 
                         const available_wallet = wallets?.find(acc => acc.loginid === wallet.loginid);
 
-                        all_wallets[wallet.loginid] = {
+                        wallet_accounts[wallet.loginid] = {
                             ...wallet,
                             icon: available_wallet?.icon,
                             gradient_class: available_wallet?.gradient_card_class,
                         };
 
-                        return all_wallets;
+                        return wallet_accounts;
                     },
                     {} as Record<
                         string,
@@ -128,16 +128,16 @@ const useTransferBetweenAccounts = () => {
     const modified_active_wallet = useMemo(() => {
         return active_wallet?.loginid
             ? {
-                  ...modified_transfer_accounts.wallets[active_wallet?.loginid],
+                  ...modified_transfer_accounts.wallet_accounts[active_wallet?.loginid],
               }
             : undefined;
-    }, [active_wallet?.loginid, modified_transfer_accounts.wallets]);
+    }, [active_wallet?.loginid, modified_transfer_accounts.wallet_accounts]);
 
     return {
         ...rest,
         active_wallet: modified_active_wallet,
-        transfer_trading_accounts: modified_transfer_accounts.trading,
-        transfer_wallets: modified_transfer_accounts.wallets,
+        trading_accounts: modified_transfer_accounts.trading_accounts,
+        wallet_accounts: modified_transfer_accounts.wallet_accounts,
     };
 };
 

@@ -4,8 +4,8 @@ import useTransferBetweenAccounts from './useTransferBetweenAccounts';
 const useWalletTransfer = () => {
     const {
         active_wallet,
-        transfer_trading_accounts,
-        transfer_wallets,
+        trading_accounts,
+        wallet_accounts,
         isLoading: is_accounts_loading,
     } = useTransferBetweenAccounts();
 
@@ -13,31 +13,31 @@ const useWalletTransfer = () => {
     const [to_account, setToAccount] = useState<typeof active_wallet>();
 
     const to_account_list = useMemo(() => {
-        if (!from_account?.loginid) return { trading_accounts: {}, wallets: {} };
-        if (!active_wallet?.loginid) return { trading_accounts: {}, wallets: {} };
+        if (!from_account?.loginid) return { trading_accounts: {}, wallet_accounts: {} };
+        if (!active_wallet?.loginid) return { trading_accounts: {}, wallet_accounts: {} };
 
         if (from_account?.loginid === active_wallet?.loginid) {
             return {
-                trading_accounts: transfer_trading_accounts,
+                trading_accounts,
                 wallets: Object.fromEntries(
-                    Object.entries(transfer_wallets).filter(
+                    Object.entries(wallet_accounts).filter(
                         ([key]) => active_wallet?.loginid && !key.includes(active_wallet?.loginid)
                     )
                 ),
             };
         }
         return { trading_accounts: {}, wallets: { [active_wallet?.loginid]: active_wallet } };
-    }, [active_wallet, from_account?.loginid, transfer_trading_accounts, transfer_wallets]);
+    }, [active_wallet, from_account?.loginid, trading_accounts, wallet_accounts]);
 
     //this useEffect populates from/to accounts with updated values, if they were updated in the background
     useEffect(() => {
         setFromAccount(acc => {
-            return acc?.loginid ? { ...transfer_trading_accounts, ...transfer_wallets }[acc?.loginid] : undefined;
+            return acc?.loginid ? { ...trading_accounts, ...wallet_accounts }[acc?.loginid] : undefined;
         });
         setToAccount(acc => {
-            return acc?.loginid ? { ...transfer_trading_accounts, ...transfer_wallets }[acc?.loginid] : undefined;
+            return acc?.loginid ? { ...trading_accounts, ...wallet_accounts }[acc?.loginid] : undefined;
         });
-    }, [setFromAccount, setToAccount, transfer_trading_accounts, transfer_wallets]);
+    }, [setFromAccount, setToAccount, trading_accounts, wallet_accounts]);
 
     return {
         active_wallet,
@@ -45,7 +45,7 @@ const useWalletTransfer = () => {
         from_account,
         to_account,
         to_account_list,
-        transfer_accounts: { trading_accounts: transfer_trading_accounts, wallets: transfer_wallets },
+        transfer_accounts: { trading_accounts, wallet_accounts },
         setFromAccount,
         setToAccount,
     };

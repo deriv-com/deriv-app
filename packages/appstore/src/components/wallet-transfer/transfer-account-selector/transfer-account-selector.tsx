@@ -15,7 +15,7 @@ type TTransferAccountSelectorProps = {
     placeholder?: string;
     portal_id?: string;
     setIsWalletNameVisible?: (value: boolean) => void;
-    transfer_accounts: Record<'trading_accounts' | 'wallets', Record<string, TTransferAccount>>;
+    transfer_accounts: Record<'trading_accounts' | 'wallet_accounts', Record<string, TTransferAccount>>;
     transfer_hint?: string | JSX.Element;
     value?: TTransferAccount;
     wallet_name?: string;
@@ -89,7 +89,7 @@ const TransferAccountSelector = ({
     placeholder,
     portal_id,
     setIsWalletNameVisible,
-    transfer_accounts = { trading_accounts: {}, wallets: {} },
+    transfer_accounts = { trading_accounts: {}, wallet_accounts: {} },
     transfer_hint,
     value,
     wallet_name,

@@ -18,11 +18,18 @@ const isMaltaAccount = ({ real_account_signup_target }) => real_account_signup_t
 const shouldShowPersonalAndAddressDetailsAndCurrency = ({ real_account_signup_target }) =>
     real_account_signup_target !== 'samoa';
 
-export const getItems = props => [
-    ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [currencySelectorConfig(props, CurrencySelector)] : []),
-    ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [personalDetailsConfig(props, PersonalDetails)] : []),
-    ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [addressDetailsConfig(props, AddressDetails)] : []),
-    ...(isMaltaAccount(props) ? [tradingAssessmentConfig(props, TradingAssessmentNewUser)] : []),
-    ...(isMaltaAccount(props) ? [financialDetailsConfig(props, FinancialDetails)] : []),
-    termsOfUseConfig(props, TermsOfUse),
-];
+export const getItems = props => {
+    console.log('getItems', props, shouldShowPersonalAndAddressDetailsAndCurrency);
+    return [
+        ...(shouldShowPersonalAndAddressDetailsAndCurrency(props)
+            ? [currencySelectorConfig(props, CurrencySelector)]
+            : []),
+        ...(shouldShowPersonalAndAddressDetailsAndCurrency(props)
+            ? [personalDetailsConfig(props, PersonalDetails)]
+            : []),
+        ...(shouldShowPersonalAndAddressDetailsAndCurrency(props) ? [addressDetailsConfig(props, AddressDetails)] : []),
+        ...(isMaltaAccount(props) ? [tradingAssessmentConfig(props, TradingAssessmentNewUser)] : []),
+        ...(isMaltaAccount(props) ? [financialDetailsConfig(props, FinancialDetails)] : []),
+        termsOfUseConfig(props, TermsOfUse),
+    ];
+};

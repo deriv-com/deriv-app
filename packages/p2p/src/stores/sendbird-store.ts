@@ -65,7 +65,7 @@ export default class SendbirdStore extends BaseStore {
     }
 
     get is_chat_frozen() {
-        return this.active_chat_channel && this.active_chat_channel.isFrozen;
+        return this.active_chat_channel?.isFrozen;
     }
 
     get last_other_user_activity() {
@@ -209,7 +209,7 @@ export default class SendbirdStore extends BaseStore {
         const custom_type = [''];
 
         const messages_timestamp =
-            timestamp || toMoment(this.root_store.general_store.server_time.get()).utc().valueOf();
+            timestamp ?? toMoment(this.root_store.general_store.server_time.get()).utc().valueOf();
 
         const retrieved_messages = await this.active_chat_channel?.getMessagesByTimestamp(messages_timestamp, {
             isInclusive: is_inclusive_of_timestamp,

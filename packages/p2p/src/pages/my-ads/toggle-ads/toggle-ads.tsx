@@ -34,7 +34,7 @@ const ToggleAds = () => {
         <div className='toggle-ads'>
             <Text
                 className='toggle-ads__message'
-                color={is_listed ? 'profit-success' : 'less-prominent'}
+                color={is_listed ? 'less-prominent' : 'profit-success'}
                 line_height='xl'
                 size='xs'
             >

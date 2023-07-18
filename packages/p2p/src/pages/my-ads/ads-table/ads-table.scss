@@ -213,7 +213,7 @@
             }
 
             .dc-text {
-                &:not(.ad-status--inactive) {
+                &:not(.ad-status--inactive):not(.ad-status--active) {
                     color: var(--text-disabled);
                 }
             }

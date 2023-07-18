@@ -52,11 +52,18 @@ const MyAdsRow = observer(({ row: advert }: TAdDetails) => {
         selected_ad_id,
         showQuickAddModal,
     } = my_ads_store;
+
+    const {
+        change_ad_alert,
+        exchange_rate: floating_exchange_rate,
+        rate_type: floating_rate_type,
+        reached_target_date,
+    } = floating_rate_store;
     // Use separate is_advert_active state to ensure value is updated
     const [is_advert_active, setIsAdvertActive] = React.useState(is_active);
     const [is_popover_actions_visible, setIsPopoverActionsVisible] = React.useState(false);
     const amount_dealt = amount - remaining_amount;
-    const enable_action_point = floating_rate_store.change_ad_alert && floating_rate_store.rate_type !== rate_type;
+    const enable_action_point = change_ad_alert && floating_rate_type !== rate_type;
     const is_buy_advert = type === buy_sell.BUY;
 
     const { display_effective_rate } = generateEffectiveRate({
@@ -64,7 +71,7 @@ const MyAdsRow = observer(({ row: advert }: TAdDetails) => {
         rate_type,
         rate: rate_display,
         local_currency,
-        exchange_rate: floating_rate_store.exchange_rate,
+        exchange_rate: floating_exchange_rate,
         market_rate: effective_rate,
     });
 
@@ -73,7 +80,7 @@ const MyAdsRow = observer(({ row: advert }: TAdDetails) => {
     const is_ad_listed = is_listed && !is_barred;
     const ad_pause_color = is_ad_listed ? 'general' : 'less-prominent';
     const icon_disabled_color = (!is_listed || is_barred || !is_advert_active) && 'disabled';
-    const is_activate_ad_disabled = floating_rate_store.reached_target_date && enable_action_point;
+    const is_activate_ad_disabled = reached_target_date && enable_action_point;
 
     const onClickActivateDeactivate = () => {
         if (!is_activate_ad_disabled) {
@@ -97,7 +104,7 @@ const MyAdsRow = observer(({ row: advert }: TAdDetails) => {
     const onMouseLeave = () => setIsPopoverActionsVisible(false);
 
     const handleOnEdit = () =>
-        enable_action_point && floating_rate_store.rate_type !== rate_type ? onClickSwitchAd() : onClickEdit();
+        enable_action_point && floating_rate_type !== rate_type ? onClickSwitchAd() : onClickEdit();
 
     React.useEffect(() => {
         my_profile_store.getAdvertiserPaymentMethods();
@@ -144,7 +151,7 @@ const MyAdsRow = observer(({ row: advert }: TAdDetails) => {
                 <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
                     <Table.Row
                         className={classNames('ads-table__row', {
-                            'ads-table__row-disabled': !is_advert_active,
+                            'ads-table__row-disabled': !is_advert_active || !is_listed,
                         })}
                     >
                         <Table.Cell>

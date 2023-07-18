@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, Checkbox, Modal, Text } from '@deriv/components';
+import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
@@ -24,17 +25,23 @@ const AdCreatedModal = () => {
         setIsAdCreatedModalVisible(false);
         hideModal();
 
-        //TODO: use advert_details directly from AdVisibilityErrorModal once it's refactored and move triggering function out of this component
+        //TODO: use advert_details directly from AdVisibilityErrorModal once it's refactored
         if (advert_details?.visibility_status?.includes(AD_EXCEEDS_BALANCE)) {
-            showModal({
-                key: 'AdVisibilityErrorModal',
-                props: { error_code: AD_EXCEEDS_BALANCE },
-            });
+            showModal(
+                {
+                    key: 'AdVisibilityErrorModal',
+                    props: { error_code: AD_EXCEEDS_BALANCE },
+                },
+                { should_stack_modal: isMobile() }
+            );
         } else if (advert_details?.visibility_status?.includes(AD_EXCEEDS_DAILY_LIMIT)) {
-            showModal({
-                key: 'AdVisibilityErrorModal',
-                props: { error_code: AD_EXCEEDS_DAILY_LIMIT },
-            });
+            showModal(
+                {
+                    key: 'AdVisibilityErrorModal',
+                    props: { error_code: AD_EXCEEDS_DAILY_LIMIT },
+                },
+                { should_stack_modal: isMobile() }
+            );
         }
         setShowAdForm(false);
     };

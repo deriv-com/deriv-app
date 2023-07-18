@@ -72,7 +72,11 @@ const TradingAppCard = ({
     };
 
     return (
-        <div className='trading-app-card' key={`trading-app-card__${current_language}`}>
+        <div
+            className='trading-app-card'
+            key={`trading-app-card__${current_language}`}
+            id={`trading-app-card__${icon.toLowerCase()}`}
+        >
             <div
                 className={classNames('trading-app-card__icon--container', {
                     'trading-app-card__icon--container__clickable': clickable_icon,

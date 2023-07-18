@@ -16,12 +16,13 @@ const ResetPasswordModal = ({
     verification_code,
     toggleResetPasswordModal,
 }) => {
-    const onResetComplete = (error_msg, actions) => {
+    const onResetComplete = (error, actions) => {
+        const error_message = error?.message;
         actions.setSubmitting(false);
         // Error would be returned on invalid token (and the like) cases.
-        if (error_msg) {
+        if (error_message) {
             actions.resetForm({ password: '' });
-            actions.setStatus({ error_msg });
+            actions.setStatus({ error_msg: error_message });
             return;
         }
 
@@ -41,7 +42,7 @@ const ResetPasswordModal = ({
 
         WS.resetPassword(api_request).then(async response => {
             if (response.error) {
-                onResetComplete(response.error.message, actions);
+                onResetComplete(response?.error, actions);
             } else {
                 onResetComplete(null, actions);
             }

@@ -105,8 +105,8 @@ export class RudderStack {
     }
 
     init() {
-        const isProduction = process.env.CIRCLE_JOB === 'release_production';
-        const isStaging = process.env.CIRCLE_JOB === 'release_staging';
+        const isProduction = process.env.NODE_ENV === 'production';
+        const isStaging = process.env.NODE_ENV === 'staging';
 
         let RUDDERSTACK_KEY;
         if (isProduction) {

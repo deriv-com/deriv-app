@@ -13,13 +13,13 @@ jest.mock('Components/cashier-container/virtual', () => jest.fn(() => 'Virtual')
 jest.mock('../../../../src/modules/withdrawal-locked/withdrawal-locked', () => jest.fn(() => 'WithdrawalLocked'));
 jest.mock('Components/no-balance', () => jest.fn(() => 'NoBalance'));
 jest.mock('Components/error', () => jest.fn(() => 'Error'));
-jest.mock('../withdraw/withdraw', () => jest.fn(() => 'Withdraw'));
 jest.mock('../crypto-withdraw-form', () => jest.fn(() => 'CryptoWithdrawForm'));
 jest.mock('../crypto-withdraw-receipt', () => jest.fn(() => 'CryptoWithdrawReceipt'));
 jest.mock('Components/crypto-transactions-history', () => jest.fn(() => 'CryptoTransactionsHistory'));
 jest.mock('../../../../src/modules/withdrawal-email-verification/withdrawal-email-verification', () =>
     jest.fn(() => 'WithdrawalEmailVerificationModule')
 );
+jest.mock('../../../../src/modules/withdrawal-fiat/withdrawal-fiat', () => jest.fn(() => 'WithdrawalFiatModule'));
 jest.mock('Components/recent-transaction', () => jest.fn(() => 'RecentTransaction'));
 jest.mock('@deriv/components', () => ({
     ...jest.requireActual('@deriv/components'),
@@ -277,7 +277,7 @@ describe('<Withdrawal />', () => {
         });
 
         render(mockWithdrawal(mock_root_store));
-        expect(screen.getByText('Withdraw')).toBeInTheDocument();
+        expect(screen.getByText('WithdrawalFiatModule')).toBeInTheDocument();
     });
 
     it('should render <CryptoWithdrawForm /> component', () => {

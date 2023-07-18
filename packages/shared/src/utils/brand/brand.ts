@@ -34,6 +34,7 @@ type TPlatforms = {
 };
 
 type TPlatformsAppstore = {
+    ctrader: TPlatformAppstore;
     trader: TPlatformAppstore;
     dbot: TPlatformAppstore;
     smarttrader: TPlatformAppstore;

@@ -25,7 +25,7 @@
         },
         "ctrader": {
             "name": "Deriv cTrader",
-            "icon": "IcBrandCtrader"
+            "icon": "IcRebrandingCtrader"
         },
         "dxtrade": {
             "name": "Deriv X",
@@ -72,6 +72,11 @@
         "go": {
             "name": "Deriv GO",
             "icon": "DerivGo",
+            "availability": "Non-EU"
+        },
+        "ctrader": {
+            "name": "Deriv cTrader",
+            "icon": "Ctrader",
             "availability": "Non-EU"
         }
     }

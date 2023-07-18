@@ -25,6 +25,7 @@ const DerivPassword = ({ email, is_social_signup, social_identity_provider }) =>
     const platform_name_go = getPlatformSettings('go').name;
     const platform_name_smarttrader = getPlatformSettings('smarttrader').name;
     const platform_name_trader = getPlatformSettings('trader').name;
+    const platform_name_ctrader = getPlatformSettings('ctrader').name;
 
     return (
         <React.Fragment>
@@ -33,7 +34,7 @@ const DerivPassword = ({ email, is_social_signup, social_identity_provider }) =>
                 <React.Fragment>
                     <Text as='p' className='passwords-platform__desc' color='prominent' size='xs' weight='lighter'>
                         <Localize
-                            i18n_default_text='Use the <0>Deriv password</0> to log in to {{brand_website_name}}, {{platform_name_go}}, {{platform_name_trader}}, {{platform_name_smarttrader}}, and {{platform_name_dbot}}.'
+                            i18n_default_text='Use the <0>Deriv password</0> to log in to {{brand_website_name}}, {{platform_name_go}}, {{platform_name_trader}}, {{platform_name_smarttrader}}, {{platform_name_dbot}} and {{platform_name_ctrader}}.'
                             components={[<strong key={0} />]}
                             values={{
                                 brand_website_name,
@@ -41,6 +42,7 @@ const DerivPassword = ({ email, is_social_signup, social_identity_provider }) =>
                                 platform_name_dbot,
                                 platform_name_smarttrader,
                                 platform_name_go,
+                                platform_name_ctrader,
                             }}
                         />
                     </Text>
@@ -79,6 +81,13 @@ const DerivPassword = ({ email, is_social_signup, social_identity_provider }) =>
                                 icon={`${getPlatformSettings('go').icon}-dashboard`}
                                 size={32}
                                 description='derivgo'
+                            />
+                        </Popover>
+                        <Popover alignment='bottom' message={platform_name_ctrader}>
+                            <Icon
+                                icon={`${getPlatformSettings('ctrader').icon}-dashboard`}
+                                size={32}
+                                description='ctrader'
                             />
                         </Popover>
                     </div>

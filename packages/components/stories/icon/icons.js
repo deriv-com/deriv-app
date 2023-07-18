@@ -696,6 +696,7 @@ export const icons =
     ],
     'rebranding': [
         'IcRebrandingBinaryBot',
+        'IcRebrandingCtraderDashboard',
         'IcRebrandingDerivBotDashboard',
         'IcRebrandingDerivBot',
         'IcRebrandingDerivGoDashboard',

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Field, FormikProps, FormikValues } from 'formik';
+import { Field, FieldProps, FormikProps, FormikValues } from 'formik';
 import { localize } from '@deriv/translations';
 import { isMobile, supported_filetypes, max_document_size } from '@deriv/shared';
 import { Button, Icon, Text, FileDropzone } from '@deriv/components';
@@ -21,7 +21,7 @@ type TUploader = {
     has_frame: boolean;
     onChange: (e: unknown) => void;
     setFieldValue: FormikProps<FormikValues>['setFieldValue'];
-    handleChange: (file: object | null, setFieldValue?: FormikProps<FormikValues>['setFieldValue']) => void;
+    handleChange: (file: object | null, setFieldValue: FormikProps<FormikValues>['setFieldValue']) => void;
 };
 
 type TMessage = {
@@ -101,17 +101,17 @@ const Uploader = ({ data, value, is_full, onChange, has_frame }: Partial<TUpload
         setImage(value);
     }, [value]);
 
-    const handleChange = (file?: object, setFieldValue?: FormikProps<FormikValues>['setFieldValue']) => {
+    const handleChange = (file: object | null, setFieldValue: FormikProps<FormikValues>['setFieldValue']) => {
         onChange?.(file);
         setFieldValue?.(data?.name, file);
     };
 
-    const handleAccept = (files: object[], setFieldValue: () => void) => {
+    const handleAccept = (files: object[], setFieldValue: FormikProps<FormikValues>['setFieldValue']) => {
         const file = { file: files[0], errors: [], ...data };
         handleChange(file, setFieldValue);
     };
 
-    const handleReject = (files: THandleRejectFiles, setFieldValue: () => void) => {
+    const handleReject = (files: THandleRejectFiles, setFieldValue: FormikProps<FormikValues>['setFieldValue']) => {
         const errors = files[0].errors?.map((error: { code: string }) =>
             DROPZONE_ERRORS[error.code as keyof TDROPZONE_ERRORS]
                 ? DROPZONE_ERRORS[error.code as keyof TDROPZONE_ERRORS]
@@ -139,7 +139,7 @@ const Uploader = ({ data, value, is_full, onChange, has_frame }: Partial<TUpload
 
     return (
         <Field name={data?.name}>
-            {({ form: { setFieldValue } }: FormikValues) => (
+            {({ form: { setFieldValue } }: FieldProps) => (
                 <div
                     className={classNames(`${ROOT_CLASS}__uploader`, {
                         [`${ROOT_CLASS}__uploader--full`]: is_full,
@@ -159,7 +159,7 @@ const Uploader = ({ data, value, is_full, onChange, has_frame }: Partial<TUpload
                                     value={image}
                                     has_frame={has_frame}
                                     setFieldValue={setFieldValue}
-                                    handleChange={() => handleChange()}
+                                    handleChange={handleChange}
                                 />
                             )
                         }

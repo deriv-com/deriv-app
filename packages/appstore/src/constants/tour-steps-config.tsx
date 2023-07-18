@@ -393,6 +393,6 @@ export const getHighRiskTourStepLocale = (): Locale => ({
 export const getWalletStepLocale = (): Locale => ({
     back: <SpanButton has_effect text={localize('Back')} secondary medium />,
     close: <Icon icon='IcAppstoreCloseLight' />,
-    last: localize('Next'), // TODO: Removed in onboarding v2
+    last: localize('Done'),
     next: localize('Next'),
 });

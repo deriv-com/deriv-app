@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isDesktop } from '@deriv/shared';
 import { Div100vhContainer } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
 import { useContentFlag } from '@deriv/hooks';
@@ -67,7 +66,6 @@ const TradersHub = observer(() => {
                     'traders-hub__wallets-bg': is_wallet_account,
                 })}
                 height_offset='50px'
-                is_disabled={isDesktop()}
             >
                 {can_show_notify && <Notifications />}
                 <div

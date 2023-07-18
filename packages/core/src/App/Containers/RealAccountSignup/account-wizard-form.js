@@ -10,7 +10,7 @@ import {
     tradingAssessmentConfig,
 } from '@deriv/account';
 
-import AddressDetails from './address-details';
+import AddressDetails from '@deriv/account/src/Components/address-details';
 import CurrencySelector from './currency-selector.jsx';
 import FinancialDetails from './financial-details.jsx';
 

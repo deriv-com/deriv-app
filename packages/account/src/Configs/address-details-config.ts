@@ -167,6 +167,7 @@ const addressDetailsConfig = (
     const config = address_details_config({ account_settings, is_svg });
     const disabled_items = account_settings.immutable_fields;
     const is_mf = real_account_signup_target === 'maltainvest';
+    const is_gb_residence = residence === 'gb';
 
     return {
         header: {
@@ -183,6 +184,7 @@ const addressDetailsConfig = (
             is_svg,
             disabled_items,
             is_mf,
+            is_gb_residence,
         },
         passthrough: ['residence_list', 'is_fully_authenticated', 'has_real_account'],
         icon: 'IcDashboardAddress',

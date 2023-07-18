@@ -105,13 +105,13 @@ export class RudderStack {
     }
 
     init() {
-        const isProduction = process.env.NODE_ENV === 'production';
-        const isStaging = process.env.NODE_ENV === 'staging';
+        const is_production = process.env.NODE_ENV === 'production';
+        const is_staging = process.env.NODE_ENV === 'staging';
 
         let RUDDERSTACK_KEY;
-        if (isProduction) {
+        if (is_production) {
             RUDDERSTACK_KEY = process.env.RUDDERSTACK_PRODUCTION_KEY;
-        } else if (isStaging) {
+        } else if (is_staging) {
             RUDDERSTACK_KEY = process.env.RUDDERSTACK_STAGING_KEY;
         }
 

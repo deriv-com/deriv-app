@@ -41,15 +41,14 @@ const AppContents = ({
     React.useEffect(() => {
         // rudderstack page view trigger
         WS.wait('authorize').then(response => {
-            if (!response.error) {
-                const { user_id } = response.authorize;
+            if (response.error) return;
+            const { user_id } = response.authorize;
 
-                if (is_logged_in && user_id) {
-                    RudderStack.identifyEvent(user_id, {
-                        language: getLanguage().toLowerCase() || 'en',
-                    });
-                    RudderStack.pageView(current_page);
-                }
+            if (is_logged_in && user_id) {
+                RudderStack.identifyEvent(user_id, {
+                    language: getLanguage().toLowerCase() || 'en',
+                });
+                RudderStack.pageView(current_page);
             }
         });
 

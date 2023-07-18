@@ -10,7 +10,7 @@ import BuySellHeader from './buy-sell-header.jsx';
 import BuySellTable from './buy-sell-table.jsx';
 
 const BuySell = () => {
-    const { buy_sell_store } = useStores();
+    const { buy_sell_store, general_store } = useStores();
     const previous_scroll_top = React.useRef(0);
 
     React.useEffect(() => {
@@ -21,6 +21,7 @@ const BuySell = () => {
         return () => {
             disposeIsListedReaction();
             disposeAdvertIntervalReaction();
+            general_store.setShouldShowPopup(false);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

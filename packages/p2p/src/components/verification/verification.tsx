@@ -1,10 +1,11 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { Icon, Checklist, Text } from '@deriv/components';
-import { isDesktop, routes } from '@deriv/shared';
+import { isDesktop, isMobile, routes } from '@deriv/shared';
 import Dp2pBlocked from 'Components/dp2p-blocked';
 import { Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import NicknameForm from 'Components/nickname-form';
 import { useStores } from 'Stores/index';
 
 const Verification = () => {
@@ -13,6 +14,10 @@ const Verification = () => {
 
     if (!general_store.is_advertiser && general_store.poi_status === 'verified' && general_store.nickname) {
         return <Dp2pBlocked />;
+    }
+
+    if (isMobile() && general_store.should_show_popup) {
+        return <NicknameForm />;
     }
 
     const checklist_items = [

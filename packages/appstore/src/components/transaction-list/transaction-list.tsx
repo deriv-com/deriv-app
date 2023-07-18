@@ -106,46 +106,50 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
     };
 
     return (
-        <ThemedScrollbars
-            className='transaction-list__scroll'
-            is_scrollbar_hidden={is_mobile}
-            onScroll={onScrollHandler}
-        >
-            <Div100vhContainer className='transaction-list__container' height_offset={getHeightOffset()}>
-                <div className='transaction-list'>
-                    <Dropdown
-                        className='transaction-list__filter'
-                        is_align_text_left
-                        list={filter_options}
-                        onChange={(e: { target: { value: typeof filter } }) => setFilter(e.target.value)}
-                        label={localize('Filter')}
-                        suffix_icon='IcFilter'
-                        value={filter}
-                    />
-                    {!isLoading || page_count >= 1 ? (
-                        <>
-                            {Object.entries(grouped_transactions).map(([day, transaction_list]) => (
-                                <TransactionsForADay
-                                    key={
-                                        // eslint-disable-next-line react/prop-types
-                                        day + transaction_list.length.toString()
-                                    }
-                                    day={day}
-                                    transaction_list={
-                                        transaction_list as React.ComponentProps<
-                                            typeof TransactionsForADay
-                                        >['transaction_list']
-                                    }
-                                />
-                            ))}
-                            {!isComplete && <Loading is_fullscreen={false} className='transaction-list__loader' />}
-                        </>
-                    ) : (
-                        <Loading is_fullscreen={false} />
-                    )}
-                </div>
-            </Div100vhContainer>
-        </ThemedScrollbars>
+        <>
+            <div className='transaction-list__filter__wrapper transaction-list__container'>
+                <Dropdown
+                    className='transaction-list__filter'
+                    is_align_text_left
+                    list={filter_options}
+                    onChange={(e: { target: { value: typeof filter } }) => setFilter(e.target.value)}
+                    label={localize('Filter')}
+                    suffix_icon='IcFilter'
+                    value={filter}
+                />
+            </div>
+            <ThemedScrollbars
+                className='transaction-list__scroll'
+                is_scrollbar_hidden={is_mobile}
+                onScroll={onScrollHandler}
+            >
+                <Div100vhContainer className='transaction-list__container' height_offset={getHeightOffset()}>
+                    <div className='transaction-list'>
+                        {!isLoading || page_count >= 1 ? (
+                            <>
+                                {Object.entries(grouped_transactions).map(([day, transaction_list]) => (
+                                    <TransactionsForADay
+                                        key={
+                                            // eslint-disable-next-line react/prop-types
+                                            day + transaction_list.length.toString()
+                                        }
+                                        day={day}
+                                        transaction_list={
+                                            transaction_list as React.ComponentProps<
+                                                typeof TransactionsForADay
+                                            >['transaction_list']
+                                        }
+                                    />
+                                ))}
+                                {!isComplete && <Loading is_fullscreen={false} className='transaction-list__loader' />}
+                            </>
+                        ) : (
+                            <Loading is_fullscreen={false} />
+                        )}
+                    </div>
+                </Div100vhContainer>
+            </ThemedScrollbars>
+        </>
     );
 };
 

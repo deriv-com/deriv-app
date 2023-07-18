@@ -31,7 +31,6 @@ const WalletTransferTile = ({
     icon_size = 'small',
     is_active,
     is_mobile,
-    is_modal = false,
     is_value,
     onClick,
 }: TWalletTileProps) => {
@@ -99,7 +98,6 @@ const WalletTransferTile = ({
             className={classNames(`wallet-transfer-tile ${className}`, {
                 'wallet-transfer-tile--hover': has_hover,
                 'wallet-transfer-tile--active': is_active,
-                'wallet-transfer-tile--is-modal': is_modal,
             })}
             data-testid='dt_wallet_transfer_tile'
             onClick={() => onClick?.()}

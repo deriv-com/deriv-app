@@ -91,7 +91,7 @@ describe('IframeStore', () => {
     it('should set the proper iframe url', () => {
         iframe_store.setIframeUrl('iframe_url/');
 
-        expect(iframe_store.iframe_url).toBe('iframe_url/&DarkMode=on');
+        expect(iframe_store.iframe_url).toBe('iframe_url/');
         expect(iframe_store.root_store.client.setVerificationCode).toHaveBeenCalledWith('', 'payment_agent_withdraw');
     });
 

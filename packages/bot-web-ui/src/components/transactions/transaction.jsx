@@ -1,11 +1,11 @@
-import classNames from 'classnames';
-import { Icon, Money, Popover, IconTradeTypes } from '@deriv/components';
-import { localize } from '@deriv/translations';
-import { convertDateFormat } from '@deriv/shared';
 import React from 'react';
-import ContentLoader from 'react-content-loader';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import ContentLoader from 'react-content-loader';
 import { getContractTypeName } from '@deriv/bot-skeleton';
+import { Icon, IconTradeTypes, Money, Popover } from '@deriv/components';
+import { convertDateFormat } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { popover_zindex } from 'Constants/z-indexes';
 import { connect } from 'Stores/connect';
 

@@ -4,7 +4,6 @@
     flex-direction: column;
     text-decoration: none;
     position: relative;
-    border-radius: $BORDER_RADIUS;
     padding: 0.8rem;
     background-color: var(--general-main-1);
     color: var(--text-prominent);
@@ -17,7 +16,6 @@
         width: 100%;
         left: 0;
         top: 0;
-        border-radius: $BORDER_RADIUS;
     }
     &--green:before {
         background-image: linear-gradient(to top, rgba(16, 19, 32, 0), rgba(0, 148, 117, 0.16));

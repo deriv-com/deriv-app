@@ -305,6 +305,7 @@ const mock = (): TStores & { is_mock: boolean } => {
             sub_section_index: 0,
             toggleReadyToDepositModal: jest.fn(),
             is_tablet: false,
+            is_desktop: false,
             is_ready_to_deposit_modal_visible: false,
             is_real_acc_signup_on: false,
             is_need_real_account_for_cashier_modal_visible: false,

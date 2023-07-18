@@ -21,10 +21,9 @@ import {
     ThemedScrollbars,
     SelectNative,
     Text,
-    Input,
 } from '@deriv/components';
 import { localize, Localize } from '@deriv/translations';
-import { isDesktop, isMobile, getLocation, makeCancellablePromise, PlatformContext } from '@deriv/shared';
+import { getLocation, makeCancellablePromise, PlatformContext } from '@deriv/shared';
 import { splitValidationResultTypes } from '../real-account-signup/helpers/utils';
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
@@ -82,9 +81,10 @@ const AddressDetails = observer(
         const [has_fetched_states_list, setHasFetchedStatesList] = React.useState(false);
         const [address_state_to_display, setAddressStateToDisplay] = React.useState('');
 
-        const { client } = useStore();
+        const { client, ui } = useStore();
 
         const { states_list, fetchStatesList } = client;
+        const { is_desktop, is_mobile } = ui;
 
         React.useEffect(() => {
             const { cancel, promise } = makeCancellablePromise(fetchStatesList());
@@ -150,7 +150,7 @@ const AddressDetails = observer(
                     handleChange,
                     setFieldTouched,
                 }: FormikHandlers & FormikHelpers<TAddressDetailFormProps> & FormikState<TAddressDetailFormProps>) => (
-                    <AutoHeightWrapper default_height={350} height_offset={isDesktop() ? 80 : null}>
+                    <AutoHeightWrapper default_height={350} height_offset={is_desktop ? 80 : null}>
                         {({
                             setRef,
                             height,
@@ -162,7 +162,7 @@ const AddressDetails = observer(
                                 <Div100vhContainer
                                     className='details-form'
                                     height_offset={is_appstore ? '222px' : '90px'}
-                                    is_disabled={isDesktop()}
+                                    is_disabled={is_desktop}
                                 >
                                     {!is_appstore && (
                                         <Text
@@ -181,10 +181,7 @@ const AddressDetails = observer(
                                     <ThemedScrollbars height={height} className='details-form__scrollbar'>
                                         {is_appstore && (
                                             <div className='details-form__sub-header'>
-                                                <Text
-                                                    size={isMobile() ? 'xs' : 'xxs'}
-                                                    align={isMobile() ? 'center' : ''}
-                                                >
+                                                <Text size={is_mobile ? 'xs' : 'xxs'} align={is_mobile ? 'center' : ''}>
                                                     {localize(
                                                         'We need this for verification. If the information you provide is fake or inaccurate, you won’t be able to deposit and withdraw.'
                                                     )}
@@ -333,11 +330,11 @@ const AddressDetails = observer(
                                         </div>
                                     </ThemedScrollbars>
                                 </Div100vhContainer>
-                                <Modal.Footer has_separator is_bypassed={isMobile()}>
+                                <Modal.Footer has_separator is_bypassed={is_mobile}>
                                     <FormSubmitButton
                                         is_disabled={isSubmitDisabled(errors)}
                                         label={localize('Next')}
-                                        is_absolute={isMobile()}
+                                        is_absolute={is_mobile}
                                         has_cancel
                                         cancel_label={localize('Previous')}
                                         onCancel={() => handleCancel(values)}

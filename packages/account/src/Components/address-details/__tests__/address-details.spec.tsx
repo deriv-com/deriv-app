@@ -109,10 +109,15 @@ describe('<AddressDetails/>', () => {
     });
 
     it('should render AddressDetails component for mobile', async () => {
-        (isDesktop as jest.Mock).mockReturnValue(false);
-        (isMobile as jest.Mock).mockReturnValue(true);
+        const new_store_config = {
+            ...store,
+            ui: {
+                ...store.ui,
+                is_mobile: true,
+            },
+        };
 
-        renderComponent({});
+        renderComponent({ store_config: new_store_config });
 
         await waitFor(() => {
             svgCommonRenderCheck();
@@ -246,7 +251,6 @@ describe('<AddressDetails/>', () => {
     it('should render AddressDetails component with states_list for mobile', async () => {
         (isDesktop as jest.Mock).mockReturnValue(false);
         (isMobile as jest.Mock).mockReturnValue(true);
-
         const new_store_config = {
             ...store,
             client: {
@@ -256,11 +260,14 @@ describe('<AddressDetails/>', () => {
                     { text: 'State 2', value: 'State 2' },
                 ],
             },
+            ui: {
+                ...store.ui,
+                is_mobile: true,
+            },
         };
         renderComponent({ store_config: new_store_config });
 
         expect(screen.getByText('Default test state')).toBeInTheDocument();
-
         const address_state_input: HTMLInputElement = screen.getByRole('combobox');
         expect(address_state_input.value).toBe('');
         fireEvent.change(address_state_input, { target: { value: 'State 2' } });

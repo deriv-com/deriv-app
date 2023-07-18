@@ -55,7 +55,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
         setPageCount(1);
     }, [filter]);
 
-    const { transactions, isLoading, isComplete } = useWalletTransactions(filter, page_count);
+    const { transactions, isLoading, isComplete } = useWalletTransactions(filter || undefined, page_count);
 
     const grouped_transactions = groupTransactionsByDay(transactions);
 

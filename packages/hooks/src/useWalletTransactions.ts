@@ -20,7 +20,7 @@ const landing_company_display_shortcodes = {
 } as const;
 
 const useWalletTransactions = (
-    action_type: '' | 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer',
+    action_type?: 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer',
     page_count?: number
 ) => {
     const {

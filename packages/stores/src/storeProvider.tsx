@@ -1,10 +1,10 @@
-import React, { PropsWithChildren, useEffect, useMemo } from 'react';
-import StoreContext from './storeContext';
-import { ExchangeRatesStore } from './stores';
+import React, { useEffect, useMemo } from 'react';
 import { ExchangeRatesProvider } from './providers';
+import StoreContext from './storeContext';
+import { ExchangeRatesStore, FeatureFlagsStore } from './stores';
 import type { TCoreStores, TStores } from '../types';
 
-const StoreProvider = ({ children, store }: PropsWithChildren<{ store: TCoreStores }>) => {
+const StoreProvider = ({ children, store }: React.PropsWithChildren<{ store: TCoreStores }>) => {
     const memoizedValue: TStores = useMemo(() => {
         // If the store is mocked for testing purposes, then return the mocked value.
         if ('is_mock' in store && store.is_mock) return store as unknown as TStores;
@@ -13,6 +13,7 @@ const StoreProvider = ({ children, store }: PropsWithChildren<{ store: TCoreStor
         return {
             ...store,
             exchange_rates: new ExchangeRatesStore(),
+            feature_flags: new FeatureFlagsStore(),
         };
     }, [store]);
 

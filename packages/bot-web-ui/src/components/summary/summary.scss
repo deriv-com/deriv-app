@@ -1,5 +1,15 @@
 .summary {
-    padding: 16px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: var(--general-section-2);
+    @include desktop {
+        height: inherit;
+    }
+
+    &--loading {
+        width: 100%;
+    }
 
     &__tiles {
         display: flex;
@@ -7,6 +17,7 @@
         justify-content: space-between;
         margin: 24px 0;
     }
+
     &__tile {
         display: flex;
         flex-direction: column;

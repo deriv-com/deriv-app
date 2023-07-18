@@ -2,11 +2,12 @@ import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import CryptoTransactionsStatusModal from '../crypto-transactions-status-modal';
 import CashierProviders from '../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
 
 describe('<CryptoTransactionsStatusModal />', () => {
-    let modal_root_el, mockRootStore;
+    let modal_root_el: HTMLDivElement, mockRootStore: ReturnType<typeof mockStore>;
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             modules: {
                 cashier: {
                     transaction_history: {
@@ -17,7 +18,7 @@ describe('<CryptoTransactionsStatusModal />', () => {
                     },
                 },
             },
-        };
+        });
     });
     beforeAll(() => {
         modal_root_el = document.createElement('div');

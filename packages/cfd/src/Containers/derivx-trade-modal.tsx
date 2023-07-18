@@ -18,6 +18,7 @@ import {
     getPlatformDXTradeDownloadLink,
     getPlatformMt5DownloadLink,
 } from '../Helpers/constants';
+import { TCFDPasswordReset } from './props.types';
 
 type TDxTradeModalProps = {
     mt5_trade_account: Required<DetailsOfEachMT5Loginid>;
@@ -25,7 +26,7 @@ type TDxTradeModalProps = {
     onPasswordManager: (
         arg1: string | undefined,
         arg2: string,
-        arg3: string,
+        group: TCFDPasswordReset['account_group'],
         arg4: string,
         arg5: string | undefined
     ) => void;
@@ -117,7 +118,7 @@ const DxtradeDesktopDownload = ({ dxtrade_tokens, is_demo }: TDxtradeDesktopDown
             >
                 <Icon
                     className='cfd-trade-modal__dxtrade-button-icon'
-                    icon='IcRebrandingDerivxWordmark'
+                    icon='IcRebrandingDxtradeWordmark'
                     height={32}
                     width={42}
                     description={<Localize i18n_default_text='derivX wordmark' />}
@@ -156,11 +157,14 @@ const DerivXTradeModal = ({
         getCFDAccountDisplay({
             market_type: mt5_trade_account.market_type,
             sub_account_type: mt5_trade_account.sub_account_type,
-            platform: CFD_PLATFORMS.MT5,
+            platform: CFD_PLATFORMS.DXTRADE,
             is_eu: is_eu_user,
             shortcode: getCompanyShortcode(),
             is_mt5_trade_modal: true,
         });
+
+    const trade_modal_title =
+        mt5_trade_account.account_type === 'demo' ? `${getHeadingTitle()} ${localize('Demo')}` : getHeadingTitle();
 
     return (
         <div className='cfd-trade-modal-container'>
@@ -168,7 +172,7 @@ const DerivXTradeModal = ({
                 <Icon icon='IcRebrandingDerivX' size={24} />
                 <div className='cfd-trade-modal__desc'>
                     <Text size='xs' line_height='l' className='cfd-trade-modal__desc-heading'>
-                        {getHeadingTitle()}
+                        {trade_modal_title}
                     </Text>
                     {(mt5_trade_account as TTradingPlatformAccounts)?.display_login && (
                         <Text color='less-prominent' size='xxxs' line_height='xxxs'>

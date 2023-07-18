@@ -5,12 +5,13 @@ import { createBrowserHistory } from 'history';
 import { routes } from '@deriv/shared';
 import AccountTransferReceipt from '../account-transfer-receipt';
 import CashierProviders from '../../../../cashier-providers';
+import { mockStore } from '@deriv/stores';
 
 describe('<AccountTransferReceipt />', () => {
-    let mockRootStore;
+    let mockRootStore: ReturnType<typeof mockStore>;
     const onClose = jest.fn();
     beforeEach(() => {
-        mockRootStore = {
+        mockRootStore = mockStore({
             client: {
                 loginid: 'CR90000401',
                 switchAccount: jest.fn(),
@@ -21,6 +22,9 @@ describe('<AccountTransferReceipt />', () => {
             },
             common: {
                 is_from_derivgo: false,
+            },
+            traders_hub: {
+                closeAccountTransferModal: jest.fn(),
             },
             modules: {
                 cashier: {
@@ -49,7 +53,7 @@ describe('<AccountTransferReceipt />', () => {
                     },
                 },
             },
-        };
+        });
     });
 
     const history = createBrowserHistory();

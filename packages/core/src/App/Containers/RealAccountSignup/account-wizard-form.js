@@ -21,9 +21,9 @@ const shouldShowPersonalAndAddressDetailsAndCurrency = ({ real_account_signup_ta
 export const getItems = props => {
     console.log(props, shouldShowPersonalAndAddressDetailsAndCurrency(props));
     return [
-        // ...(shouldShowPersonalAndAddressDetailsAndCurrency(props)
-        //     ? [currencySelectorConfig(props, CurrencySelector)]
-        //     : []),
+        ...(shouldShowPersonalAndAddressDetailsAndCurrency(props)
+            ? [currencySelectorConfig(props, CurrencySelector)]
+            : []),
         ...(shouldShowPersonalAndAddressDetailsAndCurrency(props)
             ? [personalDetailsConfig(props, PersonalDetails)]
             : []),

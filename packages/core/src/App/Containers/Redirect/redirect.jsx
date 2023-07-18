@@ -25,6 +25,7 @@ const Redirect = ({
     let redirected_to_route = false;
     const { is_appstore } = React.useContext(PlatformContext);
     const action_param = url_params.get('action');
+    const loginid = url_params.get('loginid');
     const code_param = url_params.get('code') || verification_code[action_param];
 
     setVerificationCode(code_param, action_param);
@@ -117,8 +118,13 @@ const Redirect = ({
             break;
         }
         case 'payment_withdraw': {
-            if (localStorage.getItem('active_loginid').startsWith('CRW')) {
-                history.push(routes.traders_hub);
+            const is_wallet_account = loginid.toLowerCase().includes('w');
+
+            if (is_wallet_account) {
+                history.push({
+                    pathname: routes.traders_hub,
+                    search: url_query_string,
+                });
             } else {
                 history.push(routes.cashier_withdrawal);
             }

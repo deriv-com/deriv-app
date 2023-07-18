@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { Modal, Loading } from '@deriv/components';
+import { routes } from '@deriv/shared';
 import WalletModalHeader from './wallet-modal-header';
 import WalletModalBody from './wallet-modal-body';
 import { observer, useStore } from '@deriv/stores';
@@ -11,10 +12,37 @@ const WalletModal = observer(() => {
     const {
         client: { balance, currency, landing_company_shortcode: shortcode, is_authorize, switchAccount },
         ui: { is_dark_mode_on, is_wallet_modal_visible, is_mobile, setIsWalletModalVisible },
-        traders_hub: { active_modal_tab, active_modal_wallet_id, setWalletModalActiveTab },
+        traders_hub: {
+            active_modal_tab,
+            active_modal_wallet_id,
+            setWalletModalActiveTab,
+            setWalletModalActiveWalletID,
+        },
     } = store;
 
     const wallet = useActiveWallet();
+
+    const url_query_string = window.location.search;
+
+    const url_params = useMemo(() => new URLSearchParams(url_query_string), [url_query_string]);
+    const action_param = url_params.get('action');
+    const loginid = url_params.get('loginid');
+
+    useEffect(() => {
+        if (action_param === 'payment_withdraw' && loginid) {
+            window.history.replaceState({}, '', routes.traders_hub);
+            setWalletModalActiveTab('Withdraw');
+            setIsWalletModalVisible(true);
+            setWalletModalActiveWalletID(loginid);
+        }
+    }, [
+        action_param,
+        loginid,
+        setIsWalletModalVisible,
+        setWalletModalActiveTab,
+        setWalletModalActiveWalletID,
+        url_params,
+    ]);
 
     useEffect(() => {
         let timeout_id: NodeJS.Timeout;

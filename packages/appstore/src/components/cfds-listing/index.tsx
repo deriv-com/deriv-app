@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, StaticUrl } from '@deriv/components';
+import { Text, StaticUrl, StatusBadge } from '@deriv/components';
+import { useServerUnderMaintenance } from '@deriv/hooks';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import './cfds-listing.scss';
@@ -132,9 +133,14 @@ const CFDsListing = () => {
             <AddDerivAccount />
 
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
-                <Text line_height='m' weight='bold' color='prominent'>
-                    {localize('Deriv MT5')}
-                </Text>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                    <Text line_height='m' weight='bold' color='prominent'>
+                        {localize('Deriv MT5')}
+                    </Text>
+                    {useServerUnderMaintenance() && (
+                        <StatusBadge account_status='pending' icon='IcAlertWarning' text='Server maintenance' />
+                    )}
+                </div>
             </div>
             {is_landing_company_loaded ? (
                 <>

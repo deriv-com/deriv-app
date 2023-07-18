@@ -1,4 +1,5 @@
 import { Button } from '@deriv/components';
+import { useServerUnderMaintenance } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import TradeButton from 'Components/trade-button/trade-button';
 import React from 'react';
@@ -28,10 +29,15 @@ const TradingAppCardActions = ({
     is_buttons_disabled,
     is_real,
 }: Actions) => {
+    const is_server_under_maintenance = useServerUnderMaintenance();
     switch (action_type) {
         case 'get':
             return (
-                <Button disabled={is_account_being_created} primary_light onClick={() => onAction?.()}>
+                <Button
+                    disabled={is_account_being_created || is_server_under_maintenance}
+                    primary_light
+                    onClick={() => onAction?.()}
+                >
                     {localize('Get')}
                 </Button>
             );

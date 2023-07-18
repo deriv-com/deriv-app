@@ -2,7 +2,8 @@ import classNames from 'classnames';
 import React from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Field, FieldProps, Formik, Form } from 'formik';
-import { Button, Dropdown, Input, Loading, Money, Text } from '@deriv/components';
+import { Button, Dropdown, Input, Loading, Money, StatusBadge, Text } from '@deriv/components';
+import { useServerUnderMaintenance } from '@deriv/hooks';
 import {
     getDecimalPlaces,
     getCurrencyDisplayCode,
@@ -42,11 +43,16 @@ const AccountOption = ({ account, idx }: TAccountsList) => {
             )}
 
             <div className='account-transfer-form__currency-wrapper'>
-                <Text size='xxs' line_height='xs' styles={{ color: 'prominent', fontWeight: 'inherit' }}>
-                    {account.is_dxtrade || account.is_mt || account.is_derivez
-                        ? account.text
-                        : getCurrencyName(account.currency)}
-                </Text>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                    <Text size='xxs' line_height='xs' styles={{ color: 'prominent', fontWeight: 'inherit' }}>
+                        {account.is_dxtrade || account.is_mt || account.is_derivez
+                            ? account.text
+                            : getCurrencyName(account.currency)}
+                    </Text>
+                    {useServerUnderMaintenance() && (
+                        <StatusBadge account_status='pending' icon='IcAlertWarning' text='Server maintenance' />
+                    )}
+                </div>
                 {!account.is_derivez && (
                     <Text size='xxxs' align='left' color='less-prominent'>
                         {account.value}

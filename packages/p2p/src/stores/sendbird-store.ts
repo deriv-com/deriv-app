@@ -347,7 +347,7 @@ export default class SendbirdStore extends BaseStore {
     registerMobXReactions() {
         this.disposeOrderIdReaction = reaction(
             () => this.root_store.order_store.order_id,
-            order_id => {
+            (order_id: string) => {
                 if (!order_id) {
                     this.setChatChannelUrl(null);
                     this.setChannelMessages([]);
@@ -358,11 +358,11 @@ export default class SendbirdStore extends BaseStore {
         );
 
         this.disposeChannelUrlReaction = reaction(
-            () => this.chat_channel_url && this.has_chat_info,
-            is_ready_to_intialise => {
+            () => !!this.chat_channel_url && !!this.has_chat_info,
+            (is_ready_to_intialise: boolean) => {
                 if (is_ready_to_intialise) {
                     (async () => {
-                        this.initialiseChatWsConnection();
+                        await this.initialiseChatWsConnection();
                     })();
                 } else {
                     this.terminateChatWsConnection();
@@ -373,9 +373,11 @@ export default class SendbirdStore extends BaseStore {
 
         this.disposeActiveChatChannelReaction = reaction(
             () => this.active_chat_channel,
-            active_chat_channel => {
+            (active_chat_channel?: GroupChannel) => {
                 if (active_chat_channel) {
-                    this.initialiseOrderMessages();
+                    (async () => {
+                        await this.initialiseOrderMessages();
+                    })();
                 } else {
                     this.setChannelMessages([]);
                 }
@@ -431,7 +433,7 @@ export default class SendbirdStore extends BaseStore {
     sendMessage(message: string) {
         const modified_message = message.trim();
 
-        if (modified_message.length === 0 || modified_message.trim().length === 0) {
+        if (modified_message.length === 0) {
             return;
         }
 

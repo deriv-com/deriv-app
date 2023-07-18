@@ -1,7 +1,7 @@
 import React, { ComponentProps } from 'react';
 import classNames from 'classnames';
 import { Icon } from '@deriv/components';
-import { Language, getAllowedLanguages } from '@deriv/translations';
+import { Language, useLanguageChecks } from '@deriv/translations';
 
 export type TLanguageLink = {
     is_active?: boolean;
@@ -10,7 +10,8 @@ export type TLanguageLink = {
 } & ComponentProps<'div'>;
 
 const LanguageLink = ({ icon_classname, lang, is_active = false, ...props }: TLanguageLink) => {
-    const language_text = getAllowedLanguages()[lang];
+    const { allowed_language } = useLanguageChecks();
+    const language_text = allowed_language[lang];
 
     return (
         <div

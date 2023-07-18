@@ -5,6 +5,7 @@ import i18n, {
     getInitialLanguage,
     loadIncontextTranslation,
     loadLanguageJson,
+    setEnvironment,
     switchLanguage,
 } from '../utils/i18next';
 import { Environment, Language, LanguageData } from '../utils/config';
@@ -32,6 +33,8 @@ export const TranslationProvider = ({ children, onInit, environment = 'productio
     const [current_language, setCurrentLanguage] = React.useState<Language>(
         getInitialLanguage(environment) as Language
     );
+
+    setEnvironment(environment);
 
     React.useEffect(() => {
         const initializeTranslations = async () => {

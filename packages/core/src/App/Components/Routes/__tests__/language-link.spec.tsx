@@ -1,6 +1,7 @@
 import React from 'react';
 import { screen, render } from '@testing-library/react';
 import LanguageLink, { TLanguageLink } from '../language-link';
+import { TranslationProvider } from '@deriv/translations';
 
 jest.mock('@deriv/components', () => ({
     Icon: jest.fn(({ icon_classname }) => <div data-testid='dt_mocked_icon' className={icon_classname} />),
@@ -12,8 +13,14 @@ describe('LanguageLink component', () => {
         lang: 'ID',
     };
 
+    const renderWithProvider = (props: TLanguageLink) => {
+        <TranslationProvider environment='local'>
+            <LanguageLink {...props} />
+        </TranslationProvider>;
+    };
+
     it('should render language link with active classname without active classname when not active', () => {
-        render(<LanguageLink {...mock_props} />);
+        renderWithProvider(mock_props);
 
         expect(screen.getByText('Indonesian')).toBeInTheDocument();
         expect(screen.getByTestId('dt_mocked_icon')).toBeInTheDocument();
@@ -27,7 +34,7 @@ describe('LanguageLink component', () => {
         mock_props.is_active = true;
         mock_props.lang = 'FR';
 
-        render(<LanguageLink {...mock_props} />);
+        renderWithProvider(mock_props);
 
         expect(screen.getByText('Français')).toBeInTheDocument();
         expect(screen.getByTestId('dt_mocked_icon')).toBeInTheDocument();

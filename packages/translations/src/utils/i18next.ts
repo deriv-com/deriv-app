@@ -11,18 +11,26 @@ import {
     LanguageData,
 } from './config';
 
+let temp_environment: Environment = 'production';
+
+export const setEnvironment = (env: Environment) => (temp_environment = env);
+
 /**
  * Gets the current set language.
  *
  * @deprecated This function is deprecated. You should always use the useLanguageSettings() to get the
  * current_language.
  *
- * @param {Environment} [environment='production'] - The environment in which the language is to be fetched.
  * @returns {string} The current language.
  */
-export const getLanguage = (environment: Environment = 'production') =>
-    i18n.language || getInitialLanguage(environment);
+export const getLanguage = () => i18n.language || getInitialLanguage(temp_environment);
 
+/**
+ * Gets the allowed languages based on the specified environment.
+ *
+ * @param {Environment} environment - The environment for which to retrieve the allowed languages.
+ * @returns {Partial<LanguageData>} An object containing allowed languages as keys and their descriptions as values.
+ */
 export const getAllowedLanguages = (environment: Environment): Partial<LanguageData> => {
     switch (environment) {
         case 'production':
@@ -34,6 +42,13 @@ export const getAllowedLanguages = (environment: Environment): Partial<LanguageD
     }
 };
 
+/**
+ * Checks if the specified language is available in the given environment.
+ *
+ * @param {string} lang - The language code to check for availability.
+ * @param {Environment} environment - The environment in which the language availability is to be checked.
+ * @returns {boolean} Returns true if the language is available; otherwise, returns false.
+ */
 export const isLanguageAvailable = (lang: string, environment: Environment) => {
     if (!lang) return false;
 
@@ -45,6 +60,12 @@ export const isLanguageAvailable = (lang: string, environment: Environment) => {
     return Object.keys(getAllowedLanguages(environment)).includes(selected_language);
 };
 
+/**
+ * Gets the initial language to be used in the application based on the specified environment.
+ *
+ * @param {Environment} environment - The environment for which to get the initial language.
+ * @returns {string} The initial language code to be used in the application.
+ */
 export const getInitialLanguage = (environment: Environment) => {
     if (i18n.language) return i18n.language;
 
@@ -69,6 +90,12 @@ export const getInitialLanguage = (environment: Environment) => {
     return DEFAULT_LANGUAGE;
 };
 
+/**
+ * Loads Crowdin's in-context translation for the current language if it's 'ACH' (Acholi language).
+ *
+ * @param {Language} current_language - The current language selected.
+ * @returns {void}
+ */
 export const loadIncontextTranslation = (current_language: Language) => {
     const in_context_loaded = document.getElementById('in_context_crowdin');
     const is_ach = current_language.toUpperCase() === 'ACH';
@@ -87,6 +114,13 @@ export const loadIncontextTranslation = (current_language: Language) => {
     document.head.appendChild(jipt);
 };
 
+/**
+ * Asynchronously loads the language JSON file for the specified language and adds it to the i18n resource bundles.
+ *
+ * @param {string} lang - The language code for which to load the JSON file.
+ * @returns {Promise<void>} A promise that resolves when the JSON file is loaded and added to the i18n resource bundles,
+ * or when it is not necessary to load the file (e.g., when the language is already available or is the default language).
+ */
 export const loadLanguageJson = async (lang: string) => {
     if (!i18n.hasResourceBundle(lang, 'translations') && lang.toUpperCase() !== DEFAULT_LANGUAGE) {
         const lang_json = await import(
@@ -97,6 +131,17 @@ export const loadLanguageJson = async (lang: string) => {
     }
 };
 
+/**
+ * Asynchronously switches the application language to the specified language if it is available in the given environment.
+ *
+ * @async
+ * @param {Language} lang - The language code to switch to.
+ * @param {Environment} environment - The environment in which the language availability is to be checked.
+ * @param {Function} [onChange] - An optional callback function to be executed after the language switch is completed.
+ *                                It will be called with the new language code as an argument.
+ * @returns {Promise<void>} A promise that resolves after the language switch is completed successfully, or rejects if the
+ *                          specified language is not available in the given environment.
+ */
 export const switchLanguage = async (lang: Language, environment: Environment, onChange?: (lang: Language) => void) => {
     if (isLanguageAvailable(lang, environment)) {
         await loadLanguageJson(lang);

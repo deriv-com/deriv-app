@@ -28,7 +28,7 @@ const CurrencySelector = ({ className, default_value, list, onSelect }) => {
                         <Autocomplete
                             {...field}
                             autoComplete='off'
-                            className={classNames('currency-selector', className)}
+                            className={classNames('buy-sell-currency-selector', className)}
                             data-lpignore='true'
                             historyValue={default_value}
                             is_list_visible

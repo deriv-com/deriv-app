@@ -1048,10 +1048,13 @@ export default class ClientStore extends BaseStore {
                     account.shortcode !== 'maltainvest'
             )
             .map(account => account.shortcode);
-
-        const has_no_matching_accounts = available_real_accounts_shortcodes.every(shortcode =>
-            existing_real_accounts.some(account => account.landing_company_short !== shortcode)
-        );
+        const has_no_matching_accounts = available_real_accounts_shortcodes.every(shortcode => {
+            if (market_type === 'all') {
+                // as Swapfree only have SVG account for now we need to check if there is any real svg account available
+                return existing_real_accounts.some(account => account.landing_company_short === shortcode);
+            }
+            return existing_real_accounts.some(account => account.landing_company_short === shortcode);
+        });
 
         return !has_no_matching_accounts;
     }
@@ -1574,6 +1577,7 @@ export default class ClientStore extends BaseStore {
         const redirect_url = search_params?.get('redirect_url');
         const code_param = search_params?.get('code');
         const action_param = search_params?.get('action');
+        const loginid_param = search_params?.get('loginid');
         const unused_params = [
             'type',
             'acp',
@@ -1625,7 +1629,8 @@ export default class ClientStore extends BaseStore {
             return false;
         }
 
-        this.setLoginId(LocalStore.get('active_loginid'));
+        if (action_param === 'payment_withdraw' && loginid_param) this.setLoginId(loginid_param);
+        else this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
         const client = this.accounts[this.loginid];

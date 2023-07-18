@@ -230,7 +230,7 @@ export const validate = <T>(errors: Record<string, unknown>, values: T) => {
     return (fn: (value: string) => string, arr: string[], err_msg: string) => {
         arr.forEach(field => {
             const value = values[field as keyof typeof values] as string;
-            if (!fn(value) && !errors[field] && !err_msg) errors[field] = err_msg;
+            if (!fn(value) && !errors[field]) errors[field] = err_msg;
         });
     };
 };

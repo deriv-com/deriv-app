@@ -92,7 +92,7 @@ describe('<IDVForm/>', () => {
         });
 
         const document_type_input = screen.getByLabelText('Choose the document type');
-        const document_number_input = screen.getByPlaceholderText('Enter your document number');
+        const document_number_input = screen.getByLabelText('Enter your document number');
 
         expect(document_type_input).toBeInTheDocument();
         expect(document_number_input).toBeInTheDocument();

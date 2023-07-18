@@ -15,7 +15,7 @@ const currencySelectorConfig = (
     CurrencySelector: React.Component,
     is_appstore: boolean
 ) => {
-    return {
+    const test = {
         header: {
             active_title: is_appstore ? localize('Select wallet currency') : localize('Please choose your currency'),
             title: is_appstore ? localize('CURRENCY') : localize('Account currency'),
@@ -28,6 +28,8 @@ const currencySelectorConfig = (
         passthrough: ['legal_allowed_currencies'],
         icon: 'IcDashboardCurrency',
     };
+    console.log('currencySelectorConfig', test);
+    return test;
 };
 
 export default currencySelectorConfig;

@@ -61,6 +61,7 @@ const AccountWizard = props => {
     const [is_loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
+        console.log('useEffect');
         props.setIsTradingAssessmentForNewUserEnabled(true);
         props.fetchStatesList();
         const { cancel, promise } = makeCancellablePromise(props.fetchResidenceList());
@@ -320,7 +321,7 @@ const AccountWizard = props => {
     }
     if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (!mounted) return null;
-    console.log(is_loading, mounted);
+    console.log(is_loading, mounted, finished);
     if (!finished) {
         const wizard_steps = state_items.map((step, step_index) => {
             const passthrough = getPropsForChild(step_index);

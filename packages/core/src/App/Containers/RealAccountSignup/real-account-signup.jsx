@@ -434,6 +434,20 @@ const RealAccountSignup = ({
         return real_account_signup_target === 'manage';
     };
 
+    const getModalContent = () => {
+        console.log('getModalContent');
+
+        return (
+            <ModalContent
+                state_value={state_value}
+                passthrough={state_index}
+                is_loading={is_loading}
+                real_account_signup_target={real_account_signup_target}
+                deposit_real_account_signup_target={deposit_real_account_signup_target}
+                deposit_target={deposit_target}
+            />
+        );
+    };
     const getActiveModalIndex = () => {
         let active_modal_index_no;
         if (real_account_signup_target === 'choose') {
@@ -458,9 +472,13 @@ const RealAccountSignup = ({
         }
         return active_modal_index_no;
     };
-
+    const getModal = () => {
+        console.log('getModal');
+        return modal_content[getActiveModalIndex()];
+    };
     // set title and body of the modal
-    const { title: Title, body: ModalContent } = modal_content[getActiveModalIndex()];
+    const { title: Title, body: ModalContent } = getModal();
+
     const {
         account_wizard,
         add_or_manage_account,
@@ -618,14 +636,7 @@ const RealAccountSignup = ({
                             width={getModalWidth()}
                             elements_to_ignore={[document.querySelector('.modal-root')]}
                         >
-                            <ModalContent
-                                state_value={state_value}
-                                passthrough={state_index}
-                                is_loading={is_loading}
-                                real_account_signup_target={real_account_signup_target}
-                                deposit_real_account_signup_target={deposit_real_account_signup_target}
-                                deposit_target={deposit_target}
-                            />
+                            {getModalContent()}
                         </Modal>
                     </DesktopWrapper>
                     <MobileWrapper>
@@ -651,14 +662,7 @@ const RealAccountSignup = ({
                                 return null;
                             }}
                         >
-                            <ModalContent
-                                state_value={state_value}
-                                passthrough={state_index}
-                                is_loading={is_loading}
-                                real_account_signup_target={real_account_signup_target}
-                                deposit_real_account_signup_target={deposit_real_account_signup_target}
-                                deposit_target={deposit_target}
-                            />
+                            {getModalContent()}
                         </MobileDialog>
                     </MobileWrapper>
                 </React.Fragment>

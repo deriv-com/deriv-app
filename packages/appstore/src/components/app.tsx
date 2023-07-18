@@ -11,7 +11,7 @@ type TProps = {
     };
 };
 
-const App: React.FC<TProps> = ({ passthrough: { root_store } }: TProps) => (
+const App: React.FC<TProps> = ({ passthrough: { root_store } }) => (
     <CashierStoreProvider store={root_store}>
         <CFDStoreProvider store={root_store}>
             <StoreProvider store={root_store}>

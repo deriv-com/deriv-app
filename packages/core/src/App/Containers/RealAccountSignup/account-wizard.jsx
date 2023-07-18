@@ -4,7 +4,7 @@ import fromEntries from 'object.fromentries';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
+import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard, Loading } from '@deriv/components';
 import { WS, getLocation, makeCancellablePromise, toMoment, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
@@ -58,6 +58,7 @@ const AccountWizard = props => {
     const [previous_data, setPreviousData] = React.useState([]);
     const [state_items, setStateItems] = React.useState([]);
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
+    const [is_loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
         props.setIsTradingAssessmentForNewUserEnabled(true);
@@ -75,6 +76,7 @@ const AccountWizard = props => {
             });
             setPreviousData(fetchFromStorage());
             setMounted(true);
+            setLoading(false);
         });
 
         return () => {
@@ -316,8 +318,9 @@ const AccountWizard = props => {
     if (should_accept_financial_risk) {
         return <AcceptRiskForm onConfirm={onAcceptRisk} onClose={onDeclineRisk} />;
     }
-
+    if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
     if (!mounted) return null;
+    console.log(is_loading, mounted);
     if (!finished) {
         const wizard_steps = state_items.map((step, step_index) => {
             const passthrough = getPropsForChild(step_index);

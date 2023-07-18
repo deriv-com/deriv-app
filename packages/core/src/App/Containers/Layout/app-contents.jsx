@@ -42,7 +42,7 @@ const AppContents = ({
         // rudderstack page view trigger
         WS.wait('authorize').then(response => {
             if (response.error) return;
-            const { user_id } = response.authorize;
+            const user_id = response.authorize?.user_id;
 
             if (is_logged_in && user_id) {
                 RudderStack.identifyEvent(user_id, {

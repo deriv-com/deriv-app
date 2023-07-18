@@ -8,7 +8,7 @@ import { getContractTypeCategoryIcons, findContractCategory } from '../../../Hel
 
 const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageChanged }) => {
     const wrapper_ref = React.useRef(null);
-    const [is_dialog_open, setDialogVisibility] = React.useState(false);
+    const [is_dialog_open, setDialogVisibility] = React.useState();
     const [is_info_dialog_open, setInfoDialogVisibility] = React.useState(false);
     const [selected_category, setSelectedCategory] = React.useState('All');
     const [search_query, setSearchQuery] = React.useState('');
@@ -18,7 +18,7 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
     const handleClickOutside = React.useCallback(
         event => {
             if (isMobile()) return;
-            if (wrapper_ref && !wrapper_ref.current?.contains(event.target)) {
+            if (wrapper_ref && !wrapper_ref.current?.contains(event.target) && is_dialog_open) {
                 setDialogVisibility(false);
                 setInfoDialogVisibility(false);
                 setItem({ ...item, value });
@@ -35,11 +35,13 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
     }, [handleClickOutside]);
 
     React.useEffect(() => {
-        RudderStack.track('ce_trade_types_form', {
-            action: is_dialog_open ? 'open' : 'close',
-            form_source: 'contract_set_up_form',
-            form_name: 'default',
-        });
+        if (typeof is_dialog_open === 'boolean') {
+            RudderStack.track('ce_trade_types_form', {
+                action: is_dialog_open ? 'open' : 'close',
+                form_source: 'contract_set_up_form',
+                form_name: 'default',
+            });
+        }
     }, [is_dialog_open]);
 
     const handleCategoryClick = ({ key }) => {
@@ -90,10 +92,12 @@ const ContractTypeWidget = ({ is_equal, name, value, list, onChange, languageCha
     };
 
     const onSearchBlur = () => {
-        RudderStack.track('ce_trade_types_form', {
-            action: 'search',
-            search_string: search_query,
-        });
+        if (search_query) {
+            RudderStack.track('ce_trade_types_form', {
+                action: 'search',
+                search_string: search_query,
+            });
+        }
     };
 
     const onWidgetClick = () => {

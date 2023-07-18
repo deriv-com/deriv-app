@@ -99,6 +99,7 @@ export class RudderStack {
     has_identified = false;
     has_initialized = false;
     current_page = '';
+    account_type = '';
 
     constructor() {
         this.init();
@@ -124,10 +125,15 @@ export class RudderStack {
         }
     }
 
-    identifyEvent = (user_id: string, payload: TEvents['identify']) => {
+    setAccountType(account_type: string) {
+        this.account_type = account_type;
+    }
+
+    identifyEvent = (user_id: string, account_type: string, payload: TEvents['identify']) => {
         if (this.has_initialized) {
             RudderAnalytics.identify(user_id, payload);
             this.has_identified = true;
+            this.account_type = account_type;
         }
     };
 

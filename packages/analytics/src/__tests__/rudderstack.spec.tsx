@@ -35,7 +35,7 @@ describe('rudderstack', () => {
     });
 
     test('should be identified once identify event is called', () => {
-        rudderstack.identifyEvent('C123', {
+        rudderstack.identifyEvent('C123', 'CR', {
             language: 'en',
         });
 

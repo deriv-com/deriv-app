@@ -1638,10 +1638,13 @@ export default class ClientStore extends BaseStore {
         if (authorize_response) {
             // If this fails, it means the landing company check failed
             if (this.loginid === authorize_response.authorize.loginid) {
+                const { user_id } = authorize_response.authorize;
+                const account_type = authorize_response.authorize.loginid.substring(0, 2);
+
                 BinarySocketGeneral.authorizeAccount(authorize_response);
 
                 // Client comes back from oauth and logs in
-                RudderStack.identifyEvent(this.user_id, {
+                RudderStack.identifyEvent(user_id, account_type, {
                     language: getLanguage().toLowerCase(),
                 });
                 const current_page = window.location.hostname + window.location.pathname;

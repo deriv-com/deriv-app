@@ -8,7 +8,6 @@ import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, platform
 import { RudderStack } from '@deriv/analytics';
 import { connect } from 'Stores/connect';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
-import { useStore } from '@deriv/stores';
 import { getLanguage } from '@deriv/translations';
 
 const tracking_status_cookie = new CookieStorage(TRACKING_STATUS_KEY);
@@ -32,9 +31,6 @@ const AppContents = ({
     const [show_cookie_banner, setShowCookieBanner] = React.useState(false);
     const [is_gtm_tracking, setIsGtmTracking] = React.useState(false);
     const { is_appstore } = React.useContext(PlatformContext);
-    const {
-        client: { user_id },
-    } = useStore();
 
     const tracking_status = tracking_status_cookie.get(TRACKING_STATUS_KEY);
 
@@ -42,12 +38,19 @@ const AppContents = ({
 
     React.useEffect(() => {
         // rudderstack page view trigger
-        WS.wait('authorize').then(() => {
-            RudderStack.identifyEvent(user_id, {
-                language: getLanguage().toLowerCase() || 'en',
-            });
-            const current_page = window.location.hostname + window.location.pathname;
-            RudderStack.pageView(current_page);
+        WS.wait('authorize').then(response => {
+            if (!response.error) {
+                const { user_id } = response.authorize;
+                const account_type = response.authorize.loginid.substring(0, 2);
+                
+                if (is_logged_in && user_id) {
+                    RudderStack.identifyEvent(user_id, account_type, {
+                        language: getLanguage().toLowerCase() || 'en',
+                    });
+                    const current_page = window.location.hostname + window.location.pathname;
+                    RudderStack.pageView(current_page);
+                }
+            }
         });
 
         if (scroll_ref.current) setAppContentsScrollRef(scroll_ref);

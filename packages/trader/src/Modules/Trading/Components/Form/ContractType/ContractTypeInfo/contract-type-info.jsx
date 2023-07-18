@@ -31,11 +31,13 @@ const Info = ({ handleNavigationClick, handleSelect, initial_index, item, list, 
         setCarouselIndex(contract_types[active_index].value);
         handleNavigationClick(contract_types[active_index]);
 
-        RudderStack.track('ce_trade_types_form', {
-            action: 'info_open',
-            tab_name: selected_category,
-            trade_type_name: contract_types[active_index]?.text,
-        });
+        if (!carousel_index) {
+            RudderStack.track('ce_trade_types_form', {
+                action: 'info_open',
+                tab_name: selected_category,
+                trade_type_name: contract_types[active_index]?.text,
+            });
+        }
     };
 
     React.useEffect(() => {

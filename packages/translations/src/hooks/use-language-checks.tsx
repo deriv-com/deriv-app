@@ -1,7 +1,9 @@
-import { useTranslation } from 'react-i18next';
+import { useTranslationContext } from '../context/translation-provider';
 
 const useLanguageChecks = () => {
-    const { i18n } = useTranslation();
+    const { allowed_language } = useTranslationContext();
+
+    return { allowed_language };
 };
 
 export default useLanguageChecks;

@@ -2,8 +2,7 @@ import { flow } from 'mobx';
 import { LocalStore } from '../storage';
 import { redirectToLogin } from '../login';
 import { WS } from '../../services';
-
-import { getLanguage, localize } from '@deriv/translations';
+import { localize, getLanguage } from '@deriv/translations';
 import { ActiveSymbols } from '@deriv/api-types';
 
 type TResidenceList = {

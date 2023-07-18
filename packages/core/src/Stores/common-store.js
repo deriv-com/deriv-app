@@ -1,12 +1,9 @@
-import * as SocketCache from '_common/base/socket_cache';
 import { action, computed, makeObservable, observable } from 'mobx';
-import { switchLanguage, getAllowedLanguages } from '@deriv/translations';
+import { getAllowedLanguages } from '@deriv/translations';
 import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
 import ServerTime from '_common/base/server_time';
-import WS from 'Services/ws-methods';
-import { currentLanguage } from 'Utils/Language/index';
 
 export default class CommonStore extends BaseStore {
     constructor(root_store) {
@@ -14,7 +11,6 @@ export default class CommonStore extends BaseStore {
 
         makeObservable(this, {
             server_time: observable,
-            current_language: observable,
             allowed_languages: observable,
             has_error: observable,
             error: observable,
@@ -33,7 +29,6 @@ export default class CommonStore extends BaseStore {
             setSelectedContractType: action.bound,
             init: action.bound,
             checkAppId: action.bound,
-            changeCurrentLanguage: action.bound,
             setAppstorePlatform: action.bound,
             setPlatform: action.bound,
             is_from_derivgo: computed,
@@ -49,13 +44,11 @@ export default class CommonStore extends BaseStore {
             setAppRouterHistory: action.bound,
             routeTo: action.bound,
             addRouteHistoryItem: action.bound,
-            changeSelectedLanguage: action.bound,
             routeBackInApp: action.bound,
         });
     }
 
     server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js
-    current_language = currentLanguage;
     allowed_languages = Object.keys(getAllowedLanguages());
     has_error = false;
 
@@ -94,44 +87,6 @@ export default class CommonStore extends BaseStore {
         }
         this.app_id = getAppId();
     }
-
-    changeCurrentLanguage(new_language) {
-        if (this.current_language !== new_language) {
-            this.current_language = new_language;
-        }
-    }
-
-    changeSelectedLanguage = async key => {
-        SocketCache.clear();
-        if (key === 'EN') {
-            window.localStorage.setItem('i18n_language', key);
-        }
-        await WS.wait('authorize');
-        return new Promise((resolve, reject) => {
-            WS.setSettings({
-                set_settings: 1,
-                preferred_language: key,
-            }).then(async () => {
-                const new_url = new URL(window.location.href);
-                if (key === 'EN') {
-                    new_url.searchParams.delete('lang');
-                } else {
-                    new_url.searchParams.set('lang', key);
-                }
-                window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
-                try {
-                    await switchLanguage(key, () => {
-                        this.changeCurrentLanguage(key);
-                        BinarySocket.closeAndOpenNewConnection(key);
-                        this.root_store.client.setIsAuthorize(false);
-                    });
-                    resolve();
-                } catch (e) {
-                    reject();
-                }
-            });
-        });
-    };
 
     setAppstorePlatform(platform) {
         this.platform = platform;
@@ -294,8 +249,6 @@ export default class CommonStore extends BaseStore {
         }
         this.app_routing_history.unshift(router_action);
     }
-
-    isCurrentLanguage = lang => lang === this.current_language;
 
     routeBackInApp(history, additional_platform_path = []) {
         let route_to_item_idx = -1;

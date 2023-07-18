@@ -1,5 +1,5 @@
-import classNames from 'classnames';
 import React from 'react';
+import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
 import { Div100vhContainer, Icon, MobileDrawer, ToggleSwitch, Text } from '@deriv/components';
 import {
@@ -11,20 +11,19 @@ import {
 } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { localize, getAllowedLanguages, Localize } from '@deriv/translations';
+import { localize, getAllowedLanguages, Localize, useLanguageSettings } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink, LanguageLink } from 'App/Components/Routes';
 import getRoutesConfig from 'App/Constants/routes-config';
-import { changeLanguage } from 'Utils/Language';
 import LiveChat from 'App/Components/Elements/LiveChat';
 import useLiveChat from 'App/Components/Elements/LiveChat/use-livechat.ts';
 import PlatformSwitcher from './platform-switcher';
 
 const MenuLink = observer(
     ({ link_to, icon, is_active, is_disabled, is_language, suffix_icon, text, onClickLink, is_hidden }) => {
-        const { common, ui, client } = useStore();
-        const { changeCurrentLanguage } = common;
+        const { ui, client } = useStore();
+        const { handleChangeLanguage } = useLanguageSettings();
         const deriv_static_url = getStaticUrl(link_to);
         const history = useHistory();
         const { has_any_real_account, is_virtual } = client;
@@ -100,7 +99,7 @@ const MenuLink = observer(
                     })}
                     onClick={() => {
                         onClickLink();
-                        changeLanguage(link_to, changeCurrentLanguage);
+                        handleChangeLanguage(link_to);
                     }}
                 >
                     <Icon className='header__menu-mobile-link-flag-icon' size={32} icon={icon} />

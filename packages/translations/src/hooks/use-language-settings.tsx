@@ -8,7 +8,7 @@ type UseLanguageSettings = {
 };
 
 const useLanguageSettings = ({ onChange, onComplete }: UseLanguageSettings = {}) => {
-    const { current_language, setCurrentLanguage } = useTranslationContext();
+    const { environment, current_language, setCurrentLanguage } = useTranslationContext();
 
     const handleChangeLanguage = async (selected_lang: Language) => {
         if (selected_lang === 'EN') {
@@ -25,7 +25,7 @@ const useLanguageSettings = ({ onChange, onComplete }: UseLanguageSettings = {})
         }
 
         window.history.pushState({ path: current_url.toString() }, '', current_url.toString());
-        await switchLanguage(selected_lang, async () => {
+        await switchLanguage(selected_lang, environment, async () => {
             setCurrentLanguage(selected_lang);
 
             if (typeof onComplete === 'function') await onComplete(selected_lang);

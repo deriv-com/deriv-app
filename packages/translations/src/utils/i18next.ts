@@ -1,57 +1,67 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { str as crc32 } from 'crc-32';
-import { isLocal, isProduction } from '../../../shared/src/utils/config/config';
-import { isStaging } from '../../../shared/src/utils/url/helpers';
 import {
     ALL_LANGUAGES,
     ALLOWED_LANGUAGES,
-    EXCLUDED_LANGUAGE_KEYS,
     DEFAULT_LANGUAGE,
     Language,
-    LanguageKey,
     STORE_LANGUAGE_KEY,
+    Environment,
+    LanguageData,
 } from './config';
 
-export const getAllowedLanguages = () => {
-    let language_list = Object.keys(ALL_LANGUAGES)
-        .filter(key => !EXCLUDED_LANGUAGE_KEYS.includes(key as LanguageKey))
-        .reduce((obj: { [key: string]: string }, key) => {
-            obj[key] = ALL_LANGUAGES[key as LanguageKey];
-            return obj;
-        }, {});
+/**
+ * Gets the current set language.
+ *
+ * @deprecated This function is deprecated. You should always use the useLanguageSettings() to get the
+ * current_language.
+ *
+ * @param {Environment} [environment='production'] - The environment in which the language is to be fetched.
+ * @returns {string} The current language.
+ */
+export const getLanguage = (environment: Environment = 'production') =>
+    i18n.language || getInitialLanguage(environment);
 
-    if (isProduction()) language_list = ALLOWED_LANGUAGES;
-
-    return language_list;
+export const getAllowedLanguages = (environment: Environment): Partial<LanguageData> => {
+    switch (environment) {
+        case 'production':
+            return ALLOWED_LANGUAGES;
+        case 'local':
+        case 'staging':
+        default:
+            return ALL_LANGUAGES;
+    }
 };
 
-export const isLanguageAvailable = (lang: string) => {
+export const isLanguageAvailable = (lang: string, environment: Environment) => {
     if (!lang) return false;
 
     const selected_language = lang.toUpperCase();
     const is_ach = selected_language === 'ACH';
 
-    if (is_ach) return isStaging() || isLocal();
+    if (is_ach) return environment === 'staging' || environment === 'local';
 
-    return Object.keys(getAllowedLanguages()).includes(selected_language);
+    return Object.keys(getAllowedLanguages(environment)).includes(selected_language);
 };
 
-export const getInitialLanguage = () => {
+export const getInitialLanguage = (environment: Environment) => {
+    if (i18n.language) return i18n.language;
+
     const url_params = new URLSearchParams(window.location.search);
     const query_lang = url_params.get('lang');
     const local_storage_language = localStorage.getItem(STORE_LANGUAGE_KEY);
 
     if (query_lang) {
         const query_lang_uppercase = query_lang.toUpperCase();
-        if (isLanguageAvailable(query_lang_uppercase)) {
+        if (isLanguageAvailable(query_lang_uppercase, environment)) {
             localStorage.setItem(STORE_LANGUAGE_KEY, query_lang_uppercase);
             return query_lang_uppercase;
         }
     }
 
     if (local_storage_language) {
-        if (isLanguageAvailable(local_storage_language)) {
+        if (isLanguageAvailable(local_storage_language, environment)) {
             return local_storage_language;
         }
     }
@@ -59,11 +69,9 @@ export const getInitialLanguage = () => {
     return DEFAULT_LANGUAGE;
 };
 
-export const getLanguage = () => i18n.language || getInitialLanguage();
-
-const loadIncontextTranslation = () => {
+export const loadIncontextTranslation = (current_language: Language) => {
     const in_context_loaded = document.getElementById('in_context_crowdin');
-    const is_ach = getLanguage().toUpperCase() === 'ACH';
+    const is_ach = current_language.toUpperCase() === 'ACH';
 
     if (!is_ach || in_context_loaded) return;
 
@@ -79,7 +87,7 @@ const loadIncontextTranslation = () => {
     document.head.appendChild(jipt);
 };
 
-const loadLanguageJson = async (lang: string) => {
+export const loadLanguageJson = async (lang: string) => {
     if (!i18n.hasResourceBundle(lang, 'translations') && lang.toUpperCase() !== DEFAULT_LANGUAGE) {
         const lang_json = await import(
             /* webpackChunkName: "[request]" */ `../translations/${lang.toLowerCase()}.json`
@@ -89,19 +97,12 @@ const loadLanguageJson = async (lang: string) => {
     }
 };
 
-export const initializeTranslations = async () => {
-    if (isStaging() || isLocal()) {
-        loadIncontextTranslation();
-    }
-    await loadLanguageJson(getInitialLanguage());
-};
-
-export const switchLanguage = async (lang: Language, cb: (lang: Language) => void) => {
-    if (isLanguageAvailable(lang)) {
+export const switchLanguage = async (lang: Language, environment: Environment, onChange?: (lang: Language) => void) => {
+    if (isLanguageAvailable(lang, environment)) {
         await loadLanguageJson(lang);
         await i18n.changeLanguage(lang, () => {
             localStorage.setItem(STORE_LANGUAGE_KEY, lang);
-            cb(lang);
+            if (typeof onChange === 'function') onChange(lang);
         });
     }
 };
@@ -115,7 +116,6 @@ i18n.use(initReactI18next).init({
         },
         useSuspense: false,
     },
-    lng: getInitialLanguage(),
     fallbackLng: 'EN',
     ns: ['translations'],
     defaultNS: 'translations',

@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { DesktopWrapper } from '@deriv/components';
 import { APIProvider } from '@deriv/api';
-import { setUrlLanguage, initFormErrorMessages, setSharedCFDText, setWebsocket, initMoment } from '@deriv/shared';
-import { getLanguage, TranslationProvider } from '@deriv/translations';
+import { initFormErrorMessages, setSharedCFDText, setWebsocket, initMoment } from '@deriv/shared';
+import { TranslationProvider } from '@deriv/translations';
 import { StoreProvider } from '@deriv/stores';
 import WS from 'Services/ws-methods';
 import { MobxContentProvider } from 'Stores/connect';
@@ -29,7 +29,6 @@ const App = ({ root_store }) => {
     const has_base = /^\/(br_)/.test(l.pathname);
 
     React.useEffect(() => {
-        setUrlLanguage(getLanguage());
         initFormErrorMessages(FORM_ERROR_MESSAGES);
         setSharedCFDText(CFD_TEXT);
     }, []);

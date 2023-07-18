@@ -395,7 +395,6 @@ type TCommonStore = {
     routeTo: (pathname: string) => void;
     server_time?: Moment;
     changeCurrentLanguage: (new_language: string) => void;
-    changeSelectedLanguage: (key: string) => void;
     current_language: string;
     is_language_changing: boolean;
     setAppstorePlatform: (value: string) => void;

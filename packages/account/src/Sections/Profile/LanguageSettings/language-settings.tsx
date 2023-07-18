@@ -2,7 +2,7 @@ import React from 'react';
 import { Formik, FormikHandlers, FormikHelpers, FormikValues } from 'formik';
 import { Button, DesktopWrapper } from '@deriv/components';
 import { WS } from '@deriv/shared';
-import { localize, getAllowedLanguages, useLanguageSettings } from '@deriv/translations';
+import { localize, useLanguageChecks, useLanguageSettings } from '@deriv/translations';
 import FormSubHeader from 'Components/form-sub-header';
 import FormFooter from 'Components/form-footer';
 import LanguageRadioButton from 'Components/language-settings';
@@ -20,11 +20,14 @@ const LanguageSettings = () => {
             WS.closeAndOpenNewConnection(selected_lang);
         },
     });
-    const allowed_language_keys: string[] = Object.keys(getAllowedLanguages());
-    const initial_values = { language_code: current_language };
+    const { allowed_language } = useLanguageChecks();
+    const allowed_language_keys: string[] = Object.keys(allowed_language);
 
     return (
-        <Formik initialValues={initial_values} onSubmit={values => handleChangeLanguage(values.language_code)}>
+        <Formik
+            initialValues={{ language_code: current_language }}
+            onSubmit={values => handleChangeLanguage(values.language_code)}
+        >
             {({ handleSubmit, setFieldValue, values }: FormikHandlers & FormikHelpers<FormikValues> & FormikValues) => {
                 return (
                     <form onSubmit={handleSubmit} className='account-form account-form--language-settings'>

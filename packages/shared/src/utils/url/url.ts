@@ -2,6 +2,7 @@ import { deriv_urls } from './constants';
 import { getPlatformFromUrl } from './helpers';
 import { getCurrentProductionDomain } from '../config/config';
 import { routes } from '../routes';
+import { Language } from '@deriv/translations';
 
 type TOption = {
     query_string?: string;
@@ -18,10 +19,13 @@ const host_map = {
     'blog.binary.com': 'blog.binary.com',
 };
 
-let location_url: Location, default_language: string;
+let location_url: Location;
 
-export const legacyUrlForLanguage = (target_language: string, url: string = window.location.href) =>
-    url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
+export const legacyUrlForLanguage = (
+    target_language: string,
+    url: string = window.location.href,
+    default_language: string
+) => url.replace(new RegExp(`/${default_language}/`, 'i'), `/${(target_language || 'EN').trim().toLowerCase()}/`);
 
 export const urlForLanguage = (lang: string, url: string = window.location.href) => {
     const current_url = new URL(url);
@@ -50,6 +54,13 @@ export const params = (href?: string | URL) => {
     return arr_params;
 };
 
+/**
+ * Normalizes the given path by removing leading and trailing slashes,
+ * and any invalid characters.
+ *
+ * @param {string} path - The path to be normalized.
+ * @returns {string} - The normalized path.
+ */
 export const normalizePath = (path: string) => (path ? path.replace(/(^\/|\/$|[^a-zA-Z0-9-_./()#])/g, '') : '');
 
 export const urlFor = (
@@ -58,7 +69,8 @@ export const urlFor = (
         query_string: undefined,
         legacy: false,
         language: undefined,
-    }
+    },
+    default_language: string
 ) => {
     const { legacy, language, query_string } = options;
 
@@ -82,7 +94,7 @@ export const urlFor = (
     if (lang && !legacy) {
         return urlForLanguage(lang, new_url);
     } else if (legacy) {
-        return legacyUrlForLanguage(lang, new_url);
+        return legacyUrlForLanguage(lang, new_url, default_language);
     }
 
     return new_url;
@@ -127,15 +139,23 @@ export const removeBranchName = (path = '') => {
 
 export const getHostMap = () => host_map;
 
-export const setUrlLanguage = (lang: string) => {
-    default_language = lang;
+type StaticURLOptions = {
+    default_language?: Language;
+    is_document?: boolean;
+    is_eu_url?: boolean;
 };
 
-// TODO: cleanup options param usage
-// eslint-disable-next-line no-unused-vars
-export const getStaticUrl = (path = '', _options = {}, is_document = false, is_eu_url = false) => {
+/**
+ * Generates the URL for deriv.com related links.
+ *
+ * @param {string} [path=''] - The path for the URL, if any.
+ * @param {StaticURLOptions} options - The options object for URL generation.
+ * @returns {string} - The URL for deriv.com related links.
+ */
+export const getStaticUrl = (path = '', options?: StaticURLOptions) => {
+    const { default_language = 'EN', is_document = false, is_eu_url = false } = options || {};
     const host = is_eu_url ? deriv_urls.DERIV_COM_PRODUCTION_EU : deriv_urls.DERIV_COM_PRODUCTION;
-    let lang = default_language?.toLowerCase();
+    let lang = default_language.toLowerCase();
 
     if (lang && lang !== 'en') {
         lang = `/${lang}`;

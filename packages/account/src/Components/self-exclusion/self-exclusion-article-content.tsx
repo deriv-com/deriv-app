@@ -38,7 +38,7 @@ export const selfExclusionArticleItems = ({
                                 className='link'
                                 rel='noopener noreferrer'
                                 target='_blank'
-                                href={getStaticUrl('/responsible', { is_deriv_crypto })}
+                                href={getStaticUrl('/responsible')}
                             />,
                         ]}
                         values={{ brand_website_name: getBrandWebsiteName() }}
@@ -109,7 +109,7 @@ export const selfExclusionArticleItems = ({
                             className='link'
                             rel='noopener noreferrer'
                             target='_blank'
-                            href={getStaticUrl('/responsible', { is_deriv_crypto })}
+                            href={getStaticUrl('/responsible')}
                         />,
                     ]}
                     values={{ platform_name_trader, platform_name_dbot, platform_name_smarttrader, platform_name_bbot }}
@@ -141,7 +141,7 @@ export const selfExclusionArticleItems = ({
                                       className='link'
                                       rel='noopener noreferrer'
                                       target='_blank'
-                                      href={getStaticUrl('/contact_us', { is_deriv_crypto })}
+                                      href={getStaticUrl('/contact_us')}
                                   />,
                               ]}
                           />

@@ -1,6 +1,7 @@
 export type Environment = 'local' | 'staging' | 'production';
 export type Language = keyof typeof ALL_LANGUAGES;
 export type LanguageKey = keyof typeof ALL_LANGUAGES;
+export type LanguageData = { [key in LanguageKey]: string };
 
 export const STORE_LANGUAGE_KEY = 'i18n_language';
 export const DEFAULT_LANGUAGE = 'EN';
@@ -19,7 +20,7 @@ export const ALL_LANGUAGES = Object.freeze({
     TH: 'ไทย',
 });
 
-export const ALLOWED_LANGUAGES = Object.freeze({
+export const ALLOWED_LANGUAGES: Partial<LanguageData> = Object.freeze({
     EN: 'English',
     ES: 'Español',
     RU: 'Русский',
@@ -28,5 +29,3 @@ export const ALLOWED_LANGUAGES = Object.freeze({
     TH: 'ไทย',
     VI: 'Tiếng Việt',
 });
-
-export const EXCLUDED_LANGUAGE_KEYS: [LanguageKey] = ['ACH'];

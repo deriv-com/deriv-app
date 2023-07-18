@@ -2,7 +2,7 @@ import { Formik, FormikHelpers } from 'formik';
 import React from 'react';
 import { Button, Icon, PasswordMeter, PasswordInput, FormSubmitButton, Loading, Modal, Text } from '@deriv/components';
 import { validLength, validPassword, getErrorMessages, CFD_PLATFORMS, WS, redirectToLogin } from '@deriv/shared';
-import { localize, Localize, getLanguage } from '@deriv/translations';
+import { localize, Localize, useLanguageSettings } from '@deriv/translations';
 import { getMtCompanies, TMtCompanies } from '../Stores/Modules/CFD/Helpers/cfd-config';
 import { TResetPasswordIntent, TCFDResetPasswordModal, TError } from './props.types';
 import { observer, useStore } from '@deriv/stores';
@@ -43,6 +43,7 @@ const ResetPasswordIntent = ({ current_list, children, is_eu, ...props }: TReset
 };
 
 const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) => {
+    const { current_language } = useLanguageSettings();
     const { client, ui } = useStore();
 
     const { email, is_eu, is_logged_in } = client;
@@ -145,7 +146,7 @@ const CFDResetPasswordModal = observer(({ platform }: TCFDResetPasswordModal) =>
                     ? localize('Reset Deriv X investor password')
                     : localize('Reset Deriv MT5 investor password')
             }
-            onMount={() => redirectToLogin(is_logged_in, getLanguage(), true)}
+            onMount={() => redirectToLogin(is_logged_in, current_language, true)}
             should_header_stick_body={false}
         >
             {!getIsListFetched() && !state.has_error && <Loading is_fullscreen={false} />}

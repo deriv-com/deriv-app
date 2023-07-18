@@ -81,7 +81,7 @@ const TradingAppCard = ({
             }
         }
         if (platform === CFD_PLATFORMS.MT5 && availability === 'EU')
-            window.open(getStaticUrl(`/dmt5`, {}, false, true));
+            window.open(getStaticUrl(`/dmt5`, { is_eu_url: true }));
         else if (platform === CFD_PLATFORMS.MT5 && availability !== 'EU') window.open(getStaticUrl(`/dmt5`));
         else if (platform === CFD_PLATFORMS.DXTRADE) window.open(getStaticUrl(`/derivx`));
         else if (platform === CFD_PLATFORMS.DERIVEZ) window.open(getStaticUrl(`/derivez`));

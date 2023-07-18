@@ -260,7 +260,6 @@ const mock = (): TStores & { is_mock: boolean } => {
             routeBackInApp: jest.fn(),
             routeTo: jest.fn(),
             changeCurrentLanguage: jest.fn(),
-            changeSelectedLanguage: jest.fn(),
             is_network_online: false,
             server_time: undefined,
             is_language_changing: false,

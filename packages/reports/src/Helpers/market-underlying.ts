@@ -7,6 +7,7 @@ type TMarketInfo = {
 };
 
 type TTradeConfig = {
+    button_name?: JSX.Element;
     name: JSX.Element;
     position: string;
 };
@@ -39,10 +40,11 @@ export const getMarketInformation = (shortcode: string): TMarketInfo => {
 export const getMarketName = (underlying: string) =>
     underlying ? getMarketNamesMap()[underlying.toUpperCase() as keyof typeof getMarketNamesMap] : null;
 
-export const getTradeTypeName = (category: string, is_high_low = false) =>
+export const getTradeTypeName = (category: string, is_high_low = false, show_button_name = false) =>
     category
-        ? (getContractConfig(is_high_low)[category.toUpperCase() as keyof typeof getContractConfig] as TTradeConfig)
-              .name
+        ? (getContractConfig(is_high_low)[category.toUpperCase() as keyof typeof getContractConfig] as TTradeConfig)[
+              show_button_name ? 'button_name' : 'name'
+          ]
         : null;
 
 export const getContractDurationType = (longcode: string, shortcode?: string): string => {

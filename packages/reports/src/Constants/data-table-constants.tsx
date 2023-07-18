@@ -188,14 +188,7 @@ export const getOpenPositionsColumnsTemplate = (currency: string) => [
         renderCellContent: ({ row_obj, is_footer, is_vanilla }: TCellContentProps) => {
             if (is_footer) return localize('Total');
 
-            return (
-                <MarketSymbolIconRow
-                    key={row_obj.id}
-                    payload={row_obj.contract_info}
-                    show_description={is_vanilla}
-                    is_vanilla={is_vanilla}
-                />
-            );
+            return <MarketSymbolIconRow key={row_obj.id} payload={row_obj.contract_info} is_vanilla={is_vanilla} />;
         },
     },
     {

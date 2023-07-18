@@ -212,10 +212,10 @@ const MobileRowRenderer = ({
         <>
             <div className='data-list__row'>
                 <DataList.Cell row={row} column={columns_map.type} />
-                {isVanillaContract(type ?? '') ? (
+                {isVanillaContract(type) || (isTurbosContract(type) && !tick_count) ? (
                     <ProgressSliderMobile
                         current_tick={current_tick}
-                        className='data-list__row--vanilla'
+                        className='data-list__row--timer'
                         expiry_time={date_expiry}
                         getCardLabels={getCardLabels}
                         is_loading={false}

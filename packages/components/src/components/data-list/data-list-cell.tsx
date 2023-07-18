@@ -49,7 +49,7 @@ const DataListCell = ({ className, column, is_footer, passthrough, row }: TDataL
     if (!column) return null;
     const { col_index, title } = column;
     const cell_value = row[col_index];
-    const is_vanilla = isVanillaContract(row.contract_info?.contract_type || '');
+    const is_vanilla = isVanillaContract(row.contract_info?.contract_type);
 
     return (
         <div className={classNames(className, column.col_index)}>

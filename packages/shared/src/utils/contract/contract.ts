@@ -66,7 +66,7 @@ export const isMultiplierContract = (contract_type: string) => /MULT/i.test(cont
 
 export const isTurbosContract = (contract_type = '') => /TURBOS/i.test(contract_type);
 
-export const isVanillaContract = (contract_type: string) => /VANILLA/i.test(contract_type);
+export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contract_type);
 
 export const isCryptoContract = (underlying: string) => /^cry/.test(underlying);
 

@@ -1,6 +1,5 @@
 import React from 'react';
-import { extractInfoFromShortcode, getContractSubtype, isHighLow, isTurbosContract } from '@deriv/shared';
-import { localize } from '@deriv/translations';
+import { extractInfoFromShortcode, isHighLow, isTurbosContract } from '@deriv/shared';
 import { Icon, Popover, IconTradeTypes } from '@deriv/components';
 import { getMarketName, getTradeTypeName } from '../Helpers/market-underlying';
 import classNames from 'classnames';
@@ -12,7 +11,6 @@ type TMarketSymbolIconRow = {
         display_name: string;
         action_type: string;
     };
-    show_description?: boolean;
     should_show_multiplier?: boolean;
     should_show_accumulator?: boolean;
     is_vanilla?: boolean;
@@ -21,7 +19,6 @@ type TMarketSymbolIconRow = {
 const MarketSymbolIconRow = ({
     icon,
     payload,
-    show_description,
     should_show_accumulator = true,
     should_show_multiplier = true,
     is_vanilla,
@@ -30,18 +27,15 @@ const MarketSymbolIconRow = ({
     const info_from_shortcode = extractInfoFromShortcode(payload.shortcode);
     const is_high_low = isHighLow({ shortcode_info: info_from_shortcode });
     const is_turbos = isTurbosContract(info_from_shortcode.category);
-    const turbos_category_name =
-        getContractSubtype(info_from_shortcode.category as string) === 'Long' ? localize('Long') : localize('Short');
-
-    // We need the condition to update the label for vanilla trade type since the label doesn't match with the trade type key unlike other contracts
-    const category_label = is_vanilla
-        ? (info_from_shortcode.category as string).replace('Vanillalong', '').charAt(0).toUpperCase() +
-          (info_from_shortcode.category as string).replace('Vanillalong', '').slice(1)
-        : info_from_shortcode.category;
-
+    const category_label = getTradeTypeName(info_from_shortcode.category as string, is_high_low, is_turbos);
+    const has_full_contract_title = is_vanilla || is_turbos;
     if (should_show_category_icon && info_from_shortcode) {
         return (
-            <div className={classNames('market-symbol-icon', { 'market-symbol-icon__vanilla': is_vanilla })}>
+            <div
+                className={classNames('market-symbol-icon', {
+                    'market-symbol-icon__full-title': has_full_contract_title,
+                })}
+            >
                 <div className='market-symbol-icon-name'>
                     <Popover
                         classNameTarget='market-symbol-icon__popover'
@@ -60,7 +54,7 @@ const MarketSymbolIconRow = ({
                             size={32}
                         />
                     </Popover>
-                    {show_description && payload.display_name}
+                    {has_full_contract_title && payload.display_name}
                 </div>
 
                 <div className='market-symbol-icon-category'>
@@ -68,11 +62,7 @@ const MarketSymbolIconRow = ({
                         classNameTarget='category-type-icon__popover'
                         classNameBubble='category-type-icon__popover-bubble'
                         alignment='top'
-                        message={
-                            is_turbos
-                                ? turbos_category_name
-                                : getTradeTypeName(info_from_shortcode.category as string, is_high_low)
-                        }
+                        message={category_label}
                         is_bubble_hover_enabled
                         disable_target_icon
                     >
@@ -85,7 +75,7 @@ const MarketSymbolIconRow = ({
                             color='brand'
                         />
                     </Popover>
-                    {show_description && category_label}
+                    {has_full_contract_title && category_label}
                 </div>
                 {should_show_multiplier && info_from_shortcode.multiplier && (
                     <div className='market-symbol-icon__multiplier'>x{info_from_shortcode.multiplier}</div>

@@ -77,6 +77,7 @@ const Chart = ({
                 topWidgets={() => <ChartTitle onChange={onSymbolChange} />}
                 isConnectionOpened={is_socket_opened}
                 getMarketsOrder={getMarketsOrder}
+                isLive={true}
             />
         </div>
     );

@@ -220,10 +220,15 @@ export default class ContractStore extends BaseStore {
                             }
                             // this.marker contains horizontal barrier lines & shade between rendered as DelayedAccuBarriersMarker in C.Details page
                             if (!this.marker) {
-                                this.marker = calculate_marker(this.contract_info, {
-                                    accu_high_barrier: this.accu_high_barrier,
-                                    accu_low_barrier: this.accu_low_barrier,
-                                });
+                                this.marker = calculateMarker(
+                                    this.contract_info,
+                                    this.root_store.ui.is_dark_mode_on,
+                                    false,
+                                    {
+                                        accu_high_barrier: this.accu_high_barrier,
+                                        accu_low_barrier: this.accu_low_barrier,
+                                    }
+                                );
                             }
                             // this.markers_array contains tick markers & start/end vertical lines in C.Details page
                             this.markers_array = createChartMarkers(contract_info, true);
@@ -338,6 +343,8 @@ export default class ContractStore extends BaseStore {
 
         const exit = ticks[ticks.length - 1];
         const previous_tick = ticks[ticks.length - 2] || exit;
+
+        if (!previous_tick) return [];
 
         const marker = getAccumulatorMarkers({
             high_barrier,

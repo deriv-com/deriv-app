@@ -115,7 +115,7 @@ const PageError = ({
                             ) : (
                                 <Text
                                     as='p'
-                                    size='s'
+                                    size={is_mobile ? 'xxs' : 's'}
                                     align={is_mobile ? 'center' : 'left'}
                                     line_height='x'
                                     key={index}

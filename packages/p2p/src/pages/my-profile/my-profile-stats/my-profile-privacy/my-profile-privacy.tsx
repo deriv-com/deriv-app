@@ -1,9 +1,9 @@
 import React from 'react';
 import { Text, ToggleSwitch } from '@deriv/components';
-import { isDesktop } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
+import { getTextSize } from 'Utils/responsive';
 
 const MyProfilePrivacy = () => {
     const { general_store, my_profile_store } = useStores();
@@ -11,7 +11,7 @@ const MyProfilePrivacy = () => {
     return (
         <div className='my-profile-privacy'>
             <div className='my-profile-privacy__toggle-container'>
-                <Text className='my-profile-privacy__label' color='prominent' size={isDesktop() ? 'xs' : 'xxs'}>
+                <Text className='my-profile-privacy__label' color='prominent' size={getTextSize('xxs', 'xs')}>
                     <Localize i18n_default_text='Show my real name' />
                 </Text>
                 <Text color='less-prominent' size='xxxs'>

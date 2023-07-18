@@ -1,6 +1,6 @@
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Text } from '@deriv/components';
-import { daysSince, isMobile } from '@deriv/shared';
+import { daysSince } from '@deriv/shared';
 import { observer } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import BlockUserCount from 'Pages/advertiser-page/block-user/block-user-count';
@@ -9,7 +9,7 @@ import StarRating from 'Components/star-rating';
 import TradeBadge from 'Components/trade-badge';
 import UserAvatar from 'Components/user/user-avatar';
 import { useStores } from 'Stores';
-import { getTextSize } from 'Utils/string';
+import { getIconSize, getTextSize } from 'Utils/responsive';
 import MyProfilePrivacy from '../my-profile-privacy';
 
 const MyProfileName = () => {
@@ -37,8 +37,8 @@ const MyProfileName = () => {
             <UserAvatar
                 className='my-profile-name__avatar'
                 nickname={general_store.nickname ?? ''}
-                size={isMobile() ? 32 : 64}
-                text_size={isMobile() ? 's' : 'sm'}
+                size={getIconSize(32, 64)}
+                text_size={getTextSize('s', 'm')}
             />
             <div className='my-profile-name__name'>
                 <div className='my-profile-name__privacy'>
@@ -51,7 +51,7 @@ const MyProfileName = () => {
                                 <Text
                                     className='my-profile-name__rating__row'
                                     color='less-prominent'
-                                    size={getTextSize()}
+                                    size={getTextSize('xxxs', 'xs')}
                                 >
                                     {joined_since ? (
                                         <Localize
@@ -69,7 +69,7 @@ const MyProfileName = () => {
                                 <Text
                                     className='my-profile-name__rating__row'
                                     color='less-prominent'
-                                    size={getTextSize()}
+                                    size={getTextSize('xxxs', 'xs')}
                                 >
                                     {joined_since ? (
                                         <Localize
@@ -91,13 +91,13 @@ const MyProfileName = () => {
                                             is_readonly
                                             number_of_stars={5}
                                             should_allow_hover_effect={false}
-                                            star_size={isMobile() ? 17 : 20}
+                                            star_size={getIconSize(17, 20)}
                                         />
                                         <div className='my-profile-name__rating__text'>
-                                            <Text color='prominent' size={getTextSize()}>
+                                            <Text color='prominent' size={getTextSize('xxxs', 'xs')}>
                                                 {rating_average_decimal}
                                             </Text>
-                                            <Text color='less-prominent' size={getTextSize()}>
+                                            <Text color='less-prominent' size={getTextSize('xxxs', 'xs')}>
                                                 {rating_count === 1 ? (
                                                     <Localize
                                                         i18n_default_text='({{number_of_ratings}} rating)'
@@ -121,7 +121,7 @@ const MyProfileName = () => {
                                 </React.Fragment>
                             ) : (
                                 <div className='my-profile-name__rating__row'>
-                                    <Text color='less-prominent' size={getTextSize()}>
+                                    <Text color='less-prominent' size={getTextSize('xxxs', 'xs')}>
                                         <Localize i18n_default_text='Not rated yet' />
                                     </Text>
                                 </div>

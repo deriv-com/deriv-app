@@ -8,6 +8,7 @@ import RecommendUser from 'Components/recommend-user';
 import { useStores } from 'Stores';
 import { observer } from 'mobx-react-lite';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { getIconSize } from 'Utils/responsive';
 
 const RatingModal = ({ is_buy_order_for_user, is_user_recommended_previously, onClickDone, onClickSkip }) => {
     const { order_store } = useStores();
@@ -37,7 +38,7 @@ const RatingModal = ({ is_buy_order_for_user, is_user_recommended_previously, on
                         onClick={order_store.handleRating}
                         rating_value={order_store.rating_value}
                         should_allow_half_icon={false}
-                        star_size={isMobile() ? 25 : 20}
+                        star_size={getIconSize(25, 20)}
                     />
                 </div>
                 {order_store.rating_value > 0 && (

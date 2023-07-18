@@ -3,10 +3,10 @@ import { Money, Text } from '@deriv/components';
 import { observer, useStore } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
 import { useStores } from 'Stores';
-import { getTextSize } from 'Utils/string';
+import { getTextSize } from 'Utils/responsive';
 
 const TextItalic = (
-    <Text key={0} className='my-profile-stats-table--italic' color='less-prominent' size={getTextSize()} />
+    <Text key={0} className='my-profile-stats-table--italic' color='less-prominent' size={getTextSize('xxxs', 'xs')} />
 );
 
 const MyProfileStatsTable = () => {
@@ -39,7 +39,7 @@ const MyProfileStatsTable = () => {
     return (
         <div className='my-profile-stats-table'>
             <div className='my-profile-stats-table__cell'>
-                <Text as='p' color='less-prominent' size={getTextSize()}>
+                <Text as='p' color='less-prominent' size={getTextSize('xxxs', 'xs')}>
                     <Localize i18n_default_text='Buy completion  <0>30d</0>' components={[TextItalic]} />
                 </Text>
                 <Text as='p' color='prominent' size='xs' weight='bold'>
@@ -47,7 +47,7 @@ const MyProfileStatsTable = () => {
                 </Text>
             </div>
             <div className='my-profile-stats-table__cell'>
-                <Text as='p' color='less-prominent' size={getTextSize()}>
+                <Text as='p' color='less-prominent' size={getTextSize('xxxs', 'xs')}>
                     <Localize i18n_default_text='Sell completion  <0>30d</0>' components={[TextItalic]} />
                 </Text>
                 <Text as='p' color='prominent' size='xs' weight='bold'>
@@ -55,7 +55,7 @@ const MyProfileStatsTable = () => {
                 </Text>
             </div>
             <div className='my-profile-stats-table__cell'>
-                <Text as='p' color='less-prominent' size={getTextSize()}>
+                <Text as='p' color='less-prominent' size={getTextSize('xxxs', 'xs')}>
                     <Localize i18n_default_text='Avg pay time  <0>30d</0>' components={[TextItalic]} />
                 </Text>
                 <Text as='p' color='prominent' size='xs' weight='bold'>
@@ -73,7 +73,7 @@ const MyProfileStatsTable = () => {
                 </Text>
             </div>
             <div className='my-profile-stats-table__cell'>
-                <Text as='p' color='less-prominent' size={getTextSize()}>
+                <Text as='p' color='less-prominent' size={getTextSize('xxxs', 'xs')}>
                     <Localize i18n_default_text='Avg release time  <0>30d</0>' components={[TextItalic]} />
                 </Text>
                 <Text as='p' color='prominent' size='xs' weight='bold'>
@@ -91,7 +91,7 @@ const MyProfileStatsTable = () => {
                 </Text>
             </div>
             <div className='my-profile-stats-table__cell'>
-                <Text as='p' color='less-prominent' size={getTextSize()}>
+                <Text as='p' color='less-prominent' size={getTextSize('xxxs', 'xs')}>
                     <Localize
                         i18n_default_text='Trade volume  <0>30d</0> | <1>lifetime</1>'
                         components={[
@@ -100,14 +100,14 @@ const MyProfileStatsTable = () => {
                                 color={show_lifetime_turnover_value ? 'loss-danger' : 'less-prominent'}
                                 key={0}
                                 onClick={() => setShowLifetimeTurnoverValue(!show_lifetime_turnover_value)}
-                                size={getTextSize()}
+                                size={getTextSize('xxxs', 'xs')}
                             />,
                             <Text
                                 className='my-profile-stats-table--pointer'
                                 color={show_lifetime_turnover_value ? 'less-prominent' : 'loss-danger'}
                                 key={0}
                                 onClick={() => setShowLifetimeTurnoverValue(!show_lifetime_turnover_value)}
-                                size={getTextSize()}
+                                size={getTextSize('xxxs', 'xs')}
                             />,
                         ]}
                     />
@@ -125,7 +125,7 @@ const MyProfileStatsTable = () => {
                 </Text>
             </div>
             <div className='my-profile-stats-table__cell'>
-                <Text as='p' color='less-prominent' size={getTextSize()}>
+                <Text as='p' color='less-prominent' size={getTextSize('xxxs', 'xs')}>
                     <Localize
                         i18n_default_text='Total orders  <0>30d</0> | <1>lifetime</1>'
                         components={[
@@ -134,14 +134,14 @@ const MyProfileStatsTable = () => {
                                 className='my-profile-stats-table--pointer'
                                 color={show_lifetime_order_value ? 'loss-danger' : 'less-prominent'}
                                 onClick={() => setShowLifetimeOrderValue(!show_lifetime_order_value)}
-                                size={getTextSize()}
+                                size={getTextSize('xxxs', 'xs')}
                             />,
                             <Text
                                 key={0}
                                 className='my-profile-stats-table--pointer'
                                 color={show_lifetime_order_value ? 'less-prominent' : 'loss-danger'}
                                 onClick={() => setShowLifetimeOrderValue(!show_lifetime_order_value)}
-                                size={getTextSize()}
+                                size={getTextSize('xxxs', 'xs')}
                             />,
                         ]}
                     />
@@ -153,7 +153,7 @@ const MyProfileStatsTable = () => {
                 </Text>
             </div>
             <div className='my-profile-stats-table__cell'>
-                <Text as='p' color='less-prominent' size={getTextSize()}>
+                <Text as='p' color='less-prominent' size={getTextSize('xxxs', 'xs')}>
                     <Localize i18n_default_text='Trade partners' />
                 </Text>
                 <Text as='p' color='prominent' size='xs' weight='bold'>

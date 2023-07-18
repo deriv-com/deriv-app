@@ -4,17 +4,17 @@ import { Icon } from '@deriv/components';
 
 type TStarRatingProps = {
     className?: string;
-    empty_star_className: string;
+    empty_star_className?: string;
     empty_star_color?: string;
     empty_star_icon: string;
-    full_star_className: string;
+    full_star_className?: string;
     full_star_color?: string;
     full_star_icon: string;
-    initial_value?: number;
+    initial_value?: number | string | null;
     is_readonly?: boolean;
     number_of_stars: number;
     onClick?: () => void;
-    rating_value: number;
+    rating_value?: number;
     rtl?: boolean;
     should_allow_half_icon?: boolean;
     should_allow_hover_effect?: boolean;

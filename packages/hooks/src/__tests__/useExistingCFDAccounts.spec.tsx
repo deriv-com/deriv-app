@@ -26,64 +26,73 @@ jest.mock('@deriv/api', () => ({
                 },
             };
         }
+
+        if (name === 'mt5_login_list') {
+            return {
+                data: {
+                    mt5_login_list: [
+                        {
+                            display_login: 'CRW909900',
+                            email: '',
+                            leverage: '10012123123',
+                            login: 'CRW909900',
+                            server: 'Deriv-Server',
+                            server_description: 'Deriv-Server',
+                            type: 'demo',
+                        },
+                    ],
+                },
+            };
+        }
+
+        if (name === 'trading_platform_accounts') {
+            return {
+                data: {
+                    trading_platform_accounts: [
+                        {
+                            account_id: 'DXR1646584',
+                            account_type: 'real',
+                            balance: 0,
+                            currency: 'USD',
+                            display_balance: '0.00',
+                            enabled: 1,
+                            landing_company_short: 'svg',
+                            login: '8807230',
+                            market_type: 'all',
+                            platform: 'dxtrade',
+                        },
+                        {
+                            account_type: 'real',
+                            balance: 0,
+                            country: 'za',
+                            currency: 'USD',
+                            display_balance: '0.00',
+                            email: 'mei+za1@binary.com',
+                            group: 'real\\p02_ts01\\all\\svg_ez_usd',
+                            landing_company_short: 'svg',
+                            leverage: 1000,
+                            login: 'EZR80001086',
+                            market_type: 'all',
+                            name: 'Baily Pan',
+                            server: 'p02_ts01',
+                            server_info: {
+                                environment: 'Deriv-Server-02',
+                                geolocation: {
+                                    group: 'africa_derivez',
+                                    location: 'South Africa',
+                                    region: 'Africa',
+                                    sequence: 2,
+                                },
+                                id: 'p02_ts01',
+                            },
+                        },
+                    ],
+                },
+            };
+        }
+
         return { data: undefined };
     }),
-    useRequest: jest.fn(() => ({
-        data: {
-            mt5_login_list: [
-                {
-                    display_login: 'CRW909900',
-                    email: '',
-                    leverage: '10012123123',
-                    login: 'CRW909900',
-                    server: 'Deriv-Server',
-                    server_description: 'Deriv-Server',
-                    type: 'demo',
-                },
-            ],
-
-            trading_platform_accounts: [
-                {
-                    account_id: 'DXR1646584',
-                    account_type: 'real',
-                    balance: 0,
-                    currency: 'USD',
-                    display_balance: '0.00',
-                    enabled: 1,
-                    landing_company_short: 'svg',
-                    login: '8807230',
-                    market_type: 'all',
-                    platform: 'dxtrade',
-                },
-                {
-                    account_type: 'real',
-                    balance: 0,
-                    country: 'za',
-                    currency: 'USD',
-                    display_balance: '0.00',
-                    email: 'mei+za1@binary.com',
-                    group: 'real\\p02_ts01\\all\\svg_ez_usd',
-                    landing_company_short: 'svg',
-                    leverage: 1000,
-                    login: 'EZR80001086',
-                    market_type: 'all',
-                    name: 'Baily Pan',
-                    server: 'p02_ts01',
-                    server_info: {
-                        environment: 'Deriv-Server-02',
-                        geolocation: {
-                            group: 'africa_derivez',
-                            location: 'South Africa',
-                            region: 'Africa',
-                            sequence: 2,
-                        },
-                        id: 'p02_ts01',
-                    },
-                },
-            ],
-        },
-        mutate: jest.fn,
-    })),
 }));
 
 describe('useExistingCFDAccounts', () => {

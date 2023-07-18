@@ -40,12 +40,14 @@ export const getMarketInformation = (shortcode: string): TMarketInfo => {
 export const getMarketName = (underlying: string) =>
     underlying ? getMarketNamesMap()[underlying.toUpperCase() as keyof typeof getMarketNamesMap] : null;
 
-export const getTradeTypeName = (category: string, is_high_low = false, show_button_name = false) =>
-    category
+export const getTradeTypeName = (category: string, is_high_low = false, show_button_name = false) => {
+    const key = show_button_name ? 'button_name' : 'name';
+    return category
         ? (getContractConfig(is_high_low)[category.toUpperCase() as keyof typeof getContractConfig] as TTradeConfig)[
-              show_button_name ? 'button_name' : 'name'
+              key
           ]
         : null;
+};
 
 export const getContractDurationType = (longcode: string, shortcode?: string): string => {
     if (shortcode && /^(MULTUP|MULTDOWN)/.test(shortcode)) return '';

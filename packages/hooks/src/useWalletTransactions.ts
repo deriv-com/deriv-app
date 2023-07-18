@@ -68,15 +68,6 @@ const useWalletTransactions = (
         if (new_transactions) setTransactions((prev: typeof transactions) => [...prev, ...new_transactions]);
     }, [is_complete_list, data?.statement, isLoading, isSuccess]);
 
-    // This is for seeing the loader; TODO remove
-    const [is_fetching, setIsFetching] = useState(false);
-    useEffect(() => {
-        setIsFetching(true);
-    }, [action_type, page_count]);
-    useEffect(() => {
-        if (is_fetching) setTimeout(() => setIsFetching(false), 1000);
-    }, [is_fetching]);
-
     const getTradingAccountName = useCallback(
         (
             account_type: 'standard' | 'mt5' | 'dxtrade' | 'binary',
@@ -177,9 +168,9 @@ const useWalletTransactions = (
 
     return {
         transactions: modified_transactions,
-        isLoading: isLoading || is_fetching,
+        isLoading,
         isSuccess,
-        isComplete: is_complete_list && !is_fetching,
+        isComplete: is_complete_list,
     };
 };
 

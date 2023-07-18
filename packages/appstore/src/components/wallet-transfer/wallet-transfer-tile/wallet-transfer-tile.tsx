@@ -18,9 +18,8 @@ type TWalletTileProps = {
     has_hover?: boolean;
     icon_size?: TIconSize;
     is_active?: boolean;
+    is_list_item?: boolean;
     is_mobile?: boolean;
-    is_modal?: boolean;
-    is_value?: boolean;
     onClick?: () => void;
 };
 
@@ -30,8 +29,8 @@ const WalletTransferTile = ({
     has_hover,
     icon_size = 'small',
     is_active,
+    is_list_item,
     is_mobile,
-    is_value,
     onClick,
 }: TWalletTileProps) => {
     const IconComponent = React.useCallback(() => {
@@ -66,21 +65,21 @@ const WalletTransferTile = ({
 
     const Label = React.useCallback(() => {
         let size;
-        if (is_value) size = is_mobile ? 'xxxxs' : 'xxxs';
-        else size = is_mobile ? 'xxs' : 'xs';
+        if (is_list_item) size = is_mobile ? 'xxs' : 'xs';
+        else size = is_mobile ? 'xxxxs' : 'xxxs';
 
         return (
             <Text as='div' size={size} weight='bold'>
                 {getAccountName({ ...account })}
             </Text>
         );
-    }, [account, is_mobile, is_value]);
+    }, [account, is_mobile, is_list_item]);
 
     const Balance = React.useCallback(() => {
         if (account?.balance !== undefined) {
             let size;
-            if (is_value) size = is_mobile ? 'xxxxs' : 'xxxs';
-            else size = is_mobile ? 'xxxs' : 'xxs';
+            if (is_list_item) size = is_mobile ? 'xxxs' : 'xxs';
+            else size = is_mobile ? 'xxxxs' : 'xxxs';
 
             return (
                 <Text as='div' size={size}>
@@ -91,13 +90,14 @@ const WalletTransferTile = ({
         }
 
         return null;
-    }, [account?.balance, account?.currency, account?.display_currency_code, is_mobile, is_value]);
+    }, [account?.balance, account?.currency, account?.display_currency_code, is_mobile, is_list_item]);
 
     return (
         <div
             className={classNames(`wallet-transfer-tile ${className}`, {
                 'wallet-transfer-tile--hover': has_hover,
                 'wallet-transfer-tile--active': is_active,
+                'wallet-transfer-tile--list-item-background': is_list_item && !is_active,
             })}
             data-testid='dt_wallet_transfer_tile'
             onClick={() => onClick?.()}
@@ -107,7 +107,7 @@ const WalletTransferTile = ({
                     <IconComponent />
                 </div>
 
-                {is_value && is_mobile && (
+                {!is_list_item && is_mobile && (
                     <WalletJurisdictionBadge is_demo={Boolean(account?.is_demo)} shortcode={account?.shortcode} />
                 )}
             </div>
@@ -117,7 +117,7 @@ const WalletTransferTile = ({
                 <Balance />
             </div>
 
-            {!is_value && (
+            {is_list_item && (
                 <WalletJurisdictionBadge is_demo={Boolean(account?.is_demo)} shortcode={account?.shortcode} />
             )}
         </div>

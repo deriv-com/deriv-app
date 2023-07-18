@@ -75,6 +75,7 @@ const TransferAccountList = ({
                                             account={account}
                                             className={classNames('transfer-account-selector__list-tile')}
                                             is_active={selected_account?.loginid === account?.loginid}
+                                            is_list_item
                                             is_mobile={is_mobile}
                                             has_hover
                                             onClick={() => {

@@ -27,6 +27,10 @@
         background-color: var(--state-active);
     }
 
+    &--list-item-background {
+        background-color: var(--general-main-2);
+    }
+
     &__icon {
         margin-right: 0.8rem;
         min-width: 4rem;

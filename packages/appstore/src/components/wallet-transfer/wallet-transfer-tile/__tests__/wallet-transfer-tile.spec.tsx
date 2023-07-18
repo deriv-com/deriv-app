@@ -31,9 +31,8 @@ describe('WalletTransferTile', () => {
             has_hover: false,
             icon_size: 'small',
             is_active: false,
+            is_list_item: false,
             is_mobile: false,
-            is_modal: true,
-            is_value: false,
             onClick: jest.fn(),
         };
     });
@@ -52,7 +51,7 @@ describe('WalletTransferTile', () => {
     });
 
     it('Should render jurisdiction in mobile view', () => {
-        mocked_props.is_value = true;
+        mocked_props.is_list_item = false;
         mocked_props.is_mobile = true;
         render(<WalletTransferTile {...mocked_props} />);
 
@@ -60,7 +59,7 @@ describe('WalletTransferTile', () => {
     });
 
     it('Should render jurisdiction in desktop view', () => {
-        mocked_props.is_value = false;
+        mocked_props.is_list_item = true;
         render(<WalletTransferTile {...mocked_props} />);
 
         expect(screen.getByText('SVG')).toBeInTheDocument();

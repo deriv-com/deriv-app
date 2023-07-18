@@ -58,7 +58,6 @@ const AccountSelectorTransferTile = ({
                         account={selected_account}
                         className='transfer-account-selector__value'
                         is_mobile={is_mobile}
-                        is_value
                     />
                 ) : (
                     <Text size={is_mobile ? 'xxs' : 'xs'} weight='bold'>

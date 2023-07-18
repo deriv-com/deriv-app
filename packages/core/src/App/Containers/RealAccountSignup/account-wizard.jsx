@@ -60,6 +60,18 @@ const AccountWizard = props => {
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
     const [is_loading, setLoading] = React.useState(true);
 
+    const fetchFromStorage = () => {
+        const stored_items = localStorage.getItem('real_account_signup_wizard');
+        try {
+            const items = JSON.parse(stored_items);
+            return items || [];
+        } catch (e) {
+            return [];
+        } finally {
+            localStorage.removeItem('real_account_signup_wizard');
+        }
+    };
+
     React.useEffect(() => {
         console.log('useEffect');
         props.setIsTradingAssessmentForNewUserEnabled(true);
@@ -69,18 +81,24 @@ const AccountWizard = props => {
             props.fetchFinancialAssessment()
         );
         Promise.all([promise, financial_assessment_promise]).then(() => {
+            console.log('then');
             setStateItems(previous_state => {
+                console.log('previous_state', previous_state.length);
+
                 if (!previous_state.length) {
                     return getItems(props);
                 }
                 return previous_state;
             });
+
             setPreviousData(fetchFromStorage());
             setMounted(true);
             setLoading(false);
+            console.log('setLoading');
         });
 
         return () => {
+            console.log('cancel');
             cancel();
             cancelFinancialAssessment();
         };
@@ -117,18 +135,6 @@ const AccountWizard = props => {
             getCountryCode(props.residence_list).then(setDefaultPhone);
         }
     }, [props.residence_list]);
-
-    const fetchFromStorage = () => {
-        const stored_items = localStorage.getItem('real_account_signup_wizard');
-        try {
-            const items = JSON.parse(stored_items);
-            return items || [];
-        } catch (e) {
-            return [];
-        } finally {
-            localStorage.removeItem('real_account_signup_wizard');
-        }
-    };
 
     const getCountryCode = async residence_list => {
         const response = residence_list.find(item => item.value === props.residence);
@@ -319,53 +325,69 @@ const AccountWizard = props => {
     if (should_accept_financial_risk) {
         return <AcceptRiskForm onConfirm={onAcceptRisk} onClose={onDeclineRisk} />;
     }
-    if (is_loading) return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    if (!mounted) return null;
-    console.log(is_loading, mounted, finished);
+    if (is_loading) {
+        console.log('its loading');
+        return <Loading is_fullscreen={false} className='account__initial-loader' />;
+    }
+    if (!mounted) {
+        console.log('its mounted');
+        return null;
+    }
     if (!finished) {
-        const wizard_steps = state_items.map((step, step_index) => {
-            const passthrough = getPropsForChild(step_index);
-            const BodyComponent = step.body;
-            return (
-                <BodyComponent
-                    value={getCurrent('form_value', step_index)}
-                    index={step_index}
-                    onSubmit={updateValue}
-                    onCancel={prevStep}
-                    onSave={saveFormData}
-                    closeRealAccountSignup={props.closeRealAccountSignup}
-                    is_virtual={props.is_virtual}
-                    has_currency={props.has_currency}
-                    form_error={form_error}
-                    {...passthrough}
-                    key={step_index}
-                />
-            );
-        });
+        console.log('its not finished');
 
-        let navHeader = <div />;
-        if (props.real_account_signup_target !== 'samoa') {
-            navHeader = (
-                <StepperHeader
-                    has_real_account={props.has_real_account}
-                    items={state_items}
-                    has_currency={props.has_currency}
-                    has_target={props.real_account_signup_target !== 'manage'}
-                    setIsRiskWarningVisible={props.setIsRiskWarningVisible}
-                    sub_section_index={props.sub_section_index}
-                />
-            );
-        }
+        const getNav = () => {
+            console.log('getting nav');
+            let navHeader = <div />;
+            if (props.real_account_signup_target !== 'samoa') {
+                navHeader = (
+                    <StepperHeader
+                        has_real_account={props.has_real_account}
+                        items={state_items}
+                        has_currency={props.has_currency}
+                        has_target={props.real_account_signup_target !== 'manage'}
+                        setIsRiskWarningVisible={props.setIsRiskWarningVisible}
+                        sub_section_index={props.sub_section_index}
+                    />
+                );
+            }
+            return navHeader;
+        };
+
+        const getWizard = () => {
+            console.log('getting wizard');
+            const wizard_steps = state_items.map((step, step_index) => {
+                const passthrough = getPropsForChild(step_index);
+                const BodyComponent = step.body;
+                return (
+                    <BodyComponent
+                        value={getCurrent('form_value', step_index)}
+                        index={step_index}
+                        onSubmit={updateValue}
+                        onCancel={prevStep}
+                        onSave={saveFormData}
+                        closeRealAccountSignup={props.closeRealAccountSignup}
+                        is_virtual={props.is_virtual}
+                        has_currency={props.has_currency}
+                        form_error={form_error}
+                        {...passthrough}
+                        key={step_index}
+                    />
+                );
+            });
+
+            return wizard_steps;
+        };
 
         return (
             <Wizard
-                nav={navHeader}
+                nav={getNav()}
                 className={classNames('account-wizard', {
                     'account-wizard--set-currency': !props.has_currency,
                     'account-wizard--deriv-crypto': props.real_account_signup_target === 'samoa',
                 })}
             >
-                {wizard_steps}
+                {getWizard()}
             </Wizard>
         );
     }

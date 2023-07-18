@@ -12,6 +12,7 @@ const mock_store: DeepPartial<ReturnType<typeof useStores>> = {
             buy_time_avg: 80,
             partner_count: 1,
         },
+        should_show_dp2p_blocked: false,
     },
     my_profile_store: {
         error_message: '',
@@ -47,5 +48,14 @@ describe('<MyProfile />', () => {
         render(<MyProfile />);
 
         expect(screen.getByText('test error')).toBeInTheDocument();
+    });
+
+    it('should render loading component if advertiser info is empty and should_show_dp2p_blocked is false', () => {
+        mock_store.my_profile_store.error_message = '';
+        mock_store.general_store.advertiser_info = {};
+
+        render(<MyProfile />);
+
+        expect(screen.getByTestId('dt_initial_loader')).toBeInTheDocument();
     });
 });

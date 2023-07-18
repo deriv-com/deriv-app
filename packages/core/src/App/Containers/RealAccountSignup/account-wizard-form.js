@@ -23,7 +23,7 @@ export const getItems = props => {
     return [
         ...(shouldShowPersonalAndAddressDetailsAndCurrency(props)
             ? [currencySelectorConfig(props, CurrencySelector)]
-            : []),
+            : ['test']),
         ...(shouldShowPersonalAndAddressDetailsAndCurrency(props)
             ? [personalDetailsConfig(props, PersonalDetails)]
             : []),

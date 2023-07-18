@@ -66,7 +66,6 @@ const AccountWizard = props => {
         const { cancel: cancelFinancialAssessment, promise: financial_assessment_promise } = makeCancellablePromise(
             props.fetchFinancialAssessment()
         );
-
         Promise.all([promise, financial_assessment_promise]).then(() => {
             setStateItems(previous_state => {
                 if (!previous_state.length) {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { mockStore } from '@deriv/stores';
-import WithdrawalFiatIframe from './withdrawal-fiat-iframe';
-import CashierProviders from '../../../../cashier-providers';
+import WithdrawalFiatIframe from '../withdrawal-fiat-iframe';
+import CashierProviders from '../../../../../cashier-providers';
 
 let mockUseWithdrawalFiatAddress: {
     data: string | undefined;

@@ -160,7 +160,6 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
     }
 
     if (!is_crypto && verification_code) {
-        setActiveTab(container);
         return <WithdrawalFiatModule />;
     }
 

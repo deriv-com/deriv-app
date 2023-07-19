@@ -59,6 +59,7 @@ const AccountWizard = props => {
     const [state_items, setStateItems] = React.useState([]);
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
     const [is_loading, setLoading] = React.useState(true);
+    const [api_error, setAPIError] = React.useState();
 
     const fetchFromStorage = () => {
         const stored_items = localStorage.getItem('real_account_signup_wizard');
@@ -72,56 +73,90 @@ const AccountWizard = props => {
         }
     };
 
+    // React.useEffect(() => {
+    //     if (!props.is_switching) {
+    //         console.log('useEffect');
+    // WS.authorized.getAccountStatus().then(response_account_status => {
+    //     if (response_account_status.error) {
+    //         setAPIError(response_account_status.error);
+    //         setStatusLoading(false);
+    //         return;
+    //     }
+
+    //     fetchResidenceList().then(response_residence_list => {
+    //         if (response_residence_list.error) {
+    //             setAPIError(response_residence_list.error);
+    //         } else {
+    //             setResidenceList(response_residence_list.residence_list);
+    //         }
+    //         setStatusLoading(false);
+    //     });
+    // });
+
+    //         props.setIsTradingAssessmentForNewUserEnabled(true);
+    //         props.fetchStatesList();
+    //         const { cancel, promise } = makeCancellablePromise(props.fetchResidenceList());
+    //         const { cancel: cancelFinancialAssessment, promise: financial_assessment_promise } = makeCancellablePromise(
+    //             props.fetchFinancialAssessment()
+    //         );
+    //         Promise.all([promise, financial_assessment_promise]).then(() => {
+    //             console.log('then');
+    //             setStateItems(previous_state => {
+    //                 console.log('previous_state', previous_state.length);
+
+    //                 if (!previous_state.length) {
+    //                     return getItems(props);
+    //                 }
+    //                 return previous_state;
+    //             });
+
+    //             setPreviousData(fetchFromStorage());
+    //             setMounted(true);
+    //             setLoading(false);
+    //             console.log('setLoading');
+    //         });
+
+    //         return () => {
+    //             console.log('cancel');
+    //             cancel();
+    //             cancelFinancialAssessment();
+    //         };
+    //     }
+    // }, [props.fetchResidenceList, props.is_switching]);
+
     React.useEffect(() => {
-        console.log('useEffect');
+        // only re-mount logic when switching is done
         if (!props.is_switching) {
-            // WS.authorized.getAccountStatus().then(response_account_status => {
-            //     if (response_account_status.error) {
-            //         setAPIError(response_account_status.error);
-            //         setStatusLoading(false);
-            //         return;
-            //     }
+            console.log('useEffect');
+            props.fetchStatesList().then(response_state_list => {
+                console.log('response_state_list');
+                if (response_state_list.error) {
+                    setAPIError(response_state_list.error);
+                    setLoading(false);
+                    return;
+                }
 
-            //     fetchResidenceList().then(response_residence_list => {
-            //         if (response_residence_list.error) {
-            //             setAPIError(response_residence_list.error);
-            //         } else {
-            //             setResidenceList(response_residence_list.residence_list);
-            //         }
-            //         setStatusLoading(false);
-            //     });
-            // });
+                props.fetchResidenceList().then(response_residence_list => {
+                    console.log('response_residence_list');
+                    if (response_residence_list.error) {
+                        setAPIError(response_residence_list.error);
+                    } else {
+                        setStateItems(previous_state => {
+                            console.log('previous_state', previous_state.length);
 
-            props.setIsTradingAssessmentForNewUserEnabled(true);
-            props.fetchStatesList();
-            const { cancel, promise } = makeCancellablePromise(props.fetchResidenceList());
-            const { cancel: cancelFinancialAssessment, promise: financial_assessment_promise } = makeCancellablePromise(
-                props.fetchFinancialAssessment()
-            );
-            Promise.all([promise, financial_assessment_promise]).then(() => {
-                console.log('then');
-                setStateItems(previous_state => {
-                    console.log('previous_state', previous_state.length);
-
-                    if (!previous_state.length) {
-                        return getItems(props);
+                            if (!previous_state.length) {
+                                return getItems(props);
+                            }
+                            return previous_state;
+                        });
                     }
-                    return previous_state;
+                    setPreviousData(fetchFromStorage());
+                    setMounted(true);
+                    setLoading(false);
                 });
-
-                setPreviousData(fetchFromStorage());
-                setMounted(true);
-                setLoading(false);
-                console.log('setLoading');
             });
-
-            return () => {
-                console.log('cancel');
-                cancel();
-                cancelFinancialAssessment();
-            };
         }
-    }, [props.fetchResidenceList, props.is_switching]);
+    }, [props.fetchStatesList, props.fetchResidenceList, props.is_switching]);
 
     React.useEffect(() => {
         if (previous_data.length > 0) {
@@ -347,10 +382,11 @@ const AccountWizard = props => {
     if (is_loading || props.is_switching) {
         console.log('its loading', is_loading, props.is_switching);
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
-    }
-    if (!mounted) {
+    } else if (!mounted) {
         console.log('its mounted');
         return null;
+    } else if (api_error) {
+        return <div>{api_error?.message || api_error}</div>;
     }
     if (!finished) {
         console.log('its not finished');

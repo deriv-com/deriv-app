@@ -69,11 +69,17 @@ const AccountWizard = props => {
         setLoading,
     } = props;
     React.useEffect(() => {
-        setLoading(true);
         setIsTradingAssessmentForNewUserEnabled(true);
-        if (!residence_list.length) fetchResidenceList();
-        if (!states_list.length && has_residence) fetchStatesList();
+        const getData = async () => {
+            setLoading(true);
+            if (!residence_list.length) await fetchResidenceList();
 
+            if (has_residence && !states_list.length) {
+                await fetchStatesList();
+            }
+            setLoading(false);
+        };
+        getData();
         setStateItems(previous_state => {
             if (!previous_state.length) {
                 return getItems(props);
@@ -82,7 +88,6 @@ const AccountWizard = props => {
         });
         setPreviousData(fetchFromStorage());
         setMounted(true);
-        setLoading(false);
     }, [residence_list, states_list, fetchResidenceList, fetchStatesList, has_residence]);
 
     React.useEffect(() => {

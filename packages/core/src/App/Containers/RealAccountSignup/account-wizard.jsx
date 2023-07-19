@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import { DesktopWrapper, FormProgress, MobileWrapper, Text, Wizard } from '@deriv/components';
-import { WS, getLocation, makeCancellablePromise, toMoment, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
+import { WS, getLocation, toMoment, IDV_NOT_APPLICABLE_OPTION } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import AcceptRiskForm from './accept-risk-form.jsx';
@@ -59,29 +59,30 @@ const AccountWizard = props => {
     const [state_items, setStateItems] = React.useState([]);
     const [should_accept_financial_risk, setShouldAcceptFinancialRisk] = React.useState(false);
 
+    const {
+        setIsTradingAssessmentForNewUserEnabled,
+        residence_list,
+        states_list,
+        fetchResidenceList,
+        fetchStatesList,
+        has_residence,
+        setLoading,
+    } = props;
     React.useEffect(() => {
-        props.setIsTradingAssessmentForNewUserEnabled(true);
-        props.fetchStatesList();
-        const { cancel, promise } = makeCancellablePromise(props.fetchResidenceList());
-        const { cancel: cancelFinancialAssessment, promise: financial_assessment_promise } = makeCancellablePromise(
-            props.fetchFinancialAssessment()
-        );
+        setLoading(true);
+        setIsTradingAssessmentForNewUserEnabled(true);
+        if (!residence_list.length) fetchResidenceList();
+        if (!states_list.length && has_residence) fetchStatesList();
 
-        Promise.all([promise, financial_assessment_promise]).then(() => {
-            setStateItems(previous_state => {
-                if (!previous_state.length) {
-                    return getItems(props);
-                }
-                return previous_state;
-            });
-            setPreviousData(fetchFromStorage());
-            setMounted(true);
+        setStateItems(previous_state => {
+            if (!previous_state.length) {
+                return getItems(props);
+            }
+            return previous_state;
         });
-
-        return () => {
-            cancel();
-            cancelFinancialAssessment();
-        };
+        setPreviousData(fetchFromStorage());
+        setMounted(true);
+        setLoading(false);
     }, []);
 
     React.useEffect(() => {
@@ -128,8 +129,8 @@ const AccountWizard = props => {
         }
     };
 
-    const getCountryCode = async residence_list => {
-        const response = residence_list.find(item => item.value === props.residence);
+    const getCountryCode = async residences => {
+        const response = residences.find(item => item.value === props.residence);
         if (!response || !response.phone_idd) return '';
         return `+${response.phone_idd}`;
     };
@@ -376,11 +377,12 @@ AccountWizard.propTypes = {
     account_status: PropTypes.object,
     closeRealAccountSignup: PropTypes.func,
     content_flag: PropTypes.string,
-    fetchFinancialAssessment: PropTypes.func,
     fetchResidenceList: PropTypes.func,
+    fetchAccountSettings: PropTypes.func,
     fetchStatesList: PropTypes.func,
     has_currency: PropTypes.bool,
     has_real_account: PropTypes.bool,
+    has_residence: PropTypes.bool,
     is_loading: PropTypes.bool,
     is_virtual: PropTypes.bool,
     onClose: PropTypes.func,
@@ -392,8 +394,11 @@ AccountWizard.propTypes = {
     realAccountSignup: PropTypes.func,
     residence_list: PropTypes.array,
     residence: PropTypes.string,
+    states_list: PropTypes.array,
+    setIsTradingAssessmentForNewUserEnabled: PropTypes.func,
     setIsRiskWarningVisible: PropTypes.func,
     setLoading: PropTypes.func,
+    setShouldShowRiskWarningModal: PropTypes.func,
     setSubSectionIndex: PropTypes.func,
     sub_section_index: PropTypes.number,
 };
@@ -404,12 +409,12 @@ export default connect(({ client, notifications, ui, traders_hub }) => ({
     closeRealAccountSignup: ui.closeRealAccountSignup,
     content_flag: traders_hub.content_flag,
     fetchAccountSettings: client.fetchAccountSettings,
-    fetchFinancialAssessment: client.fetchFinancialAssessment,
     fetchResidenceList: client.fetchResidenceList,
     fetchStatesList: client.fetchStatesList,
     financial_assessment: client.financial_assessment,
     has_currency: !!client.currency,
     has_real_account: client.has_active_real_account,
+    has_residence: client.residence,
     is_fully_authenticated: client.is_fully_authenticated,
     is_virtual: client.is_virtual,
     real_account_signup_target: ui.real_account_signup_target,

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useIdleTimer } from 'react-idle-timer';
 import { useHistory, useLocation } from 'react-router-dom';
 import { reaction } from 'mobx';
 import { useStore, observer } from '@deriv/stores';
@@ -32,6 +33,15 @@ const App = () => {
     const [order_id, setOrderId] = React.useState(null);
     const [action_param, setActionParam] = React.useState();
     const [code_param, setCodeParam] = React.useState();
+
+    const { start } = useIdleTimer({
+        onIdle: () => {
+            window.LiveChatWidget?.call('update_session_variables', { is_dp2p: 1 });
+        },
+        startManually: true,
+        stopOnIdle: true,
+        timeout: 10_000,
+    });
 
     React.useEffect(() => {
         general_store.setExternalStores({ client, common, modules, notifications, ui });
@@ -85,6 +95,7 @@ const App = () => {
                 localStorage.removeItem('is_verifying_p2p');
                 general_store.setActiveIndex(general_store.path.my_ads);
             }
+            start();
         });
 
         if (/\/p2p$/.test(location.pathname)) {

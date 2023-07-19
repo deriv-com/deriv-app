@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { liveChatInitialization } from './live-chat';
 import Cookies from 'js-cookie';
-import { deriv_urls, routes } from '@deriv/shared';
+import { deriv_urls } from '@deriv/shared';
 
 // Todo: Should break this into smaller hooks or utility functions.
 const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
@@ -71,7 +71,7 @@ const useLiveChat = (has_cookie_account = false, active_loginid?: string) => {
                 currency: currency ?? ' ',
                 residence: residence ?? ' ',
                 email: email ?? ' ',
-                is_dp2p: window.location.pathname.includes(routes.cashier_p2p) ? 1 : 0,
+                is_dp2p: 0,
                 utm_source: utm_source ?? ' ',
                 utm_medium: utm_medium ?? ' ',
                 utm_campaign: utm_campaign ?? ' ',

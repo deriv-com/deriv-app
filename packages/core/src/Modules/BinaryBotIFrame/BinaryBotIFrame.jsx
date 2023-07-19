@@ -2,7 +2,7 @@ import React from 'react';
 import { getUrlBinaryBot } from '@deriv/shared';
 
 const BinaryBotIFrame = () => {
-    const base_link = getUrlBinaryBot();
+    const base_link = getUrlBinaryBot(false);
 
     return (
         <iframe

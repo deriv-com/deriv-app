@@ -6,7 +6,6 @@ import { Localize, localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
 import CashierLocked from '../../components/cashier-locked';
 import SideNote from '../../components/side-note';
-import { TReactFormEvent } from '../../types';
 import OnRampProviderCard from './on-ramp-provider-card';
 import OnRampProviderPopup from './on-ramp-provider-popup';
 import { useCashierStore } from '../../stores/useCashierStores';
@@ -118,9 +117,11 @@ const OnRamp = observer(({ menu_options, setSideNotes }: TOnRampProps) => {
                         <SelectNative
                             data_testid='dt_on_ramp_select_native'
                             className='on-ramp__selector'
+                            label={''}
                             list_items={getActivePaths()}
                             value={selected_cashier_path}
                             should_show_empty_option={false}
+                            hide_top_placeholder={false}
                             onChange={e => {
                                 if (e.currentTarget.value !== selected_cashier_path) {
                                     setSelectedCashierPath(e.currentTarget.value);

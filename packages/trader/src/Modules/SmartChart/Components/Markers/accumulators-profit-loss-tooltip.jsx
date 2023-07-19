@@ -18,6 +18,7 @@ const AccumulatorsProfitLossTooltip = ({
     high_barrier,
     is_sold,
     profit,
+    should_show_profit_text,
 }) => {
     const [is_tooltip_open, setIsTooltipOpen] = React.useState(false);
     const won = profit >= 0;
@@ -68,7 +69,7 @@ const AccumulatorsProfitLossTooltip = ({
     };
 
     if (typeof profit !== 'number') return null;
-    if (!is_sold && current_spot_time && high_barrier)
+    if (!is_sold && current_spot_time && high_barrier && should_show_profit_text)
         return (
             <AccumulatorsProfitLossText
                 currency={currency}
@@ -121,6 +122,7 @@ AccumulatorsProfitLossTooltip.propTypes = {
     high_barrier: PropTypes.string,
     is_sold: PropTypes.number,
     profit: PropTypes.number,
+    should_show_profit_text: PropTypes.bool,
 };
 
 export default React.memo(AccumulatorsProfitLossTooltip);

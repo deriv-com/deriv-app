@@ -177,6 +177,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
         is_logged_in,
         is_logging_in,
         is_virtual,
+        loginid,
         logout: logoutClient,
         should_allow_authentication,
         landing_company_shortcode: active_account_landing_company,
@@ -193,7 +194,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const { data: is_p2p_enabled } = useIsP2PEnabled();
 
-    const liveChat = useLiveChat();
+    const liveChat = useLiveChat(false, loginid);
     const [is_open, setIsOpen] = React.useState(false);
     const [transitionExit, setTransitionExit] = React.useState(false);
     const [primary_routes_config, setPrimaryRoutesConfig] = React.useState([]);
@@ -201,6 +202,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const [is_language_change, setIsLanguageChange] = React.useState(false);
     const { is_appstore } = React.useContext(PlatformContext);
     const timeout = React.useRef();
+    const history = useHistory();
 
     React.useEffect(() => {
         const processRoutes = () => {
@@ -389,9 +391,12 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 submenu_toggle_class='dc-mobile-drawer__submenu-toggle--hidden'
             >
                 <div
-                    className={classNames('settings-language__language-container', {
-                        'settings-language__language-container--disabled': is_language_changing,
-                    })}
+                    className={classNames(
+                        'settings-language__language-container settings-language__language-container--has-padding',
+                        {
+                            'settings-language__language-container--disabled': is_language_changing,
+                        }
+                    )}
                 >
                     {Object.keys(getAllowedLanguages()).map(lang => (
                         <LanguageLink
@@ -504,6 +509,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                         is_logging_in={is_logging_in}
                                         platform_config={platform_config}
                                         toggleDrawer={toggleDrawer}
+                                        current_language={current_language}
                                         setTogglePlatformType={setTogglePlatformType}
                                     />
                                 </MobileDrawer.SubHeader>
@@ -616,12 +622,15 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                                 {is_logged_in && (
                                     <MobileDrawer.Item
                                         onClick={() => {
-                                            logoutClient();
                                             toggleDrawer();
+                                            history.push(routes.index);
+                                            logoutClient().then(() => {
+                                                window.location.href = getStaticUrl('/');
+                                            });
                                         }}
                                         className='dc-mobile-drawer__item'
                                     >
-                                        <MenuLink link_to={routes.index} icon='IcLogout' text={localize('Log out')} />
+                                        <MenuLink icon='IcLogout' text={localize('Log out')} />
                                     </MobileDrawer.Item>
                                 )}
                             </MobileDrawer.Body>

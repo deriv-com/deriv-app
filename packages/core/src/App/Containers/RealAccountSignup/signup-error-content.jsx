@@ -98,6 +98,7 @@ const TryAgain = ({ text, onConfirm }) => (
 
 const ErrorCTA = ({ code, onConfirm }) => {
     switch (code) {
+        case 'DuplicateCurrency':
         case 'CurrencyTypeNotAllowed':
             return <TryAgain text={localize('Try a different currency')} onConfirm={onConfirm} />;
         case 'DuplicateAccount':

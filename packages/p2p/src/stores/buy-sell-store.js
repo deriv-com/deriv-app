@@ -346,7 +346,7 @@ export default class BuySellStore extends BaseStore {
                             const old_items = [...this.items];
                             const new_items = [];
 
-                            list.forEach(new_item => {
+                            list?.forEach(new_item => {
                                 const old_item_idx = old_items.findIndex(old_item => old_item.id === new_item.id);
 
                                 if (old_item_idx > -1) {

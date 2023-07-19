@@ -1,3 +1,3 @@
-import IdvDocumentSubmit from './idv-document-submit.jsx';
+import IdvDocumentSubmit from './idv-document-submit';
 
 export default IdvDocumentSubmit;

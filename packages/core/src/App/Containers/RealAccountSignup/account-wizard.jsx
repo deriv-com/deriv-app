@@ -83,7 +83,7 @@ const AccountWizard = props => {
         setPreviousData(fetchFromStorage());
         setMounted(true);
         setLoading(false);
-    }, []);
+    }, [residence_list, states_list, fetchResidenceList, fetchStatesList, has_residence]);
 
     React.useEffect(() => {
         if (previous_data.length > 0) {
@@ -99,7 +99,7 @@ const AccountWizard = props => {
     }, [previous_data]);
 
     React.useEffect(() => {
-        if (props.residence_list.length) {
+        if (residence_list.length) {
             const setDefaultPhone = country_code => {
                 let items;
                 if (state_items.length) {
@@ -113,9 +113,9 @@ const AccountWizard = props => {
                     setStateItems(items);
                 }
             };
-            getCountryCode(props.residence_list).then(setDefaultPhone);
+            getCountryCode(residence_list).then(setDefaultPhone);
         }
-    }, [props.residence_list]);
+    }, [residence_list]);
 
     const fetchFromStorage = () => {
         const stored_items = localStorage.getItem('real_account_signup_wizard');
@@ -152,16 +152,16 @@ const AccountWizard = props => {
                 }
                 if (values.place_of_birth) {
                     values.place_of_birth = values.place_of_birth
-                        ? getLocation(props.residence_list, values.place_of_birth, 'value')
+                        ? getLocation(residence_list, values.place_of_birth, 'value')
                         : '';
                 }
                 if (values.citizen) {
-                    values.citizen = values.citizen ? getLocation(props.residence_list, values.citizen, 'value') : '';
+                    values.citizen = values.citizen ? getLocation(residence_list, values.citizen, 'value') : '';
                 }
 
                 if (values.tax_residence) {
                     values.tax_residence = values.tax_residence
-                        ? getLocation(props.residence_list, values.tax_residence, 'value')
+                        ? getLocation(residence_list, values.tax_residence, 'value')
                         : values.tax_residence;
                 }
 
@@ -265,7 +265,7 @@ const AccountWizard = props => {
     };
 
     const createRealAccount = (payload = undefined) => {
-        props.setLoading(true);
+        setLoading(true);
         const form_data = { ...form_values() };
         submitForm(payload)
             .then(response => {
@@ -299,7 +299,7 @@ const AccountWizard = props => {
                 }
             })
             .finally(() => {
-                props.setLoading(false);
+                setLoading(false);
                 localStorage.removeItem('current_question_index');
             });
     };

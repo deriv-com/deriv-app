@@ -74,35 +74,54 @@ const AccountWizard = props => {
 
     React.useEffect(() => {
         console.log('useEffect');
-        props.setIsTradingAssessmentForNewUserEnabled(true);
-        props.fetchStatesList();
-        const { cancel, promise } = makeCancellablePromise(props.fetchResidenceList());
-        const { cancel: cancelFinancialAssessment, promise: financial_assessment_promise } = makeCancellablePromise(
-            props.fetchFinancialAssessment()
-        );
-        Promise.all([promise, financial_assessment_promise]).then(() => {
-            console.log('then');
-            setStateItems(previous_state => {
-                console.log('previous_state', previous_state.length);
+        if (!props.is_switching) {
+            // WS.authorized.getAccountStatus().then(response_account_status => {
+            //     if (response_account_status.error) {
+            //         setAPIError(response_account_status.error);
+            //         setStatusLoading(false);
+            //         return;
+            //     }
 
-                if (!previous_state.length) {
-                    return getItems(props);
-                }
-                return previous_state;
+            //     fetchResidenceList().then(response_residence_list => {
+            //         if (response_residence_list.error) {
+            //             setAPIError(response_residence_list.error);
+            //         } else {
+            //             setResidenceList(response_residence_list.residence_list);
+            //         }
+            //         setStatusLoading(false);
+            //     });
+            // });
+
+            props.setIsTradingAssessmentForNewUserEnabled(true);
+            props.fetchStatesList();
+            const { cancel, promise } = makeCancellablePromise(props.fetchResidenceList());
+            const { cancel: cancelFinancialAssessment, promise: financial_assessment_promise } = makeCancellablePromise(
+                props.fetchFinancialAssessment()
+            );
+            Promise.all([promise, financial_assessment_promise]).then(() => {
+                console.log('then');
+                setStateItems(previous_state => {
+                    console.log('previous_state', previous_state.length);
+
+                    if (!previous_state.length) {
+                        return getItems(props);
+                    }
+                    return previous_state;
+                });
+
+                setPreviousData(fetchFromStorage());
+                setMounted(true);
+                setLoading(false);
+                console.log('setLoading');
             });
 
-            setPreviousData(fetchFromStorage());
-            setMounted(true);
-            setLoading(false);
-            console.log('setLoading');
-        });
-
-        return () => {
-            console.log('cancel');
-            cancel();
-            cancelFinancialAssessment();
-        };
-    }, []);
+            return () => {
+                console.log('cancel');
+                cancel();
+                cancelFinancialAssessment();
+            };
+        }
+    }, [props.fetchResidenceList, props.is_switching]);
 
     React.useEffect(() => {
         if (previous_data.length > 0) {
@@ -325,7 +344,7 @@ const AccountWizard = props => {
     if (should_accept_financial_risk) {
         return <AcceptRiskForm onConfirm={onAcceptRisk} onClose={onDeclineRisk} />;
     }
-    if (is_loading) {
+    if (is_loading || props.is_switching) {
         console.log('its loading');
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
@@ -450,4 +469,5 @@ export default connect(({ client, notifications, ui, traders_hub }) => ({
     upgrade_info: client.upgrade_info,
     setSubSectionIndex: ui.setSubSectionIndex,
     sub_section_index: ui.sub_section_index,
+    is_switching: client.is_switching,
 }))(AccountWizard);

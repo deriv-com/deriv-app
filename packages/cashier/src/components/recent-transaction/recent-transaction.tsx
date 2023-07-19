@@ -28,7 +28,9 @@ const RecentTransaction = observer(({ is_wallet }: TRecentTransactionProps) => {
     };
 
     const SideNoteContainer = ({ children }: React.PropsWithChildren<unknown>) => (
-        <div className={`recent-transaction__wrapper ${is_wallet ? 'recent-transaction__wrapper--wallet' : ''}`}>
+        <div
+            className={classNames('recent-transaction__wrapper', { 'recent-transaction__wrapper--wallet': is_wallet })}
+        >
             <div className='cashier-recent-transaction'>
                 <Text weight='bold' as='p' line_height='s' size={is_mobile ? 'xxs' : 'xs'}>
                     <Localize i18n_default_text='Transaction status' />

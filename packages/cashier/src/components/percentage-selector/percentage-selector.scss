@@ -2,7 +2,7 @@
     display: flex;
     justify-content: space-around;
     width: 100%;
-    gap: 4px;
+    gap: 0.4rem;
 
     @include mobile {
         width: 100%;

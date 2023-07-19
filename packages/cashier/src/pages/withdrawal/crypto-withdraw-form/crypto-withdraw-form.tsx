@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Field, FieldProps, Formik, FormikProps } from 'formik';
 import { Button, Input, Loading, Text, InlineMessage } from '@deriv/components';
 import { CryptoConfig, getCurrencyName, isCryptocurrency } from '@deriv/shared';
@@ -111,7 +112,11 @@ const CryptoWithdrawForm = observer(({ is_wallet }: { is_wallet?: boolean }) => 
 
     return (
         <div className='cashier__wrapper crypto-withdraw-form__container' data-testid='dt_crypto_withdraw_form'>
-            <div className={`crypto-withdraw-form__form ${!is_wallet ? 'crypto-withdraw-form__form--cashier' : ''}`}>
+            <div
+                className={classNames('crypto-withdraw-form__form', {
+                    'crypto-withdraw-form__form--cashier': !is_wallet,
+                })}
+            >
                 <Header currency={currency} />
                 <div className='crypto-withdraw-form__messages'>
                     <InlineMessage message={<Messages />} type='warning' />

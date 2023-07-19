@@ -1,6 +1,6 @@
 import { useFetch } from '@deriv/api';
+import { getMinWithdrawal } from '@deriv/shared';
 import { useStore } from '@deriv/stores';
-import { getMinWithdrawal } from '../../shared/src/utils/currency';
 
 type TUseCheck10kLimit = {
     is_10k_withdrawal_limit_reached: boolean;

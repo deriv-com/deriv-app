@@ -44,9 +44,9 @@ describe('useIsAskFinancialRiskApprovalNeeded', () => {
             isSuccess: true,
         });
 
-        const { result: result_1 } = renderHook(useIsAskFinancialRiskApprovalNeeded, { wrapper });
+        const { result, rerender } = renderHook(useIsAskFinancialRiskApprovalNeeded, { wrapper });
 
-        expect(result_1.current.is_ask_financial_risk_approval_needed).toBe(false);
+        expect(result.current.is_ask_financial_risk_approval_needed).toBe(false);
 
         mock_store.modules.cashier.error.is_ask_financial_risk_approval = false;
 
@@ -56,8 +56,7 @@ describe('useIsAskFinancialRiskApprovalNeeded', () => {
             isSuccess: true,
         });
 
-        const { result: result_2 } = renderHook(useIsAskFinancialRiskApprovalNeeded, { wrapper });
-
-        expect(result_2.current.is_ask_financial_risk_approval_needed).toBe(false);
+        rerender();
+        expect(result.current.is_ask_financial_risk_approval_needed).toBe(false);
     });
 });

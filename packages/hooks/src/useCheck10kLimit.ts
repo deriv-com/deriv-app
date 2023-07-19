@@ -1,5 +1,5 @@
 import { useFetch } from '@deriv/api';
-import { getMinWithdrawal } from '@deriv/shared';
+import { getMinWithdrawal } from '../../shared/src/utils/currency';
 import { useStore } from '@deriv/stores';
 
 type TUseCheck10kLimit = {
@@ -13,7 +13,7 @@ const useCheck10kLimit = (): TUseCheck10kLimit => {
     const { data: account_limit, isSuccess } = useFetch('get_limits');
     const remainder = account_limit?.get_limits?.remainder;
     const min_withdrawal = getMinWithdrawal(client.currency);
-    const is_10k_withdrawal_limit_reached = !!(typeof remainder !== 'undefined' && +remainder < min_withdrawal);
+    const is_10k_withdrawal_limit_reached = true; //!!(typeof remainder !== 'undefined' && +remainder < min_withdrawal);
 
     return { is_10k_withdrawal_limit_reached, max_withdraw_amount: remainder, isSuccess };
 };

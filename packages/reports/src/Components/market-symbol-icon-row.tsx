@@ -1,10 +1,11 @@
 import React from 'react';
-import { extractInfoFromShortcode, isHighLow, isTurbosContract } from '@deriv/shared';
+import { extractInfoFromShortcode, isHighLow } from '@deriv/shared';
 import { Icon, Popover, IconTradeTypes } from '@deriv/components';
 import { getMarketName, getTradeTypeName } from '../Helpers/market-underlying';
 import classNames from 'classnames';
 
 type TMarketSymbolIconRow = {
+    has_full_contract_title?: boolean;
     icon?: string | null;
     payload: {
         shortcode: string;
@@ -13,22 +14,23 @@ type TMarketSymbolIconRow = {
     };
     should_show_multiplier?: boolean;
     should_show_accumulator?: boolean;
-    is_vanilla?: boolean;
 };
 
 const MarketSymbolIconRow = ({
+    has_full_contract_title,
     icon,
     payload,
     should_show_accumulator = true,
     should_show_multiplier = true,
-    is_vanilla,
 }: TMarketSymbolIconRow) => {
     const should_show_category_icon = typeof payload.shortcode === 'string';
     const info_from_shortcode = extractInfoFromShortcode(payload.shortcode);
     const is_high_low = isHighLow({ shortcode_info: info_from_shortcode });
-    const is_turbos = isTurbosContract(info_from_shortcode.category);
-    const category_label = getTradeTypeName(info_from_shortcode.category as string, is_high_low, is_turbos);
-    const has_full_contract_title = is_vanilla || is_turbos;
+    const category_label = getTradeTypeName(
+        info_from_shortcode.category as string,
+        is_high_low,
+        has_full_contract_title
+    );
     if (should_show_category_icon && info_from_shortcode) {
         return (
             <div

@@ -1,6 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
-import { isVanillaContract } from '@deriv/shared';
+import { isTurbosContract, isVanillaContract } from '@deriv/shared';
 import { TPassThrough, TRow } from './data-list';
 
 export type TColIndex =
@@ -24,6 +24,7 @@ export type TRenderCellContent = {
     is_footer?: boolean;
     passthrough?: TPassThrough;
     row_obj: TRow;
+    is_turbos?: boolean;
     is_vanilla?: boolean;
 };
 export type THeaderProps = {
@@ -49,6 +50,7 @@ const DataListCell = ({ className, column, is_footer, passthrough, row }: TDataL
     if (!column) return null;
     const { col_index, title } = column;
     const cell_value = row[col_index];
+    const is_turbos = isTurbosContract(row.contract_info?.contract_type);
     const is_vanilla = isVanillaContract(row.contract_info?.contract_type);
 
     return (
@@ -60,7 +62,14 @@ const DataListCell = ({ className, column, is_footer, passthrough, row }: TDataL
             )}
             <div className='data-list__row-content'>
                 {column.renderCellContent
-                    ? column.renderCellContent({ cell_value, is_footer, passthrough, row_obj: row, is_vanilla })
+                    ? column.renderCellContent({
+                          cell_value,
+                          is_footer,
+                          passthrough,
+                          row_obj: row,
+                          is_vanilla,
+                          is_turbos,
+                      })
                     : cell_value}
             </div>
         </div>

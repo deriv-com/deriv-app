@@ -41,12 +41,11 @@ export const getMarketName = (underlying: string) =>
     underlying ? getMarketNamesMap()[underlying.toUpperCase() as keyof typeof getMarketNamesMap] : null;
 
 export const getTradeTypeName = (category: string, is_high_low = false, show_button_name = false) => {
-    const key = show_button_name ? 'button_name' : 'name';
-    return category
-        ? (getContractConfig(is_high_low)[category.toUpperCase() as keyof typeof getContractConfig] as TTradeConfig)[
-              key
-          ]
-        : null;
+    const trade_type =
+        category &&
+        (getContractConfig(is_high_low)[category.toUpperCase() as keyof typeof getContractConfig] as TTradeConfig);
+    if (!trade_type) return null;
+    return (show_button_name && trade_type.button_name) || trade_type.name || null;
 };
 
 export const getContractDurationType = (longcode: string, shortcode?: string): string => {

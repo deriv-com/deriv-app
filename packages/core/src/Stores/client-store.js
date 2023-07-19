@@ -1726,6 +1726,7 @@ export default class ClientStore extends BaseStore {
 
             if (this.account_settings) this.setPreferredLanguage(this.account_settings.preferred_language);
             await this.fetchResidenceList();
+            await this.states_list();
             await this.getTwoFAStatus();
             if (this.account_settings && !this.account_settings.residence) {
                 this.root_store.ui.toggleSetResidenceModal(true);

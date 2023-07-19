@@ -425,7 +425,6 @@ export function getAccumulatorMarkers({
         ? getColor({ status: 'fg', is_dark_theme })
         : getColor({
               is_dark_theme,
-              profit: is_sold ? profit : null,
               status: contract_status,
               profit: is_sold || is_accu_contract_ended ? profit : null,
           });
@@ -453,11 +452,14 @@ export function getAccumulatorMarkers({
     ];
 
     return {
-        type: in_contract_details ? 'AccumulatorContractInContractDetails' : 'AccumulatorContract',
+        type: 'AccumulatorContract',
         markers,
         color: getColor({
             status: getShadeStatus(),
             is_dark_theme,
         }),
+        props: {
+            hasPersistentBorders: in_contract_details,
+        },
     };
 }

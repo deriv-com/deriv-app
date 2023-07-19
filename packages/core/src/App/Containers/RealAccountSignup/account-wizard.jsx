@@ -345,7 +345,7 @@ const AccountWizard = props => {
         return <AcceptRiskForm onConfirm={onAcceptRisk} onClose={onDeclineRisk} />;
     }
     if (is_loading || props.is_switching) {
-        console.log('its loading');
+        console.log('its loading', is_loading, props.is_switching);
         return <Loading is_fullscreen={false} className='account__initial-loader' />;
     }
     if (!mounted) {

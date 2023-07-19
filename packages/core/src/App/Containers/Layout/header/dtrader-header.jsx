@@ -53,6 +53,7 @@ const DTraderHeader = ({
     toggleReadyToDepositModal,
     has_any_real_account,
     setTogglePlatformType,
+    is_real_acc_signup_on,
 }) => {
     const addUpdateNotification = () => addNotificationMessage(client_notifications.new_version_available);
     const removeUpdateNotification = React.useCallback(
@@ -166,7 +167,7 @@ const DTraderHeader = ({
                     </div>
                 </div>
             </div>
-            <RealAccountSignup />
+            {is_real_acc_signup_on && <RealAccountSignup />}
             <SetAccountCurrencyModal />
             <NewVersionNotification onUpdate={addUpdateNotification} />
         </header>
@@ -248,4 +249,5 @@ export default connect(({ client, common, ui, notifications, traders_hub }) => (
     has_any_real_account: client.has_any_real_account,
     setTogglePlatformType: traders_hub.setTogglePlatformType,
     current_language: common.current_language,
+    is_real_acc_signup_on: ui.is_real_acc_signup_on,
 }))(withRouter(DTraderHeader));

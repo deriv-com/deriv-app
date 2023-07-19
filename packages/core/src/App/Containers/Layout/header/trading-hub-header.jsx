@@ -113,6 +113,7 @@ const TradingHubHeader = ({
     has_any_real_account,
     toggleReadyToDepositModal,
     toggleNeedRealAccountForCashierModal,
+    is_real_acc_signup_on,
 }) => {
     const { pathname } = useLocation();
     const cashier_routes = pathname.startsWith(routes.cashier);
@@ -274,7 +275,7 @@ const TradingHubHeader = ({
                         )}
                     </div>
                 </div>
-                <RealAccountSignup />
+                {is_real_acc_signup_on && <RealAccountSignup />}
             </DesktopWrapper>
             <MobileWrapper>
                 <div className='trading-hub-header__mobile-parent'>
@@ -297,7 +298,7 @@ const TradingHubHeader = ({
                         )}
                     </div>
                 </div>
-                <RealAccountSignup />
+                {is_real_acc_signup_on && <RealAccountSignup />}
             </MobileWrapper>
             <SetAccountCurrencyModal />
             <CurrencySelectionModal is_visible={modal_data.active_modal === 'currency_selection'} />
@@ -367,4 +368,5 @@ export default connect(({ client, common, notifications, ui, traders_hub }) => (
     toggleReadyToDepositModal: ui.toggleReadyToDepositModal,
     toggleNeedRealAccountForCashierModal: ui.toggleNeedRealAccountForCashierModal,
     content_flag: traders_hub.content_flag,
+    is_real_acc_signup_on: ui.is_real_acc_signup_on,
 }))(withRouter(TradingHubHeader));

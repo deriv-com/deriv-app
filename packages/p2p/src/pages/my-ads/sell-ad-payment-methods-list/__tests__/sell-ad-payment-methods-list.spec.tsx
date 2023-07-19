@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useStores } from 'Stores/index';
+import { useStores } from 'Stores';
 import SellAdPaymentMethodsList from '../sell-ad-payment-methods-list';
 import { advertiser_payment_methods_list } from '../../__mocks__/mock-data';
 

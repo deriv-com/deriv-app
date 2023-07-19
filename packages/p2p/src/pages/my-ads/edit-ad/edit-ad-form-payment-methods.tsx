@@ -4,9 +4,9 @@ import { localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import PaymentMethodCard from 'Pages/my-profile/payment-methods/payment-method-card';
 import { useStores } from 'Stores';
+import { TPaymentMethod } from 'Types';
 import BuyAdPaymentMethodsList from '../buy-ad-payment-methods-list';
 import SellAdPaymentMethodsList from '../sell-ad-payment-methods-list';
-import { TPaymentMethod } from 'Types';
 
 type TEditAdFormPaymentMethodsProps = {
     is_sell_advert: boolean;

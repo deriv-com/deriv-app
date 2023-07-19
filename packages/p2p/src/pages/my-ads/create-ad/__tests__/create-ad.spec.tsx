@@ -30,7 +30,7 @@ describe('<CreateAd/>', () => {
     it('should close the create ad page on clicking back button', () => {
         render(<CreateAd />);
 
-        const back_button = screen.getByTestId('dt_page_return');
+        const back_button = screen.getByTestId('dt_page_return_icon');
         userEvent.click(back_button);
         expect(mocked_store_values.my_ads_store.setApiErrorMessage).toBeCalledTimes(1);
         expect(mocked_store_values.my_ads_store.setShowAdForm).toHaveBeenLastCalledWith(false);

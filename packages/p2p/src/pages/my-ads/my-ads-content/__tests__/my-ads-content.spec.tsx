@@ -1,9 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { isMobile } from '@deriv/shared';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import { useStores } from 'Stores/index';
+import { useStores } from 'Stores';
 import MyAdsContent from '../my-ads-content';
 import { adverts } from '../../__mocks__/mock-data';
 

@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores';
 import EditAdFormPaymentMethods from '../edit-ad-form-payment-methods';
 
 const mocked_store_values: DeepPartial<ReturnType<typeof useStores>> = {

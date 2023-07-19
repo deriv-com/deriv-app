@@ -5,11 +5,11 @@ import { observer } from '@deriv/stores';
 import { localize, Localize } from 'Components/i18next';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { api_error_codes } from 'Constants/api-error-codes';
-import { useStores } from 'Stores/index';
+import { useStores } from 'Stores';
 
 const AdCreatedModal = () => {
     const { my_ads_store } = useStores();
-    const { setIsAdCreatedModalVisible, setShowAdForm, advert_details } = my_ads_store;
+    const { adverts_archive_period, advert_details, setIsAdCreatedModalVisible, setShowAdForm } = my_ads_store;
     const { hideModal, is_modal_open, showModal } = useModalManagerContext();
     const should_not_show_auto_archive_message_again = React.useRef(false);
     const { AD_EXCEEDS_BALANCE, AD_EXCEEDS_DAILY_LIMIT } = api_error_codes;
@@ -25,7 +25,7 @@ const AdCreatedModal = () => {
         setIsAdCreatedModalVisible(false);
         hideModal();
 
-        //TODO: use advert_details directly from AdVisibilityErrorModal once it's refactored
+        //TODO: refactor below section - use advert_details directly from AdVisibilityErrorModal once it's refactored
         if (advert_details?.visibility_status?.includes(AD_EXCEEDS_BALANCE)) {
             showModal(
                 {
@@ -52,7 +52,7 @@ const AdCreatedModal = () => {
                 <Text as='p' size='xs' color='prominent'>
                     <Localize
                         i18n_default_text="If the ad doesn't receive an order for {{adverts_archive_period}} days, it will be deactivated."
-                        values={{ adverts_archive_period: my_ads_store.adverts_archive_period }}
+                        values={{ adverts_archive_period }}
                     />
                 </Text>
                 <br />

@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores';
 import CreateAdForm from '../create-ad-form';
 
 const mocked_store_values: DeepPartial<ReturnType<typeof useStores>> = {

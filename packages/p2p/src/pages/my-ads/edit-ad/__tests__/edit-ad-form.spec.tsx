@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { StoreProvider, mockStore } from '@deriv/stores';
-import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores';
 import EditAdForm from '../edit-ad-form';
 
 const mocked_store_values: DeepPartial<ReturnType<typeof useStores>> = {
@@ -194,7 +194,7 @@ describe('<EditAdForm/>', () => {
             </StoreProvider>
         );
 
-        const back_button = screen.getByTestId('dt_page_return');
+        const back_button = screen.getByTestId('dt_page_return_icon');
         userEvent.click(back_button);
         expect(mocked_store_values.my_ads_store.setShowEditAdForm).toHaveBeenCalledWith(false);
     });

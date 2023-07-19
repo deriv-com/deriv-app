@@ -1,7 +1,7 @@
 import React from 'react';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useStores } from 'Stores/index';
+import { useStores } from 'Stores';
 import BuyAdPaymentMethodsList, { TBuyAdPaymentMethodsListProps } from '../buy-ad-payment-methods-list';
 import { available_payment_methods } from '../../__mocks__/mock-data';
 

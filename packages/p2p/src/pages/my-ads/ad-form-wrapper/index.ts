@@ -1,3 +1,3 @@
-import FormWrapper from './ad-form-wrapper';
+import AdFormWrapper from './ad-form-wrapper';
 
-export default FormWrapper;
+export default AdFormWrapper;

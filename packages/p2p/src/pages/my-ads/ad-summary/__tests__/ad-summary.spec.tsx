@@ -36,7 +36,7 @@ const mock_props = {
 };
 
 describe('<AdSummary/>', () => {
-    it('should render the default create ad summary line with buy ad for create', () => {
+    it('should render the default ad summary line with buy ad for create', () => {
         render(
             <StoreProvider store={mock_use_store_values}>
                 <AdSummary {...mock_props} />
@@ -44,7 +44,7 @@ describe('<AdSummary/>', () => {
         );
         expect(screen.getByText("You're creating an ad to buy...")).toBeInTheDocument();
     });
-    it('should render the default create ad summary line with sell ad for create', () => {
+    it('should render the default ad summary line with sell ad for create', () => {
         const new_mock_props = { ...mock_props, type: 'sell' };
         render(
             <StoreProvider store={mock_use_store_values}>
@@ -53,7 +53,7 @@ describe('<AdSummary/>', () => {
         );
         expect(screen.getByText("You're creating an ad to sell...")).toBeInTheDocument();
     });
-    it('should render the create ad summary line with offer amount for buy ad for create', () => {
+    it('should render the ad summary line with offer amount for buy ad for create', () => {
         const new_mock_props = { ...mock_props, offer_amount: '100' };
         render(
             <StoreProvider store={mock_use_store_values}>
@@ -63,7 +63,7 @@ describe('<AdSummary/>', () => {
         expect(screen.getByText(/You're creating an ad to buy/)).toBeInTheDocument();
         expect(screen.getByText('100.00 USD')).toBeInTheDocument();
     });
-    it('should render the create ad summary line with offer amount for sell ad for create', () => {
+    it('should render the ad summary line with offer amount for sell ad for create', () => {
         const new_mock_props = { ...mock_props, offer_amount: '100', type: 'sell' };
         render(
             <StoreProvider store={mock_use_store_values}>
@@ -73,7 +73,7 @@ describe('<AdSummary/>', () => {
         expect(screen.getByText(/You're creating an ad to sell/)).toBeInTheDocument();
         expect(screen.getByText('100.00 USD')).toBeInTheDocument();
     });
-    it('should render the create ad summary line with offer amount and price rate for buy ad for create', () => {
+    it('should render the ad summary line with offer amount and price rate for buy ad for create', () => {
         const new_mock_props = { ...mock_props, offer_amount: '100', price_rate: '2' };
         render(
             <StoreProvider store={mock_use_store_values}>
@@ -84,7 +84,7 @@ describe('<AdSummary/>', () => {
         expect(screen.getByText('100.00 USD')).toBeInTheDocument();
         expect(screen.getByText('0.01 USD')).toBeInTheDocument();
     });
-    it('should render the create ad summary line with offer amount and price rate for sell ad for create', () => {
+    it('should render the ad summary line with offer amount and price rate for sell ad for create', () => {
         const new_mock_props = { ...mock_props, offer_amount: '100', price_rate: '2', type: 'sell' };
         render(
             <StoreProvider store={mock_use_store_values}>
@@ -95,7 +95,7 @@ describe('<AdSummary/>', () => {
         expect(screen.getByText('100.00 USD')).toBeInTheDocument();
         expect(screen.getByText('0.01 USD')).toBeInTheDocument();
     });
-    it('should render the create ad summary line with offer amount and price rate for buy ad with fixed rate for create', () => {
+    it('should render the ad summary line with offer amount and price rate for buy ad with fixed rate for create', () => {
         (useStores as jest.Mock).mockReturnValue({
             ...mocked_store_values,
             floating_rate_store: {
@@ -113,7 +113,7 @@ describe('<AdSummary/>', () => {
         expect(screen.getByText('100.00 USD')).toBeInTheDocument();
         expect(screen.getByText('200.00 USD')).toBeInTheDocument();
     });
-    it('should render the create ad summary line with offer amount and price rate for buy ad with fixed rate for edit', () => {
+    it('should render the ad summary line with offer amount and price rate for buy ad with fixed rate for edit', () => {
         (useStores as jest.Mock).mockReturnValue({
             ...mocked_store_values,
             floating_rate_store: {

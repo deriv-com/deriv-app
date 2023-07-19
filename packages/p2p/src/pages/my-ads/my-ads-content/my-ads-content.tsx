@@ -37,15 +37,25 @@ const AdSwitchHintBox = () => {
     );
 };
 
+const AdCreateButton = ({ class_name = '' }: { class_name?: string }) => {
+    const { general_store, my_ads_store } = useStores();
+    const { is_barred } = general_store;
+    const { onClickCreate } = my_ads_store;
+    return (
+        <Button className={class_name} is_disabled={is_barred} large onClick={onClickCreate} primary>
+            <Localize i18n_default_text='Create new ad' />
+        </Button>
+    );
+};
+
 const MyAdsTable = () => {
     const { floating_rate_store, general_store, my_ads_store } = useStores();
-    const { is_barred, setP2PConfig } = general_store;
+    const { setP2PConfig } = general_store;
     const {
         adverts = [],
         api_error_message,
         is_table_loading,
         loadMoreAds,
-        onClickCreate,
         setAdverts,
         setApiErrorCode,
         setSelectedAdId,
@@ -90,24 +100,14 @@ const MyAdsTable = () => {
                 )}
                 <div className='my-ads-content__header'>
                     <DesktopWrapper>
-                        <Button is_disabled={is_barred} large onClick={onClickCreate} primary>
-                            <Localize i18n_default_text='Create new ad' />
-                        </Button>
+                        <AdCreateButton class_name='p2p-empty__button' />
                     </DesktopWrapper>
                     <ToggleAds />
                 </div>
                 <AdsTable />
                 <MobileWrapper>
                     <div className='my-ads-content__create-container'>
-                        <Button
-                            className='my-ads-content__create'
-                            is_disabled={is_barred}
-                            large
-                            onClick={onClickCreate}
-                            primary
-                        >
-                            <Localize i18n_default_text='Create new ad' />
-                        </Button>
+                        <AdCreateButton class_name='my-ads-content__create' />
                     </div>
                 </MobileWrapper>
             </React.Fragment>
@@ -116,9 +116,7 @@ const MyAdsTable = () => {
 
     return (
         <P2pEmpty icon='IcCashierNoAds' title={localize('You have no ads.')}>
-            <Button className='p2p-empty__button' is_disabled={is_barred} onClick={() => onClickCreate()} large primary>
-                <Localize i18n_default_text='Create new ad' />
-            </Button>
+            <AdCreateButton class_name='p2p-empty__button' />
         </P2pEmpty>
     );
 };

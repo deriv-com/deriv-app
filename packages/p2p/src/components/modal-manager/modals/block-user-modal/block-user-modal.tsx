@@ -1,12 +1,18 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Button, Modal, Text } from '@deriv/components';
-import { observer } from 'mobx-react-lite';
+import { observer } from '@deriv/stores';
 import { Localize } from 'Components/i18next';
-import { useStores } from 'Stores';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { useStores } from 'Stores';
 
-const BlockUserModal = ({ advertiser_name, is_advertiser_blocked, onCancel, onSubmit }) => {
+type TBlockUserModalProps = {
+    advertiser_name: string;
+    is_advertiser_blocked: boolean;
+    onCancel: () => void;
+    onSubmit: () => void;
+};
+
+const BlockUserModal = ({ advertiser_name, is_advertiser_blocked, onCancel, onSubmit }: TBlockUserModalProps) => {
     const { general_store } = useStores();
     const { is_modal_open } = useModalManagerContext();
 
@@ -65,13 +71,6 @@ const BlockUserModal = ({ advertiser_name, is_advertiser_blocked, onCancel, onSu
             </Modal.Footer>
         </Modal>
     );
-};
-
-BlockUserModal.propTypes = {
-    advertiser_name: PropTypes.string.isRequired,
-    is_advertiser_blocked: PropTypes.bool.isRequired,
-    onCancel: PropTypes.func.isRequired,
-    onSubmit: PropTypes.func.isRequired,
 };
 
 export default observer(BlockUserModal);

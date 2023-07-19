@@ -1,9 +1,8 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import AddressDetails from '../address-details';
+import AddressDetails, { TAddressDetailFormProps } from '../address-details';
 import { isDesktop, isMobile, PlatformContext } from '@deriv/shared';
 import { FormikProps } from 'formik';
-import { TAddressDetailFormProps } from 'Types';
 import { StoreProvider, mockStore } from '@deriv/stores';
 
 jest.mock('@deriv/shared', () => ({

@@ -28,7 +28,14 @@ import { splitValidationResultTypes } from '../real-account-signup/helpers/utils
 import classNames from 'classnames';
 import { observer, useStore } from '@deriv/stores';
 import { FormInputField } from '../forms/form-fields';
-import { TAddressDetailFormProps } from 'Types';
+
+export type TAddressDetailFormProps = {
+    address_line_1: string;
+    address_line_2?: string;
+    address_city: string;
+    address_state?: string;
+    address_postcode?: string;
+};
 
 type TAddressDetails = {
     getCurrentStep?: () => number;
@@ -127,20 +134,22 @@ const AddressDetails = observer(
             return errors;
         };
 
+        const handleSubmitData = (values: TAddressDetailFormProps, actions: FormikHelpers<TAddressDetailFormProps>) => {
+            if (values.address_state && states_list.length) {
+                values.address_state = address_state_to_display
+                    ? getLocation(states_list, address_state_to_display, 'value')
+                    : getLocation(states_list, values.address_state, 'value');
+            }
+            onSubmit((getCurrentStep?.() || 1) - 1, values, actions.setSubmitting, goToNextStep);
+        };
+
         return (
             <Formik
                 innerRef={selected_step_ref}
                 initialValues={props.value}
                 validate={handleValidate}
                 validateOnMount
-                onSubmit={(values, actions) => {
-                    if (values.address_state && states_list.length) {
-                        values.address_state = address_state_to_display
-                            ? getLocation(states_list, address_state_to_display, 'value')
-                            : getLocation(states_list, values.address_state, 'value');
-                    }
-                    onSubmit((getCurrentStep?.() || 1) - 1, values, actions.setSubmitting, goToNextStep);
-                }}
+                onSubmit={handleSubmitData}
             >
                 {({
                     handleSubmit,

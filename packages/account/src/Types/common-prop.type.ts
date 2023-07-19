@@ -149,11 +149,3 @@ export type TPersonalDetailsForm = {
 } & FormikProps<FormikValues>;
 
 export type TInputFieldValues = Record<string, string>;
-
-export type TAddressDetailFormProps = {
-    address_line_1: string;
-    address_line_2?: string;
-    address_city: string;
-    address_state?: string;
-    address_postcode?: string;
-};

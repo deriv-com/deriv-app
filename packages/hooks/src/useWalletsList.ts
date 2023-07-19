@@ -66,10 +66,15 @@ const useWalletsList = () => {
     const { is_dark_mode_on } = ui;
     const { getConfig } = useCurrencyConfig();
 
-    const { data: authorize_data, ...rest } = useAuthorize();
+    const {
+        data: authorize_data,
+        isSuccess: is_authorize_success,
+        isFetching: is_authorize_fetching,
+        ...rest
+    } = useAuthorize();
     const { data: balance_data } = useFetch('balance', {
         payload: { account: 'all' },
-        options: { enabled: Object.keys(authorize_data).length !== 0 },
+        options: { enabled: is_authorize_success && !is_authorize_fetching },
     });
 
     // Filter out non-wallet accounts.

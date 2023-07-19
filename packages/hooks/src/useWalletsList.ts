@@ -67,7 +67,10 @@ const useWalletsList = () => {
     const { getConfig } = useCurrencyConfig();
 
     const { data: authorize_data, ...rest } = useAuthorize();
-    const { data: balance_data } = useFetch('balance', { payload: { account: 'all' } });
+    const { data: balance_data } = useFetch('balance', {
+        payload: { account: 'all' },
+        options: { enabled: Object.keys(authorize_data).length !== 0 },
+    });
 
     // Filter out non-wallet accounts.
     const wallets = useMemo(

@@ -30,7 +30,7 @@ jest.mock('@deriv/components', () => ({
     Loading: () => <div>Loading</div>,
 }));
 
-jest.mock('Components/Verification', () => jest.fn(() => <div>Verification</div>));
+jest.mock('Components/verification', () => jest.fn(() => <div>Verification</div>));
 
 jest.mock('../my-ads-content', () => jest.fn(() => <div>MyAdsContent</div>));
 jest.mock('../create-ad', () => jest.fn(() => <div>CreateAd</div>));

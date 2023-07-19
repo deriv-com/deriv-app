@@ -128,35 +128,38 @@ const AccountWizard = props => {
         // only re-mount logic when switching is done
         if (!props.is_switching) {
             console.log('useEffect');
-            props.fetchStatesList().then(response_state_list => {
-                console.log('response_state_list');
-                if (response_state_list.error) {
-                    setAPIError(response_state_list.error);
-                    setLoading(false);
-                    return;
-                }
+            console.log(props.residence_list, props.states_list);
 
-                props.fetchResidenceList().then(response_residence_list => {
-                    console.log('response_residence_list');
-                    if (response_residence_list.error) {
-                        setAPIError(response_residence_list.error);
-                    } else {
-                        setStateItems(previous_state => {
-                            console.log('previous_state', previous_state.length);
-
-                            if (!previous_state.length) {
-                                return getItems(props);
-                            }
-                            return previous_state;
-                        });
+            if (!props.residence_list.length && !props.states_list.length) {
+                props.fetchStatesList().then(response_state_list => {
+                    console.log('response_state_list');
+                    if (response_state_list.error) {
+                        setAPIError(response_state_list.error);
+                        setLoading(false);
+                        return;
                     }
-                    setPreviousData(fetchFromStorage());
-                    setMounted(true);
-                    setLoading(false);
+
+                    props.fetchResidenceList().then(response_residence_list => {
+                        console.log('response_residence_list');
+                        if (response_residence_list.error) {
+                            setAPIError(response_residence_list.error);
+                        }
+                    });
                 });
+            }
+            setStateItems(previous_state => {
+                console.log('previous_state', previous_state, previous_state.length);
+
+                if (!previous_state.length) {
+                    return getItems(props);
+                }
+                return previous_state;
             });
+            setPreviousData(fetchFromStorage());
+            setMounted(true);
+            setLoading(false);
         }
-    }, [props.fetchStatesList, props.fetchResidenceList, props.is_switching]);
+    }, [props.fetchStatesList, props.fetchResidenceList, props.is_switching, props.residence_list, props.states_list]);
 
     React.useEffect(() => {
         if (previous_data.length > 0) {

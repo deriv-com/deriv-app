@@ -192,7 +192,7 @@ const currency_symbols = {
     UST: '\u20ae',
 };
 
-const getMarkerContractType = contract_info => {
+export const getMarkerContractType = contract_info => {
     const { tick_count, contract_type } = contract_info;
 
     if (isAccumulatorContract(contract_type)) {
@@ -204,7 +204,7 @@ const getMarkerContractType = contract_info => {
     return tick_count > 0 ? 'TickContract' : 'NonTickContract';
 };
 
-const getStartText = contract_info => {
+export const getStartText = contract_info => {
     const { barrier, contract_type, currency, is_sold, profit, tick_count, tick_stream } = contract_info;
     const is_non_tick_contract = !tick_count;
 
@@ -223,7 +223,7 @@ const getStartText = contract_info => {
     return `${Math.max(tick_stream.length - 1, 0)}/${tick_count}`;
 };
 
-const getTickStreamMarkers = (contract_info, barrier_price) => {
+export const getTickStreamMarkers = (contract_info, barrier_price) => {
     function getTicks() {
         if (is_accumulator_contract) {
             return [];

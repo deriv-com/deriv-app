@@ -19,6 +19,7 @@ import FormFooter from 'Components/form-footer';
 import FormSubHeader from 'Components/form-sub-header';
 import PoincFileUploaderContainer from 'Components/poinc/file-uploader-container';
 import { income_status_codes, poinc_documents_list } from 'Sections/Verification/ProofOfIncome/proof-of-income-utils';
+import { TDocumentSettings } from 'Types';
 
 type TUpload = {
     upload: () => Promise<DocumentUploadResponse>;
@@ -29,10 +30,10 @@ type TProofOfIncomeForm = {
 };
 
 type TInitialValues = {
-    document_type: string;
+    document_type: TDocumentSettings['documentType'] | '';
 };
 
-let file_uploader_ref: React.RefObject<HTMLElement & TUpload>;
+let file_uploader_ref: React.RefObject<TUpload>;
 
 const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
     const [document_file, setDocumentFile] = React.useState({ files: [], error_message: null });

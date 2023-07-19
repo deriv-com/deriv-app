@@ -6,7 +6,13 @@ import ResetTradingPasswordModal from '../Components/reset-trading-password-moda
 
 const ResetTradingPassword = observer(() => {
     const { ui, client } = useStore();
-    const { enableApp, disableApp, is_visible, is_loading, setResetTradingPasswordModalOpen } = ui;
+    const {
+        enableApp,
+        disableApp,
+        is_reset_trading_password_modal_visible,
+        is_loading,
+        setResetTradingPasswordModalOpen,
+    } = ui;
     const location = useLocation();
     const query_params = new URLSearchParams(location.search);
     const cfd_platform = /^trading_platform_(.*)_password_reset$/.exec(query_params.get('action') || '')?.[1];
@@ -22,7 +28,7 @@ const ResetTradingPassword = observer(() => {
             enableApp={enableApp}
             disableApp={disableApp}
             toggleResetTradingPasswordModal={setResetTradingPasswordModalOpen}
-            is_visible={is_visible}
+            is_visible={is_reset_trading_password_modal_visible}
             is_loading={is_loading}
             verification_code={verification_code}
         />

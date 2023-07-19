@@ -24,6 +24,7 @@ import {
     toMoment,
     urlForLanguage,
 } from '@deriv/shared';
+import { RudderStack } from '@deriv/analytics';
 import { WS, requestLogout } from 'Services';
 import { action, computed, makeObservable, observable, reaction, runInAction, toJS, when } from 'mobx';
 import { getAccountTitle, getClientAccountType, getAvailableAccount } from './Helpers/client';
@@ -291,6 +292,7 @@ export default class ClientStore extends BaseStore {
             should_restrict_bvi_account_creation: computed,
             should_restrict_vanuatu_account_creation: computed,
             should_show_eu_content: computed,
+            should_show_eu_error: computed,
             is_virtual: computed,
             is_eu: computed,
             is_uk: computed,
@@ -735,8 +737,8 @@ export default class ClientStore extends BaseStore {
 
     get is_tnc_needed() {
         if (this.is_virtual) return false;
-        const { client_tnc_status } = this.account_settings;
-        const { terms_conditions_version } = this.website_status;
+        const { client_tnc_status } = this.account_settings || {};
+        const { terms_conditions_version } = this.website_status || {};
 
         return typeof client_tnc_status !== 'undefined' && client_tnc_status !== terms_conditions_version;
     }
@@ -848,7 +850,14 @@ export default class ClientStore extends BaseStore {
 
     get should_show_eu_content() {
         const is_current_mf = this.landing_company_shortcode === 'maltainvest';
-        return (!this.loginid && this.is_eu_country) || this.is_eu || is_current_mf;
+        return (!this.is_logged_in && this.is_eu_country) || this.is_eu || is_current_mf;
+    }
+
+    get should_show_eu_error() {
+        if (!this.is_landing_company_loaded) {
+            return false;
+        }
+        return this.is_eu && !this.is_low_risk;
     }
 
     get is_virtual() {
@@ -1052,10 +1061,13 @@ export default class ClientStore extends BaseStore {
                     account.shortcode !== 'maltainvest'
             )
             .map(account => account.shortcode);
-
-        const has_no_matching_accounts = available_real_accounts_shortcodes.every(shortcode =>
-            existing_real_accounts.some(account => account.landing_company_short !== shortcode)
-        );
+        const has_no_matching_accounts = available_real_accounts_shortcodes.every(shortcode => {
+            if (market_type === 'all') {
+                // as Swapfree only have SVG account for now we need to check if there is any real svg account available
+                return existing_real_accounts.some(account => account.landing_company_short === shortcode);
+            }
+            return existing_real_accounts.some(account => account.landing_company_short === shortcode);
+        });
 
         return !has_no_matching_accounts;
     }
@@ -1578,6 +1590,7 @@ export default class ClientStore extends BaseStore {
         const redirect_url = search_params?.get('redirect_url');
         const code_param = search_params?.get('code');
         const action_param = search_params?.get('action');
+        const loginid_param = search_params?.get('loginid');
         const unused_params = [
             'type',
             'acp',
@@ -1629,7 +1642,8 @@ export default class ClientStore extends BaseStore {
             return false;
         }
 
-        this.setLoginId(LocalStore.get('active_loginid'));
+        if (action_param === 'payment_withdraw' && loginid_param) this.setLoginId(loginid_param);
+        else this.setLoginId(LocalStore.get('active_loginid'));
         this.setAccounts(LocalStore.getObject(storage_key));
         this.setSwitched('');
         const client = this.accounts[this.loginid];
@@ -1640,7 +1654,11 @@ export default class ClientStore extends BaseStore {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
 
                 // Client comes back from oauth and logs in
-                await this.root_store.rudderstack.identifyEvent();
+                RudderStack.identifyEvent(this.user_id, {
+                    language: getLanguage().toLowerCase(),
+                });
+                const current_page = window.location.hostname + window.location.pathname;
+                RudderStack.pageView(current_page);
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',
@@ -2119,7 +2137,7 @@ export default class ClientStore extends BaseStore {
         if (response?.logout === 1) {
             this.cleanUp();
 
-            this.root_store.rudderstack.reset();
+            RudderStack.reset();
             this.setLogout(true);
         }
 

@@ -1,8 +1,9 @@
 /** Add types that are shared between components */
-
 import { FormikProps, FormikValues } from 'formik';
 import { Authorize, ResidenceList } from '@deriv/api-types';
 import { Redirect } from 'react-router-dom';
+import React from 'react';
+import { DOCUMENT_TYPE, PAGE_TYPE } from '@deriv/shared';
 
 export type TToken = {
     display_name: string;
@@ -82,6 +83,46 @@ export type TBinaryRoutes = {
     is_logging_in: boolean;
 };
 
+export type TUpgradeInfo = {
+    type: string;
+    can_upgrade: boolean;
+    can_upgrade_to: string;
+    can_open_multi: boolean;
+};
+
+type TIdentity = {
+    services: {
+        idv: {
+            documents_supported: { [key: string]: { display_name: string } } | Record<string, never>;
+            has_visual_sample: 0 | 1;
+            is_country_supported: 0 | 1;
+        };
+        onfido: {
+            documents_supported: { [key: string]: { display_name: string } };
+            is_country_supported: 0 | 1;
+        };
+    };
+};
+
+export type TResidenseList = {
+    identity: TIdentity;
+    phone_idd: string;
+    tin_format: string[];
+    disabled: string;
+    text: string;
+    value: string;
+};
+
+export type TFile = {
+    path: string;
+    lastModified: number;
+    lastModifiedDate: Date;
+    name: string;
+    size: number;
+    type: string;
+    webkitRelativePath: string;
+};
+
 export type TPOIStatus = {
     needs_poa?: boolean;
     redirect_button?: React.ReactElement;
@@ -110,3 +151,18 @@ export type TPersonalDetailsForm = {
 } & FormikProps<FormikValues>;
 
 export type TInputFieldValues = Record<string, string>;
+
+export type TFileUploaderContainer = {
+    is_description_enabled?: boolean;
+    getSocket?: () => WebSocket;
+    onFileDrop: (file: TFile | undefined) => void;
+    onRef: (ref: React.RefObject<unknown> | undefined) => void;
+};
+
+export type TDocumentSettings = {
+    documentType: keyof typeof DOCUMENT_TYPE;
+    pageType: keyof typeof PAGE_TYPE;
+    expirationDate: string;
+    documentId: string;
+    lifetimeValid: boolean;
+};

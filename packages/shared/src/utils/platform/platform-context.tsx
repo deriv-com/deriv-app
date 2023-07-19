@@ -6,7 +6,7 @@ type TPlatformContext = {
     is_deriv_crypto: boolean;
 };
 
-export const PlatformContext = React.createContext<TPlatformContext>({
+export const PlatformContext = React.createContext<Partial<TPlatformContext>>({
     is_appstore: false,
     is_pre_appstore: false,
     is_deriv_crypto: false,

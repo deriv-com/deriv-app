@@ -1,5 +1,12 @@
 import 'Styles/account.scss';
-import { PlatformContext, getSelectedRoute, isMobile, matchRoute, routes as shared_routes } from '@deriv/shared';
+import {
+    PlatformContext,
+    getSelectedRoute,
+    getStaticUrl,
+    isMobile,
+    matchRoute,
+    routes as shared_routes,
+} from '@deriv/shared';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
@@ -7,17 +14,15 @@ import { VerticalTab, FadeWrapper, PageOverlay, Loading, Text, Icon } from '@der
 import { observer, useStore } from '@deriv/stores';
 import { flatten } from '../Helpers/flatten';
 import { localize } from '@deriv/translations';
-import { useHistory } from 'react-router';
+
+const onClickLogout = (logout, history) => {
+    history.push(shared_routes.index);
+    logout().then(() => (window.location.href = getStaticUrl('/')));
+};
 
 const AccountLogout = ({ logout, history }) => {
     return (
-        <div
-            className='dc-vertical-tab__header account__logout '
-            onClick={() => {
-                history.push(shared_routes.index);
-                logout();
-            }}
-        >
+        <div className='dc-vertical-tab__header account__logout ' onClick={() => onClickLogout(logout, history)}>
             <div className='dc-vertical-tab__header-group account__logout-tab'>
                 <Text size='xxs' weight='normal'>
                     {localize('Log out')}
@@ -27,16 +32,9 @@ const AccountLogout = ({ logout, history }) => {
     );
 };
 
-const TradingHubLogout = ({ logout }) => {
-    const history = useHistory();
+const TradingHubLogout = ({ logout, history }) => {
     return (
-        <div
-            className='dc-vertical-tab__header-account__logout-tab'
-            onClick={() => {
-                logout();
-                history.push(shared_routes.index);
-            }}
-        >
+        <div className='dc-vertical-tab__header-account__logout-tab' onClick={() => onClickLogout(logout, history)}>
             <div className='dc-vertical-tab__header-account__logout'>
                 <Icon icon='IcLogout' className='dc-vertical-tab__header-account__logout--icon' />
                 <Text size='xs' weight='bold'>
@@ -97,7 +95,7 @@ const PageOverlayWrapper = ({
                 is_full_width
                 list={subroutes}
                 list_groups={list_groups}
-                extra_content={<TradingHubLogout logout={logout} />}
+                extra_content={<TradingHubLogout logout={logout} history={history} />}
             />
         </PageOverlay>
     );

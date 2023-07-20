@@ -7,7 +7,7 @@ import { DynamicLeverageMarketCard } from './dynamic-leverage-market-card';
 const DynamicLeverageModalContent = () => {
     return (
         <div className='dynamic-leverage-modal'>
-            <Text size='xs'>
+            <Text data-testid='header-text' size='xs'>
                 {localize(`
                     Enjoy dynamic leverage of up to 1:1500 when trading selected instruments in the forex, commodities,
                     cryptocurrencies, and stock indices markets. Our dynamic leverage adjusts automatically to your

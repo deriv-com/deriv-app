@@ -11,15 +11,20 @@ export const DynamicLeverageMarketCard = ({
 }: TDynamicLeverageMarketCardProps) => (
     <div className='dynamic-leverage-modal__market'>
         <div className='dynamic-leverage-modal__market-title'>
-            <Text size='xs' weight='bolder' align='center'>
+            <Text data-testid='market_title' size='xs' weight='bolder' align='center'>
                 {localize(market)}
             </Text>
             {market_example ? (
-                <Text size='xxxs' align='center' className='dynamic-leverage-modal__market-example'>
+                <Text
+                    data-testid='example_title'
+                    size='xxxs'
+                    align='center'
+                    className='dynamic-leverage-modal__market-example'
+                >
                     {localize(market_example)}
                 </Text>
             ) : null}
-            <Text size='xxs' color='red' align='center'>
+            <Text data-testid='leverage_title' size='xxs' color='red' align='center'>
                 {localize(leverage)}
             </Text>
         </div>

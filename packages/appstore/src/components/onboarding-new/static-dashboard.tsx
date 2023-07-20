@@ -13,7 +13,7 @@ import BalanceText from 'Components/elements/text/balance-text';
 
 import './static-dashboard.scss';
 
-type TStaticDashboard = {
+export type TStaticDashboard = {
     loginid?: string;
     is_grey?: boolean;
     currency?: string;
@@ -104,6 +104,7 @@ const StaticDashboard = ({
     return (
         <ThemedScrollbars height={'calc(100% - 20rem)'} is_bypassed={isMobile()}>
             <div
+                data-testid='dt_onboarding_dashboard'
                 className={classNames('static-dashboard', {
                     'static-dashboard--eu': eu_user,
                 })}

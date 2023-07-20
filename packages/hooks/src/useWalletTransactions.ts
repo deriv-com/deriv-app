@@ -28,7 +28,7 @@ const useWalletTransactions = (
     );
 
     // Get the paginated and filtered list of transactions from the API.
-    const { data, ...rest } = usePaginatedFetch('statement', action_type || '', {
+    const { data, ...rest } = usePaginatedFetch('statement', {
         payload: {
             // @ts-expect-error reset_balance is not supported in the API yet
             action_type: action_type || undefined,

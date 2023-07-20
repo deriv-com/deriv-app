@@ -1,6 +1,6 @@
 const path = require('path');
 const stylelintFormatter = require('stylelint-formatter-pretty');
-const { IS_RELEASE } = require('./constants');
+const { IS_RELEASE } = require('./loaders-config');
 // const { transformContentUrlBase } = require('./helpers');
 
 const generateSWConfig = () => ({

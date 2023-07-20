@@ -65,7 +65,7 @@ const ContractCardHeader = ({
     } = contract_info;
     const { is_pathname_bot } = isBot();
     const is_sold = !!contract_info.is_sold || is_contract_sold;
-    const is_accumulator = isAccumulatorContract(contract_type || '');
+    const is_accumulator = isAccumulatorContract(contract_type);
     const is_mobile = isMobile();
     const is_turbos = isTurbosContract(contract_type);
 

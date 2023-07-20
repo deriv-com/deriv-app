@@ -61,7 +61,7 @@ export const isStarted = (contract_info: TIsStarted) =>
 
 export const isUserCancelled = (contract_info: TContractInfo) => contract_info.status === 'cancelled';
 
-export const getEndTime = (contract_info: TGetEndTime) => {
+export const getEndTime = (contract_info: TContractInfo) => {
     const {
         contract_type,
         exit_tick_time,
@@ -77,12 +77,12 @@ export const getEndTime = (contract_info: TGetEndTime) => {
     if (!is_finished && !isUserSold(contract_info) && !isUserCancelled(contract_info)) return undefined;
 
     if (isUserSold(contract_info) && sell_time) {
-        return sell_time > date_expiry ? date_expiry : sell_time;
-    } else if (!is_tick_contract && sell_time && sell_time > date_expiry) {
+        return sell_time > Number(date_expiry) ? date_expiry : sell_time;
+    } else if (!is_tick_contract && sell_time && sell_time > Number(date_expiry)) {
         return date_expiry;
     }
 
-    return date_expiry > exit_tick_time && !+is_path_dependent ? date_expiry : exit_tick_time;
+    return Number(date_expiry) > Number(exit_tick_time) && !Number(is_path_dependent) ? date_expiry : exit_tick_time;
 };
 
 export const getBuyPrice = (contract_store: TContractStore) => {

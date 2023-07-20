@@ -23,14 +23,14 @@ export type TMobileRowRenderer = {
     is_footer?: boolean;
     columns_map?: Record<TColIndex, TDataListCell['column']>;
     server_time?: moment.Moment;
-    onClickCancel?: (contract_id?: number) => void;
-    onClickSell?: (contract_id?: number) => void;
+    onClickCancel: (contract_id?: number) => void;
+    onClickSell: (contract_id?: number) => void;
     measure?: () => void;
 };
 const List = _List as unknown as React.FC<ListProps>;
 const AutoSizer = _AutoSizer as unknown as React.FC<AutoSizerProps>;
 const CellMeasurer = _CellMeasurer as unknown as React.FC<CellMeasurerProps>;
-export type TRowRenderer = (params: TMobileRowRenderer) => React.ReactNode;
+export type TRowRenderer = (params: Partial<TMobileRowRenderer>) => React.ReactNode;
 export type TPassThrough = { isTopUp: (item: TRow) => boolean };
 export type TRow = { [key: string]: any };
 
@@ -146,7 +146,7 @@ const DataList = React.memo(
             );
         };
 
-        const handleScroll: React.UIEventHandler<HTMLDivElement> = ev => {
+        const handleScroll = (ev: Partial<React.UIEvent<HTMLDivElement>>) => {
             let timeout;
 
             clearTimeout(timeout);
@@ -161,7 +161,7 @@ const DataList = React.memo(
 
             setScrollTop((ev.target as HTMLElement).scrollTop);
             if (typeof onScroll === 'function') {
-                onScroll(ev);
+                onScroll(ev as React.UIEvent<HTMLDivElement>);
             }
         };
 
@@ -205,7 +205,12 @@ const DataList = React.memo(
                                             width={width}
                                             {...(isDesktop()
                                                 ? { scrollTop: scroll_top, autoHeight: true }
-                                                : { onScroll: target => handleScroll({ target } as any) })}
+                                                : {
+                                                      onScroll: target =>
+                                                          handleScroll({ target } as unknown as Partial<
+                                                              React.UIEvent<HTMLDivElement>
+                                                          >),
+                                                  })}
                                         />
                                     </ThemedScrollbars>
                                 </TransitionGroup>

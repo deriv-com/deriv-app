@@ -5,17 +5,11 @@ type TTransaction = NonNullable<
     NonNullable<ReturnType<typeof useFetch<'cashier_payments'>>['data']>['cashier_payments']
 >['crypto'][number];
 
+type TStatus = TTransaction['status_code'];
+
 type TDepositStatus = 'PENDING' | 'CONFIRMED' | 'ERROR';
 
-type TWithdrawalStatus =
-    | 'LOCKED'
-    | 'VERIFIED'
-    | 'REJECTED'
-    | 'PERFORMING_BLOCKCHAIN_TXN'
-    | 'PROCESSING'
-    | 'SENT'
-    | 'ERROR'
-    | 'CANCELLED';
+type TWithdrawalStatus = Exclude<TStatus, TDepositStatus>;
 
 // Since BE sends the `status_code` for both `deposit` and `withdrawal` in the same field,
 // Here we modify the BE type to make `status_code` type more specific to the `transaction_type` field.
@@ -29,7 +23,9 @@ type TModifiedTransaction = Omit<TTransaction, 'status_code' | 'transaction_type
 const useCryptoTransactions = () => {
     // Todo: replace `useFetch` with `useSubscription` once we removed `TransactionHistoryStore`.
     // const { subscribe, data, ...rest } = useSubscription('cashier_payments');
-    const { data, ...rest } = useFetch('cashier_payments');
+    const { data, ...rest } = useFetch('cashier_payments', {
+        options: { refetchInterval: 2000 },
+    });
     const transactions = data?.cashier_payments?.crypto as TModifiedTransaction[] | undefined;
 
     const modified_transactions = useMemo(

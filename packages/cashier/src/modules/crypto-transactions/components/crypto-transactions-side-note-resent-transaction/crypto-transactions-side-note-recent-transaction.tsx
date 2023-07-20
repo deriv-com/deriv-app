@@ -63,13 +63,15 @@ const CryptoTransactionsSideNoteRecentTransaction: React.FC = observer(() => {
                             components={[<Text key={0} size={'xxxs'} color={'red'} />]}
                         />
                     </Text>
-                    <Text size={'xxxs'}>
-                        <Localize
-                            i18n_default_text='Confirmations: <0>{{value}}</0>'
-                            values={{ value: confirmation_display }}
-                            components={[<Text key={0} size={'xxxs'} color={'red'} />]}
-                        />
-                    </Text>
+                    {is_deposit && (
+                        <Text size={'xxxs'}>
+                            <Localize
+                                i18n_default_text='Confirmations: <0>{{value}}</0>'
+                                values={{ value: confirmation_display }}
+                                components={[<Text key={0} size={'xxxs'} color={'red'} />]}
+                            />
+                        </Text>
+                    )}
                     <div className='crypto-transactions-side-note-recent-transaction__status'>
                         <div
                             className={classNames(

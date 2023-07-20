@@ -3,12 +3,17 @@ import classNames from 'classnames';
 import { getStatusBadgeConfig } from '@deriv/account';
 import { Text, StatusBadge } from '@deriv/components';
 import TradigPlatformIconProps from 'Assets/svgs/trading-platform';
-import { getAppstorePlatforms, getMFAppstorePlatforms, BrandConfig } from 'Constants/platform-config';
+import {
+    getAppstorePlatforms,
+    getMFAppstorePlatforms,
+    BrandConfig,
+    DERIV_PLATFORM_NAMES,
+} from 'Constants/platform-config';
 import TradingAppCardActions, { Actions } from './trading-app-card-actions';
 import { AvailableAccount, TDetailsOfEachMT5Loginid } from 'Types';
 import { useStore, observer } from '@deriv/stores';
 import { localize } from '@deriv/translations';
-import { CFD_PLATFORMS, ContentFlag, getStaticUrl } from '@deriv/shared';
+import { CFD_PLATFORMS, ContentFlag, getStaticUrl, getUrlSmartTrader, getUrlBinaryBot } from '@deriv/shared';
 import './trading-app-card.scss';
 
 type TWalletsProps = {
@@ -47,6 +52,36 @@ const TradingAppCard = observer(
 
         const low_risk_cr_non_eu = content_flag === ContentFlag.LOW_RISK_CR_NON_EU;
 
+        const openStaticPage = () => {
+            if (is_deriv_platform) {
+                switch (name) {
+                    case DERIV_PLATFORM_NAMES.TRADER:
+                        window.open(getStaticUrl(`/dtrader`));
+                        break;
+                    case DERIV_PLATFORM_NAMES.DBOT:
+                        window.open(getStaticUrl(`/dbot`));
+                        break;
+                    case DERIV_PLATFORM_NAMES.SMARTTRADER:
+                        window.open(getUrlSmartTrader());
+                        break;
+                    case DERIV_PLATFORM_NAMES.BBOT:
+                        window.open(getUrlBinaryBot());
+                        break;
+                    case DERIV_PLATFORM_NAMES.GO:
+                        window.open(getStaticUrl('/deriv-go'));
+                        break;
+                    default:
+                }
+            }
+            if (platform === CFD_PLATFORMS.MT5 && availability === 'EU')
+                window.open(getStaticUrl(`/dmt5`, {}, false, true));
+            else if (platform === CFD_PLATFORMS.MT5 && availability !== 'EU') window.open(getStaticUrl(`/dmt5`));
+            else if (platform === CFD_PLATFORMS.DXTRADE) window.open(getStaticUrl(`/derivx`));
+            else if (platform === CFD_PLATFORMS.DERIVEZ) window.open(getStaticUrl(`/derivez`));
+            else if (icon === 'Options' && !is_eu_user) window.open(getStaticUrl(`/trade-types/options/`));
+            else;
+        };
+
         const app_platform =
             !is_eu_user || low_risk_cr_non_eu || is_demo_low_risk ? getAppstorePlatforms() : getMFAppstorePlatforms();
 
@@ -60,16 +95,6 @@ const TradingAppCard = observer(
             openFailedVerificationModal,
             selected_mt5_jurisdiction
         );
-
-        const openStaticPage = () => {
-            if (platform === CFD_PLATFORMS.MT5 && availability === 'EU')
-                window.open(getStaticUrl(`/dmt5`, {}, false, true));
-            else if (platform === CFD_PLATFORMS.MT5 && availability !== 'EU') window.open(getStaticUrl(`/dmt5`));
-            else if (platform === CFD_PLATFORMS.DXTRADE) window.open(getStaticUrl(`/derivx`));
-            else if (platform === CFD_PLATFORMS.DERIVEZ) window.open(getStaticUrl(`/derivez`));
-            else if (icon === 'Options' && !is_eu_user) window.open(getStaticUrl(`/trade-types/options/`));
-            else;
-        };
 
         return (
             <div className='trading-app-card' key={`trading-app-card__${current_language}`}>

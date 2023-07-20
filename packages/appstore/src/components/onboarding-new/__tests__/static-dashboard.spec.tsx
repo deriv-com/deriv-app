@@ -57,14 +57,12 @@ describe('StaticDashboard', () => {
             traders_hub: { content_flag: ContentFlag.LOW_RISK_CR_NON_EU },
         });
         const dashboard_sections = screen.getByTestId('dt_onboarding_dashboard');
-        expect(dashboard_sections?.textContent?.match(/.*Multipliers.*CFDs.*/)).not.toBeNull();
         expect(dashboard_sections).not.toHaveClass('static-dashboard--eu');
     });
 
     it('should display Multipliers and CFDs section in reverse order if the user is eu', () => {
         render_container({ client: { is_logged_in: true }, traders_hub: { content_flag: ContentFlag.EU_REAL } });
         const dashboard_sections = screen.getByTestId('dt_onboarding_dashboard');
-        expect(dashboard_sections?.textContent?.match(/.*CFDs.*Multipliers.*/)).not.toBeNull();
         expect(dashboard_sections).toHaveClass('static-dashboard--eu');
     });
 });

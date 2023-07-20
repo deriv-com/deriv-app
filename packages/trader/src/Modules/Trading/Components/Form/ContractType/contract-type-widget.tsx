@@ -45,7 +45,10 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
         if (key) setSelectedCategory(key);
     };
 
-    const handleSelect = (clicked_item: TContractType | undefined, e: React.MouseEvent) => {
+    const handleSelect = (
+        clicked_item: TContractType | undefined,
+        e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLInputElement>
+    ) => {
         const categories = list_with_category();
         const { key } = findContractCategory(categories, clicked_item);
         if ('id' in e.target && e.target.id !== 'info-icon' && clicked_item) {
@@ -120,11 +123,11 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
             categories.push({
                 label: localize('Options'),
                 contract_categories: options_category,
-                // @ts-expect-error The type of the component prop in VerticalTab.Headers is wrong and it should be JSX.Element
-                component: options_category.some(category => category.key === 'Vanillas') && (
+                component: options_category.some(category => category.key === 'Vanillas') ? (
                     <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>
-                ),
+                ) : null,
                 key: 'Options',
+                icon: '',
             });
         }
 
@@ -132,9 +135,9 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
             categories.push({
                 label: localize('Accumulators'),
                 contract_categories: accumulators_category,
-                // @ts-expect-error The type of the component prop in VerticalTab.Headers is wrong and it should be JSX.Element
                 component: <span className='dc-vertical-tab__header--new'>{localize('NEW')}!</span>,
                 key: 'Accumulators',
+                icon: '',
             });
         }
 

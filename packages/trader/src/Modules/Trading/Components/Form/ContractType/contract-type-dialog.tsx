@@ -40,7 +40,6 @@ const ContractTypeDialog = ({
                 <span className='contract-type-widget__select-arrow' />
                 <MobileDialog
                     portal_element_id='modal_root'
-                    // @ts-expect-error The type of the title prop in MobileDialog is wrong and it should be React.ReactElement
                     title={current_mobile_title}
                     header_classname='contract-type-widget__header'
                     wrapper_classname='contracts-modal-list'

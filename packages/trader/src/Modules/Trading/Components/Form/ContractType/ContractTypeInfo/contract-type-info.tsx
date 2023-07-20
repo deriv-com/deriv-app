@@ -14,7 +14,7 @@ export type TContractType = {
 };
 
 export type TContractCategory = {
-    component?: typeof React.Component;
+    component?: JSX.Element | null;
     contract_types: TContractType[];
     icon?: string;
     key: string;
@@ -22,7 +22,7 @@ export type TContractCategory = {
 };
 
 export type TList = {
-    component?: typeof React.Component;
+    component?: JSX.Element | null;
     contract_categories: TContractCategory[];
     contract_types?: TContractType[];
     icon: string;
@@ -31,7 +31,10 @@ export type TList = {
 };
 
 type TInfo = {
-    handleSelect: (type: TContractType | undefined, e: React.MouseEvent) => void;
+    handleSelect: (
+        type: TContractType | undefined,
+        e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLInputElement>
+    ) => void;
     item: TContractType;
     list: TList[];
 };

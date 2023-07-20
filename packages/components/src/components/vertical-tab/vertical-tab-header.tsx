@@ -16,7 +16,7 @@ export type THeader = {
 };
 
 export type TItem = {
-    component?: typeof React.Component;
+    component?: JSX.Element | null;
     count?: number;
     default?: boolean;
     getTitle?: () => string;

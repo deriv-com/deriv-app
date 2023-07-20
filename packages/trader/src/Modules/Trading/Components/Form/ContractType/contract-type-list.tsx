@@ -7,7 +7,10 @@ import { TContractType, TList } from './ContractTypeInfo/contract-type-info.js';
 
 type TListProps = {
     handleInfoClick?: (clicked_item: TContractType) => void;
-    handleSelect?: (clicked_item: TContractType, e: React.MouseEvent<HTMLDivElement>) => void;
+    handleSelect?: (
+        clicked_item: TContractType,
+        e: React.MouseEvent<HTMLDivElement | HTMLButtonElement | HTMLInputElement>
+    ) => void;
     list: TList['contract_categories'];
     value?: string;
 };

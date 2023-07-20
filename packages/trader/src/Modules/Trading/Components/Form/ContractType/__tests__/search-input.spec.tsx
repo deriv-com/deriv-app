@@ -26,7 +26,6 @@ describe('<SearchInput />', () => {
         render(<SearchInput {...mocked_props} />);
         expect(screen.getAllByTestId('mockedIcon').length).toBe(1);
     });
-
     it('should display trailing clear icon when input is not empty', () => {
         mocked_props.value = 'test';
         render(<SearchInput {...mocked_props} />);

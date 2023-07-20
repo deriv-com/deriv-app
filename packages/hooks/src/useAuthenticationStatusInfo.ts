@@ -24,8 +24,8 @@ const useAuthenticationStatusInfo = () => {
         client: { account_status },
     } = useStore();
     const { NONE, PENDING, VERIFIED, REJECTED, EXPIRED, SUSPECTED } = STATUSES;
-    const poa_status = account_status?.authentication?.document?.status || NONE;
-    const poi_status = account_status?.authentication?.identity?.status || NONE;
+    const poa_status = account_status?.authentication?.document?.status ?? NONE;
+    const poi_status = account_status?.authentication?.identity?.status ?? NONE;
 
     const services = account_status?.authentication?.identity?.services ?? {};
     const {
@@ -51,11 +51,9 @@ const useAuthenticationStatusInfo = () => {
     //maltainvest
 
     // mf = maltainvest: only require onfido and manual
-    const mf_jurisdiction_statuses = [onfido_status, manual_status].filter(status => status);
+    const mf_jurisdiction_statuses = [onfido_status, manual_status];
     // bvi_labuan_vanuatu jurisdictions: require idv, onfido and manual
-    const bvi_labuan_vanuatu_jurisdiction_statuses = [idv_status, onfido_status, manual_status].filter(
-        status => status
-    );
+    const bvi_labuan_vanuatu_jurisdiction_statuses = [idv_status, onfido_status, manual_status];
 
     const poi_verified_for_maltainvest = mf_jurisdiction_statuses.includes(VERIFIED);
     const poi_acknowledged_for_maltainvest = mf_jurisdiction_statuses.some(status =>
@@ -111,8 +109,7 @@ const useAuthenticationStatusInfo = () => {
             verified: poi_status === VERIFIED,
             pending: poi_status === PENDING,
             not_submitted: poi_not_submitted,
-            need_submission: need_poi_for_maltainvest || need_poi_for_bvi_labuan_vanuatu,
-            need_resubmission: poi_resubmit_for_maltainvest || poi_resubmit_for_bvi_labuan_vanuatu,
+
             maltainvest: {
                 verified: poi_verified_for_maltainvest,
                 pending: poi_pending_for_maltainvest,
@@ -136,10 +133,10 @@ const useAuthenticationStatusInfo = () => {
             verified_for_bvi_labuan_vanuatu: poi_poa_verified_for_bvi_labuan_vanuatu,
         },
 
-        identity: {
-            idv_status,
-            onfido_status,
-            manual_status,
+        identity_status: {
+            idv: idv_status,
+            onfido: onfido_status,
+            manual: manual_status,
         },
 
         // to check if either POI or POA is not submitted

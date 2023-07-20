@@ -125,7 +125,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
                 <Div100vhContainer className='transaction-list__container' height_offset={getHeightOffset()}>
                     <div className='transaction-list'>
                         {!isLoading ? (
-                            <>
+                            <React.Fragment>
                                 {Object.entries(grouped_transactions).map(([day, transaction_list]) => (
                                     <TransactionsForADay
                                         key={
@@ -141,7 +141,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
                                     />
                                 ))}
                                 {!isComplete && <Loading is_fullscreen={false} className='transaction-list__loader' />}
-                            </>
+                            </React.Fragment>
                         ) : (
                             <Loading is_fullscreen={false} />
                         )}

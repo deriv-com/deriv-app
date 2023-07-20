@@ -252,7 +252,7 @@ jobs:
   build_and_test:
     docker:
       - image: cimg/node:18.16.0
-    resource_class: large
+    resource_class: xlarge
     steps:
       - git_checkout_from_cache
       - npm_install_from_cache

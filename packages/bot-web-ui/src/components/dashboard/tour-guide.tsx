@@ -30,7 +30,7 @@ const TourGuide = ({ content, img, label, onCloseTour, step_index }: TTourGuide)
             <div className='onboard'>
                 <div className='onboard__header'>
                     <Text color='less-prominent' line_height='l'>
-                        {step_index}/6
+                        {step_index}/7
                     </Text>
                     <Text className='onboard__header--close' line_height='l' onClick={onCloseTour}>
                         {localize('Exit tour')}

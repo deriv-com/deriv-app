@@ -47,6 +47,7 @@ type TDashboard = {
     onCancelButtonClick: () => void;
     onCloseDialog: () => void;
     onEntered: () => void;
+    onCloseTour: () => void;
     onOkButtonClick: () => void;
     setActiveTab: (active_tab: number) => void;
     setBotBuilderTourState: (param: boolean) => void;
@@ -71,6 +72,7 @@ const Dashboard = ({
     is_strategy_modal_open,
     onCancelButtonClick,
     onCloseDialog,
+    onCloseTour,
     onEntered,
     onOkButtonClick,
     setActiveTab,
@@ -172,7 +174,12 @@ const Dashboard = ({
     const botStorageSetting = () => {
         tour_status = getTourSettings('bot_builder_status');
         if (tour_status_ended.key === 'finished' && !is_mobile) {
-            setTourDialogVisibility(true);
+            if (active_tab === 1) {
+                setTourDialogVisibility(true);
+            }
+            if (tour_type.key === 'onboard_tour') {
+                onCloseTour();
+            }
             setHasTourEnded(true);
             is_tour_complete.current = false;
             window.removeEventListener('storage', botStorageSetting);
@@ -325,4 +332,5 @@ export default connect(({ dashboard, run_panel, load_modal, quick_strategy }: Ro
     setOnBoardingTokenCheck: dashboard.setOnBoardingTokenCheck,
     has_tour_ended: dashboard.has_tour_ended,
     is_strategy_modal_open: quick_strategy.is_strategy_modal_open,
+    onCloseTour: dashboard.onCloseTour,
 }))(Dashboard);

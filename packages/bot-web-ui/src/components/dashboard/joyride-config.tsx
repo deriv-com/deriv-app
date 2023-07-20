@@ -21,6 +21,7 @@ type TTourStatus = {
     key: string;
     toggle: string;
     type: string;
+    lifecycle: string;
 };
 
 export type TTourType = Pick<TTourStatus, 'key'>;
@@ -62,17 +63,22 @@ export const tour_status_ended: TTourStatus = {
     key: '',
     toggle: '',
     type: `${tour_type.key}_status`,
+    lifecycle: '',
 };
 
 let tour: { [key: string]: string } = {};
 let current_target: number | undefined;
+
 export const handleJoyrideCallback = (data: CallBackProps) => {
-    const { action, index, status } = data;
+    const { action, index, status, lifecycle } = data;
     if (status === 'finished') {
         tour_status_ended.key = status;
     }
     if (action === 'close') {
         tour_status_ended.toggle = action;
+    }
+    if (lifecycle === 'complete') {
+        tour_status_ended.lifecycle = action;
     }
     if (current_target !== index) {
         tour = {};
@@ -185,6 +191,21 @@ export const DBOT_ONBOARDING = [
             />
         ),
         locale: { last: localize('Next') },
+        ...joyride_props,
+        disableOverlay: false,
+    },
+    {
+        target: '#id-tutorials',
+        content: (
+            <TourGuide
+                label={localize('Last Step')}
+                content={[localize('Click Run when you want to start trading, and click Stop when you want to stop.')]}
+                img={getImageLocation('dbot-onboarding-tour-step-6.gif')}
+                dashboard_tab_index={0}
+                step_index={7}
+            />
+        ),
+        locale: { last: localize('Finsih') },
         ...joyride_props,
         disableOverlay: false,
     },

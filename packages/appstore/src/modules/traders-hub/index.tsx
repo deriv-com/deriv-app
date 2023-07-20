@@ -1,21 +1,19 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
+import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
+import { isDesktop, routes, ContentFlag } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
+import { Localize, localize } from '@deriv/translations';
 import CFDsListing from 'Components/cfds-listing';
 import ModalManager from 'Components/modals/modal-manager';
 import MainTitleBar from 'Components/main-title-bar';
 import TourGuide from 'Modules/tour-guide/tour-guide';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
-import { useStores } from 'Stores/index';
-import { isDesktop, routes, ContentFlag } from '@deriv/shared';
-import { DesktopWrapper, MobileWrapper, ButtonToggle, Div100vhContainer, Text } from '@deriv/components';
-import { Localize, localize } from '@deriv/translations';
 import classNames from 'classnames';
-
 import './traders-hub.scss';
 
 const TradersHub = () => {
-    const { traders_hub, client, ui } = useStores();
+    const { traders_hub, client, ui } = useStore();
     const { notification_messages_ui: Notifications, is_mobile } = ui;
     const { is_landing_company_loaded, is_logged_in, is_switching, is_logging_in, is_account_setting_loaded } = client;
     const { selected_platform_type, setTogglePlatformType, is_tour_open, content_flag, is_eu_user } = traders_hub;

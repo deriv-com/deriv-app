@@ -14,8 +14,8 @@ type TranslationData = {
     environment: Environment;
     current_language: Language;
     setCurrentLanguage: React.Dispatch<React.SetStateAction<Language>>;
-    allowed_language: Partial<LanguageData>;
-    setAllowedLanguage: React.Dispatch<React.SetStateAction<Partial<LanguageData>>>;
+    allowed_languages: Partial<LanguageData>;
+    setAllowedLanguages: React.Dispatch<React.SetStateAction<Partial<LanguageData>>>;
 };
 
 export const TranslationDataContext = React.createContext<TranslationData | null>(null);
@@ -27,7 +27,7 @@ type TranslationProviderProps = {
 };
 
 export const TranslationProvider = ({ children, onInit, environment = 'production' }: TranslationProviderProps) => {
-    const [allowed_language, setAllowedLanguage] = React.useState<Partial<LanguageData>>(
+    const [allowed_languages, setAllowedLanguages] = React.useState<Partial<LanguageData>>(
         getAllowedLanguages(environment)
     );
     const [current_language, setCurrentLanguage] = React.useState<Language>(
@@ -54,7 +54,13 @@ export const TranslationProvider = ({ children, onInit, environment = 'productio
     return (
         <I18nextProvider i18n={i18n}>
             <TranslationDataContext.Provider
-                value={{ environment, current_language, setCurrentLanguage, allowed_language, setAllowedLanguage }}
+                value={{
+                    environment,
+                    current_language,
+                    setCurrentLanguage,
+                    allowed_languages,
+                    setAllowedLanguages,
+                }}
             >
                 <React.Suspense fallback={<React.Fragment />}>{children}</React.Suspense>
             </TranslationDataContext.Provider>

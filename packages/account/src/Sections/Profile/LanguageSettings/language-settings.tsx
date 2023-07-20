@@ -6,6 +6,7 @@ import { localize, useLanguageChecks, useLanguageSettings } from '@deriv/transla
 import FormSubHeader from 'Components/form-sub-header';
 import FormFooter from 'Components/form-footer';
 import LanguageRadioButton from 'Components/language-settings';
+import { LanguageKey } from '@deriv/translations/src/utils/config';
 
 const LanguageSettings = () => {
     const { current_language, handleChangeLanguage } = useLanguageSettings({
@@ -20,8 +21,7 @@ const LanguageSettings = () => {
             WS.closeAndOpenNewConnection(selected_lang);
         },
     });
-    const { allowed_language } = useLanguageChecks();
-    const allowed_language_keys: string[] = Object.keys(allowed_language);
+    const { allowed_languages } = useLanguageChecks();
 
     return (
         <Formik
@@ -36,12 +36,12 @@ const LanguageSettings = () => {
                                 <FormSubHeader title={localize('Select Language')} />
                             </DesktopWrapper>
                             <div className='settings-language__language-container'>
-                                {allowed_language_keys.map(language_key => {
+                                {Object.keys(allowed_languages).map(language_key => {
                                     return (
                                         <LanguageRadioButton
                                             key={language_key}
                                             id={language_key}
-                                            language_code={language_key}
+                                            language_code={language_key as LanguageKey}
                                             is_current_language={values.language_code === language_key}
                                             name='language-radio-group'
                                             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>

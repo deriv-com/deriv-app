@@ -1,5 +1,4 @@
 import { action, computed, makeObservable, observable } from 'mobx';
-import { getAllowedLanguages } from '@deriv/translations';
 import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
@@ -49,7 +48,6 @@ export default class CommonStore extends BaseStore {
     }
 
     server_time = ServerTime.get() || toMoment(); // fallback: get current time from moment.js
-    allowed_languages = Object.keys(getAllowedLanguages());
     has_error = false;
 
     error = {

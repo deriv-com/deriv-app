@@ -3,7 +3,7 @@ import React from 'react';
 import { Formik, Form } from 'formik';
 import { Button, Modal, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { localize, Localize, getLanguage } from '@deriv/translations';
+import { localize, Localize, useLanguageSettings } from '@deriv/translations';
 import TradingAssessmentRadioButton from './trading-assessment-radio-buttons.jsx';
 import TradingAssessmentDropdown from './trading-assessment-dropdown.jsx';
 
@@ -18,6 +18,7 @@ const TradingAssessmentForm = ({
     setSubSectionIndex,
     is_independent_section,
 }) => {
+    const { current_language } = useLanguageSettings();
     const [is_section_filled, setIsSectionFilled] = React.useState(false);
     const [should_inform_user, shouldInformUser] = React.useState(false);
     const [current_question_details, setCurrentQuestionDetails] = React.useState({
@@ -134,7 +135,7 @@ const TradingAssessmentForm = ({
                                 <div
                                     className={classNames('trading-assessment__form--fields', {
                                         highlight: should_inform_user,
-                                        'field-layout': ['ID', 'FR'].includes(getLanguage()),
+                                        'field-layout': ['ID', 'FR'].includes(current_language),
                                     })}
                                 >
                                     {questions?.length ? (

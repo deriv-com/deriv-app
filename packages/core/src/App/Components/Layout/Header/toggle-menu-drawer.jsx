@@ -11,7 +11,7 @@ import {
 } from '@deriv/hooks';
 import { routes, PlatformContext, getStaticUrl, whatsapp_url } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
-import { localize, getAllowedLanguages, Localize, useLanguageSettings } from '@deriv/translations';
+import { localize, Localize, useLanguageChecks, useLanguageSettings } from '@deriv/translations';
 import NetworkStatus from 'App/Components/Layout/Footer';
 import ServerTime from 'App/Containers/server-time.jsx';
 import { BinaryLink, LanguageLink } from 'App/Components/Routes';
@@ -168,6 +168,7 @@ const MenuLink = observer(
 );
 
 const ToggleMenuDrawer = observer(({ platform_config }) => {
+    const { allowed_languages } = useLanguageChecks();
     const { common, ui, client, traders_hub, modules } = useStore();
     const { app_routing_history, current_language, is_language_changing } = common;
     const { disableApp, enableApp, is_dark_mode_on: is_dark_mode, setDarkMode: toggleTheme } = ui;
@@ -192,7 +193,6 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
     const is_onramp_visible = useOnrampVisible();
     const { data: is_payment_agent_transfer_visible } = usePaymentAgentTransferVisible();
     const { data: is_p2p_enabled } = useIsP2PEnabled();
-
     const liveChat = useLiveChat(false, loginid);
     const [is_open, setIsOpen] = React.useState(false);
     const [transitionExit, setTransitionExit] = React.useState(false);
@@ -361,14 +361,14 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                 submenu_suffix_icon='IcChevronRight'
                 onToggle={expandSubMenu}
             >
-                {Object.keys(getAllowedLanguages()).map((lang, idx) => (
+                {Object.keys(allowed_languages).map((lang, idx) => (
                     <MobileDrawer.Item key={idx}>
                         <MenuLink
                             is_language
                             is_active={current_language === lang}
                             link_to={lang}
                             icon={`IcFlag${lang.replace('_', '-')}`}
-                            text={getAllowedLanguages()[lang]}
+                            text={allowed_languages[lang]}
                             onClickLink={toggleDrawer}
                         />
                     </MobileDrawer.Item>
@@ -397,7 +397,7 @@ const ToggleMenuDrawer = observer(({ platform_config }) => {
                         }
                     )}
                 >
-                    {Object.keys(getAllowedLanguages()).map(lang => (
+                    {Object.keys(allowed_languages).map(lang => (
                         <LanguageLink
                             key={lang}
                             icon_classname='settings-language__language-flag'

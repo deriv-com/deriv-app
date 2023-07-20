@@ -1,9 +1,9 @@
 import { useTranslationContext } from '../context/translation-provider';
 
 const useLanguageChecks = () => {
-    const { allowed_language } = useTranslationContext();
+    const { allowed_languages } = useTranslationContext();
 
-    return { allowed_language };
+    return { allowed_languages };
 };
 
 export default useLanguageChecks;

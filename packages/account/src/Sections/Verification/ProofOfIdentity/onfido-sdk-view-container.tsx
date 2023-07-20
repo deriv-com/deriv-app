@@ -6,7 +6,7 @@ import { CSSTransition } from 'react-transition-group';
 import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { cryptoMathRandom, isMobile, WS } from '@deriv/shared';
-import { getLanguage } from '@deriv/translations';
+import { useLanguageSettings } from '@deriv/translations';
 import ErrorMessage from 'Components/error-component';
 import getOnfidoPhrases from 'Constants/onfido-phrases';
 import MissingPersonalDetails from 'Components/poi/missing-personal-details';
@@ -43,6 +43,7 @@ const OnfidoSdkViewContainer = ({
     handleViewComplete,
     height,
 }: TOnfidoSdkViewContainer) => {
+    const { current_language } = useLanguageSettings();
     const [api_error, setAPIError] = React.useState<TAPIError>();
     const [missing_personal_details, setMissingPersonalDetails] = React.useState('');
     const [is_status_loading, setStatusLoading] = React.useState(true);
@@ -93,7 +94,7 @@ const OnfidoSdkViewContainer = ({
                 onfido_init.current = await init({
                     containerId: 'onfido',
                     language: {
-                        locale: (getLanguage().toLowerCase() as SupportedLanguages) || 'en',
+                        locale: (current_language.toLowerCase() as SupportedLanguages) || 'en',
                         phrases: getOnfidoPhrases(),
                         mobilePhrases: getOnfidoPhrases(),
                     },

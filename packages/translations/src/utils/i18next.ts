@@ -17,9 +17,8 @@ export const setEnvironment = (env: Environment) => (temp_environment = env);
 
 /**
  * Gets the current set language.
- *
- * @deprecated This function is deprecated. You should always use the useLanguageSettings() to get the
- * current_language.
+ * Do not use this in React components. Ideally everything in react React utilise
+ * the useLanguageSettings() hook.
  *
  * @returns {string} The current language.
  */

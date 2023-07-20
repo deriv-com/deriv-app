@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field } from 'formik';
 import { DesktopWrapper, Dropdown, MobileWrapper, Text, SelectNative } from '@deriv/components';
-import { localize, getLanguage } from '@deriv/translations';
+import { localize, useLanguageSettings } from '@deriv/translations';
 import classNames from 'classnames';
 
 const TradingAssessmentDropdown = ({
@@ -12,6 +12,8 @@ const TradingAssessmentDropdown = ({
     setFieldValue,
     setEnableNextSection,
 }) => {
+    const { current_language } = useLanguageSettings();
+
     React.useEffect(() => {
         checkIfAllFieldsFilled();
     }, [values]);
@@ -42,7 +44,7 @@ const TradingAssessmentDropdown = ({
                                                 'trading-frequency--field':
                                                     question.form_control ===
                                                         'trading_frequency_financial_instruments' &&
-                                                    ['ID', 'FR'].includes(getLanguage()),
+                                                    ['ID', 'FR'].includes(current_language),
                                             }
                                         )}
                                         is_align_text_left

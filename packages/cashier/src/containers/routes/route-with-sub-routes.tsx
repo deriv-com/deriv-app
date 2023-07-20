@@ -9,7 +9,7 @@ import {
     removeBranchName,
     default_title,
 } from '@deriv/shared';
-import { getLanguage } from '@deriv/translations';
+import { useLanguageSettings } from '@deriv/translations';
 import { TRootStore, TRouteConfig, TRoute } from '../../types';
 
 type TRouteWithSubRoutesProps = TRouteConfig & {
@@ -20,6 +20,8 @@ type TRouteWithSubRoutesProps = TRouteConfig & {
 type TDefaultSubroute = TRoute | undefined;
 
 const RouteWithSubRoutes = (route: TRouteWithSubRoutesProps) => {
+    const { current_language } = useLanguageSettings();
+
     const renderFactory = (props: RouteComponentProps) => {
         let result = null;
         if (route.component === Redirect) {
@@ -32,7 +34,7 @@ const RouteWithSubRoutes = (route: TRouteWithSubRoutesProps) => {
             }
             result = <Redirect to={to} />;
         } else if (route.is_authenticated && !route.is_logging_in && !route.is_logged_in) {
-            redirectToLogin(route.is_logged_in, getLanguage());
+            redirectToLogin(route.is_logged_in, current_language);
         } else {
             const default_subroute: TDefaultSubroute = route.routes?.find(r => r.default);
             const pathname = removeBranchName(location.pathname);

@@ -10,8 +10,7 @@ export type TLanguageLink = {
 } & ComponentProps<'div'>;
 
 const LanguageLink = ({ icon_classname, lang, is_active = false, ...props }: TLanguageLink) => {
-    const { allowed_language } = useLanguageChecks();
-    const language_text = allowed_language[lang];
+    const { allowed_languages } = useLanguageChecks();
 
     return (
         <div
@@ -35,7 +34,7 @@ const LanguageLink = ({ icon_classname, lang, is_active = false, ...props }: TLa
                     'settings-language__language-name--active': is_active,
                 })}
             >
-                {language_text}
+                {allowed_languages[lang]}
             </span>
         </div>
     );

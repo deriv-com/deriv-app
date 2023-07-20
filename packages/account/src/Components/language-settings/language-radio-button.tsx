@@ -1,18 +1,20 @@
 import React from 'react';
-import { Text, Icon } from '@deriv/components';
 import classNames from 'classnames';
-import { getAllowedLanguages } from '@deriv/translations';
+import { Text, Icon } from '@deriv/components';
+import { useLanguageChecks } from '@deriv/translations';
+import { LanguageKey } from '@deriv/translations/src/utils/config';
 
 export type TLanguageRadioButton = {
     is_current_language: boolean;
     id: string;
-    language_code: string;
+    language_code: LanguageKey;
     name: string;
     onChange: React.ChangeEventHandler<HTMLInputElement>;
 };
 
 const LanguageRadioButton = ({ is_current_language, id, language_code, name, onChange }: TLanguageRadioButton) => {
-    const allowed_languages: Record<string, string> = getAllowedLanguages();
+    const { allowed_languages } = useLanguageChecks();
+
     return (
         <div
             className={classNames('settings-language__language-link', {

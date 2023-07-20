@@ -22,7 +22,7 @@ const FilterPaymentMethods = observer(({ selected_methods, setSelectedMethods })
     }, 1000);
 
     const onSearch = search => {
-        my_ads_store.setSearchTerm(search.trim());
+        my_ads_store.setSearchTerm(search.trim().toLowerCase());
 
         if (!search.trim()) {
             my_ads_store.setSearchedResults([]);

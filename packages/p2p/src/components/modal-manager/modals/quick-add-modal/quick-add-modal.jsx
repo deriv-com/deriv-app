@@ -33,6 +33,7 @@ const QuickAddModal = ({ advert }) => {
             setSelectedMethods(JSON.parse(saved_selected_methods));
             localStorage.removeItem('selected_methods');
         }
+        my_profile_store.getPaymentMethodsList();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

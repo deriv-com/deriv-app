@@ -93,6 +93,7 @@ export type TCardFlipStatus = {
 export type TClickableDescription = {
     type: 'text' | 'link';
     text: string;
+    onClick?: React.MouseEventHandler<HTMLSpanElement>;
 };
 
 export type TJurisdictionCardSectionTitleIndicators = {
@@ -129,6 +130,10 @@ export type TJurisdictionCardItems = {
     is_over_header_available: boolean;
     synthetic_verification_docs?: TJurisdictionCardItemVerification;
     financial_verification_docs?: TJurisdictionCardItemVerification;
+};
+
+export type TJurisdictionCardParams = {
+    toggleDynamicLeverage: React.MouseEventHandler<HTMLSpanElement>;
 };
 
 export type TJurisdictionVerificationSection = {

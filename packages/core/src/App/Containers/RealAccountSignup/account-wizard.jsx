@@ -68,17 +68,18 @@ const AccountWizard = props => {
         has_residence,
         setLoading,
     } = props;
+
+    const getData = async () => {
+        setLoading(true);
+        if (!residence_list.length) await fetchResidenceList();
+        if (has_residence && !states_list.length) {
+            await fetchStatesList();
+        }
+        setLoading(false);
+    };
+
     React.useEffect(() => {
         setIsTradingAssessmentForNewUserEnabled(true);
-        const getData = async () => {
-            setLoading(true);
-            if (!residence_list.length) await fetchResidenceList();
-
-            if (has_residence && !states_list.length) {
-                await fetchStatesList();
-            }
-            setLoading(false);
-        };
         getData();
         setStateItems(previous_state => {
             if (!previous_state.length) {
@@ -324,7 +325,9 @@ const AccountWizard = props => {
         return <AcceptRiskForm onConfirm={onAcceptRisk} onClose={onDeclineRisk} />;
     }
 
-    if (!mounted) return null;
+    if (!mounted) {
+        return null;
+    }
     if (!finished) {
         const wizard_steps = state_items.map((step, step_index) => {
             const passthrough = getPropsForChild(step_index);

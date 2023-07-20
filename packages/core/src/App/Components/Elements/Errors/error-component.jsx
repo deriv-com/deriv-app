@@ -14,7 +14,7 @@ const ErrorComponent = ({
     header,
     message,
     redirect_label,
-    redirectOnClick,
+    redirectOnClick = null,
     should_clear_error_on_click,
     setError,
     showNotificationMessageByKey,
@@ -23,6 +23,7 @@ const ErrorComponent = ({
     type,
     redirect_to = routes.trade,
     should_show_refresh = true,
+    should_redirect = true,
 }) => {
     const history = useHistory();
 
@@ -73,11 +74,12 @@ const ErrorComponent = ({
             error_header={header ?? ''}
             error_messages={message ? [message, refresh_message] : []}
             redirect_urls={[redirect_to]}
-            redirect_labels={[redirect_label || localize('Refresh')]}
+            redirect_labels={(redirect_label === false && []) || [redirect_label || localize('Refresh')]}
             buttonOnClick={redirectOnClick || (() => location.reload())}
             should_clear_error_on_click={should_clear_error_on_click}
             setError={setError}
             has_malta_account={has_malta_account}
+            should_redirect={should_redirect}
         />
     );
 };
@@ -88,10 +90,11 @@ ErrorComponent.propTypes = {
     has_malta_account: PropTypes.bool,
     header: PropTypes.string,
     message: PropTypes.oneOfType([PropTypes.node, PropTypes.string, PropTypes.object]),
-    redirectOnClick: PropTypes.func,
+    redirectOnClick: PropTypes.func || PropTypes.object,
     redirect_label: PropTypes.string,
     setError: PropTypes.func,
     should_clear_error_on_click: PropTypes.bool,
+    should_redirect: PropTypes.bool,
     showNotificationMessageByKey: PropTypes.func,
     showCloseMxMltAccountPopup: PropTypes.func,
     removeNotificationMessageByKey: PropTypes.func,

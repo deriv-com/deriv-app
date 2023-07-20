@@ -105,17 +105,16 @@ export class RudderStack {
     }
 
     init() {
-        const isProduction = process.env.CIRCLE_JOB === 'release_production';
-        const isStaging = process.env.CIRCLE_JOB === 'release_staging';
+        const is_production = process.env.NODE_ENV === 'production';
+        const is_staging = process.env.NODE_ENV === 'staging';
 
-        let RUDDERSTACK_KEY;
-        if (isProduction) {
-            RUDDERSTACK_KEY = process.env.RUDDERSTACK_PRODUCTION_KEY;
-        } else if (isStaging) {
-            RUDDERSTACK_KEY = process.env.RUDDERSTACK_STAGING_KEY;
-        }
+        if (!is_production && !is_staging) return;
 
+        const RUDDERSTACK_KEY = is_production
+            ? process.env.RUDDERSTACK_PRODUCTION_KEY
+            : process.env.RUDDERSTACK_STAGING_KEY;
         const RUDDERSTACK_URL = process.env.RUDDERSTACK_URL;
+
         if (RUDDERSTACK_KEY && RUDDERSTACK_URL) {
             RudderAnalytics.load(RUDDERSTACK_KEY, RUDDERSTACK_URL);
             RudderAnalytics.ready(() => {

@@ -20,7 +20,7 @@ jest.mock('Stores', () => ({
         order_store: {
             confirmOrderRequest: jest.fn(),
             order_information: {
-                amount: 10,
+                amount_display: 10,
                 id: 1,
                 local_currency: 'AED',
                 other_user_details: { name: 'P2P' },

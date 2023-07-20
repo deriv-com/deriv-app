@@ -333,7 +333,7 @@
 
             &__loaded {
                 text-align: left;
-                padding: 1rem 3rem;
+                padding: 1rem 2.4rem;
 
                 @include tablet {
                     padding: 1rem 0.6rem;
@@ -434,6 +434,10 @@
                         cursor: pointer;
                     }
                 }
+            }
+
+            span {
+                padding-right: 1.5rem;
             }
         }
     }

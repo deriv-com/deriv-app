@@ -6,10 +6,10 @@ import { Localize, localize } from '@deriv/translations';
 import CFDsListing from 'Components/cfds-listing';
 import ModalManager from 'Components/modals/modal-manager';
 import MainTitleBar from 'Components/main-title-bar';
-import TourGuide from 'Modules/tour-guide/tour-guide';
 import OptionsAndMultipliersListing from 'Components/options-multipliers-listing';
 import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import classNames from 'classnames';
+import TourGuide from '../tour-guide/tour-guide';
 import './traders-hub.scss';
 
 const TradersHub = () => {

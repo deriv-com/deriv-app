@@ -1,9 +1,9 @@
 import { Button } from '@deriv/components';
+import { observer, useStore } from '@deriv/stores';
 import { localize } from '@deriv/translations';
 import { Actions } from 'Components/containers/trading-app-card-actions';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useStores } from 'Stores';
 
 const TradeButton = ({
     link_to,
@@ -12,7 +12,7 @@ const TradeButton = ({
     is_buttons_disabled,
     new_tab,
 }: Pick<Actions, 'link_to' | 'onAction' | 'is_external' | 'new_tab' | 'is_buttons_disabled'>) => {
-    const { traders_hub, modules } = useStores();
+    const { traders_hub, modules } = useStore();
     const { is_demo } = traders_hub;
     const { dxtrade_tokens } = modules.cfd;
     const REAL_DXTRADE_URL = 'https://dx.deriv.com';
@@ -63,4 +63,4 @@ const TradeButton = ({
     );
 };
 
-export default TradeButton;
+export default observer(TradeButton);

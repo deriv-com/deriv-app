@@ -51,6 +51,7 @@ const AddedMT5Card = observer(
                 name={!has_mt5_account_status ? account?.name : ''}
                 platform={account.platform}
                 description={account.description}
+                short_code_and_region={account.short_code_and_region}
                 has_divider={(!is_eu_user || is_demo) && getHasDivider(index, list_size, 3)}
                 onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
                     const button_name = e?.currentTarget?.name;

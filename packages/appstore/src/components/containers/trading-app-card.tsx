@@ -95,7 +95,7 @@ const TradingAppCard = observer(
                                     : sub_title}
                             </Text>
 
-                            {!is_wallet && short_code_and_region && (
+                            {short_code_and_region && (
                                 <Text
                                     weight='bolder'
                                     size='xxxs'

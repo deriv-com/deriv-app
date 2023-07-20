@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import useAvailableMT5Accounts from './useAvailableMT5Accounts';
 import useExistingCFDAccounts from './useExistingCFDAccounts';
+import { useStore } from '@deriv/stores';
 
 /**
  *
@@ -8,39 +9,65 @@ import useExistingCFDAccounts from './useExistingCFDAccounts';
  *
  */
 const useFilteredCFDAccounts = () => {
-    const { data, isLoading } = useAvailableMT5Accounts();
+    const { data: available_mt5_accounts, isLoading } = useAvailableMT5Accounts();
     const { data: existing_cfd_accounts, isLoading: existing_cfd_accounts_loading } = useExistingCFDAccounts();
+    const { traders_hub } = useStore();
+    const { getShortCodeAndRegion } = traders_hub;
 
-    const filtered_mt5_accounts = useMemo(() => {
-        if (!data) return undefined;
+    const combined_mt5_accounts = useMemo(() => {
+        if (!available_mt5_accounts) return undefined;
 
-        return Object.keys(data)
-            .map(key => {
-                const first_account = data[key][0];
-                // Why? Because we are expecting the market_type to be 'synthetic' but the API returns 'gaming'
-                const modified_market_type = first_account.market_type.replace('gaming', 'synthetic');
-                const added_account = existing_cfd_accounts?.mt5_accounts?.find(
-                    cfd => cfd.market_type === modified_market_type
-                );
+        return (
+            Object.keys(available_mt5_accounts)
+                // Map over available market types
+                .map(market_type => {
+                    // Change the market type from 'gaming' to 'synthetic' to match the existing CFD accounts
+                    const modified_market_type = market_type.replace('gaming', 'synthetic');
 
-                const is_added = !!added_account;
+                    // Find the existing CFD account that matches the market type
+                    const existing_mt5_accounts = existing_cfd_accounts?.mt5_accounts?.filter(
+                        mt5 => mt5.market_type === modified_market_type
+                    );
 
-                return {
-                    ...first_account,
-                    ...added_account,
-                    is_added,
-                    market_type: is_added ? first_account.market_type : modified_market_type,
-                };
+                    // Map over the available accounts and add the existing CFD account if it exists
+                    return available_mt5_accounts[market_type].map((available, index) => {
+                        // Find the existing CFD account with the index
+                        const existing_mt5_account = existing_mt5_accounts?.[index];
+
+                        // Check if the account is added
+                        const is_added = !!existing_mt5_account;
+
+                        return {
+                            ...available,
+                            ...existing_mt5_account,
+                            market_type: modified_market_type,
+                            short_code_and_region: getShortCodeAndRegion(existing_mt5_account || available),
+                            is_added,
+                        };
+                    });
+                })
+        );
+    }, [available_mt5_accounts, existing_cfd_accounts?.mt5_accounts, getShortCodeAndRegion]);
+
+    const categorized_mt5_accounts = useMemo(() => {
+        const categorized_accounts = combined_mt5_accounts?.flat().reduce((acc, account) => {
+            const { market_type } = account;
+            if (!acc[market_type]) acc[market_type] = [];
+            acc[market_type].push(account);
+            return acc;
+        }, {} as Record<string, typeof combined_mt5_accounts[number]>);
+
+        return Object.fromEntries(
+            Object.entries(categorized_accounts || {}).map(([market_type, accounts]) => {
+                const added_accounts = accounts.filter(account => account.is_added);
+                const not_added_accounts = accounts.filter(account => !account.is_added);
+                return [market_type, added_accounts.length ? added_accounts : [not_added_accounts[0]]];
             })
-            .sort((a, b) => {
-                const market_type_order = ['gaming', 'financial', 'all'];
-
-                return market_type_order.indexOf(a.market_type) - market_type_order.indexOf(b.market_type);
-            });
-    }, [data, existing_cfd_accounts]);
+        );
+    }, [combined_mt5_accounts]);
 
     return {
-        data: filtered_mt5_accounts,
+        data: categorized_mt5_accounts,
         isLoading: isLoading || existing_cfd_accounts_loading,
     };
 };

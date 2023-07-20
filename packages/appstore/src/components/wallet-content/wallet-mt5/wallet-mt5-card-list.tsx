@@ -4,22 +4,34 @@ import { useFilteredCFDAccounts } from '@deriv/hooks';
 import AddedMT5Card from './added-mt5-card';
 import AvailableMT5Card from './available-mt5-card';
 
+const market_types = ['gaming', 'synthetic', 'financial', 'all'];
+
 const WalletMT5CardList = observer(() => {
     const { data: filtered_cfd_accounts } = useFilteredCFDAccounts();
-
     return (
         <React.Fragment>
-            {filtered_cfd_accounts?.map((account, index) => {
-                const list_size = filtered_cfd_accounts.length || 0;
+            {filtered_cfd_accounts &&
+                market_types.map(market_type => {
+                    const accounts = filtered_cfd_accounts[market_type] as NonNullable<
+                        ReturnType<typeof useFilteredCFDAccounts>['data']
+                    >[number];
 
-                if (account.is_added) {
-                    return (
-                        <AddedMT5Card key={`${account.login}`} account={account} index={index} list_size={list_size} />
-                    );
-                }
+                    return accounts?.map((account, index) => {
+                        const list_size = accounts.length || 0;
 
-                return <AvailableMT5Card key={`${account.market_type}${index}`} account={account} />;
-            })}
+                        if (account.is_added) {
+                            return (
+                                <AddedMT5Card
+                                    key={`${account.login}`}
+                                    account={account}
+                                    index={index}
+                                    list_size={list_size}
+                                />
+                            );
+                        }
+                        return <AvailableMT5Card key={`${account.market_type}${index}`} account={account} />;
+                    });
+                })}
         </React.Fragment>
     );
 });

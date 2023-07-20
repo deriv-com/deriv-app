@@ -107,6 +107,7 @@ export default class TradersHubStore extends BaseStore {
             showTopUpModal: action.bound,
             toggleWalletsUpgrade: action.bound,
             setWalletsMigrationFailedPopup: action.bound,
+            getShortCodeAndRegion: action.bound,
         });
 
         reaction(

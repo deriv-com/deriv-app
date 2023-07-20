@@ -655,6 +655,7 @@ type TTradersHubStore = {
     showTopUpModal: (existing_account: Partial<ExistingMT5Account>) => void;
     startTrade: (platform: string, account: Partial<ExistingMT5Account>) => void;
     has_any_real_account: boolean;
+    getShortCodeAndRegion: (account: Partial<ExistingMT5Account>) => string;
 };
 
 /**

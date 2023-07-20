@@ -454,11 +454,9 @@ export default class GeneralStore extends BaseStore {
         requestWS({ get_account_status: 1 }).then(({ error, get_account_status }) => {
             if (!isEmptyObject(get_account_status)) {
                 const hasStatuses = statuses => statuses.every(status => get_account_status.status.includes(status));
-
                 const is_authenticated = hasStatuses(['authenticated']);
                 const is_blocked_for_pa = hasStatuses(['p2p_blocked_for_pa']);
                 const is_fa_not_complete = hasStatuses(['financial_assessment_not_complete']);
-
                 if (error) {
                     this.setIsHighRisk(false);
                     this.setIsBlocked(false);
@@ -486,15 +484,11 @@ export default class GeneralStore extends BaseStore {
 
                     if (is_fa_not_complete) this.setIsHighRisk(true);
                 }
-
                 if (is_blocked_for_pa) {
                     this.setIsP2pBlockedForPa(true);
                 }
-
                 this.setIsLoading(false);
-
-                const { sendbird_store } = this.root_store;
-
+                const { buy_sell_store, floating_rate_store, sendbird_store } = this.root_store;
                 this.setP2PConfig();
                 this.ws_subscriptions = {
                     advertiser_subscription: subscribeWS(
@@ -519,20 +513,18 @@ export default class GeneralStore extends BaseStore {
                             base_currency: this.external_stores.client.currency,
                             subscribe: 1,
                             target_currency:
-                                this.root_store.buy_sell_store.selected_local_currency ??
+                                buy_sell_store.selected_local_currency ??
                                 this.external_stores.client.local_currency_config?.currency,
                         },
-                        [this.root_store.floating_rate_store.fetchExchangeRate]
+                        [floating_rate_store.fetchExchangeRate]
                     ),
                 };
-
                 this.disposeLocalCurrencyReaction = reaction(
-                    () => [this.root_store.buy_sell_store.local_currency, this.active_index],
+                    () => [buy_sell_store.local_currency, this.active_index],
                     () => {
                         this.subscribeToLocalCurrency();
                     }
                 );
-
                 if (this.ws_subscriptions) {
                     this.setIsLoading(false);
                 }

@@ -198,9 +198,8 @@ export const DBOT_ONBOARDING = [
         target: '#id-tutorials',
         content: (
             <TourGuide
-                label={localize('Last Step')}
-                content={[localize('Click Run when you want to start trading, and click Stop when you want to stop.')]}
-                img={getImageLocation('dbot-onboarding-tour-step-6.gif')}
+                label={localize('Looking to retake the tour?')}
+                content={[localize("If you're interested, head to Tutorials.")]}
                 dashboard_tab_index={0}
                 step_index={7}
             />

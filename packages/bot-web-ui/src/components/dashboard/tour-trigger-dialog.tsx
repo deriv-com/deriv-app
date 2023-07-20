@@ -53,9 +53,7 @@ const TourTriggrerDialog = ({
                 />
             );
         }
-        return (
-            <Localize key={0} i18n_default_text={'If yes, go to <0>Tutorials</0>.'} components={[<strong key={0} />]} />
-        );
+        return dashboardTourContent;
     };
 
     const getTourHeaders = (tour_check: boolean, tab_id: number) => {
@@ -64,7 +62,6 @@ const TourTriggrerDialog = ({
             if (tab_id === 1) text = localize(is_mobile ? 'Bot Builder guide' : "Let's build a Bot!");
             else text = localize('Get started on Deriv Bot');
         } else if (tab_id === 1) text = localize('Congratulations');
-        else text = localize('Want to retake the tour?');
         return text;
     };
 
@@ -140,8 +137,6 @@ const TourTriggrerDialog = ({
         );
     };
 
-    const confirm_button = active_tab === 0 ? localize('Got it, thanks!') : localize('OK');
-
     const onHandleConfirm = React.useCallback(() => {
         const status = tour_status_ended.key === 'finished';
         toggleTour(status ? false : !has_tour_ended, 'onConfirm');
@@ -155,7 +150,7 @@ const TourTriggrerDialog = ({
                 is_visible={is_tour_dialog_visible}
                 cancel_button_text={localize('Skip')}
                 onCancel={() => toggleTour(false, 'onCancel')}
-                confirm_button_text={has_tour_ended ? confirm_button : localize('Start')}
+                confirm_button_text={has_tour_ended ? localize('OK') : localize('Start')}
                 onConfirm={onHandleConfirm}
                 is_mobile_full_width
                 className={classNames('dc-dialog', {

@@ -88,7 +88,10 @@ const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch<'trading_pl
 
 describe('useFilteredCFDAccounts', () => {
     it('should return filteredCFDAccounts', async () => {
-        const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
+        const mock = mockStore({
+            client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
+            traders_hub: { getShortCodeAndRegion: () => 'svg' },
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
@@ -96,39 +99,51 @@ describe('useFilteredCFDAccounts', () => {
 
         const { result } = renderHook(() => useFilteredCFDAccounts(), { wrapper });
 
-        expect(result.current.data).toEqual([
-            {
-                availability: 'Non-EU',
-                icon: 'Derived',
-                is_added: false,
-                market_type: 'synthetic',
-                name: 'Deriv SVG',
-                platform: 'mt5',
-                shortcode: 'svg',
-            },
-            {
-                availability: 'All',
-                icon: 'Financial',
-                is_added: false,
-                market_type: 'financial',
-                name: 'Deriv SVG',
-                platform: 'mt5',
-                shortcode: 'bvi',
-            },
-            {
-                availability: 'All',
-                icon: 'SwapFree',
-                market_type: 'all',
-                name: 'Swap Free',
-                is_added: false,
-                platform: 'mt5',
-                shortcode: 'svg',
-            },
-        ]);
+        expect(result.current.data).toEqual({
+            synthetic: [
+                {
+                    availability: 'Non-EU',
+                    icon: 'Derived',
+                    is_added: false,
+                    market_type: 'synthetic',
+                    name: 'Deriv SVG',
+                    platform: 'mt5',
+                    short_code_and_region: 'svg',
+                    shortcode: 'svg',
+                },
+            ],
+            financial: [
+                {
+                    availability: 'All',
+                    icon: 'Financial',
+                    is_added: false,
+                    market_type: 'financial',
+                    name: 'Deriv SVG',
+                    platform: 'mt5',
+                    short_code_and_region: 'svg',
+                    shortcode: 'bvi',
+                },
+            ],
+            all: [
+                {
+                    availability: 'All',
+                    icon: 'SwapFree',
+                    is_added: false,
+                    market_type: 'all',
+                    name: 'Swap Free',
+                    platform: 'mt5',
+                    short_code_and_region: 'svg',
+                    shortcode: 'svg',
+                },
+            ],
+        });
     });
 
     it('should return gaming, financial then all in the correct order', () => {
-        const mock = mockStore({ client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' } });
+        const mock = mockStore({
+            client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
+            traders_hub: { getShortCodeAndRegion: () => 'svg' },
+        });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
             <StoreProvider store={mock}>{children}</StoreProvider>
@@ -136,35 +151,44 @@ describe('useFilteredCFDAccounts', () => {
 
         const { result } = renderHook(() => useFilteredCFDAccounts(), { wrapper });
 
-        expect(result.current.data).toEqual([
-            {
-                availability: 'Non-EU',
-                icon: 'Derived',
-                is_added: false,
-                market_type: 'synthetic',
-                name: 'Deriv SVG',
-                platform: 'mt5',
-                shortcode: 'svg',
-            },
-            {
-                availability: 'All',
-                icon: 'Financial',
-                is_added: false,
-                market_type: 'financial',
-                name: 'Deriv SVG',
-                platform: 'mt5',
-                shortcode: 'bvi',
-            },
-            {
-                availability: 'All',
-                icon: 'SwapFree',
-                market_type: 'all',
-                name: 'Swap Free',
-                is_added: false,
-                platform: 'mt5',
-                shortcode: 'svg',
-            },
-        ]);
+        expect(result.current.data).toEqual({
+            synthetic: [
+                {
+                    availability: 'Non-EU',
+                    icon: 'Derived',
+                    is_added: false,
+                    market_type: 'synthetic',
+                    name: 'Deriv SVG',
+                    platform: 'mt5',
+                    short_code_and_region: 'svg',
+                    shortcode: 'svg',
+                },
+            ],
+            financial: [
+                {
+                    availability: 'All',
+                    icon: 'Financial',
+                    is_added: false,
+                    market_type: 'financial',
+                    name: 'Deriv SVG',
+                    platform: 'mt5',
+                    short_code_and_region: 'svg',
+                    shortcode: 'bvi',
+                },
+            ],
+            all: [
+                {
+                    availability: 'All',
+                    icon: 'SwapFree',
+                    is_added: false,
+                    market_type: 'all',
+                    name: 'Swap Free',
+                    platform: 'mt5',
+                    short_code_and_region: 'svg',
+                    shortcode: 'svg',
+                },
+            ],
+        });
     });
 
     it('should return undefined if there is no data', () => {
@@ -178,6 +202,6 @@ describe('useFilteredCFDAccounts', () => {
 
         const { result } = renderHook(() => useFilteredCFDAccounts(), { wrapper });
 
-        expect(result.current.data).toBeUndefined();
+        expect(result.current.data).toEqual({});
     });
 });

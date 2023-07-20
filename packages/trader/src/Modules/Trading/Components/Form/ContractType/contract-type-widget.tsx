@@ -9,7 +9,7 @@ type TContractTypeWidget = {
     name?: string;
     value: TContractType['value'];
     list: TContractCategory[];
-    onChange?: (event: DeepPartial<React.ChangeEvent<HTMLInputElement>>) => void;
+    onChange: (event: DeepPartial<React.ChangeEvent<HTMLInputElement>>) => void;
     languageChanged?: boolean;
 };
 
@@ -59,7 +59,7 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
 
     React.useEffect(() => {
         if (selected_item && selected_item.value !== value) {
-            onChange?.({ target: { name, value: selected_item.value } });
+            onChange({ target: { name, value: selected_item.value } });
         }
     }, [selected_item, onChange, name, value]);
 

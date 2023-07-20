@@ -12,19 +12,6 @@ describe('JurisdictionModalFootNote', () => {
     };
     const mock_context = new RootStore(mock_store);
     const mock_props = {
-        account_status: {
-            authentication: {
-                document: {
-                    status: 'none' as const,
-                },
-                needs_verification: [],
-            },
-            currency_config: {},
-            p2p_status: 'none' as const,
-            prompt_client_to_authenticate: 0 as const,
-            risk_classification: '',
-            status: [''],
-        },
         account_type: '',
         context: mock_context,
         card_classname: '',
@@ -86,23 +73,9 @@ describe('JurisdictionModalFootNote', () => {
     });
 
     it('should render JurisdictionModalFootNote with bvi_restriction and poa is pending, then display resubmit poa message', () => {
-        const mock_account_status = {
-            authentication: {
-                document: {
-                    status: 'pending' as const,
-                },
-                needs_verification: [],
-            },
-            currency_config: {},
-            p2p_status: 'none' as const,
-            prompt_client_to_authenticate: 0 as const,
-            risk_classification: '',
-            status: [''],
-        };
         render(
             <JurisdictionModalFootNote
                 {...mock_props}
-                account_status={mock_account_status}
                 jurisdiction_selected_shortcode={Jurisdiction.BVI}
                 account_type='synthetic'
                 should_restrict_bvi_account_creation
@@ -146,23 +119,9 @@ describe('JurisdictionModalFootNote', () => {
     });
 
     it('should render JurisdictionModalFootNote with vanuatu_restriction and poa is pending, then display resubmit poa message', () => {
-        const mock_account_status = {
-            authentication: {
-                document: {
-                    status: 'pending' as const,
-                },
-                needs_verification: [],
-            },
-            currency_config: {},
-            p2p_status: 'none' as const,
-            prompt_client_to_authenticate: 0 as const,
-            risk_classification: '',
-            status: [''],
-        };
         render(
             <JurisdictionModalFootNote
                 {...mock_props}
-                account_status={mock_account_status}
                 jurisdiction_selected_shortcode={Jurisdiction.VANUATU}
                 account_type='synthetic'
                 should_restrict_vanuatu_account_creation

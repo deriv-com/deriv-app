@@ -6,7 +6,6 @@ import { TJurisdictionCardFrontProps } from 'Containers/props.types';
 import JurisdictionCardSection from './jurisdiction-card-section';
 
 const JurisdictionCardFront = ({
-    account_status,
     card_classname,
     card_data,
     card_values,
@@ -51,7 +50,6 @@ const JurisdictionCardFront = ({
                 {card_data.map((item, index) => (
                     <React.Fragment key={item.key}>
                         <JurisdictionCardSection
-                            account_status={account_status}
                             card_section_item={item}
                             toggleCardFlip={toggleCardFlip}
                             type_of_card={type_of_card}

@@ -1,58 +1,48 @@
 import React from 'react';
 import classNames from 'classnames';
 import { Icon, Text } from '@deriv/components';
-import { getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
+import { Jurisdiction } from '@deriv/shared';
 import { jurisdictionVerificationContents } from '../../Constants/jurisdiction-contents/jurisdiction-verification-contents';
 import { TJurisdictionTitleIndicatorProps } from 'Containers/props.types';
 import { TJurisdictionCardItemVerificationItem, TJurisdictionCardVerificationStatus } from 'Components/props.types';
+import { useAuthenticationStatusInfo } from '@deriv/hooks';
 
 const JurisdictionTitleIndicator = ({
-    account_status,
     title_indicators,
     type_of_card,
     verification_docs,
 }: TJurisdictionTitleIndicatorProps) => {
-    const {
-        poi_pending_for_bvi_labuan_vanuatu,
-        poi_resubmit_for_bvi_labuan_vanuatu,
-        poi_verified_for_bvi_labuan_vanuatu,
-        poi_pending_for_maltainvest,
-        poi_resubmit_for_maltainvest,
-        poi_verified_for_maltainvest,
-        poa_pending,
-        need_poa_resubmission,
-        poa_verified,
-    } = getAuthenticationStatusInfo(account_status);
+    const { poi, poa } = useAuthenticationStatusInfo();
 
     const getVerificationIconVariant = (verification_document: TJurisdictionCardItemVerificationItem): string => {
         let icon_variant: TJurisdictionCardVerificationStatus = 'Default';
         if ([Jurisdiction.BVI, Jurisdiction.LABUAN, Jurisdiction.VANUATU].includes(type_of_card)) {
             if (['document_number', 'selfie', 'identity_document'].includes(verification_document)) {
-                if (poi_pending_for_bvi_labuan_vanuatu) {
+                if (poi.bvi_labuan_vanuatu.pending) {
                     icon_variant = 'Pending';
-                } else if (poi_resubmit_for_bvi_labuan_vanuatu) {
+                } else if (poi.bvi_labuan_vanuatu.need_resubmission) {
                     icon_variant = 'Failed';
-                } else if (poi_verified_for_bvi_labuan_vanuatu) {
+                } else if (poi.bvi_labuan_vanuatu.verified) {
                     icon_variant = 'Verified';
                 }
             }
         } else if (Jurisdiction.MALTA_INVEST === type_of_card) {
             if (['document_number', 'selfie', 'identity_document'].includes(verification_document)) {
-                if (poi_pending_for_maltainvest) {
+                if (poi.maltainvest.pending) {
                     icon_variant = 'Pending';
-                } else if (poi_resubmit_for_maltainvest) {
+                } else if (poi.maltainvest.need_resubmission) {
                     icon_variant = 'Failed';
-                } else if (poi_verified_for_maltainvest) {
+                } else if (poi.maltainvest.verified) {
                     icon_variant = 'Verified';
                 }
             }
         }
         if (verification_document === 'name_and_address') {
-            if (poa_pending) {
+            if (poa.pending) {
                 icon_variant = 'Pending';
-            } else if (need_poa_resubmission) {
+            } else if (poa.need_resubmission) {
                 icon_variant = 'Failed';
-            } else if (poa_verified) {
+            } else if (poa.verified) {
                 icon_variant = 'Verified';
             }
         }

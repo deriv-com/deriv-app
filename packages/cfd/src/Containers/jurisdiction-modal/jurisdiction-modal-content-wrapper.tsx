@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React from 'react';
 import { Button, Modal } from '@deriv/components';
-import { getAuthenticationStatusInfo, isMobile, Jurisdiction } from '@deriv/shared';
+import { isMobile, Jurisdiction } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { TJurisdictionModalContentWrapperProps } from '../props.types';
 import JurisdictionModalContent from './jurisdiction-modal-content';
@@ -9,6 +9,7 @@ import JurisdictionCheckBox from './jurisdiction-modal-checkbox';
 import JurisdictionModalFootNote from './jurisdiction-modal-foot-note';
 import { useStore, observer } from '@deriv/stores';
 import { useCfdStore } from '../../Stores/Modules/CFD/Helpers/useCfdStores';
+import { useAuthenticationStatusInfo } from '@deriv/hooks';
 
 const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisdictionModalContentWrapperProps) => {
     const { client, traders_hub } = useStore();
@@ -41,14 +42,7 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
     } = useCfdStore();
 
     const [checked, setChecked] = React.useState(false);
-
-    const {
-        poi_or_poa_not_submitted,
-        poi_acknowledged_for_bvi_labuan_vanuatu,
-        poi_acknowledged_for_maltainvest,
-        poa_acknowledged,
-        need_poa_resubmission,
-    } = getAuthenticationStatusInfo(account_status);
+    const { poi, poa, poi_or_poa_not_submitted } = useAuthenticationStatusInfo();
 
     React.useEffect(() => {
         if (is_jurisdiction_modal_visible) {
@@ -121,8 +115,8 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
             if (!is_account_created) {
                 if (
                     is_svg_selected ||
-                    (is_bvi_selected && should_restrict_bvi_account_creation && need_poa_resubmission) ||
-                    (is_vanuatu_selected && should_restrict_vanuatu_account_creation && need_poa_resubmission)
+                    (is_bvi_selected && should_restrict_bvi_account_creation && poa.need_resubmission) ||
+                    (is_vanuatu_selected && should_restrict_vanuatu_account_creation && poa.need_resubmission)
                 ) {
                     return false;
                 }
@@ -143,10 +137,10 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
             openPasswordModal(type_of_account);
         } else if (is_vanuatu_selected) {
             if (
-                poi_acknowledged_for_bvi_labuan_vanuatu &&
+                poi.bvi_labuan_vanuatu.acknowledged &&
                 !poi_or_poa_not_submitted &&
                 !should_restrict_vanuatu_account_creation &&
-                poa_acknowledged &&
+                poa.acknowledged &&
                 has_submitted_cfd_personal_details
             ) {
                 openPasswordModal(type_of_account);
@@ -155,10 +149,10 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
             }
         } else if (is_bvi_selected) {
             if (
-                poi_acknowledged_for_bvi_labuan_vanuatu &&
+                poi.bvi_labuan_vanuatu.acknowledged &&
                 !poi_or_poa_not_submitted &&
                 !should_restrict_bvi_account_creation &&
-                poa_acknowledged &&
+                poa.acknowledged &&
                 has_submitted_cfd_personal_details
             ) {
                 openPasswordModal(type_of_account);
@@ -166,13 +160,13 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
                 toggleCFDVerificationModal();
             }
         } else if (is_labuan_selected) {
-            if (poi_acknowledged_for_bvi_labuan_vanuatu && poa_acknowledged && has_submitted_cfd_personal_details) {
+            if (poi.bvi_labuan_vanuatu.acknowledged && poa.acknowledged && has_submitted_cfd_personal_details) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();
             }
         } else if (is_maltainvest_selected) {
-            if (poi_acknowledged_for_maltainvest && poa_acknowledged) {
+            if (poi.maltainvest.acknowledged && poa.acknowledged) {
                 openPasswordModal(type_of_account);
             } else {
                 toggleCFDVerificationModal();
@@ -184,7 +178,6 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
         <div className='jurisdiction-modal__content-wrapper'>
             <div className='jurisdiction-modal__scrollable-content'>
                 <JurisdictionModalContent
-                    account_status={account_status}
                     account_type={account_type.type}
                     financial_available_accounts={financial_available_accounts}
                     is_non_idv_design={is_non_idv_design}
@@ -205,7 +198,6 @@ const JurisdictionModalContentWrapper = observer(({ openPasswordModal }: TJurisd
                 >
                     <div className={`cfd-jurisdiction-card--${account_type.type}__footnotes-container`}>
                         <JurisdictionModalFootNote
-                            account_status={account_status}
                             account_type={account_type.type}
                             card_classname={`cfd-jurisdiction-card--${account_type.type}`}
                             jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}

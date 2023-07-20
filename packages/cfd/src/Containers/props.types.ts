@@ -154,7 +154,6 @@ export type TCFDPasswordManagerModal = {
 export type TJurisdictionCardProps = {
     jurisdiction_selected_shortcode: string;
     setJurisdictionSelectedShortcode: (card_type: string) => void;
-    account_status: GetAccountStatus;
     account_type: string;
     disabled: boolean;
     is_non_idv_design: boolean;
@@ -170,7 +169,6 @@ export type TJurisdictionCardBackProps = {
 };
 
 export type TJurisdictionCardFrontProps = TJurisdictionCardBackProps & {
-    account_status: GetAccountStatus;
     card_data: TJurisdictionCardSection[];
     card_values: TJurisdictionCardItems;
     disabled: boolean;
@@ -183,14 +181,12 @@ export type TJurisdictionClickableDescriptionProps = {
 };
 
 export type TJurisdictionTitleIndicatorProps = {
-    account_status: GetAccountStatus;
     title_indicators: TJurisdictionCardSectionTitleIndicators;
     type_of_card: TJurisdictionCardType;
     verification_docs: TJurisdictionCardItemVerification | undefined;
 };
 
 export type TJurisdictionCardSectionProps = {
-    account_status: GetAccountStatus;
     card_section_item: TJurisdictionCardSection;
     toggleCardFlip: React.MouseEventHandler<HTMLSpanElement>;
     type_of_card: TJurisdictionCardType;
@@ -236,7 +232,6 @@ export type TJurisdictionModalProps = {
 };
 
 export type TJurisdictionModalContentProps = {
-    account_status: GetAccountStatus;
     account_type: string;
     is_non_idv_design: boolean;
     jurisdiction_selected_shortcode: string;
@@ -250,10 +245,7 @@ export type TJurisdictionModalContentProps = {
     is_virtual: boolean;
 };
 
-type TAccountStatus = Omit<GetAccountStatus, 'status'> & Partial<Pick<GetAccountStatus, 'status'>>;
-
 export type TJurisdictionModalFootNoteProps = {
-    account_status: TAccountStatus;
     account_type: string;
     card_classname: string;
     jurisdiction_selected_shortcode: string;

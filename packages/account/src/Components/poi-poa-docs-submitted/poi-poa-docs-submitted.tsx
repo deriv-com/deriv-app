@@ -1,12 +1,11 @@
 import React from 'react';
 import { Button, Icon, Loading } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import { getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
+import { Jurisdiction } from '@deriv/shared';
 import IconMessageContent from 'Components/icon-message-content';
-import { GetAccountStatus } from '@deriv/api-types';
+import { useAuthenticationStatusInfo } from '@deriv/hooks';
 
 type TPoiPoaDocsSubmitted = {
-    account_status: GetAccountStatus;
     onClickOK: () => void;
     jurisdiction_selected_shortcode: string;
     has_created_account_for_selected_jurisdiction: boolean;
@@ -15,7 +14,6 @@ type TPoiPoaDocsSubmitted = {
 };
 
 const PoiPoaDocsSubmitted = ({
-    account_status,
     jurisdiction_selected_shortcode,
     onClickOK,
     updateAccountStatus,
@@ -23,6 +21,7 @@ const PoiPoaDocsSubmitted = ({
     openPasswordModal,
 }: TPoiPoaDocsSubmitted) => {
     const [is_loading, setIsLoading] = React.useState(false);
+    const { poi, poa, identity_status } = useAuthenticationStatusInfo();
     React.useEffect(() => {
         setIsLoading(true);
         updateAccountStatus()
@@ -41,13 +40,11 @@ const PoiPoaDocsSubmitted = ({
     };
 
     const getDescription = () => {
-        const { manual_status, poi_verified_for_maltainvest, poi_verified_for_bvi_labuan_vanuatu, poa_pending } =
-            getAuthenticationStatusInfo(account_status);
         const is_maltainvest_selected = jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST;
         if (
-            (is_maltainvest_selected && poi_verified_for_maltainvest && poa_pending) ||
-            (!is_maltainvest_selected && poi_verified_for_bvi_labuan_vanuatu && poa_pending) ||
-            manual_status === 'pending'
+            (is_maltainvest_selected && poi.maltainvest.verified && poa.pending) ||
+            (!is_maltainvest_selected && poi.bvi_labuan_vanuatu.verified && poa.pending) ||
+            identity_status.manual === 'pending'
         ) {
             return localize('We’ll review your documents and notify you of its status within 1 - 3 working days.');
         }

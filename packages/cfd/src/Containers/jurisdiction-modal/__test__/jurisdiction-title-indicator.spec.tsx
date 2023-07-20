@@ -11,32 +11,6 @@ describe('JurisdictionTitleIndicator', () => {
             display_text: 'Test Display Text',
         },
         type_of_card: Jurisdiction.BVI,
-        account_status: {
-            authentication: {
-                document: {
-                    status: 'none',
-                },
-                identity: {
-                    services: {
-                        idv: {
-                            status: 'none',
-                        },
-                        onfido: {
-                            status: 'none',
-                        },
-                        manual: {
-                            status: 'none',
-                        },
-                    },
-                },
-                needs_verification: [],
-            },
-            currency_config: {},
-            p2p_status: 'none',
-            prompt_client_to_authenticate: 0,
-            risk_classification: '',
-            status: [''],
-        },
         verification_docs: ['not_applicable'],
     };
     it('should render JurisdictionTitleIndicator with displayText', () => {
@@ -64,33 +38,6 @@ describe('JurisdictionTitleIndicator', () => {
                 type: 'displayIcons',
                 display_text: 'Test Display Text',
             },
-            account_status: {
-                authentication: {
-                    ...mock_props.account_status.authentication,
-                    document: {
-                        status: 'none',
-                    },
-                    identity: {
-                        services: {
-                            idv: {
-                                status: 'pending',
-                            },
-                            onfido: {
-                                status: 'pending',
-                            },
-                            manual: {
-                                status: 'pending',
-                            },
-                        },
-                    },
-                    needs_verification: [],
-                },
-                currency_config: {},
-                p2p_status: 'none',
-                prompt_client_to_authenticate: 0,
-                risk_classification: '',
-                status: [''],
-            },
             verification_docs: ['document_number'],
         };
         render(<JurisdictionTitleIndicator {...new_mock_props} />);
@@ -104,33 +51,6 @@ describe('JurisdictionTitleIndicator', () => {
                 type: 'displayIcons',
                 display_text: 'Test Display Text',
             },
-            account_status: {
-                authentication: {
-                    ...mock_props.account_status.authentication,
-                    document: {
-                        status: 'none',
-                    },
-                    identity: {
-                        services: {
-                            idv: {
-                                status: 'rejected',
-                            },
-                            onfido: {
-                                status: 'rejected',
-                            },
-                            manual: {
-                                status: 'rejected',
-                            },
-                        },
-                    },
-                    needs_verification: [],
-                },
-                currency_config: {},
-                p2p_status: 'none',
-                prompt_client_to_authenticate: 0,
-                risk_classification: '',
-                status: [''],
-            },
             verification_docs: ['document_number'],
         };
         render(<JurisdictionTitleIndicator {...new_mock_props} />);
@@ -143,33 +63,6 @@ describe('JurisdictionTitleIndicator', () => {
             title_indicators: {
                 type: 'displayIcons',
                 display_text: 'Test Display Text',
-            },
-            account_status: {
-                authentication: {
-                    ...mock_props.account_status.authentication,
-                    document: {
-                        status: 'none',
-                    },
-                    identity: {
-                        services: {
-                            idv: {
-                                status: 'verified',
-                            },
-                            onfido: {
-                                status: 'verified',
-                            },
-                            manual: {
-                                status: 'verified',
-                            },
-                        },
-                    },
-                    needs_verification: [],
-                },
-                currency_config: {},
-                p2p_status: 'none',
-                prompt_client_to_authenticate: 0,
-                risk_classification: '',
-                status: [''],
             },
             verification_docs: ['document_number'],
         };
@@ -185,30 +78,6 @@ describe('JurisdictionTitleIndicator', () => {
                 display_text: 'Test Display Text',
             },
             type_of_card: Jurisdiction.VANUATU,
-            account_status: {
-                authentication: {
-                    ...mock_props.account_status.authentication,
-                    document: {
-                        status: 'none',
-                    },
-                    identity: {
-                        services: {
-                            onfido: {
-                                status: 'pending',
-                            },
-                            manual: {
-                                status: 'pending',
-                            },
-                        },
-                    },
-                    needs_verification: [],
-                },
-                currency_config: {},
-                p2p_status: 'none',
-                prompt_client_to_authenticate: 0,
-                risk_classification: '',
-                status: [''],
-            },
             verification_docs: ['selfie'],
         };
         render(<JurisdictionTitleIndicator {...new_mock_props} />);
@@ -223,30 +92,6 @@ describe('JurisdictionTitleIndicator', () => {
                 display_text: 'Test Display Text',
             },
             type_of_card: Jurisdiction.MALTA_INVEST,
-            account_status: {
-                authentication: {
-                    ...mock_props.account_status.authentication,
-                    document: {
-                        status: 'none',
-                    },
-                    identity: {
-                        services: {
-                            onfido: {
-                                status: 'pending',
-                            },
-                            manual: {
-                                status: 'pending',
-                            },
-                        },
-                    },
-                    needs_verification: [],
-                },
-                currency_config: {},
-                p2p_status: 'none',
-                prompt_client_to_authenticate: 0,
-                risk_classification: '',
-                status: [''],
-            },
             verification_docs: ['identity_document'],
         };
         render(<JurisdictionTitleIndicator {...new_mock_props} />);
@@ -261,30 +106,6 @@ describe('JurisdictionTitleIndicator', () => {
                 display_text: 'Test Display Text',
             },
             type_of_card: Jurisdiction.VANUATU,
-            account_status: {
-                authentication: {
-                    ...mock_props.account_status.authentication,
-                    document: {
-                        status: 'none',
-                    },
-                    identity: {
-                        services: {
-                            onfido: {
-                                status: 'rejected',
-                            },
-                            manual: {
-                                status: 'rejected',
-                            },
-                        },
-                    },
-                    needs_verification: [],
-                },
-                currency_config: {},
-                p2p_status: 'none',
-                prompt_client_to_authenticate: 0,
-                risk_classification: '',
-                status: [''],
-            },
             verification_docs: ['selfie'],
         };
         render(<JurisdictionTitleIndicator {...new_mock_props} />);
@@ -299,30 +120,6 @@ describe('JurisdictionTitleIndicator', () => {
                 display_text: 'Test Display Text',
             },
             type_of_card: Jurisdiction.VANUATU,
-            account_status: {
-                authentication: {
-                    ...mock_props.account_status.authentication,
-                    document: {
-                        status: 'none',
-                    },
-                    identity: {
-                        services: {
-                            onfido: {
-                                status: 'verified',
-                            },
-                            manual: {
-                                status: 'verified',
-                            },
-                        },
-                    },
-                    needs_verification: [],
-                },
-                currency_config: {},
-                p2p_status: 'none',
-                prompt_client_to_authenticate: 0,
-                risk_classification: '',
-                status: [''],
-            },
             verification_docs: ['selfie'],
         };
         render(<JurisdictionTitleIndicator {...new_mock_props} />);
@@ -337,20 +134,6 @@ describe('JurisdictionTitleIndicator', () => {
                 display_text: 'Test Display Text',
             },
             type_of_card: Jurisdiction.SVG,
-            account_status: {
-                authentication: {
-                    ...mock_props.account_status.authentication,
-                    document: {
-                        status: 'pending',
-                    },
-                    needs_verification: [],
-                },
-                currency_config: {},
-                p2p_status: 'none',
-                prompt_client_to_authenticate: 0,
-                risk_classification: '',
-                status: [''],
-            },
             verification_docs: ['name_and_address'],
         };
         render(<JurisdictionTitleIndicator {...new_mock_props} />);
@@ -365,20 +148,6 @@ describe('JurisdictionTitleIndicator', () => {
                 display_text: 'Test Display Text',
             },
             type_of_card: Jurisdiction.SVG,
-            account_status: {
-                authentication: {
-                    ...mock_props.account_status.authentication,
-                    document: {
-                        status: 'rejected',
-                    },
-                    needs_verification: [],
-                },
-                currency_config: {},
-                p2p_status: 'none',
-                prompt_client_to_authenticate: 0,
-                risk_classification: '',
-                status: [''],
-            },
             verification_docs: ['name_and_address'],
         };
         render(<JurisdictionTitleIndicator {...new_mock_props} />);
@@ -393,20 +162,6 @@ describe('JurisdictionTitleIndicator', () => {
                 display_text: 'Test Display Text',
             },
             type_of_card: Jurisdiction.SVG,
-            account_status: {
-                authentication: {
-                    ...mock_props.account_status.authentication,
-                    document: {
-                        status: 'verified',
-                    },
-                    needs_verification: [],
-                },
-                currency_config: {},
-                p2p_status: 'none',
-                prompt_client_to_authenticate: 0,
-                risk_classification: '',
-                status: [''],
-            },
             verification_docs: ['name_and_address'],
         };
         render(<JurisdictionTitleIndicator {...new_mock_props} />);

@@ -12,11 +12,11 @@ import {
 } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { PoiPoaDocsSubmitted } from '@deriv/account';
-import { getAuthenticationStatusInfo, isMobile, WS, Jurisdiction } from '@deriv/shared';
-import { AccountStatusResponse } from '@deriv/api-types';
+import { isMobile, Jurisdiction } from '@deriv/shared';
 import CFDFinancialStpRealAccountSignup from './cfd-financial-stp-real-account-signup';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
+import { useAuthenticationStatusInfo } from '@deriv/hooks';
 
 const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) => (
     <div className='da-icon-with-message'>
@@ -39,7 +39,7 @@ const SwitchToRealAccountMessage = ({ onClickOk }: { onClickOk: () => void }) =>
 const CFDDbviOnboarding = observer(() => {
     const { client, ui } = useStore();
 
-    const { account_status, fetchAccountSettings, is_virtual, updateAccountStatus, updateMT5Status } = client;
+    const { fetchAccountSettings, is_virtual, updateAccountStatus, updateMT5Status } = client;
     const { disableApp, enableApp } = ui;
 
     const {
@@ -50,29 +50,19 @@ const CFDDbviOnboarding = observer(() => {
         enableCFDPasswordModal,
         toggleCFDVerificationModal,
     } = useCfdStore();
-
+    const { poi, poa } = useAuthenticationStatusInfo();
     const [showSubmittedModal, setShowSubmittedModal] = React.useState(true);
     const [is_loading, setIsLoading] = React.useState(false);
 
-    const getAccountStatusFromAPI = () => {
-        WS.authorized.getAccountStatus().then((response: AccountStatusResponse) => {
-            const { get_account_status } = response;
-
-            if (get_account_status?.authentication) {
-                const { poi_acknowledged_for_maltainvest, poi_acknowledged_for_bvi_labuan_vanuatu, poa_acknowledged } =
-                    getAuthenticationStatusInfo(get_account_status);
-                if (jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) {
-                    setShowSubmittedModal(poi_acknowledged_for_maltainvest && poa_acknowledged);
-                } else
-                    setShowSubmittedModal(
-                        poi_acknowledged_for_bvi_labuan_vanuatu &&
-                            poa_acknowledged &&
-                            has_submitted_cfd_personal_details
-                    );
-            }
-
-            setIsLoading(false);
-        });
+    const getAccountStatusFromAPI = async () => {
+        await updateAccountStatus();
+        if (jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) {
+            setShowSubmittedModal(poi.maltainvest.acknowledged && poa.acknowledged);
+        } else {
+            setShowSubmittedModal(
+                poi.bvi_labuan_vanuatu.acknowledged && poa.acknowledged && has_submitted_cfd_personal_details
+            );
+        }
         setIsLoading(false);
     };
 
@@ -95,7 +85,6 @@ const CFDDbviOnboarding = observer(() => {
             <PoiPoaDocsSubmitted
                 onClickOK={toggleCFDVerificationModal}
                 updateAccountStatus={updateAccountStatus}
-                account_status={account_status}
                 jurisdiction_selected_shortcode={jurisdiction_selected_shortcode}
                 has_created_account_for_selected_jurisdiction={has_created_account_for_selected_jurisdiction}
                 openPasswordModal={enableCFDPasswordModal}

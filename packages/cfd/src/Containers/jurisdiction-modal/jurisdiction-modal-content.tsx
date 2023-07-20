@@ -4,7 +4,6 @@ import { TJurisdictionModalContentProps } from '../props.types';
 import JurisdictionCard from './jurisdiction-card';
 
 const JurisdictionModalContent = ({
-    account_status,
     account_type,
     is_non_idv_design = false,
     is_virtual,
@@ -64,7 +63,6 @@ const JurisdictionModalContent = ({
                 card =>
                     cardsToBeShown(card) && (
                         <JurisdictionCard
-                            account_status={account_status}
                             account_type={account_type}
                             disabled={disableCard(card)}
                             is_non_idv_design={is_non_idv_design}

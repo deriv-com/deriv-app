@@ -4,7 +4,8 @@ import { useStores } from 'Stores';
 import { useHistory } from 'react-router-dom';
 import { localize, Localize } from '@deriv/translations';
 import { Text, Dialog } from '@deriv/components';
-import { isMobile, getAuthenticationStatusInfo, routes } from '@deriv/shared';
+import { isMobile, routes } from '@deriv/shared';
+import { useAuthenticationStatusInfo } from '@deriv/hooks';
 
 type TFailedVerificationModal = {
     should_resubmit_poi: boolean;
@@ -54,20 +55,17 @@ const FailedVerificationModal = () => {
         traders_hub,
         ui,
         modules: { cfd },
-        client,
     } = useStores();
     const {
         is_failed_verification_modal_visible,
         toggleFailedVerificationModalVisibility,
         open_failed_verification_for,
     } = traders_hub;
-    const { account_status } = client;
     const { toggleCFDVerificationModal } = cfd;
     const { disableApp, enableApp } = ui;
     const is_from_multipliers = open_failed_verification_for === 'multipliers';
 
-    const { poi_resubmit_for_maltainvest, poi_resubmit_for_bvi_labuan_vanuatu, need_poa_resubmission } =
-        getAuthenticationStatusInfo(account_status);
+    const { poi, poa } = useAuthenticationStatusInfo();
     const history = useHistory();
 
     const closeModal = () => {
@@ -89,11 +87,11 @@ const FailedVerificationModal = () => {
 
     const should_resubmit_poi = () => {
         if (is_from_multipliers || open_failed_verification_for === 'maltainvest') {
-            return poi_resubmit_for_maltainvest;
+            return poi.maltainvest.need_resubmission;
         }
-        return poi_resubmit_for_bvi_labuan_vanuatu;
+        return poi.bvi_labuan_vanuatu.need_resubmission;
     };
-    const should_resubmit_poa = need_poa_resubmission;
+    const should_resubmit_poa = poa.need_resubmission;
     const from_account_label = is_from_multipliers ? localize('Multipliers') : localize('MT5');
 
     return (

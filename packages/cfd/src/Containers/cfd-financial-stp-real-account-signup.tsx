@@ -1,12 +1,13 @@
 import React from 'react';
 import { Div100vhContainer } from '@deriv/components';
-import { isDesktop, getAuthenticationStatusInfo, Jurisdiction } from '@deriv/shared';
+import { isDesktop, Jurisdiction } from '@deriv/shared';
 import CFDPOA from '../Components/cfd-poa';
 import CFDPOI from '../Components/cfd-poi';
 import CFDPersonalDetailsContainer from './cfd-personal-details-container';
 import { observer, useStore } from '@deriv/stores';
 import { useCfdStore } from '../Stores/Modules/CFD/Helpers/useCfdStores';
 import { TCoreStores } from '@deriv/stores/types';
+import { useAuthenticationStatusInfo } from '@deriv/hooks';
 
 type TCFDFinancialStpRealAccountSignupProps = {
     onFinish: () => void;
@@ -84,8 +85,7 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
     const [form_error, setFormError] = React.useState('');
     const state_index = step;
     let is_mounted = React.useRef(true).current;
-
-    const { need_poi_for_maltainvest, need_poi_for_bvi_labuan_vanuatu } = getAuthenticationStatusInfo(account_status);
+    const { poi } = useAuthenticationStatusInfo();
 
     const poi_config: TItemsState<typeof passthroughProps> = {
         body: CFDPOI,
@@ -129,9 +129,9 @@ const CFDFinancialStpRealAccountSignup = observer(({ onFinish }: TCFDFinancialSt
 
     const should_show_poi = () => {
         if (jurisdiction_selected_shortcode === Jurisdiction.MALTA_INVEST) {
-            return need_poi_for_maltainvest;
+            return poi.maltainvest.need_submission;
         }
-        return need_poi_for_bvi_labuan_vanuatu;
+        return poi.bvi_labuan_vanuatu.need_submission;
     };
     const should_show_poa = !['pending', 'verified'].includes(authentication_status.document_status);
 

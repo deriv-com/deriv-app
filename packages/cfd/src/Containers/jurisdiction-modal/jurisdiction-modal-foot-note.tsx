@@ -1,11 +1,11 @@
 import React from 'react';
 import { Text } from '@deriv/components';
-import { getAuthenticationStatusInfo, isMobile, Jurisdiction, getMT5Title } from '@deriv/shared';
+import { isMobile, Jurisdiction, getMT5Title } from '@deriv/shared';
 import { Localize } from '@deriv/translations';
 import { TJurisdictionModalFootNoteProps } from '../props.types';
+import { useAuthenticationStatusInfo } from '@deriv/hooks';
 
 const FooterNote = ({
-    account_status,
     account_type,
     card_classname,
     jurisdiction_selected_shortcode,
@@ -13,8 +13,7 @@ const FooterNote = ({
     should_restrict_vanuatu_account_creation,
 }: TJurisdictionModalFootNoteProps) => {
     const account_type_name = getMT5Title(account_type);
-
-    const { poa_pending } = getAuthenticationStatusInfo(account_status);
+    const { poa } = useAuthenticationStatusInfo();
 
     if (jurisdiction_selected_shortcode === Jurisdiction.SVG) {
         return (
@@ -27,7 +26,7 @@ const FooterNote = ({
         (jurisdiction_selected_shortcode === Jurisdiction.BVI && should_restrict_bvi_account_creation) ||
         (jurisdiction_selected_shortcode === Jurisdiction.VANUATU && should_restrict_vanuatu_account_creation)
     ) {
-        return poa_pending ? (
+        return poa.pending ? (
             <Localize
                 i18n_default_text='<0>You can open this account once your submitted documents have been verified.</0>'
                 components={[<span key={0} className={`${card_classname}__footnote--pending`} />]}

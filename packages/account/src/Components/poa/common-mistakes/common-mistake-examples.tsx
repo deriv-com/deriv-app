@@ -20,7 +20,7 @@ const CommonMistakeExamplePartials = ({ description, image }: TCommonMistakeExam
         {image}
         <div className='description'>
             <IcErrorBadge />
-            <Text size='xs' line_height='s'>
+            <Text size='xs' line_height='s' role='document'>
                 {description}
             </Text>
         </div>

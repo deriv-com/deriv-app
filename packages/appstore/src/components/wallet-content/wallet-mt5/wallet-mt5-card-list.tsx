@@ -12,9 +12,7 @@ const WalletMT5CardList = observer(() => {
         <React.Fragment>
             {filtered_cfd_accounts &&
                 market_types.map(market_type => {
-                    const accounts = filtered_cfd_accounts[market_type] as NonNullable<
-                        ReturnType<typeof useFilteredCFDAccounts>['data']
-                    >[number];
+                    const accounts = filtered_cfd_accounts[market_type];
 
                     return accounts?.map((account, index) => {
                         const list_size = accounts.length || 0;

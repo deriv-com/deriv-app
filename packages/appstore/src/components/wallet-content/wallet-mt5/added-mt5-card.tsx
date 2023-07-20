@@ -2,18 +2,11 @@ import React from 'react';
 import TradingAppCard from 'Components/containers/trading-app-card';
 import { getHasDivider } from 'Constants/utils';
 import { useStore, observer } from '@deriv/stores';
-import { useActiveWallet, useFilteredCFDAccounts } from '@deriv/hooks';
+import { useActiveWallet } from '@deriv/hooks';
+import { TFilteredWalletMT5Account } from 'Types';
 
 const AddedMT5Card = observer(
-    ({
-        account,
-        index,
-        list_size,
-    }: {
-        account: NonNullable<ReturnType<typeof useFilteredCFDAccounts>['data']>[number];
-        index: number;
-        list_size: number;
-    }) => {
+    ({ account, index, list_size }: { account: TFilteredWalletMT5Account; index: number; list_size: number }) => {
         const { traders_hub, common } = useStore();
         const {
             selected_region,

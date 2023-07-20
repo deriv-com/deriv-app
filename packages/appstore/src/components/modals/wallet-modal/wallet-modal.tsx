@@ -76,9 +76,11 @@ const WalletModal = observer(() => {
         [is_mobile]
     );
 
+    const is_loading = !wallet?.loginid || wallet?.loginid !== active_modal_wallet_id;
+
     return (
         <Modal is_open={is_wallet_modal_visible} className='wallet-modal' portalId='deriv_app'>
-            {wallet?.loginid !== active_modal_wallet_id || !is_authorize ? (
+            {is_loading ? (
                 <Loading is_fullscreen={false} />
             ) : (
                 <React.Fragment>

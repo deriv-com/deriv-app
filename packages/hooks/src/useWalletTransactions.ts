@@ -1,27 +1,15 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useStore } from '@deriv/stores';
 import { getWalletCurrencyIcon } from '@deriv/utils';
-import { useFetch } from '@deriv/api';
+import { usePaginatedFetch } from '@deriv/api';
 import useCurrencyConfig from './useCurrencyConfig';
 import usePlatformAccounts from './usePlatformAccounts';
 import useWalletsList from './useWalletsList';
 import useActiveWallet from './useActiveWallet';
 
-const trading_accounts_display_prefixes = {
-    standard: 'Deriv Apps',
-    mt5: 'MT5',
-    dxtrade: 'Deriv X',
-    binary: 'Binary',
-} as const;
-
-const landing_company_display_shortcodes = {
-    svg: 'SVG',
-    malta: 'Malta',
-} as const;
-
+/** A custom hook to get a list of transactions for an active wallet of a user, optionally filtered by transaction type */
 const useWalletTransactions = (
-    action_type?: 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer',
-    page_count?: number
+    action_type?: 'deposit' | 'withdrawal' | 'initial_fund' | 'reset_balance' | 'transfer'
 ) => {
     const {
         client: { loginid },
@@ -33,77 +21,63 @@ const useWalletTransactions = (
     const { demo: demo_platform_account } = usePlatformAccounts();
     const { real: real_platform_accounts } = usePlatformAccounts();
 
+    // Combine demo and real accounts into one list of user accounts.
     const accounts = useMemo(
         () => [demo_platform_account, ...real_platform_accounts],
         [demo_platform_account, real_platform_accounts]
     );
 
-    const [is_complete_list, setIsCompleteList] = useState(false);
+    // Get the paginated and filtered list of transactions from the API.
+    const { data, ...rest } = usePaginatedFetch('statement', action_type || '', {
+        payload: {
+            // @ts-expect-error reset_balance is not supported in the API yet
+            action_type: action_type || undefined,
+        },
+    });
+
+    // Maintain a list of transactions.
     const [transactions, setTransactions] = useState<
         Required<Required<NonNullable<typeof data>>['statement']>['transactions']
     >([]);
 
-    const transactions_per_page = 10;
+    // Maintain a flag to indicate if the list of transactions is complete.
+    const [is_transactions_complete, setIsTransactionsComplete] = useState(false);
 
-    const { data, isLoading, isSuccess } = useFetch('statement', {
-        options: { keepPreviousData: true },
-        payload: {
-            // @ts-expect-error reset_balance is not supported in the API yet
-            action_type: action_type || undefined,
-            limit: page_count ? transactions_per_page : undefined,
-            offset: page_count ? transactions_per_page * (page_count - 1) : 0,
-        },
-    });
-
-    useEffect(() => setTransactions([]), [action_type]);
-
+    // Reset the list of transactions when the transaction type changes.
     useEffect(() => {
-        if (data?.statement?.count !== 0) setIsCompleteList(false);
-    }, [data?.statement]);
+        setIsTransactionsComplete(false);
+        setTransactions([]);
+    }, [action_type]);
 
+    // Add new transactions to the list of transactions when `usePaginatedFetch` returns new ones.
     useEffect(() => {
-        if (is_complete_list || isLoading || !isSuccess) return;
-        if (data?.statement?.count === 0) setIsCompleteList(true);
         const new_transactions = data?.statement?.transactions;
-        if (new_transactions) setTransactions((prev: typeof transactions) => [...prev, ...new_transactions]);
-    }, [is_complete_list, data?.statement, isLoading, isSuccess]);
+        if (new_transactions) setTransactions(prev => [...prev, ...(new_transactions || [])]);
+        if (new_transactions?.length === 0) setIsTransactionsComplete(true);
+    }, [data?.statement?.transactions]);
 
-    const getTradingAccountName = useCallback(
-        (
-            account_type: 'standard' | 'mt5' | 'dxtrade' | 'binary',
-            is_virtual: boolean,
-            landing_company_shortcode: 'svg' | 'malta'
-        ) => {
-            return `${trading_accounts_display_prefixes[account_type]} ${
-                is_virtual ? 'Demo' : `(${landing_company_display_shortcodes[landing_company_shortcode]})`
-            } account`;
-        },
-        []
-    );
-
+    // Add additional information to each transaction.
     const modified_transactions = useMemo(
         () =>
             wallets && current_wallet
                 ? transactions
-                      .map((transaction: typeof transactions[number]) => {
-                          if (
-                              transaction.amount === undefined ||
-                              transaction.balance_after === undefined ||
-                              transaction.action_type === undefined
-                          )
-                              return null;
-
-                          let account_category = 'wallet';
-                          let account_type = current_wallet.account_type;
-                          let account_name = `${current_wallet.is_virtual ? 'Demo ' : ''}${
-                              current_wallet.currency
-                          } Wallet`;
-                          let account_currency = current_wallet.currency;
-                          let gradient_class = current_wallet.gradient_card_class;
-                          let icon = getWalletCurrencyIcon(
-                              current_wallet.is_virtual ? 'demo' : current_wallet.currency || 'USD',
-                              is_dark_mode_on
-                          );
+                      // Filter out transactions with undefined `action_type`, `amount`, or `balance_after`.
+                      .filter(
+                          (
+                              transaction: typeof transactions[number]
+                          ): transaction is Omit<
+                              typeof transactions[number],
+                              'action_type' | 'amount' | 'balance_after'
+                          > & {
+                              action_type: Exclude<typeof transactions[number]['action_type'], undefined>;
+                              amount: Exclude<typeof transactions[number]['amount'], undefined>;
+                              balance_after: Exclude<typeof transactions[number]['balance_after'], undefined>;
+                          } =>
+                              transaction.action_type !== undefined &&
+                              transaction.amount !== undefined &&
+                              transaction.balance_after !== undefined
+                      )
+                      .map(transaction => {
                           if (transaction.action_type === 'transfer') {
                               const other_loginid =
                                   transaction.to?.loginid === loginid
@@ -112,65 +86,56 @@ const useWalletTransactions = (
                               if (!other_loginid) return null;
                               const other_account = accounts.find(el => el?.loginid === other_loginid);
                               if (!other_account || !other_account.currency || !other_account.account_type) return null;
-                              account_category = other_account.account_category || 'wallet';
-                              account_currency = other_account.currency;
-                              account_name =
-                                  other_account.account_category === 'wallet'
-                                      ? `${
-                                            (
-                                                wallets.find(
-                                                    el => el.loginid === other_account.loginid
-                                                ) as typeof wallets[number]
-                                            ).is_virtual
-                                                ? 'Demo '
-                                                : ''
-                                        }${
-                                            (
-                                                wallets.find(
-                                                    el => el.loginid === other_account.loginid
-                                                ) as typeof wallets[number]
-                                            ).currency
-                                        } Wallet`
-                                      : getTradingAccountName(
-                                            other_account.account_type as 'standard' | 'mt5' | 'dxtrade' | 'binary',
-                                            !!other_account.is_virtual,
-                                            other_account.landing_company_shortcode as 'svg' | 'malta'
-                                        );
-                              account_type = other_account.account_type;
-                              gradient_class = `wallet-card__${
-                                  other_account.is_virtual === 1 ? 'demo' : other_account?.currency?.toLowerCase()
-                              }-bg${is_dark_mode_on ? '--dark' : ''}`;
-                              icon = getWalletCurrencyIcon(
-                                  other_account.is_virtual ? 'demo' : other_account.currency || '',
-                                  is_dark_mode_on,
-                                  false
-                              );
+                              return {
+                                  ...other_account,
+                                  ...transaction,
+                                  /** The currency of a trading account that was part of the transfer to/from the wallet. */
+                                  account_currency: other_account.currency,
+                                  /** The gradient class name for the account card background. */
+                                  gradient_card_class: `wallet-card__${
+                                      other_account.is_virtual === 1 ? 'demo' : other_account?.currency?.toLowerCase()
+                                  }-bg${is_dark_mode_on ? '--dark' : ''}`,
+                                  /** Local asset name for the account icon. ex: `IcWalletCurrencyUsd` for `USD`  */
+                                  icon: getWalletCurrencyIcon(
+                                      other_account.is_virtual ? 'demo' : other_account.currency || '',
+                                      is_dark_mode_on,
+                                      false
+                                  ),
+                                  /** The type of the icon: `demo`, `fiat`, or `crypto`. */
+                                  icon_type:
+                                      getConfig(other_account.currency)?.is_crypto || current_wallet.is_virtual
+                                          ? 'crypto'
+                                          : 'fiat',
+                                  /** Landing company shortcode the account belongs to. */
+                                  landing_company_shortcode: other_account.landing_company_shortcode,
+                              };
                           }
-                          const currency_config = getConfig(account_currency || '');
-                          const is_crypto = currency_config?.is_crypto;
-                          const icon_type = is_crypto || current_wallet.is_virtual ? 'crypto' : 'fiat';
 
                           return {
+                              ...current_wallet,
                               ...transaction,
-                              account_category,
-                              account_currency,
-                              account_name,
-                              account_type,
-                              gradient_class,
-                              icon,
-                              icon_type,
+                              /** The currency of the active wallet. */
+                              account_currency: current_wallet.currency,
+                              /** The type of the icon: `demo`, `fiat`, or `crypto`. */
+                              icon_type:
+                                  current_wallet.currency_config?.is_crypto || current_wallet.is_virtual
+                                      ? 'crypto'
+                                      : 'fiat',
+                              /** Landing company shortcode the account belongs to. */
+                              landing_company_shortcode: undefined,
                           };
                       })
                       .filter(<T>(value: T | null): value is T => value !== null)
                 : [],
-        [accounts, current_wallet, getConfig, getTradingAccountName, is_dark_mode_on, loginid, transactions, wallets]
+        [accounts, current_wallet, getConfig, is_dark_mode_on, loginid, transactions, wallets]
     );
 
     return {
+        /** List of transactions of the active wallet of the current user. */
         transactions: modified_transactions,
-        isLoading,
-        isSuccess,
-        isComplete: is_complete_list,
+        /** Indicating whether this list in question is complete. */
+        isComplete: is_transactions_complete,
+        ...rest,
     };
 };
 

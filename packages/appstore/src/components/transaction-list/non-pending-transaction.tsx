@@ -1,5 +1,6 @@
 import React from 'react';
 import { AppLinkedWithWalletIcon, Text, WalletIcon } from '@deriv/components';
+import { getTradingAccountName } from '@deriv/utils';
 import { useWalletTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
 
@@ -15,15 +16,26 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
     const {
         account_category,
         account_currency,
-        account_name,
         account_type,
         action_type,
         amount,
         balance_after = 0,
-        gradient_class,
+        gradient_card_class,
         icon,
         icon_type,
+        is_virtual,
+        landing_company_shortcode,
     } = transaction;
+
+    const getAccountName = () => {
+        return account_category === 'wallet'
+            ? `${is_virtual ? 'Demo ' : ''}${account_currency} Wallet`
+            : getTradingAccountName(
+                  account_type as 'standard' | 'mt5' | 'dxtrade' | 'binary',
+                  !!is_virtual,
+                  landing_company_shortcode
+              );
+    };
 
     const formatAmount = (value: number) => value.toLocaleString(undefined, { minimumFractionDigits: 2 });
 
@@ -50,14 +62,14 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
                 {account_category === 'trading' ? (
                     <AppLinkedWithWalletIcon
                         app_icon={getAppIcon()}
-                        gradient_class={gradient_class}
+                        gradient_class={gradient_card_class}
                         type={icon_type}
                         wallet_icon={icon}
                         hide_watermark
                     />
                 ) : (
                     <WalletIcon
-                        gradient_class={gradient_class}
+                        gradient_class={gradient_card_class}
                         icon={icon}
                         type={icon_type}
                         has_bg
@@ -80,7 +92,7 @@ const NonPendingTransaction = ({ transaction }: TNonPendingTransaction) => {
                         weight='bold'
                         line_height={is_mobile ? 's' : 'm'}
                     >
-                        {account_name}
+                        {getAccountName()}
                     </Text>
                 </div>
             </div>

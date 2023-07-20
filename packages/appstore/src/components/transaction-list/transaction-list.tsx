@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Div100vhContainer, Dropdown, Loading, Text, ThemedScrollbars } from '@deriv/components';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
@@ -49,13 +49,8 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
     ] as const;
 
     const [filter, setFilter] = useState<typeof filter_options[number]['value']>('');
-    const [page_count, setPageCount] = useState(1);
 
-    useEffect(() => {
-        setPageCount(1);
-    }, [filter]);
-
-    const { transactions, isLoading, isComplete } = useWalletTransactions(filter || undefined, page_count);
+    const { transactions, isComplete, isLoading, nextPage } = useWalletTransactions(filter || undefined);
 
     const grouped_transactions = groupTransactionsByDay(transactions);
 
@@ -100,8 +95,12 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
 
     const onScrollHandler: React.UIEventHandler<HTMLDivElement> = e => {
         if (is_mobile) contentScrollHandler?.(e);
-        if (e.currentTarget.scrollHeight - e.currentTarget.scrollTop - e.currentTarget.clientHeight <= 100) {
-            if (!isComplete) setPageCount(page_count + 1);
+        if (
+            !isLoading &&
+            !isComplete &&
+            e.currentTarget.scrollHeight - e.currentTarget.scrollTop - e.currentTarget.clientHeight <= 100
+        ) {
+            nextPage();
         }
     };
 
@@ -125,7 +124,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
             >
                 <Div100vhContainer className='transaction-list__container' height_offset={getHeightOffset()}>
                     <div className='transaction-list'>
-                        {!isLoading || page_count >= 1 ? (
+                        {!isLoading ? (
                             <>
                                 {Object.entries(grouped_transactions).map(([day, transaction_list]) => (
                                     <TransactionsForADay

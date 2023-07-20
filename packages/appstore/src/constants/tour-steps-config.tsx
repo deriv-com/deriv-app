@@ -186,17 +186,15 @@ export const getWalletStepConfig = (has_mt5_account: boolean, is_all_wallets_add
                 <div className='toggle-account-type__divider' />
             </React.Fragment>
         ),
-        content: has_mt5_account ? (
+        content: (
             <Text as='p' size='xs'>
-                {localize(
-                    'This is your CFDs trading account. Click Transfer to move funds between your Wallet and trading account.'
-                )}
-            </Text>
-        ) : (
-            <Text as='p' size='xs'>
-                {localize(
-                    'This is your CFDs trading account. Click Get to create the trading account you desire for trading.'
-                )}
+                {has_mt5_account
+                    ? localize(
+                          'This is your CFDs trading account. Click Transfer to move funds between your Wallet and trading account.'
+                      )
+                    : localize(
+                          'This is your CFDs trading account. Click Get to create the trading account you desire for trading.'
+                      )}
             </Text>
         ),
         target: '#trading-app-card__derived',

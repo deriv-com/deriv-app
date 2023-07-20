@@ -1,24 +1,30 @@
 import React from 'react';
 import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
 import { getWalletStepConfig, getWalletStepLocale, wallet_tour_styles } from 'Constants/tour-steps-config';
-import { useAvailableWallets } from '@deriv/hooks';
+import { useAvailableWallets, useCFDAccounts } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 
 const WalletTourGuide = observer(() => {
-    const { modules, traders_hub } = useStore();
+    const { traders_hub } = useStore();
     const { is_wallet_tour_open, toggleIsWalletTourOpen } = traders_hub;
-    const { current_list } = modules.cfd;
 
     const [joyride_index, setJoyrideIndex] = React.useState(0);
 
     const wallet_tour_step_locale = getWalletStepLocale();
 
     const { data: sorted_wallets } = useAvailableWallets();
+    const { all: cfd_accounts } = useCFDAccounts();
 
-    // if the user has an mt5 account, show a different message for the cfd step
-    const has_mt5_account = Object.keys(current_list)
-        .map(key => current_list[key])
-        .some(account => account.landing_company_short === 'svg' && account.market_type === 'synthetic');
+    // if synthetic account exists, show a different message and vice versa
+    const has_mt5_account = React.useMemo(() => {
+        if (cfd_accounts) {
+            return cfd_accounts.some(
+                // TODO: remove landing company check in the future for MT5 once all the landing company is enabled
+                account => account.market_type === 'synthetic' && account.landing_company_short === 'svg'
+            );
+        }
+        return false;
+    }, [cfd_accounts]);
 
     // if all wallets are added, skip add wallet step
     const is_all_wallets_added = React.useMemo(() => {

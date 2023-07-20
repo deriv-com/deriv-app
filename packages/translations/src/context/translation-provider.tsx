@@ -4,7 +4,6 @@ import i18n, {
     getAllowedLanguages,
     getInitialLanguage,
     loadIncontextTranslation,
-    loadLanguageJson,
     setEnvironment,
     switchLanguage,
 } from '../utils/i18next';
@@ -41,7 +40,7 @@ export const TranslationProvider = ({ children, onInit, environment = 'productio
             if (environment === 'staging' || environment === 'local') {
                 loadIncontextTranslation(current_language);
             }
-            await loadLanguageJson(current_language);
+
             await switchLanguage(current_language, environment);
         };
 

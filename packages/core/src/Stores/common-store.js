@@ -10,7 +10,6 @@ export default class CommonStore extends BaseStore {
 
         makeObservable(this, {
             server_time: observable,
-            allowed_languages: observable,
             has_error: observable,
             error: observable,
             network_status: observable,

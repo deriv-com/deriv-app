@@ -238,6 +238,7 @@ export default Trade;
 
 /* eslint-disable */
 import { SmartChart } from 'Modules/SmartChart';
+import { useLanguageSettings } from '@deriv/translations';
 
 const SmartChartWithRef = React.forwardRef((props, ref) => <SmartChart innerRef={ref} {...props} />);
 
@@ -263,6 +264,7 @@ const ChartMarkers = observer(config => {
 });
 
 const ChartTrade = observer(props => {
+    const { current_language } = useLanguageSettings();
     const { is_accumulator, end_epoch, topWidgets, charts_ref } = props;
     const { client, ui, common, contract_trade, portfolio } = useStore();
     const {
@@ -275,7 +277,7 @@ const ChartTrade = observer(props => {
     } = contract_trade;
     const { all_positions } = portfolio;
     const { is_chart_layout_default, is_chart_countdown_visible, is_dark_mode_on } = ui;
-    const { is_socket_opened, current_language } = common;
+    const { is_socket_opened } = common;
     const { should_show_eu_content } = client;
     const {
         chartStateChange,

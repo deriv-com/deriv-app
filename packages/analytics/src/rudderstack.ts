@@ -100,12 +100,12 @@ export class RudderStack {
     has_initialized = false;
     current_page = '';
 
-    init(rudderstack_key: string, rudderstack_url: string, callbackFn: () => any) {
+    init(rudderstack_key: string, rudderstack_url: string, callbackFn?: () => any) {
         if (!this.has_initialized) {
             RudderAnalytics.load(rudderstack_key, rudderstack_url);
             RudderAnalytics.ready(() => {
                 this.has_initialized = true;
-                callbackFn();
+                callbackFn?.();
             });
         }
     }

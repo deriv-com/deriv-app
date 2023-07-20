@@ -41,7 +41,7 @@ const useWalletTransactions = (
     >([]);
 
     // Maintain a flag to indicate if the list of transactions is complete.
-    const [is_transactions_complete, setIsTransactionsComplete] = useState(false);
+    const [is_end_of_transaction_list, setIsEndOfTransactionList] = useState(false);
 
     // Reset the list of transactions when the transaction type changes.
     useEffect(() => {

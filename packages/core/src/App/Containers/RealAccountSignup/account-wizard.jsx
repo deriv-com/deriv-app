@@ -325,9 +325,8 @@ const AccountWizard = props => {
         return <AcceptRiskForm onConfirm={onAcceptRisk} onClose={onDeclineRisk} />;
     }
 
-    if (!mounted) {
-        return null;
-    }
+    if (!mounted) return null;
+
     if (!finished) {
         const wizard_steps = state_items.map((step, step_index) => {
             const passthrough = getPropsForChild(step_index);

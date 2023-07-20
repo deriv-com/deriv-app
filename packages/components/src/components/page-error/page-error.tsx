@@ -45,6 +45,7 @@ const PageError = ({
             buttonOnClick?.();
         }
     };
+    const is_mobile = isMobile();
 
     return (
         // if image_url is passed we should split the page to two columns and left-align messages
@@ -79,7 +80,14 @@ const PageError = ({
                     'dc-page-error__box--malta': has_malta_account,
                 })}
             >
-                <Text as='h3' size='l' align='center' weight='bold' line_height='s' color='prominent'>
+                <Text
+                    as='h3'
+                    size={is_mobile ? 's' : 'l'}
+                    align='center'
+                    weight='bold'
+                    line_height='s'
+                    color='prominent'
+                >
                     {header}
                 </Text>
                 <div
@@ -97,8 +105,8 @@ const PageError = ({
                             (message as TMessageObject)?.has_html ? (
                                 <Text
                                     as='p'
-                                    size='s'
-                                    align={isMobile() ? 'center' : 'left'}
+                                    size={is_mobile ? 'xxs' : 's'}
+                                    align={is_mobile ? 'center' : 'left'}
                                     line_height='x'
                                     key={index}
                                     className='dc-page-error__message-paragraph'
@@ -107,8 +115,8 @@ const PageError = ({
                             ) : (
                                 <Text
                                     as='p'
-                                    size='s'
-                                    align={isMobile() ? 'center' : 'left'}
+                                    size={is_mobile ? 'xxs' : 's'}
+                                    align={is_mobile ? 'center' : 'left'}
                                     line_height='x'
                                     key={index}
                                     className='dc-page-error__message-paragraph'
@@ -130,7 +138,11 @@ const PageError = ({
                                 size={buttonSize}
                                 key={index}
                             >
-                                <Text weight='bold' className='dc-page-error__btn-text dc-btn__text'>
+                                <Text
+                                    weight='bold'
+                                    size={is_mobile ? 'xs' : 's'}
+                                    className='dc-page-error__btn-text dc-btn__text'
+                                >
                                     {redirect_labels[index]}
                                 </Text>
                             </ButtonLink>
@@ -140,10 +152,15 @@ const PageError = ({
                             type='button'
                             className='dc-page-error__btn--no-redirect'
                             onClick={onClickHandler}
-                            large
                             primary
+                            large={!is_mobile}
+                            medium={is_mobile}
                         >
-                            <Text weight='bold' className='dc-page-error__btn-text dc-btn__text'>
+                            <Text
+                                weight='bold'
+                                size={is_mobile ? 'xs' : 's'}
+                                className='dc-page-error__btn-text dc-btn__text'
+                            >
                                 {redirect_labels[0]}
                             </Text>
                         </Button>

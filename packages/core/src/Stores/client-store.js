@@ -1654,8 +1654,10 @@ export default class ClientStore extends BaseStore {
                         : process.env.RUDDERSTACK_STAGING_KEY;
                     const rudderstack_url = process.env.RUDDERSTACK_URL;
                     RudderStack.init(rudderstack_key, rudderstack_url, () => {
+                        const user_id = authorize_response.authorize?.user_id;
+
                         // Client comes back from oauth and logs in
-                        RudderStack.identifyEvent(this.user_id, {
+                        RudderStack.identifyEvent(user_id, {
                             language: getLanguage().toLowerCase(),
                         });
                         const current_page = window.location.hostname + window.location.pathname;

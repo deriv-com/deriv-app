@@ -1648,12 +1648,20 @@ export default class ClientStore extends BaseStore {
             if (this.loginid === authorize_response.authorize.loginid) {
                 BinarySocketGeneral.authorizeAccount(authorize_response);
 
-                // Client comes back from oauth and logs in
-                RudderStack.identifyEvent(this.user_id, {
-                    language: getLanguage().toLowerCase(),
-                });
-                const current_page = window.location.hostname + window.location.pathname;
-                RudderStack.pageView(current_page);
+                if (isStaging() || isProduction()) {
+                    const rudderstack_key = isProduction()
+                        ? process.env.RUDDERSTACK_PRODUCTION_KEY
+                        : process.env.RUDDERSTACK_STAGING_KEY;
+                    const rudderstack_url = process.env.RUDDERSTACK_URL;
+                    RudderStack.init(rudderstack_key, rudderstack_url, () => {
+                        // Client comes back from oauth and logs in
+                        RudderStack.identifyEvent(this.user_id, {
+                            language: getLanguage().toLowerCase(),
+                        });
+                        const current_page = window.location.hostname + window.location.pathname;
+                        RudderStack.pageView(current_page);
+                    });
+                }
 
                 await this.root_store.gtm.pushDataLayer({
                     event: 'login',

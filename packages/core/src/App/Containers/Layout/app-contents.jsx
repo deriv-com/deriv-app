@@ -4,7 +4,16 @@ import React from 'react';
 import { withRouter } from 'react-router';
 import WS from 'Services/ws-methods';
 import { DesktopWrapper, MobileWrapper, ThemedScrollbars } from '@deriv/components';
-import { CookieStorage, isMobile, TRACKING_STATUS_KEY, PlatformContext, platforms, routes } from '@deriv/shared';
+import {
+    CookieStorage,
+    isProduction,
+    isMobile,
+    isStaging,
+    TRACKING_STATUS_KEY,
+    PlatformContext,
+    platforms,
+    routes,
+} from '@deriv/shared';
 import { RudderStack } from '@deriv/analytics';
 import { connect } from 'Stores/connect';
 import CookieBanner from '../../Components/Elements/CookieBanner/cookie-banner.jsx';
@@ -44,11 +53,18 @@ const AppContents = ({
             if (response.error) return;
             const user_id = response.authorize?.user_id;
 
-            if (is_logged_in && user_id) {
-                RudderStack.identifyEvent(user_id, {
-                    language: getLanguage().toLowerCase() || 'en',
+            if (is_logged_in && user_id && (isStaging() || isProduction())) {
+                const rudderstack_key = isProduction()
+                    ? process.env.RUDDERSTACK_PRODUCTION_KEY
+                    : process.env.RUDDERSTACK_STAGING_KEY;
+                const rudderstack_url = process.env.RUDDERSTACK_URL;
+
+                RudderStack.init(rudderstack_key, rudderstack_url, () => {
+                    RudderStack.identifyEvent(user_id, {
+                        language: getLanguage().toLowerCase() || 'en',
+                    });
+                    RudderStack.pageView(current_page);
                 });
-                RudderStack.pageView(current_page);
             }
         });
 

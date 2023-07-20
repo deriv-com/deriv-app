@@ -100,25 +100,12 @@ export class RudderStack {
     has_initialized = false;
     current_page = '';
 
-    constructor() {
-        this.init();
-    }
-
-    init() {
-        const is_production = process.env.CIRCLE_JOB === 'release_production';
-        const is_staging = process.env.CIRCLE_JOB === 'release_staging';
-
-        if (!is_production && !is_staging) return;
-
-        const RUDDERSTACK_KEY = is_production
-            ? process.env.RUDDERSTACK_PRODUCTION_KEY
-            : process.env.RUDDERSTACK_STAGING_KEY;
-        const RUDDERSTACK_URL = process.env.RUDDERSTACK_URL;
-
-        if (RUDDERSTACK_KEY && RUDDERSTACK_URL) {
-            RudderAnalytics.load(RUDDERSTACK_KEY, RUDDERSTACK_URL);
+    init(rudderstack_key: string, rudderstack_url: string, callbackFn: () => any) {
+        if (!this.has_initialized) {
+            RudderAnalytics.load(rudderstack_key, rudderstack_url);
             RudderAnalytics.ready(() => {
                 this.has_initialized = true;
+                callbackFn();
             });
         }
     }

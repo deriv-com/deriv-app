@@ -45,7 +45,7 @@ const useWalletTransactions = (
 
     // Reset the list of transactions when the transaction type changes.
     useEffect(() => {
-        setIsTransactionsComplete(false);
+        setIsEndOfTransactionList(false);
         setTransactions([]);
     }, [action_type]);
 
@@ -53,7 +53,7 @@ const useWalletTransactions = (
     useEffect(() => {
         const new_transactions = data?.statement?.transactions;
         if (new_transactions) setTransactions(prev => [...prev, ...(new_transactions || [])]);
-        if (new_transactions?.length === 0) setIsTransactionsComplete(true);
+        if (new_transactions?.length === 0) setIsEndOfTransactionList(true);
     }, [data?.statement?.transactions]);
 
     // Add additional information to each transaction.
@@ -134,7 +134,7 @@ const useWalletTransactions = (
         /** List of transactions of the active wallet of the current user. */
         transactions: modified_transactions,
         /** Indicating whether this list in question is complete. */
-        isComplete: is_transactions_complete,
+        isComplete: is_end_of_transaction_list,
         ...rest,
     };
 };

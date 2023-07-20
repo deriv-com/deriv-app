@@ -78,9 +78,9 @@ describe('useWithdrawalLocked', () => {
             isSuccess: true,
         } as ReturnType<typeof mockUseAccountStatus>);
 
-        const { result: result_1 } = renderHook(useWithdrawalLocked, { wrapper });
+        const { result, rerender } = renderHook(useWithdrawalLocked, { wrapper });
 
-        expect(result_1.current.is_withdrawal_locked).toBe(false);
+        expect(result.current.is_withdrawal_locked).toBe(false);
 
         mock_store.modules.cashier.error.is_ask_authentication = false;
         mock_store.modules.cashier.error.is_ask_financial_risk_approval = false;
@@ -96,8 +96,8 @@ describe('useWithdrawalLocked', () => {
             isSuccess: true,
         } as ReturnType<typeof mockUseAccountStatus>);
 
-        const { result: result_2 } = renderHook(useWithdrawalLocked, { wrapper });
+        rerender();
 
-        expect(result_2.current.is_withdrawal_locked).toBe(false);
+        expect(result.current.is_withdrawal_locked).toBe(false);
     });
 });

@@ -67,10 +67,10 @@ describe('useAccountStatus', () => {
                 },
             },
         });
-        const { result: result_1 } = renderHook(useAccountStatus);
-        const { statuses: statuses_1 } = result_1.current;
+        const { result, rerender } = renderHook(useAccountStatus);
+        const { statuses } = result.current;
 
-        expect(statuses_1.needs_verification.is_poi_needed).toBe(false);
+        expect(statuses.needs_verification.is_poi_needed).toBe(false);
 
         mockUseCheck10kLimit.mockReturnValue({
             is_10k_withdrawal_limit_reached: false,
@@ -91,10 +91,9 @@ describe('useAccountStatus', () => {
             },
         });
 
-        const { result: result_2 } = renderHook(useAccountStatus);
-        const { statuses: statuses_2 } = result_2.current;
+        rerender();
 
-        expect(statuses_2.needs_verification.is_poi_needed).toBe(false);
+        expect(statuses.needs_verification.is_poi_needed).toBe(false);
     });
 
     it('should check whether POI documents are submitted', () => {
@@ -156,9 +155,9 @@ describe('useAccountStatus', () => {
             isSuccess: true,
         });
 
-        const { result: result_1 } = renderHook(useAccountStatus);
+        const { result, rerender } = renderHook(useAccountStatus);
 
-        expect(result_1.current.statuses.needs_verification.is_poa_needed).toBe(false);
+        expect(result.current.statuses.needs_verification.is_poa_needed).toBe(false);
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
@@ -180,9 +179,9 @@ describe('useAccountStatus', () => {
             isSuccess: true,
         });
 
-        const { result: result_2 } = renderHook(useAccountStatus);
+        rerender();
 
-        expect(result_2.current.statuses.needs_verification.is_poa_needed).toBe(false);
+        expect(result.current.statuses.needs_verification.is_poa_needed).toBe(false);
     });
 
     it('should check whether POA is needed if document is needed', () => {
@@ -205,9 +204,9 @@ describe('useAccountStatus', () => {
             isSuccess: true,
         });
 
-        const { result: result_1 } = renderHook(useAccountStatus);
+        const { result, rerender } = renderHook(useAccountStatus);
 
-        expect(result_1.current.statuses.needs_verification.is_poa_needed).toBe(true);
+        expect(result.current.statuses.needs_verification.is_poa_needed).toBe(true);
 
         // @ts-expect-error need to come up with a way to mock the return type of useFetch
         mockUseFetch.mockReturnValue({
@@ -220,9 +219,9 @@ describe('useAccountStatus', () => {
             },
         });
 
-        const { result: result_2 } = renderHook(useAccountStatus);
+        rerender();
 
-        expect(result_2.current.statuses.needs_verification.is_poa_needed).toBe(true);
+        expect(result.current.statuses.needs_verification.is_poa_needed).toBe(true);
     });
 
     it('should check whether POA documents are not submitted', () => {

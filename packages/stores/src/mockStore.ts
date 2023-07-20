@@ -340,6 +340,7 @@ const mock = (): TStores & { is_mock: boolean } => {
                 login: '',
                 account_id: '',
             },
+            handleTabItemClick: jest.fn(),
             is_eu_user: false,
             is_real: false,
             selectRegion: jest.fn(),

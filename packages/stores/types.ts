@@ -521,6 +521,7 @@ type TTradersHubStore = {
         login: string;
         account_id: string;
     };
+    handleTabItemClick: (idx: number) => void;
     is_low_risk_cr_eu_real: boolean;
     is_eu_user: boolean;
     show_eu_related_content: boolean;

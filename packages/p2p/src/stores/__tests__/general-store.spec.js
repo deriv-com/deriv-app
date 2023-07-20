@@ -6,7 +6,6 @@ import { waitFor } from '@testing-library/react';
 
 let general_store;
 const root_store = new RootStore();
-const thirtyDaysFromNowEpoch = Math.floor((new Date().getTime() + 30 * 24 * 60 * 60 * 1000) / 1000);
 
 const website_status = {
     p2p_config: {

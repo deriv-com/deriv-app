@@ -1,7 +1,7 @@
 import React from 'react';
 import debounce from 'lodash.debounce';
-import { observer } from 'mobx-react-lite';
 import { SearchBox } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import FilterPaymentMethodsResults from './filter-payment-method-results';

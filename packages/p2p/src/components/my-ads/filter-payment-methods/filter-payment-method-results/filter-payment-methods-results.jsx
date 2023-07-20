@@ -1,6 +1,6 @@
 import React from 'react';
-import { observer } from 'mobx-react-lite';
 import { Loading, RadioGroup, Text } from '@deriv/components';
+import { observer } from '@deriv/stores';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 

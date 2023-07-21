@@ -174,12 +174,7 @@ const Dashboard = ({
     const botStorageSetting = () => {
         tour_status = getTourSettings('bot_builder_status');
         if (tour_status_ended.key === 'finished' && !is_mobile) {
-            if (active_tab === 1) {
-                setTourDialogVisibility(true);
-            }
-            if (tour_type.key === 'onboard_tour') {
-                onCloseTour();
-            }
+            setTourDialogVisibility(true);
             setHasTourEnded(true);
             is_tour_complete.current = false;
             window.removeEventListener('storage', botStorageSetting);

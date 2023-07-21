@@ -184,7 +184,6 @@ export const DBOT_ONBOARDING = [
                 step_index={6}
             />
         ),
-        locale: { last: localize('Next') },
         ...joyride_props,
         disableOverlay: false,
     },
@@ -457,7 +456,6 @@ export const BOT_BUILDER_TOUR = [
     {
         target: '.animation__wrapper',
         content: <Step6 show_label />,
-        locale: { last: localize('Next') },
         ...joyride_props,
     },
 ];

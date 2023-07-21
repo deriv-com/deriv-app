@@ -172,14 +172,6 @@ export const getUnsupportedContracts = () => ({
         name: 'Spread Down',
         position: 'bottom',
     },
-    RUNHIGH: {
-        name: 'Only Ups',
-        position: 'top',
-    },
-    RUNLOW: {
-        name: 'Only Downs',
-        position: 'bottom',
-    },
 });
 
 export const getSupportedContracts = is_high_low => ({
@@ -252,6 +244,14 @@ export const getSupportedContracts = is_high_low => ({
     TURBOSSHORT: {
         button_name: 'Short',
         name: 'Turbos',
+        position: 'bottom',
+    },
+    RUNHIGH: {
+        name: 'Only Ups',
+        position: 'top',
+    },
+    RUNLOW: {
+        name: 'Only Downs',
         position: 'bottom',
     },
 });

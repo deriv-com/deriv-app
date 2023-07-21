@@ -158,14 +158,6 @@ export const getUnsupportedContracts = () => ({
         name: localize('Put Spread'),
         position: 'bottom',
     },
-    RUNHIGH: {
-        name: localize('Only Ups'),
-        position: 'top',
-    },
-    RUNLOW: {
-        name: localize('Only Downs'),
-        position: 'bottom',
-    },
 });
 
 export const getSupportedContracts = is_high_low => ({
@@ -230,6 +222,14 @@ export const getSupportedContracts = is_high_low => ({
     TURBOSSHORT: {
         button_name: localize('Short'),
         name: 'Turbos',
+        position: 'bottom',
+    },
+    RUNHIGH: {
+        name: localize('Only Ups'),
+        position: 'top',
+    },
+    RUNLOW: {
+        name: localize('Only Downs'),
         position: 'bottom',
     },
 });

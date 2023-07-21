@@ -30,6 +30,7 @@ const ContractDrawer = observer(
         is_multiplier,
         is_turbos,
         is_vanilla,
+        is_only_ups_downs,
         onClickCancel,
         onClickSell,
         status,
@@ -55,12 +56,15 @@ const ContractDrawer = observer(
                 is_accumulator={is_accumulator}
                 is_dark_theme={is_dark_theme}
                 is_multiplier={is_multiplier}
+                is_only_ups_downs={is_only_ups_downs}
                 is_open
                 is_turbos={is_turbos}
                 duration={getDurationTime(contract_info)}
                 duration_unit={getDurationUnitText(getDurationPeriod(contract_info))}
                 exit_spot={exit_spot}
-                has_result={!!is_sold || is_accumulator || is_multiplier || is_turbos || is_vanilla}
+                has_result={
+                    !!is_sold || is_accumulator || is_only_ups_downs || is_multiplier || is_turbos || is_vanilla
+                }
                 toggleHistoryTab={toggleHistoryTab}
                 is_vanilla={is_vanilla}
             />
@@ -159,6 +163,7 @@ const ContractDrawer = observer(
 ContractDrawer.propTypes = {
     is_accumulator: PropTypes.bool,
     is_multiplier: PropTypes.bool,
+    is_only_ups_downs: PropTypes.bool,
     is_turbos: PropTypes.bool,
     is_vanilla: PropTypes.bool,
     toggleHistoryTab: PropTypes.func,

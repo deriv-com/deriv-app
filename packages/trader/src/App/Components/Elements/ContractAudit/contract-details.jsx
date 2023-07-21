@@ -9,6 +9,7 @@ import {
     isAccumulatorContract,
     isMobile,
     isMultiplierContract,
+    isOnlyUpsDownsContract,
     isTurbosContract,
     isUserSold,
     isEndedBeforeCancellationExpired,
@@ -42,7 +43,7 @@ const ContractDetails = ({ contract_end_time, contract_info, duration, duration_
 
     const is_profit = profit >= 0;
     const cancellation_price = getCancellationPrice(contract_info);
-    const show_barrier = !is_vanilla && !isAccumulatorContract(contract_type);
+    const show_barrier = !is_vanilla && !isAccumulatorContract(contract_type) && !isOnlyUpsDownsContract(contract_type);
     const show_duration = !isAccumulatorContract(contract_type) || !isNaN(contract_end_time);
     const show_payout_per_point = isTurbosContract(contract_type) || is_vanilla;
     const ticks_duration_text = isAccumulatorContract(contract_type)

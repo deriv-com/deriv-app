@@ -9,6 +9,7 @@ import {
     getContractSubtype,
     isAccumulatorContract,
     isBot,
+    isOnlyUpsDownsContract,
     isMobile,
     isTurbosContract,
 } from '@deriv/shared';
@@ -66,6 +67,7 @@ const ContractCardHeader = ({
     const { is_pathname_bot } = isBot();
     const is_sold = !!contract_info.is_sold || is_contract_sold;
     const is_accumulator = isAccumulatorContract(contract_type);
+    const is_only_ups_downs = isOnlyUpsDownsContract(contract_type);
     const is_mobile = isMobile();
     const is_turbos = isTurbosContract(contract_type);
 
@@ -116,7 +118,13 @@ const ContractCardHeader = ({
                         width={is_accumulator ? 46 : 40}
                         size={32}
                     />
-                    <Text size='xxs' className='dc-contract-card__symbol' weight='bold'>
+                    <Text
+                        size='xxs'
+                        className={classNames('dc-contract-card__symbol', {
+                            'dc-contract-card__symbol--ups-downs': is_only_ups_downs,
+                        })}
+                        weight='bold'
+                    >
                         {display_name || contract_info.display_name}
                     </Text>
                 </div>

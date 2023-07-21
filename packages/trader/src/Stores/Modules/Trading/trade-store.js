@@ -1111,6 +1111,7 @@ export default class TradeStore extends BaseStore {
             this.proposal_info = {};
             this.purchase_info = {};
             this.forgetAllProposal();
+            if (this.is_accumulator) this.resetAccumulatorData();
             return;
         }
 
@@ -1223,6 +1224,7 @@ export default class TradeStore extends BaseStore {
                     this.commission = commission_match[1];
                 }
             }
+            if (this.is_accumulator) this.resetAccumulatorData();
 
             // Sometimes when we navigate fast, `forget_all` proposal is called immediately after proposal subscription calls.
             // But, in the BE, `forget_all` proposal call is processed before the proposal subscriptions are registered. In this case, `forget_all` proposal doesn't forget the new subscriptions.

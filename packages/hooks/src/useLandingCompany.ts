@@ -15,7 +15,7 @@ const useLandingCompany = () => {
         () => ({
             ...data?.landing_company,
         }),
-        [data?.landing_company]
+        [data?.landing_company, residence]
     );
 
     return {

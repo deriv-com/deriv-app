@@ -17,7 +17,7 @@ type TListProps = {
 
 const List = ({ handleInfoClick, handleSelect, list, value }: TListProps) => (
     <React.Fragment>
-        {list.map((contract_category, key) => {
+        {list.map(contract_category => {
             const contract_types = contract_category.contract_types?.filter(contract_type => {
                 const base_contract_type = /^(.*)_equal$/.exec(contract_type.value)?.[1];
 
@@ -30,7 +30,7 @@ const List = ({ handleInfoClick, handleSelect, list, value }: TListProps) => (
             const is_new = contract_category.key === 'Accumulators' || contract_category.key === 'Vanillas';
 
             return (
-                <div key={key} className='contract-type-list' data-testid='contract_list'>
+                <div key={contract_category.key} className='contract-type-list' data-testid='contract_list'>
                     <div className='contract-type-item__container'>
                         <Text size='xs' className='contract-type-list__label'>
                             {contract_category.label}

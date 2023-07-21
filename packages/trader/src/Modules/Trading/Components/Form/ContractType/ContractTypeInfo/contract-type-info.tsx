@@ -56,10 +56,10 @@ const Info = ({ handleSelect, item, list }: TInfo) => {
     const scroll_bar_height = has_toggle_buttons ? '464px' : '560px';
     const onClickGlossary = () => setSelectedTab(TABS.GLOSSARY);
 
-    const cards = contract_types.map((type: TContractType, idx) => {
+    const cards = contract_types.map((type: TContractType) => {
         if (type.value !== item.value) return null;
         return (
-            <div key={idx} className='contract-type-info__card'>
+            <div key={type.value} className='contract-type-info__card'>
                 <ThemedScrollbars
                     className={classNames('contract-type-info__scrollbars', {
                         'contract-type-info__scrollbars-description--active': is_description_tab_selected,

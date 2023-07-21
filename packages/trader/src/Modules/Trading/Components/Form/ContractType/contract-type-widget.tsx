@@ -195,7 +195,7 @@ const ContractTypeWidget = ({ name, value, list, onChange, languageChanged }: TC
             <ContractType.Display
                 is_open={is_dialog_open || is_info_dialog_open}
                 list={list}
-                name={name || ''}
+                name={name ?? ''}
                 onClick={onWidgetClick}
                 value={value}
             />

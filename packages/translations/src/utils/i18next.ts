@@ -158,11 +158,15 @@ export const loadLanguageJson = async (lang: string) => {
  * @returns {Promise<void>} A promise that resolves after the language switch is completed successfully, or rejects if the
  *                          specified language is not available in the given environment.
  */
-export const switchLanguage = async (lang: Language, environment: Environment, onChange?: (lang: Language) => void) => {
+export const switchLanguage = async (
+    lang: Language,
+    environment: Environment,
+    onChange?: (lang: Language) => void | Promise<void>
+) => {
     if (isLanguageAvailable(lang, environment)) {
-        await i18n.changeLanguage(lang, () => {
+        await i18n.changeLanguage(lang, async () => {
             localStorage.setItem(STORE_LANGUAGE_KEY, lang);
-            if (typeof onChange === 'function') onChange(lang);
+            if (typeof onChange === 'function') await onChange(lang);
         });
     }
 };

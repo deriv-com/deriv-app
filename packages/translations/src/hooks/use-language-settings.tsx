@@ -15,12 +15,7 @@ const useLanguageSettings = ({ onChange, onComplete }: UseLanguageSettings = {})
             window.localStorage.setItem(STORE_LANGUAGE_KEY, selected_lang);
         }
 
-        if (typeof onChange === 'function') {
-            const onChangeResult = onChange(selected_lang);
-            if (onChangeResult instanceof Promise) {
-                await onChangeResult;
-            }
-        }
+        if (typeof onChange === 'function') await onChange(selected_lang);
 
         const current_url = new URL(window.location.href);
         if (selected_lang === 'EN') {
@@ -33,12 +28,7 @@ const useLanguageSettings = ({ onChange, onComplete }: UseLanguageSettings = {})
         await switchLanguage(selected_lang, environment, async () => {
             setCurrentLanguage(selected_lang);
 
-            if (typeof onComplete === 'function') {
-                const onCompleteResult = onComplete(selected_lang);
-                if (onCompleteResult instanceof Promise) {
-                    await onCompleteResult;
-                }
-            }
+            if (typeof onComplete === 'function') await onComplete(selected_lang);
         });
     };
 

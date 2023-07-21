@@ -10,9 +10,10 @@ type TTourGuide = {
     label: string | boolean;
     onCloseTour: () => void;
     step_index: number;
+    show_actions?: boolean;
 };
 
-const TourGuide = ({ content, img, label, onCloseTour, step_index }: TTourGuide) => {
+const TourGuide = ({ content, img, label, onCloseTour, step_index, show_actions = true }: TTourGuide) => {
     const [has_image_loaded, setImageLoaded] = React.useState(false);
 
     React.useEffect(() => {
@@ -28,14 +29,16 @@ const TourGuide = ({ content, img, label, onCloseTour, step_index }: TTourGuide)
     return (
         <React.Fragment>
             <div className='onboard'>
-                <div className='onboard__header'>
-                    <Text color='less-prominent' line_height='l'>
-                        {step_index}/7
-                    </Text>
-                    <Text className='onboard__header--close' line_height='l' onClick={onCloseTour}>
-                        {localize('Exit tour')}
-                    </Text>
-                </div>
+                {show_actions && (
+                    <div className='onboard__header'>
+                        <Text color='less-prominent' line_height='l'>
+                            {step_index}/6
+                        </Text>
+                        <Text className='onboard__header--close' line_height='l' onClick={onCloseTour}>
+                            {localize('Exit tour')}
+                        </Text>
+                    </div>
+                )}
                 <div className='onboard__label'>
                     <Text as='h' line_height='l' weight='bold'>
                         {label}

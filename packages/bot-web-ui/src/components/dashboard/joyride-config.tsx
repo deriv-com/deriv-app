@@ -197,10 +197,12 @@ export const DBOT_ONBOARDING = [
                 content={[localize("If you're interested, head to Tutorials.")]}
                 dashboard_tab_index={0}
                 step_index={7}
+                show_actions={false}
             />
         ),
-        locale: { last: localize('Finish') },
+        locale: { last: localize('Got it, thanks!') },
         ...joyride_props,
+        hideBackButton: true,
         disableOverlay: false,
     },
 ];

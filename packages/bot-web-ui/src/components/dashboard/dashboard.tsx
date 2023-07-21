@@ -174,7 +174,14 @@ const Dashboard = ({
     const botStorageSetting = () => {
         tour_status = getTourSettings('bot_builder_status');
         if (tour_status_ended.key === 'finished' && !is_mobile) {
+            if (tour_type.key === 'onboard_tour') {
+                const status = tour_status_ended.key === 'finished';
+                onCloseTour();
+                tour_status_ended.key = '';
+                return status ? tour_status_ended.key : null;
+            }
             setTourDialogVisibility(true);
+
             setHasTourEnded(true);
             is_tour_complete.current = false;
             window.removeEventListener('storage', botStorageSetting);
@@ -184,6 +191,7 @@ const Dashboard = ({
         if (active_tab === 1 && !storage.bot_builder_token && !has_started_onboarding_tour) {
             setTourSettings(new Date().getTime(), `${tour_type.key}_token`);
         }
+        return botStorageSetting;
     };
     if (!bot_tour_token && !is_mobile && !has_started_onboarding_tour) {
         window.addEventListener('storage', botStorageSetting);

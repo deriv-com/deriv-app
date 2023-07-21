@@ -25,9 +25,10 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
     const [residence_list, setResidenceList] = React.useState();
     const [is_status_loading, setStatusLoading] = React.useState(true);
 
-    const { client, common } = useStore();
+    const { client, common, notifications } = useStore();
 
     const {
+        account_settings,
         account_status,
         fetchResidenceList,
         is_switching,
@@ -37,6 +38,7 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
         is_virtual,
     } = client;
     const { app_routing_history, is_language_changing, routeBackInApp } = common;
+    const { refreshNotifications } = notifications;
 
     const from_platform = getPlatformRedirect(app_routing_history);
 
@@ -44,6 +46,13 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
     const handleRequireSubmission = () => setHasRequireSubmission(true);
+    const country_code = account_settings?.citizen || account_settings?.country_code;
+
+    const handleManualSubmit = () => {
+        WS.authorized.getAccountStatus().then(() => {
+            refreshNotifications();
+        });
+    };
 
     const loadResidenceList = React.useCallback(() => {
         setStatusLoading(true);
@@ -207,17 +216,22 @@ const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateCh
                     manual={manual}
                     setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                     redirect_button={redirect_button}
+                    country_code={country_code}
+                    handleViewComplete={handleManualSubmit}
                 />
             );
         case service_code.manual:
             return (
                 <Unsupported
                     manual={manual}
+                    country_code={country_code}
                     is_from_external={is_from_external}
                     setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                     needs_poa={needs_poa}
                     redirect_button={redirect_button}
                     handleRequireSubmission={handleRequireSubmission}
+                    handleViewComplete={handleManualSubmit}
+                    onfido={onfido}
                 />
             );
         default:

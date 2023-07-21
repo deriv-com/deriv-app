@@ -1,5 +1,6 @@
 import { Button, Loading } from '@deriv/components';
-import { WS, getPlatformRedirect, platforms } from '@deriv/shared';
+import { isEmptyObject, WS, getPlatformRedirect, platforms } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { identity_status_codes, service_code } from './proof-of-identity-utils';
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
@@ -17,30 +18,25 @@ import Verified from 'Components/poi/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification';
 import { useHistory } from 'react-router';
 
-const ProofOfIdentityContainer = ({
-    account_settings,
-    account_status,
-    app_routing_history,
-    fetchResidenceList,
-    getChangeableFields,
-    height,
-    is_from_external,
-    is_switching,
-    is_virtual,
-    is_high_risk,
-    is_withdrawal_lock,
-    onStateChange,
-    refreshNotifications,
-    routeBackInApp,
-    should_allow_authentication,
-    setIsCfdPoiCompleted,
-    updateAccountStatus,
-}) => {
+const ProofOfIdentityContainer = observer(({ height, is_from_external, onStateChange, setIsCfdPoiCompleted }) => {
     const history = useHistory();
     const [api_error, setAPIError] = React.useState();
     const [has_require_submission, setHasRequireSubmission] = React.useState(false);
     const [residence_list, setResidenceList] = React.useState();
     const [is_status_loading, setStatusLoading] = React.useState(true);
+
+    const { client, common } = useStore();
+
+    const {
+        account_status,
+        fetchResidenceList,
+        is_switching,
+        is_high_risk,
+        is_withdrawal_lock,
+        should_allow_authentication,
+        is_virtual,
+    } = client;
+    const { app_routing_history, is_language_changing, routeBackInApp } = common;
 
     const from_platform = getPlatformRedirect(app_routing_history);
 
@@ -48,6 +44,24 @@ const ProofOfIdentityContainer = ({
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
     const handleRequireSubmission = () => setHasRequireSubmission(true);
+
+    const loadResidenceList = React.useCallback(() => {
+        setStatusLoading(true);
+        fetchResidenceList().then(response_residence_list => {
+            if (response_residence_list.error) {
+                setAPIError(response_residence_list.error);
+            } else {
+                setResidenceList(response_residence_list.residence_list);
+            }
+        });
+        setStatusLoading(false);
+    }, [fetchResidenceList]);
+
+    React.useEffect(() => {
+        if (is_language_changing) {
+            loadResidenceList();
+        }
+    }, [is_language_changing, loadResidenceList]);
 
     React.useEffect(() => {
         // only re-mount logic when switching is done
@@ -58,20 +72,12 @@ const ProofOfIdentityContainer = ({
                     setStatusLoading(false);
                     return;
                 }
-
-                fetchResidenceList().then(response_residence_list => {
-                    if (response_residence_list.error) {
-                        setAPIError(response_residence_list.error);
-                    } else {
-                        setResidenceList(response_residence_list.residence_list);
-                    }
-                    setStatusLoading(false);
-                });
+                loadResidenceList();
             });
         }
-    }, [fetchResidenceList, is_switching]);
+    }, [is_switching, loadResidenceList]);
 
-    if (is_status_loading || is_switching) {
+    if (is_status_loading || is_switching || isEmptyObject(account_status)) {
         return <Loading is_fullscreen={false} />;
     } else if (is_virtual) {
         return <DemoMessage />;
@@ -126,24 +132,19 @@ const ProofOfIdentityContainer = ({
     ) {
         return (
             <POISubmission
-                account_settings={account_settings}
                 allow_poi_resubmission={allow_poi_resubmission}
                 has_require_submission={has_require_submission}
                 height={height ?? null}
-                getChangeableFields={getChangeableFields}
                 identity_last_attempt={identity_last_attempt}
                 idv={idv}
                 is_from_external={!!is_from_external}
                 is_idv_disallowed={is_idv_disallowed || should_ignore_idv}
-                manual={manual}
                 needs_poa={needs_poa}
                 onfido={onfido}
                 onStateChange={onStateChange}
                 redirect_button={redirect_button}
-                refreshNotifications={refreshNotifications}
                 residence_list={residence_list}
                 setIsCfdPoiCompleted={setIsCfdPoiCompleted}
-                updateAccountStatus={updateAccountStatus}
             />
         );
     } else if (
@@ -222,6 +223,6 @@ const ProofOfIdentityContainer = ({
         default:
             return null;
     }
-};
+});
 
 export default ProofOfIdentityContainer;

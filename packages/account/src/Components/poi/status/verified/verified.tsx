@@ -1,9 +1,9 @@
 import React from 'react';
 import { Icon } from '@deriv/components';
-import IconMessageContent from 'Components/icon-message-content';
+import IconMessageContent from '../../../icon-message-content';
 import { TPlatformContext, TPOIStatus } from 'Types';
 import { PlatformContext } from '@deriv/shared';
-import PoaButton from 'Components/poa/poa-button';
+import PoaButton from '../../../poa/poa-button';
 import { localize } from '@deriv/translations';
 
 export const Verified = ({ needs_poa, redirect_button, is_from_external }: TPOIStatus) => {

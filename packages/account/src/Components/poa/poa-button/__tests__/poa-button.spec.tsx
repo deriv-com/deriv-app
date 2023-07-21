@@ -3,7 +3,7 @@ import { createBrowserHistory } from 'history';
 import { Router } from 'react-router';
 import { fireEvent, render, screen } from '@testing-library/react';
 import { routes } from '@deriv/shared';
-import { PoaButton } from '../poa-button';
+import PoaButton from '../poa-button';
 
 describe('<PoaButton/>', () => {
     const history = createBrowserHistory();

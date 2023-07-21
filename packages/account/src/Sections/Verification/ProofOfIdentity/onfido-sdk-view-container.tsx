@@ -7,11 +7,11 @@ import { GetSettings, ResidenceList } from '@deriv/api-types';
 import { Loading, ThemedScrollbars } from '@deriv/components';
 import { cryptoMathRandom, isMobile, WS } from '@deriv/shared';
 import { getLanguage } from '@deriv/translations';
-import ErrorMessage from 'Components/error-component';
-import getOnfidoPhrases from 'Constants/onfido-phrases';
-import MissingPersonalDetails from 'Components/poi/missing-personal-details';
-import PoiConfirmWithExampleFormContainer from 'Components/poi/poi-confirm-with-example-form-container';
-import OnfidoSdkView from 'Sections/Verification/ProofOfIdentity/onfido-sdk-view';
+import ErrorMessage from '../../../Components/error-component';
+import getOnfidoPhrases from '../../../Constants/onfido-phrases';
+import MissingPersonalDetails from '../../../Components/poi/missing-personal-details';
+import PoiConfirmWithExampleFormContainer from '../../../Components/poi/poi-confirm-with-example-form-container';
+import OnfidoSdkView from './onfido-sdk-view';
 
 type TAPIError = {
     code?: string;

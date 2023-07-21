@@ -76,7 +76,7 @@ const ListItem = ({ is_active, is_disabled, index, item, child_ref, onItemSelect
 
 const ListItems = React.forwardRef<HTMLDivElement, TListItems>((props, ref) => {
     const { active_index, list_items, is_object_list, onItemSelection, setActiveIndex, not_found_text } = props;
-    const is_grouped_list = list_items.some(list_item => typeof list_item === 'object' && !!list_item.group);
+    const is_grouped_list = list_items?.some(list_item => typeof list_item === 'object' && !!list_item.group);
 
     if (is_grouped_list) {
         const groups: { [key: string]: TItem[] } = {};
@@ -126,7 +126,7 @@ const ListItems = React.forwardRef<HTMLDivElement, TListItems>((props, ref) => {
 
     return (
         <>
-            {list_items.length ? (
+            {list_items?.length ? (
                 list_items.map((item, item_idx) => (
                     <ListItem
                         key={item_idx}
@@ -162,12 +162,12 @@ const DropdownList = (props: TDropDownList) => {
         portal_id,
     } = props;
 
-    if (list_items.length && typeof list_items[0] !== 'string' && typeof list_items[0] !== 'object') {
+    if (list_items?.length && typeof list_items[0] !== 'string' && typeof list_items[0] !== 'object') {
         throw Error('Dropdown received wrong data structure');
     }
 
     const is_object = !Array.isArray(list_items) && typeof list_items === 'object';
-    const is_string_array = list_items.length && typeof list_items[0] === 'string';
+    const is_string_array = list_items?.length && typeof list_items[0] === 'string';
 
     const el_dropdown_list = (
         <CSSTransition

@@ -7,7 +7,7 @@ import FormFooter from 'Components/form-footer';
 
 type TCountry = Record<string, string>;
 
-type TCountrySelector = {
+type TPoiCountrySelector = {
     handleSelectionNext: () => void;
     is_from_external: boolean;
     residence_list: TCountry[];
@@ -15,13 +15,13 @@ type TCountrySelector = {
     setSelectedCountry: (value: TCountry) => void;
 };
 
-const CountrySelector = ({
+const PoiCountrySelector = ({
     handleSelectionNext,
     is_from_external,
     residence_list,
     selected_country,
     setSelectedCountry,
-}: TCountrySelector) => {
+}: TPoiCountrySelector) => {
     const [country_list, setCountryList] = React.useState<TCountry[]>([]);
 
     const initial_form_values: FormikValues = {
@@ -168,4 +168,4 @@ const CountrySelector = ({
     );
 };
 
-export default CountrySelector;
+export default PoiCountrySelector;

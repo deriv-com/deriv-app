@@ -4,7 +4,12 @@ import { Field, FieldProps } from 'formik';
 import { localize } from '@deriv/translations';
 import { formatInput, getIDVNotApplicableOption } from '@deriv/shared';
 import { Autocomplete, DesktopWrapper, Input, MobileWrapper, SelectNative, Text } from '@deriv/components';
-import { getDocumentData, preventEmptyClipboardPaste, generatePlaceholderText, getExampleFormat } from 'Helpers/utils';
+import {
+    getDocumentData,
+    preventEmptyClipboardPaste,
+    generatePlaceholderText,
+    getExampleFormat,
+} from '../../Helpers/utils';
 import { TDocument, TIDVForm } from 'Types';
 
 const IDVForm = ({

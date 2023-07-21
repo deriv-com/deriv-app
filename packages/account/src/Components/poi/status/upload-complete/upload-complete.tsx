@@ -2,9 +2,9 @@ import React from 'react';
 import { Icon, Text } from '@deriv/components';
 import { PlatformContext, isNavigationFromP2P, isNavigationFromDerivGO } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import PoaButton from 'Components/poa/poa-button';
-import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
-import IconMessageContent from 'Components/icon-message-content';
+import PoaButton from '../../../poa/poa-button';
+import { ContinueTradingButton } from '../../../poa/continue-trading-button/continue-trading-button';
+import IconMessageContent from '../../../icon-message-content/icon-message-content';
 import { TPlatformContext, TPOIStatus } from 'Types';
 import classNames from 'classnames';
 

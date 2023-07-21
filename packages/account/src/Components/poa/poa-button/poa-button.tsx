@@ -7,10 +7,12 @@ type TPoaButton = {
     custom_text?: string;
 };
 
-export const PoaButton = ({ custom_text = localize('Submit proof of address') }: TPoaButton) => (
+const PoaButton = ({ custom_text = localize('Submit proof of address') }: TPoaButton) => (
     <ButtonLink className='account-management__button' to={routes.proof_of_address}>
         <Text className='dc-btn__text' as='p' weight='bold' data-testid='poa_button_text'>
             {custom_text}
         </Text>
     </ButtonLink>
 );
+
+export default PoaButton;

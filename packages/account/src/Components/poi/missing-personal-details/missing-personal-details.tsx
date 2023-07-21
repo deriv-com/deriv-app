@@ -2,7 +2,7 @@ import React from 'react';
 import { PlatformContext } from '@deriv/shared';
 import { ButtonLink, Icon, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import IconMessageContent from 'Components/icon-message-content';
+import IconMessageContent from '../../icon-message-content';
 
 type TGoToPersonalDetailsButton = {
     has_invalid_postal_code?: boolean;

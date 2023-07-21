@@ -1,3 +1,3 @@
-import CountrySelector from './poi-country-selector';
+import PoiCountrySelector from './poi-country-selector';
 
-export default CountrySelector;
+export default PoiCountrySelector;

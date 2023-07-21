@@ -12,10 +12,10 @@ import {
     toMoment,
     WS,
 } from '@deriv/shared';
-import FormBody from 'Components/form-body';
-import LoadErrorMessage from 'Components/load-error-message';
-import PersonalDetailsForm from 'Components/forms/personal-details-form';
-import { makeSettingsRequest, validate, validateName } from 'Helpers/utils';
+import FormBody from '../../form-body';
+import LoadErrorMessage from '../../load-error-message';
+import PersonalDetailsForm from '../../forms/personal-details-form.jsx';
+import { makeSettingsRequest, validate, validateName } from '../../../Helpers/utils';
 import { TInputFieldValues } from 'Types';
 
 type TRestState = {
@@ -158,7 +158,6 @@ const PoiConfirmWithExampleFormContainer = ({
                             setFieldTouched={setFieldTouched}
                             editable_fields={rest_state.changeable_fields}
                             is_rendered_for_onfido
-                            warning_items={undefined}
                         />
                         <button
                             type='submit'

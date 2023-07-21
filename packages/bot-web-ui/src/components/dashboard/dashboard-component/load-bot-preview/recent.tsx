@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { MobileWrapper, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import { TWorkspace } from 'Stores/load-modal-store';
@@ -19,7 +19,7 @@ type TRecentComponent = {
     strategy_save_type: string;
 };
 
-const HEADERS = ['Bot name', 'Last modified', 'Status'];
+const HEADERS = [localize('Bot name'), localize('Last modified'), localize('Status')];
 
 const RecentComponent = ({
     dashboard_strategies,

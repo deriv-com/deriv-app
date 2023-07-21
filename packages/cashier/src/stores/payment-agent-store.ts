@@ -159,10 +159,11 @@ export default class PaymentAgentStore {
 
     async setPaymentAgentList(pa_list?: TPaymentAgent[]) {
         const { setLoading } = this.root_store.modules.cashier.general_store;
-        this.clearList();
-        this.clearSupportedBanks();
         try {
-            (pa_list || (await this.getPaymentAgentList()).paymentagent_list?.list)?.forEach(payment_agent => {
+            const payment_agent_list = pa_list || (await this.getPaymentAgentList()).paymentagent_list?.list;
+            this.clearList();
+            this.clearSupportedBanks();
+            payment_agent_list?.forEach(payment_agent => {
                 this.setList({
                     currency: payment_agent.currencies,
                     deposit_commission: payment_agent.deposit_commission,

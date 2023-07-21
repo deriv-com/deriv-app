@@ -18,3 +18,10 @@ export const storeSetting = (key, value) => {
     settings[key] = value;
     localStorage.setItem('dbot_settings', JSON.stringify(settings));
 };
+
+export const removeKeyValue = key => {
+    const settings = getSettingsFromLocal() || {};
+    delete settings[key];
+
+    localStorage.setItem('dbot_settings', JSON.stringify(settings));
+};

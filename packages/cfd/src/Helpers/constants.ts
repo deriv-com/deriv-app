@@ -1,4 +1,5 @@
 import { OSDetect } from '@deriv/shared';
+import { localize } from '@deriv/translations';
 import { TCFDsPlatformType, TMobilePlatforms } from 'Components/props.types';
 
 const platformsText = (platform: TCFDsPlatformType) => {
@@ -14,6 +15,22 @@ const platformsText = (platform: TCFDsPlatformType) => {
     }
 };
 
+const platformsIcons = (platform: TCFDsPlatformType) => {
+    switch (platform) {
+        case 'derivez':
+            return 'DerivEz';
+        case 'dxtrade':
+            return 'Dxtrade';
+        default:
+            return '';
+    }
+};
+
+const getTitle = (market_type: string, is_eu_user: boolean) => {
+    if (is_eu_user) localize('MT5 CFDs');
+    return market_type;
+};
+
 const REAL_DXTRADE_URL = 'https://dx.deriv.com';
 const DEMO_DXTRADE_URL = 'https://dx-demo.deriv.com';
 
@@ -22,6 +39,9 @@ const CTRADER_DOWNLOAD_LINK = 'https://ctrader.com/download/';
 const CTRADER_URL = 'https://ct-uat.deriv.com/info';
 
 const DERIVEZ_URL = 'https://dqwsqxuu0r6t9.cloudfront.net/';
+const DERIVEZ_IOS_APP_URL = 'https://apps.apple.com/my/app/deriv-go/id1550561298';
+const DERIVEZ_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.app&pli=1';
+const DERIVEZ_HUAWEI_APP_URL = 'https://appgallery.huawei.com/#/app/C103801913';
 
 const DXTRADE_IOS_APP_URL = 'https://apps.apple.com/us/app/deriv-x/id1563337503';
 const DXTRADE_ANDROID_APP_URL = 'https://play.google.com/store/apps/details?id=com.deriv.dx';
@@ -45,8 +65,23 @@ const getPlatformDXTradeDownloadLink = (platform?: TMobilePlatforms) => {
             return DXTRADE_IOS_APP_URL;
         case 'huawei':
             return DXTRADE_HUAWEI_APP_URL;
-        default:
+        case 'android':
             return DXTRADE_ANDROID_APP_URL;
+        default:
+            return '';
+    }
+};
+
+const getPlatformDerivEZDownloadLink = (platform: 'ios' | 'android' | 'huawei') => {
+    switch (platform) {
+        case 'ios':
+            return DERIVEZ_IOS_APP_URL;
+        case 'android':
+            return DERIVEZ_ANDROID_APP_URL;
+        case 'huawei':
+            return DERIVEZ_HUAWEI_APP_URL;
+        default:
+            return '';
     }
 };
 
@@ -60,19 +95,6 @@ const getPlatformCTraderDownloadLink = (platform: TMobilePlatforms) => {
             return '';
         default:
             return CTRADER_ANDROID_APP_URL;
-    }
-};
-
-const getPlatformDerivEZDownloadLink = (platform: TMobilePlatforms) => {
-    switch (platform) {
-        case 'ios':
-            return 'a';
-        case 'android':
-            return 'a';
-        case 'huawei':
-            return 'a';
-        default:
-            return '';
     }
 };
 
@@ -111,6 +133,15 @@ const getCTraderWebTerminalLink = (category: string, token?: string) => {
     if (token) {
         url += `?token=${token}`;
     }
+    return url;
+};
+
+const getDerivEzWebTerminalLink = (category: string, token?: string) => {
+    let url = DERIVEZ_URL;
+
+    if (token) {
+        url += `?lang=en&token=${token}`;
+    }
 
     return url;
 };
@@ -128,7 +159,7 @@ const getMT5WebTerminalLink = ({
     const server = is_demo ? 'Deriv-Demo' : server_name;
     const login = loginid ?? '';
 
-    return `https://trade.mql5.com/trade?servers=${server}&trade_server=${server}${login && `&login=${login}`}`;
+    return `https://metatraderweb.app/trade?servers=${server}&trade_server=${server}${login && `&login=${login}`}`;
 };
 
 export {
@@ -145,6 +176,9 @@ export {
     getPlatformMt5DownloadLink,
     getDXTradeWebTerminalLink,
     getCTraderWebTerminalLink,
+    platformsIcons,
+    getTitle,
+    getDerivEzWebTerminalLink,
     getMT5WebTerminalLink,
     getTopUpConfig,
 };

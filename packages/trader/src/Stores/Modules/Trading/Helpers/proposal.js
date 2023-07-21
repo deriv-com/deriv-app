@@ -47,6 +47,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
     const accumulators_details = {
         ...proposal.contract_details,
         growth_rate: store.growth_rate,
+        spot_time: proposal.spot_time,
     };
 
     return {
@@ -65,6 +66,7 @@ export const getProposalInfo = (store, response, obj_prev_contract_basis) => {
         profit: profit.toFixed(getDecimalPlaces(store.currency)),
         returns: `${returns.toFixed(2)}%`,
         stake,
+        spot: proposal.spot,
         ...accumulators_details,
     };
 };

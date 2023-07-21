@@ -7,7 +7,7 @@ import { useStore } from '@deriv/stores';
  */
 const useCFDAllAccounts = () => {
     const { client } = useStore();
-    const { ctrader_accounts_list, dxtrade_accounts_list, mt5_login_list } = client;
+    const { dxtrade_accounts_list, mt5_login_list, derivez_accounts_list, ctrader_accounts_list } = client;
 
     let cfd_accounts: typeof mt5_login_list = [];
     if (Array.isArray(mt5_login_list)) {
@@ -18,6 +18,9 @@ const useCFDAllAccounts = () => {
     }
     if (Array.isArray(ctrader_accounts_list)) {
         cfd_accounts = [...cfd_accounts, ...ctrader_accounts_list];
+    }
+    if (Array.isArray(derivez_accounts_list)) {
+        cfd_accounts = [...cfd_accounts, ...derivez_accounts_list];
     }
 
     return cfd_accounts;

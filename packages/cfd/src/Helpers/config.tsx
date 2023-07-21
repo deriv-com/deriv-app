@@ -6,13 +6,13 @@ import {
     getPlatformCTraderDownloadLink,
     getPlatformDerivEZDownloadLink,
     getDXTradeWebTerminalLink,
+    getDerivEzWebTerminalLink,
     getCTraderWebTerminalLink,
     platformsText,
-    DERIVEZ_URL,
+    platformsIcons,
 } from './constants';
 import { Text, Icon } from '@deriv/components';
 import { Localize } from '@deriv/translations';
-import { isMobile, OSDetect, isDesktopOs } from '@deriv/shared';
 import { TCFDDashboardContainer } from 'Containers/props.types';
 
 export const mobileDownloadLink = (platform: TCFDsPlatformType, type: 'ios' | 'android' | 'huawei') => {
@@ -29,42 +29,23 @@ export const mobileDownloadLink = (platform: TCFDsPlatformType, type: 'ios' | 'a
 };
 
 export const getPlatformQRCode = (acc_type: TCFDsPlatformType) => {
-    const qr_code_mobile = isMobile() ? '100%' : '80%';
-
-    const QRCodeLinks = () => {
-        switch (acc_type) {
-            case 'derivez':
-                return 'https://onelink.to/bkdwkd';
-            case 'dxtrade':
-                return 'https://onelink.to/grmtyx';
-            case 'ctrader':
-                return 'https://onelink.to/yvk2a5';
-            default:
-                return 'https://onelink.to/grmtyx';
-        }
-    };
-
-    return (
-        <React.Fragment>
-            <QRCode
-                value={QRCodeLinks()}
-                size={5}
-                style={{ height: 'auto', maxWidth: '100%', width: qr_code_mobile }}
-            />
-            <Text align='center' size='xxs'>
-                <Localize
-                    i18n_default_text='Scan the QR code to download Deriv {{ platform }}.'
-                    values={{ platform: platformsText(acc_type) }}
-                />
-            </Text>
-        </React.Fragment>
-    );
+    switch (acc_type) {
+        case 'derivez':
+            return 'https://onelink.to/bkdwkd';
+        case 'dxtrade':
+            return 'https://onelink.to/grmtyx';
+        case 'ctrader':
+            return 'https://onelink.to/yvk2a5';
+        default:
+            return 'https://onelink.to/grmtyx';
+    }
 };
 
 type TPlatformsDesktopDownload = {
     platform: TCFDsPlatformType;
     dxtrade_tokens: TCFDDashboardContainer['dxtrade_tokens'];
     ctrader_tokens: TCFDDashboardContainer['ctrader_tokens'];
+    derivez_tokens: TCFDDashboardContainer['derivez_tokens'];
     is_demo: string;
 };
 
@@ -72,6 +53,7 @@ export const PlatformsDesktopDownload = ({
     platform,
     dxtrade_tokens,
     ctrader_tokens,
+    derivez_tokens,
     is_demo,
 }: TPlatformsDesktopDownload) => {
     const PlatformsDesktopDownloadLinks = () => {
@@ -83,25 +65,15 @@ export const PlatformsDesktopDownload = ({
                 );
 
             case 'derivez':
-                return DERIVEZ_URL;
+                return getDerivEzWebTerminalLink(
+                    is_demo ? 'demo' : 'real',
+                    derivez_tokens && derivez_tokens[is_demo ? 'demo' : 'real']
+                );
             case 'dxtrade':
                 return getDXTradeWebTerminalLink(
                     is_demo ? 'demo' : 'real',
                     dxtrade_tokens && dxtrade_tokens[is_demo ? 'demo' : 'real']
                 );
-            default:
-                return '';
-        }
-    };
-
-    const platforms_icons = () => {
-        switch (platform) {
-            case 'ctrader':
-                return 'Ctrader';
-            case 'derivez':
-                return 'DerivEz';
-            case 'dxtrade':
-                return 'Dxtrade';
             default:
                 return '';
         }
@@ -117,9 +89,8 @@ export const PlatformsDesktopDownload = ({
             >
                 <Icon
                     className='cfd-trade-modal__dxtrade-button-icon'
-                    icon={`IcBrand${platforms_icons()}Wordmark`}
-                    width={60}
-                    height={38}
+                    icon={`IcBrand${platformsIcons(platform)}Wordmark`}
+                    size={36}
                 />
                 <div className='cfd-trade-modal__dxtrade-button-text'>
                     <Text color='colored-background' size='xxs' weight='bold'>

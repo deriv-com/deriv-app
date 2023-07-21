@@ -140,14 +140,14 @@ const TourTriggrerDialog = ({
         );
     };
 
+    const confirm_button = active_tab === 0 ? localize('Got it, thanks!') : localize('OK');
+
     const onHandleConfirm = React.useCallback(() => {
         const status = tour_status_ended.key === 'finished';
         toggleTour(status ? false : !has_tour_ended, 'onConfirm');
         tour_status_ended.key = '';
         return status ? tour_status_ended.key : null;
     }, [has_tour_ended, active_tab]);
-
-    const confirm_button = active_tab === 0 ? localize('Got it, thanks!') : localize('OK');
 
     return (
         <div>

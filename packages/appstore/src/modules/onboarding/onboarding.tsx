@@ -9,22 +9,8 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from 'Stores';
 import EmptyOnboarding from './empty-onboarding';
 
-type TOnboardingProps = {
-    contents: Record<
-        string,
-        {
-            component: React.ReactNode;
-            eu_footer_header?: string;
-            footer_header: string;
-            eu_footer_text?: string;
-            footer_text: string;
-            next_content?: string;
-            has_next_content: boolean;
-        }
-    >;
-};
-
-const Onboarding = ({ contents = getTradingHubContents() }: TOnboardingProps) => {
+const Onboarding = () => {
+    const contents = getTradingHubContents();
     const history = useHistory();
     const number_of_steps = Object.keys(contents);
     const { traders_hub, client } = useStores();

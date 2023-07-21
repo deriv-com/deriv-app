@@ -12,7 +12,7 @@ type TStep = {
     has_next_content: boolean;
 };
 
-type TTradingHubContents = Record<'step1' | 'step2' | 'step3' | 'step4' | 'step5' | 'step6', TStep>;
+type TTradingHubContents = Record<string, TStep>;
 
 export const getTradingHubContents = (): TTradingHubContents => ({
     step1: {

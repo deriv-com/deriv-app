@@ -3,7 +3,7 @@ import Item from './contract-type-item';
 import { localize } from '@deriv/translations';
 import { Text } from '@deriv/components';
 import classNames from 'classnames';
-import { TContractType, TList } from './ContractTypeInfo/contract-type-info.js';
+import { TContractType, TList } from './types';
 
 type TListProps = {
     handleInfoClick?: (clicked_item: TContractType) => void;

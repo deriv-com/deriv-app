@@ -3,7 +3,7 @@ import { isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ContractType from './contract-type';
 import { getContractTypeCategoryIcons, findContractCategory } from '../../../Helpers/contract-type.js';
-import { TList, TContractType, TContractCategory } from './ContractTypeInfo/contract-type-info.js';
+import { TList, TContractType, TContractCategory } from './types';
 
 type TContractTypeWidget = {
     name?: string;

@@ -3,10 +3,10 @@ import React from 'react';
 import { Icon, DesktopWrapper } from '@deriv/components';
 import IconTradeCategory from 'Assets/Trading/Categories/icon-trade-categories.jsx';
 import { findContractCategory } from '../../../Helpers/contract-type';
-import { TContractCategory, TContractType } from './ContractTypeInfo/contract-type-info';
+import { TContractCategory, TContractType } from './types';
 
 type TDisplay = {
-    is_open?: boolean;
+    is_open: boolean;
     name: string;
     list: TContractCategory[];
     onClick: () => void;

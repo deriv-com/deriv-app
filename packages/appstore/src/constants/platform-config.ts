@@ -3,7 +3,7 @@ import { localize } from '@deriv/translations';
 import { PlatformIcons } from 'Assets/svgs/trading-platform';
 import { TAccountCategory, TRegionAvailability } from 'Types';
 
-export type AccountType = { text: 'Real' | 'Demo'; value: TAccountCategory };
+export type AccountType = { text: string; value: TAccountCategory };
 export type RegionAvailability = 'Non-EU' | 'EU' | 'All';
 export const getAccountTypes = (): AccountType[] => [
     { text: localize('Demo'), value: 'demo' },

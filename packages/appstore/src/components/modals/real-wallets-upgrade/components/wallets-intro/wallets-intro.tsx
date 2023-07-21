@@ -7,7 +7,7 @@ import './wallets-intro.scss';
 type TWalletsIntro = {
     title: string;
     description: string;
-    bullets: string[];
+    bullets: React.ReactNode[];
     eu_user?: boolean;
     image?: React.ReactNode;
 };
@@ -51,7 +51,7 @@ const WalletsIntroComponent = observer(({ image, title, description, bullets }: 
                 {description}
             </Text>
             {bullets.map(bullet => (
-                <div key={bullet} className='wallet-steps__bullet'>
+                <div key={`${bullet}`} className='wallet-steps__bullet'>
                     {bullet && (
                         <div className='wallet-steps__bullet-points'>
                             <Icon

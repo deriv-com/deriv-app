@@ -1,10 +1,11 @@
 export { default as useAccountTransferVisible } from './useAccountTransferVisible';
+export { default as useCashierLocked } from './useCashierLocked';
 export { default as useCFDAccounts } from './useCFDAccounts';
 export { default as useCFDAllAccounts } from './useCFDAllAccounts';
 export { default as useCFDDemoAccounts } from './useCFDDemoAccounts';
 export { default as useCFDRealAccounts } from './useCFDRealAccounts';
-export { default as useCashierLocked } from './useCashierLocked';
 export { default as useCountdown } from './useCountdown';
+export { default as useCurrentAccountDetails } from './useCurrentAccountDetails';
 export { default as useCurrencyConfig } from './useCurrencyConfig';
 export { default as useCurrentCurrencyConfig } from './useCurrentCurrencyConfig';
 export { default as useDepositCryptoAddress } from './useDepositCryptoAddress';
@@ -29,6 +30,7 @@ export { default as useIsRealAccountNeededForCashier } from './useIsRealAccountN
 export { default as useIsSystemMaintenance } from './useIsSystemMaintenance';
 export { default as useNeedAuthentication } from './useNeedAuthentication';
 export { default as useNeedFinancialAssessment } from './useNeedFinancialAssessment';
+export { default as useNeedPOI } from './useNeedPOI';
 export { default as useNeedTNC } from './useNeedTNC';
 export { default as useOnrampVisible } from './useOnrampVisible';
 export { default as useP2PNotificationCount } from './useP2PNotificationCount';

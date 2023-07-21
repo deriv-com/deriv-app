@@ -49,8 +49,11 @@ const useFilteredCFDAccounts = () => {
         );
     }, [available_mt5_accounts, existing_cfd_accounts?.mt5_accounts, getShortCodeAndRegion]);
 
+    /** Categorizes the accounts into different market types and groups them together */
     const categorized_mt5_accounts = useMemo(() => {
-        const categorized_accounts = combined_mt5_accounts?.flat().reduce((acc, account) => {
+        if (!combined_mt5_accounts) return {};
+
+        const categorized_accounts = combined_mt5_accounts.flat().reduce((acc, account) => {
             const { market_type } = account;
             if (!acc[market_type]) acc[market_type] = [];
             acc[market_type].push(account);
@@ -58,7 +61,7 @@ const useFilteredCFDAccounts = () => {
         }, {} as Record<string, typeof combined_mt5_accounts[number]>);
 
         return Object.fromEntries(
-            Object.entries(categorized_accounts || {}).map(([market_type, accounts]) => {
+            Object.entries(categorized_accounts).map(([market_type, accounts]) => {
                 const added_accounts = accounts.filter(account => account.is_added);
                 const not_added_accounts = accounts.filter(account => !account.is_added);
                 return [market_type, added_accounts.length ? added_accounts : [not_added_accounts[0]]];

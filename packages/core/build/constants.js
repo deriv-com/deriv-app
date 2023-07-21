@@ -31,11 +31,10 @@ const {
     js_loaders,
     svg_file_loaders,
     svg_loaders,
+    IS_RELEASE,
 } = require('./loaders-config');
 const Dotenv = require('dotenv-webpack');
 const { DefinePlugin } = require('webpack');
-
-const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
 
 const HOISTED_PACKAGES = {
     react: path.resolve(__dirname, '../../../node_modules/react'),
@@ -136,6 +135,9 @@ const plugins = ({ base, is_test_env }) => {
             'process.env.DATADOG_SESSION_SAMPLE_RATE': JSON.stringify(process.env.DATADOG_SESSION_SAMPLE_RATE),
             'process.env.CIRCLE_TAG': JSON.stringify(process.env.CIRCLE_TAG),
             'process.env.CIRCLE_JOB': JSON.stringify(process.env.CIRCLE_JOB),
+            'process.env.RUDDERSTACK_URL': JSON.stringify(process.env.RUDDERSTACK_URL),
+            'process.env.RUDDERSTACK_PRODUCTION_KEY': JSON.stringify(process.env.RUDDERSTACK_PRODUCTION_KEY),
+            'process.env.RUDDERSTACK_STAGING_KEY': JSON.stringify(process.env.RUDDERSTACK_STAGING_KEY),
         }),
         new CleanWebpackPlugin(),
         new CopyPlugin(copyConfig(base)),

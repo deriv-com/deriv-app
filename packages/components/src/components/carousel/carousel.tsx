@@ -13,6 +13,7 @@ type TCarousel = {
     bullet_color?: string;
     bullet_position?: 'bottom' | 'top';
     className?: string;
+    disable_swipe?: boolean;
     initial_index?: number;
     is_mt5?: boolean;
     item_per_window?: number;
@@ -30,6 +31,7 @@ const Carousel = ({
     bullet_color = 'var(--text-less-prominent)',
     bullet_position = 'bottom',
     className,
+    disable_swipe = false,
     initial_index = 0,
     is_mt5,
     item_per_window = 1,
@@ -85,7 +87,7 @@ const Carousel = ({
     });
 
     return (
-        <div {...swipe_handlers} className={className}>
+        <div {...(disable_swipe ? {} : swipe_handlers)} className={className}>
             <div className={classNames('dc-carousel', { 'dc-carousel--mt5': is_mt5 })}>
                 {sliced_list_length > 1 && (
                     <Nav

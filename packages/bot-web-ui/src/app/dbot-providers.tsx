@@ -1,7 +1,7 @@
 import React from 'react';
-import { DBotStoreProvider } from 'Stores/useDBotStore';
 import { StoreProvider } from '@deriv/stores';
-import type { TWebSocket, TRootStore } from 'Types';
+import type { TRootStore, TWebSocket } from 'Types';
+import { DBotStoreProvider } from 'Stores/useDBotStore';
 
 const DBotProviders = ({ children, store, WS }: React.PropsWithChildren<{ store: TRootStore; WS: TWebSocket }>) => {
     return (

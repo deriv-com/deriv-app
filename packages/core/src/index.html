@@ -92,50 +92,6 @@
 
         <noscript>Your browser does not support JavaScript!</noscript>
 
-        <!-- Start RudderStack Script -->
-        <script type="text/javascript">
-            const isProduction = () => {
-                return (
-                    window.location.hostname === 'app.deriv.com' ||
-                    window.location.hostname === 'app.deriv.me' ||
-                    window.location.hostname === 'app.deriv.be'
-                );
-            };
-
-            rudderanalytics = window.rudderanalytics = [];
-
-            var methods = [
-                'load',
-                'page',
-                'track',
-                'identify',
-                'alias',
-                'group',
-                'ready',
-                'reset',
-                'getAnonymousId',
-                'setAnonymousId',
-            ];
-
-            for (var i = 0; i < methods.length; i++) {
-                var method = methods[i];
-                rudderanalytics[method] = (function (methodName) {
-                    return function () {
-                        rudderanalytics.push([methodName].concat(Array.prototype.slice.call(arguments)));
-                    };
-                })(method);
-            }
-            if (isProduction()) {
-                // Production key
-                rudderanalytics.load('1oV5agvlcnCZ6IH94wCKM1oR8Pd', 'https://deriv-dataplane.rudderstack.com');
-            } else {
-                // Staging keys
-                rudderanalytics.load('1lN3tsFD2nruGFgM5F074DC2hMB', 'https://deriv-dataplane.rudderstack.com');
-            }
-        </script>
-        <script async src="https://cdn.rudderlabs.com/rudder-analytics.min.js"></script>
-        <!-- End RudderStack Script -->
-
         <!-- Start GTM Script -->
         <script>
             var gtm_id = 'GTM-NF7884S';

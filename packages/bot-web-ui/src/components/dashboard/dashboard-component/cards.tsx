@@ -1,9 +1,9 @@
 //kept sometihings commented beacuse of mobx to integrate popup functionality here
+import React from 'react';
+import classNames from 'classnames';
 import { DesktopWrapper, Dialog, Icon, MobileFullPageModal, MobileWrapper, Text } from '@deriv/components';
 import { localize } from '@deriv/translations';
-import classNames from 'classnames';
 import { DBOT_TABS } from 'Constants/bot-contents';
-import React from 'react';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';
 import SaveModalStore from 'Stores/save-modal-store';

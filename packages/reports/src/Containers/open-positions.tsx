@@ -44,16 +44,23 @@ import {
 import PlaceholderComponent from '../Components/placeholder-component';
 import { connect } from 'Stores/connect';
 import type { TRootStore } from 'Stores/index';
-import { TDataList, TMobileRowRenderer, TRowRenderer } from '../../../components/src/components/data-list/data-list';
 import { TColIndex } from 'Types';
-import { TDataListCell } from '../../../components/src/components/data-list/data-list-cell';
 import moment from 'moment';
-import { ContractUpdate } from '@deriv/api-types';
 
 type TPortfolioStore = TRootStore['portfolio'];
-
+type TDataList = React.ComponentProps<typeof DataList>;
+type TDataListCell = React.ComponentProps<typeof DataList.Cell>;
+type TRowRenderer = TDataList['rowRenderer'];
+type TMobileRowRenderer = {
+    row?: TDataList['data_source'][number];
+    is_footer?: boolean;
+    columns_map?: Record<TColIndex, TDataListCell['column']>;
+    server_time?: moment.Moment;
+    onClickCancel: (contract_id?: number) => void;
+    onClickSell: (contract_id?: number) => void;
+    measure?: () => void;
+};
 type TRangeFloatZeroToOne = React.ComponentProps<typeof ProgressBar>['value'];
-
 type TEmptyPlaceholderWrapper = React.PropsWithChildren<{
     is_empty: boolean;
     component_icon: string;
@@ -211,7 +218,7 @@ const MobileRowRenderer = ({
         return (
             <PositionsDrawerCard
                 contract_info={contract_info}
-                contract_update={contract_update as ContractUpdate}
+                contract_update={contract_update}
                 currency={currency ?? ''}
                 is_link_disabled
                 onClickCancel={onClickCancel}

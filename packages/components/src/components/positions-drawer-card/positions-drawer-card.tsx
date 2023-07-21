@@ -1,7 +1,6 @@
 import React from 'react';
 import classNames from 'classnames';
 import { NavLink } from 'react-router-dom';
-import type { ContractUpdate, Portfolio1, ProposalOpenContract } from '@deriv/api-types';
 import ContractCard from '../contract-card';
 import {
     getContractPath,
@@ -15,17 +14,14 @@ import {
     isMobile,
     isVanillaContract,
 } from '@deriv/shared';
-import { TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
+import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
 import { TToastConfig } from '../types/contract.types';
 
 type TPositionsDrawerCardProps = {
     addToast: (toast_config: TToastConfig) => void;
     className?: string;
-    contract_info: ProposalOpenContract &
-        Portfolio1 & {
-            contract_update?: ContractUpdate | undefined;
-        };
-    contract_update: ContractUpdate;
+    contract_info: TContractInfo;
+    contract_update?: TContractInfo['contract_update'];
     currency: string;
     current_focus: string;
     display_name?: string;
@@ -117,7 +113,7 @@ const PositionsDrawerCard = ({
         <ContractCard.Body
             addToast={addToast}
             contract_info={contract_info}
-            contract_update={contract_update}
+            contract_update={contract_update ?? {}}
             currency={currency}
             current_focus={current_focus}
             getCardLabels={getCardLabels}

@@ -14,14 +14,13 @@ import MultiplierCardBody from './multiplier-card-body';
 import TurbosCardBody from './turbos-card-body';
 import VanillaOptionsCardBody from './vanilla-options-card-body';
 import { TContractInfo, TContractStore } from '@deriv/shared/src/utils/contract/contract-types';
-import { ContractUpdate } from '@deriv/api-types';
 import { TToastConfig } from '../../types/contract.types';
 import { TGetCardLables } from '../../types/common.types';
 
 export type TGeneralContractCardBodyProps = {
     addToast: (toast_config: TToastConfig) => void;
     contract_info: TContractInfo;
-    contract_update: ContractUpdate;
+    contract_update: TContractInfo['contract_update'];
     connectWithContractUpdate?: (contract_update_form: React.ElementType) => React.ElementType;
     currency: string;
     current_focus?: string;

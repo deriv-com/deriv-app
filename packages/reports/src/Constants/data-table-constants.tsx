@@ -461,7 +461,7 @@ export const getAccumulatorOpenPositionsColumnsTemplate = ({
     {
         title: localize('Growth rate'),
         col_index: 'growth_rate',
-        renderCellContent: ({ row_obj }) =>
+        renderCellContent: ({ row_obj }: TCellContentProps) =>
             row_obj.contract_info && row_obj.contract_info.growth_rate
                 ? `${getGrowthRatePercentage(row_obj.contract_info.growth_rate)}%`
                 : '',

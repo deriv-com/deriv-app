@@ -18,7 +18,7 @@ import DataListRow from './data-list-row';
 import ThemedScrollbars from '../themed-scrollbars';
 import { MeasuredCellParent } from 'react-virtualized/dist/es/CellMeasurer';
 
-export type TMobileRowRenderer = {
+type TMobileRowRenderer = {
     row?: TRow;
     is_footer?: boolean;
     columns_map?: Record<TColIndex, TDataListCell['column']>;

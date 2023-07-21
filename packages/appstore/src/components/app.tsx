@@ -1,45 +1,24 @@
-import classNames from 'classnames';
-import * as React from 'react';
-import { setWebsocket, routes } from '@deriv/shared';
-import { StoreProvider, observer } from '@deriv/stores';
+import React from 'react';
 import CashierStoreProvider from '@deriv/cashier/src/cashier-providers';
 import CFDStoreProvider from '@deriv/cfd/src/cfd-providers';
-import Routes from 'Components/routes/routes';
-import { useStores, initContext } from 'Stores';
-import { TRootStore } from 'Types';
+import { StoreProvider } from '@deriv/stores';
+import AppContent from './app-content';
 import './app.scss';
 
-type TAppProps = {
+type TProps = {
     passthrough: {
-        root_store: TRootStore;
-        WS: Record<string, any>;
+        root_store: React.ComponentProps<typeof StoreProvider>['store'];
     };
 };
 
-const App = ({ passthrough: { WS, root_store } }: TAppProps) => {
-    initContext(root_store, WS);
-    setWebsocket(WS);
-    const { ui }: TRootStore = useStores();
+const App: React.FC<TProps> = ({ passthrough: { root_store } }) => (
+    <CashierStoreProvider store={root_store}>
+        <CFDStoreProvider store={root_store}>
+            <StoreProvider store={root_store}>
+                <AppContent />
+            </StoreProvider>
+        </CFDStoreProvider>
+    </CashierStoreProvider>
+);
 
-    return (
-        <CashierStoreProvider store={root_store as any}>
-            <CFDStoreProvider store={root_store as any}>
-                <StoreProvider store={root_store as any}>
-                    <main
-                        className={classNames('dashboard', {
-                            'theme--light': !ui.is_dark_mode_on,
-                            'theme--dark': ui.is_dark_mode_on,
-                            'dashboard-onboarding': window.location.pathname === routes.onboarding,
-                        })}
-                    >
-                        <div className='dw-dashboard'>
-                            <Routes />
-                        </div>
-                    </main>
-                </StoreProvider>
-            </CFDStoreProvider>
-        </CashierStoreProvider>
-    );
-};
-
-export default observer(App);
+export default App;

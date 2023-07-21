@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useFetch from './useFetch';
 import {
     TSocketEndpointNames,
@@ -10,14 +10,24 @@ import {
 const usePaginatedFetch = <T extends TSocketEndpointNames>(name: T, ...props: TSocketAcceptableProps<T, true>) => {
     const limit = 10;
     const [offset, setOffset] = useState(0);
+    const [should_reset, setShouldReset] = useState(false);
 
     const prop = props?.[0];
     const payload = prop && 'payload' in prop ? (prop.payload as TSocketRequestPayload<T>) : undefined;
     const options = prop && 'options' in prop ? (prop.options as TSocketRequestQueryOptions<T>) : undefined;
 
-    const nextPage = () => setOffset(prev => prev + limit);
+    const nextPage = () => {
+        setOffset(prev => prev + limit);
+    };
 
-    const resetPages = () => setOffset(0);
+    const resetPages = () => {
+        setShouldReset(true);
+        setOffset(0);
+    };
+
+    useEffect(() => {
+        if (should_reset && offset === 0) setShouldReset(false);
+    }, [should_reset, offset]);
 
     // @ts-expect-error aaa
     const fetcher = useFetch(name, {
@@ -28,7 +38,7 @@ const usePaginatedFetch = <T extends TSocketEndpointNames>(name: T, ...props: TS
         },
         options: {
             ...options,
-            keepPreviousData: true,
+            keepPreviousData: !should_reset,
         },
     });
 

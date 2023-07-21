@@ -139,7 +139,7 @@ const BinarySocketBase = (() => {
 
     const excludeAuthorize = type => !(type === 'authorize' && !client_store.is_logged_in);
 
-    const wait = (...responses) => deriv_api.expectResponse(...responses.filter(excludeAuthorize));
+    const wait = (...responses) => deriv_api?.expectResponse(...responses.filter(excludeAuthorize));
 
     const subscribe = (request, cb) => deriv_api.subscribe(request).subscribe(cb, cb); // Delegate error handling to the callback
 

@@ -7,6 +7,7 @@ import { save_types } from '../constants';
 import { config } from '../constants/config';
 import { getSavedWorkspaces, saveWorkspaceToRecent } from '../utils/local-storage';
 import { observer as globalObserver } from '../utils/observer';
+import { removeAttributesFromXml, ATTRIBUTES_TO_REMOVE } from '../utils';
 import ApiHelpers from '../services/api/api-helpers';
 import Interpreter from '../services/tradeEngine/utils/interpreter';
 import { api_base } from '../services/api/api-base';
@@ -107,8 +108,29 @@ class DBot {
         });
     }
 
+    isStrategyChanged(current_xml, recent_files) {
+        if (recent_files && recent_files.length) {
+            const stored_strategy = recent_files.filter(
+                strategy => strategy?.id === this.workspace?.current_strategy_id
+            )?.[0];
+            if (stored_strategy?.xml) {
+                const stored_xml_string = removeAttributesFromXml(stored_strategy?.xml, ATTRIBUTES_TO_REMOVE);
+                const current_xml_string = removeAttributesFromXml(current_xml, ATTRIBUTES_TO_REMOVE);
+                if (stored_xml_string === current_xml_string) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     async saveRecentWorkspace() {
-        await saveWorkspaceToRecent(Blockly.Xml.workspaceToDom(this.workspace), save_types.UNSAVED);
+        const recent_files = await getSavedWorkspaces();
+        const current_xml_dom = this?.workspace ? Blockly?.Xml?.workspaceToDom(this.workspace) : null;
+        const current_xml_string = current_xml_dom ? Blockly?.Xml?.domToText(current_xml_dom) : '';
+        if (current_xml_dom && this.isStrategyChanged(current_xml_string, recent_files)) {
+            await saveWorkspaceToRecent(current_xml_dom, save_types.UNSAVED);
+        }
     }
 
     /**

@@ -6,5 +6,5 @@ module.exports = {
         '\\.s(c|a)ss$': '<rootDir>/../../__mocks__/styleMock.js',
         '^.+\\.svg$': '<rootDir>/../../__mocks__/styleMock.js',
     },
-    modulePathIgnorePatterns: ['/icon/', '/.out/'],
+    modulePathIgnorePatterns: ['/icon/', '/.out/', '/*.d.ts'],
 };

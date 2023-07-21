@@ -14,9 +14,11 @@ describe('LanguageLink component', () => {
     };
 
     const renderWithProvider = (props: TLanguageLink) => {
-        <TranslationProvider environment='local'>
-            <LanguageLink {...props} />
-        </TranslationProvider>;
+        render(
+            <TranslationProvider environment='local'>
+                <LanguageLink {...props} />
+            </TranslationProvider>
+        );
     };
 
     it('should render language link with active classname without active classname when not active', () => {

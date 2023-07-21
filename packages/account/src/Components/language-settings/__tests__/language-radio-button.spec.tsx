@@ -2,6 +2,7 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import LanguageRadioButton, { TLanguageRadioButton } from '../language-radio-button';
+import { TranslationProvider } from '@deriv/translations';
 
 jest.mock('@deriv/translations', () => {
     const original_module = jest.requireActual('@deriv/translations');
@@ -19,20 +20,28 @@ jest.mock('@deriv/components', () => {
     };
 });
 
+const renderWithProvider = (props: TLanguageRadioButton) => {
+    return render(
+        <TranslationProvider>
+            <LanguageRadioButton {...props} />
+        </TranslationProvider>
+    );
+};
+
 describe('LanguageRadioButton', () => {
     const mock_props: TLanguageRadioButton = {
         is_current_language: true,
         id: 'test id',
-        language_code: 'lang_1',
+        language_code: 'EN',
         name: 'Test Language',
         onChange: jest.fn(),
     };
 
     it('should render active LanguageRadioButton', () => {
-        render(<LanguageRadioButton {...mock_props} />);
+        renderWithProvider(mock_props);
 
         expect(screen.getByText('Flag Icon')).toBeInTheDocument();
-        expect(screen.getByText('Test Lang 1')).toBeInTheDocument();
+        expect(screen.getByText('English')).toBeInTheDocument();
         expect(screen.getByTestId('dt_language_settings_button')).toHaveClass(
             'settings-language__language-link--active'
         );
@@ -40,11 +49,10 @@ describe('LanguageRadioButton', () => {
 
     it('should render not active LanguageRadioButton and trigger onchange', () => {
         mock_props.is_current_language = false;
-
-        render(<LanguageRadioButton {...mock_props} />);
+        renderWithProvider(mock_props);
 
         expect(screen.getByText('Flag Icon')).toBeInTheDocument();
-        expect(screen.getByText('Test Lang 1')).toBeInTheDocument();
+        expect(screen.getByText('English')).toBeInTheDocument();
         expect(screen.getByTestId('dt_language_settings_button')).not.toHaveClass(
             'settings-language__language-link--active'
         );

@@ -11,13 +11,11 @@ import {
     default_title,
 } from '@deriv/shared';
 import { TBinaryRoutes, TRoute, TRouteConfig } from 'Types';
-import { useLanguageSettings } from '@deriv/translations';
+import { getLanguage } from '@deriv/translations';
 
 type TRouteWithSubRoutesProps = TRouteConfig & TBinaryRoutes;
 
 const RouteWithSubRoutes = (route: TRouteWithSubRoutesProps) => {
-    const { current_language } = useLanguageSettings();
-
     const renderFactory = (props: RouteComponentProps) => {
         let result = null;
 
@@ -31,7 +29,7 @@ const RouteWithSubRoutes = (route: TRouteWithSubRoutesProps) => {
             }
             result = <Redirect to={to} />;
         } else if (route.is_authenticated && !route.is_logged_in && !route.is_logging_in) {
-            redirectToLogin(route.is_logged_in, current_language);
+            redirectToLogin(route.is_logged_in, getLanguage());
         } else {
             const default_subroute: TRoute = (route.routes ?? []).reduce(
                 (acc, cur) => ({

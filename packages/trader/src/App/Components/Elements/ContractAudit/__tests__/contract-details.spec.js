@@ -19,7 +19,7 @@ describe('ContractDetails', () => {
         date_settlement: 1687046400,
         date_start: 1686895542,
         display_name: 'Volatility 100 (1s) Index',
-        entry_spot: 1458.17,
+        entry_spot: '1458.17',
         entry_spot_display_value: '1458.17',
         entry_tick: 1458.17,
         entry_tick_display_value: '1458.17',
@@ -50,10 +50,10 @@ describe('ContractDetails', () => {
             <ContractDetails
                 contract_end_time={123456789}
                 contract_info={contract_info}
-                currency={'USD'}
-                duration_unit={'day'}
+                currency='USD'
+                duration_unit='day'
                 duration={1}
-                exit_spot={123}
+                exit_spot='123'
                 is_vanilla={true}
                 number_of_contracts={10}
             />
@@ -66,10 +66,10 @@ describe('ContractDetails', () => {
             <ContractDetails
                 contract_end_time={123456789}
                 contract_info={contract_info}
-                currency={'USD'}
-                duration_unit={'day'}
+                currency='USD'
+                duration_unit='day'
                 duration={1}
-                exit_spot={123}
+                exit_spot='123'
                 is_vanilla={true}
                 number_of_contracts={10}
             />

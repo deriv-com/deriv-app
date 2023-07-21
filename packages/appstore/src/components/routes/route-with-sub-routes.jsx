@@ -1,11 +1,9 @@
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
 import { redirectToLogin, isEmptyObject, routes, removeBranchName, default_title } from '@deriv/shared';
-import { useLanguageSettings } from '@deriv/translations';
+import { getLanguage } from '@deriv/translations';
 
 const RouteWithSubRoutes = route => {
-    const { current_language } = useLanguageSettings();
-
     const renderFactory = props => {
         let result = null;
 
@@ -19,7 +17,7 @@ const RouteWithSubRoutes = route => {
             }
             result = <Redirect to={to} />;
         } else if (route.is_authenticated && !route.is_logged_in && !route.is_logging_in) {
-            redirectToLogin(route.is_logged_in, current_language);
+            redirectToLogin(route.is_logged_in, getLanguage());
         } else {
             const default_subroute = (route.routes ?? []).reduce(
                 (acc, cur) => ({

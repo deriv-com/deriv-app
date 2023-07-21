@@ -6,7 +6,7 @@ import SearchInput from './search-input';
 import NoResultsMessage from './no-results-message';
 import { Header } from '../ContractTypeInfo/index.js';
 import { getContractCategoryKey } from '../../../../Helpers/contract-type.js';
-import { TList } from '../ContractTypeInfo/contract-type-info';
+import { TList } from '../types';
 import ContractType from '../contract-type';
 
 type TDialog = {

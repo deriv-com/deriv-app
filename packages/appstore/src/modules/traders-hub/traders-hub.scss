@@ -2,7 +2,6 @@
     max-width: 123.2rem;
     margin: auto;
     padding: 2.4rem 0;
-    height: 100vh;
 
     @include mobile {
         padding: 2rem;
@@ -40,6 +39,7 @@
     }
 
     &--mobile {
+        height: 100%;
         overflow: scroll !important;
 
         &--eu-user {

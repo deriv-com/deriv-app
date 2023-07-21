@@ -93,7 +93,7 @@ export const getTourStepConfigHighRisk = (): Step[] => [
     },
 ];
 
-export const getWalletStepConfig = (): Step[] => [
+export const getWalletStepConfig = (has_mt5_account: boolean, is_all_wallets_added: boolean): Step[] => [
     {
         title: (
             <React.Fragment>
@@ -177,6 +177,119 @@ export const getWalletStepConfig = (): Step[] => [
             },
         },
     },
+    {
+        title: (
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize('CFDs trading accounts')}
+                </Text>
+                <div className='toggle-account-type__divider' />
+            </React.Fragment>
+        ),
+        content: (
+            <Text as='p' size='xs'>
+                {has_mt5_account
+                    ? localize(
+                          'This is your CFDs trading account. Click Transfer to move funds between your Wallet and trading account.'
+                      )
+                    : localize(
+                          'This is your CFDs trading account. Click Get to create the trading account you desire for trading.'
+                      )}
+            </Text>
+        ),
+        target: '#trading-app-card__derived',
+        disableBeacon: true,
+        disableOverlayClose: true,
+        spotlightPadding: 3,
+        placement: 'right',
+        styles: { spotlight: { borderRadius: '0.6rem', height: 100, width: 88 } },
+    },
+    {
+        title: (
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize('Deriv Apps trading account')}
+                </Text>
+                <div className='toggle-account-type__divider' />
+            </React.Fragment>
+        ),
+        content: (
+            <Text as='p' size='xs'>
+                {localize(
+                    'This is your Deriv Apps trading account balance. Click Transfer to move funds between your Wallet and Deriv Apps trading account.'
+                )}
+            </Text>
+        ),
+        target: '.currency-switcher-container',
+        disableBeacon: true,
+        disableOverlayClose: true,
+        placement: 'left',
+        spotlightPadding: 0,
+        styles: { spotlight: { borderRadius: '0.6rem', height: 242, width: 40 } },
+    },
+    {
+        title: (
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize('Deriv apps')}
+                </Text>
+                <div className='toggle-account-type__divider' />
+            </React.Fragment>
+        ),
+        content: (
+            <Text as='p' size='xs'>
+                {localize('Choose a Deriv app to trade options or multipliers.')}
+            </Text>
+        ),
+        target: '#trading-app-card__dtrader',
+        disableBeacon: true,
+        disableOverlayClose: true,
+        spotlightPadding: 3,
+        placement: 'right',
+        styles: { spotlight: { borderRadius: '0.6rem', height: 100, width: 88 } },
+    },
+    {
+        title: (
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize('Explore more Wallets')}
+                </Text>
+                <div className='toggle-account-type__divider' />
+            </React.Fragment>
+        ),
+        content: (
+            <Text as='p' size='xs'>
+                {localize('Click Add on each card for more Wallets.')}
+            </Text>
+        ),
+        target: is_all_wallets_added ? 'null' : '.add-wallets__card', // Reason for this is that the target accepts string in a form of class names. If the target is an empty string, it will throw an error [trust me, I tried]. So if the user added all the wallets, the target will be null and the tour will skip this step because null is a not a legitimate class name.
+        disableBeacon: true,
+        disableOverlayClose: true,
+        spotlightPadding: 0,
+        placement: 'right',
+        styles: { spotlight: { borderRadius: '1.7rem', height: 232, width: 288 } },
+    },
+    {
+        title: (
+            <React.Fragment>
+                <Text as='p' weight='bold' color='brand-red-coral'>
+                    {localize("Trader's Hub tour")}
+                </Text>
+                <div className='toggle-account-type__divider' />
+            </React.Fragment>
+        ),
+        content: (
+            <Text as='p' size='xs'>
+                {localize('Click here to repeat this tour.')}
+            </Text>
+        ),
+        target: '.trading-hub-header__tradinghub--onboarding',
+        disableBeacon: true,
+        disableOverlayClose: true,
+        spotlightPadding: 12,
+        placement: 'right',
+        styles: { spotlight: { borderRadius: '0.4rem' } },
+    },
 ];
 
 export const tour_styles: Styles = {
@@ -257,6 +370,9 @@ export const wallet_tour_styles: Styles = {
     tooltipFooter: {
         marginTop: 'unset',
     },
+    overlay: {
+        height: '100%',
+    },
 };
 
 export const getTourStepLocale = (): Locale => ({
@@ -278,6 +394,6 @@ export const getHighRiskTourStepLocale = (): Locale => ({
 export const getWalletStepLocale = (): Locale => ({
     back: <SpanButton has_effect text={localize('Back')} secondary medium />,
     close: <Icon icon='IcAppstoreCloseLight' />,
-    last: localize('Next'), // TODO: Removed in onboarding v2
+    last: localize('Done'),
     next: localize('Next'),
 });

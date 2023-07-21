@@ -1,6 +1,7 @@
 import React from 'react';
 import Joyride, { ACTIONS, EVENTS, STATUS } from 'react-joyride';
 import { getWalletStepConfig, getWalletStepLocale, wallet_tour_styles } from 'Constants/tour-steps-config';
+import { useAvailableWallets, useCFDAccounts } from '@deriv/hooks';
 import { useStore, observer } from '@deriv/stores';
 
 const WalletTourGuide = observer(() => {
@@ -11,6 +12,28 @@ const WalletTourGuide = observer(() => {
 
     const wallet_tour_step_locale = getWalletStepLocale();
 
+    const { data: sorted_wallets } = useAvailableWallets();
+    const { all: cfd_accounts } = useCFDAccounts();
+
+    // if synthetic account exists, show a different message and vice versa
+    const has_mt5_account = React.useMemo(() => {
+        if (cfd_accounts) {
+            return cfd_accounts.some(
+                // TODO: remove landing company check in the future for MT5 once all the landing company is enabled
+                account => account.market_type === 'synthetic' && account.landing_company_short === 'svg'
+            );
+        }
+        return false;
+    }, [cfd_accounts]);
+
+    // if all wallets are added, skip add wallet step
+    const is_all_wallets_added = React.useMemo(() => {
+        if (sorted_wallets) {
+            return sorted_wallets.every(wallet => wallet.is_added);
+        }
+        return false;
+    }, [sorted_wallets]);
+
     const handleJoyrideCallback: React.ComponentProps<typeof Joyride>['callback'] = data => {
         const { action, index, status, type } = data;
 
@@ -18,7 +41,7 @@ const WalletTourGuide = observer(() => {
             ([STATUS.FINISHED, STATUS.SKIPPED] as string[]).includes(status) ||
             ([ACTIONS.CLOSE] as string[]).includes(action)
         ) {
-            // closes tour guide when the us`er clicks on the close button or at the end of the tour
+            // closes tour guide when the user clicks on the close button or at the end of the tour
             toggleIsWalletTourOpen(false);
             setJoyrideIndex(0);
         } else if (([EVENTS.STEP_AFTER, EVENTS.TARGET_NOT_FOUND] as string[]).includes(type)) {
@@ -39,10 +62,10 @@ const WalletTourGuide = observer(() => {
             locale={wallet_tour_step_locale}
             run={is_wallet_tour_open}
             scrollOffset={200}
-            scrollToFirstStep
             stepIndex={joyride_index}
-            steps={getWalletStepConfig()}
+            steps={getWalletStepConfig(has_mt5_account, is_all_wallets_added)}
             styles={wallet_tour_styles}
+            scrollDuration={800}
         />
     );
 });

@@ -2,8 +2,11 @@ import React from 'react';
 import JurisdictionCardFront from '../jurisdiction-card-front';
 import { render, screen } from '@testing-library/react';
 import { Jurisdiction } from '@deriv/shared';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 describe('JurisdictionCardFront', () => {
+    const store = mockStore({});
+
     const mock_props = {
         disabled: false,
         type_of_card: Jurisdiction.SVG,
@@ -65,7 +68,11 @@ describe('JurisdictionCardFront', () => {
     };
 
     it('should render JurisdictionCardFront without over header', () => {
-        render(<JurisdictionCardFront {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionCardFront {...mock_props} />
+            </StoreProvider>
+        );
         expect(screen.getByText('Test Header')).toBeInTheDocument();
         expect(screen.getByText('Test Title 1')).toBeInTheDocument();
         expect(screen.getByText('Test 1')).toBeInTheDocument();
@@ -78,7 +85,11 @@ describe('JurisdictionCardFront', () => {
 
     it('should render JurisdictionCardFront with over header', () => {
         mock_props.card_values.is_over_header_available = true;
-        render(<JurisdictionCardFront {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionCardFront {...mock_props} />
+            </StoreProvider>
+        );
         expect(screen.getByText('Test Over Header')).toBeInTheDocument();
     });
 });

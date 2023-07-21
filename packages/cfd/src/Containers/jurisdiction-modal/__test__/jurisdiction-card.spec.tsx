@@ -3,37 +3,10 @@ import { Jurisdiction } from '@deriv/shared';
 import { render, screen } from '@testing-library/react';
 import JurisdictionCard from '../jurisdiction-card';
 import { TTradingPlatformAvailableAccount } from 'Components/props.types';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 describe('JurisdictionCard', () => {
     type TMockProps = {
-        account_status: {
-            authentication: {
-                document: {
-                    status: 'none' | 'pending' | 'expired' | 'verified' | 'rejected';
-                };
-                identity: {
-                    services: {
-                        idv: {
-                            status: 'none' | 'pending' | 'expired' | 'verified' | 'rejected';
-                        };
-                        onfido: {
-                            status: 'none' | 'pending' | 'expired' | 'verified' | 'rejected';
-                        };
-                        manual: {
-                            status: 'none' | 'pending' | 'expired' | 'verified' | 'rejected';
-                        };
-                    };
-                };
-                needs_verification: string[];
-            };
-            currency_config: {
-                [k: string]: { is_deposit_suspended?: 0 | 1; is_withdrawal_suspended?: 0 | 1 };
-            };
-            p2p_status: 'none' | 'active' | 'temp_ban' | 'perm_ban';
-            prompt_client_to_authenticate: 0 | 1;
-            risk_classification: string;
-            status: string[];
-        };
         swapfree_available_accounts: TTradingPlatformAvailableAccount[];
         account_type: 'financial' | 'synthetic';
         disabled: boolean;
@@ -44,8 +17,8 @@ describe('JurisdictionCard', () => {
     };
 
     let mock_props: TMockProps;
-    beforeEach(() => {
-        mock_props = {
+    const store = mockStore({
+        client: {
             account_status: {
                 authentication: {
                     document: {
@@ -72,6 +45,10 @@ describe('JurisdictionCard', () => {
                 risk_classification: '',
                 status: [''],
             },
+        },
+    });
+    beforeEach(() => {
+        mock_props = {
             account_type: 'financial',
             disabled: false,
             is_non_idv_design: false,
@@ -83,7 +60,11 @@ describe('JurisdictionCard', () => {
     });
 
     it('should render JurisdictionCard with svg card', () => {
-        render(<JurisdictionCard {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionCard {...mock_props} />
+            </StoreProvider>
+        );
         expect(screen.getByText('St. Vincent & Grenadines')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(screen.getByText('170+')).toBeInTheDocument();
@@ -102,7 +83,11 @@ describe('JurisdictionCard', () => {
 
     it('should render JurisdictionCard with vanuatu card', () => {
         mock_props.type_of_card = Jurisdiction.VANUATU;
-        render(<JurisdictionCard {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionCard {...mock_props} />
+            </StoreProvider>
+        );
         expect(screen.getByText('Vanuatu')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(screen.getByText('90+')).toBeInTheDocument();
@@ -120,7 +105,11 @@ describe('JurisdictionCard', () => {
 
     it('should render JurisdictionCard with maltainvest card', () => {
         mock_props.type_of_card = Jurisdiction.MALTA_INVEST;
-        render(<JurisdictionCard {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionCard {...mock_props} />
+            </StoreProvider>
+        );
         expect(screen.getByText('Malta')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(screen.getByText('140+')).toBeInTheDocument();
@@ -142,7 +131,11 @@ describe('JurisdictionCard', () => {
 
     it('should render JurisdictionCard with bvi card', () => {
         mock_props.type_of_card = Jurisdiction.BVI;
-        render(<JurisdictionCard {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionCard {...mock_props} />
+            </StoreProvider>
+        );
         expect(screen.getByText('British Virgin Islands')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(screen.getByText('170+')).toBeInTheDocument();
@@ -162,7 +155,11 @@ describe('JurisdictionCard', () => {
 
     it('should render JurisdictionCard with labuan card', () => {
         mock_props.type_of_card = Jurisdiction.LABUAN;
-        render(<JurisdictionCard {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionCard {...mock_props} />
+            </StoreProvider>
+        );
         expect(screen.getByText('Straight-through processing')).toBeInTheDocument();
         expect(screen.getByText('Labuan')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
@@ -181,7 +178,11 @@ describe('JurisdictionCard', () => {
 
     it('should render JurisdictionCard with synthetic account_type', () => {
         mock_props.account_type = 'synthetic';
-        render(<JurisdictionCard {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionCard {...mock_props} />
+            </StoreProvider>
+        );
         expect(screen.getByText('St. Vincent & Grenadines')).toBeInTheDocument();
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(screen.getByText('40+')).toBeInTheDocument();
@@ -198,12 +199,20 @@ describe('JurisdictionCard', () => {
 
     it('should render JurisdictionCard with disabled to be true', () => {
         mock_props.disabled = true;
-        render(<JurisdictionCard {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionCard {...mock_props} />
+            </StoreProvider>
+        );
         expect(screen.getByText('St. Vincent & Grenadines')).toBeInTheDocument();
     });
 
     it('should render JurisdictionCard on the back', () => {
-        render(<JurisdictionCard {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionCard {...mock_props} />
+            </StoreProvider>
+        );
         expect(screen.getByText('We need you to submit these in order to get this account:')).toBeInTheDocument();
         expect(screen.getByText('Your document is pending for verification.')).toBeInTheDocument();
         expect(screen.getByText('Verification failed. Resubmit during account creation.')).toBeInTheDocument();
@@ -211,7 +220,11 @@ describe('JurisdictionCard', () => {
     });
 
     it('should click on JurisdictionCard and render setJurisdictionSelectedShortCode function', () => {
-        render(<JurisdictionCard {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionCard {...mock_props} />
+            </StoreProvider>
+        );
         const jurisdiction_card = screen.getByTestId('dt_jurisdiction_card');
         jurisdiction_card.click();
         expect(mock_props.setJurisdictionSelectedShortcode).toHaveBeenCalledWith('svg');
@@ -219,7 +232,11 @@ describe('JurisdictionCard', () => {
 
     it('should click on Learn More and include cfd-card-flipped into classnames', () => {
         mock_props.type_of_card = Jurisdiction.BVI;
-        render(<JurisdictionCard {...mock_props} />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionCard {...mock_props} />
+            </StoreProvider>
+        );
         const learn_more = screen.getByText('Learn more');
         learn_more.click();
         expect(screen.getByTestId('dt_jurisdiction_card')).toHaveClass('cfd-card-flipped');

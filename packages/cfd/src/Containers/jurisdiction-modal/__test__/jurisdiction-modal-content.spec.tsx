@@ -3,6 +3,7 @@ import RootStore from 'Stores/index';
 import { render, screen } from '@testing-library/react';
 import { Jurisdiction } from '@deriv/shared';
 import JurisdictionModalContent from '../jurisdiction-modal-content';
+import { StoreProvider, mockStore } from '@deriv/stores';
 
 describe('JurisdictionModalContent', () => {
     const mock_store = {
@@ -10,6 +11,7 @@ describe('JurisdictionModalContent', () => {
         client: {},
         ui: {},
     };
+    const store = mockStore({});
     const mock_context = new RootStore(mock_store);
     const mock_props = {
         account_type: '',
@@ -166,20 +168,32 @@ describe('JurisdictionModalContent', () => {
     };
 
     it('should display cfd-jurisdiction-card--synthetic__wrapper in class name', () => {
-        render(<JurisdictionModalContent {...mock_props} account_type='synthetic' />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionModalContent {...mock_props} account_type='synthetic' />
+            </StoreProvider>
+        );
         const container = screen.getByTestId('dt-jurisdiction-modal-content');
         expect(container).toHaveClass('cfd-jurisdiction-card--synthetic__wrapper');
     });
 
     it('should display 3 types of jurisdiction card for synthetics account', () => {
-        render(<JurisdictionModalContent {...mock_props} account_type='synthetic' />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionModalContent {...mock_props} account_type='synthetic' />
+            </StoreProvider>
+        );
         expect(screen.getByText('St. Vincent & Grenadines')).toBeInTheDocument();
         expect(screen.getByText('British Virgin Islands')).toBeInTheDocument();
         expect(screen.getByText('Vanuatu')).toBeInTheDocument();
     });
 
     it('should display content of 3 types of jurisdiction correctly for synthetics account', () => {
-        render(<JurisdictionModalContent {...mock_props} account_type='synthetic' />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionModalContent {...mock_props} account_type='synthetic' />
+            </StoreProvider>
+        );
         expect(screen.getAllByText('Assets')).toHaveLength(3);
         expect(screen.getAllByText('Synthetics, Baskets and Derived FX')).toHaveLength(3);
         expect(screen.getAllByText('40+')).toHaveLength(3);
@@ -200,13 +214,21 @@ describe('JurisdictionModalContent', () => {
     });
 
     it('should display cfd-jurisdiction-card--financial__wrapper in class name', () => {
-        render(<JurisdictionModalContent {...mock_props} account_type='financial' />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionModalContent {...mock_props} account_type='financial' />
+            </StoreProvider>
+        );
         const container = screen.getByTestId('dt-jurisdiction-modal-content');
         expect(container).toHaveClass('cfd-jurisdiction-card--financial__wrapper');
     });
 
     it('should display 4 types of jurisdiction card for financial account', () => {
-        render(<JurisdictionModalContent {...mock_props} account_type='financial' />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionModalContent {...mock_props} account_type='financial' />
+            </StoreProvider>
+        );
         expect(screen.getByText('St. Vincent & Grenadines')).toBeInTheDocument();
         expect(screen.getByText('British Virgin Islands')).toBeInTheDocument();
         expect(screen.getByText('Vanuatu')).toBeInTheDocument();
@@ -214,7 +236,11 @@ describe('JurisdictionModalContent', () => {
     });
 
     it('should display content of 4 types of jurisdiction correctly for synthetics account', () => {
-        render(<JurisdictionModalContent {...mock_props} account_type='financial' />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionModalContent {...mock_props} account_type='financial' />
+            </StoreProvider>
+        );
         expect(screen.getAllByText('Assets')).toHaveLength(4);
         expect(screen.getAllByText('Forex, Stocks, Stock indices, Commodities, and Cryptocurrencies')).toHaveLength(2);
         expect(screen.getByText('Forex, Stock indices, Commodities and Cryptocurrencies')).toBeInTheDocument();
@@ -245,7 +271,11 @@ describe('JurisdictionModalContent', () => {
             { ...mock_props.financial_available_accounts[0], shortcode: Jurisdiction.MALTA_INVEST },
         ];
         mock_props.synthetic_available_accounts = [];
-        render(<JurisdictionModalContent {...mock_props} account_type='financial' />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionModalContent {...mock_props} account_type='financial' />
+            </StoreProvider>
+        );
         const container = screen.getByTestId('dt-jurisdiction-modal-content');
         expect(container).toHaveClass('cfd-jurisdiction-card--financial__wrapper');
         expect(screen.queryByText('St. Vincent & Grenadines')).not.toBeInTheDocument();
@@ -278,7 +308,11 @@ describe('JurisdictionModalContent', () => {
         mock_props.synthetic_available_accounts = [
             { ...mock_props.synthetic_available_accounts[0], shortcode: Jurisdiction.SVG },
         ];
-        render(<JurisdictionModalContent {...mock_props} account_type='financial' />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionModalContent {...mock_props} account_type='financial' />
+            </StoreProvider>
+        );
         const container = screen.getByTestId('dt-jurisdiction-modal-content');
         expect(container).toHaveClass('cfd-jurisdiction-card--financial__wrapper');
         expect(screen.queryByText('British Virgin Islands')).not.toBeInTheDocument();
@@ -308,7 +342,11 @@ describe('JurisdictionModalContent', () => {
         mock_props.synthetic_available_accounts = [
             { ...mock_props.synthetic_available_accounts[0], shortcode: Jurisdiction.SVG },
         ];
-        render(<JurisdictionModalContent {...mock_props} account_type='synthetic' />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionModalContent {...mock_props} account_type='synthetic' />
+            </StoreProvider>
+        );
         const container = screen.getByTestId('dt-jurisdiction-modal-content');
         expect(container).toHaveClass('cfd-jurisdiction-card--synthetic__wrapper');
         expect(screen.queryByText('British Virgin Islands')).not.toBeInTheDocument();
@@ -330,13 +368,21 @@ describe('JurisdictionModalContent', () => {
     });
 
     it('should display cfd-jurisdiction-card--all__wrapper in class name', () => {
-        render(<JurisdictionModalContent {...mock_props} account_type='all' />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionModalContent {...mock_props} account_type='all' />
+            </StoreProvider>
+        );
         const container = screen.getByTestId('dt-jurisdiction-modal-content');
         expect(container).toHaveClass('cfd-jurisdiction-card--all__wrapper');
     });
 
     it('should display only svg jurisdiction card for swap-free account', () => {
-        render(<JurisdictionModalContent {...mock_props} account_type='all' />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionModalContent {...mock_props} account_type='all' />
+            </StoreProvider>
+        );
         expect(screen.getByText('St. Vincent & Grenadines')).toBeInTheDocument();
         expect(screen.queryByText('British Virgin Islands')).not.toBeInTheDocument();
         expect(screen.queryByText('Labuan')).not.toBeInTheDocument();
@@ -344,7 +390,11 @@ describe('JurisdictionModalContent', () => {
     });
 
     it('should display content of swap-free jurisdiction correctly in card', () => {
-        render(<JurisdictionModalContent {...mock_props} account_type='all' />);
+        render(
+            <StoreProvider store={store}>
+                <JurisdictionModalContent {...mock_props} account_type='all' />
+            </StoreProvider>
+        );
         expect(screen.getByText('Assets')).toBeInTheDocument();
         expect(
             screen.getByText('Synthetics, Forex, Stocks, Stock Indices, Cryptocurrencies, and ETFs')

@@ -1,46 +1,49 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { TWalletAccount } from 'Types';
 import { WalletCard, ProgressBarOnboarding } from '@deriv/components';
 import { formatMoney } from '@deriv/shared';
-import useEmblaCarousel, { EmblaOptionsType } from 'embla-carousel-react';
+import { observer, useStore } from '@deriv/stores';
+import useEmblaCarousel from 'embla-carousel-react';
 import { getAccountName } from 'Constants/utils';
 import './wallet-cards-carousel.scss';
+import { useWalletsList } from '@deriv/hooks';
 
-type TProps = {
-    readonly items: TWalletAccount[];
-    setActivePage: React.Dispatch<React.SetStateAction<number>>;
-    active_page: number;
-};
+const CardsSliderSwiper = observer(() => {
+    const { client } = useStore();
+    const { switchAccount } = client;
+    const { data } = useWalletsList();
 
-const CardsSliderSwiper = ({ items, setActivePage, active_page }: TProps) => {
-    const OPTIONS: EmblaOptionsType = { skipSnaps: true, containScroll: false };
-    const [emblaRef, emblaApi] = useEmblaCarousel(OPTIONS);
+    const [active_index, setActiveIndex] = useState(1);
+    const [emblaRef, emblaApi] = useEmblaCarousel({ skipSnaps: true });
 
-    const steps = items.map((_, idx) => idx.toString());
+    const active_wallet_index = data.findIndex(item => item?.is_selected) || 0;
 
-    const scrollTo = React.useCallback(
-        (index: number) => {
-            if (emblaApi) emblaApi.scrollTo(index - 1);
-            setActivePage(index - 1);
-        },
-        [emblaApi, setActivePage]
-    );
+    const steps = data.map((_, idx) => idx.toString());
 
-    const onSelect = React.useCallback(() => {
-        if (emblaApi) setActivePage(emblaApi.selectedScrollSnap());
-    }, [emblaApi, setActivePage]);
+    useEffect(() => {
+        emblaApi?.on('select', () => {
+            const index = emblaApi?.selectedScrollSnap() || 0;
+            setActiveIndex(index + 1);
+        });
+    }, [emblaApi]);
 
-    React.useEffect(() => {
-        if (!emblaApi) return;
+    useEffect(() => {
+        emblaApi?.scrollTo(active_index - 1);
+    }, [active_index, emblaApi]);
 
-        onSelect();
-        emblaApi.on('reInit', onSelect);
-        emblaApi.on('select', onSelect);
-    }, [emblaApi, onSelect]);
+    useEffect(() => {
+        setTimeout(() => {
+            if (!data[active_index - 1]?.is_selected) switchAccount(data[active_index - 1]?.loginid);
+        }, 1000);
+    }, [active_index, data, switchAccount]);
+
+    useEffect(() => {
+        setActiveIndex(active_wallet_index + 1);
+    }, [active_wallet_index]);
 
     const slider = React.useMemo(
         () =>
-            items?.map((item: TWalletAccount) => (
+            data?.map((item: TWalletAccount) => (
                 <div key={`${item.loginid}`}>
                     <WalletCard
                         wallet={{
@@ -59,7 +62,7 @@ const CardsSliderSwiper = ({ items, setActivePage, active_page }: TProps) => {
                     />
                 </div>
             )),
-        [items.length]
+        [data]
     );
 
     return (
@@ -69,14 +72,14 @@ const CardsSliderSwiper = ({ items, setActivePage, active_page }: TProps) => {
             </div>
             <div className='wallet-cards-carousel__pagination'>
                 <ProgressBarOnboarding
-                    step={Number(active_page) + 1}
+                    step={active_index}
                     amount_of_steps={steps}
                     is_transition={true}
-                    setStep={scrollTo}
+                    setStep={setActiveIndex}
                 />
             </div>
         </React.Fragment>
     );
-};
+});
 
 export default CardsSliderSwiper;

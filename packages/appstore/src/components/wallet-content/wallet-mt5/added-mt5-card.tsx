@@ -4,6 +4,8 @@ import { getHasDivider } from 'Constants/utils';
 import { useStore, observer } from '@deriv/stores';
 import { useActiveWallet } from '@deriv/hooks';
 import { TFilteredWalletMT5Account } from 'Types';
+import { mt5_details_mapper } from '../../../helpers/account-helper';
+import { formatMoney } from '@deriv/shared';
 
 const AddedMT5Card = observer(
     ({ account, index, list_size }: { account: TFilteredWalletMT5Account; index: number; list_size: number }) => {
@@ -34,16 +36,22 @@ const AddedMT5Card = observer(
 
         const has_mt5_account_status = account.status ? getMT5AccountAuthStatus(account.status) : null;
 
+        const { market_type } = account;
+
+        const mapper_content = mt5_details_mapper[market_type as keyof typeof mt5_details_mapper];
+
+        const balance = `${formatMoney(account.currency, account.display_balance, true)} ${account.currency}`;
+
         return (
             <TradingAppCard
                 action_type='multi-action'
                 availability={selected_region}
                 clickable_icon
                 icon={account.icon}
-                sub_title={account?.sub_title}
-                name={!has_mt5_account_status ? account?.name : ''}
+                sub_title={mapper_content?.name}
+                name={!has_mt5_account_status ? balance : ''}
                 platform={account.platform}
-                description={account.description}
+                description={account.display_login}
                 short_code_and_region={account.short_code_and_region}
                 has_divider={(!is_eu_user || is_demo) && getHasDivider(index, list_size, 3)}
                 onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {

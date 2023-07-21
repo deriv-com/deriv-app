@@ -1,14 +1,11 @@
 import { useEffect, useMemo } from 'react';
 import { useRequest } from '@deriv/api';
 import useActiveWallet from './useActiveWallet';
-import { useStore } from '@deriv/stores';
 
 /**
  * @description This hook is used to get the created CFD accounts of the user.
  */
 const useExistingCFDAccounts = () => {
-    const { traders_hub } = useStore();
-    const { combined_cfd_mt5_accounts } = traders_hub;
     const wallet = useActiveWallet();
     const { mutate: mt5_mutate, ...mt5 } = useRequest('mt5_login_list');
     const { mutate: derivez_mutate, ...derivez } = useRequest('trading_platform_accounts');
@@ -21,18 +18,14 @@ const useExistingCFDAccounts = () => {
     }, [derivez_mutate, dxtrade_mutate, mt5_mutate]);
 
     /**
-     *
      * @description This is the modified MT5 accounts that will be used in the CFD account creation.
      */
     const modified_mt5_accounts = useMemo(() => {
+        /** Adding the neccesary properties to the response */
         const getAccountInfo = (login?: string) => {
             return {
                 platform: wallet?.linked_to?.find(linked => linked.loginid === login)?.platform,
-                icon: combined_cfd_mt5_accounts?.find(cfd => cfd.login === login)?.icon,
-                description: combined_cfd_mt5_accounts?.find(cfd => cfd.login === login)?.description,
-                name: combined_cfd_mt5_accounts?.find(cfd => cfd.login === login)?.name,
-                sub_title: combined_cfd_mt5_accounts?.find(cfd => cfd.login === login)?.sub_title,
-                action_type: 'multi-action',
+                display_login: login?.replace(/^(MT[DR]?)/, ''),
             };
         };
 
@@ -40,7 +33,7 @@ const useExistingCFDAccounts = () => {
             ...account,
             ...getAccountInfo(account.login),
         }));
-    }, [mt5.data?.mt5_login_list, wallet?.linked_to, combined_cfd_mt5_accounts]);
+    }, [mt5.data?.mt5_login_list, wallet?.linked_to]);
 
     const modified_derivez_accounts = useMemo(
         () => derivez.data?.trading_platform_accounts?.map(account => ({ ...account })),

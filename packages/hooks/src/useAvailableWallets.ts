@@ -10,8 +10,7 @@ const useAvailableWallets = () => {
     const { is_crypto } = client;
     const { data } = useAuthorize();
 
-    // @ts-expect-error Need to update @deriv/api-types to fix the TS error
-    const { data: account_type_data, ...rest } = useFetch('get_account_types', {
+    const { data: get_account_types_data, ...rest } = useFetch('get_account_types', {
         payload: { company: data?.landing_company_name },
         options: { enabled: Boolean(data?.landing_company_name) },
     });
@@ -19,11 +18,10 @@ const useAvailableWallets = () => {
     const { data: added_wallets } = useWalletsList();
 
     const sortedWallets = React.useMemo(() => {
-        if (!account_type_data) return null;
-        // @ts-expect-error Need to update @deriv/api-types to fix the TS error
-        const { crypto, doughflow } = account_type_data?.get_account_types?.wallet || {};
-        const crypto_currencies = crypto?.currencies;
-        const fiat_currencies = doughflow?.currencies;
+        if (!get_account_types_data) return null;
+        const { crypto, doughflow } = get_account_types_data?.get_account_types?.wallet || {};
+        const crypto_currencies = crypto.currencies;
+        const fiat_currencies = doughflow.currencies;
 
         if (!crypto_currencies || !fiat_currencies) return null;
         const available_currencies = [...fiat_currencies, ...crypto_currencies];
@@ -67,7 +65,7 @@ const useAvailableWallets = () => {
         }
 
         return [...available_wallets];
-    }, [added_wallets, account_type_data, data?.landing_company_name, is_dark_mode_on, is_crypto]);
+    }, [added_wallets, get_account_types_data, data?.landing_company_name, is_dark_mode_on, is_crypto]);
 
     return {
         ...rest,

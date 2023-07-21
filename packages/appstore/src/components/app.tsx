@@ -3,7 +3,6 @@ import CashierStoreProvider from '@deriv/cashier/src/cashier-providers';
 import CFDStoreProvider from '@deriv/cfd/src/cfd-providers';
 import { StoreProvider } from '@deriv/stores';
 import AppContent from './app-content';
-import './app.scss';
 
 type TProps = {
     passthrough: {

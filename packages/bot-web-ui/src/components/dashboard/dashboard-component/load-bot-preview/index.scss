@@ -64,6 +64,7 @@
         @include mobile {
             height: 100%;
             overflow: hidden;
+            padding-left: 0.5rem;
         }
     }
 
@@ -340,7 +341,7 @@
                 }
 
                 @include mobile {
-                    padding: 1rem 0.6rem;
+                    padding: 1rem 0;
                 }
 
                 .load-strategy__recent-item-text {

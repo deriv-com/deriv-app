@@ -61,11 +61,11 @@ const WalletTourGuide = observer(() => {
             floaterProps={{ disableAnimation: true }}
             locale={wallet_tour_step_locale}
             run={is_wallet_tour_open}
-            scrollOffset={200} // TODO: add a function to calculate the scroll offset depending on the steps but for now this works
-            scrollToFirstStep
+            scrollOffset={200}
             stepIndex={joyride_index}
             steps={getWalletStepConfig(has_mt5_account, is_all_wallets_added)}
             styles={wallet_tour_styles}
+            scrollDuration={800}
         />
     );
 });

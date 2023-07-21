@@ -370,6 +370,9 @@ export const wallet_tour_styles: Styles = {
     tooltipFooter: {
         marginTop: 'unset',
     },
+    overlay: {
+        height: '100%',
+    },
 };
 
 export const getTourStepLocale = (): Locale => ({

@@ -3,18 +3,18 @@ import classNames from 'classnames';
 import { Div100vhContainer } from '@deriv/components';
 import { useStore, observer } from '@deriv/stores';
 import { useContentFlag } from '@deriv/hooks';
+import { isDesktop } from '@deriv/shared';
 import ModalManager from 'Components/modals/modal-manager';
 import TourGuide from 'Modules/tour-guide/tour-guide';
 import AccountWithWallets from './account-with-wallets';
 import AccountWithoutWallets from './account-without-wallets';
 import EUDisclaimer from 'Components/eu-disclaimer';
-import AddMoreWallets from 'Components/add-more-wallets';
 import WalletTourGuide from 'Modules/tour-guide/wallet-tour-guide';
 import './traders-hub.scss';
 
 const TradersHub = observer(() => {
     const { traders_hub, client, ui } = useStore();
-    const { notification_messages_ui: Notifications } = ui;
+    const { notification_messages_ui: Notifications, is_mobile } = ui;
     const {
         is_landing_company_loaded,
         is_logged_in,
@@ -62,25 +62,25 @@ const TradersHub = observer(() => {
         <React.Fragment>
             <Div100vhContainer
                 className={classNames('traders-hub--mobile', {
-                    'traders-hub--mobile--eu-user': is_eu_user,
+                    'traders-hub--mobile--eu-user': is_mobile && is_eu_user,
                     'traders-hub__wallets-bg': is_wallet_account,
                 })}
                 height_offset='50px'
+                is_disabled={isDesktop}
             >
                 {can_show_notify && <Notifications />}
+                <ModalManager />
+                <WalletTourGuide />
+                {scrolled && <TourGuide />}
                 <div
                     id='traders-hub'
                     ref={traders_hub_ref}
-                    className={classNames('traders-hub', {
+                    className={classNames('traders-hub traders-hub__main-container', {
                         'traders-hub__wallets': is_wallet_account,
                         'traders-hub__wallets-demo-bg': is_wallet_account && loginid && accounts?.[loginid]?.is_virtual,
                     })}
                 >
                     {is_wallet_account ? <AccountWithWallets /> : <AccountWithoutWallets />}
-                    <AddMoreWallets />
-                    <ModalManager />
-                    <WalletTourGuide />
-                    {scrolled && <TourGuide />}
                 </div>
             </Div100vhContainer>
             {is_low_risk_cr_eu && <EUDisclaimer />}

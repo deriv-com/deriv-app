@@ -8,6 +8,7 @@ import ButtonToggleLoader from 'Components/pre-loader/button-toggle-loader';
 import { routes } from '@deriv/shared';
 import WalletOptionsAndMultipliersListing from 'Components/wallet-content/wallet-option-multipliers-listing';
 import WalletCFDsListing from 'Components/wallet-content/wallet-cfds-listing';
+import AddMoreWallets from 'Components/add-more-wallets';
 
 const AccountWithWallets = observer(() => {
     const {
@@ -72,6 +73,7 @@ const AccountWithWallets = observer(() => {
             ) : (
                 <React.Fragment>{desktopWalletsComponent}</React.Fragment>
             )}
+            <AddMoreWallets />
         </React.Fragment>
     );
 });

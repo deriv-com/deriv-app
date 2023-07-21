@@ -1,6 +1,11 @@
 .add-wallets {
-    padding: 2rem 0rem 4rem;
-    margin-top: 2.4rem;
+    display: flex;
+    padding-top: 2.4rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.6rem;
+    width: 100%;
+
     &__title {
         @include mobile {
             font-size: var(--text-size-m);
@@ -8,10 +13,9 @@
     }
     &__content {
         background-color: var(--general-main-1);
-        height: 35.2rem;
-        margin-top: 1.6rem;
         border-radius: $BORDER_RADIUS;
         position: relative;
+        width: 100%;
     }
     &__card {
         width: 23rem;

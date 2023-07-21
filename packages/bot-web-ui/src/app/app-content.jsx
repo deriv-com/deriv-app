@@ -1,6 +1,7 @@
 import React from 'react';
 import { ApiHelpers, ServerTime, setColors } from '@deriv/bot-skeleton';
 import { Loading } from '@deriv/components';
+import { epochToMoment, toMoment } from '@deriv/shared';
 import { observer, useStore } from '@deriv/stores';
 import { Audio, BotNotificationMessages, Dashboard, NetworkToastPopup, RoutePromptDialog } from 'Components';
 import BotBuilder from 'Components/dashboard/bot-builder';
@@ -48,6 +49,16 @@ const AppContent = observer(() => {
             r.async = 1;
             r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
             a.appendChild(r);
+
+            const user_id = client.loginid;
+            const account_type = client.is_virtual ? 'Demo' : 'Real';
+            const account_open_date = epochToMoment(client.account_open_date);
+
+            window.hj('identify', user_id, {
+                'Account created': toMoment(account_open_date).format('YYYY-MM-DD'),
+                'Country during signup': client.clients_country,
+                'Account Type': account_type,
+            });
         })(window, document, 'https://static.hotjar.com/c/hotjar-', '.js?sv=');
     }, []);
 

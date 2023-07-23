@@ -50,7 +50,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
 
     const [filter, setFilter] = useState<typeof filter_options[number]['value']>('');
 
-    const { transactions, isComplete, isLoading, nextPage, resetPages } = useWalletTransactions(filter || undefined);
+    const { transactions, isComplete, isLoading, loadMore, reset } = useWalletTransactions(filter || undefined);
 
     const grouped_transactions = groupTransactionsByDay(transactions);
 
@@ -100,7 +100,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
             !isComplete &&
             e.currentTarget.scrollHeight - e.currentTarget.scrollTop - e.currentTarget.clientHeight <= 100
         ) {
-            nextPage();
+            loadMore();
         }
     };
 
@@ -112,7 +112,7 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
                     is_align_text_left
                     list={filter_options}
                     onChange={(e: { target: { value: typeof filter } }) => {
-                        resetPages();
+                        reset();
                         setFilter(e.target.value);
                     }}
                     label={localize('Filter')}

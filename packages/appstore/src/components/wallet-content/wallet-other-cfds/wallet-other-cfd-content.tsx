@@ -43,38 +43,33 @@ const WalletOtherCFDContent = observer(({ wallet_account }: TWalletOtherCFDConte
              * todo: Please extract this out to a separate component after derivez is available and make this component as parent for Other CFDs
              */}
             {dxtrade.dxtrade_accounts?.map(account => {
-                const existing_accounts = getExistingAccounts(account.platform || '', account.market_type || '');
-                return existing_accounts.map((existing_account: TDetailsOfEachMT5Loginid) => {
-                    return (
-                        <TradingAppCard
-                            action_type='multi-action'
-                            availability={selected_region}
-                            clickable_icon
-                            icon='DerivX'
-                            sub_title={localize('Deriv X')}
-                            name={`${formatMoney(existing_account.currency, existing_account.display_balance, true)} ${
-                                existing_account.currency
-                            }`}
-                            description={existing_account.login}
-                            platform={account.platform}
-                            key={`trading_app_card_${existing_account.login}`}
-                            is_wallet={true}
-                            is_wallet_demo={!!wallet?.is_demo}
-                            onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
-                                const button_name = e?.currentTarget?.name;
-                                if (button_name === 'transfer-btn') {
-                                    toggleAccountTransferModal();
-                                    setSelectedAccount(existing_account);
-                                } else if (button_name === 'topup-btn') {
-                                    showTopUpModal(existing_account);
-                                    setAppstorePlatform(account.platform);
-                                } else {
-                                    startTrade(account.platform, existing_account);
-                                }
-                            }}
-                        />
-                    );
-                });
+                return (
+                    <TradingAppCard
+                        action_type='multi-action'
+                        availability={selected_region}
+                        clickable_icon
+                        icon='DerivX'
+                        sub_title={localize('Deriv X')}
+                        name={`${formatMoney(account.currency, account.display_balance, true)} ${account.currency}`}
+                        description={account.login}
+                        platform={account.platform}
+                        key={`trading_app_card_${account.login}`}
+                        is_wallet={true}
+                        is_wallet_demo={!!wallet?.is_demo}
+                        onAction={(e?: React.MouseEvent<HTMLButtonElement>) => {
+                            const button_name = e?.currentTarget?.name;
+                            if (button_name === 'transfer-btn') {
+                                toggleAccountTransferModal();
+                                setSelectedAccount(account);
+                            } else if (button_name === 'topup-btn') {
+                                showTopUpModal(account);
+                                setAppstorePlatform(account.platform);
+                            } else {
+                                startTrade(account.platform, account);
+                            }
+                        }}
+                    />
+                );
             })}
             {!dxtrade.dxtrade_accounts?.length && (
                 <TradingAppCard

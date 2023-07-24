@@ -26,58 +26,53 @@ jest.mock('@deriv/api', () => ({
                 },
             };
         }
+        if (name === 'mt5_login_list') {
+            return {
+                data: {
+                    mt5_login_list: [
+                        {
+                            display_login: 'CRW909900',
+                            email: '',
+                            leverage: '10012123123',
+                            login: 'CRW909900',
+                            server: 'Deriv-Server',
+                            server_description: 'Deriv-Server',
+                            type: 'demo',
+                        },
+                    ],
+                },
+            };
+        }
+        if (name === 'trading_platform_accounts') {
+            return {
+                data: {
+                    trading_platform_accounts: [
+                        {
+                            account_type: 'financial',
+                            email: '',
+                            id: 'CRW909900',
+                            is_disabled: 0,
+                            is_virtual: 1,
+                            leverage: '1000',
+                            login: 'CRW909900',
+                            server: 'Deriv-Server',
+                            server_description: 'Deriv-Server',
+                            short_title: 'CRW909900',
+                            title: 'CRW909900',
+                            type: 'demo',
+                        },
+                    ],
+                },
+            };
+        }
         return { data: undefined };
     }),
-    useRequest: jest.fn(() => ({
-        data: {
-            mt5_login_list: [
-                {
-                    display_login: 'CRW909900',
-                    email: '',
-                    leverage: '10012123123',
-                    login: 'CRW909900',
-                    server: 'Deriv-Server',
-                    server_description: 'Deriv-Server',
-                    type: 'demo',
-                },
-            ],
-
-            trading_platform_accounts: [
-                {
-                    account_type: 'financial',
-                    email: '',
-                    id: 'CRW909900',
-                    is_disabled: 0,
-                    is_virtual: 1,
-                    leverage: '1000',
-                    login: 'CRW909900',
-                    server: 'Deriv-Server',
-                    server_description: 'Deriv-Server',
-                    short_title: 'CRW909900',
-                    title: 'CRW909900',
-                    type: 'demo',
-                },
-            ],
-        },
-        mutate: jest.fn,
-    })),
 }));
 
 describe('useExistingCFDAccounts', () => {
     it('should return the existing cfd accounts', () => {
         const mock = mockStore({
             client: { accounts: { CRW909900: { token: '12345' } }, loginid: 'CRW909900' },
-            traders_hub: {
-                combined_cfd_mt5_accounts: [
-                    {
-                        platform: 'mt5',
-                        description: 'Deriv-Server',
-                        icon: 'Derived',
-                        sub_title: 'sub_name',
-                        name: 'Derived',
-                    },
-                ],
-            },
         });
 
         const wrapper = ({ children }: { children: JSX.Element }) => (
@@ -92,6 +87,7 @@ describe('useExistingCFDAccounts', () => {
                 account_type: 'financial',
                 email: '',
                 id: 'CRW909900',
+                is_added: true,
                 is_disabled: 0,
                 is_virtual: 1,
                 leverage: '1000',

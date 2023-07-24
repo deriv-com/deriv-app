@@ -3,7 +3,12 @@ import { Loading } from '@deriv/components';
 import { Localize } from '@deriv/translations';
 import { isCryptocurrency, isDesktop } from '@deriv/shared';
 import { useStore, observer } from '@deriv/stores';
-import { useCashierLocked, useCheck10kLimit, useIsSystemMaintenance, useWithdrawalLocked } from '@deriv/hooks';
+import {
+    useCashierLocked,
+    useIsWithdrawalLimitReached,
+    useIsSystemMaintenance,
+    useWithdrawalLocked,
+} from '@deriv/hooks';
 import CryptoTransactionsHistory from '../../components/crypto-transactions-history';
 import CryptoWithdrawForm from './crypto-withdraw-form';
 import CryptoWithdrawReceipt from './crypto-withdraw-receipt';
@@ -76,7 +81,7 @@ const Withdrawal = observer(({ setSideNotes }: TWithdrawalProps) => {
         willMountWithdraw,
     } = withdraw;
 
-    const { is_10k_withdrawal_limit_reached } = useCheck10kLimit();
+    const { is_10k_withdrawal_limit_reached } = useIsWithdrawalLimitReached();
     const { is_withdrawal_locked, isLoading } = useWithdrawalLocked();
 
     React.useEffect(() => {

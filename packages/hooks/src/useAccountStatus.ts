@@ -1,9 +1,9 @@
 import { useFetch } from '@deriv/api';
-import useCheck10kLimit from './useCheck10kLimit';
+import useIsWithdrawalLimitReached from './useIsWithdrawalLimitReached';
 
 const useAccountStatus = () => {
     const { data: account_status, ...rest } = useFetch('get_account_status');
-    const { is_10k_withdrawal_limit_reached: is_10K_limit } = useCheck10kLimit();
+    const { is_10k_withdrawal_limit_reached: is_10K_limit } = useIsWithdrawalLimitReached();
 
     const get_account_status = account_status?.get_account_status;
 

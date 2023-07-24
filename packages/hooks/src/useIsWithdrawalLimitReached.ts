@@ -2,7 +2,7 @@ import { useFetch } from '@deriv/api';
 import { getMinWithdrawal } from '../../shared/src/utils/currency';
 import { useStore } from '@deriv/stores';
 
-const useCheck10kLimit = () => {
+const useIsWithdrawalLimitReached = () => {
     const { client } = useStore();
     const { data: account_limit, isSuccess } = useFetch('get_limits');
     const remainder = account_limit?.get_limits?.remainder;
@@ -12,4 +12,4 @@ const useCheck10kLimit = () => {
     return { is_10k_withdrawal_limit_reached, max_withdraw_amount: remainder, isSuccess };
 };
 
-export default useCheck10kLimit;
+export default useIsWithdrawalLimitReached;

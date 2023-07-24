@@ -3,13 +3,13 @@ import { renderHook } from '@testing-library/react-hooks';
 import { StoreProvider, mockStore } from '@deriv/stores';
 import useWithdrawalLocked from '../useWithdrawalLocked';
 import useAccountStatus from '../useAccountStatus';
-import useCheck10kLimit from '../useCheck10kLimit';
+import useIsWithdrawalLimitReached from '../useIsWithdrawalLimitReached';
 
 jest.mock('../useAccountStatus', () => {
     return jest.fn();
 });
 
-jest.mock('../useCheck10kLimit', () => {
+jest.mock('../useIsWithdrawalLimitReached', () => {
     return jest.fn();
 });
 
@@ -25,7 +25,9 @@ const mock_store = mockStore({
 });
 
 const mockUseAccountStatus = useAccountStatus as jest.MockedFunction<typeof useAccountStatus>;
-const mockUseCheck10kLimit = useCheck10kLimit as jest.MockedFunction<typeof useCheck10kLimit>;
+const mockUseIsWithdrawalLimitReached = useIsWithdrawalLimitReached as jest.MockedFunction<
+    typeof useIsWithdrawalLimitReached
+>;
 
 const wrapper = ({ children }: { children: JSX.Element }) => {
     return <StoreProvider store={mock_store}>{children}</StoreProvider>;
@@ -33,7 +35,7 @@ const wrapper = ({ children }: { children: JSX.Element }) => {
 
 describe('useWithdrawalLocked', () => {
     beforeEach(() => {
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: true,
             max_withdraw_amount: 10,
             isSuccess: true,

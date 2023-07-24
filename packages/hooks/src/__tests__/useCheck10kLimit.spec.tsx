@@ -2,7 +2,7 @@ import React from 'react';
 import { renderHook } from '@testing-library/react-hooks';
 import { APIProvider } from '@deriv/api';
 import { mockStore, StoreProvider } from '@deriv/stores';
-import useCheck10kLimit from '../useCheck10kLimit';
+import useIsWithdrawalLimitReached from '../useIsWithdrawalLimitReached';
 
 const mock_store = mockStore({
     client: {
@@ -23,11 +23,11 @@ const wrapper = ({ children }: { children: JSX.Element }) => (
     </APIProvider>
 );
 
-describe('useCheck10kLimit', () => {
+describe('useIsWithdrawalLimitReached', () => {
     it('should return true if max withdrawal value is reached', () => {
         mock_remainder = '0';
 
-        const { result } = renderHook(() => useCheck10kLimit(), { wrapper });
+        const { result } = renderHook(() => useIsWithdrawalLimitReached(), { wrapper });
 
         expect(result.current.is_10k_withdrawal_limit_reached).toBe(true);
     });
@@ -35,7 +35,7 @@ describe('useCheck10kLimit', () => {
     it('should return false if max withdrawal value is not reached', () => {
         mock_remainder = '10000';
 
-        const { result } = renderHook(() => useCheck10kLimit(), { wrapper });
+        const { result } = renderHook(() => useIsWithdrawalLimitReached(), { wrapper });
 
         expect(result.current.is_10k_withdrawal_limit_reached).toBe(false);
     });

@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react-hooks';
 import useAccountStatus from '../useAccountStatus';
-import useCheck10kLimit from '../useCheck10kLimit';
+import useIsWithdrawalLimitReached from '../useIsWithdrawalLimitReached';
 import { useFetch } from '@deriv/api';
 
 jest.mock('@deriv/api', () => ({
@@ -8,16 +8,18 @@ jest.mock('@deriv/api', () => ({
     useFetch: jest.fn(),
 }));
 
-jest.mock('../useCheck10kLimit', () => {
+jest.mock('../useIsWithdrawalLimitReached', () => {
     return jest.fn();
 });
 
 const mockUseFetch = useFetch as jest.MockedFunction<typeof useFetch>;
-const mockUseCheck10kLimit = useCheck10kLimit as jest.MockedFunction<typeof useCheck10kLimit>;
+const mockUseIsWithdrawalLimitReached = useIsWithdrawalLimitReached as jest.MockedFunction<
+    typeof useIsWithdrawalLimitReached
+>;
 
 describe('useAccountStatus', () => {
     beforeEach(() => {
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: false,
             max_withdraw_amount: 10,
             isSuccess: true,
@@ -38,7 +40,7 @@ describe('useAccountStatus', () => {
             },
         });
 
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: true,
             max_withdraw_amount: 10,
             isSuccess: true,
@@ -50,7 +52,7 @@ describe('useAccountStatus', () => {
     });
 
     it('should check whether POI is not needed', () => {
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: true,
             max_withdraw_amount: 10,
             isSuccess: true,
@@ -72,7 +74,7 @@ describe('useAccountStatus', () => {
 
         expect(statuses.needs_verification.is_poi_needed).toBe(false);
 
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: false,
             max_withdraw_amount: 10,
             isSuccess: true,
@@ -149,7 +151,7 @@ describe('useAccountStatus', () => {
             },
         });
 
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: true,
             max_withdraw_amount: 10,
             isSuccess: true,
@@ -173,7 +175,7 @@ describe('useAccountStatus', () => {
             },
         });
 
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: false,
             max_withdraw_amount: 10,
             isSuccess: true,
@@ -198,7 +200,7 @@ describe('useAccountStatus', () => {
             },
         });
 
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: true,
             max_withdraw_amount: 10,
             isSuccess: true,

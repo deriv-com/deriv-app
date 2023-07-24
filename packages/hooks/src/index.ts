@@ -5,7 +5,7 @@ export { default as useCFDAllAccounts } from './useCFDAllAccounts';
 export { default as useCFDDemoAccounts } from './useCFDDemoAccounts';
 export { default as useCFDRealAccounts } from './useCFDRealAccounts';
 export { default as useCashierLocked } from './useCashierLocked';
-export { default as useCheck10kLimit } from './useCheck10kLimit';
+export { default as useIsWithdrawalLimitReached } from './useIsWithdrawalLimitReached';
 export { default as useCountdown } from './useCountdown';
 export { default as useCurrentAccountDetails } from './useCurrentAccountDetails';
 export { default as useCurrencyConfig } from './useCurrencyConfig';

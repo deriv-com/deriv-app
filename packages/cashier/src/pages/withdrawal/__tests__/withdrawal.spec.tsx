@@ -6,7 +6,7 @@ import { isDesktop } from '@deriv/shared';
 import Withdrawal from '../withdrawal';
 import CashierProviders from '../../../cashier-providers';
 import { mockStore } from '@deriv/stores';
-import { useCashierLocked, useCheck10kLimit, useWithdrawalLocked } from '@deriv/hooks';
+import { useCashierLocked, useIsWithdrawalLimitReached, useWithdrawalLocked } from '@deriv/hooks';
 
 jest.mock('Components/cashier-locked', () => jest.fn(() => 'CashierLocked'));
 jest.mock('Components/cashier-container/virtual', () => jest.fn(() => 'Virtual'));
@@ -32,11 +32,13 @@ jest.mock('@deriv/shared/src/utils/screen/responsive', () => ({
 jest.mock('@deriv/hooks', () => ({
     ...jest.requireActual('@deriv/hooks'),
     useCashierLocked: jest.fn(() => false),
-    useCheck10kLimit: jest.fn(),
+    useIsWithdrawalLimitReached: jest.fn(),
     useWithdrawalLocked: jest.fn(),
 }));
 const mockUseCashierLocked = useCashierLocked as jest.MockedFunction<typeof useCashierLocked>;
-const mockUseCheck10kLimit = useCheck10kLimit as jest.MockedFunction<typeof useCheck10kLimit>;
+const mockUseIsWithdrawalLimitReached = useIsWithdrawalLimitReached as jest.MockedFunction<
+    typeof useIsWithdrawalLimitReached
+>;
 const mockUseWithdrawalLocked = useWithdrawalLocked as jest.MockedFunction<typeof useWithdrawalLocked>;
 
 const cashier_mock = {
@@ -69,7 +71,7 @@ describe('<Withdrawal />', () => {
     beforeEach(() => {
         setSideNotes = jest.fn();
         mockUseCashierLocked.mockReturnValue(false);
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: false,
             max_withdraw_amount: 10,
             isSuccess: true,
@@ -183,7 +185,7 @@ describe('<Withdrawal />', () => {
         const { rerender } = render(mockWithdrawal(mock_root_store));
         expect(screen.getByText('WithdrawalLocked')).toBeInTheDocument();
 
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: true,
             max_withdraw_amount: 10,
             isSuccess: true,
@@ -194,7 +196,7 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <NoBalance /> component', () => {
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: false,
             max_withdraw_amount: 10,
             isSuccess: true,
@@ -217,7 +219,7 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <Error /> component', () => {
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: false,
             max_withdraw_amount: 10,
             isSuccess: true,
@@ -257,7 +259,7 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <Withdraw /> component', () => {
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: false,
             max_withdraw_amount: 10,
             isSuccess: true,
@@ -281,7 +283,7 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <CryptoWithdrawForm /> component', () => {
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: false,
             max_withdraw_amount: 10,
             isSuccess: true,
@@ -313,7 +315,7 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <CryptoWithdrawReceipt /> component', () => {
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: false,
             max_withdraw_amount: 10,
             isSuccess: true,
@@ -344,7 +346,7 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <CryptoTransactionsHistory /> component', () => {
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: false,
             max_withdraw_amount: 10,
             isSuccess: true,
@@ -375,7 +377,7 @@ describe('<Withdrawal />', () => {
     });
 
     it('should render <WithdrawalEmailVerificationModule />', () => {
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: false,
             max_withdraw_amount: 10,
             isSuccess: true,
@@ -398,7 +400,7 @@ describe('<Withdrawal />', () => {
     });
 
     it('should not trigger "setSideNotes" callback if "isDesktop = false"', () => {
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: false,
             max_withdraw_amount: 10,
             isSuccess: true,
@@ -433,7 +435,7 @@ describe('<Withdrawal />', () => {
     });
 
     it('should trigger "setSideNotes" callback in Desktop mode', () => {
-        mockUseCheck10kLimit.mockReturnValue({
+        mockUseIsWithdrawalLimitReached.mockReturnValue({
             is_10k_withdrawal_limit_reached: false,
             max_withdraw_amount: 10,
             isSuccess: true,

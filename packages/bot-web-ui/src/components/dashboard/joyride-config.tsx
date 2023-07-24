@@ -198,7 +198,7 @@ const Step1 = ({ show_label = false }) => (
         )}
         <div className='joyride-content__left'>
             <Localize
-                i18n_default_text={`First, set the <0>Trade parameters</0> block.`}
+                i18n_default_text={'First, set the <0>Trade parameters</0> block.'}
                 components={[<strong key={0} />]}
             />
         </div>

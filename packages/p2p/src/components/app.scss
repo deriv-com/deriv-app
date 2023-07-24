@@ -33,10 +33,6 @@
     }
     & .dc-tabs {
         &--p2p-cashier__tabs {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-
             @include mobile {
                 overflow: hidden;
             }
@@ -106,6 +102,11 @@
                     margin-top: 4rem;
                 }
             }
+        }
+    }
+    @include mobile {
+        .dc-autocomplete__field {
+            border: none;
         }
     }
 }

@@ -1,12 +1,12 @@
-import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
-import { getAllowedLanguages, changeLanguage } from '@deriv/translations';
-import { action, computed, observable, makeObservable } from 'mobx';
-import { currentLanguage } from 'Utils/Language/index';
-import ServerTime from '_common/base/server_time';
-import BinarySocket from '_common/base/socket_base';
-import BaseStore from './base-store';
-import WS from 'Services/ws-methods';
 import * as SocketCache from '_common/base/socket_cache';
+import { action, computed, makeObservable, observable } from 'mobx';
+import { changeLanguage, getAllowedLanguages } from '@deriv/translations';
+import { getAppId, getUrlBinaryBot, getUrlSmartTrader, isMobile, platforms, routes, toMoment } from '@deriv/shared';
+import BaseStore from './base-store';
+import BinarySocket from '_common/base/socket_base';
+import ServerTime from '_common/base/server_time';
+import WS from 'Services/ws-methods';
+import { currentLanguage } from 'Utils/Language/index';
 
 export default class CommonStore extends BaseStore {
     constructor(root_store) {
@@ -52,7 +52,6 @@ export default class CommonStore extends BaseStore {
             routeTo: action.bound,
             addRouteHistoryItem: action.bound,
             changeSelectedLanguage: action.bound,
-            getExchangeRate: action.bound,
             routeBackInApp: action.bound,
         });
     }
@@ -108,30 +107,38 @@ export default class CommonStore extends BaseStore {
             this.is_language_changing = true;
             this.changing_language_timer_id = setTimeout(() => {
                 this.is_language_changing = false;
-            }, 10000);
+            }, 2500);
         }
     }
 
-    changeSelectedLanguage = key => {
+    changeSelectedLanguage = async key => {
         SocketCache.clear();
         if (key === 'EN') {
             window.localStorage.setItem('i18n_language', key);
         }
-
-        WS.setSettings({
-            set_settings: 1,
-            preferred_language: key,
-        }).then(() => {
-            const new_url = new URL(window.location.href);
-            if (key === 'EN') {
-                new_url.searchParams.delete('lang');
-            } else {
-                new_url.searchParams.set('lang', key);
-            }
-            window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
-            changeLanguage(key, () => {
-                this.changeCurrentLanguage(key);
-                BinarySocket.closeAndOpenNewConnection(key);
+        await WS.wait('authorize');
+        return new Promise((resolve, reject) => {
+            WS.setSettings({
+                set_settings: 1,
+                preferred_language: key,
+            }).then(async () => {
+                const new_url = new URL(window.location.href);
+                if (key === 'EN') {
+                    new_url.searchParams.delete('lang');
+                } else {
+                    new_url.searchParams.set('lang', key);
+                }
+                window.history.pushState({ path: new_url.toString() }, '', new_url.toString());
+                try {
+                    await changeLanguage(key, () => {
+                        this.changeCurrentLanguage(key);
+                        BinarySocket.closeAndOpenNewConnection(key);
+                        this.root_store.client.setIsAuthorize(false);
+                    });
+                    resolve();
+                } catch (e) {
+                    reject();
+                }
             });
         });
     };
@@ -144,8 +151,11 @@ export default class CommonStore extends BaseStore {
         const search = window.location.search;
         if (search) {
             const url_params = new URLSearchParams(search);
-            this.platform = url_params.get('platform') || '';
-            localStorage.setItem('config.platform', this.platform);
+            const platform = url_params.get('platform');
+            if (platform) {
+                this.platform = platform;
+                window.sessionStorage.setItem('config.platform', this.platform);
+            }
         }
     }
 
@@ -156,7 +166,11 @@ export default class CommonStore extends BaseStore {
     setInitialRouteHistoryItem(location) {
         if (window.location.href.indexOf('?ext_platform_url=') !== -1) {
             const ext_url = decodeURI(new URL(window.location.href).searchParams.get('ext_platform_url'));
-
+            const { setExternalParams } = this.root_store.client;
+            setExternalParams({
+                url: ext_url,
+                should_redirect: true,
+            });
             if (ext_url?.indexOf(getUrlSmartTrader()) === 0) {
                 this.addRouteHistoryItem({ pathname: ext_url, action: 'PUSH', is_external: true });
             } else if (ext_url?.indexOf(routes.cashier_p2p) === 0) {
@@ -220,6 +234,7 @@ export default class CommonStore extends BaseStore {
                 should_show_refresh: error.should_show_refresh,
                 redirect_to: error.redirect_to,
                 should_clear_error_on_click: error.should_clear_error_on_click,
+                should_redirect: error.should_redirect,
                 setError: this.setError,
             }),
         };
@@ -233,6 +248,7 @@ export default class CommonStore extends BaseStore {
         should_show_refresh,
         redirect_to,
         should_clear_error_on_click,
+        should_redirect,
     }) {
         this.setError(true, {
             header,
@@ -243,6 +259,7 @@ export default class CommonStore extends BaseStore {
             redirect_to,
             should_clear_error_on_click,
             type: 'error',
+            should_redirect,
         });
     }
 
@@ -257,7 +274,7 @@ export default class CommonStore extends BaseStore {
     setServicesError(error) {
         this.services_error = error;
         if (isMobile()) {
-            if (error.code === 'CompanyWideLimitExceeded') {
+            if (error.code === 'CompanyWideLimitExceeded' || error.code === 'PleaseAuthenticate') {
                 this.root_store.ui.toggleServicesErrorModal(true);
             } else {
                 this.root_store.ui.addToast({
@@ -289,12 +306,6 @@ export default class CommonStore extends BaseStore {
     }
 
     isCurrentLanguage = lang => lang === this.current_language;
-
-    getExchangeRate = async (from_currency, to_currency) => {
-        const { exchange_rates } = await BinarySocket.exchange_rates(from_currency);
-
-        return exchange_rates?.rates?.[to_currency];
-    };
 
     routeBackInApp(history, additional_platform_path = []) {
         let route_to_item_idx = -1;

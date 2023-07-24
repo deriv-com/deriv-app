@@ -18,6 +18,7 @@ export const getCardLabels = () => ({
     PURCHASE_PRICE: 'Buy price:',
     POTENTIAL_PAYOUT: 'Payout limit:',
     TICK: 'Tick ',
+    TICKS: 'Ticks',
     WON: 'Won',
     LOST: 'Lost',
     DAYS: 'Days',
@@ -170,17 +171,14 @@ export const getUnsupportedContracts = () => ({
         name: 'Spread Down',
         position: 'bottom',
     },
-    RUNHIGH: {
-        name: 'Only Ups',
-        position: 'top',
-    },
-    RUNLOW: {
-        name: 'Only Downs',
-        position: 'bottom',
-    },
 });
 
 export const getSupportedContracts = is_high_low => ({
+    ACCU: {
+        button_name: 'Buy',
+        name: 'Accumulator',
+        position: 'top',
+    },
     CALL: {
         name: is_high_low ? 'Higher' : 'Rise',
         position: 'top',
@@ -237,6 +235,14 @@ export const getSupportedContracts = is_high_low => ({
         name: 'Down',
         position: 'bottom',
     },
+    RUNHIGH: {
+        name: 'Only Ups',
+        position: 'top',
+    },
+    RUNLOW: {
+        name: 'Only Downs',
+        position: 'bottom',
+    },
 });
 
 export const getContractConfig = is_high_low => ({
@@ -244,8 +250,9 @@ export const getContractConfig = is_high_low => ({
     ...getUnsupportedContracts(),
 });
 
-export const getContractTypeDisplay = (type, is_high_low = false) => {
-    return getContractConfig(is_high_low)[type] ? getContractConfig(is_high_low)[type.toUpperCase()].name : '';
+export const getContractTypeDisplay = (type, is_high_low = false, show_button_name = false) => {
+    const contract_config = getContractConfig(is_high_low)[type];
+    return (show_button_name && contract_config.button_name) || contract_config.name || '';
 };
 
 export const getContractTypePosition = (type, is_high_low = false) =>

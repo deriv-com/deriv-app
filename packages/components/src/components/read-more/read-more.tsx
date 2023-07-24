@@ -5,7 +5,7 @@ type TReadMore = {
     className?: string;
     collapse_length: number;
     expand_text: string;
-    openDialog: () => void;
+    openDialog?: () => void;
     show_dialog?: boolean;
     text: string;
 };
@@ -25,7 +25,7 @@ const ReadMore = ({ className, collapse_length, expand_text, openDialog, show_di
                 <div className={classNames('dc-read-more', className)}>
                     <span className='dc-read-more__content'>{content}</span>
                     <span>...</span>
-                    <span className='dc-read-more__dialog' onClick={() => openDialog()}>
+                    <span className='dc-read-more__dialog' onClick={() => openDialog?.()}>
                         {expand_text}
                     </span>
                 </div>

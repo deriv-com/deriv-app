@@ -1,10 +1,9 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
+const IS_RELEASE = process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging';
+
 const js_loaders = [
-    {
-        loader: '@deriv/shared/src/loaders/react-import-loader.js',
-    },
     {
         loader: '@deriv/shared/src/loaders/deriv-account-loader.js',
     },
@@ -72,13 +71,13 @@ const css_loaders = [
     {
         loader: 'css-loader',
         options: {
-            sourceMap: true,
+            sourceMap: !IS_RELEASE,
         },
     },
     {
         loader: 'postcss-loader',
         options: {
-            sourceMap: true,
+            sourceMap: !IS_RELEASE,
             postcssOptions: {
                 config: path.resolve(__dirname),
             },
@@ -94,7 +93,7 @@ const css_loaders = [
     {
         loader: 'sass-loader',
         options: {
-            sourceMap: true,
+            sourceMap: !IS_RELEASE,
         },
     },
     {
@@ -112,4 +111,5 @@ module.exports = {
     svg_loaders,
     svg_file_loaders,
     css_loaders,
+    IS_RELEASE,
 };

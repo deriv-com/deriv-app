@@ -1,26 +1,28 @@
-import React from 'react';
 import { Button, Loading } from '@deriv/components';
-import { getPlatformRedirect, WS } from '@deriv/shared';
-import { Localize } from '@deriv/translations';
-import { useHistory } from 'react-router';
+import { WS, getPlatformRedirect, platforms } from '@deriv/shared';
+import { identity_status_codes, service_code } from './proof-of-identity-utils';
 import DemoMessage from 'Components/demo-message';
 import ErrorMessage from 'Components/error-component';
-import NotRequired from 'Components/poi/status/not-required';
-import Unsupported from 'Components/poi/status/unsupported';
-import Verified from 'Components/poi/status/verified';
-import Limited from 'Components/poi/status/limited';
 import Expired from 'Components/poi/status/expired';
-import UploadComplete from 'Components/poi/status/upload-complete';
-import POISubmission from './proof-of-identity-submission.jsx';
-import Onfido from './onfido.jsx';
 import IdvContainer from './idv.jsx';
-import { identity_status_codes, service_code } from './proof-of-identity-utils';
+import Limited from 'Components/poi/status/limited';
+import { Localize } from '@deriv/translations';
+import NotRequired from 'Components/poi/status/not-required';
+import Onfido from './onfido.jsx';
+import POISubmission from './proof-of-identity-submission.jsx';
+import React from 'react';
+import Unsupported from 'Components/poi/status/unsupported';
+import UploadComplete from 'Components/poi/status/upload-complete';
+import Verified from 'Components/poi/status/verified';
 import { populateVerificationStatus } from '../Helpers/verification';
+import { useHistory } from 'react-router';
 
 const ProofOfIdentityContainer = ({
+    account_settings,
     account_status,
     app_routing_history,
     fetchResidenceList,
+    getChangeableFields,
     height,
     is_from_external,
     is_switching,
@@ -32,6 +34,7 @@ const ProofOfIdentityContainer = ({
     routeBackInApp,
     should_allow_authentication,
     setIsCfdPoiCompleted,
+    updateAccountStatus,
 }) => {
     const history = useHistory();
     const [api_error, setAPIError] = React.useState();
@@ -40,10 +43,18 @@ const ProofOfIdentityContainer = ({
     const [is_status_loading, setStatusLoading] = React.useState(true);
 
     const from_platform = getPlatformRedirect(app_routing_history);
-    const should_show_redirect_btn = from_platform.name === 'P2P';
+
+    const should_show_redirect_btn = Object.keys(platforms).includes(from_platform?.ref);
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
     const handleRequireSubmission = () => setHasRequireSubmission(true);
+    const country_code = account_settings?.citizen || account_settings?.country_code;
+
+    const handleManualSubmit = () => {
+        WS.authorized.getAccountStatus().then(() => {
+            refreshNotifications();
+        });
+    };
 
     React.useEffect(() => {
         // only re-mount logic when switching is done
@@ -96,8 +107,19 @@ const ProofOfIdentityContainer = ({
         return <NotRequired />;
     }
 
+    const onClickRedirectButton = () => {
+        const platform = platforms[from_platform.ref];
+        const { is_hard_redirect = false, url = '' } = platform ?? {};
+        if (is_hard_redirect) {
+            window.location.href = url;
+            window.sessionStorage.removeItem('config.platform');
+        } else {
+            routeBackTo(from_platform.route);
+        }
+    };
+
     const redirect_button = should_show_redirect_btn && (
-        <Button primary className='proof-of-identity__redirect' onClick={() => routeBackTo(from_platform.route)}>
+        <Button primary className='proof-of-identity__redirect' onClick={onClickRedirectButton}>
             <Localize i18n_default_text='Back to {{platform_name}}' values={{ platform_name: from_platform.name }} />
         </Button>
     );
@@ -111,9 +133,11 @@ const ProofOfIdentityContainer = ({
     ) {
         return (
             <POISubmission
+                account_settings={account_settings}
                 allow_poi_resubmission={allow_poi_resubmission}
                 has_require_submission={has_require_submission}
                 height={height ?? null}
+                getChangeableFields={getChangeableFields}
                 identity_last_attempt={identity_last_attempt}
                 idv={idv}
                 is_from_external={!!is_from_external}
@@ -126,6 +150,7 @@ const ProofOfIdentityContainer = ({
                 refreshNotifications={refreshNotifications}
                 residence_list={residence_list}
                 setIsCfdPoiCompleted={setIsCfdPoiCompleted}
+                updateAccountStatus={updateAccountStatus}
             />
         );
     } else if (
@@ -188,17 +213,22 @@ const ProofOfIdentityContainer = ({
                     manual={manual}
                     setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                     redirect_button={redirect_button}
+                    country_code={country_code}
+                    handleViewComplete={handleManualSubmit}
                 />
             );
         case service_code.manual:
             return (
                 <Unsupported
                     manual={manual}
+                    country_code={country_code}
                     is_from_external={is_from_external}
                     setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                     needs_poa={needs_poa}
                     redirect_button={redirect_button}
                     handleRequireSubmission={handleRequireSubmission}
+                    handleViewComplete={handleManualSubmit}
+                    onfido={onfido}
                 />
             );
         default:

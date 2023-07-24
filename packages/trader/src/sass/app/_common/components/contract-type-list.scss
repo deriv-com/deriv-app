@@ -14,9 +14,6 @@
     &__contracts-wrapper {
         margin-bottom: 1.4rem;
     }
-    @include mobile {
-        border-bottom: 4px solid var(--border-disabled);
-    }
 }
 
 /** @define contract-type-item */
@@ -54,6 +51,10 @@
 
     &__icon {
         margin-left: auto;
+
+        @include mobile {
+            display: block;
+        }
 
         /* postcss-bem-linter: ignore */
         .dc-icon {

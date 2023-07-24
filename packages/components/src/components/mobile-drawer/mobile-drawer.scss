@@ -40,6 +40,14 @@
         background-color: var(--general-main-2);
         box-shadow: 0 16px 16px 0 var(--shadow-menu), 0 0 16px 0 var(--shadow-menu);
     }
+
+    &-header {
+        &__title--pre-appstore {
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+
     &__header {
         display: flex;
         width: 100%;
@@ -112,6 +120,12 @@
             height: 5.6rem;
             padding: 0 1.6rem 0 4.8rem;
             align-items: center;
+
+            &--hidden {
+                visibility: hidden;
+                height: 0;
+                padding: 0;
+            }
 
             &-icon {
                 width: 16px;

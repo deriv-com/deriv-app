@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { useHistory } from 'react-router-dom';
 import { Table, Text, Button, Icon } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
-import { observer } from 'mobx-react-lite';
+import { isMobile, routes } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { buy_sell } from 'Constants/buy-sell';
 import { Localize, localize } from 'Components/i18next';
 import { OnlineStatusAvatar } from 'Components/online-status';
@@ -15,6 +16,10 @@ import './buy-sell-row.scss';
 
 const BuySellRow = ({ row: advert }) => {
     const { buy_sell_store, floating_rate_store, general_store } = useStores();
+    const {
+        client: { currency },
+    } = useStore();
+    const history = useHistory();
 
     if (advert.id === 'WATCH_THIS_SPACE') {
         // This allows for the sliding animation on the Buy/Sell toggle as it pushes
@@ -65,6 +70,7 @@ const BuySellRow = ({ row: advert }) => {
             buy_sell_store.setShouldShowVerification(true);
         } else if (!general_store.is_barred) {
             buy_sell_store.showAdvertiserPage(advert);
+            history.push({ pathname: routes.p2p_advertiser_page, search: `?id=${advert.advertiser_details.id}` });
         }
     };
 
@@ -116,10 +122,7 @@ const BuySellRow = ({ row: advert }) => {
                 <div className='buy-sell-row__information'>
                     <div className='buy-sell-row__rate'>
                         <Text as='div' color='general' line_height='m' size='xxs'>
-                            <Localize
-                                i18n_default_text='Rate (1 {{currency}})'
-                                values={{ currency: general_store.client.currency }}
-                            />
+                            <Localize i18n_default_text='Rate (1 {{currency}})' values={{ currency }} />
                         </Text>
                         <Text as='div' color='profit-success' line_height='m' size='s' weight='bold'>
                             {display_effective_rate} {local_currency}

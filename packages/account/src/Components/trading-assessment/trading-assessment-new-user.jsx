@@ -3,6 +3,7 @@ import TradingAssessmentForm from './trading-assessment-form';
 
 const TradingAssessmentNewUser = ({
     assessment_questions,
+    disabled_items,
     goToNextStep,
     goToPreviousStep,
     onSave,
@@ -39,6 +40,7 @@ const TradingAssessmentNewUser = ({
             onSubmit={handleSubmit}
             onCancel={handleCancel}
             setSubSectionIndex={setSubSectionIndex}
+            disabled_items={disabled_items}
         />
     );
 };

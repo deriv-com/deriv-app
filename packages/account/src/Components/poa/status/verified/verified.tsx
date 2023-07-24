@@ -1,17 +1,19 @@
+import { TPoaStatusProps } from 'Types';
+
+import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
+import { Icon } from '@deriv/components';
+import IconMessageContent from 'Components/icon-message-content';
+import { PlatformContext, isNavigationFromP2P, isNavigationFromDerivGO } from '@deriv/shared';
+import { PoiButton } from 'Components/poi/poi-button/poi-button';
 import React from 'react';
 import classNames from 'classnames';
-import { Icon } from '@deriv/components';
-import { PlatformContext } from '@deriv/shared';
 import { localize } from '@deriv/translations';
-import { TPlatformContext, TPoaStatusProps } from 'Types';
-import { PoiButton } from 'Components/poi/poi-button/poi-button';
-import IconMessageContent from 'Components/icon-message-content';
-import { ContinueTradingButton } from 'Components/poa/continue-trading-button/continue-trading-button';
 
-export const Verified = ({ needs_poi, is_description_enabled = true }: TPoaStatusProps) => {
-    const { is_appstore }: TPlatformContext = React.useContext(PlatformContext);
+export const Verified = ({ needs_poi, redirect_button }: TPoaStatusProps) => {
+    const { is_appstore } = React.useContext(PlatformContext);
 
     const message = localize('Your proof of address is verified');
+    const is_redirected_from_platform = isNavigationFromP2P() || isNavigationFromDerivGO();
     if (needs_poi) {
         return (
             <div
@@ -23,7 +25,7 @@ export const Verified = ({ needs_poi, is_description_enabled = true }: TPoaStatu
                     message={message}
                     text={localize('To continue trading, you must also submit a proof of identity.')}
                     icon={<Icon icon='IcPoaVerified' size={128} />}
-                    className={is_appstore && 'account-management-dashboard'}
+                    className={classNames({ 'account-management-dashboard': is_appstore })}
                 >
                     <PoiButton />
                 </IconMessageContent>
@@ -39,9 +41,9 @@ export const Verified = ({ needs_poi, is_description_enabled = true }: TPoaStatu
             <IconMessageContent
                 message={message}
                 icon={<Icon icon='IcPoaVerified' size={128} />}
-                className={is_appstore && 'account-management-dashboard'}
+                className={classNames({ 'account-management-dashboard': is_appstore })}
             >
-                {!is_description_enabled && <ContinueTradingButton />}
+                {redirect_button || (!is_redirected_from_platform && <ContinueTradingButton />)}
             </IconMessageContent>
         </div>
     );

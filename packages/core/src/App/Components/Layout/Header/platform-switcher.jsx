@@ -1,7 +1,7 @@
 import 'Sass/app/_common/components/platform-switcher.scss';
 
-import { Icon, Text } from '@deriv/components';
-import { getPlatformInformation, isMobile } from '@deriv/shared';
+import { Icon } from '@deriv/components';
+import { getPlatformInformation, getUrlBinaryBot, isMobile } from '@deriv/shared';
 
 import { CSSTransition } from 'react-transition-group';
 import { PlatformDropdown } from './platform-dropdown.jsx';
@@ -13,16 +13,26 @@ import { withRouter } from 'react-router-dom';
 
 const PlatformSwitcher = ({
     toggleDrawer,
-    is_pre_appstore,
     app_routing_history,
-    platform_config,
+    platform_config = [],
+    current_language,
     is_landing_company_loaded,
     is_logged_in,
     is_logging_in,
+    setTogglePlatformType,
 }) => {
     const [is_open, setIsOpen] = React.useState(false);
 
     const is_close_drawer_fired_ref = React.useRef(false);
+
+    React.useEffect(() => {
+        platform_config.forEach(data => {
+            const { name } = data;
+            if (name === 'Binary Bot') {
+                data.href = getUrlBinaryBot();
+            }
+        });
+    }, [current_language, platform_config]);
 
     React.useEffect(() => {
         if (is_close_drawer_fired_ref.current) {
@@ -61,11 +71,11 @@ const PlatformSwitcher = ({
                 <Icon
                     className='platform-switcher__icon'
                     icon={getPlatformInformation(app_routing_history).icon}
-                    size={32}
+                    description={getPlatformInformation(app_routing_history).header}
+                    width={120}
+                    height={25}
                 />
-                <Text as='h1' styles={{ lineHeight: '2.4rem' }} weight='bold'>
-                    {getPlatformInformation(app_routing_history).header}
-                </Text>
+
                 <Icon className='platform-switcher__arrow' icon='IcChevronDownBold' />
             </div>
             <CSSTransition
@@ -81,8 +91,9 @@ const PlatformSwitcher = ({
                 <PlatformDropdown
                     platform_config={platform_config}
                     closeDrawer={closeDrawer}
+                    current_language={current_language}
                     app_routing_history={app_routing_history}
-                    is_pre_appstore={is_pre_appstore}
+                    setTogglePlatformType={setTogglePlatformType}
                 />
             </CSSTransition>
         </React.Fragment>
@@ -92,11 +103,12 @@ const PlatformSwitcher = ({
 PlatformSwitcher.propTypes = {
     platform_config: PropTypes.array,
     toggleDrawer: PropTypes.func,
+    current_language: PropTypes.string,
     app_routing_history: PropTypes.array,
-    is_pre_appstore: PropTypes.bool,
     is_landing_company_loaded: PropTypes.bool,
     is_logged_in: PropTypes.bool,
     is_logging_in: PropTypes.bool,
+    setTogglePlatformType: PropTypes.func,
 };
 
 export default withRouter(PlatformSwitcher);

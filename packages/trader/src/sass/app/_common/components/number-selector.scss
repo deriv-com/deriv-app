@@ -32,6 +32,23 @@
         &:last-child {
             margin-right: 0;
         }
+        &--percentage {
+            width: 20%;
+            border-radius: unset;
+            height: 3.2rem;
+
+            &:not(:first-child) {
+                margin-left: 0;
+            }
+            &:first-child {
+                border-top-left-radius: $BORDER_RADIUS;
+                border-bottom-left-radius: $BORDER_RADIUS;
+            }
+            &:last-child {
+                border-top-right-radius: $BORDER_RADIUS;
+                border-bottom-right-radius: $BORDER_RADIUS;
+            }
+        }
     }
     @include mobile {
         margin-top: 0;

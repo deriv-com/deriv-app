@@ -11,8 +11,8 @@ import {
     ThemedScrollbars,
 } from '@deriv/components';
 import { formatMoney, isDesktop, isMobile } from '@deriv/shared';
+import { observer, useStore } from '@deriv/stores';
 import { reaction } from 'mobx';
-import { observer } from 'mobx-react-lite';
 import FloatingRate from 'Components/floating-rate';
 import { Localize, localize } from 'Components/i18next';
 import { buy_sell } from 'Constants/buy-sell';
@@ -21,6 +21,7 @@ import { useStores } from 'Stores';
 import CreateAdSummary from './create-ad-summary.jsx';
 import CreateAdFormPaymentMethods from './create-ad-form-payment-methods.jsx';
 import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
+import { api_error_codes } from '../../constants/api-error-codes.js';
 
 const CreateAdFormWrapper = ({ children }) => {
     if (isMobile()) {
@@ -30,9 +31,12 @@ const CreateAdFormWrapper = ({ children }) => {
 };
 
 const CreateAdForm = () => {
+    const {
+        client: { currency, local_currency_config },
+    } = useStore();
+
     const { buy_sell_store, floating_rate_store, general_store, my_ads_store, my_profile_store } = useStores();
 
-    const { currency, local_currency_config } = general_store.client;
     const should_not_show_auto_archive_message_again = React.useRef(false);
     const [selected_methods, setSelectedMethods] = React.useState([]);
     const { useRegisterModalProps } = useModalManagerContext();
@@ -51,8 +55,17 @@ const CreateAdForm = () => {
             JSON.stringify(should_not_show_auto_archive_message_again.current)
         );
         my_ads_store.setIsAdCreatedModalVisible(false);
-        if (my_ads_store.advert_details?.visibility_status?.includes('advertiser_daily_limit'))
-            general_store.showModal({ key: 'AdExceedsDailyLimitModal', props: {} });
+        if (my_ads_store.advert_details?.visibility_status?.includes(api_error_codes.AD_EXCEEDS_BALANCE)) {
+            general_store.showModal({
+                key: 'AdVisibilityErrorModal',
+                props: { error_code: api_error_codes.AD_EXCEEDS_BALANCE },
+            });
+        } else if (my_ads_store.advert_details?.visibility_status?.includes(api_error_codes.AD_EXCEEDS_DAILY_LIMIT)) {
+            general_store.showModal({
+                key: 'AdVisibilityErrorModal',
+                props: { error_code: api_error_codes.AD_EXCEEDS_DAILY_LIMIT },
+            });
+        }
 
         my_ads_store.setShowAdForm(false);
     };
@@ -64,6 +77,13 @@ const CreateAdForm = () => {
             should_hide_all_modals_on_cancel: true,
         },
     });
+
+    const onCleanup = () => {
+        my_ads_store.setApiErrorMessage('');
+        floating_rate_store.setApiErrorMessage('');
+        my_ads_store.setShowAdForm(false);
+        buy_sell_store.setCreateSellAdFromNoAds(false);
+    };
 
     React.useEffect(() => {
         my_ads_store.setCurrentMethod({ key: null, is_deleted: false });
@@ -80,10 +100,7 @@ const CreateAdForm = () => {
 
         return () => {
             disposeApiErrorReaction();
-            my_ads_store.setApiErrorMessage('');
-            floating_rate_store.setApiErrorMessage('');
-            my_ads_store.setShowAdForm(false);
-            buy_sell_store.setCreateSellAdFromNoAds(false);
+            onCleanup();
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -336,27 +353,31 @@ const CreateAdForm = () => {
                                                 </Field>
                                             </div>
                                             {is_sell_advert && (
-                                                <Field name='contact_info'>
-                                                    {({ field }) => (
-                                                        <Input
-                                                            {...field}
-                                                            data-testid='contact_info'
-                                                            data-lpignore='true'
-                                                            type='textarea'
-                                                            label={
-                                                                <Text color='less-prominent' size='xs'>
-                                                                    <Localize i18n_default_text='Your contact details' />
-                                                                </Text>
-                                                            }
-                                                            error={touched.contact_info && errors.contact_info}
-                                                            className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
-                                                            initial_character_count={general_store.contact_info.length}
-                                                            required
-                                                            has_character_counter
-                                                            max_characters={300}
-                                                        />
-                                                    )}
-                                                </Field>
+                                                <div className='p2p-my-ads__form-field--contact-details'>
+                                                    <Field name='contact_info'>
+                                                        {({ field }) => (
+                                                            <Input
+                                                                {...field}
+                                                                data-testid='contact_info'
+                                                                data-lpignore='true'
+                                                                type='textarea'
+                                                                label={
+                                                                    <Text color='less-prominent' size='xs'>
+                                                                        <Localize i18n_default_text='Your contact details' />
+                                                                    </Text>
+                                                                }
+                                                                error={touched.contact_info && errors.contact_info}
+                                                                className='p2p-my-ads__form-field p2p-my-ads__form-field--textarea'
+                                                                initial_character_count={
+                                                                    general_store.contact_info.length
+                                                                }
+                                                                required
+                                                                has_character_counter
+                                                                max_characters={300}
+                                                            />
+                                                        )}
+                                                    </Field>
+                                                </div>
                                             )}
                                             <Field name='default_advert_description'>
                                                 {({ field }) => (
@@ -407,7 +428,7 @@ const CreateAdForm = () => {
                                                 className='p2p-my-ads__form-button'
                                                 secondary
                                                 large
-                                                onClick={() => my_ads_store.setShowAdForm(false)}
+                                                onClick={onCleanup}
                                                 type='button'
                                             >
                                                 <Localize i18n_default_text='Cancel' />

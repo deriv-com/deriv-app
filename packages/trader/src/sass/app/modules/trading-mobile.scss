@@ -24,7 +24,10 @@
         }
     }
     /** @define barrier; weak */
-    .barrier {
+    .barrier,
+    .barrier_1,
+    .barrier_2,
+    .amount {
         .draggable {
             pointer-events: none;
 
@@ -54,6 +57,19 @@
                 justify-content: flex-end;
                 padding-right: 0.8rem;
             }
+            &:is(.amount__widget) {
+                grid-template-columns: 5fr 1.3fr;
+            }
+            .trade-container {
+                &__amount {
+                    margin: 0.3rem 0 0;
+                    .trade-container__input {
+                        font-weight: bold;
+                        max-width: 100%;
+                        padding: 0 4rem;
+                    }
+                }
+            }
         }
         &__fields {
             width: 100%;
@@ -63,10 +79,10 @@
                 padding: 0;
                 font-weight: bold;
                 border: none;
+                display: flex;
+                justify-content: center;
+                align-items: center;
 
-                &--is-offset {
-                    pointer-events: none;
-                }
                 &:focus,
                 &:active,
                 &:hover {
@@ -99,8 +115,44 @@
             }
         }
     }
+    .barrier__modal {
+        &-container {
+            display: flex;
+            justify-content: space-between;
+            .strike--value-container {
+                margin-top: 0.5rem;
+                margin-right: 2.4rem;
+            }
+            .trade-container__price-info-currency {
+                font-weight: bold;
+                font-size: 1.4rem;
+                color: var(--text-general);
+            }
+        }
+        &-text {
+            margin: 0.5rem 2.4rem 1.6rem;
+        }
+        &-price {
+            margin: 0rem 2.4rem 1.6rem;
+        }
+        &-input {
+            border: 1px solid var(--general-active);
+            border-radius: $BORDER_RADIUS;
+            margin-inline: 1.6rem;
+            &:has(.input:active, .input:focus, .input:hover) {
+                border: 1px solid var(--border-active);
+            }
+            &:has(.input--error) {
+                border: 1px solid var(--status-danger) !important;
+                .input--error {
+                    border: none !important;
+                }
+            }
+        }
+    }
     /** @define allow-equals; weak */
-    .allow-equals {
+    .allow-equals,
+    .take-profit.mobile-widget {
         .dc-checkbox__label {
             font-weight: bold;
             color: var(--text-prominent);
@@ -130,6 +182,11 @@
             @media only screen and (max-height: 480px) {
                 top: 0.4rem;
             }
+        }
+        &__container_barrier {
+            border-radius: $BORDER_RADIUS * 2;
+            box-shadow: 0 16px 16px 0 var(--shadow-menu-2), 0 0 16px 0 var(--shadow-menu-2);
+            overflow-y: scroll;
         }
         &-header {
             /* postcss-bem-linter: ignore */
@@ -199,11 +256,11 @@
         &__amount {
             &-keypad {
                 width: 100%;
-                padding: 1.6rem;
+                padding: 2.4rem 1.6rem 1.6rem;
                 height: auto;
-                margin-top: 0.8rem;
                 margin-bottom: 0.8rem;
                 display: flex;
+                flex-direction: column;
                 align-items: center;
                 justify-content: center;
 
@@ -324,7 +381,8 @@
                 flex: 1;
             }
         }
-        &__multiplier {
+        &__multiplier,
+        &__accumulator {
             &-radio-group {
                 flex-direction: column;
                 align-items: flex-start;
@@ -334,6 +392,9 @@
 
                 &--empty {
                     display: none;
+                }
+                &:is(.trade-params__accumulator-radio-group) {
+                    gap: 1.6rem;
                 }
                 .dc-radio-group__item {
                     min-height: 4.8rem;
@@ -349,6 +410,9 @@
 
                     &--selected {
                         border: 1px solid var(--brand-secondary);
+                    }
+                    &:is(.trade-params__accumulator-radio-group *) {
+                        margin-bottom: 0;
                     }
                 }
             }
@@ -447,7 +511,7 @@
             left: 2.4rem !important;
 
             &__content {
-                max-width: 32.8rem;
+                max-width: calc(min(32.8rem, 85vw));
                 left: 2.5rem;
                 &--vanilla {
                     top: -0.9rem;

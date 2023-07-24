@@ -1,16 +1,17 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
-import { isMobile, getPathname, getPlatformSettings, routes } from '@deriv/shared';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
+import { getPathname, getPlatformSettings, isMobile, routes } from '@deriv/shared';
+import 'Sass/app/_common/components/app-notification-message.scss';
 import { connect } from 'Stores/connect';
-import { excluded_notifications } from '../../Stores/Helpers/client-notifications';
 import Notification, {
     max_display_notifications,
     max_display_notifications_mobile,
 } from '../Components/Elements/NotificationMessage';
-import 'Sass/app/_common/components/app-notification-message.scss';
-import classNames from 'classnames';
+import { useLocation } from 'react-router-dom';
+import { excluded_notifications, priority_toast_messages } from '../../Stores/Helpers/client-notifications';
 
 const Portal = ({ children }) =>
     isMobile() ? ReactDOM.createPortal(children, document.getElementById('deriv_app')) : children;
@@ -18,7 +19,6 @@ const Portal = ({ children }) =>
 const NotificationsContent = ({
     is_notification_loaded,
     style,
-    is_pre_appstore,
     notifications,
     removeNotificationMessage,
     markNotificationMessage,
@@ -41,11 +41,12 @@ const NotificationsContent = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window_location]);
+    const { pathname } = useLocation();
 
     return (
         <div
             className={classNames('notification-messages', {
-                'notification-messages--traders-hub': is_pre_appstore,
+                'notification-messages--traders-hub': pathname === routes.traders_hub,
             })}
             style={style}
         >
@@ -75,7 +76,6 @@ const NotificationsContent = ({
 const AppNotificationMessages = ({
     is_notification_loaded,
     is_mt5,
-    is_pre_appstore,
     marked_notifications,
     notification_messages,
     removeNotificationMessage,
@@ -107,37 +107,39 @@ const AppNotificationMessages = ({
         const is_not_marked_notification = !marked_notifications.includes(message.key);
         const is_non_hidden_notification = isMobile()
             ? [
-                  'unwelcome',
-                  'contract_sold',
-                  'dp2p',
-                  'install_pwa',
-                  'tnc',
-                  'risk_client',
+                  'authenticate',
                   'deriv_go',
-                  'close_mx_mlt_account',
-                  'trustpilot',
-                  'close_uk_account',
-                  'p2p_daily_limit_increase',
                   'document_needs_action',
+                  'dp2p',
+                  'close_mx_mlt_account',
+                  'close_uk_account',
+                  'contract_sold',
+                  'has_changed_two_fa',
                   'identity',
+                  'install_pwa',
+                  'need_fa',
                   'poi_name_mismatch',
+                  'poa_address_mismatch_failure',
+                  'poa_address_mismatch_success',
+                  'poa_address_mismatch_warning',
+                  'poa_expired',
+                  'poa_failed',
+                  'poa_rejected_for_mt5',
+                  'poa_verified',
                   'poi_expired',
                   'poi_failed',
                   'poi_verified',
-                  'poa_expired',
-                  'resticted_mt5_with_pending_poa',
-                  'poa_verified',
-                  'poa_failed',
+                  'p2p_daily_limit_increase',
                   'resticted_mt5_with_failed_poa',
-                  'poa_rejected_for_mt5',
-                  'poa_address_mismatch_warning',
-                  'poa_address_mismatch_success',
-                  'poa_address_mismatch_failure',
-                  'svg_needs_poi_poa',
+                  'resticted_mt5_with_pending_poa',
                   'svg_needs_poa',
                   'svg_needs_poi',
+                  'svg_needs_poi_poa',
                   'svg_poi_expired',
                   'switched_to_real',
+                  'tnc',
+                  'trustpilot',
+                  'unwelcome',
               ].includes(message.key) || message.type === 'p2p_completed_order'
             : true;
 
@@ -148,27 +150,25 @@ const AppNotificationMessages = ({
 
     const notifications_limit = isMobile() ? max_display_notifications_mobile : max_display_notifications;
     //TODO (yauheni-kryzhyk): showing pop-up only for specific messages. the rest of notifications are hidden. this logic should be changed in the upcoming new pop-up notifications implementation
+
     const filtered_excluded_notifications = notifications.filter(message =>
-        message.key.includes('svg') || message.key.includes('p2p_daily_limit_increase')
+        priority_toast_messages.includes(message.key) || message.type.includes('p2p')
             ? message
             : excluded_notifications.includes(message.key)
     );
-    const getNotificationSublist = () => {
-        if (window.location.pathname === routes.cashier_deposit) {
-            return filtered_excluded_notifications.filter(message =>
-                message.key.includes('switched_to_real') ? message : null
-            );
-        }
-        return filtered_excluded_notifications.slice(0, notifications_limit);
-    };
+
+    const notifications_sublist =
+        window.location.pathname === routes.cashier_deposit
+            ? filtered_excluded_notifications.filter(message => message.key.includes('switched_to_real'))
+            : filtered_excluded_notifications.slice(0, notifications_limit);
 
     if (!should_show_popups) return null;
 
-    return getNotificationSublist().length ? (
+    return notifications_sublist.length ? (
         <div ref={ref => setNotificationsRef(ref)} className='notification-messages-bounds'>
             <Portal>
                 <NotificationsContent
-                    notifications={getNotificationSublist()}
+                    notifications={notifications_sublist}
                     is_notification_loaded={is_notification_loaded}
                     style={style}
                     removeNotificationMessage={removeNotificationMessage}
@@ -177,7 +177,6 @@ const AppNotificationMessages = ({
                     has_iom_account={has_iom_account}
                     has_malta_account={has_malta_account}
                     is_logged_in={is_logged_in}
-                    is_pre_appstore={is_pre_appstore}
                 />
             </Portal>
         </div>
@@ -216,7 +215,6 @@ AppNotificationMessages.propTypes = {
     removeNotificationMessage: PropTypes.func,
     should_show_popups: PropTypes.bool,
     stopNotificationLoading: PropTypes.func,
-    is_pre_appstore: PropTypes.bool,
 };
 
 export default connect(({ client, notifications }) => ({
@@ -229,5 +227,4 @@ export default connect(({ client, notifications }) => ({
     has_malta_account: client.has_malta_account,
     is_logged_in: client.is_logged_in,
     should_show_popups: notifications.should_show_popups,
-    is_pre_appstore: client.is_pre_appstore,
 }))(AppNotificationMessages);

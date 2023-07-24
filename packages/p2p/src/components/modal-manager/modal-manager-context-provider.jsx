@@ -56,8 +56,8 @@ const ModalManagerContextProvider = props => {
      */
     const isCurrentModal = (...keys) => keys.includes(active_modal.key);
 
-    const showModal = modal => {
-        if (isDesktop()) {
+    const showModal = (modal, options = { should_stack_modal: false }) => {
+        if (isDesktop() || options.should_stack_modal) {
             setPreviousModal(active_modal);
             setActiveModal(modal);
         } else if (Object.keys(active_modal).length === 0) {
@@ -120,6 +120,7 @@ const ModalManagerContextProvider = props => {
     const state = {
         hideModal,
         is_modal_open,
+        isCurrentModal,
         modal: active_modal,
         modal_props,
         previous_modal,

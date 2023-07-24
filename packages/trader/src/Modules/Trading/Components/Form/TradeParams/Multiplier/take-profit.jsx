@@ -1,24 +1,26 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import classNames from 'classnames';
 import { InputWithCheckbox } from '@deriv/components';
 import { localize } from '@deriv/translations';
 import { isDesktop } from '@deriv/shared';
 import Fieldset from 'App/Components/Form/fieldset.jsx';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
+import { useTraderStore } from 'Stores/useTraderStores';
 
-const TakeProfit = ({
-    addToast,
-    removeToast,
-    currency,
-    current_focus,
-    has_take_profit,
-    is_single_currency,
-    onChange,
-    onChangeMultiple,
-    setCurrentFocus,
-    take_profit,
-    validation_errors,
-}) => {
+const TakeProfit = observer(props => {
+    const { ui, client } = useStore();
+    const trade = useTraderStore();
+
+    const { addToast, removeToast, current_focus, setCurrentFocus } = ui;
+    const { is_single_currency } = client;
+    const { is_accumulator, currency } = trade;
+
+    const validation_errors = props.validation_errors ?? trade.validation_errors;
+    const take_profit = props.take_profit ?? trade.take_profit;
+    const has_take_profit = props.has_take_profit ?? trade.has_take_profit;
+    const onChangeMultiple = props.onChangeMultiple ?? trade.onChangeMultiple;
+    const onChange = props.onChange ?? trade.onChange;
+
     const changeValue = e => {
         if (e.target.name === 'has_take_profit') {
             const new_val = e.target.value;
@@ -37,7 +39,9 @@ const TakeProfit = ({
                 addToast={addToast}
                 removeToast={removeToast}
                 classNameInlinePrefix='trade-container__currency'
-                classNameInput='trade-container__input'
+                classNameInput={classNames('trade-container__input', {
+                    'trade-container__input--accumulator': is_accumulator,
+                })}
                 className={isDesktop() ? 'trade-container__amount trade-container__amount--multipliers' : null}
                 currency={currency}
                 current_focus={current_focus}
@@ -51,7 +55,7 @@ const TakeProfit = ({
                 onChange={changeValue}
                 setCurrentFocus={setCurrentFocus}
                 tooltip_label={localize(
-                    'Your contract is closed automatically when your profit is more than or equals to this amount.'
+                    'Your contract will be closed automatically if your profit reaches this amount.'
                 )}
                 tooltip_alignment='left'
                 error_message_alignment='left'
@@ -59,32 +63,6 @@ const TakeProfit = ({
             />
         </Fieldset>
     );
-};
+});
 
-TakeProfit.propTypes = {
-    addToast: PropTypes.func,
-    currency: PropTypes.string,
-    current_focus: PropTypes.string,
-    has_take_profit: PropTypes.bool,
-    is_single_currency: PropTypes.bool,
-    onChange: PropTypes.func,
-    onChangeMultiple: PropTypes.func,
-    removeToast: PropTypes.func,
-    setCurrentFocus: PropTypes.func,
-    take_profit: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    validation_errors: PropTypes.object,
-};
-
-export default connect(({ modules, client, ui }, props) => ({
-    addToast: ui.addToast,
-    currency: modules.trade.currency,
-    current_focus: ui.current_focus,
-    has_take_profit: props.has_take_profit ?? modules.trade.has_take_profit,
-    is_single_currency: client.is_single_currency,
-    onChange: props.onChange ?? modules.trade.onChange,
-    onChangeMultiple: props.onChangeMultiple ?? modules.trade.onChangeMultiple,
-    removeToast: ui.removeToast,
-    setCurrentFocus: ui.setCurrentFocus,
-    take_profit: props.take_profit ?? modules.trade.take_profit,
-    validation_errors: props.validation_errors ?? modules.trade.validation_errors,
-}))(TakeProfit);
+export default TakeProfit;

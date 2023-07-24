@@ -9,9 +9,9 @@ storiesOf('Collapsible', module)
         'Top',
         () => (
             <Collapsible as='div'>
-                <div collapsible>Will be collapsed</div>
+                <div data-collapsible='true'>Will be collapsed</div>
                 <div>Item 2</div>
-                <div collapsible>Will be collapsed</div>
+                <div data-collapsible='true'>Will be collapsed</div>
                 <div>Item 4</div>
                 <div>Item 5</div>
                 <div>Item 1</div>
@@ -25,9 +25,9 @@ storiesOf('Collapsible', module)
         'Bottom',
         () => (
             <Collapsible position='bottom' is_collapsed>
-                <li collapsible>Will be collapsed</li>
+                <li data-collapsible='true'>Will be collapsed</li>
                 <li>Item 2</li>
-                <li collapsible>Will be collapsed</li>
+                <li data-collapsible='true'>Will be collapsed</li>
                 <li>Item 4</li>
                 <li>Item 5</li>
                 <li>Item 1</li>
@@ -55,7 +55,7 @@ storiesOf('Collapsible', module)
         'with Title',
         () => (
             <Collapsible position='top' is_collapsed title='Title'>
-                <li collapsible='true'>Content</li>
+                <li data-collapsible='true'>Content</li>
             </Collapsible>
         ),
         {

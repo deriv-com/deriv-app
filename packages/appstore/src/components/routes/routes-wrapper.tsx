@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { TReactChildren } from 'Types';
 
 const RoutesWrapper: React.FC<TRoutesWrapperProps> = ({ has_router, children }) => {
     if (has_router) {
@@ -10,9 +9,8 @@ const RoutesWrapper: React.FC<TRoutesWrapperProps> = ({ has_router, children }) 
     return <Router>{children}</Router>;
 };
 
-type TRoutesWrapperProps = {
+type TRoutesWrapperProps = React.PropsWithChildren<{
     has_router: boolean;
-    children: TReactChildren;
-};
+}>;
 
 export default RoutesWrapper;

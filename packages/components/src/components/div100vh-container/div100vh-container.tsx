@@ -15,13 +15,13 @@ import Div100vh from 'react-div-100vh';
 /* To bypass usage of component altogether, use is_bypassed */
 
 type TDiv100vhContainer = {
-    id: string;
+    id?: string;
     height_offset: string;
-    is_bypassed: boolean;
-    is_disabled: boolean;
-    max_height_offset: string;
+    is_bypassed?: boolean;
+    is_disabled?: boolean;
+    max_height_offset?: string;
     className: string;
-    max_autoheight_offset: string;
+    max_autoheight_offset?: string;
 };
 
 const Div100vhContainer = ({
@@ -32,12 +32,16 @@ const Div100vhContainer = ({
     id,
     height_offset,
     max_autoheight_offset,
-}: React.PropsWithChildren<Partial<TDiv100vhContainer>>) => {
+}: React.PropsWithChildren<TDiv100vhContainer>) => {
     const height_rule = height_offset ? `calc(100rvh - ${height_offset})` : 'calc(100rvh)';
     const height_style = {
         height: max_autoheight_offset ? '' : height_rule,
         maxHeight: max_autoheight_offset ? `calc(100rvh - ${max_autoheight_offset})` : '',
     };
+    React.useEffect(() => {
+        // forcing resize event to make Div100vh re-render when height_offset has changed:
+        window.dispatchEvent(new Event('resize'));
+    }, [height_offset]);
     if (is_bypassed) return children as JSX.Element;
     return (
         <Div100vh id={id} className={className} style={is_disabled ? {} : height_style} data-testid='dt_div_100_vh'>

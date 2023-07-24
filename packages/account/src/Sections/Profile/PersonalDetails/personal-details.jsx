@@ -1,44 +1,45 @@
+import classNames from 'classnames';
+import { Field, Formik, Form } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Formik, Field } from 'formik';
-import classNames from 'classnames';
+import { withRouter } from 'react-router';
 import {
     Autocomplete,
-    Checkbox,
     Button,
-    FormSubmitErrorMessage,
-    Input,
+    Checkbox,
+    DateOfBirthPicker,
     DesktopWrapper,
     Dropdown,
+    FormSubmitErrorMessage,
+    HintBox,
+    Input,
     Loading,
     MobileWrapper,
     SelectNative,
-    DateOfBirthPicker,
     Text,
     useStateCallback,
-    HintBox,
 } from '@deriv/components';
 import {
-    toMoment,
-    isMobile,
-    validAddress,
-    validPostCode,
-    validPhone,
-    validLetterSymbol,
-    validLength,
+    PlatformContext,
+    WS,
+    filterObjProperties,
     getBrandWebsiteName,
     getLocation,
-    removeObjProperties,
-    filterObjProperties,
-    PlatformContext,
+    isMobile,
     regex_checks,
+    removeObjProperties,
     routes,
-    WS,
+    toMoment,
     useIsMounted,
+    validAddress,
+    validLength,
+    validLetterSymbol,
+    validPhone,
+    validPostCode,
+    removeEmptyPropertiesFromObject,
 } from '@deriv/shared';
 import { Localize, localize } from '@deriv/translations';
-import { withRouter } from 'react-router';
-import { connect } from 'Stores/connect';
+import { observer, useStore } from '@deriv/stores';
 import LeaveConfirm from 'Components/leave-confirm';
 import FormFooter from 'Components/form-footer';
 import FormBody from 'Components/form-body';
@@ -47,13 +48,7 @@ import FormSubHeader from 'Components/form-sub-header';
 import LoadErrorMessage from 'Components/load-error-message';
 import POAAddressMismatchHintBox from 'Components/poa-address-mismatch-hint-box';
 import { getEmploymentStatusList } from 'Sections/Assessment/FinancialAssessment/financial-information-list';
-
-const validate = (errors, values) => (fn, arr, err_msg) => {
-    arr.forEach(field => {
-        const value = values[field];
-        if (/^\s+$/.test(value) || (!fn(value) && !errors[field] && err_msg !== true)) errors[field] = err_msg;
-    });
-};
+import { validateName, validate } from 'Helpers/utils';
 
 const InputGroup = ({ children, className }) => {
     const { is_appstore } = React.useContext(PlatformContext);
@@ -101,31 +96,7 @@ const TaxResidenceSelect = ({ field, errors, setFieldValue, values, is_changeabl
     </React.Fragment>
 );
 
-export const PersonalDetailsForm = ({
-    authentication_status,
-    is_eu,
-    is_mf,
-    is_uk,
-    is_svg,
-    is_virtual,
-    residence_list,
-    states_list,
-    current_landing_company,
-    refreshNotifications,
-    showPOAAddressMismatchSuccessNotification,
-    showPOAAddressMismatchFailureNotification,
-    Notifications,
-    fetchResidenceList,
-    fetchStatesList,
-    has_residence,
-    account_settings,
-    getChangeableFields,
-    history,
-    is_social_signup,
-    updateAccountStatus,
-    has_poa_address_mismatch,
-    is_language_changing,
-}) => {
+export const PersonalDetailsForm = observer(({ history }) => {
     const [is_loading, setIsLoading] = React.useState(true);
 
     const [is_state_loading, setIsStateLoading] = useStateCallback(false);
@@ -133,7 +104,38 @@ export const PersonalDetailsForm = ({
     const [is_btn_loading, setIsBtnLoading] = React.useState(false);
 
     const [is_submit_success, setIsSubmitSuccess] = useStateCallback(false);
+    const { client, notifications, ui, common } = useStore();
 
+    const {
+        authentication_status,
+        is_eu,
+        landing_company_shortcode,
+        is_uk,
+        is_svg,
+        is_virtual,
+        residence_list,
+        states_list,
+        current_landing_company,
+        fetchResidenceList,
+        fetchStatesList,
+        has_residence,
+        account_settings,
+        getChangeableFields,
+        updateAccountStatus,
+        is_social_signup,
+        account_status,
+    } = client;
+
+    const {
+        refreshNotifications,
+        showPOAAddressMismatchSuccessNotification,
+        showPOAAddressMismatchFailureNotification,
+    } = notifications;
+
+    const { Notifications } = ui;
+    const { is_language_changing } = common;
+    const is_mf = landing_company_shortcode === 'maltainvest';
+    const has_poa_address_mismatch = account_status.status?.includes('poa_address_mismatch');
     const [rest_state, setRestState] = React.useState({
         show_form: true,
         errors: false,
@@ -146,7 +148,6 @@ export const PersonalDetailsForm = ({
     });
 
     const { is_appstore } = React.useContext(PlatformContext);
-
     const isMounted = useIsMounted();
 
     React.useEffect(() => {
@@ -297,29 +298,20 @@ export const PersonalDetailsForm = ({
 
         if (is_virtual) return errors;
 
-        const required_fields = [
-            'first_name',
-            'last_name',
-            'phone',
-            // 'account_opening_reason',
-            'address_line_1',
-            'address_city',
-        ];
-        if (is_eu) {
-            required_fields.push('citizen');
-        }
+        const required_fields = ['first_name', 'last_name', 'phone', 'address_line_1', 'address_city'];
+
         if (is_mf) {
             const required_tax_fields = ['tax_residence', 'tax_identification_number', 'employment_status'];
             required_fields.push(...required_tax_fields);
         }
 
         validateValues(val => val, required_fields, localize('This field is required'));
-        const only_alphabet_fields = ['first_name', 'last_name'];
-        validateValues(validLetterSymbol, only_alphabet_fields, localize('Only alphabet is allowed'));
 
-        const residence_fields = ['citizen'];
-        const validateResidence = val => getLocation(residence_list, val, 'value');
-        validateValues(validateResidence, residence_fields, true);
+        if (is_eu) {
+            const residence_fields = ['citizen'];
+            const validateResidence = val => getLocation(residence_list, val, 'value');
+            validateValues(validateResidence, residence_fields, true);
+        }
 
         const min_tax_identification_number = 0;
         const max_tax_identification_number = 25;
@@ -348,15 +340,8 @@ export const PersonalDetailsForm = ({
                 );
             }
         }
-
-        const min_name = 2;
-        const max_name = 50;
-        if (values.first_name && !validLength(values.first_name.trim(), { min: min_name, max: max_name })) {
-            errors.first_name = localize('You should enter 2-50 characters.');
-        }
-        if (values.last_name && !validLength(values.last_name.trim(), { min: min_name, max: max_name })) {
-            errors.last_name = localize('You should enter 2-50 characters.');
-        }
+        if (values.first_name) errors.first_name = validateName(values.first_name);
+        if (values.last_name) errors.last_name = validateName(values.last_name);
 
         if (values.phone) {
             // minimum characters required is 9 numbers (excluding +- signs or space)
@@ -376,20 +361,13 @@ export const PersonalDetailsForm = ({
             }
         }
 
-        const permitted_characters = ". , ' : ; ( ) @ # / -";
-        const address_validation_message = localize(
-            'Use only the following special characters: {{ permitted_characters }}',
-            {
-                permitted_characters,
-                interpolation: { escapeValue: false },
-            }
-        );
-
-        if (values.address_line_1 && !validAddress(values.address_line_1)) {
-            errors.address_line_1 = address_validation_message;
+        const address_line_1_validation_result = validAddress(values.address_line_1, { is_required: true });
+        if (!address_line_1_validation_result.is_ok) {
+            errors.address_line_1 = address_line_1_validation_result.message;
         }
-        if (values.address_line_2 && !validAddress(values.address_line_2)) {
-            errors.address_line_2 = address_validation_message;
+        const address_line_2_validation_result = validAddress(values.address_line_2);
+        if (!address_line_2_validation_result.is_ok) {
+            errors.address_line_2 = address_line_2_validation_result.message;
         }
 
         if (values.address_city && !validLetterSymbol(values.address_city)) {
@@ -427,7 +405,7 @@ export const PersonalDetailsForm = ({
 
         setRestState({ ...rest_state, errors: Object.keys(errors).length > 0 });
 
-        return errors;
+        return removeEmptyPropertiesFromObject(errors);
     };
 
     const getWarningMessages = values => {
@@ -457,7 +435,7 @@ export const PersonalDetailsForm = ({
     const showForm = show_form => setRestState({ show_form });
 
     const isChangeableField = name => {
-        return rest_state.changeable_fields.some(field => field === name);
+        return rest_state.changeable_fields?.some(field => field === name);
     };
 
     const initializeFormValues = () => {
@@ -582,16 +560,17 @@ export const PersonalDetailsForm = ({
                 setTouched,
                 dirty,
             }) => (
-                <>
+                <React.Fragment>
                     {Notifications && <Notifications />}
                     <LeaveConfirm onDirty={isMobile() ? showForm : null} />
                     {show_form && (
-                        <form
+                        <Form
                             noValidate
                             className={classNames('account-form account-form__personal-details', {
                                 'account-form account-form__personal-details--dashboard': is_appstore,
                             })}
                             onSubmit={handleSubmit}
+                            data-testid='dt_account_personal_details_section'
                         >
                             <FormBody scroll_offset={isMobile() ? '199px' : '80px'}>
                                 <FormSubHeader title={localize('Details')} />
@@ -659,10 +638,11 @@ export const PersonalDetailsForm = ({
                                                         required
                                                         disabled={!isChangeableField('first_name')}
                                                         error={errors.first_name}
-                                                        id={'first_name'}
+                                                        id='first_name'
+                                                        data-testid='dt_first_name'
                                                     />
                                                     <Input
-                                                        id={'last_name'}
+                                                        id='last_name'
                                                         data-lpignore='true'
                                                         type='text'
                                                         name='last_name'
@@ -673,6 +653,7 @@ export const PersonalDetailsForm = ({
                                                         required
                                                         disabled={!isChangeableField('last_name')}
                                                         error={errors.last_name}
+                                                        data-testid='dt_last_name'
                                                     />
                                                 </InputGroup>
                                             </DesktopWrapper>
@@ -690,6 +671,7 @@ export const PersonalDetailsForm = ({
                                                         required
                                                         disabled={!isChangeableField('first_name')}
                                                         error={errors.first_name}
+                                                        data-testid='dt_first_name'
                                                     />
                                                 </fieldset>
                                                 <fieldset className='account-form__fieldset'>
@@ -705,6 +687,7 @@ export const PersonalDetailsForm = ({
                                                         required
                                                         disabled={!isChangeableField('last_name')}
                                                         error={errors.last_name}
+                                                        data-testid='dt_last_name'
                                                     />
                                                 </fieldset>
                                             </MobileWrapper>
@@ -880,38 +863,13 @@ export const PersonalDetailsForm = ({
                                                     onBlur={handleBlur}
                                                     required
                                                     error={errors.phone}
+                                                    data-testid='dt_phone'
                                                 />
                                             </fieldset>
                                         </FormBodySection>
                                     </React.Fragment>
                                 )}
                                 <React.Fragment>
-                                    {/* Hide Account Opening Reason, uncomment block below to re-enable */}
-                                    {/* <fieldset className='account-form__fieldset'> */}
-                                    {/*    {account_opening_reason && is_fully_authenticated ? ( */}
-                                    {/*        <Input */}
-                                    {/*            data-lpignore='true' */}
-                                    {/*            type='text' */}
-                                    {/*            name='account_opening_reason' */}
-                                    {/*            label={localize('Account opening reason')} */}
-                                    {/*            value={values.account_opening_reason} */}
-                                    {/*            disabled */}
-                                    {/*        /> */}
-                                    {/*    ) : ( */}
-                                    {/*        <Dropdown */}
-                                    {/*            placeholder={'Account opening reason'} */}
-                                    {/*            is_align_text_left */}
-                                    {/*            name='account_opening_reason' */}
-                                    {/*            list={account_opening_reason_list} */}
-                                    {/*            value={values.account_opening_reason} */}
-                                    {/*            onChange={handleChange} */}
-                                    {/*            handleBlur={handleBlur} */}
-                                    {/*            error={ */}
-                                    {/*                errors.account_opening_reason */}
-                                    {/*            } */}
-                                    {/*        /> */}
-                                    {/*    )} */}
-                                    {/* </fieldset> */}
                                     {is_mf && (
                                         <React.Fragment>
                                             <FormSubHeader title={localize('Tax information')} />
@@ -1041,6 +999,7 @@ export const PersonalDetailsForm = ({
                                                             error={errors.address_line_1}
                                                             required
                                                             disabled={!isChangeableField('address_line_1')}
+                                                            data-testid='dt_address_line_1'
                                                         />
                                                     </fieldset>
                                                     <fieldset className='account-form__fieldset'>
@@ -1074,6 +1033,7 @@ export const PersonalDetailsForm = ({
                                                             onBlur={handleBlur}
                                                             required
                                                             disabled={!isChangeableField('address_city')}
+                                                            data-testid='dt_address_city'
                                                         />
                                                     </fieldset>
                                                     <fieldset className='account-form__fieldset'>
@@ -1174,7 +1134,9 @@ export const PersonalDetailsForm = ({
                                                         <Text as='p' size='xs'>
                                                             <Localize
                                                                 i18n_default_text='By default, all {{brand_website_name}} clients are retail clients but anyone can request to be treated as a professional client.'
-                                                                values={{ brand_website_name: getBrandWebsiteName() }}
+                                                                values={{
+                                                                    brand_website_name: getBrandWebsiteName(),
+                                                                }}
                                                             />
                                                         </Text>
                                                         <Text as='p' size='xs'>
@@ -1301,7 +1263,6 @@ export const PersonalDetailsForm = ({
                                                   (is_mf && !values.tax_identification_number) ||
                                                   (!is_svg && errors.place_of_birth) ||
                                                   (!is_svg && !values.place_of_birth) ||
-                                                  // (errors.account_opening_reason || !values.account_opening_reason) ||
                                                   errors.address_line_1 ||
                                                   !values.address_line_1 ||
                                                   errors.address_line_2 ||
@@ -1319,61 +1280,16 @@ export const PersonalDetailsForm = ({
                                     primary
                                 />
                             </FormFooter>
-                        </form>
+                        </Form>
                     )}
-                </>
+                </React.Fragment>
             )}
         </Formik>
     );
-};
+});
 
 PersonalDetailsForm.propTypes = {
-    authentication_status: PropTypes.object,
-    is_eu: PropTypes.bool,
-    is_mf: PropTypes.bool,
-    is_uk: PropTypes.bool,
-    is_svg: PropTypes.bool,
-    is_virtual: PropTypes.bool,
-    residence_list: PropTypes.arrayOf(PropTypes.object),
-    states_list: PropTypes.array,
-    refreshNotifications: PropTypes.func,
-    showPOAAddressMismatchSuccessNotification: PropTypes.func,
-    showPOAAddressMismatchFailureNotification: PropTypes.func,
-    Notifications: PropTypes.node,
-    fetchResidenceList: PropTypes.func,
-    fetchStatesList: PropTypes.func,
-    has_residence: PropTypes.bool,
-    account_settings: PropTypes.object,
-    getChangeableFields: PropTypes.func,
-    current_landing_company: PropTypes.object,
     history: PropTypes.object,
-    is_social_signup: PropTypes.bool,
-    updateAccountStatus: PropTypes.func,
-    has_poa_address_mismatch: PropTypes.bool,
-    is_language_changing: PropTypes.bool,
 };
 
-export default connect(({ client, notifications, ui, common }) => ({
-    account_settings: client.account_settings,
-    authentication_status: client.authentication_status,
-    has_residence: client.has_residence,
-    getChangeableFields: client.getChangeableFields,
-    current_landing_company: client.current_landing_company,
-    is_eu: client.is_eu,
-    is_mf: client.landing_company_shortcode === 'maltainvest',
-    is_svg: client.is_svg,
-    is_uk: client.is_uk,
-    is_virtual: client.is_virtual,
-    residence_list: client.residence_list,
-    states_list: client.states_list,
-    fetchResidenceList: client.fetchResidenceList,
-    fetchStatesList: client.fetchStatesList,
-    is_social_signup: client.is_social_signup,
-    refreshNotifications: notifications.refreshNotifications,
-    showPOAAddressMismatchSuccessNotification: notifications.showPOAAddressMismatchSuccessNotification,
-    showPOAAddressMismatchFailureNotification: notifications.showPOAAddressMismatchFailureNotification,
-    Notifications: ui.notification_messages_ui,
-    updateAccountStatus: client.updateAccountStatus,
-    has_poa_address_mismatch: client.account_status.status?.includes('poa_address_mismatch'),
-    is_language_changing: common.is_language_changing,
-}))(withRouter(PersonalDetailsForm));
+export default withRouter(PersonalDetailsForm);

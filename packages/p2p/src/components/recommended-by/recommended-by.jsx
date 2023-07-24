@@ -19,7 +19,7 @@ const RecommendedBy = ({ recommended_average, recommended_count }) => {
                 recommended_count,
             });
         }
-        return localize('Recommended by 0 traders');
+        return localize('No one has recommended this trader yet');
     };
 
     return (

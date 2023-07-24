@@ -88,17 +88,19 @@ const PasswordSelectionModal = ({
                 </div>
             </React.Fragment>
         ) : (
-            <Button
-                className={classNames('account-signup__btn', {
-                    'account-signup__btn--disabled': !values.password || errors.password || isSubmitting,
-                })}
-                id='dt_core_account-signup-modal_submit-btn'
-                type='submit'
-                is_disabled={!values.password || !!errors.password || isSubmitting}
-                text={localize('Start trading')}
-                large
-                primary
-            />
+            <div className='account-signup__footer'>
+                <Button
+                    className={classNames('account-signup__btn', {
+                        'account-signup__btn--disabled': !values.password || errors.password || isSubmitting,
+                    })}
+                    id='dt_core_account-signup-modal_submit-btn'
+                    type='submit'
+                    is_disabled={!values.password || !!errors.password || isSubmitting}
+                    text={localize('Start trading')}
+                    large
+                    primary
+                />
+            </div>
         )}
     </div>
 );

@@ -1,12 +1,12 @@
 import React from 'react';
-import { useVerifyEmail, TEmailVerificationType } from '@deriv/hooks';
+import { useVerifyEmail } from '@deriv/hooks';
 import { localize } from '@deriv/translations';
 import EmptyState from 'Components/empty-state';
 import EmailVerificationResendEmptyState from './email-verification-resend-empty-state';
 import './email-verification-empty-state.scss';
 
 type TEmailVerificationEmptyStateProps = {
-    type: TEmailVerificationType;
+    type: Parameters<typeof useVerifyEmail>[0];
 };
 
 const EmailVerificationEmptyState = ({ type }: TEmailVerificationEmptyStateProps) => {

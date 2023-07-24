@@ -1,6 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
-import { Dropdown, Icon, Text } from '@deriv/components';
+import { Checkbox, Dropdown, Icon, Text } from '@deriv/components';
+import { isEmptyObject } from '@deriv/shared';
 import { localize } from 'Components/i18next';
 import { useStores } from 'Stores';
 import PropTypes from 'prop-types';
@@ -20,7 +21,7 @@ const PaymentMethodCard = ({
     small,
     style,
 }) => {
-    const { my_profile_store } = useStores();
+    const { general_store, my_ads_store, my_profile_store } = useStores();
     const method = !is_add && payment_method?.display_name.replace(/\s|-/gm, '');
     const payment_account = payment_method?.fields?.account?.value;
     const payment_account_name = payment_method?.display_name;
@@ -49,7 +50,6 @@ const PaymentMethodCard = ({
                     custom_color='var(--brand-red-coral)'
                     size={32}
                 />
-
                 <Text align='center' color={disabled ? 'less-prominent' : 'prominent'} size='xs'>
                     {label || add_payment_method}
                 </Text>
@@ -84,6 +84,17 @@ const PaymentMethodCard = ({
                         onChange={e => my_profile_store.onEditDeletePaymentMethodCard(e, payment_method)}
                         suffix_icon='IcCashierVerticalEllipsis'
                         is_align_text_left
+                    />
+                )}
+                {(general_store.active_index === 2 || general_store.active_index === 0) && (
+                    <Checkbox
+                        className='payment-method-card__checkbox'
+                        disabled={
+                            my_ads_store.payment_method_ids.length === 3 &&
+                            !my_ads_store.payment_method_ids.includes(payment_method.ID)
+                        }
+                        onChange={onClick}
+                        value={!isEmptyObject(style)}
                     />
                 )}
             </div>

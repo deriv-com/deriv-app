@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Text } from '@deriv/components';
+import { formatMoney, getCurrencyDisplayCode } from '@deriv/shared';
 import { FastMarker } from 'Modules/SmartChart';
 import classNames from 'classnames';
 
@@ -19,14 +20,15 @@ const AccumulatorsProfitLossText = ({
 }) => {
     const [is_fading_in, setIsFadingIn] = React.useState(false);
     const [is_sliding, setIsSliding] = React.useState(false);
-    const prev_profit = React.useRef(profit);
-    const prev_profit_tenth = +prev_profit.current?.toFixed(2).split('.')[1][0];
+    const formatted_profit = formatMoney(currency, profit, true, 0, 0);
+    const prev_profit = React.useRef(formatted_profit);
+    const prev_profit_tenth = +prev_profit.current?.split('.')[1][0];
     const [current_profit_tenth, setCurrentProfitTenth] = React.useState(prev_profit_tenth);
     const profit_tenth_ref = React.useRef();
     const interval_id_ref = React.useRef(null);
     const fading_in_timeout_id = React.useRef();
     const sliding_timeout_id = React.useRef();
-    const profit_portions_array = profit.toFixed(2).split('.');
+    const profit_portions_array = formatted_profit.split('.');
     const profit_whole_number = +profit_portions_array[0];
     const profit_tenth = +profit_portions_array[1][0];
     const profit_hundredths = +profit_portions_array[1].slice(1);
@@ -113,7 +115,7 @@ const AccumulatorsProfitLossText = ({
                 {`${profit_hundredths}`}
             </Text>
             <Text size='xxs' as='div' className={`${className}__currency`}>
-                {currency}
+                {getCurrencyDisplayCode(currency)}
             </Text>
         </FastMarker>
     );

@@ -57,13 +57,15 @@ export const isAccumulatorContractOpen = (contract_info: TContractInfo = {}) => 
     return isAccumulatorContract(contract_info.contract_type) && getContractStatus(contract_info) === 'open';
 };
 
-export const isMultiplierContract = (contract_type: string) => /MULT/i.test(contract_type);
+export const isMultiplierContract = (contract_type = '') => /MULT/i.test(contract_type);
 
 export const isTouchContract = (contract_type: string) => /TOUCH/i.test(contract_type);
 
-export const isVanillaContract = (contract_type: string) => /VANILLA/i.test(contract_type);
+export const isVanillaContract = (contract_type = '') => /VANILLA/i.test(contract_type);
 
-export const isCryptoContract = (underlying: string) => /^cry/.test(underlying);
+export const isOnlyUpsDownsContract = (contract_type = '') => /RUN/i.test(contract_type);
+
+export const isCryptoContract = (underlying = '') => underlying.startsWith('cry');
 
 export const getAccuBarriersDefaultTimeout = (symbol: string) => {
     return symbols_2s.includes(symbol) ? DELAY_TIME_1S_SYMBOL * 2 : DELAY_TIME_1S_SYMBOL;
@@ -194,6 +196,6 @@ export const getContractUpdateConfig = ({ contract_update, limit_order }: TContr
     };
 };
 
-export const shouldShowExpiration = (symbol: string) => /^cry/.test(symbol);
+export const shouldShowExpiration = (symbol = '') => symbol.startsWith('cry');
 
 export const shouldShowCancellation = (symbol = '') => !/^(cry|CRASH|BOOM|stpRNG|WLD|JD)/.test(symbol);

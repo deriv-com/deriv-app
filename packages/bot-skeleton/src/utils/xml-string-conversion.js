@@ -1,4 +1,15 @@
-export const ATTRIBUTES_TO_REMOVE = ['is_dbot', 'collection', 'x', 'y'];
+export const ATTRIBUTES_TO_REMOVE = [
+    'xmlns',
+    'is_dbot',
+    'collection',
+    'x',
+    'y',
+    'id',
+    'type',
+    'iscloud',
+    'islocal',
+    'collapsed',
+];
 
 export const removeAttributesFromXml = (xmlString = '', attributeNames) => {
     // Remove attribute names like collection/is_dbot from the string

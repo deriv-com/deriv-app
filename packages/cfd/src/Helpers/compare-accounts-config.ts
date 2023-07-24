@@ -151,7 +151,7 @@ const cfd_config = () => ({
     leverage: '1:1000',
     leverage_description: localize('Maximum Leverage'),
     spread: '0.5 pips',
-    spread_description: localize('Spread from'),
+    spread_description: localize('Spreads from'),
     counterparty_company: 'Deriv (SVG) LLC',
     counterparty_company_description: localize('Counterparty company'),
     jurisdiction: 'St. Vincent & Grenadines',

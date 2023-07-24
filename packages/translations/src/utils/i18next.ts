@@ -30,6 +30,13 @@ import zh_tw from '../translations/zh_tw.json';
 
 let temp_environment: Environment = 'production';
 
+/**
+ * Sets the current environment for the application. This function is used to synchronize
+ * the environment variable with the state in the React life cycle and update the translation data accordingly.
+ *
+ * @param {Environment} env - The environment to be set. A string representing the application's environment.
+ * @returns {void} This function does not return anything.
+ */
 export const setEnvironment = (env: Environment) => (temp_environment = env);
 
 /**

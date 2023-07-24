@@ -369,6 +369,7 @@ type TClientStore = {
     setFinancialAndTradingAssessment: (
         payload: SetFinancialAssessmentRequest
     ) => Promise<SetFinancialAssessmentResponse>;
+    preferred_language: string;
 };
 
 type TCommonStoreError = {

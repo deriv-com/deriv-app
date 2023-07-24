@@ -2,7 +2,13 @@ import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { DesktopWrapper } from '@deriv/components';
 import { APIProvider } from '@deriv/api';
-import { initFormErrorMessages, setSharedCFDText, setWebsocket, initMoment } from '@deriv/shared';
+import {
+    initFormErrorMessages,
+    setSharedCFDText,
+    setWebsocket,
+    initMoment,
+    getRuntimeEnvironment,
+} from '@deriv/shared';
 import { TranslationProvider } from '@deriv/translations';
 import { StoreProvider } from '@deriv/stores';
 import WS from 'Services/ws-methods';
@@ -41,8 +47,8 @@ const App = ({ root_store }) => {
     setWebsocket(WS);
 
     return (
-        <TranslationProvider onInit={lang => initMoment(lang)}>
-            <Router basename={has_base ? `/${base}` : null}>
+        <Router basename={has_base ? `/${base}` : null}>
+            <TranslationProvider environment={getRuntimeEnvironment()} onInit={lang => initMoment(lang)}>
                 <MobxContentProvider store={root_store}>
                     <StoreProvider store={root_store}>
                         <APIProvider>
@@ -67,8 +73,8 @@ const App = ({ root_store }) => {
                         </APIProvider>
                     </StoreProvider>
                 </MobxContentProvider>
-            </Router>
-        </TranslationProvider>
+            </TranslationProvider>
+        </Router>
     );
 };
 

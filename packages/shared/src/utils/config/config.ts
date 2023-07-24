@@ -140,3 +140,19 @@ export const getDebugServiceWorker = () => {
 
     return false;
 };
+
+/**
+ * Get the current runtime environment based on the application's context.
+ *
+ * The runtime environment is determined as follows:
+ * - If the current domain is a staging domain (e.g., staging-app.deriv.com), the environment is "staging".
+ * - If the current domain is a local domain (e.g., localhost.binary.sx), the environment is "local".
+ * - For all other domains, the environment is considered "production".
+ *
+ * @returns {string} The current runtime environment. Possible values are "staging", "local", or "production".
+ */
+export const getRuntimeEnvironment = () => {
+    if (isStaging()) return 'staging';
+    if (isLocal()) return 'local';
+    return 'production';
+};

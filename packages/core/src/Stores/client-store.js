@@ -30,7 +30,6 @@ import { action, computed, makeObservable, observable, reaction, runInAction, to
 import { getAccountTitle, getClientAccountType, getAvailableAccount } from './Helpers/client';
 import { getLanguage, localize } from '@deriv/translations';
 import { getRegion, isEuCountry, isMultipliersOnly, isOptionsBlocked } from '_common/utility';
-
 import BaseStore from './base-store';
 import BinarySocket from '_common/base/socket_base';
 import BinarySocketGeneral from 'Services/socket-general';
@@ -1683,11 +1682,11 @@ export default class ClientStore extends BaseStore {
             runInAction(() => {
                 this.is_populating_account_list = false;
             });
-            const language = authorize_response.authorize.preferred_language;
+            const { preferred_language } = authorize_response.authorize;
             const stored_language = LocalStore.get(LANGUAGE_KEY);
-            if (language !== 'EN' && stored_language && language !== stored_language) {
-                window.history.replaceState({}, document.title, urlForLanguage(language));
-                await this.root_store.common.changeSelectedLanguage(language);
+            if (preferred_language !== 'EN' && stored_language && preferred_language !== stored_language) {
+                this.setPreferredLanguage(preferred_language);
+                window.history.replaceState({}, document.title, urlForLanguage(preferred_language));
             }
             if (this.citizen) {
                 await this.onSetCitizen(this.citizen);

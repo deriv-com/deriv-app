@@ -35,7 +35,7 @@ const POISubmissionForMT5 = ({
                 jurisdiction_selected_shortcode !== Jurisdiction.VANUATU
             ) {
                 setSubmissionService(service_code.idv);
-            } else if (onfido_submissions_left && is_onfido_supported) {
+            } else if (onfido_submissions_left > 0 && is_onfido_supported) {
                 setSubmissionService(service_code.onfido);
             } else {
                 setSubmissionService(service_code.manual);
@@ -131,7 +131,14 @@ const POISubmissionForMT5 = ({
                 );
             }
             case service_code.manual:
-                return <Unsupported is_mt5 handlePOIforMT5Complete={handlePOIComplete} />;
+                return (
+                    <Unsupported
+                        onfido={onfido}
+                        country_code={citizen_data.value}
+                        is_mt5
+                        handlePOIforMT5Complete={handlePOIComplete}
+                    />
+                );
             default:
                 return null;
         }

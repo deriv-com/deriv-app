@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Div100vhContainer, Dropdown, Loading, Text, ThemedScrollbars } from '@deriv/components';
 import { useActiveWallet, useWalletTransactions } from '@deriv/hooks';
 import { useStore } from '@deriv/stores';
@@ -93,16 +93,27 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
         return is_wallet_name_visible ? header_height : collapsed_header_height;
     }, [is_mobile, is_wallet_name_visible]);
 
+    const [should_load_more, setShouldLoadMore] = useState(false);
+
     const onScrollHandler: React.UIEventHandler<HTMLDivElement> = e => {
         if (is_mobile) contentScrollHandler?.(e);
         if (
+            !should_load_more &&
             !isLoading &&
             !isComplete &&
             e.currentTarget.scrollHeight - e.currentTarget.scrollTop - e.currentTarget.clientHeight <= 100
         ) {
-            loadMore();
+            setShouldLoadMore(true);
         }
     };
+
+    useEffect(() => {
+        if (should_load_more) loadMore();
+    }, [should_load_more, loadMore]);
+
+    useEffect(() => {
+        setShouldLoadMore(false);
+    }, [transactions.length]);
 
     return (
         <>
@@ -143,7 +154,9 @@ const TransactionList = ({ contentScrollHandler, is_wallet_name_visible }: TTran
                                         }
                                     />
                                 ))}
-                                {!isComplete && <Loading is_fullscreen={false} className='transaction-list__loader' />}
+                                {!isComplete && should_load_more && (
+                                    <Loading is_fullscreen={false} className='transaction-list__loader' />
+                                )}
                             </React.Fragment>
                         ) : (
                             <Loading is_fullscreen={false} />

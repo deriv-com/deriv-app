@@ -1,4 +1,4 @@
-import { action, computed, observable, when, runInAction, makeObservable, override } from 'mobx';
+import { action, computed, observable, when, reaction, runInAction, makeObservable, override } from 'mobx';
 import { getAccountListKey, getAccountTypeFields, CFD_PLATFORMS, WS, Jurisdiction } from '@deriv/shared';
 import BaseStore from 'Stores/base-store';
 import { getDxCompanies, getMtCompanies, getDerivezCompanies } from './Helpers/cfd-config';

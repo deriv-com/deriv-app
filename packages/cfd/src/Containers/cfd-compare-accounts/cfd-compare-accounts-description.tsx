@@ -55,7 +55,8 @@ const CFDCompareAccountsDescription = ({ trading_platforms, is_demo }: TCompareA
                         </Text>
                         <Text as='p' size='xxxs' align='center'>
                             {juridisction_data.regulator_description.split('<br />')[0]}
-                            <br />
+                        </Text>
+                        <Text as='p' size='xxxs' align='center'>
                             {juridisction_data.regulator_description.split('<br />')[1]}
                         </Text>
                     </div>

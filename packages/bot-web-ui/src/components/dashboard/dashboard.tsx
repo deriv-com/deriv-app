@@ -173,12 +173,12 @@ const Dashboard = ({
 
     const botStorageSetting = () => {
         tour_status = getTourSettings('bot_builder_status');
-        if (tour_status_ended.key === 'finished' && !is_mobile) {
+        const joyride_status_finished = tour_status_ended.key === 'finished';
+        if (joyride_status_finished && !is_mobile) {
             if (tour_type.key === 'onboard_tour') {
-                const status = tour_status_ended.key === 'finished';
                 onCloseTour();
                 tour_status_ended.key = '';
-                return status ? tour_status_ended.key : null;
+                return joyride_status_finished ?? null;
             }
             setTourDialogVisibility(true);
 

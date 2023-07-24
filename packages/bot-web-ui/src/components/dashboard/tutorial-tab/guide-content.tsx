@@ -72,7 +72,7 @@ const GuideContent = ({
             <div className='tutorials-wrap'>
                 {guide_list?.length > 0 && (
                     <Text align='center' weight='bold' color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
-                        Step-by-step guides
+                        {localize('Step-by-step guides')}
                     </Text>
                 )}
                 <div className='tutorials-wrap__group'>
@@ -108,7 +108,7 @@ const GuideContent = ({
                 </div>
                 {guide_list?.length > 0 && (
                     <Text align='center' weight='bold' color='prominent' line_height='s' size={is_mobile ? 'xxs' : 's'}>
-                        Videos on Deriv Bot
+                        {localize('Videos on Deriv Bot')}
                     </Text>
                 )}
                 <div className='tutorials-wrap__group'>

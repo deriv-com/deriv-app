@@ -219,8 +219,8 @@ const PositionsModalCard = observer(
             <React.Fragment>
                 <NavLink
                     className={classNames('dc-contract-card', {
-                        'dc-contract-card--green': !is_multiplier && profit_loss > 0 && !result,
-                        'dc-contract-card--red': !is_multiplier && profit_loss < 0 && !result,
+                        'dc-contract-card--green': profit_loss > 0 && !result,
+                        'dc-contract-card--red': profit_loss < 0 && !result,
                     })}
                     to={{
                         pathname: `/contract/${contract_info.contract_id}`,

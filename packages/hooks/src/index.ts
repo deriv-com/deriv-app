@@ -1,6 +1,5 @@
 export { default as useAccountStatus } from './useAccountStatus';
 export { default as useAccountTransferVisible } from './useAccountTransferVisible';
-export { default as useCashierLocked } from './useCashierLocked';
 export { default as useCFDAccounts } from './useCFDAccounts';
 export { default as useCFDAllAccounts } from './useCFDAllAccounts';
 export { default as useCFDDemoAccounts } from './useCFDDemoAccounts';

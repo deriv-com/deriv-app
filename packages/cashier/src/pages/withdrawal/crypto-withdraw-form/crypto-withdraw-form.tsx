@@ -5,6 +5,7 @@ import { Button, Input, Loading, Text, InlineMessage } from '@deriv/components';
 import { CryptoConfig, getCurrencyName, isCryptocurrency } from '@deriv/shared';
 import { localize, Localize } from '@deriv/translations';
 import { useStore, observer } from '@deriv/stores';
+import { useCurrentAccountDetails } from '@deriv/hooks';
 import CryptoFiatConverter from '../../../components/crypto-fiat-converter';
 import PercentageSelector from '../../../components/percentage-selector';
 import RecentTransaction from '../../../components/recent-transaction';

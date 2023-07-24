@@ -1,4 +1,3 @@
-// import IdvDocumentVerified from 'Assets/ic-idv-verified.svg';
 import IdvDocumentVerified from '../../../../Assets/ic-idv-verified.svg';
 import PoaButton from '../../../poa/poa-button/poa-button';
 import React from 'react';

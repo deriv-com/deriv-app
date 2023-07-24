@@ -34,7 +34,7 @@ Blockly.Blocks.math_modulo = {
     meta() {
         return {
             display_name: localize('Remainder after division'),
-            description: localize(' Returns the remainder after the division of the given numbers.'),
+            description: localize('Returns the remainder after the division of the given numbers.'),
         };
     },
     getRequiredValueInputs() {

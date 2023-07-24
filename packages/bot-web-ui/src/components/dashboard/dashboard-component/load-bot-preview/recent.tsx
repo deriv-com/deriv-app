@@ -4,14 +4,14 @@ import { getSavedWorkspaces } from '@deriv/bot-skeleton';
 import { MobileWrapper, Text } from '@deriv/components';
 import { isMobile } from '@deriv/shared';
 import { observer } from '@deriv/stores';
-import { Localize } from '@deriv/translations';
+import { Localize, localize } from '@deriv/translations';
 import { useDBotStore } from 'Stores/useDBotStore';
 import DeleteDialog from './delete-dialog';
 import RecentWorkspace from './recent-workspace';
 import SaveModal from './save-modal';
 import './index.scss';
 
-const HEADERS = ['Bot name', 'Last modified', 'Status'];
+const HEADERS = [localize('Bot name'), localize('Last modified'), localize('Status')];
 
 const RecentComponent = observer(() => {
     const { load_modal, dashboard } = useDBotStore();

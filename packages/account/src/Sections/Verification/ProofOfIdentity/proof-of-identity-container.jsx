@@ -48,6 +48,13 @@ const ProofOfIdentityContainer = ({
 
     const routeBackTo = redirect_route => routeBackInApp(history, [redirect_route]);
     const handleRequireSubmission = () => setHasRequireSubmission(true);
+    const country_code = account_settings?.citizen || account_settings?.country_code;
+
+    const handleManualSubmit = () => {
+        WS.authorized.getAccountStatus().then(() => {
+            refreshNotifications();
+        });
+    };
 
     React.useEffect(() => {
         // only re-mount logic when switching is done
@@ -206,17 +213,22 @@ const ProofOfIdentityContainer = ({
                     manual={manual}
                     setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                     redirect_button={redirect_button}
+                    country_code={country_code}
+                    handleViewComplete={handleManualSubmit}
                 />
             );
         case service_code.manual:
             return (
                 <Unsupported
                     manual={manual}
+                    country_code={country_code}
                     is_from_external={is_from_external}
                     setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                     needs_poa={needs_poa}
                     redirect_button={redirect_button}
                     handleRequireSubmission={handleRequireSubmission}
+                    handleViewComplete={handleManualSubmit}
+                    onfido={onfido}
                 />
             );
         default:

@@ -1,18 +1,33 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { useStores } from 'Stores';
-import { useModalManagerContext } from 'Components/modal-manager/modal-manager-context';
 import { mockStore, StoreProvider } from '@deriv/stores';
 import AppContent from '../app-content.jsx';
 
+const mocked_store_values = {
+    general_store: {
+        is_loading: false,
+        should_show_dp2p_blocked: false,
+        should_show_popup: false,
+        props: { should_show_verification: false },
+        is_advertiser: false,
+    },
+    buy_sell_store: {
+        setTableType: jest.fn(),
+    },
+};
+
 jest.mock('Stores', () => ({
     ...jest.requireActual('Stores'),
-    useStores: jest.fn(),
+    useStores: jest.fn(() => mocked_store_values),
 }));
 
 jest.mock('Components/modal-manager/modal-manager-context', () => ({
     ...jest.requireActual('Components/modal-manager/modal-manager-context'),
-    useModalManagerContext: jest.fn(),
+    useModalManagerContext: jest.fn(() => ({
+        showModal: jest.fn(),
+        hideModal: jest.fn(),
+    })),
 }));
 
 jest.mock('@deriv/components', () => ({
@@ -34,22 +49,13 @@ jest.mock('Components/buy-sell/buy-sell', () => jest.fn(() => 'BuySell'));
 jest.mock('Components/my-profile', () => jest.fn(() => 'MyProfile'));
 
 describe('<AppContent/>', () => {
-    const mocked_store_values = {
-        is_loading: false,
-        should_show_dp2p_blocked: false,
-        should_show_popup: false,
-        props: { should_show_verification: false },
-        is_advertiser: false,
-    };
-
+    it('should set the table type to buy on initial page render', () => {
+        render(<AppContent />, {
+            wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
+        });
+        expect(mocked_store_values.buy_sell_store.setTableType).toHaveBeenCalledWith('buy');
+    });
     it('should load the Tab component when no error status are set', () => {
-        useStores.mockImplementation(() => ({
-            general_store: mocked_store_values,
-        }));
-        useModalManagerContext.mockImplementation(() => ({
-            showModal: () => {},
-            hideModal: () => {},
-        }));
         render(<AppContent />, {
             // TODO: remove StoreProvider Wrappers when we fix routing for p2p
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
@@ -61,7 +67,8 @@ describe('<AppContent/>', () => {
 
     it('should render the loading component when is_loading state is true', () => {
         useStores.mockImplementation(() => ({
-            general_store: { ...mocked_store_values, is_loading: true },
+            ...mocked_store_values,
+            general_store: { ...mocked_store_values.general_store, is_loading: true },
         }));
         render(<AppContent />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
@@ -83,7 +90,8 @@ describe('<AppContent/>', () => {
 
     it('should render the nick-name form component when should_show_popup state is true', () => {
         useStores.mockImplementation(() => ({
-            general_store: { ...mocked_store_values, should_show_popup: true },
+            ...mocked_store_values,
+            general_store: { ...mocked_store_values.general_store, should_show_popup: true },
         }));
         render(<AppContent />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,
@@ -106,7 +114,8 @@ describe('<AppContent/>', () => {
 
     it('should render MyProfile component when is_advertiser state is true', () => {
         useStores.mockImplementation(() => ({
-            general_store: { ...mocked_store_values, is_advertiser: true },
+            ...mocked_store_values,
+            general_store: { ...mocked_store_values.general_store, is_advertiser: true },
         }));
         render(<AppContent />, {
             wrapper: ({ children }) => <StoreProvider store={mockStore({})}>{children}</StoreProvider>,

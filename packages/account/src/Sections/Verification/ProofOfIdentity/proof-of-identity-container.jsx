@@ -50,6 +50,12 @@ const ProofOfIdentityContainer = ({
     const handleRequireSubmission = () => setHasRequireSubmission(true);
     const country_code = account_settings?.citizen || account_settings?.country_code;
 
+    const handleManualSubmit = () => {
+        WS.authorized.getAccountStatus().then(() => {
+            refreshNotifications();
+        });
+    };
+
     React.useEffect(() => {
         // only re-mount logic when switching is done
         if (!is_switching) {
@@ -208,6 +214,7 @@ const ProofOfIdentityContainer = ({
                     setIsCfdPoiCompleted={setIsCfdPoiCompleted}
                     redirect_button={redirect_button}
                     country_code={country_code}
+                    handleViewComplete={handleManualSubmit}
                 />
             );
         case service_code.manual:
@@ -220,6 +227,8 @@ const ProofOfIdentityContainer = ({
                     needs_poa={needs_poa}
                     redirect_button={redirect_button}
                     handleRequireSubmission={handleRequireSubmission}
+                    handleViewComplete={handleManualSubmit}
+                    onfido={onfido}
                 />
             );
         default:

@@ -3,6 +3,10 @@
         &--wallet {
             width: 28.8rem;
 
+            @include mobile {
+                width: 100%;
+            }
+
             .cashier-recent-transaction {
                 width: 100%;
                 padding: 1.6rem 2.4rem;

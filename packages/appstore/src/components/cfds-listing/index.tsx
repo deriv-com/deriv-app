@@ -1,5 +1,6 @@
 import React from 'react';
-import { Text, StaticUrl } from '@deriv/components';
+import { Text, StaticUrl, StatusBadge } from '@deriv/components';
+import { useIsSystemMaintenance, useDepositLocked } from '@deriv/hooks';
 import { localize, Localize } from '@deriv/translations';
 import ListingContainer from 'Components/containers/listing-container';
 import './cfds-listing.scss';
@@ -61,11 +62,12 @@ const CFDsListing = () => {
     const has_no_real_account = !has_any_real_account;
     const accounts_sub_text =
         !is_eu_user || is_demo_low_risk ? localize('Compare accounts') : localize('Account Information');
-
+    const is_account_locked = useDepositLocked();
     const getMT5AccountAuthStatus = (current_acc_status: string) => {
-        if (current_acc_status === 'proof_failed') {
-            return 'failed';
-        } else if (current_acc_status === 'verification_pending') {
+        if (is_account_locked) {
+            return 'disabled';
+        }
+        if (current_acc_status === 'verification_pending') {
             return 'pending';
         }
         return null;
@@ -74,6 +76,8 @@ const CFDsListing = () => {
     const no_real_mf_account_eu_regulator = no_MF_account && is_eu_user && is_real;
 
     const no_real_cr_non_eu_regulator = no_CR_account && !is_eu_user && is_real;
+
+    const is_server_under_maintenance = useIsSystemMaintenance();
 
     const AddDerivAccount = () => {
         if (is_real) {
@@ -132,9 +136,14 @@ const CFDsListing = () => {
             <AddDerivAccount />
 
             <div className='cfd-full-row' style={{ paddingTop: '2rem' }}>
-                <Text line_height='m' weight='bold' color='prominent'>
-                    {localize('Deriv MT5')}
-                </Text>
+                <div style={{ display: 'flex', gap: '10px' }}>
+                    <Text line_height='m' weight='bold' color='prominent'>
+                        {localize('Deriv MT5')}
+                    </Text>
+                    {is_server_under_maintenance && (
+                        <StatusBadge account_status='pending' icon='IcAlertWarning' text='Server maintenance' />
+                    )}
+                </div>
             </div>
             {is_landing_company_loaded ? (
                 <>

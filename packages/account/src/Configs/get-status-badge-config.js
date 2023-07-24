@@ -47,6 +47,16 @@ const getStatusBadgeConfig = (account_status, openFailedVerificationModal, selec
                 ),
                 icon: 'IcAlertInfo',
             };
+        case 'disabled':
+            return {
+                text: (
+                    <Localize
+                        i18n_default_text='<0>Disabled</0>'
+                        components={[<Text key={0} weight='bold' size='xxxs' color='var(--status-failed)' />]}
+                    />
+                ),
+                icon: 'IcAlertDanger',
+            };
         default:
             return {
                 text: '',

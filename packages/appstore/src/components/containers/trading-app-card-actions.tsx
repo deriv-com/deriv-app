@@ -31,7 +31,11 @@ const TradingAppCardActions = ({
     switch (action_type) {
         case 'get':
             return (
-                <Button disabled={is_account_being_created} primary_light onClick={() => onAction?.()}>
+                <Button
+                    disabled={is_account_being_created || is_buttons_disabled}
+                    primary_light
+                    onClick={() => onAction?.()}
+                >
                     {localize('Get')}
                 </Button>
             );

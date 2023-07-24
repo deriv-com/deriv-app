@@ -200,7 +200,7 @@ const ProofOfIncomeForm = observer(({ onSubmit }: TProofOfIncomeForm) => {
                         </Timeline>
                     </FormBody>
                     <FormFooter className='account-form__footer-poinc'>
-                        {status && status.msg && <FormSubmitErrorMessage message={status.msg} />}
+                        {status?.msg && <FormSubmitErrorMessage message={status.msg} />}
                         <Button
                             className='account-form__footer-btn'
                             type='submit'

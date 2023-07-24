@@ -37,7 +37,7 @@ describe('<PoincFileUploaderContainer />', () => {
     const file_address = /issued under your name with your current address/i;
 
     const runCommonTests = () => {
-        expect(screen.getAllByText('mockedIcon')).toHaveLength(6);
+        expect(screen.getAllByText('mockedIcon')).toHaveLength(5);
         expect(screen.getByText(file_size_msg)).toBeInTheDocument();
         expect(screen.getByText(file_type_msg)).toBeInTheDocument();
         expect(screen.getByText(file_time_msg)).toBeInTheDocument();
@@ -46,12 +46,14 @@ describe('<PoincFileUploaderContainer />', () => {
     it('should render PoincFileUploaderContainer component', () => {
         render(<PoincFileUploaderContainer {...props} />);
         expect(screen.getByTestId('dt_file_uploader_container')).toBeInTheDocument();
+        runCommonTests();
     });
 
     it('should render PoincFileUploaderContainer component if getSocket is not passed as prop', () => {
         delete props.getSocket;
         render(<PoincFileUploaderContainer {...props} />);
         expect(screen.getByTestId('dt_file_uploader_container')).toBeInTheDocument();
+        runCommonTests();
     });
 
     it('should not show description if is_description_enabled is false)', () => {

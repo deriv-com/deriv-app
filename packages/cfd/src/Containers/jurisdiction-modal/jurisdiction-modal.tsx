@@ -48,6 +48,21 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
         });
     }
 
+    const modal_content = (
+        <div
+            data-testid='modal_content'
+            className={classNames('jurisdiction-modal__wrapper', {
+                'jurisdiction-modal__flipped': is_dynamic_leverage_visible,
+            })}
+        >
+            <JurisdictionModalContentWrapper
+                toggleDynamicLeverage={toggleDynamicLeverage}
+                openPasswordModal={openPasswordModal}
+            />
+            <DynamicLeverageModalContent />
+        </div>
+    );
+
     return (
         <div>
             <React.Suspense fallback={<UILoader />}>
@@ -64,17 +79,7 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
                         width={account_type.type === 'financial' ? '1200px' : '1040px'}
                         has_close_icon={!is_dynamic_leverage_visible}
                     >
-                        <div
-                            className={classNames('jurisdiction-modal__wrapper', {
-                                'jurisdiction-modal__flipped': is_dynamic_leverage_visible,
-                            })}
-                        >
-                            <JurisdictionModalContentWrapper
-                                toggleDynamicLeverage={toggleDynamicLeverage}
-                                openPasswordModal={openPasswordModal}
-                            />
-                            <DynamicLeverageModalContent />
-                        </div>
+                        {modal_content}
                     </Modal>
                 </DesktopWrapper>
                 <MobileWrapper>
@@ -85,17 +90,7 @@ const JurisdictionModal = observer(({ openPasswordModal }: TJurisdictionModalPro
                         onClose={toggleJurisdictionModal}
                         has_close_icon={!is_dynamic_leverage_visible}
                     >
-                        <div
-                            className={classNames('jurisdiction-modal__wrapper', {
-                                'jurisdiction-modal__flipped': is_dynamic_leverage_visible,
-                            })}
-                        >
-                            <JurisdictionModalContentWrapper
-                                toggleDynamicLeverage={toggleDynamicLeverage}
-                                openPasswordModal={openPasswordModal}
-                            />
-                            <DynamicLeverageModalContent />
-                        </div>
+                        {modal_content}
                     </MobileDialog>
                 </MobileWrapper>
             </React.Suspense>

@@ -44,7 +44,7 @@
 
     &__wrapper {
         height: 77rem;
-        perspective: 1000px;
+        perspective: 100rem;
     }
 
     &__flipped {
@@ -735,7 +735,7 @@
 
     &__market {
         border: 0.5px solid var(--border-hover);
-        border-radius: 8px;
+        border-radius: $BORDER_RADIUS * 2;
         overflow: hidden;
         background-color: var(--general-hover);
 
@@ -778,7 +778,7 @@
         &-title {
             display: flex;
             flex-direction: column;
-            height: 70px;
+            height: 7rem;
             padding-top: 1rem;
             background-color: var(--general-section-1);
         }

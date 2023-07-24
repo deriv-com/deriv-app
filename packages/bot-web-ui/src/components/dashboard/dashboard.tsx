@@ -203,7 +203,7 @@ const Dashboard = ({
                 setOnBoardTourRunState(true);
             } else {
                 setHasTourEnded(false);
-                if (show_tour_dialog_mobile || show_tour_dialog_desktop) {
+                if ((show_tour_dialog_mobile || show_tour_dialog_desktop) && !is_strategy_modal_open) {
                     setTourDialogVisibility(true);
                 } else {
                     setTourActive(true);

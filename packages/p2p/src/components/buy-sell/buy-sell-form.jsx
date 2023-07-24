@@ -222,6 +222,8 @@ const BuySellForm = props => {
                                                     <Icon
                                                         className='buy-sell__modal-payment-method--icon'
                                                         icon={getPaymentMethodIcon(method)}
+                                                        // TODO: replace with getSnakeCase method
+                                                        data_testid={`dt_${method.toLowerCase()}`}
                                                         size={16}
                                                     />
                                                     <Text as='p' color='general' line_height='m' size='xs'>

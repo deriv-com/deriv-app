@@ -33,27 +33,41 @@ const getHighlightedIconLabel = (
                 { icon: 'ETF', text: localize('ETF'), highlighted: false },
             ];
         case 'financial':
-            if (trading_platforms.shortcode === 'maltainvest') {
-                return [
-                    { icon: 'Synthetics', text: localize('Synthetics'), highlighted: true, is_asterisk: true },
-                    { icon: 'Forex', text: forex_label, highlighted: true },
-                    { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
-                    { icon: 'StockIndices', text: localize('Stock Indices'), highlighted: true },
-                    { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
-                    { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                ];
+            switch (trading_platforms.shortcode) {
+                case 'maltainvest':
+                    return [
+                        { icon: 'Synthetics', text: localize('Synthetics'), highlighted: true, is_asterisk: true },
+                        { icon: 'Forex', text: forex_label, highlighted: true },
+                        { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
+                        { icon: 'StockIndices', text: localize('Stock Indices'), highlighted: true },
+                        { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
+                        { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
+                    ];
+                case 'labuan':
+                    return [
+                        { icon: 'Synthetics', text: localize('Synthetics'), highlighted: false },
+                        { icon: 'Baskets', text: localize('Baskets'), highlighted: false },
+                        { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: false },
+                        { icon: 'Stocks', text: localize('Stocks'), highlighted: false },
+                        { icon: 'StockIndices', text: localize('Stock Indices'), highlighted: false },
+                        { icon: 'Commodities', text: localize('Commodities'), highlighted: false },
+                        { icon: 'Forex', text: forex_label, highlighted: true },
+                        { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
+                        { icon: 'ETF', text: localize('ETF'), highlighted: true },
+                    ];
+                default:
+                    return [
+                        { icon: 'Synthetics', text: localize('Synthetics'), highlighted: false },
+                        { icon: 'Baskets', text: localize('Baskets'), highlighted: false },
+                        { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: false },
+                        { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
+                        { icon: 'StockIndices', text: localize('Stock Indices'), highlighted: true },
+                        { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
+                        { icon: 'Forex', text: forex_label, highlighted: true },
+                        { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
+                        { icon: 'ETF', text: localize('ETF'), highlighted: true },
+                    ];
             }
-            return [
-                { icon: 'Synthetics', text: localize('Synthetics'), highlighted: false },
-                { icon: 'Baskets', text: localize('Baskets'), highlighted: false },
-                { icon: 'DerivedFX', text: localize('Derived FX'), highlighted: false },
-                { icon: 'Stocks', text: localize('Stocks'), highlighted: true },
-                { icon: 'StockIndices', text: localize('Stock Indices'), highlighted: true },
-                { icon: 'Commodities', text: localize('Commodities'), highlighted: true },
-                { icon: 'Forex', text: forex_label, highlighted: true },
-                { icon: 'Cryptocurrencies', text: localize('Cryptocurrencies'), highlighted: true },
-                { icon: 'ETF', text: localize('ETF'), highlighted: true },
-            ];
         case 'all':
         default:
             return [

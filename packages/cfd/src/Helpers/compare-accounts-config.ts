@@ -183,7 +183,7 @@ const getJuridisctionDescription = (shortcode: string) => {
                 'Deriv (BVI) Ltd',
                 'British Virgin Islands',
                 localize('British Virgin Islands Financial Services Commission'),
-                localize('(License no. SIBA/L/18/1114) Regulator/External dispute Resolution')
+                localize('(License no. SIBA/L/18/1114)<br />Regulator/External dispute Resolution')
             );
         case 'synthetic_vanuatu':
             return createDescription(
@@ -197,7 +197,7 @@ const getJuridisctionDescription = (shortcode: string) => {
                 'Deriv (BVI) Ltd',
                 'British Virgin Islands',
                 localize('British Virgin Islands Financial Services Commission'),
-                localize('(License no. SIBA/L/18/1114) Regulator/External Dispute Resolution')
+                localize('(License no. SIBA/L/18/1114)<br />Regulator/External Dispute Resolution')
             );
         case 'financial_vanuatu':
             return createDescription(
@@ -211,7 +211,7 @@ const getJuridisctionDescription = (shortcode: string) => {
                 'Deriv (FX) Ltd',
                 'Labuan',
                 localize('Labuan Financial Services Authority'),
-                localize('(licence no. MB/18/0024) Regulator/External Dispute Resolution'),
+                localize('(licence no. MB/18/0024)<br />Regulator/External Dispute Resolution'),
                 '1:100'
             );
         case 'financial_maltainvest':

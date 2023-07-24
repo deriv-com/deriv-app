@@ -6,6 +6,7 @@ const languages = {
     FR: 'Français',
     ID: 'Indonesian',
     IT: 'Italiano',
+    KR: '한국어',
     PL: 'Polish',
     RU: 'Русский',
     VI: 'Tiếng Việt',

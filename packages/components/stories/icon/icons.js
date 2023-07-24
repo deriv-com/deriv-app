@@ -681,6 +681,7 @@ export const icons =
         'IcFlagFr',
         'IcFlagId',
         'IcFlagIt',
+        'IcFlagKr',
         'IcFlagPl',
         'IcFlagPt',
         'IcFlagRu',

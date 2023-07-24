@@ -123,8 +123,8 @@ const ContractDrawerCard = observer(
             >
                 <div
                     className={classNames('dc-contract-card', {
-                        'dc-contract-card--green': is_mobile && !is_multiplier && profit > 0 && !result,
-                        'dc-contract-card--red': is_mobile && !is_multiplier && profit < 0 && !result,
+                        'dc-contract-card--green': profit > 0 && !result,
+                        'dc-contract-card--red': profit < 0 && !result,
                         'contract-card__market-closed--disabled': is_market_closed && should_hide_closed_overlay,
                     })}
                     ref={hover_ref}

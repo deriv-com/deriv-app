@@ -1,9 +1,8 @@
 import React from 'react';
-import { isAccumulatorContract, isEmptyObject, isMobile } from '@deriv/shared';
+import { isAccumulatorContract, isEmptyObject, isMobile, getContractTypePosition } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import PurchaseButtonsOverlay from 'Modules/Trading/Components/Elements/purchase-buttons-overlay.jsx';
 import PurchaseFieldset from 'Modules/Trading/Components/Elements/purchase-fieldset.jsx';
-import { getContractTypePosition } from 'Constants/contract';
 import { useTraderStore } from 'Stores/useTraderStores';
 import { observer, useStore } from '@deriv/stores';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';

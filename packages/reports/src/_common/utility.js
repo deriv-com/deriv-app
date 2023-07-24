@@ -1,11 +1,3 @@
-const template = (string, content) => {
-    let to_replace = content;
-    if (content && !Array.isArray(content)) {
-        to_replace = [content];
-    }
-    return string.replace(/\[_(\d+)]/g, (s, index) => to_replace[+index - 1]);
-};
-
 /**
  * Creates a DOM element and adds any attributes to it.
  *
@@ -45,7 +37,6 @@ class PromiseClass {
 }
 
 module.exports = {
-    template,
     createElement,
     getStaticHash,
     PromiseClass,

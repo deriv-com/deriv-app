@@ -1,10 +1,10 @@
 import React from 'react';
 import classNames from 'classnames';
 import { ContractCard, Text } from '@deriv/components';
-import { isMobile } from '@deriv/shared';
+import { getCardLabels, isMobile } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import ContractCardLoader from 'Components/contract-card-loading';
-import { getCardLabels, getContractTypeDisplay } from 'Constants/contract';
+import { getContractTypeDisplay } from 'Constants/contract';
 import { connectWithContractUpdate } from 'Utils/multiplier';
 import { connect } from 'Stores/connect';
 import RootStore from 'Stores/index';

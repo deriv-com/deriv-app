@@ -2,9 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { DesktopWrapper, MobileWrapper, Money, IconTradeTypes, Text } from '@deriv/components';
-import { getContractTypeDisplay } from 'Constants/contract';
 import ContractInfo from 'Modules/Trading/Components/Form/Purchase/contract-info.jsx';
-import { getGrowthRatePercentage } from '@deriv/shared';
+import { getGrowthRatePercentage, getContractTypeDisplay } from '@deriv/shared';
 
 // TODO [lazy-loading-required] Responsive related components
 const ButtonTextWrapper = ({ should_fade, is_loading, type, is_high_low }) => {

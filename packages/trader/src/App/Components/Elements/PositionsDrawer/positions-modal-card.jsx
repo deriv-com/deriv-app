@@ -17,11 +17,12 @@ import {
     getEndTime,
     getTotalProfit,
     isVanillaContract,
+    getCardLabels,
+    getContractTypeDisplay,
 } from '@deriv/shared';
 import { localize } from '@deriv/translations';
 import { BinaryLink } from 'App/Components/Routes';
 import { PositionsCardLoader } from 'App/Components/Elements/ContentLoader';
-import { getContractTypeDisplay, getCardLabels } from 'Constants/contract';
 import { getMarketInformation } from 'Utils/Helpers/market-underlying';
 import ResultMobile from './result-mobile.jsx';
 import { observer, useStore } from '@deriv/stores';

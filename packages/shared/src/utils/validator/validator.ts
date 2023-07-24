@@ -5,11 +5,13 @@ type TRuleOptions = {
     func: (value: string | number, options?: TOptions, store?: unknown, inputs?: unknown) => boolean;
     condition: (store: unknown) => boolean;
     message: string;
+    name1: string;
+    name2: string;
 } & TOptions;
 
 type TRule = string | Array<string | TRuleOptions>;
 
-const template = (string: string, content: string | Array<string>) => {
+export const template = (string: string, content: string | Array<string>) => {
     let to_replace = content;
     if (content && !Array.isArray(content)) {
         to_replace = [content];
@@ -52,6 +54,8 @@ class Validator {
             ]);
         } else if (rule.name === 'min') {
             message = template(message, [rule.options.min!.toString()]);
+        } else if (rule.name === 'not_equal') {
+            message = template(message, [rule.options.name1, rule.options.name2]);
         }
         this.errors.add(attribute, message);
         this.error_count++;

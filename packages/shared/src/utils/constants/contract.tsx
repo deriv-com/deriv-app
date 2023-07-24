@@ -389,6 +389,11 @@ export const getUnsupportedContracts = () => ({
     },
 });
 
+/**
+ * // Config to display trade buttons and their positions
+ * @param {Boolean} is_high_low
+ * @returns { object }
+ */
 export const getSupportedContracts = (is_high_low?: boolean) => ({
     ACCU: {
         button_name: <Localize i18n_default_text='Buy' />,

@@ -114,10 +114,11 @@ const personal_details_config = ({
             ],
         },
         tax_residence: {
-            default_value:
-                real_account_signup_target === 'maltainvest'
-                    ? account_settings.residence
-                    : residence_list.find(item => item.value === account_settings.tax_residence)?.text || '',
+            default_value: account_settings.residence
+                ? residence_list.find(item => item.value === account_settings.tax_residence)?.text || ''
+                : real_account_signup_target === 'maltainvest'
+                ? account_settings.residence
+                : '',
             supported_in: ['maltainvest'],
             rules: [['req', localize('Tax residence is required.')]],
         },

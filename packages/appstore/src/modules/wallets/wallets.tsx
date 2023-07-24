@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Loading, ThemedScrollbars } from '@deriv/components';
+import { Loading } from '@deriv/components';
 import { useActiveWallet, useWalletsList } from '@deriv/hooks';
 import { observer, useStore } from '@deriv/stores';
 import AddMoreWallets from 'Components/add-more-wallets';
@@ -23,7 +23,7 @@ const Wallets = observer(() => {
     }, [active_wallet, data, switchAccount]);
 
     return (
-        <ThemedScrollbars className={'wallets-module'}>
+        <div className={'wallets-module'}>
             {!is_authorize && <Loading />}
             {is_authorize && (
                 <div className={'wallets-module__content'}>
@@ -33,7 +33,7 @@ const Wallets = observer(() => {
             )}
             <ModalManager />
             <WalletTourGuide />
-        </ThemedScrollbars>
+        </div>
     );
 });
 
